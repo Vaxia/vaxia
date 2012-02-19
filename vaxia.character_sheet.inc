@@ -10,7 +10,8 @@
 function vaxia_character_sheet_register_systems() {
   $system['vaxia'] = array(
     'name' => 'Vaxia character sheet',
-    'description' => 'Vaxia system featuring a points tracker for attribute and skill fields.',
+    'description' => 'Vaxia system featuring a points tracker for '.
+      'attribute and skill fields.',
     'admin_callback' => '_vaxia_admin_settings',
   );
   return $system;
@@ -40,7 +41,8 @@ function _vaxia_admin_settings() {
     '#title' => 'XP types',
     '#description' => 'Available XP sub-types',
     '#type' => 'textfield',
-    '#default_value' => variable_get('vaxia_xp_types', "good\nevil\smart\nclever\nwarrior\nmage\nrogue"),
+    '#default_value' => variable_get('vaxia_xp_types',
+      "good\nevil\smart\nclever\nwarrior\nmage\nrogue"),
   );
   $form['point_cost'] = array(
     '#title' => 'Point costs',
@@ -62,7 +64,8 @@ function _vaxia_admin_settings() {
 }
 
 /**
- * Experience can be tracked as userpoints or as here as a table of it's own. Really just about any way you want to.
+ * Experience can be tracked as userpoints or as here as a table of it's own.
+ * Really just about any way you want to.
  * Userpoints ties in best with outside systems like Rules, Views, and the like.
  */
 
@@ -109,7 +112,8 @@ function vaxia_character_sheet_validate_sheet($node, $old_node, $form, $form_sta
     return FALSE;
   }
   return $error = array('field' => '', 'message' => 
-    t('You have spent %spent_xp xp out of %xp available xp. Please revise your sheet.', array('%spent_xp' => $spent_xp, '%xp' => $xp)));
+    t('You have spent %spent_xp xp out of %xp available xp. Please revise your sheet.',
+      array('%spent_xp' => $spent_xp, '%xp' => $xp)));
 }
 
 /**
@@ -118,7 +122,8 @@ function vaxia_character_sheet_validate_sheet($node, $old_node, $form, $form_sta
 function vaxia_form_character_sheet_node_form_alter(&$form, &$form_state) {
   $workflow_state = workflow_get_workflow_states_by_sid($form['#node']->workflow);
   if ($workflow_state->state != 'draft' && !user_access('evaluate character')) {
-    // User is not allowed to modify certain elements on their sheet. Such as: name, skill names and skill descriptions.
+    // User is not allowed to modify certain elements on their sheet.
+    // Such as: name, skill names and skill descriptions.
     $lang = $form['language']['#value'];
     $form['title']['#disabled'] = TRUE;
     $form['title']['#value'] = $form['title']['#default_value'];
@@ -245,7 +250,8 @@ function _vaxia_total_sheet($node) {
     if (strpos($field_name, 'field_') === 0) {
       $field = $entity[$field_name];
       if(isset($field[$entity['language']]) && is_array($field[$entity['language']])) {
-        // If field is a field_collection call this function on the entity. (could be done with user ref, node ref)
+        // If field is a field_collection call this function on the entity.
+        // (could be done with user ref, node ref)
         // If field is a normal / plain field then try to grab the value and map cost.
         foreach ($field[$entity['language']] as $delta => $delta_field) {
           $bundle_type = 'generic';

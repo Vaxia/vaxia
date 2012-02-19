@@ -142,7 +142,8 @@ function vaxia_node_view($node, $view_mode, $langcode) {
  */
 function _vaxia_change_ownership_form($form, &$form_state, $node) {
   $context['owner_uid'] = $node->uid;
-  $form = node_assign_owner_action_form($context); // From node.module, generate an ownership form.
+  $form = node_assign_owner_action_form($context);
+  // From node.module, generate an ownership form.
   $form['owner_name']['#title'] = t('Owner');
   $form['nid'] = array(
     '#type' => 'hidden',
@@ -159,7 +160,8 @@ function _vaxia_change_ownership_form($form, &$form_state, $node) {
  * Form callback validation for _vaxia_change_ownership_form.
  */
 function _vaxia_change_ownership_form_validate($form, $form_state) {
-  $count = db_query("SELECT COUNT(*) FROM {users} WHERE name = :name", array(':name' => $form_state['values']['owner_name']))->fetchField();
+  $count = db_query("SELECT COUNT(*) FROM {users} WHERE name = :name",
+    array(':name' => $form_state['values']['owner_name']))->fetchField();
   if (intval($count) != 1) {
     form_set_error('owner_name', t('Please enter a valid username.'));
   }

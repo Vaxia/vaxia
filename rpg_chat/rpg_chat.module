@@ -7,7 +7,7 @@
  */
 
 /**
- * Implements hook_form_alter().
+ * Implements hook_form_FORM_ID_alter().
  *
  * Alter content type settings to add "Enable dice roller?" checkbox.
  */
@@ -25,11 +25,11 @@ function rpg_chat_form_node_type_form_alter(&$form, &$form_state) {
       '#type' => 'checkbox',
       '#title' => t('Enable RPG chat?'),
       '#default_value' => variable_get('rpg_chat_' . $form['#node_type']->type, FALSE),
-      '#description' => t('Enable this checkbox if you want to provide a RPG chat UI for your users with this content type.'),
+      '#description' => t('Enable this checkbox if you want to provide a RPG chat UI '.  
+        'for your users with this content type.'),
     );
   }
 }
-
 
 /**
  * Implements hook_permission().
@@ -56,7 +56,7 @@ function rpg_chat_permission() {
  */
 function rpg_chat_node_access($node, $op, $account) {
   // Only check if this is an rpg_node.
-  if (!rpg_chat_is_enabled($node->type) ) {
+  if (!_rpg_chat_is_enabled($node->type) ) {
     return NODE_ACCESS_IGNORE;
   }
   // You you can't view it, and you're not an admin for chat or the site.
@@ -64,22 +64,16 @@ function rpg_chat_node_access($node, $op, $account) {
     return NODE_ACCESS_DENY;
   }
   // If this is flagged as a mature room and you're not mature.
-  if (!user_access('view rpg mature chat') && $node->field_status[$node->language][0]['value'] == 'mature') { //TODO remove dependancy.
+  if (!user_access('view rpg mature chat') && $node->rpg_chat_mature) {
     return NODE_ACCESS_DENY;
   }  
   // If this is flagged as a locked room and you're not an admin.
-  if (!user_access('administer rpg chat') && $node->field_status[$node->language][0]['value'] == 'locked') { //TODO remove dependancy.
+  if (!user_access('administer rpg chat') && $node->rpg_chat_locked) {
     return NODE_ACCESS_DENY;
   }
   // Check user specific settings.
-  $banned_users = array();
-  foreach ($node->field_banned_users[$node->language] as $index => $user) { //TODO remove dependancy.
-    $baned_users[] = $user['uid'];
-  }
-  $allowed_users = array();
-  foreach ($node->field_allowed_users[$node->language] as $index => $user) { //TODO remove dependancy.
-    $allowed_users[] = $user['uid'];
-  }
+  $banned_users = $node->rpg_chat_banned_users;
+  $allowed_users = $node->rpg_char_allowed_users;
   // If you are on the banned users list, and not on the allowed users list.
   if (in_array($user->uid, $banned_users) && !in_array($user->uid, $allowed_users)) {
     return NODE_ACCESS_DENY;
@@ -94,14 +88,46 @@ function rpg_chat_node_access($node, $op, $account) {
 }
 
 /**
+ * Implements hook_node_load().
+ */
+function rpg_chat_node_load($node) {
+  if (_rpg_chat_is_enabled($node->type)) {
+    $room = _rpg_chat_get_room($nid);
+    $node->rpg_chat_min_refresh = $room->min_refresh;
+    $node->rpg_chat_mature = $room->mature;
+    $node->rpg_chat_locked = $room->locked;
+    $node->rpg_chat_banned_users = unserialize($room->banned_users);
+    $node->rpg_chat_allowed_users = unserialize($room->banned_users);
+    $node->rpg_chat_current_users = _rpg_chat_get_room_users($node->nid);
+  }
+}
+
+/**
+ * Implements hook_node_delete().
+ */
+function rpg_chat_node_delete($node) {
+  if (_rpg_chat_is_enabled($node->type)) {
+    _rpg_chat_delete_room($node->nid);
+  }
+}
+
+/**
  * Implements hook_node_view().
  */
 function rpg_chat_node_view($node, $view_mode = 'full', $langcode) {
-  if (rpg_chat_is_enabled($node->type) && $view_mode == 'full' ) {
+  if (_rpg_chat_is_enabled($node->type) && $view_mode == 'full' ) {
     // Modify the node with UI changes. This drives the reload.
     // Default is 60 seconds.
-    $refresh = $min_refresh = $node->field_min_refresh[$node->language][0]['value']; //TODO remove dependancy.
-    // TODO allow users to configure their refresh rate.
+    $refresh = $min_refresh = 60;
+    if (isset($node->rpg_chat_min_refresh)) {
+      $refresh = $min_refresh = $node->rpg_chat_min_refresh;
+    }
+    // Allow other modules to provide custom refresh rates for users.
+    module_invoke_all('rpg_chat_user_refresh', $refresh);
+    if ($refresh < $min_refresh) {
+      $refresh = $min_refresh;
+    }
+    // And add the JS we need to drive the conversation.
     drupal_add_js(array('rpg_chat' => array('refreshRate' => $refresh)), 'setting');
     drupal_add_js(drupal_get_path('module', 'rpg_chat').'/js/rpg_chat.js');
   }
@@ -112,18 +138,18 @@ function rpg_chat_node_view($node, $view_mode = 'full', $langcode) {
  * Wrap all comments in an ID wrapper for our AJAX to pick up.
  */
 function rpg_chat_node_view_alter(&$build) {
-  if (rpg_chat_is_enabled($build['#node']->type) ) {
+  if (_rpg_chat_is_enabled($build['#node']->type) ) {
     $build['comments']['comments']['#prefix'] = '<div id="rpg-chat">';
     $build['comments']['comments']['#suffix'] = '</div>';
   }
 }
 
 /**
- * Implements hook_form_FORM_ID_alter().
+ * Implements hook_form_FORM_ID_alter(). Alter the comment type.
  */
 function rpg_chat_form_comment_form_alter(&$form, &$form_state, $form_id) {
   // Check to see if this node type is a rpg chatroom.
-  if (rpg_chat_is_enabled($form['#node']->type) ) {
+  if (_rpg_chat_is_enabled($form['#node']->type) ) {
     // Display the refresh button.
     $form['actions']['refresh'] = array(
       '#type' => 'submit',
@@ -141,7 +167,7 @@ function rpg_chat_form_comment_form_alter(&$form, &$form_state, $form_id) {
     );
     // When clicked refresh the comment display in addition to a submit.
     $form['actions']['submit']['#ajax'] = array(
-      'callback' => 'rpg_chat_refresh_js',
+      'callback' => '_rpg_chat_refresh_js',
       'wrapper' => 'rpg-chat',
       'method' => 'replace',
       'effect' => 'fade',
@@ -152,7 +178,7 @@ function rpg_chat_form_comment_form_alter(&$form, &$form_state, $form_id) {
 /**
  * AJAX callback, refreshes the comments displayed for this chatroom.
  */
-function rpg_chat_refresh_js($form, &$form_state) {
+function _rpg_chat_refresh_js($form, &$form_state) {
   // This is to remove the "Your comment has been posted" status message.
   $published = t('Your comment has been posted.');
   if (isset($_SESSION['messages']['status'])) {
@@ -167,7 +193,8 @@ function rpg_chat_refresh_js($form, &$form_state) {
   // Only attempt to render comments if the node has visible comments.
   // Unpublished comments are not included in $node->comment_count, so show
   // comments unconditionally if the user is an administrator.
-  if (($node->comment_count && user_access('access comments')) || user_access('administer comments')) {
+  if (($node->comment_count && user_access('access comments'))
+    || user_access('administer comments')) {
     $mode = variable_get('comment_default_mode_' . $node->type, COMMENT_MODE_THREADED);
     $comments_per_page = variable_get('comment_default_per_page_' . $node->type, 50);
     if ($cids = comment_get_thread($node, $mode, $comments_per_page)) {
@@ -183,15 +210,124 @@ function rpg_chat_refresh_js($form, &$form_state) {
     }
   } 
   $return_string .= '</div>';
+  global $user;
+  _rpg_chat_set_room_users($form['#node']->nid, $user->uid);
   return $return_string;
+}
+
+// To every node type, add the functions to set value.
+
+function dice_roller_form_alter(&$form, &$form_state, $form_id) {
+  if (!_rpg_chat_is_enabled$form['type']['#value']) ) {
+    return;
+  }
+  // If this is a node form, add the rpg_chat feature set.
+  if (strpos($form_id, '_node_form')) {
+    $form = array(
+      '#type' => 'text',
+      '#title' => t('Minimum refresh rate'),
+      '#default_value' => 60,
+    );
+    $form = array(
+      '#type' => 'checkbox',
+      '#title' => t('Mature room?'),
+      '#default_value' => FALSE,
+    );
+    $form = array(
+      '#type' => 'checkbox',
+      '#title' => t('Locked room?'),
+      '#default_value' => FALSE,
+    );
+
+/*
+    $node->rpg_chat_banned_users = unserialize($room->banned_users);
+    $node->rpg_chat_allowed_users = unserialize($room->banned_users);
+*/
+    $form['allow_ban'] = array(
+      '#type' => 'fieldset',
+    );
+    $form['allow_ban']['allow'] = array(
+      '#prefix' => '<div id="rpg-chat-node-allow-list">',
+      '#suffix' => '</div>',
+    );
+    $form['allow_ban']['allow'] = array(
+      '#prefix' => '<div id="rpg-chat-node-ban-list">',
+      '#suffix' => '</div>',
+    );
+    $context['owner_uid'] = $node->uid;
+    $form = node_assign_owner_action_form($context);
+    // From node.module, generate an ownership form.
+    $form['owner_name']['#title'] = t('Allow / ban user');
+    $form['submit_allow'] = array(
+      '#type' => 'submit',
+      '#value' => t('Add user to allow list'),
+      '#ajax' => array(
+        'callback' => '_rpg_chat_add_allow_user_submit',
+        'wrapper' => 'rpg-chat-node-allow-list',
+        'method' => 'replace',
+        'effect' => 'fade',
+      ),
+    );
+    $form['submit_ban'] = array(
+      '#type' => 'submit',
+      '#value' => t('Add user to ban list'),
+      '#ajax' => array(
+        'callback' => '_rpg_chat_add_ban_user_submit',
+        'wrapper' => 'rpg-chat-node-ban-lists',
+        'method' => 'replace',
+        'effect' => 'fade',
+      ),
+    );
+    $form['#submit'][] = '_rpg_chat_add_user_submit';
+  }
+  return $form;
+}
+
+function _rpg_chat_add_allow_user_submit($form, $form_state) {
+  // Check submitted.
+}
+
+function _rpg_chat_add_ban_user_submit($form, $form_state) {
+  // Check submitted.
+}
+
+/*
+ * Form callback validation for _vaxia_change_ownership_form.
+ */
+function _vaxia_change_ownership_form_validate($form, $form_state) {
+  $count = db_query("SELECT COUNT(*) FROM {users} WHERE name = :name",
+    array(':name' => $form_state['values']['owner_name']))->fetchField();
+  if (intval($count) != 1) {
+    form_set_error('owner_name', t('Please enter a valid username.'));
+  }
 }
 
 /**
  * Helper function. Return RPG chat status.
  */
-function rpg_chat_is_enabled($type) {
+function _rpg_chat_is_enabled($type) {
   return variable_get('rpg_chat_' . $type, FALSE);
 }
 
-// NOTE: Alias posts are handled with an additional field on comments independantly from chat. 
-// This field is to be referenced when theming the comment to provide a character display.
+/**
+ * DB function.
+ */
+function _rpg_chat_get_room($nid) {
+}
+
+function _rpg_chat_set_room($nid, $values) {
+}
+
+function _rpg_chat_delete_room($nid) {
+}
+
+function _rpg_chat_get_room_users($nid) {
+}
+
+function _rpg_chat_set_room_users($nid, $uid) {
+  // Mark the timestamp for the nid/uid combination.
+  // Also clears out anything past a certain timeline / session.
+}
+
+function _rpg_chat_delete_room_users($nid) {
+}
