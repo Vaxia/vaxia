@@ -1,0 +1,44 @@
+<?php
+// $Id$
+
+/**
+ * @file
+ * Add lever features to RPG chat rooms.
+ */
+
+/**
+ * Implements hook_node_view().
+ */
+function rpg_chat_lever_node_view($node, $view_mode = 'full', $langcode) {
+  if (rpg_chat_is_enabled($node->type) && $view_mode == 'full' ) {
+    // Modify the node with UI changes. This drives the lever load.
+    drupal_add_js(drupal_get_path('module', 'rpg_chat_lever').'/js/rpg_chat_lever.js');
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function rpg_chat_form_comment_form_alter(&$form, &$form_state, $form_id) {
+  // Check to see if this node type is a rpg chatroom.
+  if (rpg_chat_is_enabled($form['#node']->type) ) {
+    // Display the refresh button.
+    $form['rpg_chat_lever'] = array(
+      '#type' => 'fieldset',
+    );
+    $form['rpg_chat_lever']['pulldown'] = array(
+      '#type' => 'submit',
+      '#value' => 'Pull',
+      '#submit' => '', // Set to make sure validation errors are cleared.
+      '#limit_validation_errors' => array(), // No validation for a refresh.
+    );
+    $form['rpg_chat_lever']['pulldown'] = array(
+      '#type' => 'submit',
+      '#value' => 'Pull',
+      '#submit' => '', // Set to make sure validation errors are cleared.
+      '#limit_validation_errors' => array(), // No validation for a refresh.
+    );
+  }
+}
+
+// May have to theme this lever to get the buttons inline.

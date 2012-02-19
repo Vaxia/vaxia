@@ -1,0 +1,311 @@
+<?php
+/**
+ * @file
+ * Code for the Vaxia feature.
+ */
+
+include_once('vaxia.features.inc');
+
+include_once('vaxia.dice.inc');
+
+include_once('vaxia.character_sheet.inc');
+
+/**
+ * Implements hook_permission().
+ */
+function vaxia_permission() {
+  return array(
+    'change art owner'=> array(
+      'title' => t('change art owner'),
+      'description' => t('Change the owner of art.'),
+    ),
+    'evaluate art'=> array(
+      'title' => t('evaluate art'),
+      'description' => t('Evaluate art.'),
+    ),
+    'change item owner'=> array(
+      'title' => t('change item owner'),
+      'description' => t('Change the owner of items.'),
+    ),
+    'evaluate item'=> array(
+      'title' => t('evaluate item'),
+      'description' => t('Evaluate item.'),
+    ),
+    'post notes on character'=> array(
+      'title' => t('post notes on character'),
+      'description' => t('Post notes on character.'),
+    ),
+    'add xp to character sheet' => array(
+      'title' => t('add xp to character sheet'),
+      'description' => t('Add XP to a character.'),
+    ),
+    'add item to character sheet' => array(
+      'title' => t('add item to character sheet'),
+      'description' => t('Add item to a character.'),
+    ),
+    'add property to character sheet' => array(
+      'title' => t('add property to character sheet'),
+      'description' => t('Add property to a character.'),
+    ),
+    'add art to character sheet' => array(
+      'title' => t('add art to character sheet'),
+      'description' => t('Add art to a character.'),
+    ),
+    'add npc to character sheet' => array(
+      'title' => t('add npc to character sheet'),
+      'description' => t('Add npc to a character.'),
+    ),
+    'evaluate character'=> array(
+      'title' => t('evaluate character'),
+      'description' => t('Evaluate character.'),
+    ),
+    'post in narrative format' => array(
+      'title' => t('post in narrative format'),
+      'description' => t('Post in narrative format.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_extra_fields().
+ */
+function vaxia_field_extra_fields() {
+  $types = array_keys(node_type_get_types());
+  $extra = array();
+  foreach ($types as $type) {
+    $enabled = character_sheet_is_enabled($type);
+    if ($enabled && variable_get('character_sheet_system_' . $type, '') == 'vaxia') {
+      $extra['node'][$type] = array(
+        'form' => array(
+          'vaxia_xp' => array(
+            'label' => t('Total XP'),
+            'description' => t('character sheet basic XP display.'),
+            'weight' => 0,
+          ),
+        ), 
+        'display' => array(
+          'vaxia' => array(
+            'vaxia_xp' => t('Total XP'),
+            'description' => t('character sheet basic XP display.'),
+            'weight' => 0,
+          ),
+        ),
+      );
+    }
+    $vaxia_ownership_managed = array('artwork', 'items');
+    if (in_array($type, $vaxia_ownership_managed)) {
+      $extra['node'][$type] = array(
+        'form' => array(
+          'vaxia_ownership_form' => array(
+            'label' => t('Change ownership'),
+            'description' => t('Change ownership controls.'),
+            'weight' => 0,
+          ),
+        ), 
+        'display' => array(
+          'vaxia_ownership_form' => array(
+            'label' => t('Change ownership'),
+            'description' => t('Change ownership controls.'),
+            'weight' => 0,
+          ),
+        ),
+      );
+    }
+
+  }
+  return $extra;
+}
+
+/*
+ * Implements hook_node_view().
+ */
+function vaxia_node_view($node, $view_mode, $langcode) {
+  if ($view_mode == 'full') {
+    $vaxia_ownership_managed = array('artwork', 'items');
+    if (in_array($node->type, $vaxia_ownership_managed)) {
+      // Add ownership and moderation fields for the sheet.
+      global $user;
+      if ( ( user_access('change art owner') || user_access('change item owner'))
+        || ($user->uid == $node->uid && 
+          (user_access('edit any ' . $node->type . ' content') || user_access('edit own ' . $node->type . ' content')))) {
+        $node->content['vaxia_ownership_form'] = array(
+          '#type' => 'item',
+          '#markup' => drupal_render(drupal_get_form('_vaxia_change_ownership_form', $node)),
+        );
+      }
+    }
+  }
+}
+
+/*
+ * Form callback function from nodeapi view, adds moderation form to node display.
+ */
+function _vaxia_change_ownership_form($form, &$form_state, $node) {
+  $context['owner_uid'] = $node->uid;
+  $form = node_assign_owner_action_form($context);
+  // From node.module, generate an ownership form.
+  $form['owner_name']['#title'] = t('Owner');
+  $form['nid'] = array(
+    '#type' => 'hidden',
+    '#value' => $node->nid,
+  );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Update ownership'),
+  );
+  return $form;
+}
+
+/*
+ * Form callback validation for _vaxia_change_ownership_form.
+ */
+function _vaxia_change_ownership_form_validate($form, $form_state) {
+  $count = db_query("SELECT COUNT(*) FROM {users} WHERE name = :name",
+    array(':name' => $form_state['values']['owner_name']))->fetchField();
+  if (intval($count) != 1) {
+    form_set_error('owner_name', t('Please enter a valid username.'));
+  }
+}
+
+/*
+ * Form callback submission for _vaxia_change_ownership_form.
+ */
+function _vaxia_change_ownership_form_submit($form, $form_state) {
+  $values = $form_state['values'];
+  $node = node_load($values['nid']);
+  global $user;
+  if (!empty($node) && ( (user_access('change item owner') || user_access('change art owner'))
+                        || ($user->uid == $node->uid && 
+                          (user_access('edit any ' . $node->type . ' content') || user_access('edit own ' . $node->type . ' content'))))) {
+    $uid = db_query("SELECT uid from {users} WHERE name = :name", array(':name' => $values['owner_name']))->fetchField();
+    if (!empty($uid)) {
+      $node->uid = $uid;
+    }
+    node_save($node);
+  }
+}
+
+/**
+ * Implements hook_comment_view().
+ */
+function vaxia_comment_view($comment, $view_mode, $langcode) {
+  // Format the user display correctly.
+  $node_type = substr($comment->node_type, 13);
+  if (rpg_chat_is_enabled($node_type) && $view_mode == 'full') {
+// TODO add the avatar information here for alias.
+//   $comment->content['alias'] = 'AS CHARACTER';
+  }
+}
+
+/**
+ * Implements hook_theme().
+ *
+ * Register themes used by this module.
+ */
+function vaxia_theme($existing, $type, $theme, $path) {
+  return array(
+    'vaxia_dice_roller' => array(
+      'render element' => 'element',
+    ),
+  );
+// The RPG Chat rooms and nodes should be themed in the Vaxia theme.
+// This is to avoid cross-theming issues. We use views to provide the
+// Additional data to the themer as needed for display.
+// Otherwise, it's not this module's business.
+}
+
+/**
+ * Theme the dice roller.
+ */
+function theme_vaxia_dice_roller($element) {
+  $element = $element['element'];
+  $header = array( t('#'), '', t('dice'), t('stat'), t('skill'), t('item') );
+  $rows = array();
+  $i = 0;
+  foreach (element_children($element['dice']) as $dice) {
+    $number = drupal_render($element['dice'][$i]['number']);
+    $size = drupal_render($element['dice'][$i]['size']);
+    $stat = drupal_render($element['dice'][$i]['stat']);
+    $skill = drupal_render($element['dice'][$i]['skill']);
+    $item = drupal_render($element['dice'][$i]['item']);
+    $rows[] = array($number, 'd', $size, $stat, $skill, $item);
+    $i++;
+  }
+  return theme('table', array('header' => $header, 'rows' => $rows)).
+    drupal_render($element['notes']);
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function vaxia_form_alter(&$form, &$form_state, $form_id) {
+  if (!user_access('use dice roller')) {
+    return; /* Exit if this user can't use the dice roller */
+  }
+  // If we're viewing a comment form, allow for user profile to set the character.
+  if (substr($form_id, 0, 7) == 'comment' && isset($form['#node'])) {
+    global $user;
+    $this_player = user_load($user->uid);
+    $lang = $form['language']['#value'];
+    // Set character controls.
+    if (isset($this_player->field_current_character[$lang][0]['nid'])) {
+      $character = node_load($this_player->field_current_character[$lang][0]['nid']);
+      $form['field_comment_character'][$lang]['#default_value'][0] = $character->nid;
+    }
+    $form['field_comment_character'][$lang]['#ajax'] = array(
+      'callback' => '_vaxia_character_pick',
+      'wrapper' => 'vaxia-dice-roller',
+      'method' => 'replace',
+      'effect' => 'fade',
+    );
+    // Set comment color controls.
+    if (isset($this_player->field_comment_color[$lang][0]['safe_value'])) {
+      $form['field_comment_color'][$lang][0]['value']['#default_value'] =
+        $this_player->field_comment_color[$lang][0]['safe_value'];
+    }
+    // Set narrative checkbox access.
+    if (!user_access('post in narrative format')) {
+      $form['field_comment_narrative']['#access'] = FALSE;
+    }
+    // Add new fields.
+    $form['uid'] = array(
+      '#type' => 'hidden',
+      '#value' => $this_player->uid,
+    );
+    $form['field_refresh_rate'] = array(
+      '#type' => 'textfield',
+      '#default_value' => isset($this_player->field_refresh_rate[$lang][0]['value']) ? $this_player->field_refresh_rate[$lang][0]['value'] : 60,
+      '#title' => t('Refresh rate'),
+    );
+    $form['#submit'][] = '_vaxia_comment_set_profile_values_submit';
+  }
+  return $form;
+}
+
+/**
+ * Ajax callback for character selection.
+ */
+function _vaxia_character_pick($form, $form_state) {
+  $roll_form = $form['vaxia_rolls'];
+  return $roll_form;
+}
+
+/**
+ * Additional submit handler for comment forms to set profile values for default.
+ */
+function _vaxia_comment_set_profile_values_submit($form, $form_state) {
+  // Get the values from the comment submit handler.
+  $lang = $form_state['values']['language'];
+  $character = $form_state['values']['field_comment_character'][$lang][0]['nid'];
+  $color = $form_state['values']['field_comment_color'][$lang][0]['value'];
+  $refresh_rate = $form_state['values']['field_refresh_rate'];
+  $uid = $form_state['values']['uid'];
+  // Save them to the profile sheet.
+  $this_player = user_load($uid);
+  $this_player->field_current_character[$lang][0]['nid'] = $character;
+  $this_player->field_comment_color[$lang][0]['value'] = $color;
+  if (is_numeric($refresh_rate) && $refresh_rate > 4) {
+    $this_player->field_refresh_rate[$lang][0]['value'] = $refresh_rate;
+  }
+  user_save($this_player);
+}
