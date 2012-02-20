@@ -231,6 +231,9 @@ function _rpg_chat_refresh_js($form, &$form_state) {
  * Add RPG chat settings to node forms with RPG chat enabled.
  */
 function rpg_chat_form_alter(&$form, &$form_state, $form_id) {
+  if (!isset($form['type']['#value'])) {
+    return;
+  }
   if (!_rpg_chat_is_enabled($form['type']['#value'])) {
     return;
   }
