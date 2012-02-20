@@ -324,9 +324,12 @@ function _vaxia_delete_xp($nid) {
 /**
  * DB function, get XP count to the database.
  */
-function _vaxia_get_xp($nid, $type = 'all') {
+function _vaxia_get_xp($nid, $type = 'xp') {
   // Allows for negative XP values to remove XP from a sheet.
   $total = FALSE;
+  // Types: RXP, BXP, KXP, XP.
+  // (All other types aka HXP are noted in the log for the record.)
+  // XP is the only one that is actually 'spent'.
   $type_query = '';
   $args = array(':nid' => $nid);
   if ($type != 'all') {

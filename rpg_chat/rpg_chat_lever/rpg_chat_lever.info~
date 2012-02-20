@@ -1,7 +1,0 @@
-name = Chat lever
-description = Provides Chat lever messages
-package = RPG
-core = 7.x
-files[] = rpg_chat_lever.install
-files[] = rpg_chat_lever.module
-dependencies[] = rpg_chat

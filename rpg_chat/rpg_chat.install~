@@ -23,7 +23,7 @@ function rpg_chat_schema() {
         'type' => 'int',
         'not null' => TRUE,
         'default' => 0,
-        'description' => 'Uid of the room.',
+        'description' => 'Uid of the user.',
       ),
       'timestamp' => array(
         'type' => 'int',

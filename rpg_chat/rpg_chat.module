@@ -551,3 +551,4 @@ function _rpg_chat_set_room_users($nid, $uid) {
 function _rpg_chat_delete_room_users($nid) {
   db_query('DELETE FROM {rpg_chat_room_users} WHERE nid = :nid', array(':nid' => $nid));
 }
+
