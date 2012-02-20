@@ -191,7 +191,7 @@ function _vaxia_change_ownership_form_submit($form, $form_state) {
 function vaxia_comment_view($comment, $view_mode, $langcode) {
   // Format the user display correctly.
   $node_type = substr($comment->node_type, 13);
-  if (rpg_chat_is_enabled($node_type) && $view_mode == 'full') {
+  if (_rpg_chat_is_enabled($node_type) && $view_mode == 'full') {
 // TODO add the avatar information here for alias.
 //   $comment->content['alias'] = 'AS CHARACTER';
   }
