@@ -71,6 +71,46 @@ function vaxia_field_group_info() {
   $field_group = new stdClass;
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
+  $field_group->identifier = 'group_item_stats|node|items|form';
+  $field_group->group_name = 'group_item_stats';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'items';
+  $field_group->mode = 'form';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Stats',
+    'weight' => '3',
+    'children' => array(
+      0 => 'field_item_life',
+      1 => 'field_item_endurance',
+      2 => 'field_item_strength',
+      3 => 'field_item_dexterity',
+      4 => 'field_item_intelligence',
+      5 => 'field_item_spirituality',
+      6 => 'field_item_charisma',
+      7 => 'field_item_health',
+      8 => 'field_item_constitution',
+      9 => 'field_item_agility',
+      10 => 'field_item_reflexes',
+      11 => 'field_item_awareness',
+      12 => 'field_item_presence',
+      13 => 'field_item_appearance',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'formatter' => 'collapsible',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => '',
+        'required_fields' => 1,
+      ),
+    ),
+  );
+  $export['group_item_stats|node|items|form'] = $field_group;
+
+  $field_group = new stdClass;
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
   $field_group->identifier = 'group_items|node|character_sheet|form';
   $field_group->group_name = 'group_items';
   $field_group->entity_type = 'node';
