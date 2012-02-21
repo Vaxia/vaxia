@@ -341,9 +341,10 @@ function _vaxia_comment_set_profile_values_submit($form, $form_state) {
 /**
  * Implements hook_rpg_chat_user_refresh().
  */
-function vaxia_rpg_chat_user_refresh(&$refresh) {
+function vaxia_rpg_chat_user_refresh($refresh) {
   global $user;
   $this_player = user_load($user->uid);
-  $refresh = $this_player->field_refresh_rate[$lang][0]['value'];
+  $lang = $this_player->language;
+  $refresh = isset($this_player->field_refresh_rate[$lang][0]['value']) ? $this_player->field_refresh_rate[$lang][0]['value'] : 60;
   return $refresh;
 }

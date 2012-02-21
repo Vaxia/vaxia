@@ -125,7 +125,8 @@ function rpg_chat_node_view($node, $view_mode = 'full', $langcode) {
     }
     // Allow other modules to provide custom refresh rates for users.
     // Such as from a specific implementation of a character sheet.
-    module_invoke_all('rpg_chat_user_refresh', $refresh);
+    $refresh = module_invoke_all('rpg_chat_user_refresh', $refresh);
+    $refresh = $refresh[0];
     if ($refresh < $min_refresh) {
       $refresh = $min_refresh;
     }
@@ -153,14 +154,15 @@ function rpg_chat_form_comment_form_alter(&$form, &$form_state, $form_id) {
   // Check to see if this node type is a rpg chatroom.
   if (_rpg_chat_is_enabled($form['#node']->type) ) {
     // Display the refresh button.
-    $form['actions']['refresh'] = array(
+    $form['actions']['refresh_chat'] = array(
       '#type' => 'submit',
       '#value' => 'Refresh',
+      '#access' => 1,
       '#submit' => '', // Set to make sure validation errors are cleared.
       '#limit_validation_errors' => array(), // No validation for a refresh.
     );
     // When clicked refresh the comment display.
-    $form['actions']['refresh']['#ajax'] = array(
+    $form['actions']['refresh_chat']['#ajax'] = array(
       'callback' => 'rpg_chat_refresh_js',
       'wrapper' => 'rpg-chat',
       'method' => 'replace',
@@ -241,28 +243,29 @@ function rpg_chat_form_alter(&$form, &$form_state, $form_id) {
   }
   // If this is a node form, add the rpg_chat feature set.
   if (strpos($form_id, '_node_form')) {
+    $node = $form['#node'];
     // RPG Chat values are loaded by node_load.
-    $form = array(
-      '#type' => 'text',
+    $form['min_refresh'] = array(
+      '#type' => 'textfield',
       '#title' => t('Minimum refresh rate'),
-      '#default_value' => $node->rpg_chat_min_refresh,
+      '#default_value' => isset($node->rpg_chat_min_refresh) ? $node->rpg_chat_min_refresh : 60,
     );
-    $form = array(
+    $form['mature'] = array(
       '#type' => 'checkbox',
       '#title' => t('Mature room?'),
-      '#default_value' => $node->rpg_chat_mature,
+      '#default_value' => isset($node->rpg_chat_mature) ? $node->rpg_chat_mature : FALSE,
     );
-    $form = array(
+    $form['locked'] = array(
       '#type' => 'checkbox',
       '#title' => t('Locked room?'),
-      '#default_value' => $node->rpg_chat_locked,
+      '#default_value' => isset($node->rpg_chat_locked) ? $node->rpg_chat_locked : FALSE,
     );
     $form['allow_ban'] = array(
       '#type' => 'fieldset',
     );
     // Default list is node's list, if not submitted yet by AJAX.
-    $allow_list = $node->rpg_chat_allowed_users;
-    $ban_list = $node->rpg_chat_banned_users;
+    $allow_list = isset($node->rpg_chat_allowed_users) ? $node->rpg_chat_allowed_users : array();
+    $ban_list = isset($node->rpg_chat_banned_users) ? $node->rpg_chat_banned_users : array();
     // Add users from submitted form, and account for removals.
     if (isset($form_state['values']['allow_ban']['allow'])) {
       $allow_list = array();
@@ -279,21 +282,23 @@ function rpg_chat_form_alter(&$form, &$form_state, $form_id) {
           $ban_list[] = $values['uid'];
         }
       }
-    }
+    } // TODO figure out why this ajax isnt working.
     // Check for users added to the list.
-    if ($form_state['clicked_button']['#id'] == 'submit_allow') {
+    if (isset($form_state['clicked_button']['#id']) && $form_state['clicked_button']['#id'] == 'edit-submit-allow') {
       $uid = db_query("SELECT uid FROM {users} WHERE name = :name",
-        array(':name' => $form_state['values']['owner_name']->fetchField()));
+        array(':name' => $form_state['values']['owner_name']))->fetchField();
       $allow_list[] = $uid;
     }
-    if ($form_state['clicked_button']['#id'] == 'submit_ban') {
+    if (isset($form_state['clicked_button']['#id']) && $form_state['clicked_button']['#id'] == 'edit-submit-ban') {
       $uid = db_query("SELECT uid FROM {users} WHERE name = :name",
-        array(':name' => $form_state['values']['owner_name']->fetchField()));
+        array(':name' => $form_state['values']['owner_name']))->fetchField();
       $ban_list[] = $uid;
     }
     // Display allow / ban with list generated from default or form_state.
     $form['allow_ban']['allow'] = array(
       '#theme' => 'rpg_chat_user_list',
+      '#type' => 'fieldset',
+      '#title' => t('Allowed users'),
       '#prefix' => '<div id="rpg-chat-node-allow-list">',
       '#suffix' => '</div>',
       '#tree' => TRUE,
@@ -321,6 +326,8 @@ function rpg_chat_form_alter(&$form, &$form_state, $form_id) {
     }
     $form['allow_ban']['ban'] = array(
       '#theme' => 'rpg_chat_user_list',
+      '#type' => 'fieldset',
+      '#title' => t('Banned users'),
       '#prefix' => '<div id="rpg-chat-node-ban-list">',
       '#suffix' => '</div>',
       '#tree' => TRUE,
@@ -352,7 +359,6 @@ function rpg_chat_form_alter(&$form, &$form_state, $form_id) {
     // From node.module, generate an ownership form to usxe for getting users by name.
     $form['allow_ban']['add_user'] = array(
       '#type' => 'fieldset',
-//      '#theme' => 'rpg_chat_user_add',
     );
     $form['allow_ban']['add_user']['owner_name'] = $user_form['owner_name'];
     $form['allow_ban']['add_user']['owner_name']['#title'] = t('Allow / ban user');
@@ -377,7 +383,6 @@ function rpg_chat_form_alter(&$form, &$form_state, $form_id) {
       ),
     );
     $form['#validate'][] = '_rpg_chat_add_room_validate';
-    $form['#submit'][] = '_rpg_chat_add_room_submit';
   }
   return $form;
 }
@@ -408,27 +413,37 @@ function _rpg_chat_add_room_validate($form, $form_state) {
 }
 
 /*
- * Form callback submit for _rpg_chat_node_forms.
+ * Implements hook_node_insert().
  */
-function _rpg_chat_add_room_submit($form, $form_state) {
+function rpg_chat_node_insert($node) {
+  rpg_chat_node_update($node);
+}
+
+/*
+ * Implements hook_node_update().
+ */
+function rpg_chat_node_update($node) {
   // Gather all values and save them.
-  $values = $form_state['values'];
   $variables = array();
-  $variables['nid'] = $form_state['nid'];
-  $variables['min_refresh'] = $values['min_refresh'];
-  $variables['mature'] = $values['mature'];
-  $variables['locked'] = $values['locked'];
+  $variables['nid'] = $node->nid;
+  $variables['min_refresh'] = $node->min_refresh;
+  $variables['mature'] = $node->mature;
+  $variables['locked'] = $node->locked;
   $allowed_users = array();
-  foreach ($values['allow_ban']['allow'] as $delta => $users) {
-    $allowed_users[] = $users['uid'];
+  if (isset($node->allow)) {
+    foreach ($node->allow as $delta => $users) {
+      $allowed_users[] = $users['uid'];
+    }
   }
   $banned_users = array();
-  foreach ($values['allow_ban']['ban'] as $delta => $users) {
-    $banned_users[] = $users['uid'];
+  if (isset($node->ban)) {
+    foreach ($node->ban as $delta => $users) {
+      $banned_users[] = $users['uid'];
+    }
   }
   $variables['allowed_users'] = $allowed_users;
   $variables['banned_users'] = $banned_users;
-  _rpg_chat_set_room($form_state['nid'], $variables);
+  _rpg_chat_set_room($node->nid, $variables);
 }
 
 /**
@@ -441,9 +456,6 @@ function rpg_chat_theme($existing, $type, $theme, $path) {
     'rpg_chat_user_list' => array(
       'render element' => 'element',
     ),
-//    'rpg_chat_user_add' => array(
-//      'render element' => 'element',
-//    ),
   );
 }
 
@@ -470,13 +482,6 @@ function theme_rpg_chat_user_list($element) {
   return theme('table', array('header' => $header, 'rows' => $rows)).
     drupal_render($element['notes']);
 }
-
-/**
- * Theme user add buttons in RPG chat forms.
- */
-//function theme_rpg_chat_user_add($element) {
-//  $element = $element['element'];
-//}
 
 /**
  * Helper function. Return RPG chat status.

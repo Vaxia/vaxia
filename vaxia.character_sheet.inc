@@ -359,9 +359,9 @@ function vaxia_character_sheet_view_sheet($node) {
   );
   $xps[] = t('Spent %spent out of %xp xp.',
     array('%spent' =>$node->vaxia_spent_xp, '%xp' => $node->vaxia_xp));
-  $xps[] = t('Banked %banked bxp.', array('%banked' =>$node->vaxia_bxp);
-  $xps[] = t('Roleplayed %roleplayed rxp.', array('%roleplayed' =>$node->vaxia_rxp);
-  $xps[] = t('Posted %posted kxp.', array('%posted' =>$node->vaxia_kxp);
+  $xps[] = t('Banked %banked bxp.', array('%banked' =>$node->vaxia_bxp));
+  $xps[] = t('Roleplayed %roleplayed rxp.', array('%roleplayed' => $node->vaxia_rxp));
+  $xps[] = t('Posted %posted kxp.', array('%posted' => $node->vaxia_kxp));
   $node->content['vaxia']['xp'] = array(
     '#type' => 'item',
     '#title' => 'XP Total',
@@ -541,7 +541,7 @@ function _vaxia_add_xp($nid, $xp, $type) {
 /**
  * DB function, insert XP count to the database.
  */
-function _vaxia_update_xp($nid, $xp, $type == 'xp') {
+function _vaxia_update_xp($nid, $xp, $type = 'xp') {
   $current_xp = _vaxia_get_xp($nid, $type);
   $record = array(
     'xp' => $xp,
