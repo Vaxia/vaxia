@@ -24,7 +24,11 @@ Drupal.behaviors.vaxiaChat = {
   function refreshChat() {
     $("#edit-refresh").triggerHandler("click");
     clearTimeout(timer);
-    timer = setTimeout(refreshChat, refeshRate * 1000);
+    // TESTING.
+    // Since the refresh is driven by AJAX, the doc gets reloaded.
+    // When it's reloaded, the refresh hits up again.
+    // So we actually don't need to loop this.
+    //timer = setTimeout(refreshChat, refeshRate * 1000);
   }
 
   })(jQuery); }

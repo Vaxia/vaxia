@@ -337,3 +337,13 @@ function _vaxia_comment_set_profile_values_submit($form, $form_state) {
   }
   user_save($this_player);
 }
+
+/**
+ * Implements hook_rpg_chat_user_refresh().
+ */
+function vaxia_rpg_chat_user_refresh(&$refresh) {
+  global $user;
+  $this_player = user_load($user->uid);
+  $refresh = $this_player->field_refresh_rate[$lang][0]['value'];
+  return $refresh;
+}

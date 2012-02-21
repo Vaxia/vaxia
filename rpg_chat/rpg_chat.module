@@ -89,6 +89,7 @@ function rpg_chat_node_access($node, $op, $account) {
 /**
  * Implements hook_node_load().
  */
+//TODO describe these fields to views (as join table).
 function rpg_chat_node_load($node) {
   // Load all the chat related bits for this node.
   if (isset($node->type) && _rpg_chat_is_enabled($node->type)) {
@@ -123,6 +124,7 @@ function rpg_chat_node_view($node, $view_mode = 'full', $langcode) {
       $refresh = $min_refresh = $node->rpg_chat_min_refresh;
     }
     // Allow other modules to provide custom refresh rates for users.
+    // Such as from a specific implementation of a character sheet.
     module_invoke_all('rpg_chat_user_refresh', $refresh);
     if ($refresh < $min_refresh) {
       $refresh = $min_refresh;
