@@ -37,6 +37,12 @@ function _vaxia_admin_settings() {
     '#type' => 'textfield',
     '#default_value' => variable_get('vaxia_starting_econ', 25),
   );
+  $form['settings']['vaxia_kxp_level'] = array(
+    '#title' => 'Posted XP ratio',
+    '#description' => 'The ratio of kxp to xp per comment word count.',
+    '#type' => 'textfield',
+    '#default_value' => variable_get('vaxia_kxp_level', 70),
+  );
   $form['settings']['vaxia_xp_types'] = array(
     '#title' => 'XP types',
     '#description' => 'Available XP sub-types',
@@ -105,10 +111,11 @@ function _vaxia_transfer_xp_form($form, &$form_state, $node) {
     '#title' => t('Character'),
     '#markup' => $node->title,
   );
+  $xp = _vaxia_get_xp($node->nid);
   $form['node_info']['xp'] = array(
     '#type' => 'item',
     '#title' => t('Current XP total'),
-    '#markup' => _vaxia_get_xp($node->nid),
+    '#markup' => $xp ? $xp : 0,
   );
   $form['node_info']['xp_log'] = array(
     '#type' => 'item',
@@ -186,13 +193,17 @@ function _vaxia_transfer_xp_form_submit(&$form, &$form_state) {
   $workflow = variable_get('vaxia_transfer_workflow', '');
   if ($old_character && $new_character && !empty($workflow) && $old_character->nid != $new_character->nid) {
     // Grab XP for this character.
-    $xp = _vaxia_get_xp($old_character->nid);
+    $xp = $old_character->vaxia_xp;
     // Update the XP recorded for this character.
     _vaxia_delete_xp($old_character->nid);
     _vaxia_delete_xp_log($old_character->nid);
     // And update the original character status.
     workflow_execute_transition($old_character, $workflow, t('Transferring XP to a new character'), TRUE);
-    // Now add XP to the new character. TODO
+    // Now add XP to the new character.
+    $new_xp = floor($xp * variable_get('vaxia_transfer_percentage', 0.75));
+    $bank_xp = floor($xp - $new_xp); 
+    _vaxia_update_xp($new_character->nid, $new_xp, 'xp');
+    _vaxia_update_xp($new_character->nid, $bank_xp, 'bxp');
   }
 }
 
@@ -214,20 +225,35 @@ function vaxia_character_sheet_delete_sheet($node) {
  * Implements hook_character_sheet_insert_sheet().
  */
 function vaxia_character_sheet_insert_sheet($node) {
-  _vaxia_insert_xp($node->nid, variable_get('vaxia_starting_xp', 250));
+  _vaxia_update_xp($node->nid, variable_get('vaxia_starting_xp', 250), 'xp');
 }
 
 /**
  * Implements hook_character_sheet_load_sheet().
  */
 function vaxia_character_sheet_load_sheet($node) {
-  $xp = _vaxia_get_xp($node->nid);
+  $xp = _vaxia_get_xp($node->nid, 'xp');
   if (!$xp) {
     $xp = 0;
+  }
+  $bxp = _vaxia_get_xp($node->nid, 'bxp');
+  if (!$bxp) {
+    $bxp = 0;
+  }
+  $kxp = _vaxia_get_xp($node->nid, 'kxp');
+  if (!$kxp) {
+    $kxp = 0;
+  }
+  $rxp = _vaxia_get_xp($node->nid, 'rxp');
+  if (!$rxp) {
+    $rxp = 0;
   }
   $spent_xp = _vaxia_total_sheet($node);
   $unspent_xp = $xp - $spent_xp;
   $node->vaxia_xp = $xp;
+  $node->vaxia_bxp = $bxp;
+  $node->vaxia_kxp = $kxp;
+  $node->vaxia_rxp = $rxp;
   $node->vaxia_spent_xp = $spent_xp;
   $node->vaxia_unspent_xp = $unspent_xp;
 }
@@ -286,7 +312,8 @@ function vaxia_form_character_sheet_node_form_alter(&$form, &$form_state) {
   }
   if (!user_access('post notes on character')) {
     $form['field_sh_notes'][$lang][0]['value']['#disabled'] = TRUE;
-    $form['field_sh_notes'][$lang][0]['value']['#value'] = $form['field_sh_notes'][$lang][0]['value']['#default_value'];
+    $form['field_sh_notes'][$lang][0]['value']['#value'] =
+      $form['field_sh_notes'][$lang][0]['value']['#default_value'];
   }
   if (!user_access('add item to character sheet')) {
     $form['field_character_sheet_artwork'][$lang][0]['value']['#disabled'] = TRUE;
@@ -295,7 +322,8 @@ function vaxia_form_character_sheet_node_form_alter(&$form, &$form_state) {
   }
   if (!user_access('add property to character sheet')) {
     $form['field_npcs'][$lang][0]['value']['#disabled'] = TRUE;
-    $form['field_npcs'][$lang][0]['value']['#value'] = $form['field_npcs'][$lang][0]['value']['#default_value'];
+    $form['field_npcs'][$lang][0]['value']['#value'] =
+      $form['field_npcs'][$lang][0]['value']['#default_value'];
   }
   if (!user_access('add item to character sheet')) {
     $form['field_property'][$lang][0]['value']['#disabled'] = TRUE;
@@ -304,7 +332,8 @@ function vaxia_form_character_sheet_node_form_alter(&$form, &$form_state) {
   }
   if (!user_access('add art to character sheet')) {
     $form['field_items'][$lang][0]['value']['#disabled'] = TRUE;
-    $form['field_items'][$lang][0]['value']['#value'] = $form['field_items'][$lang][0]['value']['#default_value'];
+    $form['field_items'][$lang][0]['value']['#value'] =
+      $form['field_items'][$lang][0]['value']['#default_value'];
   }
 }
 
@@ -315,12 +344,17 @@ function vaxia_character_sheet_view_sheet($node) {
   $node->content['vaxia'] = array(
     '#type' => 'fieldset',
   );
+  $xps[] = t('Spent %spent out of %xp xp.',
+    array('%spent' =>$node->vaxia_spent_xp, '%xp' => $node->vaxia_xp));
+  $xps[] = t('Banked %banked bxp.', array('%banked' =>$node->vaxia_bxp);
+  $xps[] = t('Roleplayed %roleplayed rxp.', array('%roleplayed' =>$node->vaxia_rxp);
+  $xps[] = t('Posted %posted kxp.', array('%posted' =>$node->vaxia_kxp);
   $node->content['vaxia']['xp'] = array(
     '#type' => 'item',
     '#title' => 'XP Total',
-    '#markup' => t('Spent %spent out of %xp.',
-      array('%spent' =>$node->vaxia_spent_xp, '%xp' => $node->vaxia_xp)),
+    '#markup' => theme('list_items', array('items' => $xps)),
   );
+
   $node->content['vaxia']['type'] = array(
     '#type' => 'item',
     '#access' => user_access('add xp to character sheet'),
@@ -368,9 +402,9 @@ function vaxia_add_xp_form_submit($form, $form_state) {
   if (!empty($node) && user_access('add xp to character sheet')) {
     $old_xp = _vaxia_get_xp($node->nid);
     if (!$old_xp) {
-      _vaxia_update_xp($node->nid, variable_get('vaxia_starting_xp', 250), '');
+      _vaxia_update_xp($node->nid, variable_get('vaxia_starting_xp', 250), 'xp');
     }
-    vaxia_insert_xp($node->nid, $values['xp'], $values['type']);
+    _vaxia_add_xp($node->nid, $values['xp'], $values['type']);
   }
 }
 
@@ -438,16 +472,73 @@ function _vaxia_field_calculate_cost($field_name, $current_value) {
   return 0;
 }
 
+function _vaxia_add_xp($nid, $xp, $type) {
+  $meaningful_types = array('xp', 'bxp', 'rxp', 'kxp');
+  if (!in_array($type, $meaningful_types)) {
+    // Add a historical log for 'flavored' rxp given.
+    _vaxia_update_log($nid, $type, ':xp was awarded.', array(':xp' => $xp));
+    $type = 'xp';
+  }
+  switch ($type) {
+    case 'kxp':
+      // Add wordcount xp.
+      _vaxia_update_xp($nid, $xp, 'kxp');
+      $current_kxp = _vaxia_get_xp($nid, 'kxp');
+      // If we have enough to convert to other xp, do it.
+      if ($current_kxp > variable_get('vaxia_kxp_level', 70)) {
+        // Remove from kxp, add 1 to rxp.
+        _vaxia_update_xp($nid, variable_get('vaxia_kxp_level', 70) * -1, 'kxp');
+        _vaxia_update_xp($nid, 1, 'rxp');
+        // If we have banked xp, remove one from bxp and add spendable xp.
+        $current_bxp = _vaxia_get_xp($nid, 'bxp');
+        if ($current_bpx > 0 ) {
+          _vaxia_update_xp($nid, -1, 'bxp');
+          _vaxia_update_xp($nid, 1, 'xp');
+        }
+      }
+    break;
+    case 'bxp':
+      // If bxp is added directly, just add it to the bxp score.
+      _vaxia_update_xp($nid, $xp, 'bxp');
+    break;
+    case 'rxp':
+      // If rxp is added directly, just add it to the rxp score.
+      _vaxia_update_xp($nid, $xp, 'rxp');
+    break;
+    case 'xp':
+    default:
+      while ($xp > 0 ) {
+        $current_rxp = _vaxia_get_xp($nid, 'rxp');
+        if ($current_rxp > 0 ) {
+          _vaxia_update_xp($nid, -1, 'rxp');
+          _vaxia_update_xp($nid, 1, 'xp');
+        }
+        else {
+          _vaxia_update_xp($nid, 1, 'bxp');
+        }
+        $xp--;
+      }
+    break;
+  }
+}
+
 /**
  * DB function, insert XP count to the database.
  */
-function _vaxia_insert_xp($nid, $xp, $type) {
-  _vaxia_update_log($nid, $type, ':xp was awarded.', array(':xp' => $xp));
-  // TODO: CALCULATE ALL CHANGES TO XP, KXP, BXP, RXP.
-  // NEGATIVE NUMBERS ARE ALLOWED (as XP goes from one pool to the next.)
-  // DO NOT REPEAT THE LOG.
-  db_query('INSERT INTO {vaxia_xp} (xp, nid, type) VALUES (:xp, :nid, :type)', 
-    array(':xp' => $xp, ':nid' => $nid, ':type' => $type));
+function _vaxia_update_xp($nid, $xp, $type == 'xp') {
+  $current_xp = _vaxia_get_xp($nid, $type);
+  $record = array(
+    'xp' => $xp,
+    'nid' => $nid,
+    'type' => $type,
+  );
+  if ($current_xp) {
+    $record['xp'] += $current_xp; // Add current xp total to track.
+    drupal_write_record('vaxia_xp', $record, array('nid', 'type'));
+  }
+  else {
+    drupal_write_record('vaxia_xp', $record);
+  }
 }
 
 /**
@@ -461,19 +552,16 @@ function _vaxia_delete_xp($nid) {
  * DB function, get XP count to the database.
  */
 function _vaxia_get_xp($nid, $type = 'xp') {
-  // Allows for negative XP values to remove XP from a sheet.
-  $total = FALSE;
-  // Types: RXP, BXP, KXP, XP.
-  // (All other types aka HXP are noted in the log for the record.)
-  // XP is the only one that is actually 'spent'.
-  $type_query = '';
+  $type_query = 'SELECT SUM(xp) AS xp FROM {vaxia_xp} WHERE nid = :nid';
   $args = array(':nid' => $nid);
+  // Filter for the type.
   if ($type != 'all') {
     $type_query = ' AND type=:type';
     $args[':type'] = $type;
   }
-  $total = 0;
-  $results = db_query('SELECT SUM(xp) AS xp FROM {vaxia_xp} WHERE nid = :nid', $args);
+  // Make the query.
+  $total = FALSE;
+  $results = db_query($type_query, $args);
   foreach ($results as $result) {
     $total = $result->xp;
   }
@@ -485,7 +573,8 @@ function _vaxia_get_xp($nid, $type = 'xp') {
  */
 function _vaxia_get_log($nid) {
   $logs = array();
-  $results = db_query("SELECT * FROM {vaxia_xp_log} WHERE nid = :nid ORDER BY timestamp DESC", array(':nid' => $nid));
+  $results = db_query('SELECT * FROM {vaxia_xp_log} WHERE nid = :nid ORDER BY timestamp DESC',
+    array(':nid' => $nid));
   foreach ($results as $result) {
     $result = (array) $result;
     $message = '[' .format_date($result['timestamp']). ' ] ' . $result['message'];
