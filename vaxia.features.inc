@@ -209,6 +209,12 @@ function vaxia_workflow_features_default_workflow() {
           'sysid' => '0',
           'status' => '1',
         ),
+        5 => array(
+          'state' => 'inactive',
+          'weight' => '0',
+          'sysid' => '0',
+          'status' => '1',
+        ),
       ),
       'transitions' => array(
         0 => array(
@@ -237,34 +243,69 @@ function vaxia_workflow_features_default_workflow() {
           'roles' => '6,4',
         ),
         5 => array(
-          'sid' => 'approved',
-          'target_sid' => 'draft',
-          'roles' => '4',
+          'sid' => 'submitted',
+          'target_sid' => 'inactive',
+          'roles' => '6,4',
         ),
         6 => array(
           'sid' => 'approved',
-          'target_sid' => 'submitted',
+          'target_sid' => 'draft',
           'roles' => '4',
         ),
         7 => array(
           'sid' => 'approved',
-          'target_sid' => 'disapproved',
+          'target_sid' => 'submitted',
           'roles' => '4',
         ),
         8 => array(
+          'sid' => 'approved',
+          'target_sid' => 'disapproved',
+          'roles' => '4',
+        ),
+        9 => array(
+          'sid' => 'approved',
+          'target_sid' => 'inactive',
+          'roles' => 'author,6,4',
+        ),
+        10 => array(
           'sid' => 'disapproved',
           'target_sid' => 'draft',
           'roles' => '4',
         ),
-        9 => array(
+        11 => array(
           'sid' => 'disapproved',
           'target_sid' => 'submitted',
           'roles' => '4',
         ),
-        10 => array(
+        12 => array(
           'sid' => 'disapproved',
           'target_sid' => 'approved',
           'roles' => '4',
+        ),
+        13 => array(
+          'sid' => 'disapproved',
+          'target_sid' => 'inactive',
+          'roles' => '4',
+        ),
+        14 => array(
+          'sid' => 'inactive',
+          'target_sid' => 'draft',
+          'roles' => '4',
+        ),
+        15 => array(
+          'sid' => 'inactive',
+          'target_sid' => 'submitted',
+          'roles' => '6,4',
+        ),
+        16 => array(
+          'sid' => 'inactive',
+          'target_sid' => 'approved',
+          'roles' => '6,4',
+        ),
+        17 => array(
+          'sid' => 'inactive',
+          'target_sid' => 'disapproved',
+          'roles' => '6,4',
         ),
       ),
       'node_types' => array(

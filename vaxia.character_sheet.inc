@@ -40,9 +40,9 @@ function _vaxia_admin_settings() {
   $form['settings']['vaxia_xp_types'] = array(
     '#title' => 'XP types',
     '#description' => 'Available XP sub-types',
-    '#type' => 'textfield',
+    '#type' => 'textarea',
     '#default_value' => variable_get('vaxia_xp_types',
-      "good\nevil\smart\nclever\nwarrior\nmage\nrogue"),
+      "good\nevil\nsmart\nclever\nwarrior\nmage\nrogue"),
   );
   $form['point_cost'] = array(
     '#title' => 'Point costs',
@@ -60,7 +60,140 @@ function _vaxia_admin_settings() {
     '#type' => 'textfield',
     '#default_value' => variable_get('vaxia_skill_cost', 0.75),
   );
+  $form['point_cost']['vaxia_transfer_percentage'] = array(
+    '#title' => 'Percent of XP',
+    '#description' => 'Percent of XP when transferred that goes to XP, the rest is banked.',
+    '#type' => 'textfield',
+    '#default_value' => variable_get('vaxia_transfer_percentage', 0.75),
+  );
+  $workflow_options = array();
+  $workflows = workflow_get_workflows();
+  foreach ($workflows as $workflow) {
+    $states = workflow_get_workflow_states_by_wid($workflow->wid);
+    foreach ($states as $state) {
+      $workflow_options[$state->sid] = $workflow->name . ':' . $state->state;
+    }
+  }
+  $form['point_cost']['vaxia_transfer_workflow'] = array(
+    '#title' => 'Transfer workflow',
+    '#description' => 'Workflow state characters who are transferred from end up in.',
+    '#type' => 'select',
+    '#options' => $workflow_options,
+    '#default_value' => variable_get('vaxia_transfer_workflow', ''),
+  );
   return $form;
+}
+
+
+/**
+ * Menu callback, transfer XP page.
+ */
+function _vaxia_transfer_xp($node) {
+  return drupal_get_form('_vaxia_transfer_xp_form', $node);
+}
+
+/**
+ * Transfer XP form.
+ */
+function _vaxia_transfer_xp_form($form, &$form_state, $node) {
+  $form['node_info'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Character sheet information'),
+  );
+  $form['node_info']['name'] = array(
+    '#type' => 'item',
+    '#title' => t('Character'),
+    '#markup' => $node->title,
+  );
+  $form['node_info']['xp'] = array(
+    '#type' => 'item',
+    '#title' => t('Current XP total'),
+    '#markup' => _vaxia_get_xp($node->nid),
+  );
+  $form['node_info']['xp_log'] = array(
+    '#type' => 'item',
+    '#title' => t('XP history'),
+    '#markup' => theme('list_items', array('items' => _vaxia_get_log($node->nid))),
+  );
+  $form['alert'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('NOTICE'),
+  );
+  $form['alert']['alert'] = array(
+    '#type' => 'item',
+    '#markup' => t('IF YOU TRANSFER YOUR CHARACTER XP: YOUR CHARACTER WILL NOT BE PLAYABLE AFTERWARDS.'),
+  );
+  $form['alert']['details'] = array(
+    '#type' => 'item',
+    '#markup' => t('When transferred, %percent percent of the XP will be placed on the selected character sheet immediately and the rest will be '.
+      'added to the character bank. Banked and other XP for this sheet will not be trasnferred. At that time, the character will be flagged '.
+       'as inactive and will not longer be available to post. This cannot be undone without intervention by an administrator, so be sure you '.
+       'mean to do this.', array('%percent' => variable_get('vaxia_transfer_percentage', 0.75))),
+  );
+  $available_characters = array();
+  $view = views_get_view('character_sheet_moderation');
+  if (is_object($view)) {
+    $view->set_display('character_sheets_refs');
+    $view->pre_execute();
+    $view->execute();
+    $characters = $view->result;
+  }
+  else {
+    $characters = array();
+  }
+  foreach ($characters as $character) {
+    if ($character->nid != $node->nid) {
+      $available_characters[$character->nid] = $character->node_title;
+    }
+  }
+  $form['confirm']['character'] = array(
+    '#type' => 'hidden',
+    '#value' => $node->nid,
+  );
+  $form['confirm']['target'] = array(
+    '#type' => 'select',
+    '#title' => t('Transfer to'),
+    '#options' => $available_characters,
+    '#description' => t('Transfer XP to this character sheet.'),
+  );
+  $form['confirm']['confirm'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Confirm'),
+    '#description' => t('If you really mean to do this, please type "TRANSFER" into this textbox, in all caps.'),
+  );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Transfer character XP'),
+  );
+  return $form;
+}
+
+/**
+ * Validate callback for _vaxia_transfer_xp_form().
+ */
+function _vaxia_transfer_xp_form_validate(&$form, &$form_state) {
+  if ($form_state['values']['confirm'] != 'TRANSFER') {
+    form_set_error('confirm', t('Transfer was not confirmed.'));
+  }
+}
+
+/**
+ * Submit callback for _vaxia_transfer_xp_form().
+ */
+function _vaxia_transfer_xp_form_submit(&$form, &$form_state) {
+  $old_character = node_load($form_state['values']['character']);
+  $new_character = node_load($form_state['values']['target']);
+  $workflow = variable_get('vaxia_transfer_workflow', '');
+  if ($old_character && $new_character && !empty($workflow) && $old_character->nid != $new_character->nid) {
+    // Grab XP for this character.
+    $xp = _vaxia_get_xp($old_character->nid);
+    // Update the XP recorded for this character.
+    _vaxia_delete_xp($old_character->nid);
+    _vaxia_delete_xp_log($old_character->nid);
+    // And update the original character status.
+    workflow_execute_transition($old_character, $workflow, t('Transferring XP to a new character'), TRUE);
+    // Now add XP to the new character. TODO
+  }
 }
 
 /**
@@ -120,8 +253,11 @@ function vaxia_character_sheet_validate_sheet($node, $old_node, $form, $form_sta
  * Implements hook_form_FORMID_alter().
  */
 function vaxia_form_character_sheet_node_form_alter(&$form, &$form_state) {
-  $workflow_state = workflow_get_workflow_states_by_sid($form['#node']->workflow);
-  if ($workflow_state->state != 'draft' && !user_access('evaluate character')) {
+  if (isset($form['#node']->workflow)) {
+    $workflow_state = workflow_get_workflow_states_by_sid($form['#node']->workflow);
+  }
+  if ((!empty($workflow_state->state) && $workflow_state->state != 'draft')
+      && !user_access('evaluate character')) {
     // User is not allowed to modify certain elements on their sheet.
     // Such as: name, skill names and skill descriptions.
     $lang = $form['language']['#value'];
@@ -336,7 +472,8 @@ function _vaxia_get_xp($nid, $type = 'xp') {
     $type_query = ' AND type=:type';
     $args[':type'] = $type;
   }
-  $results = db_query('SELECT SUM(xp) FROM {vaxia_xp} WHERE nid = :nid', $args);
+  $total = 0;
+  $results = db_query('SELECT SUM(xp) AS xp FROM {vaxia_xp} WHERE nid = :nid', $args);
   foreach ($results as $result) {
     $total = $result->xp;
   }

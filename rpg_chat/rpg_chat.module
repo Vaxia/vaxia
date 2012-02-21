@@ -91,7 +91,7 @@ function rpg_chat_node_access($node, $op, $account) {
  */
 function rpg_chat_node_load($node) {
   // Load all the chat related bits for this node.
-  if (_rpg_chat_is_enabled($node->type)) {
+  if (isset($node->type) && _rpg_chat_is_enabled($node->type)) {
     $room = _rpg_chat_get_room($nid);
     $node->rpg_chat_min_refresh = $room->min_refresh;
     $node->rpg_chat_mature = $room->mature;
@@ -231,7 +231,10 @@ function _rpg_chat_refresh_js($form, &$form_state) {
  * Add RPG chat settings to node forms with RPG chat enabled.
  */
 function rpg_chat_form_alter(&$form, &$form_state, $form_id) {
-  if (!_rpg_chat_is_enabled$form['type']['#value']) ) {
+  if (!isset($form['type']['#value'])) {
+    return;
+  }
+  if (!_rpg_chat_is_enabled($form['type']['#value'])) {
     return;
   }
   // If this is a node form, add the rpg_chat feature set.
@@ -259,7 +262,7 @@ function rpg_chat_form_alter(&$form, &$form_state, $form_id) {
     $allow_list = $node->rpg_chat_allowed_users;
     $ban_list = $node->rpg_chat_banned_users;
     // Add users from submitted form, and account for removals.
-    if (isset($form_state['values']['allow_ban']['allow']) {
+    if (isset($form_state['values']['allow_ban']['allow'])) {
       $allow_list = array();
       foreach($form_state['values']['allow_ban']['allow'] as $delta => $values) {
         if ($form_state['clicked_button']['#id'] != 'allow_remove_' . $values['uid']) {
@@ -267,7 +270,7 @@ function rpg_chat_form_alter(&$form, &$form_state, $form_id) {
         }
       }
     }
-    if (isset($form_state['values']['allow_ban']['ban']) {
+    if (isset($form_state['values']['allow_ban']['ban'])) {
       $allow_list = array();
       foreach($form_state['values']['allow_ban']['ban'] as $delta => $values) {
         if ($form_state['clicked_button']['#id'] != 'ban_remove_' . $values['uid']) {
@@ -278,12 +281,12 @@ function rpg_chat_form_alter(&$form, &$form_state, $form_id) {
     // Check for users added to the list.
     if ($form_state['clicked_button']['#id'] == 'submit_allow') {
       $uid = db_query("SELECT uid FROM {users} WHERE name = :name",
-        array(':name' => $form_state['values']['owner_name']))->fetchField();]
+        array(':name' => $form_state['values']['owner_name']->fetchField()));
       $allow_list[] = $uid;
     }
     if ($form_state['clicked_button']['#id'] == 'submit_ban') {
       $uid = db_query("SELECT uid FROM {users} WHERE name = :name",
-        array(':name' => $form_state['values']['owner_name']))->fetchField();]
+        array(':name' => $form_state['values']['owner_name']->fetchField()));
       $ban_list[] = $uid;
     }
     // Display allow / ban with list generated from default or form_state.
@@ -410,9 +413,9 @@ function _rpg_chat_add_room_submit($form, $form_state) {
   $values = $form_state['values'];
   $variables = array();
   $variables['nid'] = $form_state['nid'];
-  $variables['min_refresh'] = $values[];
-  $variables['mature'] = $values[];
-  $variables['locked'] = $values[];
+  $variables['min_refresh'] = $values['min_refresh'];
+  $variables['mature'] = $values['mature'];
+  $variables['locked'] = $values['locked'];
   $allowed_users = array();
   foreach ($values['allow_ban']['allow'] as $delta => $users) {
     $allowed_users[] = $users['uid'];
