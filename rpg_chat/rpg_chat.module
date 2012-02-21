@@ -91,7 +91,7 @@ function rpg_chat_node_access($node, $op, $account) {
  */
 function rpg_chat_node_load($node) {
   // Load all the chat related bits for this node.
-  if (_rpg_chat_is_enabled($node->type)) {
+  if (isset($node->type) && _rpg_chat_is_enabled($node->type)) {
     $room = _rpg_chat_get_room($nid);
     $node->rpg_chat_min_refresh = $room->min_refresh;
     $node->rpg_chat_mature = $room->mature;

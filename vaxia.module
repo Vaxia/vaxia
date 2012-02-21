@@ -67,6 +67,34 @@ function vaxia_permission() {
 }
 
 /**
+ * Implements hook_menu().
+ */
+function vaxia_menu() {
+  $items['node/%node/transfer'] = array(
+    'title' => 'Transfer XP',
+    'type' => MENU_LOCAL_TASK,
+    'access callback' => '_vaxia_menu_perms_callback',
+    'access arguments' => array(1),
+    'page callback' => '_vaxia_transfer_xp',
+    'page arguments' => array(1),
+    'weight' => 3,
+  );
+  return $items;
+}
+
+/**
+ * Menu access callback.
+ */
+function _vaxia_menu_perms_callback($node) {
+  $setting = variable_get('vaxia_transfer_workflow', '');
+  $sheet = character_sheet_is_enabled($node->type);
+  if ($sheet && !empty($setting)) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+/**
  * Implements hook_field_extra_fields().
  */
 function vaxia_field_extra_fields() {
