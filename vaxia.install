@@ -55,11 +55,11 @@ function vaxia_schema() {
         'default' => '',
         'description' => 'Type of log message, for example "approved" or "changed"',
       ),
-      'message' => array(
-        'type' => 'text',
+      'xp' => array(
+        'type' => 'int',
         'not null' => TRUE,
-        'size' => 'big',
-        'description' => 'Text of log message to be passed into the t() function.',
+        'default' => 0,
+        'description' => 'XP for this log.',
       ),
       'nid' => array(
         'type' => 'int',

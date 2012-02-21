@@ -117,10 +117,16 @@ function _vaxia_transfer_xp_form($form, &$form_state, $node) {
     '#title' => t('Current XP total'),
     '#markup' => $xp ? $xp : 0,
   );
+  $logs = _vaxia_get_log_groups($node->nid);
+  $message_log = array();
+  foreach ($logs as $log) {
+    $message_log[] = t('%xp %type xp awarded.',
+      array('%xp' => $log->xp, '%type' => $log->type));
+  }
   $form['node_info']['xp_log'] = array(
     '#type' => 'item',
     '#title' => t('XP history'),
-    '#markup' => theme('list_items', array('items' => _vaxia_get_log($node->nid))),
+    '#markup' => theme('list_items', array('items' => $message_log)),
   );
   $form['alert'] = array(
     '#type' => 'fieldset',
@@ -256,6 +262,13 @@ function vaxia_character_sheet_load_sheet($node) {
   $node->vaxia_rxp = $rxp;
   $node->vaxia_spent_xp = $spent_xp;
   $node->vaxia_unspent_xp = $unspent_xp;
+  $logs = _vaxia_get_log_groups($node->nid);
+  $message_log = array();
+  foreach ($logs as $log) {
+    $message_log[] = t('%xp %type xp awarded.',
+      array('%xp' => $log->xp, '%type' => $log->type));
+  }
+  $node->vaxia_type_xp = theme('list_items', array('items' => $message_log));
 }
 
 /**
@@ -401,9 +414,11 @@ function vaxia_add_xp_form_submit($form, $form_state) {
   global $user;
   if (!empty($node) && user_access('add xp to character sheet')) {
     $old_xp = _vaxia_get_xp($node->nid);
+    // If somehow a character got this far without xp, add the baseline.
     if (!$old_xp) {
       _vaxia_update_xp($node->nid, variable_get('vaxia_starting_xp', 250), 'xp');
     }
+    // Add xp from Session.
     _vaxia_add_xp($node->nid, $values['xp'], $values['type']);
   }
 }
@@ -476,7 +491,8 @@ function _vaxia_add_xp($nid, $xp, $type) {
   $meaningful_types = array('xp', 'bxp', 'rxp', 'kxp');
   if (!in_array($type, $meaningful_types)) {
     // Add a historical log for 'flavored' rxp given.
-    _vaxia_update_log($nid, $type, ':xp was awarded.', array(':xp' => $xp));
+    // Flavor xp is basically xp from a GM, tagged according to type.
+    _vaxia_update_log($nid, $type, $xp);
     $type = 'xp';
   }
   switch ($type) {
@@ -576,9 +592,20 @@ function _vaxia_get_log($nid) {
   $results = db_query('SELECT * FROM {vaxia_xp_log} WHERE nid = :nid ORDER BY timestamp DESC',
     array(':nid' => $nid));
   foreach ($results as $result) {
-    $result = (array) $result;
-    $message = '[' .format_date($result['timestamp']). ' ] ' . $result['message'];
-    $logs[] = $message;
+    $logs[] = $result;
+  }
+  return $logs;
+}
+
+/*
+ * Database helper function, get status matching a given nid.
+ */
+function _vaxia_get_log_groups($nid) {
+  $logs = array();
+  $results = db_query('SELECT *, SUM(xp) AS xp FROM {vaxia_xp_log} WHERE nid = :nid GROUP BY type',
+    array(':nid' => $nid));
+  foreach ($results as $result) {
+    $logs[] = $result;
   }
   return $logs;
 }
@@ -595,12 +622,12 @@ function _vaxia_delete_log($nid) {
 /*
  * Database helper function, insert a new log entry.
  */
-function _vaxia_update_log($nid, $type, $message, $variables = array()) {
+function _vaxia_update_log($nid, $type, $xp) {
   global $user;
   $record = array(
     'uid' => $user->uid,
     'type' => $type,
-    'message' => t($message, $variables),
+    'xp' => $xp,
     'nid' => $nid,
     'hostname' => ip_address(),
     'timestamp' => REQUEST_TIME,
