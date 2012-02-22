@@ -323,7 +323,7 @@ function rpg_chat_form_alter(&$form, &$form_state, $form_id) {
         '#limit_validation_errors' => array(), // No validation for a refresh.
         '#ajax' => array(
           'callback' => '_rpg_chat_allow_user_submit',
-          'wrapper' => 'rpg-chat-node-allow-lists',
+          'wrapper' => 'rpg-chat-node-allow-list',
           'method' => 'replace',
           'effect' => 'fade',
         ),
@@ -354,7 +354,7 @@ function rpg_chat_form_alter(&$form, &$form_state, $form_id) {
         '#limit_validation_errors' => array(), // No validation for a refresh.
         '#ajax' => array(
           'callback' => '_rpg_chat_ban_user_submit',
-          'wrapper' => 'rpg-chat-node-ban-lists',
+          'wrapper' => 'rpg-chat-node-ban-list',
           'method' => 'replace',
           'effect' => 'fade',
         ),
@@ -372,7 +372,8 @@ function rpg_chat_form_alter(&$form, &$form_state, $form_id) {
     $form['allow_ban']['add_user']['submit_allow'] = array(
       '#type' => 'submit',
       '#value' => t('Add user to allow list'),
-      '#limit_validation_errors' => array(),
+      '#submit' => array(),
+      //'#limit_validation_errors' => array(),
       '#ajax' => array(
         'callback' => '_rpg_chat_allow_user_submit',
         'wrapper' => 'rpg-chat-node-allow-list',
@@ -384,6 +385,7 @@ function rpg_chat_form_alter(&$form, &$form_state, $form_id) {
       '#type' => 'submit',
       '#value' => t('Add user to ban list'),
       '#submit' => array(),
+      //'#limit_validation_errors' => array(),
       '#ajax' => array(
         'callback' => '_rpg_chat_ban_user_submit',
         'wrapper' => 'rpg-chat-node-ban-list',
