@@ -165,7 +165,7 @@ function rpg_chat_form_comment_form_alter(&$form, &$form_state, $form_id) {
     );
     // When clicked refresh the comment display.
     $form['actions']['refresh_chat']['#ajax'] = array(
-      'callback' => 'rpg_chat_refresh_js',
+      'callback' => '_rpg_chat_refresh_js',
       'wrapper' => 'rpg-chat',
       'method' => 'replace',
       'effect' => 'fade',
@@ -409,13 +409,6 @@ function _rpg_chat_add_room_validate($form, $form_state) {
   if (intval($count) != 1) {
     form_set_error('owner_name', t('Please enter a valid username.'));
   }
-}
-
-/*
- * Form callback submit for _rpg_chat_node_forms.
- */
-function _rpg_chat_add_room_submit($form, $form_state) {
-  // Do nothing here. We don't submit at that stage, we submit on node_update (to have the nid).
 }
 
 /*
