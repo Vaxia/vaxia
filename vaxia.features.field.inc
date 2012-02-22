@@ -3855,217 +3855,6 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-rpg_chatroom-field_allowed_users'
-  $fields['node-rpg_chatroom-field_allowed_users'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '-1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_allowed_users',
-      'foreign keys' => array(
-        'uid' => array(
-          'columns' => array(
-            'uid' => 'uid',
-          ),
-          'table' => 'users',
-        ),
-      ),
-      'indexes' => array(
-        'uid' => array(
-          0 => 'uid',
-        ),
-      ),
-      'module' => 'user_reference',
-      'settings' => array(
-        'referenceable_roles' => array(
-          2 => '2',
-          3 => 0,
-        ),
-        'referenceable_status' => array(
-          0 => 0,
-          1 => '1',
-        ),
-        'view' => array(
-          'args' => array(),
-          'display_name' => '',
-          'view_name' => '',
-        ),
-      ),
-      'translatable' => '0',
-      'type' => 'user_reference',
-    ),
-    'field_instance' => array(
-      'bundle' => 'rpg_chatroom',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => 'Add user names for users who should be allowed to access this chatroom. Leave empty to allow any registered user access.
-
-NOTE: If a banned user is also in the allowed list, he will be allowed into the room.',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'module' => 'user_reference',
-          'settings' => array(),
-          'type' => 'user_reference_default',
-          'weight' => '3',
-        ),
-        'print' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '3',
-        ),
-        'rss' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '3',
-        ),
-        'search_index' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '3',
-        ),
-        'search_result' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '3',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '4',
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_allowed_users',
-      'label' => 'Allowed users',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'user_reference',
-        'settings' => array(
-          'autocomplete_match' => 'contains',
-          'autocomplete_path' => 'user_reference/autocomplete',
-          'size' => '60',
-        ),
-        'type' => 'user_reference_autocomplete',
-        'weight' => '6',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-rpg_chatroom-field_banned_users'
-  $fields['node-rpg_chatroom-field_banned_users'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '-1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_banned_users',
-      'foreign keys' => array(
-        'uid' => array(
-          'columns' => array(
-            'uid' => 'uid',
-          ),
-          'table' => 'users',
-        ),
-      ),
-      'indexes' => array(
-        'uid' => array(
-          0 => 'uid',
-        ),
-      ),
-      'module' => 'user_reference',
-      'settings' => array(
-        'referenceable_roles' => array(
-          2 => '2',
-          3 => 0,
-        ),
-        'referenceable_status' => array(
-          0 => 0,
-          1 => '1',
-        ),
-        'view' => array(
-          'args' => array(),
-          'display_name' => '',
-          'view_name' => '',
-        ),
-      ),
-      'translatable' => '0',
-      'type' => 'user_reference',
-    ),
-    'field_instance' => array(
-      'bundle' => 'rpg_chatroom',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => 'Add any user names who should not be allowed to access this chatroom.',
-      'display' => array(
-        'default' => array(
-          'label' => 'hidden',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '2',
-        ),
-        'print' => array(
-          'label' => 'hidden',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '2',
-        ),
-        'rss' => array(
-          'label' => 'hidden',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '2',
-        ),
-        'search_index' => array(
-          'label' => 'hidden',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '2',
-        ),
-        'search_result' => array(
-          'label' => 'hidden',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '2',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '6',
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_banned_users',
-      'label' => 'Banned users',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'user_reference',
-        'settings' => array(
-          'autocomplete_match' => 'contains',
-          'autocomplete_path' => 'user_reference/autocomplete',
-          'size' => '60',
-        ),
-        'type' => 'user_reference_autocomplete',
-        'weight' => '5',
-      ),
-    ),
-  );
-
   // Exported field: 'node-rpg_chatroom-field_images'
   $fields['node-rpg_chatroom-field_images'] = array(
     'field_config' => array(
@@ -4164,89 +3953,6 @@ NOTE: If a banned user is also in the allowed list, he will be allowed into the 
         ),
         'type' => 'image_image',
         'weight' => '3',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-rpg_chatroom-field_min_refresh'
-  $fields['node-rpg_chatroom-field_min_refresh'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_min_refresh',
-      'foreign keys' => array(),
-      'indexes' => array(),
-      'module' => 'number',
-      'settings' => array(),
-      'translatable' => '0',
-      'type' => 'number_integer',
-    ),
-    'field_instance' => array(
-      'bundle' => 'rpg_chatroom',
-      'default_value' => array(
-        0 => array(
-          'value' => '60',
-        ),
-      ),
-      'deleted' => '0',
-      'description' => 'The lowest refresh rate allowed for this chatroom in seconds.',
-      'display' => array(
-        'default' => array(
-          'label' => 'hidden',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '4',
-        ),
-        'print' => array(
-          'label' => 'hidden',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '4',
-        ),
-        'rss' => array(
-          'label' => 'hidden',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '4',
-        ),
-        'search_index' => array(
-          'label' => 'hidden',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '4',
-        ),
-        'search_result' => array(
-          'label' => 'hidden',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '4',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '3',
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_min_refresh',
-      'label' => 'Minimum refresh rate',
-      'required' => 1,
-      'settings' => array(
-        'max' => '',
-        'min' => '20',
-        'prefix' => '',
-        'suffix' => '',
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 0,
-        'module' => 'number',
-        'settings' => array(),
-        'type' => 'number',
-        'weight' => '7',
       ),
     ),
   );
@@ -4351,92 +4057,64 @@ NOTE: If a banned user is also in the allowed list, he will be allowed into the 
     ),
   );
 
-  // Exported field: 'node-rpg_chatroom-field_status'
-  $fields['node-rpg_chatroom-field_status'] = array(
+  // Exported field: 'user-user-field_comment_color'
+  $fields['user-user-field_comment_color'] = array(
     'field_config' => array(
       'active' => '1',
       'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
-      'field_name' => 'field_status',
-      'foreign keys' => array(),
-      'indexes' => array(
-        'value' => array(
-          0 => 'value',
+      'field_name' => 'field_comment_color',
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
         ),
       ),
-      'module' => 'list',
-      'settings' => array(
-        'allowed_values' => array(
-          'open' => 'open',
-          'mature_only' => 'mature_only',
-          'locked' => 'locked',
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
         ),
-        'allowed_values_function' => '',
+      ),
+      'module' => 'text',
+      'settings' => array(
+        'max_length' => '6',
       ),
       'translatable' => '0',
-      'type' => 'list_text',
+      'type' => 'text',
     ),
     'field_instance' => array(
-      'bundle' => 'rpg_chatroom',
-      'default_value' => array(
-        0 => array(
-          'value' => 'open',
-        ),
-      ),
+      'bundle' => 'user',
+      'default_value' => NULL,
       'deleted' => '0',
-      'description' => 'The status of the chatroom: open, mature_only, locked.',
+      'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'hidden',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '6',
-        ),
-        'print' => array(
           'label' => 'above',
+          'module' => 'text',
           'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'rss' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'search_index' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'search_result' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '2',
+          'type' => 'text_default',
+          'weight' => 4,
         ),
       ),
-      'entity_type' => 'node',
-      'field_name' => 'field_status',
-      'label' => 'Status',
-      'required' => 1,
+      'entity_type' => 'user',
+      'field_name' => 'field_comment_color',
+      'label' => 'Comment color',
+      'required' => 0,
       'settings' => array(
-        'user_register_form' => FALSE,
+        'text_processing' => '0',
+        'user_register_form' => 0,
       ),
       'widget' => array(
         'active' => 1,
-        'module' => 'options',
-        'settings' => array(),
-        'type' => 'options_select',
-        'weight' => '8',
+        'module' => 'text',
+        'settings' => array(
+          'size' => '60',
+        ),
+        'type' => 'text_textfield',
+        'weight' => '10',
       ),
     ),
   );
@@ -4513,15 +4191,69 @@ NOTE: If a banned user is also in the allowed list, he will be allowed into the 
     ),
   );
 
+  // Exported field: 'user-user-field_refresh_rate'
+  $fields['user-user-field_refresh_rate'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_refresh_rate',
+      'foreign keys' => array(),
+      'indexes' => array(),
+      'module' => 'number',
+      'settings' => array(),
+      'translatable' => '0',
+      'type' => 'number_integer',
+    ),
+    'field_instance' => array(
+      'bundle' => 'user',
+      'default_value' => array(
+        0 => array(
+          'value' => '60',
+        ),
+      ),
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 0,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_integer',
+          'weight' => 3,
+        ),
+      ),
+      'entity_type' => 'user',
+      'field_name' => 'field_refresh_rate',
+      'label' => 'Refresh rate',
+      'required' => 0,
+      'settings' => array(
+        'max' => '',
+        'min' => '5',
+        'prefix' => '',
+        'suffix' => '',
+        'user_register_form' => 0,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'number',
+        'settings' => array(),
+        'type' => 'number',
+        'weight' => '8',
+      ),
+    ),
+  );
+
   // Translatables
   // Included for use with string extractors like potx.
-  t('Add any user names who should not be allowed to access this chatroom.');
-  t('Add user names for users who should be allowed to access this chatroom. Leave empty to allow any registered user access.
-
-NOTE: If a banned user is also in the allowed list, he will be allowed into the room.');
   t('Additional property');
   t('Agility');
-  t('Allowed users');
   t('Apparent Age');
   t('Appearance');
   t('Approved?');
@@ -4530,10 +4262,10 @@ NOTE: If a banned user is also in the allowed list, he will be allowed into the 
   t('As narrative');
   t('Awareness');
   t('Background');
-  t('Banned users');
   t('Body');
   t('Charisma');
   t('Color');
+  t('Comment color');
   t('Constitution');
   t('Credit');
   t('Current character');
@@ -4547,7 +4279,6 @@ NOTE: If a banned user is also in the allowed list, he will be allowed into the 
   t('Intelligence');
   t('Items');
   t('Life');
-  t('Minimum refresh rate');
   t('NPC');
   t('Name');
   t('Notes');
@@ -4560,14 +4291,12 @@ NOTE: If a banned user is also in the allowed list, he will be allowed into the 
   t('Real Age');
   t('Realm');
   t('Reflexes');
+  t('Refresh rate');
   t('SH Notes');
   t('Sex');
   t('Skill');
   t('Spirituality');
-  t('Status');
   t('Strength');
-  t('The lowest refresh rate allowed for this chatroom in seconds.');
-  t('The status of the chatroom: open, mature_only, locked.');
   t('Value');
 
   return $fields;

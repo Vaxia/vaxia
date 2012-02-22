@@ -126,7 +126,7 @@ function _vaxia_transfer_xp_form($form, &$form_state, $node) {
   $form['node_info']['xp_log'] = array(
     '#type' => 'item',
     '#title' => t('XP history'),
-    '#markup' => theme('list_items', array('items' => $message_log)),
+    '#markup' => theme('item_list', array('items' => $message_log)),
   );
   $form['alert'] = array(
     '#type' => 'fieldset',
@@ -268,7 +268,7 @@ function vaxia_character_sheet_load_sheet($node) {
     $message_log[] = t('%xp %type xp awarded.',
       array('%xp' => $log->xp, '%type' => $log->type));
   }
-  $node->vaxia_type_xp = theme('list_items', array('items' => $message_log));
+  $node->vaxia_type_xp = theme('item_list', array('items' => $message_log));
 }
 
 /**
@@ -365,7 +365,7 @@ function vaxia_character_sheet_view_sheet($node) {
   $node->content['vaxia']['xp'] = array(
     '#type' => 'item',
     '#title' => 'XP Total',
-    '#markup' => theme('list_items', array('items' => $xps)),
+    '#markup' => theme('item_list', array('items' => $xps)),
   );
 
   $node->content['vaxia']['type'] = array(

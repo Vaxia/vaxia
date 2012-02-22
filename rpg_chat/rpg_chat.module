@@ -90,16 +90,18 @@ function rpg_chat_node_access($node, $op, $account) {
  * Implements hook_node_load().
  */
 //TODO describe these fields to views (as join table).
-function rpg_chat_node_load($node) {
-  // Load all the chat related bits for this node.
-  if (isset($node->type) && _rpg_chat_is_enabled($node->type)) {
-    $room = _rpg_chat_get_room($nid);
-    $node->rpg_chat_min_refresh = $room->min_refresh;
-    $node->rpg_chat_mature = $room->mature;
-    $node->rpg_chat_locked = $room->locked;
-    $node->rpg_chat_allowed_users = unserialize($room->allowed_users);
-    $node->rpg_chat_banned_users = unserialize($room->banned_users);
-    $node->rpg_chat_current_users = _rpg_chat_get_room_users($node->nid);
+function rpg_chat_node_load($nodes) {
+  foreach ($nodes as $node) {
+    // Load all the chat related bits for this node.
+    if (isset($node->type) && _rpg_chat_is_enabled($node->type)) {
+      $room = _rpg_chat_get_room($node->nid);
+      $nodes[$node->nid]->rpg_chat_min_refresh = $room->min_refresh;
+      $nodes[$node->nid]->rpg_chat_mature = $room->mature;
+      $nodes[$node->nid]->rpg_chat_locked = $room->locked;
+      $nodes[$node->nid]->rpg_chat_allowed_users = unserialize($room->allowed_users);
+      $nodes[$node->nid]->rpg_chat_banned_users = unserialize($room->banned_users);
+      $nodes[$node->nid]->rpg_chat_current_users = _rpg_chat_get_room_users($node->nid);
+    }
   }
 }
 
@@ -155,10 +157,9 @@ function rpg_chat_form_comment_form_alter(&$form, &$form_state, $form_id) {
   if (_rpg_chat_is_enabled($form['#node']->type) ) {
     // Display the refresh button.
     $form['actions']['refresh_chat'] = array(
-      '#type' => 'submit',
+      '#type' => 'button',
       '#value' => 'Refresh',
       '#access' => 1,
-      '#submit' => '', // Set to make sure validation errors are cleared.
       '#limit_validation_errors' => array(), // No validation for a refresh.
     );
     // When clicked refresh the comment display.
@@ -176,6 +177,9 @@ function rpg_chat_form_comment_form_alter(&$form, &$form_state, $form_id) {
       'method' => 'replace',
       'effect' => 'fade',
     );
+    // Refresh this user's last login to this room.
+    global $user;
+    _rpg_chat_set_room_users($form['#node']->nid, $user->uid);
   }
 }
 
@@ -184,14 +188,7 @@ function rpg_chat_form_comment_form_alter(&$form, &$form_state, $form_id) {
  */
 function _rpg_chat_refresh_js($form, &$form_state) {
   // This is to remove the "Your comment has been posted" status message.
-  $published = t('Your comment has been posted.');
-  if (isset($_SESSION['messages']['status'])) {
-    foreach ($_SESSION['messages']['status'] as $key => $value) {
-      if ($value == $published) {
-        unset($_SESSION['messages']['status']);
-      }
-    }
-  }
+  unset($_SESSION['messages']['status']);
   $node = node_load($form['#node']->nid);
   // COPIED from comment_node_page_additions();
   // Only attempt to render comments if the node has visible comments.
@@ -210,22 +207,22 @@ function _rpg_chat_refresh_js($form, &$form_state) {
   $user_names = array();
   $users = _rpg_chat_get_room_users($node->nid);
   foreach ($users as $found_user) {
-    $this_user = load_user($found_user->uid);
+    $this_user = user_load($found_user->uid);
     $user_names[] = $this_user->name;
   }
   $return_string = '<div id="rpg-chat">';
   $return_string .= '<div id="rpg-chat-userlist">' .
-    theme('list_items', array('items' => $user_names)) .
+    theme('item_list', array('title' => t('Users in this room'), 'items' => $user_names)) .
     '</div>';
   foreach ($comments as $cid => $comment) {
     if (is_numeric($cid)) {
       $return_string .= drupal_render($comment);
     }
-  } 
+  }
   $return_string .= '</div>';
   // Refresh this user's last login to this room.
   global $user;
-  _rpg_chat_set_room_users($form['#node']->nid, $user->uid);
+  _rpg_chat_set_room_users($node->nid, $user->uid);
   return $return_string;
 }
 
@@ -235,15 +232,12 @@ function _rpg_chat_refresh_js($form, &$form_state) {
  * Add RPG chat settings to node forms with RPG chat enabled.
  */
 function rpg_chat_form_alter(&$form, &$form_state, $form_id) {
-  if (!isset($form['type']['#value'])) {
-    return;
-  }
-  if (!_rpg_chat_is_enabled($form['type']['#value'])) {
+  if (!isset($form['type']['#value']) || !_rpg_chat_is_enabled($form['type']['#value'])) {
     return;
   }
   // If this is a node form, add the rpg_chat feature set.
-  if (strpos($form_id, '_node_form')) {
-    $node = $form['#node'];
+  if (strpos($form['#form_id'], '_node_form') !== FALSE) {
+    $node = node_load($form['#node']->nid);
     // RPG Chat values are loaded by node_load.
     $form['min_refresh'] = array(
       '#type' => 'textfield',
@@ -267,31 +261,29 @@ function rpg_chat_form_alter(&$form, &$form_state, $form_id) {
     $allow_list = isset($node->rpg_chat_allowed_users) ? $node->rpg_chat_allowed_users : array();
     $ban_list = isset($node->rpg_chat_banned_users) ? $node->rpg_chat_banned_users : array();
     // Add users from submitted form, and account for removals.
-    if (isset($form_state['values']['allow_ban']['allow'])) {
+    if (isset($form_state['values']['allow'])) {
       $allow_list = array();
-      foreach($form_state['values']['allow_ban']['allow'] as $delta => $values) {
+      foreach($form_state['values']['allow'] as $delta => $values) {
         if ($form_state['clicked_button']['#id'] != 'allow_remove_' . $values['uid']) {
           $allow_list[] = $values['uid'];
         }
       }
     }
-    if (isset($form_state['values']['allow_ban']['ban'])) {
+    if (isset($form_state['values']['ban'])) {
       $allow_list = array();
-      foreach($form_state['values']['allow_ban']['ban'] as $delta => $values) {
+      foreach($form_state['values']['ban'] as $delta => $values) {
         if ($form_state['clicked_button']['#id'] != 'ban_remove_' . $values['uid']) {
           $ban_list[] = $values['uid'];
         }
       }
-    } // TODO figure out why this ajax isnt working.
+    }
     // Check for users added to the list.
-    if (isset($form_state['clicked_button']['#id']) && $form_state['clicked_button']['#id'] == 'edit-submit-allow') {
-      $uid = db_query("SELECT uid FROM {users} WHERE name = :name",
-        array(':name' => $form_state['values']['owner_name']))->fetchField();
+    if (isset($form_state['clicked_button']['#id']) && $form_state['clicked_button']['#id'] == 'edit-submit-allow' && isset($form_state['values']['owner_name'])) {
+      $uid = db_query("SELECT uid FROM {users} WHERE name = :name", array(':name' => $form_state['values']['owner_name']))->fetchField();
       $allow_list[] = $uid;
     }
-    if (isset($form_state['clicked_button']['#id']) && $form_state['clicked_button']['#id'] == 'edit-submit-ban') {
-      $uid = db_query("SELECT uid FROM {users} WHERE name = :name",
-        array(':name' => $form_state['values']['owner_name']))->fetchField();
+    if (isset($form_state['clicked_button']['#id']) && $form_state['clicked_button']['#id'] == 'edit-submit-ban' && isset($form_state['values']['owner_name'])) {
+      $uid = db_query("SELECT uid FROM {users} WHERE name = :name", array(':name' => $form_state['values']['owner_name']))->fetchField();
       $ban_list[] = $uid;
     }
     // Display allow / ban with list generated from default or form_state.
@@ -314,8 +306,9 @@ function rpg_chat_form_alter(&$form, &$form_state, $form_id) {
         '#markup' => $this_user->name,
       );
       $form['allow_ban']['allow'][$delta]['allow_remove_' . $uid] = array(
-        '#type' => 'submit',
+        '#type' => 'button',
         '#value' => t('Remove'),
+        '#limit_validation_errors' => array(),
         '#ajax' => array(
           'callback' => '_rpg_chat_allow_user_submit',
           'wrapper' => 'rpg-chat-node-allow-lists',
@@ -343,8 +336,9 @@ function rpg_chat_form_alter(&$form, &$form_state, $form_id) {
         '#markup' => $this_user->name,
       );
       $form['allow_ban']['ban'][$delta]['ban_remove_' . $uid] = array(
-        '#type' => 'submit',
+        '#type' => 'button',
         '#value' => t('Remove'),
+        '#limit_validation_errors' => array(),
         '#ajax' => array(
           'callback' => '_rpg_chat_ban_user_submit',
           'wrapper' => 'rpg-chat-node-ban-lists',
@@ -363,8 +357,9 @@ function rpg_chat_form_alter(&$form, &$form_state, $form_id) {
     $form['allow_ban']['add_user']['owner_name'] = $user_form['owner_name'];
     $form['allow_ban']['add_user']['owner_name']['#title'] = t('Allow / ban user');
     $form['allow_ban']['add_user']['submit_allow'] = array(
-      '#type' => 'submit',
+      '#type' => 'button',
       '#value' => t('Add user to allow list'),
+      '#limit_validation_errors' => array(),
       '#ajax' => array(
         'callback' => '_rpg_chat_allow_user_submit',
         'wrapper' => 'rpg-chat-node-allow-list',
@@ -373,18 +368,19 @@ function rpg_chat_form_alter(&$form, &$form_state, $form_id) {
       ),
     );
     $form['allow_ban']['add_user']['submit_ban'] = array(
-      '#type' => 'submit',
+      '#type' => 'button',
       '#value' => t('Add user to ban list'),
+      '#limit_validation_errors' => array(),
       '#ajax' => array(
         'callback' => '_rpg_chat_ban_user_submit',
-        'wrapper' => 'rpg-chat-node-ban-lists',
+        'wrapper' => 'rpg-chat-node-ban-list',
         'method' => 'replace',
         'effect' => 'fade',
       ),
     );
     $form['#validate'][] = '_rpg_chat_add_room_validate';
+    $form['#submit'][] = '_rpg_chat_add_room_submit';
   }
-  return $form;
 }
 
 /**
@@ -410,6 +406,13 @@ function _rpg_chat_add_room_validate($form, $form_state) {
   if (intval($count) != 1) {
     form_set_error('owner_name', t('Please enter a valid username.'));
   }
+}
+
+/*
+ * Form callback submit for _rpg_chat_node_forms.
+ */
+function _rpg_chat_add_room_submit($form, $form_state) {
+  // Do nothing here. We don't submit at that stage, we submit on node_update (to have the nid).
 }
 
 /*
@@ -441,8 +444,8 @@ function rpg_chat_node_update($node) {
       $banned_users[] = $users['uid'];
     }
   }
-  $variables['allowed_users'] = $allowed_users;
-  $variables['banned_users'] = $banned_users;
+  $variables['allowed_users'] = array_unique($allowed_users);
+  $variables['banned_users'] = array_unique($banned_users);
   _rpg_chat_set_room($node->nid, $variables);
 }
 
@@ -466,21 +469,25 @@ function theme_rpg_chat_user_list($element) {
   $element = $element['element'];
   $header = array('', '');
   $rows = array();
-  $i = 0;
-  foreach (element_children($element) as $user) {
-    $uid = $element[$i]['uid']; // Leave to form to render as normal.
+  foreach (element_children($element) as $i) {
+    $this_user = $element[$i]['uid']['#value'];
+    $uid = drupal_render($element[$i]['uid']);
     $name = drupal_render($element[$i]['name']);
-    if (isset($element[$i]['allow_remove_' . $uid])) {
-      $remove = drupal_render($element[$i]['allow_remove_' . $uid]);
+    $remove = '';
+    if (isset($element[$i]['allow_remove_' . $this_user])) {
+      $remove = drupal_render($element[$i]['allow_remove_' . $this_user]);
     }
-    if (isset($element[$i]['ban_remove_' . $uid])) {
-      $remove = drupal_render($element[$i]['ban_remove_' . $uid]);
+    if (isset($element[$i]['ban_remove_' . $this_user])) {
+      $remove = drupal_render($element[$i]['ban_remove_' . $this_user]);
     }
-    $rows[] = array($name, $remove);
-    $i++;
+    $rows[] = array($uid.$name, $remove);
   }
-  return theme('table', array('header' => $header, 'rows' => $rows)).
-    drupal_render($element['notes']);
+  if (!empty($rows)) {
+    return theme('table', array('header' => $header, 'rows' => $rows));
+  }
+  else {
+    return t('No users in this list.');
+  }
 }
 
 /**
@@ -529,7 +536,7 @@ function _rpg_chat_delete_room($nid) {
  */
 function _rpg_chat_get_room_users($nid) {
   $users = array();
-  $results = db_query('SELECT * FROM {rpg_chat_room} WHERE nid = :nid', array(':nid' => $nid));
+  $results = db_query('SELECT * FROM {rpg_chat_room_users} WHERE nid = :nid', array(':nid' => $nid));
   foreach ($results as $result) {
     $users[] = $result;
   }
