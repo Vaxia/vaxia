@@ -155,11 +155,12 @@ function rpg_chat_node_view_alter(&$build) {
 function rpg_chat_form_comment_form_alter(&$form, &$form_state, $form_id) {
   // Check to see if this node type is a rpg chatroom.
   if (_rpg_chat_is_enabled($form['#node']->type) ) {
-    // Display the refresh button.
+    // Display the refresh submit.
     $form['actions']['refresh_chat'] = array(
-      '#type' => 'button',
+      '#type' => 'submit',
       '#value' => 'Refresh',
       '#access' => 1,
+      '#submit' => array(),
       '#limit_validation_errors' => array(), // No validation for a refresh.
     );
     // When clicked refresh the comment display.
@@ -306,9 +307,10 @@ function rpg_chat_form_alter(&$form, &$form_state, $form_id) {
         '#markup' => $this_user->name,
       );
       $form['allow_ban']['allow'][$delta]['allow_remove_' . $uid] = array(
-        '#type' => 'button',
+        '#type' => 'submit',
         '#value' => t('Remove'),
-        '#limit_validation_errors' => array(),
+        '#submit' => array(),
+        '#limit_validation_errors' => array(), // No validation for a refresh.
         '#ajax' => array(
           'callback' => '_rpg_chat_allow_user_submit',
           'wrapper' => 'rpg-chat-node-allow-lists',
@@ -336,9 +338,10 @@ function rpg_chat_form_alter(&$form, &$form_state, $form_id) {
         '#markup' => $this_user->name,
       );
       $form['allow_ban']['ban'][$delta]['ban_remove_' . $uid] = array(
-        '#type' => 'button',
+        '#type' => 'submit',
         '#value' => t('Remove'),
-        '#limit_validation_errors' => array(),
+        '#submit' => array(),
+        '#limit_validation_errors' => array(), // No validation for a refresh.
         '#ajax' => array(
           'callback' => '_rpg_chat_ban_user_submit',
           'wrapper' => 'rpg-chat-node-ban-lists',
@@ -357,7 +360,7 @@ function rpg_chat_form_alter(&$form, &$form_state, $form_id) {
     $form['allow_ban']['add_user']['owner_name'] = $user_form['owner_name'];
     $form['allow_ban']['add_user']['owner_name']['#title'] = t('Allow / ban user');
     $form['allow_ban']['add_user']['submit_allow'] = array(
-      '#type' => 'button',
+      '#type' => 'submit',
       '#value' => t('Add user to allow list'),
       '#limit_validation_errors' => array(),
       '#ajax' => array(
@@ -368,9 +371,9 @@ function rpg_chat_form_alter(&$form, &$form_state, $form_id) {
       ),
     );
     $form['allow_ban']['add_user']['submit_ban'] = array(
-      '#type' => 'button',
+      '#type' => 'submit',
       '#value' => t('Add user to ban list'),
-      '#limit_validation_errors' => array(),
+      '#submit' => array(),
       '#ajax' => array(
         'callback' => '_rpg_chat_ban_user_submit',
         'wrapper' => 'rpg-chat-node-ban-list',
