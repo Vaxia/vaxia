@@ -144,7 +144,17 @@ function rpg_chat_node_view($node, $view_mode = 'full', $langcode) {
  */
 function rpg_chat_node_view_alter(&$build) {
   if (_rpg_chat_is_enabled($build['#node']->type) ) {
-    $build['comments']['comments']['#prefix'] = '<div id="rpg-chat">';
+    // Get users for display in addition to the wrapper.
+    $user_names = array();
+    $users = _rpg_chat_get_room_users($build['#node']->nid);
+    foreach ($users as $found_user) {
+      $this_user = user_load($found_user->uid);
+      $user_names[] = $this_user->name;
+    }
+    $user_string = '<div id="rpg-chat-userlist">' .
+      theme('item_list', array('title' => t('Users in this room'), 'items' => $user_names)) .
+      '</div>';
+    $build['comments']['comments']['#prefix'] = '<div id="rpg-chat">' . $user_string;
     $build['comments']['comments']['#suffix'] = '</div>';
   }
 }
