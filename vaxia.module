@@ -203,8 +203,8 @@ function _vaxia_change_ownership_form_submit($form, $form_state) {
   $node = node_load($values['nid']);
   global $user;
   if (!empty($node) && ( (user_access('change item owner') || user_access('change art owner'))
-                        || ($user->uid == $node->uid && 
-                          (user_access('edit any ' . $node->type . ' content') || user_access('edit own ' . $node->type . ' content'))))) {
+      || ($user->uid == $node->uid && 
+      (user_access('edit any ' . $node->type . ' content') || user_access('edit own ' . $node->type . ' content'))))) {
     $uid = db_query("SELECT uid from {users} WHERE name = :name", array(':name' => $values['owner_name']))->fetchField();
     if (!empty($uid)) {
       $node->uid = $uid;
