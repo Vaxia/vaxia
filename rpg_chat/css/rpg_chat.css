@@ -12,7 +12,6 @@
 #comment-form {clear:both;}
 
 /* Display particulars, default values. */
-#rpg-chat #rpg-chat-userlist {border:solid 1px #DDD;}
 #rpg-chat #rpg-chat-userlist h3 {text-align:center;}
 
 /* Hide specific elements of the comment display. */

@@ -140,6 +140,28 @@ function rpg_chat_node_view($node, $view_mode = 'full', $langcode) {
 }
 
 /**
+ * Implements process suggestion for comment theme. This allows us to override parts of the comment form.
+ */
+function rpg_chat_process_comment(&$variables) {
+  if (_rpg_chat_is_enabled($variables['node']->type)) {
+    $variables['classes'] .= ' rpg-chat-post';
+    // Looks for comment--rpg-chat.tpl.php in your theme directory. If not there, it uses the available comment theme.
+    $variables['theme_hook_suggestion'] = 'comment__rpg_chat';
+  }
+}
+
+/**
+ * Implements process suggestion for node theme. This allows us to override parts of the node form.
+ */
+function rpg_chat_process_node(&$variables) {
+  if (_rpg_chat_is_enabled($variables['node']->type)) {
+    $variables['classes'] .= ' rpg-chat-node';
+    // Looks for node--rpg-chat.tpl.php in your theme directory.
+    $variables['theme_hook_suggestion'] = 'node__rpg_chat';
+  }
+}
+
+/**
  * Implements hook_node_view_alter().
  * Wrap all comments in an ID wrapper for our AJAX to pick up.
  */
