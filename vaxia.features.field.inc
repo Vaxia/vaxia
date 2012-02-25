@@ -742,7 +742,7 @@ function vaxia_field_default_fields() {
       'indexes' => array(),
       'module' => 'computed_field',
       'settings' => array(
-        'code' => '$entity_field[0][\'value\'] = 1;',
+        'code' => '$entity_field[0][\'value\'] =  ($entity->field_strength[$entity->language][0][\'value\'] + $entity->field_dexterity[$entity->language][0][\'value\']) / 2;',
         'database' => array(
           'data_default' => '0',
           'data_index' => 0,
@@ -807,7 +807,7 @@ function vaxia_field_default_fields() {
       'indexes' => array(),
       'module' => 'computed_field',
       'settings' => array(
-        'code' => '$entity_field[0][\'value\'] = 1;',
+        'code' => '$entity_field[0][\'value\'] =  ($entity->field_charisma[$entity->language][0][\'value\'] + $entity->field_life[$entity->language][0][\'value\']) / 2;',
         'database' => array(
           'data_default' => '0',
           'data_index' => 0,
@@ -872,7 +872,7 @@ function vaxia_field_default_fields() {
       'indexes' => array(),
       'module' => 'computed_field',
       'settings' => array(
-        'code' => '$entity_field[0][\'value\'] = 1;',
+        'code' => '$entity_field[0][\'value\'] =  ($entity->field_intelligence[$entity->language][0][\'value\'] + $entity->field_spirituality[$entity->language][0][\'value\']) / 2;',
         'database' => array(
           'data_default' => '0',
           'data_index' => 0,
@@ -1143,7 +1143,7 @@ function vaxia_field_default_fields() {
       'indexes' => array(),
       'module' => 'computed_field',
       'settings' => array(
-        'code' => '$entity_field[0][\'value\'] = 1;',
+        'code' => '$entity_field[0][\'value\'] =  ($entity->field_endurance[$entity->language][0][\'value\'] + $entity->field_strength[$entity->language][0][\'value\']) / 2;',
         'database' => array(
           'data_default' => '0',
           'data_index' => 0,
@@ -1396,7 +1396,8 @@ function vaxia_field_default_fields() {
       'indexes' => array(),
       'module' => 'computed_field',
       'settings' => array(
-        'code' => '$entity_field[0][\'value\'] = 1;',
+        'code' => '$entity_field[0][\'value\'] = ($entity->field_life[$entity->language][0][\'value\'] + $entity->field_endurance[$entity->language][0][\'value\']) / 2;
+',
         'database' => array(
           'data_default' => '0',
           'data_index' => 0,
@@ -1943,7 +1944,7 @@ function vaxia_field_default_fields() {
       'indexes' => array(),
       'module' => 'computed_field',
       'settings' => array(
-        'code' => '$entity_field[0][\'value\'] = 1;',
+        'code' => '$entity_field[0][\'value\'] =  ($entity->field_spirituality[$entity->language][0][\'value\'] + $entity->field_charisma[$entity->language][0][\'value\']) / 2;',
         'database' => array(
           'data_default' => '0',
           'data_index' => 0,
@@ -2207,7 +2208,7 @@ function vaxia_field_default_fields() {
       'indexes' => array(),
       'module' => 'computed_field',
       'settings' => array(
-        'code' => '$entity_field[0][\'value\'] = 1;',
+        'code' => '$entity_field[0][\'value\'] =  ($entity->field_dexterity[$entity->language][0][\'value\'] + $entity->field_intelligence[$entity->language][0][\'value\']) / 2;',
         'database' => array(
           'data_default' => '0',
           'data_index' => 0,
