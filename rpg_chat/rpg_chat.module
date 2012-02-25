@@ -9,7 +9,7 @@
 /**
  * Implements hook_form_FORM_ID_alter().
  *
- * Alter content type settings to add "Enable dice roller?" checkbox.
+ * Alter content type settings to add "Enable rpg chat?" checkbox.
  */
 function rpg_chat_form_node_type_form_alter(&$form, &$form_state) {
   if (isset($form['type'])) {
@@ -252,18 +252,26 @@ function rpg_chat_form_alter(&$form, &$form_state, $form_id) {
     if (isset($form_state['node'])) {
       $node = $form_state['node'];
     }
+    $form['rpg_chat'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('RPG chat settings'),
+      '#description' => t('Configure RPG chat settings'),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      '#group' => 'additional_settings',
+    );
     // RPG Chat values are loaded by node_load.
-    $form['min_refresh'] = array(
+    $form['rpg_chat']['min_refresh'] = array(
       '#type' => 'textfield',
       '#title' => t('Minimum refresh rate'),
       '#default_value' => isset($node->rpg_chat_min_refresh) ? $node->rpg_chat_min_refresh : 60,
     );
-    $form['mature'] = array(
+    $form['rpg_chat']['mature'] = array(
       '#type' => 'checkbox',
       '#title' => t('Mature room?'),
       '#default_value' => isset($node->rpg_chat_mature) ? $node->rpg_chat_mature : FALSE,
     );
-    $form['locked'] = array(
+    $form['rpg_chat']['locked'] = array(
       '#type' => 'checkbox',
       '#title' => t('Locked room?'),
       '#default_value' => isset($node->rpg_chat_locked) ? $node->rpg_chat_locked : FALSE,
@@ -277,7 +285,7 @@ function rpg_chat_form_alter(&$form, &$form_state, $form_id) {
       $this_user = user_load($uid);
       $allow_string .= $this_user->name . "\n";
     }
-    $form['allow'] = array(
+    $form['rpg_chat']['allow'] = array(
       '#type' => 'textarea',
       '#title' => t('Allowed users'),
       '#description' => t('Enter usernames one per line.'),
@@ -288,7 +296,7 @@ function rpg_chat_form_alter(&$form, &$form_state, $form_id) {
       $this_user = user_load($uid);
       $ban_string .= $this_user->name . "\n";
     }
-    $form['ban'] = array(
+    $form['rpg_chat']['ban'] = array(
       '#type' => 'textarea',
       '#title' => t('Banned users'),
       '#description' => t('Enter usernames one per line.'),
