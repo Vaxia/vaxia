@@ -229,7 +229,8 @@ function vaxia_process_comment(&$variables) {
       $color = '#' . trim($comment->field_comment_color[$lang][0]['value']);
       $variables['content_attributes'] .= t(' style="color:@color;"', array('@color' => $color));
     }
-    $variables['submitted'] = node_load caches else calling this for Every Comment would get really ugly.
+    $variables['submitted'] = t('!username </br> !datetime', array('!username' => $variables['author'], '!datetime' => $variables['created']));
+    // node_load caches else calling this for Every Comment would get really ugly.
     if (isset($comment->field_comment_character[$lang][0]['nid'])) {
       $character = node_load($comment->field_comment_character[$lang][0]['nid']);
       // Replace the user name with the character title.
