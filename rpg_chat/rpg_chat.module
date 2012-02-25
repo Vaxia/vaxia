@@ -135,6 +135,7 @@ function rpg_chat_node_view($node, $view_mode = 'full', $langcode) {
     // And add the JS we need to drive the conversation.
     drupal_add_js(array('rpg_chat' => array('refreshRate' => $refresh)), 'setting');
     drupal_add_js(drupal_get_path('module', 'rpg_chat').'/js/rpg_chat.js');
+    drupal_add_css(drupal_get_path('module', 'rpg_chat').'/css/rpg_chat.css');
   }
 }
 
