@@ -248,7 +248,10 @@ function rpg_chat_form_alter(&$form, &$form_state, $form_id) {
   }
   // If this is a node form, add the rpg_chat feature set.
   if (strpos($form['#form_id'], '_node_form') !== FALSE) {
-    $node = node_load($form['#node']->nid);
+    // Load a node if it exists.
+    if (isset($form_state['node'])) {
+      $node = $form_state['node'];
+    }
     // RPG Chat values are loaded by node_load.
     $form['min_refresh'] = array(
       '#type' => 'textfield',
@@ -265,161 +268,67 @@ function rpg_chat_form_alter(&$form, &$form_state, $form_id) {
       '#title' => t('Locked room?'),
       '#default_value' => isset($node->rpg_chat_locked) ? $node->rpg_chat_locked : FALSE,
     );
-    $form['allow_ban'] = array(
-      '#type' => 'fieldset',
-    );
-    // Default list is node's list, if not submitted yet by AJAX.
+    // TODO - eventually this should become a AJAX driven interface.
     $allow_list = isset($node->rpg_chat_allowed_users) ? $node->rpg_chat_allowed_users : array();
     $ban_list = isset($node->rpg_chat_banned_users) ? $node->rpg_chat_banned_users : array();
-    // Add users from submitted form, and account for removals.
-    if (isset($form_state['values']['allow'])) {
-      $allow_list = array();
-      foreach($form_state['values']['allow'] as $delta => $values) {
-        if ($form_state['clicked_button']['#id'] != 'allow_remove_' . $values['uid']) {
-          $allow_list[] = $values['uid'];
-        }
-      }
-    }
-    if (isset($form_state['values']['ban'])) {
-      $allow_list = array();
-      foreach($form_state['values']['ban'] as $delta => $values) {
-        if ($form_state['clicked_button']['#id'] != 'ban_remove_' . $values['uid']) {
-          $ban_list[] = $values['uid'];
-        }
-      }
-    }
-    // Check for users added to the list.
-    if (isset($form_state['clicked_button']['#id']) && $form_state['clicked_button']['#id'] == 'edit-submit-allow' && isset($form_state['values']['owner_name'])) {
-      $uid = db_query("SELECT uid FROM {users} WHERE name = :name", array(':name' => $form_state['values']['owner_name']))->fetchField();
-      $allow_list[] = $uid;
-    }
-    if (isset($form_state['clicked_button']['#id']) && $form_state['clicked_button']['#id'] == 'edit-submit-ban' && isset($form_state['values']['owner_name'])) {
-      $uid = db_query("SELECT uid FROM {users} WHERE name = :name", array(':name' => $form_state['values']['owner_name']))->fetchField();
-      $ban_list[] = $uid;
-    }
     // Display allow / ban with list generated from default or form_state.
-    $form['allow_ban']['allow'] = array(
-      '#theme' => 'rpg_chat_user_list',
-      '#type' => 'fieldset',
+    $allow_string = '';
+    foreach ($allow_list as $uid) {
+      $this_user = user_load($uid);
+      $allow_string .= $this_user->name . "\n";
+    }
+    $form['allow'] = array(
+      '#type' => 'textarea',
       '#title' => t('Allowed users'),
-      '#prefix' => '<div id="rpg-chat-node-allow-list">',
-      '#suffix' => '</div>',
-      '#tree' => TRUE,
+      '#description' => t('Enter usernames one per line.'),
+      '#default_value' => $allow_string,
     );
-    foreach ($allow_list as $delta => $uid) {
+    $ban_string = '';
+    foreach ($ban_list as $uid) {
       $this_user = user_load($uid);
-      $form['allow_ban']['allow'][$delta]['uid'] = array(
-        '#type' => 'hidden',
-        '#value' => $uid,
-      );
-      $form['allow_ban']['allow'][$delta]['name'] = array(
-        '#type' => 'item',
-        '#markup' => $this_user->name,
-      );
-      $form['allow_ban']['allow'][$delta]['allow_remove_' . $uid] = array(
-        '#type' => 'submit',
-        '#value' => t('Remove'),
-        '#submit' => array(),
-        '#limit_validation_errors' => array(), // No validation for a refresh.
-        '#ajax' => array(
-          'callback' => '_rpg_chat_allow_user_submit',
-          'wrapper' => 'rpg-chat-node-allow-list',
-          'method' => 'replace',
-          'effect' => 'fade',
-        ),
-      );
+      $ban_string .= $this_user->name . "\n";
     }
-    $form['allow_ban']['ban'] = array(
-      '#theme' => 'rpg_chat_user_list',
-      '#type' => 'fieldset',
+    $form['ban'] = array(
+      '#type' => 'textarea',
       '#title' => t('Banned users'),
-      '#prefix' => '<div id="rpg-chat-node-ban-list">',
-      '#suffix' => '</div>',
-      '#tree' => TRUE,
-    );
-    foreach ($ban_list as $delta => $uid) {
-      $this_user = user_load($uid);
-      $form['allow_ban']['ban'][$delta]['uid'] = array(
-        '#type' => 'hidden',
-        '#value' => $uid,
-      );
-      $form['allow_ban']['ban'][$delta]['name'] = array(
-        '#type' => 'item',
-        '#markup' => $this_user->name,
-      );
-      $form['allow_ban']['ban'][$delta]['ban_remove_' . $uid] = array(
-        '#type' => 'submit',
-        '#value' => t('Remove'),
-        '#submit' => array(),
-        '#limit_validation_errors' => array(), // No validation for a refresh.
-        '#ajax' => array(
-          'callback' => '_rpg_chat_ban_user_submit',
-          'wrapper' => 'rpg-chat-node-ban-list',
-          'method' => 'replace',
-          'effect' => 'fade',
-        ),
-      );
-    }
-    // Generate add-user form.
-    $context['owner_uid'] = $node->uid;
-    $user_form = node_assign_owner_action_form($context);
-    // From node.module, generate an ownership form to usxe for getting users by name.
-    $form['allow_ban']['add_user'] = array(
-      '#type' => 'fieldset',
-    );
-    $form['allow_ban']['add_user']['owner_name'] = $user_form['owner_name'];
-    $form['allow_ban']['add_user']['owner_name']['#title'] = t('Allow / ban user');
-    $form['allow_ban']['add_user']['submit_allow'] = array(
-      '#type' => 'submit',
-      '#value' => t('Add user to allow list'),
-      '#submit' => array(),
-      //'#limit_validation_errors' => array(),
-      '#ajax' => array(
-        'callback' => '_rpg_chat_allow_user_submit',
-        'wrapper' => 'rpg-chat-node-allow-list',
-        'method' => 'replace',
-        'effect' => 'fade',
-      ),
-    );
-    $form['allow_ban']['add_user']['submit_ban'] = array(
-      '#type' => 'submit',
-      '#value' => t('Add user to ban list'),
-      '#submit' => array(),
-      //'#limit_validation_errors' => array(),
-      '#ajax' => array(
-        'callback' => '_rpg_chat_ban_user_submit',
-        'wrapper' => 'rpg-chat-node-ban-list',
-        'method' => 'replace',
-        'effect' => 'fade',
-      ),
+      '#description' => t('Enter usernames one per line.'),
+      '#default_value' => $ban_string,
     );
     $form['#validate'][] = '_rpg_chat_add_room_validate';
-    $form['#submit'][] = '_rpg_chat_add_room_submit';
   }
-}
-
-/**
- * AJAX callback for adding users to the allow list.
- */
-function _rpg_chat_allow_user_submit($form, $form_state) {
-  return $form['allow_ban']['allow'];
-}
-
-/**
- * AJAX callback for adding users to the allow list.
- */
-function _rpg_chat_ban_user_submit($form, $form_state) {
-  return $form['allow_ban']['ban'];
 }
 
 /*
  * Form callback validation for _rpg_chat_node_forms.
  */
 function _rpg_chat_add_room_validate($form, $form_state) {
-  $count = db_query("SELECT COUNT(*) FROM {users} WHERE name = :name",
-    array(':name' => $form_state['values']['owner_name']))->fetchField();
-  if (intval($count) != 1) {
-    form_set_error('owner_name', t('Please enter a valid username.'));
+  // Check all allowed usernames.
+  $allow = $form_state['values']['allow'];
+  $allow_list = explode("\n", $allow);
+  $error_list = array();
+  foreach ($allow_list as $name) {
+    $name = trim($name);
+    $count = db_query("SELECT COUNT(*) FROM {users} WHERE name = :name", array(':name' => $name))->fetchField();
+    if (intval($count) != 1) {
+      $error_list[] = $name;
+    }
+  }
+  if (!empty($error_list)) {
+    form_set_error('allow', t('Please enter valid usernames. Invalid names: %names', array('%names' => implode(', ', $error_list))));
+  }
+  // Check all banned usernames.
+  $ban = $form_state['values']['ban'];
+  $ban_list = explode("\n", $ban);
+  $error_list = array();
+  foreach ($ban_list as $name) {
+    $name = trim($name);
+    $count = db_query("SELECT COUNT(*) FROM {users} WHERE name = :name", array(':name' => $name))->fetchField();
+    if (intval($count) != 1) {
+      $error_list[] = $name;
+    }
+  }
+  if (!empty($error_list)) {
+    form_set_error('ban', t('Please enter valid usernames. Invalid names: %names', array('%names' => implode(', ', $error_list))));
   }
 }
 
@@ -440,62 +349,31 @@ function rpg_chat_node_update($node) {
   $variables['min_refresh'] = $node->min_refresh;
   $variables['mature'] = $node->mature;
   $variables['locked'] = $node->locked;
+  // We're doing this as an allowed /banned userlist by username.
+  $allow = $node->allow;
+  $allow_list = explode("\n", $allow);
   $allowed_users = array();
-  if (isset($node->allow)) {
-    foreach ($node->allow as $delta => $users) {
-      $allowed_users[] = $users['uid'];
+  foreach ($allow_list as $name) {
+    $name = trim($name);
+    $uid = db_query("SELECT uid FROM {users} WHERE name = :name", array(':name' => $name))->fetchField();
+    if (intval($uid) == 1) {
+      $allowed_users[] = $uid;
     }
   }
+  $ban = $node->ban;
+  $ban_list = explode("\n", $ban);
   $banned_users = array();
-  if (isset($node->ban)) {
-    foreach ($node->ban as $delta => $users) {
-      $banned_users[] = $users['uid'];
+  foreach ($ban_list as $name) {
+    $name = trim($name);
+    $uid = db_query("SELECT uid FROM {users} WHERE name = :name", array(':name' => $name))->fetchField();
+    if (intval($uid) == 1) {
+      $banned_users[] = $uid;
     }
   }
+  // And save the constructed array.
   $variables['allowed_users'] = array_unique($allowed_users);
   $variables['banned_users'] = array_unique($banned_users);
   _rpg_chat_set_room($node->nid, $variables);
-}
-
-/**
- * Implements hook_theme().
- *
- * Register themes used by this module.
- */
-function rpg_chat_theme($existing, $type, $theme, $path) {
-  return array(
-    'rpg_chat_user_list' => array(
-      'render element' => 'element',
-    ),
-  );
-}
-
-/**
- * Theme user lists in RPG chat forms.
- */
-function theme_rpg_chat_user_list($element) {
-  $element = $element['element'];
-  $header = array('', '');
-  $rows = array();
-  foreach (element_children($element) as $i) {
-    $this_user = $element[$i]['uid']['#value'];
-    $uid = drupal_render($element[$i]['uid']);
-    $name = drupal_render($element[$i]['name']);
-    $remove = '';
-    if (isset($element[$i]['allow_remove_' . $this_user])) {
-      $remove = drupal_render($element[$i]['allow_remove_' . $this_user]);
-    }
-    if (isset($element[$i]['ban_remove_' . $this_user])) {
-      $remove = drupal_render($element[$i]['ban_remove_' . $this_user]);
-    }
-    $rows[] = array($uid.$name, $remove);
-  }
-  if (!empty($rows)) {
-    return theme('table', array('header' => $header, 'rows' => $rows));
-  }
-  else {
-    return t('No users in this list.');
-  }
 }
 
 /**
