@@ -214,14 +214,36 @@ function _vaxia_change_ownership_form_submit($form, $form_state) {
 }
 
 /**
- * Implements hook_comment_view().
+ * Implements process suggestion for comment theme. This allows us to override parts of the comment form.
  */
-function vaxia_comment_view($comment, $view_mode, $langcode) {
-  // Format the user display correctly.
-  $node_type = substr($comment->node_type, 13);
-  if (_rpg_chat_is_enabled($node_type) && $view_mode == 'full') {
-// TODO add the avatar information here for alias.
-//   $comment->content['alias'] = 'AS CHARACTER';
+function vaxia_process_comment(&$variables) {
+  if (_rpg_chat_is_enabled($variables['node']->type)) {
+    $comment = $variables['comment'];
+    $lang = $comment->language;
+    // Add the variables for our narrative and colors.
+    if( isset($comment->field_comment_narrative[$lang][0]['value']) && ($comment->field_comment_narrative[$lang][0]['value'] == 1) ) {
+      $variables['classes'] .= ' rpg-chat-narrative';
+    }
+    // Add the style attribute for our content color.
+    if (isset($comment->field_comment_color[$lang][0]['value'])) {
+      $color = '#' . trim($comment->field_comment_color[$lang][0]['value']);
+      $variables['content_attributes'] .= t(' style="color:@color;"', array('@color' => $color));
+    }
+    // It's really good that node_load caches else calling this for Every Comment would get really ugly.
+    if (isset($comment->field_comment_character[$lang][0]['nid'])) {
+      $character = node_load($comment->field_comment_character[$lang][0]['nid']);
+      // Replace the user name with the character title.
+      // TODO add link from this character name like you do for user names.
+      $variables['submitted'] = t('Submitted by !username on !datetime', array('!username' => $character->title, '!datetime' => $variables['created']));
+      if (isset($character->field_character_sheet_artwork[$lang][0]['nid'])) {
+        $artwork = node_load($character->field_character_sheet_artwork[$lang][0]['nid']);
+        if (isset($artwork->field_artwork[$lang][0])) {
+          // TODO test character picture replacement.
+          // Replace the picture with the character picture.
+          $variables['picture']   = theme_get_setting('toggle_comment_user_picture') ? drupal_render($artwork->field_artwork) : '';
+        }
+      }
+    }
   }
 }
 
@@ -236,10 +258,6 @@ function vaxia_theme($existing, $type, $theme, $path) {
       'render element' => 'element',
     ),
   );
-// The RPG Chat rooms and nodes should be themed in the Vaxia theme.
-// This is to avoid cross-theming issues. We use views to provide the
-// Additional data to the themer as needed for display.
-// Otherwise, it's not this module's business.
 }
 
 /**
