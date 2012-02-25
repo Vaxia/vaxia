@@ -367,44 +367,48 @@ function _rpg_chat_add_room_validate($form, $form_state) {
  * Implements hook_node_insert().
  */
 function rpg_chat_node_insert($node) {
-  rpg_chat_node_update($node);
+  if(_rpg_chat_is_enabled($node->type)) {
+    rpg_chat_node_update($node);
+  }
 }
 
 /*
  * Implements hook_node_update().
  */
 function rpg_chat_node_update($node) {
-  // Gather all values and save them.
-  $variables = array();
-  $variables['nid'] = $node->nid;
-  $variables['min_refresh'] = $node->min_refresh;
-  $variables['mature'] = $node->mature;
-  $variables['locked'] = $node->locked;
-  // We're doing this as an allowed /banned userlist by username.
-  $allow = $node->allow;
-  $allow_list = explode("\n", $allow);
-  $allowed_users = array();
-  foreach ($allow_list as $name) {
-    $name = trim($name);
-    $uid = db_query("SELECT uid FROM {users} WHERE name = :name", array(':name' => $name))->fetchField();
-    if (intval($uid) == 1) {
-      $allowed_users[] = $uid;
+  if(_rpg_chat_is_enabled($node->type)) {
+    // Gather all values and save them.
+    $variables = array();
+    $variables['nid'] = $node->nid;
+    $variables['min_refresh'] = $node->min_refresh;
+    $variables['mature'] = $node->mature;
+    $variables['locked'] = $node->locked;
+    // We're doing this as an allowed /banned userlist by username.
+    $allow = $node->allow;
+    $allow_list = explode("\n", $allow);
+    $allowed_users = array();
+    foreach ($allow_list as $name) {
+      $name = trim($name);
+      $uid = db_query("SELECT uid FROM {users} WHERE name = :name", array(':name' => $name))->fetchField();
+      if (intval($uid) == 1) {
+        $allowed_users[] = $uid;
+      }
     }
-  }
-  $ban = $node->ban;
-  $ban_list = explode("\n", $ban);
-  $banned_users = array();
-  foreach ($ban_list as $name) {
-    $name = trim($name);
-    $uid = db_query("SELECT uid FROM {users} WHERE name = :name", array(':name' => $name))->fetchField();
-    if (intval($uid) == 1) {
-      $banned_users[] = $uid;
+    $ban = $node->ban;
+    $ban_list = explode("\n", $ban);
+    $banned_users = array();
+    foreach ($ban_list as $name) {
+      $name = trim($name);
+      $uid = db_query("SELECT uid FROM {users} WHERE name = :name", array(':name' => $name))->fetchField();
+      if (intval($uid) == 1) {
+        $banned_users[] = $uid;
+      }
     }
+    // And save the constructed array.
+    $variables['allowed_users'] = array_unique($allowed_users);
+    $variables['banned_users'] = array_unique($banned_users);
+    _rpg_chat_set_room($node->nid, $variables);
   }
-  // And save the constructed array.
-  $variables['allowed_users'] = array_unique($allowed_users);
-  $variables['banned_users'] = array_unique($banned_users);
-  _rpg_chat_set_room($node->nid, $variables);
 }
 
 /**
