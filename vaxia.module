@@ -262,7 +262,9 @@ function vaxia_process_comment(&$variables) {
     }
     else {
       $user = user_load($comment->uid);
-      $artwork = node_load($user->field_artwork[$lang][0]['nid']);
+      if (isset($user->field_artwork[$lang][0]['nid'])) {
+        $artwork = node_load($user->field_artwork[$lang][0]['nid']);
+      }
       if (isset($artwork->field_artwork_image[$lang][0]['fid'])) {
         $artwork_image = file_load($artwork->field_artwork_image[$lang][0]['fid']);
         $filepath = $artwork_image->uri;
@@ -283,10 +285,11 @@ function vaxia_process_comment(&$variables) {
         }
       }
       else {
-        $variables['picture'] = 'NO IMAGE'; // DEFAULT OR NONE.
+        $variables['picture'] = 'NO IMAGE'; // DEFAULT OR NONE. TODO configure this.
       }
     }
   }
+  // TODO REFACTOR THE F out of 
   // TODO ADD REPLACEMENT FOR ALL THROUGHOUT THE SITE.
   // TODO REMOVE REGULAR PICTURE FEATURE UPDATE IN USER ADMIN
 }
@@ -313,14 +316,16 @@ function theme_vaxia_dice_roller($element) {
   $header = array( t('#'), t('d'), t('stat'), t('skill'), t('item') );
   $rows = array();
   $i = 0;
-  foreach (element_children($element['dice']) as $dice) {
-    $number = drupal_render($element['dice'][$i]['number']);
-    $size = drupal_render($element['dice'][$i]['size']);
-    $stat = drupal_render($element['dice'][$i]['stat']);
-    $skill = drupal_render($element['dice'][$i]['skill']);
-    $item = drupal_render($element['dice'][$i]['item']);
-    $rows[] = array($number, $size, $stat, $skill, $item);
-    $i++;
+  if (isset($element['dice']) && is_array($element['dice'])) {
+    foreach (element_children($element['dice']) as $dice) {
+      $number = drupal_render($element['dice'][$i]['number']);
+      $size = drupal_render($element['dice'][$i]['size']);
+      $stat = drupal_render($element['dice'][$i]['stat']);
+      $skill = drupal_render($element['dice'][$i]['skill']);
+      $item = drupal_render($element['dice'][$i]['item']);
+      $rows[] = array($number, $size, $stat, $skill, $item);
+      $i++;
+    }
   }
   if (!empty($rows)) {
     return theme('table', array('header' => $header, 'rows' => $rows)) . drupal_render($element['notes']);

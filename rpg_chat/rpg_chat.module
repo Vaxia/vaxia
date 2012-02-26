@@ -103,12 +103,14 @@ function rpg_chat_node_load($nodes) {
     // Load all the chat related bits for this node.
     if (isset($node->type) && _rpg_chat_is_enabled($node->type)) {
       $room = _rpg_chat_get_room($node->nid);
-      $nodes[$node->nid]->rpg_chat_min_refresh = $room->min_refresh;
-      $nodes[$node->nid]->rpg_chat_mature = $room->mature;
-      $nodes[$node->nid]->rpg_chat_locked = $room->locked;
-      $nodes[$node->nid]->rpg_chat_allowed_users = unserialize($room->allowed_users);
-      $nodes[$node->nid]->rpg_chat_banned_users = unserialize($room->banned_users);
-      $nodes[$node->nid]->rpg_chat_current_users = _rpg_chat_get_room_users($node->nid);
+      if ($room) {
+        $nodes[$node->nid]->rpg_chat_min_refresh = $room->min_refresh;
+        $nodes[$node->nid]->rpg_chat_mature = $room->mature;
+        $nodes[$node->nid]->rpg_chat_locked = $room->locked;
+        $nodes[$node->nid]->rpg_chat_allowed_users = unserialize($room->allowed_users);
+        $nodes[$node->nid]->rpg_chat_banned_users = unserialize($room->banned_users);
+        $nodes[$node->nid]->rpg_chat_current_users = _rpg_chat_get_room_users($node->nid);
+      }
     }
   }
 }
@@ -388,11 +390,11 @@ function rpg_chat_node_update($node) {
     // Gather all values and save them.
     $variables = array();
     $variables['nid'] = $node->nid;
-    $variables['min_refresh'] = $node->min_refresh;
-    $variables['mature'] = $node->mature;
-    $variables['locked'] = $node->locked;
+    $variables['min_refresh'] = isset($node->min_refresh) ? $node->min_refresh : 60;
+    $variables['mature'] = isset($node->mature) ? $node->mature : 0;
+    $variables['locked'] =isset($node->locked) ? $node->locked : 0;
     // We're doing this as an allowed /banned userlist by username.
-    $allow = $node->allow;
+    $allow = isset($node->allow) ? $node->allow : '';
     $allow_list = explode("\n", $allow);
     $allowed_users = array();
     foreach ($allow_list as $name) {
@@ -402,7 +404,7 @@ function rpg_chat_node_update($node) {
         $allowed_users[] = $uid;
       }
     }
-    $ban = $node->ban;
+    $ban = isset($node->ban) ? $node->ban : '';
     $ban_list = explode("\n", $ban);
     $banned_users = array();
     foreach ($ban_list as $name) {
