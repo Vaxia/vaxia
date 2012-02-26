@@ -239,8 +239,8 @@ function vaxia_process_comment(&$variables) {
       // Overwrite the user picture witha  character picture if character is set.
       if (isset($character->field_artwork[$lang][0]['nid'])) {
         $artwork = node_load($character->field_artwork[$lang][0]['nid']);
-        if (isset($artwork->field_artwork[$lang][0]['fid'])) {
-          $artwork_image = file_load($artwork->field_artwork[$lang][0]['fid']);
+        if (isset($artwork->field_artwork_image[$lang][0]['fid'])) {
+          $artwork_image = file_load($artwork->field_artwork_image[$lang][0]['fid']);
           $filepath = $artwork_image->uri;
           if (isset($filepath)) {
             $alt = t("@user's picture", array('@user' => $character->title));
@@ -263,8 +263,8 @@ function vaxia_process_comment(&$variables) {
     else {
       $user = user_load($comment->uid);
       $artwork = node_load($user->field_artwork[$lang][0]['nid']);
-      if (isset($artwork->field_artwork[$lang][0]['fid'])) {
-        $artwork_image = file_load($artwork->field_artwork[$lang][0]['fid']);
+      if (isset($artwork->field_artwork_image[$lang][0]['fid'])) {
+        $artwork_image = file_load($artwork->field_artwork_image[$lang][0]['fid']);
         $filepath = $artwork_image->uri;
         if (isset($filepath)) {
           $alt = t("@user's picture", array('@user' => $user->name));
@@ -287,6 +287,8 @@ function vaxia_process_comment(&$variables) {
       }
     }
   }
+  // TODO ADD REPLACEMENT FOR ALL THROUGHOUT THE SITE.
+  // TODO REMOVE REGULAR PICTURE FEATURE UPDATE IN USER ADMIN
 }
 
 /**

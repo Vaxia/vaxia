@@ -23,7 +23,7 @@ function vaxia_field_group_info() {
     'label' => 'Art',
     'weight' => '1',
     'children' => array(
-      0 => 'field_artwork',
+      0 => 'field_artwork_image',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
