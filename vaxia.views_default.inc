@@ -27,6 +27,7 @@ function vaxia_views_default_views() {
   $handler->display->display_options['access']['role'] = array(
     4 => '4',
     5 => '5',
+    8 => '8',
   );
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
@@ -494,6 +495,12 @@ function vaxia_views_default_views() {
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Artwork evaluate';
   $handler->display->display_options['display_description'] = 'Artwork evaluate';
+  $handler->display->display_options['defaults']['access'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'role';
+  $handler->display->display_options['access']['role'] = array(
+    4 => '4',
+    5 => '5',
+  );
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
@@ -786,6 +793,7 @@ function vaxia_views_default_views() {
   $handler->display->display_options['access']['role'] = array(
     4 => '4',
     7 => '7',
+    8 => '8',
   );
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
@@ -1086,6 +1094,12 @@ function vaxia_views_default_views() {
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Character items evaluate';
   $handler->display->display_options['display_description'] = 'Character items evaluate';
+  $handler->display->display_options['defaults']['access'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'role';
+  $handler->display->display_options['access']['role'] = array(
+    4 => '4',
+    7 => '7',
+  );
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
@@ -1304,7 +1318,9 @@ function vaxia_views_default_views() {
   $handler->display->display_options['title'] = 'Moderate character sheets';
   $handler->display->display_options['access']['type'] = 'role';
   $handler->display->display_options['access']['role'] = array(
-    2 => '2',
+    4 => '4',
+    6 => '6',
+    8 => '8',
   );
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
