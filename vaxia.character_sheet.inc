@@ -329,9 +329,9 @@ function vaxia_form_character_sheet_node_form_alter(&$form, &$form_state) {
       $form['field_sh_notes'][$lang][0]['value']['#default_value'];
   }
   if (!user_access('add item to character sheet')) {
-    $form['field_character_sheet_artwork'][$lang][0]['value']['#disabled'] = TRUE;
-    $form['field_character_sheet_artwork'][$lang][0]['value']['#value'] = 
-      $form['field_character_sheet_artwork'][$lang][0]['value']['#default_value'];
+    $form['field_artwork'][$lang][0]['value']['#disabled'] = TRUE;
+    $form['field_artwork'][$lang][0]['value']['#value'] = 
+      $form['field_artwork'][$lang][0]['value']['#default_value'];
   }
   if (!user_access('add property to character sheet')) {
     $form['field_npcs'][$lang][0]['value']['#disabled'] = TRUE;

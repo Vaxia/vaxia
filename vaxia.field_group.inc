@@ -50,7 +50,7 @@ function vaxia_field_group_info() {
     'label' => 'Art',
     'weight' => '2',
     'children' => array(
-      0 => 'field_character_sheet_artwork',
+      0 => 'field_artwork',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -76,7 +76,7 @@ function vaxia_field_group_info() {
     'label' => 'Art',
     'weight' => '3',
     'children' => array(
-      0 => 'field_character_sheet_artwork',
+      0 => 'field_artwork',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(

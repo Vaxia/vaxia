@@ -38,11 +38,11 @@ function vaxia_views_default_views() {
   $handler->display->display_options['style_options']['group_rendered'] = 1;
   $handler->display->display_options['style_options']['fill_single_line'] = 1;
   $handler->display->display_options['row_plugin'] = 'fields';
-  /* Relationship: Content: Artwork (field_character_sheet_artwork) - reverse (to Content) */
-  $handler->display->display_options['relationships']['reverse_field_character_sheet_artwork_node']['id'] = 'reverse_field_character_sheet_artwork_node';
-  $handler->display->display_options['relationships']['reverse_field_character_sheet_artwork_node']['table'] = 'node';
-  $handler->display->display_options['relationships']['reverse_field_character_sheet_artwork_node']['field'] = 'reverse_field_character_sheet_artwork_node';
-  $handler->display->display_options['relationships']['reverse_field_character_sheet_artwork_node']['required'] = 0;
+  /* Relationship: Content: Artwork (field_artwork) - reverse (to Content) */
+  $handler->display->display_options['relationships']['reverse_field_artwork_node']['id'] = 'reverse_field_artwork_node';
+  $handler->display->display_options['relationships']['reverse_field_artwork_node']['table'] = 'node';
+  $handler->display->display_options['relationships']['reverse_field_artwork_node']['field'] = 'reverse_field_artwork_node';
+  $handler->display->display_options['relationships']['reverse_field_artwork_node']['required'] = 0;
   /* Relationship: Content: Author */
   $handler->display->display_options['relationships']['uid']['id'] = 'uid';
   $handler->display->display_options['relationships']['uid']['table'] = 'node';
@@ -80,7 +80,7 @@ function vaxia_views_default_views() {
   $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
   $handler->display->display_options['fields']['title_1']['table'] = 'node';
   $handler->display->display_options['fields']['title_1']['field'] = 'title';
-  $handler->display->display_options['fields']['title_1']['relationship'] = 'reverse_field_character_sheet_artwork_node';
+  $handler->display->display_options['fields']['title_1']['relationship'] = 'reverse_field_artwork_node';
   $handler->display->display_options['fields']['title_1']['label'] = '';
   $handler->display->display_options['fields']['title_1']['alter']['alter_text'] = 0;
   $handler->display->display_options['fields']['title_1']['alter']['make_link'] = 0;
@@ -237,7 +237,7 @@ function vaxia_views_default_views() {
   $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
   $handler->display->display_options['fields']['title_1']['table'] = 'node';
   $handler->display->display_options['fields']['title_1']['field'] = 'title';
-  $handler->display->display_options['fields']['title_1']['relationship'] = 'reverse_field_character_sheet_artwork_node';
+  $handler->display->display_options['fields']['title_1']['relationship'] = 'reverse_field_artwork_node';
   $handler->display->display_options['fields']['title_1']['label'] = '';
   $handler->display->display_options['fields']['title_1']['alter']['alter_text'] = 1;
   $handler->display->display_options['fields']['title_1']['alter']['text'] = '([title_1]) ';
@@ -363,7 +363,7 @@ function vaxia_views_default_views() {
   $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
   $handler->display->display_options['fields']['title_1']['table'] = 'node';
   $handler->display->display_options['fields']['title_1']['field'] = 'title';
-  $handler->display->display_options['fields']['title_1']['relationship'] = 'reverse_field_character_sheet_artwork_node';
+  $handler->display->display_options['fields']['title_1']['relationship'] = 'reverse_field_artwork_node';
   $handler->display->display_options['fields']['title_1']['label'] = '';
   $handler->display->display_options['fields']['title_1']['alter']['alter_text'] = 1;
   $handler->display->display_options['fields']['title_1']['alter']['text'] = '([title_1]) ';

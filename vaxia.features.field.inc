@@ -1057,14 +1057,14 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-character_sheet-field_character_sheet_artwork'
-  $fields['node-character_sheet-field_character_sheet_artwork'] = array(
+  // Exported field: 'node-character_sheet-field_artwork'
+  $fields['node-character_sheet-field_artwork'] = array(
     'field_config' => array(
       'active' => '1',
       'cardinality' => '-1',
       'deleted' => '0',
       'entity_types' => array(),
-      'field_name' => 'field_character_sheet_artwork',
+      'field_name' => 'field_artwork',
       'foreign keys' => array(
         'nid' => array(
           'columns' => array(
@@ -1122,7 +1122,7 @@ function vaxia_field_default_fields() {
         ),
       ),
       'entity_type' => 'node',
-      'field_name' => 'field_character_sheet_artwork',
+      'field_name' => 'field_artwork',
       'label' => 'Artwork',
       'required' => 0,
       'settings' => array(
@@ -3852,14 +3852,14 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-rpg_chatroom-field_character_sheet_artwork'
-  $fields['node-rpg_chatroom-field_character_sheet_artwork'] = array(
+  // Exported field: 'node-rpg_chatroom-field_artwork'
+  $fields['node-rpg_chatroom-field_artwork'] = array(
     'field_config' => array(
       'active' => '1',
       'cardinality' => '-1',
       'deleted' => '0',
       'entity_types' => array(),
-      'field_name' => 'field_character_sheet_artwork',
+      'field_name' => 'field_artwork',
       'foreign keys' => array(
         'nid' => array(
           'columns' => array(
@@ -3915,7 +3915,7 @@ function vaxia_field_default_fields() {
         ),
       ),
       'entity_type' => 'node',
-      'field_name' => 'field_character_sheet_artwork',
+      'field_name' => 'field_artwork',
       'label' => 'Artwork',
       'required' => 0,
       'settings' => array(

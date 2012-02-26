@@ -237,8 +237,8 @@ function vaxia_process_comment(&$variables) {
       // TODO add link from this character name like you do for user names.
       $variables['submitted'] = t('!username </br> !datetime', array('!username' => $character->title, '!datetime' => $variables['created']));
       // Overwrite the user picture witha  character picture if character is set.
-      if (isset($character->field_character_sheet_artwork[$lang][0]['nid'])) {
-        $artwork = node_load($character->field_character_sheet_artwork[$lang][0]['nid']);
+      if (isset($character->field_artwork[$lang][0]['nid'])) {
+        $artwork = node_load($character->field_artwork[$lang][0]['nid']);
         if (isset($artwork->field_artwork[$lang][0]['fid'])) {
           $artwork_image = file_load($artwork->field_artwork[$lang][0]['fid']);
           $filepath = $artwork_image->uri;
@@ -262,7 +262,7 @@ function vaxia_process_comment(&$variables) {
     }
     else {
       $user = user_load($comment->uid);
-      $artwork = node_load($user->field_character_sheet_artwork[$lang][0]['nid']);
+      $artwork = node_load($user->field_artwork[$lang][0]['nid']);
       if (isset($artwork->field_artwork[$lang][0]['fid'])) {
         $artwork_image = file_load($artwork->field_artwork[$lang][0]['fid']);
         $filepath = $artwork_image->uri;
