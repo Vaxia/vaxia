@@ -7,6 +7,14 @@
  */
 
 /**
+ * Implements hook_cron().
+ */
+function rpg_chat_cron() {
+  db_query('DELETE FROM {rpg_chat_room_users} WHERE timestamp < :timestamp',
+    array(':timestamp' => strtotime('-15 minutes')));
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  *
  * Alter content type settings to add "Enable rpg chat?" checkbox.
@@ -468,7 +476,7 @@ function _rpg_chat_get_room_users($nid) {
  * DB function. Set users recently viewing a room, clear out logouts.
  */
 function _rpg_chat_set_room_users($nid, $uid) {
-  // Clear out anything past a certain timeline / session.
+  // Clear out anything past a certain timeline / session for ALL ROOMS.
   db_query('DELETE FROM {rpg_chat_room_users} WHERE timestamp < :timestamp',
     array(':timestamp' => strtotime('-15 minutes') ));
   // Clear out this user and nid connection.
