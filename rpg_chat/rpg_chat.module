@@ -63,6 +63,12 @@ function rpg_chat_permission() {
  */
 function rpg_chat_node_access($node, $op, $account) {
   // Only check if this is an rpg_node.
+  if (!isset($node->type) ) {
+    return NODE_ACCESS_IGNORE;
+  }
+  else {
+    $node = node_load($node->nid);
+  }
   if (!_rpg_chat_is_enabled($node->type) ) {
     return NODE_ACCESS_IGNORE;
   }
