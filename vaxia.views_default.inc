@@ -1513,27 +1513,19 @@ function vaxia_views_default_views() {
   $handler->display->display_options['filters']['sid']['value'] = array(
     9 => '9',
   );
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'character_sheet' => 'character_sheet',
+  );
 
   /* Display: Character sheets */
   $handler = $view->new_display('page', 'Character sheets', 'character_sheets');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Character sheets';
   $handler->display->display_options['display_description'] = 'Character sheets';
-  $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Content: Published */
-  $handler->display->display_options['filters']['status']['id'] = 'status';
-  $handler->display->display_options['filters']['status']['table'] = 'node';
-  $handler->display->display_options['filters']['status']['field'] = 'status';
-  $handler->display->display_options['filters']['status']['value'] = 1;
-  $handler->display->display_options['filters']['status']['group'] = 0;
-  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Workflow: Current state */
-  $handler->display->display_options['filters']['sid']['id'] = 'sid';
-  $handler->display->display_options['filters']['sid']['table'] = 'workflow_node';
-  $handler->display->display_options['filters']['sid']['field'] = 'sid';
-  $handler->display->display_options['filters']['sid']['value'] = array(
-    9 => '9',
-  );
   $handler->display->display_options['path'] = 'character-sheets/all';
   $handler->display->display_options['menu']['type'] = 'default tab';
   $handler->display->display_options['menu']['title'] = 'Characters';
@@ -1628,7 +1620,21 @@ function vaxia_views_default_views() {
   $handler->display->display_options['filters']['sid']['id'] = 'sid';
   $handler->display->display_options['filters']['sid']['table'] = 'workflow_node';
   $handler->display->display_options['filters']['sid']['field'] = 'sid';
-  $handler->display->display_options['filters']['sid']['operator'] = 'not empty';
+  $handler->display->display_options['filters']['sid']['value'] = array(
+    6 => '6',
+    7 => '7',
+    8 => '8',
+    9 => '9',
+    10 => '10',
+    11 => '11',
+  );
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'character_sheet' => 'character_sheet',
+  );
   $handler->display->display_options['path'] = 'character-sheets/mine';
   $handler->display->display_options['menu']['type'] = 'tab';
   $handler->display->display_options['menu']['title'] = 'My characters';
@@ -1871,6 +1877,13 @@ function vaxia_views_default_views() {
   $handler->display->display_options['filters']['sid']['expose']['remember'] = 1;
   $handler->display->display_options['filters']['sid']['expose']['multiple'] = 1;
   $handler->display->display_options['filters']['sid']['expose']['reduce'] = 1;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'character_sheet' => 'character_sheet',
+  );
   $handler->display->display_options['path'] = 'character-sheets/evaluate';
   $handler->display->display_options['menu']['type'] = 'tab';
   $handler->display->display_options['menu']['title'] = 'Character evaluation';
