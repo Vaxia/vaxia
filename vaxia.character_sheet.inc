@@ -29,7 +29,7 @@ function _vaxia_admin_settings() {
     '#title' => 'Starting XP',
     '#description' => 'The starting XP points for a new character.',
     '#type' => 'textfield',
-    '#default_value' => variable_get('vaxia_starting_xp', 250),
+    '#default_value' => variable_get('vaxia_starting_xp', 300),
   );
   $form['settings']['vaxia_starting_econ'] = array(
     '#title' => 'Starting Economy level',
@@ -231,7 +231,7 @@ function vaxia_character_sheet_delete_sheet($node) {
  * Implements hook_character_sheet_insert_sheet().
  */
 function vaxia_character_sheet_insert_sheet($node) {
-  _vaxia_update_xp($node->nid, variable_get('vaxia_starting_xp', 250), 'xp');
+  _vaxia_update_xp($node->nid, variable_get('vaxia_starting_xp', 300), 'xp');
 }
 
 /**
@@ -277,7 +277,7 @@ function vaxia_character_sheet_load_sheet($node) {
 function vaxia_character_sheet_validate_sheet($node, $old_node, $form, $form_state) {
   $xp = _vaxia_get_xp($node->nid);
   if (!$old_node || !$xp) {
-    $xp = variable_get('vaxia_starting_xp', 250);
+    $xp = variable_get('vaxia_starting_xp', 300);
   }
   $spent_xp = _vaxia_total_sheet($node);
   if ($spent_xp <= $xp) {
@@ -416,7 +416,7 @@ function vaxia_add_xp_form_submit($form, $form_state) {
     $old_xp = _vaxia_get_xp($node->nid);
     // If somehow a character got this far without xp, add the baseline.
     if (!$old_xp) {
-      _vaxia_update_xp($node->nid, variable_get('vaxia_starting_xp', 250), 'xp');
+      _vaxia_update_xp($node->nid, variable_get('vaxia_starting_xp', 300), 'xp');
     }
     // Add xp from Session.
     _vaxia_add_xp($node->nid, $values['xp'], $values['type']);

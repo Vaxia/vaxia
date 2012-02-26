@@ -73,6 +73,7 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
   else {
     $form['vaxia_rolls'] = array(
       '#type' => 'item',
+      '#theme' => 'vaxia_dice_roller',
       '#markup' => '',
       '#prefix' => '<div id="vaxia-dice-roller">',
       '#suffix' => '</div>',
@@ -104,6 +105,7 @@ function _vaxia_dice_roller_row($dice_size, $stat, $skill, $item) {
   $form['item'] = array(
     '#type' => 'select',
     '#options' => $item,
+    '#multiple' => TRUE,
   );
   return $form;
 }
@@ -135,11 +137,13 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
               $mod += $skill;
             }
             if (isset($roll['item']) && $roll['item'] != -1) {
-              $item = node_load($roll['item']);
-              $item_stat = _vaxia_dice_map_stat_to_item($roll['stat']);
-              $item += isset($item->{$item_stat}[$lang][0]['value']) ? $item->{$item_stat}[$lang][0]['value'] : 0;
-              $mod_note .= ' + item ('.$item.')';
-              $mod += $item;
+              foreach ($roll['item'] as $this_item) {
+                $item = node_load($this_item);
+                $item_stat = _vaxia_dice_map_stat_to_item($roll['stat']);
+                $item += isset($item->{$item_stat}[$lang][0]['value']) ? $item->{$item_stat}[$lang][0]['value'] : 0;
+                $mod_note .= ' + item ('.$item.')';
+                $mod += $item;
+              }
             }
             $this_command = $roll['number'] . 'd' . $roll['size'];
             $note .= 'Roll '. $delta + 1 .' : roll(' . $this_command . ')' . $mod_note . '<br>';

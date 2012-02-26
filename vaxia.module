@@ -236,13 +236,54 @@ function vaxia_process_comment(&$variables) {
       // Replace the user name with the character title.
       // TODO add link from this character name like you do for user names.
       $variables['submitted'] = t('!username </br> !datetime', array('!username' => $character->title, '!datetime' => $variables['created']));
+      // Overwrite the user picture witha  character picture if character is set.
       if (isset($character->field_character_sheet_artwork[$lang][0]['nid'])) {
         $artwork = node_load($character->field_character_sheet_artwork[$lang][0]['nid']);
-        if (isset($artwork->field_artwork[$lang][0])) {
-          // TODO test character picture replacement.
-          // Replace the picture with the character picture.
-          $variables['picture']   = theme_get_setting('toggle_comment_user_picture') ? drupal_render($artwork->field_artwork) : '';
+        if (isset($artwork->field_artwork[$lang][0]['fid'])) {
+          $artwork_image = file_load($artwork->field_artwork[$lang][0]['fid']);
+          $filepath = $artwork_image->uri;
+          if (isset($filepath)) {
+            $alt = t("@user's picture", array('@user' => $character->title));
+            // If the image does not have a valid Drupal scheme (for eg. HTTP) don't load image styles.
+            if (module_exists('image') && file_valid_uri($filepath) && $style = variable_get('user_picture_style', '')) {
+              $picture = theme('image_style', array('style_name' => $style, 'path' => $filepath, 'alt' => $alt, 'title' => $alt));
+            }
+            else {
+              $picture = theme('image', array('path' => $filepath, 'alt' => $alt, 'title' => $alt));
+            }
+            $attributes = array(
+              'attributes' => array('title' => t('View character profile.')),
+              'html' => TRUE,
+            );
+            $variables['picture'] = l($picture, 'node/' . $character->nid, $attributes);
+          }
         }
+      }
+    }
+    else {
+      $user = user_load($comment->uid);
+      $artwork = node_load($user->field_character_sheet_artwork[$lang][0]['nid']);
+      if (isset($artwork->field_artwork[$lang][0]['fid'])) {
+        $artwork_image = file_load($artwork->field_artwork[$lang][0]['fid']);
+        $filepath = $artwork_image->uri;
+        if (isset($filepath)) {
+          $alt = t("@user's picture", array('@user' => $user->name));
+          // If the image does not have a valid Drupal scheme (for eg. HTTP) don't load image styles.
+          if (module_exists('image') && file_valid_uri($filepath) && $style = variable_get('user_picture_style', '')) {
+            $picture = theme('image_style', array('style_name' => $style, 'path' => $filepath, 'alt' => $alt, 'title' => $alt));
+          }
+          else {
+            $picture = theme('image', array('path' => $filepath, 'alt' => $alt, 'title' => $alt));
+          }
+          $attributes = array(
+            'attributes' => array('title' => t('View user profile.')),
+            'html' => TRUE,
+          );
+          $variables['picture'] = l($picture, 'user/' . $user->uid, $attributes);
+        }
+      }
+      else {
+        $variables['picture'] = 'NO IMAGE'; // DEFAULT OR NONE.
       }
     }
   }
@@ -257,6 +298,7 @@ function vaxia_theme($existing, $type, $theme, $path) {
   return array(
     'vaxia_dice_roller' => array(
       'render element' => 'element',
+      'function' => 'theme_vaxia_dice_roller',
     ),
   );
 }
@@ -266,7 +308,7 @@ function vaxia_theme($existing, $type, $theme, $path) {
  */
 function theme_vaxia_dice_roller($element) {
   $element = $element['element'];
-  $header = array( t('#'), '', t('dice'), t('stat'), t('skill'), t('item') );
+  $header = array( t('#'), t('d'), t('stat'), t('skill'), t('item') );
   $rows = array();
   $i = 0;
   foreach (element_children($element['dice']) as $dice) {
@@ -275,11 +317,15 @@ function theme_vaxia_dice_roller($element) {
     $stat = drupal_render($element['dice'][$i]['stat']);
     $skill = drupal_render($element['dice'][$i]['skill']);
     $item = drupal_render($element['dice'][$i]['item']);
-    $rows[] = array($number, 'd', $size, $stat, $skill, $item);
+    $rows[] = array($number, $size, $stat, $skill, $item);
     $i++;
   }
-  return theme('table', array('header' => $header, 'rows' => $rows)).
-    drupal_render($element['notes']);
+  if (!empty($rows)) {
+    return theme('table', array('header' => $header, 'rows' => $rows)) . drupal_render($element['notes']);
+  }
+  else {
+    return '';
+  }
 }
 
 /**
