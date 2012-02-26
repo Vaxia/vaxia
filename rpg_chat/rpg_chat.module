@@ -73,26 +73,26 @@ function rpg_chat_node_access($node, $op, $account) {
     return NODE_ACCESS_IGNORE;
   }
   // You you can't view it, and you're not an admin for chat or the site.
-  if (!user_access('view rpg chat') && !user_access('administer rpg chat')) {
+  if (!user_access('view rpg chat', $account) && !user_access('administer rpg chat', $account)) {
     return NODE_ACCESS_DENY;
   }
   // If this is flagged as a mature room and you're not mature. (Let's face it. No one is.)
-  if (!user_access('view rpg mature chat') && $node->rpg_chat_mature) {
+  if (!user_access('view rpg mature chat', $account) && $node->rpg_chat_mature) {
     return NODE_ACCESS_DENY;
   }  
   // If this is flagged as a locked room and you're not an admin.
-  if (!user_access('administer rpg chat') && $node->rpg_chat_locked) {
+  if (!user_access('administer rpg chat', $account) && $node->rpg_chat_locked) {
     return NODE_ACCESS_DENY;
   }
   // Check user specific settings.
-  $banned_users = $node->rpg_chat_banned_users;
-  $allowed_users = $node->rpg_char_allowed_users;
+  $allowed_users = isset($node->rpg_char_allowed_users) ? $node->rpg_char_allowed_users : array();
+  $banned_users = isset($node->rpg_chat_banned_users) ? $node->rpg_chat_banned_users : array();
   // If you are on the banned users list, and not on the allowed users list.
-  if (in_array($user->uid, $banned_users) && !in_array($user->uid, $allowed_users)) {
+  if (in_array($account->uid, $banned_users) && !in_array($account->uid, $allowed_users)) {
     return NODE_ACCESS_DENY;
   }
   // If the allowed users list is set, and you are not on it.
-  if (count($allowed_users) > 0 && !in_array($user->uid, $allowed_users)) {
+  if (count($allowed_users) > 0 && !in_array($account->uid, $allowed_users)) {
     return NODE_ACCESS_DENY;
   }
   // Still good? Great. Go chat.
