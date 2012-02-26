@@ -416,14 +416,14 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'hidden',
           'module' => 'image',
           'settings' => array(
-            'image_link' => '',
-            'image_style' => '',
+            'image_link' => 'content',
+            'image_style' => 'medium',
           ),
           'type' => 'image',
-          'weight' => 0,
+          'weight' => '0',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -463,7 +463,7 @@ function vaxia_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'image_image',
-        'weight' => '-4',
+        'weight' => '2',
       ),
     ),
   );
@@ -503,11 +503,10 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
-          'module' => 'text',
+          'label' => 'inline',
           'settings' => array(),
-          'type' => 'text_default',
-          'weight' => 1,
+          'type' => 'hidden',
+          'weight' => '2',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -531,7 +530,74 @@ function vaxia_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '-3',
+        'weight' => '2',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-artwork-field_website'
+  $fields['node-artwork-field_website'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_website',
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(
+        'max_length' => '255',
+      ),
+      'translatable' => '0',
+      'type' => 'text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'artwork',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '3',
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_website',
+      'label' => 'Website',
+      'required' => 0,
+      'settings' => array(
+        'text_processing' => '0',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'size' => '60',
+        ),
+        'type' => 'text_textfield',
+        'weight' => '3',
       ),
     ),
   );
@@ -630,7 +696,7 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'number',
           'settings' => array(
             'decimal_separator' => '.',
@@ -639,7 +705,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_integer',
-          'weight' => 6,
+          'weight' => '4',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -664,7 +730,7 @@ function vaxia_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '7',
+        'weight' => '5',
       ),
     ),
   );
@@ -691,7 +757,7 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'number',
           'settings' => array(
             'decimal_separator' => '.',
@@ -700,7 +766,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_integer',
-          'weight' => 5,
+          'weight' => '3',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -725,7 +791,7 @@ function vaxia_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '6',
+        'weight' => '4',
       ),
     ),
   );
@@ -765,11 +831,11 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'computed_field',
           'settings' => array(),
           'type' => 'computed_field_plain',
-          'weight' => 22,
+          'weight' => '20',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -790,7 +856,7 @@ function vaxia_field_default_fields() {
         'module' => 'computed_field',
         'settings' => array(),
         'type' => 'computed',
-        'weight' => '18',
+        'weight' => '24',
       ),
     ),
   );
@@ -830,11 +896,11 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'computed_field',
           'settings' => array(),
           'type' => 'computed_field_plain',
-          'weight' => 26,
+          'weight' => '24',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -855,7 +921,7 @@ function vaxia_field_default_fields() {
         'module' => 'computed_field',
         'settings' => array(),
         'type' => 'computed',
-        'weight' => '22',
+        'weight' => '28',
       ),
     ),
   );
@@ -895,11 +961,11 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'computed_field',
           'settings' => array(),
           'type' => 'computed_field_plain',
-          'weight' => 24,
+          'weight' => '22',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -920,7 +986,7 @@ function vaxia_field_default_fields() {
         'module' => 'computed_field',
         'settings' => array(),
         'type' => 'computed',
-        'weight' => '20',
+        'weight' => '26',
       ),
     ),
   );
@@ -958,11 +1024,11 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => 9,
+          'weight' => '6',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -986,7 +1052,7 @@ function vaxia_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '3',
+        'weight' => '1',
       ),
     ),
   );
@@ -1026,8 +1092,8 @@ function vaxia_field_default_fields() {
         ),
         'view' => array(
           'args' => array(),
-          'display_name' => 'references_1',
-          'view_name' => 'character_artwork',
+          'display_name' => 'artwork_all_refs',
+          'view_name' => 'artwork',
         ),
       ),
       'translatable' => '0',
@@ -1040,11 +1106,13 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'hidden',
           'module' => 'node_reference',
-          'settings' => array(),
-          'type' => 'node_reference_default',
-          'weight' => 1,
+          'settings' => array(
+            'node_reference_view_mode' => 'full',
+          ),
+          'type' => 'node_reference_node',
+          'weight' => '3',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1065,7 +1133,7 @@ function vaxia_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '3',
+        'weight' => '4',
       ),
     ),
   );
@@ -1092,7 +1160,7 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'number',
           'settings' => array(
             'decimal_separator' => '.',
@@ -1101,7 +1169,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_integer',
-          'weight' => 19,
+          'weight' => '17',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1126,7 +1194,7 @@ function vaxia_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '15',
+        'weight' => '21',
       ),
     ),
   );
@@ -1166,11 +1234,11 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'computed_field',
           'settings' => array(),
           'type' => 'computed_field_plain',
-          'weight' => 21,
+          'weight' => '19',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1191,7 +1259,7 @@ function vaxia_field_default_fields() {
         'module' => 'computed_field',
         'settings' => array(),
         'type' => 'computed',
-        'weight' => '17',
+        'weight' => '23',
       ),
     ),
   );
@@ -1229,11 +1297,11 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => 12,
+          'weight' => '9',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1257,7 +1325,7 @@ function vaxia_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '6',
+        'weight' => '4',
       ),
     ),
   );
@@ -1284,7 +1352,7 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'number',
           'settings' => array(
             'decimal_separator' => '.',
@@ -1293,7 +1361,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_integer',
-          'weight' => 16,
+          'weight' => '14',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1318,7 +1386,7 @@ function vaxia_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '12',
+        'weight' => '18',
       ),
     ),
   );
@@ -1345,7 +1413,7 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'number',
           'settings' => array(
             'decimal_separator' => '.',
@@ -1354,7 +1422,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_integer',
-          'weight' => 14,
+          'weight' => '11',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1379,7 +1447,7 @@ function vaxia_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '10',
+        'weight' => '16',
       ),
     ),
   );
@@ -1420,11 +1488,11 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'computed_field',
           'settings' => array(),
           'type' => 'computed_field_plain',
-          'weight' => 20,
+          'weight' => '18',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1445,7 +1513,7 @@ function vaxia_field_default_fields() {
         'module' => 'computed_field',
         'settings' => array(),
         'type' => 'computed',
-        'weight' => '16',
+        'weight' => '22',
       ),
     ),
   );
@@ -1472,7 +1540,7 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'number',
           'settings' => array(
             'decimal_separator' => '.',
@@ -1481,7 +1549,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_integer',
-          'weight' => 17,
+          'weight' => '15',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1506,7 +1574,7 @@ function vaxia_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '13',
+        'weight' => '19',
       ),
     ),
   );
@@ -1560,11 +1628,13 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'node_reference',
-          'settings' => array(),
-          'type' => 'node_reference_default',
-          'weight' => 27,
+          'settings' => array(
+            'node_reference_view_mode' => 'full',
+          ),
+          'type' => 'node_reference_node',
+          'weight' => '26',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1612,7 +1682,7 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'number',
           'settings' => array(
             'decimal_separator' => '.',
@@ -1621,7 +1691,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_integer',
-          'weight' => 13,
+          'weight' => '10',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1646,7 +1716,7 @@ function vaxia_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '9',
+        'weight' => '15',
       ),
     ),
   );
@@ -1700,11 +1770,11 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'node_reference',
           'settings' => array(),
           'type' => 'node_reference_default',
-          'weight' => 29,
+          'weight' => '28',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1767,11 +1837,11 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => 11,
+          'weight' => '8',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1795,7 +1865,7 @@ function vaxia_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '5',
+        'weight' => '3',
       ),
     ),
   );
@@ -1833,11 +1903,11 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => 10,
+          'weight' => '7',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1861,7 +1931,7 @@ function vaxia_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '4',
+        'weight' => '2',
       ),
     ),
   );
@@ -1899,11 +1969,11 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => 3,
+          'weight' => '10',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1967,11 +2037,11 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'computed_field',
           'settings' => array(),
           'type' => 'computed_field_plain',
-          'weight' => 25,
+          'weight' => '23',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1992,7 +2062,7 @@ function vaxia_field_default_fields() {
         'module' => 'computed_field',
         'settings' => array(),
         'type' => 'computed',
-        'weight' => '21',
+        'weight' => '27',
       ),
     ),
   );
@@ -2030,11 +2100,11 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => 30,
+          'weight' => '27',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2100,11 +2170,11 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => 8,
+          'weight' => '1',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2125,7 +2195,7 @@ function vaxia_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '4',
+        'weight' => '2',
       ),
     ),
   );
@@ -2166,11 +2236,11 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => 4,
+          'weight' => '0',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2191,7 +2261,7 @@ function vaxia_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '3',
+        'weight' => '1',
       ),
     ),
   );
@@ -2231,11 +2301,11 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'computed_field',
           'settings' => array(),
           'type' => 'computed_field_plain',
-          'weight' => 23,
+          'weight' => '21',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2256,7 +2326,7 @@ function vaxia_field_default_fields() {
         'module' => 'computed_field',
         'settings' => array(),
         'type' => 'computed',
-        'weight' => '19',
+        'weight' => '25',
       ),
     ),
   );
@@ -2296,11 +2366,11 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => 7,
+          'weight' => '2',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2324,7 +2394,7 @@ function vaxia_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '5',
+        'weight' => '3',
       ),
     ),
   );
@@ -2362,11 +2432,11 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => 2,
+          'weight' => '9',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2419,7 +2489,7 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'field_collection',
           'settings' => array(
             'add' => 'Add',
@@ -2429,7 +2499,7 @@ function vaxia_field_default_fields() {
             'view_mode' => 'full',
           ),
           'type' => 'field_collection_view',
-          'weight' => 28,
+          'weight' => '13',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2450,7 +2520,7 @@ function vaxia_field_default_fields() {
         'module' => 'field_collection',
         'settings' => array(),
         'type' => 'field_collection_embed',
-        'weight' => '24',
+        'weight' => '15',
       ),
     ),
   );
@@ -2477,7 +2547,7 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'number',
           'settings' => array(
             'decimal_separator' => '.',
@@ -2486,7 +2556,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_integer',
-          'weight' => 18,
+          'weight' => '16',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2511,7 +2581,7 @@ function vaxia_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '14',
+        'weight' => '20',
       ),
     ),
   );
@@ -2538,7 +2608,7 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'number',
           'settings' => array(
             'decimal_separator' => '.',
@@ -2547,7 +2617,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_integer',
-          'weight' => 15,
+          'weight' => '13',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2572,7 +2642,7 @@ function vaxia_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '11',
+        'weight' => '17',
       ),
     ),
   );
@@ -2603,7 +2673,7 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'number',
           'settings' => array(
             'decimal_separator' => '.',
@@ -2612,7 +2682,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_integer',
-          'weight' => 10,
+          'weight' => '11',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2668,7 +2738,7 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'number',
           'settings' => array(
             'decimal_separator' => '.',
@@ -2677,7 +2747,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_integer',
-          'weight' => 14,
+          'weight' => '15',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2733,7 +2803,7 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'number',
           'settings' => array(
             'decimal_separator' => '.',
@@ -2742,7 +2812,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_integer',
-          'weight' => 12,
+          'weight' => '13',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2798,7 +2868,7 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'number',
           'settings' => array(
             'decimal_separator' => '.',
@@ -2807,7 +2877,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_integer',
-          'weight' => 7,
+          'weight' => '8',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2863,7 +2933,7 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'number',
           'settings' => array(
             'decimal_separator' => '.',
@@ -2872,7 +2942,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_integer',
-          'weight' => 9,
+          'weight' => '10',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2935,11 +3005,11 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => 16,
+          'weight' => '14',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2963,7 +3033,7 @@ function vaxia_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '1',
+        'weight' => '2',
       ),
     ),
   );
@@ -2994,7 +3064,7 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'number',
           'settings' => array(
             'decimal_separator' => '.',
@@ -3003,7 +3073,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_integer',
-          'weight' => 4,
+          'weight' => '5',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -3059,7 +3129,7 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'number',
           'settings' => array(
             'decimal_separator' => '.',
@@ -3068,7 +3138,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_integer',
-          'weight' => 2,
+          'weight' => '3',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -3124,7 +3194,7 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'number',
           'settings' => array(
             'decimal_separator' => '.',
@@ -3133,7 +3203,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_integer',
-          'weight' => 8,
+          'weight' => '9',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -3196,11 +3266,11 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => 18,
+          'weight' => '15',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -3224,7 +3294,7 @@ function vaxia_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '2',
+        'weight' => '3',
       ),
     ),
   );
@@ -3255,7 +3325,7 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'number',
           'settings' => array(
             'decimal_separator' => '.',
@@ -3264,7 +3334,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_integer',
-          'weight' => 5,
+          'weight' => '6',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -3320,7 +3390,7 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'number',
           'settings' => array(
             'decimal_separator' => '.',
@@ -3329,7 +3399,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_integer',
-          'weight' => 1,
+          'weight' => '2',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -3392,11 +3462,11 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => 17,
+          'weight' => '15',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -3451,7 +3521,7 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'number',
           'settings' => array(
             'decimal_separator' => '.',
@@ -3460,7 +3530,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_integer',
-          'weight' => 13,
+          'weight' => '14',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -3516,7 +3586,7 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'number',
           'settings' => array(
             'decimal_separator' => '.',
@@ -3525,7 +3595,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_integer',
-          'weight' => 11,
+          'weight' => '12',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -3581,7 +3651,7 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'number',
           'settings' => array(
             'decimal_separator' => '.',
@@ -3590,7 +3660,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_integer',
-          'weight' => 6,
+          'weight' => '7',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -3646,7 +3716,7 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'number',
           'settings' => array(
             'decimal_separator' => '.',
@@ -3655,7 +3725,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_integer',
-          'weight' => 3,
+          'weight' => '4',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -3721,9 +3791,8 @@ function vaxia_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'hidden',
-          'module' => 'text',
           'settings' => array(),
-          'type' => 'text_default',
+          'type' => 'hidden',
           'weight' => '0',
         ),
         'print' => array(
@@ -3757,11 +3826,9 @@ function vaxia_field_default_fields() {
         'teaser' => array(
           'label' => 'hidden',
           'module' => 'text',
-          'settings' => array(
-            'trim_length' => 600,
-          ),
-          'type' => 'text_summary_or_trimmed',
-          'weight' => '0',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '2',
         ),
       ),
       'entity_type' => 'node',
@@ -3780,109 +3847,90 @@ function vaxia_field_default_fields() {
           'summary_rows' => 5,
         ),
         'type' => 'text_textarea_with_summary',
-        'weight' => '2',
+        'weight' => '3',
       ),
     ),
   );
 
-  // Exported field: 'node-rpg_chatroom-field_images'
-  $fields['node-rpg_chatroom-field_images'] = array(
+  // Exported field: 'node-rpg_chatroom-field_character_sheet_artwork'
+  $fields['node-rpg_chatroom-field_character_sheet_artwork'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '3',
+      'cardinality' => '-1',
       'deleted' => '0',
       'entity_types' => array(),
-      'field_name' => 'field_images',
+      'field_name' => 'field_character_sheet_artwork',
       'foreign keys' => array(
-        'fid' => array(
+        'nid' => array(
           'columns' => array(
-            'fid' => 'fid',
+            'nid' => 'nid',
           ),
-          'table' => 'file_managed',
+          'table' => 'node',
         ),
       ),
       'indexes' => array(
-        'fid' => array(
-          0 => 'fid',
+        'nid' => array(
+          0 => 'nid',
         ),
       ),
-      'module' => 'image',
+      'module' => 'node_reference',
       'settings' => array(
-        'default_image' => 0,
-        'uri_scheme' => 'public',
+        'referenceable_types' => array(
+          'article' => 0,
+          'artwork' => 'artwork',
+          'book' => 0,
+          'character_sheet' => 0,
+          'forum' => 0,
+          'items' => 0,
+          'page' => 0,
+          'rpg_chatroom' => 0,
+        ),
+        'view' => array(
+          'args' => array(),
+          'display_name' => 'artwork_all_refs',
+          'view_name' => 'artwork',
+        ),
       ),
       'translatable' => '0',
-      'type' => 'image',
+      'type' => 'node_reference',
     ),
     'field_instance' => array(
       'bundle' => 'rpg_chatroom',
+      'default_value' => NULL,
       'deleted' => '0',
-      'description' => 'Images to be displayed for this chat room.',
+      'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'hidden',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '5',
-        ),
-        'print' => array(
           'label' => 'above',
+          'module' => 'node_reference',
           'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'rss' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'search_index' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'search_result' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
+          'type' => 'node_reference_default',
+          'weight' => 2,
         ),
         'teaser' => array(
-          'label' => 'hidden',
-          'module' => 'image',
-          'settings' => array(
-            'image_link' => '',
-            'image_style' => '',
-          ),
-          'type' => 'image',
-          'weight' => '1',
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
         ),
       ),
       'entity_type' => 'node',
-      'field_name' => 'field_images',
-      'label' => 'Images',
+      'field_name' => 'field_character_sheet_artwork',
+      'label' => 'Artwork',
       'required' => 0,
       'settings' => array(
-        'alt_field' => 1,
-        'file_directory' => 'vaxia_chat',
-        'file_extensions' => 'png gif jpg jpeg',
-        'max_filesize' => '300KB',
-        'max_resolution' => '600x600',
-        'min_resolution' => '100x100',
-        'title_field' => 1,
         'user_register_form' => FALSE,
       ),
       'widget' => array(
         'active' => 1,
-        'module' => 'image',
+        'module' => 'node_reference',
         'settings' => array(
-          'preview_image_style' => 'thumbnail',
-          'progress_indicator' => 'throbber',
+          'autocomplete_match' => 'contains',
+          'autocomplete_path' => 'node_reference/autocomplete',
+          'size' => '60',
         ),
-        'type' => 'image_image',
-        'weight' => '3',
+        'type' => 'node_reference_autocomplete',
+        'weight' => '2',
       ),
     ),
   );
@@ -3933,7 +3981,7 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'node_reference',
           'settings' => array(),
           'type' => 'node_reference_default',
@@ -3964,10 +4012,11 @@ function vaxia_field_default_fields() {
           'weight' => '1',
         ),
         'teaser' => array(
-          'label' => 'above',
+          'label' => 'inline',
+          'module' => 'node_reference',
           'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '5',
+          'type' => 'node_reference_default',
+          'weight' => '0',
         ),
       ),
       'entity_type' => 'node',
@@ -3982,7 +4031,7 @@ function vaxia_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '4',
+        'weight' => '1',
       ),
     ),
   );
@@ -4026,7 +4075,7 @@ function vaxia_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => 4,
+          'weight' => '1',
         ),
       ),
       'entity_type' => 'user',
@@ -4101,7 +4150,7 @@ function vaxia_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '2',
+          'weight' => '4',
         ),
       ),
       'entity_type' => 'user',
@@ -4156,7 +4205,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_integer',
-          'weight' => 3,
+          'weight' => '0',
         ),
       ),
       'entity_type' => 'user',
@@ -4203,8 +4252,6 @@ function vaxia_field_default_fields() {
   t('Endurance');
   t('Health');
   t('History');
-  t('Images');
-  t('Images to be displayed for this chat room.');
   t('Intelligence');
   t('Items');
   t('Life');
@@ -4227,6 +4274,7 @@ function vaxia_field_default_fields() {
   t('Spirituality');
   t('Strength');
   t('Value');
+  t('Website');
 
   return $fields;
 }
