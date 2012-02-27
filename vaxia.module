@@ -378,6 +378,7 @@ function vaxia_form_alter(&$form, &$form_state, $form_id) {
       '#title' => t('Refresh rate'),
     );
     $form['#submit'][] = '_vaxia_comment_set_profile_values_submit';
+    $form['#submit'][] = '_vaxia_comment_add_kxp_submit';
   }
   return $form;
 }
@@ -408,6 +409,22 @@ function _vaxia_comment_set_profile_values_submit($form, $form_state) {
     $this_player->field_refresh_rate[$lang][0]['value'] = $refresh_rate;
   }
   user_save($this_player);
+}
+
+/**
+ * Additional submit handler to add kxp for commenting as a character, not narrative.
+ */
+function _vaxia_comment_add_kxp_submit($form, $form_state) {
+  $lang = $form_state['values']['language'];
+  // If posted as a character and not as narrative.
+  if (!empty($form_state['values']['field_comment_character'][$lang][0]['nid']) 
+    && $form_state['values']['field_comment_narrative'][$lang][0]['value'] == 0) {
+    // The character gains XP per wordcount.
+    $wordcount = str_word_count($form_state['values']['comment_body'][$lang][0]['value']);
+    if (is_numeric($wordcount)) {
+      _vaxia_add_xp($form_state['values']['field_comment_character'][$lang][0]['nid'], $wordcount, 'kxp');
+    }  
+  }
 }
 
 /**
