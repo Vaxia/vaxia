@@ -73,9 +73,18 @@ function vaxia_menu() {
   $items['node/%node/transfer'] = array(
     'title' => 'Transfer XP',
     'type' => MENU_LOCAL_TASK,
-    'access callback' => '_vaxia_menu_perms_callback',
+    'access callback' => '_vaxia_menu_transfer_access_callback',
     'access arguments' => array(1),
     'page callback' => '_vaxia_transfer_xp',
+    'page arguments' => array(1),
+    'weight' => 3,
+  );
+  $items['node/%node/ownership'] = array(
+    'title' => 'Transfer ownership',
+    'type' => MENU_LOCAL_TASK,
+    'access callback' => '_vaxia_menu_ownership_access_callback',
+    'access arguments' => array(1),
+    'page callback' => '_vaxia_ownership',
     'page arguments' => array(1),
     'weight' => 3,
   );
@@ -85,11 +94,27 @@ function vaxia_menu() {
 /**
  * Menu access callback.
  */
-function _vaxia_menu_perms_callback($node) {
+function _vaxia_menu_transfer_access_callback($node) {
   $setting = variable_get('vaxia_transfer_workflow', '');
   $sheet = character_sheet_is_enabled($node->type);
   if ($sheet && !empty($setting)) {
     return TRUE;
+  }
+  return FALSE;
+}
+
+/**
+ * Menu access callback.
+ */
+function _vaxia_menu_ownership_access_callback($node) {
+  $vaxia_ownership_managed = array('artwork', 'items');
+  if (in_array($node->type, $vaxia_ownership_managed)) {
+    global $user;
+    if ( ( user_access('change art owner') || user_access('change item owner'))
+      || ($user->uid == $node->uid && 
+        (user_access('edit any ' . $node->type . ' content') || user_access('edit own ' . $node->type . ' content')))) {
+      return TRUE;
+    }
   }
   return FALSE;
 }
@@ -120,51 +145,17 @@ function vaxia_field_extra_fields() {
         ),
       );
     }
-    $vaxia_ownership_managed = array('artwork', 'items');
-    if (in_array($type, $vaxia_ownership_managed)) {
-      $extra['node'][$type] = array(
-        'form' => array(
-          'vaxia_ownership_form' => array(
-            'label' => t('Change ownership'),
-            'description' => t('Change ownership controls.'),
-            'weight' => 0,
-          ),
-        ), 
-        'display' => array(
-          'vaxia_ownership_form' => array(
-            'label' => t('Change ownership'),
-            'description' => t('Change ownership controls.'),
-            'weight' => 0,
-          ),
-        ),
-      );
-    }
-
   }
   return $extra;
 }
 
-/*
- * Implements hook_node_view().
+/**
+ * Menu callback, transfer ownership pages for items and artwork.
  */
-function vaxia_node_view($node, $view_mode, $langcode) {
-  if ($view_mode == 'full') {
-    $vaxia_ownership_managed = array('artwork', 'items');
-    if (in_array($node->type, $vaxia_ownership_managed)) {
-      // Add ownership and moderation fields for the sheet.
-      global $user;
-      if ( ( user_access('change art owner') || user_access('change item owner'))
-        || ($user->uid == $node->uid && 
-          (user_access('edit any ' . $node->type . ' content') || user_access('edit own ' . $node->type . ' content')))) {
-        $node->content['vaxia_ownership_form'] = array(
-          '#type' => 'item',
-          '#markup' => drupal_render(drupal_get_form('_vaxia_change_ownership_form', $node)),
-        );
-      }
-    }
-  }
+function _vaxia_ownership($node) {
+  return drupal_get_form('_vaxia_change_ownership_form', $node);
 }
-
+      
 /*
  * Form callback function from nodeapi view, adds moderation form to node display.
  */
@@ -229,34 +220,23 @@ function vaxia_process_comment(&$variables) {
       $color = '#' . trim($comment->field_comment_color[$lang][0]['value']);
       $variables['content_attributes'] .= t(' style="color:@color;"', array('@color' => $color));
     }
-    $variables['submitted'] = t('!username </br> !datetime', array('!username' => $variables['author'], '!datetime' => $variables['created']));
+    $variables['submitted'] = t('!username </br> !datetime',
+      array('!username' => $variables['author'], '!datetime' => $variables['created']));
     // node_load caches else calling this for Every Comment would get really ugly.
     if (isset($comment->field_comment_character[$lang][0]['nid'])) {
       $character = node_load($comment->field_comment_character[$lang][0]['nid']);
       // Replace the user name with the character title.
       // TODO add link from this character name like you do for user names.
-      $variables['submitted'] = t('!username </br> !datetime', array('!username' => $character->title, '!datetime' => $variables['created']));
+      $variables['submitted'] = t('!username </br> !datetime',
+        array('!username' => $character->title, '!datetime' => $variables['created']));
       // Overwrite the user picture witha  character picture if character is set.
       if (isset($character->field_artwork[$lang][0]['nid'])) {
         $artwork = node_load($character->field_artwork[$lang][0]['nid']);
         if (isset($artwork->field_artwork_image[$lang][0]['fid'])) {
-          $artwork_image = file_load($artwork->field_artwork_image[$lang][0]['fid']);
-          $filepath = $artwork_image->uri;
-          if (isset($filepath)) {
-            $alt = t("@user's picture", array('@user' => $character->title));
-            // If the image does not have a valid Drupal scheme (for eg. HTTP) don't load image styles.
-            if (module_exists('image') && file_valid_uri($filepath) && $style = variable_get('user_picture_style', '')) {
-              $picture = theme('image_style', array('style_name' => $style, 'path' => $filepath, 'alt' => $alt, 'title' => $alt));
-            }
-            else {
-              $picture = theme('image', array('path' => $filepath, 'alt' => $alt, 'title' => $alt));
-            }
-            $attributes = array(
-              'attributes' => array('title' => t('View character profile.')),
-              'html' => TRUE,
-            );
-            $variables['picture'] = l($picture, 'node/' . $character->nid, $attributes);
-          }
+          $variables['picture'] = _vaxia_create_avatar_image_link($artwork->field_artwork_image[$lang][0]['fid'], $character->title);
+        }
+        else {
+          $variables['picture'] = 'NO IMAGE'; // DEFAULT OR NONE. TODO configure this.
         }
       }
     }
@@ -266,32 +246,41 @@ function vaxia_process_comment(&$variables) {
         $artwork = node_load($user->field_artwork[$lang][0]['nid']);
       }
       if (isset($artwork->field_artwork_image[$lang][0]['fid'])) {
-        $artwork_image = file_load($artwork->field_artwork_image[$lang][0]['fid']);
-        $filepath = $artwork_image->uri;
-        if (isset($filepath)) {
-          $alt = t("@user's picture", array('@user' => $user->name));
-          // If the image does not have a valid Drupal scheme (for eg. HTTP) don't load image styles.
-          if (module_exists('image') && file_valid_uri($filepath) && $style = variable_get('user_picture_style', '')) {
-            $picture = theme('image_style', array('style_name' => $style, 'path' => $filepath, 'alt' => $alt, 'title' => $alt));
-          }
-          else {
-            $picture = theme('image', array('path' => $filepath, 'alt' => $alt, 'title' => $alt));
-          }
-          $attributes = array(
-            'attributes' => array('title' => t('View user profile.')),
-            'html' => TRUE,
-          );
-          $variables['picture'] = l($picture, 'user/' . $user->uid, $attributes);
-        }
+        $variables['picture'] = _vaxia_create_avatar_image_link($artwork->field_artwork_image[$lang][0]['fid'], $user->name);
       }
       else {
         $variables['picture'] = 'NO IMAGE'; // DEFAULT OR NONE. TODO configure this.
       }
     }
   }
-  // TODO REFACTOR THE F out of 
-  // TODO ADD REPLACEMENT FOR ALL THROUGHOUT THE SITE.
+  // TODO ADD REPLACEMENT FOR ALL THROUGHOUT THE SITE. FORUMS TOO.
   // TODO REMOVE REGULAR PICTURE FEATURE UPDATE IN USER ADMIN
+}
+
+/**
+ * Helper function, given a fid return the image link.
+ */
+function _vaxia_create_avatar_image_link($fid, $name) {
+  $artwork_image = file_load($fid);
+  $filepath = $artwork_image->uri;
+  if (isset($filepath)) {
+    $alt = t("@user's picture", array('@user' => $name));
+    // If the image does not have a valid Drupal scheme (for eg. HTTP) don't load image styles.
+    if (module_exists('image') && file_valid_uri($filepath) && $style = variable_get('user_picture_style', '')) {
+      $picture = theme('image_style', array('style_name' => $style, 'path' => $filepath, 'alt' => $alt, 'title' => $alt));
+    }
+    else {
+      $picture = theme('image', array('path' => $filepath, 'alt' => $alt, 'title' => $alt));
+    }
+    $attributes = array(
+      'attributes' => array('title' => t('View user profile.')),
+      'html' => TRUE,
+    );
+    return $picture;
+  }
+  else {
+    return ''; // DEFAULT OR NONE. TODO configure this for default.
+  }
 }
 
 /**
