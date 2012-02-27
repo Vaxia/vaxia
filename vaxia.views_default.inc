@@ -39,7 +39,7 @@ function vaxia_views_default_views() {
   $handler->display->display_options['style_options']['row_class'] = 'art-row';
   $handler->display->display_options['style_options']['class'] = 'art-grid';
   $handler->display->display_options['row_plugin'] = 'fields';
-  /* Relationship: Content: Artwork (field_artwork) - reverse */
+  /* Relationship: Content: Artwork (field_artwork) - reverse (to Content) */
   $handler->display->display_options['relationships']['reverse_field_artwork_node']['id'] = 'reverse_field_artwork_node';
   $handler->display->display_options['relationships']['reverse_field_artwork_node']['table'] = 'node';
   $handler->display->display_options['relationships']['reverse_field_artwork_node']['field'] = 'reverse_field_artwork_node';
@@ -73,7 +73,7 @@ function vaxia_views_default_views() {
   $handler->display->display_options['fields']['title']['empty_zero'] = 0;
   $handler->display->display_options['fields']['title']['hide_alter_empty'] = 1;
   $handler->display->display_options['fields']['title']['link_to_node'] = 1;
-  /* Field: Content: Artwork */
+  /* Field: Field: Artwork */
   $handler->display->display_options['fields']['field_artwork']['id'] = 'field_artwork';
   $handler->display->display_options['fields']['field_artwork']['table'] = 'field_data_field_artwork';
   $handler->display->display_options['fields']['field_artwork']['field'] = 'field_artwork';
@@ -202,34 +202,35 @@ function vaxia_views_default_views() {
   $handler->display->display_options['fields']['title']['empty_zero'] = 0;
   $handler->display->display_options['fields']['title']['hide_alter_empty'] = 1;
   $handler->display->display_options['fields']['title']['link_to_node'] = 1;
-  /* Field: Content: Artwork */
-  $handler->display->display_options['fields']['field_artwork']['id'] = 'field_artwork';
-  $handler->display->display_options['fields']['field_artwork']['table'] = 'field_data_field_artwork';
-  $handler->display->display_options['fields']['field_artwork']['field'] = 'field_artwork';
-  $handler->display->display_options['fields']['field_artwork']['label'] = '';
-  $handler->display->display_options['fields']['field_artwork']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['field_artwork']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['field_artwork']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['field_artwork']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['field_artwork']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['field_artwork']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['field_artwork']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['field_artwork']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['field_artwork']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['field_artwork']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['field_artwork']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['field_artwork']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['field_artwork']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_artwork']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['field_artwork']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['field_artwork']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['field_artwork']['hide_alter_empty'] = 1;
-  $handler->display->display_options['fields']['field_artwork']['click_sort_column'] = 'fid';
-  $handler->display->display_options['fields']['field_artwork']['settings'] = array(
+  /* Field: Content: Image */
+  $handler->display->display_options['fields']['field_artwork_image']['id'] = 'field_artwork_image';
+  $handler->display->display_options['fields']['field_artwork_image']['table'] = 'field_data_field_artwork_image';
+  $handler->display->display_options['fields']['field_artwork_image']['field'] = 'field_artwork_image';
+  $handler->display->display_options['fields']['field_artwork_image']['label'] = '';
+  $handler->display->display_options['fields']['field_artwork_image']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_artwork_image']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_artwork_image']['alter']['more_link'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_artwork_image']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_artwork_image']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['field_artwork_image']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_artwork_image']['settings'] = array(
     'image_style' => 'thumbnail',
-    'image_link' => 'file',
+    'image_link' => 'content',
   );
-  $handler->display->display_options['fields']['field_artwork']['field_api_classes'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['field_api_classes'] = 0;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
   $handler->display->display_options['fields']['title_1']['table'] = 'node';
@@ -293,34 +294,35 @@ function vaxia_views_default_views() {
   $handler->display->display_options['fields']['title']['empty_zero'] = 0;
   $handler->display->display_options['fields']['title']['hide_alter_empty'] = 1;
   $handler->display->display_options['fields']['title']['link_to_node'] = 1;
-  /* Field: Content: Artwork */
-  $handler->display->display_options['fields']['field_artwork']['id'] = 'field_artwork';
-  $handler->display->display_options['fields']['field_artwork']['table'] = 'field_data_field_artwork';
-  $handler->display->display_options['fields']['field_artwork']['field'] = 'field_artwork';
-  $handler->display->display_options['fields']['field_artwork']['label'] = '';
-  $handler->display->display_options['fields']['field_artwork']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['field_artwork']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['field_artwork']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['field_artwork']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['field_artwork']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['field_artwork']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['field_artwork']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['field_artwork']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['field_artwork']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['field_artwork']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['field_artwork']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['field_artwork']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['field_artwork']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_artwork']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['field_artwork']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['field_artwork']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['field_artwork']['hide_alter_empty'] = 1;
-  $handler->display->display_options['fields']['field_artwork']['click_sort_column'] = 'fid';
-  $handler->display->display_options['fields']['field_artwork']['settings'] = array(
+  /* Field: Content: Image */
+  $handler->display->display_options['fields']['field_artwork_image']['id'] = 'field_artwork_image';
+  $handler->display->display_options['fields']['field_artwork_image']['table'] = 'field_data_field_artwork_image';
+  $handler->display->display_options['fields']['field_artwork_image']['field'] = 'field_artwork_image';
+  $handler->display->display_options['fields']['field_artwork_image']['label'] = '';
+  $handler->display->display_options['fields']['field_artwork_image']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_artwork_image']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_artwork_image']['alter']['more_link'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_artwork_image']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_artwork_image']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['field_artwork_image']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_artwork_image']['settings'] = array(
     'image_style' => 'thumbnail',
-    'image_link' => 'file',
+    'image_link' => 'content',
   );
-  $handler->display->display_options['fields']['field_artwork']['field_api_classes'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['field_api_classes'] = 0;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
   $handler->display->display_options['fields']['title_1']['table'] = 'node';
@@ -524,37 +526,35 @@ function vaxia_views_default_views() {
   $handler->display->display_options['fields']['title']['empty_zero'] = 0;
   $handler->display->display_options['fields']['title']['hide_alter_empty'] = 1;
   $handler->display->display_options['fields']['title']['link_to_node'] = 1;
-  /* Field: Content: Artwork */
-  $handler->display->display_options['fields']['field_artwork']['id'] = 'field_artwork';
-  $handler->display->display_options['fields']['field_artwork']['table'] = 'field_data_field_artwork';
-  $handler->display->display_options['fields']['field_artwork']['field'] = 'field_artwork';
-  $handler->display->display_options['fields']['field_artwork']['label'] = '';
-  $handler->display->display_options['fields']['field_artwork']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['field_artwork']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['field_artwork']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['field_artwork']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['field_artwork']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['field_artwork']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['field_artwork']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['field_artwork']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['field_artwork']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['field_artwork']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['field_artwork']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['field_artwork']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['field_artwork']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_artwork']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['field_artwork']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['field_artwork']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['field_artwork']['hide_alter_empty'] = 1;
-  $handler->display->display_options['fields']['field_artwork']['settings'] = array(
+  /* Field: Content: Image */
+  $handler->display->display_options['fields']['field_artwork_image']['id'] = 'field_artwork_image';
+  $handler->display->display_options['fields']['field_artwork_image']['table'] = 'field_data_field_artwork_image';
+  $handler->display->display_options['fields']['field_artwork_image']['field'] = 'field_artwork_image';
+  $handler->display->display_options['fields']['field_artwork_image']['label'] = '';
+  $handler->display->display_options['fields']['field_artwork_image']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_artwork_image']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_artwork_image']['alter']['more_link'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_artwork_image']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_artwork_image']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['field_artwork_image']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_artwork_image']['settings'] = array(
     'image_style' => 'thumbnail',
-    'image_link' => 'file',
+    'image_link' => 'content',
   );
-  $handler->display->display_options['fields']['field_artwork']['group_rows'] = 1;
-  $handler->display->display_options['fields']['field_artwork']['delta_offset'] = '0';
-  $handler->display->display_options['fields']['field_artwork']['delta_reversed'] = 0;
-  $handler->display->display_options['fields']['field_artwork']['delta_first_last'] = 0;
-  $handler->display->display_options['fields']['field_artwork']['field_api_classes'] = 0;
+  $handler->display->display_options['fields']['field_artwork_image']['field_api_classes'] = 0;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
   $handler->display->display_options['fields']['title_1']['table'] = 'node';
@@ -656,54 +656,6 @@ function vaxia_views_default_views() {
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: Title */
-  $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
-  $handler->display->display_options['fields']['title_1']['table'] = 'node';
-  $handler->display->display_options['fields']['title_1']['field'] = 'title';
-  $handler->display->display_options['fields']['title_1']['relationship'] = 'reverse_field_artwork_node';
-  $handler->display->display_options['fields']['title_1']['label'] = '';
-  $handler->display->display_options['fields']['title_1']['alter']['alter_text'] = 1;
-  $handler->display->display_options['fields']['title_1']['alter']['text'] = '([title_1]) ';
-  $handler->display->display_options['fields']['title_1']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['title_1']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['title_1']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['title_1']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['title_1']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['title_1']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['title_1']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['title_1']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['title_1']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['title_1']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['title_1']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['title_1']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['title_1']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['title_1']['hide_empty'] = 1;
-  $handler->display->display_options['fields']['title_1']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['title_1']['hide_alter_empty'] = 1;
-  $handler->display->display_options['fields']['title_1']['link_to_node'] = 0;
-  /* Field: Content: Title */
-  $handler->display->display_options['fields']['title']['id'] = 'title';
-  $handler->display->display_options['fields']['title']['table'] = 'node';
-  $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = '';
-  $handler->display->display_options['fields']['title']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['title']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['title']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['title']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['title']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['title']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['title']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['title']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['title']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['title']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['title']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['title']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['title']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['title']['hide_alter_empty'] = 1;
-  $handler->display->display_options['fields']['title']['link_to_node'] = 1;
-  /* Field: Content: Title */
   $handler->display->display_options['fields']['title_2']['id'] = 'title_2';
   $handler->display->display_options['fields']['title_2']['table'] = 'node';
   $handler->display->display_options['fields']['title_2']['field'] = 'title';
@@ -727,28 +679,29 @@ function vaxia_views_default_views() {
   $handler->display->display_options['fields']['title_2']['empty_zero'] = 0;
   $handler->display->display_options['fields']['title_2']['hide_alter_empty'] = 1;
   $handler->display->display_options['fields']['title_2']['link_to_node'] = 1;
-  /* Field: Workflow: Current state */
-  $handler->display->display_options['fields']['sid']['id'] = 'sid';
-  $handler->display->display_options['fields']['sid']['table'] = 'workflow_node';
-  $handler->display->display_options['fields']['sid']['field'] = 'sid';
-  $handler->display->display_options['fields']['sid']['label'] = '';
-  $handler->display->display_options['fields']['sid']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['sid']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['sid']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['sid']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['sid']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['sid']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['sid']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['sid']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['sid']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['sid']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['sid']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['sid']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['sid']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['sid']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['sid']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['sid']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['sid']['hide_alter_empty'] = 1;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['title']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['title']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['title']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['title']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['title']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['title']['link_to_node'] = 1;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
@@ -1513,13 +1466,6 @@ function vaxia_views_default_views() {
   $handler->display->display_options['filters']['status']['value'] = 1;
   $handler->display->display_options['filters']['status']['group'] = 0;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: User: Current */
-  $handler->display->display_options['filters']['uid_current']['id'] = 'uid_current';
-  $handler->display->display_options['filters']['uid_current']['table'] = 'users';
-  $handler->display->display_options['filters']['uid_current']['field'] = 'uid_current';
-  $handler->display->display_options['filters']['uid_current']['relationship'] = 'uid';
-  $handler->display->display_options['filters']['uid_current']['value'] = '1';
-  $handler->display->display_options['filters']['uid_current']['group'] = 0;
   /* Filter criterion: Workflow: Current state */
   $handler->display->display_options['filters']['sid']['id'] = 'sid';
   $handler->display->display_options['filters']['sid']['table'] = 'workflow_node';
@@ -1908,8 +1854,7 @@ function vaxia_views_default_views() {
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'My character sheets refs';
   $handler->display->display_options['display_description'] = 'My character sheets refs';
-  $handler->display->display_options['pager']['type'] = 'some';
-  $handler->display->display_options['pager']['options']['items_per_page'] = '0';
+  $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'references_style';
@@ -1946,6 +1891,34 @@ function vaxia_views_default_views() {
   $handler->display->display_options['sorts']['title']['id'] = 'title';
   $handler->display->display_options['sorts']['title']['table'] = 'node';
   $handler->display->display_options['sorts']['title']['field'] = 'title';
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 0;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Workflow: Current state */
+  $handler->display->display_options['filters']['sid']['id'] = 'sid';
+  $handler->display->display_options['filters']['sid']['table'] = 'workflow_node';
+  $handler->display->display_options['filters']['sid']['field'] = 'sid';
+  $handler->display->display_options['filters']['sid']['value'] = array(
+    9 => '9',
+  );
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'character_sheet' => 'character_sheet',
+  );
+  /* Filter criterion: User: Current */
+  $handler->display->display_options['filters']['uid_current']['id'] = 'uid_current';
+  $handler->display->display_options['filters']['uid_current']['table'] = 'users';
+  $handler->display->display_options['filters']['uid_current']['field'] = 'uid_current';
+  $handler->display->display_options['filters']['uid_current']['relationship'] = 'uid';
+  $handler->display->display_options['filters']['uid_current']['value'] = '1';
 
   /* Display: My character sheets block */
   $handler = $view->new_display('block', 'My character sheets block', 'character_sheets_mine_block');
@@ -1953,11 +1926,8 @@ function vaxia_views_default_views() {
   $handler->display->display_options['title'] = 'Characters';
   $handler->display->display_options['display_description'] = 'My character sheets block';
   $handler->display->display_options['defaults']['pager'] = FALSE;
-  $handler->display->display_options['pager']['type'] = 'full';
-  $handler->display->display_options['pager']['options']['items_per_page'] = '0';
+  $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
-  $handler->display->display_options['pager']['options']['id'] = '0';
-  $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all'] = 0;
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'jump_menu';
   $handler->display->display_options['style_options']['hide'] = 0;
@@ -2025,6 +1995,34 @@ function vaxia_views_default_views() {
   $handler->display->display_options['fields']['nid']['empty_zero'] = 0;
   $handler->display->display_options['fields']['nid']['hide_alter_empty'] = 1;
   $handler->display->display_options['fields']['nid']['link_to_node'] = 0;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 0;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Workflow: Current state */
+  $handler->display->display_options['filters']['sid']['id'] = 'sid';
+  $handler->display->display_options['filters']['sid']['table'] = 'workflow_node';
+  $handler->display->display_options['filters']['sid']['field'] = 'sid';
+  $handler->display->display_options['filters']['sid']['value'] = array(
+    9 => '9',
+  );
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'character_sheet' => 'character_sheet',
+  );
+  /* Filter criterion: User: Current */
+  $handler->display->display_options['filters']['uid_current']['id'] = 'uid_current';
+  $handler->display->display_options['filters']['uid_current']['table'] = 'users';
+  $handler->display->display_options['filters']['uid_current']['field'] = 'uid_current';
+  $handler->display->display_options['filters']['uid_current']['relationship'] = 'uid';
+  $handler->display->display_options['filters']['uid_current']['value'] = '1';
   $handler->display->display_options['block_description'] = 'My character sheets block';
   $export['character_sheet_moderation'] = $view;
 
@@ -2453,11 +2451,8 @@ function vaxia_views_default_views() {
   $handler->display->display_options['title'] = 'Rooms';
   $handler->display->display_options['display_description'] = 'RPG Chats Block';
   $handler->display->display_options['defaults']['pager'] = FALSE;
-  $handler->display->display_options['pager']['type'] = 'full';
-  $handler->display->display_options['pager']['options']['items_per_page'] = '0';
+  $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
-  $handler->display->display_options['pager']['options']['id'] = '0';
-  $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all'] = 0;
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'jump_menu';
   $handler->display->display_options['style_options']['grouping'] = 'title_1';

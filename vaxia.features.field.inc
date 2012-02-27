@@ -930,7 +930,7 @@ function vaxia_field_default_fields() {
   $fields['node-character_sheet-field_artwork'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '-1',
+      'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_artwork',
@@ -961,7 +961,7 @@ function vaxia_field_default_fields() {
         ),
         'view' => array(
           'args' => array(),
-          'display_name' => 'artwork_all_refs',
+          'display_name' => 'artwork_mine_refs',
           'view_name' => 'artwork',
         ),
       ),
@@ -3856,7 +3856,7 @@ function vaxia_field_default_fields() {
   $fields['node-rpg_chatroom-field_artwork'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '-1',
+      'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_artwork',
@@ -3887,7 +3887,7 @@ function vaxia_field_default_fields() {
         ),
         'view' => array(
           'args' => array(),
-          'display_name' => 'artwork_all_refs',
+          'display_name' => 'artwork_mine_refs',
           'view_name' => 'artwork',
         ),
       ),
@@ -4036,6 +4036,79 @@ function vaxia_field_default_fields() {
     ),
   );
 
+  // Exported field: 'user-user-field_artwork'
+  $fields['user-user-field_artwork'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_artwork',
+      'foreign keys' => array(
+        'nid' => array(
+          'columns' => array(
+            'nid' => 'nid',
+          ),
+          'table' => 'node',
+        ),
+      ),
+      'indexes' => array(
+        'nid' => array(
+          0 => 'nid',
+        ),
+      ),
+      'module' => 'node_reference',
+      'settings' => array(
+        'referenceable_types' => array(
+          'article' => 0,
+          'artwork' => 'artwork',
+          'book' => 0,
+          'character_sheet' => 0,
+          'forum' => 0,
+          'items' => 0,
+          'page' => 0,
+          'rpg_chatroom' => 0,
+        ),
+        'view' => array(
+          'args' => array(),
+          'display_name' => 'artwork_mine_refs',
+          'view_name' => 'artwork',
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'node_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'user',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'node_reference',
+          'settings' => array(),
+          'type' => 'node_reference_default',
+          'weight' => '0',
+        ),
+      ),
+      'entity_type' => 'user',
+      'field_name' => 'field_artwork',
+      'label' => 'Picture',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => 0,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '12',
+      ),
+    ),
+  );
+
   // Exported field: 'user-user-field_comment_color'
   $fields['user-user-field_comment_color'] = array(
     'field_config' => array(
@@ -4072,10 +4145,9 @@ function vaxia_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'text',
           'settings' => array(),
-          'type' => 'text_default',
-          'weight' => '1',
+          'type' => 'hidden',
+          'weight' => '3',
         ),
       ),
       'entity_type' => 'user',
@@ -4197,15 +4269,9 @@ function vaxia_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 0,
-            'thousand_separator' => ' ',
-          ),
-          'type' => 'number_integer',
-          'weight' => '0',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '2',
         ),
       ),
       'entity_type' => 'user',
@@ -4262,6 +4328,7 @@ function vaxia_field_default_fields() {
   t('Occupation');
   t('Parent chatroom');
   t('Personality');
+  t('Picture');
   t('Player Notes');
   t('Presence');
   t('Race');
