@@ -208,9 +208,20 @@ function _vaxia_change_ownership_form_submit($form, $form_state) {
  * Implements process suggestion for comment theme. This allows us to override parts of the comment form.
  */
 function vaxia_process_comment(&$variables) {
+  // Update the user image for submission to no image.
+  $comment = $variables['comment'];
+  $lang = $comment->language;
+  $variables['picture'] = 'NO IMAGE'; // DEFAULT OR NONE. TODO configure this.
+  // Check for user profile settings.
+  $user = user_load($comment->uid);
+  if (isset($user->field_artwork[$lang][0]['nid'])) {
+    $artwork = node_load($user->field_artwork[$lang][0]['nid']);
+    if (isset($artwork->field_artwork_image[$lang][0]['fid'])) {
+      $variables['picture'] = _vaxia_create_avatar_image_link($artwork->field_artwork_image[$lang][0]['fid'], $user->name);
+    }
+  }
+  // Check for character type only on RPG type nodes. (and do some other work as well on RPG chat nodes)
   if (_rpg_chat_is_enabled($variables['node']->type)) {
-    $comment = $variables['comment'];
-    $lang = $comment->language;
     // Add the variables for our narrative and colors.
     if( isset($comment->field_comment_narrative[$lang][0]['value']) && ($comment->field_comment_narrative[$lang][0]['value'] == 1) ) {
       $variables['classes'] .= ' rpg-chat-narrative';
@@ -220,41 +231,26 @@ function vaxia_process_comment(&$variables) {
       $color = '#' . trim($comment->field_comment_color[$lang][0]['value']);
       $variables['content_attributes'] .= t(' style="color:@color;"', array('@color' => $color));
     }
+    // Redo the submitted field for RPG chatrooms only.
     $variables['submitted'] = t('!username </br> !datetime',
       array('!username' => $variables['author'], '!datetime' => $variables['created']));
-    // node_load caches else calling this for Every Comment would get really ugly.
+    // Now check for user pictures again.
+    // Good thing node_load caches else calling this for Every Comment would get really ugly.
     if (isset($comment->field_comment_character[$lang][0]['nid'])) {
       $character = node_load($comment->field_comment_character[$lang][0]['nid']);
       // Replace the user name with the character title.
       // TODO add link from this character name like you do for user names.
       $variables['submitted'] = t('!username </br> !datetime',
         array('!username' => $character->title, '!datetime' => $variables['created']));
-      // Overwrite the user picture witha  character picture if character is set.
+      // Overwrite the user picture with character picture if character is set.
       if (isset($character->field_artwork[$lang][0]['nid'])) {
         $artwork = node_load($character->field_artwork[$lang][0]['nid']);
         if (isset($artwork->field_artwork_image[$lang][0]['fid'])) {
           $variables['picture'] = _vaxia_create_avatar_image_link($artwork->field_artwork_image[$lang][0]['fid'], $character->title);
         }
-        else {
-          $variables['picture'] = 'NO IMAGE'; // DEFAULT OR NONE. TODO configure this.
-        }
-      }
-    }
-    else {
-      $user = user_load($comment->uid);
-      if (isset($user->field_artwork[$lang][0]['nid'])) {
-        $artwork = node_load($user->field_artwork[$lang][0]['nid']);
-      }
-      if (isset($artwork->field_artwork_image[$lang][0]['fid'])) {
-        $variables['picture'] = _vaxia_create_avatar_image_link($artwork->field_artwork_image[$lang][0]['fid'], $user->name);
-      }
-      else {
-        $variables['picture'] = 'NO IMAGE'; // DEFAULT OR NONE. TODO configure this.
       }
     }
   }
-  // TODO ADD REPLACEMENT FOR ALL THROUGHOUT THE SITE. FORUMS TOO.
-  // TODO REMOVE REGULAR PICTURE FEATURE UPDATE IN USER ADMIN
 }
 
 /**
