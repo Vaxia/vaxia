@@ -103,7 +103,6 @@ function rpg_chat_node_access($node, $op, $account) {
 /**
  * Implements hook_node_load().
  */
-//TODO describe these fields to views (as join table).
 function rpg_chat_node_load($nodes) {
   foreach ($nodes as $node) {
     // Load all the chat related bits for this node.
@@ -425,6 +424,15 @@ function rpg_chat_node_update($node) {
     $variables['banned_users'] = array_unique($banned_users);
     _rpg_chat_set_room($node->nid, $variables);
   }
+}
+
+/**
+ * Implements hook_views_api(). From Views module.
+ */
+function rpg_chat_views_api() {
+  return array(
+    'api' => 2,
+  );
 }
 
 /**
