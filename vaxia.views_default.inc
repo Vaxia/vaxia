@@ -36,7 +36,6 @@ function vaxia_views_default_views() {
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '15';
   $handler->display->display_options['style_plugin'] = 'list';
-  $handler->display->display_options['style_options']['group_rendered'] = 1;
   $handler->display->display_options['style_options']['row_class'] = 'art-row';
   $handler->display->display_options['style_options']['class'] = 'art-grid';
   $handler->display->display_options['row_plugin'] = 'fields';
@@ -1329,7 +1328,6 @@ function vaxia_views_default_views() {
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '35';
   $handler->display->display_options['style_plugin'] = 'table';
-  $handler->display->display_options['style_options']['group_rendered'] = 1;
   $handler->display->display_options['style_options']['columns'] = array(
     'timestamp' => 'timestamp',
     'title_1' => 'title_1',
@@ -1561,7 +1559,6 @@ function vaxia_views_default_views() {
   $handler->display->display_options['display_description'] = 'My character sheets';
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'table';
-  $handler->display->display_options['style_options']['group_rendered'] = 1;
   $handler->display->display_options['style_options']['columns'] = array(
     'timestamp' => 'timestamp',
     'title_1' => 'title_1',
@@ -1671,7 +1668,6 @@ function vaxia_views_default_views() {
   );
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'table';
-  $handler->display->display_options['style_options']['group_rendered'] = 1;
   $handler->display->display_options['style_options']['columns'] = array(
     'timestamp' => 'timestamp',
     'title_1' => 'title_1',
@@ -1917,7 +1913,6 @@ function vaxia_views_default_views() {
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'references_style';
-  $handler->display->display_options['style_options']['group_rendered'] = 1;
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['row_plugin'] = 'references_fields';
@@ -1965,7 +1960,6 @@ function vaxia_views_default_views() {
   $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all'] = 0;
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'jump_menu';
-  $handler->display->display_options['style_options']['group_rendered'] = 1;
   $handler->display->display_options['style_options']['hide'] = 0;
   $handler->display->display_options['style_options']['path'] = 'nid';
   $handler->display->display_options['style_options']['default_value'] = 0;
@@ -2342,7 +2336,6 @@ function vaxia_views_default_views() {
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '35';
   $handler->display->display_options['style_plugin'] = 'list';
-  $handler->display->display_options['style_options']['group_rendered'] = 1;
   $handler->display->display_options['row_plugin'] = 'node';
   $handler->display->display_options['row_options']['links'] = 0;
   $handler->display->display_options['row_options']['comments'] = 0;
@@ -2468,7 +2461,6 @@ function vaxia_views_default_views() {
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'jump_menu';
   $handler->display->display_options['style_options']['grouping'] = 'title_1';
-  $handler->display->display_options['style_options']['group_rendered'] = 0;
   $handler->display->display_options['style_options']['hide'] = 0;
   $handler->display->display_options['style_options']['path'] = 'nid';
   $handler->display->display_options['style_options']['default_value'] = 1;
