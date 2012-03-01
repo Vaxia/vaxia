@@ -211,9 +211,9 @@ function vaxia_process_comment(&$variables) {
   // Update the user image for submission to no image.
   $comment = $variables['comment'];
   $lang = $comment->language;
-  $variables['picture'] = 'NO IMAGE'; // DEFAULT OR NONE. TODO configure this.
   // Check for user profile settings.
   $user = user_load($comment->uid);
+  $variables['picture'] = _vaxia_create_avatar_image_link(-1, $user->name);
   if (isset($user->field_artwork[$lang][0]['nid'])) {
     $artwork = node_load($user->field_artwork[$lang][0]['nid']);
     if (isset($artwork->field_artwork_image[$lang][0]['fid'])) {
@@ -258,7 +258,8 @@ function vaxia_process_comment(&$variables) {
  */
 function _vaxia_create_avatar_image_link($fid, $name) {
   $artwork_image = file_load($fid);
-  $filepath = $artwork_image->uri;
+  $default_filepath = drupal_get_path('module', 'vaxia').'/images/vaxialogo.gif';
+  $filepath = isset($artwork_image->uri) ? $artwork_image->uri : $default_filepath;
   if (isset($filepath)) {
     $alt = t("@user's picture", array('@user' => $name));
     // If the image does not have a valid Drupal scheme (for eg. HTTP) don't load image styles.
@@ -269,13 +270,10 @@ function _vaxia_create_avatar_image_link($fid, $name) {
       $picture = theme('image', array('path' => $filepath, 'alt' => $alt, 'title' => $alt));
     }
     $attributes = array(
-      'attributes' => array('title' => t('View user profile.')),
+      'attributes' => array('title' => t('View profile.')),
       'html' => TRUE,
     );
     return $picture;
-  }
-  else {
-    return ''; // DEFAULT OR NONE. TODO configure this for default.
   }
 }
 
