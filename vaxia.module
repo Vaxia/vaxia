@@ -322,11 +322,12 @@ function theme_vaxia_dice_roller($element) {
  * Implements hook_form_alter().
  */
 function vaxia_form_alter(&$form, &$form_state, $form_id) {
-  if (!user_access('use dice roller')) {
-    return; /* Exit if this user can't use the dice roller */
-  }
-  // If we're viewing a comment form, allow for user profile to set the character.
+  // If we're viewing a comment form, allow for user profile to set RPG chat additional fields.
   if (substr($form_id, 0, 7) == 'comment' && isset($form['#node'])) {
+    $type = $form['#node']->type;
+    if (!character_sheet_is_enabled($type)) {
+      return;
+    }
     global $user;
     $this_player = user_load($user->uid);
     $lang = $form['language']['#value'];
