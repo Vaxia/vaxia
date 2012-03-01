@@ -329,26 +329,27 @@ function vaxia_form_character_sheet_node_form_alter(&$form, &$form_state) {
   if (!user_access('post notes on character')) {
     $form['field_sh_notes'][$lang][0]['value']['#disabled'] = TRUE;
     $form['field_sh_notes'][$lang][0]['value']['#value'] =
-      $form['field_sh_notes'][$lang][0]['value']['#default_value'];
+      isset($form['field_sh_notes'][$lang][0]['value']['#default_value']) ? $form['field_sh_notes'][$lang][0]['value']['#default_value'] : '';
   }
   if (!user_access('add item to character sheet')) {
     $form['field_artwork'][$lang][0]['value']['#disabled'] = TRUE;
-    $form['field_artwork'][$lang][0]['value']['#value'] = isset($form['field_artwork'][$lang][0]['value']['#default_value']) ? $form['field_artwork'][$lang][0]['value']['#default_value'] : '';
+    $form['field_artwork'][$lang][0]['value']['#value'] = 
+      isset($form['field_artwork'][$lang][0]['value']['#default_value']) ? $form['field_artwork'][$lang][0]['value']['#default_value'] : '';
   }
   if (!user_access('add property to character sheet')) {
     $form['field_npcs'][$lang][0]['value']['#disabled'] = TRUE;
-    $form['field_npcs'][$lang][0]['value']['#value'] =
-      $form['field_npcs'][$lang][0]['value']['#default_value'];
+    $form['field_npcs'][$lang][0]['value']['#value'] = 
+      isset($form['field_npcs'][$lang][0]['value']['#default_value']) ? $form['field_npcs'][$lang][0]['value']['#default_value'] : '';
   }
   if (!user_access('add item to character sheet')) {
     $form['field_property'][$lang][0]['value']['#disabled'] = TRUE;
     $form['field_property'][$lang][0]['value']['#value'] = 
-      $form['field_property'][$lang][0]['value']['#default_value'];
+     isset($form['field_property'][$lang][0]['value']['#default_value']) ? $form['field_property'][$lang][0]['value']['#default_value'] : '';
   }
   if (!user_access('add art to character sheet')) {
     $form['field_items'][$lang][0]['value']['#disabled'] = TRUE;
-    $form['field_items'][$lang][0]['value']['#value'] =
-      $form['field_items'][$lang][0]['value']['#default_value'];
+    $form['field_items'][$lang][0]['value']['#value'] = 
+      isset($form['field_items'][$lang][0]['value']['#default_value']) ? $form['field_items'][$lang][0]['value']['#default_value'] : '';
   }
 }
 
