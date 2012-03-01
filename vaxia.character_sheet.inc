@@ -292,6 +292,10 @@ function vaxia_character_sheet_validate_sheet($node, $old_node, $form, $form_sta
  * Implements hook_form_FORMID_alter().
  */
 function vaxia_form_character_sheet_node_form_alter(&$form, &$form_state) {
+  $lang = $form['language']['#value'];
+  if (empty($lang)) {
+    $lang = 'und';
+  }  
   if (isset($form['#node']->workflow)) {
     $workflow_state = workflow_get_workflow_states_by_sid($form['#node']->workflow);
   }
@@ -299,7 +303,6 @@ function vaxia_form_character_sheet_node_form_alter(&$form, &$form_state) {
       && !user_access('evaluate character')) {
     // User is not allowed to modify certain elements on their sheet.
     // Such as: name, skill names and skill descriptions.
-    $lang = $form['language']['#value'];
     $form['title']['#disabled'] = TRUE;
     $form['title']['#value'] = $form['title']['#default_value'];
     $form['field_realm'][$lang]['#disabled'] = TRUE;
