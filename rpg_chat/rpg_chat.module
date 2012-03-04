@@ -206,7 +206,7 @@ function rpg_chat_form_comment_form_alter(&$form, &$form_state, $form_id) {
     // Display the refresh submit.
     $form['actions']['refresh_chat'] = array(
       '#type' => 'submit',
-      '#value' => 'Refresh',
+      '#value' => t('Refresh'),
       '#access' => 1,
       '#submit' => array(),
       '#limit_validation_errors' => array(), // No validation for a refresh.
@@ -302,16 +302,19 @@ function rpg_chat_form_alter(&$form, &$form_state, $form_id) {
     $form['rpg_chat']['min_refresh'] = array(
       '#type' => 'textfield',
       '#title' => t('Minimum refresh rate'),
+      '#description' => t('How fast (in seconds) to allow users to refresh the room. This can impact performance.'),
       '#default_value' => isset($node->rpg_chat_min_refresh) ? $node->rpg_chat_min_refresh : 60,
     );
     $form['rpg_chat']['mature'] = array(
       '#type' => 'checkbox',
       '#title' => t('Mature room?'),
+      '#description' => t('If "mature" this is a chatroom that will have mature content.'),
       '#default_value' => isset($node->rpg_chat_mature) ? $node->rpg_chat_mature : FALSE,
     );
     $form['rpg_chat']['locked'] = array(
       '#type' => 'checkbox',
       '#title' => t('Locked room?'),
+      '#description' => t('If "locked" this chatroom will be allowed only for those with "administer rpg chat" rights.'),
       '#default_value' => isset($node->rpg_chat_locked) ? $node->rpg_chat_locked : FALSE,
     );
     // TODO - eventually this should become a AJAX driven interface.
@@ -326,7 +329,7 @@ function rpg_chat_form_alter(&$form, &$form_state, $form_id) {
     $form['rpg_chat']['allow'] = array(
       '#type' => 'textarea',
       '#title' => t('Allowed users'),
-      '#description' => t('Enter usernames one per line.'),
+      '#description' => t('Enter usernames one per line. If left empty, any user with "view rpg chat" rights may use this room.'),
       '#default_value' => $allow_string,
     );
     $ban_string = '';
@@ -337,7 +340,7 @@ function rpg_chat_form_alter(&$form, &$form_state, $form_id) {
     $form['rpg_chat']['ban'] = array(
       '#type' => 'textarea',
       '#title' => t('Banned users'),
-      '#description' => t('Enter usernames one per line.'),
+      '#description' => t('Enter usernames one per line. Users listed may not use this room.'),
       '#default_value' => $ban_string,
     );
     $form['#validate'][] = '_rpg_chat_add_room_validate';
@@ -480,6 +483,9 @@ function _rpg_chat_delete_room($nid) {
  * DB function. Get users recently viewing a room.
  */
 function _rpg_chat_get_room_users($nid) {
+  // Clear out anything past a certain timeline / session for ALL ROOMS.
+  db_query('DELETE FROM {rpg_chat_room_users} WHERE timestamp < :timestamp',
+    array(':timestamp' => strtotime('-15 minutes') ));
   $users = array();
   $results = db_query('SELECT * FROM {rpg_chat_room_users} WHERE nid = :nid', array(':nid' => $nid));
   foreach ($results as $result) {
