@@ -363,6 +363,7 @@ function vaxia_character_sheet_validate_sheet($node, $old_node, $form, $form_sta
   }
   $spent_xp = _vaxia_total_sheet($node);
   if ($spent_xp <= $xp) {
+    drupal_set_message(t('You have spent %spent_xp xp out of %xp available xp.', array('%spent_xp' => $spent_xp, '%xp' => $xp)));
     return FALSE;
   }
   return $error = array('field' => '', 'message' => 

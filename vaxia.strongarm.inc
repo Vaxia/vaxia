@@ -20,9 +20,24 @@ function vaxia_strongarm() {
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'character_sheet_systems';
+  $strongarm->value = array(
+    'vaxia' => 'vaxia',
+  );
+  $export['character_sheet_systems'] = $strongarm;
+
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'character_sheet_system_character_sheet';
+  $strongarm->value = 'vaxia';
+  $export['character_sheet_system_character_sheet'] = $strongarm;
+
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'character_sheet_types';
   $strongarm->value = array(
-    'rpg_chatroom' => FALSE,
     'character_sheet' => TRUE,
   );
   $export['character_sheet_types'] = $strongarm;
@@ -421,6 +436,68 @@ function vaxia_strongarm() {
   $strongarm->name = 'rpg_chat_rpg_chatroom';
   $strongarm->value = 1;
   $export['rpg_chat_rpg_chatroom'] = $strongarm;
+
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'vaxia_attribute_cost';
+  $strongarm->value = '1';
+  $export['vaxia_attribute_cost'] = $strongarm;
+
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'vaxia_kxp_level';
+  $strongarm->value = '70';
+  $export['vaxia_kxp_level'] = $strongarm;
+
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'vaxia_skill_cost';
+  $strongarm->value = '0.75';
+  $export['vaxia_skill_cost'] = $strongarm;
+
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'vaxia_starting_econ';
+  $strongarm->value = '25';
+  $export['vaxia_starting_econ'] = $strongarm;
+
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'vaxia_starting_xp';
+  $strongarm->value = '300';
+  $export['vaxia_starting_xp'] = $strongarm;
+
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'vaxia_transfer_percentage';
+  $strongarm->value = '0.75';
+  $export['vaxia_transfer_percentage'] = $strongarm;
+
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'vaxia_transfer_workflow';
+  $strongarm->value = '11';
+  $export['vaxia_transfer_workflow'] = $strongarm;
+
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'vaxia_xp_types';
+  $strongarm->value = 'good
+evil
+smart
+clever
+warrior
+mage
+rogue';
+  $export['vaxia_xp_types'] = $strongarm;
 
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
