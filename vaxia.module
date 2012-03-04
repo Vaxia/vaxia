@@ -70,14 +70,15 @@ function vaxia_permission() {
  * Implements hook_menu().
  */
 function vaxia_menu() {
-  $items['node/%node/transfer'] = array(
-    'title' => 'Transfer XP',
+  $items['node/%node/xp'] = array(
+    'title' => 'XP',
     'type' => MENU_LOCAL_TASK,
-    'access callback' => '_vaxia_menu_transfer_access_callback',
+    'access callback' => '_vaxia_menu_manage_xp_callback',
     'access arguments' => array(1),
-    'page callback' => '_vaxia_transfer_xp',
+    'page callback' => '_vaxia_manage_xp',
     'page arguments' => array(1),
     'weight' => 3,
+    'file' => 'vaxia.character_sheet.inc',
   );
   $items['node/%node/ownership'] = array(
     'title' => 'Transfer ownership',
@@ -94,10 +95,9 @@ function vaxia_menu() {
 /**
  * Menu access callback.
  */
-function _vaxia_menu_transfer_access_callback($node) {
-  $setting = variable_get('vaxia_transfer_workflow', '');
+function _vaxia_menu_manage_xp_callback($node) {
   $sheet = character_sheet_is_enabled($node->type);
-  if ($sheet && !empty($setting)) {
+  if ($sheet) {
     return TRUE;
   }
   return FALSE;
@@ -112,41 +112,12 @@ function _vaxia_menu_ownership_access_callback($node) {
     global $user;
     if ( ( user_access('change art owner') || user_access('change item owner'))
       || ($user->uid == $node->uid && 
-        (user_access('edit any ' . $node->type . ' content') || user_access('edit own ' . $node->type . ' content')))) {
+        (user_access('edit any ' . $node->type . ' content')
+          || user_access('edit own ' . $node->type . ' content')))) {
       return TRUE;
     }
   }
   return FALSE;
-}
-
-/**
- * Implements hook_field_extra_fields().
- */
-function vaxia_field_extra_fields() {
-  $types = array_keys(node_type_get_types());
-  $extra = array();
-  foreach ($types as $type) {
-    $enabled = character_sheet_is_enabled($type);
-    if ($enabled && variable_get('character_sheet_system_' . $type, '') == 'vaxia') {
-      $extra['node'][$type] = array(
-        'form' => array(
-          'vaxia_xp' => array(
-            'label' => t('Total XP'),
-            'description' => t('character sheet basic XP display.'),
-            'weight' => 0,
-          ),
-        ), 
-        'display' => array(
-          'vaxia' => array(
-            'vaxia_xp' => t('Total XP'),
-            'description' => t('character sheet basic XP display.'),
-            'weight' => 0,
-          ),
-        ),
-      );
-    }
-  }
-  return $extra;
 }
 
 /**
@@ -155,7 +126,7 @@ function vaxia_field_extra_fields() {
 function _vaxia_ownership($node) {
   return drupal_get_form('_vaxia_change_ownership_form', $node);
 }
-      
+
 /*
  * Form callback function from nodeapi view, adds moderation form to node display.
  */
@@ -263,8 +234,10 @@ function _vaxia_create_avatar_image_link($fid, $name) {
   if (isset($filepath)) {
     $alt = t("@user's picture", array('@user' => $name));
     // If the image does not have a valid Drupal scheme (for eg. HTTP) don't load image styles.
-    if (module_exists('image') && file_valid_uri($filepath) && $style = variable_get('user_picture_style', '')) {
-      $picture = theme('image_style', array('style_name' => $style, 'path' => $filepath, 'alt' => $alt, 'title' => $alt));
+    if (module_exists('image') && file_valid_uri($filepath) 
+      && $style = variable_get('user_picture_style', '')) {
+      $picture = theme('image_style',
+        array('style_name' => $style, 'path' => $filepath, 'alt' => $alt, 'title' => $alt));
     }
     else {
       $picture = theme('image', array('path' => $filepath, 'alt' => $alt, 'title' => $alt));
