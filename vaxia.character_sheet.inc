@@ -129,7 +129,7 @@ function _vaxia_manage_xp_form($form, &$form_state, $node) {
   );
   $form['node_info']['xp_log']['log'] = array(
     '#type' => 'item',
-    '#markup' => theme('item_list', array('items' => $node->vaxia_type_xp)),
+    '#markup' => !empty($node->vaxia_type_xp) ? $node->vaxia_type_xp : t('No XP awarded.'),
   );
   if (TRUE) { // TODO check permissions to add XP.
     $form['add_xp'] = array(
@@ -296,6 +296,17 @@ function vaxia_character_sheet_insert_sheet($node) {
 }
 
 /**
+ * Implements hook_character_sheet_update_sheet().
+ */
+function vaxia_character_sheet_update_sheet($node) {
+  $old_xp = _vaxia_get_xp($node->nid);
+  // If somehow a character got this far without xp, add the baseline.
+  if (!$old_xp) {
+    _vaxia_update_xp($node->nid, variable_get('vaxia_starting_xp', 300), 'xp');
+  }
+}
+
+/**
  * Implements hook_character_sheet_load_sheet().
  */
 function vaxia_character_sheet_load_sheet($node) {
@@ -334,7 +345,12 @@ function vaxia_character_sheet_load_sheet($node) {
     $message_log[] = t('%xp %type xp awarded.',
       array('%xp' => $log->xp, '%type' => $log->type));
   }
-  $node->vaxia_type_xp = theme('item_list', array('items' => $message_log));
+  if (!empty($message_log)) {
+    $node->vaxia_type_xp = theme('item_list', array('items' => $message_log));
+  }
+  else {
+   $node->vaxia_type_xp = '';
+  }
 }
 
 /**
@@ -447,24 +463,27 @@ function _vaxia_total_sheet($node) {
               break;
             default:
               if (isset($delta_field['value']) && is_numeric($delta_field['value'])) {
-                $total += _vaxia_field_calculate_cost($field_name, $delta_field['value']);
+                $total += _vaxia_field_calculate_value($field_name, $delta_field['value']);
               }
               break;
           }
         }
       }
     }
-  }  
+  }
   return $total;
 }
 
 /**
  * Helper function, assign values to field names.
  */
-function _vaxia_field_calculate_cost($field_name, $current_value) {
+function _vaxia_field_calculate_value($field_name, $current_value) {
+  $total = 0;
   // If a skill.
-  if ($field_name == 'field_skill_value') {
-    return floor($current_value / 10) * variable_get('vaxia_skill_cost', 0.75);
+  if ($field_name == 'field_skill_value') {   
+    for ($i=1;$i<=$current_value;$i++) {
+      $total += _vaxia_field_calculate_cost($field_name, $i);
+    }
   }
   // If an attribute.
   $attributes = array(
@@ -477,7 +496,34 @@ function _vaxia_field_calculate_cost($field_name, $current_value) {
     'field_charisma',
   );
   if (in_array($field_name, $attributes)) {
-    return floor($current_value / 10) * variable_get('vaxia_attribute_cost', 1);
+    for ($i=1;$i<=$current_value;$i++) {
+      $total += _vaxia_field_calculate_cost($field_name, $i);
+    }
+  }
+  // If value is not found. Calculated fields, descriptions, etc.
+  return $total;
+}
+
+/**
+ * Helper function, assign values to field names.
+ */
+function _vaxia_field_calculate_cost($field_name, $current_value) {
+  // If a skill.
+  if ($field_name == 'field_skill_value') {
+    return ($current_value / 10) * variable_get('vaxia_skill_cost', 0.75);
+  }
+  // If an attribute.
+  $attributes = array(
+    'field_life',
+    'field_endurance',
+    'field_strength',
+    'field_dexterity',
+    'field_intelligence',
+    'field_spirituality',
+    'field_charisma',
+  );
+  if (in_array($field_name, $attributes)) {
+    return ($current_value / 10) * variable_get('vaxia_attribute_cost', 1);
   }
   // If value is not found. Calculated fields, descriptions, etc.
   return 0;
@@ -580,7 +626,9 @@ function _vaxia_get_xp($nid, $type = 'xp') {
   $total = FALSE;
   $results = db_query($type_query, $args);
   foreach ($results as $result) {
-    $total = $result->xp;
+    if (!empty($result->xp)) {
+      $total = $result->xp;
+    }
   }
   return $total;
 }

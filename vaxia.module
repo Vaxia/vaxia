@@ -80,8 +80,8 @@ function vaxia_menu() {
     'weight' => 3,
     'file' => 'vaxia.character_sheet.inc',
   );
-  $items['node/%node/ownership'] = array(
-    'title' => 'Transfer ownership',
+  $items['node/%node/v_ownership'] = array(
+    'title' => 'Ownership',
     'type' => MENU_LOCAL_TASK,
     'access callback' => '_vaxia_menu_ownership_access_callback',
     'access arguments' => array(1),
@@ -116,8 +116,8 @@ function _vaxia_menu_ownership_access_callback($node) {
           || user_access('edit own ' . $node->type . ' content')))) {
       return TRUE;
     }
+    return FALSE;
   }
-  return FALSE;
 }
 
 /**
