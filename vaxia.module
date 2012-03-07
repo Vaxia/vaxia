@@ -298,7 +298,7 @@ function vaxia_form_alter(&$form, &$form_state, $form_id) {
   // If we're viewing a comment form, allow for user profile to set RPG chat additional fields.
   if (substr($form_id, 0, 7) == 'comment' && isset($form['#node'])) {
     $type = $form['#node']->type;
-    if (!character_sheet_is_enabled($type)) {
+    if (!_rpg_chat_is_enabled($type)) {
       return;
     }
     global $user;
@@ -322,7 +322,9 @@ function vaxia_form_alter(&$form, &$form_state, $form_id) {
     }
     // Set narrative checkbox access.
     if (!user_access('post in narrative format')) {
-      $form['field_comment_narrative']['#access'] = FALSE;
+      $form['field_comment_narrative'][$lang]['#value'] = 0;
+      $form['field_comment_narrative'][$lang]['#access'] = FALSE;
+      $form['field_comment_narrative'][$lang]['#type'] = 'hidden';
     }
     // Add new fields.
     $form['uid'] = array(

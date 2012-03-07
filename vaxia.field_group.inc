@@ -538,7 +538,8 @@ function vaxia_field_group_info() {
       1 => 'field_description',
       2 => 'field_occupation',
       3 => 'field_personality',
-      4 => 'title',
+      4 => 'field_npc',
+      5 => 'title',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(

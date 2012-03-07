@@ -269,7 +269,7 @@ function _vaxia_transfer_xp_form_submit(&$form, &$form_state) {
     $xp = $old_character->vaxia_xp;
     // Update the XP recorded for this character.
     _vaxia_delete_xp($old_character->nid);
-    _vaxia_delete_xp_log($old_character->nid);
+    _vaxia_delete_log($old_character->nid);
     // And update the original character status.
     workflow_execute_transition($old_character, $workflow, t('Transferring XP to a new character'), TRUE);
     // Now add XP to the new character.
@@ -285,7 +285,7 @@ function _vaxia_transfer_xp_form_submit(&$form, &$form_state) {
  */
 function vaxia_character_sheet_delete_sheet($node) {
   _vaxia_delete_xp($node->nid);
-  _vaxia_delete_xp_log($node->nid);
+  _vaxia_delete_log($node->nid);
 }
 
 /**
