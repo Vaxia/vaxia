@@ -32,7 +32,7 @@ function vaxia_schema() {
         'default' => '',
       ),
     ),
-    'primary key' => array('nid, type'),
+    'primary key' => array('nid', 'type'),
   );
   $schema['vaxia_xp_log'] = array(
     'description' => 'Table that contains logs of character sheet events.',
