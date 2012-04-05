@@ -459,13 +459,6 @@ function vaxia_strongarm() {
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'vaxia_kxp_level';
-  $strongarm->value = '70';
-  $export['vaxia_kxp_level'] = $strongarm;
-
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
   $strongarm->name = 'vaxia_kxp_ratio';
   $strongarm->value = '70';
   $export['vaxia_kxp_ratio'] = $strongarm;
@@ -497,13 +490,6 @@ function vaxia_strongarm() {
   $strongarm->name = 'vaxia_starting_points';
   $strongarm->value = '300';
   $export['vaxia_starting_points'] = $strongarm;
-
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'vaxia_starting_xp';
-  $strongarm->value = '300';
-  $export['vaxia_starting_xp'] = $strongarm;
 
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
