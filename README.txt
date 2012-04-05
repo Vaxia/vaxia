@@ -15,6 +15,10 @@ PURPOSE
 INSTALLATION
 ------------
 
+0. Currently: This code requires the use of the dev versions of the following modules:
+
+Features, Rules, Entity, Workflow
+
 1. Unzip and copy this directory to your sites/SITENAME/modules directory. 
 
 2. Enable the module. 
