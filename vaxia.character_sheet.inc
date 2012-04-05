@@ -25,11 +25,11 @@ function _vaxia_admin_settings() {
     '#title' => 'Settings',
     '#type' => 'fieldset',
   );
-  $form['settings']['vaxia_starting_xp'] = array(
-    '#title' => 'Starting XP',
-    '#description' => 'The starting XP points for a new character.',
+  $form['settings']['vaxia_starting_points'] = array(
+    '#title' => 'Starting points',
+    '#description' => 'The starting points for a new character.',
     '#type' => 'textfield',
-    '#default_value' => variable_get('vaxia_starting_xp', 300),
+    '#default_value' => variable_get('vaxia_starting_points', 300),
   );
   $form['settings']['vaxia_starting_econ'] = array(
     '#title' => 'Starting Economy level',
@@ -37,15 +37,16 @@ function _vaxia_admin_settings() {
     '#type' => 'textfield',
     '#default_value' => variable_get('vaxia_starting_econ', 25),
   );
-  $form['settings']['vaxia_kxp_level'] = array(
+  $form['settings']['vaxia_kxp_ratio'] = array(
     '#title' => 'Posted XP ratio',
     '#description' => 'The ratio of kxp to xp per comment word count.',
     '#type' => 'textfield',
-    '#default_value' => variable_get('vaxia_kxp_level', 70),
+    '#default_value' => variable_get('vaxia_kxp_ratio', 70),
   );
   $form['settings']['vaxia_xp_types'] = array(
     '#title' => 'XP types',
-    '#description' => 'Available XP sub-types',
+    '#description' => t('Available XP sub-types. The following types used by the system and will be ignored if added here: @types',
+      array('@types' => implode(', ' , _vaxia_meaningful_xp_types()))),
     '#type' => 'textarea',
     '#default_value' => variable_get('vaxia_xp_types',
       "good\nevil\nsmart\nclever\nwarrior\nmage\nrogue"),
@@ -86,6 +87,13 @@ function _vaxia_admin_settings() {
     '#type' => 'select',
     '#options' => $workflow_options,
     '#default_value' => variable_get('vaxia_transfer_workflow', ''),
+  );
+  $form['point_cost']['vaxia_live_workflow'] = array(
+    '#title' => 'Playable workflow',
+    '#description' => 'Workflow state characters who are playable are in. Character sheets in this state may be improved with XP.',
+    '#type' => 'select',
+    '#options' => $workflow_options,
+    '#default_value' => variable_get('vaxia_live_workflow', ''),
   );
   return $form;
 }
@@ -146,6 +154,7 @@ function _vaxia_manage_xp_form($form, &$form_state, $node) {
     );
     $types = variable_get('vaxia_xp_types', "good\nevil\nsmart\nclever\nwarrior\nmage\nrogue");
     $types = explode("\n", $types);
+    $types = array_diff($types, _vaxia_meaningful_xp_types());
     $options = array_combine($types, $types);
     $options = array_merge(array('generic' => '- generic -'), $options);
     $form['add_xp']['type'] = array(
@@ -239,10 +248,6 @@ function _vaxia_add_xp_form_submit($form, $form_state) {
   global $user;
   if (!empty($node) && user_access('add xp to character sheet')) {
     $old_xp = _vaxia_get_xp($node->nid);
-    // If somehow a character got this far without xp, add the baseline.
-    if (!$old_xp) {
-      _vaxia_update_xp($node->nid, variable_get('vaxia_starting_xp', 300), 'xp');
-    }
     // Add xp from Session.
     _vaxia_add_xp($node->nid, $values['xp'], $values['type']);
   }
@@ -266,7 +271,7 @@ function _vaxia_transfer_xp_form_submit(&$form, &$form_state) {
   $workflow = variable_get('vaxia_transfer_workflow', '');
   if ($old_character && $new_character && !empty($workflow) && $old_character->nid != $new_character->nid) {
     // Grab XP for this character.
-    $xp = $old_character->vaxia_xp;
+    $xp = $old_character->vaxia_unspent_xp + $old_character->vaxia_spent_xp;
     // Update the XP recorded for this character.
     _vaxia_delete_xp($old_character->nid);
     _vaxia_delete_log($old_character->nid);
@@ -292,17 +297,34 @@ function vaxia_character_sheet_delete_sheet($node) {
  * Implements hook_character_sheet_insert_sheet().
  */
 function vaxia_character_sheet_insert_sheet($node) {
-  _vaxia_update_xp($node->nid, variable_get('vaxia_starting_xp', 300), 'xp');
+}
+
+/**
+ * Helper function, determine access to modify without costing XP.
+ */
+function vaxia_character_sheet_no_xp_cost($node) {
+  global $user;
+  if(user_access('ignore cost on own character') && $node->uid == $user->uid) {
+    return FALSE;
+  }
+  if(user_access('ignore cost on others character') && $node->uid != $user->uid) {
+    return FALSE;
+  }
+  return TRUE;
 }
 
 /**
  * Implements hook_character_sheet_update_sheet().
  */
-function vaxia_character_sheet_update_sheet($node) {
-  $old_xp = _vaxia_get_xp($node->nid);
-  // If somehow a character got this far without xp, add the baseline.
-  if (!$old_xp) {
-    _vaxia_update_xp($node->nid, variable_get('vaxia_starting_xp', 300), 'xp');
+function vaxia_character_sheet_update_sheet($node, $old_node) {
+  // Check if the sheet has been finalized.
+  if ($node->workflow == variable_get('vaxia_live_workflow', '') && vaxia_character_sheet_no_xp_cost($node)) {
+    // Total the value of points by *change* against available xp weighted.
+    $old_total = _vaxia_total_sheet($old_node);
+    $new_total = _vaxia_total_sheet($node);
+    $spent_xp = $new_total - $old_total;
+    // Charge the spent xp tp the spent_xp pool.
+    _vaxia_update_xp($nid, $spent_xp, 'spent_xp');
   }
 }
 
@@ -313,6 +335,10 @@ function vaxia_character_sheet_load_sheet($node) {
   $xp = _vaxia_get_xp($node->nid, 'xp');
   if (!$xp) {
     $xp = 0;
+  }
+  $spent_xp = _vaxia_get_xp($node->nid, 'spent_xp');
+  if (!$spent_xp) {
+    $spent_xp = 0;
   }
   $bxp = _vaxia_get_xp($node->nid, 'bxp');
   if (!$bxp) {
@@ -330,7 +356,6 @@ function vaxia_character_sheet_load_sheet($node) {
   if (!$econ) {
     $econ = 0;
   }
-  $spent_xp = _vaxia_total_sheet($node);
   $unspent_xp = $xp - $spent_xp;
   $node->vaxia_xp = $xp;
   $node->vaxia_bxp = $bxp;
@@ -357,18 +382,32 @@ function vaxia_character_sheet_load_sheet($node) {
  * Implements hook_character_sheet_validate_sheet().
  */
 function vaxia_character_sheet_validate_sheet($node, $old_node, $form, $form_state) {
-  $xp = _vaxia_get_xp($node->nid);
-  if (!$old_node || !$xp) {
-    $xp = variable_get('vaxia_starting_xp', 300);
+  // Check if the sheet has been finalized.
+  if ($node->workflow == variable_get('vaxia_live_workflow', '') && isset($old_node->nid)) {
+    // Total the value of points by *change* against available xp weighted.
+    $xp = _vaxia_get_xp($node->nid);
+    $spent_xp = _vaxia_get_xp($node->nid, 'spent_xp');
+    $available_xp = $xp - $spent_xp; // Available xp for spending.
+    $old_total = _vaxia_total_sheet($old_node);
+    $new_total = _vaxia_total_sheet($node);
+    $spent_xp = $new_total - $old_total;
+    // Calculate the difference in cost. The spare 300 won't matter in this diff.
   }
-  $spent_xp = _vaxia_total_sheet($node);
-  if ($spent_xp <= $xp) {
-    drupal_set_message(t('You have spent %spent_xp xp out of %xp available xp.', array('%spent_xp' => $spent_xp, '%xp' => $xp)));
+  else {
+    // Total the value of points against starting points flat.
+    if (!$old_node || !$xp) {
+      $available_xp = variable_get('vaxia_starting_points', 300);
+    }
+    $spent_xp = _vaxia_total_sheet($node, 'flat');
+  }
+  if ($spent_xp <= $available_xp || vaxia_character_sheet_no_xp_cost($node)) {
+    drupal_set_message(t('You have spent %spent_xp xp out of %available_xp available xp.',
+      array('%spent_xp' => $spent_xp, '%available_xp' => $available_xp)));
     return FALSE;
   }
   return $error = array('field' => '', 'message' => 
-    t('You have spent %spent_xp xp out of %xp available xp. Please revise your sheet.',
-      array('%spent_xp' => $spent_xp, '%xp' => $xp)));
+    t('You have spent %spent_xp xp out of %available_xp available xp. Please revise your sheet.',
+      array('%spent_xp' => $spent_xp, '%available_xp' => $available_xp)));
 }
 
 /**
@@ -440,7 +479,7 @@ function vaxia_form_character_sheet_node_form_alter(&$form, &$form_state) {
  * Helper function, determine how many points a sheet has spent.
  * ALERT: RECURSIVE. BE CAREFUL HERE.
  */
-function _vaxia_total_sheet($node) {
+function _vaxia_total_sheet($node, $mode = 'weighted') {
   $total = 0;
   $entity = (array) $node;
   // Look at all elements of the node.
@@ -464,7 +503,7 @@ function _vaxia_total_sheet($node) {
               break;
             default:
               if (isset($delta_field['value']) && is_numeric($delta_field['value'])) {
-                $total += _vaxia_field_calculate_value($field_name, $delta_field['value']);
+                $total += _vaxia_field_calculate_value($field_name, $delta_field['value'], $mode);
               }
               break;
           }
@@ -478,16 +517,15 @@ function _vaxia_total_sheet($node) {
 /**
  * Helper function, assign values to field names.
  */
-function _vaxia_field_calculate_value($field_name, $current_value) {
-  $total = 0;
-  // If a skill.
-  if ($field_name == 'field_skill_value') {   
-    for ($i=1;$i<=$current_value;$i++) {
-      $total += _vaxia_field_calculate_cost($field_name, $i);
-    }
+function _vaxia_field_calculate_value($field_name, $current_value, $mode = 'weighted') {
+  // If in flat mode, we're just counting the value - not weighing each point of it as assigned.
+  if ($mode == 'flat') {
+    return $current_value;
   }
-  // If an attribute.
-  $attributes = array(
+  // Else we calculate the total value, point by point starting at zero.
+  $total = 0;
+  $field_names = array(
+    'field_skill_value',
     'field_life',
     'field_endurance',
     'field_strength',
@@ -501,7 +539,6 @@ function _vaxia_field_calculate_value($field_name, $current_value) {
       $total += _vaxia_field_calculate_cost($field_name, $i);
     }
   }
-  // If value is not found. Calculated fields, descriptions, etc.
   return $total;
 }
 
@@ -530,8 +567,12 @@ function _vaxia_field_calculate_cost($field_name, $current_value) {
   return 0;
 }
 
+function _vaxia_meaningful_xp_types() {
+  return array('xp', 'spent_xp', 'bxp', 'rxp', 'kxp', 'econ');
+}
+
 function _vaxia_add_xp($nid, $xp, $type) {
-  $meaningful_types = array('xp', 'bxp', 'rxp', 'kxp', 'econ');
+  $meaningful_types = _vaxia_meaningful_xp_types();
   if (!in_array($type, $meaningful_types)) {
     // Add a historical log for 'flavored' rxp given.
     // Flavor xp is basically xp from a GM, tagged according to type.
@@ -546,9 +587,9 @@ function _vaxia_add_xp($nid, $xp, $type) {
       _vaxia_update_xp($nid, $xp, 'kxp');
       $current_kxp = _vaxia_get_xp($nid, 'kxp');
       // If we have enough to convert to other xp, do it.
-      if ($current_kxp > variable_get('vaxia_kxp_level', 70)) {
+      if ($current_kxp > variable_get('vaxia_kxp_ratio', 70)) {
         // Remove from kxp, add 1 to rxp.
-        _vaxia_update_xp($nid, variable_get('vaxia_kxp_level', 70) * -1, 'kxp');
+        _vaxia_update_xp($nid, variable_get('vaxia_kxp_ratio', 70) * -1, 'kxp');
         _vaxia_update_xp($nid, 1, 'rxp');
         // If we have banked xp, remove one from bxp and add spendable xp.
         $current_bxp = _vaxia_get_xp($nid, 'bxp');
@@ -597,7 +638,7 @@ function _vaxia_update_xp($nid, $xp, $type = 'xp') {
     'type' => $type,
   );
   if ($current_xp !== FALSE) {
-    $record['xp'] += $current_xp; // Add current xp total to track.
+    $record['xp'] += $current_xp; // Update current xp total to track.
     drupal_write_record('vaxia_xp', $record, array('nid', 'type'));
   }
   else {
@@ -616,7 +657,7 @@ function _vaxia_delete_xp($nid) {
  * DB function, get XP count to the database.
  */
 function _vaxia_get_xp($nid, $type = 'xp') {
-  $type_query = 'SELECT SUM(xp) AS xp FROM {vaxia_xp} WHERE nid = :nid';
+  $type_query = 'SELECT xp FROM {vaxia_xp} WHERE nid = :nid';
   $args = array(':nid' => $nid);
   // Filter for the type.
   if ($type != 'all') {
@@ -624,7 +665,7 @@ function _vaxia_get_xp($nid, $type = 'xp') {
     $args[':type'] = $type;
   }
   // Make the query.
-  $total = FALSE;
+  $total = 0;
   $results = db_query($type_query, $args);
   foreach ($results as $result) {
     if (!empty($result->xp)) {

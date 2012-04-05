@@ -35,10 +35,6 @@ function vaxia_permission() {
       'title' => t('post notes on character'),
       'description' => t('Post notes on character.'),
     ),
-    'add xp to character sheet' => array(
-      'title' => t('add xp to character sheet'),
-      'description' => t('Add XP to a character.'),
-    ),
     'add item to character sheet' => array(
       'title' => t('add item to character sheet'),
       'description' => t('Add item to a character.'),
@@ -55,9 +51,21 @@ function vaxia_permission() {
       'title' => t('add npc to character sheet'),
       'description' => t('Add npc to a character.'),
     ),
+    'add xp to character sheet' => array(
+      'title' => t('add xp to character sheet'),
+      'description' => t('Add XP to a character.'),
+    ),
     'evaluate character'=> array(
       'title' => t('evaluate character'),
       'description' => t('Evaluate character.'),
+    ),
+    'ignore cost on others character'=> array(
+      'title' => t('ignore cost on others character'),
+      'description' => t('Modify others character without spending xp.'),
+    ),
+    'ignore cost on own character' => array(
+      'title' => t('ignore cost on own character'),
+      'description' => t('Modify own character without spending xp.'),
     ),
     'post in narrative format' => array(
       'title' => t('post in narrative format'),
