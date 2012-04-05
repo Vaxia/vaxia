@@ -505,7 +505,7 @@ function vaxia_field_default_fields() {
       'required' => 1,
       'settings' => array(
         'alt_field' => 0,
-        'file_directory' => '',
+        'file_directory' => 'artwork',
         'file_extensions' => 'png gif jpg jpeg',
         'max_filesize' => '',
         'max_resolution' => '200x200',
@@ -517,15 +517,6 @@ function vaxia_field_default_fields() {
         'active' => 1,
         'module' => 'image',
         'settings' => array(
-          'allowed_schemes' => array(
-            'public' => 'public',
-          ),
-          'allowed_types' => array(
-            'audio' => 0,
-            'default' => 0,
-            'image' => 'image',
-            'video' => 0,
-          ),
           'preview_image_style' => 'thumbnail',
           'progress_indicator' => 'throbber',
         ),
