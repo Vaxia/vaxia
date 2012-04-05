@@ -335,6 +335,7 @@ function vaxia_strongarm() {
   $strongarm->name = 'node_options_artwork';
   $strongarm->value = array(
     0 => 'status',
+    1 => 'revision',
   );
   $export['node_options_artwork'] = $strongarm;
 
@@ -353,6 +354,7 @@ function vaxia_strongarm() {
   $strongarm->name = 'node_options_character_sheet';
   $strongarm->value = array(
     0 => 'status',
+    1 => 'revision',
   );
   $export['node_options_character_sheet'] = $strongarm;
 
@@ -362,6 +364,7 @@ function vaxia_strongarm() {
   $strongarm->name = 'node_options_items';
   $strongarm->value = array(
     0 => 'status',
+    1 => 'revision',
   );
   $export['node_options_items'] = $strongarm;
 
@@ -371,6 +374,7 @@ function vaxia_strongarm() {
   $strongarm->name = 'node_options_rpg_chatroom';
   $strongarm->value = array(
     0 => 'status',
+    1 => 'revision',
   );
   $export['node_options_rpg_chatroom'] = $strongarm;
 
