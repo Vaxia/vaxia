@@ -5,16 +5,47 @@
  */
 
 /* 
- * Implementation of hook_character_sheet_register_systems(). 
+ * Implements hook_character_sheet_register_systems(). 
  */
 function vaxia_character_sheet_register_systems() {
   $system['vaxia'] = array(
     'name' => 'Vaxia character sheet',
-    'description' => 'Vaxia system featuring a points tracker for '.
-      'attribute and skill fields.',
+    'description' => 'Vaxia system featuring a XP tracker for attribute and skill fields.',
     'admin_callback' => '_vaxia_admin_settings',
   );
   return $system;
+}
+
+/**
+ * Implements hook_character_sheet_field_info().
+ */
+function vaxia_character_sheet_field_info() {
+  return array(
+    'field_skill_value' => array(
+      'cost' => variable_get('vaxia_skill_cost', 0.75) * 0.1,
+    ),
+    'field_life' => array(
+      'cost' => variable_get('vaxia_attribute_cost', 1) * 0.1,
+    ),
+    'field_endurance' => array(
+      'cost' => variable_get('vaxia_attribute_cost', 1) * 0.1,
+    ),
+    'field_strength' => array(
+      'cost' => variable_get('vaxia_attribute_cost', 1) * 0.1,
+    ),
+    'field_dexterity' => array(
+      'cost' => variable_get('vaxia_attribute_cost', 1) * 0.1,
+    ),
+    'field_intelligence' => array(
+      'cost' => variable_get('vaxia_attribute_cost', 1) * 0.1,
+    ),
+    'field_spirituality' => array(
+      'cost' => variable_get('vaxia_attribute_cost', 1) * 0.1,
+    ),
+    'field_charisma' => array(
+      'cost' => variable_get('vaxia_attribute_cost', 1) * 0.1,
+    ),
+  );
 }
 
 /*
@@ -320,8 +351,8 @@ function vaxia_character_sheet_update_sheet($node, $old_node) {
   // Check if the sheet has been finalized.
   if ($node->workflow == variable_get('vaxia_live_workflow', '') && vaxia_character_sheet_no_xp_cost($node)) {
     // Total the value of points by *change* against available xp weighted.
-    $old_total = _vaxia_total_sheet($old_node);
-    $new_total = _vaxia_total_sheet($node);
+    $old_total = character_sheet_total_sheet($old_node);
+    $new_total = character_sheet_total_sheet($node);
     $spent_xp = $new_total - $old_total;
     // Charge the spent xp tp the spent_xp pool.
     _vaxia_update_xp($nid, $spent_xp, 'spent_xp');
@@ -388,8 +419,8 @@ function vaxia_character_sheet_validate_sheet($node, $old_node, $form, $form_sta
     $xp = _vaxia_get_xp($node->nid);
     $spent_xp = _vaxia_get_xp($node->nid, 'spent_xp');
     $available_xp = $xp - $spent_xp; // Available xp for spending.
-    $old_total = _vaxia_total_sheet($old_node);
-    $new_total = _vaxia_total_sheet($node);
+    $old_total = character_sheet_total_sheet($old_node);
+    $new_total = character_sheet_total_sheet($node);
     $spent_xp = $new_total - $old_total;
     // Calculate the difference in cost. The spare 300 won't matter in this diff.
   }
@@ -398,7 +429,7 @@ function vaxia_character_sheet_validate_sheet($node, $old_node, $form, $form_sta
     if (!$old_node || !$xp) {
       $available_xp = variable_get('vaxia_starting_points', 300);
     }
-    $spent_xp = _vaxia_total_sheet($node, 'flat');
+    $spent_xp = character_sheet_total_sheet($node, 'flat');
   }
   if ($spent_xp <= $available_xp || vaxia_character_sheet_no_xp_cost($node)) {
     drupal_set_message(t('You have spent %spent_xp xp out of %available_xp available xp.',
@@ -473,98 +504,6 @@ function vaxia_form_character_sheet_node_form_alter(&$form, &$form_state) {
     $form['field_items'][$lang][0]['value']['#value'] = 
       isset($form['field_items'][$lang][0]['value']['#default_value']) ? $form['field_items'][$lang][0]['value']['#default_value'] : '';
   }
-}
-
-/**
- * Helper function, determine how many points a sheet has spent.
- * ALERT: RECURSIVE. BE CAREFUL HERE.
- */
-function _vaxia_total_sheet($node, $mode = 'weighted') {
-  $total = 0;
-  $entity = (array) $node;
-  // Look at all elements of the node.
-  foreach (element_children($entity) as $field_name) {
-    if (strpos($field_name, 'field_') === 0) {
-      $field = $entity[$field_name];
-      if(isset($field[$entity['language']]) && is_array($field[$entity['language']])) {
-        // If field is a field_collection call this function on the entity.
-        // (could be done with user ref, node ref)
-        // If field is a normal / plain field then try to grab the value and map cost.
-        foreach ($field[$entity['language']] as $delta => $delta_field) {
-          $bundle_type = 'generic';
-          if (isset($entity['content'][$field_name]['#field_type'])) {
-            $bundle_type = $entity['content'][$field_name]['#field_type'];
-          }
-          switch ($bundle_type) {
-            case 'field_collection':
-              $sub_entity = field_collection_item_load($delta_field['value']);
-              $sub_entity->language = $entity['language'];
-              $total += _vaxia_total_sheet($sub_entity);
-              break;
-            default:
-              if (isset($delta_field['value']) && is_numeric($delta_field['value'])) {
-                $total += _vaxia_field_calculate_value($field_name, $delta_field['value'], $mode);
-              }
-              break;
-          }
-        }
-      }
-    }
-  }
-  return $total;
-}
-
-/**
- * Helper function, assign values to field names.
- */
-function _vaxia_field_calculate_value($field_name, $current_value, $mode = 'weighted') {
-  // If in flat mode, we're just counting the value - not weighing each point of it as assigned.
-  if ($mode == 'flat') {
-    return $current_value;
-  }
-  // Else we calculate the total value, point by point starting at zero.
-  $total = 0;
-  $field_names = array(
-    'field_skill_value',
-    'field_life',
-    'field_endurance',
-    'field_strength',
-    'field_dexterity',
-    'field_intelligence',
-    'field_spirituality',
-    'field_charisma',
-  );
-  if (in_array($field_name, $attributes)) {
-    for ($i=1;$i<=$current_value;$i++) {
-      $total += _vaxia_field_calculate_cost($field_name, $i);
-    }
-  }
-  return $total;
-}
-
-/**
- * Helper function, assign values to field names.
- */
-function _vaxia_field_calculate_cost($field_name, $current_value) {
-  // If a skill.
-  if ($field_name == 'field_skill_value') {
-    return ($current_value / 10) * variable_get('vaxia_skill_cost', 0.75);
-  }
-  // If an attribute.
-  $attributes = array(
-    'field_life',
-    'field_endurance',
-    'field_strength',
-    'field_dexterity',
-    'field_intelligence',
-    'field_spirituality',
-    'field_charisma',
-  );
-  if (in_array($field_name, $attributes)) {
-    return ($current_value / 10) * variable_get('vaxia_attribute_cost', 1);
-  }
-  // If value is not found. Calculated fields, descriptions, etc.
-  return 0;
 }
 
 function _vaxia_meaningful_xp_types() {
