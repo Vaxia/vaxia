@@ -119,9 +119,23 @@ function _vaxia_admin_settings() {
     '#options' => $workflow_options,
     '#default_value' => variable_get('vaxia_transfer_workflow', ''),
   );
+  $form['point_cost']['vaxia_draft_workflow'] = array(
+    '#title' => 'Draft workflow',
+    '#description' => 'Workflow state for characters in creation.',
+    '#type' => 'select',
+    '#options' => $workflow_options,
+    '#default_value' => variable_get('vaxia_draft_workflow', ''),
+  );
+  $form['point_cost']['vaxia_eval_workflow'] = array(
+    '#title' => 'Evaluation workflow',
+    '#description' => 'Workflow state for characters in evaluation.',
+    '#type' => 'select',
+    '#options' => $workflow_options,
+    '#default_value' => variable_get('vaxia_eval_workflow', ''),
+  );
   $form['point_cost']['vaxia_live_workflow'] = array(
     '#title' => 'Playable workflow',
-    '#description' => 'Workflow state characters who are playable are in. Character sheets in this state may be improved with XP.',
+    '#description' => 'Workflow state for playable characters. Character sheets in this state may be improved with XP.',
     '#type' => 'select',
     '#options' => $workflow_options,
     '#default_value' => variable_get('vaxia_live_workflow', ''),
@@ -331,28 +345,14 @@ function vaxia_character_sheet_insert_sheet($node) {
 }
 
 /**
- * Helper function, determine access to modify without costing XP.
- */
-function vaxia_character_sheet_no_xp_cost($node) {
-  global $user;
-  if(user_access('ignore cost on own character') && $node->uid == $user->uid) {
-    return FALSE;
-  }
-  if(user_access('ignore cost on others character') && $node->uid != $user->uid) {
-    return FALSE;
-  }
-  return TRUE;
-}
-
-/**
  * Implements hook_character_sheet_update_sheet().
  */
 function vaxia_character_sheet_update_sheet($node, $old_node) {
   // Check if the sheet has been finalized.
   if ($node->workflow == variable_get('vaxia_live_workflow', '') && vaxia_character_sheet_no_xp_cost($node)) {
     // Total the value of points by *change* against available xp weighted.
-    $old_total = character_sheet_total_sheet($old_node);
-    $new_total = character_sheet_total_sheet($node);
+    $old_total = _vaxia_total_sheet($old_node);
+    $new_total = _vaxia_total_sheet($node);
     $spent_xp = $new_total - $old_total;
     // Charge the spent xp tp the spent_xp pool.
     _vaxia_update_xp($nid, $spent_xp, 'spent_xp');
@@ -414,22 +414,23 @@ function vaxia_character_sheet_load_sheet($node) {
  */
 function vaxia_character_sheet_validate_sheet($node, $old_node, $form, $form_state) {
   // Check if the sheet has been finalized.
-  if ($node->workflow == variable_get('vaxia_live_workflow', '') && isset($old_node->nid)) {
+  if (isset($node->workflow)
+    && ($node->workflow == variable_get('vaxia_live_workflow', '') && isset($old_node->nid))) {
     // Total the value of points by *change* against available xp weighted.
     $xp = _vaxia_get_xp($node->nid);
     $spent_xp = _vaxia_get_xp($node->nid, 'spent_xp');
     $available_xp = $xp - $spent_xp; // Available xp for spending.
-    $old_total = character_sheet_total_sheet($old_node);
-    $new_total = character_sheet_total_sheet($node);
+    $old_total = _vaxia_total_sheet($old_node);
+    $new_total = _vaxia_total_sheet($node);
     $spent_xp = $new_total - $old_total;
     // Calculate the difference in cost. The spare 300 won't matter in this diff.
   }
   else {
     // Total the value of points against starting points flat.
-    if (!$old_node || !$xp) {
+    if (!isset($old_node->nid) || !isset($xp)) {
       $available_xp = variable_get('vaxia_starting_points', 300);
     }
-    $spent_xp = character_sheet_total_sheet($node, 'flat');
+    $spent_xp = _vaxia_total_sheet($node, 'flat');
   }
   if ($spent_xp <= $available_xp || vaxia_character_sheet_no_xp_cost($node)) {
     drupal_set_message(t('You have spent %spent_xp xp out of %available_xp available xp.',
@@ -442,68 +443,270 @@ function vaxia_character_sheet_validate_sheet($node, $old_node, $form, $form_sta
 }
 
 /**
- * Implements hook_form_FORMID_alter().
+ * Helper function, determine how many points a sheet has spent.
+ * ALERT: RECURSIVE. BE CAREFUL HERE.
  */
-function vaxia_form_character_sheet_node_form_alter(&$form, &$form_state) {
-  $lang = $form['language']['#value'];
-  if (empty($lang)) {
-    $lang = 'und';
-  }  
-  if (isset($form['#node']->workflow)) {
-    $workflow_state = workflow_get_workflow_states_by_sid($form['#node']->workflow);
-  }
-  if ((!empty($workflow_state->state) && $workflow_state->state != 'draft')
-      && !user_access('evaluate character')) {
-    // User is not allowed to modify certain elements on their sheet.
-    // Such as: name, skill names and skill descriptions.
-    $form['title']['#disabled'] = TRUE;
-    $form['title']['#value'] = $form['title']['#default_value'];
-    $form['field_realm'][$lang]['#disabled'] = TRUE;
-    $form['field_realm'][$lang]['#value'] = $form['field_realm'][$lang]['#default_value'];
-    foreach (element_children($form['field_skill'][$lang]) as $delta) {
-      if (isset($form['field_skill'][$lang][$delta]['#name']) 
-        && ($form['field_skill'][$lang][$delta]['#name'] == 'field_skill_add_more')) {
-          unset($form['field_skill'][$lang][$delta]);
-      }
-      else {
-        $form['field_skill'][$lang][$delta]['field_skill_name'][$lang][0]['value']['#disabled'] = TRUE;
-        $form['field_skill'][$lang][$delta]['field_skill_name'][$lang][0]['value']['#value'] =
-          $form['field_skill'][$lang][$delta]['field_skill_name'][$lang][0]['value']['#default_value'];
-        $form['field_skill'][$lang][$delta]['field_skill_desc'][$lang][0]['value']['#disabled'] = TRUE;
-        $form['field_skill'][$lang][$delta]['field_skill_desc'][$lang][0]['value']['#value'] = 
-          $form['field_skill'][$lang][$delta]['field_skill_desc'][$lang][0]['value']['#default_value'];
-        if (empty($form['field_skill'][$lang][$delta]['field_skill_name'][$lang][0]['value']['#value'])) {
-          unset($form['field_skill'][$lang][$delta]);
+function _vaxia_total_sheet($node, $mode = 'weighted') {
+  $total = 0;
+  $entity = (array) $node;
+  // Look at all elements of the node.
+  foreach (element_children($entity) as $field_name) {
+    if (strpos($field_name, 'field_') === 0) {
+      $field = $entity[$field_name];
+      if(isset($field[$entity['language']]) && is_array($field[$entity['language']])) {
+        // If field is a field_collection call this function on the entity.
+        // (could be done with user ref, node ref)
+        // If field is a normal / plain field then try to grab the value and map cost.
+        foreach ($field[$entity['language']] as $delta => $delta_field) {
+          $bundle_type = 'generic';
+          if (isset($entity['content'][$field_name]['#field_type'])) {
+            $bundle_type = $entity['content'][$field_name]['#field_type'];
+          }
+          switch ($bundle_type) {
+            case 'field_collection':
+              $sub_entity = field_collection_item_load($delta_field['value']);
+              $sub_entity->language = $entity['language'];
+              $total += _vaxia_total_sheet($sub_entity);
+              break;
+            default:
+              if (isset($delta_field['value']) && is_numeric($delta_field['value'])) {
+                $total += _vaxia_field_calculate_value($field_name, $delta_field['value'], $mode);
+              }
+              break;
+          }
         }
-        unset($form['field_skill'][$lang][$delta]['remove_button']);
       }
     }
   }
-  if (!user_access('post notes on character')) {
+  return $total;
+}
+
+/**
+ * Helper function, assign values to field names.
+ */
+function _vaxia_field_calculate_value($field_name, $current_value, $mode = 'weighted') {
+  // If in flat mode, we're just counting the value - not weighing each point of it as assigned.
+  if ($mode == 'flat') {
+    return $current_value;
+  }
+  // Else we calculate the total value, point by point starting at zero.
+  $total = 0;
+  $field_names = array(
+    'field_skill_value',
+    'field_life',
+    'field_endurance',
+    'field_strength',
+    'field_dexterity',
+    'field_intelligence',
+    'field_spirituality',
+    'field_charisma',
+  );
+  if (in_array($field_name, $field_names)) {
+    for ($i=1;$i<=$current_value;$i++) {
+      if ($field_name == 'field_skill_value') {
+        $total += ($current_value / 10) * variable_get('vaxia_skill_cost', 0.75);
+      }
+      else {
+        $total += ($current_value / 10) * variable_get('vaxia_attribute_cost', 1);
+      }
+    }
+  }
+  return $total;
+}
+
+/**
+ * Implements hook_form_FORMID_alter().
+ */
+function vaxia_form_character_sheet_node_form_alter(&$form, &$form_state) {
+  // If a field is in draft state, just let it go through unhindered.
+  if (isset($form['#node']->workflow)) {
+    $draft_state = variable_get('vaxia_draft_workflow', '');
+    if ($form['#node']->workflow == $draft_state) {
+      return $form;
+    }
+  }
+  else {
+    // New character sheets don't have a workflow, by default are in draft.
+    return $form;
+  }
+  
+  // Else, the field is in moderation or playable states.
+  $lang = $form['language']['#value'];
+  if (empty($lang)) {
+    $lang = 'und';
+  }
+  $edit_status = _vaxia_field_edit_access($form['#node']);
+
+  // Can't change character name or realm in principle.
+  $form['title']['#disabled'] = TRUE;
+  $form['title']['#value'] = $form['title']['#default_value'];
+  $form['field_realm'][$lang]['#disabled'] = TRUE;
+  $form['field_realm'][$lang]['#value'] = $form['field_realm'][$lang]['#default_value'];
+
+  // Check for race and sex? TODO
+
+  // Check skills.
+  foreach (element_children($form['field_skill'][$lang]) as $delta) {
+    switch($edit_status) {
+      case 'free':
+        // Edit freely. Do nothing.
+      break;
+      case 'edit':
+        // Remove the option to add more skills.
+        if (isset($form['field_skill'][$lang][$delta]['#name']) 
+          && ($form['field_skill'][$lang][$delta]['#name'] == 'field_skill_add_more')) {
+            unset($form['field_skill'][$lang][$delta]);
+        }
+        else {
+          // Disable the skill name.
+          $form['field_skill'][$lang][$delta]['field_skill_name'][$lang][0]['value']['#disabled'] = TRUE;
+          $form['field_skill'][$lang][$delta]['field_skill_name'][$lang][0]['value']['#value'] =
+            $form['field_skill'][$lang][$delta]['field_skill_name'][$lang][0]['value']['#default_value'];
+          // Disable the skill desc.
+          $form['field_skill'][$lang][$delta]['field_skill_desc'][$lang][0]['value']['#disabled'] = TRUE;
+          $form['field_skill'][$lang][$delta]['field_skill_desc'][$lang][0]['value']['#value'] = 
+            $form['field_skill'][$lang][$delta]['field_skill_desc'][$lang][0]['value']['#default_value'];
+          // MODIFY the skill value.
+          $base_value = $form['field_skill'][$lang][$delta]['field_skill_value'][$lang][0]['value']['#default_value'];
+          $options = range($base_value, $base_value + 10);
+          $options = array_combine($options, $options);
+          $form['field_skill'][$lang][$delta]['field_skill_value'][$lang][0]['value']['#type'] = 'select';
+          $form['field_skill'][$lang][$delta]['field_skill_value'][$lang][0]['value']['#size'] = 1;
+          $form['field_skill'][$lang][$delta]['field_skill_value'][$lang][0]['value']['#options'] = $options;
+          // Hide the skill if the value is zero.
+          if (empty($form['field_skill'][$lang][$delta]['field_skill_name'][$lang][0]['value']['#value'])) {
+            unset($form['field_skill'][$lang][$delta]);
+          }
+          // Disable the button to remove the skill.
+          unset($form['field_skill'][$lang][$delta]['remove_button']);
+        }
+      break;
+      case 'lock':
+      default:
+        // Remove the option to add more skills.
+        if (isset($form['field_skill'][$lang][$delta]['#name']) 
+          && ($form['field_skill'][$lang][$delta]['#name'] == 'field_skill_add_more')) {
+            unset($form['field_skill'][$lang][$delta]);
+        }
+        else {
+          // Disable the skill name.
+          $form['field_skill'][$lang][$delta]['field_skill_name'][$lang][0]['value']['#disabled'] = TRUE;
+          $form['field_skill'][$lang][$delta]['field_skill_name'][$lang][0]['value']['#value'] =
+            $form['field_skill'][$lang][$delta]['field_skill_name'][$lang][0]['value']['#default_value'];
+          // Disable the skill desc.
+          $form['field_skill'][$lang][$delta]['field_skill_desc'][$lang][0]['value']['#disabled'] = TRUE;
+          $form['field_skill'][$lang][$delta]['field_skill_desc'][$lang][0]['value']['#value'] = 
+            $form['field_skill'][$lang][$delta]['field_skill_desc'][$lang][0]['value']['#default_value'];
+          // DISABLE the skill value.
+          $form['field_skill'][$lang][$delta]['field_skill_value'][$lang][0]['value']['#disabled'] = TRUE;
+          $form['field_skill'][$lang][$delta]['field_skill_value'][$lang][0]['value']['#value'] = 
+            $form['field_skill'][$lang][$delta]['field_skill_value'][$lang][0]['value']['#default_value'];
+          // Hide the skill if the value is zero.
+          if (empty($form['field_skill'][$lang][$delta]['field_skill_name'][$lang][0]['value']['#value'])) {
+            unset($form['field_skill'][$lang][$delta]);
+          }
+          // Disable the button to remove the skill.
+          unset($form['field_skill'][$lang][$delta]['remove_button']);
+        }
+      break;
+    }
+  }
+
+  // Check attributes.
+  $attributes = array(
+    'field_life',
+    'field_endurance',
+    'field_strength',
+    'field_dexterity',
+    'field_intelligence',
+    'field_spirituality',
+    'field_charisma',
+  );
+  foreach ($attributes as $attribute_name) {
+    switch($edit_status) {
+      case 'free':
+        // Edit freely. Do nothing.
+      break;
+      case 'edit':
+        // MODIFY the attribute field.
+        $base_value = $form[$attribute_name][$lang][0]['value']['#default_value'];
+        $options = range($base_value, $base_value + 10);
+        $options = array_combine($options, $options);
+        $form[$attribute_name][$lang][0]['value']['#type'] = 'select';
+        $form[$attribute_name][$lang][0]['value']['#size'] = 1;
+        $form[$attribute_name][$lang][0]['value']['#options'] = $options;
+      break;
+      case 'lock':
+      default:
+        // Disable the attribute field.
+        $form[$attribute_name][$lang][0]['value']['#disabled'] = TRUE;
+        $form[$attribute_name][$lang][0]['value']['#value'] =
+          $form[$attribute_name][$lang][0]['value']['#default_value'];
+      break;
+    }
+  }
+  
+  global $user;
+  // Misc info and resources for a character sheet.
+  if (!user_access('post notes on character') || $user->uid == $form['#node']->uid) {
     $form['field_sh_notes'][$lang][0]['value']['#disabled'] = TRUE;
     $form['field_sh_notes'][$lang][0]['value']['#value'] =
       isset($form['field_sh_notes'][$lang][0]['value']['#default_value']) ? $form['field_sh_notes'][$lang][0]['value']['#default_value'] : '';
   }
-  if (!user_access('add item to character sheet')) {
-    $form['field_artwork'][$lang][0]['value']['#disabled'] = TRUE;
-    $form['field_artwork'][$lang][0]['value']['#value'] = 
-      isset($form['field_artwork'][$lang][0]['value']['#default_value']) ? $form['field_artwork'][$lang][0]['value']['#default_value'] : '';
-  }
-  if (!user_access('add property to character sheet')) {
+  if (!user_access('add npcs to character sheet') || $user->uid == $form['#node']->uid) {
     $form['field_npcs'][$lang][0]['value']['#disabled'] = TRUE;
     $form['field_npcs'][$lang][0]['value']['#value'] = 
       isset($form['field_npcs'][$lang][0]['value']['#default_value']) ? $form['field_npcs'][$lang][0]['value']['#default_value'] : '';
+   // Also remoe option to add more.
   }
-  if (!user_access('add item to character sheet')) {
+  if (!user_access('add item to character sheet') || $user->uid == $form['#node']->uid) {
     $form['field_property'][$lang][0]['value']['#disabled'] = TRUE;
     $form['field_property'][$lang][0]['value']['#value'] = 
      isset($form['field_property'][$lang][0]['value']['#default_value']) ? $form['field_property'][$lang][0]['value']['#default_value'] : '';
-  }
-  if (!user_access('add art to character sheet')) {
     $form['field_items'][$lang][0]['value']['#disabled'] = TRUE;
     $form['field_items'][$lang][0]['value']['#value'] = 
-      isset($form['field_items'][$lang][0]['value']['#default_value']) ? $form['field_items'][$lang][0]['value']['#default_value'] : '';
+      isset($form['field_items'][$lang][0]['value']['#default_value']) ? $form['field_artwork'][$lang][0]['value']['#default_value'] : '';
   }
+  if (!user_access('add art to character sheet') || $user->uid == $form['#node']->uid) {
+    $form['field_artwork'][$lang][0]['value']['#disabled'] = TRUE;
+    $form['field_artwork'][$lang][0]['value']['#value'] = 
+      isset($form['field_artwork'][$lang][0]['value']['#default_value']) ? $form['field_items'][$lang][0]['value']['#default_value'] : '';
+  }
+}
+
+/**
+ * Determine access based on node state and user permissions.
+ */
+function _vaxia_field_edit_access($node) {
+  global $user;
+  $draft_state = variable_get('vaxia_draft_workflow', '');
+  $sub_state = variable_get('vaxia_eval_workflow', '');
+  $live_state = variable_get('vaxia_live_workflow', '');
+  // New nodes don't have workflows, by default are in draft.
+  $workflow = isset($node->workflow) ? $node->workflow : $draft_state;
+
+  if ($workflow == $draft_state) {
+    if ($node->uid == $user->uid) {
+      return 'free';
+    }
+  }
+  elseif ($workflow == $sub_state) {
+    if ($node->uid == $user->uid) {
+      return 'edit';
+    }
+    if ($node->uid != $user->uid && user_access('evaluate character')) {
+      return 'free';
+    }
+  }
+  elseif ($workflow == $live_state) {
+    if ($node->uid == $user->uid) {
+      return 'edit';
+    }
+    if (user_access('edit live sheets')) {
+      return 'free';
+    }
+  }
+  return 'lock';
 }
 
 function _vaxia_meaningful_xp_types() {
@@ -561,9 +764,24 @@ function _vaxia_add_xp($nid, $xp, $type) {
       }
     break;
     case 'econ':
-// TODO FILL THIS IN FOR ECONOMY
+      // Economy is just added directly.
+      _vaxia_update_xp($nid, 1, 'econ');
     break;
   }
+}
+
+/**
+ * Helper function, determine access to modify without costing XP.
+ */
+function vaxia_character_sheet_no_xp_cost($node) {
+  global $user;
+  if(user_access('ignore cost on own character') && $node->uid == $user->uid) {
+    return FALSE;
+  }
+  if(user_access('ignore cost on others character') && $node->uid != $user->uid) {
+    return FALSE;
+  }
+  return TRUE;
 }
 
 /**

@@ -19,7 +19,7 @@ function vaxia_schema() {
         'description' => 'Nid of the character sheet.',
       ),
       'xp' => array(
-        'type' => 'int',
+        'type' => 'float',
         'not null' => TRUE,
         'default' => 0,
         'description' => 'XP assigned to the character sheet.',

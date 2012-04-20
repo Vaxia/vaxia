@@ -158,7 +158,7 @@ function _vaxia_change_ownership_form($form, &$form_state, $node) {
  * Form callback validation for _vaxia_change_ownership_form.
  */
 function _vaxia_change_ownership_form_validate($form, $form_state) {
-  $count = db_query("SELECT COUNT(*) FROM {users} WHERE name = :name",
+  $count = db_query('SELECT COUNT(*) FROM {users} WHERE name = :name',
     array(':name' => $form_state['values']['owner_name']))->fetchField();
   if (intval($count) != 1) {
     form_set_error('owner_name', t('Please enter a valid username.'));
