@@ -50,11 +50,6 @@ function vaxia_permission() {
     'add npc to character sheet' => array(
       'title' => t('add npc to character sheet'),
       'description' => t('Add npc to a character.'),
-    ),
-    'add xp to character sheet' => array(
-      'title' => t('add xp to character sheet'),
-      'description' => t('Add XP to a character.'),
-    ),
     'evaluate character'=> array(
       'title' => t('evaluate character'),
       'description' => t('Evaluate character.'),
@@ -78,16 +73,6 @@ function vaxia_permission() {
  * Implements hook_menu().
  */
 function vaxia_menu() {
-  $items['node/%node/xp'] = array(
-    'title' => 'XP',
-    'type' => MENU_LOCAL_TASK,
-    'access callback' => '_vaxia_menu_manage_xp_callback',
-    'access arguments' => array(1),
-    'page callback' => '_vaxia_manage_xp',
-    'page arguments' => array(1),
-    'weight' => 3,
-    'file' => 'vaxia.character_sheet.inc',
-  );
   $items['node/%node/v_ownership'] = array(
     'title' => 'Ownership',
     'type' => MENU_LOCAL_TASK,
@@ -98,17 +83,6 @@ function vaxia_menu() {
     'weight' => 3,
   );
   return $items;
-}
-
-/**
- * Menu access callback.
- */
-function _vaxia_menu_manage_xp_callback($node) {
-  $sheet = character_sheet_is_enabled($node->type);
-  if ($sheet) {
-    return TRUE;
-  }
-  return FALSE;
 }
 
 /**
@@ -196,13 +170,15 @@ function vaxia_process_comment(&$variables) {
   if (isset($user->field_artwork[$lang][0]['nid'])) {
     $artwork = node_load($user->field_artwork[$lang][0]['nid']);
     if (isset($artwork->field_artwork_image[$lang][0]['fid'])) {
-      $variables['picture'] = _vaxia_create_avatar_image_link($artwork->field_artwork_image[$lang][0]['fid'], $user->name);
+      $variables['picture'] = _vaxia_create_avatar_image_link(
+        $artwork->field_artwork_image[$lang][0]['fid'], $user->name);
     }
   }
   // Check for character type only on RPG type nodes. (and do some other work as well on RPG chat nodes)
   if (_rpg_chat_is_enabled($variables['node']->type)) {
     // Add the variables for our narrative and colors.
-    if( isset($comment->field_comment_narrative[$lang][0]['value']) && ($comment->field_comment_narrative[$lang][0]['value'] == 1) ) {
+    if( isset($comment->field_comment_narrative[$lang][0]['value'])
+      && ($comment->field_comment_narrative[$lang][0]['value'] == 1) ) {
       $variables['classes'] .= ' rpg-chat-narrative';
     }
     // Add the style attribute for our content color.
@@ -225,7 +201,8 @@ function vaxia_process_comment(&$variables) {
       if (isset($character->field_artwork[$lang][0]['nid'])) {
         $artwork = node_load($character->field_artwork[$lang][0]['nid']);
         if (isset($artwork->field_artwork_image[$lang][0]['fid'])) {
-          $variables['picture'] = _vaxia_create_avatar_image_link($artwork->field_artwork_image[$lang][0]['fid'], $character->title);
+          $variables['picture'] = _vaxia_create_avatar_image_link(
+            $artwork->field_artwork_image[$lang][0]['fid'], $character->title);
         }
       }
     }
@@ -341,7 +318,8 @@ function vaxia_form_alter(&$form, &$form_state, $form_id) {
     );
     $form['field_refresh_rate'] = array(
       '#type' => 'textfield',
-      '#default_value' => isset($this_player->field_refresh_rate[$lang][0]['value']) ? $this_player->field_refresh_rate[$lang][0]['value'] : 60,
+      '#default_value' => isset($this_player->field_refresh_rate[$lang][0]['value']) ?
+        $this_player->field_refresh_rate[$lang][0]['value'] : 60,
       '#title' => t('Refresh rate'),
     );
     $form['#submit'][] = '_vaxia_comment_set_profile_values_submit';
@@ -401,6 +379,7 @@ function vaxia_rpg_chat_user_refresh($refresh) {
   global $user;
   $this_player = user_load($user->uid);
   $lang = $this_player->language;
-  $refresh = isset($this_player->field_refresh_rate[$lang][0]['value']) ? $this_player->field_refresh_rate[$lang][0]['value'] : 60;
+  $refresh = isset($this_player->field_refresh_rate[$lang][0]['value']) ?
+    $this_player->field_refresh_rate[$lang][0]['value'] : 60;
   return $refresh;
 }
