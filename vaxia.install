@@ -14,3 +14,13 @@ function vaxia_install() {}
  * Implements hook_uninstall().
  */
 function vaxia_uninstall() {}
+
+
+/**
+ * Implements hook_enable().
+ */
+function vaxia_enable() {
+  // Refresh the workflow features now that all is installed.
+  module_load_include('inc', 'workflow', 'workflow.features');
+  workflow_features_revert('vaxia');
+}

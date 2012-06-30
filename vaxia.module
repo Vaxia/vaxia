@@ -50,6 +50,7 @@ function vaxia_permission() {
     'add npc to character sheet' => array(
       'title' => t('add npc to character sheet'),
       'description' => t('Add npc to a character.'),
+    ),
     'evaluate character'=> array(
       'title' => t('evaluate character'),
       'description' => t('Evaluate character.'),
