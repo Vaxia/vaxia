@@ -179,6 +179,16 @@ function vaxia_character_sheet_field_info() {
         'step' => 1,
       ),
     ),
+    'field_skill_name' => array(
+      'permissions' => array(
+        'owner' => DISABLE_SHEET,
+      ),
+    ),
+    'field_skill_desc' => array(
+      'permissions' => array(
+        'owner' => DISABLE_SHEET,
+      ),
+    ),
     'field_items' => array(
       'permissions' => array(
         'owner' => DISABLE_SHEET,
@@ -432,21 +442,44 @@ function vaxia_character_sheet_validate_sheet($node, $old_node, $form, $form_sta
     foreach ($fields_info as $field_key => $field_info) {
       if (isset($field_info['costs']['xp_type'])) {
         // Calculate cost difference.
-        $old_value = _vaxia_get_field_value_flat($old_node, $field_key, $fields_info);
         $new_value = _vaxia_get_field_value_flat($node, $field_key, $fields_info);
         // Add the debt to the ongoing total for this type.
         $xp_type = $field_info['costs']['xp_type'];
-        $cost = $new_value - $old_value;
+        $cost = $new_value;
         $spent_xp[$xp_type] = isset($spent_xp[$xp_type]) ? $spent_xp[$xp_type] + $cost : $cost;
         if ($spent_xp[$xp_type] > $available_xp) {
           return $error = array('field' => '', 'message' => 
-            t('You have spent over %spent_xp xp out of %available_xp available xp. Please revise your sheet.',
+            t('You have spent %spent_xp xp out of %available_xp available xp. Please revise your sheet.',
               array('%spent_xp' => $spent_xp[$xp_type], '%available_xp' => $available_xp)));
         }
       }
     }
   }
   return FALSE;
+}
+
+/*
+ * Character sheet, field level controls for players and moderators according to character sheet defs.
+ */
+function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
+  $node = $form['#node'];
+  // Only do this if this is a character sheet in play.
+  if (_character_sheet_is_enabled($node) && _character_sheet_is_playable($node)) {
+    // Remove skill's remove button and add more button IIF owner viewing playable.
+    global $user;
+    $lang = $form['language']['#value'];
+    if ($node->uid == $user->uid) {
+      unset($form['field_skill'][$lang]['add_more']);
+      foreach ($form['field_skill'][$lang] as $delta => $field) {
+        if (is_array($field) && isset($form['field_skill'][$lang][$delta]['remove_button'])) {
+          unset($form['field_skill'][$lang][$delta]['remove_button']);
+        }
+        if (is_array($field) && !isset($form['field_skill'][$lang][$delta]['field_skill_name'][$lang][0]['value']['#default_value'])) {
+          unset($form['field_skill'][$lang][$delta]);
+        } 
+      }
+    }
+  }
 }
 
 /**
