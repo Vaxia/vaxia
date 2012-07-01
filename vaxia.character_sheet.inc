@@ -206,7 +206,11 @@ function vaxia_character_sheet_field_info() {
         'owner' => DISABLE_SHEET,
       ),
     ),
-    //field_property
+    'field_property' => array(
+      'permissions' => array(
+        'owner' => DISABLE_SHEET,
+      ),
+    ),
     'field_npcs' => array(
       'permissions' => array(
         'owner' => DISABLE_SHEET,
