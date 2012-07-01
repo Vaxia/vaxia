@@ -19,7 +19,7 @@
   );
  */
 function vaxia_character_sheet_register_systems() {
-  $xp_types = array('xp', 'econ');
+  $xp_types = array('xp');
   foreach ($xp_types as $key => $type) {
     $xp_types[$key] = trim($type);
   }
@@ -50,6 +50,7 @@ function vaxia_character_sheet_register_systems() {
         'xp_type' => 'xp', // Type of xp to spend for cost.
          // Type of xp to track spending.
         'cost' => variable_get('vaxia_skill_cost', 0.75) * 0.1, // Cost to increase.
+        'cost_mode' => 'flat', // Cost is flat per point added not multipled of the current cost. (Default is multipled.)
         'step' => 1, // How many steps per value. Default 1.
          value_callback => '', // Function to handle value calculation for current value, instead of character sheet's own.
          costs_callback => '', // Function to handle cost per next step(s), instead of character sheet's own.
@@ -189,6 +190,17 @@ function vaxia_character_sheet_field_info() {
         'owner' => DISABLE_SHEET,
       ),
     ),
+    'field_economy' => array(
+      'permissions' => array(
+        'owner' => DISABLE_SHEET,
+      ),
+      'costs' => array(
+        'xp_type' => 'xp',
+        'cost' => variable_get('vaxia_economy_cost', 2),
+        'cost_mode' => 'flat',
+        'step' => 1,
+      ),
+    ),
     'field_items' => array(
       'permissions' => array(
         'owner' => DISABLE_SHEET,
@@ -209,7 +221,63 @@ function vaxia_character_sheet_field_info() {
   );
 }
 
-/*
+/**
+ * Implelents node_form_alter for nodes.
+ * Character sheet, field level controls for players and moderators according to character sheet defs.
+ */
+function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
+  $node = $form['#node'];
+  // Only do this if this is a character sheet in play.
+  if (_character_sheet_is_enabled($node) && _character_sheet_is_playable($node)) {
+    // Remove skill's remove button and add more button IIF owner viewing playable.
+    global $user;
+    $lang = $form['language']['#value'];
+    if ($node->uid == $user->uid) {
+      unset($form['field_skill'][$lang]['add_more']);
+      foreach ($form['field_skill'][$lang] as $delta => $field) {
+        if (is_array($field) && isset($form['field_skill'][$lang][$delta]['remove_button'])) {
+          unset($form['field_skill'][$lang][$delta]['remove_button']);
+        }
+        if (is_array($field) && !isset($form['field_skill'][$lang][$delta]['field_skill_name'][$lang][0]['value']['#default_value'])) {
+          unset($form['field_skill'][$lang][$delta]);
+        } 
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_character_sheet_validate_sheet().
+ */
+function vaxia_character_sheet_validate_sheet($node, $old_node, $form, $form_state) {
+  // Run this only for draft nodes, to cap out at 300 per field.
+  // Check if the sheet has been finalized.
+  if (isset($node->workflow)
+    && ($node->workflow == variable_get('vaxia_draft_workflow', '') )) {
+    // Total the value of points against starting points flat.
+    $available_xp = variable_get('vaxia_starting_points', 300);
+    $fields_info = _character_sheet_get_field_info($node);
+    $spent_xp = array();
+    foreach ($fields_info as $field_key => $field_info) {
+      if (isset($field_info['costs']['xp_type'])) {
+        // Calculate cost difference.
+        $new_value = _vaxia_get_field_value_flat($node, $field_key, $fields_info);
+        // Add the debt to the ongoing total for this type.
+        $xp_type = $field_info['costs']['xp_type'];
+        $cost = $new_value;
+        $spent_xp[$xp_type] = isset($spent_xp[$xp_type]) ? $spent_xp[$xp_type] + $cost : $cost;
+        if ($spent_xp[$xp_type] > $available_xp) {
+          return $error = array('field' => '', 'message' => 
+            t('You have spent %spent_xp xp out of %available_xp available xp. Please revise your sheet.',
+              array('%spent_xp' => $spent_xp[$xp_type], '%available_xp' => $available_xp)));
+        }
+      }
+    }
+  }
+  return FALSE;
+}
+
+/**
  * Callback for admin settings page for character sheets.
  */
 function _vaxia_admin_settings() {
@@ -260,6 +328,12 @@ function _vaxia_admin_settings() {
     '#type' => 'textfield',
     '#default_value' => variable_get('vaxia_skill_cost', 0.75),
   );
+  $form['point_cost']['vaxia_economy_cost'] = array(
+    '#title' => 'Economy cost',
+    '#description' => 'Economy cost is calculated as cost per point added.',
+    '#type' => 'textfield',
+    '#default_value' => variable_get('vaxia_economy_cost', 2),
+  );
   $form['point_cost']['vaxia_transfer_percentage'] = array(
     '#title' => 'Percent of XP',
     '#description' => 'Percent of XP when transferred that goes to XP, the rest is banked.',
@@ -300,38 +374,88 @@ function _vaxia_admin_settings() {
  */
 function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
   // Load the node.
-  $node = node_load($form['add_xp']['nid']['#value']);
-
-  // Add additional options for xp.
-  $xp_types = array();
-  foreach(explode("\n", variable_get('vaxia_xp_types', "good\nevil\nsmart\nclever\nwarrior\nmage\nrogue")) as $type) {
-    $type = trim($type);
-    $xp_types[$type] = $type;
-  }
-  $form['add_xp']['type']['#options'] = array_merge($xp_types, $form['add_xp']['type']['#options']);
+  $node = node_load($form['node_info']['nid']['#value']);
 
   // Get specific info for vaxia to display in markup.
   $this_xp = _character_sheet_get_xp($node->nid, 'spent_xp');
-  $this_xp = isset($this_xp) ? $this_xp : 0;
   $xps[] = t('Spent %spent out of %xp xp.', array('%spent' => $this_xp, '%xp' => $node->xp['xp']));
   $this_xp = _character_sheet_get_xp($node->nid, 'bxp');
-  $this_xp = isset($this_xp) ? $this_xp : 0;
   $xps[] = t('Banked %banked bxp.', array('%banked' => $this_xp));
   $this_xp = _character_sheet_get_xp($node->nid, 'rxp');
-  $this_xp = isset($this_xp) ? $this_xp : 0;
   $xps[] = t('Roleplayed %roleplayed rxp.', array('%roleplayed' => $this_xp));
   $this_xp = _character_sheet_get_xp($node->nid, 'kxp');
-  $this_xp = isset($this_xp) ? $this_xp : 0;
   $xps[] = t('Posted %posted kxp.', array('%posted' => $this_xp));
+  $silver = _character_sheet_get_xp($node->nid, 'silver');
+  $silver_spent = _character_sheet_get_xp($node->nid, 'spent_silver');
+  $silver_invested = _character_sheet_get_xp($node->nid, 'invest_silver');
+  $available_silver = $silver - ($silver_spent + $silver_invested);
+  $xps[] = t('Have %posted silver.', array('%posted' => $available_silver));
   $form['node_info']['xp_details'] = array(
     '#type' => 'item',
     '#title' => t('XP details'),
     '#markup' => theme('item_list', array('items' => $xps)),
   );
 
+  // Add the economy form for owned forms.
+  global $user;
+  if ($node->uid == $user->uid) {
+    $level = isset($node->field_economy[$node->language][0]['value']) ? $node->field_economy[$node->language][0]['value'] : 0;
+    $econ[] = t('Your current economy level is %level.', array('%level' => $level));
+    $income = 0; //TODO caluclate
+    $econ[] = t('Your monthly disposable income is %income.', array('%income' => $income));
+    $pay = 0; // TODO calculate
+    $econ[] = t('You get paid %pay a day.', array('%pay' => $pay));
+    $form['node_info']['economy'] = array(
+      '#type' => 'item',
+      '#title' => t('Economy'),
+      '#markup' => theme('item_list', array('items' => $econ)),
+    );
+    $cost = _vaxia_invest_calculate_cost_to_improve($level);
+    $invest = $cost - $silver_invested;
+    // Invested silver is spent_silver, adjusted to show the difference between spent and the cost of the current economy level.
+    $desc = t('You need to invest %invest more silver before you will reach %level economy.',
+      array('%invest' => $invest, '%level' => $level + 1));
+    if ($available_silver >= 1 ) {
+      $available_silver = floor($available_silver);
+      $options = range(0, $available_silver);
+      $options[0] = '-';
+      $invest = 0;
+      // Figure out how many given current silver you can add.
+      $form['node_info']['invest_silver'] = array(
+        '#title' => t('Invest silver'),
+        '#type' => 'select',
+        '#options' => $options,
+        '#description' => $desc,
+      );
+      $form['node_info']['submit_economy'] = array(
+        '#type' => 'submit',
+        '#value' => t('Invest silver'),
+        '#validate' => array(),
+        '#submit' => array('_vaxia_invest_silver_submit'),
+      );
+    }
+    else {
+      $form['node_info']['invest_silver'] = array(
+        '#type' => 'item',
+        '#value' => t('You currectly have no silver available to invest.'),
+        '#description' => $desc,
+      );
+    }
+  }
+
+  // Add additional options for xp IIF allowed.
+  if (isset($form['add_xp'])) {
+    $xp_types = array();
+    foreach(explode("\n", variable_get('vaxia_xp_types', "good\nevil\nsmart\nclever\nwarrior\nmage\nrogue")) as $type) {
+      $type = trim($type);
+      $xp_types[$type] = $type;
+    }
+    $form['add_xp']['type']['#options'] = array_merge($xp_types, $form['add_xp']['type']['#options']);
+  }
+
   // And add the transfer options.
   $setting = variable_get('vaxia_transfer_workflow', '');
-  if (!empty($setting)) { // TODO check permissions to transfer.
+  if (!empty($setting) && ($node->uid == $user->uid || user_access('transfer others sheets')) ) {
     $form['transfer'] = array(
       '#type' => 'fieldset',
       '#title' => 'Transfer XP',
@@ -388,26 +512,63 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
     $form['transfer']['submit'] = array(
       '#type' => 'submit',
       '#value' => t('Transfer character XP'),
-      '#validate' => array('_vaxia_transfer_xp_transfer_validate'),
-      '#submit' => array('_vaxia_transfer_xp_transfer_submit'),
+      '#validate' => array('_vaxia_transfer_xp_validate'),
+      '#submit' => array('_vaxia_transfer_xp_submit'),
     );
   }
   return $form;
 }
 
 /**
- * Validate callback for _vaxia_transfer_xp_form().
+ * Helper function, figure out how much it costs to improve economy by one.
+ */  //TODO
+function _vaxia_invest_calculate_cost_to_improve($value) {
+  // Given an economy value, figure out how much silver it would take to increase it.
+  // $value +1; TODO
+  return 1;
+}
+
+/**
+ * Submit callback for investing silver.
  */
-function _vaxia_transfer_xp_transfer_validate(&$form, &$form_state) {
+function _vaxia_invest_silver_submit($form, $form_state) {
+  $nid = $form_state['values']['nid'];
+  $invest = $form_state['values']['invest_silver'];
+  if (is_numeric($invest) && $invest > 0 ) {
+    // Figure out how many to add based on added silver.
+    $node = node_load($nid);
+    $cost = _vaxia_invest_calculate_cost_to_improve($node->field_economy[$node->language][0]['value']);
+    $silver_invested = _character_sheet_get_xp($node->nid, 'invest_silver');
+    while ($invest > 0) {
+      $invest--;
+      $silver_invested++;
+      _character_sheet_update_xp($node->nid, 1, 'invest_silver');
+      if ($silver_invested >= $cost ) {
+        // Pay the cost.
+        $node->field_economy[$node->language][0]['value']++;
+        $cost = _vaxia_invest_calculate_cost_to_improve($node->field_economy[$node->language][0]['value']);
+        _character_sheet_update_xp($node->nid, $cost, 'spent_silver');
+        _character_sheet_update_xp($node->nid, $cost*-1, 'invest_silver');
+        $silver_invested = $silver_invested - $cost;
+      }
+    }
+    node_save($node);
+  }
+}
+
+/**
+ * Validate callback for transfering XP().
+ */
+function _vaxia_transfer_xp_validate(&$form, &$form_state) {
   if ($form_state['values']['confirm'] != 'TRANSFER') {
     form_set_error('confirm', t('Transfer was not confirmed.'));
   }
 }
 
 /**
- * Submit callback for _vaxia_transfer_xp_form().
+ * Submit callback for transfering XP().
  */
-function _vaxia_transfer_xp_transfer_submit(&$form, &$form_state) {
+function _vaxia_transfer_xp_submit(&$form, &$form_state) {
   $old_character = node_load($form_state['values']['character']);
   $new_character = node_load($form_state['values']['target']);
   $workflow = variable_get('vaxia_transfer_workflow', '');
@@ -428,59 +589,20 @@ function _vaxia_transfer_xp_transfer_submit(&$form, &$form_state) {
 }
 
 /**
- * Implements hook_character_sheet_validate_sheet().
+ * Helper function, calculate money for economy on cron.
  */
-function vaxia_character_sheet_validate_sheet($node, $old_node, $form, $form_state) {
-  // Run this only for draft nodes, to cap out at 300 per field.
-  // Check if the sheet has been finalized.
-  if (isset($node->workflow)
-    && ($node->workflow == variable_get('vaxia_draft_workflow', '') )) {
-    // Total the value of points against starting points flat.
-    $available_xp = variable_get('vaxia_starting_points', 300);
-    $fields_info = _character_sheet_get_field_info($node);
-    $spent_xp = array();
-    foreach ($fields_info as $field_key => $field_info) {
-      if (isset($field_info['costs']['xp_type'])) {
-        // Calculate cost difference.
-        $new_value = _vaxia_get_field_value_flat($node, $field_key, $fields_info);
-        // Add the debt to the ongoing total for this type.
-        $xp_type = $field_info['costs']['xp_type'];
-        $cost = $new_value;
-        $spent_xp[$xp_type] = isset($spent_xp[$xp_type]) ? $spent_xp[$xp_type] + $cost : $cost;
-        if ($spent_xp[$xp_type] > $available_xp) {
-          return $error = array('field' => '', 'message' => 
-            t('You have spent %spent_xp xp out of %available_xp available xp. Please revise your sheet.',
-              array('%spent_xp' => $spent_xp[$xp_type], '%available_xp' => $available_xp)));
-        }
-      }
-    }
+function vaxia_character_sheet_cron() {
+  $last_run = variable_get('vaxia_character_sheet_cron', 0);
+  $yesterday = strtotime('-1 day');
+  if ($last_run < $yesterday) {
+    $last_run = variable_set('vaxia_character_sheet_cron', strtotime('now'));
+    // On cron. Go through ALL character sheets. (BATCH API or TABLE?).
+    // For each sheet, calculate money to add based on the economy level.
+    // And add that to available silver. TODO
+    $silver = db_query('');
   }
-  return FALSE;
 }
 
-/*
- * Character sheet, field level controls for players and moderators according to character sheet defs.
- */
-function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
-  $node = $form['#node'];
-  // Only do this if this is a character sheet in play.
-  if (_character_sheet_is_enabled($node) && _character_sheet_is_playable($node)) {
-    // Remove skill's remove button and add more button IIF owner viewing playable.
-    global $user;
-    $lang = $form['language']['#value'];
-    if ($node->uid == $user->uid) {
-      unset($form['field_skill'][$lang]['add_more']);
-      foreach ($form['field_skill'][$lang] as $delta => $field) {
-        if (is_array($field) && isset($form['field_skill'][$lang][$delta]['remove_button'])) {
-          unset($form['field_skill'][$lang][$delta]['remove_button']);
-        }
-        if (is_array($field) && !isset($form['field_skill'][$lang][$delta]['field_skill_name'][$lang][0]['value']['#default_value'])) {
-          unset($form['field_skill'][$lang][$delta]);
-        } 
-      }
-    }
-  }
-}
 
 /**
  * Helper function, determine how many points a sheet has spent.
@@ -543,7 +665,7 @@ function _vaxia_get_field_value_flat($node, $field_key, $field_info) {
  * Helper function, list meaningful types for Vaxia.
  */
 function _vaxia_meaningful_xp_types() {
-  return array('xp', 'bxp', 'rxp', 'kxp', 'econ');
+  return array('xp', 'bxp', 'rxp', 'kxp', 'silver');
 }
 
 /**
@@ -607,11 +729,11 @@ function _vaxia_add_xp($nid, $xp, $type) {
       _character_sheet_update_xp($nid, $xp_to_add, 'xp');
       _character_sheet_update_xp($nid, $bxp_to_add, 'bxp');
     break;
-    case 'econ':
+    case 'silver':
       $message = t('%xp %type XP added to %title.', array('%xp' => $xp, '%type' => $type, '%title' => $node->title));
       _character_sheet_update_log($nid, 'xp', $message, $variables = array());
-      // Economy is just added directly.
-      _character_sheet_update_xp($nid, $xp, 'econ');
+      // Silver is just added directly.
+      _character_sheet_update_xp($nid, $xp, 'silver');
     break;
   }
 }

@@ -67,6 +67,10 @@ function vaxia_permission() {
       'title' => t('post in narrative format'),
       'description' => t('Post in narrative format.'),
     ),
+    'transfer others sheets' => array(
+      'title' => t('transfer others sheets'),
+      'description' => t('Transfer the XP of others sheets.'),
+    ),
   );
 }
 
@@ -84,6 +88,13 @@ function vaxia_menu() {
     'weight' => 3,
   );
   return $items;
+}
+
+/**
+ * Implements hook_cron().
+ */
+function vaxia_cron() {
+  vaxia_character_sheet_cron();
 }
 
 /**
