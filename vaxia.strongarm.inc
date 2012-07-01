@@ -20,6 +20,13 @@ function vaxia_strongarm() {
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'character_sheet_default_workflow';
+  $strongarm->value = 'Character evaluation';
+  $export['character_sheet_default_workflow'] = $strongarm;
+
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'character_sheet_systems';
   $strongarm->value = array(
     'vaxia' => 'vaxia',
@@ -29,19 +36,21 @@ function vaxia_strongarm() {
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'character_sheet_system_character_sheet';
-  $strongarm->value = 'vaxia';
-  $export['character_sheet_system_character_sheet'] = $strongarm;
+  $strongarm->name = 'character_sheet_types';
+  $strongarm->value = array(
+    'character_sheet' => 'vaxia',
+    'rpg_chatroom' => FALSE,
+  );
+  $export['character_sheet_types'] = $strongarm;
 
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'character_sheet_types';
+  $strongarm->name = 'character_sheet_vaxia_playable';
   $strongarm->value = array(
-    'character_sheet' => TRUE,
-    'rpg_chatroom' => FALSE,
+    4 => '4',
   );
-  $export['character_sheet_types'] = $strongarm;
+  $export['character_sheet_vaxia_playable'] = $strongarm;
 
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
@@ -459,6 +468,13 @@ function vaxia_strongarm() {
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'vaxia_draft_workflow';
+  $strongarm->value = '2';
+  $export['vaxia_draft_workflow'] = $strongarm;
+
+  $strongarm = new stdClass;
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'vaxia_kxp_ratio';
   $strongarm->value = '70';
   $export['vaxia_kxp_ratio'] = $strongarm;
@@ -502,7 +518,7 @@ function vaxia_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'vaxia_transfer_workflow';
-  $strongarm->value = '11';
+  $strongarm->value = '5';
   $export['vaxia_transfer_workflow'] = $strongarm;
 
   $strongarm = new stdClass;

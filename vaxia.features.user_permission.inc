@@ -88,7 +88,14 @@ function vaxia_user_default_permissions() {
       3 => 'storyteller',
       4 => 'storyteller-assistant',
     ),
-    'module' => 'vaxia',
+    'module' => 'character_sheet',
+  );
+
+  // Exported permission: add xp to own character sheet
+  $permissions['add xp to own character sheet'] = array(
+    'name' => 'add xp to own character sheet',
+    'roles' => array(),
+    'module' => 'character_sheet',
   );
 
   // Exported permission: administer character sheet
@@ -161,6 +168,13 @@ function vaxia_user_default_permissions() {
       2 => 'item-evaluator',
     ),
     'module' => 'vaxia',
+  );
+
+  // Exported permission: change own character sheet owner
+  $permissions['change own character sheet owner'] = array(
+    'name' => 'change own character sheet owner',
+    'roles' => array(),
+    'module' => 'character_sheet',
   );
 
   // Exported permission: create artwork content
@@ -538,6 +552,13 @@ function vaxia_user_default_permissions() {
       1 => 'player',
     ),
     'module' => 'comment',
+  );
+
+  // Exported permission: transfer others sheets
+  $permissions['transfer others sheets'] = array(
+    'name' => 'transfer others sheets',
+    'roles' => array(),
+    'module' => 'vaxia',
   );
 
   // Exported permission: use advanced search

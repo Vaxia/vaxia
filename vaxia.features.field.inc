@@ -943,9 +943,7 @@ function vaxia_field_default_fields() {
         'referenceable_types' => array(
           'article' => 0,
           'artwork' => 'artwork',
-          'book' => 0,
           'character_sheet' => 0,
-          'forum' => 0,
           'items' => 0,
           'page' => 0,
           'rpg_chatroom' => 0,
@@ -1382,6 +1380,71 @@ function vaxia_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-character_sheet-field_economy'
+  $fields['node-character_sheet-field_economy'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_economy',
+      'foreign keys' => array(),
+      'indexes' => array(),
+      'module' => 'number',
+      'settings' => array(),
+      'translatable' => '0',
+      'type' => 'number_integer',
+    ),
+    'field_instance' => array(
+      'bundle' => 'character_sheet',
+      'default_value' => array(
+        0 => array(
+          'value' => '0',
+        ),
+      ),
+      'deleted' => '0',
+      'description' => 'Spend XP at a ratio of 2:1 to increase your economy level. (You can invest silver instead on the Sheet tab.)',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 0,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_integer',
+          'weight' => 30,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_economy',
+      'label' => 'Economy',
+      'required' => 0,
+      'settings' => array(
+        'max' => '',
+        'min' => '0',
+        'prefix' => '',
+        'suffix' => '',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'number',
+        'settings' => array(),
+        'type' => 'number',
+        'weight' => '32',
+      ),
+    ),
+  );
+
   // Exported field: 'node-character_sheet-field_endurance'
   $fields['node-character_sheet-field_endurance'] = array(
     'field_config' => array(
@@ -1596,17 +1659,15 @@ function vaxia_field_default_fields() {
         'referenceable_types' => array(
           'article' => 0,
           'artwork' => 0,
-          'book' => 0,
           'character_sheet' => 0,
-          'forum' => 0,
           'items' => 'items',
           'page' => 0,
           'rpg_chatroom' => 0,
         ),
         'view' => array(
           'args' => array(),
-          'display_name' => '',
-          'view_name' => '',
+          'display_name' => 'character_items_mine_ref',
+          'view_name' => 'character_items',
         ),
       ),
       'translatable' => '0',
@@ -1646,7 +1707,7 @@ function vaxia_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '30',
+        'weight' => '33',
       ),
     ),
   );
@@ -2187,7 +2248,7 @@ function vaxia_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '31',
+        'weight' => '34',
       ),
     ),
   );
@@ -3937,9 +3998,7 @@ function vaxia_field_default_fields() {
         'referenceable_types' => array(
           'article' => 0,
           'artwork' => 'artwork',
-          'book' => 0,
           'character_sheet' => 0,
-          'forum' => 0,
           'items' => 0,
           'page' => 0,
           'rpg_chatroom' => 0,
@@ -4121,9 +4180,7 @@ function vaxia_field_default_fields() {
         'referenceable_types' => array(
           'article' => 0,
           'artwork' => 'artwork',
-          'book' => 0,
           'character_sheet' => 0,
-          'forum' => 0,
           'items' => 0,
           'page' => 0,
           'rpg_chatroom' => 0,
@@ -4374,6 +4431,7 @@ function vaxia_field_default_fields() {
   t('Current character');
   t('Description');
   t('Dexterity');
+  t('Economy');
   t('Endurance');
   t('Health');
   t('History');
@@ -4399,6 +4457,7 @@ function vaxia_field_default_fields() {
   t('SH Notes');
   t('Sex');
   t('Skill');
+  t('Spend XP at a ratio of 2:1 to increase your economy level. (You can invest silver instead on the Sheet tab.)');
   t('Spirituality');
   t('Strength');
   t('Value');

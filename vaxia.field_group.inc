@@ -371,6 +371,7 @@ function vaxia_field_group_info() {
     'children' => array(
       0 => 'field_items',
       1 => 'field_property',
+      2 => 'field_economy',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -536,9 +537,9 @@ function vaxia_field_group_info() {
     'children' => array(
       0 => 'field_background',
       1 => 'field_description',
-      2 => 'field_occupation',
-      3 => 'field_personality',
-      4 => 'field_npc',
+      2 => 'field_npc',
+      3 => 'field_occupation',
+      4 => 'field_personality',
       5 => 'title',
     ),
     'format_type' => 'fieldset',
