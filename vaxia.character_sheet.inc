@@ -227,6 +227,17 @@ function vaxia_character_sheet_field_info() {
  */
 function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
   $node = $form['#node'];
+
+  // Only on a character sheet that isn't yet set.
+  if (_character_sheet_is_enabled($node) && !_character_sheet_is_playable($node)) {
+    // Remove skill's remove button and add more button IIF owner viewing playable.
+    $lang = $form['language']['#value'];
+    $form['field_economy'][$lang][0]['#disabled'] = TRUE;
+    if (isset($form['field_economy'][$lang][0]['#default_value'])) {
+      $form['field_economy'][$lang][0]['#value'] = $form['field_economy'][$lang][0]['#default_value'];
+    }
+  }
+
   // Only do this if this is a character sheet in play.
   if (_character_sheet_is_enabled($node) && _character_sheet_is_playable($node)) {
     // Remove skill's remove button and add more button IIF owner viewing playable.
@@ -243,6 +254,15 @@ function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
         } 
       }
     }
+  }
+}
+
+/**
+ * Implements hook_character_sheet_presave_sheet().
+ */
+function vaxia_character_sheet_presave_sheet($node) {
+  if ($node->is_new || !empty($node->revision)) {
+    $node->field_economy[$node->language][0]['value'] = variable_get('vaxia_starting_econ', 25);
   }
 }
 
