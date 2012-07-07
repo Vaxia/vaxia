@@ -336,6 +336,18 @@ function _vaxia_admin_settings() {
     '#default_value' => variable_get('vaxia_xp_types',
       "good\nevil\nsmart\nclever\nwarrior\nmage\nrogue"),
   );
+  $rooms = _rpg_chat_get_rooms();
+  $options = array();
+  foreach ($rooms as $room) {
+    $options[$room->nid] = $room->title;
+  }
+  $form['settings']['vaxia_limbo_room'] = array(
+    '#title' => 'Limbo room',
+    '#description' => t('In this room, posts made do not gain XP.'),
+    '#type' => 'select',
+    '#options' => $options,
+    '#default_value' => variable_get('vaxia_limbo_room', ''),
+  );
   $form['point_cost'] = array(
     '#title' => 'Point costs',
     '#type' => 'fieldset',
