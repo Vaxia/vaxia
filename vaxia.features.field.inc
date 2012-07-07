@@ -2338,7 +2338,7 @@ function vaxia_field_default_fields() {
       'settings' => array(
         'allowed_values' => array(
           'Vaxia' => 'Vaxia',
-          'Siria' => 'Siria',
+          'Sirian' => 'Sirian',
         ),
         'allowed_values_function' => '',
       ),
