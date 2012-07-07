@@ -7,7 +7,13 @@
 Drupal.behaviors.vaxiaChat = {
   attach: function(context) { (function($) {
 
+  // Grab the refresh rate from the user settings.
   var refeshRate = Drupal.settings.rpg_chat['refreshRate'];
+
+  // Function to refresh the chatroom by clicking submit.
+  function refreshChat() {
+    $("#edit-refresh-chat").triggerHandler("click");
+  }
 
   // On page load, start the chat running.
   // Run only the one time to avoid ajax triggering multiple loads.
@@ -16,10 +22,10 @@ Drupal.behaviors.vaxiaChat = {
     var timer = setTimeout(refreshChat, refeshRate * 1000);
   });
 
-  // Function to refresh the chatroom by clicking submit.
-  function refreshChat() {
-    $("#edit-refresh-chat").triggerHandler("click");
-  }
+  // When clicking the comment post, empty the post out.
+  $('#edit-submit').ajaxComplete(function() {
+    $('#comment-form #edit-comment-body-und-0-value, #comment-form #edit-vaxia-rolls-notes').val();
+  });
 
   })(jQuery); }
 }
