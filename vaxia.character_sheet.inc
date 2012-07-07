@@ -322,11 +322,23 @@ function _vaxia_admin_settings() {
     '#default_value' => variable_get('vaxia_starting_econ', 25),
   );
   $form['settings']['vaxia_kxp_ratio'] = array(
-    '#title' => 'Posted XP ratio',
-    '#description' => 'The ratio of kxp to xp per comment word count.',
+    '#title' => 'KXP to XP ratio',
+    '#description' => 'The ratio of kxp to xp.',
     '#type' => 'textfield',
     '#default_value' => variable_get('vaxia_kxp_ratio', 70),
   );
+  $form['settings']['vaxia_kxp_per_words'] = array(
+    '#title' => 'Words to KXP ratio',
+    '#description' => 'The ratio of comment word count to kxp.',
+    '#type' => 'textfield',
+    '#default_value' => variable_get('vaxia_kxp_per_words', 20),
+  );
+  $form['settings']['vaxia_max_kxp_post'] = array(
+    '#title' => 'Max KXP per post',
+    '#description' => 'The maximum amount of kxp to be awarded per post.',
+    '#type' => 'textfield',
+    '#default_value' => variable_get('vaxia_max_kxp_post', 10),
+  );  
   $form['settings']['vaxia_xp_types'] = array(
     '#title' => 'XP types',
     '#description' => t('Available XP sub-types. The following types used by the system and will ' .

@@ -372,6 +372,10 @@ function _vaxia_comment_set_profile_values_submit($form, $form_state) {
  * Additional submit handler to add kxp for commenting as a character, not narrative.
  */
 function _vaxia_comment_add_kxp_submit($form, $form_state) {
+  $limbo_room = variable_get('vaxia_limbo_room', '');
+  if ($form['#node']->nid == $limbo_room) {
+    return;
+  }
   $lang = $form_state['values']['language'];
   // If posted as a character and not as narrative.
   if (!empty($form_state['values']['field_comment_character'][$lang][0]['nid']) 
@@ -379,7 +383,10 @@ function _vaxia_comment_add_kxp_submit($form, $form_state) {
     // The character gains XP per wordcount.
     $wordcount = str_word_count($form_state['values']['comment_body'][$lang][0]['value']);
     if (is_numeric($wordcount)) {
-      _vaxia_add_xp($form_state['values']['field_comment_character'][$lang][0]['nid'], $wordcount, 'kxp');
+      $kxp = floor( $wordcount / variable_get('vaxia_kxp_per_words', 20) );
+      $max_kxp = variable_get('vaxia_max_kxp_post', 10);
+      $kxp = $kxp <= $max_kxp ? $kxp : $max_kxp;
+      _vaxia_add_xp($form_state['values']['field_comment_character'][$lang][0]['nid'], $kxp, 'kxp');
     }  
   }
 }
