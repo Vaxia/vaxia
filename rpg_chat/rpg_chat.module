@@ -468,6 +468,16 @@ function _rpg_chat_get_room($nid) {
 }
 
 /**
+ * DB function. Get nodes for all rooms.
+ */
+function _rpg_chat_get_rooms() {
+  $results = db_query('SELECT r.nid, n.title FROM {rpg_chat_room} r ' .
+    'LEFT JOIN {node} n ON r.nid = n.nid ' .
+    'WHERE nid = :nid')->fetchAll();
+  return $results;
+}
+
+/**
  * DB function. Set room info for a node.
  */
 function _rpg_chat_set_room($nid, $values) {
