@@ -179,6 +179,7 @@ function vaxia_user_default_permissions() {
     'roles' => array(
       0 => 'administrator',
       1 => 'administrator-vaxia',
+      2 => 'player',
     ),
     'module' => 'character_sheet',
   );
@@ -189,7 +190,8 @@ function vaxia_user_default_permissions() {
     'roles' => array(
       0 => 'administrator',
       1 => 'administrator-vaxia',
-      2 => 'player',
+      2 => 'art-evaluator',
+      3 => 'player',
     ),
     'module' => 'node',
   );
@@ -215,6 +217,7 @@ function vaxia_user_default_permissions() {
       1 => 'administrator-vaxia',
       2 => 'item-evaluator',
       3 => 'player',
+      4 => 'storyteller',
     ),
     'module' => 'node',
   );
@@ -225,6 +228,7 @@ function vaxia_user_default_permissions() {
     'roles' => array(
       0 => 'administrator',
       1 => 'administrator-vaxia',
+      2 => 'item-evaluator',
     ),
     'module' => 'node',
   );
@@ -235,7 +239,6 @@ function vaxia_user_default_permissions() {
     'roles' => array(
       0 => 'administrator',
       1 => 'administrator-vaxia',
-      2 => 'art-evaluator',
     ),
     'module' => 'node',
   );
@@ -266,6 +269,7 @@ function vaxia_user_default_permissions() {
     'roles' => array(
       0 => 'administrator',
       1 => 'administrator-vaxia',
+      2 => 'item-evaluator',
     ),
     'module' => 'node',
   );
@@ -309,6 +313,7 @@ function vaxia_user_default_permissions() {
     'roles' => array(
       0 => 'administrator',
       1 => 'administrator-vaxia',
+      2 => 'item-evaluator',
     ),
     'module' => 'node',
   );
@@ -363,6 +368,7 @@ function vaxia_user_default_permissions() {
       0 => 'administrator',
       1 => 'administrator-vaxia',
       2 => 'item-evaluator',
+      3 => 'storyteller',
     ),
     'module' => 'node',
   );
@@ -373,6 +379,7 @@ function vaxia_user_default_permissions() {
     'roles' => array(
       0 => 'administrator',
       1 => 'administrator-vaxia',
+      2 => 'item-evaluator',
     ),
     'module' => 'node',
   );
@@ -383,7 +390,6 @@ function vaxia_user_default_permissions() {
     'roles' => array(
       0 => 'administrator',
       1 => 'administrator-vaxia',
-      2 => 'player',
     ),
     'module' => 'node',
   );
@@ -394,9 +400,6 @@ function vaxia_user_default_permissions() {
     'roles' => array(
       0 => 'administrator',
       1 => 'administrator-vaxia',
-      2 => 'char-evaluator',
-      3 => 'player',
-      4 => 'storyteller',
     ),
     'module' => 'node',
   );
@@ -416,8 +419,6 @@ function vaxia_user_default_permissions() {
     'roles' => array(
       0 => 'administrator',
       1 => 'administrator-vaxia',
-      2 => 'item-evaluator',
-      3 => 'player',
     ),
     'module' => 'node',
   );
@@ -428,6 +429,7 @@ function vaxia_user_default_permissions() {
     'roles' => array(
       0 => 'administrator',
       1 => 'administrator-vaxia',
+      2 => 'item-evaluator',
     ),
     'module' => 'node',
   );
@@ -482,6 +484,8 @@ function vaxia_user_default_permissions() {
       0 => 'administrator',
       1 => 'administrator-vaxia',
       2 => 'char-evaluator',
+      3 => 'storyteller',
+      4 => 'storyteller-assistant',
     ),
     'module' => 'vaxia',
   );

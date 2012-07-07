@@ -131,7 +131,7 @@ function vaxia_workflow_default_workflows() {
         'target_state' => 'disapproved',
       ),
       4 => array(
-        'roles' => 'administrator,art-evaluator,administrator-vaxia',
+        'roles' => 'workflow_features_author_name,administrator,art-evaluator,administrator-vaxia',
         'state' => 'submitted',
         'target_state' => 'draft',
       ),
@@ -151,7 +151,7 @@ function vaxia_workflow_default_workflows() {
         'target_state' => 'draft',
       ),
       8 => array(
-        'roles' => 'administrator,administrator-vaxia',
+        'roles' => 'administrator,art-evaluator,administrator-vaxia',
         'state' => 'approved',
         'target_state' => 'submitted',
       ),
@@ -240,7 +240,7 @@ function vaxia_workflow_default_workflows() {
         'target_state' => 'disapproved',
       ),
       4 => array(
-        'roles' => 'administrator,item-evaluator,administrator-vaxia',
+        'roles' => 'workflow_features_author_name,administrator,item-evaluator,administrator-vaxia',
         'state' => 'submitted',
         'target_state' => 'draft',
       ),
@@ -260,7 +260,7 @@ function vaxia_workflow_default_workflows() {
         'target_state' => 'draft',
       ),
       8 => array(
-        'roles' => 'administrator,administrator-vaxia',
+        'roles' => 'administrator,item-evaluator,administrator-vaxia',
         'state' => 'approved',
         'target_state' => 'submitted',
       ),
