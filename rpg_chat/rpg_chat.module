@@ -472,8 +472,7 @@ function _rpg_chat_get_room($nid) {
  */
 function _rpg_chat_get_rooms() {
   $results = db_query('SELECT r.nid, n.title FROM {rpg_chat_room} r ' .
-    'LEFT JOIN {node} n ON r.nid = n.nid ' .
-    'WHERE nid = :nid')->fetchAll();
+    'LEFT JOIN {node} n ON r.nid = n.nid')->fetchAll();
   return $results;
 }
 
