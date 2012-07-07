@@ -28,7 +28,7 @@ function vaxia_default_rules_configuration() {
         { "mail_to_users_of_role" : {
             "roles" : { "value" : { "5" : "5" } },
             "subject" : "[Vaxia] Art ready for evaluation",
-            "message" : "Art is ready for evaluation at Vaxia.\\r\\n\\r\\nArt: [node:title]\\r\\nPlayer: [node:author]\\r\\nLink: [node:url]\\r\\n\\r\\nThis is an automated message. Please do not reply to this email. If you no longer wish to receive these notifications, please ask to be removed from the art evaluation team."
+            "message" : "Art is ready for evaluation at Vaxia.\\u000D\\u000A\\u000D\\u000AArt: [node:title]\\u000D\\u000APlayer: [node:author]\\u000D\\u000ALink: [node:url]\\u000D\\u000A\\u000D\\u000AThis is an automated message. Please do not reply to this email. If you no longer wish to receive these notifications, please ask to be removed from the art evaluation team."
           }
         }
       ]
@@ -57,7 +57,7 @@ function vaxia_default_rules_configuration() {
         { "mail_to_users_of_role" : {
             "roles" : { "value" : { "6" : "6" } },
             "subject" : "[Vaxia] Character ready for evaluation",
-            "message" : "A character is ready for evaluation at Vaxia.\\r\\n\\r\\nCharacter: [node:title]\\r\\nPlayer: [node:author]\\r\\nLink: [node:url]\\r\\n\\r\\nThis is an automated message. Please do not reply to this email. If you no longer wish to receive these notifications, please ask to be removed from the character evaluation team."
+            "message" : "A character is ready for evaluation at Vaxia.\\u000D\\u000A\\u000D\\u000ACharacter: [node:title]\\u000D\\u000APlayer: [node:author]\\u000D\\u000ALink: [node:url]\\u000D\\u000A\\u000D\\u000AThis is an automated message. Please do not reply to this email. If you no longer wish to receive these notifications, please ask to be removed from the character evaluation team."
           }
         }
       ]
@@ -82,7 +82,7 @@ function vaxia_default_rules_configuration() {
         { "mail_to_users_of_role" : {
             "roles" : { "value" : { "7" : "7" } },
             "subject" : "[Vaxia] Item ready for evaluation",
-            "message" : "An item is ready for evaluation at Vaxia.\\r\\n\\r\\nItem: [node:title]\\r\\nPlayer: [node:author]\\r\\nLink: [node:url]\\r\\n\\r\\nThis is an automated message. Please do not reply to this email. If you no longer wish to receive these notifications, please ask to be removed from the item evaluation team."
+            "message" : "An item is ready for evaluation at Vaxia.\\u000D\\u000A\\u000D\\u000AItem: [node:title]\\u000D\\u000APlayer: [node:author]\\u000D\\u000ALink: [node:url]\\u000D\\u000A\\u000D\\u000AThis is an automated message. Please do not reply to this email. If you no longer wish to receive these notifications, please ask to be removed from the item evaluation team."
           }
         }
       ]
@@ -111,7 +111,7 @@ function vaxia_default_rules_configuration() {
         { "mail" : {
             "to" : [ "node:author:mail" ],
             "subject" : "[Vaxia] Character ready to play",
-            "message" : "Your character [node:title] has been approved for play.\\r\\n\\r\\nThis is an automated message, please do not reply to this email."
+            "message" : "Your character [node:title] has been approved for play.\\u000D\\u000A\\u000D\\u000AThis is an automated message, please do not reply to this email."
           }
         }
       ]

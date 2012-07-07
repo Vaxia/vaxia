@@ -75,7 +75,7 @@ function vaxia_workflow_default_workflows() {
   // Exported workflow: Art evaluation workflow
   $workflows['Art evaluation workflow'] = array(
     'name' => 'Art evaluation workflow',
-    'tab_roles' => 'author,5,4',
+    'tab_roles' => 'author,3,5,4',
     'options' => 'a:3:{s:16:"comment_log_node";i:1;s:15:"comment_log_tab";i:1;s:13:"name_as_title";i:1;}',
     'states' => array(
       0 => array(
@@ -111,57 +111,67 @@ function vaxia_workflow_default_workflows() {
     ),
     'transitions' => array(
       0 => array(
-        'roles' => 'workflow_features_author_name,authenticated user',
+        'roles' => 'workflow_features_author_name',
         'state' => '(creation)',
         'target_state' => 'draft',
       ),
       1 => array(
-        'roles' => 'workflow_features_author_name,authenticated user',
+        'roles' => 'workflow_features_author_name,administrator,administrator-vaxia',
         'state' => 'draft',
         'target_state' => 'submitted',
       ),
       2 => array(
-        'roles' => 'art-evaluator,administrator-vaxia',
+        'roles' => 'administrator,administrator-vaxia',
+        'state' => 'draft',
+        'target_state' => 'approved',
+      ),
+      3 => array(
+        'roles' => 'administrator,administrator-vaxia',
+        'state' => 'draft',
+        'target_state' => 'disapproved',
+      ),
+      4 => array(
+        'roles' => 'administrator,art-evaluator,administrator-vaxia',
         'state' => 'submitted',
         'target_state' => 'draft',
       ),
-      3 => array(
-        'roles' => 'art-evaluator,administrator-vaxia',
+      5 => array(
+        'roles' => 'administrator,art-evaluator,administrator-vaxia',
         'state' => 'submitted',
         'target_state' => 'approved',
       ),
-      4 => array(
-        'roles' => 'art-evaluator,administrator-vaxia',
+      6 => array(
+        'roles' => 'administrator,art-evaluator,administrator-vaxia',
         'state' => 'submitted',
         'target_state' => 'disapproved',
       ),
-      5 => array(
-        'roles' => 'administrator-vaxia',
+      7 => array(
+        'roles' => 'administrator,administrator-vaxia',
         'state' => 'approved',
         'target_state' => 'draft',
       ),
-      6 => array(
-        'roles' => 'administrator-vaxia',
+      8 => array(
+        'roles' => 'administrator,administrator-vaxia',
         'state' => 'approved',
         'target_state' => 'submitted',
       ),
-      7 => array(
-        'roles' => 'administrator-vaxia',
+      9 => array(
+        'roles' => 'administrator,art-evaluator,administrator-vaxia',
         'state' => 'approved',
         'target_state' => 'disapproved',
       ),
-      8 => array(
-        'roles' => 'administrator-vaxia',
+      10 => array(
+        'roles' => 'administrator,administrator-vaxia',
         'state' => 'disapproved',
         'target_state' => 'draft',
       ),
-      9 => array(
-        'roles' => 'administrator-vaxia',
+      11 => array(
+        'roles' => 'administrator,administrator-vaxia',
         'state' => 'disapproved',
         'target_state' => 'submitted',
       ),
-      10 => array(
-        'roles' => 'administrator-vaxia',
+      12 => array(
+        'roles' => 'administrator,administrator-vaxia',
         'state' => 'disapproved',
         'target_state' => 'approved',
       ),
@@ -174,7 +184,7 @@ function vaxia_workflow_default_workflows() {
   // Exported workflow: Item evaluation workflow
   $workflows['Item evaluation workflow'] = array(
     'name' => 'Item evaluation workflow',
-    'tab_roles' => 'author,7,4',
+    'tab_roles' => 'author,3,7,4',
     'options' => 'a:3:{s:16:"comment_log_node";i:1;s:15:"comment_log_tab";i:1;s:13:"name_as_title";i:1;}',
     'states' => array(
       0 => array(
@@ -210,57 +220,67 @@ function vaxia_workflow_default_workflows() {
     ),
     'transitions' => array(
       0 => array(
-        'roles' => 'workflow_features_author_name,authenticated user',
+        'roles' => 'workflow_features_author_name',
         'state' => '(creation)',
         'target_state' => 'draft',
       ),
       1 => array(
-        'roles' => 'workflow_features_author_name,authenticated user',
+        'roles' => 'workflow_features_author_name,administrator,administrator-vaxia',
         'state' => 'draft',
         'target_state' => 'submitted',
       ),
       2 => array(
-        'roles' => 'item-evaluator,administrator-vaxia',
+        'roles' => 'administrator,administrator-vaxia',
+        'state' => 'draft',
+        'target_state' => 'approved',
+      ),
+      3 => array(
+        'roles' => 'administrator,administrator-vaxia',
+        'state' => 'draft',
+        'target_state' => 'disapproved',
+      ),
+      4 => array(
+        'roles' => 'administrator,item-evaluator,administrator-vaxia',
         'state' => 'submitted',
         'target_state' => 'draft',
       ),
-      3 => array(
-        'roles' => 'item-evaluator,administrator-vaxia',
+      5 => array(
+        'roles' => 'administrator,item-evaluator,administrator-vaxia',
         'state' => 'submitted',
         'target_state' => 'approved',
       ),
-      4 => array(
-        'roles' => 'item-evaluator,administrator-vaxia',
+      6 => array(
+        'roles' => 'administrator,item-evaluator,administrator-vaxia',
         'state' => 'submitted',
         'target_state' => 'disapproved',
       ),
-      5 => array(
-        'roles' => 'administrator-vaxia',
+      7 => array(
+        'roles' => 'administrator,administrator-vaxia',
         'state' => 'approved',
         'target_state' => 'draft',
       ),
-      6 => array(
-        'roles' => 'administrator-vaxia',
+      8 => array(
+        'roles' => 'administrator,administrator-vaxia',
         'state' => 'approved',
         'target_state' => 'submitted',
       ),
-      7 => array(
-        'roles' => 'administrator-vaxia',
+      9 => array(
+        'roles' => 'administrator,item-evaluator,administrator-vaxia',
         'state' => 'approved',
         'target_state' => 'disapproved',
       ),
-      8 => array(
-        'roles' => 'administrator-vaxia',
+      10 => array(
+        'roles' => 'administrator,administrator-vaxia',
         'state' => 'disapproved',
         'target_state' => 'draft',
       ),
-      9 => array(
-        'roles' => 'administrator-vaxia',
+      11 => array(
+        'roles' => 'administrator,administrator-vaxia',
         'state' => 'disapproved',
         'target_state' => 'submitted',
       ),
-      10 => array(
-        'roles' => 'administrator-vaxia',
+      12 => array(
+        'roles' => 'administrator,administrator-vaxia',
         'state' => 'disapproved',
         'target_state' => 'approved',
       ),

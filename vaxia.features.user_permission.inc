@@ -94,7 +94,10 @@ function vaxia_user_default_permissions() {
   // Exported permission: add xp to own character sheet
   $permissions['add xp to own character sheet'] = array(
     'name' => 'add xp to own character sheet',
-    'roles' => array(),
+    'roles' => array(
+      0 => 'administrator',
+      1 => 'administrator-vaxia',
+    ),
     'module' => 'character_sheet',
   );
 
@@ -173,7 +176,10 @@ function vaxia_user_default_permissions() {
   // Exported permission: change own character sheet owner
   $permissions['change own character sheet owner'] = array(
     'name' => 'change own character sheet owner',
-    'roles' => array(),
+    'roles' => array(
+      0 => 'administrator',
+      1 => 'administrator-vaxia',
+    ),
     'module' => 'character_sheet',
   );
 
@@ -557,7 +563,10 @@ function vaxia_user_default_permissions() {
   // Exported permission: transfer others sheets
   $permissions['transfer others sheets'] = array(
     'name' => 'transfer others sheets',
-    'roles' => array(),
+    'roles' => array(
+      0 => 'administrator',
+      1 => 'administrator-vaxia',
+    ),
     'module' => 'vaxia',
   );
 

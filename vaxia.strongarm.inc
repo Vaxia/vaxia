@@ -518,7 +518,7 @@ function vaxia_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'vaxia_transfer_workflow';
-  $strongarm->value = '5';
+  $strongarm->value = '6';
   $export['vaxia_transfer_workflow'] = $strongarm;
 
   $strongarm = new stdClass;
