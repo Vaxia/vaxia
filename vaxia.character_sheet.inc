@@ -201,11 +201,7 @@ function vaxia_character_sheet_field_info() {
         'step' => 1,
       ),
     ),
-    'field_items' => array(
-      'permissions' => array(
-        'owner' => DISABLE_SHEET,
-      ),
-    ),
+    //field_items
     'field_property' => array(
       'permissions' => array(
         'owner' => DISABLE_SHEET,
@@ -236,9 +232,15 @@ function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
   if (_character_sheet_is_enabled($node) && !_character_sheet_is_playable($node)) {
     // Remove skill's remove button and add more button IIF owner viewing playable.
     $lang = $form['language']['#value'];
+    // Disable the economy field.
     $form['field_economy'][$lang][0]['#disabled'] = TRUE;
     if (isset($form['field_economy'][$lang][0]['#default_value'])) {
       $form['field_economy'][$lang][0]['#value'] = $form['field_economy'][$lang][0]['#default_value'];
+    }
+    // Disable the SH notes field.
+    $form['field_sh_notes'][$lang][0]['#disabled'] = TRUE;
+    if (isset($form['field_sh_notes'][$lang][0]['#default_value'])) {
+      $form['field_sh_notes'][$lang][0]['#value'] = $form['field_sh_notes'][$lang][0]['#default_value'];
     }
   }
 
@@ -734,9 +736,10 @@ function _vaxia_add_xp($nid, $xp, $type) {
       _character_sheet_update_xp($nid, $xp, 'kxp');
       $current_kxp = _character_sheet_get_xp($nid, 'kxp');
       // If we have enough to convert to other xp, do it.
-      if ($current_kxp > variable_get('vaxia_kxp_ratio', 70)) {
+      $kxp_ratio = variable_get('vaxia_kxp_ratio', 70);
+      if ($current_kxp >= $kxp_ratio) {
         // Remove from kxp, add 1 to rxp.
-        _character_sheet_update_xp($nid, variable_get('vaxia_kxp_ratio', 70) * -1, 'kxp');
+        _character_sheet_update_xp($nid, $kxp_ratio * -1, 'kxp');
         _character_sheet_update_xp($nid, 1, 'rxp');
         // If we have banked xp, remove one from bxp and add spendable xp.
         $current_bxp = _character_sheet_get_xp($nid, 'bxp');
@@ -764,7 +767,7 @@ function _vaxia_add_xp($nid, $xp, $type) {
       $xp_to_add = 0;
       $rxp_to_charge = 0;
       while ($xp > 0 ) {
-        if ($current_rxp > 0 ) {
+        if ( ($current_rxp - $rxp_to_charge) > 0 ) {
           $rxp_to_charge--;
           $xp_to_add++;
         }
