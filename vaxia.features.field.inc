@@ -1666,7 +1666,7 @@ function vaxia_field_default_fields() {
         ),
         'view' => array(
           'args' => array(),
-          'display_name' => 'character_items_mine_ref',
+          'display_name' => 'character_items_ref',
           'view_name' => 'character_items',
         ),
       ),
