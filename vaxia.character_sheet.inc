@@ -743,7 +743,7 @@ function _vaxia_add_xp($nid, $xp, $type) {
         _character_sheet_update_xp($nid, 1, 'rxp');
         // If we have banked xp, remove one from bxp and add spendable xp.
         $current_bxp = _character_sheet_get_xp($nid, 'bxp');
-        if ($current_bpx > 0 ) {
+        if ($current_bxp > 0 ) {
           _character_sheet_update_xp($nid, -1, 'bxp');
           _character_sheet_update_xp($nid, 1, 'xp');
         }
