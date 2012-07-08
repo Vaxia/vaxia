@@ -30,45 +30,47 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
   }
   if ($character && $character != '_none') {
     $character = node_load($character);
-    $dice_size = array(100,77,50,30,20,16,12,10,8,6,4,2);
-    $stat = array(
-      '-1' => '<none>', 
-      'field_life' => 'Life', 
-      'field_health' => 'Health', 
-      'field_endurance' => 'Endurance', 
-      'field_constitution' => 'Constitution', 
-      'field_strength' => 'Strength', 
-      'field_agility' => 'Agility', 
-      'field_dexterity' => 'Dexterity', 
-      'field_reflexes' => 'Reflexes', 
-      'field_intelligence' => 'Intelligence', 
-      'field_awareness' => 'Awareness', 
-      'field_spirituality' => 'Spirituality', 
-      'field_presence' => 'Presence', 
-      'field_charisma' => 'Charima', 
-      'field_appearance' => 'Appearance'
-    );
-    $skills = array(-1 => '<none>');
-    if (isset($character->field_skill[$character->language])) {
-      foreach ($character->field_skill[$character->language] as $delta => $skill) {
-        $this_skill = field_collection_item_load($skill['value']);
-        $skills[$skill['value']] = $this_skill->field_skill_name[$character->language][0]['value'];  
+    if (isset($character->title)) {
+      $dice_size = array(100,77,50,30,20,16,12,10,8,6,4,2);
+      $stat = array(
+        '-1' => '<none>', 
+        'field_life' => 'Life', 
+        'field_health' => 'Health', 
+        'field_endurance' => 'Endurance', 
+        'field_constitution' => 'Constitution', 
+        'field_strength' => 'Strength', 
+        'field_agility' => 'Agility', 
+        'field_dexterity' => 'Dexterity', 
+        'field_reflexes' => 'Reflexes', 
+        'field_intelligence' => 'Intelligence', 
+        'field_awareness' => 'Awareness', 
+        'field_spirituality' => 'Spirituality', 
+        'field_presence' => 'Presence', 
+        'field_charisma' => 'Charima', 
+        'field_appearance' => 'Appearance'
+      );
+      $skills = array(-1 => '<none>');
+      if (isset($character->field_skill[$character->language])) {
+        foreach ($character->field_skill[$character->language] as $delta => $skill) {
+          $this_skill = field_collection_item_load($skill['value']);
+          $skills[$skill['value']] = $this_skill->field_skill_name[$character->language][0]['value'];  
+        }
       }
-    }
-    $items = array(-1 => '<none>');
-    if (isset($character->field_items[$character->language])) {
-      foreach ($character->field_items[$character->language] as $delta => $item) {
-        $this_item = node_load($item['nid']);
-        $items[$this_item->nid] = $this_item->title;  
+      $items = array(-1 => '<none>');
+      if (isset($character->field_items[$character->language])) {
+        foreach ($character->field_items[$character->language] as $delta => $item) {
+          $this_item = node_load($item['nid']);
+          $items[$this_item->nid] = $this_item->title;  
+        }
       }
+      for ($i=0;$i<3;$i++) {
+        $form['vaxia_rolls']['dice'][$i] = _vaxia_dice_roller_row($dice_size, $stat, $skills, $items);
+      }
+      $form['vaxia_rolls']['notes'] = array(
+        '#type' => 'textarea',
+        '#title' => t('Notes'),
+      );
     }
-    for ($i=0;$i<3;$i++) {
-      $form['vaxia_rolls']['dice'][$i] = _vaxia_dice_roller_row($dice_size, $stat, $skills, $items);
-    }
-    $form['vaxia_rolls']['notes'] = array(
-      '#type' => 'textarea',
-      '#title' => t('Notes'),
-    );
   }
   else {
     $form['vaxia_rolls'] = array(
