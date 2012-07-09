@@ -463,8 +463,8 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
     $cost = _vaxia_invest_calculate_cost_to_improve($level);
     $invest = $cost - $silver_invested;
     // Invested silver is spent_silver, adjusted to show the difference between spent and the cost of the current economy level.
-    $desc = t('You need to invest %invest more silver before you will reach %level economy.',
-      array('%invest' => $invest, '%level' => $level + 1));
+    $desc = t('You need to invest %invest more silver before you will reach %level economy. Invested so far %so_far.',
+      array('%invest' => $invest, '%level' => $level + 1, '%so_far' => $silver_invested));
     if ($available_silver >= 1 ) {
       $available_silver = floor($available_silver);
       $options = range(0, $available_silver);
@@ -500,6 +500,7 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
       $type = trim($type);
       $xp_types[$type] = $type;
     }
+    $xp_types['silver'] = 'silver';
     $form['add_xp']['type']['#options'] = array_merge($xp_types, $form['add_xp']['type']['#options']);
   }
 
@@ -571,11 +572,11 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
 
 /**
  * Helper function, figure out how much it costs to improve economy by one.
- */  //TODO
+ */
 function _vaxia_invest_calculate_cost_to_improve($value) {
   // Given an economy value, figure out how much silver it would take to increase it.
-  // $value +1; TODO
-  return 1;
+  drupal_set_message('TMP: The equation to calculate how much silver it takes to improve the economy level is currently not set. Cost is 1:1.');
+  return $value + 1;
 }
 
 /**
@@ -649,7 +650,7 @@ function vaxia_character_sheet_cron() {
     // On cron. Go through ALL character sheets. (BATCH API or TABLE?).
     // For each sheet, calculate money to add based on the economy level.
     // And add that to available silver. TODO
-    $silver = db_query('');
+    drupal_set_message('TMP: We would calculate silver gained per day here, if we had the equation.');
   }
 }
 
