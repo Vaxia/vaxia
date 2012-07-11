@@ -58,6 +58,30 @@ function vaxia_character_sheet_register_systems() {
     ),
   );
  */
+/**
+ * Value callback for determining costs. Modified from _character_sheet_calculate_field_value().
+ */
+function _vaxia_calculate_attribute_field_value($field_info, $value) {
+  if (!isset($value)) { return 0; }
+  if (isset($field_info['costs']['cost_mode']) && $field_info['costs']['cost_mode'] == 'flat') {
+    $total = $value * $field_info['costs']['cost'];
+  }
+  else {
+    $total = 0;
+    $current = 0;
+    $cost_modifier = isset($field_info['costs']['cost']) ? $field_info['costs']['cost'] : 1;
+    $step = isset($field_info['costs']['step']) ? $field_info['costs']['step'] : 1;
+    while ($current < $value) {
+      $current += $step;
+      $total += floor($current * 0.1) * $cost_modifier;
+    }
+  }
+  return $total;
+}
+
+/**
+ * Implements hook_character_sheet_field_info().
+ */
 function vaxia_character_sheet_field_info() {
   return array(
     'title' => array(
@@ -99,8 +123,9 @@ function vaxia_character_sheet_field_info() {
       ),
       'costs' => array(
         'xp_type' => 'xp',
-        'cost' => variable_get('vaxia_attribute_cost', 1) * 0.1,
+        'cost' => variable_get('vaxia_attribute_cost', 1),
         'step' => 1,
+        'value_callback' => '_vaxia_calculate_attribute_field_value',
       ),
     ),
     'field_endurance' => array(
@@ -109,8 +134,9 @@ function vaxia_character_sheet_field_info() {
       ),
       'costs' => array(
         'xp_type' => 'xp',
-        'cost' => variable_get('vaxia_attribute_cost', 1) * 0.1,
+        'cost' => variable_get('vaxia_attribute_cost', 1),
         'step' => 1,
+        'value_callback' => '_vaxia_calculate_attribute_field_value',
       ),
     ),
     'field_strength' => array(
@@ -119,8 +145,9 @@ function vaxia_character_sheet_field_info() {
       ),
       'costs' => array(
         'xp_type' => 'xp',
-        'cost' => variable_get('vaxia_attribute_cost', 1) * 0.1,
+        'cost' => variable_get('vaxia_attribute_cost', 1),
         'step' => 1,
+        'value_callback' => '_vaxia_calculate_attribute_field_value',
       ),
     ),
     'field_dexterity' => array(
@@ -129,8 +156,9 @@ function vaxia_character_sheet_field_info() {
       ),
       'costs' => array(
         'xp_type' => 'xp',
-        'cost' => variable_get('vaxia_attribute_cost', 1) * 0.1,
+        'cost' => variable_get('vaxia_attribute_cost', 1),
         'step' => 1,
+        'value_callback' => '_vaxia_calculate_attribute_field_value',
       ),
     ),
     'field_intelligence' => array(
@@ -139,8 +167,9 @@ function vaxia_character_sheet_field_info() {
       ),
       'costs' => array(
         'xp_type' => 'xp',
-        'cost' => variable_get('vaxia_attribute_cost', 1) * 0.1,
+        'cost' => variable_get('vaxia_attribute_cost', 1),
         'step' => 1,
+        'value_callback' => '_vaxia_calculate_attribute_field_value',
       ),
     ),
     'field_spirituality' => array(
@@ -149,8 +178,9 @@ function vaxia_character_sheet_field_info() {
       ),
       'costs' => array(
         'xp_type' => 'xp',
-        'cost' => variable_get('vaxia_attribute_cost', 1) * 0.1,
+        'cost' => variable_get('vaxia_attribute_cost', 1),
         'step' => 1,
+        'value_callback' => '_vaxia_calculate_attribute_field_value',
       ),
     ),
     'field_charisma' => array(
@@ -159,8 +189,9 @@ function vaxia_character_sheet_field_info() {
       ),
       'costs' => array(
         'xp_type' => 'xp',
-        'cost' => variable_get('vaxia_attribute_cost', 1) * 0.1,
+        'cost' => variable_get('vaxia_attribute_cost', 1),
         'step' => 1,
+        'value_callback' => '_vaxia_calculate_attribute_field_value',
       ),
     ),
     //field_health
@@ -176,8 +207,9 @@ function vaxia_character_sheet_field_info() {
       ),
       'costs' => array(
         'xp_type' => 'xp',        
-        'cost' => variable_get('vaxia_skill_cost', 0.75) * 0.1,
+        'cost' => variable_get('vaxia_skill_cost', 0.75),
         'step' => 1,
+        'value_callback' => '_vaxia_calculate_attribute_field_value',
       ),
     ),
     'field_skill_name' => array(
