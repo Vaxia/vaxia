@@ -228,9 +228,9 @@ function vaxia_character_sheet_field_info() {
       ),
       'costs' => array(
         'xp_type' => 'xp',
-        'cost' => variable_get('vaxia_economy_cost', 2),
-        'cost_mode' => 'flat',
+        'cost' => variable_get('vaxia_economy_cost', 1),
         'step' => 1,
+        'value_callback' => '_vaxia_calculate_attribute_field_value',
       ),
     ),
     //field_items
@@ -414,7 +414,7 @@ function _vaxia_admin_settings() {
     '#title' => 'Economy cost',
     '#description' => 'Economy cost is calculated as cost per point added.',
     '#type' => 'textfield',
-    '#default_value' => variable_get('vaxia_economy_cost', 2),
+    '#default_value' => variable_get('vaxia_economy_cost', 1),
   );
   $form['point_cost']['vaxia_transfer_percentage'] = array(
     '#title' => 'Percent of XP',
