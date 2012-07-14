@@ -634,7 +634,7 @@ function _vaxia_get_daily_pay($economy) {
  * Helper function, figure out how much you're worth in silver.
  */
 function _vaxia_calculate_worth($economy) {
-  $power = int ((0.04 * $economy) + 1.853 + (-4 * ( 1 / ($economy + 1) )));
+  $power = int (0.04 * $economy) + 1.853 + (-4 * ( 1 / ($economy + 1) ));
   return pow(10, $power) + (0.5);
 }
 
