@@ -483,9 +483,9 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
   if ($node->uid == $user->uid) {
     $level = isset($node->field_economy[$node->language][0]['value']) ? $node->field_economy[$node->language][0]['value'] : 0;
     $econ[] = t('Your current economy level is %level.', array('%level' => $level));
-    $income = 0; //TODO caluclate
+    $income = _vaxia_get_month_income($level);
     $econ[] = t('Your monthly disposable income is %income.', array('%income' => $income));
-    $pay = 0; // TODO calculate
+    $pay = _vaxia_get_daily_pay($level);
     $econ[] = t('You get paid %pay a day.', array('%pay' => $pay));
     $form['node_info']['economy'] = array(
       '#type' => 'item',
@@ -605,10 +605,37 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
 /**
  * Helper function, figure out how much it costs to improve economy by one.
  */
-function _vaxia_invest_calculate_cost_to_improve($value) {
-  // Given an economy value, figure out how much silver it would take to increase it.
-  drupal_set_message('TMP: The equation to calculate how much silver it takes to improve the economy level is currently not set. Cost is 1:1.');
-  return $value + 1;
+function _vaxia_invest_calculate_cost_to_improve($economy) {
+  // Given an economy value, figure out how much silver it would take to increase it by one.
+  $total_worth = _vaxia_calculate_worth($economy);
+  $economy++;
+  $new_worth = _vaxia_calculate_worth($economy);
+  return $new_worth - $total_worth;
+}
+
+/**
+ * Helepr function, given an economy level, figure out how much income in a month.
+ */
+function _vaxia_get_month_income($economy) {
+  $total_worth = _vaxia_calculate_worth($economy);
+  return (($total_worth) * (3.5 / 100)) + (0.05);
+}
+
+/**
+ * Helepr function, given an economy level, figure out how much income in a day.
+ */
+function _vaxia_get_daily_pay($economy) {
+  $monthly = _vaxia_get_month_income($economy);
+  $daily = $monthly / 30;
+  return $daily;
+}
+
+/**
+ * Helper function, figure out how much you're worth in silver.
+ */
+function _vaxia_calculate_worth($economy) {
+  $power = int ((0.04 * $economy) + 1.853 + (-4 * ( 1 / ($economy + 1) )));
+  return pow(10, $power) + (0.5);
 }
 
 /**
@@ -681,11 +708,34 @@ function vaxia_character_sheet_cron() {
     $last_run = variable_set('vaxia_character_sheet_cron', strtotime('now'));
     // On cron. Go through ALL character sheets. (BATCH API or TABLE?).
     // For each sheet, calculate money to add based on the economy level.
-    // And add that to available silver. TODO
-    drupal_set_message('TMP: We would calculate silver gained per day here, if we had the equation.');
+    // Using this query to make swure we don't load anything we really don't need to.
+    // So only nodes that have an economy and exist.
+    $sheets = db_query('SELECT n.nid, e.field_economy_value FROM {field_data_field_economy} e ' .
+      'LEFT JOIN {node} n ON e.entity_id = n.nid AND e.revision_id = n.vid');
+    foreach ($sheets as $node_data) {
+      $node = node_load($node_data->nid);
+      if (_character_sheet_is_enabled($node) && !_character_sheet_is_playable($node)) {
+        $node = node_load($node->nid);
+        $level = isset($node->field_economy[$node->language][0]['value']) ? $node->field_economy[$node->language][0]['value'] : 0;
+        $silver = _character_sheet_get_xp($node->nid, 'silver');
+        $silver_spent = _character_sheet_get_xp($node->nid, 'spent_silver');
+        $silver_invested = _character_sheet_get_xp($node->nid, 'invest_silver');
+        $available_silver = $silver - ($silver_spent + $silver_invested);
+        $income = _vaxia_get_month_income($level);
+        $daily = _vaxia_get_daily_pay($level);
+        // If silver on hand > income reduce it by daily pay, else add it.
+        if ($available_silver > $income) {
+          // Reduce silver.
+          _character_sheet_update_xp($node->nid, $daily * -1, 'silver');
+        }
+        else {
+          // Add silver.
+          _character_sheet_update_xp($node->nid, $daily, 'silver');
+        }
+      }
+    }
   }
 }
-
 
 /**
  * Helper function, determine how many points a sheet has spent.
