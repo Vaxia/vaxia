@@ -34,6 +34,27 @@ function vaxia_character_sheet_register_systems() {
   );
   return $system;
 }
+ 
+/**
+ * Value callback for determining costs. Modified from _character_sheet_calculate_field_value().
+ */
+function _vaxia_calculate_attribute_field_value($field_info, $value) {
+  if (!isset($value)) { return 0; }
+  if (isset($field_info['costs']['cost_mode']) && $field_info['costs']['cost_mode'] == 'flat') {
+    $total = $value * $field_info['costs']['cost'];
+  }
+  else {
+    $total = 0;
+    $current = 0;
+    $cost_modifier = isset($field_info['costs']['cost']) ? $field_info['costs']['cost'] : 1;
+    $step = isset($field_info['costs']['step']) ? $field_info['costs']['step'] : 1;
+    while ($current < $value) {
+      $current += $step;
+      $total += floor($current * 0.1) * $cost_modifier;
+    }
+  }
+  return $total;
+}
 
 /**
  * Implements hook_character_sheet_field_info().
@@ -58,26 +79,6 @@ function vaxia_character_sheet_register_systems() {
     ),
   );
  */
-/**
- * Value callback for determining costs. Modified from _character_sheet_calculate_field_value().
- */
-function _vaxia_calculate_attribute_field_value($field_info, $value) {
-  if (!isset($value)) { return 0; }
-  if (isset($field_info['costs']['cost_mode']) && $field_info['costs']['cost_mode'] == 'flat') {
-    $total = $value * $field_info['costs']['cost'];
-  }
-  else {
-    $total = 0;
-    $current = 0;
-    $cost_modifier = isset($field_info['costs']['cost']) ? $field_info['costs']['cost'] : 1;
-    $step = isset($field_info['costs']['step']) ? $field_info['costs']['step'] : 1;
-    while ($current < $value) {
-      $current += $step;
-      $total += floor($current * 0.1) * $cost_modifier;
-    }
-  }
-  return $total;
-}
 
 /**
  * Implements hook_character_sheet_field_info().
@@ -412,7 +413,7 @@ function _vaxia_admin_settings() {
   );
   $form['point_cost']['vaxia_economy_cost'] = array(
     '#title' => 'Economy cost',
-    '#description' => 'Economy cost is calculated as cost per point added.',
+    '#description' => 'Economy cost is calculated as (current/10) * multiplier.',
     '#type' => 'textfield',
     '#default_value' => variable_get('vaxia_economy_cost', 1),
   );
@@ -480,49 +481,47 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
 
   // Add the economy form for owned forms.
   global $user;
-  if ($node->uid == $user->uid) {
-    $level = isset($node->field_economy[$node->language][0]['value']) ? $node->field_economy[$node->language][0]['value'] : 0;
-    $econ[] = t('Your current economy level is %level.', array('%level' => $level));
-    $income = _vaxia_get_month_income($level);
-    $econ[] = t('Your monthly disposable income is %income.', array('%income' => $income));
-    $pay = _vaxia_get_daily_pay($level);
-    $econ[] = t('You get paid %pay a day.', array('%pay' => $pay));
-    $form['node_info']['economy'] = array(
-      '#type' => 'item',
-      '#title' => t('Economy'),
-      '#markup' => theme('item_list', array('items' => $econ)),
+  $level = isset($node->field_economy[$node->language][0]['value']) ? $node->field_economy[$node->language][0]['value'] : 0;
+  $econ[] = t('Your current economy level is %level.', array('%level' => $level));
+  $income = _vaxia_get_month_income($level);
+  $econ[] = t('Your monthly disposable income is %income.', array('%income' => number_format($income, 0)));
+  $pay = _vaxia_get_daily_pay($level);
+  $econ[] = t('You get paid %pay a day.', array('%pay' => number_format($pay, 1)));
+  $form['node_info']['economy'] = array(
+    '#type' => 'item',
+    '#title' => t('Economy'),
+    '#markup' => theme('item_list', array('items' => $econ)),
+  );
+  $cost = _vaxia_invest_calculate_cost_to_improve($level);
+  $invest = $cost - $silver_invested;
+  // Invested silver is spent_silver, adjusted to show the difference between spent and the cost of the current economy level.
+  $desc = t('You need to invest %invest more silver before you will reach %level economy. Invested so far %so_far.',
+    array('%invest' => number_format($invest, 0), '%level' => $level + 1, '%so_far' => $silver_invested));
+  if ($available_silver >= 1 ) {
+    $available_silver = floor($available_silver);
+    $options = range(0, $available_silver);
+    $options[0] = '-';
+    $invest = 0;
+    // Figure out how many given current silver you can add.
+    $form['node_info']['invest_silver'] = array(
+      '#title' => t('Invest silver'),
+      '#type' => 'select',
+      '#options' => $options,
+      '#description' => $desc,
     );
-    $cost = _vaxia_invest_calculate_cost_to_improve($level);
-    $invest = $cost - $silver_invested;
-    // Invested silver is spent_silver, adjusted to show the difference between spent and the cost of the current economy level.
-    $desc = t('You need to invest %invest more silver before you will reach %level economy. Invested so far %so_far.',
-      array('%invest' => $invest, '%level' => $level + 1, '%so_far' => $silver_invested));
-    if ($available_silver >= 1 ) {
-      $available_silver = floor($available_silver);
-      $options = range(0, $available_silver);
-      $options[0] = '-';
-      $invest = 0;
-      // Figure out how many given current silver you can add.
-      $form['node_info']['invest_silver'] = array(
-        '#title' => t('Invest silver'),
-        '#type' => 'select',
-        '#options' => $options,
-        '#description' => $desc,
-      );
-      $form['node_info']['submit_economy'] = array(
-        '#type' => 'submit',
-        '#value' => t('Invest silver'),
-        '#validate' => array(),
-        '#submit' => array('_vaxia_invest_silver_submit'),
-      );
-    }
-    else {
-      $form['node_info']['invest_silver'] = array(
-        '#type' => 'item',
-        '#value' => t('You currectly have no silver available to invest.'),
-        '#description' => $desc,
-      );
-    }
+    $form['node_info']['submit_economy'] = array(
+      '#type' => 'submit',
+      '#value' => t('Invest silver'),
+      '#validate' => array(),
+      '#submit' => array('_vaxia_invest_silver_submit'),
+    );
+  }
+  else {
+    $form['node_info']['invest_silver'] = array(
+      '#type' => 'item',
+      '#value' => t('You currectly have no silver available to invest.'),
+      '#description' => $desc,
+    );
   }
 
   // Add additional options for xp IIF allowed.
@@ -634,7 +633,7 @@ function _vaxia_get_daily_pay($economy) {
  * Helper function, figure out how much you're worth in silver.
  */
 function _vaxia_calculate_worth($economy) {
-  $power = int (0.04 * $economy) + 1.853 + (-4 * ( 1 / ($economy + 1) ));
+  $power = (0.04 * $economy) + 1.853 + (-4 * ( 1 / ($economy + 1) ));
   return pow(10, $power) + (0.5);
 }
 
