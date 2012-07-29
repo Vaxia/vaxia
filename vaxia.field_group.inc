@@ -342,8 +342,9 @@ function vaxia_field_group_info() {
     'label' => 'Items',
     'weight' => '7',
     'children' => array(
-      0 => 'field_items',
-      1 => 'field_property',
+      0 => 'field_economy',
+      1 => 'field_items',
+      2 => 'field_property',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(

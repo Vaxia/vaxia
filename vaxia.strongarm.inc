@@ -39,7 +39,7 @@ function vaxia_strongarm() {
   $strongarm->name = 'character_sheet_types';
   $strongarm->value = array(
     'character_sheet' => 'vaxia',
-    'rpg_chatroom' => FALSE,
+    'rpg_chatroom' => '-1',
   );
   $export['character_sheet_types'] = $strongarm;
 
@@ -280,7 +280,7 @@ function vaxia_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'dice_roller_place_rpg_chatroom';
-  $strongarm->value = 'comment';
+  $strongarm->value = 'both';
   $export['dice_roller_place_rpg_chatroom'] = $strongarm;
 
   $strongarm = new stdClass;
@@ -352,7 +352,6 @@ function vaxia_strongarm() {
   $strongarm->name = 'node_options_artwork';
   $strongarm->value = array(
     0 => 'status',
-    1 => 'revision',
   );
   $export['node_options_artwork'] = $strongarm;
 
@@ -371,7 +370,6 @@ function vaxia_strongarm() {
   $strongarm->name = 'node_options_character_sheet';
   $strongarm->value = array(
     0 => 'status',
-    1 => 'revision',
   );
   $export['node_options_character_sheet'] = $strongarm;
 
@@ -381,7 +379,6 @@ function vaxia_strongarm() {
   $strongarm->name = 'node_options_items';
   $strongarm->value = array(
     0 => 'status',
-    1 => 'revision',
   );
   $export['node_options_items'] = $strongarm;
 
@@ -391,7 +388,6 @@ function vaxia_strongarm() {
   $strongarm->name = 'node_options_rpg_chatroom';
   $strongarm->value = array(
     0 => 'status',
-    1 => 'revision',
   );
   $export['node_options_rpg_chatroom'] = $strongarm;
 
@@ -537,29 +533,11 @@ rogue';
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'workflow_artwork';
-  $strongarm->value = array(
-    0 => 'node',
-  );
-  $export['workflow_artwork'] = $strongarm;
-
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
   $strongarm->name = 'workflow_character_sheet';
   $strongarm->value = array(
     0 => 'node',
   );
   $export['workflow_character_sheet'] = $strongarm;
-
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'workflow_items';
-  $strongarm->value = array(
-    0 => 'node',
-  );
-  $export['workflow_items'] = $strongarm;
 
   $strongarm = new stdClass;
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */

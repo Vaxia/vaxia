@@ -135,7 +135,7 @@ function vaxia_field_default_fields() {
         'active' => 1,
         'module' => 'text',
         'settings' => array(
-          'size' => '60',
+          'size' => '6',
         ),
         'type' => 'text_textfield',
         'weight' => '3',
@@ -1403,7 +1403,7 @@ function vaxia_field_default_fields() {
         ),
       ),
       'deleted' => '0',
-      'description' => 'Spend XP at a ratio of 2:1 to increase your economy level. (You can invest silver instead on the Sheet tab.)',
+      'description' => 'You can invest silver instead on the Sheet tab.',
       'display' => array(
         'default' => array(
           'label' => 'above',
@@ -1415,7 +1415,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_integer',
-          'weight' => 30,
+          'weight' => '28',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1813,7 +1813,7 @@ function vaxia_field_default_fields() {
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => 29,
+          'weight' => '29',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2610,15 +2610,16 @@ function vaxia_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'inline',
-          'module' => 'field_collection',
+          'module' => 'field_collection_table',
           'settings' => array(
-            'add' => 'Add',
-            'delete' => 'Delete',
-            'description' => TRUE,
-            'edit' => 'Edit',
+            'add' => '',
+            'delete' => '',
+            'description' => 0,
+            'edit' => '',
+            'empty' => 1,
             'view_mode' => 'full',
           ),
-          'type' => 'field_collection_view',
+          'type' => 'field_collection_table_view',
           'weight' => '13',
         ),
         'teaser' => array(
@@ -4023,7 +4024,7 @@ function vaxia_field_default_fields() {
           'module' => 'node_reference',
           'settings' => array(),
           'type' => 'node_reference_default',
-          'weight' => 2,
+          'weight' => '2',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -4457,11 +4458,11 @@ function vaxia_field_default_fields() {
   t('SH Notes');
   t('Sex');
   t('Skill');
-  t('Spend XP at a ratio of 2:1 to increase your economy level. (You can invest silver instead on the Sheet tab.)');
   t('Spirituality');
   t('Strength');
   t('Value');
   t('Website');
+  t('You can invest silver instead on the Sheet tab.');
 
   return $fields;
 }
