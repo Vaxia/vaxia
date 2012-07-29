@@ -1,8 +1,8 @@
 /* Vaxia CSS */
 html{font-size:80%}
 #page{max-width:100%;padding-bottom:100px;}
-#header{width:100%;background-color:black;height:150px;}
-#header #logo{float:none;display:block;height:150px;width:960px;margin:0 auto;}
+#header{width:100%;background-color:black;height:100px;}
+#header #logo{float:none;display:block;height:100px;width:100px;margin:0 auto;}
 #header #name-and-slogan{display:none;}
 #main{width:960px;margin:0 auto 3em;padding-top:3em;}
 #content{padding-bottom:1em;}
@@ -33,7 +33,7 @@ table, th, thead, tbody, tr, tr.even, tr.odd, td, td.active{background-color:tra
 
 /* Tab formating. */
 ul.primary a:link, ul.primary a:visited{padding:0 0.5em;}
-ul.tabs a:link, ul.tabs a:visited{color:#111;background-color:#abc;} /*background-color:#A7CEE7*/
+ul.tabs a:link, ul.tabs a:visited{} /*background-color:#A7CEE7*/
 ul.tabs li{
   -moz-border-radius: 8px 8px 0 0;
   -webkit-border-radius: 8px 8px 0 0;
@@ -63,11 +63,22 @@ article .links li.service-links{display:inline;float:left;margin-top:2em;}
 article .links li.node-readmore{display:inline;clear:right;float:right;}
 article .links li.comment-add{display:inline;clear:right;float:right;}
 article section.comments{clear:both;margin-top:0.5em;}
-article .field-name-comment-body{padding-bottom:0.5em;border-bottom:solid 1px #FFF;}
+article #comment-body-add-more-wrapper #edit-comment-body-und-0-format{display:none;}
+
+/* Comment formatting */
+article.rpg-chat-node article.comment {border:solid 1px #FFF;padding:0.5em;}
+article.rpg-chat-node article.comment header .submitted{float:left;margin:1em;}
+article.rpg-chat-node article.comment header .submitted span{display:block;}
+article.rpg-chat-node article.comment header .permalink{float:left;}
+article.rpg-chat-node article.comment .field-name-comment-body{min-height:160px;}
+article.rpg-chat-node .comments h2{display:none;}
+article.rpg-chat-node .links{display:none;}
+article.rpg-chat-node .form-type-item{display:none;}
+#rpg-chat-userlist{width:25%;}
 
 /* Forum Thread*/
 .forum-table td{padding: 0.5em 0;}
-.forum-post{border-bottom:1px solid #FFF;}
+.forum-post{border:1px solid #FFF;}
 .forum-post-panel-sub .author-pane{text-align:center;}
 .forum-post-panel-sub .author-pane .user-picture{display:block;margin-top:0.5em;}
 .forum-post-links{float:none;margin-left:160px;}

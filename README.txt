@@ -21,10 +21,12 @@ Features, Rules, Entity, Workflow
 
 1. Unzip and copy this directory to your sites/SITENAME/modules directory. 
 
-2. Enable the module. 
+2. Move the vaxia_theme module to the themes directory.
 
-3. Immediately go to Features at admin/structure/features.
+3. Enable the module. 
 
-4. Click where the Vaxia feature says "Overridden".
+4. Immediately go to Features at admin/structure/features.
 
-5. Scroll down, select the checkbox beside "Workflow", and click "Revert components".
+5. Click where the Vaxia feature says "Overridden".
+
+6. Scroll down, select the checkbox beside "Workflow", and click "Revert components".
