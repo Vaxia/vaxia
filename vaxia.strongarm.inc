@@ -530,23 +530,5 @@ mage
 rogue';
   $export['vaxia_xp_types'] = $strongarm;
 
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'workflow_character_sheet';
-  $strongarm->value = array(
-    0 => 'node',
-  );
-  $export['workflow_character_sheet'] = $strongarm;
-
-  $strongarm = new stdClass;
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'workflow_rpg_chatroom';
-  $strongarm->value = array(
-    0 => 'node',
-  );
-  $export['workflow_rpg_chatroom'] = $strongarm;
-
   return $export;
 }

@@ -1918,7 +1918,7 @@ function vaxia_views_default_views() {
   $handler->display->display_options['filters']['sid']['table'] = 'workflow_node';
   $handler->display->display_options['filters']['sid']['field'] = 'sid';
   $handler->display->display_options['filters']['sid']['value'] = array(
-    9 => '9',
+    4 => '4',
   );
   $handler->display->display_options['filters']['sid']['group'] = 1;
   $handler->display->display_options['block_description'] = 'My character sheets block';
