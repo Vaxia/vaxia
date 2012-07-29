@@ -270,10 +270,13 @@ function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
     if (isset($form['field_economy'][$lang][0]['#default_value'])) {
       $form['field_economy'][$lang][0]['#value'] = $form['field_economy'][$lang][0]['#default_value'];
     }
-    // Disable the SH notes field.
-    $form['field_sh_notes'][$lang][0]['#disabled'] = TRUE;
-    if (isset($form['field_sh_notes'][$lang][0]['#default_value'])) {
-      $form['field_sh_notes'][$lang][0]['#value'] = $form['field_sh_notes'][$lang][0]['#default_value'];
+    // Disable these fields.
+    $disabled = array('field_property', 'field_npcs', 'field_sh_notes');
+    foreach ($disabled as $field_name) {
+      $form[$field_name][$lang][0]['#disabled'] = TRUE;
+      if (isset($form[$field_name][$lang][0]['#default_value'])) {
+        $form[$field_name][$lang][0]['#value'] = $form[$field_name][$lang][0]['#default_value'];
+      }
     }
   }
 
