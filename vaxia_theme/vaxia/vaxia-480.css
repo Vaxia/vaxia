@@ -1,0 +1,61 @@
+/* Display under 480, generally mobile in landscape or portrait. */
+
+/* Header */
+#header{height:40px;}
+#header #logo{height:40px;margin:0 auto;}
+#header #logo img{height:40px;}
+#main{padding-top:0;}
+
+/* Navigation menu tweaks. */
+#navigation{margin-top:1em;}
+#navigation #main-menu{float:none;clear:both;top:0;}
+#navigation #main-menu li{float:none;display:block;}
+#navigation a{width:100%;padding-top:10px;padding-bottom:5px;background:#000;border: solid 1px #666;border-bottom:0;}
+#navigation ul.links li, #navigation ul.menu li{padding: 0 20px 0 0;margin:0;}
+
+.front_page_flash{left:0;margin:0.5em 0;}
+
+/* Tabs realign and stretch. */
+.tabs li{float:none !important;margin:0 !important;}
+.tabs li a{height:25px;}
+
+/* Form input widths. */
+form input{max-width:300px;}
+
+/* Service link sizes. */
+article .links a{padding:5px;}
+article .field-name-body img{float:left;max-width:95%;}
+article .field-name-body img.odd{float:left;}
+
+/* Forum listing. */
+#forum .forum-icon{display:none;}
+#forum .forum-topics{display:none;}
+#forum .forum-posts{display:none;}
+#forum .forum-list-icon{display:none;}
+#forum .forum-number-topics{display:none;}
+#forum .forum-number-posts{display:none;}
+#forum .forum-details{width:20%;}
+
+/* Forum thread list. */
+#forum .views-field-topic-icon{display:none;}
+#forum .views-field-comment-count{display:none;}
+#forum .views-field-totalcount{display:none;}
+#forum-sort{float:right;}
+
+/* Misc forum cleanup on navigation etc. */
+.forum-topic-legend{display:none;}
+.forum-node-create-links, .topic-reply-allowed{width:100%;text-align:center;clear:both;}
+.forum-node-create-links .forum-add-node{float:none;}
+.forum-node-create-links .forum-add-node a{height:25px;}
+.forum-pager .pager, #forum-comments .pager{width:100%;text-align:center;}
+.forum-pager .pager, #forum-comments .pager a{height:25px;}
+
+/* Forum thread. */
+.forum-post .forum-post-panel-main{margin-left:0;}
+.forum-post-links{margin-left:0;}
+.forum-post .links li.quote{clear:left;}
+
+/* Sidebars */
+.sidebars .block{width:46%;padding:1%;border:solid 1px #555;float:left;}
+.sidebars .block.odd{float:right;}
+.sidebars .block .block-title{text-align:center;}

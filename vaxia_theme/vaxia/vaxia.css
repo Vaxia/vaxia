@@ -1,0 +1,101 @@
+/* Vaxia CSS */
+html{font-size:80%}
+#page{max-width:100%;padding-bottom:100px;}
+#header{width:100%;background-color:black;height:150px;}
+#header #logo{float:none;display:block;height:150px;width:960px;margin:0 auto;}
+#header #name-and-slogan{display:none;}
+#main{width:960px;margin:0 auto 3em;padding-top:3em;}
+#content{padding-bottom:1em;}
+#footer{width:960px;margin:0 auto;}
+.front_page_flash{position:relative;left:-10px}
+
+/* Front page */
+body.front #content #page-title, body.page-node-42 #content #page-title{display:none;}
+body.front #content .breadcrumb, body.page-node-42 #content .breadcrumb{display:none;}
+body.front #main, body.page-node-42 #main{padding-top:0;}
+
+/* Fonts styles. */
+body{font-family:Verdana,Arial,Helvetica,sans-serif;line-height:1.25em;} /* Setup for em driven percent resizes.*/
+h1{font-size:1.5em;}
+h2{font-size:1.2em;}
+h3{font-size:1em;}
+p{font-size:0.9em;}
+
+/* Text colors. */
+body{color:#FFF;}
+a{color:#4799CC;}
+a.active{color:#5BA4D2;}
+a:visited{color:#368EC4;}
+
+/* Default background colors by element. */
+body{background-color:#111;} /* Default background color is a nuetral dark grey. */
+table, th, thead, tbody, tr, tr.even, tr.odd, td, td.active{background-color:transparent;} /* Default tables are transparent background. */
+
+/* Tab formating. */
+ul.primary a:link, ul.primary a:visited{padding:0 0.5em;}
+ul.tabs a:link, ul.tabs a:visited{color:#111;background-color:#abc;} /*background-color:#A7CEE7*/
+ul.tabs li{
+  -moz-border-radius: 8px 8px 0 0;
+  -webkit-border-radius: 8px 8px 0 0;
+  -khtml-border-radius: 8px 8px 0 0;
+  border-radius: 8px 8px 0 0;
+}
+
+/* Navigation link formatting for all pgs. */
+#navigation #main-menu{float:right;position:relative;top:-25px;}
+#navigation a{display:block;height:20px;text-decoration:none;color:#FFF;text-align:center;padding:0 0.5em;padding-bottom:0.12em;}
+#navigation a:hover{background:url('images/underline.jpg') center bottom no-repeat #000;}
+
+/* General article formating. */
+article{margin:0.5em auto;}
+article .submitted{font-style:italic;}
+article .submitted .user-picture{float:left;margin:0.5em;}
+article .submitted .permalink{float:right;}
+article .field-name-body, article .field-name-comment-body{text-align:justify;margin-bottom:0.5em;}
+article .field-name-body h1, article .field-name-body h2, article .field-name-body h3{clear:both;}
+article .field-name-body img{margin:0.5em;float:right;max-width:50%;}
+article .field-name-body img.odd{float:left;}
+article .field-type-taxonomy-term-reference{display:none;}
+article .links li.subscriptions-subscribe{display:none;}
+article .links li.statistics_counter{display:none;}
+article .links li{display:none;}
+article .links li.service-links{display:inline;float:left;margin-top:2em;}
+article .links li.node-readmore{display:inline;clear:right;float:right;}
+article .links li.comment-add{display:inline;clear:right;float:right;}
+article section.comments{clear:both;margin-top:0.5em;}
+article .field-name-comment-body{padding-bottom:0.5em;border-bottom:solid 1px #FFF;}
+
+/* Forum Thread*/
+.forum-table td{padding: 0.5em 0;}
+.forum-post{border-bottom:1px solid #FFF;}
+.forum-post-panel-sub .author-pane{text-align:center;}
+.forum-post-panel-sub .author-pane .user-picture{display:block;margin-top:0.5em;}
+.forum-post-links{float:none;margin-left:160px;}
+.forum-post ul.links li{display:none;}
+.forum-post .links li.service-links{display:inline;float:left;}
+.forum-post .links li.quote{display:inline;float:right;}
+.forum-post .links li.post-edit{display:inline;float:right;}
+.forum-post .links li.post-delete{display:inline;float:right;}
+.forum-post .links li.comment-add{display:inline;float:right;}
+.forum-post .links li.comment-edit{display:inline;float:right;}
+.forum-post .links li.comment-delete{display:inline;float:right;}
+.forum-post .links li.comment-reply{display:inline;float:right;}
+.forum-post .links li.quote{clear:left;}
+
+/* Forum Images */
+#content .button, .sidebars .button, button, input[type="reset"], input[type="button"], input[type="submit"] {
+  -moz-border-radius: 8px;
+  -webkit-border-radius: 8px;
+  -khtml-border-radius: 8px;
+  border-radius: 8px;
+  border-color: #eee #eee -moz-use-text-color;
+  border-style: solid solid none;
+  border-width: 1px 1px 0;
+  padding:0.25em;
+  margin: 0.5em 0 0 3px;
+  text-shadow: 1px 1px 0 white;
+  background:#abc;
+}
+#content a.button, #content .button a{text-decoration:none; color:#111;}
+#content .button-large{}
+#content .button-small{}

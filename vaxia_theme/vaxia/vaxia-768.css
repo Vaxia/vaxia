@@ -1,0 +1,12 @@
+/* Header */
+#header{height:80px;}
+#header #logo{height:80px;margin:0 auto;}
+#header #logo img{height:40px;}
+
+/* Tabs realign and stretch. */
+.tabs li{float:none !important;margin:0 !important;}
+.tabs li a{height:25px;}
+
+/* Forum thread. */
+.forum-post .forum-post-panel-main{margin-left:0;}
+.forum-post-links{margin-left:0;}
