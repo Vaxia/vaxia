@@ -19,7 +19,7 @@
   );
  */
 function vaxia_character_sheet_register_systems() {
-  $xp_types = array('xp');
+  $xp_types = array('xp', 'silver');
   foreach ($xp_types as $key => $type) {
     $xp_types[$key] = trim($type);
   }
@@ -276,6 +276,9 @@ function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
       $form[$field_name][$lang][0]['#disabled'] = TRUE;
       if (isset($form[$field_name][$lang][0]['#default_value'])) {
         $form[$field_name][$lang][0]['#value'] = $form[$field_name][$lang][0]['#default_value'];
+      }
+      if (isset($form[$field_name][$lang]['add_more'])) {
+        $form[$field_name][$lang]['add_more']['#access'] = FALSE;
       }
     }
   }
