@@ -336,6 +336,7 @@ function vaxia_form_alter(&$form, &$form_state, $form_id) {
       '#type' => 'textfield',
       '#default_value' => isset($this_player->field_refresh_rate[$lang][0]['value']) ?
         $this_player->field_refresh_rate[$lang][0]['value'] : 60,
+      '#size' => 6,
       '#title' => t('Refresh rate'),
     );
     $form['#submit'][] = '_vaxia_comment_set_profile_values_submit';
