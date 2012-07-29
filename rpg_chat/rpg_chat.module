@@ -172,8 +172,8 @@ function rpg_chat_node_view_alter(&$build) {
     $user_string = '<div id="rpg-chat-userlist">' .
       theme('item_list', array('title' => t('Users in this room'), 'items' => $user_names)) .
       '</div>';
-    $build['comments']['comments']['#prefix'] = $user_string . '<div id="rpg-chat">';
-    $build['comments']['comments']['#suffix'] = '</div>';
+    $build['comments']['comments']['#prefix'] = '<div id="rpg-chat-wrapper">' . $user_string . '<div id="rpg-chat">';
+    $build['comments']['comments']['#suffix'] = '</div></div>';
   }
 }
 
@@ -194,18 +194,18 @@ function rpg_chat_form_comment_form_alter(&$form, &$form_state, $form_id) {
     // When clicked refresh the comment display.
     $form['actions']['refresh_chat']['#ajax'] = array(
       'callback' => '_rpg_chat_refresh_js',
-      'wrapper' => 'rpg-chat',
+      'wrapper' => 'rpg-chat-wrapper',
       'method' => 'replace',
       'effect' => 'fade',
       'event' => 'click', // To allow our refresh script to hit it.
     );
     // When clicked refresh the comment display in addition to a submit.
-    $form['actions']['submit']['#ajax'] = array(
-      'callback' => '_rpg_chat_refresh_js',
-      'wrapper' => 'rpg-chat',
-      'method' => 'replace',
-      'effect' => 'fade',
-    );
+    //$form['actions']['submit']['#ajax'] = array(
+    //  'callback' => '_rpg_chat_refresh_js',
+    //  'wrapper' => 'rpg-chat-wrapper',
+    //  'method' => 'replace',
+    //  'effect' => 'fade',
+    //);
     // Refresh this user's last login to this room.
     global $user;
     _rpg_chat_set_room_users($form['#node']->nid, $user->uid);
@@ -239,10 +239,11 @@ function _rpg_chat_refresh_js($form, &$form_state) {
     $this_user = user_load($found_user->uid);
     $user_names[] = $this_user->name;
   }
-  $return_string = '<div id="rpg-chat">';
-  $return_string .= '<div id="rpg-chat-userlist">' .
+  $return_string = '<div id="rpg-chat-userlist">' .
     theme('item_list', array('title' => t('Users in this room'), 'items' => $user_names)) .
     '</div>';
+  $return_string .= '<div id="rpg-chat">';
+
   foreach ($comments as $cid => $comment) {
     if (is_numeric($cid)) {
       $return_string .= drupal_render($comment);
