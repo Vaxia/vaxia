@@ -107,7 +107,7 @@ function _vaxia_dice_roller_row($dice_size, $stat, $skill, $item) {
   $form['item'] = array(
     '#type' => 'select',
     '#options' => $item,
-    '#multiple' => TRUE,
+    '#multiple' => FALSE,
   );
   return $form;
 }
