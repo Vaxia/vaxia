@@ -59,3 +59,9 @@ article .field-name-body img.odd{float:left;}
 .sidebars .block{width:46%;padding:1%;border:solid 1px #555;float:left;}
 .sidebars .block.odd{float:right;}
 .sidebars .block .block-title{text-align:center;}
+
+/* RPG chat edits below 480. */
+#comment-form{clear:none;float:none;width:100%;top:0px;}
+#rpg-chat-userlist{clear:none;float:none;width:100%;left:0px;}
+#rpg-chat-userlist li{width:100%;float:none;}
+#rpg-chat{clear:node;float:node;width:100%;top:0px;}
