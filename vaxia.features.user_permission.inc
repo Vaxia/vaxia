@@ -30,54 +30,6 @@ function vaxia_user_default_permissions() {
     'module' => 'node',
   );
 
-  // Exported permission: add art to character sheet
-  $permissions['add art to character sheet'] = array(
-    'name' => 'add art to character sheet',
-    'roles' => array(
-      0 => 'administrator',
-      1 => 'administrator-vaxia',
-      2 => 'art-evaluator',
-    ),
-    'module' => 'vaxia',
-  );
-
-  // Exported permission: add item to character sheet
-  $permissions['add item to character sheet'] = array(
-    'name' => 'add item to character sheet',
-    'roles' => array(
-      0 => 'administrator',
-      1 => 'administrator-vaxia',
-      2 => 'char-evaluator',
-      3 => 'item-evaluator',
-      4 => 'storyteller',
-    ),
-    'module' => 'vaxia',
-  );
-
-  // Exported permission: add npc to character sheet
-  $permissions['add npc to character sheet'] = array(
-    'name' => 'add npc to character sheet',
-    'roles' => array(
-      0 => 'administrator',
-      1 => 'administrator-vaxia',
-      2 => 'char-evaluator',
-      3 => 'storyteller',
-    ),
-    'module' => 'vaxia',
-  );
-
-  // Exported permission: add property to character sheet
-  $permissions['add property to character sheet'] = array(
-    'name' => 'add property to character sheet',
-    'roles' => array(
-      0 => 'administrator',
-      1 => 'administrator-vaxia',
-      2 => 'char-evaluator',
-      3 => 'storyteller',
-    ),
-    'module' => 'vaxia',
-  );
-
   // Exported permission: add xp to character sheet
   $permissions['add xp to character sheet'] = array(
     'name' => 'add xp to character sheet',
@@ -497,62 +449,6 @@ function vaxia_user_default_permissions() {
     'module' => 'taxonomy',
   );
 
-  // Exported permission: evaluate art
-  $permissions['evaluate art'] = array(
-    'name' => 'evaluate art',
-    'roles' => array(
-      0 => 'administrator',
-      1 => 'administrator-vaxia',
-      2 => 'art-evaluator',
-    ),
-    'module' => 'vaxia',
-  );
-
-  // Exported permission: evaluate character
-  $permissions['evaluate character'] = array(
-    'name' => 'evaluate character',
-    'roles' => array(
-      0 => 'administrator',
-      1 => 'administrator-vaxia',
-      2 => 'char-evaluator',
-    ),
-    'module' => 'vaxia',
-  );
-
-  // Exported permission: evaluate item
-  $permissions['evaluate item'] = array(
-    'name' => 'evaluate item',
-    'roles' => array(
-      0 => 'administrator',
-      1 => 'administrator-vaxia',
-      2 => 'item-evaluator',
-    ),
-    'module' => 'vaxia',
-  );
-
-  // Exported permission: ignore cost on others character
-  $permissions['ignore cost on others character'] = array(
-    'name' => 'ignore cost on others character',
-    'roles' => array(
-      0 => 'administrator',
-      1 => 'administrator-vaxia',
-      2 => 'char-evaluator',
-      3 => 'storyteller',
-      4 => 'storyteller-assistant',
-    ),
-    'module' => 'vaxia',
-  );
-
-  // Exported permission: ignore cost on own character
-  $permissions['ignore cost on own character'] = array(
-    'name' => 'ignore cost on own character',
-    'roles' => array(
-      0 => 'administrator',
-      1 => 'administrator-vaxia',
-    ),
-    'module' => 'vaxia',
-  );
-
   // Exported permission: post comments
   $permissions['post comments'] = array(
     'name' => 'post comments',
@@ -570,19 +466,6 @@ function vaxia_user_default_permissions() {
       0 => 'administrator',
       1 => 'administrator-vaxia',
       2 => 'storyteller',
-    ),
-    'module' => 'vaxia',
-  );
-
-  // Exported permission: post notes on character
-  $permissions['post notes on character'] = array(
-    'name' => 'post notes on character',
-    'roles' => array(
-      0 => 'administrator',
-      1 => 'administrator-vaxia',
-      2 => 'char-evaluator',
-      3 => 'storyteller',
-      4 => 'storyteller-assistant',
     ),
     'module' => 'vaxia',
   );
