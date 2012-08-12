@@ -222,6 +222,17 @@ function vaxia_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: create npc content
+  $permissions['create npc content'] = array(
+    'name' => 'create npc content',
+    'roles' => array(
+      0 => 'administrator',
+      1 => 'administrator-vaxia',
+      2 => 'storyteller',
+    ),
+    'module' => 'node',
+  );
+
   // Exported permission: create rpg_chatroom content
   $permissions['create rpg_chatroom content'] = array(
     'name' => 'create rpg_chatroom content',
@@ -256,6 +267,16 @@ function vaxia_user_default_permissions() {
   // Exported permission: delete any items content
   $permissions['delete any items content'] = array(
     'name' => 'delete any items content',
+    'roles' => array(
+      0 => 'administrator',
+      1 => 'administrator-vaxia',
+    ),
+    'module' => 'node',
+  );
+
+  // Exported permission: delete any npc content
+  $permissions['delete any npc content'] = array(
+    'name' => 'delete any npc content',
     'roles' => array(
       0 => 'administrator',
       1 => 'administrator-vaxia',
@@ -303,6 +324,17 @@ function vaxia_user_default_permissions() {
       0 => 'administrator',
       1 => 'administrator-vaxia',
       2 => 'player',
+    ),
+    'module' => 'node',
+  );
+
+  // Exported permission: delete own npc content
+  $permissions['delete own npc content'] = array(
+    'name' => 'delete own npc content',
+    'roles' => array(
+      0 => 'administrator',
+      1 => 'administrator-vaxia',
+      2 => 'storyteller',
     ),
     'module' => 'node',
   );
@@ -373,6 +405,16 @@ function vaxia_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: edit any npc content
+  $permissions['edit any npc content'] = array(
+    'name' => 'edit any npc content',
+    'roles' => array(
+      0 => 'administrator',
+      1 => 'administrator-vaxia',
+    ),
+    'module' => 'node',
+  );
+
   // Exported permission: edit any rpg_chatroom content
   $permissions['edit any rpg_chatroom content'] = array(
     'name' => 'edit any rpg_chatroom content',
@@ -419,6 +461,17 @@ function vaxia_user_default_permissions() {
     'roles' => array(
       0 => 'administrator',
       1 => 'administrator-vaxia',
+    ),
+    'module' => 'node',
+  );
+
+  // Exported permission: edit own npc content
+  $permissions['edit own npc content'] = array(
+    'name' => 'edit own npc content',
+    'roles' => array(
+      0 => 'administrator',
+      1 => 'administrator-vaxia',
+      2 => 'storyteller',
     ),
     'module' => 'node',
   );
@@ -532,6 +585,28 @@ function vaxia_user_default_permissions() {
       4 => 'storyteller-assistant',
     ),
     'module' => 'vaxia',
+  );
+
+  // Exported permission: remove xp from character sheet
+  $permissions['remove xp from character sheet'] = array(
+    'name' => 'remove xp from character sheet',
+    'roles' => array(
+      0 => 'administrator',
+      1 => 'administrator-vaxia',
+      2 => 'char-evaluator',
+      3 => 'storyteller',
+    ),
+    'module' => 'character_sheet',
+  );
+
+  // Exported permission: remove xp from own character sheet
+  $permissions['remove xp from own character sheet'] = array(
+    'name' => 'remove xp from own character sheet',
+    'roles' => array(
+      0 => 'administrator',
+      1 => 'administrator-vaxia',
+    ),
+    'module' => 'character_sheet',
   );
 
   // Exported permission: revert revisions

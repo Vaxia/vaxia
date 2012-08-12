@@ -1773,74 +1773,6 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-character_sheet-field_npc'
-  $fields['node-character_sheet-field_npc'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_npc',
-      'foreign keys' => array(),
-      'indexes' => array(
-        'value' => array(
-          0 => 'value',
-        ),
-      ),
-      'module' => 'list',
-      'settings' => array(
-        'allowed_values' => array(
-          0 => '',
-          1 => '',
-        ),
-        'allowed_values_function' => '',
-      ),
-      'translatable' => '0',
-      'type' => 'list_boolean',
-    ),
-    'field_instance' => array(
-      'bundle' => 'character_sheet',
-      'default_value' => array(
-        0 => array(
-          'value' => 0,
-        ),
-      ),
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'module' => 'list',
-          'settings' => array(),
-          'type' => 'list_default',
-          'weight' => '29',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_npc',
-      'label' => 'Is an NPC?',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'options',
-        'settings' => array(
-          'display_label' => 1,
-        ),
-        'type' => 'options_onoff',
-        'weight' => '-4',
-      ),
-    ),
-  );
-
   // Exported field: 'node-character_sheet-field_npcs'
   $fields['node-character_sheet-field_npcs'] = array(
     'field_config' => array(
@@ -1867,17 +1799,16 @@ function vaxia_field_default_fields() {
         'referenceable_types' => array(
           'article' => 0,
           'artwork' => 0,
-          'book' => 0,
-          'character_sheet' => 'character_sheet',
-          'forum' => 0,
+          'character_sheet' => 0,
           'items' => 0,
+          'npc' => 'npc',
           'page' => 0,
           'rpg_chatroom' => 0,
         ),
         'view' => array(
           'args' => array(),
-          'display_name' => '',
-          'view_name' => '',
+          'display_name' => 'character_npcs_ref',
+          'view_name' => 'character_npcs',
         ),
       ),
       'translatable' => '0',
@@ -3876,6 +3807,78 @@ function vaxia_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-npc-body'
+  $fields['node-npc-body'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(
+        0 => 'node',
+      ),
+      'field_name' => 'body',
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(),
+      'translatable' => '0',
+      'type' => 'text_with_summary',
+    ),
+    'field_instance' => array(
+      'bundle' => 'npc',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'hidden',
+          'module' => 'text',
+          'settings' => array(
+            'trim_length' => 600,
+          ),
+          'type' => 'text_summary_or_trimmed',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'body',
+      'label' => 'Body',
+      'required' => FALSE,
+      'settings' => array(
+        'display_summary' => TRUE,
+        'text_processing' => 1,
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'module' => 'text',
+        'settings' => array(
+          'rows' => 20,
+          'summary_rows' => 5,
+        ),
+        'type' => 'text_textarea_with_summary',
+        'weight' => 11,
+      ),
+    ),
+  );
+
   // Exported field: 'node-rpg_chatroom-body'
   $fields['node-rpg_chatroom-body'] = array(
     'field_config' => array(
@@ -4438,7 +4441,6 @@ function vaxia_field_default_fields() {
   t('History');
   t('Image');
   t('Intelligence');
-  t('Is an NPC?');
   t('Items');
   t('Life');
   t('NPC');
