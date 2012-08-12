@@ -19,49 +19,9 @@ function vaxia_permission() {
       'title' => t('change art owner'),
       'description' => t('Change the owner of art.'),
     ),
-    'evaluate art'=> array(
-      'title' => t('evaluate art'),
-      'description' => t('Evaluate art.'),
-    ),
     'change item owner'=> array(
       'title' => t('change item owner'),
       'description' => t('Change the owner of items.'),
-    ),
-    'evaluate item'=> array(
-      'title' => t('evaluate item'),
-      'description' => t('Evaluate item.'),
-    ),
-    'post notes on character'=> array(
-      'title' => t('post notes on character'),
-      'description' => t('Post notes on character.'),
-    ),
-    'add item to character sheet' => array(
-      'title' => t('add item to character sheet'),
-      'description' => t('Add item to a character.'),
-    ),
-    'add property to character sheet' => array(
-      'title' => t('add property to character sheet'),
-      'description' => t('Add property to a character.'),
-    ),
-    'add art to character sheet' => array(
-      'title' => t('add art to character sheet'),
-      'description' => t('Add art to a character.'),
-    ),
-    'add npc to character sheet' => array(
-      'title' => t('add npc to character sheet'),
-      'description' => t('Add npc to a character.'),
-    ),
-    'evaluate character'=> array(
-      'title' => t('evaluate character'),
-      'description' => t('Evaluate character.'),
-    ),
-    'ignore cost on others character'=> array(
-      'title' => t('ignore cost on others character'),
-      'description' => t('Modify others character without spending xp.'),
-    ),
-    'ignore cost on own character' => array(
-      'title' => t('ignore cost on own character'),
-      'description' => t('Modify own character without spending xp.'),
     ),
     'post in narrative format' => array(
       'title' => t('post in narrative format'),
@@ -391,7 +351,10 @@ function _vaxia_comment_add_kxp_submit($form, $form_state) {
       $kxp = floor( $wordcount / variable_get('vaxia_kxp_per_words', 20) );
       $max_kxp = variable_get('vaxia_max_kxp_post', 10);
       $kxp = $kxp <= $max_kxp ? $kxp : $max_kxp;
-      _vaxia_add_xp($form_state['values']['field_comment_character'][$lang][0]['nid'], $kxp, 'kxp');
+      $character = node_load($form_state['values']['field_comment_character'][$lang][0]['nid']);
+      if ($character->type == 'character_sheet') {
+        _vaxia_add_xp($form_state['values']['field_comment_character'][$lang][0]['nid'], $kxp, 'kxp');
+      }
     }  
   }
 }

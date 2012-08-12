@@ -28,9 +28,9 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
   elseif(!empty($this_player->field_current_character[$lang][0]['nid'])) {
     $character = $this_player->field_current_character[$lang][0]['nid'];
   }
-  if ($character && $character != '_none') {
+  if ($character && $character != '_none' ) {
     $character = node_load($character);
-    if (isset($character->title)) {
+    if (isset($character->title) && ($character->type == 'character_sheet')) {
       $dice_size = array(100,77,50,30,20,16,12,10,8,6,4,2);
       $stat = array(
         '-1' => '<none>', 
@@ -70,17 +70,17 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
         '#type' => 'textarea',
         '#title' => t('Notes'),
       );
+      return $form;
     }
   }
-  else {
-    $form['vaxia_rolls'] = array(
-      '#type' => 'item',
-      '#theme' => 'vaxia_dice_roller',
-      '#markup' => '',
-      '#prefix' => '<div id="vaxia-dice-roller">',
-      '#suffix' => '</div>',
-    );
-  }
+
+  $form['vaxia_rolls'] = array(
+    '#type' => 'item',
+    '#theme' => 'vaxia_dice_roller',
+    '#markup' => '',
+    '#prefix' => '<div id="vaxia-dice-roller">',
+    '#suffix' => '</div>',
+  );
   return $form;
 }
 
