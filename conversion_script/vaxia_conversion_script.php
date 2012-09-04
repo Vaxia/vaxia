@@ -9,17 +9,20 @@
 
 define('VAXIA_CHAR_PATH', './vaxia_docroot/vaxia/characters/active');
 define('VAXIA_ROOM_PATH', './vaxia_docroot/vaxia/enter');
+define('VAXIA_ART_PATH', './vaxia_art');
 
 // Execute.
 main();
 
 function main() {
-  get_users(VAXIA_CHAR_PATH);
-  get_characters(VAXIA_CHAR_PATH);
-  get_art(VAXIA_CHAR_PATH);
+  $art_file = './art.xml';
+  write_record_open_file($art_file);
+  get_users(VAXIA_CHAR_PATH, $art_file);
+  get_characters(VAXIA_CHAR_PATH, $art_file);
   get_items(VAXIA_CHAR_PATH);
   get_npcs(VAXIA_CHAR_PATH);
-  get_rooms(VAXIA_ROOM_PATH);
+  get_rooms(VAXIA_ROOM_PATH, $art_file);
+  write_record_close_file($art_file);
 }
 
 function get_directories($path) {
@@ -93,6 +96,7 @@ function file_scan_directory($dir, $mask) {
 }
 
 function read_vaxia_file($file) {
+  $file = str_replace('//','/',$file);
   $record = array();
   $fp = fopen($file, 'r');
   if ($fp) {
@@ -116,12 +120,42 @@ function read_vaxia_file($file) {
   return $record;
 }
 
-function get_users($path) {
+function move_vaxia_art_file($path, $subpath) {
+  $new_path = $path;
+  if (is_file($path)) {
+    if (!is_dir(VAXIA_ART_PATH.'/'.$subpath)) {
+      mkdir(VAXIA_ART_PATH.'/'.$subpath, 0777, TRUE);
+    }
+    $new_path = VAXIA_ART_PATH.'/'.$subpath.'/'.basename($path);
+    copy($path, $new_path);
+  }
+  return $new_path;
+}
+
+function get_users($path, $art_file) {
   $file = './users.xml';
   write_record_open_file($file);
   foreach (get_directories($path) as $letter_dir) {
     // We now have the alphabetical.
     foreach (get_directories($path . '/' . $letter_dir) as $user_dir) {
+      // Get user art.
+      $files = file_scan_directory($path . '/' . $letter_dir . '/' . $user_dir, '.*.item');
+      foreach ($files as $more_data) {
+        if (!(strpos($more_data, 'player') === 0) ) {
+          // Read art in the user dir.
+          $art = array();
+          $art['player'] = ucfirst($user_dir);
+          $art['character'] = $art['room'] = '';
+          // Given permissions and email in dir / dir / name-pass.item
+          $data = read_vaxia_file($path . '/' . $letter_dir . '/' . $user_dir . '/' . $more_data);
+          $data['path'] = move_vaxia_art_file($path . '/' . $letter_dir . '/' . $user_dir . '/' . $data['name'], 'users');
+          $data['name'] = basename($data['path']);
+          $art = array_merge($art, $data);
+          // Now that we have a user, determine the rest of the settings and permissions.
+          $record = $art;
+          write_record_to_file($art_file, $record);
+        }
+      }
       // Read each dir in dir
       $user = array();
       $user['name'] = $user_dir; // User name.
@@ -129,6 +163,7 @@ function get_users($path) {
       if (count($more_data) == 1) {
         // Given permissions and email in dir / dir / name-pass.item
         $data = read_vaxia_file($path . '/' . $letter_dir . '/' . $user_dir . '/' . $more_data[0]);
+        // No 'currently set' images show up.
         $user = array_merge($user, $data);
       }
       // Now that we have a user, determine the rest of the settings and permissions.
@@ -139,36 +174,8 @@ function get_users($path) {
   write_record_close_file($file);
 }
 
-function get_characters($path) {
+function get_characters($path, $art_file) {
   $file = './characters.xml';
-  write_record_open_file($file);
-  foreach (get_directories($path) as $letter_dir) {
-    // We now have the alphabetical.
-    foreach (get_directories($path . '/' . $letter_dir) as $user_dir) {
-      // Read each dir in dir
-      foreach (get_directories($path . '/' . $letter_dir . '/' . $user_dir) as $char_dir) {
-        $character = array();
-        $character['player'] = ucfirst($user_dir);
-        $character['character'] = ucfirst($char_dir);
-        $more_data = file_scan_directory($path . '/' . $letter_dir . '/' . $user_dir . '/' . $char_dir, '.*-'.$char_dir.'.item');
-        if (count($more_data) == 1) {
-          // Given permissions and email in dir / dir / name-pass.item
-          $data = read_vaxia_file($path . '/' . $letter_dir . '/' . $user_dir . '/' . $char_dir. '/' . $more_data[0]);
-          $character = array_merge($character, $data);
-        }
-        // Now that we have a user, determine the rest of the settings and permissions.
-        $record = $character;
-        // TODO map the skill set.
-        write_record_to_file($file, $record);
-      }
-    }
-  }
-  write_record_close_file($file);
-}
-
-function get_art($path) {
-// TODO add art along the whole way.
-  $file = './art.xml';
   write_record_open_file($file);
   foreach (get_directories($path) as $letter_dir) {
     // We now have the alphabetical.
@@ -179,16 +186,34 @@ function get_art($path) {
         $art_dir = $path . '/' . $letter_dir . '/' . $user_dir . '/' . $char_dir . '/art';
         $files = file_scan_directory($art_dir, '.*.item');
         foreach ($files as $more_data) {
-          $art = array();//TODO map art to a image file and map that to a open HTML path for feeds to pick up.
+          $art = array();
           $art['player'] = ucfirst($user_dir);
           $art['character'] = ucfirst($char_dir);
+          $art['room'] = '';
           // Given permissions and email in dir / dir / name-pass.item
           $data = read_vaxia_file($path . '/' . $letter_dir . '/' . $user_dir . '/' . $char_dir . '/art/' . $more_data);
+          $data['path'] = move_vaxia_art_file($path . '/' . $letter_dir . '/' . $user_dir . '/' . $char_dir . '/art/' . $data['name'], 'characters');
+          $data['name'] = basename($data['path']);
           $art = array_merge($art, $data);
           // Now that we have a user, determine the rest of the settings and permissions.
           $record = $art;
-          write_record_to_file($file, $record);
+          write_record_to_file($art_file, $record);
         }
+        // Get the character data too.
+        $character = array();
+        $character['player'] = ucfirst($user_dir);
+        $character['character'] = ucfirst($char_dir);
+        $more_data = file_scan_directory($path . '/' . $letter_dir . '/' . $user_dir . '/' . $char_dir, '.*-'.$char_dir.'.item');
+        if (count($more_data) == 1) {
+          // Given permissions and email in dir / dir / name-pass.item
+          $data = read_vaxia_file($path . '/' . $letter_dir . '/' . $user_dir . '/' . $char_dir. '/' . $more_data[0]);
+          $data['image'] = basename($data['actualPic']); // Current image.
+          $character = array_merge($character, $data);
+        }
+        // Now that we have a user, determine the rest of the settings and permissions.
+        $record = $character;
+        // TODO map the skill set.
+        write_record_to_file($file, $record);
       }
     }
   }
@@ -251,28 +276,47 @@ function get_npcs($path) {
   write_record_close_file($file);
 }
 
-function get_rooms($path) {
+function get_rooms($path, $art_file) {
   $worlds = array('/_vaxian_world' => 'vaxia', '/sirian_solar_system' => 'sirian');
   foreach ($worlds as $world => $category) {
     $file = './'.$category.'-rooms.xml';
     write_record_open_file($file);
     $path = $path.$world;
-    recursive_get_rooms($path, $category, $file);
+    recursive_get_rooms($path, $category, $file, $art_file);
     write_record_close_file($file);
   }
 }
 
 // RECURSIVE EFFORT.
-function recursive_get_rooms($path, $category, $file) {
+function recursive_get_rooms($path, $category, $file, $art_file) {
   if (is_dir($path)) {
     foreach (get_directories($path) as $this_path) {
-      $room['name'] = $this_path;
+      // Read art files.
+      $files = file_scan_directory($path .'/'. $this_path, '.*.item');
+      foreach ($files as $more_data) {
+        if ($more_data != 'item.item') {
+          $art = array();
+          $art['player'] = $art['character'] = '';
+          $art['room'] = ucwords(str_replace('_', ' ', $this_path));
+          // Given permissions and email in dir / dir / name-pass.item
+          $data = read_vaxia_file($path .'/'. $this_path . '/' . $more_data);
+          $data['path'] = move_vaxia_art_file($path .'/'. $this_path . '/' . $data['name'], 'rooms');
+          $data['name'] = basename($data['path']);
+          $art = array_merge($art, $data);
+          // Now that we have a user, determine the rest of the settings and permissions.
+          $record = $art;
+          write_record_to_file($art_file, $record);
+        }
+      }
+      // Read room file.
+      $room['name'] = ucwords(str_replace('_', ' ', $this_path));
       $room['realm'] = $category;
       $data = read_vaxia_file($path .'/'. $this_path . '/item.item');
+      $data['image'] = basename($data['locImage']); // Current image.
       $record = array_merge($room, $data);
       write_record_to_file($file, $record);
       // And recurse down.
-      recursive_get_rooms($path .'/'. $this_path, $category, $file);
+      recursive_get_rooms($path .'/'. $this_path, $category, $file, $art_file);
     }
   }
 }
