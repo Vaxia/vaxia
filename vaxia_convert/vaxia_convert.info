@@ -1,0 +1,6 @@
+name = "Old Vaxia Conversion"
+description = "Old Vaxia Conversion"
+core = "7.x"
+package = "RPG"
+php = "5.2.4"
+dependencies[] = "vaxia"

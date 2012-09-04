@@ -1,0 +1,79 @@
+<?php
+
+/**
+ * Implements hook_menu().
+ */
+function vaxia_convert_menu() {
+  $items['admin/settings/vaxia_convert'] = array(
+    'title' => 'Vaxia Conversion',
+    'access arguments' => array('access content'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('_vaxia_convert_admin_form'),
+  );
+  return $items;
+}
+
+function _vaxia_convert_admin_form() {
+  $form['root_path'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Path to Old Vaxia'),
+    '#description' => t('Path from server root, leave off ending slashes.'),
+  );
+  $form['go'] = array(
+    '#type' => 'submit',
+    '#value' => t('Convert old Vaxia files'),
+  );
+  return $form;
+}
+
+function _vaxia_convert_admin_form_submit($form, &$form_state) {
+  $root_path = $form_state['values']['root_path'];
+  include('./vaxia_conversion_script.inc');
+  // Execute.
+  $resturn = vaxia_convert_main($ROOT);
+  // PHP will wait to complete.
+  drupal_set_message('Files and art have been moved.');
+  if ($return) {
+    // Now we have all the converted data in .xml form.
+    // Make users from .users.xml    
+    if (file_exists('./users.xml')) {
+      $records = simplexml_load_file('./users.xml');
+      foreach ($records->record as $record) {
+        $roles = array();
+         // Determine user roles by XLM values.
+        $user = array(
+        'name' => $record['playerName'],
+        'pass' => user_password(), // Random password.
+        'mail' => $user_password['email'],
+        'init' => $user_password['email'],
+        'status' => 1,
+        'access' => REQUEST_TIME,
+        'roles' => $roles,
+        );
+        $user = user_save(null, $user);
+      }
+    }
+    // Make art from art.xml
+    if (file_exists('./art.xml')) {
+      $records = simplexml_load_file('./art.xml');
+      foreach ($records->record as $record) {
+        $roles = array();
+         // Determine user roles by XLM values.
+        $node = array(
+        'author' => $record['player'],
+        'name' => $record['name'],
+        'status' => 1,
+        'access' => REQUEST_TIME,
+        'roles' => $roles,
+        );
+        $node = node_save(null, $node);
+      }
+    }
+    // Make rooms from vaxia-rooms.xml
+    // Make rooms from sirian-rooms.xml
+    // Make characters from characters.xml
+    // Make npcs from npcs.xml
+    // Make items from items.xml
+  }
+  drupal_set_message('Converted. TURN THIS MODULE OFF.');
+}
