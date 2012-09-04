@@ -7,17 +7,19 @@
  * via feeds into the new system.
  */
 
-define('VAXIA_PATH', '.');
+define('VAXIA_CHAR_PATH', './vaxia/characters/active');
+define('VAXIA_ROOM_PATH', './vaxia/enter');
 
 // Execute.
 main();
 
 function main() {
-  get_users(VAXIA_PATH);
-  get_characters(VAXIA_PATH);
-  get_art(VAXIA_PATH);
-  get_items(VAXIA_PATH);
-  get_npcs(VAXIA_PATH);
+  get_users(VAXIA_CHAR_PATH);
+  get_characters(VAXIA_CHAR_PATH);
+  get_art(VAXIA_CHAR_PATH);
+  get_items(VAXIA_CHAR_PATH);
+  get_npcs(VAXIA_CHAR_PATH);
+  get_rooms(VAXIA_ROOM_PATH);
 }
 
 function get_directories($path) {
@@ -247,5 +249,28 @@ function get_npcs($path) {
     }
   }
   write_record_close_file($file);
+}
+
+function get_rooms($path) {
+  $worlds = array('/_vaxian_world' => 'vaxia', '/sirian_solar_system' => 'sirian');
+  write_record_open_file($file);
+  foreach ($worlds as $world => $category) {
+    $file = $path.'/'.$world;
+    recursive_get_rooms($path, $category, $file);
+  }
+  write_record_close_file($file);
+}
+
+// RECURSIVE EFFORT.
+function recursive_get_rooms($path, $category, $file) {
+  foreach (get_directories($path) as $this_path) {
+    $room['name'] => $this_path;
+    $room['realm'] => $category;
+    $data = read_vaxia_file($path .'/'. $this_path . '/item.item');
+    $record = array_merge($room, $data);
+    write_record_to_file($file, $record);
+    // And recurse down.
+    recursive_get_rooms($path .'/'. $this_path);
+  }
 }
 ?>
