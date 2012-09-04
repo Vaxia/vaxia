@@ -1,0 +1,6 @@
+name = RPG chat
+description = Provides RPG (slow refresh) chatroom UI to nodes and comments
+package = RPG
+core = 7.x
+files[] = rpg_chat.install
+files[] = rpg_chat.module
