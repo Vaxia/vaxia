@@ -7,8 +7,8 @@
  * via feeds into the new system.
  */
 
-define('VAXIA_CHAR_PATH', './vaxia/characters/active');
-define('VAXIA_ROOM_PATH', './vaxia/enter');
+define('VAXIA_CHAR_PATH', './vaxia_docroot/vaxia/characters/active');
+define('VAXIA_ROOM_PATH', './vaxia_docroot/vaxia/enter');
 
 // Execute.
 main();
@@ -117,7 +117,7 @@ function read_vaxia_file($file) {
 }
 
 function get_users($path) {
-  $file = $path.'/users.xml';
+  $file = './users.xml';
   write_record_open_file($file);
   foreach (get_directories($path) as $letter_dir) {
     // We now have the alphabetical.
@@ -140,7 +140,7 @@ function get_users($path) {
 }
 
 function get_characters($path) {
-  $file = $path.'/characters.xml';
+  $file = './characters.xml';
   write_record_open_file($file);
   foreach (get_directories($path) as $letter_dir) {
     // We now have the alphabetical.
@@ -168,7 +168,7 @@ function get_characters($path) {
 
 function get_art($path) {
 // TODO add art along the whole way.
-  $file = $path.'/art.xml';
+  $file = './art.xml';
   write_record_open_file($file);
   foreach (get_directories($path) as $letter_dir) {
     // We now have the alphabetical.
@@ -196,7 +196,7 @@ function get_art($path) {
 }
 
 function get_items($path) {// For each dir in root.
-  $file = $path.'/items.xml';
+  $file = './items.xml';
   write_record_open_file($file);
   foreach (get_directories($path) as $letter_dir) {
     // We now have the alphabetical.
@@ -224,7 +224,7 @@ function get_items($path) {// For each dir in root.
 }
 
 function get_npcs($path) {
-  $file = $path.'/npcs.xml';
+  $file = './npcs.xml';
   write_record_open_file($file);
   foreach (get_directories($path) as $letter_dir) {
     // We now have the alphabetical.
@@ -253,24 +253,27 @@ function get_npcs($path) {
 
 function get_rooms($path) {
   $worlds = array('/_vaxian_world' => 'vaxia', '/sirian_solar_system' => 'sirian');
-  write_record_open_file($file);
   foreach ($worlds as $world => $category) {
-    $file = $path.'/'.$world;
+    $file = './'.$category.'-rooms.xml';
+    write_record_open_file($file);
+    $path = $path.$world;
     recursive_get_rooms($path, $category, $file);
+    write_record_close_file($file);
   }
-  write_record_close_file($file);
 }
 
 // RECURSIVE EFFORT.
 function recursive_get_rooms($path, $category, $file) {
-  foreach (get_directories($path) as $this_path) {
-    $room['name'] => $this_path;
-    $room['realm'] => $category;
-    $data = read_vaxia_file($path .'/'. $this_path . '/item.item');
-    $record = array_merge($room, $data);
-    write_record_to_file($file, $record);
-    // And recurse down.
-    recursive_get_rooms($path .'/'. $this_path);
+  if (is_dir($path)) {
+    foreach (get_directories($path) as $this_path) {
+      $room['name'] = $this_path;
+      $room['realm'] = $category;
+      $data = read_vaxia_file($path .'/'. $this_path . '/item.item');
+      $record = array_merge($room, $data);
+      write_record_to_file($file, $record);
+      // And recurse down.
+      recursive_get_rooms($path .'/'. $this_path, $category, $file);
+    }
   }
 }
 ?>
