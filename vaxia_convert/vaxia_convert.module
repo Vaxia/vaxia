@@ -42,15 +42,15 @@ function _vaxia_convert_admin_form_submit($form, &$form_state) {
         $roles = array(); //TODO set this value.
          // Determine user roles by XLM values.
         $user = array(
-        'name' => $record['playerName'],
-        'pass' => user_password(), // Random password.
-        'mail' => $record['email'],
-        'init' => $record['email'],
-        'status' => 1,
-        'access' => REQUEST_TIME,
-        'roles' => $roles,
+          'name' => $record['playerName'],
+          'pass' => user_password(), // Random password.
+          'mail' => $record['email'],
+          'init' => $record['email'],
+          'status' => 1,
+          'access' => REQUEST_TIME,
+          'roles' => $roles,
         );
-        $user = user_save(null, $user);
+        $account = user_save(null, $user);
       }
     }
     // Make art from art.xml
@@ -61,6 +61,8 @@ function _vaxia_convert_admin_form_submit($form, &$form_state) {
         $node->type = 'artwork';
         node_object_prepare($node);
         $node->title = $record['name'];
+        $user = user_load_by_name($record['player']);
+        $node->uid = $user->uid;
         $node->language = LANGUAGE_NONE;
         $node->field_artwork_credit[$node->language][0]['value'] = $record['copyright'];
         $node->field_website[$node->language][0]['value'] = $record['url'];
@@ -78,6 +80,7 @@ function _vaxia_convert_admin_form_submit($form, &$form_state) {
         $node->type = 'rpg-chatroom';
         node_object_prepare($node);
         $node->title = $record['name'];
+        $node->uid = 1;
         $node->language = LANGUAGE_NONE;
         $node->body[$node->language][0]['value'] = $record['locDescription'];
         $node->body[$node->language][0]['summary'] = text_summary($record['locDescription']);
@@ -95,6 +98,7 @@ function _vaxia_convert_admin_form_submit($form, &$form_state) {
         $node->type = 'rpg-chatroom';
         node_object_prepare($node);
         $node->title = $record['name'];
+        $node->uid = 1;
         $node->language = LANGUAGE_NONE;
         $node->body[$node->language][0]['value'] = $record['locDescription'];
         $node->body[$node->language][0]['summary'] = text_summary($record['locDescription']);
@@ -123,6 +127,8 @@ function _vaxia_convert_admin_form_submit($form, &$form_state) {
         $node->type = 'npc';
         node_object_prepare($node);
         $node->title = $record['name'];
+        $user = user_load_by_name($record['player']);
+        $node->uid = $user->uid;
         $node->language = LANGUAGE_NONE;
         $node->body[$node->language][0]['value'] = $record['description'];
         $node->body[$node->language][0]['summary'] = text_summary($record['description']);
