@@ -279,13 +279,13 @@ function get_rooms($path, $art_file) {
     $file = './'.$category.'-rooms.xml';
     write_record_open_file($file);
     $path = $path.$world;
-    recursive_get_rooms($path, $category, $file, $art_file);
+    recursive_get_rooms($path, '', $category, $file, $art_file);
     write_record_close_file($file);
   }
 }
 
 // RECURSIVE EFFORT.
-function recursive_get_rooms($path, $category, $file, $art_file) {
+function recursive_get_rooms($path, $parent, $category, $file, $art_file) {
   if (is_dir($path)) {
     foreach (get_directories($path) as $this_path) {
       // Read art files.
@@ -308,12 +308,13 @@ function recursive_get_rooms($path, $category, $file, $art_file) {
       // Read room file.
       $room['name'] = ucwords(str_replace('_', ' ', $this_path));
       $room['realm'] = $category;
+      $room['parent'] = $parent;
       $data = read_vaxia_file($path .'/'. $this_path . '/item.item');
       $data['image'] = basename($data['locImage']); // Current image.
       $record = array_merge($room, $data);
       write_record_to_file($file, $record);
       // And recurse down.
-      recursive_get_rooms($path .'/'. $this_path, $category, $file, $art_file);
+      recursive_get_rooms($path .'/'. $this_path, $room['name'], $category, $file, $art_file);
     }
   }
 }
