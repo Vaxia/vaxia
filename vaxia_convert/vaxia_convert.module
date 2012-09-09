@@ -19,141 +19,178 @@ function _vaxia_convert_admin_form() {
     '#title' => t('Path to Old Vaxia'),
     '#description' => t('Path from server root, leave off ending slashes.'),
   );
-  $form['go'] = array(
+  $form['step_one'] = array(
     '#type' => 'submit',
-    '#value' => t('Convert old Vaxia files'),
+    '#value' => t('Import started do not start it again. If conversion failed, remove created files and retry.'),
+    '#disabled' => TRUE,
   );
-  return $form;
+  $form['step_two'] = array(
+    '#type' => 'submit',
+    '#value' => t('Not ready to import. Convert files first or check the server to make sure they converted.'),
+    '#disabled' => TRUE,
+  );
+  if (!file_exists('./users.xml')) {
+    unset($form['step_two']['#disabled']);
+    $form['#submit'] = array('_vaxia_convert_admin_form_submit_one');
+    $form['step_two']['#value'] = t('Convert old Vaxia files. THIS WILL TAKE TIME. So give it minutes to complete.');
+  }
+  if (file_exists('./users.xml') && file_exists('./art.xml') && file_exists('./vaxia-rooms.xml')
+    && file_exists('./sirian-rooms.xml') && file_exists('./characters.xml') && file_exists('./npcs.xml') && file_exists('./items.xml')) {
+    unset($form['step_two']['#disabled']);
+    $form['#submit'] = array('_vaxia_convert_admin_form_submit_two');
+    $form['step_two']['#value'] = t('Import converted files into new Vaxia.');
+  }
 }
 
-function _vaxia_convert_admin_form_submit($form, &$form_state) {
+function _vaxia_convert_admin_form_submit_one($form, &$form_state) {
   $root_path = $form_state['values']['root_path'];
   include('./vaxia_conversion_script.inc');
   // Execute.
   $resturn = vaxia_convert_main($ROOT);
   // PHP will wait to complete.
-  drupal_set_message('Files and art have been moved.');
-  if ($return) {
-    // Now we have all the converted data in .xml form.
-    // Make users from .users.xml    
-    if (file_exists('./users.xml')) {
-      $records = simplexml_load_file('./users.xml');
-      foreach ($records->record as $record) {
-        $roles = array(); //TODO set this value.
-         // Determine user roles by XLM values.
-        $user = array(
-          'name' => $record['playerName'],
-          'pass' => user_password(), // Random password.
-          'mail' => $record['email'],
-          'init' => $record['email'],
-          'status' => 1,
-          'access' => REQUEST_TIME,
-          'roles' => $roles,
-        );
-        $account = user_save(null, $user);
+  drupal_set_message('Files and art have been successfully moved.');
+}
+
+function _vaxia_convert_admin_form_submit_two($form, &$form_state) {
+  // Now we have all the converted data in .xml form.
+  // Make users from .users.xml    
+  if (file_exists('./users.xml')) {
+    $records = simplexml_load_file('./users.xml');
+    $role_set = array_flip(user_roles(TRUE));
+    foreach ($records->record as $record) {
+      $roles = array();
+      // Check player, player mature.
+      if ($record['fullFledgedPlayerCheck'] != 'No') {
+        $roles[] = $role_set['player'];
       }
-    }
-    // Make art from art.xml
-    if (file_exists('./art.xml')) {
-      $records = simplexml_load_file('./art.xml');
-      foreach ($records->record as $record) {
-        $node = new stdClass();
-        $node->type = 'artwork';
-        node_object_prepare($node);
-        $node->title = $record['name'];
-        $user = user_load_by_name($record['player']);
-        $node->uid = $user->uid;
-        $node->language = LANGUAGE_NONE;
-        $node->field_artwork_credit[$node->language][0]['value'] = $record['copyright'];
-        $node->field_website[$node->language][0]['value'] = $record['url'];
-        $image = file_get_contents($record['path']);
-        $file = file_save_data($image, 'public://' . $record['name'], FILE_EXISTS_RENAME);
-        $node->field_artwork_image[$node->language][0] = (array) $file;
-        $node = node_save($node);
+      if ($record['matureRP'] != 'No') {
+        $roles[] = $role_set['player-mature'];
       }
+      // Check evals.
+      drupal_set_message('TASK: Art, character, item evaulators should be reactived by hand.');
+      drupal_set_message('TASK: Assistant storytellers and storytellers should be reactived by hand.');
+      
+      // Determine user roles by XLM values.
+      $user = array(
+        'name' => $record['playerName'],
+        'pass' => user_password(), // Random password.
+        'mail' => $record['email'],
+        'init' => $record['email'],
+        'status' => 1,
+        'access' => REQUEST_TIME,
+        'roles' => $roles,
+      );
+      $account = user_save(null, $user);
     }
-    // Make rooms from vaxia-rooms.xml
-    if (file_exists('./vaxia-rooms.xml')) {
-      $records = simplexml_load_file('./vaxia-rooms.xml');
-      foreach ($records->record as $record) {
-        $node = new stdClass();
-        $node->type = 'rpg-chatroom';
-        node_object_prepare($node);
-        $node->title = $record['name'];
-        $node->uid = 1;
-        $node->language = LANGUAGE_NONE;
-        $node->body[$node->language][0]['value'] = $record['locDescription'];
-        $node->body[$node->language][0]['summary'] = text_summary($record['locDescription']);
-        $node->body[$node->language][0]['format']  = 'filtered_html';
-        $node->field_parent[$node->language][0]['nid'] = vaxia_convert_get_nid($record['parent']);
-        $node->field_artwork[$node->language][0]['nid'] = vaxia_convert_get_nid($record['image']);
-        $node = node_save($node);
-      }
-    }
-    // Make rooms from sirian-rooms.xml
-    if (file_exists('./sirian-rooms.xml')) {
-      $records = simplexml_load_file('./sirian-rooms.xml');
-      foreach ($records->record as $record) {
-        $node = new stdClass();
-        $node->type = 'rpg-chatroom';
-        node_object_prepare($node);
-        $node->title = $record['name'];
-        $node->uid = 1;
-        $node->language = LANGUAGE_NONE;
-        $node->body[$node->language][0]['value'] = $record['locDescription'];
-        $node->body[$node->language][0]['summary'] = text_summary($record['locDescription']);
-        $node->body[$node->language][0]['format']  = 'filtered_html';
-        $node->field_parent[$node->language][0]['nid'] = vaxia_convert_get_nid($record['parent']);
-        $node->field_artwork[$node->language][0]['nid'] = vaxia_convert_get_nid($record['image']);
-        $node = node_save($node);
-      }
-    }
-    // Make characters from characters.xml
-    if (file_exists('./characters.xml')) {
-      $records = simplexml_load_file('./characters.xml');
-      foreach ($records->record as $record) {
-        $node = new stdClass();
-        $node->type = 'character_sheet';
-        node_object_prepare($node);
-//TODO stuff here
-        $node = node_save($node);
-      }
-    }
-    // Make npcs from npcs.xml
-    if (file_exists('./npcs.xml')) {
-      $records = simplexml_load_file('./npcs.xml');
-      foreach ($records->record as $record) {
-        $node = new stdClass();
-        $node->type = 'npc';
-        node_object_prepare($node);
-        $node->title = $record['name'];
-        $user = user_load_by_name($record['player']);
-        $node->uid = $user->uid;
-        $node->language = LANGUAGE_NONE;
-        $node->body[$node->language][0]['value'] = $record['description'];
-        $node->body[$node->language][0]['summary'] = text_summary($record['description']);
-        $node->body[$node->language][0]['format']  = 'filtered_html';
-        $node->field_artwork[$node->language][0]['value'] = vaxia_convert_get_nid($record['image']);
-        $node->field_age_real[$node->language][0]['value'] = $record['age'];
-        $node->field_age_app[$node->language][0]['value'] = $record['AppAge'];
-        $node->field_race[$node->language][0]['value'] = $record['race'];
-        $node->field_sex[$node->language][0]['value'] = $record['sex'];
-        $node = node_save($node);
-      }
-    }
-    // Make items from items.xml
-    if (file_exists('./items.xml')) {
-      $records = simplexml_load_file('./items.xml');
-      foreach ($records->record as $record) {
-        $node = new stdClass();
-        $node->type = 'items';
-        node_object_prepare($node);
-//TODO stuff here
-        $node = node_save($node);
-      }
-    }
+    drupal_set_message('Users have been converted.');
   }
-  drupal_set_message('Converted. TURN THIS MODULE OFF.');
+  // Make art from art.xml
+  if (file_exists('./art.xml')) {
+    $records = simplexml_load_file('./art.xml');
+    foreach ($records->record as $record) {
+      $node = new stdClass();
+      $node->type = 'artwork';
+      node_object_prepare($node);
+      $node->title = $record['name'];
+      $user = user_load_by_name($record['player']);
+      $node->uid = $user->uid;
+      $node->language = LANGUAGE_NONE;
+      $node->field_artwork_credit[$node->language][0]['value'] = $record['copyright'];
+      $node->field_website[$node->language][0]['value'] = $record['url'];
+      $image = file_get_contents($record['path']);
+      $file = file_save_data($image, 'public://' . $record['name'], FILE_EXISTS_RENAME);
+      $node->field_artwork_image[$node->language][0] = (array) $file;
+      $node = node_save($node);
+    }
+    drupal_set_message('Art has been converted.');
+  }
+  // Make rooms from vaxia-rooms.xml
+  if (file_exists('./vaxia-rooms.xml')) {
+    $records = simplexml_load_file('./vaxia-rooms.xml');
+    foreach ($records->record as $record) {
+      $node = new stdClass();
+      $node->type = 'rpg-chatroom';
+      node_object_prepare($node);
+      $node->title = $record['name'];
+      $node->uid = 1;
+      $node->language = LANGUAGE_NONE;
+      $node->body[$node->language][0]['value'] = $record['locDescription'];
+      $node->body[$node->language][0]['summary'] = text_summary($record['locDescription']);
+      $node->body[$node->language][0]['format']  = 'filtered_html';
+      $node->field_parent[$node->language][0]['nid'] = vaxia_convert_get_nid($record['parent']);
+      $node->field_artwork[$node->language][0]['nid'] = vaxia_convert_get_nid($record['image']);
+      $node = node_save($node);
+    }
+    drupal_set_message('Vaxia rooms have been converted.');
+  }
+  // Make rooms from sirian-rooms.xml
+  if (file_exists('./sirian-rooms.xml')) {
+    $records = simplexml_load_file('./sirian-rooms.xml');
+    foreach ($records->record as $record) {
+      $node = new stdClass();
+      $node->type = 'rpg-chatroom';
+      node_object_prepare($node);
+      $node->title = $record['name'];
+      $node->uid = 1;
+      $node->language = LANGUAGE_NONE;
+      $node->body[$node->language][0]['value'] = $record['locDescription'];
+      $node->body[$node->language][0]['summary'] = text_summary($record['locDescription']);
+      $node->body[$node->language][0]['format']  = 'filtered_html';
+      $node->field_parent[$node->language][0]['nid'] = vaxia_convert_get_nid($record['parent']);
+      $node->field_artwork[$node->language][0]['nid'] = vaxia_convert_get_nid($record['image']);
+      $node = node_save($node);
+    }
+    drupal_set_message('Sirian rooms have been converted.');
+  }
+  drupal_set_message('TASK: Creae a central Limbo room.');
+  // Make characters from characters.xml
+  if (file_exists('./characters.xml')) {
+    $records = simplexml_load_file('./characters.xml');
+    foreach ($records->record as $record) {
+      $node = new stdClass();
+      $node->type = 'character_sheet';
+      node_object_prepare($node);
+//TODO stuff here
+      $node = node_save($node);
+    }
+    drupal_set_message('Characters have been converted.');
+  }
+  // Make npcs from npcs.xml
+  if (file_exists('./npcs.xml')) {
+    $records = simplexml_load_file('./npcs.xml');
+    foreach ($records->record as $record) {
+      $node = new stdClass();
+      $node->type = 'npc';
+      node_object_prepare($node);
+      $node->title = $record['name'];
+      $user = user_load_by_name($record['player']);
+      $node->uid = $user->uid;
+      $node->language = LANGUAGE_NONE;
+      $node->body[$node->language][0]['value'] = $record['description'];
+      $node->body[$node->language][0]['summary'] = text_summary($record['description']);
+      $node->body[$node->language][0]['format']  = 'filtered_html';
+      $node->field_artwork[$node->language][0]['value'] = vaxia_convert_get_nid($record['image']);
+      $node->field_age_real[$node->language][0]['value'] = $record['age'];
+      $node->field_age_app[$node->language][0]['value'] = $record['AppAge'];
+      $node->field_race[$node->language][0]['value'] = $record['race'];
+      $node->field_sex[$node->language][0]['value'] = $record['sex'];
+      $node = node_save($node);
+    }
+    drupal_set_message('NPCs have been converted.');
+  }
+  // Make items from items.xml
+  if (file_exists('./items.xml')) {
+    $records = simplexml_load_file('./items.xml');
+    foreach ($records->record as $record) {
+      $node = new stdClass();
+      $node->type = 'items';
+      node_object_prepare($node);
+//TODO stuff here
+      $node = node_save($node);
+    }
+    drupal_set_message('Items have been converted.');
+  }
+  drupal_set_message('TASK: All has been converted. TURN THIS MODULE OFF.');
 }
 
 function vaxia_convert_get_nid($title) {
