@@ -197,7 +197,20 @@ function _vaxia_convert_admin_form_submit_two($form, &$form_state) {
       $node->field_skill[$node->language][0]['value'] = $record['KEYNAME'];
       
       //TODO XP assignments.
-      
+/*
+      charRxps
+      charKxps
+      charHxps
+      silver
+      charGxps
+      charCxps
+      charSxps
+      charExps
+      charTxps
+      charBxps
+      charMxps
+      charWxps
+*/
       // And save the character.
       $node = node_save($node);
     }
