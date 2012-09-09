@@ -141,8 +141,12 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
             if (isset($roll['item']) && $roll['item'] != -1) {
               foreach ($roll['item'] as $this_item) {
                 $item = node_load($this_item);
+                // If right stat.
+                // TODO add a negative if the required stat isn't met.
                 $item_stat = _vaxia_dice_map_stat_to_item($roll['stat']);
                 $item += isset($item->{$item_stat}[$lang][0]['value']) ? $item->{$item_stat}[$lang][0]['value'] : 0;
+                // If a skill.
+                $item += isset($item->field_item_skill[$lang][0]['value']) ? $item->{$item_stat}[$lang][0]['value'] : 0;
                 $mod_note .= ' + item ('.$item.')';
                 $mod += $item;
               }

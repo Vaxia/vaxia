@@ -317,10 +317,10 @@ function _vaxia_convert_admin_form_submit_two($form, &$form_state) {
       );
       foreach ($mods_map as $key => $map) {
         if (isset($record[$key])) {
-          $node->$map[$node->language][0]['value'] = $record[$key];
+          $node->{$map}[$node->language][0]['value'] = $record[$key];
         }
         else {
-          $node->$map[$node->language][0]['value'] = 0;
+          $node->{$map}[$node->language][0]['value'] = 0;
         }
       }
       // Set stat requirements.
@@ -342,10 +342,10 @@ function _vaxia_convert_admin_form_submit_two($form, &$form_state) {
       );
       foreach ($mods_map as $key => $map) {
         if (isset($record[$key])) {
-          $node->$map[$node->language][0]['value'] = $record[$key];
+          $node->{$map}[$node->language][0]['value'] = $record[$key];
         }
         else {
-          $node->$map[$node->language][0]['value'] = 0;
+          $node->{$map}[$node->language][0]['value'] = 0;
         }
       }
       // Set skill modifier.
