@@ -166,10 +166,17 @@ function vaxia_process_comment(&$variables) {
     if (isset($comment->field_comment_character[$lang][0]['nid'])) {
       $character = node_load($comment->field_comment_character[$lang][0]['nid']);
       if (isset($character->title)) {
-        // Replace the user name with the character title.
+        // Replace the user name with the character titles, name, last name.
+        $character_name = $character->title;
+        if (isset($character->field_titles[$lang][0]['value'])) {
+          $character_name = $character->field_titles[$lang][0]['value'] .' ' . $character_name;
+        } 
+        if (isset($character->field_last_name[$lang][0]['value'])) {
+          $character_name .= ' ' . $character->field_last_name[$lang][0]['value'];
+        }
         // TODO add link from this character name like you do for user names.
         $variables['submitted'] = t('!username </br> !datetime',
-          array('!username' => $character->title, '!datetime' => $variables['created']));
+          array('!username' => $character_name, '!datetime' => $variables['created']));
         // Overwrite the user picture with character picture if character is set.
         if (isset($character->field_artwork[$lang][0]['nid'])) {
           $artwork = node_load($character->field_artwork[$lang][0]['nid']);

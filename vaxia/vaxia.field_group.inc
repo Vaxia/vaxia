@@ -541,10 +541,11 @@ function vaxia_field_group_info() {
     'children' => array(
       0 => 'field_background',
       1 => 'field_description',
-      2 => 'field_npc',
-      3 => 'field_occupation',
-      4 => 'field_personality',
-      5 => 'title',
+      2 => 'field_occupation',
+      3 => 'field_personality',
+      4 => 'field_titles',
+      5 => 'field_last_name',
+      6 => 'title',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
