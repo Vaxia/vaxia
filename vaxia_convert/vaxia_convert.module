@@ -193,15 +193,45 @@ function _vaxia_convert_admin_form_submit_two($form, &$form_state) {
       $node->field_spirituality[$node->language][0]['value'] = $record['spi'];
       $node->field_strength[$node->language][0]['value'] = $record['str'];
 
-      //TODO loop for skill sets.
-      $node->field_skill[$node->language][0]['value'] = $record['KEYNAME'];
-      
+      // And save the character.
+      $node = node_save($node);
+
+      // Add skills, values all are keyed as : skDELTAx = amount, skDELTAn = name , skDELTAx = d = description.
+      $skill_fields = array();
+      foreach ($record as $key => $value) {
+        if (strpos($key, 'sk') !== FALSE && strpos($key, 'sk') === 0) {
+          // Get the delta and set.
+          $setting = substr($key, -1);
+          $delta = substr($key, 2, -1);
+          $skill_fields[$delta][$setting] = $value;
+        }
+      }
+      // And create and add the skills to the node.
+      // Now we have a mapped array of skill values.
+      foreach ($skill_fields as $delta => $values) {
+        if (count($values) == 3) {
+          $skill = entity_create('field_collection_item', array('field_name' => 'field_skill'));
+          $skill->setHostEntity('node', $node);
+          $skill->field_skill_desc[$node->language][0]['value'] = $values['x'];
+          $skill->field_skill_name[$node->language][0]['value'] = $values['n'];
+          $skill->field_skill_value[$node->language][0]['value'] = $values['d'];
+          $skill->save();
+          $node->field_skill[$node->language][]['value'] = $skill->item_id;
+        }
+      }
+      // Save updated skills.
+      $node = node_save($node);
+
       //TODO XP assignments.
 /*
       charRxps
       charKxps
       charHxps
       silver
+      _character_sheet_update_xp($node->nid, 1, 'invest_silver');
+       //spent_silver
+       //silver
+
       charGxps
       charCxps
       charSxps
@@ -211,8 +241,6 @@ function _vaxia_convert_admin_form_submit_two($form, &$form_state) {
       charMxps
       charWxps
 */
-      // And save the character.
-      $node = node_save($node);
     }
     drupal_set_message('Characters have been converted.');
   }
