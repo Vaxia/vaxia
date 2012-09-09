@@ -7,7 +7,7 @@
  * via feeds into the new system.
  */
 
-function vaxia_convert_main() {
+function vaxia_convert_main($ROOT) {
   $VAXIA_CHAR_PATH = $ROOT.'/vaxia_docroot/vaxia/characters/active';
   $VAXIA_ROOM_PATH = $ROOT.'/vaxia_docroot/vaxia/enter';
   $art_file = './art.xml';
