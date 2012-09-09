@@ -142,7 +142,7 @@ function _vaxia_convert_admin_form_submit_two($form, &$form_state) {
     }
     drupal_set_message('Sirian rooms have been converted.');
   }
-  drupal_set_message('TASK: Creae a central Limbo room.');
+  drupal_set_message('TASK: Create a central Limbo room.');
   // Make characters from characters.xml
   if (file_exists('./characters.xml')) {
     $records = simplexml_load_file('./characters.xml');
@@ -150,7 +150,55 @@ function _vaxia_convert_admin_form_submit_two($form, &$form_state) {
       $node = new stdClass();
       $node->type = 'character_sheet';
       node_object_prepare($node);
-//TODO stuff here
+      $node->title = $record['character'];
+      $user = user_load_by_name($record['player']);
+      $node->uid = $user->uid;
+      $node->field_artwork[$node->language][0]['nid'] = vaxia_convert_get_nid($record['image']);
+
+      $node->field_age_app[$node->language][0]['value'] = $record['charAppAge'];
+      $node->field_age_real[$node->language][0]['value'] = $record['charAge'];
+      $node->field_economy[$node->language][0]['value'] = $record['ecolevel'];
+      $node->field_race[$node->language][0]['value'] = $record['charRace'];
+      $realm = 'vaxia';
+      if (isset($record['sirianCert']) && $record['sirianCert'] == 'Yes') {
+        $realm = 'sirian';
+      }
+      $node->field_realm[$node->language][0]['value'] = $realm;
+      $node->field_sex[$node->language][0]['value'] = $record['charSex'];
+
+      $node->field_background[$node->language][0]['value'] = $record['background'];
+      $node->field_description[$node->language][0]['value'] = $record['description'];
+      $node->field_occupation[$node->language][0]['value'] = $record['ocupation'];
+      $node->field_personality[$node->language][0]['value'] = $record['personality'];
+
+      $node->field_player_notes[$node->language][0]['value'] = $record['playerNotes'];
+      $node->field_sh_notes[$node->language][0]['value'] = $record['shNotes'];
+
+      $node->field_property[$node->language][0]['value'] = $record['playerProperty'];
+      //$node->field_items[$node->language][0]['value'] = $record['KEYNAME'];
+      // Leave items empty, players will have to reassign them to characters.
+
+      $node->field_agility[$node->language][0]['value'] = $record['agi'];
+      $node->field_appearance[$node->language][0]['value'] = $record['bty'];
+      $node->field_awareness[$node->language][0]['value'] = $record['awa'];
+      $node->field_charisma[$node->language][0]['value'] = $record['cha'];
+      $node->field_constitution[$node->language][0]['value'] = $record['con'];
+      $node->field_dexterity[$node->language][0]['value'] = $record['dex'];
+      $node->field_endurance[$node->language][0]['value'] = $record['end'];
+      $node->field_health[$node->language][0]['value'] = $record['hlt'];
+      $node->field_intelligence[$node->language][0]['value'] = $record['int'];
+      $node->field_life[$node->language][0]['value'] = $record['lfe'];
+      $node->field_presence[$node->language][0]['value'] = $record['pre'];
+      $node->field_reflexes[$node->language][0]['value'] = $record['roa'];
+      $node->field_spirituality[$node->language][0]['value'] = $record['spi'];
+      $node->field_strength[$node->language][0]['value'] = $record['str'];
+
+      //TODO loop for skill sets.
+      $node->field_skill[$node->language][0]['value'] = $record['KEYNAME'];
+      
+      //TODO XP assignments.
+      
+      // And save the character.
       $node = node_save($node);
     }
     drupal_set_message('Characters have been converted.');
@@ -174,6 +222,9 @@ function _vaxia_convert_admin_form_submit_two($form, &$form_state) {
       $node->field_age_app[$node->language][0]['value'] = $record['AppAge'];
       $node->field_race[$node->language][0]['value'] = $record['race'];
       $node->field_sex[$node->language][0]['value'] = $record['sex'];
+      $node->field_sex[$node->language][0]['value'] = $record['last'];
+      $node->field_sex[$node->language][0]['value'] = $record['shNotes'];
+      $node->field_sex[$node->language][0]['value'] = $record['titles'];
       // Add Last name? last
       // Add SH notes? shNotes
       // Add titles? titles
@@ -189,16 +240,82 @@ function _vaxia_convert_admin_form_submit_two($form, &$form_state) {
       $node->type = 'items';
       node_object_prepare($node);
       $node->title = $record['USEitemName'];
-//TODO stuff here
-// MODitemValue ?
-// MODquantity ?
-// MODreqdex - modifies dex?
-// MODreqstr
-// MODitemValue
-// MODpre  ??
-// MODbty ??
-// MODend ??
-// NEWitemDescription
+      $user = user_load_by_name($record['player']);
+      $node->uid = $user->uid;
+      $node->field_item_desc[$node->language][0]['value'] = $record['NEWitemDescription'];
+      $node->field_item_history[$node->language][0]['value'] = '';
+      $node->field_item_notes[$node->language][0]['value'] = '';
+      if (numeric($record['MODitemValue'])) {
+        $node->field_item_value[$node->language][0]['value'] = $record['MODitemValue'];
+      }
+      else {
+        $node->field_item_value[$node->language][0]['value'] = 0;
+      }
+      // Set stat modifications.
+      $mods_map = array(
+        'MODagi' => 'field_item_agility',
+        'MODbty' => 'field_item_appearance',
+        'MODawa' => 'field_item_awareness',
+        'MODcha' => 'field_item_charisma',
+        'MODcon' => 'field_item_constitution',
+        'MODdex' => 'field_item_dexterity',
+        'MODend' => 'field_item_endurance',
+        'MODhlt' => 'field_item_health',
+        'MODint' => 'field_item_intelligence',
+        'MODlfe' => 'field_item_life',
+        'MODpre' => 'field_item_presence',
+        'MODroa' => 'field_item_reflexes',
+        'MODspi' => 'field_item_spirituality',
+        'MODstr' => 'field_item_strength',
+      );
+      foreach ($mods_map as $key => $map) {
+        if (isset($record[$key])) {
+          $node->$map[$node->language][0]['value'] = $record[$key];
+        }
+        else {
+          $node->$map[$node->slanguage][0]['value'] = 0;
+        }
+      }
+      // Set stat requirements.
+      $mods_map = array(
+        'MODreqagi' => 'field_item_required_agility',
+        'MODreqbty' => 'field_item_required_appearance',
+        'MODreqawa' => 'field_item_required_awareness',
+        'MODreqcha' => 'field_item_required_charisma',
+        'MODreqcon' => 'field_item_required_constitution',
+        'MODreqdex' => 'field_item_required_dexterity',
+        'MODreqend' => 'field_item_required_endurance',
+        'MODreqhlt' => 'field_item_required_health',
+        'MODreqint' => 'field_item_required_intelligence',
+        'MODreqlfe' => 'field_item_required_life',
+        'MODreqpre' => 'field_item_required_presence',
+        'MODreqroa' => 'field_item_required_reflexes',
+        'MODreqspi' => 'field_item_required_spirituality',
+        'MODreqstr' => 'field_item_required_strength',
+      );
+      foreach ($mods_map as $key => $map) {
+        if (isset($record[$key])) {
+          $node->$map[$node->language][0]['value'] = $record[$key];
+        }
+        else {
+          $node->$map[$node->language][0]['value'] = 0;
+        }
+      }
+      // Set skill modifier.
+      if (isset($record['MODski'])) {
+        $node->field_item_skill[$node->language][0]['value'] = $record['MODski'];
+      }
+      else {
+        $node->field_item_skill[$node->language][0]['value'] = 0;
+      }
+      // Set skill required.
+      if (isset($record['MODreqski'])) {
+        $node->field_item_required_skill[$node->language][0]['value'] = $record['MODreqski'];
+      }
+      else {
+        $node->field_item_required_skill[$node->language][0]['value'] = 0;
+      }
+      // Save if we have an item. (Some item records are incomplete.)
       if (isset($record['USEitemName'])) {
         $node = node_save($node);
       }
@@ -206,6 +323,14 @@ function _vaxia_convert_admin_form_submit_two($form, &$form_state) {
     drupal_set_message('Items have been converted.');
   }
   drupal_set_message('TASK: All has been converted. TURN THIS MODULE OFF.');
+}
+
+function vaxia_convert_item_mods($field) {
+
+  if (isset($mods_map[$field])) {
+    return $mods_map[$field];
+  }
+  return $field;
 }
 
 function vaxia_convert_get_nid($title) {
