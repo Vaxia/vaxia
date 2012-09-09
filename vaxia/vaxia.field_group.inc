@@ -299,8 +299,8 @@ function vaxia_field_group_info() {
   $field_group->mode = 'form';
   $field_group->parent_name = '';
   $field_group->data = array(
-    'label' => 'Stats',
-    'weight' => '4',
+    'label' => 'Modifies',
+    'weight' => '1',
     'children' => array(
       0 => 'field_item_agility',
       1 => 'field_item_appearance',
@@ -316,15 +316,17 @@ function vaxia_field_group_info() {
       11 => 'field_item_reflexes',
       12 => 'field_item_spirituality',
       13 => 'field_item_strength',
+      14 => 'field_item_skill',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
-      'formatter' => 'collapsible',
+      'label' => 'Modifies',
       'instance_settings' => array(
-        'description' => '',
-        'classes' => '',
         'required_fields' => 1,
+        'classes' => '',
+        'description' => '',
       ),
+      'formatter' => 'collapsible',
     ),
   );
   $export['group_item_stats|node|items|form'] = $field_group;
@@ -478,9 +480,10 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Notes',
-    'weight' => '5',
+    'weight' => '2',
     'children' => array(
       0 => 'field_item_notes',
+      1 => 'field_value',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -554,6 +557,47 @@ function vaxia_field_group_info() {
     ),
   );
   $export['group_personal|node|character_sheet|form'] = $field_group;
+
+  $field_group = new stdClass;
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_requires|node|items|form';
+  $field_group->group_name = 'group_requires';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'items';
+  $field_group->mode = 'form';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Requires',
+    'weight' => '4',
+    'children' => array(
+      0 => 'field_item_required_agility',
+      1 => 'field_item_required_appearance',
+      2 => 'field_item_required_awareness',
+      3 => 'field_item_required_charisma',
+      4 => 'field_item_required_constitution',
+      5 => 'field_item_required_dexterity',
+      6 => 'field_item_required_endurance',
+      7 => 'field_item_required_health',
+      8 => 'field_item_required_intelligence',
+      9 => 'field_item_required_life',
+      10 => 'field_item_required_presence',
+      11 => 'field_item_required_reflexes',
+      12 => 'field_item_required_spirituality',
+      13 => 'field_item_required_strength',
+      14 => 'field_item_required_skill',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'formatter' => 'collapsible',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => '',
+        'required_fields' => 1,
+      ),
+    ),
+  );
+  $export['group_requires|node|items|form'] = $field_group;
 
   $field_group = new stdClass;
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
