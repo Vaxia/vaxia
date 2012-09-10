@@ -8,14 +8,22 @@
  */
 
 function vaxia_convert_main($ROOT) {
-  $VAXIA_CHAR_PATH = $ROOT.'/vaxia_docroot/vaxia/characters/active';
-  $VAXIA_ROOM_PATH = $ROOT.'/vaxia_docroot/vaxia/enter';
-  $art_file = './art.xml';
+  set_time_limit(60);
+  $VAXIA_CHAR_PATH = $ROOT.'/vaxia/characters/active';
+  $VAXIA_ROOM_PATH = $ROOT.'/vaxia/enter';
+  $art_file = './vaxia_convert/art.xml';
+  if (!is_dir('./vaxia_convert')) {
+    mkdir('./vaxia_convert', 0777, TRUE);
+  }
   write_record_open_file($art_file);
   get_users($VAXIA_CHAR_PATH, $art_file);
+  set_time_limit(240);
   get_characters($VAXIA_CHAR_PATH, $art_file);
+  set_time_limit(60);
   get_items($VAXIA_CHAR_PATH);
+  set_time_limit(60);
   get_npcs($VAXIA_CHAR_PATH);
+  set_time_limit(180);
   get_rooms($VAXIA_ROOM_PATH, $art_file);
   write_record_close_file($art_file);
   return TRUE;
@@ -60,7 +68,7 @@ function write_record_to_file($path, $record) {
 function _write_record_to_file($record, $depth = '    ') {
   $xml = '';
   foreach ($record as $key => $field) {
-    if (!empty($key) && !empty($field)) {
+    if (isset($key) && !empty($key) && !empty($field)) {
       if (!is_array($field)) {
         $xml .= $depth."<".trim($key).">".trim($field)."</".trim($key).">\n";
       }
@@ -74,7 +82,7 @@ function _write_record_to_file($record, $depth = '    ') {
   return $xml;
 }
 
-function file_scan_directory($dir, $mask) {
+function vaxia_file_scan_directory($dir, $mask) {
   $nomask = array('.', '..');
   $key = (in_array($key, array('filename', 'basename', 'name')) ? $key : 'filename');
   $files = array();
@@ -117,7 +125,7 @@ function read_vaxia_file($file) {
 }
 
 function move_vaxia_art_file($path, $subpath) {
-  $VAXIA_ART_PATH = './vaxia_art';
+  $VAXIA_ART_PATH = './vaxia_convert/vaxia_art';
   $new_path = $path;
   if (is_file($path)) {
     if (!is_dir($VAXIA_ART_PATH.'/'.$subpath)) {
@@ -130,13 +138,14 @@ function move_vaxia_art_file($path, $subpath) {
 }
 
 function get_users($path, $art_file) {
-  $file = './users.xml';
+  $file = './vaxia_convert/users.xml';
   write_record_open_file($file);
+  $results = 0;
   foreach (get_directories($path) as $letter_dir) {
     // We now have the alphabetical.
     foreach (get_directories($path . '/' . $letter_dir) as $user_dir) {
       // Get user art.
-      $files = file_scan_directory($path . '/' . $letter_dir . '/' . $user_dir, '.*.item');
+      $files = vaxia_file_scan_directory($path . '/' . $letter_dir . '/' . $user_dir, '.*.item');
       foreach ($files as $more_data) {
         if (!(strpos($more_data, 'player') === 0) ) {
           // Read art in the user dir.
@@ -156,7 +165,7 @@ function get_users($path, $art_file) {
       // Read each dir in dir
       $user = array();
       $user['name'] = $user_dir; // User name.
-      $more_data = file_scan_directory($path . '/' . $letter_dir . '/' . $user_dir, 'player-.*.item');
+      $more_data = vaxia_file_scan_directory($path . '/' . $letter_dir . '/' . $user_dir, 'player-.*.item');
       if (count($more_data) == 1) {
         // Given permissions and email in dir / dir / name-pass.item
         $data = read_vaxia_file($path . '/' . $letter_dir . '/' . $user_dir . '/' . $more_data[0]);
@@ -166,14 +175,17 @@ function get_users($path, $art_file) {
       // Now that we have a user, determine the rest of the settings and permissions.
       $record = $user;
       write_record_to_file($file, $record);
+      $results++;
     }
   }
+  drupal_set_message($results . ' users converted.');
   write_record_close_file($file);
 }
 
 function get_characters($path, $art_file) {
-  $file = './characters.xml';
+  $file = './vaxia_convert/characters.xml';
   write_record_open_file($file);
+  $results = 0;
   foreach (get_directories($path) as $letter_dir) {
     // We now have the alphabetical.
     foreach (get_directories($path . '/' . $letter_dir) as $user_dir) {
@@ -181,7 +193,7 @@ function get_characters($path, $art_file) {
       foreach (get_directories($path . '/' . $letter_dir . '/' . $user_dir) as $char_dir) {
         // Read the art dir.
         $art_dir = $path . '/' . $letter_dir . '/' . $user_dir . '/' . $char_dir . '/art';
-        $files = file_scan_directory($art_dir, '.*.item');
+        $files = vaxia_file_scan_directory($art_dir, '.*.item');
         foreach ($files as $more_data) {
           $art = array();
           $art['player'] = ucfirst($user_dir);
@@ -200,7 +212,7 @@ function get_characters($path, $art_file) {
         $character = array();
         $character['player'] = ucfirst($user_dir);
         $character['character'] = ucfirst($char_dir);
-        $more_data = file_scan_directory($path . '/' . $letter_dir . '/' . $user_dir . '/' . $char_dir, '.*-'.$char_dir.'.item');
+        $more_data = vaxia_file_scan_directory($path . '/' . $letter_dir . '/' . $user_dir . '/' . $char_dir, '.*-'.$char_dir.'.item');
         if (count($more_data) == 1) {
           // Given permissions and email in dir / dir / name-pass.item
           $data = read_vaxia_file($path . '/' . $letter_dir . '/' . $user_dir . '/' . $char_dir. '/' . $more_data[0]);
@@ -211,15 +223,18 @@ function get_characters($path, $art_file) {
         $record = $character;
         // TODO map the skill set.
         write_record_to_file($file, $record);
+        $results++;
       }
     }
   }
+  drupal_set_message($results . ' characters converted.');
   write_record_close_file($file);
 }
 
 function get_items($path) {// For each dir in root.
-  $file = './items.xml';
+  $file = './vaxia_convert/items.xml';
   write_record_open_file($file);
+  $results = 0;
   foreach (get_directories($path) as $letter_dir) {
     // We now have the alphabetical.
     foreach (get_directories($path . '/' . $letter_dir) as $user_dir) {
@@ -227,7 +242,7 @@ function get_items($path) {// For each dir in root.
       foreach (get_directories($path . '/' . $letter_dir . '/' . $user_dir) as $char_dir) {
         // Read the art dir.
         $item_dir = $path . '/' . $letter_dir . '/' . $user_dir . '/' . $char_dir . '/property';
-        $files = file_scan_directory($item_dir, '.*.item');
+        $files = vaxia_file_scan_directory($item_dir, '.*.item');
         foreach ($files as $more_data) {
           $item = array(); //TODO map item MODS to an attribute
           $item['player'] = ucfirst($user_dir);
@@ -238,16 +253,19 @@ function get_items($path) {// For each dir in root.
           // Now that we have a user, determine the rest of the settings and permissions.
           $record = $item;
           write_record_to_file($file, $record);
+          $results++;
         }
       }
     }
   }
+  drupal_set_message($results . ' items converted.');
   write_record_close_file($file);
 }
 
 function get_npcs($path) {
-  $file = './npcs.xml';
+  $file = './vaxia_convert/npcs.xml';
   write_record_open_file($file);
+  $results = 0;
   foreach (get_directories($path) as $letter_dir) {
     // We now have the alphabetical.
     foreach (get_directories($path . '/' . $letter_dir) as $user_dir) {
@@ -255,7 +273,7 @@ function get_npcs($path) {
       foreach (get_directories($path . '/' . $letter_dir . '/' . $user_dir) as $char_dir) {
         // Read the art dir.
         $npc_dir = $path . '/' . $letter_dir . '/' . $user_dir . '/' . $char_dir . '/dependants';
-        $files = file_scan_directory($npc_dir, '.*.item');
+        $files = vaxia_file_scan_directory($npc_dir, '.*.item');
         foreach ($files as $more_data) {
           $npc = array();
           $npc['player'] = ucfirst($user_dir);
@@ -266,30 +284,34 @@ function get_npcs($path) {
           // Now that we have a user, determine the rest of the settings and permissions.
           $record = $npc;
           write_record_to_file($file, $record);
+          $results++;
         }
       }
     }
   }
+  drupal_set_message($results . ' npcs converted.');
   write_record_close_file($file);
 }
 
 function get_rooms($path, $art_file) {
   $worlds = array('/_vaxian_world' => 'vaxia', '/sirian_solar_system' => 'sirian');
+  $results = 0;
   foreach ($worlds as $world => $category) {
-    $file = './'.$category.'-rooms.xml';
+    $file = './vaxia_convert/'.$category.'-rooms.xml';
     write_record_open_file($file);
     $path = $path.$world;
-    recursive_get_rooms($path, '', $category, $file, $art_file);
+    $results = recursive_get_rooms($path, '', $category, $file, $art_file, $results);
     write_record_close_file($file);
   }
+  drupal_set_message($results . ' rooms converted.');
 }
 
 // RECURSIVE EFFORT.
-function recursive_get_rooms($path, $parent, $category, $file, $art_file) {
+function recursive_get_rooms($path, $parent, $category, $file, $art_file, $results) {
   if (is_dir($path)) {
     foreach (get_directories($path) as $this_path) {
       // Read art files.
-      $files = file_scan_directory($path .'/'. $this_path, '.*.item');
+      $files = vaxia_file_scan_directory($path .'/'. $this_path, '.*.item');
       foreach ($files as $more_data) {
         if ($more_data != 'item.item') {
           $art = array();
@@ -313,9 +335,10 @@ function recursive_get_rooms($path, $parent, $category, $file, $art_file) {
       $data['image'] = basename($data['locImage']); // Current image.
       $record = array_merge($room, $data);
       write_record_to_file($file, $record);
+      $results++;
       // And recurse down.
-      recursive_get_rooms($path .'/'. $this_path, $room['name'], $category, $file, $art_file);
+      $results = recursive_get_rooms($path .'/'. $this_path, $room['name'], $category, $file, $art_file, $results);
     }
   }
+  return $results;
 }
-?>
