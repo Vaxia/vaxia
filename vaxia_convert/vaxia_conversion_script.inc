@@ -45,6 +45,7 @@ function get_directories($path) {
 
 function write_record_open_file($path) {
   $fp = fopen($path, 'a'); // Append, write one per row.
+  fwrite($fp, "<?xml version='1.0' encoding='ISO-8859-1'?>\n");
   fwrite($fp, "<records>\n");
   fclose($fp);
 }
@@ -68,9 +69,9 @@ function write_record_to_file($path, $record) {
 function _write_record_to_file($record, $depth = '    ') {
   $xml = '';
   foreach ($record as $key => $field) {
-    if (isset($key) && !empty($key) && !empty($field)) {
+    if (isset($key) && !empty($key) && strpos($key, ' ') === FALSE && strpos($key, '^') === FALSE && !empty($field)) {
       if (!is_array($field)) {
-        $xml .= $depth."<".trim($key).">".trim($field)."</".trim($key).">\n";
+        $xml .= $depth."<".trim($key)."><![CDATA[".trim($field)."]]></".trim($key).">\n";
       }
       else {
         $xml .= $depth."<".trim($key).">\n";
