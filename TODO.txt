@@ -3,6 +3,16 @@ TO DO LIST FOR COMPLETION
 
 a) Heavy test with live players. 
 
+Parts to watch for:
+  NPC handling
+  Cross room dynamics (may need to save room/character/player settings
+  NPC posting
+  Interface confusion
+
+To Add:
+a) A "character not posted" to be able to retire chars post move.
+b) A "room not posted" to be able to retire rooms post move.
+
 TO DO LIST FOR FUTURE DEVELOPMENT
 ---------------------------------
 
