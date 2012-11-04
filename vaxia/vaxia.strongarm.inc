@@ -336,7 +336,7 @@ function vaxia_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'dice_roller_place_rpg_chatroom';
-  $strongarm->value = 'both';
+  $strongarm->value = 'comment';
   $export['dice_roller_place_rpg_chatroom'] = $strongarm;
 
   $strongarm = new stdClass;

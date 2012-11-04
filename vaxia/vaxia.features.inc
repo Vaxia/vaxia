@@ -184,6 +184,9 @@ function vaxia_workflow_default_workflows() {
         'target_state' => 'approved',
       ),
     ),
+    'node_types' => array(
+      0 => 'artwork',
+    ),
   );
 
   // Exported workflow: Item evaluation workflow
@@ -289,6 +292,9 @@ function vaxia_workflow_default_workflows() {
         'state' => 'disapproved',
         'target_state' => 'approved',
       ),
+    ),
+    'node_types' => array(
+      0 => 'items',
     ),
   );
 
