@@ -105,7 +105,7 @@ function vaxia_import_art($file) {
       node_object_prepare($node);
       $node->title = $record['name'];
       $node->uid = 1;
-      if(!isset($record['player'])) {
+      if(isset($record['player'])) {
         $user = user_load_by_name($record['player']);
         $node->uid = isset($user->uid) ? $user->uid : 1;
       }
