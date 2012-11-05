@@ -10,7 +10,7 @@
 function vaxia_filter_default_formats() {
   $formats = array();
 
-  // Exported format: Plain text with BBCode
+  // Exported format: Plain text with BBCode.
   $formats['plain_text'] = array(
     'format' => 'plain_text',
     'name' => 'Plain text with BBCode',

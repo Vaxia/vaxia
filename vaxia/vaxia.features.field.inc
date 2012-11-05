@@ -10,7 +10,7 @@
 function vaxia_field_default_fields() {
   $fields = array();
 
-  // Exported field: 'comment-comment_node_rpg_chatroom-field_comment_character'
+  // Exported field: 'comment-comment_node_rpg_chatroom-field_comment_character'.
   $fields['comment-comment_node_rpg_chatroom-field_comment_character'] = array(
     'field_config' => array(
       'active' => '1',
@@ -31,6 +31,7 @@ function vaxia_field_default_fields() {
           0 => 'nid',
         ),
       ),
+      'locked' => '0',
       'module' => 'node_reference',
       'settings' => array(
         'referenceable_types' => array(
@@ -81,7 +82,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'comment-comment_node_rpg_chatroom-field_comment_color'
+  // Exported field: 'comment-comment_node_rpg_chatroom-field_comment_color'.
   $fields['comment-comment_node_rpg_chatroom-field_comment_color'] = array(
     'field_config' => array(
       'active' => '1',
@@ -102,6 +103,7 @@ function vaxia_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(
         'max_length' => '6',
@@ -142,7 +144,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'comment-comment_node_rpg_chatroom-field_comment_narrative'
+  // Exported field: 'comment-comment_node_rpg_chatroom-field_comment_narrative'.
   $fields['comment-comment_node_rpg_chatroom-field_comment_narrative'] = array(
     'field_config' => array(
       'active' => '1',
@@ -156,6 +158,7 @@ function vaxia_field_default_fields() {
           0 => 'value',
         ),
       ),
+      'locked' => '0',
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
@@ -203,7 +206,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'field_collection_item-field_skill-field_skill_desc'
+  // Exported field: 'field_collection_item-field_skill-field_skill_desc'.
   $fields['field_collection_item-field_skill-field_skill_desc'] = array(
     'field_config' => array(
       'active' => '1',
@@ -224,6 +227,7 @@ function vaxia_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(),
       'translatable' => '0',
@@ -263,7 +267,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'field_collection_item-field_skill-field_skill_name'
+  // Exported field: 'field_collection_item-field_skill-field_skill_name'.
   $fields['field_collection_item-field_skill-field_skill_name'] = array(
     'field_config' => array(
       'active' => '1',
@@ -284,6 +288,7 @@ function vaxia_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(
         'max_length' => '255',
@@ -325,7 +330,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'field_collection_item-field_skill-field_skill_value'
+  // Exported field: 'field_collection_item-field_skill-field_skill_value'.
   $fields['field_collection_item-field_skill-field_skill_value'] = array(
     'field_config' => array(
       'active' => '1',
@@ -335,6 +340,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_skill_value',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(),
       'translatable' => '0',
@@ -380,7 +386,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-artwork-field_artwork_credit'
+  // Exported field: 'node-artwork-field_artwork_credit'.
   $fields['node-artwork-field_artwork_credit'] = array(
     'field_config' => array(
       'active' => '1',
@@ -401,6 +407,7 @@ function vaxia_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(),
       'translatable' => '0',
@@ -446,7 +453,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-artwork-field_artwork_image'
+  // Exported field: 'node-artwork-field_artwork_image'.
   $fields['node-artwork-field_artwork_image'] = array(
     'field_config' => array(
       'active' => '1',
@@ -467,6 +474,7 @@ function vaxia_field_default_fields() {
           0 => 'fid',
         ),
       ),
+      'locked' => '0',
       'module' => 'image',
       'settings' => array(
         'default_image' => 0,
@@ -524,7 +532,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-artwork-field_website'
+  // Exported field: 'node-artwork-field_website'.
   $fields['node-artwork-field_website'] = array(
     'field_config' => array(
       'active' => '1',
@@ -545,6 +553,7 @@ function vaxia_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(
         'max_length' => '255',
@@ -591,7 +600,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-book-body'
+  // Exported field: 'node-book-body'.
   $fields['node-book-body'] = array(
     'field_config' => array(
       'active' => '1',
@@ -614,6 +623,7 @@ function vaxia_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(),
       'translatable' => '0',
@@ -663,7 +673,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-character_sheet-field_age_app'
+  // Exported field: 'node-character_sheet-field_age_app'.
   $fields['node-character_sheet-field_age_app'] = array(
     'field_config' => array(
       'active' => '1',
@@ -684,6 +694,7 @@ function vaxia_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(
         'max_length' => '255',
@@ -731,7 +742,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-character_sheet-field_age_real'
+  // Exported field: 'node-character_sheet-field_age_real'.
   $fields['node-character_sheet-field_age_real'] = array(
     'field_config' => array(
       'active' => '1',
@@ -752,6 +763,7 @@ function vaxia_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(
         'max_length' => '255',
@@ -799,7 +811,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-character_sheet-field_agility'
+  // Exported field: 'node-character_sheet-field_agility'.
   $fields['node-character_sheet-field_agility'] = array(
     'field_config' => array(
       'active' => '1',
@@ -809,6 +821,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_agility',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'computed_field',
       'settings' => array(
         'code' => '$entity_field[0][\'value\'] =  ($entity->field_strength[$entity->language][0][\'value\'] + $entity->field_dexterity[$entity->language][0][\'value\']) / 2;',
@@ -864,7 +877,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-character_sheet-field_appearance'
+  // Exported field: 'node-character_sheet-field_appearance'.
   $fields['node-character_sheet-field_appearance'] = array(
     'field_config' => array(
       'active' => '1',
@@ -874,6 +887,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_appearance',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'computed_field',
       'settings' => array(
         'code' => '$entity_field[0][\'value\'] =  ($entity->field_charisma[$entity->language][0][\'value\'] + $entity->field_life[$entity->language][0][\'value\']) / 2;',
@@ -929,7 +943,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-character_sheet-field_artwork'
+  // Exported field: 'node-character_sheet-field_artwork'.
   $fields['node-character_sheet-field_artwork'] = array(
     'field_config' => array(
       'active' => '1',
@@ -950,6 +964,7 @@ function vaxia_field_default_fields() {
           0 => 'nid',
         ),
       ),
+      'locked' => '0',
       'module' => 'node_reference',
       'settings' => array(
         'referenceable_types' => array(
@@ -1009,7 +1024,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-character_sheet-field_awareness'
+  // Exported field: 'node-character_sheet-field_awareness'.
   $fields['node-character_sheet-field_awareness'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1019,6 +1034,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_awareness',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'computed_field',
       'settings' => array(
         'code' => '$entity_field[0][\'value\'] =  ($entity->field_intelligence[$entity->language][0][\'value\'] + $entity->field_spirituality[$entity->language][0][\'value\']) / 2;',
@@ -1074,7 +1090,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-character_sheet-field_background'
+  // Exported field: 'node-character_sheet-field_background'.
   $fields['node-character_sheet-field_background'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1095,6 +1111,7 @@ function vaxia_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(),
       'translatable' => '0',
@@ -1140,7 +1157,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-character_sheet-field_charisma'
+  // Exported field: 'node-character_sheet-field_charisma'.
   $fields['node-character_sheet-field_charisma'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1150,6 +1167,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_charisma',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(),
       'translatable' => '0',
@@ -1201,7 +1219,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-character_sheet-field_constitution'
+  // Exported field: 'node-character_sheet-field_constitution'.
   $fields['node-character_sheet-field_constitution'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1211,6 +1229,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_constitution',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'computed_field',
       'settings' => array(
         'code' => '$entity_field[0][\'value\'] =  ($entity->field_endurance[$entity->language][0][\'value\'] + $entity->field_strength[$entity->language][0][\'value\']) / 2;',
@@ -1266,7 +1285,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-character_sheet-field_description'
+  // Exported field: 'node-character_sheet-field_description'.
   $fields['node-character_sheet-field_description'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1287,6 +1306,7 @@ function vaxia_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(),
       'translatable' => '0',
@@ -1332,7 +1352,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-character_sheet-field_dexterity'
+  // Exported field: 'node-character_sheet-field_dexterity'.
   $fields['node-character_sheet-field_dexterity'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1342,6 +1362,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_dexterity',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(),
       'translatable' => '0',
@@ -1393,7 +1414,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-character_sheet-field_economy'
+  // Exported field: 'node-character_sheet-field_economy'.
   $fields['node-character_sheet-field_economy'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1403,6 +1424,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_economy',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(),
       'translatable' => '0',
@@ -1458,7 +1480,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-character_sheet-field_endurance'
+  // Exported field: 'node-character_sheet-field_endurance'.
   $fields['node-character_sheet-field_endurance'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1468,6 +1490,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_endurance',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(),
       'translatable' => '0',
@@ -1519,7 +1542,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-character_sheet-field_health'
+  // Exported field: 'node-character_sheet-field_health'.
   $fields['node-character_sheet-field_health'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1529,6 +1552,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_health',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'computed_field',
       'settings' => array(
         'code' => '$entity_field[0][\'value\'] = ($entity->field_life[$entity->language][0][\'value\'] + $entity->field_endurance[$entity->language][0][\'value\']) / 2;
@@ -1585,7 +1609,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-character_sheet-field_intelligence'
+  // Exported field: 'node-character_sheet-field_intelligence'.
   $fields['node-character_sheet-field_intelligence'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1595,6 +1619,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_intelligence',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(),
       'translatable' => '0',
@@ -1646,7 +1671,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-character_sheet-field_items'
+  // Exported field: 'node-character_sheet-field_items'.
   $fields['node-character_sheet-field_items'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1667,6 +1692,7 @@ function vaxia_field_default_fields() {
           0 => 'nid',
         ),
       ),
+      'locked' => '0',
       'module' => 'node_reference',
       'settings' => array(
         'referenceable_types' => array(
@@ -1725,7 +1751,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-character_sheet-field_last_name'
+  // Exported field: 'node-character_sheet-field_last_name'.
   $fields['node-character_sheet-field_last_name'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1746,6 +1772,7 @@ function vaxia_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(
         'max_length' => '255',
@@ -1793,7 +1820,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-character_sheet-field_life'
+  // Exported field: 'node-character_sheet-field_life'.
   $fields['node-character_sheet-field_life'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1803,6 +1830,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_life',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(),
       'translatable' => '0',
@@ -1854,7 +1882,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-character_sheet-field_npcs'
+  // Exported field: 'node-character_sheet-field_npcs'.
   $fields['node-character_sheet-field_npcs'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1875,6 +1903,7 @@ function vaxia_field_default_fields() {
           0 => 'nid',
         ),
       ),
+      'locked' => '0',
       'module' => 'node_reference',
       'settings' => array(
         'referenceable_types' => array(
@@ -1936,7 +1965,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-character_sheet-field_occupation'
+  // Exported field: 'node-character_sheet-field_occupation'.
   $fields['node-character_sheet-field_occupation'] = array(
     'field_config' => array(
       'active' => '1',
@@ -1957,6 +1986,7 @@ function vaxia_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(),
       'translatable' => '0',
@@ -2002,7 +2032,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-character_sheet-field_personality'
+  // Exported field: 'node-character_sheet-field_personality'.
   $fields['node-character_sheet-field_personality'] = array(
     'field_config' => array(
       'active' => '1',
@@ -2023,6 +2053,7 @@ function vaxia_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(),
       'translatable' => '0',
@@ -2068,7 +2099,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-character_sheet-field_player_notes'
+  // Exported field: 'node-character_sheet-field_player_notes'.
   $fields['node-character_sheet-field_player_notes'] = array(
     'field_config' => array(
       'active' => '1',
@@ -2089,6 +2120,7 @@ function vaxia_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(),
       'translatable' => '0',
@@ -2134,7 +2166,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-character_sheet-field_presence'
+  // Exported field: 'node-character_sheet-field_presence'.
   $fields['node-character_sheet-field_presence'] = array(
     'field_config' => array(
       'active' => '1',
@@ -2144,6 +2176,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_presence',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'computed_field',
       'settings' => array(
         'code' => '$entity_field[0][\'value\'] =  ($entity->field_spirituality[$entity->language][0][\'value\'] + $entity->field_charisma[$entity->language][0][\'value\']) / 2;',
@@ -2199,7 +2232,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-character_sheet-field_property'
+  // Exported field: 'node-character_sheet-field_property'.
   $fields['node-character_sheet-field_property'] = array(
     'field_config' => array(
       'active' => '1',
@@ -2220,6 +2253,7 @@ function vaxia_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(),
       'translatable' => '0',
@@ -2265,7 +2299,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-character_sheet-field_race'
+  // Exported field: 'node-character_sheet-field_race'.
   $fields['node-character_sheet-field_race'] = array(
     'field_config' => array(
       'active' => '1',
@@ -2279,6 +2313,7 @@ function vaxia_field_default_fields() {
           0 => 'value',
         ),
       ),
+      'locked' => '0',
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
@@ -2332,7 +2367,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-character_sheet-field_realm'
+  // Exported field: 'node-character_sheet-field_realm'.
   $fields['node-character_sheet-field_realm'] = array(
     'field_config' => array(
       'active' => '1',
@@ -2346,6 +2381,7 @@ function vaxia_field_default_fields() {
           0 => 'value',
         ),
       ),
+      'locked' => '0',
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
@@ -2398,7 +2434,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-character_sheet-field_reflexes'
+  // Exported field: 'node-character_sheet-field_reflexes'.
   $fields['node-character_sheet-field_reflexes'] = array(
     'field_config' => array(
       'active' => '1',
@@ -2408,6 +2444,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_reflexes',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'computed_field',
       'settings' => array(
         'code' => '$entity_field[0][\'value\'] =  ($entity->field_dexterity[$entity->language][0][\'value\'] + $entity->field_intelligence[$entity->language][0][\'value\']) / 2;',
@@ -2463,7 +2500,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-character_sheet-field_sex'
+  // Exported field: 'node-character_sheet-field_sex'.
   $fields['node-character_sheet-field_sex'] = array(
     'field_config' => array(
       'active' => '1',
@@ -2484,6 +2521,7 @@ function vaxia_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(
         'max_length' => '255',
@@ -2531,7 +2569,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-character_sheet-field_sh_notes'
+  // Exported field: 'node-character_sheet-field_sh_notes'.
   $fields['node-character_sheet-field_sh_notes'] = array(
     'field_config' => array(
       'active' => '1',
@@ -2552,6 +2590,7 @@ function vaxia_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(),
       'translatable' => '0',
@@ -2597,7 +2636,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-character_sheet-field_skill'
+  // Exported field: 'node-character_sheet-field_skill'.
   $fields['node-character_sheet-field_skill'] = array(
     'field_config' => array(
       'active' => '1',
@@ -2607,6 +2646,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_skill',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'field_collection',
       'settings' => array(
         'path' => '',
@@ -2658,7 +2698,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-character_sheet-field_spirituality'
+  // Exported field: 'node-character_sheet-field_spirituality'.
   $fields['node-character_sheet-field_spirituality'] = array(
     'field_config' => array(
       'active' => '1',
@@ -2668,6 +2708,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_spirituality',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(),
       'translatable' => '0',
@@ -2719,7 +2760,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-character_sheet-field_strength'
+  // Exported field: 'node-character_sheet-field_strength'.
   $fields['node-character_sheet-field_strength'] = array(
     'field_config' => array(
       'active' => '1',
@@ -2729,6 +2770,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_strength',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(),
       'translatable' => '0',
@@ -2780,7 +2822,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-character_sheet-field_titles'
+  // Exported field: 'node-character_sheet-field_titles'.
   $fields['node-character_sheet-field_titles'] = array(
     'field_config' => array(
       'active' => '1',
@@ -2801,6 +2843,7 @@ function vaxia_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(
         'max_length' => '255',
@@ -2848,7 +2891,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-items-field_item_agility'
+  // Exported field: 'node-items-field_item_agility'.
   $fields['node-items-field_item_agility'] = array(
     'field_config' => array(
       'active' => '1',
@@ -2858,6 +2901,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_item_agility',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(),
       'translatable' => '0',
@@ -2913,7 +2957,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-items-field_item_appearance'
+  // Exported field: 'node-items-field_item_appearance'.
   $fields['node-items-field_item_appearance'] = array(
     'field_config' => array(
       'active' => '1',
@@ -2923,6 +2967,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_item_appearance',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(),
       'translatable' => '0',
@@ -2978,7 +3023,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-items-field_item_awareness'
+  // Exported field: 'node-items-field_item_awareness'.
   $fields['node-items-field_item_awareness'] = array(
     'field_config' => array(
       'active' => '1',
@@ -2988,6 +3033,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_item_awareness',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(),
       'translatable' => '0',
@@ -3043,7 +3089,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-items-field_item_charisma'
+  // Exported field: 'node-items-field_item_charisma'.
   $fields['node-items-field_item_charisma'] = array(
     'field_config' => array(
       'active' => '1',
@@ -3053,6 +3099,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_item_charisma',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(),
       'translatable' => '0',
@@ -3108,7 +3155,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-items-field_item_constitution'
+  // Exported field: 'node-items-field_item_constitution'.
   $fields['node-items-field_item_constitution'] = array(
     'field_config' => array(
       'active' => '1',
@@ -3118,6 +3165,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_item_constitution',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(),
       'translatable' => '0',
@@ -3173,7 +3221,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-items-field_item_desc'
+  // Exported field: 'node-items-field_item_desc'.
   $fields['node-items-field_item_desc'] = array(
     'field_config' => array(
       'active' => '1',
@@ -3194,6 +3242,7 @@ function vaxia_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(),
       'translatable' => '0',
@@ -3239,7 +3288,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-items-field_item_dexterity'
+  // Exported field: 'node-items-field_item_dexterity'.
   $fields['node-items-field_item_dexterity'] = array(
     'field_config' => array(
       'active' => '1',
@@ -3249,6 +3298,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_item_dexterity',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(),
       'translatable' => '0',
@@ -3304,7 +3354,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-items-field_item_endurance'
+  // Exported field: 'node-items-field_item_endurance'.
   $fields['node-items-field_item_endurance'] = array(
     'field_config' => array(
       'active' => '1',
@@ -3314,6 +3364,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_item_endurance',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(),
       'translatable' => '0',
@@ -3369,7 +3420,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-items-field_item_health'
+  // Exported field: 'node-items-field_item_health'.
   $fields['node-items-field_item_health'] = array(
     'field_config' => array(
       'active' => '1',
@@ -3379,6 +3430,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_item_health',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(),
       'translatable' => '0',
@@ -3434,7 +3486,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-items-field_item_history'
+  // Exported field: 'node-items-field_item_history'.
   $fields['node-items-field_item_history'] = array(
     'field_config' => array(
       'active' => '1',
@@ -3455,6 +3507,7 @@ function vaxia_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(),
       'translatable' => '0',
@@ -3500,7 +3553,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-items-field_item_intelligence'
+  // Exported field: 'node-items-field_item_intelligence'.
   $fields['node-items-field_item_intelligence'] = array(
     'field_config' => array(
       'active' => '1',
@@ -3510,6 +3563,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_item_intelligence',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(),
       'translatable' => '0',
@@ -3565,7 +3619,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-items-field_item_life'
+  // Exported field: 'node-items-field_item_life'.
   $fields['node-items-field_item_life'] = array(
     'field_config' => array(
       'active' => '1',
@@ -3575,6 +3629,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_item_life',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(),
       'translatable' => '0',
@@ -3630,7 +3685,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-items-field_item_notes'
+  // Exported field: 'node-items-field_item_notes'.
   $fields['node-items-field_item_notes'] = array(
     'field_config' => array(
       'active' => '1',
@@ -3651,6 +3706,7 @@ function vaxia_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(),
       'translatable' => '0',
@@ -3696,7 +3752,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-items-field_item_presence'
+  // Exported field: 'node-items-field_item_presence'.
   $fields['node-items-field_item_presence'] = array(
     'field_config' => array(
       'active' => '1',
@@ -3706,6 +3762,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_item_presence',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(),
       'translatable' => '0',
@@ -3761,7 +3818,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-items-field_item_reflexes'
+  // Exported field: 'node-items-field_item_reflexes'.
   $fields['node-items-field_item_reflexes'] = array(
     'field_config' => array(
       'active' => '1',
@@ -3771,6 +3828,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_item_reflexes',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(),
       'translatable' => '0',
@@ -3826,7 +3884,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-items-field_item_required_agility'
+  // Exported field: 'node-items-field_item_required_agility'.
   $fields['node-items-field_item_required_agility'] = array(
     'field_config' => array(
       'active' => '1',
@@ -3836,6 +3894,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_item_required_agility',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(),
       'translatable' => '0',
@@ -3891,7 +3950,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-items-field_item_required_appearance'
+  // Exported field: 'node-items-field_item_required_appearance'.
   $fields['node-items-field_item_required_appearance'] = array(
     'field_config' => array(
       'active' => '1',
@@ -3901,6 +3960,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_item_required_appearance',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(),
       'translatable' => '0',
@@ -3956,7 +4016,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-items-field_item_required_awareness'
+  // Exported field: 'node-items-field_item_required_awareness'.
   $fields['node-items-field_item_required_awareness'] = array(
     'field_config' => array(
       'active' => '1',
@@ -3966,6 +4026,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_item_required_awareness',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(),
       'translatable' => '0',
@@ -4021,7 +4082,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-items-field_item_required_charisma'
+  // Exported field: 'node-items-field_item_required_charisma'.
   $fields['node-items-field_item_required_charisma'] = array(
     'field_config' => array(
       'active' => '1',
@@ -4031,6 +4092,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_item_required_charisma',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(),
       'translatable' => '0',
@@ -4086,7 +4148,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-items-field_item_required_constitution'
+  // Exported field: 'node-items-field_item_required_constitution'.
   $fields['node-items-field_item_required_constitution'] = array(
     'field_config' => array(
       'active' => '1',
@@ -4096,6 +4158,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_item_required_constitution',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(),
       'translatable' => '0',
@@ -4151,7 +4214,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-items-field_item_required_dexterity'
+  // Exported field: 'node-items-field_item_required_dexterity'.
   $fields['node-items-field_item_required_dexterity'] = array(
     'field_config' => array(
       'active' => '1',
@@ -4161,6 +4224,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_item_required_dexterity',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(),
       'translatable' => '0',
@@ -4216,7 +4280,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-items-field_item_required_endurance'
+  // Exported field: 'node-items-field_item_required_endurance'.
   $fields['node-items-field_item_required_endurance'] = array(
     'field_config' => array(
       'active' => '1',
@@ -4226,6 +4290,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_item_required_endurance',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(),
       'translatable' => '0',
@@ -4281,7 +4346,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-items-field_item_required_health'
+  // Exported field: 'node-items-field_item_required_health'.
   $fields['node-items-field_item_required_health'] = array(
     'field_config' => array(
       'active' => '1',
@@ -4291,6 +4356,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_item_required_health',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(),
       'translatable' => '0',
@@ -4346,7 +4412,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-items-field_item_required_intelligence'
+  // Exported field: 'node-items-field_item_required_intelligence'.
   $fields['node-items-field_item_required_intelligence'] = array(
     'field_config' => array(
       'active' => '1',
@@ -4356,6 +4422,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_item_required_intelligence',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(),
       'translatable' => '0',
@@ -4411,7 +4478,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-items-field_item_required_life'
+  // Exported field: 'node-items-field_item_required_life'.
   $fields['node-items-field_item_required_life'] = array(
     'field_config' => array(
       'active' => '1',
@@ -4421,6 +4488,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_item_required_life',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(),
       'translatable' => '0',
@@ -4476,7 +4544,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-items-field_item_required_presence'
+  // Exported field: 'node-items-field_item_required_presence'.
   $fields['node-items-field_item_required_presence'] = array(
     'field_config' => array(
       'active' => '1',
@@ -4486,6 +4554,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_item_required_presence',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(),
       'translatable' => '0',
@@ -4541,7 +4610,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-items-field_item_required_reflexes'
+  // Exported field: 'node-items-field_item_required_reflexes'.
   $fields['node-items-field_item_required_reflexes'] = array(
     'field_config' => array(
       'active' => '1',
@@ -4551,6 +4620,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_item_required_reflexes',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(),
       'translatable' => '0',
@@ -4606,7 +4676,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-items-field_item_required_skill'
+  // Exported field: 'node-items-field_item_required_skill'.
   $fields['node-items-field_item_required_skill'] = array(
     'field_config' => array(
       'active' => '1',
@@ -4616,6 +4686,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_item_required_skill',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(),
       'translatable' => '0',
@@ -4671,7 +4742,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-items-field_item_required_spirituality'
+  // Exported field: 'node-items-field_item_required_spirituality'.
   $fields['node-items-field_item_required_spirituality'] = array(
     'field_config' => array(
       'active' => '1',
@@ -4681,6 +4752,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_item_required_spirituality',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(),
       'translatable' => '0',
@@ -4736,7 +4808,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-items-field_item_required_strength'
+  // Exported field: 'node-items-field_item_required_strength'.
   $fields['node-items-field_item_required_strength'] = array(
     'field_config' => array(
       'active' => '1',
@@ -4746,6 +4818,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_item_required_strength',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(),
       'translatable' => '0',
@@ -4801,7 +4874,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-items-field_item_skill'
+  // Exported field: 'node-items-field_item_skill'.
   $fields['node-items-field_item_skill'] = array(
     'field_config' => array(
       'active' => '1',
@@ -4811,6 +4884,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_item_skill',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(),
       'translatable' => '0',
@@ -4866,7 +4940,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-items-field_item_spirituality'
+  // Exported field: 'node-items-field_item_spirituality'.
   $fields['node-items-field_item_spirituality'] = array(
     'field_config' => array(
       'active' => '1',
@@ -4876,6 +4950,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_item_spirituality',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(),
       'translatable' => '0',
@@ -4931,7 +5006,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-items-field_item_strength'
+  // Exported field: 'node-items-field_item_strength'.
   $fields['node-items-field_item_strength'] = array(
     'field_config' => array(
       'active' => '1',
@@ -4941,6 +5016,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_item_strength',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(),
       'translatable' => '0',
@@ -4996,7 +5072,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-items-field_value'
+  // Exported field: 'node-items-field_value'.
   $fields['node-items-field_value'] = array(
     'field_config' => array(
       'active' => '1',
@@ -5017,6 +5093,7 @@ function vaxia_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(
         'max_length' => '255',
@@ -5064,7 +5141,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-npc-body'
+  // Exported field: 'node-npc-body'.
   $fields['node-npc-body'] = array(
     'field_config' => array(
       'active' => '1',
@@ -5087,6 +5164,7 @@ function vaxia_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(),
       'translatable' => '0',
@@ -5136,7 +5214,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-npc-field_age_app'
+  // Exported field: 'node-npc-field_age_app'.
   $fields['node-npc-field_age_app'] = array(
     'field_config' => array(
       'active' => '1',
@@ -5157,6 +5235,7 @@ function vaxia_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(
         'max_length' => '255',
@@ -5204,7 +5283,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-npc-field_age_real'
+  // Exported field: 'node-npc-field_age_real'.
   $fields['node-npc-field_age_real'] = array(
     'field_config' => array(
       'active' => '1',
@@ -5225,6 +5304,7 @@ function vaxia_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(
         'max_length' => '255',
@@ -5272,7 +5352,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-npc-field_artwork'
+  // Exported field: 'node-npc-field_artwork'.
   $fields['node-npc-field_artwork'] = array(
     'field_config' => array(
       'active' => '1',
@@ -5293,6 +5373,7 @@ function vaxia_field_default_fields() {
           0 => 'nid',
         ),
       ),
+      'locked' => '0',
       'module' => 'node_reference',
       'settings' => array(
         'referenceable_types' => array(
@@ -5350,7 +5431,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-npc-field_last_name'
+  // Exported field: 'node-npc-field_last_name'.
   $fields['node-npc-field_last_name'] = array(
     'field_config' => array(
       'active' => '1',
@@ -5371,6 +5452,7 @@ function vaxia_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(
         'max_length' => '255',
@@ -5418,7 +5500,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-npc-field_race'
+  // Exported field: 'node-npc-field_race'.
   $fields['node-npc-field_race'] = array(
     'field_config' => array(
       'active' => '1',
@@ -5432,6 +5514,7 @@ function vaxia_field_default_fields() {
           0 => 'value',
         ),
       ),
+      'locked' => '0',
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
@@ -5481,7 +5564,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-npc-field_sex'
+  // Exported field: 'node-npc-field_sex'.
   $fields['node-npc-field_sex'] = array(
     'field_config' => array(
       'active' => '1',
@@ -5502,6 +5585,7 @@ function vaxia_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(
         'max_length' => '255',
@@ -5549,7 +5633,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-npc-field_sh_notes'
+  // Exported field: 'node-npc-field_sh_notes'.
   $fields['node-npc-field_sh_notes'] = array(
     'field_config' => array(
       'active' => '1',
@@ -5570,6 +5654,7 @@ function vaxia_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(),
       'translatable' => '0',
@@ -5615,7 +5700,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-npc-field_titles'
+  // Exported field: 'node-npc-field_titles'.
   $fields['node-npc-field_titles'] = array(
     'field_config' => array(
       'active' => '1',
@@ -5636,6 +5721,7 @@ function vaxia_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(
         'max_length' => '255',
@@ -5683,7 +5769,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-rpg_chatroom-body'
+  // Exported field: 'node-rpg_chatroom-body'.
   $fields['node-rpg_chatroom-body'] = array(
     'field_config' => array(
       'active' => '1',
@@ -5706,6 +5792,7 @@ function vaxia_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(),
       'translatable' => '0',
@@ -5719,9 +5806,10 @@ function vaxia_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'hidden',
+          'module' => 'text',
           'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '0',
+          'type' => 'text_default',
+          'weight' => '1',
         ),
         'print' => array(
           'label' => 'hidden',
@@ -5780,7 +5868,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-rpg_chatroom-field_artwork'
+  // Exported field: 'node-rpg_chatroom-field_artwork'.
   $fields['node-rpg_chatroom-field_artwork'] = array(
     'field_config' => array(
       'active' => '1',
@@ -5801,6 +5889,7 @@ function vaxia_field_default_fields() {
           0 => 'nid',
         ),
       ),
+      'locked' => '0',
       'module' => 'node_reference',
       'settings' => array(
         'referenceable_types' => array(
@@ -5828,7 +5917,7 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'hidden',
           'module' => 'node_reference',
           'settings' => array(),
           'type' => 'node_reference_default',
@@ -5862,7 +5951,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-rpg_chatroom-field_parent'
+  // Exported field: 'node-rpg_chatroom-field_parent'.
   $fields['node-rpg_chatroom-field_parent'] = array(
     'field_config' => array(
       'active' => '1',
@@ -5883,12 +5972,15 @@ function vaxia_field_default_fields() {
           0 => 'nid',
         ),
       ),
+      'locked' => '0',
       'module' => 'node_reference',
       'settings' => array(
         'referenceable_types' => array(
           'article' => 0,
-          'book' => 0,
-          'forum' => 0,
+          'artwork' => 0,
+          'character_sheet' => 0,
+          'items' => 0,
+          'npc' => 0,
           'page' => 0,
           'rpg_chatroom' => 'rpg_chatroom',
         ),
@@ -5912,7 +6004,7 @@ function vaxia_field_default_fields() {
           'module' => 'node_reference',
           'settings' => array(),
           'type' => 'node_reference_default',
-          'weight' => '1',
+          'weight' => '0',
         ),
         'print' => array(
           'label' => 'above',
@@ -5948,7 +6040,7 @@ function vaxia_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_parent',
-      'label' => 'Parent chatroom',
+      'label' => 'Parent room',
       'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
@@ -5963,7 +6055,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'user-user-field_artwork'
+  // Exported field: 'user-user-field_artwork'.
   $fields['user-user-field_artwork'] = array(
     'field_config' => array(
       'active' => '1',
@@ -5984,6 +6076,7 @@ function vaxia_field_default_fields() {
           0 => 'nid',
         ),
       ),
+      'locked' => '0',
       'module' => 'node_reference',
       'settings' => array(
         'referenceable_types' => array(
@@ -6035,7 +6128,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'user-user-field_comment_color'
+  // Exported field: 'user-user-field_comment_color'.
   $fields['user-user-field_comment_color'] = array(
     'field_config' => array(
       'active' => '1',
@@ -6056,6 +6149,7 @@ function vaxia_field_default_fields() {
           0 => 'format',
         ),
       ),
+      'locked' => '0',
       'module' => 'text',
       'settings' => array(
         'max_length' => '6',
@@ -6096,7 +6190,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'user-user-field_current_character'
+  // Exported field: 'user-user-field_current_character'.
   $fields['user-user-field_current_character'] = array(
     'field_config' => array(
       'active' => '1',
@@ -6117,6 +6211,7 @@ function vaxia_field_default_fields() {
           0 => 'nid',
         ),
       ),
+      'locked' => '0',
       'module' => 'node_reference',
       'settings' => array(
         'referenceable_types' => array(
@@ -6168,7 +6263,7 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'user-user-field_refresh_rate'
+  // Exported field: 'user-user-field_refresh_rate'.
   $fields['user-user-field_refresh_rate'] = array(
     'field_config' => array(
       'active' => '1',
@@ -6178,6 +6273,7 @@ function vaxia_field_default_fields() {
       'field_name' => 'field_refresh_rate',
       'foreign keys' => array(),
       'indexes' => array(),
+      'locked' => '0',
       'module' => 'number',
       'settings' => array(),
       'translatable' => '0',
@@ -6255,7 +6351,7 @@ function vaxia_field_default_fields() {
   t('Name');
   t('Notes');
   t('Occupation');
-  t('Parent chatroom');
+  t('Parent room');
   t('Personality');
   t('Picture');
   t('Player Notes');

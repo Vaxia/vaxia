@@ -10,7 +10,7 @@
 function vaxia_menu_default_menu_custom() {
   $menus = array();
 
-  // Exported menu: menu-vaxia
+  // Exported menu: menu-vaxia.
   $menus['menu-vaxia'] = array(
     'menu_name' => 'menu-vaxia',
     'title' => 'Vaxia',
