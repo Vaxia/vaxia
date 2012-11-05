@@ -12,6 +12,8 @@ Parts to watch for:
 To Add:
 a) A "character not posted" to be able to retire chars post move.
 b) A "room not posted" to be able to retire rooms post move.
+c) Add checks to allow items to be added to a character iif required skill met
+
 
 TO DO LIST FOR FUTURE DEVELOPMENT
 ---------------------------------
