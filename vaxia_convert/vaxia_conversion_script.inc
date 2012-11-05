@@ -85,7 +85,6 @@ function _write_record_to_file($record, $depth = '    ') {
 
 function vaxia_file_scan_directory($dir, $mask) {
   $nomask = array('.', '..');
-  $key = (in_array($key, array('filename', 'basename', 'name')) ? $key : 'filename');
   $files = array();
   if (is_dir($dir) && $handle = opendir($dir)) {
     while (FALSE !== ($file = readdir($handle))) {
@@ -155,12 +154,14 @@ function get_users($path, $art_file) {
           $art['character'] = $art['room'] = '';
           // Given permissions and email in dir / dir / name-pass.item
           $data = read_vaxia_file($path . '/' . $letter_dir . '/' . $user_dir . '/' . $more_data);
-          $data['path'] = move_vaxia_art_file($path . '/' . $letter_dir . '/' . $user_dir . '/' . $data['name'], 'users');
-          $data['name'] = basename($data['path']);
-          $art = array_merge($art, $data);
-          // Now that we have a user, determine the rest of the settings and permissions.
-          $record = $art;
-          write_record_to_file($art_file, $record);
+          if (isset($data['name'])) {
+            $data['path'] = move_vaxia_art_file($path . '/' . $letter_dir . '/' . $user_dir . '/' . $data['name'], 'users');
+            $data['name'] = basename($data['path']);
+            $art = array_merge($art, $data);
+            // Now that we have a user, determine the rest of the settings and permissions.
+            $record = $art;
+            write_record_to_file($art_file, $record);
+          }
         }
       }
       // Read each dir in dir
@@ -217,8 +218,10 @@ function get_characters($path, $art_file) {
         if (count($more_data) == 1) {
           // Given permissions and email in dir / dir / name-pass.item
           $data = read_vaxia_file($path . '/' . $letter_dir . '/' . $user_dir . '/' . $char_dir. '/' . $more_data[0]);
-          $data['image'] = basename($data['actualPic']); // Current image.
-          $character = array_merge($character, $data);
+          if (isset($data['actualPic'])) {
+            $data['image'] = basename($data['actualPic']); // Current image.
+            $character = array_merge($character, $data);
+          }
         }
         // Now that we have a user, determine the rest of the settings and permissions.
         $record = $character;
@@ -300,8 +303,8 @@ function get_rooms($path, $art_file) {
   foreach ($worlds as $world => $category) {
     $file = './vaxia_convert/'.$category.'-rooms.xml';
     write_record_open_file($file);
-    $path = $path.$world;
-    $results = recursive_get_rooms($path, '', $category, $file, $art_file, $results);
+    $world_path = $path.$world;
+    $results = recursive_get_rooms($world_path, '', $category, $file, $art_file, $results);
     write_record_close_file($file);
   }
   drupal_set_message($results . ' rooms converted.');
@@ -320,12 +323,14 @@ function recursive_get_rooms($path, $parent, $category, $file, $art_file, $resul
           $art['room'] = ucwords(str_replace('_', ' ', $this_path));
           // Given permissions and email in dir / dir / name-pass.item
           $data = read_vaxia_file($path .'/'. $this_path . '/' . $more_data);
-          $data['path'] = move_vaxia_art_file($path .'/'. $this_path . '/' . $data['name'], 'rooms');
-          $data['name'] = basename($data['path']);
-          $art = array_merge($art, $data);
-          // Now that we have a user, determine the rest of the settings and permissions.
-          $record = $art;
-          write_record_to_file($art_file, $record);
+          if (isset($data['name'])) {
+            $data['path'] = move_vaxia_art_file($path .'/'. $this_path . '/' . $data['name'], 'rooms');
+            $data['name'] = basename($data['path']);
+            $art = array_merge($art, $data);
+            // Now that we have a user, determine the rest of the settings and permissions.
+            $record = $art;
+            write_record_to_file($art_file, $record);
+          }
         }
       }
       // Read room file.
@@ -333,7 +338,9 @@ function recursive_get_rooms($path, $parent, $category, $file, $art_file, $resul
       $room['realm'] = $category;
       $room['parent'] = $parent;
       $data = read_vaxia_file($path .'/'. $this_path . '/item.item');
-      $data['image'] = basename($data['locImage']); // Current image.
+      if (isset($data['locImage'])) {
+        $data['image'] = basename($data['locImage']); // Current image.
+      }
       $record = array_merge($room, $data);
       write_record_to_file($file, $record);
       $results++;

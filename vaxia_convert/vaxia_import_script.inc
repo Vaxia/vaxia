@@ -104,8 +104,11 @@ function vaxia_import_art($file) {
       $node->type = 'artwork';
       node_object_prepare($node);
       $node->title = $record['name'];
-      $user = user_load_by_name($record['player']);
-      $node->uid = isset($user->uid) ? $user->uid : 1;
+      $node->uid = 1;
+      if(!isset($record['player'])) {
+        $user = user_load_by_name($record['player']);
+        $node->uid = isset($user->uid) ? $user->uid : 1;
+      }
       $node->language = LANGUAGE_NONE;
       $node->field_artwork_credit[$node->language][0]['value'] = isset($record['copyright']) ? $record['copyright'] : '';
       $node->field_website[$node->language][0]['value'] =  isset($record['url']) ? $record['url'] : '';
