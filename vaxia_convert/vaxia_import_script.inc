@@ -86,7 +86,10 @@ function vaxia_import_users($file) {
         'access' => REQUEST_TIME,
         'roles' => $roles,
       );
-      $account = user_save((object) $user);
+      $check_user = user_load_by_name($record['playerName']);
+      if (!isset($check_user->uid)) {
+        $account = user_save((object) $user);
+      }
       $results++;
     }
   }

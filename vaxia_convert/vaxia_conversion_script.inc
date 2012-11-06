@@ -203,12 +203,14 @@ function get_characters($path, $art_file) {
           $art['room'] = '';
           // Given permissions and email in dir / dir / name-pass.item
           $data = read_vaxia_file($path . '/' . $letter_dir . '/' . $user_dir . '/' . $char_dir . '/art/' . $more_data);
-          $data['path'] = move_vaxia_art_file($path . '/' . $letter_dir . '/' . $user_dir . '/' . $char_dir . '/art/' . $data['name'], 'characters');
-          $data['name'] = basename($data['path']);
-          $art = array_merge($art, $data);
-          // Now that we have a user, determine the rest of the settings and permissions.
-          $record = $art;
-          write_record_to_file($art_file, $record);
+          if (isset($data['name'])) {
+            $data['path'] = move_vaxia_art_file($path . '/' . $letter_dir . '/' . $user_dir . '/' . $char_dir . '/art/' . $data['name'], 'characters');
+            $data['name'] = basename($data['path']);
+            $art = array_merge($art, $data);
+            // Now that we have a user, determine the rest of the settings and permissions.
+            $record = $art;
+            write_record_to_file($art_file, $record);
+          }
         }
         // Get the character data too.
         $character = array();
