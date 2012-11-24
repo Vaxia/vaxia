@@ -9,6 +9,7 @@ html{font-size:80%}
 #footer{width:960px;margin:0 auto;}
 .front_page_flash{position:relative;left:-10px}
 
+
 /* Front page */
 body.front #content #page-title, body.page-node-42 #content #page-title{display:none;}
 body.front #content .breadcrumb, body.page-node-42 #content .breadcrumb{display:none;}
@@ -26,6 +27,7 @@ body{color:#FFF;}
 a{color:#4799CC;}
 a.active{color:#5BA4D2;}
 a:visited{color:#368EC4;}
+li a.active{color:#4799CC;}
 
 /* Default background colors by element. */
 body{background-color:#111;} /* Default background color is a nuetral dark grey. */
