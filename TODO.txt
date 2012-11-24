@@ -14,6 +14,11 @@ a) A "character not posted" to be able to retire chars post move.
 b) A "room not posted" to be able to retire rooms post move.
 c) Add checks to allow items to be added to a character iif required skill met
 
+Feedback:
+a) Save -> Submit your post for RPG posts
+b) Invert test-box and room layout if possible
+
+
 
 TO DO LIST FOR FUTURE DEVELOPMENT
 ---------------------------------
