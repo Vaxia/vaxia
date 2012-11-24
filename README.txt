@@ -7,8 +7,8 @@ Conversion of old Vaxia
 
 INTRODUCTION
 ------------
-Vaxia has limped along for ages on old softwarre with critical security flaws
-and non-standard file structures. It has becomd difficult to maintain, and 
+Vaxia has operated for ages on old software with critical security flaws
+and non-standard file structures. It has become difficult to maintain, and 
 extremely difficult to modify. Thankfully, we have other options.
 
 Drupal was selected as the basis for this as it came with many critical features
