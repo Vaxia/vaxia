@@ -63,11 +63,12 @@ Workflow matching the name of the content type.
 CONVERSION OF OLD VAXIA
 -----------------------
 To convert old Vaxia information, we need to have a Drupal site configured and
-access to the old Vaxia files. This may be done on a local bix if you are 
+access to the old Vaxia files. This may be done on a local box if you are 
 planning to copy/paste files and database tables to a live location. Otherwise,
 the Drupal site needs access to the file structure of the old Vaxia files.
 
-Things that will be converted: Player accounts, characters, artwork, items, npcs, and rooms in a nested strucutre reflecting the data on old Vaxia.
+Things that will be converted: Player accounts, characters, artwork, items, npcs, 
+and rooms in a nested strucutre reflecting the data on old Vaxia.
 
 Things not converted: Forums, Room posts, Passwords. Forums and room posts are
 transient data that goes stale quickly, read-only access to Old Vaxia should be
@@ -83,7 +84,8 @@ the old Vaxia information relies on correct configuration.
 2) Go to YOUR_SITE/admin/settings/vaxia_convert and set the path from root for
 your old file structure. Point the module at the root of Vaxia so it will be
 able to access all of Vaxia's file structure.
-3) Click on the first Conversion button. Go get some coffee. In this process, XML files should be created at DRUPAL_ROOT/vaxia_convert. Art files should be
+3) Click on the first Conversion button. Go get some coffee. In this process, XML 
+files should be created at DRUPAL_ROOT/vaxia_convert. Art files should be
 gathered into a central location at DRUPAL_ROOT/vaxia_convert/vaxia_art and will
 be organized by character, room or user.
 4) Check that the XML files and art files are what you expected. If not, you may
