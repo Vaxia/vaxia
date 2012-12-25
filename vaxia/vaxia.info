@@ -318,6 +318,7 @@ features[views_view][] = character_npcs
 features[views_view][] = character_sheet_moderation
 features[views_view][] = character_sheet_moderation_log
 features[views_view][] = players
+features[views_view][] = rpg_chat_archives
 features[views_view][] = rpg_chats
 features[workflow][] = Art evaluation workflow
 features[workflow][] = Item evaluation workflow

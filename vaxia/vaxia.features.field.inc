@@ -491,11 +491,11 @@ function vaxia_field_default_fields() {
           'label' => 'hidden',
           'module' => 'image',
           'settings' => array(
-            'image_link' => 'content',
+            'image_link' => '',
             'image_style' => 'medium',
           ),
           'type' => 'image',
-          'weight' => '0',
+          'weight' => '',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -5811,7 +5811,7 @@ function vaxia_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '1',
+          'weight' => '2',
         ),
         'print' => array(
           'label' => 'hidden',
@@ -5925,7 +5925,7 @@ function vaxia_field_default_fields() {
             'node_reference_view_mode' => 'full',
           ),
           'type' => 'node_reference_node',
-          'weight' => '2',
+          'weight' => '1',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -6008,7 +6008,7 @@ function vaxia_field_default_fields() {
           'module' => 'node_reference',
           'settings' => array(),
           'type' => 'node_reference_default',
-          'weight' => '',
+          'weight' => '0',
         ),
         'print' => array(
           'label' => 'above',
