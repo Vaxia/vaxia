@@ -82,6 +82,27 @@ function _vaxia_ownership($node) {
 }
 
 /*
+ * Implements hook_node_view().
+ */
+function vaxia_node_view($node, $view_mode, $langcode) {
+  if (_character_sheet_is_enabled($node)) {
+    $logs = _character_sheet_get_log($node->nid);
+    $node->content['xp_details'] = array(
+      '#type' => 'item',
+      '#title' => t('XP details'),
+      '#markup' => theme('item_list', array('items' => _vaxia_xp_display($node))),
+      '#weight' => 101,
+    );
+    $node->content['xp_types'] = array(
+      '#type' => 'item',
+      '#title' => t('XP types'),
+      '#markup' => theme('item_list', array('items' => _vaxia_xp_display_type($node))),
+      '#weight' => 102,
+    );
+  }
+}
+
+/*
  * Form callback function from nodeapi view, adds moderation form to node display.
  */
 function _vaxia_change_ownership_form($form, &$form_state, $node) {
@@ -155,8 +176,15 @@ function vaxia_process_comment(&$variables) {
     }
     // Add the style attribute for our content color.
     if (isset($comment->field_comment_color[$lang][0]['value'])) {
-      $color = '#' . trim($comment->field_comment_color[$lang][0]['value']);
-      $variables['content_attributes'] .= t(' style="color:@color;"', array('@color' => $color));
+      $color = strtolower(trim($comment->field_comment_color[$lang][0]['value']));
+      $color = PREG_REPLACE("/[^0-9a-z]/i", '', $color); // Filter non-alphanumeric out.
+      $color_codes = array('aqua', 'black', 'blue', 'fuchsia', 'gray', 'green', 'lime', 'maroon',
+        'navy', 'olive', 'purple', 'red', 'silver', 'teal', 'white', 'yellow');
+      if (!in_array($color, $color_codes)) {
+        $color = '#'. $color;
+      }
+      $variables['content']['comment_body']['#prefix'] = '<span style="color:' . $color . '">';
+      $variables['content']['comment_body']['#suffix'] = '</span>';
     }
     // Redo the submitted field for RPG chatrooms only.
     $variables['submitted'] = t('!username </br> !datetime',
@@ -275,6 +303,10 @@ function vaxia_form_alter(&$form, &$form_state, $form_id) {
       $character = node_load($this_player->field_current_character[$lang][0]['nid']);
       if (isset($character->title)) {
         $form['field_comment_character'][$lang]['#default_value'][0] = $character->nid;
+        $kxp = _character_sheet_get_xp($character->nid, 'kxp');
+        $xp = _character_sheet_get_xp($character->nid, 'xp');
+        $spent_xp = _character_sheet_get_xp($character->nid, 'spent_xp');
+        $form['field_comment_character'][$lang]['#description'] = $kxp . ' KXP / ' . ($xp - $spent_xp) . ' XP';
       }
     }
     $form['field_comment_character'][$lang]['#ajax'] = array(
@@ -306,6 +338,7 @@ function vaxia_form_alter(&$form, &$form_state, $form_id) {
       '#size' => 6,
       '#title' => t('Refresh rate'),
     );
+    $form['actions']['submit']['#value'] = t('Post');
     $form['#submit'][] = '_vaxia_comment_set_profile_values_submit';
     $form['#submit'][] = '_vaxia_comment_add_kxp_submit';
   }

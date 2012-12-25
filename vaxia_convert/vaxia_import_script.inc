@@ -193,6 +193,7 @@ function vaxia_import_characters($file) {
     
         $node->field_player_notes[$node->language][0]['value'] = isset($record['playerNotes']) ? $record['playerNotes'] : '';
         $node->field_sh_notes[$node->language][0]['value'] = isset($record['shNotes']) ? $record['shNotes'] : '';
+        $node->field_sh_private_notes[$node->language][0]['value'] = isset($record['shNotes']) ? $record['shPnotes'] : '';
     
         $node->field_property[$node->language][0]['value'] = isset($record['playerProperty']) ? $record['playerProperty'] : '';
         //$node->field_items[$node->language][0]['value'] = $record['KEYNAME'];

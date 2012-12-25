@@ -15,6 +15,39 @@ function vaxia_install() {}
  */
 function vaxia_uninstall() {}
 
+/**
+ * Implements hook_schema().
+ */
+function vaxia_schema() {
+  $schema['vaxia_xp_type_totals'] = array(
+    'description' => 'The table to store type of XP assigned to a character.',
+    'fields' => array(
+      'nid' => array(
+        'description' => 'The associated node.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'xp' => array(
+        'description' => 'The count of given xp.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'type' => array(
+        'description' => 'The type of given xp.',
+        'type' => 'varchar',
+        'length' => 15,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+    ),
+    'primary key' => array('nid', 'type'),
+  );
+  return $schema;
+}
 
 /**
  * Implements hook_enable().

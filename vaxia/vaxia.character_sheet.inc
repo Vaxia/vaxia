@@ -229,7 +229,11 @@ function vaxia_character_sheet_field_info() {
         'value_callback' => '_vaxia_calculate_attribute_field_value',
       ),
     ),
-    //field_items
+    'field_items' => array(
+      'permissions' => array(
+        'owner' => DISABLE_SHEET,
+      ),
+    ),
     'field_property' => array(
       'permissions' => array(
         'owner' => DISABLE_SHEET,
@@ -241,6 +245,11 @@ function vaxia_character_sheet_field_info() {
       ),
     ),
     'field_sh_notes' => array(
+      'permissions' => array(
+        'owner' => DISABLE_SHEET,
+      ),
+    ),
+    'field_sh_private_notes' => array(
       'permissions' => array(
         'owner' => DISABLE_SHEET,
       ),
@@ -460,25 +469,19 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
   // Load the node.
   $node = node_load($form['node_info']['nid']['#value']);
 
-  // Get specific info for vaxia to display in markup.
-  $this_xp = _character_sheet_get_xp($node->nid, 'spent_xp');
-  $xps[] = t('Spent %spent out of %xp xp.', array('%spent' => $this_xp, '%xp' => $node->xp['xp']));
-  $this_xp = _character_sheet_get_xp($node->nid, 'bxp');
-  $xps[] = t('Banked %banked bxp.', array('%banked' => $this_xp));
-  $this_xp = _character_sheet_get_xp($node->nid, 'rxp');
-  $xps[] = t('Roleplayed %roleplayed rxp.', array('%roleplayed' => $this_xp));
-  $this_xp = _character_sheet_get_xp($node->nid, 'kxp');
-  $xps[] = t('Posted %posted kxp.', array('%posted' => $this_xp));
-  $silver = _character_sheet_get_xp($node->nid, 'silver');
-  $silver_spent = _character_sheet_get_xp($node->nid, 'spent_silver');
-  $silver_invested = _character_sheet_get_xp($node->nid, 'invest_silver');
-  $available_silver = $silver - ($silver_spent + $silver_invested);
-  $xps[] = t('Have %posted silver.', array('%posted' => $available_silver));
   $form['node_info']['xp_details'] = array(
     '#type' => 'item',
     '#title' => t('XP details'),
-    '#markup' => theme('item_list', array('items' => $xps)),
+    '#markup' => theme('item_list', array('items' => _vaxia_xp_display($node))),
   );
+
+  if (count($xp_types) > 0) {
+    $form['node_info']['xp_types'] = array(
+      '#type' => 'item',
+      '#title' => t('XP types'),
+      '#markup' => theme('item_list', array('items' => _vaxia_xp_display_type($node))),
+    );
+  }
 
   // Add the economy form for owned forms.
   global $user;
@@ -527,6 +530,7 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
 
   // Add additional options for xp IIF allowed.
   if (isset($form['add_xp'])) {
+    $form['add_xp']['xp']['#options'] = range(0, 500);
     $xp_types = array();
     foreach(explode("\n", variable_get('vaxia_xp_types', "good\nevil\nsmart\nclever\nwarrior\nmage\nrogue")) as $type) {
       $type = trim($type);
@@ -599,7 +603,59 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
       '#submit' => array('_vaxia_transfer_xp_submit'),
     );
   }
-  return $form;
+}
+
+/**
+ * Implements hook_form_FORMID_alter().
+ */
+function vaxia_form__character_sheet_owner_form_alter(&$form, &$form_state) {
+  $form['change_ownership'] = array(
+    '#type' => 'fieldset',
+    '#title' => 'Change Ownership',
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  $form['change_ownership']['owner_name'] = $form['owner_name'];
+  unset($form['owner_name']);
+  $form['change_ownership']['submit'] = $form['submit'];
+  unset($form['submit']);
+  $form['change_ownership']['character_sheet_log'] = $form['character_sheet_log'];
+  unset($form['character_sheet_log']);
+}
+
+/**
+ * Helper function, gather xp for display.
+ */
+function _vaxia_xp_display($node) {
+  // Get specific info for vaxia to display in markup.
+  $this_xp = _character_sheet_get_xp($node->nid, 'spent_xp');
+  $xps['spent_xp'] = t('Spent %spent out of %xp xp.', array('%spent' => $this_xp, '%xp' => $node->xp['xp']));
+  $this_xp = _character_sheet_get_xp($node->nid, 'bxp');
+  $xps['bxp'] = t('Banked %banked bxp.', array('%banked' => $this_xp));
+  $this_xp = _character_sheet_get_xp($node->nid, 'rxp');
+  $xps['rxp'] = t('Roleplayed %roleplayed rxp.', array('%roleplayed' => $this_xp));
+  $this_xp = _character_sheet_get_xp($node->nid, 'kxp');
+  $xps['kxp'] = t('Posted %posted kxp.', array('%posted' => $this_xp));
+  $silver = _character_sheet_get_xp($node->nid, 'silver');
+  $silver_spent = _character_sheet_get_xp($node->nid, 'spent_silver');
+  $silver_invested = _character_sheet_get_xp($node->nid, 'invest_silver');
+  $available_silver = $silver - ($silver_spent + $silver_invested);
+  $xps['available_silver'] = t('Have %posted silver.', array('%posted' => $available_silver));
+  return $xps;
+}
+
+/**
+ * Helper function, gather xp type records for display.
+ */
+function _vaxia_xp_display_type($node) {
+  // Get specific info for vaxia to display in markup.
+  // Display types of xp.
+  $xp_types = array();
+  $types = _vaxia_get_type_tracking_by_nid($node->nid);
+  foreach ($types as $type) {
+    $xp_types[] = t('Earned %xp %type XP.', array('%xp' => $type->xp, '%type' => $type->type));
+  }
+  return $xp_types;
 }
 
 /**
@@ -688,6 +744,7 @@ function _vaxia_transfer_xp_submit(&$form, &$form_state) {
     // Update the XP recorded for this character.
     _character_sheet_delete_xp($old_character->nid);
     _character_sheet_delete_log($old_character->nid);
+    _vaxia_delete_type_tracking($old_character->nid);
     // And update the original character status.
     workflow_execute_transition($old_character, $workflow, t('Transferring XP to a new character'), TRUE);
     // Now add XP to the new character.
@@ -808,9 +865,7 @@ function _vaxia_add_xp($nid, $xp, $type) {
   $node = node_load($nid);
   $meaningful_types = _vaxia_meaningful_xp_types();
   if (!in_array($type, $meaningful_types)) {
-    // Log it.
-    $message = t('%xp %type XP added to %title.', array('%xp' => $xp, '%type' => $type, '%title' => $node->title));
-    _character_sheet_update_log($nid, 'xp', $message, $variables = array());
+    _vaxia_update_type_tracking(array('nid' => $nid, 'xp' => $xp, 'type' => $type)); // Add to the type given.
     $type = 'xp';
   }
   switch ($type) {
@@ -870,4 +925,62 @@ function _vaxia_add_xp($nid, $xp, $type) {
       _character_sheet_update_xp($nid, $xp, 'silver');
     break;
   }
+}
+
+/**
+ * CRUD style DB function for vaxia_xp_type_totals.
+ */
+function _vaxia_create_type_tracking($tracking) {
+  $tracking = (array) $tracking;
+  $tracking_data = FALSE;
+  if (isset($tracking['nid'])) {
+    $tracking_data = _vaxia_get_type_tracking_by_nid_and_type($tracking['nid'], $tracking['type']);
+  }
+  if (!$tracking_data) {
+    drupal_write_record('vaxia_xp_type_totals', $tracking);
+  }
+  else {
+    _vaxia_update_type_tracking($tracking);
+  }
+}
+
+/**
+ * CRUD style DB function for vaxia_xp_type_totals.
+ */
+function _vaxia_get_type_tracking_by_nid($nid) {
+  return db_query('SELECT * FROM {vaxia_xp_type_totals} WHERE nid = :nid', array(':nid' => $nid));
+}
+
+/**
+ * CRUD style DB function for vaxia_xp_type_totals.
+ */
+function _vaxia_get_type_tracking_by_nid_and_type($nid, $type) {
+  return db_query('SELECT * FROM {vaxia_xp_type_totals} WHERE nid = :nid AND type = :type',
+    array(':nid' => $nid, ':type' => $type))->fetchObject();
+}
+
+/**
+ * CRUD style DB function for vaxia_xp_type_totals.
+ */
+function _vaxia_update_type_tracking($tracking) {
+  $tracking = (array) $tracking;
+  $tracking_data = FALSE;
+  if (isset($tracking['nid'])) {
+    $tracking_data = _vaxia_get_type_tracking_by_nid_and_type($tracking['nid'], $tracking['type']);
+  }
+  if (!$tracking_data) {
+    _vaxia_create_type_tracking($tracking);
+  }
+  else {
+    $tracking_data = (array) $tracking_data;
+    $tracking['xp'] = $tracking['xp'] + $tracking_data['xp'];
+    drupal_write_record('vaxia_xp_type_totals', $tracking, array('nid', 'type'));
+  }
+}
+
+/**
+ * CRUD style DB function for vaxia_xp_type_totals.
+ */
+function _vaxia_delete_type_tracking($nid) {
+  db_delete('vaxia_xp_type_totals')->condition('nid', $nid)->execute();
 }

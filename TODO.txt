@@ -18,7 +18,10 @@ Feedback:
 a) Save -> Submit your post for RPG posts
 b) Invert test-box and room layout if possible
 c) Add equilivent to 13 orb
-
+d) Better navigation to avoid drilling down - post add?
+e) Bugs:
+  Notice: Undefined variable: comments in _rpg_chat_refresh_js() (line 247 of /home/bastlynn/vaxia.unpretentiousmonkey.com/sites/all/modules/vaxia/rpg_chat/rpg_chat.module).
+  Warning: Invalid argument supplied for foreach() in _rpg_chat_refresh_js() (line 247 of /home/bastlynn/vaxia.unpretentiousmonkey.com/sites/all/modules/vaxia/rpg_chat/rpg_chat.module).
 
 TO DO LIST FOR FUTURE DEVELOPMENT
 ---------------------------------

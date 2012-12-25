@@ -48,7 +48,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Art',
-    'weight' => '2',
+    'weight' => '3',
     'children' => array(
       0 => 'field_artwork',
     ),
@@ -214,11 +214,11 @@ function vaxia_field_group_info() {
     'label' => 'Details',
     'weight' => '2',
     'children' => array(
-      0 => 'field_race',
-      1 => 'field_realm',
-      2 => 'field_sex',
-      3 => 'field_age_real',
-      4 => 'field_age_app',
+      0 => 'field_age_app',
+      1 => 'field_age_real',
+      2 => 'field_race',
+      3 => 'field_realm',
+      4 => 'field_sex',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -402,6 +402,7 @@ function vaxia_field_group_info() {
     'children' => array(
       0 => 'field_player_notes',
       1 => 'field_sh_notes',
+      2 => 'field_sh_private_notes',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -507,12 +508,14 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Personal',
-    'weight' => '1',
+    'weight' => '2',
     'children' => array(
       0 => 'field_background',
       1 => 'field_description',
-      2 => 'field_occupation',
-      3 => 'field_personality',
+      2 => 'field_last_name',
+      3 => 'field_occupation',
+      4 => 'field_personality',
+      5 => 'field_titles',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
