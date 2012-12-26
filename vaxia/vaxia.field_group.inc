@@ -247,6 +247,8 @@ function vaxia_field_group_info() {
     'children' => array(
       0 => 'field_item_desc',
       1 => 'field_item_history',
+      2 => 'field_item_notes',
+      3 => 'field_value',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -274,7 +276,9 @@ function vaxia_field_group_info() {
     'children' => array(
       0 => 'field_item_desc',
       1 => 'field_item_history',
-      2 => 'title',
+      2 => 'field_item_notes',
+      3 => 'field_value',
+      4 => 'title',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -313,9 +317,9 @@ function vaxia_field_group_info() {
       9 => 'field_item_life',
       10 => 'field_item_presence',
       11 => 'field_item_reflexes',
-      12 => 'field_item_spirituality',
-      13 => 'field_item_strength',
-      14 => 'field_item_skill',
+      12 => 'field_item_skill',
+      13 => 'field_item_spirituality',
+      14 => 'field_item_strength',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -500,6 +504,114 @@ function vaxia_field_group_info() {
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
+  $field_group->identifier = 'group_penalties|node|items|default';
+  $field_group->group_name = 'group_penalties';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'items';
+  $field_group->mode = 'default';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Penalties',
+    'weight' => '4',
+    'children' => array(
+      0 => 'field_item_pen_strength',
+      1 => 'field_item_pen_life',
+      2 => 'field_item_pen_endurance',
+      3 => 'field_item_pen_dexterity',
+      4 => 'field_item_pen_intellegence',
+      5 => 'field_item_pen_spirituality',
+      6 => 'field_item_pen_charisma',
+      7 => 'field_item_pen_health',
+      8 => 'field_item_pen_constitution',
+      9 => 'field_item_pen_agility',
+      10 => 'field_item_pen_reflexes',
+      11 => 'field_item_pen_awareness',
+      12 => 'field_item_pen_presence',
+      13 => 'field_item_pen_appearance',
+      14 => 'field_item_pen_skill',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'formatter' => 'collapsible',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => '',
+      ),
+    ),
+  );
+  $export['group_penalties|node|items|default'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_penalties|node|items|form';
+  $field_group->group_name = 'group_penalties';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'items';
+  $field_group->mode = 'form';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Penalties',
+    'weight' => '4',
+    'children' => array(
+      0 => 'field_item_pen_strength',
+      1 => 'field_item_pen_life',
+      2 => 'field_item_pen_endurance',
+      3 => 'field_item_pen_dexterity',
+      4 => 'field_item_pen_intellegence',
+      5 => 'field_item_pen_spirituality',
+      6 => 'field_item_pen_charisma',
+      7 => 'field_item_pen_health',
+      8 => 'field_item_pen_constitution',
+      9 => 'field_item_pen_agility',
+      10 => 'field_item_pen_reflexes',
+      11 => 'field_item_pen_awareness',
+      12 => 'field_item_pen_presence',
+      13 => 'field_item_pen_appearance',
+      14 => 'field_item_pen_skill',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'formatter' => 'collapsible',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => '',
+        'required_fields' => 1,
+      ),
+    ),
+  );
+  $export['group_penalties|node|items|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_percentages|node|items|form';
+  $field_group->group_name = 'group_percentages';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'items';
+  $field_group->mode = 'form';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Percentages',
+    'weight' => '2',
+    'children' => array(
+      0 => 'field_percents',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'formatter' => 'collapsible',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => '',
+        'required_fields' => 1,
+      ),
+    ),
+  );
+  $export['group_percentages|node|items|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
   $field_group->identifier = 'group_personal|node|character_sheet|default';
   $field_group->group_name = 'group_personal';
   $field_group->entity_type = 'node';
@@ -564,15 +676,15 @@ function vaxia_field_group_info() {
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
-  $field_group->identifier = 'group_requires|node|items|form';
+  $field_group->identifier = 'group_requires|node|items|default';
   $field_group->group_name = 'group_requires';
   $field_group->entity_type = 'node';
   $field_group->bundle = 'items';
-  $field_group->mode = 'form';
+  $field_group->mode = 'default';
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Requires',
-    'weight' => '4',
+    'weight' => '3',
     'children' => array(
       0 => 'field_item_required_agility',
       1 => 'field_item_required_appearance',
@@ -586,9 +698,49 @@ function vaxia_field_group_info() {
       9 => 'field_item_required_life',
       10 => 'field_item_required_presence',
       11 => 'field_item_required_reflexes',
-      12 => 'field_item_required_spirituality',
-      13 => 'field_item_required_strength',
-      14 => 'field_item_required_skill',
+      12 => 'field_item_required_skill',
+      13 => 'field_item_required_spirituality',
+      14 => 'field_item_required_strength',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'formatter' => 'collapsible',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => '',
+      ),
+    ),
+  );
+  $export['group_requires|node|items|default'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_requires|node|items|form';
+  $field_group->group_name = 'group_requires';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'items';
+  $field_group->mode = 'form';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Requires',
+    'weight' => '3',
+    'children' => array(
+      0 => 'field_item_required_agility',
+      1 => 'field_item_required_appearance',
+      2 => 'field_item_required_awareness',
+      3 => 'field_item_required_charisma',
+      4 => 'field_item_required_constitution',
+      5 => 'field_item_required_dexterity',
+      6 => 'field_item_required_endurance',
+      7 => 'field_item_required_health',
+      8 => 'field_item_required_intelligence',
+      9 => 'field_item_required_life',
+      10 => 'field_item_required_presence',
+      11 => 'field_item_required_reflexes',
+      12 => 'field_item_required_skill',
+      13 => 'field_item_required_spirituality',
+      14 => 'field_item_required_strength',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -744,7 +896,7 @@ function vaxia_field_group_info() {
   $field_group->mode = 'default';
   $field_group->parent_name = '';
   $field_group->data = array(
-    'label' => 'Stats',
+    'label' => 'Modifies',
     'weight' => '1',
     'children' => array(
       0 => 'field_item_agility',
@@ -759,16 +911,18 @@ function vaxia_field_group_info() {
       9 => 'field_item_life',
       10 => 'field_item_presence',
       11 => 'field_item_reflexes',
-      12 => 'field_item_spirituality',
-      13 => 'field_item_strength',
+      12 => 'field_item_skill',
+      13 => 'field_item_spirituality',
+      14 => 'field_item_strength',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
-      'formatter' => 'collapsible',
+      'label' => 'Modifies',
       'instance_settings' => array(
-        'description' => '',
         'classes' => '',
+        'description' => '',
       ),
+      'formatter' => 'collapsible',
     ),
   );
   $export['group_stats|node|items|default'] = $field_group;

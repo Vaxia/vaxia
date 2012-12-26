@@ -114,17 +114,6 @@ function vaxia_user_default_permissions() {
     'module' => 'character_sheet',
   );
 
-  // Exported permission: change item owner.
-  $permissions['change item owner'] = array(
-    'name' => 'change item owner',
-    'roles' => array(
-      0 => 'administrator',
-      1 => 'administrator-vaxia',
-      2 => 'item-evaluator',
-    ),
-    'module' => 'vaxia',
-  );
-
   // Exported permission: change own character sheet owner.
   $permissions['change own character sheet owner'] = array(
     'name' => 'change own character sheet owner',
