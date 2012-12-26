@@ -19,10 +19,6 @@ function vaxia_permission() {
       'title' => t('change art owner'),
       'description' => t('Change the owner of art.'),
     ),
-    'change item owner'=> array(
-      'title' => t('change item owner'),
-      'description' => t('Change the owner of items.'),
-    ),
     'post in narrative format' => array(
       'title' => t('post in narrative format'),
       'description' => t('Post in narrative format.'),
@@ -61,10 +57,10 @@ function vaxia_cron() {
  * Menu access callback.
  */
 function _vaxia_menu_ownership_access_callback($node) {
-  $vaxia_ownership_managed = array('artwork', 'items');
+  $vaxia_ownership_managed = array('artwork');
   if (in_array($node->type, $vaxia_ownership_managed)) {
     global $user;
-    if ( ( user_access('change art owner') || user_access('change item owner'))
+    if ((user_access('change art owner'))
       || ($user->uid == $node->uid && 
         (user_access('edit any ' . $node->type . ' content')
           || user_access('edit own ' . $node->type . ' content')))) {
@@ -139,9 +135,9 @@ function _vaxia_change_ownership_form_submit($form, $form_state) {
   $values = $form_state['values'];
   $node = node_load($values['nid']);
   global $user;
-  if (!empty($node) && ( (user_access('change item owner') || user_access('change art owner'))
-      || ($user->uid == $node->uid && 
-      (user_access('edit any ' . $node->type . ' content') || user_access('edit own ' . $node->type . ' content'))))) {
+  if (!empty($node) && user_access('change art owner') || ($user->uid == $node->uid && 
+      (user_access('edit any ' . $node->type . ' content') || user_access('edit own ' . $node->type . ' content'))
+    )) {
     $uid = db_query("SELECT uid from {users} WHERE name = :name", array(':name' => $values['owner_name']))->fetchField();
     if (!empty($uid)) {
       $node->uid = $uid;
