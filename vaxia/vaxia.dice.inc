@@ -256,6 +256,12 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
                       $mod_note .= ' + ' . $this_item->title . ' (' . ($modifies[$this_stat]) . ')';
                       $mod += $modifies[$this_stat];
                     }
+                    // Add percentage descriptions to mod_note.
+                    if (isset($this_item->$this_item->{$field_name}[$this_item->language][0]['value'][$this_item->language][0]['value'])
+                      && !empty($this_item->$this_item->{$field_name}[$this_item->language][0]['value'][$this_item->language][0]['value'])) {
+                      $mod_note .= ' + percentage (' .
+                        $this_item->$this_item->{$field_name}[$this_item->language][0]['value'][$this_item->language][0]['value'] . ')';
+                    }
                   }
                 } // End for else per item.
               }
