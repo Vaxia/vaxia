@@ -10,3 +10,9 @@
 /* Forum thread. */
 .forum-post .forum-post-panel-main{margin-left:0;}
 .forum-post-links{margin-left:0;}
+
+/* RPG chat edits below 768. */
+.rpg-chat-node #comment-form{clear:none;float:none;width:100%;top:0px;}
+.rpg-chat-node #rpg-chat-userlist{clear:none;float:none;width:100%;left:0px;}
+.rpg-chat-node #rpg-chat-userlist li{width:100%;float:none;}
+.rpg-chat-node #rpg-chat{clear:node;float:node;width:100%;top:0px;}
