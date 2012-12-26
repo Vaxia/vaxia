@@ -24,8 +24,8 @@ form input{max-width:300px;}
 
 /* Service link sizes. */
 article .links a{padding:5px;}
-article .field-name-body img{float:left;max-width:95%;}
-article .field-name-body img.odd{float:left;}
+.field-name-body img{float:left;max-width:95%;}
+.field-name-body img.odd{float:left;}
 
 /* Forum listing. */
 #forum .forum-icon{display:none;}

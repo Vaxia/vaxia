@@ -7,8 +7,6 @@ html{font-size:80%}
 #main{width:960px;margin:0 auto 3em;padding-top:3em;}
 #content{padding-bottom:1em;}
 #footer{width:960px;margin:0 auto;}
-.front_page_flash{position:relative;left:-10px}
-
 
 /* Front page */
 body.front #content #page-title, body.page-node-42 #content #page-title{display:none;}
@@ -68,25 +66,25 @@ article section.comments{clear:both;margin-top:0.5em;}
 article #comment-body-add-more-wrapper #edit-comment-body-und-0-format{display:none;}
 
 /* Chatroom formatting */
-article.rpg-chat-node .field-name-field-artwork{float:left;padding:1em;}
-article.rpg-chat-node .field-name-field-artwork h2{display:none;}
-article.rpg-chat-node article.comment {border:solid 1px #FFF;padding:0.5em;background-color:#888;}
-article.rpg-chat-node article.comment.clearfix:after{clear:none;}
-article.rpg-chat-node article.comment header mark.new{display:none;}
-article.rpg-chat-node article.comment header .submitted{margin:1em;width:150px;float:left;}
-article.rpg-chat-node article.comment header .submitted img{display:block;margin:0 auto;}
-article.rpg-chat-node article.comment header .submitted span{display:block;}
-article.rpg-chat-node article.comment header .permalink{float:none;}
-article.rpg-chat-node article.comment .field-name-comment-body{min-height:160px;}
-article.rpg-chat-node .comments h2{display:none;}
-article.rpg-chat-node .links{display:none;}
-article.rpg-chat-node .form-type-item{display:none;}
-article.rpg-chat-node #comment-form{clear:right;float:right;width:49%;position:relative;top:100px;}
-article.rpg-chat-node #rpg-chat-userlist{clear:left;float:left;width:49%;position:relative;left:50%;}
-article.rpg-chat-node #rpg-chat-userlist li{width:30%;float:left;}
-article.rpg-chat-node #rpg-chat{clear:left;float:left;width:49%;position:relative;top:-75px;}
+.rpg-chat-node .field-name-field-artwork{float:left;padding:1em;}
+.rpg-chat-node .field-name-field-artwork h2{display:none;}
+.rpg-chat-node article.comment {border:solid 1px #FFF;padding:0.5em;background-color:#888;}
+.rpg-chat-node article.comment.clearfix:after{clear:none;}
+.rpg-chat-node article.comment header mark.new{display:none;}
+.rpg-chat-node article.comment header .submitted{margin:1em;width:150px;float:left;}
+.rpg-chat-node article.comment header .submitted img{display:block;margin:0 auto;}
+.rpg-chat-node article.comment header .submitted span{display:block;}
+.rpg-chat-node article.comment header .permalink{float:none;}
+.rpg-chat-node article.comment .field-name-comment-body{min-height:160px;}
+.rpg-chat-node .comments h2{display:none;}
+.rpg-chat-node .links{display:none;}
+.rpg-chat-node .form-type-item{display:none;}
+.rpg-chat-node #comment-form{clear:right;float:right;width:49%;position:relative;top:100px;}
+.rpg-chat-node #rpg-chat-userlist{clear:left;float:left;width:49%;position:relative;left:50%;}
+.rpg-chat-node #rpg-chat-userlist li{width:30%;float:left;}
+.rpg-chat-node #rpg-chat{clear:left;float:left;width:49%;position:relative;top:-75px;}
 #edit-vaxia-rolls{font-size:80%;}
-article.rpg-chat-narrative header{display:none;}
+.rpg-chat-narrative header{display:none;}
 
 
 /* Forum Thread*/
