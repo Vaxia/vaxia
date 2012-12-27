@@ -6757,7 +6757,7 @@ function vaxia_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '2',
+          'weight' => '1',
         ),
         'print' => array(
           'label' => 'hidden',
@@ -6871,7 +6871,7 @@ function vaxia_field_default_fields() {
             'node_reference_view_mode' => 'full',
           ),
           'type' => 'node_reference_node',
-          'weight' => '1',
+          'weight' => '0',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -6954,7 +6954,7 @@ function vaxia_field_default_fields() {
           'module' => 'node_reference',
           'settings' => array(),
           'type' => 'node_reference_default',
-          'weight' => '0',
+          'weight' => '2',
         ),
         'print' => array(
           'label' => 'above',
