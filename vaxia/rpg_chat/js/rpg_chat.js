@@ -4,7 +4,7 @@
  *
  * Refreshes the AJAX comments on a regular refresh.
  */
-Drupal.behaviors.vaxiaChat = {
+Drupal.behaviors.rpgChat = {
   attach: function(context) { (function($) {
 
   // Grab the refresh rate from the user settings.

@@ -1,6 +1,6 @@
 /* jQuery driven Eclipse Behaviors. */
 (function ($) {
-  Drupal.behaviors.themeEclipse = {
+  Drupal.behaviors.themeVaxia = {
     attach: function (context, settings) {
 
       /* Add css tag even/odd to each image in an article body. */
