@@ -174,6 +174,8 @@ function vaxia_import_characters($file) {
         $node->uid = isset($user->uid) ? $user->uid : 1;
         $node->language = LANGUAGE_NONE;
         $image = vaxia_convert_get_nid(isset($record['image']) ? $record['image'] : '');
+        $node->field_is_npc[$node->language][0]['nid'] = isset($record['isNPC']) ? $record['isNPC'] : 0;
+        $node->field_is_open_npc[$node->language][0]['nid'] = isset($record['isOpenNPC']) ? $record['isOpenNPC'] : 0;
         if ($image) {
           $node->field_artwork[$node->language][0]['nid'] = $image;
         }
@@ -307,6 +309,7 @@ function vaxia_import_items($file) {
         $node->field_item_value[$node->language][0]['value'] = 0;
       }
       // Set stat modifications.
+      // Mods from the items.
       $mods_map = array(
         'MODagi' => 'field_item_agility',
         'MODbty' => 'field_item_appearance',
@@ -323,30 +326,58 @@ function vaxia_import_items($file) {
         'MODspi' => 'field_item_spirituality',
         'MODstr' => 'field_item_strength',
       );
+      // Mods from base.
+      $mods_map2 = array(
+        'MODagi' => 'agi',
+        'MODbty' => 'bty',
+        'MODawa' => 'awa',
+        'MODcha' => 'cha',
+        'MODcon' => 'con',
+        'MODdex' => 'dex',
+        'MODend' => 'end',
+        'MODhlt' => 'hlt',
+        'MODint' => 'int',
+        'MODlfe' => 'lfe',
+        'MODpre' => 'pre',
+        'MODroa' => 'roa',
+        'MODspi' => 'spi',
+        'MODstr' => 'str',
+      );
       foreach ($mods_map as $key => $map) {
         if (isset($record[$key]) && is_numeric($record[$key])) {
-          $node->{$map}[$node->language][0]['value'] = $record[$key] < 500000? $record[$key] : 500000;
+          if (isset($record[ $mods_map2[$key] ]) && !empty($record[ $mods_map2[$key] ])) {
+            $position = strrpos($record[ $mods_map2[$key] ], '%');
+            if ($position !== FALSE) {
+              $node->field_percents[$node->language][0]['value'] .= 'Adds ' . $record[ $mods_map2[$key] ] . ' to ' . $mods_map2[$key] . '.' . "\n";
+            }
+          }
+          else {
+            $this_value = $record[$key] < 500000? $record[$key] : 500000;
+            $this_value += isset($record[ $mods_map2[$key] ]) ? $record[ $mods_map2[$key] ] : 0;
+            $node->{$map}[$node->language][0]['value'] = $this_value;
+          }
         }
         else {
           $node->{$map}[$node->language][0]['value'] = 0;
         }
       }
       // Set stat requirements.
+      // Min requirements.
       $mods_map = array(
-        'MODreqagi' => 'field_item_required_agility',
-        'MODreqbty' => 'field_item_required_appearance',
-        'MODreqawa' => 'field_item_required_awareness',
-        'MODreqcha' => 'field_item_required_charisma',
-        'MODreqcon' => 'field_item_required_constitution',
-        'MODreqdex' => 'field_item_required_dexterity',
-        'MODreqend' => 'field_item_required_endurance',
-        'MODreqhlt' => 'field_item_required_health',
-        'MODreqint' => 'field_item_required_intelligence',
-        'MODreqlfe' => 'field_item_required_life',
-        'MODreqpre' => 'field_item_required_presence',
-        'MODreqroa' => 'field_item_required_reflexes',
-        'MODreqspi' => 'field_item_required_spirituality',
-        'MODreqstr' => 'field_item_required_strength',
+        'reqagi' => 'field_item_required_agility',
+        'reqbty' => 'field_item_required_appearance',
+        'reqawa' => 'field_item_required_awareness',
+        'reqcha' => 'field_item_required_charisma',
+        'reqcon' => 'field_item_required_constitution',
+        'reqdex' => 'field_item_required_dexterity',
+        'reqend' => 'field_item_required_endurance',
+        'reqhlt' => 'field_item_required_health',
+        'reqint' => 'field_item_required_intelligence',
+        'reqlfe' => 'field_item_required_life',
+        'reqpre' => 'field_item_required_presence',
+        'reqroa' => 'field_item_required_reflexes',
+        'reqspi' => 'field_item_required_spirituality',
+        'reqstr' => 'field_item_required_strength',
       );
       foreach ($mods_map as $key => $map) {
         if (isset($record[$key]) && is_numeric($record[$key])) {
@@ -356,6 +387,25 @@ function vaxia_import_items($file) {
           $node->{$map}[$node->language][0]['value'] = 0;
         }
       }
+      // The mods based on failed requirements.
+      // Damage done if mins aren't fulfilled.
+      $mods_map = array(
+        'MODreqagi' => 'field_item_pen_agility',
+        'MODreqbty' => 'field_item_pen_appearance',
+        'MODreqawa' => 'field_item_pen_awareness',
+        'MODreqcha' => 'field_item_pen_charisma',
+        'MODreqcon' => 'field_item_pen_constitution',
+        'MODreqdex' => 'field_item_pen_dexterity',
+        'MODreqend' => 'field_item_pen_endurance',
+        'MODreqhlt' => 'field_item_pen_health',
+        'MODreqint' => 'field_item_pen_intelligence',
+        'MODreqlfe' => 'field_item_pen_life',
+        'MODreqpre' => 'field_item_pen_presence',
+        'MODreqroa' => 'field_item_pen_reflexes',
+        'MODreqspi' => 'field_item_pen_spirituality',
+        'MODreqstr' => 'field_item_pen_strength',
+      );
+      
       // Set skill modifier.
       if (isset($record['MODski']) && is_numeric($record['MODski'])) {
         $node->field_item_skill[$node->language][0]['value'] = $record['MODski'] < 500000? $record['MODski'] : 500000;
@@ -369,6 +419,13 @@ function vaxia_import_items($file) {
       }
       else {
         $node->field_item_required_skill[$node->language][0]['value'] = 0;
+      }
+      // Set skill pen.
+      if (isset($record['MODreqski']) && is_numeric($record['MODreqski'])) {
+        $node->field_item_pen_skill[$node->language][0]['value'] = $record['MODreqski'] < 500000? $record['MODreqski'] : 500000;
+      }
+      else {
+        $node->field_item_pen_skill[$node->language][0]['value'] = 0;
       }
       // Save if we have an item. (Some item records are incomplete.)
       node_save($node);
