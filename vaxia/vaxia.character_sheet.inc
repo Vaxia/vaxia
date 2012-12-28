@@ -91,6 +91,16 @@ function vaxia_character_sheet_field_info() {
         'other' => DISABLE_SHEET,
       ),
     ),
+    'field_is_npc' => array(
+      'permissions' => array(
+        'owner' => DISABLE_SHEET,
+      ),
+    ),
+    'field_is_open_npc' => array(
+      'permissions' => array(
+        'owner' => DISABLE_SHEET,
+      ),
+    ),
     //field_background
     //field_personality
     //field_occupation
@@ -264,11 +274,9 @@ function vaxia_character_sheet_field_info() {
  */
 function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
   $node = $form['#node'];
-
+  $lang = $form['language']['#value'];
   // Only on a character sheet that isn't yet set.
   if (_character_sheet_is_enabled($node) && !_character_sheet_is_playable($node)) {
-    // Remove skill's remove button and add more button IIF owner viewing playable.
-    $lang = $form['language']['#value'];
     // Disable the economy field.
     $form['field_economy'][$lang][0]['#disabled'] = TRUE;
     if (isset($form['field_economy'][$lang][0]['#default_value'])) {
@@ -291,7 +299,6 @@ function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
   if (_character_sheet_is_enabled($node) && _character_sheet_is_playable($node)) {
     // Remove skill's remove button and add more button IIF owner viewing playable.
     global $user;
-    $lang = $form['language']['#value'];
     if ($node->uid == $user->uid) {
       unset($form['field_skill'][$lang]['add_more']);
       foreach ($form['field_skill'][$lang] as $delta => $field) {
@@ -303,6 +310,17 @@ function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
         } 
       }
     }
+  }
+
+  // Do this for all forms.
+  // Remove the NPC / ONPC buttons if the user is not permissioned.
+  if (!user_access('create NPCs')) {
+    $form['field_is_npc'][$lang]['#access'] = FALSE;
+    $form['field_is_npc'][$lang]['#value'] =  $form['field_is_npc'][$lang]['#default_value'];
+  }
+  if (!user_access('create open NPCs')) {
+    $form['field_is_open_npc'][$lang]['#access'] = FALSE;
+    $form['field_is_open_npc'][$lang]['#value'] =  $form['field_is_open_npc'][$lang]['#default_value'];
   }
 }
 

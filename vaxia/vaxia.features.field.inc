@@ -1151,7 +1151,7 @@ function vaxia_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '-2',
+        'weight' => '2',
       ),
     ),
   );
@@ -1346,7 +1346,7 @@ function vaxia_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '1',
+        'weight' => '5',
       ),
     ),
   );
@@ -1670,6 +1670,144 @@ function vaxia_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-character_sheet-field_is_npc'.
+  $fields['node-character_sheet-field_is_npc'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_is_npc',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => '',
+          1 => '',
+        ),
+        'allowed_values_function' => '',
+      ),
+      'translatable' => '0',
+      'type' => 'list_boolean',
+    ),
+    'field_instance' => array(
+      'bundle' => 'character_sheet',
+      'default_value' => array(
+        0 => array(
+          'value' => 0,
+        ),
+      ),
+      'deleted' => '0',
+      'description' => 'Check this box if the character is intended to be an NPC.',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 33,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_is_npc',
+      'label' => 'NPC',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(
+          'display_label' => 1,
+        ),
+        'type' => 'options_onoff',
+        'weight' => '0',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-character_sheet-field_is_open_npc'.
+  $fields['node-character_sheet-field_is_open_npc'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_is_open_npc',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => '',
+          1 => '',
+        ),
+        'allowed_values_function' => '',
+      ),
+      'translatable' => '0',
+      'type' => 'list_boolean',
+    ),
+    'field_instance' => array(
+      'bundle' => 'character_sheet',
+      'default_value' => array(
+        0 => array(
+          'value' => 0,
+        ),
+      ),
+      'deleted' => '0',
+      'description' => 'Check this box if the character is intended to be an openly available NPC.',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 34,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_is_open_npc',
+      'label' => 'Open NPC',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(
+          'display_label' => 1,
+        ),
+        'type' => 'options_onoff',
+        'weight' => '1',
+      ),
+    ),
+  );
+
   // Exported field: 'node-character_sheet-field_items'.
   $fields['node-character_sheet-field_items'] = array(
     'field_config' => array(
@@ -1816,7 +1954,7 @@ function vaxia_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '-4',
+        'weight' => '-2',
       ),
     ),
   );
@@ -2028,7 +2166,7 @@ function vaxia_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '0',
+        'weight' => '4',
       ),
     ),
   );
@@ -2095,7 +2233,7 @@ function vaxia_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '-1',
+        'weight' => '3',
       ),
     ),
   );
@@ -2162,7 +2300,7 @@ function vaxia_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '11',
+        'weight' => '12',
       ),
     ),
   );
@@ -2699,7 +2837,7 @@ function vaxia_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '36',
+        'weight' => '11',
       ),
     ),
   );
@@ -2954,7 +3092,7 @@ function vaxia_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '-3',
+        'weight' => '-1',
       ),
     ),
   );
@@ -7280,6 +7418,8 @@ function vaxia_field_default_fields() {
   t('Background');
   t('Body');
   t('Charisma');
+  t('Check this box if the character is intended to be an NPC.');
+  t('Check this box if the character is intended to be an openly available NPC.');
   t('Color');
   t('Comment color');
   t('Constitution');
@@ -7302,6 +7442,7 @@ function vaxia_field_default_fields() {
   t('Note additional percentage effects for this item.');
   t('Notes');
   t('Occupation');
+  t('Open NPC');
   t('Parent room');
   t('Percentages');
   t('Personality');

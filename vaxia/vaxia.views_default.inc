@@ -744,23 +744,23 @@ function vaxia_views_default_views() {
 
   $view = new view();
   $view->name = 'character_npcs';
-  $view->description = 'Character NPCs';
+  $view->description = 'Storyteller NPCs';
   $view->tag = 'Vaxia';
   $view->base_table = 'node';
-  $view->human_name = 'Character NPCs';
+  $view->human_name = 'Storyteller NPCs';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Character NPCs';
+  $handler->display->display_options['title'] = 'My character NPCs';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'role';
   $handler->display->display_options['access']['role'] = array(
     4 => '4',
-    7 => '7',
-    8 => '8',
+    10 => '10',
+    11 => '11',
   );
   $handler->display->display_options['cache']['type'] = 'time';
   $handler->display->display_options['cache']['results_lifespan'] = '3600';
@@ -903,22 +903,6 @@ function vaxia_views_default_views() {
     4 => 0,
   );
 
-  /* Display: Character NPCs */
-  $handler = $view->new_display('page', 'Character NPCs', 'character_npcs');
-  $handler->display->display_options['display_description'] = 'Character NPCs';
-  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
-  $handler->display->display_options['path'] = 'character-npcs/all';
-  $handler->display->display_options['menu']['type'] = 'default tab';
-  $handler->display->display_options['menu']['title'] = 'Character NPCs';
-  $handler->display->display_options['menu']['description'] = 'Character NPCs';
-  $handler->display->display_options['menu']['weight'] = '0';
-  $handler->display->display_options['menu']['context'] = 0;
-  $handler->display->display_options['tab_options']['type'] = 'normal';
-  $handler->display->display_options['tab_options']['title'] = 'NPCs';
-  $handler->display->display_options['tab_options']['description'] = 'NPCs';
-  $handler->display->display_options['tab_options']['weight'] = '0';
-  $handler->display->display_options['tab_options']['name'] = 'menu-vaxia';
-
   /* Display: Character NPCs refs */
   $handler = $view->new_display('references', 'Character NPCs refs', 'character_npcs_ref');
   $handler->display->display_options['defaults']['title'] = FALSE;
@@ -1000,10 +984,80 @@ function vaxia_views_default_views() {
   $handler->display->display_options['filters']['uid_current']['field'] = 'uid_current';
   $handler->display->display_options['filters']['uid_current']['relationship'] = 'uid';
   $handler->display->display_options['filters']['uid_current']['value'] = '1';
-  $handler->display->display_options['path'] = 'character-npcs/mine';
+  $handler->display->display_options['path'] = 'character-sheets/my-character-npcs';
   $handler->display->display_options['menu']['type'] = 'tab';
   $handler->display->display_options['menu']['title'] = 'My character NPCs';
   $handler->display->display_options['menu']['description'] = 'My character NPCs';
+  $handler->display->display_options['menu']['weight'] = '1';
+  $handler->display->display_options['menu']['name'] = 'menu-vaxia';
+  $handler->display->display_options['menu']['context'] = 0;
+
+  /* Display: Storyteller NPCs */
+  $handler = $view->new_display('page', 'Storyteller NPCs', 'storyteller_npcs');
+  $handler->display->display_options['display_description'] = 'Storyteller NPCs';
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['filter_groups']['operator'] = 'OR';
+  $handler->display->display_options['filter_groups']['groups'] = array(
+    1 => 'AND',
+    2 => 'AND',
+  );
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'character_sheet' => 'character_sheet',
+  );
+  $handler->display->display_options['filters']['type']['group'] = 1;
+  /* Filter criterion: User: Current */
+  $handler->display->display_options['filters']['uid_current']['id'] = 'uid_current';
+  $handler->display->display_options['filters']['uid_current']['table'] = 'users';
+  $handler->display->display_options['filters']['uid_current']['field'] = 'uid_current';
+  $handler->display->display_options['filters']['uid_current']['relationship'] = 'uid';
+  $handler->display->display_options['filters']['uid_current']['value'] = '1';
+  $handler->display->display_options['filters']['uid_current']['group'] = 1;
+  /* Filter criterion: Content: NPC (field_is_npc) */
+  $handler->display->display_options['filters']['field_is_npc_value']['id'] = 'field_is_npc_value';
+  $handler->display->display_options['filters']['field_is_npc_value']['table'] = 'field_data_field_is_npc';
+  $handler->display->display_options['filters']['field_is_npc_value']['field'] = 'field_is_npc_value';
+  $handler->display->display_options['filters']['field_is_npc_value']['operator'] = 'not empty';
+  $handler->display->display_options['filters']['field_is_npc_value']['value'] = array(
+    'all' => 'all',
+  );
+  $handler->display->display_options['filters']['field_is_npc_value']['group'] = 1;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status_1']['id'] = 'status_1';
+  $handler->display->display_options['filters']['status_1']['table'] = 'node';
+  $handler->display->display_options['filters']['status_1']['field'] = 'status';
+  $handler->display->display_options['filters']['status_1']['value'] = '1';
+  $handler->display->display_options['filters']['status_1']['group'] = 2;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type_1']['id'] = 'type_1';
+  $handler->display->display_options['filters']['type_1']['table'] = 'node';
+  $handler->display->display_options['filters']['type_1']['field'] = 'type';
+  $handler->display->display_options['filters']['type_1']['value'] = array(
+    'character_sheet' => 'character_sheet',
+  );
+  $handler->display->display_options['filters']['type_1']['group'] = 2;
+  /* Filter criterion: Content: Open NPC (field_is_open_npc) */
+  $handler->display->display_options['filters']['field_is_open_npc_value']['id'] = 'field_is_open_npc_value';
+  $handler->display->display_options['filters']['field_is_open_npc_value']['table'] = 'field_data_field_is_open_npc';
+  $handler->display->display_options['filters']['field_is_open_npc_value']['field'] = 'field_is_open_npc_value';
+  $handler->display->display_options['filters']['field_is_open_npc_value']['operator'] = 'not empty';
+  $handler->display->display_options['filters']['field_is_open_npc_value']['group'] = 2;
+  $handler->display->display_options['path'] = 'character-sheets/storyteller-npcs';
+  $handler->display->display_options['menu']['type'] = 'tab';
+  $handler->display->display_options['menu']['title'] = 'Storyteller NPCs';
+  $handler->display->display_options['menu']['description'] = 'Storyteller NPCs';
   $handler->display->display_options['menu']['weight'] = '1';
   $handler->display->display_options['menu']['name'] = 'menu-vaxia';
   $handler->display->display_options['menu']['context'] = 0;
@@ -1538,12 +1592,27 @@ function vaxia_views_default_views() {
   $handler->display->display_options['fields']['title_1']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title_1']['hide_alter_empty'] = FALSE;
   $handler->display->display_options['fields']['title_1']['link_to_node'] = FALSE;
+  /* Field: User: Uid */
+  $handler->display->display_options['fields']['uid']['id'] = 'uid';
+  $handler->display->display_options['fields']['uid']['table'] = 'users';
+  $handler->display->display_options['fields']['uid']['field'] = 'uid';
+  $handler->display->display_options['fields']['uid']['relationship'] = 'uid';
+  $handler->display->display_options['fields']['uid']['label'] = '';
+  $handler->display->display_options['fields']['uid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['uid']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['uid']['link_to_user'] = FALSE;
   $handler->display->display_options['defaults']['sorts'] = FALSE;
   /* Sort criterion: Content: Title */
   $handler->display->display_options['sorts']['title']['id'] = 'title';
   $handler->display->display_options['sorts']['title']['table'] = 'node';
   $handler->display->display_options['sorts']['title']['field'] = 'title';
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['filter_groups']['operator'] = 'OR';
+  $handler->display->display_options['filter_groups']['groups'] = array(
+    1 => 'AND',
+    2 => 'AND',
+  );
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
@@ -1575,6 +1644,44 @@ function vaxia_views_default_views() {
     4 => '4',
   );
   $handler->display->display_options['filters']['sid']['group'] = 1;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status_1']['id'] = 'status_1';
+  $handler->display->display_options['filters']['status_1']['table'] = 'node';
+  $handler->display->display_options['filters']['status_1']['field'] = 'status';
+  $handler->display->display_options['filters']['status_1']['value'] = '1';
+  $handler->display->display_options['filters']['status_1']['group'] = 2;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type_1']['id'] = 'type_1';
+  $handler->display->display_options['filters']['type_1']['table'] = 'node';
+  $handler->display->display_options['filters']['type_1']['field'] = 'type';
+  $handler->display->display_options['filters']['type_1']['value'] = array(
+    'character_sheet' => 'character_sheet',
+  );
+  $handler->display->display_options['filters']['type_1']['group'] = 2;
+  /* Filter criterion: Content: Open NPC (field_is_open_npc) */
+  $handler->display->display_options['filters']['field_is_open_npc_value']['id'] = 'field_is_open_npc_value';
+  $handler->display->display_options['filters']['field_is_open_npc_value']['table'] = 'field_data_field_is_open_npc';
+  $handler->display->display_options['filters']['field_is_open_npc_value']['field'] = 'field_is_open_npc_value';
+  $handler->display->display_options['filters']['field_is_open_npc_value']['operator'] = 'not empty';
+  $handler->display->display_options['filters']['field_is_open_npc_value']['group'] = 2;
+  /* Filter criterion: User Access Permissions */
+  $handler->display->display_options['filters']['php']['id'] = 'php';
+  $handler->display->display_options['filters']['php']['table'] = 'views';
+  $handler->display->display_options['filters']['php']['field'] = 'php';
+  $handler->display->display_options['filters']['php']['ui_name'] = 'User Access Permissions';
+  $handler->display->display_options['filters']['php']['group'] = 2;
+  $handler->display->display_options['filters']['php']['use_php_setup'] = 0;
+  $handler->display->display_options['filters']['php']['php_filter'] = 'global $user;
+// If the user is able to create open NPCs or is the owner then allow access.
+return !( user_access(\'use NPCs\') || $row->uid == $user->uid );';
+  /* Filter criterion: Workflow: Current state */
+  $handler->display->display_options['filters']['sid_1']['id'] = 'sid_1';
+  $handler->display->display_options['filters']['sid_1']['table'] = 'workflow_node';
+  $handler->display->display_options['filters']['sid_1']['field'] = 'sid';
+  $handler->display->display_options['filters']['sid_1']['value'] = array(
+    4 => '4',
+  );
+  $handler->display->display_options['filters']['sid_1']['group'] = 2;
 
   /* Display: My character sheets block */
   $handler = $view->new_display('block', 'My character sheets block', 'character_sheets_mine_block');
