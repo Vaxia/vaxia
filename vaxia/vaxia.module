@@ -240,16 +240,21 @@ function vaxia_process_comment(&$variables) {
         $character_name .= ' ' . $character->field_last_name[$lang][0]['value'];
       }
       // Set the submitted variable with the updated character name.
-      // TODO add link from this character name like you do for user names.
+      global $base_url;
       $variables['submitted'] = t('!username </br> !datetime',
-        array('!username' => $character_name, '!datetime' => $variables['created']));
+        array('!username' => l($character_name, $base_url . '/node/' . $character->nid), '!datetime' => $variables['created']));
+
       // Set the character picture.
-      $variables['picture'] = _vaxia_create_avatar_image_link(-1, $user->name);
+      $alt = t('Presence: @pre, Charisma: @char, Appearance: @app',
+        array('@pre' => $character->field_presence[$lang][0]['value'],
+          '@char' => $character->field_charisma[$lang][0]['value'],
+          '@app' => $character->field_appearance[$lang][0]['value']));
+      $variables['picture'] = _vaxia_create_avatar_image_link(-1, $character_name, $alt);
       if (isset($character->field_artwork[$lang][0]['nid'])) {
         $artwork = node_load($character->field_artwork[$lang][0]['nid']);
         if (isset($artwork->field_artwork_image[$lang][0]['fid'])) {
           $variables['picture'] = _vaxia_create_avatar_image_link(
-            $artwork->field_artwork_image[$lang][0]['fid'], $character->title);
+            $artwork->field_artwork_image[$lang][0]['fid'], $character->title, $alt);
         }
       }
     }
@@ -259,12 +264,14 @@ function vaxia_process_comment(&$variables) {
 /**
  * Helper function, given a fid return the image link.
  */
-function _vaxia_create_avatar_image_link($fid, $name) {
+function _vaxia_create_avatar_image_link($fid, $name, $alt = '') {
   $artwork_image = file_load($fid);
   $default_filepath = drupal_get_path('module', 'vaxia').'/images/vaxialogo.gif';
   $filepath = isset($artwork_image->uri) ? $artwork_image->uri : $default_filepath;
   if (isset($filepath)) {
-    $alt = t("@user's picture", array('@user' => $name));
+    if (empty($alt)) {
+      $alt = t("@user's picture.", array('@user' => $name));
+    }
     // If the image does not have a valid Drupal scheme (for eg. HTTP) don't load image styles.
     if (module_exists('image') && file_valid_uri($filepath) 
       && $style = variable_get('user_picture_style', '')) {
