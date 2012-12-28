@@ -10,6 +10,7 @@
 function vaxia_convert_main($ROOT) {
   set_time_limit(60);
   $VAXIA_CHAR_PATH = $ROOT.'/vaxia/characters/active';
+  $VAXIA_OPENNPC_PATH = $ROOT.'/vaxia/world';
   $VAXIA_ROOM_PATH = $ROOT.'/vaxia/enter';
   $art_file = './vaxia_convert/art.xml';
   if (!is_dir('./vaxia_convert')) {
@@ -22,7 +23,7 @@ function vaxia_convert_main($ROOT) {
   set_time_limit(60);
   get_items($VAXIA_CHAR_PATH);
   set_time_limit(60);
-  get_npcs($VAXIA_CHAR_PATH);
+  get_npcs($VAXIA_CHAR_PATH, $VAXIA_OPENNPC_PATH);
   set_time_limit(180);
   get_rooms($VAXIA_ROOM_PATH, $art_file);
   write_record_close_file($art_file);
@@ -268,9 +269,13 @@ function get_items($path) {// For each dir in root.
   write_record_close_file($file);
 }
 
-function get_npcs($path) {
+function get_npcs($path, $open_path) {
   $file = './vaxia_convert/npcs.xml';
+  $sh_file = './vaxia_convert/shnpcs.xml';
+  $open_file = './vaxia_convert/opennpcs.xml';
   write_record_open_file($file);
+  write_record_open_file($sh_file);
+  write_record_open_file($open_file);
   $results = 0;
   foreach (get_directories($path) as $letter_dir) {
     // We now have the alphabetical.
@@ -292,11 +297,47 @@ function get_npcs($path) {
           write_record_to_file($file, $record);
           $results++;
         }
+        // Get SH NPCS        
+        foreach (get_directories($path . '/' . $letter_dir . '/' . $user_dir . '/dependants') as $shnpc_dir) {
+          // Read the art dir.
+          $shnpc = array();
+          $shnpc['player'] = ucfirst($user_dir);
+          $shnpc['character'] = ucfirst($shnpc_dir);
+          // Given permissions and email in dir / dir / name-pass.item
+          $data = read_vaxia_file($path . '/' . $letter_dir . '/' . $user_dir . '/dependants/' . $shnpc_dir . '/' . $shnpc_dir . '.item');
+          $shnpc = array_merge($shnpc, $data);
+          // Now that we have a user, determine the rest of the settings and permissions.
+          $record = $shnpc;
+          write_record_to_file($sh_file, $record);
+          $results++;
+        }
+      }
+    }
+  }
+  // Get open NPCs
+  foreach (get_directories($open_path) as $world) {
+    foreach (get_directories($open_path . '/' . $world . '/npcs/') as $letter_dir) {
+      // Read each dir in dir
+      foreach (get_directories($open_path . '/' . $world . '/npcs/' . $letter_dir) as $open_dir) {
+        // Read the art dir.
+        $opennpc = array();
+        $opennpc['player'] = ucfirst('admin');
+        $opennpc['character'] = ucfirst($open_dir);
+        $opennpc['realm'] = ucfirst($world);
+        // Given permissions and email in dir / dir / name-pass.item
+        $data = read_vaxia_file($open_path . '/' . $world . '/npcs/' . $letter_dir . '/' . $open_dir . '/' . $open_dir . '.item');
+        $opennpc = array_merge($opennpc, $data);
+        // Now that we have a user, determine the rest of the settings and permissions.
+        $record = $opennpc;
+        write_record_to_file($open_file, $record);
+        $results++;
       }
     }
   }
   drupal_set_message($results . ' npcs converted.');
   write_record_close_file($file);
+  write_record_close_file($sh_file);
+  write_record_close_file($open_file);
 }
 
 function get_rooms($path, $art_file) {

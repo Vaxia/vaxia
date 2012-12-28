@@ -35,6 +35,8 @@ function vaxia_import_main() {
   // Make characters from characters.xml
   if (file_exists('./vaxia_convert/characters.xml')) {
     vaxia_import_characters('./vaxia_convert/characters.xml');
+    vaxia_import_characters('./vaxia_convert/shnpcs.xml');
+    vaxia_import_characters('./vaxia_convert/opennpcs.xml');
     drupal_set_message('Characters have been converted.');
   }
   // Make items from items.xml
@@ -190,7 +192,10 @@ function vaxia_import_characters($file) {
         $node->field_description[$node->language][0]['value'] = isset($record['description']) ? $record['description'] : '';
         $node->field_occupation[$node->language][0]['value'] = isset($record['ocupation']) ? $record['ocupation'] : '';
         $node->field_personality[$node->language][0]['value'] = isset($record['personality']) ? $record['personality'] : '';
-    
+        
+        if (isset($record['icNotes'])) {
+          $record['playerNotes'] .= ' ' . $record['icNotes'];
+        }
         $node->field_player_notes[$node->language][0]['value'] = isset($record['playerNotes']) ? $record['playerNotes'] : '';
         $node->field_sh_notes[$node->language][0]['value'] = isset($record['shNotes']) ? $record['shNotes'] : '';
         $node->field_sh_private_notes[$node->language][0]['value'] = isset($record['shNotes']) ? $record['shPnotes'] : '';
