@@ -884,10 +884,13 @@ function _vaxia_meaningful_xp_types() {
  * XP callback for adding XP to a node. Vaxia's wierd XP complexity.
  */
 function _vaxia_add_xp($nid, $xp, $type) {
+  global $user;
   $node = node_load($nid);
   $meaningful_types = _vaxia_meaningful_xp_types();
   if (!in_array($type, $meaningful_types)) {
     _vaxia_update_type_tracking(array('nid' => $nid, 'xp' => $xp, 'type' => $type)); // Add to the type given.
+    $message = t('%xp %type XP added to %title by %user.',
+      array('%xp' => $xp, '%type' => $type, '%title' => $node->title, '%user' => $user->name));
     $type = 'xp';
   }
   switch ($type) {
@@ -919,7 +922,6 @@ function _vaxia_add_xp($nid, $xp, $type) {
     break;
     case 'xp':
     default:
-      $message = t('%xp %type XP added to %title.', array('%xp' => $xp, '%type' => $type, '%title' => $node->title));
       _character_sheet_update_log($nid, 'xp', $message, $variables = array());
       // Add per, b/c of the way the calculations work for adding.
       $current_rxp = _character_sheet_get_xp($nid, 'rxp');
@@ -941,7 +943,8 @@ function _vaxia_add_xp($nid, $xp, $type) {
       _character_sheet_update_xp($nid, $bxp_to_add, 'bxp');
     break;
     case 'silver':
-      $message = t('%xp %type XP added to %title.', array('%xp' => $xp, '%type' => $type, '%title' => $node->title));
+      $message = t('%xp %type silver added to %title by %user.',
+        array('%xp' => $xp, '%type' => $type, '%title' => $node->title, '%user' => $user->name));
       _character_sheet_update_log($nid, 'xp', $message, $variables = array());
       // Silver is just added directly.
       _character_sheet_update_xp($nid, $xp, 'silver');
