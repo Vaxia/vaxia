@@ -239,7 +239,7 @@ function _rpg_chat_refresh_js($form, &$form_state) {
     $this_user = user_load($found_user->uid);
     $user_names[] = $this_user->name;
   }
-  $return_string = '<div id="rpg-chat-userlist">' .
+  $return_string = '<div id="rpg-chat-wrapper"><div id="rpg-chat-userlist">' .
     theme('item_list', array('title' => t('Users in this room'), 'items' => $user_names)) .
     '</div>';
   $return_string .= '<div id="rpg-chat">';
@@ -249,7 +249,7 @@ function _rpg_chat_refresh_js($form, &$form_state) {
       $return_string .= drupal_render($comment);
     }
   }
-  $return_string .= '</div>';
+  $return_string .= '</div></div>';
   // Refresh this user's last login to this room.
   global $user;
   _rpg_chat_set_room_users($node->nid, $user->uid);
