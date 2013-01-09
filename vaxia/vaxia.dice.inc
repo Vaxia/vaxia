@@ -184,10 +184,11 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
               }
             }
             if (isset($roll['skill']) && $roll['skill'] != -1) {
-              $skill = field_collection_item_load($roll['skill']); 
-              $skill = isset($skill->field_skill_value[$lang][0]['value']) ? $skill->field_skill_value[$lang][0]['value'] : 0;
-              $mod_note .= ' + skill (' . $skill . ')';
-              $mod += $skill;
+              $skill = field_collection_item_load($roll['skill']);
+              $skill_value = isset($skill->field_skill_value[$lang][0]['value']) ? $skill->field_skill_value[$lang][0]['value'] : 0;
+              $skill_name = isset($skill->field_skill_name[$lang][0]['value']) ? $skill->field_skill_name[$lang][0]['value'] : 'skill';
+              $mod_note .= ' + ' . $skill_name . ' (' . $skill_value . ')';
+              $mod += $skill_value;
             }
             // If items selected.
             if (isset($roll['item']) && $roll['item'] != -1) {
@@ -267,8 +268,14 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
               }
             }
             $this_command = $roll['number'] . 'd' . $roll['size'];
-            $note .= 'Roll '. $delta + 1 .' : roll(' . $this_command . ')' . $mod_note . '<br>';
-            $command .= $this_command . '+' . $mod .';';
+            if ($mod != 0) {
+              $note .= 'Roll '. $delta + 1 .' : roll(' . $this_command . ')' . $mod_note . '<br>';
+              $command .= $this_command . '+' . $mod .';';
+            }
+            else {
+              $note .= 'Roll '. $delta + 1 .' : roll(' . $this_command . ')<br>';
+              $command .= $this_command .';';
+            }
           }
         }
       }
