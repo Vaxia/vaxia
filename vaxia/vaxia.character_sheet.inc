@@ -493,13 +493,11 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
     '#markup' => theme('item_list', array('items' => _vaxia_xp_display($node))),
   );
 
-  if (count($xp_types) > 0) {
-    $form['node_info']['xp_types'] = array(
-      '#type' => 'item',
-      '#title' => t('XP types'),
-      '#markup' => theme('item_list', array('items' => _vaxia_xp_display_type($node))),
-    );
-  }
+  $form['node_info']['xp_types'] = array(
+    '#type' => 'item',
+    '#title' => t('XP types'),
+    '#markup' => theme('item_list', array('items' => _vaxia_xp_display_type($node))),
+  );
 
   // Add the economy form for owned forms.
   global $user;
@@ -514,6 +512,10 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
     '#title' => t('Economy'),
     '#markup' => theme('item_list', array('items' => $econ)),
   );
+  $silver = _character_sheet_get_xp($node->nid, 'silver');
+  $silver_spent = _character_sheet_get_xp($node->nid, 'spent_silver');
+  $silver_invested = _character_sheet_get_xp($node->nid, 'invest_silver');
+  $available_silver = $silver - ($silver_spent + $silver_invested);
   $cost = _vaxia_invest_calculate_cost_to_improve($level);
   $invest = $cost - $silver_invested;
   // Invested silver is spent_silver, adjusted to show the difference between spent and the cost of the current economy level.
@@ -637,8 +639,10 @@ function vaxia_form__character_sheet_owner_form_alter(&$form, &$form_state) {
   unset($form['owner_name']);
   $form['change_ownership']['submit'] = $form['submit'];
   unset($form['submit']);
-  $form['change_ownership']['character_sheet_log'] = $form['character_sheet_log'];
-  unset($form['character_sheet_log']);
+  if (isset($form['character_sheet_log'])) {
+    $form['change_ownership']['character_sheet_log'] = $form['character_sheet_log'];
+    unset($form['character_sheet_log']);
+  }
 }
 
 /**
