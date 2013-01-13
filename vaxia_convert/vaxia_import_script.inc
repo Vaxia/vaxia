@@ -257,7 +257,7 @@ function vaxia_import_characters($file) {
           'charGxps' => 'good',
           'charExps' => 'evil',
           'charSxps' => 'smart',
-          'charCxps' => 'clever',
+          'charCxps' => 'charismatic',
           'charWxps' => 'warrior',
           'charMxps' => 'mage',
           'charTxps' => 'rogue',

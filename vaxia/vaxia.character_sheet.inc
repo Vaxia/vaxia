@@ -409,7 +409,7 @@ function _vaxia_admin_settings() {
       array('@types' => implode(', ' , _vaxia_meaningful_xp_types()))),
     '#type' => 'textarea',
     '#default_value' => variable_get('vaxia_xp_types',
-      "good\nevil\nsmart\nclever\nwarrior\nmage\nrogue"),
+      "good\nevil\nsmart\ncharismatic\nwarrior\nmage\nrogue"),
   );
   $rooms = _rpg_chat_get_rooms();
   $options = array();
