@@ -1,7 +1,7 @@
 /* Vaxia CSS */
 html{font-size:80%}
 #page{max-width:100%;padding-bottom:100px;}
-#header{width:100%;background-color:black;height:100px;}
+#header{width:100%;height:100px;}
 #header #logo{float:none;display:block;height:100px;width:100px;margin:0 auto;}
 #header #name-and-slogan{display:none;}
 #main{width:auto;margin:0 3em;padding-top:3em;}
@@ -22,13 +22,13 @@ p{font-size:0.9em;}
 
 /* Text colors. */
 body{color:#FFF;}
-a{color:#4799CC;}
-a.active{color:#5BA4D2;}
-a:visited{color:#368EC4;}
-li a.active{color:#4799CC;}
+a{color:#FFF;} /*4799CC*/
+a.active{color:#FFF;} /*5BA4D2*/
+a:visited{color:#FFF;} /*368EC4*/
+li a.active{color:#FFF;} /*4799CC*/
 
 /* Default background colors by element. */
-body{background-color:#111;} /* Default background color is a nuetral dark grey. */
+body{background-color:#07E;} /* Default background color is a nuetral dark grey. */
 table, th, thead, tbody, tr, tr.even, tr.odd, td, td.active{background-color:transparent;} /* Default tables are transparent background. */
 
 /* Tab formating. */
@@ -44,7 +44,7 @@ ul.tabs li{
 /* Navigation link formatting for all pgs. */
 #navigation #main-menu{float:right;position:relative;top:-25px;}
 #navigation a{display:block;height:20px;text-decoration:none;color:#FFF;text-align:center;padding:0 0.5em;padding-bottom:0.12em;}
-#navigation a:hover{background:url('images/underline.jpg') center bottom no-repeat #000;}
+#navigation a:hover{background:url('images/underline.jpg') center bottom no-repeat;}
 
 /* General article formating. */
 article{margin:0.5em auto;}
@@ -66,7 +66,8 @@ article section.comments{clear:both;margin-top:0.5em;}
 article #comment-body-add-more-wrapper #edit-comment-body-und-0-format{display:none;}
 
 /* Chatroom formatting */
-.rpg-chat-node .field-name-field-artwork{float:left;padding:1em;}
+.rpg-chat-node .field-name-field-artwork {float:left;padding:1em;}
+.rpg-chat-node #comment-form .field-name-field-artwork {float:none;padding:0;}
 .rpg-chat-node .field-name-field-artwork h2{display:none;}
 .rpg-chat-node article.comment {border:solid 1px #FFF;padding:0.5em;background-color:#555;}
 .rpg-chat-node article.comment.clearfix:after{clear:none;}

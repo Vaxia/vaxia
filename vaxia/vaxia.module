@@ -256,8 +256,10 @@ function vaxia_process_comment(&$variables) {
           '@char' => $character->field_charisma[$lang][0]['value'],
           '@app' => $character->field_appearance[$lang][0]['value']));
       $variables['picture'] = _vaxia_create_avatar_image_link(-1, $character_name, $alt);
-      if (isset($character->field_artwork[$lang][0]['nid'])) {
-        $artwork = node_load($character->field_artwork[$lang][0]['nid']);
+      // Check first against the selected comment, it should by default be the character selected on load.
+      // If not, fall back to the character itself.
+      if (isset($comment->field_artwork[$lang][0]['nid'])) {
+        $artwork = node_load($comment->field_artwork[$lang][0]['nid']);
         if (isset($artwork->field_artwork_image[$lang][0]['fid'])) {
           $variables['picture'] = _vaxia_create_avatar_image_link(
             $artwork->field_artwork_image[$lang][0]['fid'], $character->title, $alt);
@@ -354,6 +356,7 @@ function vaxia_form_alter(&$form, &$form_state, $form_id) {
       $character = node_load($this_player->field_current_character[$lang][0]['nid']);
       if (isset($character->title)) {
         $form['field_comment_character'][$lang]['#default_value'][0] = $character->nid;
+        $form['field_artwork'][$lang]['#default_value'][0] = $character->field_artwork[$lang][0]['nid'];
         $kxp = _character_sheet_get_xp($character->nid, 'kxp');
         $xp = _character_sheet_get_xp($character->nid, 'xp');
         $spent_xp = _character_sheet_get_xp($character->nid, 'spent_xp');
@@ -378,16 +381,17 @@ function vaxia_form_alter(&$form, &$form_state, $form_id) {
       $form['field_comment_narrative'][$lang]['#type'] = 'hidden';
     }
     // Add new fields.
-    $form['uid'] = array(
-      '#type' => 'hidden',
-      '#value' => $this_player->uid,
-    );
     $form['field_refresh_rate'] = array(
       '#type' => 'textfield',
       '#default_value' => isset($this_player->field_refresh_rate[$lang][0]['value']) ?
-        $this_player->field_refresh_rate[$lang][0]['value'] : 60,
+        $this_player->field_refresh_rate[$lang][0]['value'] : 30,
       '#size' => 6,
       '#title' => t('Refresh rate'),
+      '#weight' => 6,
+    );
+    $form['uid'] = array(
+      '#type' => 'hidden',
+      '#value' => $this_player->uid,
     );
     $form['actions']['submit']['#value'] = t('Post');
     $form['#submit'][] = '_vaxia_comment_set_profile_values_submit';
@@ -411,6 +415,7 @@ function _vaxia_comment_set_profile_values_submit($form, $form_state) {
   // Get the values from the comment submit handler.
   $lang = $form_state['values']['language'];
   $character = $form_state['values']['field_comment_character'][$lang][0]['nid'];
+  $artwork = $form_state['values']['field_artwork'][$lang][0]['nid'];
   $color = $form_state['values']['field_comment_color'][$lang][0]['value'];
   $refresh_rate = $form_state['values']['field_refresh_rate'];
   $uid = $form_state['values']['uid'];
@@ -422,6 +427,10 @@ function _vaxia_comment_set_profile_values_submit($form, $form_state) {
     $this_player->field_refresh_rate[$lang][0]['value'] = $refresh_rate;
   }
   user_save($this_player);
+  // Save the updated art to the character.
+  $this_character = node_load($character);
+  $this_character->field_artwork[$lang][0]['nid'] = $artwork;
+  node_save($this_character);
 }
 
 /**

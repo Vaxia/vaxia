@@ -13,6 +13,7 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
     '#theme' => 'vaxia_dice_roller',
     '#prefix' => '<div id="vaxia-dice-roller">',
     '#suffix' => '</div>',
+    '#weight' => 10,
     '#tree' => TRUE, // This is important, this allows the deltas below to function.
   );
   // Pass additional data from user profile configuration.
