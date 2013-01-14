@@ -1,0 +1,5 @@
+name = Select Image
+description = Provides an image friendly select dropdown for list items.
+package = Fields
+core = 7.x
+dependencies[] = field
