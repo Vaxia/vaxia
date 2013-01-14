@@ -127,3 +127,6 @@ article.node-rpg-chatroom.clearfix:after, .field-type-node-reference.clearfix:af
 #content a.button, #content .button a{text-decoration:none; color:#111;}
 #content .button-large{}
 #content .button-small{}
+
+/* Fancy select dropdown button. */
+.dd{text-align:center;width:200px !important;}

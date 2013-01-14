@@ -113,11 +113,8 @@ function form_select_image_options($element, $choices = NULL) {
       else {
         $selected = '';
       }
-      // TODO filter all but img tags out of the choice.
-      $choice = strip_tags($choice, '<img></img>');
-      // Grab images out of the choice.
-      $image = 'http://vaxia.unpretentiousmonkey.com/sites/default/files/styles/thumbnail/public/harbormaster_4.jpg';
-      $options .= '<option value="' . check_plain($key) . '"' . $selected . ' data-image="' . $image . '">' . $choice . '</option>';
+      // Grab the first image listed out of the choice.
+      $options .= '<option value="' . check_plain($key) . '"' . $selected . '>' . check_plain($choice) . '</option>';
     }
   }
   return $options;
