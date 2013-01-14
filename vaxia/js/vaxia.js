@@ -17,7 +17,7 @@ Drupal.behaviors.vaxiaChat = {
       'style="float:left;margin:0.25em -20% 0.25em 0;">' +
       'show/hide' +
       '</button>');
-    $('#main .sidebars').css('margin-top', '40px');
+    $('#main .sidebars, #main #content').css('margin-top', '40px');
   });
 
   // When Chat location toggle clicked, switch.
@@ -30,6 +30,13 @@ Drupal.behaviors.vaxiaChat = {
   // When Sidebar toggle clicked, switch.
   $('.toggle-rpg-chat-sidebar').click(function() {
     $('#main .sidebars').toggle();
+    if ( $('#main .sidebars').is(':visible') ) {
+      $('#main #content').css('margin-left', '20%');
+      $('#main #content').css('width', '80%');
+    } else {
+      $('#main #content').css('margin-left', '0%');
+      $('#main #content').css('width', '100%');
+    }
   });
 
   })(jQuery); }
