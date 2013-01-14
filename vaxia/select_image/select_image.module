@@ -78,6 +78,11 @@ function theme_select_image($variables) {
   element_set_attributes($element, array('id', 'name', 'size'));
   _form_set_class($element, array('form-select form-select-image'));
   $select = '<select' . drupal_attributes($element['#attributes']) . '>' . form_select_image_options($element) . '</select>';
+  // Include the JS and CSS we need.
+  drupal_add_js(drupal_get_path('module', 'select_image') . '/js/jquery.dd.min.js');
+  drupal_add_js(drupal_get_path('module', 'select_image') . '/js/select_image.js');
+  drupal_add_css(drupal_get_path('module', 'select_image') . '/css/dd.css');
+  drupal_add_css(drupal_get_path('module', 'select_image') . '/css/select_image.css');
   return $select;
 }
 
@@ -110,7 +115,9 @@ function form_select_image_options($element, $choices = NULL) {
       }
       // TODO filter all but img tags out of the choice.
       $choice = strip_tags($choice, '<img></img>');
-      $options .= '<option value="' . check_plain($key) . '"' . $selected . '>' . $choice . '</option>';
+      // Grab images out of the choice.
+      $image = 'http://vaxia.unpretentiousmonkey.com/sites/default/files/styles/thumbnail/public/harbormaster_4.jpg';
+      $options .= '<option value="' . check_plain($key) . '"' . $selected . ' data-image="' . $image . '">' . $choice . '</option>';
     }
   }
   return $options;
