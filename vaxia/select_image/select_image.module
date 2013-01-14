@@ -6,6 +6,19 @@
  */
 
 /**
+ * Implements hook_help().
+ */
+function select_image_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#options':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('The Select Image module defines image friendly selection input widgets for the Field module. See the <a href="@field-help">Field module help page</a> for more information about fields.', array('@field-help' => url('admin/help/field'))) . '</p>';
+      return $output;
+  }
+}
+
+/**
  * Implements hook_theme().
  */
 function select_image_theme() {
@@ -38,7 +51,7 @@ function select_image_field_widget_info() {
         'list_text',
         'node_reference',
       ),
-      'select_image' => array(
+      'behaviors' => array(
         'multiple values' => FIELD_BEHAVIOR_CUSTOM,
       ),
     ),
@@ -68,56 +81,9 @@ function select_image_field_widget_form(&$form, &$form_state, $field, $instance,
     '#value_key' => $value_key,
     '#element_validate' => array('select_image_field_widget_validate'),
     '#properties' => $properties,
-    '#theme' => 'select_image', // MAGIC: New form element for rendering.
+    '#theme' => 'select_image', // Theming: New form element for rendering. This handles our new format.
   );
   return $element;
-}
-
-function theme_select_image($variables) {
-  $element = $variables['element'];
-  element_set_attributes($element, array('id', 'name', 'size'));
-  _form_set_class($element, array('form-select form-select-image'));
-  $select = '<select' . drupal_attributes($element['#attributes']) . '>' . form_select_image_options($element) . '</select>';
-  // Include the JS and CSS we need.
-  drupal_add_js(drupal_get_path('module', 'select_image') . '/js/jquery.dd.min.js');
-  drupal_add_js(drupal_get_path('module', 'select_image') . '/js/select_image.js');
-  drupal_add_css(drupal_get_path('module', 'select_image') . '/css/dd.css');
-  drupal_add_css(drupal_get_path('module', 'select_image') . '/css/select_image.css');
-  return $select;
-}
-
-function form_select_image_options($element, $choices = NULL) {
-  if (!isset($choices)) {
-    $choices = $element['#options'];
-  }
-  // array_key_exists() accommodates the rare event where $element['#value'] is NULL.
-  // isset() fails in this situation.
-  $value_valid = isset($element['#value']) || array_key_exists('#value', $element);
-  $value_is_array = $value_valid && is_array($element['#value']);
-  $options = '';
-  foreach ($choices as $key => $choice) {
-    if (is_array($choice)) {
-      $options .= '<optgroup label="' . $key . '">';
-      $options .= form_select_image_options($element, $choice);
-      $options .= '</optgroup>';
-    }
-    elseif (is_object($choice)) {
-      $options .= form_select_image_options($element, $choice->option);
-    }
-    else {
-      $key = (string) $key;
-      if ($value_valid && (!$value_is_array && (string) $element['#value'] === $key ||
-        ($value_is_array && in_array($key, $element['#value'])))) {
-          $selected = ' selected="selected"';
-      }
-      else {
-        $selected = '';
-      }
-      // Grab the first image listed out of the choice.
-      $options .= '<option value="' . check_plain($key) . '"' . $selected . '>' . check_plain($choice) . '</option>';
-    }
-  }
-  return $options;
 }
 
 /**
@@ -314,4 +280,57 @@ function theme_select_image_none($variables) {
   $output = '';
   $output = ($option == 'option_none' ? t('- None -') : t('- Select a value -'));
   return $output;
+}
+
+/**
+ * Special theming for the select object, avoid the issue with HTML in options.
+ */
+function theme_select_image($variables) {
+  $element = $variables['element'];
+  element_set_attributes($element, array('id', 'name', 'size'));
+  _form_set_class($element, array('form-select form-select-image'));
+  $select = '<select' . drupal_attributes($element['#attributes']) . '>' . form_select_image_options($element) . '</select>';
+  // Include the JS and CSS we need.
+  drupal_add_js(drupal_get_path('module', 'select_image') . '/js/jquery.dd.min.js');
+  drupal_add_js(drupal_get_path('module', 'select_image') . '/js/select_image.js');
+  drupal_add_css(drupal_get_path('module', 'select_image') . '/css/dd.css');
+  drupal_add_css(drupal_get_path('module', 'select_image') . '/css/select_image.css');
+  return $select;
+}
+
+/**
+ * Special theming for the select object, avoid the issue with HTML in options.
+ */
+function form_select_image_options($element, $choices = NULL) {
+  if (!isset($choices)) {
+    $choices = $element['#options'];
+  }
+  // array_key_exists() accommodates the rare event where $element['#value'] is NULL.
+  // isset() fails in this situation.
+  $value_valid = isset($element['#value']) || array_key_exists('#value', $element);
+  $value_is_array = $value_valid && is_array($element['#value']);
+  $options = '';
+  foreach ($choices as $key => $choice) {
+    if (is_array($choice)) {
+      $options .= '<optgroup label="' . $key . '">';
+      $options .= form_select_image_options($element, $choice);
+      $options .= '</optgroup>';
+    }
+    elseif (is_object($choice)) {
+      $options .= form_select_image_options($element, $choice->option);
+    }
+    else {
+      $key = (string) $key;
+      if ($value_valid && (!$value_is_array && (string) $element['#value'] === $key ||
+        ($value_is_array && in_array($key, $element['#value'])))) {
+          $selected = ' selected="selected"';
+      }
+      else {
+        $selected = '';
+      }
+      // Grab the first image listed out of the choice.
+      $options .= '<option value="' . check_plain($key) . '"' . $selected . '>' . check_plain($choice) . '</option>';
+    }
+  }
+  return $options;
 }
