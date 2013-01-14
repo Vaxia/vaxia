@@ -125,6 +125,16 @@ function vaxia_user_default_permissions() {
     'module' => 'character_sheet',
   );
 
+  // Exported permission: create NPCs.
+  $permissions['create NPCs'] = array(
+    'name' => 'create NPCs',
+    'roles' => array(
+      0 => 'administrator',
+      1 => 'storyteller',
+    ),
+    'module' => 'vaxia',
+  );
+
   // Exported permission: create artwork content.
   $permissions['create artwork content'] = array(
     'name' => 'create artwork content',
@@ -172,6 +182,16 @@ function vaxia_user_default_permissions() {
       2 => 'storyteller',
     ),
     'module' => 'node',
+  );
+
+  // Exported permission: create open NPCs.
+  $permissions['create open NPCs'] = array(
+    'name' => 'create open NPCs',
+    'roles' => array(
+      0 => 'administrator',
+      1 => 'storyteller',
+    ),
+    'module' => 'vaxia',
   );
 
   // Exported permission: create rpg_chatroom content.
@@ -383,6 +403,7 @@ function vaxia_user_default_permissions() {
     'roles' => array(
       0 => 'administrator',
       1 => 'administrator-vaxia',
+      2 => 'player',
     ),
     'module' => 'node',
   );
@@ -517,6 +538,17 @@ function vaxia_user_default_permissions() {
     'roles' => array(
       0 => 'administrator',
       1 => 'administrator-vaxia',
+    ),
+    'module' => 'vaxia',
+  );
+
+  // Exported permission: use NPCs.
+  $permissions['use NPCs'] = array(
+    'name' => 'use NPCs',
+    'roles' => array(
+      0 => 'administrator',
+      1 => 'storyteller',
+      2 => 'wiki-master',
     ),
     'module' => 'vaxia',
   );

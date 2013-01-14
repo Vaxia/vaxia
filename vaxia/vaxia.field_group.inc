@@ -586,6 +586,30 @@ function vaxia_field_group_info() {
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
+  $field_group->identifier = 'group_percentages|node|items|default';
+  $field_group->group_name = 'group_percentages';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'items';
+  $field_group->mode = 'default';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Percentages',
+    'weight' => '2',
+    'children' => array(),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'formatter' => 'collapsible',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => '',
+      ),
+    ),
+  );
+  $export['group_percentages|node|items|default'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
   $field_group->identifier = 'group_percentages|node|items|form';
   $field_group->group_name = 'group_percentages';
   $field_group->entity_type = 'node';

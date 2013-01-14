@@ -10,6 +10,86 @@
 function vaxia_field_default_fields() {
   $fields = array();
 
+  // Exported field: 'comment-comment_node_rpg_chatroom-field_artwork'.
+  $fields['comment-comment_node_rpg_chatroom-field_artwork'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_artwork',
+      'foreign keys' => array(
+        'nid' => array(
+          'columns' => array(
+            'nid' => 'nid',
+          ),
+          'table' => 'node',
+        ),
+      ),
+      'indexes' => array(
+        'nid' => array(
+          0 => 'nid',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'node_reference',
+      'settings' => array(
+        'referenceable_types' => array(
+          'article' => 0,
+          'artwork' => 'artwork',
+          'character_sheet' => 0,
+          'forum' => 0,
+          'items' => 0,
+          'npc' => 0,
+          'page' => 0,
+          'rpg_chatroom' => 0,
+        ),
+        'view' => array(
+          'args' => array(),
+          'display_name' => 'artwork_mine_refs',
+          'view_name' => 'artwork',
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'node_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'comment_node_rpg_chatroom',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '5',
+        ),
+      ),
+      'entity_type' => 'comment',
+      'field_name' => 'field_artwork',
+      'label' => 'Artwork',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'select_image',
+        'settings' => array(
+          'autocomplete_match' => 'contains',
+          'edit_fallback' => 0,
+          'fallback' => 'select',
+          'image_field_artwork' => 'field_artwork_image',
+          'image_style' => 'thumbnail',
+          'node_link' => array(),
+        ),
+        'type' => 'select_image_select',
+        'weight' => '4',
+      ),
+    ),
+  );
+
   // Exported field: 'comment-comment_node_rpg_chatroom-field_comment_character'.
   $fields['comment-comment_node_rpg_chatroom-field_comment_character'] = array(
     'field_config' => array(
@@ -77,7 +157,7 @@ function vaxia_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '1',
+        'weight' => '3',
       ),
     ),
   );
@@ -139,7 +219,7 @@ function vaxia_field_default_fields() {
           'size' => '6',
         ),
         'type' => 'text_textfield',
-        'weight' => '3',
+        'weight' => '5',
       ),
     ),
   );
@@ -202,6 +282,67 @@ function vaxia_field_default_fields() {
         ),
         'type' => 'options_onoff',
         'weight' => '2',
+      ),
+    ),
+  );
+
+  // Exported field: 'comment-comment_node_rpg_chatroom-field_ooc'.
+  $fields['comment-comment_node_rpg_chatroom-field_ooc'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_ooc',
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'text',
+      'settings' => array(),
+      'translatable' => '0',
+      'type' => 'text_long',
+    ),
+    'field_instance' => array(
+      'bundle' => 'comment_node_rpg_chatroom',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'inline',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '4',
+        ),
+      ),
+      'entity_type' => 'comment',
+      'field_name' => 'field_ooc',
+      'label' => 'OOC',
+      'required' => 0,
+      'settings' => array(
+        'text_processing' => '0',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'rows' => '2',
+        ),
+        'type' => 'text_textarea',
+        'weight' => '1',
       ),
     ),
   );
@@ -970,6 +1111,7 @@ function vaxia_field_default_fields() {
           'article' => 0,
           'artwork' => 'artwork',
           'character_sheet' => 0,
+          'forum' => 0,
           'items' => 0,
           'npc' => 0,
           'page' => 0,
@@ -977,7 +1119,7 @@ function vaxia_field_default_fields() {
         ),
         'view' => array(
           'args' => array(),
-          'display_name' => 'artwork_all_refs',
+          'display_name' => 'artwork_mine_refs',
           'view_name' => 'artwork',
         ),
       ),
@@ -1015,9 +1157,16 @@ function vaxia_field_default_fields() {
       ),
       'widget' => array(
         'active' => 1,
-        'module' => 'options',
-        'settings' => array(),
-        'type' => 'options_select',
+        'module' => 'select_image',
+        'settings' => array(
+          'autocomplete_match' => 'contains',
+          'edit_fallback' => 0,
+          'fallback' => 'select',
+          'image_field_artwork' => 'field_artwork_image',
+          'image_style' => 'thumbnail',
+          'node_link' => array(),
+        ),
+        'type' => 'select_image_select',
         'weight' => '4',
       ),
     ),
@@ -6464,6 +6613,7 @@ function vaxia_field_default_fields() {
           'article' => 0,
           'artwork' => 'artwork',
           'character_sheet' => 0,
+          'forum' => 0,
           'items' => 0,
           'npc' => 0,
           'page' => 0,
@@ -6471,7 +6621,7 @@ function vaxia_field_default_fields() {
         ),
         'view' => array(
           'args' => array(),
-          'display_name' => 'artwork_all_refs',
+          'display_name' => 'artwork_mine_refs',
           'view_name' => 'artwork',
         ),
       ),
@@ -6509,9 +6659,16 @@ function vaxia_field_default_fields() {
       ),
       'widget' => array(
         'active' => 1,
-        'module' => 'options',
-        'settings' => array(),
-        'type' => 'options_select',
+        'module' => 'select_image',
+        'settings' => array(
+          'autocomplete_match' => 'contains',
+          'edit_fallback' => 0,
+          'fallback' => 'select',
+          'image_field_artwork' => 'field_artwork_image',
+          'image_style' => 'thumbnail',
+          'node_link' => array(),
+        ),
+        'type' => 'select_image_select',
         'weight' => '3',
       ),
     ),
@@ -6982,6 +7139,7 @@ function vaxia_field_default_fields() {
           'article' => 0,
           'artwork' => 'artwork',
           'character_sheet' => 0,
+          'forum' => 0,
           'items' => 0,
           'npc' => 0,
           'page' => 0,
@@ -6989,7 +7147,7 @@ function vaxia_field_default_fields() {
         ),
         'view' => array(
           'args' => array(),
-          'display_name' => 'artwork_all_refs',
+          'display_name' => 'artwork_mine_refs',
           'view_name' => 'artwork',
         ),
       ),
@@ -7027,13 +7185,9 @@ function vaxia_field_default_fields() {
       ),
       'widget' => array(
         'active' => 1,
-        'module' => 'node_reference',
-        'settings' => array(
-          'autocomplete_match' => 'contains',
-          'autocomplete_path' => 'node_reference/autocomplete',
-          'size' => '60',
-        ),
-        'type' => 'node_reference_autocomplete',
+        'module' => 'select_image',
+        'settings' => array(),
+        'type' => 'select_image_select',
         'weight' => '2',
       ),
     ),
@@ -7171,6 +7325,7 @@ function vaxia_field_default_fields() {
           'article' => 0,
           'artwork' => 'artwork',
           'character_sheet' => 0,
+          'forum' => 0,
           'items' => 0,
           'npc' => 0,
           'page' => 0,
@@ -7178,7 +7333,7 @@ function vaxia_field_default_fields() {
         ),
         'view' => array(
           'args' => array(),
-          'display_name' => 'artwork_all_refs',
+          'display_name' => 'artwork_mine_refs',
           'view_name' => 'artwork',
         ),
       ),
@@ -7441,6 +7596,7 @@ function vaxia_field_default_fields() {
   t('Name');
   t('Note additional percentage effects for this item.');
   t('Notes');
+  t('OOC');
   t('Occupation');
   t('Open NPC');
   t('Parent room');
