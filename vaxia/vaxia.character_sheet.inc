@@ -635,10 +635,14 @@ function vaxia_form__character_sheet_owner_form_alter(&$form, &$form_state) {
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
   );
-  $form['change_ownership']['owner_name'] = $form['owner_name'];
-  unset($form['owner_name']);
-  $form['change_ownership']['submit'] = $form['submit'];
-  unset($form['submit']);
+  if (isset($form['owner_name'])) {
+     $form['change_ownership']['owner_name'] = $form['owner_name'];
+    unset($form['owner_name']);
+  }
+  if (isset($form['submit'])) {
+    $form['change_ownership']['submit'] = $form['submit'];
+    unset($form['submit']);
+  }
   if (isset($form['character_sheet_log'])) {
     $form['change_ownership']['character_sheet_log'] = $form['character_sheet_log'];
     unset($form['character_sheet_log']);
