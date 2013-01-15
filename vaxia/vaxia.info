@@ -13,7 +13,6 @@ dependencies[] = comment
 dependencies[] = comment_goodness
 dependencies[] = computed_field
 dependencies[] = dice_roller
-dependencies[] = entitycache
 dependencies[] = favorites
 dependencies[] = features
 dependencies[] = field_collection
