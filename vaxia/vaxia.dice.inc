@@ -115,8 +115,7 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
         $form['vaxia_rolls']['dice'][$i] = _vaxia_dice_roller_row($dice_size, $stat, $skills, $items);
       }
       $form['vaxia_rolls']['notes'] = array(
-        '#type' => 'textarea',
-        '#title' => t('Notes'),
+        '#type' => 'hidden',
       );
       return $form;
     }
