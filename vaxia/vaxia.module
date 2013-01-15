@@ -427,10 +427,12 @@ function _vaxia_comment_set_profile_values_submit($form, $form_state) {
     $this_player->field_refresh_rate[$lang][0]['value'] = $refresh_rate;
   }
   user_save($this_player);
-  // Save the updated art to the character.
-  $this_character = node_load($character);
-  $this_character->field_artwork[$lang][0]['nid'] = $artwork;
-  node_save($this_character);
+  if (!empty($artwork) && !empty($character)) {
+    // Save the updated art to the character.
+    $this_character = node_load($character);
+    $this_character->field_artwork[$lang][0]['nid'] = $artwork;
+    node_save($this_character);
+  }
 }
 
 /**
