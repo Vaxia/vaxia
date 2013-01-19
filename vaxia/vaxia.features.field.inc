@@ -46,7 +46,7 @@ function vaxia_field_default_fields() {
         ),
         'view' => array(
           'args' => array(),
-          'display_name' => 'artwork_mine_refs',
+          'display_name' => 'artwork_char_sheet_refs',
           'view_name' => 'artwork',
         ),
       ),
@@ -60,10 +60,11 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'hidden',
+          'label' => 'above',
+          'module' => 'node_reference',
           'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '5',
+          'type' => 'node_reference_default',
+          'weight' => 5,
         ),
       ),
       'entity_type' => 'comment',
@@ -74,16 +75,9 @@ function vaxia_field_default_fields() {
         'user_register_form' => FALSE,
       ),
       'widget' => array(
-        'active' => 1,
+        'active' => 0,
         'module' => 'select_image',
-        'settings' => array(
-          'autocomplete_match' => 'contains',
-          'edit_fallback' => 0,
-          'fallback' => 'select',
-          'image_field_artwork' => 'field_artwork_image',
-          'image_style' => 'thumbnail',
-          'node_link' => array(),
-        ),
+        'settings' => array(),
         'type' => 'select_image_select',
         'weight' => '4',
       ),
@@ -1119,7 +1113,7 @@ function vaxia_field_default_fields() {
         ),
         'view' => array(
           'args' => array(),
-          'display_name' => 'artwork_mine_refs',
+          'display_name' => 'artwork_char_sheet_refs',
           'view_name' => 'artwork',
         ),
       ),
@@ -1156,16 +1150,9 @@ function vaxia_field_default_fields() {
         'user_register_form' => FALSE,
       ),
       'widget' => array(
-        'active' => 1,
+        'active' => 0,
         'module' => 'select_image',
-        'settings' => array(
-          'autocomplete_match' => 'contains',
-          'edit_fallback' => 0,
-          'fallback' => 'select',
-          'image_field_artwork' => 'field_artwork_image',
-          'image_style' => 'thumbnail',
-          'node_link' => array(),
-        ),
+        'settings' => array(),
         'type' => 'select_image_select',
         'weight' => '4',
       ),
@@ -6621,7 +6608,7 @@ function vaxia_field_default_fields() {
         ),
         'view' => array(
           'args' => array(),
-          'display_name' => 'artwork_mine_refs',
+          'display_name' => 'artwork_char_sheet_refs',
           'view_name' => 'artwork',
         ),
       ),
@@ -7147,7 +7134,7 @@ function vaxia_field_default_fields() {
         ),
         'view' => array(
           'args' => array(),
-          'display_name' => 'artwork_mine_refs',
+          'display_name' => 'artwork_char_sheet_refs',
           'view_name' => 'artwork',
         ),
       ),
@@ -7161,13 +7148,11 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'hidden',
+          'label' => 'above',
           'module' => 'node_reference',
-          'settings' => array(
-            'node_reference_view_mode' => 'full',
-          ),
-          'type' => 'node_reference_node',
-          'weight' => '0',
+          'settings' => array(),
+          'type' => 'node_reference_default',
+          'weight' => 3,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -7184,7 +7169,7 @@ function vaxia_field_default_fields() {
         'user_register_form' => FALSE,
       ),
       'widget' => array(
-        'active' => 1,
+        'active' => 0,
         'module' => 'select_image',
         'settings' => array(),
         'type' => 'select_image_select',
@@ -7333,7 +7318,7 @@ function vaxia_field_default_fields() {
         ),
         'view' => array(
           'args' => array(),
-          'display_name' => 'artwork_mine_refs',
+          'display_name' => 'artwork_char_sheet_refs',
           'view_name' => 'artwork',
         ),
       ),

@@ -435,13 +435,6 @@ function vaxia_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'entitycache_enabled';
-  $strongarm->value = TRUE;
-  $export['entitycache_enabled'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
   $strongarm->name = 'menu_options_artwork';
   $strongarm->value = array();
   $export['menu_options_artwork'] = $strongarm;
