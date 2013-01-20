@@ -101,45 +101,42 @@ function vaxia_file_scan_directory($dir, $mask) {
 }
 
 function read_vaxia_file($ROOT, $file) {
-  $file = str_replace('//','/',$file);
+  $file = str_replace('//', '/', $file);
   $record = array();
-  $fp = fopen($file, 'r');
-  if ($fp) {
-    while (($line = fgets($fp, 4096)) !== false) {
-      $pattern = '/^\[(.*)\](.*)/';
-      preg_match($pattern, $line, $matches);
-      if (count($matches) >= 3) {
-        $matches[1] = trim($matches[1]);
-        $matches[2] = trim($matches[2]);
-        if (strpos($matches[2], '^') === 0) { // If string starts with caret remove it.
-          $matches[2] = substr($matches[2], 1);
+  if (is_file($file)) {
+    $fp = fopen($file, 'r');
+    $path = '';
+    if ($fp) {
+      while (($line = fgets($fp, 4096)) !== false) {
+        // Check for values.
+        $pattern = '/^\[(.*)\](.*)/';
+        preg_match($pattern, $line, $matches);
+        if (count($matches) >= 3) {
+          $matches[1] = trim($matches[1]);
+          $matches[2] = trim($matches[2]);
+          if (strpos($matches[2], '^') === 0) { // If string starts with caret remove it.
+            $matches[2] = substr($matches[2], 1);
+          }
+          $record[ $matches[1] ] = $matches[2];
         }
-        $record[ $matches[1] ] = $matches[2];
+        // Check for PATH: and read and merge the values.
+        $pattern = '/^PATH:(.*)/';
+        $matches = array();
+        preg_match($pattern, $line, $matches);
+        if (count($matches) >= 2) {
+          $path = trim($matches[1]);
+        }
       }
+      if (!feof($fp)) {
+        echo "Error: unexpected fgets() fail\n";
+      }
+      fclose($fp);
     }
-    if (!feof($fp)) {
-      echo "Error: unexpected fgets() fail\n";
+    if (!empty($path)) {
+      $new_record = read_vaxia_file($ROOT, $ROOT . '/' . $path);
+      // Add values.
+      $record = array_merge($new_record, $record);
     }
-    fclose($fp);
-  }
-  $fp = fopen($file, 'r');
-  $path = '';
-  if ($fp) {
-    while (($line = fgets($fp, 4096)) !== false) {
-      // Check for PATH: and read and merge the values.
-      $additional = '/^\PATH:(.*)/';
-      preg_match($additional, $line, $matches);
-      $path = trim($matches[1]);
-    }
-    if (!feof($fp)) {
-      echo "Error: unexpected fgets() fail\n";
-    }
-    fclose($fp);
-  }
-  if (!empty($path)) {
-    $new_record = read_vaxia_file($ROOT . '/' . $path);
-    // Add values.
-    $record = array_merge($new_record, $record);
   }
   return $record;
 }
