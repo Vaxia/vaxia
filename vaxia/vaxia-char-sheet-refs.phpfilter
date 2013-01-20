@@ -1,0 +1,14 @@
+// Default use logged in user.
+global $user;
+$uid = $user->uid;
+// If this is a node display, char sheet type.
+$path = $_GET['q'];
+$args[$path] = explode('/', $path);
+if (!empty($args[1])) {
+  $nid = $args[1];
+  $node = node_load($nid);
+  if (!empty($node->nid) && $node->type == 'character_sheet') {
+    $uid = $node->uid;
+  }
+}
+return $uid;
