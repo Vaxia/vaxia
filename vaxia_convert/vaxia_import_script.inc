@@ -14,7 +14,6 @@ function vaxia_import_main() {
     vaxia_import_users('./vaxia_convert/users.xml');
     drupal_set_message('Users have been converted.');
   }
-  set_time_limit(180);
   // Make art from art.xml
   if (file_exists('./vaxia_convert/art.xml')) {
     vaxia_import_art('./vaxia_convert/art.xml');
@@ -55,13 +54,18 @@ function vaxia_import_main() {
 function vaxia_read_xml($file) {
   $results = simplexml_load_file($file, 'SimpleXMLElement', LIBXML_NOCDATA);
   $records = array();
-  foreach ($results->children() as $child) {
-    $record = array();
-    foreach ($child->children() as $child_two) {
-      $child_value = (array) $child_two;
-      $record[ $child_two->getName() ] = $child_value[0];
+  if (!empty($results)) {
+    foreach ($results->children() as $child) {
+      $record = array();
+      foreach ($child->children() as $child_two) {
+        $child_value = (array) $child_two;
+        $record[ $child_two->getName() ] = $child_value[0];
+      }
+      $records[] = $record;
     }
-    $records[] = $record;
+  }
+  else {
+    drupal_set_message('Warning: ' . $file . ' is not a properly formatted XML file.', 'error');
   }
   return $records;
 }
@@ -104,6 +108,7 @@ function vaxia_import_art($file) {
   $records = vaxia_read_xml($file);
   $results = 0;
   foreach ($records as $record) {
+    set_time_limit(10);
     if (isset($record['name']) && !empty($record['name']) && isset($record['path']) && !empty($record['path'])) {
       $node = new stdClass();
       $node->type = 'artwork';
@@ -200,7 +205,7 @@ function vaxia_import_characters($file) {
         }
         $node->field_player_notes[$node->language][0]['value'] = isset($record['playerNotes']) ? $record['playerNotes'] : '';
         $node->field_sh_notes[$node->language][0]['value'] = isset($record['shNotes']) ? $record['shNotes'] : '';
-        $node->field_sh_private_notes[$node->language][0]['value'] = isset($record['shNotes']) ? $record['shPnotes'] : '';
+        $node->field_sh_private_notes[$node->language][0]['value'] = isset($record['shPnotes']) ? $record['shPnotes'] : '';
     
         $node->field_property[$node->language][0]['value'] = isset($record['playerProperty']) ? $record['playerProperty'] : '';
         //$node->field_items[$node->language][0]['value'] = $record['KEYNAME'];
@@ -262,6 +267,7 @@ function vaxia_import_characters($file) {
           'charMxps' => 'mage',
           'charTxps' => 'rogue',
         );
+        $node->field_economy[$node->language][0]['value'] = isset($record['ecolevel']) && is_numeric($record['ecolevel']) ? $record['ecolevel'] : 25;
         // Mark the historical record of flavored XP.
         foreach ($flavoured_xp as $old_type => $new_type) {
           if (isset($record[$old_type]) && $record[$old_type] > 0) {
@@ -308,124 +314,51 @@ function vaxia_import_items($file) {
       else {
         $node->field_item_value[$node->language][0]['value'] = 0;
       }
-      // Set stat modifications.
-      // Mods from the items.
-      $mods_map = array(
-        'MODagi' => 'field_item_agility',
-        'MODbty' => 'field_item_appearance',
-        'MODawa' => 'field_item_awareness',
-        'MODcha' => 'field_item_charisma',
-        'MODcon' => 'field_item_constitution',
-        'MODdex' => 'field_item_dexterity',
-        'MODend' => 'field_item_endurance',
-        'MODhlt' => 'field_item_health',
-        'MODint' => 'field_item_intelligence',
-        'MODlfe' => 'field_item_life',
-        'MODpre' => 'field_item_presence',
-        'MODroa' => 'field_item_reflexes',
-        'MODspi' => 'field_item_spirituality',
-        'MODstr' => 'field_item_strength',
+      // Skill label maps.
+      $s_map = array(
+        'agi' => 'agility',
+        'bty' => 'appearance',
+        'awa' => 'awareness',
+        'cha' => 'charisma',
+        'con' => 'constitution',
+        'dex' => 'dexterity',
+        'end' => 'endurance',
+        'hlt' => 'health',
+        'int' => 'intelligence',
+        'lfe' => 'life',
+        'pre' => 'presence',
+        'roa' => 'reflexes',
+        'spi' => 'spirituality',
+        'str' => 'strength',
+        'ski' => 'skill',
       );
-      // Mods from base.
-      $mods_map2 = array(
-        'MODagi' => 'agi',
-        'MODbty' => 'bty',
-        'MODawa' => 'awa',
-        'MODcha' => 'cha',
-        'MODcon' => 'con',
-        'MODdex' => 'dex',
-        'MODend' => 'end',
-        'MODhlt' => 'hlt',
-        'MODint' => 'int',
-        'MODlfe' => 'lfe',
-        'MODpre' => 'pre',
-        'MODroa' => 'roa',
-        'MODspi' => 'spi',
-        'MODstr' => 'str',
-      );
-      foreach ($mods_map as $key => $map) {
-        if (isset($record[$key]) && is_numeric($record[$key])) {
-          if (isset($record[ $mods_map2[$key] ]) && !empty($record[ $mods_map2[$key] ])) {
-            $position = strrpos($record[ $mods_map2[$key] ], '%');
-            if ($position !== FALSE) {
-              $node->field_percents[$node->language][0]['value'] .= 'Adds ' . $record[ $mods_map2[$key] ] . ' to ' . $mods_map2[$key] . '.' . "\n";
-            }
-          }
-          else {
-            $this_value = $record[$key] < 500000? $record[$key] : 500000;
-            $this_value += isset($record[ $mods_map2[$key] ]) ? $record[ $mods_map2[$key] ] : 0;
-            $node->{$map}[$node->language][0]['value'] = $this_value;
-          }
+      foreach ($s_map as $vname => $dname) {
+        // Set modifies.
+        if (!isset($record[$vname])) { $record[$vname] = 0; }
+        if (!isset($record['MOD' . $vname])) { $record['MOD' . $vname] = 0; }
+        $drupal_field = 'field_item_' . $dname;
+        if ($vname != 'str') {
+          $node->{$drupal_field}[$node->language][0]['value'] = $record[$vname] + $record['MOD' . $vname];
         }
         else {
-          $node->{$map}[$node->language][0]['value'] = 0;
+          // Trim the % off the end.
+          $record[$vname] = str_replace('%', '', $record[$vname]);
+          $value = $record[$vname] + $record['MOD' . $vname];
+          $node->{$drupal_field}[$node->language][0]['value'] = 0;
+          if ($value != 0) {
+            $node->field_percents[$node->language][0]['value'] = 'Adds ' . $value . '% to strength.';
+          }
         }
-      }
-      // Set stat requirements.
-      // Min requirements.
-      $mods_map = array(
-        'reqagi' => 'field_item_required_agility',
-        'reqbty' => 'field_item_required_appearance',
-        'reqawa' => 'field_item_required_awareness',
-        'reqcha' => 'field_item_required_charisma',
-        'reqcon' => 'field_item_required_constitution',
-        'reqdex' => 'field_item_required_dexterity',
-        'reqend' => 'field_item_required_endurance',
-        'reqhlt' => 'field_item_required_health',
-        'reqint' => 'field_item_required_intelligence',
-        'reqlfe' => 'field_item_required_life',
-        'reqpre' => 'field_item_required_presence',
-        'reqroa' => 'field_item_required_reflexes',
-        'reqspi' => 'field_item_required_spirituality',
-        'reqstr' => 'field_item_required_strength',
-      );
-      foreach ($mods_map as $key => $map) {
-        if (isset($record[$key]) && is_numeric($record[$key])) {
-          $node->{$map}[$node->language][0]['value'] = $record[$key] < 500000? $record[$key] : 500000;
-        }
-        else {
-          $node->{$map}[$node->language][0]['value'] = 0;
-        }
-      }
-      // The mods based on failed requirements.
-      // Damage done if mins aren't fulfilled.
-      $mods_map = array(
-        'MODreqagi' => 'field_item_pen_agility',
-        'MODreqbty' => 'field_item_pen_appearance',
-        'MODreqawa' => 'field_item_pen_awareness',
-        'MODreqcha' => 'field_item_pen_charisma',
-        'MODreqcon' => 'field_item_pen_constitution',
-        'MODreqdex' => 'field_item_pen_dexterity',
-        'MODreqend' => 'field_item_pen_endurance',
-        'MODreqhlt' => 'field_item_pen_health',
-        'MODreqint' => 'field_item_pen_intelligence',
-        'MODreqlfe' => 'field_item_pen_life',
-        'MODreqpre' => 'field_item_pen_presence',
-        'MODreqroa' => 'field_item_pen_reflexes',
-        'MODreqspi' => 'field_item_pen_spirituality',
-        'MODreqstr' => 'field_item_pen_strength',
-      );
-      
-      // Set skill modifier.
-      if (isset($record['MODski']) && is_numeric($record['MODski'])) {
-        $node->field_item_skill[$node->language][0]['value'] = $record['MODski'] < 500000? $record['MODski'] : 500000;
-      }
-      else {
-        $node->field_item_skill[$node->language][0]['value'] = 0;
-      }
-      // Set skill required.
-      if (isset($record['MODreqski']) && is_numeric($record['MODreqski'])) {
-        $node->field_item_required_skill[$node->language][0]['value'] = $record['MODreqski'] < 500000? $record['MODreqski'] : 500000;
-      }
-      else {
-        $node->field_item_required_skill[$node->language][0]['value'] = 0;
-      }
-      // Set skill pen.
-      if (isset($record['MODreqski']) && is_numeric($record['MODreqski'])) {
-        $node->field_item_pen_skill[$node->language][0]['value'] = $record['MODreqski'] < 500000? $record['MODreqski'] : 500000;
-      }
-      else {
-        $node->field_item_pen_skill[$node->language][0]['value'] = 0;
+        // Set requires.
+        if (!isset($record['req' . $vname])) { $record['req' . $vname] = 0; }
+        if (!isset($record['MODreq' . $vname])) { $record['MODreq' . $vname] = 0; }
+        $drupal_field = 'field_item_required_' . $dname;
+        $node->{$drupal_field}[$node->language][0]['value'] = $record['req' . $vname] + $record['MODreq' . $vname];
+        //Set penalties.
+        //if (!isset($record['req' . $vname]) { $record['req' . $vname] = 0; }
+        //if (!isset($record['MODreq' . $vname]) { $record['MODreq' . $vname] = 0; }
+        $drupal_field = 'field_item_pen_' . $dname;
+        $node->{$drupal_field}[$node->language][0]['value'] = 0;
       }
       // Save if we have an item. (Some item records are incomplete.)
       node_save($node);

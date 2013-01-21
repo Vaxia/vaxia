@@ -407,7 +407,7 @@ function recursive_get_rooms($ROOT, $path, $parent, $category, $file, $art_file,
       write_record_to_file($file, $record);
       $results++;
       // And recurse down.
-      $results = recursive_get_rooms($path .'/'. $this_path, $room['name'], $category, $file, $art_file, $results);
+      $results = recursive_get_rooms($ROOT, $path .'/'. $this_path, $room['name'], $category, $file, $art_file, $results);
     }
   }
   return $results;
