@@ -39,10 +39,6 @@ function vaxia_views_default_views() {
   $handler->display->display_options['style_plugin'] = 'grid';
   $handler->display->display_options['style_options']['columns'] = '5';
   $handler->display->display_options['row_plugin'] = 'fields';
-  /* Relationship: Content: Author */
-  $handler->display->display_options['relationships']['uid']['id'] = 'uid';
-  $handler->display->display_options['relationships']['uid']['table'] = 'node';
-  $handler->display->display_options['relationships']['uid']['field'] = 'uid';
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -207,6 +203,7 @@ function vaxia_views_default_views() {
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['row_plugin'] = 'references_fields';
   $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
@@ -227,6 +224,29 @@ function vaxia_views_default_views() {
     'image_link' => '',
   );
   $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Content: Author uid */
+  $handler->display->display_options['arguments']['uid']['id'] = 'uid';
+  $handler->display->display_options['arguments']['uid']['table'] = 'node';
+  $handler->display->display_options['arguments']['uid']['field'] = 'uid';
+  $handler->display->display_options['arguments']['uid']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['uid']['default_argument_type'] = 'php';
+  $handler->display->display_options['arguments']['uid']['default_argument_options']['code'] = '// Default use logged in user.
+global $user;
+$uid = $user->uid;
+// If this is a node display, char sheet type.
+$path = $_GET[\'q\'];
+$args[$path] = explode(\'/\', $path);
+if (!empty($args[1])) {
+  $nid = $args[1];
+  $node = node_load($nid);
+  if (!empty($node->nid) && $node->type == \'character_sheet\') {
+    $uid = $node->uid;
+  }
+}
+return $uid;';
+  $handler->display->display_options['arguments']['uid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['uid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['uid']['summary_options']['items_per_page'] = '25';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
@@ -252,18 +272,6 @@ function vaxia_views_default_views() {
     10 => '10',
   );
   $handler->display->display_options['filters']['sid']['group'] = 1;
-  /* Filter criterion: User: Current */
-  $handler->display->display_options['filters']['uid_current']['id'] = 'uid_current';
-  $handler->display->display_options['filters']['uid_current']['table'] = 'users';
-  $handler->display->display_options['filters']['uid_current']['field'] = 'uid_current';
-  $handler->display->display_options['filters']['uid_current']['relationship'] = 'uid';
-  $handler->display->display_options['filters']['uid_current']['value'] = '1';
-  $handler->display->display_options['filters']['uid_current']['group'] = 1;
-  $handler->display->display_options['filters']['uid_current']['expose']['operator_id'] = '';
-  $handler->display->display_options['filters']['uid_current']['expose']['label'] = 'Is the logged in user';
-  $handler->display->display_options['filters']['uid_current']['expose']['operator'] = 'uid_current_op';
-  $handler->display->display_options['filters']['uid_current']['expose']['identifier'] = 'uid_current';
-  $handler->display->display_options['filters']['uid_current']['expose']['required'] = TRUE;
 
   /* Display: Artwork evaluate */
   $handler = $view->new_display('page', 'Artwork evaluate', 'artwork_evaluate');
@@ -340,77 +348,6 @@ function vaxia_views_default_views() {
   $handler->display->display_options['menu']['description'] = 'Art evaluation';
   $handler->display->display_options['menu']['weight'] = '2';
   $handler->display->display_options['menu']['name'] = 'menu-vaxia';
-
-  /* Display: Char sheet artwork refs */
-  $handler = $view->new_display('references', 'Char sheet artwork refs', 'artwork_char_sheet_refs');
-  $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'My artwork refs';
-  $handler->display->display_options['display_description'] = 'Char sheet artwork refs';
-  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
-  $handler->display->display_options['pager']['type'] = 'none';
-  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
-  $handler->display->display_options['style_plugin'] = 'references_style';
-  $handler->display->display_options['defaults']['style_options'] = FALSE;
-  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
-  $handler->display->display_options['row_plugin'] = 'references_fields';
-  $handler->display->display_options['defaults']['row_options'] = FALSE;
-  $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Content: Title */
-  $handler->display->display_options['fields']['title']['id'] = 'title';
-  $handler->display->display_options['fields']['title']['table'] = 'node';
-  $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = '';
-  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
-  /* Field: Content: Image */
-  $handler->display->display_options['fields']['field_artwork_image']['id'] = 'field_artwork_image';
-  $handler->display->display_options['fields']['field_artwork_image']['table'] = 'field_data_field_artwork_image';
-  $handler->display->display_options['fields']['field_artwork_image']['field'] = 'field_artwork_image';
-  $handler->display->display_options['fields']['field_artwork_image']['label'] = '';
-  $handler->display->display_options['fields']['field_artwork_image']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_artwork_image']['click_sort_column'] = 'fid';
-  $handler->display->display_options['fields']['field_artwork_image']['settings'] = array(
-    'image_style' => 'thumbnail',
-    'image_link' => '',
-  );
-  $handler->display->display_options['defaults']['arguments'] = FALSE;
-  /* Contextual filter: User: Uid */
-  $handler->display->display_options['arguments']['uid']['id'] = 'uid';
-  $handler->display->display_options['arguments']['uid']['table'] = 'users';
-  $handler->display->display_options['arguments']['uid']['field'] = 'uid';
-  $handler->display->display_options['arguments']['uid']['relationship'] = 'uid';
-  $handler->display->display_options['arguments']['uid']['default_action'] = 'default';
-  $handler->display->display_options['arguments']['uid']['default_argument_type'] = 'user';
-  $handler->display->display_options['arguments']['uid']['default_argument_options']['user'] = TRUE;
-  $handler->display->display_options['arguments']['uid']['summary']['number_of_records'] = '0';
-  $handler->display->display_options['arguments']['uid']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['uid']['summary_options']['items_per_page'] = '25';
-  $handler->display->display_options['arguments']['uid']['validate']['type'] = 'user';
-  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
-  $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Content: Published */
-  $handler->display->display_options['filters']['status']['id'] = 'status';
-  $handler->display->display_options['filters']['status']['table'] = 'node';
-  $handler->display->display_options['filters']['status']['field'] = 'status';
-  $handler->display->display_options['filters']['status']['value'] = 1;
-  $handler->display->display_options['filters']['status']['group'] = 1;
-  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Content: Type */
-  $handler->display->display_options['filters']['type']['id'] = 'type';
-  $handler->display->display_options['filters']['type']['table'] = 'node';
-  $handler->display->display_options['filters']['type']['field'] = 'type';
-  $handler->display->display_options['filters']['type']['value'] = array(
-    'artwork' => 'artwork',
-  );
-  $handler->display->display_options['filters']['type']['group'] = 1;
-  /* Filter criterion: Workflow: Current state */
-  $handler->display->display_options['filters']['sid']['id'] = 'sid';
-  $handler->display->display_options['filters']['sid']['table'] = 'workflow_node';
-  $handler->display->display_options['filters']['sid']['field'] = 'sid';
-  $handler->display->display_options['filters']['sid']['value'] = array(
-    10 => '10',
-  );
-  $handler->display->display_options['filters']['sid']['group'] = 1;
   $export['artwork'] = $view;
 
   $view = new view();
