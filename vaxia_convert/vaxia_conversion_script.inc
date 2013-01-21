@@ -313,20 +313,23 @@ function get_npcs($ROOT, $path, $open_path) {
           write_record_to_file($file, $record);
           $results++;
         }
-        // Get SH NPCS        
-        foreach (get_directories($path . '/' . $letter_dir . '/' . $user_dir . '/dependants') as $shnpc_dir) {
-          // Read the art dir.
-          $shnpc = array();
-          $shnpc['player'] = ucfirst($user_dir);
-          $shnpc['character'] = ucfirst($shnpc_dir);
-          $shnpc['isNPC'] = 1;
-          // Given permissions and email in dir / dir / name-pass.item
-          $data = read_vaxia_file($ROOT, $path . '/' . $letter_dir . '/' . $user_dir . '/dependants/' . $shnpc_dir . '/' . $shnpc_dir . '.item');
-          $shnpc = array_merge($shnpc, $data);
-          // Now that we have a user, determine the rest of the settings and permissions.
-          $record = $shnpc;
-          write_record_to_file($sh_file, $record);
-          $results++;
+        // Get SH NPCS
+        $shnpc_dirs = get_directories($path . '/' . $letter_dir . '/' . $user_dir . '/dependants');        
+        if (is_array($shnpc_dirs)) {
+          foreach ($shnpc_dirs as $shnpc_dir) {
+            // Read the art dir.
+            $shnpc = array();
+            $shnpc['player'] = ucfirst($user_dir);
+            $shnpc['character'] = ucfirst($shnpc_dir);
+            $shnpc['isNPC'] = 1;
+            // Given permissions and email in dir / dir / name-pass.item
+            $data = read_vaxia_file($ROOT, $path . '/' . $letter_dir . '/' . $user_dir . '/dependants/' . $shnpc_dir . '/' . $shnpc_dir . '.item');
+            $shnpc = array_merge($shnpc, $data);
+            // Now that we have a user, determine the rest of the settings and permissions.
+            $record = $shnpc;
+            write_record_to_file($sh_file, $record);
+            $results++;
+          }
         }
       }
     }
@@ -344,7 +347,7 @@ function get_npcs($ROOT, $path, $open_path) {
         $opennpc['isNPC'] = 1;
         $opennpc['isOpenNPC'] = 1;
         // Given permissions and email in dir / dir / name-pass.item
-        $data = read_vaxia_file($open_path . '/' . $world . '/npcs/' . $letter_dir . '/' . $open_dir . '/' . $open_dir . '.item');
+        $data = read_vaxia_file($ROOT, $open_path . '/' . $world . '/npcs/' . $letter_dir . '/' . $open_dir . '/' . $open_dir . '.item');
         $opennpc = array_merge($opennpc, $data);
         // Now that we have a user, determine the rest of the settings and permissions.
         $record = $opennpc;
