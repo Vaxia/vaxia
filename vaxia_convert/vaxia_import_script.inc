@@ -308,11 +308,11 @@ function vaxia_import_items($file) {
       $node->field_item_desc[$node->language][0]['value'] = isset($record['NEWitemDescription']) ? $record['NEWitemDescription'] : '';
       $node->field_item_history[$node->language][0]['value'] = '';
       $node->field_item_notes[$node->language][0]['value'] = '';
-      if (isset($record['MODitemValue']) && is_numeric($record['MODitemValue'])) {
-        $node->field_item_value[$node->language][0]['value'] = $record['MODitemValue'] < 500000? $record['MODitemValue'] : 500000;
-      }
-      else {
-        $node->field_item_value[$node->language][0]['value'] = 0;
+      if (!isset($record['itemValue'])) { $record['itemValue'] = 0; }
+      if (!isset($record['MODitemValue'])) { $record['MODitemValue'] = 0; }
+      $node->field_item_value[$node->language][0]['value'] = $record['itemValue'] + $record['MODitemValue'];
+      if ($node->field_item_value[$node->language][0]['value'] > 50000) {
+        $node->field_item_value[$node->language][0]['value'] = 50000;
       }
       // Skill label maps.
       $s_map = array(
@@ -339,6 +339,9 @@ function vaxia_import_items($file) {
         $drupal_field = 'field_item_' . $dname;
         if ($vname != 'str') {
           $node->{$drupal_field}[$node->language][0]['value'] = $record[$vname] + $record['MOD' . $vname];
+          if ($node->{$drupal_field}[$node->language][0]['value'] > 50000) {
+            $node->{$drupal_field}[$node->language][0]['value'] = 50000;
+          }
         }
         else {
           // Trim the % off the end.
@@ -354,6 +357,9 @@ function vaxia_import_items($file) {
         if (!isset($record['MODreq' . $vname])) { $record['MODreq' . $vname] = 0; }
         $drupal_field = 'field_item_required_' . $dname;
         $node->{$drupal_field}[$node->language][0]['value'] = $record['req' . $vname] + $record['MODreq' . $vname];
+        if ($node->{$drupal_field}[$node->language][0]['value'] > 50000) {
+          $node->{$drupal_field}[$node->language][0]['value'] = 50000;
+        }
         //Set penalties.
         //if (!isset($record['req' . $vname]) { $record['req' . $vname] = 0; }
         //if (!isset($record['MODreq' . $vname]) { $record['MODreq' . $vname] = 0; }
