@@ -108,7 +108,7 @@ function vaxia_import_art($file) {
   $records = vaxia_read_xml($file);
   $results = 0;
   foreach ($records as $record) {
-    set_time_limit(10);
+    set_time_limit(30);
     if (isset($record['name']) && !empty($record['name']) && isset($record['path']) && !empty($record['path'])) {
       $node = new stdClass();
       $node->type = 'artwork';
@@ -170,7 +170,7 @@ function vaxia_import_characters($file) {
   foreach ($records as $record) {
     if (isset($record['character']) && !empty($record['character']) && ($record['character'] != '_vti_cnf')) {
       try {
-        set_time_limit(10);
+        set_time_limit(30);
         $node = new stdClass();
         $node->type = 'character_sheet';
         node_object_prepare($node);
