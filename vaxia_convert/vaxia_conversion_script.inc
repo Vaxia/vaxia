@@ -314,21 +314,24 @@ function get_npcs($ROOT, $path, $open_path) {
           $results++;
         }
         // Get SH NPCS
-        $shnpc_dirs = get_directories($path . '/' . $letter_dir . '/' . $user_dir . '/dependants');        
+        $shnpc_dirs = get_directories($path . '/' . $letter_dir . '/' . $user_dir . '/' . $char_dir . '/dependants');        
         if (is_array($shnpc_dirs)) {
           foreach ($shnpc_dirs as $shnpc_dir) {
-            // Read the art dir.
-            $shnpc = array();
-            $shnpc['player'] = ucfirst($user_dir);
-            $shnpc['character'] = ucfirst($shnpc_dir);
-            $shnpc['isNPC'] = 1;
-            // Given permissions and email in dir / dir / name-pass.item
-            $data = read_vaxia_file($ROOT, $path . '/' . $letter_dir . '/' . $user_dir . '/dependants/' . $shnpc_dir . '/' . $shnpc_dir . '.item');
-            $shnpc = array_merge($shnpc, $data);
-            // Now that we have a user, determine the rest of the settings and permissions.
-            $record = $shnpc;
-            write_record_to_file($sh_file, $record);
-            $results++;
+            if ($shnpc_dir != '_vti_cnf') {
+              // Read the art dir.
+              $shnpc = array();
+              $shnpc['player'] = ucfirst($user_dir);
+              $shnpc['character'] = ucfirst($shnpc_dir);
+              $shnpc['isNPC'] = 1;
+              // Given permissions and email in dir / dir / name-pass.item
+              $data = read_vaxia_file($ROOT, $path . '/' . $letter_dir . '/' . $user_dir . '/' . $char_dir . '/dependants/'
+                . $shnpc_dir . '/' . $shnpc_dir . '.item');
+              $shnpc = array_merge($shnpc, $data);
+              // Now that we have a user, determine the rest of the settings and permissions.
+              $record = $shnpc;
+              write_record_to_file($sh_file, $record);
+              $results++;
+            }
           }
         }
       }
