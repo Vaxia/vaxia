@@ -8,45 +8,49 @@
  */
 
 function vaxia_import_main() {
-  // Now we have all the converted data in .xml form.
-  // Make users from .users.xml
-  if (file_exists('./vaxia_convert/users.xml')) {
-    vaxia_import_users('./vaxia_convert/users.xml');
-    drupal_set_message('Users have been converted.');
-  }
-  // Make art from art.xml
-  if (file_exists('./vaxia_convert/art.xml')) {
-    vaxia_import_art('./vaxia_convert/art.xml');
-    drupal_set_message('Art has been converted.');
-  }
-  set_time_limit(180);
-  // Make rooms from vaxia-rooms.xml
-  if (file_exists('./vaxia_convert/vaxia-rooms.xml')) {
-    vaxia_import_rooms('./vaxia_convert/vaxia-rooms.xml');
-    drupal_set_message('Vaxia rooms have been converted.');
-  }
-  if (file_exists('./vaxia_convert/sirian-rooms.xml')) {
-    vaxia_import_rooms('./vaxia_convert/sirian-rooms.xml');
-    drupal_set_message('Sirian rooms have been converted.');
-  }
-  set_time_limit(180);
-  drupal_set_message('TASK: Create a central Limbo room.');
-  // Make characters from characters.xml
-  if (file_exists('./vaxia_convert/characters.xml')) {
-    vaxia_import_characters('./vaxia_convert/characters.xml');
-    vaxia_import_characters('./vaxia_convert/shnpcs.xml');
-    vaxia_import_characters('./vaxia_convert/opennpcs.xml');
-    drupal_set_message('Characters have been converted.');
-  }
-  // Make items from items.xml
-  if (file_exists('./vaxia_convert/items.xml')) {
-    vaxia_import_items('./vaxia_convert/items.xml');
-    drupal_set_message('Items have been converted.');
-  }
-  // Make npcs from npcs.xml
-  if (file_exists('./vaxia_convert/npcs.xml')) {
-    vaxia_import_npcs('./vaxia_convert/npcs.xml');
-    drupal_set_message('NPCs have been converted.');
+  $started = variable_get('vaxia_import_start', FALSE);
+  if (!$started) {
+    variable_set('vaxia_import_start', TRUE);
+    // Now we have all the converted data in .xml form.
+    // Make users from .users.xml
+    if (file_exists('./vaxia_convert/users.xml')) {
+      vaxia_import_users('./vaxia_convert/users.xml');
+      drupal_set_message('Users have been converted.');
+    }
+    // Make art from art.xml
+    if (file_exists('./vaxia_convert/art.xml')) {
+      vaxia_import_art('./vaxia_convert/art.xml');
+      drupal_set_message('Art has been converted.');
+    }
+    set_time_limit(180);
+    // Make rooms from vaxia-rooms.xml
+    if (file_exists('./vaxia_convert/vaxia-rooms.xml')) {
+      vaxia_import_rooms('./vaxia_convert/vaxia-rooms.xml');
+      drupal_set_message('Vaxia rooms have been converted.');
+    }
+    if (file_exists('./vaxia_convert/sirian-rooms.xml')) {
+      vaxia_import_rooms('./vaxia_convert/sirian-rooms.xml');
+      drupal_set_message('Sirian rooms have been converted.');
+    }
+    set_time_limit(180);
+    drupal_set_message('TASK: Create a central Limbo room.');
+    // Make characters from characters.xml
+    if (file_exists('./vaxia_convert/characters.xml')) {
+      vaxia_import_characters('./vaxia_convert/characters.xml');
+      vaxia_import_characters('./vaxia_convert/shnpcs.xml');
+      vaxia_import_characters('./vaxia_convert/opennpcs.xml');
+      drupal_set_message('Characters have been converted.');
+    }
+    // Make items from items.xml
+    if (file_exists('./vaxia_convert/items.xml')) {
+      vaxia_import_items('./vaxia_convert/items.xml');
+      drupal_set_message('Items have been converted.');
+    }
+    // Make npcs from npcs.xml
+    if (file_exists('./vaxia_convert/npcs.xml')) {
+      vaxia_import_npcs('./vaxia_convert/npcs.xml');
+      drupal_set_message('NPCs have been converted.');
+    }
   }
   drupal_set_message('TASK: All has been converted. TURN THIS MODULE OFF.');
 }
