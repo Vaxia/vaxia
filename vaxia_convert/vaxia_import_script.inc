@@ -201,6 +201,7 @@ function vaxia_import_characters($file) {
         $node->field_personality[$node->language][0]['value'] = isset($record['personality']) ? $record['personality'] : '';
         
         if (isset($record['icNotes'])) {
+          if (!isset($record['playerNotes'])) {$record['playerNotes'] = ''; }
           $record['playerNotes'] .= ' ' . $record['icNotes'];
         }
         $node->field_player_notes[$node->language][0]['value'] = isset($record['playerNotes']) ? $record['playerNotes'] : '';
@@ -369,9 +370,9 @@ function vaxia_import_items($file) {
       // Save if we have an item. (Some item records are incomplete.)
       node_save($node);
       // Add the item to a character if it exists.
-      $character = vaxia_convert_get_nid(isset($record['character']) ? $record[character] : '');
-      if ($character) {
-        $character->field_items[$node->language][] = array('nid' => $node->nid);
+      $character = vaxia_convert_get_nid(isset($record['character']) ? $record['character'] : '');
+      if (isset($character->nid) && isset($node->nid)) {
+        $character->field_items[$character->language][] = array('nid' => $node->nid);
         node_save($character);
       }
       vaxia_convert_set_workflow($node);
