@@ -426,10 +426,12 @@ function vaxia_convert_set_workflow($node) {
   static $type_sids;
   if (!isset($type_sids[$node->type])) {
     $workflow = workflow_get_workflow_type_map_by_type($node->type);
-    $states = workflow_get_workflow_states_by_wid($workflow->wid);
-    foreach ($states as $state) {
-      if ($state->state == 'approved') {
-        $type_sids[$node->type] = $state->sid;
+    if (empty($workflow)) {
+      $states = workflow_get_workflow_states_by_wid($workflow->wid);
+      foreach ($states as $state) {
+        if ($state->state == 'approved') {
+          $type_sids[$node->type] = $state->sid;
+        }
       }
     }
   }
