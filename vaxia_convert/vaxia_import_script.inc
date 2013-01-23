@@ -286,7 +286,7 @@ function vaxia_import_characters($file) {
         _character_sheet_update_xp($node->nid, isset($record['charKxps']) ? $record['charKxps'] : 0, 'kxp');
         // And this is what is in the system - flat - for their calculations henceforth.
         $silver = isset($record['silver']) ? $record['silver'] : 0;
-        $invested_silver =isset($record['invest']) ? $record['invest'] : 0;
+        $invested_silver = isset($record['invest']) ? $record['invest'] : 0;
         _character_sheet_update_xp($node->nid, $invested_silver, 'invest_silver');
         _character_sheet_update_xp($node->nid, $silver + $invested_silver, 'silver');
       } catch (Exception $e) {
