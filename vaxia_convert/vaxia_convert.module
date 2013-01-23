@@ -14,36 +14,40 @@ function vaxia_convert_menu() {
 }
 
 function _vaxia_convert_admin_form() {
-  $form['root_path'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Path to Old Vaxia'),
-    '#description' => t('Path from server root, leave off ending slashes.'),
-  );
-  $form['step_one'] = array(
-    '#type' => 'submit',
-    '#value' => t('Import started do not start it again. If conversion failed, remove created files and retry.'),
-    '#disabled' => TRUE,
-    '#weight' => 1,
-  );
-  $form['step_two'] = array(
-    '#type' => 'submit',
-    '#value' => t('Not ready to import. Convert files first or check the server to make sure they converted.'),
-    '#disabled' => TRUE,
-    '#weight' => 2,
-  );
-  if (!file_exists('./vaxia_convert/users.xml')) {
-    unset($form['step_one']['#disabled']);
-    $form['#submit'] = array('_vaxia_convert_admin_form_submit_one');
-    $form['step_one']['#value'] = t('Convert old Vaxia files. THIS WILL TAKE TIME. So give it minutes to complete.');
-  }
-  if (file_exists('./vaxia_convert/users.xml') && file_exists('./vaxia_convert/art.xml')
+
+  if (!(file_exists('./vaxia_convert/users.xml') && file_exists('./vaxia_convert/art.xml')
     && file_exists('./vaxia_convert/vaxia-rooms.xml') && file_exists('./vaxia_convert/sirian-rooms.xml')
     && file_exists('./vaxia_convert/characters.xml') && file_exists('./vaxia_convert/npcs.xml')
-    && file_exists('./vaxia_convert/items.xml')) {
-    unset($form['step_two']['#disabled']);
-    $form['root_path']['#access'] = FALSE;
-    $form['#submit'] = array('_vaxia_convert_admin_form_submit_two');
-    $form['step_two']['#value'] = t('Import converted files into new Vaxia.');
+    && file_exists('./vaxia_convert/items.xml'))) {
+    $form['root_path'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Path to Old Vaxia'),
+      '#description' => t('Path from server root, leave off ending slashes.'),
+    );
+    $form['step_one'] = array(
+      '#type' => 'submit',
+      '#value' => t('Convert old Vaxia files. THIS WILL TAKE TIME. So give it 30 minutes to complete.'),
+      '#weight' => 1,
+      '#submit' => array('_vaxia_convert_admin_form_submit_one'),
+    );
+  }
+  else {
+    $form['step_two'] = array(
+      '#type' => 'submit',
+      '#value' => t('Import converted files into new Vaxia.  THIS WILL TAKE A LOT OF TIME. So give it an hour to complete.'),
+      '#weight' => 2,
+      '#submit' => array('_vaxia_convert_admin_form_submit_two'),
+    );
+  }
+
+  $started = variable_get('vaxia_import_start', FALSE);
+  if ($started) {
+    $form['step_three'] = array(
+      '#type' => 'submit',
+      '#value' => t('Unlock conversion lock. (Prevents duplicate conversions.)'),
+      '#weight' => 2,
+      '#submit' => array('_vaxia_convert_admin_form_submit_unlock'),
+    );
   }
   return $form;
 }
@@ -61,4 +65,8 @@ function _vaxia_convert_admin_form_submit_two($form, &$form_state) {
   drupal_set_message('Starting imports.');
   vaxia_import_main();
   drupal_set_message('Import completed.');
+}
+
+function _vaxia_convert_admin_form_submit_unlock($form, &$form_state) {
+  variable_set('vaxia_import_start', FALSE);
 }
