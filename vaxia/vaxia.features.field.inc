@@ -555,10 +555,10 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '4',
+          'weight' => '2',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -630,7 +630,7 @@ function vaxia_field_default_fields() {
             'image_style' => 'medium',
           ),
           'type' => 'image',
-          'weight' => '',
+          'weight' => '0',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -702,10 +702,10 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '3',
+          'weight' => '1',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -962,6 +962,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_agility',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -1028,6 +1031,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_appearance',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -1176,6 +1182,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_awareness',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -1275,7 +1284,7 @@ function vaxia_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '2',
+          'weight' => '3',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1312,6 +1321,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_charisma',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -1374,6 +1386,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_constitution',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -1470,7 +1485,7 @@ function vaxia_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '5',
+          'weight' => '6',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1507,6 +1522,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_dexterity',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -1638,6 +1656,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_endurance',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -1700,6 +1721,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_health',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -1767,6 +1791,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_intelligence',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -1865,7 +1892,7 @@ function vaxia_field_default_fields() {
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => '6',
+          'weight' => '0',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1937,7 +1964,7 @@ function vaxia_field_default_fields() {
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => '7',
+          'weight' => '1',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2040,13 +2067,9 @@ function vaxia_field_default_fields() {
       ),
       'widget' => array(
         'active' => 1,
-        'module' => 'node_reference',
-        'settings' => array(
-          'autocomplete_match' => 'contains',
-          'autocomplete_path' => 'node_reference/autocomplete',
-          'size' => '60',
-        ),
-        'type' => 'node_reference_autocomplete',
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_buttons',
         'weight' => '34',
       ),
     ),
@@ -2095,7 +2118,7 @@ function vaxia_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '0',
+          'weight' => '2',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2132,6 +2155,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_life',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -2314,7 +2340,7 @@ function vaxia_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '4',
+          'weight' => '5',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2384,7 +2410,7 @@ function vaxia_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '3',
+          'weight' => '4',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2454,7 +2480,7 @@ function vaxia_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '11',
+          'weight' => '17',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2491,6 +2517,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_presence',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -2699,7 +2728,7 @@ function vaxia_field_default_fields() {
       'entity_types' => array(),
       'field_name' => 'field_realm',
       'field_permissions' => array(
-        'type' => '0',
+        'type' => '1',
       ),
       'foreign keys' => array(),
       'indexes' => array(
@@ -2768,6 +2797,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_reflexes',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -2939,7 +2971,7 @@ function vaxia_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '12',
+          'weight' => '15',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -3009,7 +3041,7 @@ function vaxia_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '13',
+          'weight' => '16',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -3046,6 +3078,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_skill',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -3108,6 +3143,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_spirituality',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -3170,6 +3208,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_strength',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -3304,6 +3345,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_agility',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -3355,7 +3399,7 @@ function vaxia_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '16',
+        'weight' => '15',
       ),
     ),
   );
@@ -3368,6 +3412,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_appearance',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -3419,7 +3466,7 @@ function vaxia_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '20',
+        'weight' => '19',
       ),
     ),
   );
@@ -3432,6 +3479,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_awareness',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -3483,7 +3533,7 @@ function vaxia_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '18',
+        'weight' => '17',
       ),
     ),
   );
@@ -3496,6 +3546,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_charisma',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -3560,6 +3613,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_constitution',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -3611,7 +3667,7 @@ function vaxia_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '15',
+        'weight' => '14',
       ),
     ),
   );
@@ -3678,7 +3734,7 @@ function vaxia_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '34',
+        'weight' => '-4',
       ),
     ),
   );
@@ -3691,6 +3747,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_dexterity',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -3755,6 +3814,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_endurance',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -3819,6 +3881,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_health',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -3870,7 +3935,7 @@ function vaxia_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '14',
+        'weight' => '13',
       ),
     ),
   );
@@ -3940,7 +4005,7 @@ function vaxia_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '35',
+        'weight' => '-3',
       ),
     ),
   );
@@ -3953,6 +4018,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_intelligence',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -4017,6 +4085,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_life',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -4073,76 +4144,6 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-items-field_item_notes'.
-  $fields['node-items-field_item_notes'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_item_notes',
-      'field_permissions' => array(
-        'type' => '1',
-      ),
-      'foreign keys' => array(
-        'format' => array(
-          'columns' => array(
-            'format' => 'format',
-          ),
-          'table' => 'filter_format',
-        ),
-      ),
-      'indexes' => array(
-        'format' => array(
-          0 => 'format',
-        ),
-      ),
-      'locked' => '0',
-      'module' => 'text',
-      'settings' => array(),
-      'translatable' => '0',
-      'type' => 'text_long',
-    ),
-    'field_instance' => array(
-      'bundle' => 'items',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'module' => 'text',
-          'settings' => array(),
-          'type' => 'text_default',
-          'weight' => '16',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_item_notes',
-      'label' => 'Notes',
-      'required' => 0,
-      'settings' => array(
-        'text_processing' => '0',
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'text',
-        'settings' => array(
-          'rows' => '5',
-        ),
-        'type' => 'text_textarea',
-        'weight' => '36',
-      ),
-    ),
-  );
-
   // Exported field: 'node-items-field_item_pen_agility'.
   $fields['node-items-field_item_pen_agility'] = array(
     'field_config' => array(
@@ -4151,6 +4152,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_pen_agility',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -4177,7 +4181,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '42',
+          'weight' => '45',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -4215,6 +4219,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_pen_appearance',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -4241,7 +4248,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '47',
+          'weight' => '49',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -4279,6 +4286,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_pen_awareness',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -4305,7 +4315,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '45',
+          'weight' => '47',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -4343,6 +4353,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_pen_charisma',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -4369,7 +4382,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '40',
+          'weight' => '42',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -4407,6 +4420,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_pen_constitution',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -4433,7 +4449,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '43',
+          'weight' => '44',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -4471,6 +4487,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_pen_dexterity',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -4497,7 +4516,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '38',
+          'weight' => '39',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -4535,6 +4554,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_pen_endurance',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -4599,6 +4621,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_pen_health',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -4625,7 +4650,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '41',
+          'weight' => '43',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -4663,6 +4688,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_pen_intellegence',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -4689,7 +4717,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '39',
+          'weight' => '40',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -4727,6 +4755,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_pen_life',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -4791,6 +4822,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_pen_presence',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -4817,7 +4851,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '46',
+          'weight' => '48',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -4855,6 +4889,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_pen_reflexes',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -4881,7 +4918,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '44',
+          'weight' => '46',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -4919,6 +4956,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_pen_skill',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -4945,7 +4985,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '34',
+          'weight' => '50',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -4983,6 +5023,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_pen_spirituality',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -5009,7 +5052,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '35',
+          'weight' => '41',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -5047,6 +5090,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_pen_strength',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -5073,7 +5119,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '33',
+          'weight' => '38',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -5111,6 +5157,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_presence',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -5162,7 +5211,7 @@ function vaxia_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '19',
+        'weight' => '18',
       ),
     ),
   );
@@ -5175,6 +5224,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_reflexes',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -5226,7 +5278,7 @@ function vaxia_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '17',
+        'weight' => '16',
       ),
     ),
   );
@@ -5239,6 +5291,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_required_agility',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -5265,7 +5320,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '20',
+          'weight' => '37',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -5303,6 +5358,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_required_appearance',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -5329,7 +5387,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '21',
+          'weight' => '41',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -5367,6 +5425,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_required_awareness',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -5393,7 +5454,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '22',
+          'weight' => '39',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -5431,6 +5492,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_required_charisma',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -5457,7 +5521,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '23',
+          'weight' => '34',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -5495,6 +5559,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_required_constitution',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -5521,7 +5588,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '19',
+          'weight' => '36',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -5559,6 +5626,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_required_dexterity',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -5585,7 +5655,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '24',
+          'weight' => '31',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -5623,6 +5693,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_required_endurance',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -5649,7 +5722,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '26',
+          'weight' => '29',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -5687,6 +5760,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_required_health',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -5713,7 +5789,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '27',
+          'weight' => '35',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -5751,6 +5827,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_required_intelligence',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -5777,7 +5856,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '25',
+          'weight' => '32',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -5815,6 +5894,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_required_life',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -5879,6 +5961,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_required_presence',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -5905,7 +5990,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '29',
+          'weight' => '40',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -5943,6 +6028,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_required_reflexes',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -5969,7 +6057,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '30',
+          'weight' => '38',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -6007,6 +6095,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_required_skill',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -6033,7 +6124,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '32',
+          'weight' => '42',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -6071,6 +6162,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_required_spirituality',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -6097,7 +6191,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '31',
+          'weight' => '33',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -6135,6 +6229,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_required_strength',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -6161,7 +6258,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '18',
+          'weight' => '30',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -6199,6 +6296,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_skill',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -6250,7 +6350,7 @@ function vaxia_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '21',
+        'weight' => '20',
       ),
     ),
   );
@@ -6263,6 +6363,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_spirituality',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -6327,6 +6430,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_strength',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(),
       'indexes' => array(),
       'locked' => '0',
@@ -6391,6 +6497,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_percents',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
       'foreign keys' => array(
         'format' => array(
           'columns' => array(
@@ -6421,7 +6530,7 @@ function vaxia_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '48',
+          'weight' => '17',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -6445,7 +6554,217 @@ function vaxia_field_default_fields() {
           'rows' => '2',
         ),
         'type' => 'text_textarea',
-        'weight' => '46',
+        'weight' => '21',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-items-field_player_notes'.
+  $fields['node-items-field_player_notes'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_player_notes',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'text',
+      'settings' => array(),
+      'translatable' => '0',
+      'type' => 'text_long',
+    ),
+    'field_instance' => array(
+      'bundle' => 'items',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '51',
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_player_notes',
+      'label' => 'Player Notes',
+      'required' => 0,
+      'settings' => array(
+        'text_processing' => '0',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'rows' => '5',
+        ),
+        'type' => 'text_textarea',
+        'weight' => '50',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-items-field_sh_notes'.
+  $fields['node-items-field_sh_notes'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_sh_notes',
+      'field_permissions' => array(
+        'type' => '1',
+      ),
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'text',
+      'settings' => array(),
+      'translatable' => '0',
+      'type' => 'text_long',
+    ),
+    'field_instance' => array(
+      'bundle' => 'items',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '49',
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_sh_notes',
+      'label' => 'SH Notes',
+      'required' => 0,
+      'settings' => array(
+        'text_processing' => '0',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'rows' => '5',
+        ),
+        'type' => 'text_textarea',
+        'weight' => '48',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-items-field_sh_private_notes'.
+  $fields['node-items-field_sh_private_notes'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_sh_private_notes',
+      'field_permissions' => array(
+        'type' => '2',
+      ),
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'text',
+      'settings' => array(),
+      'translatable' => '0',
+      'type' => 'text_long',
+    ),
+    'field_instance' => array(
+      'bundle' => 'items',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '50',
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_sh_private_notes',
+      'label' => 'Private SH Notes',
+      'required' => 0,
+      'settings' => array(
+        'text_processing' => '0',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'rows' => '5',
+        ),
+        'type' => 'text_textarea',
+        'weight' => '49',
       ),
     ),
   );
@@ -6517,7 +6836,7 @@ function vaxia_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '37',
+        'weight' => '-2',
       ),
     ),
   );
@@ -7050,7 +7369,7 @@ function vaxia_field_default_fields() {
       'entity_types' => array(),
       'field_name' => 'field_realm',
       'field_permissions' => array(
-        'type' => '0',
+        'type' => '1',
       ),
       'foreign keys' => array(),
       'indexes' => array(
@@ -7976,7 +8295,6 @@ function vaxia_field_default_fields() {
   t('NPC');
   t('Name');
   t('Note additional percentage effects for this item.');
-  t('Notes');
   t('OOC');
   t('Occupation');
   t('Open NPC');

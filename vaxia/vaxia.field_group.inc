@@ -48,7 +48,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Art',
-    'weight' => '3',
+    'weight' => '4',
     'children' => array(
       0 => 'field_artwork',
     ),
@@ -210,7 +210,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Details',
-    'weight' => '4',
+    'weight' => '3',
     'children' => array(
       0 => 'field_age_app',
       1 => 'field_age_real',
@@ -303,7 +303,8 @@ function vaxia_field_group_info() {
     'children' => array(
       0 => 'field_item_desc',
       1 => 'field_item_history',
-      2 => 'title',
+      2 => 'field_value',
+      3 => 'title',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -359,7 +360,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Modifies',
-    'weight' => '2',
+    'weight' => '1',
     'children' => array(
       0 => 'field_item_agility',
       1 => 'field_item_appearance',
@@ -376,6 +377,7 @@ function vaxia_field_group_info() {
       12 => 'field_item_skill',
       13 => 'field_item_spirituality',
       14 => 'field_item_strength',
+      15 => 'field_percents',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -517,7 +519,9 @@ function vaxia_field_group_info() {
     'label' => 'Notes',
     'weight' => '16',
     'children' => array(
-      0 => 'field_item_notes',
+      0 => 'field_sh_notes',
+      1 => 'field_player_notes',
+      2 => 'field_sh_private_notes',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -541,10 +545,11 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Notes',
-    'weight' => '1',
+    'weight' => '5',
     'children' => array(
-      0 => 'field_item_notes',
-      1 => 'field_value',
+      0 => 'field_sh_notes',
+      1 => 'field_player_notes',
+      2 => 'field_sh_private_notes',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -638,7 +643,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Penalties',
-    'weight' => '5',
+    'weight' => '4',
     'children' => array(
       0 => 'field_item_pen_agility',
       1 => 'field_item_pen_appearance',
@@ -681,9 +686,7 @@ function vaxia_field_group_info() {
   $field_group->data = array(
     'label' => 'Percentages',
     'weight' => '2',
-    'children' => array(
-      0 => 'field_percents',
-    ),
+    'children' => array(),
     'format_type' => 'fieldset',
     'format_settings' => array(
       'formatter' => 'collapsible',
@@ -737,12 +740,10 @@ function vaxia_field_group_info() {
     'children' => array(
       0 => 'field_background',
       1 => 'field_description',
-      2 => 'field_is_npc',
-      3 => 'field_is_open_npc',
-      4 => 'field_last_name',
-      5 => 'field_occupation',
-      6 => 'field_personality',
-      7 => 'field_titles',
+      2 => 'field_last_name',
+      3 => 'field_occupation',
+      4 => 'field_personality',
+      5 => 'field_titles',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -867,7 +868,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Requires',
-    'weight' => '4',
+    'weight' => '3',
     'children' => array(
       0 => 'field_item_required_agility',
       1 => 'field_item_required_appearance',
@@ -1059,6 +1060,7 @@ function vaxia_field_group_info() {
       12 => 'field_item_skill',
       13 => 'field_item_spirituality',
       14 => 'field_item_strength',
+      15 => 'field_percents',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(

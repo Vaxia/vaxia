@@ -314,7 +314,6 @@ function vaxia_import_items($file) {
       $node->language = LANGUAGE_NONE;
       $node->field_item_desc[$node->language][0]['value'] = isset($record['NEWitemDescription']) ? $record['NEWitemDescription'] : '';
       $node->field_item_history[$node->language][0]['value'] = '';
-      $node->field_item_notes[$node->language][0]['value'] = '';
       if (!isset($record['itemValue'])) { $record['itemValue'] = 0; }
       if (!isset($record['MODitemValue'])) { $record['MODitemValue'] = 0; }
       $node->field_item_value[$node->language][0]['value'] = $record['itemValue'] + $record['MODitemValue'];
