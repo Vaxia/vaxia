@@ -105,7 +105,7 @@ function vaxia_node_view($node, $view_mode, $langcode) {
     $node->content['xp_types'] = array(
       '#type' => 'item',
       '#title' => t('XP types'),
-      '#markup' => theme('item_list', array('items' => _vaxia_xp_display_type($node))),
+      '#markup' => theme('item_list', array('items' => _vaxia_xp_display_types($node))),
       '#weight' => 102,
     );
   }

@@ -496,7 +496,7 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
   $form['node_info']['xp_types'] = array(
     '#type' => 'item',
     '#title' => t('XP types'),
-    '#markup' => theme('item_list', array('items' => _vaxia_xp_display_type($node))),
+    '#markup' => theme('item_list', array('items' => _vaxia_xp_display_types($node))),
   );
 
   // Add the economy form for owned forms.
@@ -673,7 +673,7 @@ function _vaxia_xp_display($node) {
 /**
  * Helper function, gather xp type records for display.
  */
-function _vaxia_xp_display_type($node) {
+function _vaxia_xp_display_types($node) {
   // Get specific info for vaxia to display in markup.
   // Display types of xp.
   $xp_types = array();

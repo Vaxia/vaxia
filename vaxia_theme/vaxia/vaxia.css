@@ -130,3 +130,6 @@ article.node-rpg-chatroom.clearfix:after, .field-type-node-reference.clearfix:af
 
 /* Fancy select dropdown button. */
 .dd{text-align:center;width:200px !important;}
+
+/* Artwork grid page layouts. */
+.view-artwork td{background:#aaa;border:2px solid #eee;text-align:center;padding:0.5em;}

@@ -279,6 +279,8 @@ function vaxia_import_characters($file) {
             $xp = $record[$old_type];
             $message = t('%xp %type XP added to %title.', array('%xp' => $xp, '%type' => $new_type, '%title' => $node->title));
             _character_sheet_update_log($node->nid, 'xp', $message, $variables = array());
+            $tracking = array('xp' => $xp, 'type' => $new_type, 'nid' => $node->nid);
+            _vaxia_update_type_tracking($tracking);
           }
         }
         _character_sheet_update_xp($node->nid, isset($record['charXps']) ? $record['charXps'] : 0, 'xp'); // Available unlocked xp.
