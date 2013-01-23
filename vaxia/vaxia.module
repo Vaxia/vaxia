@@ -95,21 +95,8 @@ function _vaxia_ownership($node) {
 function vaxia_node_view($node, $view_mode, $langcode) {
   // If node is a character sheet.
   if (_character_sheet_is_enabled($node)) {
-    $logs = _character_sheet_get_log($node->nid);
-    $node->content['xp_details'] = array(
-      '#type' => 'item',
-      '#title' => t('XP details'),
-      '#markup' => theme('item_list', array('items' => _vaxia_xp_display($node))),
-      '#weight' => 101,
-    );
-    $node->content['xp_types'] = array(
-      '#type' => 'item',
-      '#title' => t('XP types'),
-      '#markup' => theme('item_list', array('items' => _vaxia_xp_display_types($node))),
-      '#weight' => 102,
-    );
+    unset($node->content['character_sheet_log']);
   }
-
   // If node is an RPG chatroom, add the js for additional behaviors.
   if ($node->type == 'rpg_chatroom') {
     drupal_add_js( drupal_get_path('module', 'vaxia') . '/js/vaxia.js' );

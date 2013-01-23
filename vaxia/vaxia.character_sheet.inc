@@ -643,8 +643,14 @@ function vaxia_form__character_sheet_owner_form_alter(&$form, &$form_state) {
     $form['change_ownership']['submit'] = $form['submit'];
     unset($form['submit']);
   }
+  $form['moderation_log'] = array(
+    '#type' => 'fieldset',
+    '#title' => 'Moderation Log',
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
   if (isset($form['character_sheet_log'])) {
-    $form['change_ownership']['character_sheet_log'] = $form['character_sheet_log'];
+    $form['moderation_log']['character_sheet_log'] = $form['character_sheet_log'];
     unset($form['character_sheet_log']);
   }
 }
@@ -662,6 +668,7 @@ function _vaxia_xp_display($node) {
   $xps['rxp'] = t('Roleplayed %roleplayed rxp.', array('%roleplayed' => $this_xp));
   $this_xp = _character_sheet_get_xp($node->nid, 'kxp');
   $xps['kxp'] = t('Posted %posted kxp.', array('%posted' => $this_xp));
+  // Figure out silver math.
   $silver = _character_sheet_get_xp($node->nid, 'silver');
   $silver_spent = _character_sheet_get_xp($node->nid, 'spent_silver');
   $silver_invested = _character_sheet_get_xp($node->nid, 'invest_silver');
