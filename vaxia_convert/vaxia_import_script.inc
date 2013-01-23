@@ -185,7 +185,7 @@ function vaxia_import_characters($file) {
         }
         $node->field_age_app[$node->language][0]['value'] = isset($record['charAppAge']) ? $record['charAppAge'] : '';
         $node->field_age_real[$node->language][0]['value'] = isset($record['charAge']) ? $record['charAge'] : '';
-        $node->field_economy[$node->language][0]['value'] = isset($record['ecolevel']) && is_numeric($record['ecolevel'])? $record['ecolevel'] : 0;
+        $node->field_economy[$node->language][0]['value'] = isset($record['ecolevel']) ? $record['ecolevel'] : 25;
         $node->field_race[$node->language][0]['value'] = isset($record['charRace']) ? $record['charRace'] : 'human';
         $realm = 'vaxia';
         if (isset($record['sirianCert']) && $record['sirianCert'] == 'Yes') {
@@ -267,7 +267,6 @@ function vaxia_import_characters($file) {
           'charMxps' => 'mage',
           'charTxps' => 'rogue',
         );
-        $node->field_economy[$node->language][0]['value'] = isset($record['ecolevel']) ? $record['ecolevel'] : 25;
         // Mark the historical record of flavored XP.
         foreach ($flavoured_xp as $old_type => $new_type) {
           if (isset($record[$old_type]) && $record[$old_type] > 0) {
