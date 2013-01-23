@@ -272,7 +272,7 @@ function vaxia_import_characters($file) {
           'charMxps' => 'mage',
           'charTxps' => 'rogue',
         );
-        $node->field_economy[$node->language][0]['value'] = isset($record['ecolevel']) && is_numeric($record['ecolevel']) ? $record['ecolevel'] : 25;
+        $node->field_economy[$node->language][0]['value'] = isset($record['ecolevel']) ? $record['ecolevel'] : 25;
         // Mark the historical record of flavored XP.
         foreach ($flavoured_xp as $old_type => $new_type) {
           if (isset($record[$old_type]) && $record[$old_type] > 0) {
