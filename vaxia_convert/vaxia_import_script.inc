@@ -123,7 +123,7 @@ function vaxia_import_art($file) {
       $node->field_website[$node->language][0]['value'] =  isset($record['url']) ? $record['url'] : '';
       if (is_file($record['path'])) {
         $image = file_get_contents($record['path']);
-        $file = file_save_data($image, 'public://' . $record['name'], FILE_EXISTS_RENAME);
+        $file = file_save_data($image, 'public://artwork/' . $record['name'], FILE_EXISTS_RENAME);
         $node->field_artwork_image[$node->language][0] = (array) $file;
         node_save($node);
         vaxia_convert_set_workflow($node);
