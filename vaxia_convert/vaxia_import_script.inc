@@ -185,7 +185,9 @@ function vaxia_import_characters($file) {
         }
         $node->field_age_app[$node->language][0]['value'] = isset($record['charAppAge']) ? $record['charAppAge'] : '';
         $node->field_age_real[$node->language][0]['value'] = isset($record['charAge']) ? $record['charAge'] : '';
-        $node->field_economy[$node->language][0]['value'] = isset($record['ecolevel']) ? $record['ecolevel'] : 25;
+        $economy = isset($record['ecolevel']) ? $record['ecolevel'] : 25;
+        $economy = $economy + 0;
+        $node->field_economy[$node->language][0]['value'] = $economy;
         $node->field_race[$node->language][0]['value'] = isset($record['charRace']) ? $record['charRace'] : 'human';
         $realm = 'vaxia';
         if (isset($record['sirianCert']) && $record['sirianCert'] == 'Yes') {
@@ -283,9 +285,10 @@ function vaxia_import_characters($file) {
         _character_sheet_update_xp($node->nid, isset($record['charRxps']) ? $record['charRxps'] : 0, 'rxp');
         _character_sheet_update_xp($node->nid, isset($record['charKxps']) ? $record['charKxps'] : 0, 'kxp');
         // And this is what is in the system - flat - for their calculations henceforth.
-        $record['silver'] = isset($record['silver']) ? $record['silver'] : 0 + isset($record['invest']) ? $record['invest'] : 0;
-        _character_sheet_update_xp($node->nid, isset($record['invest']) ? $record['invest'] : 0, 'invest_silver');
-        _character_sheet_update_xp($node->nid, isset($record['silver']) ? $record['silver'] : 0, 'silver');
+        $silver = isset($record['silver']) ? $record['silver'] : 0;
+        $invested_silver =isset($record['invest']) ? $record['invest'] : 0;
+        _character_sheet_update_xp($node->nid, $invested_silver, 'invest_silver');
+        _character_sheet_update_xp($node->nid, $silver + $invested_silver, 'silver');
       } catch (Exception $e) {
         drupal_set_message('Error attempting to create character: ' . $record['character']);
         watchdog('vaxia_convert', 'Error attempting to create character: ' . $record['character']);
