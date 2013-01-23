@@ -178,16 +178,14 @@ function vaxia_import_characters($file) {
         $node->uid = isset($user->uid) ? $user->uid : 1;
         $node->language = LANGUAGE_NONE;
         $image = vaxia_convert_get_nid(isset($record['image']) ? $record['image'] : '');
-        $node->field_is_npc[$node->language][0]['nid'] = isset($record['isNPC']) ? $record['isNPC'] : 0;
-        $node->field_is_open_npc[$node->language][0]['nid'] = isset($record['isOpenNPC']) ? $record['isOpenNPC'] : 0;
+        $node->field_is_npc[$node->language][0]['nid'] = isset($record['isNPC']) ? 1 : 0;
+        $node->field_is_open_npc[$node->language][0]['nid'] = isset($record['isOpenNPC']) ? 1 : 0;
         if ($image) {
           $node->field_artwork[$node->language][0]['nid'] = $image;
         }
         $node->field_age_app[$node->language][0]['value'] = isset($record['charAppAge']) ? $record['charAppAge'] : '';
         $node->field_age_real[$node->language][0]['value'] = isset($record['charAge']) ? $record['charAge'] : '';
-        $economy = isset($record['ecolevel']) ? $record['ecolevel'] : 25;
-        $economy = $economy + 0;
-        $node->field_economy[$node->language][0]['value'] = $economy;
+        $node->field_economy[$node->language][0]['value'] = isset($record['ecolevel']) ? $record['ecolevel'] : 25;
         $node->field_race[$node->language][0]['value'] = isset($record['charRace']) ? $record['charRace'] : 'human';
         $realm = 'vaxia';
         if (isset($record['sirianCert']) && $record['sirianCert'] == 'Yes') {

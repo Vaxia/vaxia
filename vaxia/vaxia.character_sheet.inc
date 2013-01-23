@@ -329,7 +329,9 @@ function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
  */
 function vaxia_character_sheet_presave_sheet($node) {
   if ($node->is_new || !empty($node->revision)) {
-    $node->field_economy[$node->language][0]['value'] = variable_get('vaxia_starting_econ', 25);
+    if (empty($node->field_economy[$node->language][0]['value'])) {
+      $node->field_economy[$node->language][0]['value'] = variable_get('vaxia_starting_econ', 25);
+    }
   }
 }
 
