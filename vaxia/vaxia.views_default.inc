@@ -39,6 +39,10 @@ function vaxia_views_default_views() {
   $handler->display->display_options['style_plugin'] = 'grid';
   $handler->display->display_options['style_options']['columns'] = '5';
   $handler->display->display_options['row_plugin'] = 'fields';
+  /* Relationship: Content: Author */
+  $handler->display->display_options['relationships']['uid']['id'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['table'] = 'node';
+  $handler->display->display_options['relationships']['uid']['field'] = 'uid';
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -93,6 +97,33 @@ function vaxia_views_default_views() {
   $handler->display->display_options['filters']['sid']['field'] = 'sid';
   $handler->display->display_options['filters']['sid']['value'] = array(
     10 => '10',
+  );
+  /* Filter criterion: User: Name */
+  $handler->display->display_options['filters']['uid']['id'] = 'uid';
+  $handler->display->display_options['filters']['uid']['table'] = 'users';
+  $handler->display->display_options['filters']['uid']['field'] = 'uid';
+  $handler->display->display_options['filters']['uid']['relationship'] = 'uid';
+  $handler->display->display_options['filters']['uid']['value'] = '';
+  $handler->display->display_options['filters']['uid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['uid']['expose']['operator_id'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['label'] = 'Name';
+  $handler->display->display_options['filters']['uid']['expose']['operator'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['identifier'] = 'uid';
+  $handler->display->display_options['filters']['uid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['uid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    8 => 0,
+    9 => 0,
+    12 => 0,
+    13 => 0,
+    10 => 0,
+    11 => 0,
+    6 => 0,
+    7 => 0,
+    5 => 0,
+    4 => 0,
   );
 
   /* Display: Artwork */
@@ -342,6 +373,33 @@ return $uid;';
   $handler->display->display_options['filters']['sid']['expose']['remember'] = TRUE;
   $handler->display->display_options['filters']['sid']['expose']['multiple'] = TRUE;
   $handler->display->display_options['filters']['sid']['expose']['reduce'] = TRUE;
+  /* Filter criterion: User: Name */
+  $handler->display->display_options['filters']['uid']['id'] = 'uid';
+  $handler->display->display_options['filters']['uid']['table'] = 'users';
+  $handler->display->display_options['filters']['uid']['field'] = 'uid';
+  $handler->display->display_options['filters']['uid']['relationship'] = 'uid';
+  $handler->display->display_options['filters']['uid']['value'] = '';
+  $handler->display->display_options['filters']['uid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['uid']['expose']['operator_id'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['label'] = 'Name';
+  $handler->display->display_options['filters']['uid']['expose']['operator'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['identifier'] = 'uid';
+  $handler->display->display_options['filters']['uid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['uid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    8 => 0,
+    9 => 0,
+    12 => 0,
+    13 => 0,
+    10 => 0,
+    11 => 0,
+    6 => 0,
+    7 => 0,
+    5 => 0,
+    4 => 0,
+  );
   $handler->display->display_options['path'] = 'artwork/evaluate';
   $handler->display->display_options['menu']['type'] = 'tab';
   $handler->display->display_options['menu']['title'] = 'Art evaluation';
@@ -444,6 +502,33 @@ return $uid;';
   $handler->display->display_options['filters']['sid']['field'] = 'sid';
   $handler->display->display_options['filters']['sid']['value'] = array(
     15 => '15',
+  );
+  /* Filter criterion: User: Name */
+  $handler->display->display_options['filters']['uid']['id'] = 'uid';
+  $handler->display->display_options['filters']['uid']['table'] = 'users';
+  $handler->display->display_options['filters']['uid']['field'] = 'uid';
+  $handler->display->display_options['filters']['uid']['relationship'] = 'uid';
+  $handler->display->display_options['filters']['uid']['value'] = '';
+  $handler->display->display_options['filters']['uid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['uid']['expose']['operator_id'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['label'] = 'Name';
+  $handler->display->display_options['filters']['uid']['expose']['operator'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['identifier'] = 'uid';
+  $handler->display->display_options['filters']['uid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['uid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    8 => 0,
+    9 => 0,
+    12 => 0,
+    13 => 0,
+    10 => 0,
+    11 => 0,
+    6 => 0,
+    7 => 0,
+    5 => 0,
+    4 => 0,
   );
 
   /* Display: Character items */
@@ -627,6 +712,33 @@ return $uid;';
   $handler->display->display_options['filters']['sid']['expose']['remember'] = TRUE;
   $handler->display->display_options['filters']['sid']['expose']['multiple'] = TRUE;
   $handler->display->display_options['filters']['sid']['expose']['reduce'] = TRUE;
+  /* Filter criterion: User: Name */
+  $handler->display->display_options['filters']['uid']['id'] = 'uid';
+  $handler->display->display_options['filters']['uid']['table'] = 'users';
+  $handler->display->display_options['filters']['uid']['field'] = 'uid';
+  $handler->display->display_options['filters']['uid']['relationship'] = 'uid';
+  $handler->display->display_options['filters']['uid']['value'] = '';
+  $handler->display->display_options['filters']['uid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['uid']['expose']['operator_id'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['label'] = 'Name';
+  $handler->display->display_options['filters']['uid']['expose']['operator'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['identifier'] = 'uid';
+  $handler->display->display_options['filters']['uid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['uid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    8 => 0,
+    9 => 0,
+    12 => 0,
+    13 => 0,
+    10 => 0,
+    11 => 0,
+    6 => 0,
+    7 => 0,
+    5 => 0,
+    4 => 0,
+  );
   $handler->display->display_options['path'] = 'character-items/evaluate';
   $handler->display->display_options['menu']['type'] = 'tab';
   $handler->display->display_options['menu']['title'] = 'Character item evaluation';
@@ -848,6 +960,33 @@ return $uid;';
     'npc' => 'npc',
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
+  /* Filter criterion: User: Name */
+  $handler->display->display_options['filters']['uid']['id'] = 'uid';
+  $handler->display->display_options['filters']['uid']['table'] = 'users';
+  $handler->display->display_options['filters']['uid']['field'] = 'uid';
+  $handler->display->display_options['filters']['uid']['relationship'] = 'uid';
+  $handler->display->display_options['filters']['uid']['value'] = '';
+  $handler->display->display_options['filters']['uid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['uid']['expose']['operator_id'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['label'] = 'Name';
+  $handler->display->display_options['filters']['uid']['expose']['operator'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['identifier'] = 'uid';
+  $handler->display->display_options['filters']['uid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['uid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    8 => 0,
+    9 => 0,
+    12 => 0,
+    13 => 0,
+    10 => 0,
+    11 => 0,
+    6 => 0,
+    7 => 0,
+    5 => 0,
+    4 => 0,
+  );
 
   /* Display: My character NPCs */
   $handler = $view->new_display('page', 'My character NPCs', 'character_npcs_mine');
