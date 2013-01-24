@@ -81,6 +81,8 @@ function vaxia_import_users($file) {
   foreach ($records as $record) {
     if (isset($record['playerName']) && !empty($record['playerName'])) {
       $roles = array();
+      // Check player, player mature.
+      $roles[$role_set['player']] = 'player';
       // Determine user roles by XLM values.
       $user = array(
         'name' => $record['playerName'],
