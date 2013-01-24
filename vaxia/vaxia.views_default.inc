@@ -238,6 +238,7 @@ function vaxia_views_default_views() {
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['row_plugin'] = 'references_fields';
   $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['empty'] = FALSE;
   $handler->display->display_options['defaults']['relationships'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: Title */
@@ -270,7 +271,7 @@ global $user;
 $uid = $user->uid;
 // If this is a node display, char sheet type.
 $path = $_GET[\'q\'];
-$args[$path] = explode(\'/\', $path);
+$args = explode(\'/\', $path);
 if (!empty($args[1])) {
   $nid = $args[1];
   $node = node_load($nid);
@@ -282,6 +283,9 @@ return $uid;';
   $handler->display->display_options['arguments']['uid']['summary']['number_of_records'] = '0';
   $handler->display->display_options['arguments']['uid']['summary']['format'] = 'default_summary';
   $handler->display->display_options['arguments']['uid']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['uid']['validate']['type'] = 'user';
+  $handler->display->display_options['arguments']['uid']['validate']['fail'] = 'empty';
+  $handler->display->display_options['arguments']['uid']['break_phrase'] = TRUE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
@@ -367,6 +371,7 @@ return $uid;';
   $handler->display->display_options['filters']['sid']['value'] = array(
     8 => '8',
     9 => '9',
+    10 => '10',
   );
   $handler->display->display_options['filters']['sid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['sid']['expose']['operator_id'] = 'sid_op';
@@ -376,6 +381,18 @@ return $uid;';
   $handler->display->display_options['filters']['sid']['expose']['identifier'] = 'sid';
   $handler->display->display_options['filters']['sid']['expose']['remember'] = TRUE;
   $handler->display->display_options['filters']['sid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['sid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    8 => 0,
+    9 => 0,
+    10 => 0,
+    6 => 0,
+    7 => 0,
+    5 => 0,
+    4 => 0,
+  );
   $handler->display->display_options['filters']['sid']['expose']['reduce'] = TRUE;
   /* Filter criterion: User: Name */
   $handler->display->display_options['filters']['uid']['id'] = 'uid';
@@ -584,7 +601,7 @@ global $user;
 $uid = $user->uid;
 // If this is a node display, char sheet type.
 $path = $_GET[\'q\'];
-$args[$path] = explode(\'/\', $path);
+$args = explode(\'/\', $path);
 if (!empty($args[1])) {
   $nid = $args[1];
   $node = node_load($nid);
@@ -729,6 +746,7 @@ return $uid;';
   $handler->display->display_options['filters']['sid']['value'] = array(
     13 => '13',
     14 => '14',
+    15 => '15',
   );
   $handler->display->display_options['filters']['sid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['sid']['expose']['operator_id'] = 'sid_op';
@@ -738,6 +756,18 @@ return $uid;';
   $handler->display->display_options['filters']['sid']['expose']['identifier'] = 'sid';
   $handler->display->display_options['filters']['sid']['expose']['remember'] = TRUE;
   $handler->display->display_options['filters']['sid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['sid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    8 => 0,
+    9 => 0,
+    10 => 0,
+    6 => 0,
+    7 => 0,
+    5 => 0,
+    4 => 0,
+  );
   $handler->display->display_options['filters']['sid']['expose']['reduce'] = TRUE;
   /* Filter criterion: User: Name */
   $handler->display->display_options['filters']['uid']['id'] = 'uid';
