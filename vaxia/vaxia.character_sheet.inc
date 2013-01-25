@@ -488,7 +488,13 @@ function _vaxia_admin_settings() {
 function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
   // Load the node.
   $node = node_load($form['node_info']['nid']['#value']);
-
+  $xp_totals = array(t('You have %xp xp available to spend.',
+    array('%xp' => _character_sheet_get_xp($node->nid, 'xp'))));
+  $form['node_info']['xp'] = array(
+    '#type' => 'item',
+    '#title' => t('XP totals'),
+    '#markup' => theme('item_list', array('items' => $xp_totals)),
+  );
   $form['node_info']['xp_details'] = array(
     '#type' => 'item',
     '#title' => t('XP details'),
@@ -645,13 +651,13 @@ function vaxia_form__character_sheet_owner_form_alter(&$form, &$form_state) {
     $form['change_ownership']['submit'] = $form['submit'];
     unset($form['submit']);
   }
-  $form['moderation_log'] = array(
-    '#type' => 'fieldset',
-    '#title' => 'Moderation Log',
-    '#collapsible' => TRUE,
-    '#collapsed' => TRUE,
-  );
   if (isset($form['character_sheet_log'])) {
+    $form['moderation_log'] = array(
+      '#type' => 'fieldset',
+      '#title' => 'Moderation Log',
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+    );
     $form['moderation_log']['character_sheet_log'] = $form['character_sheet_log'];
     unset($form['character_sheet_log']);
   }
@@ -663,7 +669,7 @@ function vaxia_form__character_sheet_owner_form_alter(&$form, &$form_state) {
 function _vaxia_xp_display($node) {
   // Get specific info for vaxia to display in markup.
   $this_xp = _character_sheet_get_xp($node->nid, 'spent_xp');
-  $xps['spent_xp'] = t('Spent %spent out of %xp xp.', array('%spent' => $this_xp, '%xp' => $node->xp['xp']));
+  //$xps['spent_xp'] = t('Spent %spent out of %xp xp.', array('%spent' => $this_xp, '%xp' => $node->xp['xp']));
   $this_xp = _character_sheet_get_xp($node->nid, 'bxp');
   $xps['bxp'] = t('Banked %banked bxp.', array('%banked' => $this_xp));
   $this_xp = _character_sheet_get_xp($node->nid, 'rxp');
@@ -709,7 +715,8 @@ function _vaxia_invest_calculate_cost_to_improve($economy) {
  */
 function _vaxia_get_month_income($economy) {
   $total_worth = _vaxia_calculate_worth($economy);
-  return (($total_worth) * (3.5 / 100)) + (0.05);
+  $income = (($total_worth) * (3.5 / 100)) + (0.05);
+  return number_format($income, 2);
 }
 
 /**
@@ -718,7 +725,7 @@ function _vaxia_get_month_income($economy) {
 function _vaxia_get_daily_pay($economy) {
   $monthly = _vaxia_get_month_income($economy);
   $daily = $monthly / 30;
-  return $daily;
+  return number_format($daily, 2);
 }
 
 /**
@@ -806,9 +813,9 @@ function vaxia_character_sheet_cron() {
       'LEFT JOIN {node} n ON e.entity_id = n.nid AND e.revision_id = n.vid');
     foreach ($sheets as $node_data) {
       $node = node_load($node_data->nid);
-      if (_character_sheet_is_enabled($node) && !_character_sheet_is_playable($node)) {
-        $node = node_load($node->nid);
-        $level = isset($node->field_economy[$node->language][0]['value']) ? $node->field_economy[$node->language][0]['value'] : 0;
+      if (_character_sheet_is_enabled($node) && _character_sheet_is_playable($node)) {
+        $level = isset($node->field_economy[$node->language][0]['value']) ?
+          $node->field_economy[$node->language][0]['value'] : 0;
         $silver = _character_sheet_get_xp($node->nid, 'silver');
         $silver_spent = _character_sheet_get_xp($node->nid, 'spent_silver');
         $silver_invested = _character_sheet_get_xp($node->nid, 'invest_silver');
