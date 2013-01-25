@@ -165,7 +165,7 @@ function vaxia_import_rooms($file) {
   drupal_set_message($results . ' rooms imported.');
 }
 
-function vaxia_import_characters($file, $isNPC = 0, $isOpenNPC = ) {
+function vaxia_import_characters($file) {
   $records = vaxia_read_xml($file);
   $results = 0;
   foreach ($records as $record) {
@@ -180,8 +180,8 @@ function vaxia_import_characters($file, $isNPC = 0, $isOpenNPC = ) {
         $node->uid = isset($user->uid) ? $user->uid : 1;
         $node->language = LANGUAGE_NONE;
         $node->field_is_npc[$node->language][0]['value'] = isset($record['isNPC']) ? 1 : 0;
-        $node->field_is_open_npc[$node->language][0]['value'] = isset($record['isOpenNPC']) ? 1 : 0
-        $image = vaxia_convert_get_nid(isset($record['image']) ? $record['image'] : '');;
+        $node->field_is_open_npc[$node->language][0]['value'] = isset($record['isOpenNPC']) ? 1 : 0;
+        $image = vaxia_convert_get_nid(isset($record['image']) ? $record['image'] : '');
         if ($image) {
           $node->field_artwork[$node->language][0]['nid'] = $image;
         }
