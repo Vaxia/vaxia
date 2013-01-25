@@ -1747,7 +1747,9 @@ return $uid;';
   $handler->display->display_options['filters']['field_is_open_npc_value']['id'] = 'field_is_open_npc_value';
   $handler->display->display_options['filters']['field_is_open_npc_value']['table'] = 'field_data_field_is_open_npc';
   $handler->display->display_options['filters']['field_is_open_npc_value']['field'] = 'field_is_open_npc_value';
-  $handler->display->display_options['filters']['field_is_open_npc_value']['operator'] = 'not empty';
+  $handler->display->display_options['filters']['field_is_open_npc_value']['value'] = array(
+    1 => '1',
+  );
   $handler->display->display_options['filters']['field_is_open_npc_value']['group'] = 2;
   /* Filter criterion: User Access Permissions */
   $handler->display->display_options['filters']['php']['id'] = 'php';

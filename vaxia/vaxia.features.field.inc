@@ -92,6 +92,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_comment_character',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
       'foreign keys' => array(
         'nid' => array(
           'columns' => array(
@@ -112,6 +115,7 @@ function vaxia_field_default_fields() {
           'article' => 0,
           'artwork' => 0,
           'character_sheet' => 'character_sheet',
+          'forum' => 0,
           'items' => 0,
           'npc' => 'npc',
           'page' => 0,
@@ -1888,7 +1892,7 @@ function vaxia_field_default_fields() {
       'description' => 'Check this box if the character is intended to be an NPC.',
       'display' => array(
         'default' => array(
-          'label' => 'inline',
+          'label' => 'hidden',
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
@@ -1960,7 +1964,7 @@ function vaxia_field_default_fields() {
       'description' => 'Check this box if the character is intended to be an openly available NPC.',
       'display' => array(
         'default' => array(
-          'label' => 'inline',
+          'label' => 'hidden',
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
