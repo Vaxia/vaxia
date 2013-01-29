@@ -437,7 +437,8 @@ function _vaxia_comment_add_kxp_submit($form, $form_state) {
   if (!empty($form_state['values']['field_comment_character'][$lang][0]['nid']) 
     && $form_state['values']['field_comment_narrative'][$lang][0]['value'] == 0) {
     // The character gains XP per wordcount.
-    $wordcount = str_word_count($form_state['values']['comment_body'][$lang][0]['value']);
+    //$wordcount = str_word_count($form_state['values']['comment_body'][$lang][0]['value']);
+    $wordcount = strlen($form_state['values']['comment_body'][$lang][0]['value']);
     if (is_numeric($wordcount)) {
       $kxp = floor( $wordcount / variable_get('vaxia_kxp_per_words', 20) );
       $max_kxp = variable_get('vaxia_max_kxp_post', 10);
