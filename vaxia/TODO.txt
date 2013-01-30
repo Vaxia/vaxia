@@ -14,6 +14,8 @@ b) Weather module.
   Driven by maths. 
   OR by mapping real world locations to sections of RPG Chat tree.
   Toggled on/off on a given node content edit form.
+  Suggested base code: http://drupal.org/project/google_weather
+  To allow citys to match real world cities.
 
 c) Background color module.
   Adjusts the given style background on the site by *server* time.
