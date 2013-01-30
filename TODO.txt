@@ -1,28 +1,3 @@
-TO DO LIST FOR COMPLETION
--------------------------
-
-a) Heavy test with live players. 
-
-Parts to watch for:
-  NPC handling
-  Cross room dynamics (may need to save room/character/player settings
-  NPC posting
-  Interface confusion
-
-To Add:
-a) A "character not posted" to be able to retire chars post move.
-b) A "room not posted" to be able to retire rooms post move.
-c) Add checks to allow items to be added to a character iif required skill met
-
-Feedback:
-a) Save -> Submit your post for RPG posts
-b) Invert test-box and room layout if possible
-c) Add equilivent to 13 orb
-d) Better navigation to avoid drilling down - post add?
-e) Bugs:
-  Notice: Undefined variable: comments in _rpg_chat_refresh_js() (line 247 of /home/bastlynn/vaxia.unpretentiousmonkey.com/sites/all/modules/vaxia/rpg_chat/rpg_chat.module).
-  Warning: Invalid argument supplied for foreach() in _rpg_chat_refresh_js() (line 247 of /home/bastlynn/vaxia.unpretentiousmonkey.com/sites/all/modules/vaxia/rpg_chat/rpg_chat.module).
-
 TO DO LIST FOR FUTURE DEVELOPMENT
 ---------------------------------
 
