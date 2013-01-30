@@ -797,7 +797,7 @@ function _vaxia_transfer_xp_submit(&$form, &$form_state) {
     workflow_execute_transition($old_character, $workflow, t('Transferring XP to a new character'), TRUE);
     // Now add XP to the new character.
     if ($xp > variable_get('vaxia_transfer_cap', 300)) {
-      $xp = variable_get('vaxia_transfer_cap', 300)
+      $xp = variable_get('vaxia_transfer_cap', 300);
     }
     $new_xp = floor($xp * variable_get('vaxia_transfer_percentage', 0.75));
     $bank_xp = floor($xp - $new_xp); 
