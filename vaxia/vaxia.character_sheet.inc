@@ -494,8 +494,10 @@ function _vaxia_admin_settings() {
 function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
   // Load the node.
   $node = node_load($form['node_info']['nid']['#value']);
+  $xp = _character_sheet_get_xp($node->nid, 'xp');
+  $spent_xp = _character_sheet_get_xp($node->nid, 'spent_xp');
   $xp_totals = array(t('You have %xp xp available to spend.',
-    array('%xp' => _character_sheet_get_xp($node->nid, 'xp'))));
+    array('%xp' => $xp - $spent_xp )));
   $form['node_info']['xp'] = array(
     '#type' => 'item',
     '#title' => t('XP totals'),
