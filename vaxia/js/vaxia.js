@@ -11,11 +11,11 @@ Drupal.behaviors.vaxiaChat = {
   $('.tabs').once(function() {
     $('.tabs').after('<button class="toggle-rpg-chat-desc button" ' +
       'style="float:right;padding:0.5em 1em;margin:0.25em 4.4em;">' +
-      'show/hide' +
+      'hide description' +
       '</button>');
     $('#main #content').after('<button class="toggle-rpg-chat-sidebar button" ' +
       'style="float:left;margin:0.25em -20% 0.25em 0;">' +
-      'show/hide' +
+      'hide sidebar' +
       '</button>');
     $('#main .sidebars, #main #content').css('margin-top', '40px');
 
@@ -27,11 +27,13 @@ Drupal.behaviors.vaxiaChat = {
       $('article.rpg-chat-node .field-name-body').hide();
       $('article.rpg-chat-node .field-name-field-parent').hide();
       $('#block-views-rpg-chats-rpg-chats-children').hide();
+      $('.toggle-rpg-chat-desc').html('show description');
     } else {
       $('article.rpg-chat-node .field-name-field-artwork').show();
       $('article.rpg-chat-node .field-name-body').show();
       $('article.rpg-chat-node .field-name-field-parent').show();
       $('#block-views-rpg-chats-rpg-chats-children').show();
+      $('.toggle-rpg-chat-desc').html('hide description');
     }
     });
     // When Sidebar toggle clicked, switch.
@@ -40,10 +42,12 @@ Drupal.behaviors.vaxiaChat = {
       $('#main .sidebars').hide();
       $('#main #content').css('margin-left', '0%');
       $('#main #content').css('width', '100%');
+      $('.toggle-rpg-chat-sidebar').html('show sidebar');
     } else {
       $('#main .sidebars').show();
       $('#main #content').css('margin-left', '20%');
       $('#main #content').css('width', '80%');
+      $('.toggle-rpg-chat-sidebar').html('hide sidebar');
     }
     });
   });
