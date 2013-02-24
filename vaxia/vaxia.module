@@ -351,7 +351,7 @@ function vaxia_form_alter(&$form, &$form_state, $form_id) {
         $kxp = _character_sheet_get_xp($character->nid, 'kxp');
         $xp = _character_sheet_get_xp($character->nid, 'xp');
         $spent_xp = _character_sheet_get_xp($character->nid, 'spent_xp');
-        $form['field_comment_character'][$lang]['#description'] = $kxp . ' KXP / ' . ($xp - $spent_xp) . ' XP';
+        $form['field_comment_character'][$lang]['#description'] = $kxp . ' / 70 KXP';
       }
     }
     $form['field_comment_character'][$lang]['#ajax'] = array(
