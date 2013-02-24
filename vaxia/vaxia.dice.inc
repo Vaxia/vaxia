@@ -139,10 +139,12 @@ function _vaxia_dice_roller_row($dice_size, $stat, $skill, $item) {
     '#type' => 'select',
     '#options' => range(0, 10),
   );
+  $form['number']['#attributes']['class'][] = 'dice-number';
   $form['size'] = array(
     '#type' => 'select',
     '#options' => array_combine($dice_size, $dice_size),
   );
+  $form['size']['#attributes']['class'][] = 'dice-size';
   $form['stat'] = array(
     '#type' => 'select',
     '#options' => $stat,
@@ -248,6 +250,7 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
                         }
                       }
                     }
+                    // Gather skill mods.
                     if (isset($modifies['skill']) && $modifies['skill'] != 0 && isset($roll['skill']) && $roll['skill'] != -1) {
                       $skill_mod = isset($modifies[$this_stat]) ? $modifies[$this_stat] : 0;
                       $modifies[$this_stat] = $skill_mod + $modifies['skill'];
@@ -258,10 +261,10 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
                       $mod += $modifies[$this_stat];
                     }
                     // Add percentage descriptions to mod_note.
-                    if (isset($this_item->$this_item->{$field_name}[$this_item->language][0]['value'][$this_item->language][0]['value'])
-                      && !empty($this_item->$this_item->{$field_name}[$this_item->language][0]['value'][$this_item->language][0]['value'])) {
+                    if (isset($this_item->field_percents[$this_item->language][0]['value'])
+                      && !empty($this_item->field_percents[$this_item->language][0]['value'])) {
                       $mod_note .= ' + percentage (' .
-                        $this_item->$this_item->{$field_name}[$this_item->language][0]['value'][$this_item->language][0]['value'] . ')';
+                        $this_item->field_percents[$this_item->language][0]['value'] . ')';
                     }
                   }
                 } // End for else per item.
