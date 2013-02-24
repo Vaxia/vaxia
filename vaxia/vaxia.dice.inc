@@ -107,7 +107,9 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
           foreach ($modifies as $label => $value) {
             $modifies_label[] = $label . ':' . $value;
           }
-          $item_label .= ' (' . implode(', ', $modifies_label) . ')';
+          if (!empty($modifies_label)) {
+            //$item_label .= ' (' . implode(', ', $modifies_label) . ')';
+          }
           $items[$this_item->nid] = $item_label;
         } // End items loop
       }
