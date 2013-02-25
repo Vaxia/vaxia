@@ -576,12 +576,60 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
     $form['add_xp']['type']['#options'] = array_merge($xp_types, $form['add_xp']['type']['#options']);
   }
 
+  $available_characters = array();
+  $view = views_get_view('character_sheet_moderation');
+  if (is_object($view)) {
+    $view->set_display('character_sheets_refs');
+    $view->pre_execute();
+    $view->execute();
+    $characters = $view->result;
+  }
+  else {
+    $characters = array();
+  }
+  foreach ($characters as $character) {
+    if ($character->nid != $node->nid) {
+      $available_characters[$character->nid] = $character->node_title;
+    }
+  }
+
+  // And add the transfer options.
+  if (($node->uid == $user->uid && user_access('transfer rxp')) || user_access('transfer others sheets')) {
+    $form['transfer_rxp'] = array(
+      '#type' => 'fieldset',
+      '#title' => 'Transfer RXP only',
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+    );
+    $form['transfer_rxp']['rxp_character'] = array(
+      '#type' => 'hidden',
+      '#value' => $node->nid,
+    );
+    $form['transfer_rxp']'rxp_target'] = array(
+      '#type' => 'select',
+      '#title' => t('Transfer to'),
+      '#options' => $available_characters,
+      '#description' => t('Transfer RXP to this character sheet.'),
+    );
+    $form['transfer_rxp']['rxp_amount'] = array(
+      '#type' => 'select',
+      '#title' => t('Transfer amount'),
+      '#options' => range(1, _character_sheet_get_xp($nid, 'rxp')),
+      '#description' => t('Transfer this much RXP to the selected character sheet. This will not disable this character.'),
+    );
+    $form['transfer_rxp']['rxp_submit'] = array(
+      '#type' => 'submit',
+      '#value' => t('Transfer character XP'),
+      '#submit' => array('_vaxia_transfer_rxp_submit'),
+    );
+  }
+
   // And add the transfer options.
   $setting = variable_get('vaxia_transfer_workflow', '');
   if (!empty($setting) && ($node->uid == $user->uid || user_access('transfer others sheets')) ) {
     $form['transfer'] = array(
       '#type' => 'fieldset',
-      '#title' => 'Transfer XP',
+      '#title' => 'Transfer all XP',
       '#collapsible' => TRUE,
       '#collapsed' => TRUE,
     );
@@ -600,22 +648,6 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
          'as inactive and will no longer be available to post. This cannot be undone without intervention by an administrator so be sure you '.
          'mean to do this.', array('%percent' => variable_get('vaxia_transfer_percentage', 0.75))),
     );
-    $available_characters = array();
-    $view = views_get_view('character_sheet_moderation');
-    if (is_object($view)) {
-      $view->set_display('character_sheets_refs');
-      $view->pre_execute();
-      $view->execute();
-      $characters = $view->result;
-    }
-    else {
-      $characters = array();
-    }
-    foreach ($characters as $character) {
-      if ($character->nid != $node->nid) {
-        $available_characters[$character->nid] = $character->node_title;
-      }
-    }
     $form['transfer']['confirm']['character'] = array(
       '#type' => 'hidden',
       '#value' => $node->nid,
@@ -806,6 +838,17 @@ function _vaxia_transfer_xp_submit(&$form, &$form_state) {
     _character_sheet_update_xp($new_character->nid, $new_xp, 'xp');
     _character_sheet_update_xp($new_character->nid, $bank_xp, 'bxp');
   }
+}
+
+/**
+ * Submit callback for transfering RXP().
+ */
+function _vaxia_transfer_rxp_submit(&$form, &$form_state) {
+  $old_character = node_load($form_state['values']['rxp_character']);
+  $new_character = node_load($form_state['values']['rxp_target']);
+  $amount = node_load($form_state['values']['rxp_amount']);
+  _character_sheet_update_xp($old_character, $amount * -1, 'rxp');
+  _character_sheet_update_xp($new_character, $amount, 'rxp');
 }
 
 /**
