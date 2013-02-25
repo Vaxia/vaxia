@@ -605,7 +605,7 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
       '#type' => 'hidden',
       '#value' => $node->nid,
     );
-    $form['transfer_rxp']'rxp_target'] = array(
+    $form['transfer_rxp']['rxp_target'] = array(
       '#type' => 'select',
       '#title' => t('Transfer to'),
       '#options' => $available_characters,
