@@ -56,6 +56,6 @@ article .links a{padding:5px;}
 .forum-post .links li.quote{clear:left;}
 
 /* Sidebars */
-.sidebars .block{width:46%;padding:1%;border:solid 1px #555;float:left;}
-.sidebars .block.odd{float:right;}
+.sidebars .block{width:46%;padding:1%;border:solid 1px #555;float:left;clear:left;}
+.sidebars .block.odd{float:right;clear:right;}
 .sidebars .block .block-title{text-align:center;}
