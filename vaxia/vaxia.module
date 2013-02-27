@@ -200,11 +200,19 @@ function vaxia_process_comment(&$variables) {
         $artwork->field_artwork_image[$lang][0]['fid'], $user->name);
     }
   }
+  // If not, fall back to the commment itself.
+  if (isset($comment->field_artwork[$lang][0]['nid'])) {
+    $artwork = node_load($comment->field_artwork[$lang][0]['nid']);
+    if (isset($artwork->field_artwork_image[$lang][0]['fid'])) {
+      $variables['picture'] = _vaxia_create_avatar_image_link(
+        $artwork->field_artwork_image[$lang][0]['fid'], $user->name);
+    }
+  }
 
   // Check for character type only on RPG type nodes. (and do some other work as well on RPG chat nodes)
   if (_rpg_chat_is_enabled($variables['node']->type)) {
     // Add the variables for our narrative and colors.
-    if( isset($comment->field_comment_narrative[$lang][0]['value'])
+    if(isset($comment->field_comment_narrative[$lang][0]['value'])
       && ($comment->field_comment_narrative[$lang][0]['value'] == 1) ) {
       $variables['classes'] .= ' rpg-chat-narrative';
     }
@@ -359,6 +367,11 @@ function vaxia_form_alter(&$form, &$form_state, $form_id) {
         $form['field_comment_character'][$lang]['#description'] = $kxp . ' / 70 KXP, ' . ($xp - $spent_xp) . ' XP';
       }
     }
+    else {
+      if (isset($this_player->field_artwork[$lang][0]['nid'])) {
+        $form['field_artwork'][$lang]['#default_value'][0] = $this_player->field_artwork[$lang][0]['nid'];
+      }
+    }
     $form['field_comment_character'][$lang]['#ajax'] = array(
       'callback' => '_vaxia_character_pick',
       'wrapper' => 'vaxia-dice-roller',
@@ -419,6 +432,7 @@ function _vaxia_comment_set_profile_values_submit($form, $form_state) {
   $this_player = user_load($uid);
   $this_player->field_current_character[$lang][0]['nid'] = $character;
   $this_player->field_comment_color[$lang][0]['value'] = $color;
+  $this_player->field_artwork[$lang][0]['nid'] = $artwork;
   if (is_numeric($refresh_rate) && $refresh_rate > 4) {
     $this_player->field_refresh_rate[$lang][0]['value'] = $refresh_rate;
   }
