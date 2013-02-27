@@ -405,6 +405,9 @@ function vaxia_form_alter(&$form, &$form_state, $form_id) {
     $form['actions']['submit']['#value'] = t('Post');
     $form['#submit'][] = '_vaxia_comment_set_profile_values_submit';
     $form['#submit'][] = '_vaxia_comment_add_kxp_submit';
+    $new_post = $form['actions']['submit'];
+    $new_post['#weight'] = -10;
+    array_unshift($form, $new_post);
   }
   return $form;
 }
