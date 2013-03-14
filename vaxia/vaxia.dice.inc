@@ -248,7 +248,7 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
                 // Add percentage descriptions to mod_note.
                 if (isset($this_item->field_percents[$this_item->language][0]['value'])
                   && !empty($this_item->field_percents[$this_item->language][0]['value'])) {
-                  $item_mod_note .= ' + (' .
+                  $item_mod_note .= ' + item (' .
                     $this_item->field_percents[$this_item->language][0]['value'] . ')';
                 }
               }
