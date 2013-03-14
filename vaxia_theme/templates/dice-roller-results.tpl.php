@@ -15,16 +15,23 @@
     if (isset($dice_rolls[0]['roll_notes'])) {
       $notes = explode('<br>', $dice_rolls[0]['roll_notes']);
       foreach ($dice_rolls as $index => $dice_roll) {
-        $note = substr($notes[$index + 1], 8);
+        $note = '';
+        if (isset($notes[$index + 1])) {
+          $note = substr($notes[$index + 1], 8);
+        }
         $results = explode(',', $dice_rolls[$index]['roll_result']);
         $mod = array_pop($results);
-        foreach ($results as $index => $result) {
-          $results[$index] += $mod;
+        $mod = explode('=', $mod);
+        $mod = trim($mod[0]);
+        foreach ($results as $result_index => $result) {
+          $results[$result_index] += $mod;
         }
         $result = implode(', ', $results);
         $str_rolls .= '<div class="dice">' .
-          t('@note => @results',
-            array('@note' => $note, '@command' => $dice_rolls[$index]['roll_command'] . 'Might:' . $mod, '@results' => $result)
+          t('@note (Might: @might) => @results',
+            array('@note' => $note, '@command' => $dice_rolls[$index]['roll_command'],
+            '@might' => $mod,
+            '@results' => $result)
           ) .
           '</div>'."\n";
       }
