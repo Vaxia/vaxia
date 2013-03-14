@@ -24,7 +24,7 @@
         $result = implode(', ', $results);
         $str_rolls .= '<div class="dice">' .
           t('@note => @results',
-            array('@note' => $note, '@command' => $dice_rolls[$index]['roll_command'], '@results' => $result)
+            array('@note' => $note, '@command' => $dice_rolls[$index]['roll_command'] . 'Might:' . $mod, '@results' => $result)
           ) .
           '</div>'."\n";
       }
