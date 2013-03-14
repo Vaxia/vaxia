@@ -174,6 +174,7 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
       if (!empty($content->vaxia_rolls)) {
         $command = '';
         $note = $content->vaxia_rolls['notes'] . '<br>';
+        $lang = $content->language;
 
         // Items apply to all rolls.
         $item_mod_note = '';
@@ -242,7 +243,7 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
                 }
                 // Set modifier from the item stat and skill affected.
                 if (isset($modifies[$this_stat]) && $modifies[$this_stat] != 0 ) {
-                  $item_mod_note .= ' + ' . $this_item->title . ' (' . ($modifies[$this_stat]) . ')';
+                  $item_mod_note .= ' + ' . $this_item->title . '(' . ($modifies[$this_stat]) . ')';
                   $item_mod += $modifies[$this_stat];
                 }
                 // Add percentage descriptions to mod_note.
@@ -259,7 +260,6 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
         // Calculate mods and mod note for stats, skills, etc.
         foreach ($content->vaxia_rolls['dice'] as $delta => $roll) {
           $this_command = $roll['number'] . 'd' . $roll['size'];
-          $lang = $content->language;
           $mod_note = '';
           $mod = 0;
           if ($roll['number'] > 0) {
@@ -276,7 +276,8 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
               $skill = field_collection_item_load($roll['skill']);
               $skill_value = isset($skill->field_skill_value[$lang][0]['value']) ? $skill->field_skill_value[$lang][0]['value'] : 0;
               $skill_name = isset($skill->field_skill_name[$lang][0]['value']) ? $skill->field_skill_name[$lang][0]['value'] : 'skill';
-              $mod_note .= ' + ' . $skill_name . ' (' . $skill_value . ')';
+              $skill_desc = isset($skill->field_skill_desc[$lang][0]['value']) ? $skill->field_skill_desc[$lang][0]['value'] : '';
+              $mod_note .= ' +  <a alt="' . $skill_desc . '">' . $skill_name . '</a> (' . $skill_value . ')';
               $mod += $skill_value;
             }
             // Add items.
