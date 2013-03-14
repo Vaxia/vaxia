@@ -1027,7 +1027,7 @@ function vaxia_field_group_info() {
         'classes' => '',
         'description' => '',
       ),
-      'formatter' => 'collapsed',
+      'formatter' => 'collapsible',
     ),
   );
   $export['group_stats|node|character_sheet|form'] = $field_group;

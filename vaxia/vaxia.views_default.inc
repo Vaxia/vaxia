@@ -1116,9 +1116,8 @@ return $uid;';
   $handler->display->display_options['filters']['field_is_npc_value']['id'] = 'field_is_npc_value';
   $handler->display->display_options['filters']['field_is_npc_value']['table'] = 'field_data_field_is_npc';
   $handler->display->display_options['filters']['field_is_npc_value']['field'] = 'field_is_npc_value';
-  $handler->display->display_options['filters']['field_is_npc_value']['operator'] = 'not empty';
   $handler->display->display_options['filters']['field_is_npc_value']['value'] = array(
-    'all' => 'all',
+    1 => '1',
   );
   $handler->display->display_options['filters']['field_is_npc_value']['group'] = 1;
   /* Filter criterion: Content: Published */
@@ -1139,7 +1138,9 @@ return $uid;';
   $handler->display->display_options['filters']['field_is_open_npc_value']['id'] = 'field_is_open_npc_value';
   $handler->display->display_options['filters']['field_is_open_npc_value']['table'] = 'field_data_field_is_open_npc';
   $handler->display->display_options['filters']['field_is_open_npc_value']['field'] = 'field_is_open_npc_value';
-  $handler->display->display_options['filters']['field_is_open_npc_value']['operator'] = 'not empty';
+  $handler->display->display_options['filters']['field_is_open_npc_value']['value'] = array(
+    1 => '1',
+  );
   $handler->display->display_options['filters']['field_is_open_npc_value']['group'] = 2;
   $handler->display->display_options['path'] = 'character-sheets/storyteller-npcs';
   $handler->display->display_options['menu']['type'] = 'tab';
@@ -1664,11 +1665,25 @@ return $uid;';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'references_style';
+  $handler->display->display_options['style_options']['grouping'] = array(
+    0 => array(
+      'field' => 'php',
+      'rendered' => 1,
+      'rendered_strip' => 0,
+    ),
+  );
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['row_plugin'] = 'references_fields';
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Nid */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'node';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['label'] = '';
+  $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
   $handler->display->display_options['fields']['title_1']['table'] = 'node';
@@ -1686,7 +1701,42 @@ return $uid;';
   $handler->display->display_options['fields']['uid']['exclude'] = TRUE;
   $handler->display->display_options['fields']['uid']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['uid']['link_to_user'] = FALSE;
+  /* Field: Global: PHP */
+  $handler->display->display_options['fields']['php']['id'] = 'php';
+  $handler->display->display_options['fields']['php']['table'] = 'views';
+  $handler->display->display_options['fields']['php']['field'] = 'php';
+  $handler->display->display_options['fields']['php']['label'] = '';
+  $handler->display->display_options['fields']['php']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['php']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php']['php_value'] = 'global $user;
+$node = node_load($data->nid);
+$lang = $node->language;
+$field_is_open_npc = isset($node->field_is_open_npc[$lang][0][\'value\']) ?
+  $node->field_is_open_npc[$lang][0][\'value\'] : 0;
+$field_is_npc = isset($node->field_is_npc[$lang][0][\'value\']) ?
+  $node->field_is_npc[$lang][0][\'value\'] : 0;
+
+if (!empty($field_is_open_npc) && $field_is_open_npc == 1) {
+  return \'Open NPCs\';
+}
+
+if (!empty($field_is_npc) && $field_is_npc == 1) {
+  return \'Personal NPCs\';
+}
+
+return \'Characters\';';
+  $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
+  $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
   $handler->display->display_options['defaults']['sorts'] = FALSE;
+  /* Sort criterion: Content: NPC (field_is_npc) */
+  $handler->display->display_options['sorts']['field_is_npc_value']['id'] = 'field_is_npc_value';
+  $handler->display->display_options['sorts']['field_is_npc_value']['table'] = 'field_data_field_is_npc';
+  $handler->display->display_options['sorts']['field_is_npc_value']['field'] = 'field_is_npc_value';
+  /* Sort criterion: Content: Open NPC (field_is_open_npc) */
+  $handler->display->display_options['sorts']['field_is_open_npc_value']['id'] = 'field_is_open_npc_value';
+  $handler->display->display_options['sorts']['field_is_open_npc_value']['table'] = 'field_data_field_is_open_npc';
+  $handler->display->display_options['sorts']['field_is_open_npc_value']['field'] = 'field_is_open_npc_value';
   /* Sort criterion: Content: Title */
   $handler->display->display_options['sorts']['title']['id'] = 'title';
   $handler->display->display_options['sorts']['title']['table'] = 'node';
@@ -1781,6 +1831,13 @@ return !( user_access(\'use NPCs\') || $row->uid == $user->uid );';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'jump_menu';
+  $handler->display->display_options['style_options']['grouping'] = array(
+    0 => array(
+      'field' => 'php',
+      'rendered' => 1,
+      'rendered_strip' => 0,
+    ),
+  );
   $handler->display->display_options['style_options']['path'] = 'nid';
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
@@ -1810,6 +1867,42 @@ return !( user_access(\'use NPCs\') || $row->uid == $user->uid );';
   $handler->display->display_options['fields']['nid']['alter']['alter_text'] = TRUE;
   $handler->display->display_options['fields']['nid']['alter']['text'] = '/node/[nid]';
   $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
+  /* Field: Global: PHP */
+  $handler->display->display_options['fields']['php']['id'] = 'php';
+  $handler->display->display_options['fields']['php']['table'] = 'views';
+  $handler->display->display_options['fields']['php']['field'] = 'php';
+  $handler->display->display_options['fields']['php']['label'] = '';
+  $handler->display->display_options['fields']['php']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['php']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php']['php_value'] = 'global $user;
+$node = node_load($data->nid);
+$lang = $node->language;
+$field_is_open_npc = isset($node->field_is_open_npc[$lang][0][\'value\']) ?
+  $node->field_is_open_npc[$lang][0][\'value\'] : 0;
+$field_is_npc = isset($node->field_is_npc[$lang][0][\'value\']) ?
+  $node->field_is_npc[$lang][0][\'value\'] : 0;
+
+if (!empty($field_is_open_npc) && $field_is_open_npc == 1) {
+  return \'Open NPCs\';
+}
+
+if (!empty($field_is_npc) && $field_is_npc == 1) {
+  return \'Personal NPCs\';
+}
+
+return \'Characters\';';
+  $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
+  $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
+  $handler->display->display_options['defaults']['sorts'] = FALSE;
+  /* Sort criterion: Content: NPC (field_is_npc) */
+  $handler->display->display_options['sorts']['field_is_npc_value']['id'] = 'field_is_npc_value';
+  $handler->display->display_options['sorts']['field_is_npc_value']['table'] = 'field_data_field_is_npc';
+  $handler->display->display_options['sorts']['field_is_npc_value']['field'] = 'field_is_npc_value';
+  /* Sort criterion: Content: Title */
+  $handler->display->display_options['sorts']['title']['id'] = 'title';
+  $handler->display->display_options['sorts']['title']['table'] = 'node';
+  $handler->display->display_options['sorts']['title']['field'] = 'title';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
@@ -2050,6 +2143,7 @@ return !( user_access(\'use NPCs\') || $row->uid == $user->uid );';
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'comment';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
+  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
   /* Contextual filter: Content: Nid */
   $handler->display->display_options['arguments']['nid']['id'] = 'nid';
   $handler->display->display_options['arguments']['nid']['table'] = 'node';
