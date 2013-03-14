@@ -95,6 +95,8 @@ article.node-rpg-chatroom.clearfix:after, .field-type-node-reference.clearfix:af
 .rpg-chat-node #vaxia-dice-roller .form-select{width:90px;}
 .rpg-chat-node #vaxia-dice-roller .dice-number{width:auto;}
 .rpg-chat-node #vaxia-dice-roller .dice-size{width:auto;}
+.rpg-chat-node #vaxia-dice-roller .dice-skill{width:180px;}
+.rpg-chat-node #vaxia-dice-roller #edit-vaxia-rolls-items{width:380px;}
 .rpg-chat-node #comment-form{float:left;clear:left;width:400px;}
 .rpg-chat-node #rpg-chat-wrapper{float:none;margin-left:410px;position:relative;top:-25px;}
 

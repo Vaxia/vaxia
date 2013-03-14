@@ -105,24 +105,29 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
           }
           $modifies_label = array();
           foreach ($modifies as $label => $value) {
-            $modifies_label[] = $label . ':' . $value;
+            $modifies_label[] = substr($label, 0, 3) . ':' . $value;
           }
           if (!empty($modifies_label)) {
-            //$item_label .= ' (' . implode(', ', $modifies_label) . ')';
+            $item_label .= ' (' . implode(', ', $modifies_label) . ')';
           }
           $items[$this_item->nid] = $item_label;
         } // End items loop
       }
       for ($i=0;$i<3;$i++) {
-        $form['vaxia_rolls']['dice'][$i] = _vaxia_dice_roller_row($dice_size, $stat, $skills, $items);
+        $form['vaxia_rolls']['dice'][$i] = _vaxia_dice_roller_row($dice_size, $stat, $skills);
       }
+      $form['vaxia_rolls']['items'] = array(
+        '#title' => t('Using items'),
+        '#type' => 'select',
+        '#options' => $items,
+        '#multiple' => TRUE,
+      );
       $form['vaxia_rolls']['notes'] = array(
         '#type' => 'hidden',
       );
       return $form;
     }
   }
-
   $form['vaxia_rolls'] = array(
     '#type' => 'item',
     '#theme' => 'vaxia_dice_roller',
@@ -136,7 +141,7 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
 /**
  * Helper function, create the row of dice rolling options.
  */
-function _vaxia_dice_roller_row($dice_size, $stat, $skill, $item) {
+function _vaxia_dice_roller_row($dice_size, $stat, $skill) {
   $form['number'] = array(
     '#type' => 'select',
     '#options' => range(0, 10),
@@ -151,16 +156,12 @@ function _vaxia_dice_roller_row($dice_size, $stat, $skill, $item) {
     '#type' => 'select',
     '#options' => $stat,
   );
+  $form['stat']['#attributes']['class'][] = 'dice-stat';
   $form['skill'] = array(
     '#type' => 'select',
     '#options' => $skill,
   );
-  $form['item'] = array(
-    '#type' => 'select',
-    '#size' => 3,
-    '#options' => $item,
-    '#multiple' => TRUE,
-  );
+  $form['skill']['#attributes']['class'][] = 'dice-skill';
   return $form;
 }
 
@@ -173,11 +174,95 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
       if (!empty($content->vaxia_rolls)) {
         $command = '';
         $note = $content->vaxia_rolls['notes'] . '<br>';
+
+        // Items apply to all rolls.
+        $item_mod_note = '';
+        $item_mod = 0;
+        if (isset($content->vaxia_rolls['items'])) {
+          // If character set
+          if (isset($content->field_comment_character[$lang][0]['nid'])) {
+            $character = node_load($content->field_comment_character[$lang][0]['nid']);         
+            $modifies = $penalties = array();
+            $qualifies = FALSE;
+            $this_stat = substr($roll['stat'], 6); // Trim "field_" off the top.
+            // Gather each item.
+            foreach ($roll['item'] as $this_item) {
+              $this_item = node_load($this_item);
+              if (isset($this_item->nid)) {
+                $stat_set = array('life', 'health', 'endurance', 'constitution', 'strength', 'agility', 'dexterity',
+                  'reflexes', 'intelligence', 'awareness', 'spirituality', 'presence', 'charisma', 'appearance', 'skill',
+                );
+                $qualifies = TRUE;
+                foreach ($stat_set as $stat_name) {
+                  // Grab the stat mod.
+                  $field_name = 'field_' . $stat_name;
+                  $stat_stat = isset($character->{$field_name}[$character->language][0]['value']) ?
+                    $character->{$field_name}[$character->language][0]['value'] : 0;
+                  if ($stat_name == 'skill') {
+                    if (isset($roll['skill']) && $roll['skill'] != -1) {
+                      $skill = field_collection_item_load($roll['skill']); 
+                      $stat_stat = isset($skill->field_skill_value[$lang][0]['value']) ?
+                        $skill->field_skill_value[$lang][0]['value'] : 0;
+                    }
+                  }
+                  $field_name = 'field_item_' . $stat_name;
+                  $stat_mod = isset($this_item->{$field_name}[$this_item->language][0]['value']) ?
+                    $this_item->{$field_name}[$this_item->language][0]['value'] : 0;
+                  $field_name = 'field_item_required_' . $stat_name;
+                  $stat_req = isset($this_item->{$field_name}[$this_item->language][0]['value']) ? 
+                    $this_item->{$field_name}[$this_item->language][0]['value'] : 0;
+                  $field_name = 'field_item_pen_' . $stat_name;
+                  $stat_pen = isset($this_item->{$field_name}[$this_item->language][0]['value']) ?
+                    $this_item->{$field_name}[$this_item->language][0]['value'] : 0;
+                  // Set modifier from the item stat and stat affected.
+                  if ($stat_mod != 0) {
+                    $modifies[$stat_name] = $stat_mod;
+                  }
+                  if ($stat_pen != 0) {
+                    $penalties[$stat_name] = $stat_pen;
+                  }
+                  if ($stat_stat < $stat_req) {
+                    $qualifies = FALSE;
+                  }
+                } // End stat loop
+                // Once gathered, make sure we go through all relevant penalities for mods.      
+                if (!$qualifies) {
+                  // Add all penalities for this item to the modifiers.
+                  foreach ($stat_set as $stat_name) {
+                    if (isset($penalties[$stat_name])) {
+                      $this_modifier = isset($modifies[$stat_name]) ? $modifies[$stat_name] : 0;
+                      $modifies[$stat_name] = $this_modifier + $penalties[$stat_name];
+                    }
+                  }
+                }
+                // Gather skill mods.
+                if (isset($modifies['skill']) && $modifies['skill'] != 0 && isset($roll['skill']) && $roll['skill'] != -1) {
+                  $skill_mod = isset($modifies[$this_stat]) ? $modifies[$this_stat] : 0;
+                  $modifies[$this_stat] = $skill_mod + $modifies['skill'];
+                }
+                // Set modifier from the item stat and skill affected.
+                if (isset($modifies[$this_stat]) && $modifies[$this_stat] != 0 ) {
+                  $item_mod_note .= ' + ' . $this_item->title . ' (' . ($modifies[$this_stat]) . ')';
+                  $item_mod += $modifies[$this_stat];
+                }
+                // Add percentage descriptions to mod_note.
+                if (isset($this_item->field_percents[$this_item->language][0]['value'])
+                  && !empty($this_item->field_percents[$this_item->language][0]['value'])) {
+                  $item_mod_note .= ' + percentage (' .
+                    $this_item->field_percents[$this_item->language][0]['value'] . ')';
+                }
+              }
+            } // End for else per item.
+          }
+        } // Item information gathered.
+
+        // Calculate mods and mod note for stats, skills, etc.
         foreach ($content->vaxia_rolls['dice'] as $delta => $roll) {
+          $this_command = $roll['number'] . 'd' . $roll['size'];
           $lang = $content->language;
+          $mod_note = '';
+          $mod = 0;
           if ($roll['number'] > 0) {
-            $mod_note = '';
-            $mod = 0;
             if (isset($roll['stat']) && $roll['stat'] != -1) {
               if (isset($content->field_comment_character[$lang][0]['nid'])) {
                 $character = node_load($content->field_comment_character[$lang][0]['nid']);
@@ -194,85 +279,10 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
               $mod_note .= ' + ' . $skill_name . ' (' . $skill_value . ')';
               $mod += $skill_value;
             }
-            // If items selected.
-            if (isset($roll['item']) && $roll['item'] != -1) {
-              // If character set
-              if (isset($content->field_comment_character[$lang][0]['nid'])) {
-                $character = node_load($content->field_comment_character[$lang][0]['nid']);         
-                $modifies = $penalties = array();
-                $qualifies = FALSE;
-                $this_stat = substr($roll['stat'], 6); // Trim "field_" off the top.
-                // Gather each item.
-                foreach ($roll['item'] as $this_item) {
-                  $this_item = node_load($this_item);
-                  if (isset($this_item->nid)) {
-                    $stat_set = array('life', 'health', 'endurance', 'constitution', 'strength', 'agility', 'dexterity',
-                      'reflexes', 'intelligence', 'awareness', 'spirituality', 'presence', 'charisma', 'appearance', 'skill',
-                    );
-                    $qualifies = TRUE;
-                    foreach ($stat_set as $stat_name) {
-                      // Grab the stat mod.
-                      $field_name = 'field_' . $stat_name;
-                      $stat_stat = isset($character->{$field_name}[$character->language][0]['value']) ?
-                        $character->{$field_name}[$character->language][0]['value'] : 0;
-                      if ($stat_name == 'skill') {
-                        if (isset($roll['skill']) && $roll['skill'] != -1) {
-                          $skill = field_collection_item_load($roll['skill']); 
-                          $stat_stat = isset($skill->field_skill_value[$lang][0]['value']) ?
-                            $skill->field_skill_value[$lang][0]['value'] : 0;
-                        }
-                      }
-                      $field_name = 'field_item_' . $stat_name;
-                      $stat_mod = isset($this_item->{$field_name}[$this_item->language][0]['value']) ?
-                        $this_item->{$field_name}[$this_item->language][0]['value'] : 0;
-                      $field_name = 'field_item_required_' . $stat_name;
-                      $stat_req = isset($this_item->{$field_name}[$this_item->language][0]['value']) ? 
-                        $this_item->{$field_name}[$this_item->language][0]['value'] : 0;
-                      $field_name = 'field_item_pen_' . $stat_name;
-                      $stat_pen = isset($this_item->{$field_name}[$this_item->language][0]['value']) ?
-                        $this_item->{$field_name}[$this_item->language][0]['value'] : 0;
-                      // Set modifier from the item stat and stat affected.
-                      if ($stat_mod != 0) {
-                        $modifies[$stat_name] = $stat_mod;
-                      }
-                      if ($stat_pen != 0) {
-                        $penalties[$stat_name] = $stat_pen;
-                      }
-                      if ($stat_stat < $stat_req) {
-                        $qualifies = FALSE;
-                      }
-                    } // End stat loop
-                    // Once gathered, make sure we go through all relevant penalities for mods.      
-                    if (!$qualifies) {
-                      // Add all penalities for this item to the modifiers.
-                      foreach ($stat_set as $stat_name) {
-                        if (isset($penalties[$stat_name])) {
-                          $this_modifier = isset($modifies[$stat_name]) ? $modifies[$stat_name] : 0;
-                          $modifies[$stat_name] = $this_modifier + $penalties[$stat_name];
-                        }
-                      }
-                    }
-                    // Gather skill mods.
-                    if (isset($modifies['skill']) && $modifies['skill'] != 0 && isset($roll['skill']) && $roll['skill'] != -1) {
-                      $skill_mod = isset($modifies[$this_stat]) ? $modifies[$this_stat] : 0;
-                      $modifies[$this_stat] = $skill_mod + $modifies['skill'];
-                    }
-                    // Set modifier from the item stat and skill affected.
-                    if (isset($modifies[$this_stat]) && $modifies[$this_stat] != 0 ) {
-                      $mod_note .= ' + ' . $this_item->title . ' (' . ($modifies[$this_stat]) . ')';
-                      $mod += $modifies[$this_stat];
-                    }
-                    // Add percentage descriptions to mod_note.
-                    if (isset($this_item->field_percents[$this_item->language][0]['value'])
-                      && !empty($this_item->field_percents[$this_item->language][0]['value'])) {
-                      $mod_note .= ' + percentage (' .
-                        $this_item->field_percents[$this_item->language][0]['value'] . ')';
-                    }
-                  }
-                } // End for else per item.
-              }
-            }
-            $this_command = $roll['number'] . 'd' . $roll['size'];
+            // Add items.
+            $mod_note .= $item_mod_note;
+            $mod += $item_mod;
+            // And add the command to the roll set.
             if ($mod != 0) {
               $note .= 'Roll '. $delta + 1 .' : roll(' . $this_command . ')' . $mod_note . '<br>';
               $command .= $this_command . '+' . $mod .';';
@@ -283,6 +293,8 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
             }
           }
         }
+
+
       }
       if (!empty($command)) {
         module_load_include('inc', 'dice_roller', 'dice_roller.roller');
