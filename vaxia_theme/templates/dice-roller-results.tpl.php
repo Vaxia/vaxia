@@ -28,8 +28,8 @@
         }
         $result = implode(', ', $results);
         $str_rolls .= '<div class="dice">' .
-          t('@note (Might: @might) => @results',
-            array('@note' => $note, '@command' => $dice_rolls[$index]['roll_command'],
+          t('!note (Might: @might) => @results',
+            array('!note' => $note, '@command' => $dice_rolls[$index]['roll_command'],
             '@might' => $mod,
             '@results' => $result)
           ) .
