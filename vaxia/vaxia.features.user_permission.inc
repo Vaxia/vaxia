@@ -472,14 +472,7 @@ function vaxia_user_default_permissions() {
   // Exported permission: edit own field_sh_private_notes.
   $permissions['edit own field_sh_private_notes'] = array(
     'name' => 'edit own field_sh_private_notes',
-    'roles' => array(
-      0 => 'administrator',
-      1 => 'administrator-vaxia',
-      2 => 'char-evaluator',
-      3 => 'item-evaluator',
-      4 => 'storyteller',
-      5 => 'storyteller-assistant',
-    ),
+    'roles' => array(),
     'module' => 'field_permissions',
   );
 
@@ -677,14 +670,7 @@ function vaxia_user_default_permissions() {
   // Exported permission: view own field_sh_private_notes.
   $permissions['view own field_sh_private_notes'] = array(
     'name' => 'view own field_sh_private_notes',
-    'roles' => array(
-      0 => 'administrator',
-      1 => 'administrator-vaxia',
-      2 => 'char-evaluator',
-      3 => 'item-evaluator',
-      4 => 'storyteller',
-      5 => 'storyteller-assistant',
-    ),
+    'roles' => array(),
     'module' => 'field_permissions',
   );
 
