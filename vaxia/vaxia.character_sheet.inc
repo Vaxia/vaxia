@@ -519,7 +519,7 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
   global $user;
   $level = isset($node->field_economy[$node->language][0]['value']) ? $node->field_economy[$node->language][0]['value'] : 0;
   $econ[] = t('Your current economy level is %level.', array('%level' => $level));
-  $income = _vaxia_get_month_income($level);
+  $income = (float) _vaxia_get_month_income($level);
   $econ[] = t('Your monthly disposable income is %income.', array('%income' => number_format($income, 0)));
   $pay = _vaxia_get_daily_pay($level);
   $econ[] = t('You get paid %pay a day.', array('%pay' => number_format($pay, 1)));
@@ -614,7 +614,7 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
     $form['transfer_rxp']['rxp_amount'] = array(
       '#type' => 'select',
       '#title' => t('Transfer amount'),
-      '#options' => range(1, _character_sheet_get_xp($nid, 'rxp')),
+      '#options' => range(1, _character_sheet_get_xp($node->nid, 'rxp')),
       '#description' => t('Transfer this much RXP to the selected character sheet. This will not disable this character.'),
     );
     $form['transfer_rxp']['rxp_submit'] = array(
