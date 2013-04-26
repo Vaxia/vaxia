@@ -248,7 +248,7 @@ function vaxia_process_comment(&$variables) {
       // Set the submitted variable with the updated character name.
       global $base_url;
       $variables['submitted'] = t('!username </br> !datetime',
-        array('!username' => l($character_name, $base_url . '/node/' . $character->nid), '!datetime' => $variables['created']));
+        array('!username' => l($character_name, 'node/' . $character->nid), '!datetime' => $variables['created']));
 
       // Set the character picture.
       $alt = t('Presence: @pre, Charisma: @char, Appearance: @app',
@@ -256,14 +256,14 @@ function vaxia_process_comment(&$variables) {
           '@char' => $character->field_charisma[$lang][0]['value'],
           '@app' => $character->field_appearance[$lang][0]['value']));
       $link_options = array('html' => TRUE, 'attributes' => array('target' => '_blank'));
-      $variables['picture'] = l( _vaxia_create_avatar_image_link(-1, $character_name, $alt), $base_url . '/node/' . $character->nid, $link_options);
+      $variables['picture'] = l( _vaxia_create_avatar_image_link(-1, $character_name, $alt), 'node/' . $character->nid, $link_options);
       // Check first against the selected comment, it should by default be the character selected on load.
       // If not, fall back to the character itself.
       if (isset($comment->field_artwork[$lang][0]['nid'])) {
         $artwork = node_load($comment->field_artwork[$lang][0]['nid']);
         if (isset($artwork->field_artwork_image[$lang][0]['fid'])) {
           $variables['picture'] = l( _vaxia_create_avatar_image_link(
-            $artwork->field_artwork_image[$lang][0]['fid'], $character->title, $alt), $base_url . '/node/' . $character->nid, $link_options);
+            $artwork->field_artwork_image[$lang][0]['fid'], $character->title, $alt), 'node/' . $character->nid, $link_options);
         }
       }
     }
