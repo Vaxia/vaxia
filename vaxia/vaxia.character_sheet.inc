@@ -756,7 +756,7 @@ function _vaxia_invest_calculate_cost_to_improve($economy) {
 function _vaxia_get_month_income($economy) {
   $total_worth = _vaxia_calculate_worth($economy);
   $income = (($total_worth) * (3.5 / 100)) + (0.05);
-  return number_format($income, 2);
+  return $income;
 }
 
 /**
@@ -765,7 +765,7 @@ function _vaxia_get_month_income($economy) {
 function _vaxia_get_daily_pay($economy) {
   $monthly = _vaxia_get_month_income($economy);
   $daily = $monthly / 30;
-  return number_format($daily, 2);
+  return $daily;
 }
 
 /**
