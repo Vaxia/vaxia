@@ -20,18 +20,15 @@
           $note = substr($notes[$index + 1], 8);
         }
         $results = explode(',', $dice_rolls[$index]['roll_result']);
-        $mod = array_pop($results);
-        $mod = explode('=', $mod);
-        $mod = trim($mod[0]);
-        foreach ($results as $result_index => $result) {
-          $results[$result_index] += $mod;
-        }
-        $result = implode(', ', $results);
+        $might = array_pop($results);
+        $might = explode('=', $might);
+        $might = trim($might[0]);
+        $roll = implode(', ', $results);
         $str_rolls .= '<div class="dice">' .
-          t('!note (Might: @might) => @results',
+          t('!note => Roll: @roll, Might: @might',
             array('!note' => $note, '@command' => $dice_rolls[$index]['roll_command'],
-            '@might' => $mod,
-            '@results' => $result)
+            '@roll' => $roll,
+            '@might' => $might)
           ) .
           '</div>'."\n";
       }
