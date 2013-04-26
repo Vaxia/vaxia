@@ -42,14 +42,14 @@ Drupal.behaviors.vaxiaChat = {
     // When Chat location toggle clicked, switch.
     $('.toggle-rpg-chat-desc').click(function() {
       if ( $('article.rpg-chat-node .field-name-body').is(':visible') ) {
-        $('article.rpg-chat-node .field-name-field-artwork').hide();
+        $('article.rpg-chat-node article.node-artwork .field-name-field-artwork').hide();
         $('article.rpg-chat-node .field-name-body').hide();
         $('article.rpg-chat-node .field-name-field-parent').hide();
         $('#block-views-rpg-chats-rpg-chats-children').hide();
         $('.toggle-rpg-chat-desc').html('show description');
         setCookie('toggle_description', 'hide', 365);
       } else {
-        $('article.rpg-chat-node .field-name-field-artwork').show();
+        $('article.rpg-chat-node article.node-artwork .field-name-field-artwork').show();
         $('article.rpg-chat-node .field-name-body').show();
         $('article.rpg-chat-node .field-name-field-parent').show();
         $('#block-views-rpg-chats-rpg-chats-children').show();
