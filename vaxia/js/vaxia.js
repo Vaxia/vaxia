@@ -30,7 +30,7 @@ Drupal.behaviors.vaxiaChat = {
   // Add toggle buttons.
   $('.tabs').once(function() {
     $('.tabs').after('<button class="toggle-rpg-chat-desc button" ' +
-      'style="float:right;padding:0.5em 1em;margin:0.25em 4.4em;">' +
+      'style="float:right;padding:0.5em 2.4em;margin:0.25em 4.4em;">' +
       'hide description' +
       '</button>');
     $('#main #content').after('<button class="toggle-rpg-chat-sidebar button" ' +
@@ -42,7 +42,7 @@ Drupal.behaviors.vaxiaChat = {
     // When Chat location toggle clicked, switch.
     $('.toggle-rpg-chat-desc').click(function() {
       if ( $('article.rpg-chat-node .field-name-body').is(':visible') ) {
-        $('article.rpg-chat-node article.node-artwork .field-name-field-artwork').hide();
+        $('article.rpg-chat-node article.node-artwork .field-name-field-artwork-image').hide();
         $('article.rpg-chat-node .field-name-body').hide();
         $('article.rpg-chat-node .field-name-field-parent').hide();
         $('article.rpg-chat-node .field-name-field-children').hide();
@@ -50,7 +50,7 @@ Drupal.behaviors.vaxiaChat = {
         $('.toggle-rpg-chat-desc').html('show description');
         setCookie('toggle_description', 'hide', 365);
       } else {
-        $('article.rpg-chat-node article.node-artwork .field-name-field-artwork').show();
+        $('article.rpg-chat-node article.node-artwork .field-name-field-artwork-image').show();
         $('article.rpg-chat-node .field-name-body').show();
         $('article.rpg-chat-node .field-name-field-parent').show();
         $('article.rpg-chat-node .field-name-field-children').show();

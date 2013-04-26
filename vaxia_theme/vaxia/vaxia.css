@@ -70,6 +70,9 @@ article #comment-body-add-more-wrapper #edit-comment-body-und-0-format{display:n
 .rpg-chat-node .field-name-field-artwork {float:left;padding:1em;}
 .rpg-chat-node #comment-form .field-name-field-artwork {float:none;padding:0;}
 .rpg-chat-node .field-name-field-artwork h2{display:none;}
+.rpg-chat-node .field-name-field-artwork{float:right;padding:1em;clear:right;width:250px;}
+.rpg-chat-node .field-name-field-parent{float:right;padding:1em;clear:right;width:250px;}
+.rpg-chat-node .field-name-field-children{float:right;padding:1em;clear:right;width:250px;}
 .rpg-chat-node article.comment {border:solid 1px #FFF;padding:0.5em;background-color:#555;}
 .rpg-chat-node article.comment.clearfix:after{clear:none;}
 .rpg-chat-node article.comment header mark.new{display:none;}
