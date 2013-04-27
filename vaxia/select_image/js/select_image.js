@@ -11,7 +11,7 @@ Drupal.behaviors.selectImage = {
     try {
       $('body select.form-select-image').msDropDown();
     } catch(e) {
-      alert(e.message);
+      //alert(e.message);
     }
 
   })(jQuery); }
