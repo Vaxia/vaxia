@@ -316,11 +316,11 @@ function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
   // Remove the NPC / ONPC buttons if the user is not permissioned.
   if (!user_access('create NPCs')) {
     $form['field_is_npc'][$lang]['#access'] = FALSE;
-    $form['field_is_npc'][$lang]['#value'] =  $form['field_is_npc'][$lang]['#default_value'];
+    $form['field_is_npc'][$lang]['#value'] = isset($form['field_is_npc'][$lang]['#default_value']) ? $form['field_is_npc'][$lang]['#default_value'] : FALSE;
   }
   if (!user_access('create open NPCs')) {
     $form['field_is_open_npc'][$lang]['#access'] = FALSE;
-    $form['field_is_open_npc'][$lang]['#value'] =  $form['field_is_open_npc'][$lang]['#default_value'];
+    $form['field_is_open_npc'][$lang]['#value'] = isset($form['field_is_open_npc'][$lang]['#default_value']) ? $form['field_is_open_npc'][$lang]['#default_value'] : FALSE;
   }
 }
 
