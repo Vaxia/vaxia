@@ -25,7 +25,7 @@
         $might = trim($might[0]);
         $roll = implode(', ', $results);
         $str_rolls .= '<div class="dice">' .
-          t('!note => Roll: @roll, Might: @might',
+          t('!note => <b>Roll:</b> @roll, <b>Might:</b> @might',
             array('!note' => $note, '@command' => $dice_rolls[$index]['roll_command'],
             '@roll' => $roll,
             '@might' => $might)
