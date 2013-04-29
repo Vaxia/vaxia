@@ -47,7 +47,7 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
         'field_awareness' => 'Awareness', 
         'field_spirituality' => 'Spirituality', 
         'field_presence' => 'Presence', 
-        'field_charisma' => 'Charima', 
+        'field_charisma' => 'Charisma', 
         'field_appearance' => 'Appearance'
       );
       $skills = array(-1 => '<none>');
