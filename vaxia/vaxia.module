@@ -410,6 +410,9 @@ function vaxia_form_alter(&$form, &$form_state, $form_id) {
     $new_post = $form['actions']['submit'];
     $new_post['#weight'] = -10;
     array_unshift($form, $new_post);
+    $new_refresh = $form['actions']['refresh_chat'];
+    $new_refresh['#weight'] = -11;
+    array_unshift($form, $new_refresh);
   }
   return $form;
 }
