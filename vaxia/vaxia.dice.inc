@@ -113,7 +113,7 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
           $items[$this_item->nid] = $item_label;
         } // End items loop
       }
-      for ($i=0;$i<3;$i++) {
+      for ($i=0;$i<5;$i++) {
         $form['vaxia_rolls']['dice'][$i] = _vaxia_dice_roller_row($dice_size, $stat, $skills);
       }
       $form['vaxia_rolls']['items'] = array(
