@@ -80,7 +80,7 @@ article #comment-body-add-more-wrapper #edit-comment-body-und-0-format{display:n
 .rpg-chat-node article.comment header .submitted img{display:block;margin:0 auto;}
 .rpg-chat-node article.comment header .submitted span{display:block;}
 .rpg-chat-node article.comment header .permalink{float:none;}
-.rpg-chat-node article.comment .field-name-comment-body{min-height:160px;}
+.rpg-chat-node article.comment .field-name-comment-body{min-height:200px;}
 .rpg-chat-node .comments{padding-top:1em;}
 .rpg-chat-node .comments h2{display:none;}
 .rpg-chat-node .links{display:none;}
