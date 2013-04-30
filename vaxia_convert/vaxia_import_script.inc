@@ -267,7 +267,7 @@ function vaxia_import_characters($file) {
           'charCxps' => 'charismatic',
           'charWxps' => 'warrior',
           'charMxps' => 'mage',
-          'charTxps' => 'rogue',
+          'charTxps' => 'rogue', // TRANSFER
         );
         // Mark the historical record of flavored XP.
         foreach ($flavoured_xp as $old_type => $new_type) {
