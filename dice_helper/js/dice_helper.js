@@ -26,8 +26,8 @@ Drupal.behaviors.diceHelper = {
 			 $('#edit-vaxia-rolls-dice-1-size').val(100);
 			 $('#edit-vaxia-rolls-dice-2-number').val(1);
 			 $('#edit-vaxia-rolls-dice-2-size').val(100);
-			 $('#edit-vaxia-rolls-dice-0-stat').val('field_dexterity');
-			 $('#edit-vaxia-rolls-dice-1-stat').val('field_reflexes');
+			 $('#edit-vaxia-rolls-dice-0-stat').val('field_reflexes');
+			 $('#edit-vaxia-rolls-dice-1-stat').val('field_strength');
 			 $('#edit-vaxia-rolls-dice-2-stat').val('field_endurance');  
 		}
 		if (type=='magic') {
