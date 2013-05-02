@@ -1,0 +1,30 @@
+<?php
+
+/**
+ * @file
+ * Provide additional javascript to supplement the dice roller.
+ */
+
+/**
+ * Implements hook_permission().
+ */
+function dice_helper_permission() {
+  return array(
+    'use dice helper' => array(
+      'title' => t('Use the dice helper javascript'),
+      'description' => t('Use the dice helper javascript.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_node_view().
+ */
+function dice_helper_node_view($node, $view_mode = 'full', $langcode) {
+  if (_rpg_chat_is_enabled($node->type) && $view_mode == 'full' ) {
+    if (user_access('use dice helper')) {
+      drupal_add_js(drupal_get_path('module', 'dice_helper').'/js/dice_helper.js');
+      //drupal_add_css(drupal_get_path('module', 'dice_helper').'/css/rpg_chat.css');
+    }
+  }
+}
