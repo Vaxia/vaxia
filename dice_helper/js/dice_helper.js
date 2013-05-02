@@ -26,8 +26,8 @@ Drupal.behaviors.diceHelper = {
 			 $('#edit-vaxia-rolls-dice-1-size').val(100);
 			 $('#edit-vaxia-rolls-dice-2-number').val(1);
 			 $('#edit-vaxia-rolls-dice-2-size').val(100);
-			 $('#edit-vaxia-rolls-dice-0-stat').val('field_dexterity');
-			 $('#edit-vaxia-rolls-dice-1-stat').val('field_reflexes');
+			 $('#edit-vaxia-rolls-dice-0-stat').val('field_reflexes');
+			 $('#edit-vaxia-rolls-dice-1-stat').val('field_strength');
 			 $('#edit-vaxia-rolls-dice-2-stat').val('field_endurance');  
 		}
 		if (type=='magic') {
@@ -38,7 +38,15 @@ Drupal.behaviors.diceHelper = {
 			 $('#edit-vaxia-rolls-dice-1-stat').val('field_spirituality');
 			 $('#edit-vaxia-rolls-dice-2-stat').val(-1);
 		}
-		if (type=='awareness') {
+		if (type=='tech') {
+			 $('#edit-vaxia-rolls-dice-1-number').val(1);
+			 $('#edit-vaxia-rolls-dice-1-size').val(100);
+			 $('#edit-vaxia-rolls-dice-2-number').val(0);
+			 $('#edit-vaxia-rolls-dice-0-stat').val('field_intelligence');
+			 $('#edit-vaxia-rolls-dice-1-stat').val('field_dexterity');
+			 $('#edit-vaxia-rolls-dice-2-stat').val(-1);
+		}
+		if (type=='aware') {
 			 $('#edit-vaxia-rolls-dice-1-number').val(0);
 			 $('#edit-vaxia-rolls-dice-2-number').val(0);
 			 $('#edit-vaxia-rolls-dice-0-stat').val('field_awareness');
@@ -64,7 +72,8 @@ Drupal.behaviors.diceHelper = {
         '<input type="button" value="Melee" class="dice-helper-button">' +
         '<input type="button" value="Ranged" class="dice-helper-button">' +
         '<input type="button" value="Magic" class="dice-helper-button">' +
-        '<input type="button" value="Awareness" class="dice-helper-button">' +
+        '<input type="button" value="Tech" class="dice-helper-button">' +
+        '<input type="button" value="Aware" class="dice-helper-button">' +
         '<input type="checkbox" id="same-skill-for-all" class="dice-helper-select"> Same skill?' +
         '</div>'
       );
