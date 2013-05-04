@@ -1,3 +1,13 @@
 Dice Roller 7.x-1.0, 2013-05-01
 ------------------------------
 Initial module.
+
+Dice Roller 7.x-1.0, 2013-05-02
+------------------------------
+Fixed stats selected by the "ranged" trigger
+
+Added a "tech" button for Sirian play
+
+Switched .val check on checkbox to .attr('checked') to restore function
+
+
