@@ -975,9 +975,10 @@ function _vaxia_add_xp($nid, $xp, $type) {
       // If we have enough to convert to other xp, do it.
       $kxp_ratio = variable_get('vaxia_kxp_ratio', 70);
       if ($current_kxp >= $kxp_ratio) {
-        // Remove from kxp, add 1 to rxp.
+        // Remove from kxp, add 1 to rxp, xp.
         _character_sheet_update_xp($nid, $kxp_ratio * -1, 'kxp');
         _character_sheet_update_xp($nid, 1, 'rxp');
+        _character_sheet_update_xp($nid, 1, 'xp');
         // If we have banked xp, remove one from bxp and add spendable xp.
         $current_bxp = _character_sheet_get_xp($nid, 'bxp');
         if ($current_bxp > 0 ) {
