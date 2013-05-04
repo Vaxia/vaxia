@@ -18,12 +18,10 @@ function background_changer_permission() {
 }
 
 /**
- * Implements hook_node_view().
+ * Implements hook_init().
  */
-function background_changer_node_view($node, $view_mode = 'full', $langcode) {
-  if (_rpg_chat_is_enabled($node->type) && $view_mode == 'full' ) {
-    if (user_access('use background changer')) {
-      drupal_add_js(drupal_get_path('module', 'background_changer').'/js/background_changer.js');
-    }
+function background_changer_init() {
+  if (user_access('use background changer')) {
+    drupal_add_js(drupal_get_path('module', 'background_changer').'/js/background_changer.js');
   }
 }
