@@ -1005,7 +1005,7 @@ function _vaxia_add_xp($nid, $xp, $type) {
       $rxp_to_charge = 0;
       while ($xp > 0 ) {
         if ( ($current_rxp - $rxp_to_charge) > 0 ) {
-          $rxp_to_charge--;
+          $rxp_to_charge++;
           $xp_to_add++;
         }
         else {
@@ -1013,7 +1013,7 @@ function _vaxia_add_xp($nid, $xp, $type) {
         }
         $xp--;
       }
-      _character_sheet_update_xp($nid, $rxp_to_charge, 'rxp');
+      _character_sheet_update_xp($nid, $rxp_to_charge * -1, 'rxp');
       _character_sheet_update_xp($nid, $xp_to_add, 'xp');
       _character_sheet_update_xp($nid, $bxp_to_add, 'bxp');
     break;
