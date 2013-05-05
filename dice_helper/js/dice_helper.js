@@ -55,13 +55,13 @@ Drupal.behaviors.diceHelper = {
     }
   }
 
-  // Respond to skill change
-  function sameSkillCheck(id, newSkill) {
-    all = $('#same-skill-for-all').attr('checked') ? true : false;
-    if (all == true) {
-      $('.dice-skill').val(newSkill);
-    }
-  }
+	// Respond to skill change
+	function sameSkillCheck(id, newSkill) {
+		all = $('#same-skill-for-all').attr('checked');
+		if (all == true) {
+		  $('.dice-skill').val(newSkill);
+		}
+	}
 
   // Add toggle buttons, but only the once.
   $('#vaxia-dice-roller').once(function() {
