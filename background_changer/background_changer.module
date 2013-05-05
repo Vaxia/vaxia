@@ -22,6 +22,11 @@ function background_changer_permission() {
  */
 function background_changer_init() {
   if (user_access('use background changer')) {
+    $my_settings = array (
+      // Base path for background images
+      'path' = DRUPAL_ROOT . '/' . drupal_get_path('module', 'background_changer') . "/images/",
+      );
+    drupal_add_js(array('background-changer' => $my_settings, 'setting');
     drupal_add_js(drupal_get_path('module', 'background_changer').'/js/background_changer.js');
   }
 }
