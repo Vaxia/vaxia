@@ -465,10 +465,8 @@ function _vaxia_comment_add_kxp_submit($form, $form_state) {
   }
   $lang = $form_state['values']['language'];
   // If posted as a character and not as narrative.
-  if (!empty($form_state['values']['field_comment_character'][$lang][0]['nid']) 
-    && $form_state['values']['field_comment_narrative'][$lang][0]['value'] == 0) {
+  if (!empty($form_state['values']['field_comment_character'][$lang][0]['nid']) ) {
     // The character gains XP per wordcount.
-    //$wordcount = str_word_count($form_state['values']['comment_body'][$lang][0]['value']);
     $wordcount = strlen($form_state['values']['comment_body'][$lang][0]['value']);
     if (is_numeric($wordcount)) {
       //$kxp = floor( $wordcount / variable_get('vaxia_kxp_per_words', 20) );
