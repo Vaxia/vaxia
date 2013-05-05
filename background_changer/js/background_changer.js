@@ -18,8 +18,9 @@ Drupal.behaviors.backgroundChanger = {
       n = 24-n;
     }
     
-    //Find the image subfolder within the background_changer module
-    path = DRUPAL_ROOT + '/' + drupal_get_path('module', 'background_changer') + "/images/" + n + ".jpg";
+    //Grab the base path from Drupal.settings and add the specific background image
+    var path = Drupal.settings.background-changer.path;
+    path = path + n + ".jpg";
   
     //Swap the background-image attribute on the body tag
     $('body').css('background-image',path);
