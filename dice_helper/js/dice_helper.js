@@ -57,7 +57,7 @@ Drupal.behaviors.diceHelper = {
 
   // Respond to skill change
   function sameSkillCheck(id, newSkill) {
-    all = $('#same-skill-for-all').attr('checked') ? true : false;
+    all = $('#same-skill-for-all').attr('checked');
     if (all == true) {
       $('.dice-skill').val(newSkill);
     }
