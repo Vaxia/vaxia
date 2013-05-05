@@ -13,7 +13,10 @@ Drupal.behaviors.backgroundChanger = {
     n = d.getHours();
     // Converting 24-hour clock to 12-hour, with PM hours working in reverse (1pm = 11am)
     if (n > 12){
-      n = 24 - n;
+      n = n - 12;
+    }
+    else {
+      n = 12 - n;
     }
     // Grab the base path from Drupal.settings and add the specific background image
     path = path + n + '.jpg';
