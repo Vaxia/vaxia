@@ -144,5 +144,12 @@ article.node-rpg-chatroom.clearfix:after, .field-type-node-reference.clearfix:af
 /* Artwork grid page layouts. */
 .view-artwork td{background:#aaa;border:2px solid #eee;text-align:center;padding:0.5em;}
 
-/* Characters */
-article.node-character-sheet .submitted .user-picture{display:none;}
+/* User images, everywhere but forums. */
+article.node .submitted .user-picture{display:none;}
+
+/* Additional table tweaking */
+tr{background:transparent !important;}
+
+/* Chatroom userlist tweaks. */
+#rpg-chat-userlist{height:80px;}
+#rpg-chat-userlist li{float:left;width:30%;}
