@@ -147,6 +147,9 @@ article.node-rpg-chatroom.clearfix:after, .field-type-node-reference.clearfix:af
 /* User images, everywhere but forums. */
 article.node .submitted .user-picture{display:none;}
 
+/* Wiki taxonomy is ok. */
+article.node-wiki-page .field-type-taxonomy-term-reference{display:block;}
+
 /* Additional table tweaking */
 tr{background:transparent !important;}
 
