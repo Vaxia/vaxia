@@ -961,6 +961,8 @@ function _vaxia_add_xp($nid, $xp, $type) {
   global $user;
   $node = node_load($nid);
   $meaningful_types = _vaxia_meaningful_xp_types();
+  $message = t('%xp %type XP added to %title by %user.',
+    array('%xp' => $xp, '%type' => $type, '%title' => $node->title, '%user' => $user->name));
   if (!in_array($type, $meaningful_types)) {
     _vaxia_update_type_tracking(array('nid' => $nid, 'xp' => $xp, 'type' => $type)); // Add to the type given.
     $message = t('%xp %type XP added to %title by %user.',
