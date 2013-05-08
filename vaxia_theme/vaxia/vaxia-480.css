@@ -63,3 +63,6 @@ article .links a{padding:5px;}
 
 /* Chat display shrink. */
 .node-rpg-chatroom #rpg-chat-wrapper .comment header .submitted{font-size:0.7em;width:60px;}
+
+/* Chatroom userlist tweaks. */
+#rpg-chat-userlist li{float:none;width:100%;}
