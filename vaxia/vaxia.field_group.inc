@@ -519,8 +519,8 @@ function vaxia_field_group_info() {
     'label' => 'Notes',
     'weight' => '16',
     'children' => array(
-      0 => 'field_sh_notes',
-      1 => 'field_player_notes',
+      0 => 'field_player_notes',
+      1 => 'field_sh_notes',
       2 => 'field_sh_private_notes',
     ),
     'format_type' => 'fieldset',

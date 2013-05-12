@@ -422,7 +422,7 @@ function vaxia_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'dice_roller_place_rpg_chatroom';
-  $strongarm->value = 'comment';
+  $strongarm->value = 'both';
   $export['dice_roller_place_rpg_chatroom'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -431,6 +431,175 @@ function vaxia_strongarm() {
   $strongarm->name = 'dice_roller_rpg_chatroom';
   $strongarm->value = 1;
   $export['dice_roller_rpg_chatroom'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'field_bundle_settings_node__artwork';
+  $strongarm->value = array(
+    'view_modes' => array(
+      'teaser' => array(
+        'custom_settings' => TRUE,
+      ),
+      'full' => array(
+        'custom_settings' => FALSE,
+      ),
+      'rss' => array(
+        'custom_settings' => FALSE,
+      ),
+      'search_index' => array(
+        'custom_settings' => FALSE,
+      ),
+      'search_result' => array(
+        'custom_settings' => FALSE,
+      ),
+    ),
+    'extra_fields' => array(
+      'form' => array(),
+      'display' => array(
+        'workflow_current_state' => array(
+          'default' => array(
+            'weight' => '-99',
+            'visible' => FALSE,
+          ),
+        ),
+        'workflow' => array(
+          'default' => array(
+            'weight' => '99',
+            'visible' => FALSE,
+          ),
+        ),
+      ),
+    ),
+  );
+  $export['field_bundle_settings_node__artwork'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'field_bundle_settings_node__character_sheet';
+  $strongarm->value = array(
+    'view_modes' => array(
+      'teaser' => array(
+        'custom_settings' => TRUE,
+      ),
+      'full' => array(
+        'custom_settings' => FALSE,
+      ),
+      'rss' => array(
+        'custom_settings' => FALSE,
+      ),
+      'search_index' => array(
+        'custom_settings' => FALSE,
+      ),
+      'search_result' => array(
+        'custom_settings' => FALSE,
+      ),
+    ),
+    'extra_fields' => array(
+      'form' => array(),
+      'display' => array(
+        'workflow_current_state' => array(
+          'default' => array(
+            'weight' => '-99',
+            'visible' => FALSE,
+          ),
+        ),
+        'workflow' => array(
+          'default' => array(
+            'weight' => '99',
+            'visible' => FALSE,
+          ),
+        ),
+      ),
+    ),
+  );
+  $export['field_bundle_settings_node__character_sheet'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'field_bundle_settings_node__items';
+  $strongarm->value = array(
+    'view_modes' => array(
+      'teaser' => array(
+        'custom_settings' => TRUE,
+      ),
+      'full' => array(
+        'custom_settings' => FALSE,
+      ),
+      'rss' => array(
+        'custom_settings' => FALSE,
+      ),
+      'search_index' => array(
+        'custom_settings' => FALSE,
+      ),
+      'search_result' => array(
+        'custom_settings' => FALSE,
+      ),
+    ),
+    'extra_fields' => array(
+      'form' => array(),
+      'display' => array(
+        'workflow_current_state' => array(
+          'default' => array(
+            'weight' => '-99',
+            'visible' => FALSE,
+          ),
+        ),
+        'workflow' => array(
+          'default' => array(
+            'weight' => '99',
+            'visible' => FALSE,
+          ),
+        ),
+      ),
+    ),
+  );
+  $export['field_bundle_settings_node__items'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'field_bundle_settings_node__rpg_chatroom';
+  $strongarm->value = array(
+    'view_modes' => array(
+      'teaser' => array(
+        'custom_settings' => TRUE,
+      ),
+      'full' => array(
+        'custom_settings' => FALSE,
+      ),
+      'rss' => array(
+        'custom_settings' => FALSE,
+      ),
+      'search_index' => array(
+        'custom_settings' => FALSE,
+      ),
+      'search_result' => array(
+        'custom_settings' => FALSE,
+      ),
+    ),
+    'extra_fields' => array(
+      'form' => array(
+        'dice_roller' => array(
+          'weight' => '5',
+        ),
+        'title' => array(
+          'weight' => '0',
+        ),
+      ),
+      'display' => array(
+        'dice_roller' => array(
+          'default' => array(
+            'weight' => '5',
+            'visible' => FALSE,
+          ),
+        ),
+      ),
+    ),
+  );
+  $export['field_bundle_settings_node__rpg_chatroom'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
@@ -526,6 +695,7 @@ function vaxia_strongarm() {
   $strongarm->name = 'node_options_character_sheet';
   $strongarm->value = array(
     0 => 'status',
+    1 => 'revision',
   );
   $export['node_options_character_sheet'] = $strongarm;
 
@@ -535,6 +705,7 @@ function vaxia_strongarm() {
   $strongarm->name = 'node_options_items';
   $strongarm->value = array(
     0 => 'status',
+    1 => 'revision',
   );
   $export['node_options_items'] = $strongarm;
 
@@ -553,6 +724,7 @@ function vaxia_strongarm() {
   $strongarm->name = 'node_options_rpg_chatroom';
   $strongarm->value = array(
     0 => 'status',
+    1 => 'revision',
   );
   $export['node_options_rpg_chatroom'] = $strongarm;
 
@@ -602,7 +774,7 @@ function vaxia_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'node_submitted_character_sheet';
-  $strongarm->value = 0;
+  $strongarm->value = 1;
   $export['node_submitted_character_sheet'] = $strongarm;
 
   $strongarm = new stdClass();

@@ -16,18 +16,6 @@ function vaxia_user_default_roles() {
     'weight' => '9',
   );
 
-  // Exported role: art-evaluator.
-  $roles['art-evaluator'] = array(
-    'name' => 'art-evaluator',
-    'weight' => '8',
-  );
-
-  // Exported role: char-evaluator.
-  $roles['char-evaluator'] = array(
-    'name' => 'char-evaluator',
-    'weight' => '6',
-  );
-
   // Exported role: item-evaluator.
   $roles['item-evaluator'] = array(
     'name' => 'item-evaluator',

@@ -34,6 +34,7 @@ function vaxia_views_default_views() {
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['query']['options']['query_comment'] = FALSE;
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['reset_button'] = TRUE;
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '35';
   $handler->display->display_options['pager']['options']['offset'] = '0';
@@ -109,7 +110,7 @@ function vaxia_views_default_views() {
   $handler->display->display_options['filters']['uid']['value'] = '';
   $handler->display->display_options['filters']['uid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['uid']['expose']['operator_id'] = 'uid_op';
-  $handler->display->display_options['filters']['uid']['expose']['label'] = 'Name';
+  $handler->display->display_options['filters']['uid']['expose']['label'] = 'Player Name';
   $handler->display->display_options['filters']['uid']['expose']['operator'] = 'uid_op';
   $handler->display->display_options['filters']['uid']['expose']['identifier'] = 'uid';
   $handler->display->display_options['filters']['uid']['expose']['remember'] = TRUE;
@@ -119,10 +120,7 @@ function vaxia_views_default_views() {
     3 => 0,
     8 => 0,
     9 => 0,
-    12 => 0,
-    13 => 0,
     10 => 0,
-    11 => 0,
     6 => 0,
     7 => 0,
     5 => 0,
@@ -217,6 +215,15 @@ function vaxia_views_default_views() {
   $handler->display->display_options['filters']['uid_current']['relationship'] = 'uid';
   $handler->display->display_options['filters']['uid_current']['value'] = '1';
   $handler->display->display_options['filters']['uid_current']['group'] = 0;
+  /* Filter criterion: Workflow: Current state */
+  $handler->display->display_options['filters']['sid']['id'] = 'sid';
+  $handler->display->display_options['filters']['sid']['table'] = 'workflow_node';
+  $handler->display->display_options['filters']['sid']['field'] = 'sid';
+  $handler->display->display_options['filters']['sid']['value'] = array(
+    7 => '7',
+    8 => '8',
+    10 => '10',
+  );
   $handler->display->display_options['path'] = 'artwork/mine';
   $handler->display->display_options['menu']['type'] = 'tab';
   $handler->display->display_options['menu']['title'] = 'My art';
@@ -265,24 +272,11 @@ function vaxia_views_default_views() {
   $handler->display->display_options['arguments']['uid']['table'] = 'node';
   $handler->display->display_options['arguments']['uid']['field'] = 'uid';
   $handler->display->display_options['arguments']['uid']['default_action'] = 'default';
-  $handler->display->display_options['arguments']['uid']['default_argument_type'] = 'php';
-  $handler->display->display_options['arguments']['uid']['default_argument_options']['code'] = '// Default use logged in user.
-global $user;
-$uid = $user->uid;
-// If this is a node display, char sheet type.
-$path = $_GET[\'q\'];
-$args = explode(\'/\', $path);
-if (!empty($args[1])) {
-  $nid = $args[1];
-  $node = node_load($nid);
-  if (!empty($node->nid) && $node->type == \'character_sheet\') {
-    $uid = $node->uid;
-  }
-}
-return $uid;';
+  $handler->display->display_options['arguments']['uid']['default_argument_type'] = 'current_user';
   $handler->display->display_options['arguments']['uid']['summary']['number_of_records'] = '0';
   $handler->display->display_options['arguments']['uid']['summary']['format'] = 'default_summary';
   $handler->display->display_options['arguments']['uid']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['uid']['specify_validation'] = TRUE;
   $handler->display->display_options['arguments']['uid']['validate']['type'] = 'user';
   $handler->display->display_options['arguments']['uid']['validate']['fail'] = 'empty';
   $handler->display->display_options['arguments']['uid']['break_phrase'] = TRUE;
@@ -355,7 +349,7 @@ return $uid;';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = 1;
-  $handler->display->display_options['filters']['status']['group'] = 0;
+  $handler->display->display_options['filters']['status']['group'] = 1;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
   /* Filter criterion: Content: Type */
   $handler->display->display_options['filters']['type']['id'] = 'type';
@@ -364,15 +358,19 @@ return $uid;';
   $handler->display->display_options['filters']['type']['value'] = array(
     'artwork' => 'artwork',
   );
+  $handler->display->display_options['filters']['type']['group'] = 1;
   /* Filter criterion: Workflow: Current state */
   $handler->display->display_options['filters']['sid']['id'] = 'sid';
   $handler->display->display_options['filters']['sid']['table'] = 'workflow_node';
   $handler->display->display_options['filters']['sid']['field'] = 'sid';
   $handler->display->display_options['filters']['sid']['value'] = array(
+    '' => '',
     8 => '8',
     9 => '9',
     10 => '10',
+    11 => '11',
   );
+  $handler->display->display_options['filters']['sid']['group'] = 1;
   $handler->display->display_options['filters']['sid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['sid']['expose']['operator_id'] = 'sid_op';
   $handler->display->display_options['filters']['sid']['expose']['label'] = 'Current state';
@@ -400,9 +398,10 @@ return $uid;';
   $handler->display->display_options['filters']['uid']['field'] = 'uid';
   $handler->display->display_options['filters']['uid']['relationship'] = 'uid';
   $handler->display->display_options['filters']['uid']['value'] = '';
+  $handler->display->display_options['filters']['uid']['group'] = 1;
   $handler->display->display_options['filters']['uid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['uid']['expose']['operator_id'] = 'uid_op';
-  $handler->display->display_options['filters']['uid']['expose']['label'] = 'Name';
+  $handler->display->display_options['filters']['uid']['expose']['label'] = 'Player Name';
   $handler->display->display_options['filters']['uid']['expose']['operator'] = 'uid_op';
   $handler->display->display_options['filters']['uid']['expose']['identifier'] = 'uid';
   $handler->display->display_options['filters']['uid']['expose']['remember'] = TRUE;
@@ -412,10 +411,7 @@ return $uid;';
     3 => 0,
     8 => 0,
     9 => 0,
-    12 => 0,
-    13 => 0,
     10 => 0,
-    11 => 0,
     6 => 0,
     7 => 0,
     5 => 0,
@@ -453,6 +449,7 @@ return $uid;';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['query']['options']['query_comment'] = FALSE;
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['reset_button'] = TRUE;
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '35';
   $handler->display->display_options['style_plugin'] = 'table';
@@ -532,7 +529,7 @@ return $uid;';
   $handler->display->display_options['filters']['uid']['value'] = '';
   $handler->display->display_options['filters']['uid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['uid']['expose']['operator_id'] = 'uid_op';
-  $handler->display->display_options['filters']['uid']['expose']['label'] = 'Name';
+  $handler->display->display_options['filters']['uid']['expose']['label'] = 'Player';
   $handler->display->display_options['filters']['uid']['expose']['operator'] = 'uid_op';
   $handler->display->display_options['filters']['uid']['expose']['identifier'] = 'uid';
   $handler->display->display_options['filters']['uid']['expose']['remember'] = TRUE;
@@ -542,10 +539,7 @@ return $uid;';
     3 => 0,
     8 => 0,
     9 => 0,
-    12 => 0,
-    13 => 0,
     10 => 0,
-    11 => 0,
     6 => 0,
     7 => 0,
     5 => 0,
@@ -744,6 +738,7 @@ return $uid;';
   $handler->display->display_options['filters']['sid']['table'] = 'workflow_node';
   $handler->display->display_options['filters']['sid']['field'] = 'sid';
   $handler->display->display_options['filters']['sid']['value'] = array(
+    '' => '',
     13 => '13',
     14 => '14',
     15 => '15',
@@ -1175,6 +1170,7 @@ return $uid;';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['query']['options']['query_comment'] = FALSE;
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['reset_button'] = TRUE;
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '35';
   $handler->display->display_options['style_plugin'] = 'table';
@@ -1487,7 +1483,7 @@ return $uid;';
   $handler->display->display_options['access']['type'] = 'role';
   $handler->display->display_options['access']['role'] = array(
     4 => '4',
-    6 => '6',
+    9 => '9',
   );
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'table';
@@ -1604,6 +1600,7 @@ return $uid;';
   $handler->display->display_options['filters']['sid']['table'] = 'workflow_node';
   $handler->display->display_options['filters']['sid']['field'] = 'sid';
   $handler->display->display_options['filters']['sid']['value'] = array(
+    '' => '',
     2 => '2',
     3 => '3',
     4 => '4',
@@ -1619,6 +1616,18 @@ return $uid;';
   $handler->display->display_options['filters']['sid']['expose']['identifier'] = 'sid';
   $handler->display->display_options['filters']['sid']['expose']['remember'] = TRUE;
   $handler->display->display_options['filters']['sid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['sid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    8 => 0,
+    9 => 0,
+    10 => 0,
+    6 => 0,
+    7 => 0,
+    5 => 0,
+    4 => 0,
+  );
   $handler->display->display_options['filters']['sid']['expose']['reduce'] = TRUE;
   /* Filter criterion: User: Name */
   $handler->display->display_options['filters']['uid']['id'] = 'uid';
@@ -1955,7 +1964,7 @@ return \'Characters\';';
   $handler->display->display_options['access']['type'] = 'role';
   $handler->display->display_options['access']['role'] = array(
     4 => '4',
-    6 => '6',
+    9 => '9',
   );
   $handler->display->display_options['cache']['type'] = 'time';
   $handler->display->display_options['cache']['results_lifespan'] = '3600';
@@ -2355,7 +2364,7 @@ return \'Characters\';';
   $handler->display->display_options['fields']['last_comment_timestamp']['field'] = 'last_comment_timestamp';
   $handler->display->display_options['fields']['last_comment_timestamp']['label'] = 'Last Activity';
   $handler->display->display_options['fields']['last_comment_timestamp']['date_format'] = 'long';
-  /* Field: Content: Parent room */
+  /* Field: Content: Parent-locations */
   $handler->display->display_options['fields']['field_parent']['id'] = 'field_parent';
   $handler->display->display_options['fields']['field_parent']['table'] = 'field_data_field_parent';
   $handler->display->display_options['fields']['field_parent']['field'] = 'field_parent';
@@ -2375,7 +2384,7 @@ return \'Characters\';';
   $handler->display->display_options['fields']['locked']['table'] = 'rpg_chat_room';
   $handler->display->display_options['fields']['locked']['field'] = 'locked';
   $handler->display->display_options['fields']['locked']['not'] = 0;
-  /* Contextual filter: Content: Parent room (field_parent) */
+  /* Contextual filter: Content: Parent-locations (field_parent) */
   $handler->display->display_options['arguments']['field_parent_nid']['id'] = 'field_parent_nid';
   $handler->display->display_options['arguments']['field_parent_nid']['table'] = 'field_data_field_parent';
   $handler->display->display_options['arguments']['field_parent_nid']['field'] = 'field_parent_nid';
@@ -2555,7 +2564,7 @@ return \'Characters\';';
   $handler->display->display_options['sorts']['title']['field'] = 'title';
   $handler->display->display_options['sorts']['title']['relationship'] = 'field_parent_nid';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
-  /* Contextual filter: Content: Parent room (field_parent) */
+  /* Contextual filter: Content: Parent-locations (field_parent) */
   $handler->display->display_options['arguments']['field_parent_nid']['id'] = 'field_parent_nid';
   $handler->display->display_options['arguments']['field_parent_nid']['table'] = 'field_data_field_parent';
   $handler->display->display_options['arguments']['field_parent_nid']['field'] = 'field_parent_nid';
@@ -2588,7 +2597,7 @@ return \'Characters\';';
     'rpg_chatroom' => 'rpg_chatroom',
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
-  /* Filter criterion: Content: Parent room (field_parent) */
+  /* Filter criterion: Content: Parent-locations (field_parent) */
   $handler->display->display_options['filters']['field_parent_nid_1']['id'] = 'field_parent_nid_1';
   $handler->display->display_options['filters']['field_parent_nid_1']['table'] = 'field_data_field_parent';
   $handler->display->display_options['filters']['field_parent_nid_1']['field'] = 'field_parent_nid';
@@ -2635,7 +2644,7 @@ return \'Characters\';';
   $handler->display->display_options['sorts']['title']['field'] = 'title';
   $handler->display->display_options['sorts']['title']['relationship'] = 'field_parent_nid';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
-  /* Contextual filter: Content: Parent room (field_parent) */
+  /* Contextual filter: Content: Parent-locations (field_parent) */
   $handler->display->display_options['arguments']['field_parent_nid']['id'] = 'field_parent_nid';
   $handler->display->display_options['arguments']['field_parent_nid']['table'] = 'field_data_field_parent';
   $handler->display->display_options['arguments']['field_parent_nid']['field'] = 'field_parent_nid';
@@ -2667,7 +2676,7 @@ return \'Characters\';';
     'rpg_chatroom' => 'rpg_chatroom',
   );
   $handler->display->display_options['filters']['type_1']['group'] = 1;
-  /* Filter criterion: Content: Parent room (field_parent) */
+  /* Filter criterion: Content: Parent-locations (field_parent) */
   $handler->display->display_options['filters']['field_parent_nid']['id'] = 'field_parent_nid';
   $handler->display->display_options['filters']['field_parent_nid']['table'] = 'field_data_field_parent';
   $handler->display->display_options['filters']['field_parent_nid']['field'] = 'field_parent_nid';

@@ -18,6 +18,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_artwork',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
       'foreign keys' => array(
         'nid' => array(
           'columns' => array(
@@ -532,6 +535,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_artwork_credit',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
       'foreign keys' => array(
         'format' => array(
           'columns' => array(
@@ -575,6 +581,32 @@ function vaxia_field_default_fields() {
       'label' => 'Credit',
       'required' => 0,
       'settings' => array(
+        'better_formats' => array(
+          'allowed_formats' => array(
+            'full_html' => 0,
+            'php_code' => 0,
+            'plain_text' => 'plain_text',
+            'wiki' => 0,
+          ),
+          'allowed_formats_toggle' => 1,
+          'default_order_toggle' => 0,
+          'default_order_wrapper' => array(
+            'formats' => array(
+              'full_html' => array(
+                'weight' => '1',
+              ),
+              'php_code' => array(
+                'weight' => '11',
+              ),
+              'plain_text' => array(
+                'weight' => '10',
+              ),
+              'wiki' => array(
+                'weight' => '0',
+              ),
+            ),
+          ),
+        ),
         'text_processing' => '1',
         'user_register_form' => FALSE,
       ),
@@ -823,7 +855,7 @@ function vaxia_field_default_fields() {
       'entity_types' => array(),
       'field_name' => 'field_age_app',
       'field_permissions' => array(
-        'type' => '1',
+        'type' => '0',
       ),
       'foreign keys' => array(
         'format' => array(
@@ -1104,6 +1136,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_artwork',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
       'foreign keys' => array(
         'nid' => array(
           'columns' => array(
@@ -1302,6 +1337,32 @@ function vaxia_field_default_fields() {
       'label' => 'Background',
       'required' => 1,
       'settings' => array(
+        'better_formats' => array(
+          'allowed_formats' => array(
+            'full_html' => 0,
+            'php_code' => 0,
+            'plain_text' => 'plain_text',
+            'wiki' => 0,
+          ),
+          'allowed_formats_toggle' => 1,
+          'default_order_toggle' => 0,
+          'default_order_wrapper' => array(
+            'formats' => array(
+              'full_html' => array(
+                'weight' => '1',
+              ),
+              'php_code' => array(
+                'weight' => '11',
+              ),
+              'plain_text' => array(
+                'weight' => '10',
+              ),
+              'wiki' => array(
+                'weight' => '0',
+              ),
+            ),
+          ),
+        ),
         'text_processing' => '1',
         'user_register_form' => FALSE,
       ),
@@ -1459,6 +1520,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_description',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
       'foreign keys' => array(
         'format' => array(
           'columns' => array(
@@ -1503,6 +1567,32 @@ function vaxia_field_default_fields() {
       'label' => 'Description',
       'required' => 1,
       'settings' => array(
+        'better_formats' => array(
+          'allowed_formats' => array(
+            'full_html' => 0,
+            'php_code' => 0,
+            'plain_text' => 'plain_text',
+            'wiki' => 0,
+          ),
+          'allowed_formats_toggle' => 1,
+          'default_order_toggle' => 0,
+          'default_order_wrapper' => array(
+            'formats' => array(
+              'full_html' => array(
+                'weight' => '1',
+              ),
+              'php_code' => array(
+                'weight' => '11',
+              ),
+              'plain_text' => array(
+                'weight' => '10',
+              ),
+              'wiki' => array(
+                'weight' => '0',
+              ),
+            ),
+          ),
+        ),
         'text_processing' => '1',
         'user_register_form' => FALSE,
       ),
@@ -2358,6 +2448,32 @@ function vaxia_field_default_fields() {
       'label' => 'Occupation',
       'required' => 1,
       'settings' => array(
+        'better_formats' => array(
+          'allowed_formats' => array(
+            'full_html' => 0,
+            'php_code' => 0,
+            'plain_text' => 'plain_text',
+            'wiki' => 0,
+          ),
+          'allowed_formats_toggle' => 1,
+          'default_order_toggle' => 0,
+          'default_order_wrapper' => array(
+            'formats' => array(
+              'full_html' => array(
+                'weight' => '1',
+              ),
+              'php_code' => array(
+                'weight' => '11',
+              ),
+              'plain_text' => array(
+                'weight' => '10',
+              ),
+              'wiki' => array(
+                'weight' => '0',
+              ),
+            ),
+          ),
+        ),
         'text_processing' => '1',
         'user_register_form' => FALSE,
       ),
@@ -2428,6 +2544,32 @@ function vaxia_field_default_fields() {
       'label' => 'Personality',
       'required' => 1,
       'settings' => array(
+        'better_formats' => array(
+          'allowed_formats' => array(
+            'full_html' => 0,
+            'php_code' => 0,
+            'plain_text' => 'plain_text',
+            'wiki' => 0,
+          ),
+          'allowed_formats_toggle' => 1,
+          'default_order_toggle' => 0,
+          'default_order_wrapper' => array(
+            'formats' => array(
+              'full_html' => array(
+                'weight' => '1',
+              ),
+              'php_code' => array(
+                'weight' => '11',
+              ),
+              'plain_text' => array(
+                'weight' => '10',
+              ),
+              'wiki' => array(
+                'weight' => '0',
+              ),
+            ),
+          ),
+        ),
         'text_processing' => '1',
         'user_register_form' => FALSE,
       ),
@@ -2498,6 +2640,32 @@ function vaxia_field_default_fields() {
       'label' => 'Player Notes',
       'required' => 0,
       'settings' => array(
+        'better_formats' => array(
+          'allowed_formats' => array(
+            'full_html' => 0,
+            'php_code' => 0,
+            'plain_text' => 'plain_text',
+            'wiki' => 0,
+          ),
+          'allowed_formats_toggle' => 1,
+          'default_order_toggle' => 0,
+          'default_order_wrapper' => array(
+            'formats' => array(
+              'full_html' => array(
+                'weight' => '1',
+              ),
+              'php_code' => array(
+                'weight' => '11',
+              ),
+              'plain_text' => array(
+                'weight' => '10',
+              ),
+              'wiki' => array(
+                'weight' => '0',
+              ),
+            ),
+          ),
+        ),
         'text_processing' => '1',
         'user_register_form' => FALSE,
       ),
@@ -2637,6 +2805,32 @@ function vaxia_field_default_fields() {
       'label' => 'Additional property',
       'required' => 0,
       'settings' => array(
+        'better_formats' => array(
+          'allowed_formats' => array(
+            'full_html' => 0,
+            'php_code' => 0,
+            'plain_text' => 'plain_text',
+            'wiki' => 0,
+          ),
+          'allowed_formats_toggle' => 1,
+          'default_order_toggle' => 0,
+          'default_order_wrapper' => array(
+            'formats' => array(
+              'full_html' => array(
+                'weight' => '1',
+              ),
+              'php_code' => array(
+                'weight' => '11',
+              ),
+              'plain_text' => array(
+                'weight' => '10',
+              ),
+              'wiki' => array(
+                'weight' => '0',
+              ),
+            ),
+          ),
+        ),
         'text_processing' => '1',
         'user_register_form' => FALSE,
       ),
@@ -2661,7 +2855,7 @@ function vaxia_field_default_fields() {
       'entity_types' => array(),
       'field_name' => 'field_race',
       'field_permissions' => array(
-        'type' => '1',
+        'type' => '0',
       ),
       'foreign keys' => array(),
       'indexes' => array(
@@ -2676,6 +2870,15 @@ function vaxia_field_default_fields() {
           'human' => 'human',
           'half-elf' => 'half-elf',
           'elf' => 'elf',
+          'orc' => 'orc',
+          'half-orc' => 'half-orc',
+          'neth' => 'neth',
+          'gnome' => 'gnome',
+          'halfling' => 'halfling',
+          'lurai' => 'lurai',
+          'fairy' => 'fariy',
+          'aratay' => 'aratay',
+          'mojingan' => 'mojingan',
         ),
         'allowed_values_function' => '',
       ),
@@ -2732,7 +2935,7 @@ function vaxia_field_default_fields() {
       'entity_types' => array(),
       'field_name' => 'field_realm',
       'field_permissions' => array(
-        'type' => '1',
+        'type' => '0',
       ),
       'foreign keys' => array(),
       'indexes' => array(
@@ -2871,7 +3074,7 @@ function vaxia_field_default_fields() {
       'entity_types' => array(),
       'field_name' => 'field_sex',
       'field_permissions' => array(
-        'type' => '1',
+        'type' => '0',
       ),
       'foreign keys' => array(
         'format' => array(
@@ -2989,6 +3192,32 @@ function vaxia_field_default_fields() {
       'label' => 'SH Notes',
       'required' => 0,
       'settings' => array(
+        'better_formats' => array(
+          'allowed_formats' => array(
+            'full_html' => 0,
+            'php_code' => 0,
+            'plain_text' => 'plain_text',
+            'wiki' => 0,
+          ),
+          'allowed_formats_toggle' => 1,
+          'default_order_toggle' => 0,
+          'default_order_wrapper' => array(
+            'formats' => array(
+              'full_html' => array(
+                'weight' => '1',
+              ),
+              'php_code' => array(
+                'weight' => '11',
+              ),
+              'plain_text' => array(
+                'weight' => '10',
+              ),
+              'wiki' => array(
+                'weight' => '0',
+              ),
+            ),
+          ),
+        ),
         'text_processing' => '1',
         'user_register_form' => FALSE,
       ),
@@ -3059,6 +3288,32 @@ function vaxia_field_default_fields() {
       'label' => 'Private SH Notes',
       'required' => 0,
       'settings' => array(
+        'better_formats' => array(
+          'allowed_formats' => array(
+            'full_html' => 0,
+            'php_code' => 0,
+            'plain_text' => 'plain_text',
+            'wiki' => 0,
+          ),
+          'allowed_formats_toggle' => 1,
+          'default_order_toggle' => 0,
+          'default_order_wrapper' => array(
+            'formats' => array(
+              'full_html' => array(
+                'weight' => '1',
+              ),
+              'php_code' => array(
+                'weight' => '11',
+              ),
+              'plain_text' => array(
+                'weight' => '10',
+              ),
+              'wiki' => array(
+                'weight' => '0',
+              ),
+            ),
+          ),
+        ),
         'text_processing' => '1',
         'user_register_form' => FALSE,
       ),
@@ -3685,6 +3940,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_item_desc',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
       'foreign keys' => array(
         'format' => array(
           'columns' => array(
@@ -3729,6 +3987,32 @@ function vaxia_field_default_fields() {
       'label' => 'Description',
       'required' => 1,
       'settings' => array(
+        'better_formats' => array(
+          'allowed_formats' => array(
+            'full_html' => 0,
+            'php_code' => 0,
+            'plain_text' => 'plain_text',
+            'wiki' => 0,
+          ),
+          'allowed_formats_toggle' => 1,
+          'default_order_toggle' => 0,
+          'default_order_wrapper' => array(
+            'formats' => array(
+              'full_html' => array(
+                'weight' => '1',
+              ),
+              'php_code' => array(
+                'weight' => '11',
+              ),
+              'plain_text' => array(
+                'weight' => '10',
+              ),
+              'wiki' => array(
+                'weight' => '0',
+              ),
+            ),
+          ),
+        ),
         'text_processing' => '1',
         'user_register_form' => FALSE,
       ),
@@ -4000,6 +4284,32 @@ function vaxia_field_default_fields() {
       'label' => 'History',
       'required' => 0,
       'settings' => array(
+        'better_formats' => array(
+          'allowed_formats' => array(
+            'full_html' => 0,
+            'php_code' => 0,
+            'plain_text' => 'plain_text',
+            'wiki' => 0,
+          ),
+          'allowed_formats_toggle' => 1,
+          'default_order_toggle' => 0,
+          'default_order_wrapper' => array(
+            'formats' => array(
+              'full_html' => array(
+                'weight' => '1',
+              ),
+              'php_code' => array(
+                'weight' => '11',
+              ),
+              'plain_text' => array(
+                'weight' => '10',
+              ),
+              'wiki' => array(
+                'weight' => '0',
+              ),
+            ),
+          ),
+        ),
         'text_processing' => '1',
         'user_register_form' => FALSE,
       ),
@@ -6619,7 +6929,33 @@ function vaxia_field_default_fields() {
       'label' => 'Player Notes',
       'required' => 0,
       'settings' => array(
-        'text_processing' => '0',
+        'better_formats' => array(
+          'allowed_formats' => array(
+            'full_html' => 0,
+            'php_code' => 0,
+            'plain_text' => 'plain_text',
+            'wiki' => 0,
+          ),
+          'allowed_formats_toggle' => 1,
+          'default_order_toggle' => 0,
+          'default_order_wrapper' => array(
+            'formats' => array(
+              'full_html' => array(
+                'weight' => '1',
+              ),
+              'php_code' => array(
+                'weight' => '11',
+              ),
+              'plain_text' => array(
+                'weight' => '10',
+              ),
+              'wiki' => array(
+                'weight' => '0',
+              ),
+            ),
+          ),
+        ),
+        'text_processing' => '1',
         'user_register_form' => FALSE,
       ),
       'widget' => array(
@@ -6689,7 +7025,33 @@ function vaxia_field_default_fields() {
       'label' => 'SH Notes',
       'required' => 0,
       'settings' => array(
-        'text_processing' => '0',
+        'better_formats' => array(
+          'allowed_formats' => array(
+            'full_html' => 0,
+            'php_code' => 0,
+            'plain_text' => 'plain_text',
+            'wiki' => 0,
+          ),
+          'allowed_formats_toggle' => 1,
+          'default_order_toggle' => 0,
+          'default_order_wrapper' => array(
+            'formats' => array(
+              'full_html' => array(
+                'weight' => '1',
+              ),
+              'php_code' => array(
+                'weight' => '11',
+              ),
+              'plain_text' => array(
+                'weight' => '10',
+              ),
+              'wiki' => array(
+                'weight' => '0',
+              ),
+            ),
+          ),
+        ),
+        'text_processing' => '1',
         'user_register_form' => FALSE,
       ),
       'widget' => array(
@@ -6759,7 +7121,33 @@ function vaxia_field_default_fields() {
       'label' => 'Private SH Notes',
       'required' => 0,
       'settings' => array(
-        'text_processing' => '0',
+        'better_formats' => array(
+          'allowed_formats' => array(
+            'full_html' => 0,
+            'php_code' => 0,
+            'plain_text' => 'plain_text',
+            'wiki' => 0,
+          ),
+          'allowed_formats_toggle' => 1,
+          'default_order_toggle' => 0,
+          'default_order_wrapper' => array(
+            'formats' => array(
+              'full_html' => array(
+                'weight' => '1',
+              ),
+              'php_code' => array(
+                'weight' => '11',
+              ),
+              'plain_text' => array(
+                'weight' => '10',
+              ),
+              'wiki' => array(
+                'weight' => '0',
+              ),
+            ),
+          ),
+        ),
+        'text_processing' => '1',
         'user_register_form' => FALSE,
       ),
       'widget' => array(
@@ -6906,6 +7294,32 @@ function vaxia_field_default_fields() {
       'label' => 'Details',
       'required' => 0,
       'settings' => array(
+        'better_formats' => array(
+          'allowed_formats' => array(
+            'full_html' => 0,
+            'php_code' => 0,
+            'plain_text' => 'plain_text',
+            'wiki' => 0,
+          ),
+          'allowed_formats_toggle' => 1,
+          'default_order_toggle' => 0,
+          'default_order_wrapper' => array(
+            'formats' => array(
+              'full_html' => array(
+                'weight' => '1',
+              ),
+              'php_code' => array(
+                'weight' => '11',
+              ),
+              'plain_text' => array(
+                'weight' => '10',
+              ),
+              'wiki' => array(
+                'weight' => '0',
+              ),
+            ),
+          ),
+        ),
         'display_summary' => 0,
         'text_processing' => '1',
         'user_register_form' => FALSE,
@@ -6932,7 +7346,7 @@ function vaxia_field_default_fields() {
       'entity_types' => array(),
       'field_name' => 'field_age_app',
       'field_permissions' => array(
-        'type' => '1',
+        'type' => '0',
       ),
       'foreign keys' => array(
         'format' => array(
@@ -7075,6 +7489,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_artwork',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
       'foreign keys' => array(
         'nid' => array(
           'columns' => array(
@@ -7283,7 +7700,33 @@ function vaxia_field_default_fields() {
       'label' => 'Player Notes',
       'required' => 0,
       'settings' => array(
-        'text_processing' => '0',
+        'better_formats' => array(
+          'allowed_formats' => array(
+            'full_html' => 0,
+            'php_code' => 0,
+            'plain_text' => 'plain_text',
+            'wiki' => 0,
+          ),
+          'allowed_formats_toggle' => 1,
+          'default_order_toggle' => 0,
+          'default_order_wrapper' => array(
+            'formats' => array(
+              'full_html' => array(
+                'weight' => '1',
+              ),
+              'php_code' => array(
+                'weight' => '11',
+              ),
+              'plain_text' => array(
+                'weight' => '10',
+              ),
+              'wiki' => array(
+                'weight' => '0',
+              ),
+            ),
+          ),
+        ),
+        'text_processing' => '1',
         'user_register_form' => FALSE,
       ),
       'widget' => array(
@@ -7307,7 +7750,7 @@ function vaxia_field_default_fields() {
       'entity_types' => array(),
       'field_name' => 'field_race',
       'field_permissions' => array(
-        'type' => '1',
+        'type' => '0',
       ),
       'foreign keys' => array(),
       'indexes' => array(
@@ -7322,6 +7765,15 @@ function vaxia_field_default_fields() {
           'human' => 'human',
           'half-elf' => 'half-elf',
           'elf' => 'elf',
+          'orc' => 'orc',
+          'half-orc' => 'half-orc',
+          'neth' => 'neth',
+          'gnome' => 'gnome',
+          'halfling' => 'halfling',
+          'lurai' => 'lurai',
+          'fairy' => 'fariy',
+          'aratay' => 'aratay',
+          'mojingan' => 'mojingan',
         ),
         'allowed_values_function' => '',
       ),
@@ -7374,7 +7826,7 @@ function vaxia_field_default_fields() {
       'entity_types' => array(),
       'field_name' => 'field_realm',
       'field_permissions' => array(
-        'type' => '1',
+        'type' => '0',
       ),
       'foreign keys' => array(),
       'indexes' => array(
@@ -7440,7 +7892,7 @@ function vaxia_field_default_fields() {
       'entity_types' => array(),
       'field_name' => 'field_sex',
       'field_permissions' => array(
-        'type' => '1',
+        'type' => '0',
       ),
       'foreign keys' => array(
         'format' => array(
@@ -7558,6 +8010,32 @@ function vaxia_field_default_fields() {
       'label' => 'SH Notes',
       'required' => 0,
       'settings' => array(
+        'better_formats' => array(
+          'allowed_formats' => array(
+            'full_html' => 0,
+            'php_code' => 0,
+            'plain_text' => 'plain_text',
+            'wiki' => 0,
+          ),
+          'allowed_formats_toggle' => 1,
+          'default_order_toggle' => 0,
+          'default_order_wrapper' => array(
+            'formats' => array(
+              'full_html' => array(
+                'weight' => '1',
+              ),
+              'php_code' => array(
+                'weight' => '11',
+              ),
+              'plain_text' => array(
+                'weight' => '10',
+              ),
+              'wiki' => array(
+                'weight' => '0',
+              ),
+            ),
+          ),
+        ),
         'text_processing' => '1',
         'user_register_form' => FALSE,
       ),
@@ -7628,7 +8106,33 @@ function vaxia_field_default_fields() {
       'label' => 'Private SH Notes',
       'required' => 0,
       'settings' => array(
-        'text_processing' => '0',
+        'better_formats' => array(
+          'allowed_formats' => array(
+            'full_html' => 0,
+            'php_code' => 0,
+            'plain_text' => 'plain_text',
+            'wiki' => 0,
+          ),
+          'allowed_formats_toggle' => 1,
+          'default_order_toggle' => 0,
+          'default_order_wrapper' => array(
+            'formats' => array(
+              'full_html' => array(
+                'weight' => '1',
+              ),
+              'php_code' => array(
+                'weight' => '11',
+              ),
+              'plain_text' => array(
+                'weight' => '10',
+              ),
+              'wiki' => array(
+                'weight' => '0',
+              ),
+            ),
+          ),
+        ),
+        'text_processing' => '1',
         'user_register_form' => FALSE,
       ),
       'widget' => array(
@@ -7757,8 +8261,8 @@ function vaxia_field_default_fields() {
           'label' => 'hidden',
           'module' => 'text',
           'settings' => array(),
-          'type' => 'text_default',
-          'weight' => '1',
+          'type' => 'text_plain',
+          'weight' => '3',
         ),
         'print' => array(
           'label' => 'hidden',
@@ -7799,20 +8303,47 @@ function vaxia_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'body',
       'label' => 'Body',
-      'required' => FALSE,
+      'required' => 0,
       'settings' => array(
-        'display_summary' => TRUE,
-        'text_processing' => 1,
+        'better_formats' => array(
+          'allowed_formats' => array(
+            'full_html' => 0,
+            'php_code' => 0,
+            'plain_text' => 'plain_text',
+            'wiki' => 0,
+          ),
+          'allowed_formats_toggle' => 1,
+          'default_order_toggle' => 0,
+          'default_order_wrapper' => array(
+            'formats' => array(
+              'full_html' => array(
+                'weight' => '1',
+              ),
+              'php_code' => array(
+                'weight' => '11',
+              ),
+              'plain_text' => array(
+                'weight' => '10',
+              ),
+              'wiki' => array(
+                'weight' => '0',
+              ),
+            ),
+          ),
+        ),
+        'display_summary' => 1,
+        'text_processing' => '1',
         'user_register_form' => FALSE,
       ),
       'widget' => array(
+        'active' => 1,
         'module' => 'text',
         'settings' => array(
-          'rows' => 20,
+          'rows' => '20',
           'summary_rows' => 5,
         ),
         'type' => 'text_textarea_with_summary',
-        'weight' => '3',
+        'weight' => '4',
       ),
     ),
   );
@@ -7825,6 +8356,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_artwork',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
       'foreign keys' => array(
         'nid' => array(
           'columns' => array(
@@ -7867,11 +8401,13 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'hidden',
           'module' => 'node_reference',
-          'settings' => array(),
-          'type' => 'node_reference_default',
-          'weight' => '3',
+          'settings' => array(
+            'node_reference_view_mode' => 'full',
+          ),
+          'type' => 'node_reference_node',
+          'weight' => '4',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -7892,6 +8428,88 @@ function vaxia_field_default_fields() {
         'module' => 'select_image',
         'settings' => array(),
         'type' => 'select_image_select',
+        'weight' => '3',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-rpg_chatroom-field_children'.
+  $fields['node-rpg_chatroom-field_children'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_children',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
+      'foreign keys' => array(),
+      'indexes' => array(),
+      'locked' => '0',
+      'module' => 'nodereferrer',
+      'settings' => array(
+        'multiple' => 0,
+        'referrer_fields' => array(
+          'field_artwork' => 0,
+          'field_comment_character' => 0,
+          'field_current_character' => 0,
+          'field_items' => 0,
+          'field_npcs' => 0,
+          'field_parent' => 'field_parent',
+        ),
+        'referrer_nodes_per_page' => '0',
+        'referrer_order' => 'TITLE_ASC',
+        'referrer_pager_element' => '0',
+        'referrer_translations' => 0,
+        'referrer_types' => array(
+          'article' => 0,
+          'artwork' => 0,
+          'character_sheet' => 0,
+          'forum' => 0,
+          'items' => 0,
+          'npc' => 0,
+          'page' => 0,
+          'rpg_chatroom' => 'rpg_chatroom',
+        ),
+        'required' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'nodereferrer',
+    ),
+    'field_instance' => array(
+      'bundle' => 'rpg_chatroom',
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'nodereferrer',
+          'settings' => array(),
+          'type' => 'nodereferrer_default',
+          'weight' => '2',
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_children',
+      'label' => 'Sub-locations',
+      'required' => 0,
+      'settings' => array(
+        'prefix' => '',
+        'suffix' => '',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'nodereferrer',
+        'settings' => array(),
+        'type' => 'nodereferrer_list',
         'weight' => '2',
       ),
     ),
@@ -7905,6 +8523,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_parent',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
       'foreign keys' => array(
         'nid' => array(
           'columns' => array(
@@ -7925,6 +8546,7 @@ function vaxia_field_default_fields() {
           'article' => 0,
           'artwork' => 0,
           'character_sheet' => 0,
+          'forum' => 0,
           'items' => 0,
           'npc' => 0,
           'page' => 0,
@@ -7946,11 +8568,11 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'inline',
+          'label' => 'above',
           'module' => 'node_reference',
           'settings' => array(),
           'type' => 'node_reference_default',
-          'weight' => '2',
+          'weight' => '1',
         ),
         'print' => array(
           'label' => 'above',
@@ -7986,7 +8608,7 @@ function vaxia_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_parent',
-      'label' => 'Parent room',
+      'label' => 'Parent-locations',
       'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
@@ -8001,6 +8623,231 @@ function vaxia_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-rpg_chatroom-field_rl_weather'.
+  $fields['node-rpg_chatroom-field_rl_weather'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_rl_weather',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
+      'foreign keys' => array(),
+      'indexes' => array(
+        'lid' => array(
+          0 => 'lid',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'location_cck',
+      'settings' => array(
+        'gmap_macro' => '[gmap ]',
+        'gmap_marker' => 'drupal',
+        'location_settings' => array(
+          'display' => array(
+            'hide' => array(
+              'additional' => 0,
+              'city' => 0,
+              'coords' => 0,
+              'country' => 0,
+              'country_name' => 0,
+              'locpick' => 0,
+              'map_link' => 0,
+              'name' => 0,
+              'postal_code' => 0,
+              'province' => 0,
+              'province_name' => 0,
+              'street' => 0,
+            ),
+          ),
+          'form' => array(
+            'fields' => array(
+              'additional' => array(
+                'collect' => '0',
+                'default' => '',
+                'weight' => '6',
+              ),
+              'city' => array(
+                'collect' => '0',
+                'default' => 'New York',
+                'weight' => '8',
+              ),
+              'country' => array(
+                'collect' => '1',
+                'default' => 'us',
+                'weight' => '14',
+              ),
+              'locpick' => array(
+                'collect' => '1',
+                'weight' => '20',
+              ),
+              'name' => array(
+                'collect' => '0',
+                'default' => 'New York City',
+                'weight' => '2',
+              ),
+              'postal_code' => array(
+                'collect' => '0',
+                'default' => '10004',
+                'weight' => '12',
+              ),
+              'province' => array(
+                'collect' => '0',
+                'default' => 'New York',
+                'weight' => '10',
+                'widget' => 'autocomplete',
+              ),
+              'street' => array(
+                'collect' => '0',
+                'default' => '4 New York Plaza',
+                'weight' => '4',
+              ),
+            ),
+          ),
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'location',
+    ),
+    'field_instance' => array(
+      'bundle' => 'rpg_chatroom',
+      'default_value' => array(
+        0 => array(
+          'location_settings' => array(
+            'display' => array(
+              'hide' => array(
+                'additional' => 0,
+                'city' => 0,
+                'coords' => 0,
+                'country' => 0,
+                'country_name' => 0,
+                'locpick' => 0,
+                'map_link' => 0,
+                'name' => 0,
+                'postal_code' => 0,
+                'province' => 0,
+                'province_name' => 0,
+                'street' => 0,
+              ),
+            ),
+            'form' => array(
+              'fields' => array(
+                'additional' => array(
+                  'collect' => '0',
+                  'default' => '',
+                  'weight' => '6',
+                ),
+                'city' => array(
+                  'collect' => '0',
+                  'default' => 'New York',
+                  'weight' => '8',
+                ),
+                'country' => array(
+                  '#parents' => array(
+                    0 => 'field_rl_weather',
+                    1 => 'und',
+                    2 => 0,
+                  ),
+                  'collect' => '1',
+                  'default' => 'us',
+                  'weight' => '14',
+                ),
+                'delete_location' => array(
+                  'default' => FALSE,
+                  'nodiff' => TRUE,
+                ),
+                'is_primary' => array(
+                  'default' => 0,
+                ),
+                'latitude' => array(
+                  'default' => 0,
+                ),
+                'lid' => array(
+                  'default' => FALSE,
+                ),
+                'locpick' => array(
+                  '#parents' => array(
+                    0 => 'field_rl_weather',
+                    1 => 'und',
+                    2 => 0,
+                  ),
+                  'collect' => '1',
+                  'default' => FALSE,
+                  'nodiff' => TRUE,
+                  'weight' => '20',
+                ),
+                'longitude' => array(
+                  'default' => 0,
+                ),
+                'name' => array(
+                  'collect' => '0',
+                  'default' => 'New York City',
+                  'weight' => '2',
+                ),
+                'postal_code' => array(
+                  'collect' => '0',
+                  'default' => '10004',
+                  'weight' => '12',
+                ),
+                'province' => array(
+                  'collect' => '0',
+                  'default' => 'New York',
+                  'weight' => '10',
+                  'widget' => 'autocomplete',
+                ),
+                'source' => array(
+                  'default' => 0,
+                ),
+                'street' => array(
+                  'collect' => '0',
+                  'default' => '4 New York Plaza',
+                  'weight' => '4',
+                ),
+              ),
+            ),
+          ),
+          'country' => 'us',
+          'locpick' => array(
+            'user_latitude' => '42.5530802889558',
+            'user_longitude' => '-74.35546875',
+          ),
+        ),
+      ),
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '5',
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_rl_weather',
+      'label' => 'RL weather',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'location_cck',
+        'settings' => array(),
+        'type' => 'location',
+        'weight' => '6',
+      ),
+    ),
+  );
+
   // Exported field: 'user-user-field_artwork'.
   $fields['user-user-field_artwork'] = array(
     'field_config' => array(
@@ -8009,6 +8856,9 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_artwork',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
       'foreign keys' => array(
         'nid' => array(
           'columns' => array(
@@ -8051,10 +8901,12 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'hidden',
           'module' => 'node_reference',
-          'settings' => array(),
-          'type' => 'node_reference_default',
+          'settings' => array(
+            'node_reference_view_mode' => 'full',
+          ),
+          'type' => 'node_reference_node',
           'weight' => '0',
         ),
       ),
@@ -8303,13 +9155,14 @@ function vaxia_field_default_fields() {
   t('OOC');
   t('Occupation');
   t('Open NPC');
-  t('Parent room');
+  t('Parent-locations');
   t('Percentages');
   t('Personality');
   t('Picture');
   t('Player Notes');
   t('Presence');
   t('Private SH Notes');
+  t('RL weather');
   t('Race');
   t('Real Age');
   t('Realm');
@@ -8320,6 +9173,7 @@ function vaxia_field_default_fields() {
   t('Skill');
   t('Spirituality');
   t('Strength');
+  t('Sub-locations');
   t('Titles');
   t('Value');
   t('Website');
