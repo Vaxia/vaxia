@@ -88,11 +88,11 @@ Drupal.behaviors.diceHelper = {
   function setCharacterColorNPic(character_value) {
     // Check the cookie against the helper value to set pic and color.
     var color = getCookie('vaxia_dice_helper_' + character_value + '_color');
-    if (typeof color !== 'undefined') {
+    if (typeof color !== 'undefined' && color.length > 0) {
       $('#edit-field-comment-color-und-0-value').val(color);
     }
     var pic = getCookie('vaxia_dice_helper_' + character_value + '_pic');
-    if (typeof pic !== 'undefined') {
+    if (typeof pic !== 'undefined' && pic.length > 0) {
       $('body select.form-select-image').msDropDown().data('dd').setIndexByValue(pic);
     }
   }
