@@ -19,22 +19,22 @@ function vaxia_vacation_form_user_profile_form_alter(&$form, &$form_state) {
   }
   // Get currently on vacation.
   $vacation_modes = variable_get('vaxia_vacation', array());
-  // Provide element.
-  $form['vaxia_vacation'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Vacation mode'),
-    '#description' => t('<b>If you know you will be absent for some time: Please let us know! We need to know ' .
-      'if you\'ll be around or not.</b> <br/> When you go on vcation mode all of your powers as a storyteller ' .
-      'or evaluator are removed. During this time you will not recieve emails, notifications, or other ' .
-      'communications from the site and we won\'t expect you to perform duties. When you return, hit the ' .
-      'button and your permissions will be returned to you.'),
-    '#weight' => 1000,
-  );
-  $form['vaxia_vacation']['vaxia_vacation_uid'] = array(
-    '#type' => 'hidden',
-    '#value' => $form['#user']->uid,
-  );
   if ($has_extra == TRUE) {
+    // Provide element.
+    $form['vaxia_vacation'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Vacation mode'),
+      '#description' => t('<b>If you know you will be absent for some time: Please let us know! We need to know ' .
+        'if you\'ll be around or not.</b> <br/> When you go on vcation mode all of your powers as a storyteller ' .
+        'or evaluator are removed. During this time you will not recieve emails, notifications, or other ' .
+        'communications from the site and we won\'t expect you to perform duties. When you return, hit the ' .
+        'button and your permissions will be returned to you.'),
+      '#weight' => 1000,
+    );
+    $form['vaxia_vacation']['vaxia_vacation_uid'] = array(
+      '#type' => 'hidden',
+      '#value' => $form['#user']->uid,
+    );
     $form['vaxia_vacation']['vaxia_vacation_submit'] = array(
       '#type' => 'submit',
       '#value' => t('Go on vacation'),
@@ -42,6 +42,21 @@ function vaxia_vacation_form_user_profile_form_alter(&$form, &$form_state) {
     $form['vaxia_vacation']['vaxia_vacation_submit']['#submit'][] = '_vaxia_vacation_go_on_vacation';
   }
   if (isset($vacation_modes[$form['#user']->uid])) {
+    // Provide element.
+    $form['vaxia_vacation'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Vacation mode'),
+      '#description' => t('<b>If you know you will be absent for some time: Please let us know! We need to know ' .
+        'if you\'ll be around or not.</b> <br/> When you go on vcation mode all of your powers as a storyteller ' .
+        'or evaluator are removed. During this time you will not recieve emails, notifications, or other ' .
+        'communications from the site and we won\'t expect you to perform duties. When you return, hit the ' .
+        'button and your permissions will be returned to you.'),
+      '#weight' => 1000,
+    );
+    $form['vaxia_vacation']['vaxia_vacation_uid'] = array(
+      '#type' => 'hidden',
+      '#value' => $form['#user']->uid,
+    );
     $form['vaxia_vacation']['vaxia_vacation_submit'] = array(
       '#type' => 'submit',
       '#value' => t('Return from vacation'),
