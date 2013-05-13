@@ -1,0 +1,99 @@
+<?php
+/**
+ * @file
+ * Provide a vacation button for users to temp remove roles.
+ */
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function vaxia_vacation_form_user_profile_form_alter(&$form, &$form_state) {
+//drupal_set_message(print_r($form['#user'],1));
+  // If user account has any of the roles to watch for.
+  $extra_roles = array('storyteller', 'storyteller-assistant', 'storyteller-evaluator');
+  $has_extra = FALSE;
+  foreach ($extra_roles as $extra_role) {
+    if (in_array($extra_role, $form['#user']->roles)) {
+      $has_extra = TRUE;
+    }
+  }
+  // Get currently on vacation.
+  $vacation_modes = variable_get('vaxia_vacation', array());
+  // Provide element.
+  $form['vaxia_vacation'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Vacation mode'),
+    '#description' => t('<b>If you know you will be absent for some time: Please let us know! We need to know ' .
+      'if you\'ll be around or not.</b> <br/> When you go on vcation mode all of your powers as a storyteller ' .
+      'or evaluator are removed. During this time you will not recieve emails, notifications, or other ' .
+      'communications from the site and we won\'t expect you to perform duties. When you return, hit the ' .
+      'button and your permissions will be returned to you.'),
+    '#weight' => 1000,
+  );
+  $form['vaxia_vacation']['vaxia_vacation_uid'] = array(
+    '#type' => 'hidden',
+    '#value' => $form['#user']->uid,
+  );
+  if ($has_extra == TRUE) {
+    $form['vaxia_vacation']['vaxia_vacation_submit'] = array(
+      '#type' => 'submit',
+      '#value' => t('Go on vacation'),
+    );
+    $form['vaxia_vacation']['vaxia_vacation_submit']['#submit'][] = '_vaxia_vacation_go_on_vacation';
+  }
+  if (isset($vacation_modes[$form['#user']->uid])) {
+    $form['vaxia_vacation']['vaxia_vacation_submit'] = array(
+      '#type' => 'submit',
+      '#value' => t('Return from vacation'),
+    );  
+    $form['vaxia_vacation']['vaxia_vacation_submit']['#submit'][] = '_vaxia_vacation_return_from_vacation';
+  }
+}
+
+/**
+ * Implements form submit handler.
+ */
+function _vaxia_vacation_go_on_vacation(&$form, &$form_state) {
+  $uid = $form_state['values']['vaxia_vacation_uid'];
+  $vacation_modes = variable_get('vaxia_vacation', array());
+  $account = user_load($uid);
+  $vacation_modes[$uid] = $account->roles;
+  variable_set('vaxia_vacation', $vacation_modes);
+  $role = user_role_load_by_name('player');
+  $account->roles = array();
+  $account->roles[$role->rid] = $role->name;
+  _vaxia_vacation_update_roles($account);
+}
+
+/**
+ * Implements form submit handler.
+ */
+function _vaxia_vacation_return_from_vacation(&$form, &$form_state) {
+  $uid = $form_state['values']['vaxia_vacation_uid'];
+  $vacation_modes = variable_get('vaxia_vacation', array());
+  if (isset($vacation_modes[$uid])) {
+    $account = user_load($uid);
+    $account->roles = $vacation_modes[$uid];
+    unset($vacation_modes[$uid]);
+    variable_set('vaxia_vacation', $vacation_modes);
+    _vaxia_vacation_update_roles($account);
+  }
+}
+
+/**
+ * Helper function update roles for given user.
+ */
+function _vaxia_vacation_update_roles($account) {
+  db_delete('users_roles')->condition('uid', $account->uid)->execute();
+  $query = db_insert('users_roles')->fields(array('uid', 'rid'));
+  foreach (array_keys($account->roles) as $rid) {
+    if (!in_array($rid, array(DRUPAL_ANONYMOUS_RID, DRUPAL_AUTHENTICATED_RID))) {
+      $query->values(array(
+        'uid' => $account->uid,
+        'rid' => $rid,
+      ));
+    }
+  }
+  $query->execute();
+  drupal_session_destroy_uid($account->uid);
+}
