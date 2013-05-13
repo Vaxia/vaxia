@@ -11,7 +11,7 @@ include_once 'wiki_features.features.inc';
  */
 function wiki_features_form_wiki_page_node_form_alter(&$form, &$form_state) {
   $node = $form['#node'];
-  if ($state = workflow_get_workflow_node_by_nid($node->nid)) {
+  if (isset($node->nid) && $state = workflow_get_workflow_node_by_nid($node->nid)) {
     $state = workflow_get_workflow_states_by_sid($state->sid);
     if ($state->state == 'locked') {
       drupal_set_message(t('This wiki article is locked. You are not allowed to edit it.'));
