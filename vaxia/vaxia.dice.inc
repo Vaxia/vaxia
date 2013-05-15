@@ -187,9 +187,7 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
             // If character set
             if (isset($content->field_comment_character[$lang][0]['nid'])) {
               $this_stat = substr($roll['stat'], 6); // Trim "field_" off the top.
-              $character = node_load($content->field_comment_character[$lang][0]['nid']);         
-              $modifies = $penalties = array();
-              $qualifies = FALSE;
+              $character = node_load($content->field_comment_character[$lang][0]['nid']);
               // Gather each item.
               foreach ($content->vaxia_rolls['items'] as $this_item) {
                 $this_item = node_load($this_item);
@@ -197,6 +195,7 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
                   $stat_set = array('life', 'health', 'endurance', 'constitution', 'strength', 'agility', 'dexterity',
                     'reflexes', 'intelligence', 'awareness', 'spirituality', 'presence', 'charisma', 'appearance', 'skill',
                   );
+                  $modifies = $penalties = array();
                   $qualifies = TRUE;
                   foreach ($stat_set as $stat_name) {
                     // Grab the stat mod.
