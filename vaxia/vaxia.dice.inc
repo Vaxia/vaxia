@@ -283,8 +283,10 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
             }
 
             // Add items.
-            $mod_note .= ' +  <a title="' . $item_mod_note . '" href="#">Items</a> (' . $item_mod . ')';
-            $mod += $item_mod;
+            if (!empty($item_mod_note)) {
+              $mod_note .= ' +  <a title="' . $item_mod_note . '" href="#">Items</a> (' . $item_mod . ')';
+              $mod += $item_mod;
+            }
             // And add the command to the roll set.
             if ($mod != 0) {
               $note .= 'Roll '. $delta + 1 .' : roll(' . $this_command . ')' . $mod_note . '<br>';
