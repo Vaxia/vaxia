@@ -88,6 +88,15 @@ Drupal.behaviors.diceHelper = {
     }
   }
 
+  // Set the value in the form based on the given character index.
+  function setNarrative() {
+    // Check the cookie against the helper value to set pic and color.
+    var narr = getCookie('vaxia_dice_helper_narrative');
+    if (typeof narr !== 'undefined' && narr.length > 0 && narr == 'true') {
+      $('#edit-field-comment-narrative-und').attr('checked','checked');;
+    }
+  }
+
   // Add toggle buttons, but only the once.
   $('#vaxia-dice-roller').once(function() {
     helper = $('#dice-helper');
@@ -110,6 +119,7 @@ Drupal.behaviors.diceHelper = {
         $('#dice-helper').show();
       }
       setCharacterColorNPic(helper);
+      setNarrative();
     }
   });
 
@@ -132,6 +142,8 @@ Drupal.behaviors.diceHelper = {
     setCookie('vaxia_dice_helper_' + helper + '_color', color, 30);
     var pic = $('#edit-field-artwork-und').val();
     setCookie('vaxia_dice_helper_' + helper + '_pic', pic, 30);
+    var narr = $('#edit-field-comment-narrative-und').is(':checked');
+    setCookie('vaxia_dice_helper_narrative', narr, 30);
   });
 
   $('.dice-helper-button').click(function() {
