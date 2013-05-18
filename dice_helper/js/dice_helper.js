@@ -12,7 +12,7 @@ Drupal.behaviors.diceHelper = {
   function quickPick(type) {
   	$('#edit-vaxia-rolls-dice-0-number').val(1);
 		$('#edit-vaxia-rolls-dice-0-size').val(100);
-		if (type=='melee') {
+		if (type=='melee' || 'ranged') {
 			$('#edit-vaxia-rolls-dice-1-number').val(1);
 			$('#edit-vaxia-rolls-dice-1-size').val(100);
 			$('#edit-vaxia-rolls-dice-2-number').val(1);
@@ -21,15 +21,6 @@ Drupal.behaviors.diceHelper = {
 			$('#edit-vaxia-rolls-dice-1-stat').val('field_strength');
 			$('#edit-vaxia-rolls-dice-2-stat').val('field_endurance');
 		} 
-		if (type=='ranged') {
-			 $('#edit-vaxia-rolls-dice-1-number').val(1);
-			 $('#edit-vaxia-rolls-dice-1-size').val(100);
-			 $('#edit-vaxia-rolls-dice-2-number').val(1);
-			 $('#edit-vaxia-rolls-dice-2-size').val(100);
-			 $('#edit-vaxia-rolls-dice-0-stat').val('field_reflexes');
-			 $('#edit-vaxia-rolls-dice-1-stat').val('field_strength');
-			 $('#edit-vaxia-rolls-dice-2-stat').val('field_endurance');  
-		}
 		if (type=='magic') {
 			 $('#edit-vaxia-rolls-dice-1-number').val(1);
 			 $('#edit-vaxia-rolls-dice-1-size').val(100);
