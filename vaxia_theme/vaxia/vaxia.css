@@ -154,5 +154,13 @@ article.node-wiki-page .field-type-taxonomy-term-reference{display:block;}
 tr{background:transparent !important;}
 
 /* Chatroom userlist tweaks. */
-#rpg-chat-userlist{height:80px;}
-#rpg-chat-userlist li{float:left;width:30%;}
+#rpg-chat-userlist li{float:right;width:30%;}
+#rpg-chat{clear:right !important;}
+#rpg-chat .field-name-field-ooc{height:20px;clear:none;}
+
+/* Error displays, colors fix. */
+div.error a, table tr.error a{color:#111 !important;}
+
+/* Fix weather below a certain width. */
+.weather{width:auto;}
+.weather .weather-pic{float:none !important;padding:0.2em !important;}
