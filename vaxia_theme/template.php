@@ -162,6 +162,9 @@ function vaxia_theme_preprocess_page(&$variables, $hook) {
  */
 function vaxia_theme_preprocess_node(&$variables, $hook) {
   $node = $variables['node'];
+  if ($node->type == 'event') {
+    $variables['theme_hook_suggestion'] = 'node__' . $node->type . '_' . $variables['elements']['#view_mode'];
+  }
   $variables['theme_hook_suggestions'][] = 'node__' . $node->type . '_' . $variables['elements']['#view_mode'];
 }
 // */
