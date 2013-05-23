@@ -164,3 +164,9 @@ div.error a, table tr.error a{color:#111 !important;}
 /* Fix weather below a certain width. */
 .weather{width:auto;}
 .weather .weather-pic{float:none !important;padding:0.2em !important;}
+
+/* Whiteboard background color. */
+#whiteboard{background-color:#fff;}
+
+/* Wiki background color. */
+article.node-wiki-page{background-color:#666;padding:1em;}
