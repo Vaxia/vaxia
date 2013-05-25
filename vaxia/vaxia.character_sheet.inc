@@ -724,15 +724,17 @@ function vaxia_form__character_sheet_owner_form_alter(&$form, &$form_state) {
  * Helper function, gather xp for display.
  */
 function _vaxia_xp_display($node) {
+  $historical = _character_sheet_get_xp($node->nid, 'xp');
+  $xps['historical_xp'] = t('Earned %historical historical xp.', array('%historical' => $historical));
   // Get specific info for vaxia to display in markup.
-  $this_xp = _character_sheet_get_xp($node->nid, 'spent_xp');
-  //$xps['spent_xp'] = t('Spent %spent out of %xp xp.', array('%spent' => $this_xp, '%xp' => $node->xp['xp']));
-  $this_xp = _character_sheet_get_xp($node->nid, 'bxp');
-  $xps['bxp'] = t('Banked %banked bxp.', array('%banked' => $this_xp));
-  $this_xp = _character_sheet_get_xp($node->nid, 'rxp');
-  $xps['rxp'] = t('Roleplayed %roleplayed rxp.', array('%roleplayed' => $this_xp));
-  $this_xp = _character_sheet_get_xp($node->nid, 'kxp');
-  $xps['kxp'] = t('Posted %posted kxp.', array('%posted' => $this_xp));
+  $spent = _character_sheet_get_xp($node->nid, 'spent_xp');
+  $xps['spent_xp'] = t('Spent %spent out of %xp xp.', array('%spent' => $spent, '%xp' => $historical));
+  $banked = _character_sheet_get_xp($node->nid, 'bxp');
+  $xps['bxp'] = t('Banked %banked bxp.', array('%banked' => $banked));
+  $roleplayed = _character_sheet_get_xp($node->nid, 'rxp');
+  $xps['rxp'] = t('Roleplayed %roleplayed rxp.', array('%roleplayed' => $roleplayed));
+  $posted = _character_sheet_get_xp($node->nid, 'kxp');
+  $xps['kxp'] = t('Posted %posted kxp.', array('%posted' => $posted));
   // Figure out silver math.
   $silver = _character_sheet_get_xp($node->nid, 'silver');
   $silver_spent = _character_sheet_get_xp($node->nid, 'spent_silver');
