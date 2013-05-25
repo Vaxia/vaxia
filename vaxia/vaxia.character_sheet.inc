@@ -725,8 +725,8 @@ function vaxia_form__character_sheet_owner_form_alter(&$form, &$form_state) {
  */
 function _vaxia_xp_display($node) {
   $historical = _character_sheet_get_xp($node->nid, 'xp');
-  $xps['historical_xp'] = t('Earned %historical historical xp.', array('%historical' => $historical));
-  // Get specific info for vaxia to display in markup.
+  $spent = _character_sheet_get_xp($node->nid, 'spent_xp');
+  $xps['historical_xp'] = t('Earned %historical historical xp.', array('%historical' => $spent));
   $spent = _character_sheet_get_xp($node->nid, 'spent_xp');
   $xps['spent_xp'] = t('Spent %spent out of %xp xp.', array('%spent' => $spent, '%xp' => $historical));
   $banked = _character_sheet_get_xp($node->nid, 'bxp');
