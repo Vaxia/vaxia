@@ -1,0 +1,16 @@
+name = Vaxia SH Test
+description = SH and Evaluator tests
+core = 7.x
+package = RPG
+version = 7.x-1.0
+project = vaxia_sh_test
+dependencies[] = entity
+dependencies[] = php
+dependencies[] = quiz_rules
+dependencies[] = rules
+dependencies[] = webform_rules
+features[features_api][] = api:1
+features[rules_config][] = rules_sh_test_1_response
+features[rules_config][] = rules_sh_test_2_response
+features[rules_config][] = rules_sh_test_3_response_cloned_
+features[rules_config][] = rules_sh_test_4_response

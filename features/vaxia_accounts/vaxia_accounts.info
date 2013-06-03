@@ -1,0 +1,15 @@
+name = Vaxia accounts
+description = Vaxia account handling rulesets
+core = 7.x
+package = RPG
+php = 5.2.4
+version = 7.x-1.1
+project = vaxia_accounts
+dependencies[] = entity
+dependencies[] = rules
+dependencies[] = user_stats
+features[features_api][] = api:1
+features[rules_config][] = rules_rem_sh_role_if_absentee_6mo
+features[rules_config][] = rules_retire_blocked_user_characters
+features[rules_config][] = rules_retire_inactive_user_account
+features[rules_config][] = rules_retire_unused_user_account
