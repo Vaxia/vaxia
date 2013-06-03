@@ -86,17 +86,36 @@ function wiki_features_strongarm() {
       'token' => array(
         'custom_settings' => FALSE,
       ),
+      'ical' => array(
+        'custom_settings' => FALSE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(
         'title' => array(
-          'weight' => '-5',
+          'weight' => '0',
         ),
         'path' => array(
-          'weight' => '30',
+          'weight' => '1',
+        ),
+        'workflow' => array(
+          'weight' => '6',
         ),
       ),
-      'display' => array(),
+      'display' => array(
+        'workflow_current_state' => array(
+          'default' => array(
+            'weight' => '-99',
+            'visible' => TRUE,
+          ),
+        ),
+        'workflow' => array(
+          'default' => array(
+            'weight' => '99',
+            'visible' => TRUE,
+          ),
+        ),
+      ),
     ),
   );
   $export['field_bundle_settings_node__wiki_page'] = $strongarm;

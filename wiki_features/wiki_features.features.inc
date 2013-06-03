@@ -15,6 +15,13 @@ function wiki_features_ctools_plugin_api() {
 }
 
 /**
+ * Implements hook_views_api().
+ */
+function wiki_features_views_api() {
+  return array("version" => "3.0");
+}
+
+/**
  * Implements hook_node_info().
  */
 function wiki_features_node_info() {
@@ -83,9 +90,6 @@ function wiki_features_workflow_default_workflows() {
         'state' => 'locked',
         'target_state' => 'open',
       ),
-    ),
-    'node_types' => array(
-      0 => 'wiki_page',
     ),
   );
 

@@ -21,7 +21,7 @@ function wiki_features_taxonomy_default_vocabularies() {
       'name' => 'Wiki categories',
       'machine_name' => 'wiki_categories',
       'description' => '',
-      'hierarchy' => '0',
+      'hierarchy' => '1',
       'module' => 'taxonomy',
       'weight' => '0',
     ),
