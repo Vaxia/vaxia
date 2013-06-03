@@ -142,7 +142,7 @@ function vaxia_field_default_fields() {
           'label' => 'hidden',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '1',
+          'weight' => '2',
         ),
       ),
       'entity_type' => 'comment',
@@ -201,7 +201,7 @@ function vaxia_field_default_fields() {
           'label' => 'hidden',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '3',
+          'weight' => '4',
         ),
       ),
       'entity_type' => 'comment',
@@ -264,7 +264,7 @@ function vaxia_field_default_fields() {
           'label' => 'hidden',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '2',
+          'weight' => '3',
         ),
       ),
       'entity_type' => 'comment',
@@ -320,11 +320,11 @@ function vaxia_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '4',
+          'weight' => '1',
         ),
       ),
       'entity_type' => 'comment',
@@ -1033,7 +1033,7 @@ function vaxia_field_default_fields() {
           'module' => 'computed_field',
           'settings' => array(),
           'type' => 'computed_field_plain',
-          'weight' => '20',
+          'weight' => '15',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1054,7 +1054,7 @@ function vaxia_field_default_fields() {
         'module' => 'computed_field',
         'settings' => array(),
         'type' => 'computed',
-        'weight' => '25',
+        'weight' => '20',
       ),
     ),
   );
@@ -1102,7 +1102,7 @@ function vaxia_field_default_fields() {
           'module' => 'computed_field',
           'settings' => array(),
           'type' => 'computed_field_plain',
-          'weight' => '24',
+          'weight' => '23',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1123,7 +1123,7 @@ function vaxia_field_default_fields() {
         'module' => 'computed_field',
         'settings' => array(),
         'type' => 'computed',
-        'weight' => '29',
+        'weight' => '28',
       ),
     ),
   );
@@ -1256,7 +1256,7 @@ function vaxia_field_default_fields() {
           'module' => 'computed_field',
           'settings' => array(),
           'type' => 'computed_field_plain',
-          'weight' => '22',
+          'weight' => '19',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1277,7 +1277,7 @@ function vaxia_field_default_fields() {
         'module' => 'computed_field',
         'settings' => array(),
         'type' => 'computed',
-        'weight' => '27',
+        'weight' => '24',
       ),
     ),
   );
@@ -1401,7 +1401,7 @@ function vaxia_field_default_fields() {
       'bundle' => 'character_sheet',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => '',
+      'description' => 'Contributes to Presence and Appearance.',
       'display' => array(
         'default' => array(
           'label' => 'inline',
@@ -1413,7 +1413,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_integer',
-          'weight' => '17',
+          'weight' => '22',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1438,7 +1438,7 @@ function vaxia_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '22',
+        'weight' => '27',
       ),
     ),
   );
@@ -1486,7 +1486,7 @@ function vaxia_field_default_fields() {
           'module' => 'computed_field',
           'settings' => array(),
           'type' => 'computed_field_plain',
-          'weight' => '19',
+          'weight' => '13',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1507,7 +1507,7 @@ function vaxia_field_default_fields() {
         'module' => 'computed_field',
         'settings' => array(),
         'type' => 'computed',
-        'weight' => '24',
+        'weight' => '18',
       ),
     ),
   );
@@ -1631,7 +1631,7 @@ function vaxia_field_default_fields() {
       'bundle' => 'character_sheet',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => '',
+      'description' => 'Contributes to Agility and Reflexes.',
       'display' => array(
         'default' => array(
           'label' => 'inline',
@@ -1643,7 +1643,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_integer',
-          'weight' => '14',
+          'weight' => '16',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1668,7 +1668,7 @@ function vaxia_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '19',
+        'weight' => '21',
       ),
     ),
   );
@@ -1765,7 +1765,7 @@ function vaxia_field_default_fields() {
       'bundle' => 'character_sheet',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => '',
+      'description' => 'Contributes to Health and Constitution.',
       'display' => array(
         'default' => array(
           'label' => 'inline',
@@ -1777,7 +1777,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_integer',
-          'weight' => '11',
+          'weight' => '12',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1802,7 +1802,7 @@ function vaxia_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '16',
+        'weight' => '17',
       ),
     ),
   );
@@ -1851,7 +1851,7 @@ function vaxia_field_default_fields() {
           'module' => 'computed_field',
           'settings' => array(),
           'type' => 'computed_field_plain',
-          'weight' => '18',
+          'weight' => '11',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1872,7 +1872,7 @@ function vaxia_field_default_fields() {
         'module' => 'computed_field',
         'settings' => array(),
         'type' => 'computed',
-        'weight' => '23',
+        'weight' => '16',
       ),
     ),
   );
@@ -1900,7 +1900,7 @@ function vaxia_field_default_fields() {
       'bundle' => 'character_sheet',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => '',
+      'description' => 'Contributes to Reflexes and Awareness.',
       'display' => array(
         'default' => array(
           'label' => 'inline',
@@ -1912,7 +1912,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_integer',
-          'weight' => '15',
+          'weight' => '18',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1937,7 +1937,7 @@ function vaxia_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '20',
+        'weight' => '23',
       ),
     ),
   );
@@ -2264,7 +2264,7 @@ function vaxia_field_default_fields() {
       'bundle' => 'character_sheet',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => '',
+      'description' => 'Contributes to Appearance and Health.',
       'display' => array(
         'default' => array(
           'label' => 'inline',
@@ -2724,7 +2724,7 @@ function vaxia_field_default_fields() {
           'module' => 'computed_field',
           'settings' => array(),
           'type' => 'computed_field_plain',
-          'weight' => '23',
+          'weight' => '21',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2745,7 +2745,7 @@ function vaxia_field_default_fields() {
         'module' => 'computed_field',
         'settings' => array(),
         'type' => 'computed',
-        'weight' => '28',
+        'weight' => '26',
       ),
     ),
   );
@@ -2876,9 +2876,10 @@ function vaxia_field_default_fields() {
           'gnome' => 'gnome',
           'halfling' => 'halfling',
           'lurai' => 'lurai',
-          'fairy' => 'fariy',
+          'fairy' => 'fairy',
           'aratay' => 'aratay',
           'mojingan' => 'mojingan',
+          'dwarf' => 'dwarf',
         ),
         'allowed_values_function' => '',
       ),
@@ -3039,7 +3040,7 @@ function vaxia_field_default_fields() {
           'module' => 'computed_field',
           'settings' => array(),
           'type' => 'computed_field_plain',
-          'weight' => '21',
+          'weight' => '17',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -3060,7 +3061,7 @@ function vaxia_field_default_fields() {
         'module' => 'computed_field',
         'settings' => array(),
         'type' => 'computed',
-        'weight' => '26',
+        'weight' => '22',
       ),
     ),
   );
@@ -3418,7 +3419,7 @@ function vaxia_field_default_fields() {
       'bundle' => 'character_sheet',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => '',
+      'description' => 'Contributes to Awareness and Presence.',
       'display' => array(
         'default' => array(
           'label' => 'inline',
@@ -3430,7 +3431,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_integer',
-          'weight' => '16',
+          'weight' => '20',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -3455,7 +3456,7 @@ function vaxia_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '21',
+        'weight' => '25',
       ),
     ),
   );
@@ -3483,7 +3484,7 @@ function vaxia_field_default_fields() {
       'bundle' => 'character_sheet',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => '',
+      'description' => 'Contributes to Constitution and Agility.',
       'display' => array(
         'default' => array(
           'label' => 'inline',
@@ -3495,7 +3496,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_integer',
-          'weight' => '13',
+          'weight' => '14',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -3520,7 +3521,7 @@ function vaxia_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '18',
+        'weight' => '19',
       ),
     ),
   );
@@ -7771,9 +7772,10 @@ function vaxia_field_default_fields() {
           'gnome' => 'gnome',
           'halfling' => 'halfling',
           'lurai' => 'lurai',
-          'fairy' => 'fariy',
+          'fairy' => 'fairy',
           'aratay' => 'aratay',
           'mojingan' => 'mojingan',
+          'dwarf' => 'dwarf',
         ),
         'allowed_values_function' => '',
       ),
@@ -8848,6 +8850,434 @@ function vaxia_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-session_report-body'.
+  $fields['node-session_report-body'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(
+        0 => 'node',
+      ),
+      'field_name' => 'body',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'text',
+      'settings' => array(),
+      'translatable' => '0',
+      'type' => 'text_with_summary',
+    ),
+    'field_instance' => array(
+      'bundle' => 'session_report',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '2',
+        ),
+        'teaser' => array(
+          'label' => 'hidden',
+          'module' => 'text',
+          'settings' => array(
+            'trim_length' => 600,
+          ),
+          'type' => 'text_summary_or_trimmed',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'body',
+      'label' => 'Body',
+      'required' => 0,
+      'settings' => array(
+        'better_formats' => array(
+          'allowed_formats' => array(
+            'full_html' => 0,
+            'php_code' => 0,
+            'plain_text' => 'plain_text',
+            'wiki' => 0,
+          ),
+          'allowed_formats_toggle' => 1,
+          'default_order_toggle' => 0,
+          'default_order_wrapper' => array(
+            'formats' => array(
+              'full_html' => array(
+                'weight' => '1',
+              ),
+              'php_code' => array(
+                'weight' => '11',
+              ),
+              'plain_text' => array(
+                'weight' => '10',
+              ),
+              'wiki' => array(
+                'weight' => '0',
+              ),
+            ),
+          ),
+        ),
+        'display_summary' => 1,
+        'text_processing' => '1',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'rows' => '20',
+          'summary_rows' => 5,
+        ),
+        'type' => 'text_textarea_with_summary',
+        'weight' => '4',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-session_report-field_characters_involved'.
+  $fields['node-session_report-field_characters_involved'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_characters_involved',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
+      'foreign keys' => array(
+        'nid' => array(
+          'columns' => array(
+            'nid' => 'nid',
+          ),
+          'table' => 'node',
+        ),
+      ),
+      'indexes' => array(
+        'nid' => array(
+          0 => 'nid',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'node_reference',
+      'settings' => array(
+        'referenceable_types' => array(
+          'article' => 0,
+          'artwork' => 0,
+          'character_sheet' => 'character_sheet',
+          'faq_article' => 0,
+          'forum' => 0,
+          'items' => 0,
+          'long_answer' => 0,
+          'matching' => 0,
+          'multichoice' => 0,
+          'npc' => 0,
+          'page' => 0,
+          'quiz' => 0,
+          'quiz_directions' => 0,
+          'quiz_evaluation' => 0,
+          'rpg_chatroom' => 0,
+          'session_report' => 0,
+          'short_answer' => 0,
+          'truefalse' => 0,
+        ),
+        'view' => array(
+          'args' => array(),
+          'display_name' => '',
+          'view_name' => '',
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'node_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'session_report',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'List all characters involved in this session.',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'node_reference',
+          'settings' => array(),
+          'type' => 'node_reference_default',
+          'weight' => '1',
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_characters_involved',
+      'label' => 'Characters involved',
+      'required' => 1,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'node_reference',
+        'settings' => array(
+          'autocomplete_match' => 'contains',
+          'autocomplete_path' => 'node_reference/autocomplete',
+          'size' => '60',
+        ),
+        'type' => 'node_reference_autocomplete',
+        'weight' => '2',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-session_report-field_rate_session'.
+  $fields['node-session_report-field_rate_session'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_rate_session',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
+      'foreign keys' => array(),
+      'indexes' => array(),
+      'locked' => '0',
+      'module' => 'fivestar',
+      'settings' => array(
+        'axis' => 'good_session',
+      ),
+      'translatable' => '0',
+      'type' => 'fivestar',
+    ),
+    'field_instance' => array(
+      'bundle' => 'session_report',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'module' => 'fivestar',
+          'settings' => array(
+            'expose' => 1,
+            'style' => 'smart',
+            'text' => 'average',
+            'widget' => array(
+              'fivestar_widget' => 'sites/all/modules/fivestar/widgets/outline/outline.css',
+            ),
+          ),
+          'type' => 'fivestar_formatter_default',
+          'weight' => '4',
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_rate_session',
+      'label' => 'How good was this session?',
+      'required' => 0,
+      'settings' => array(
+        'allow_clear' => 1,
+        'stars' => '5',
+        'target' => 'none',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'fivestar',
+        'settings' => array(),
+        'type' => 'exposed',
+        'weight' => '5',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-session_report-field_session_held'.
+  $fields['node-session_report-field_session_held'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_session_held',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
+      'foreign keys' => array(),
+      'indexes' => array(),
+      'locked' => '0',
+      'module' => 'date',
+      'settings' => array(
+        'cache_count' => '4',
+        'cache_enabled' => 1,
+        'granularity' => array(
+          'day' => 'day',
+          'hour' => 0,
+          'minute' => 0,
+          'month' => 'month',
+          'second' => 0,
+          'year' => 'year',
+        ),
+        'timezone_db' => '',
+        'todate' => '',
+        'tz_handling' => 'none',
+      ),
+      'translatable' => '0',
+      'type' => 'datetime',
+    ),
+    'field_instance' => array(
+      'bundle' => 'session_report',
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'date',
+          'settings' => array(
+            'format_type' => 'long',
+            'fromto' => 'both',
+            'multiple_from' => '',
+            'multiple_number' => '',
+            'multiple_to' => '',
+          ),
+          'type' => 'date_default',
+          'weight' => '3',
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_session_held',
+      'label' => 'Session held',
+      'required' => 1,
+      'settings' => array(
+        'default_value' => 'now',
+        'default_value2' => 'same',
+        'default_value_code' => '',
+        'default_value_code2' => '',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'date',
+        'settings' => array(
+          'increment' => '15',
+          'input_format' => 'm/d/Y - H:i:s',
+          'input_format_custom' => '',
+          'label_position' => 'above',
+          'text_parts' => array(),
+          'year_range' => '-0:+3',
+        ),
+        'type' => 'date_popup',
+        'weight' => '3',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-session_report-taxonomy_forums'.
+  $fields['node-session_report-taxonomy_forums'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'taxonomy_forums',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'forums',
+            'parent' => 0,
+          ),
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'session_report',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'taxonomy',
+          'settings' => array(),
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => '0',
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'taxonomy_forums',
+      'label' => 'Forums',
+      'required' => 1,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '1',
+      ),
+    ),
+  );
+
   // Exported field: 'user-user-field_artwork'.
   $fields['user-user-field_artwork'] = array(
     'field_config' => array(
@@ -9128,12 +9558,20 @@ function vaxia_field_default_fields() {
   t('Awareness');
   t('Background');
   t('Body');
+  t('Characters involved');
   t('Charisma');
   t('Check this box if the character is intended to be an NPC.');
   t('Check this box if the character is intended to be an openly available NPC.');
   t('Color');
   t('Comment color');
   t('Constitution');
+  t('Contributes to Agility and Reflexes.');
+  t('Contributes to Appearance and Health.');
+  t('Contributes to Awareness and Presence.');
+  t('Contributes to Constitution and Agility.');
+  t('Contributes to Health and Constitution.');
+  t('Contributes to Presence and Appearance.');
+  t('Contributes to Reflexes and Awareness.');
   t('Credit');
   t('Current character');
   t('Description');
@@ -9141,14 +9579,17 @@ function vaxia_field_default_fields() {
   t('Dexterity');
   t('Economy');
   t('Endurance');
+  t('Forums');
   t('Health');
   t('History');
+  t('How good was this session?');
   t('Image');
   t('Intellegence');
   t('Intelligence');
   t('Items');
   t('Last Name');
   t('Life');
+  t('List all characters involved in this session.');
   t('NPC');
   t('Name');
   t('Note additional percentage effects for this item.');
@@ -9169,6 +9610,7 @@ function vaxia_field_default_fields() {
   t('Reflexes');
   t('Refresh rate');
   t('SH Notes');
+  t('Session held');
   t('Sex');
   t('Skill');
   t('Spirituality');

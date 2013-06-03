@@ -26,6 +26,37 @@ function vaxia_views_api() {
 }
 
 /**
+ * Implements hook_image_default_styles().
+ */
+function vaxia_image_default_styles() {
+  $styles = array();
+
+  // Exported image style: tiny-thumbnail.
+  $styles['tiny-thumbnail'] = array(
+    'name' => 'tiny-thumbnail',
+    'effects' => array(
+      2 => array(
+        'label' => 'Resize',
+        'help' => 'Resizing will make images an exact set of dimensions. This may cause images to be stretched or shrunk disproportionately.',
+        'effect callback' => 'image_resize_effect',
+        'dimensions callback' => 'image_resize_dimensions',
+        'form callback' => 'image_resize_form',
+        'summary theme' => 'image_resize_summary',
+        'module' => 'image',
+        'name' => 'image_resize',
+        'data' => array(
+          'width' => '40',
+          'height' => '40',
+        ),
+        'weight' => '1',
+      ),
+    ),
+  );
+
+  return $styles;
+}
+
+/**
  * Implements hook_node_info().
  */
 function vaxia_node_info() {
@@ -68,6 +99,14 @@ function vaxia_node_info() {
       'description' => t('RPG chatroom'),
       'has_title' => '1',
       'title_label' => t('Room name'),
+      'help' => '',
+    ),
+    'session_report' => array(
+      'name' => t('Session report'),
+      'base' => 'node_content',
+      'description' => t('For SHs after a session, to include a list of users, characters and provide a record of events.'),
+      'has_title' => '1',
+      'title_label' => t('Session name'),
       'help' => '',
     ),
   );
@@ -222,32 +261,32 @@ function vaxia_workflow_default_workflows() {
         'target_state' => 'disapproved',
       ),
       5 => array(
-        'roles' => 'workflow_features_author_name,administrator,item-evaluator,administrator-vaxia',
+        'roles' => 'administrator,evaluator,administrator-vaxia',
         'state' => 'submitted',
         'target_state' => 'draft',
       ),
       6 => array(
-        'roles' => 'administrator,item-evaluator,administrator-vaxia',
+        'roles' => 'administrator,evaluator,administrator-vaxia',
         'state' => 'submitted',
         'target_state' => 'approved',
       ),
       7 => array(
-        'roles' => 'administrator,item-evaluator,administrator-vaxia',
+        'roles' => 'administrator,evaluator,administrator-vaxia',
         'state' => 'submitted',
         'target_state' => 'disapproved',
       ),
       8 => array(
-        'roles' => 'administrator,item-evaluator,administrator-vaxia',
+        'roles' => 'administrator,evaluator,administrator-vaxia',
         'state' => 'approved',
         'target_state' => 'draft',
       ),
       9 => array(
-        'roles' => 'administrator,item-evaluator,administrator-vaxia',
+        'roles' => 'administrator,evaluator,administrator-vaxia',
         'state' => 'approved',
         'target_state' => 'submitted',
       ),
       10 => array(
-        'roles' => 'administrator,item-evaluator,administrator-vaxia',
+        'roles' => 'administrator,evaluator,administrator-vaxia',
         'state' => 'approved',
         'target_state' => 'disapproved',
       ),
