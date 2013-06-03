@@ -1,0 +1,13 @@
+name = Whiteboard feature
+description = Whiteboard features packaged up in a Features module
+core = 7.x
+package = Other
+version = 7.x-1.0
+project = whiteboard_feature
+dependencies[] = features
+dependencies[] = views
+dependencies[] = whiteboard
+features[ctools][] = views:views_default:3.0
+features[features_api][] = api:1
+features[filter][] = whiteboard
+features[views_view][] = whiteboards
