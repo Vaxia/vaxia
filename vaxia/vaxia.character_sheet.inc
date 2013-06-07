@@ -232,12 +232,12 @@ function vaxia_character_sheet_field_info() {
       'permissions' => array(
         'owner' => DISABLE_SHEET,
       ),
-      'costs' => array(
-        'xp_type' => 'xp',
-        'cost' => variable_get('vaxia_economy_cost', 1),
-        'step' => 1,
-        'value_callback' => '_vaxia_calculate_attribute_field_value',
-      ),
+//      'costs' => array(
+//        'xp_type' => 'xp',
+//        'cost' => variable_get('vaxia_economy_cost', 1),
+//        'step' => 1,
+//        'value_callback' => '_vaxia_calculate_attribute_field_value',
+//      ),
     ),
     'field_items' => array(
       'permissions' => array(
