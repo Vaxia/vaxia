@@ -19,6 +19,10 @@ function vaxia_permission() {
       'title' => t('change art owner'),
       'description' => t('Change the owner of art.'),
     ),
+    'change item owner'=> array(
+      'title' => t('change item owner'),
+      'description' => t('Change the owner of an item.'),
+    ),
     'post in narrative format' => array(
       'title' => t('post in narrative format'),
       'description' => t('Post in narrative format.'),
@@ -73,10 +77,10 @@ function vaxia_cron() {
  * Menu access callback.
  */
 function _vaxia_menu_ownership_access_callback($node) {
-  $vaxia_ownership_managed = array('artwork');
+  $vaxia_ownership_managed = array('artwork', 'item');
   if (in_array($node->type, $vaxia_ownership_managed)) {
     global $user;
-    if ((user_access('change art owner'))
+    if ((user_access('change art owner') || user_access('change item owner'))
       || ($user->uid == $node->uid && 
         (user_access('edit any ' . $node->type . ' content')
           || user_access('edit own ' . $node->type . ' content')))) {
