@@ -566,8 +566,8 @@ function _vaxia_comment_set_profile_values_submit($form, $form_state) {
  * Additional submit handler to add kxp for commenting as a character, not narrative.
  */
 function _vaxia_comment_add_kxp_submit($form, $form_state) {
-  $limbo_room = variable_get('vaxia_limbo_room', '');
-  if ($form['#node']->nid == $limbo_room) {
+  $limbo_room = variable_get('vaxia_limbo_room', array());
+  if (in_array($form['#node']->nid, $limbo_room)) {
     return;
   }
   $lang = $form_state['values']['language'];

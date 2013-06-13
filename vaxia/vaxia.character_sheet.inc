@@ -446,7 +446,9 @@ function _vaxia_admin_settings() {
     '#description' => t('In this room, posts made do not gain XP.'),
     '#type' => 'select',
     '#options' => $options,
-    '#default_value' => variable_get('vaxia_limbo_room', ''),
+    '#multiple' => TRUE,
+    '#size' => 15,
+    '#default_value' => variable_get('vaxia_limbo_room', array()),
   );
   $form['point_cost'] = array(
     '#title' => 'Point costs',
