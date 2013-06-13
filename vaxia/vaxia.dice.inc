@@ -65,7 +65,7 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
         foreach ($character->field_items[$character->language] as $delta => $item) {
           // Filter the item by workflow state.
           $this_item = node_load($item['nid']);
-          if ($this_item->workflow_state_name == t('approved') || $this_item->workflow == 4) {
+          if (isset($this_item->workflow) && ($this_item->workflow_state_name == t('approved') || $this_item->workflow == 4)) {
             $mods = array();
             $item_label = $this_item->title;
             $modifies = $penalties = array();
