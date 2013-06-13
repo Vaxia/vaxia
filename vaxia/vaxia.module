@@ -177,6 +177,20 @@ function vaxia_node_update($node) {
   }
 }
 
+/**
+ * Implements hook_workflow().
+ */
+function vaxia_workflow($op, $old_state, $new_state, $node, $force = FALSE) {
+  switch ($op) {
+    case 'transition post';
+      // Flush Entity Cache record.
+      if (module_exists('entitycache')) {
+        cache_clear_all($node->nid, 'cache_entity_node');
+      }
+    break;
+  }
+}
+
 /*
  * Form callback function from nodeapi view, adds moderation form to node display.
  */
