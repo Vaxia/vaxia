@@ -63,54 +63,57 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
           'reflexes', 'intelligence', 'awareness', 'spirituality', 'presence', 'charisma', 'appearance', 'skill'
         );
         foreach ($character->field_items[$character->language] as $delta => $item) {
+          // Filter the item by workflow state.
           $this_item = node_load($item['nid']);
-          $mods = array();
-          $item_label = $this_item->title;
-          $modifies = $penalties = array();
-          $qualifies = TRUE;
-          foreach ($stat_set as $stat_name) {
-            // Grab the stat mod.
-            $field_name = 'field_' . $stat_name;
-            $stat_stat = isset($character->{$field_name}[$character->language][0]['value']) ?
-              $character->{$field_name}[$character->language][0]['value'] : 0;
-            $field_name = 'field_item_' . $stat_name;
-            $stat_mod = isset($this_item->{$field_name}[$this_item->language][0]['value']) ?
-              $this_item->{$field_name}[$this_item->language][0]['value'] : 0;
-            $field_name = 'field_item_required_' . $stat_name;
-            $stat_req = isset($this_item->{$field_name}[$this_item->language][0]['value']) ? 
-              $this_item->{$field_name}[$this_item->language][0]['value'] : 0;
-            $field_name = 'field_item_pen_' . $stat_name;
-            $stat_pen = isset($this_item->{$field_name}[$this_item->language][0]['value']) ?
-              $this_item->{$field_name}[$this_item->language][0]['value'] : 0;  
-            // Once collected, figure out what applies
-            if ($stat_mod != 0) {
-              $modifies[$stat_name] = $stat_mod;
-            }
-            if ($stat_pen != 0) {
-              $penalties[$stat_name] = $stat_pen;
-            }
-            if ($stat_stat < $stat_req && $stat_name != 'skill') {
-              $qualifies = FALSE;
-            }
-          } // End stat loop
-          // Once gathered, make sure we go through all relevant penalities for mods.      
-          if (!$qualifies) {
-            // Add all penalities for this item to the modifiers.
+          if ($this_item->workflow_state_name == t('approved') || $this_item->workflow == 4) {
+            $mods = array();
+            $item_label = $this_item->title;
+            $modifies = $penalties = array();
+            $qualifies = TRUE;
             foreach ($stat_set as $stat_name) {
-              if (isset($penalties[$stat_name])) {
-                $this_modifier = isset($modifies[$stat_name]) ? $modifies[$stat_name] : 0;
-                $modifies[$stat_name] = $this_modifier + $penalties[$stat_name];
+              // Grab the stat mod.
+              $field_name = 'field_' . $stat_name;
+              $stat_stat = isset($character->{$field_name}[$character->language][0]['value']) ?
+                $character->{$field_name}[$character->language][0]['value'] : 0;
+              $field_name = 'field_item_' . $stat_name;
+              $stat_mod = isset($this_item->{$field_name}[$this_item->language][0]['value']) ?
+                $this_item->{$field_name}[$this_item->language][0]['value'] : 0;
+              $field_name = 'field_item_required_' . $stat_name;
+              $stat_req = isset($this_item->{$field_name}[$this_item->language][0]['value']) ? 
+                $this_item->{$field_name}[$this_item->language][0]['value'] : 0;
+              $field_name = 'field_item_pen_' . $stat_name;
+              $stat_pen = isset($this_item->{$field_name}[$this_item->language][0]['value']) ?
+                $this_item->{$field_name}[$this_item->language][0]['value'] : 0;  
+              // Once collected, figure out what applies
+              if ($stat_mod != 0) {
+                $modifies[$stat_name] = $stat_mod;
+              }
+              if ($stat_pen != 0) {
+                $penalties[$stat_name] = $stat_pen;
+              }
+              if ($stat_stat < $stat_req && $stat_name != 'skill') {
+                $qualifies = FALSE;
+              }
+            } // End stat loop
+            // Once gathered, make sure we go through all relevant penalities for mods.      
+            if (!$qualifies) {
+              // Add all penalities for this item to the modifiers.
+              foreach ($stat_set as $stat_name) {
+                if (isset($penalties[$stat_name])) {
+                  $this_modifier = isset($modifies[$stat_name]) ? $modifies[$stat_name] : 0;
+                  $modifies[$stat_name] = $this_modifier + $penalties[$stat_name];
+                }
               }
             }
+            $modifies_label = array();
+            foreach ($modifies as $label => $value) {
+              $modifies_label[] = substr($label, 0, 3) . ':' . $value;
+            }
+            if (!empty($modifies_label)) {
+              $item_label .= ' (' . implode(', ', $modifies_label) . ')';
+            }
+            $items[$this_item->nid] = $item_label;
           }
-          $modifies_label = array();
-          foreach ($modifies as $label => $value) {
-            $modifies_label[] = substr($label, 0, 3) . ':' . $value;
-          }
-          if (!empty($modifies_label)) {
-            $item_label .= ' (' . implode(', ', $modifies_label) . ')';
-          }
-          $items[$this_item->nid] = $item_label;
         } // End items loop
       }
       for ($i=0;$i<5;$i++) {
