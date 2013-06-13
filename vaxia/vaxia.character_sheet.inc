@@ -242,6 +242,7 @@ function vaxia_character_sheet_field_info() {
     'field_items' => array(
       'permissions' => array(
         'owner' => DISABLE_SHEET,
+        'other' => DISABLE_SHEET,
       ),
     ),
     'field_property' => array(
