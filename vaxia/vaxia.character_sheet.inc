@@ -310,17 +310,35 @@ function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
         } 
       }
     }
+
+    global $user;
+    // Disable the private note if you can't edit it. Can't edit your own.
+    if (!($user->uid == $node->uid || user_access('edit SH notes'))) {
+      $form['field_sh_notes'][$lang][0]['#disabled'] = TRUE;
+      if (isset($form['field_sh_notes'][$lang][0]['#default_value'])) {
+        $form['field_sh_notes'][$lang][0]['#value'] = $form['field_sh_notes'][$lang][0]['#default_value'];
+      }
+    }
+    // Hide the private note if you can't edit it. Can't edit your own.
+    if (!($user->uid != $node->uid && user_access('edit private SH notes'))) {
+      $form['field_sh_private_notes'][$lang][0]['#access'] = FALSE;
+      if (isset($form['field_sh_private_notes'][$lang][0]['#default_value'])) {
+        $form['field_sh_private_notes'][$lang][0]['#value'] = $form['field_sh_notes'][$lang][0]['#default_value'];
+      }
+    }
   }
 
   // Do this for all forms.
   // Remove the NPC / ONPC buttons if the user is not permissioned.
   if (!user_access('create NPCs')) {
     $form['field_is_npc'][$lang]['#access'] = FALSE;
-    $form['field_is_npc'][$lang]['#value'] = isset($form['field_is_npc'][$lang]['#default_value']) ? $form['field_is_npc'][$lang]['#default_value'] : FALSE;
+    $form['field_is_npc'][$lang]['#value'] =
+      isset($form['field_is_npc'][$lang]['#default_value']) ? $form['field_is_npc'][$lang]['#default_value'] : FALSE;
   }
   if (!user_access('create open NPCs')) {
     $form['field_is_open_npc'][$lang]['#access'] = FALSE;
-    $form['field_is_open_npc'][$lang]['#value'] = isset($form['field_is_open_npc'][$lang]['#default_value']) ? $form['field_is_open_npc'][$lang]['#default_value'] : FALSE;
+    $form['field_is_open_npc'][$lang]['#value'] =
+      isset($form['field_is_open_npc'][$lang]['#default_value']) ? $form['field_is_open_npc'][$lang]['#default_value'] : FALSE;
   }
 }
 

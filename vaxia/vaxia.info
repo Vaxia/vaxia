@@ -19,7 +19,6 @@ dependencies[] = features
 dependencies[] = field_collection
 dependencies[] = field_collection_table
 dependencies[] = field_group
-dependencies[] = field_permissions
 dependencies[] = fivestar
 dependencies[] = forum
 dependencies[] = image
