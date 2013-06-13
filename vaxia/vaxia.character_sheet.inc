@@ -841,8 +841,6 @@ function _vaxia_invest_silver_submit($form, $form_state) {
       $silver_invested++;
       $silver_to_invest++;
       if ($silver_invested >= $cost ) {
-        _character_sheet_update_xp($node->nid, $silver_to_invest, 'invest_silver');
-        $silver_to_invest = 0;
         // Pay the cost.
         $node->field_economy[$node->language][0]['value']++;
         $cost = _vaxia_invest_calculate_cost_to_improve($node->field_economy[$node->language][0]['value']);
@@ -850,10 +848,12 @@ function _vaxia_invest_silver_submit($form, $form_state) {
         // Remove silver invested - back to zero.
         $current_invest = _character_sheet_get_xp($node->nid, 'invest_silver');
         _character_sheet_update_xp($node->nid, $current_invest * -1, 'invest_silver');
+        $silver_to_invest = 0;
         // Substract cost from invested, continue.
         $silver_invested = $silver_invested - $cost;
       }
     }
+    _character_sheet_update_xp($node->nid, $silver_to_invest, 'invest_silver');
     node_save($node);
   }
 }
