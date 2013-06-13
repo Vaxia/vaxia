@@ -1342,6 +1342,7 @@ function vaxia_field_default_fields() {
             'full_html' => 0,
             'php_code' => 0,
             'plain_text' => 'plain_text',
+            'whiteboard' => 0,
             'wiki' => 0,
           ),
           'allowed_formats_toggle' => 1,
@@ -1356,6 +1357,9 @@ function vaxia_field_default_fields() {
               ),
               'plain_text' => array(
                 'weight' => '10',
+              ),
+              'whiteboard' => array(
+                'weight' => '0',
               ),
               'wiki' => array(
                 'weight' => '0',
@@ -1572,6 +1576,7 @@ function vaxia_field_default_fields() {
             'full_html' => 0,
             'php_code' => 0,
             'plain_text' => 'plain_text',
+            'whiteboard' => 0,
             'wiki' => 0,
           ),
           'allowed_formats_toggle' => 1,
@@ -1586,6 +1591,9 @@ function vaxia_field_default_fields() {
               ),
               'plain_text' => array(
                 'weight' => '10',
+              ),
+              'whiteboard' => array(
+                'weight' => '0',
               ),
               'wiki' => array(
                 'weight' => '0',
@@ -2117,16 +2125,30 @@ function vaxia_field_default_fields() {
           'article' => 0,
           'artwork' => 0,
           'character_sheet' => 0,
+          'event' => 0,
+          'feature_request' => 0,
           'forum' => 0,
           'items' => 'items',
+          'long_answer' => 0,
+          'matching' => 0,
+          'multichoice' => 0,
           'npc' => 0,
           'page' => 0,
+          'quiz' => 0,
+          'quiz_directions' => 0,
+          'quiz_evaluation' => 0,
           'rpg_chatroom' => 0,
+          'session_report' => 0,
+          'short_answer' => 0,
+          'truefalse' => 0,
+          'webform' => 0,
+          'whiteboard' => 0,
+          'wiki_page' => 0,
         ),
         'view' => array(
           'args' => array(),
-          'display_name' => 'character_items_ref',
-          'view_name' => 'character_items',
+          'display_name' => '',
+          'view_name' => '',
         ),
       ),
       'translatable' => '0',
@@ -2161,9 +2183,13 @@ function vaxia_field_default_fields() {
       ),
       'widget' => array(
         'active' => 1,
-        'module' => 'options',
-        'settings' => array(),
-        'type' => 'options_buttons',
+        'module' => 'node_reference',
+        'settings' => array(
+          'autocomplete_match' => 'contains',
+          'autocomplete_path' => 'node_reference/autocomplete',
+          'size' => 60,
+        ),
+        'type' => 'node_reference_autocomplete',
         'weight' => '34',
       ),
     ),
@@ -2453,6 +2479,7 @@ function vaxia_field_default_fields() {
             'full_html' => 0,
             'php_code' => 0,
             'plain_text' => 'plain_text',
+            'whiteboard' => 0,
             'wiki' => 0,
           ),
           'allowed_formats_toggle' => 1,
@@ -2467,6 +2494,9 @@ function vaxia_field_default_fields() {
               ),
               'plain_text' => array(
                 'weight' => '10',
+              ),
+              'whiteboard' => array(
+                'weight' => '0',
               ),
               'wiki' => array(
                 'weight' => '0',
@@ -2549,6 +2579,7 @@ function vaxia_field_default_fields() {
             'full_html' => 0,
             'php_code' => 0,
             'plain_text' => 'plain_text',
+            'whiteboard' => 0,
             'wiki' => 0,
           ),
           'allowed_formats_toggle' => 1,
@@ -2563,6 +2594,9 @@ function vaxia_field_default_fields() {
               ),
               'plain_text' => array(
                 'weight' => '10',
+              ),
+              'whiteboard' => array(
+                'weight' => '0',
               ),
               'wiki' => array(
                 'weight' => '0',
@@ -2645,6 +2679,7 @@ function vaxia_field_default_fields() {
             'full_html' => 0,
             'php_code' => 0,
             'plain_text' => 'plain_text',
+            'whiteboard' => 0,
             'wiki' => 0,
           ),
           'allowed_formats_toggle' => 1,
@@ -2652,16 +2687,19 @@ function vaxia_field_default_fields() {
           'default_order_wrapper' => array(
             'formats' => array(
               'full_html' => array(
-                'weight' => '1',
+                'weight' => '-47',
               ),
               'php_code' => array(
-                'weight' => '11',
+                'weight' => '-46',
               ),
               'plain_text' => array(
-                'weight' => '10',
+                'weight' => '-50',
+              ),
+              'whiteboard' => array(
+                'weight' => '-49',
               ),
               'wiki' => array(
-                'weight' => '0',
+                'weight' => '-48',
               ),
             ),
           ),
@@ -2810,6 +2848,7 @@ function vaxia_field_default_fields() {
             'full_html' => 0,
             'php_code' => 0,
             'plain_text' => 'plain_text',
+            'whiteboard' => 0,
             'wiki' => 0,
           ),
           'allowed_formats_toggle' => 1,
@@ -2824,6 +2863,9 @@ function vaxia_field_default_fields() {
               ),
               'plain_text' => array(
                 'weight' => '10',
+              ),
+              'whiteboard' => array(
+                'weight' => '0',
               ),
               'wiki' => array(
                 'weight' => '0',
@@ -3198,6 +3240,7 @@ function vaxia_field_default_fields() {
             'full_html' => 0,
             'php_code' => 0,
             'plain_text' => 'plain_text',
+            'whiteboard' => 0,
             'wiki' => 0,
           ),
           'allowed_formats_toggle' => 1,
@@ -3212,6 +3255,9 @@ function vaxia_field_default_fields() {
               ),
               'plain_text' => array(
                 'weight' => '10',
+              ),
+              'whiteboard' => array(
+                'weight' => '0',
               ),
               'wiki' => array(
                 'weight' => '0',
@@ -3294,6 +3340,7 @@ function vaxia_field_default_fields() {
             'full_html' => 0,
             'php_code' => 0,
             'plain_text' => 'plain_text',
+            'whiteboard' => 0,
             'wiki' => 0,
           ),
           'allowed_formats_toggle' => 1,
@@ -3308,6 +3355,9 @@ function vaxia_field_default_fields() {
               ),
               'plain_text' => array(
                 'weight' => '10',
+              ),
+              'whiteboard' => array(
+                'weight' => '0',
               ),
               'wiki' => array(
                 'weight' => '0',
@@ -3594,6 +3644,104 @@ function vaxia_field_default_fields() {
         ),
         'type' => 'text_textfield',
         'weight' => '-1',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-items-field_character_owner'.
+  $fields['node-items-field_character_owner'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_character_owner',
+      'foreign keys' => array(
+        'nid' => array(
+          'columns' => array(
+            'nid' => 'nid',
+          ),
+          'table' => 'node',
+        ),
+      ),
+      'indexes' => array(
+        'nid' => array(
+          0 => 'nid',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'node_reference',
+      'settings' => array(
+        'referenceable_types' => array(
+          'article' => 0,
+          'artwork' => 0,
+          'character_sheet' => 'character_sheet',
+          'event' => 0,
+          'feature_request' => 0,
+          'forum' => 0,
+          'items' => 0,
+          'long_answer' => 0,
+          'matching' => 0,
+          'multichoice' => 0,
+          'npc' => 0,
+          'page' => 0,
+          'quiz' => 0,
+          'quiz_directions' => 0,
+          'quiz_evaluation' => 0,
+          'rpg_chatroom' => 0,
+          'session_report' => 0,
+          'short_answer' => 0,
+          'truefalse' => 0,
+          'webform' => 0,
+          'whiteboard' => 0,
+          'wiki_page' => 0,
+        ),
+        'view' => array(
+          'args' => array(),
+          'display_name' => '',
+          'view_name' => '',
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'node_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'items',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'node_reference',
+          'settings' => array(),
+          'type' => 'node_reference_default',
+          'weight' => '52',
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_character_owner',
+      'label' => 'Character owner',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'node_reference',
+        'settings' => array(
+          'autocomplete_match' => 'contains',
+          'autocomplete_path' => 'node_reference/autocomplete',
+          'size' => '60',
+        ),
+        'type' => 'node_reference_autocomplete',
+        'weight' => '0',
       ),
     ),
   );
@@ -3974,7 +4122,7 @@ function vaxia_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '14',
+          'weight' => '53',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -4024,7 +4172,7 @@ function vaxia_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '-4',
+        'weight' => '2',
       ),
     ),
   );
@@ -4271,7 +4419,7 @@ function vaxia_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '15',
+          'weight' => '54',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -4321,7 +4469,7 @@ function vaxia_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '-3',
+        'weight' => '3',
       ),
     ),
   );
@@ -7206,7 +7354,7 @@ function vaxia_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '17',
+          'weight' => '55',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -7230,7 +7378,7 @@ function vaxia_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '-2',
+        'weight' => '4',
       ),
     ),
   );
@@ -9558,6 +9706,7 @@ function vaxia_field_default_fields() {
   t('Awareness');
   t('Background');
   t('Body');
+  t('Character owner');
   t('Characters involved');
   t('Charisma');
   t('Check this box if the character is intended to be an NPC.');

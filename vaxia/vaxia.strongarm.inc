@@ -605,9 +605,28 @@ function vaxia_strongarm() {
       'search_result' => array(
         'custom_settings' => FALSE,
       ),
+      'ical' => array(
+        'custom_settings' => FALSE,
+      ),
+      'diff_standard' => array(
+        'custom_settings' => FALSE,
+      ),
+      'token' => array(
+        'custom_settings' => FALSE,
+      ),
     ),
     'extra_fields' => array(
-      'form' => array(),
+      'form' => array(
+        'title' => array(
+          'weight' => '1',
+        ),
+        'path' => array(
+          'weight' => '7',
+        ),
+        'workflow' => array(
+          'weight' => '8',
+        ),
+      ),
       'display' => array(
         'workflow_current_state' => array(
           'default' => array(

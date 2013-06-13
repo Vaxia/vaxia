@@ -91,7 +91,8 @@ function vaxia_accounts_default_rules_configuration() {
             "message" : "VAXIA: BLOCK RULE TRIGGERED for 1 yr on: [user:name]  - last access: [user:last-access]",
             "language" : [ "" ]
           }
-        }
+        },
+        { "user_block" : { "account" : [ "user" ] } }
       ]
     }
   }');

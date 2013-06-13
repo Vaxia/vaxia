@@ -32,19 +32,6 @@ function vaxia_user_default_permissions() {
     'module' => 'node',
   );
 
-  // Exported permission: access private fields.
-  $permissions['access private fields'] = array(
-    'name' => 'access private fields',
-    'roles' => array(
-      0 => 'administrator',
-      1 => 'administrator-vaxia',
-      2 => 'evaluator',
-      3 => 'storyteller',
-      4 => 'storyteller-assistant',
-    ),
-    'module' => 'field_permissions',
-  );
-
   // Exported permission: add xp to character sheet.
   $permissions['add xp to character sheet'] = array(
     'name' => 'add xp to character sheet',
@@ -97,16 +84,6 @@ function vaxia_user_default_permissions() {
     'module' => 'dice_roller',
   );
 
-  // Exported permission: administer field permissions.
-  $permissions['administer field permissions'] = array(
-    'name' => 'administer field permissions',
-    'roles' => array(
-      0 => 'administrator',
-      1 => 'administrator-vaxia',
-    ),
-    'module' => 'field_permissions',
-  );
-
   // Exported permission: administer rpg chat.
   $permissions['administer rpg chat'] = array(
     'name' => 'administer rpg chat',
@@ -123,6 +100,7 @@ function vaxia_user_default_permissions() {
     'roles' => array(
       0 => 'administrator',
       1 => 'administrator-vaxia',
+      2 => 'evaluator',
     ),
     'module' => 'vaxia',
   );
@@ -181,19 +159,6 @@ function vaxia_user_default_permissions() {
       4 => 'storyteller',
     ),
     'module' => 'node',
-  );
-
-  // Exported permission: create field_sh_private_notes.
-  $permissions['create field_sh_private_notes'] = array(
-    'name' => 'create field_sh_private_notes',
-    'roles' => array(
-      0 => 'administrator',
-      1 => 'administrator-vaxia',
-      2 => 'evaluator',
-      3 => 'storyteller',
-      4 => 'storyteller-assistant',
-    ),
-    'module' => 'field_permissions',
   );
 
   // Exported permission: create items content.
@@ -417,19 +382,6 @@ function vaxia_user_default_permissions() {
     'module' => 'node',
   );
 
-  // Exported permission: edit field_sh_private_notes.
-  $permissions['edit field_sh_private_notes'] = array(
-    'name' => 'edit field_sh_private_notes',
-    'roles' => array(
-      0 => 'administrator',
-      1 => 'administrator-vaxia',
-      2 => 'evaluator',
-      3 => 'storyteller',
-      4 => 'storyteller-assistant',
-    ),
-    'module' => 'field_permissions',
-  );
-
   // Exported permission: edit own artwork content.
   $permissions['edit own artwork content'] = array(
     'name' => 'edit own artwork content',
@@ -460,16 +412,6 @@ function vaxia_user_default_permissions() {
       0 => 'administrator',
     ),
     'module' => 'comment',
-  );
-
-  // Exported permission: edit own field_sh_private_notes.
-  $permissions['edit own field_sh_private_notes'] = array(
-    'name' => 'edit own field_sh_private_notes',
-    'roles' => array(
-      0 => 'administrator',
-      1 => 'administrator-vaxia',
-    ),
-    'module' => 'field_permissions',
   );
 
   // Exported permission: edit own items content.
@@ -649,29 +591,6 @@ function vaxia_user_default_permissions() {
       1 => 'player',
     ),
     'module' => 'dice_roller',
-  );
-
-  // Exported permission: view field_sh_private_notes.
-  $permissions['view field_sh_private_notes'] = array(
-    'name' => 'view field_sh_private_notes',
-    'roles' => array(
-      0 => 'administrator',
-      1 => 'administrator-vaxia',
-      2 => 'evaluator',
-      3 => 'storyteller',
-      4 => 'storyteller-assistant',
-    ),
-    'module' => 'field_permissions',
-  );
-
-  // Exported permission: view own field_sh_private_notes.
-  $permissions['view own field_sh_private_notes'] = array(
-    'name' => 'view own field_sh_private_notes',
-    'roles' => array(
-      0 => 'administrator',
-      1 => 'administrator-vaxia',
-    ),
-    'module' => 'field_permissions',
   );
 
   // Exported permission: view own unpublished content.

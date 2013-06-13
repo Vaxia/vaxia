@@ -89,8 +89,12 @@ function calendar_feature_views_default_views() {
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['style_plugin'] = 'date_ical';
+  $handler->display->display_options['style_options']['cal_name'] = 'Events';
+  $handler->display->display_options['style_options']['no_calname'] = 0;
+  $handler->display->display_options['style_options']['disable_webcal'] = 0;
   $handler->display->display_options['row_plugin'] = 'date_ical';
   $handler->display->display_options['row_options']['date_field'] = 'field_data_field_when.field_when_value';
+  $handler->display->display_options['row_options']['summary_field'] = 'default_title';
   $handler->display->display_options['row_options']['location_field'] = 'none';
   $handler->display->display_options['path'] = 'calendar/ical';
   $export['calender_feed'] = $view;

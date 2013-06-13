@@ -81,13 +81,12 @@ function vaxia_reputation_views_default_views() {
 .view-vaxia-reputation table{width:90%;}
 </style>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
-  /* Relationship: Broken/missing handler */
+  /* Relationship: Userpoints: User */
   $handler->display->display_options['relationships']['uid']['id'] = 'uid';
   $handler->display->display_options['relationships']['uid']['table'] = 'userpoints';
   $handler->display->display_options['relationships']['uid']['field'] = 'uid';
-  $handler->display->display_options['relationships']['uid']['label'] = 'Users';
   $handler->display->display_options['relationships']['uid']['required'] = TRUE;
-  /* Relationship: Broken/missing handler */
+  /* Relationship: Userpoints Transactions: Node */
   $handler->display->display_options['relationships']['node']['id'] = 'node';
   $handler->display->display_options['relationships']['node']['table'] = 'userpoints_txn';
   $handler->display->display_options['relationships']['node']['field'] = 'node';
@@ -103,12 +102,12 @@ function vaxia_reputation_views_default_views() {
   $handler->display->display_options['fields']['access']['field'] = 'access';
   $handler->display->display_options['fields']['access']['relationship'] = 'uid';
   $handler->display->display_options['fields']['access']['date_format'] = 'time ago';
-  /* Field: Broken/missing handler */
+  /* Field: Userpoints total: Current total v-rep */
   $handler->display->display_options['fields']['points']['id'] = 'points';
   $handler->display->display_options['fields']['points']['table'] = 'userpoints_total';
   $handler->display->display_options['fields']['points']['field'] = 'points';
   $handler->display->display_options['fields']['points']['relationship'] = 'uid';
-  /* Field: Broken/missing handler */
+  /* Field: Userpoints total: Last update of total v-rep */
   $handler->display->display_options['fields']['last_update']['id'] = 'last_update';
   $handler->display->display_options['fields']['last_update']['table'] = 'userpoints_total';
   $handler->display->display_options['fields']['last_update']['field'] = 'last_update';
@@ -123,7 +122,7 @@ function vaxia_reputation_views_default_views() {
   $handler->display->display_options['fields']['uid']['alter']['alter_text'] = TRUE;
   $handler->display->display_options['fields']['uid']['alter']['text'] = '<a href="/vaxia-reputation/[uid]">Details</a>';
   $handler->display->display_options['fields']['uid']['link_to_user'] = FALSE;
-  /* Sort criterion: Broken/missing handler */
+  /* Sort criterion: Userpoints total: Last update of total v-rep */
   $handler->display->display_options['sorts']['last_update']['id'] = 'last_update';
   $handler->display->display_options['sorts']['last_update']['table'] = 'userpoints_total';
   $handler->display->display_options['sorts']['last_update']['field'] = 'last_update';
@@ -185,11 +184,10 @@ function vaxia_reputation_views_default_views() {
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['relationships'] = FALSE;
-  /* Relationship: Broken/missing handler */
+  /* Relationship: Userpoints: User */
   $handler->display->display_options['relationships']['uid']['id'] = 'uid';
   $handler->display->display_options['relationships']['uid']['table'] = 'userpoints';
   $handler->display->display_options['relationships']['uid']['field'] = 'uid';
-  $handler->display->display_options['relationships']['uid']['label'] = 'Users';
   $handler->display->display_options['relationships']['uid']['required'] = TRUE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: User: Name */
@@ -203,7 +201,7 @@ function vaxia_reputation_views_default_views() {
   $handler->display->display_options['fields']['access']['field'] = 'access';
   $handler->display->display_options['fields']['access']['relationship'] = 'uid';
   $handler->display->display_options['fields']['access']['date_format'] = 'time ago';
-  /* Field: Broken/missing handler */
+  /* Field: Userpoints total: Current total v-rep */
   $handler->display->display_options['fields']['points']['id'] = 'points';
   $handler->display->display_options['fields']['points']['table'] = 'userpoints_total';
   $handler->display->display_options['fields']['points']['field'] = 'points';
@@ -233,13 +231,12 @@ function vaxia_reputation_views_default_views() {
   $handler->display->display_options['fields']['name']['table'] = 'users';
   $handler->display->display_options['fields']['name']['field'] = 'name';
   $handler->display->display_options['fields']['name']['relationship'] = 'uid';
-  /* Field: Broken/missing handler */
+  /* Field: Userpoints Transactions: Points */
   $handler->display->display_options['fields']['points']['id'] = 'points';
   $handler->display->display_options['fields']['points']['table'] = 'userpoints_txn';
   $handler->display->display_options['fields']['points']['field'] = 'points';
   $handler->display->display_options['fields']['points']['relationship'] = 'uid';
-  $handler->display->display_options['fields']['points']['label'] = 'Points';
-  /* Field: Broken/missing handler */
+  /* Field: Userpoints Transactions: Transaction ID */
   $handler->display->display_options['fields']['txn_id']['id'] = 'txn_id';
   $handler->display->display_options['fields']['txn_id']['table'] = 'userpoints_txn';
   $handler->display->display_options['fields']['txn_id']['field'] = 'txn_id';
@@ -247,12 +244,11 @@ function vaxia_reputation_views_default_views() {
   $handler->display->display_options['fields']['txn_id']['label'] = '';
   $handler->display->display_options['fields']['txn_id']['exclude'] = TRUE;
   $handler->display->display_options['fields']['txn_id']['element_label_colon'] = FALSE;
-  /* Field: Broken/missing handler */
+  /* Field: Userpoints Transactions: Timestamp */
   $handler->display->display_options['fields']['time_stamp']['id'] = 'time_stamp';
   $handler->display->display_options['fields']['time_stamp']['table'] = 'userpoints_txn';
   $handler->display->display_options['fields']['time_stamp']['field'] = 'time_stamp';
   $handler->display->display_options['fields']['time_stamp']['relationship'] = 'uid';
-  $handler->display->display_options['fields']['time_stamp']['label'] = 'Timestamp';
   /* Field: Global: PHP */
   $handler->display->display_options['fields']['php']['id'] = 'php';
   $handler->display->display_options['fields']['php']['table'] = 'views';
@@ -268,7 +264,7 @@ print userpoints_create_description($transaction, array(\'truncate\' => FALSE));
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
   $handler->display->display_options['defaults']['sorts'] = FALSE;
-  /* Sort criterion: Broken/missing handler */
+  /* Sort criterion: Userpoints Transactions: Timestamp */
   $handler->display->display_options['sorts']['time_stamp']['id'] = 'time_stamp';
   $handler->display->display_options['sorts']['time_stamp']['table'] = 'userpoints_txn';
   $handler->display->display_options['sorts']['time_stamp']['field'] = 'time_stamp';

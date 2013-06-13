@@ -230,7 +230,7 @@ function calendar_feature_field_default_fields() {
     'field_instance' => array(
       'bundle' => 'event',
       'deleted' => '0',
-      'description' => '',
+      'description' => 'This field can handle your timezone shift for you. Make sure you configure your preferred time-zone under <a href="/user">your account information</a>. After you set that, dates and times throughout this site will be displayed using your time zone. This allows you to enter times in your preferred time zone. They will display for other site members in their preferred time zone and on the calendar in default EST.',
       'display' => array(
         'default' => array(
           'label' => 'inline',
@@ -371,6 +371,7 @@ function calendar_feature_field_default_fields() {
   t('Body');
   t('Forums');
   t('Is this a good idea?');
+  t('This field can handle your timezone shift for you. Make sure you configure your preferred time-zone under <a href="/user">your account information</a>. After you set that, dates and times throughout this site will be displayed using your time zone. This allows you to enter times in your preferred time zone. They will display for other site members in their preferred time zone and on the calendar in default EST.');
   t('When');
 
   return $fields;

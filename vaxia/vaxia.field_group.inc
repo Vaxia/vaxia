@@ -276,6 +276,7 @@ function vaxia_field_group_info() {
       0 => 'field_item_desc',
       1 => 'field_item_history',
       2 => 'field_value',
+      3 => 'field_character_owner',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -299,12 +300,13 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Details',
-    'weight' => '0',
+    'weight' => '1',
     'children' => array(
       0 => 'field_item_desc',
       1 => 'field_item_history',
       2 => 'field_value',
-      3 => 'title',
+      3 => 'field_character_owner',
+      4 => 'title',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -360,7 +362,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Modifies',
-    'weight' => '1',
+    'weight' => '2',
     'children' => array(
       0 => 'field_item_agility',
       1 => 'field_item_appearance',
@@ -377,7 +379,6 @@ function vaxia_field_group_info() {
       12 => 'field_item_skill',
       13 => 'field_item_spirituality',
       14 => 'field_item_strength',
-      15 => 'field_percents',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -545,10 +546,10 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Notes',
-    'weight' => '5',
+    'weight' => '6',
     'children' => array(
-      0 => 'field_sh_notes',
-      1 => 'field_player_notes',
+      0 => 'field_player_notes',
+      1 => 'field_sh_notes',
       2 => 'field_sh_private_notes',
     ),
     'format_type' => 'fieldset',
@@ -643,7 +644,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Penalties',
-    'weight' => '4',
+    'weight' => '5',
     'children' => array(
       0 => 'field_item_pen_agility',
       1 => 'field_item_pen_appearance',
@@ -868,7 +869,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Requires',
-    'weight' => '3',
+    'weight' => '4',
     'children' => array(
       0 => 'field_item_required_agility',
       1 => 'field_item_required_appearance',

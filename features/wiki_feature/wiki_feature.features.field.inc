@@ -108,7 +108,7 @@ function wiki_feature_field_default_fields() {
           'summary_rows' => 5,
         ),
         'type' => 'text_textarea_with_summary',
-        'weight' => '1',
+        'weight' => '2',
       ),
     ),
   );
@@ -231,7 +231,7 @@ function wiki_feature_field_default_fields() {
       'bundle' => 'wiki_page',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => '',
+      'description' => 'Check the relevant category for this article, this will help us sort out areas of the wiki by over-arching segment of the site.',
       'display' => array(
         'default' => array(
           'label' => 'inline',
@@ -256,13 +256,10 @@ function wiki_feature_field_default_fields() {
       ),
       'widget' => array(
         'active' => 1,
-        'module' => 'taxonomy',
-        'settings' => array(
-          'autocomplete_path' => 'taxonomy/autocomplete',
-          'size' => 60,
-        ),
-        'type' => 'taxonomy_autocomplete',
-        'weight' => '4',
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_buttons',
+        'weight' => '6',
       ),
     ),
   );
@@ -338,7 +335,7 @@ function wiki_feature_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '3',
+        'weight' => '4',
       ),
     ),
   );
@@ -404,6 +401,7 @@ function wiki_feature_field_default_fields() {
       'required' => 0,
       'settings' => array(
         'alt_field' => 1,
+        'default_image' => 0,
         'file_directory' => 'wiki/images',
         'file_extensions' => 'png gif jpg jpeg',
         'max_filesize' => '',
@@ -420,7 +418,7 @@ function wiki_feature_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'image_image',
-        'weight' => '2',
+        'weight' => '3',
       ),
     ),
   );
@@ -429,6 +427,7 @@ function wiki_feature_field_default_fields() {
   // Included for use with string extractors like potx.
   t('Additional tagging');
   t('Body');
+  t('Check the relevant category for this article, this will help us sort out areas of the wiki by over-arching segment of the site.');
   t('Upload any files to go with this article.');
   t('Upload any images to go with this article.');
   t('Wiki categories');

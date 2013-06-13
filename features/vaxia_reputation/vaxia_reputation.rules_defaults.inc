@@ -13,7 +13,7 @@ function vaxia_reputation_default_rules_configuration() {
       "LABEL" : "Give v-rep for being in a session",
       "PLUGIN" : "reaction rule",
       "TAGS" : [ "Vaxia Reputation" ],
-      "REQUIRES" : [ "rules" ],
+      "REQUIRES" : [ "rules", "userpoints_rules" ],
       "ON" : [ "node_insert" ],
       "IF" : [
         { "node_is_of_type" : {
@@ -26,7 +26,19 @@ function vaxia_reputation_default_rules_configuration() {
         { "LOOP" : {
             "USING" : { "list" : [ "node:field-characters-involved" ] },
             "ITEM" : { "characters_involved" : "Characters involved" },
-            "DO" : [ { "userpoints_action_grant_points" : [] } ]
+            "DO" : [
+              { "userpoints_action_grant_points" : {
+                  "user" : [ "characters-involved:author" ],
+                  "points" : "1",
+                  "tid" : "0",
+                  "entity" : [ "characters-involved" ],
+                  "description" : "Participated in a session.",
+                  "operation" : "Insert",
+                  "display" : 0,
+                  "moderate" : "approved"
+                }
+              }
+            ]
           }
         }
       ]
@@ -36,7 +48,7 @@ function vaxia_reputation_default_rules_configuration() {
       "LABEL" : "Give v-rep for Approving sheet w\\/in 3 days",
       "PLUGIN" : "reaction rule",
       "TAGS" : [ "Vaxia Reputation" ],
-      "REQUIRES" : [ "rules", "workflow_rules", "php" ],
+      "REQUIRES" : [ "rules", "workflow_rules", "php", "userpoints_rules" ],
       "ON" : [ "workflow_state_changed" ],
       "IF" : [
         { "node_is_of_type" : {
@@ -52,14 +64,26 @@ function vaxia_reputation_default_rules_configuration() {
         },
         { "php_eval" : { "code" : "\\/\\/ Check against when node was submitted into submit state. If within 1 week, allow.\\r\\n$history = workflow_get_workflow_node_history_by_nid($node-\\u003Enid);\\r\\n$latest = $history[0];\\r\\n$next = $history[1];\\r\\n$diff = $latest-\\u003Estamp - $next-\\u003Estamp; \\/\\/ In seconds\\r\\n$week = 60 * 60 * 24 * 3;\\r\\n\\r\\nreturn $week \\u003E $diff;" } }
       ],
-      "DO" : [ { "userpoints_action_grant_points" : [] } ]
+      "DO" : [
+        { "userpoints_action_grant_points" : {
+            "user" : [ "site:current-user" ],
+            "points" : "2",
+            "tid" : "0",
+            "entity" : [ "node" ],
+            "description" : "Approved a character sheet within 3 days.",
+            "operation" : "Insert",
+            "display" : 0,
+            "moderate" : "approved"
+          }
+        }
+      ]
     }
   }');
   $items['rules_give_v_rep_when_character_approved'] = entity_import('rules_config', '{ "rules_give_v_rep_when_character_approved" : {
       "LABEL" : "Give v-rep when character approved",
       "PLUGIN" : "reaction rule",
       "TAGS" : [ "Vaxia Reputation" ],
-      "REQUIRES" : [ "rules", "workflow_rules" ],
+      "REQUIRES" : [ "rules", "workflow_rules", "userpoints_rules" ],
       "ON" : [ "workflow_state_changed" ],
       "IF" : [
         { "node_is_of_type" : {
@@ -75,8 +99,28 @@ function vaxia_reputation_default_rules_configuration() {
         }
       ],
       "DO" : [
-        { "userpoints_action_grant_points" : [] },
-        { "userpoints_action_grant_points" : [] }
+        { "userpoints_action_grant_points" : {
+            "user" : [ "node:author" ],
+            "points" : "3",
+            "tid" : "0",
+            "entity" : [ "node" ],
+            "description" : "Created a character for play.",
+            "operation" : "Insert",
+            "display" : 0,
+            "moderate" : "approved"
+          }
+        },
+        { "userpoints_action_grant_points" : {
+            "user" : [ "site:current-user" ],
+            "points" : "1",
+            "tid" : "0",
+            "entity" : [ "node" ],
+            "description" : "Approved a character for play.",
+            "operation" : "Insert",
+            "display" : 0,
+            "moderate" : "approved"
+          }
+        }
       ]
     }
   }');
