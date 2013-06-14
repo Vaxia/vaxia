@@ -1025,7 +1025,8 @@ function vaxia_character_sheet_cron() {
  * ALERT: RECURSIVE. BE CAREFUL HERE.
  * Based on _character_sheet_get_field_value().
  */
-function _vaxia_get_field_value_flat($node, $field_key, $field_info) {
+function _vaxia_get_field_value_flat($node, $field_key, $field_info, $nodes_seen = array()) {
+  $nodes_seen[] = $node->nid;
   // Given a node, find the key and patch to the information for that key.
   $total = 0;
   $language = isset($node->language) ? $node->language : 'und';
@@ -1068,7 +1069,10 @@ function _vaxia_get_field_value_flat($node, $field_key, $field_info) {
           }
           // If we found a subnode at this this child, check it.
           if (!empty($sub_node)) {
-             $total += _vaxia_get_field_value_flat($sub_node, $field_key, $field_info);
+            // NOTE: THIS DOES NOT HANDLE RECUSIVE LOOPS WELL - SO DON'T RECOUNT THINGS COUNTED.
+            if (!in_array($sub_node->nid, $nodes_seen)) {
+              $total += _vaxia_get_field_value_flat($sub_node, $field_key, $field_info, $nodes_seen);
+            }
           }
         }
       }
