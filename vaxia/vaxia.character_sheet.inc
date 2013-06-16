@@ -278,15 +278,12 @@ function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
   $lang = $form['language']['#value'];
   // Only on a character sheet that isn't yet set.
   if (_character_sheet_is_enabled($node) && !_character_sheet_is_playable($node)) {
-    // Disable the economy field.
-    $form['field_economy'][$lang][0]['#disabled'] = TRUE;
-    if (isset($form['field_economy'][$lang][0]['#default_value'])) {
-      $form['field_economy'][$lang][0]['#value'] = $form['field_economy'][$lang][0]['#default_value'];
-    }
-    // Disable these fields.
-    $disabled = array('field_property', 'field_sh_notes');
+    // Hide these fields.
+    $disabled = array('field_economy', 'field_npcs', 'field_items', 'field_property',
+      'field_sh_notes', 'field_sh_private_notes', 'field_player_notes');
     foreach ($disabled as $field_name) {
-      $form[$field_name][$lang][0]['#disabled'] = TRUE;
+      $form[$field_name]['#access'] = FALSE;
+      $form[$field_name][$lang][0]['#access'] = FALSE;
       if (isset($form[$field_name][$lang][0]['#default_value'])) {
         $form[$field_name][$lang][0]['#value'] = $form[$field_name][$lang][0]['#default_value'];
       }
