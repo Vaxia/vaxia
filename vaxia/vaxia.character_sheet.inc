@@ -979,56 +979,6 @@ function _vaxia_transfer_rxp_submit(&$form, &$form_state) {
 }
 
 /**
- * Helper function, calculate money for economy on cron.
- */
- // TODO this will NOT handle large sets of characters.
- // THIS SHOULD GO INTO A QUEUE EVENTUALLY AND SOON.
-function vaxia_character_sheet_cron() {
-  $last_run = variable_get('vaxia_character_sheet_cron', 0);
-  $yesterday = strtotime('-1 day');
-  if ($last_run < $yesterday) {
-    $last_run = variable_set('vaxia_character_sheet_cron', strtotime('now'));
-    // On cron. Go through ALL character sheets. (BATCH API or TABLE?).
-    // For each sheet, calculate money to add based on the economy level.
-    // Using this query to make swure we don't load anything we really don't need to.
-    // So only nodes that have an economy and exist.
-    $sheets = db_query('SELECT n.nid, e.field_economy_value FROM {field_data_field_economy} e ' .
-      'LEFT JOIN {node} n ON e.entity_id = n.nid AND e.revision_id = n.vid ' .
-      'WHERE n.status = 1 ' .
-      'AND n.nid NOT IN (' .
-      'SELECT npc.entity_id FROM {field_data_field_is_npc} npc WHERE npc.field_is_npc_value = 1' .
-      ')'.
-      'AND n.nid NOT IN (' .
-      'SELECT onpc.entity_id FROM {field_data_field_is_open_npc} onpc WHERE onpc.field_is_open_npc_value = 1' .
-      ')');
-    foreach ($sheets as $node_data) {
-      $node = node_load($node_data->nid);
-      if (_character_sheet_is_enabled($node) && _character_sheet_is_playable($node)) {
-        $level = isset($node->field_economy[$node->language][0]['value']) ?
-          $node->field_economy[$node->language][0]['value'] : 0;
-        $silver = _character_sheet_get_xp($node->nid, 'silver');
-        $silver_spent = _character_sheet_get_xp($node->nid, 'spent_silver');
-        $silver_invested = _character_sheet_get_xp($node->nid, 'invest_silver');
-        $available_silver = $silver - ($silver_spent + $silver_invested);
-        $income = _vaxia_get_month_income($level);
-        $daily = _vaxia_get_daily_pay($level);
-        // If silver on hand > income reduce it by daily pay, else add it.
-        if ($available_silver > $income) {
-          // Reduce silver.
-          _character_sheet_update_xp($node->nid, $daily * -1, 'silver');
-          watchdog('vaxia_slv', 'Removed ' . $daily .' to # '. $node->nid . ' ' . $node->title);
-        }
-        else {
-          // Add silver.
-          _character_sheet_update_xp($node->nid, $daily, 'silver');
-          watchdog('vaxia_slv', 'Added ' . $daily .' to # '. $node->nid . ' ' . $node->title);
-        }
-      }
-    }
-  }
-}
-
-/**
  * Helper function, determine how many points a sheet has spent.
  * ALERT: RECURSIVE. BE CAREFUL HERE.
  * Based on _character_sheet_get_field_value().

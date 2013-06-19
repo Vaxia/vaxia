@@ -83,10 +83,74 @@ function vaxia_menu() {
 }
 
 /**
+* Implements hook_cron_queue_info().
+*/
+function vaxia_cron_queue_info() {
+  $queues = array();
+  $queues['vaxiaSilverQueue'] = array(
+    'worker callback' => '_vaxia_character_daily_silver',
+    'time' => 60,
+  );
+  return $queues;
+}
+
+/**
  * Implements hook_cron().
  */
 function vaxia_cron() {
-  vaxia_character_sheet_cron();
+  $last_run = variable_get('vaxia_character_sheet_cron', 0);
+  $yesterday = strtotime('-1 day');
+  if ($last_run < $yesterday) {
+    $queue = DrupalQueue::get('vaxiaSilverQueue');
+    $last_run = variable_set('vaxia_character_sheet_cron', strtotime('now'));
+    // On cron. Go through ALL character sheets.
+    // Using this query to make swure we don't load anything we really don't need to.
+    // So only nodes that have an economy and exist.
+    $sheets = db_query('SELECT n.nid FROM {field_data_field_economy} e ' . // With an economy value
+      'LEFT JOIN {node} n ON e.entity_id = n.nid AND e.revision_id = n.vid ' .
+      'WHERE n.status = 1 ' . // Active character sheet
+      'AND n.nid NOT IN (' .
+      'SELECT npc.entity_id FROM {field_data_field_is_npc} npc WHERE npc.field_is_npc_value = 1' . // Not an NPC
+      ')'.
+      'AND n.nid NOT IN (' .
+      'SELECT onpc.entity_id FROM {field_data_field_is_open_npc} onpc WHERE onpc.field_is_open_npc_value = 1' . // Not an open NPC
+      ')');
+    foreach ($sheets as $node_data) {
+      $item = array(
+        'nid' => $node_data->nid
+      );
+      $queue->createItem($item);
+    }
+  }
+}
+
+/**
+ * Helper function, calculate money for economy on cron.
+ */
+function _vaxia_character_daily_silver($node_data) {
+  // For each sheet, calculate money to add based on the economy level.
+  $node = node_load($node_data['nid']);
+  if (_character_sheet_is_enabled($node) && _character_sheet_is_playable($node)) {
+    $level = isset($node->field_economy[$node->language][0]['value']) ?
+      $node->field_economy[$node->language][0]['value'] : 0;
+    $silver = _character_sheet_get_xp($node->nid, 'silver');
+    $silver_spent = _character_sheet_get_xp($node->nid, 'spent_silver');
+    $silver_invested = _character_sheet_get_xp($node->nid, 'invest_silver');
+    $available_silver = $silver - ($silver_spent + $silver_invested);
+    $income = _vaxia_get_month_income($level);
+    $daily = _vaxia_get_daily_pay($level);
+    // If silver on hand > income reduce it by daily pay, else add it.
+    if ($available_silver > $income) {
+      // Reduce silver.
+      _character_sheet_update_xp($node->nid, $daily * -1, 'silver');
+      watchdog('vaxia_slv', 'Removed ' . $daily .' to # '. $node->nid . ' ' . $node->title);
+    }
+    else {
+      // Add silver.
+      _character_sheet_update_xp($node->nid, $daily, 'silver');
+      watchdog('vaxia_slv', 'Added ' . $daily .' to # '. $node->nid . ' ' . $node->title);
+    }
+  }
 }
 
 /**

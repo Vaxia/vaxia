@@ -3698,8 +3698,8 @@ function vaxia_field_default_fields() {
         ),
         'view' => array(
           'args' => array(),
-          'display_name' => '',
-          'view_name' => '',
+          'display_name' => 'active_characters_ref',
+          'view_name' => 'character_sheet_moderation',
         ),
       ),
       'translatable' => '0',
@@ -3741,7 +3741,7 @@ function vaxia_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'node_reference_autocomplete',
-        'weight' => '0',
+        'weight' => 0,
       ),
     ),
   );
