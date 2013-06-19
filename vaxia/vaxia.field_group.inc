@@ -300,7 +300,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Details',
-    'weight' => '1',
+    'weight' => '0',
     'children' => array(
       0 => 'field_item_desc',
       1 => 'field_item_history',
@@ -362,7 +362,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Modifies',
-    'weight' => '2',
+    'weight' => '1',
     'children' => array(
       0 => 'field_item_agility',
       1 => 'field_item_appearance',
@@ -596,6 +596,47 @@ function vaxia_field_group_info() {
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
+  $field_group->identifier = 'group_overlaps|node|items|form';
+  $field_group->group_name = 'group_overlaps';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'items';
+  $field_group->mode = 'form';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Overlaps',
+    'weight' => '3',
+    'children' => array(
+      0 => 'field_item_over_life',
+      1 => 'field_item_over_endurance',
+      2 => 'field_item_over_strength',
+      3 => 'field_item_over_dexterity',
+      4 => 'field_item_over_intellegence',
+      5 => 'field_item_over_spirituality',
+      6 => 'field_item_over_charisma',
+      7 => 'field_item_over_health',
+      8 => 'field_item_over_constitution',
+      9 => 'field_item_over_agility',
+      10 => 'field_item_over_reflexes',
+      11 => 'field_item_over_awareness',
+      12 => 'field_item_over_appearance',
+      13 => 'field_item_over_skill',
+      14 => 'field_item_over_presence',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'formatter' => 'collapsible',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => '',
+        'required_fields' => 1,
+      ),
+    ),
+  );
+  $export['group_overlaps|node|items|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
   $field_group->identifier = 'group_penalties|node|items|default';
   $field_group->group_name = 'group_penalties';
   $field_group->entity_type = 'node';
@@ -710,9 +751,24 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Percentages',
-    'weight' => '3',
+    'weight' => '2',
     'children' => array(
       0 => 'field_percents',
+      1 => 'field_item_perc_life',
+      2 => 'field_item_perc_endurance',
+      3 => 'field_item_perc_strength',
+      4 => 'field_item_perc_dexterity',
+      5 => 'field_item_perc_intellegence',
+      6 => 'field_item_perc_spirituality',
+      7 => 'field_item_perc_charisma',
+      8 => 'field_item_perc_health',
+      9 => 'field_item_perc_constitution',
+      10 => 'field_item_perc_agility',
+      11 => 'field_item_perc_reflexes',
+      12 => 'field_item_perc_awareness',
+      13 => 'field_item_perc_presence',
+      14 => 'field_item_perc_appearance',
+      15 => 'field_item_perc_skill',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
