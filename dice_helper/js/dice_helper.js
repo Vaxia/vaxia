@@ -8,7 +8,7 @@
 Drupal.behaviors.diceHelper = {
   attach: function(context) { (function($) {
 
-  // Cookie settings.
+  // Cookie handling, set cookie.
   function setCookie(c_name, value, exdays) {
     var exdate=new Date();
     exdate.setDate(exdate.getDate() + exdays);
@@ -16,6 +16,7 @@ Drupal.behaviors.diceHelper = {
     document.cookie=c_name + "=" + c_value;
   }
 
+  // Cookie handling, get cookie.
   function getCookie(c_name) {
     var i,x,y,ARRcookies=document.cookie.split(";");
     for (i=0;i<ARRcookies.length;i++) {
@@ -29,7 +30,7 @@ Drupal.behaviors.diceHelper = {
     return 0;
   }
 
-  // Respond to button clicks.
+  // Set quickly picked values.
   function quickPick(type) {
     $('#edit-vaxia-rolls-dice-0-number').val(1);
     $('#edit-vaxia-rolls-dice-0-size').val(100);
@@ -67,7 +68,7 @@ Drupal.behaviors.diceHelper = {
     }
   }
 
-  // Respond to skill change
+  // Set skill if all are to be set.
   function sameSkillCheck(id, newSkill) {
     all = $('#same-skill-for-all').attr('checked');
     if (all == true) {
@@ -75,8 +76,17 @@ Drupal.behaviors.diceHelper = {
     }
   }
 
-  // Set the value in the form based on the given character index.
-  function setCharacterColorNPic(character_value) {
+  // Toggle dice helper availablity when character changed.
+  function setDiceHelper() {
+    character_value = $('#edit-field-comment-character-und').val();
+    if (character_value == '_none') {
+      $('#dice-helper').hide();
+      $('#dice-helper-image').hide();
+    }
+    else {
+      $('#dice-helper').show();
+      $('#dice-helper-image').show();
+    }
     // Check the cookie against the helper value to set pic and color.
     var color = getCookie('vaxia_dice_helper_' + character_value + '_color');
     if (typeof color !== 'undefined' && color.length > 0) {
@@ -86,23 +96,37 @@ Drupal.behaviors.diceHelper = {
     if (typeof pic !== 'undefined' && pic.length > 0) {
       $('body select.form-select-image').msDropDown().data('dd').setIndexByValue(pic);
     }
+    // Set the image on display.
+    setImageAssist();
   }
 
-  // Set the value in the form based on the given character index.
-  function setNarrative() {
-    // Check the cookie against the helper value to set pic and color.
-    var narr = getCookie('vaxia_dice_helper_narrative');
-    if (typeof narr !== 'undefined' && narr.length > 0 && narr == 'true') {
-      $('#edit-field-comment-narrative-und').attr('checked','checked');;
-    }
+  // When the image is changed, rotate that in the display.
+  function setImageAssist() {
+    var image_html = $('#edit-field-artwork-und option:selected').html();
+    image_html = image_html.replace(/&lt;/g, '<');
+    image_html = image_html.replace(/&gt;/g, '>');
+    $('#dice-helper-image').html(image_html);
+    image_html = $('#dice-helper-image .views-field-field-artwork-image .field-content').html();
+    $('#dice-helper-image').html(image_html);
   }
 
   // Add toggle buttons, but only the once.
+  // Called on load.
   $('#vaxia-dice-roller').once(function() {
     helper = $('#dice-helper');
     if (helper.length == 0) {
       // On page load, inject the buttons into place in the DOM.
-      $('#vaxia-dice-roller').before('<div id="dice-helper" style="">' +
+       $('#edit-comment-body').before('' +
+        '<style>' +
+        '#dice-helper-image{float:right}' +
+        '#dice-helper-image span.views-field-title{display:none;}' +
+        '#dice-helper-image img{width:60px;height:60px;}' +
+        '</style>' +
+        '<div id="dice-helper-image" style="">' +
+        '</div>'
+      );
+      $('#vaxia-dice-roller').before('' +
+        '<div id="dice-helper" style="">' +
         '<input type="button" value="Melee" class="dice-helper-button">' +
         '<input type="button" value="Ranged" class="dice-helper-button">' +
         '<input type="button" value="Magic" class="dice-helper-button">' +
@@ -111,28 +135,22 @@ Drupal.behaviors.diceHelper = {
         '<input type="checkbox" id="same-skill-for-all" class="dice-helper-select"> Same skill?' +
         '</div>'
       );
-      helper = $('#edit-field-comment-character-und').val();
-      if (helper == '_none') {
-        $('#dice-helper').hide();
+      // Check the cookie against the helper value to set pic and color.
+      var narr = getCookie('vaxia_dice_helper_narrative');
+      if (typeof narr !== 'undefined' && narr.length > 0 && narr == 'true') {
+        $('#edit-field-comment-narrative-und').attr('checked','checked');;
       }
-      else {
-        $('#dice-helper').show();
-      }
-      setCharacterColorNPic(helper);
-      setNarrative();
+      // Check the dice helper on load.
+      setDiceHelper();
+      // Set the image on display.
+      setImageAssist();
     }
   });
 
-  // Add the listeners.
+  // React when a new character is selected.
   $('#edit-field-comment-character-und').change(function() {
-    helper = $(this).val();
-    if (helper == '_none') {
-      $('#dice-helper').hide();
-    }
-    else {
-      $('#dice-helper').show();
-    }
-    setCharacterColorNPic(helper);
+      // Check the dice helper on character selection.
+      setDiceHelper();
   });
 
   // Save the color and pic on post.
@@ -146,12 +164,19 @@ Drupal.behaviors.diceHelper = {
     setCookie('vaxia_dice_helper_narrative', narr, 30);
   });
 
+  // Clicking a quick pick button, trigger auto selects.
   $('.dice-helper-button').click(function() {
     quickPick($(this).val().toLowerCase());
   });
 
+  // Changing a skill, check for all skill setting.
   $('.dice-skill').change(function() {
     sameSkillCheck($(this).attr('id'), $(this).val());
+  });
+
+  // Changing the character pic dropdown.
+  $('#edit-field-artwork-und').change(function() {
+    setImageAssist();
   });
 
   })(jQuery); }
