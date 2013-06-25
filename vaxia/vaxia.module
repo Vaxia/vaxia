@@ -79,6 +79,12 @@ function vaxia_menu() {
     'page arguments' => array(1),
     'weight' => 3,
   );
+  $items['vaxia/transfer_xp'] = array(
+    'title' => 'Transfer XP autocomplete',
+    'type' => MENU_CALLBACK,
+    'access arguments' => array('access content'),
+    'page callback' => '_vaxia_transfer_xp_autocomplete',
+  );
   return $items;
 }
 

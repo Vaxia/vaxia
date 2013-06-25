@@ -611,23 +611,6 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
     );
   }
 
-  $available_characters = array();
-  $view = views_get_view('character_sheet_moderation');
-  if (is_object($view)) {
-    $view->set_display('character_sheets_refs');
-    $view->pre_execute();
-    $view->execute();
-    $characters = $view->result;
-  }
-  else {
-    $characters = array();
-  }
-  foreach ($characters as $character) {
-    if ($character->nid != $node->nid) {
-      $available_characters[$character->nid] = $character->node_title;
-    }
-  }
-
   // And add the transfer options.
   if (($node->uid == $user->uid && user_access('transfer rxp')) || user_access('transfer others sheets')) {
     $form['transfer_rxp'] = array(
@@ -641,10 +624,10 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
       '#value' => $node->nid,
     );
     $form['transfer_rxp']['rxp_target'] = array(
-      '#type' => 'select',
+      '#type' => 'textfield',
       '#title' => t('Transfer to'),
-      '#options' => $available_characters,
       '#description' => t('Transfer RXP to this character sheet.'),
+      '#autocomplete_path' => 'vaxia/transfer_xp',
     );
     $form['transfer_rxp']['rxp_amount'] = array(
       '#type' => 'select',
@@ -688,10 +671,10 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
       '#value' => $node->nid,
     );
     $form['transfer']['confirm']['target'] = array(
-      '#type' => 'select',
+      '#type' => 'textfield',
       '#title' => t('Transfer to'),
-      '#options' => $available_characters,
       '#description' => t('Transfer XP to this character sheet.'),
+      '#autocomplete_path' => 'vaxia/transfer_xp',
     );
     $form['transfer']['confirm']['confirm'] = array(
       '#type' => 'textfield',
@@ -706,6 +689,22 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
       '#submit' => array('_vaxia_transfer_xp_submit'),
     );
   }
+}
+
+/**
+ * Menu callback handler for autocomplete.
+ */
+function _vaxia_transfer_xp_autocomplete($character_name = '') {
+  $matches = array();
+  $results = db_query('SELECT n.nid, n.title, u.name FROM {node} n ' .
+    'LEFT JOIN {users} u ON n.uid = u.uid ' .
+    'WHERE n.type LIKE \'character_sheet\' AND n.status = 1 ' .
+    'AND n.title LIKE :name', array(':name' => $character_name . '%'));
+  foreach ($results as $character) {
+    $character_label = $character->title . ' (' . $character->name. ') [nid:' . $character->nid . ']';
+    $matches[ check_plain($character_label) ] = check_plain($character_label);
+  }
+  drupal_json_output($matches);
 }
 
 /**
@@ -944,26 +943,36 @@ function _vaxia_transfer_xp_validate(&$form, &$form_state) {
  * Submit callback for transfering XP().
  */
 function _vaxia_transfer_xp_submit(&$form, &$form_state) {
-  $old_character = node_load($form_state['values']['character']);
-  $new_character = node_load($form_state['values']['target']);
-  $workflow = variable_get('vaxia_transfer_workflow', '');
-  if ($old_character && $new_character && !empty($workflow) && $old_character->nid != $new_character->nid) {
-    // Grab XP for this character.
-    $xp = $old_character->vaxia_unspent_xp + $old_character->vaxia_spent_xp;
-    // Update the XP recorded for this character.
-    _character_sheet_delete_xp($old_character->nid);
-    _character_sheet_delete_log($old_character->nid);
-    _vaxia_delete_type_tracking($old_character->nid);
-    // And update the original character status.
-    workflow_execute_transition($old_character, $workflow, t('Transferring XP to a new character'), TRUE);
-    // Now add XP to the new character.
-    if ($xp > variable_get('vaxia_transfer_cap', 300)) {
-      $xp = variable_get('vaxia_transfer_cap', 300);
+  $target_nid = _vaxia_transfer_xp_autocomplete_get_nid($form_state['values']['target']);
+  if ($target_nid != FALSE) {
+    $old_character = node_load($form_state['values']['character']);
+    $new_character = node_load($target_nid);
+    $workflow = variable_get('vaxia_transfer_workflow', '');
+    if ($old_character && $new_character && !empty($workflow) && $old_character->nid != $new_character->nid) {
+      // Grab XP for this character.
+      $unspent = _character_sheet_get_xp($old_character->nid, 'xp');
+      $spent = _character_sheet_get_xp($old_character->nid, 'spent_xp');
+      $xp = $unspent + $spent;
+
+      // Now add XP to the new character.
+      if ($xp > variable_get('vaxia_transfer_cap', 300)) {
+        $xp = variable_get('vaxia_transfer_cap', 300);
+      }
+      $new_xp = floor($xp * variable_get('vaxia_transfer_percentage', 0.75));
+      $bank_xp = floor($xp - $new_xp); 
+      _character_sheet_update_xp($new_character->nid, $new_xp, 'xp');
+      _character_sheet_update_xp($new_character->nid, $bank_xp, 'bxp');
+
+      // Update the XP recorded for the old character.
+      _character_sheet_delete_xp($old_character->nid);
+      _character_sheet_delete_log($old_character->nid);
+      _vaxia_delete_type_tracking($old_character->nid);
+      // And update the original character status.
+      workflow_execute_transition($old_character, $workflow, t('Transferring XP to a new character'), TRUE);
     }
-    $new_xp = floor($xp * variable_get('vaxia_transfer_percentage', 0.75));
-    $bank_xp = floor($xp - $new_xp); 
-    _character_sheet_update_xp($new_character->nid, $new_xp, 'xp');
-    _character_sheet_update_xp($new_character->nid, $bank_xp, 'bxp');
+  }
+  else {
+    drupal_set_message('Unable to locate selected character. Transfer not completed.', 'error');
   }
 }
 
@@ -971,11 +980,17 @@ function _vaxia_transfer_xp_submit(&$form, &$form_state) {
  * Submit callback for transfering RXP().
  */
 function _vaxia_transfer_rxp_submit(&$form, &$form_state) {
-  $old_character = node_load($form_state['values']['rxp_character']);
-  $new_character = node_load($form_state['values']['rxp_target']);
-  $amount = node_load($form_state['values']['rxp_amount']);
-  _character_sheet_update_xp($old_character, $amount * -1, 'rxp');
-  _character_sheet_update_xp($new_character, $amount, 'rxp');
+  $target_nid = _vaxia_transfer_xp_autocomplete_get_nid($form_state['values']['rxp_target']);
+  if ($target_nid != FALSE) {
+    $old_character = node_load($form_state['values']['rxp_character']);
+    $new_character = node_load($target_nid);
+    $amount = node_load($form_state['values']['rxp_amount']);
+    _character_sheet_update_xp($old_character, $amount * -1, 'rxp');
+    _character_sheet_update_xp($new_character, $amount, 'rxp');
+  }
+  else {
+    drupal_set_message('Unable to locate selected character. Transfer not completed.', 'error');
+  }
 }
 
 /**
@@ -1044,6 +1059,28 @@ function _vaxia_get_field_value_flat($node, $field_key, $field_info, $nodes_seen
  */
 function _vaxia_meaningful_xp_types() {
   return array('xp', 'bxp', 'rxp', 'kxp', 'silver');
+}
+
+/**
+ * Helper function, given a string retrieve any nid in the format [nid:XXX].
+ * Or look for the node by title.
+ */
+function _vaxia_transfer_xp_autocomplete_get_nid($character_selected) {
+  $result = preg_match('/\[nid:([0-9]+)\]$/', $character_selected, $matches);
+  if ($result > 0) {
+    $nid = $matches[$result];
+    $node = node_load($nid);
+    if (empty($node)) {
+      $nodes = node_load_multiple(array(), array('title' => $character_selected));
+      foreach ($nodes as $nid => $this_node) {
+        $node = $this_node;
+      }
+    }
+    if (!empty($node) && $node->type == 'character_sheet' && $node->status == 1) {
+      return $node->nid;
+    } 
+  }
+  return FALSE;
 }
 
 /**
