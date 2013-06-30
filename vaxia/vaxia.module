@@ -519,6 +519,19 @@ function vaxia_form_items_node_form_alter(&$form, &$form_state, $form_id) {
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function vaxia_form_user_profile_form_alter(&$form, &$form_state, $form_id) {
+  $form['picture']['picture_delete']['#access'] = FALSE;
+  $form['picture']['picture_upload']['#access'] = FALSE;
+  $form['picture']['field_artwork'] = $form['field_artwork'];
+  unset($form['field_artwork']);
+  $form['field_comment_color']['#access'] = FALSE;
+  $form['field_current_character']['#access'] = FALSE;
+  $form['field_refresh_rate']['#access'] = FALSE;
+}
+
+/**
  * Implements hook_form_alter().
  */
 function vaxia_form_alter(&$form, &$form_state, $form_id) {
