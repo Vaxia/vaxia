@@ -632,12 +632,12 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
     $form['transfer_rxp']['rxp_amount'] = array(
       '#type' => 'select',
       '#title' => t('Transfer amount'),
-      '#options' => range(1, _character_sheet_get_xp($node->nid, 'rxp')),
+      '#options' => array_combine(range(1, _character_sheet_get_xp($node->nid, 'rxp')), range(1, _character_sheet_get_xp($node->nid, 'rxp'))),
       '#description' => t('Transfer this much RXP to the selected character sheet. This will not disable this character.'),
     );
     $form['transfer_rxp']['rxp_submit'] = array(
       '#type' => 'submit',
-      '#value' => t('Transfer character XP'),
+      '#value' => t('Transfer character RXP'),
       '#submit' => array('_vaxia_transfer_rxp_submit'),
     );
   }
@@ -647,7 +647,7 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
   if (!empty($setting) && ($node->uid == $user->uid || user_access('transfer others sheets')) ) {
     $form['transfer'] = array(
       '#type' => 'fieldset',
-      '#title' => 'Transfer all XP',
+      '#title' => 'Transfer all HXP',
       '#collapsible' => TRUE,
       '#collapsed' => TRUE,
     );
@@ -673,7 +673,7 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
     $form['transfer']['confirm']['target'] = array(
       '#type' => 'textfield',
       '#title' => t('Transfer to'),
-      '#description' => t('Transfer XP to this character sheet.'),
+      '#description' => t('Transfer HXP to this character sheet.'),
       '#autocomplete_path' => 'vaxia/transfer_xp',
     );
     $form['transfer']['confirm']['confirm'] = array(
@@ -684,7 +684,7 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
     );
     $form['transfer']['submit'] = array(
       '#type' => 'submit',
-      '#value' => t('Transfer character XP'),
+      '#value' => t('Transfer ALL character HXP'),
       '#validate' => array('_vaxia_transfer_xp_validate'),
       '#submit' => array('_vaxia_transfer_xp_submit'),
     );
@@ -946,21 +946,27 @@ function _vaxia_transfer_xp_submit(&$form, &$form_state) {
     $old_character = node_load($form_state['values']['character']);
     $new_character = node_load($target_nid);
     $workflow = variable_get('vaxia_transfer_workflow', '');
-    if ($old_character && $new_character && !empty($workflow) && $old_character->nid != $new_character->nid) {
+    if (!empty($old_character) && !empty($new_character) && !empty($workflow) && $old_character->nid != $new_character->nid) {
       // Grab XP for this character.
-      $unspent = _character_sheet_get_xp($old_character->nid, 'xp');
-      $spent = _character_sheet_get_xp($old_character->nid, 'spent_xp');
-      $xp = $unspent + $spent;
-
-      // Now add XP to the new character.
-      if ($xp > variable_get('vaxia_transfer_cap', 300)) {
-        $xp = variable_get('vaxia_transfer_cap', 300);
-      }
+      $xp = _character_sheet_get_xp($old_character->nid, 'spent_xp');
       $new_xp = floor($xp * variable_get('vaxia_transfer_percentage', 0.75));
-      $bank_xp = floor($xp - $new_xp); 
-      _character_sheet_update_xp($new_character->nid, $new_xp, 'xp');
-      _character_sheet_update_xp($new_character->nid, $bank_xp, 'bxp');
-
+      watchdog('vaxia', 'Transfering ALL xp (@new_xp out of @xp max 300) from #@nid @title to #@nid2 @title2',
+        array('@new_xp' => $new_xp, '@xp' => $xp, '@nid' => $old_character->nid, '@title' => $old_character->title,
+        '@nid2' => $new_character->nid, '@title2' => $new_character->title));
+      drupal_set_message(t('Transfering ALL xp (@new_xp out of @xp max 300) from #@nid @title to #@nid2 @title2',
+        array('@new_xp' => $new_xp, '@xp' => $xp, '@nid' => $old_character->nid, '@title' => $old_character->title,
+        '@nid2' => $new_character->nid, '@title2' => $new_character->title)));
+      // Now add XP to the new character.
+      if ($new_xp > variable_get('vaxia_transfer_cap', 300)) {
+        $new_xp = variable_get('vaxia_transfer_cap', 300);
+      }
+      $new_spent = _character_sheet_get_xp($new_character->nid, 'spent_xp');
+      if ($new_spent > 0) {
+        _character_sheet_update_xp($new_character->nid, $new_xp, 'bxp');
+      }
+      else {
+        _character_sheet_update_xp($new_character->nid, $new_xp, 'xp');
+      }
       // Update the XP recorded for the old character.
       _character_sheet_delete_xp($old_character->nid);
       _character_sheet_delete_log($old_character->nid);
@@ -970,6 +976,7 @@ function _vaxia_transfer_xp_submit(&$form, &$form_state) {
     }
   }
   else {
+    watchdog('vaxia', 'Unable to locate selected character. Transfer not completed.');
     drupal_set_message('Unable to locate selected character. Transfer not completed.', 'error');
   }
 }
@@ -982,9 +989,17 @@ function _vaxia_transfer_rxp_submit(&$form, &$form_state) {
   if ($target_nid != FALSE) {
     $old_character = node_load($form_state['values']['rxp_character']);
     $new_character = node_load($target_nid);
-    $amount = node_load($form_state['values']['rxp_amount']);
-    _character_sheet_update_xp($old_character, $amount * -1, 'rxp');
-    _character_sheet_update_xp($new_character, $amount, 'rxp');
+    if (!empty($old_character) && !empty($new_character) && $old_character->nid != $new_character->nid) {
+      $amount = $form_state['values']['rxp_amount'];
+      watchdog('vaxia', 'Transfering RXP (@amount) from #@nid @title to #@nid2 @title2',
+        array('@amount' => $amount, '@nid' => $old_character->nid, '@title' => $old_character->title,
+        '@nid2' => $new_character->nid, '@title2' => $new_character->title));
+      drupal_set_message(t('Transfering RXP (@amount) from #@nid @title to #@nid2 @title2',
+        array('@amount' => $amount, '@nid' => $old_character->nid, '@title' => $old_character->title,
+        '@nid2' => $new_character->nid, '@title2' => $new_character->title)));
+      _character_sheet_update_xp($old_character->nid, $amount * -1, 'rxp');
+      _character_sheet_update_xp($new_character->nid, $amount, 'rxp');
+    }
   }
   else {
     drupal_set_message('Unable to locate selected character. Transfer not completed.', 'error');
