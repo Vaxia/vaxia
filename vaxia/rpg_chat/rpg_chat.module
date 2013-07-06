@@ -244,9 +244,11 @@ function _rpg_chat_refresh_js($form, &$form_state) {
     '</div>';
   $return_string .= '<div id="rpg-chat">';
 
-  foreach ($comments as $cid => $comment) {
-    if (is_numeric($cid)) {
-      $return_string .= drupal_render($comment);
+  if (!empty($comments) && is_array($comments)) {
+    foreach ($comments as $cid => $comment) {
+      if (is_numeric($cid)) {
+        $return_string .= drupal_render($comment);
+      }
     }
   }
   $return_string .= '</div></div>';
