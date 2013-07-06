@@ -507,7 +507,7 @@ function vaxia_form_character_sheet_node_form_alter(&$form, &$form_state, $form_
 function _vaxia_node_form_workflow_after_build($form, $form_state) {
   global $user;
   $node = isset($form['#node']) ? $form['#node'] : '';
-  if (!empty($node) && $user->uid == $node->uid) {
+  if (!empty($form['#wf']->name) && !empty($node) && $user->uid == $node->uid) {
     if ($node->type == 'character_sheet' || $node->type == 'items') {
       $workflow_name = $form['#wf']->name;
       $options = $form['workflow'][$workflow_name]['#options'];
