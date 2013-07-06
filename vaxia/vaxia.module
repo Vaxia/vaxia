@@ -498,6 +498,29 @@ function vaxia_form_character_sheet_node_form_alter(&$form, &$form_state, $form_
         'after approval. Please revert this NPC to draft, and take it through the approval process again if you need to update numbers.');
     }
   }
+  $form['#after_build'][] = '_vaxia_node_form_workflow_after_build';
+}
+
+/**
+ * Implements form after build.
+ */
+function _vaxia_node_form_workflow_after_build($form, $form_state) {
+  global $user;
+  $node = isset($form['#node']) ? $form['#node'] : '';
+  if (!empty($node) && $user->uid == $node->uid) {
+    if ($node->type == 'character_sheet' || $node->type == 'items') {
+      $workflow_name = $form['#wf']->name;
+      $options = $form['workflow'][$workflow_name]['#options'];
+      $index = array_search('approved', $options);
+      if ($index !== FALSE && $index != $node->workflow) {
+        drupal_set_message(t('You cannot set an item or character sheet you own to approved.'));
+        unset($options[$index]);
+        unset($form['workflow'][$workflow_name][$index]);
+        $form['workflow'][$workflow_name]['#options'] = $options;
+      }
+    }
+  }
+  return $form;
 }
 
 /**
@@ -532,6 +555,26 @@ function vaxia_form_user_profile_form_alter(&$form, &$form_state, $form_id) {
   $form['field_took_ash1']['#access'] = FALSE;
   $form['field_took_ash2']['#access'] = FALSE;
   $form['field_became_sh']['#access'] = FALSE;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function vaxia_form_workflow_tab_form_alter(&$form, &$form_state, $form_id) {
+  global $user;
+  $node = isset($form['node']['#value']) ? $form['node']['#value'] : '';
+  if (!empty($node) && $user->uid == $node->uid) {
+    if ($node->type == 'character_sheet' || $node->type == 'items') {
+      $workflow_name = $form['#wf']->name;
+      $options = $form['workflow'][$workflow_name]['#options'];
+      $index = array_search('approved', $options);
+      if ($index !== FALSE && $index != $node->workflow) {
+        drupal_set_message(t('You cannot set an item or character sheet you own to approved.'));
+        unset($options[$index]);
+        $form['workflow'][$workflow_name]['#options'] = $options;
+      }
+    }
+  }
 }
 
 /**
