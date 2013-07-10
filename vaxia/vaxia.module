@@ -610,6 +610,12 @@ function vaxia_form_alter(&$form, &$form_state, $form_id) {
         $form['field_artwork'][$lang]['#default_value'][0] = $this_player->field_artwork[$lang][0]['nid'];
       }
     }
+    $limbo_room = variable_get('vaxia_limbo_room', array());
+    if (!in_array($form['#node']->nid, $limbo_room)) {
+      $options = $form['field_comment_character'][$lang]['#options'];
+      $options = array_diff($options, array('_none' => '- None -'));
+      $form['field_comment_character'][$lang]['#options'] = $options;
+    }
     $form['field_comment_character'][$lang]['#ajax'] = array(
       'callback' => '_vaxia_character_pick',
       'wrapper' => 'vaxia-dice-roller',
