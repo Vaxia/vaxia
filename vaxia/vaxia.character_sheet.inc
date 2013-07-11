@@ -279,9 +279,10 @@ function vaxia_character_sheet_field_info() {
  * Character sheet, field level controls for players and moderators according to character sheet defs.
  */
 function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
+  global $user;
   $node = $form['#node'];
   $lang = $form['language']['#value'];
-  // Only on a character sheet that isn't yet set.
+  // Only on a character sheet that isn't yet enabled.
   if (_character_sheet_is_enabled($node) && !_character_sheet_is_playable($node)) {
     // Hide these fields.
     $disabled = array('field_economy', 'field_npcs', 'field_items', 'field_property',
@@ -296,12 +297,15 @@ function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
         $form[$field_name][$lang]['add_more']['#access'] = FALSE;
       }
     }
+    // If in submit / review mode then really remove access.
+    if ($user->uid == $node->uid && $node->workflow_state_name == 'submitted') {
+      $form['#disabled'] = TRUE;
+    }
   }
 
   // Only do this if this is a character sheet in play.
   if (_character_sheet_is_enabled($node) && _character_sheet_is_playable($node)) {
     // Remove skill's remove button and add more button IIF owner viewing playable.
-    global $user;
     if ($node->uid == $user->uid) {
       unset($form['field_skill'][$lang]['add_more']);
       foreach ($form['field_skill'][$lang] as $delta => $field) {
@@ -313,8 +317,6 @@ function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
         } 
       }
     }
-
-    global $user;
     // Disable the private note if you can't edit it. Can't edit your own.
     if (!($user->uid == $node->uid || user_access('edit SH notes'))) {
       $form['field_sh_notes'][$lang][0]['#disabled'] = TRUE;
