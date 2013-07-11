@@ -617,7 +617,8 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
   }
 
   // And add the transfer options. But only if this sheet is a storyteller sheet.
-  if (($node->field_is_storyteller[$node->language][0]['value'] == 1) &&
+  $rpx = _character_sheet_get_xp($node->nid, 'rxp');
+  if ($rpx > 0 &&($node->field_is_storyteller[$node->language][0]['value'] == 1) &&
     ($node->uid == $user->uid && user_access('transfer rxp')) || user_access('transfer others sheets')
   ) {
     $form['transfer_rxp'] = array(
@@ -639,7 +640,7 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
     $form['transfer_rxp']['rxp_amount'] = array(
       '#type' => 'select',
       '#title' => t('Transfer amount'),
-      '#options' => array_combine(range(1, _character_sheet_get_xp($node->nid, 'rxp')), range(1, _character_sheet_get_xp($node->nid, 'rxp'))),
+      '#options' => array_combine(range(0, $rxp), range(0, $rxp)),
       '#description' => t('Transfer this much RXP to the selected character sheet. This will not disable this character.'),
     );
     $form['transfer_rxp']['rxp_submit'] = array(
