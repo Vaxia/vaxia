@@ -366,8 +366,8 @@ function vaxia_character_sheet_validate_sheet($node, $old_node, $form, $form_sta
   }
   // Run this only for draft nodes, to cap out at 300 per field.
   // Check if the sheet has been finalized.
-  if (isset($node->workflow)
-    && ($node->workflow == variable_get('vaxia_draft_workflow', '') )) {
+  if (!isset($node->workflow) || (isset($node->workflow)
+    && ($node->workflow == variable_get('vaxia_draft_workflow', '') ))) {
     // Total the value of points against starting points flat.
     $available_xp = variable_get('vaxia_starting_points', 300);
     $fields_info = _character_sheet_get_field_info($node);
@@ -386,6 +386,11 @@ function vaxia_character_sheet_validate_sheet($node, $old_node, $form, $form_sta
               array('%spent_xp' => $spent_xp[$xp_type], '%available_xp' => $available_xp)));
         }
       }
+    }
+    if ($spent_xp[$xp_type] < $available_xp) {
+      return $error = array('field' => '', 'message' => 
+        t('You have spent %spent_xp xp out of %available_xp available xp. You have more XP to spend. Please revise your sheet.',
+          array('%spent_xp' => $spent_xp[$xp_type], '%available_xp' => $available_xp)));    
     }
   }
   return FALSE;
