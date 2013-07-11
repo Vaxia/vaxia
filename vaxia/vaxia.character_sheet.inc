@@ -101,6 +101,11 @@ function vaxia_character_sheet_field_info() {
         'owner' => DISABLE_SHEET,
       ),
     ),
+    'field_is_storyteller' => array(
+      'permissions' => array(
+        'owner' => DISABLE_SHEET,
+      ),
+    ),
     //field_background
     //field_personality
     //field_occupation
@@ -611,8 +616,10 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
     );
   }
 
-  // And add the transfer options.
-  if (($node->uid == $user->uid && user_access('transfer rxp')) || user_access('transfer others sheets')) {
+  // And add the transfer options. But only if this sheet is a storyteller sheet.
+  if (($node->field_is_storyteller[$node->language][0]['value'] == 1) &&
+    ($node->uid == $user->uid && user_access('transfer rxp')) || user_access('transfer others sheets')
+  ) {
     $form['transfer_rxp'] = array(
       '#type' => 'fieldset',
       '#title' => 'Transfer RXP only',
@@ -965,7 +972,7 @@ function _vaxia_transfer_xp_submit(&$form, &$form_state) {
         _character_sheet_update_xp($new_character->nid, $new_xp, 'bxp');
       }
       else {
-        _character_sheet_update_xp($new_character->nid, $new_xp, 'xp');
+        _vaxia_add_xp($new_character->nid, $new_xp, 'transfer');
       }
       // Update the XP recorded for the old character.
       _character_sheet_delete_xp($old_character->nid);
@@ -1144,6 +1151,13 @@ function _vaxia_add_xp($nid, $xp, $type) {
       // If rxp is added directly, just add it to the rxp score.
       _character_sheet_update_xp($nid, $xp, 'rxp');
     break;
+    case 'silver':
+      $message = t('%xp %type silver added to %title by %user.',
+        array('%xp' => $xp, '%type' => $type, '%title' => $node->title, '%user' => $user->name));
+      _character_sheet_update_log($nid, 'silver', $message, $variables = array());
+      // Silver is just added directly.
+      _character_sheet_update_xp($nid, $xp, 'silver');
+    break;
     case 'xp':
     default:
       _character_sheet_update_log($nid, 'xp', $message, $variables = array());
@@ -1166,13 +1180,10 @@ function _vaxia_add_xp($nid, $xp, $type) {
       _character_sheet_update_xp($nid, $xp_to_add, 'xp');
       _character_sheet_update_xp($nid, $bxp_to_add, 'bxp');
     break;
-    case 'silver':
-      $message = t('%xp %type silver added to %title by %user.',
-        array('%xp' => $xp, '%type' => $type, '%title' => $node->title, '%user' => $user->name));
-      _character_sheet_update_log($nid, 'xp', $message, $variables = array());
-      // Silver is just added directly.
-      _character_sheet_update_xp($nid, $xp, 'silver');
-    break;
+  }
+  // Flush Entity Cache record.
+  if (module_exists('entitycache')) {
+    cache_clear_all($nid, 'cache_entity_node');
   }
 }
 
