@@ -1025,7 +1025,7 @@ function _vaxia_transfer_rxp_submit(&$form, &$form_state) {
  * Based on _character_sheet_get_field_value().
  */
 function _vaxia_get_field_value_flat($node, $field_key, $field_info, $nodes_seen = array()) {
-  $nodes_seen[] = $node->nid;
+  $nodes_seen[] = isset($node->nid) ? $node->nid : ''; // No nid to be found.
   // Given a node, find the key and patch to the information for that key.
   $total = 0;
   $language = isset($node->language) ? $node->language : 'und';
@@ -1059,9 +1059,8 @@ function _vaxia_get_field_value_flat($node, $field_key, $field_info, $nodes_seen
                 // Checking on an already saved node (probably old_node).
                 $sub_node = field_collection_item_load($delta_field['value']);
               }
-              elseif(isset($delta_field['entity']->item_id)) {
-                // New node, has a differnt format. Not saved, so we can't just load it.
-                // We have to grab it from the form's submitted data.
+              else {
+                // The sub node hasn't been saved yet either.
                 $sub_node = $delta_field['entity'];
               }
             }
@@ -1069,7 +1068,7 @@ function _vaxia_get_field_value_flat($node, $field_key, $field_info, $nodes_seen
           // If we found a subnode at this this child, check it.
           if (!empty($sub_node)) {
             // NOTE: THIS DOES NOT HANDLE RECUSIVE LOOPS WELL - SO DON'T RECOUNT THINGS COUNTED.
-            if (!in_array($sub_node->nid, $nodes_seen)) {
+            if (!isset($sub_node->nid) || !in_array($sub_node->nid, $nodes_seen)) {
               $total += _vaxia_get_field_value_flat($sub_node, $field_key, $field_info, $nodes_seen);
             }
           }
