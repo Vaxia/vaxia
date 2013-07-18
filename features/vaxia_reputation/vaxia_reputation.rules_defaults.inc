@@ -45,7 +45,7 @@ function vaxia_reputation_default_rules_configuration() {
     }
   }');
   $items['rules_give_v_rep_for_approving_character_sheet'] = entity_import('rules_config', '{ "rules_give_v_rep_for_approving_character_sheet" : {
-      "LABEL" : "Give v-rep for Approving sheet w\\/in 3 days",
+      "LABEL" : "Give v-rep for approving sheet w\\/in 3 days",
       "PLUGIN" : "reaction rule",
       "TAGS" : [ "Vaxia Reputation" ],
       "REQUIRES" : [ "rules", "workflow_rules", "php", "userpoints_rules" ],

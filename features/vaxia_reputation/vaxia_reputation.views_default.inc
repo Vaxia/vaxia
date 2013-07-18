@@ -28,7 +28,6 @@ function vaxia_reputation_views_default_views() {
   $handler->display->display_options['access']['role'] = array(
     3 => '3',
     4 => '4',
-    8 => '8',
   );
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
