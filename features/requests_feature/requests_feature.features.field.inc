@@ -75,6 +75,7 @@ function requests_feature_field_default_fields() {
             'full_html' => 0,
             'php_code' => 0,
             'plain_text' => 'plain_text',
+            'whiteboard' => 0,
             'wiki' => 'wiki',
           ),
           'allowed_formats_toggle' => 1,
@@ -89,6 +90,9 @@ function requests_feature_field_default_fields() {
               ),
               'plain_text' => array(
                 'weight' => '10',
+              ),
+              'whiteboard' => array(
+                'weight' => '0',
               ),
               'wiki' => array(
                 'weight' => '0',
