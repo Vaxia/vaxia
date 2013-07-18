@@ -265,32 +265,32 @@ function vaxia_workflow_default_workflows() {
         'target_state' => 'disapproved',
       ),
       5 => array(
-        'roles' => 'administrator,evaluator,administrator-vaxia',
+        'roles' => 'administrator,administrator-vaxia',
         'state' => 'submitted',
         'target_state' => 'draft',
       ),
       6 => array(
-        'roles' => 'administrator,evaluator,administrator-vaxia',
+        'roles' => 'administrator,administrator-vaxia',
         'state' => 'submitted',
         'target_state' => 'approved',
       ),
       7 => array(
-        'roles' => 'administrator,evaluator,administrator-vaxia',
+        'roles' => 'administrator,administrator-vaxia',
         'state' => 'submitted',
         'target_state' => 'disapproved',
       ),
       8 => array(
-        'roles' => 'administrator,evaluator,administrator-vaxia',
+        'roles' => 'administrator,administrator-vaxia',
         'state' => 'approved',
         'target_state' => 'draft',
       ),
       9 => array(
-        'roles' => 'administrator,evaluator,administrator-vaxia',
+        'roles' => 'administrator,administrator-vaxia',
         'state' => 'approved',
         'target_state' => 'submitted',
       ),
       10 => array(
-        'roles' => 'administrator,evaluator,administrator-vaxia',
+        'roles' => 'administrator,administrator-vaxia',
         'state' => 'approved',
         'target_state' => 'disapproved',
       ),

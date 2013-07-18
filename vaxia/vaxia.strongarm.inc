@@ -557,25 +557,25 @@ function vaxia_strongarm() {
     'extra_fields' => array(
       'form' => array(
         'title' => array(
-          'weight' => '-5',
+          'weight' => '0',
         ),
         'path' => array(
-          'weight' => '30',
+          'weight' => '12',
         ),
         'workflow' => array(
-          'weight' => '99',
+          'weight' => '13',
         ),
       ),
       'display' => array(
         'workflow_current_state' => array(
           'default' => array(
-            'weight' => '-99',
+            'weight' => '11',
             'visible' => FALSE,
           ),
         ),
         'workflow' => array(
           'default' => array(
-            'weight' => '99',
+            'weight' => '12',
             'visible' => FALSE,
           ),
         ),
@@ -630,13 +630,13 @@ function vaxia_strongarm() {
       'display' => array(
         'workflow_current_state' => array(
           'default' => array(
-            'weight' => '-99',
+            'weight' => '7',
             'visible' => FALSE,
           ),
         ),
         'workflow' => array(
           'default' => array(
-            'weight' => '99',
+            'weight' => '8',
             'visible' => FALSE,
           ),
         ),
@@ -664,6 +664,15 @@ function vaxia_strongarm() {
         'custom_settings' => FALSE,
       ),
       'search_result' => array(
+        'custom_settings' => FALSE,
+      ),
+      'ical' => array(
+        'custom_settings' => FALSE,
+      ),
+      'diff_standard' => array(
+        'custom_settings' => FALSE,
+      ),
+      'token' => array(
         'custom_settings' => FALSE,
       ),
     ),
@@ -1036,7 +1045,9 @@ smart
 charismatic
 warrior
 mage
-rogue';
+rogue
+transfer
+site-award';
   $export['vaxia_xp_types'] = $strongarm;
 
   return $export;
