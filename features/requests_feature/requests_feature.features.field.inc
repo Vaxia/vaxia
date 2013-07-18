@@ -72,12 +72,12 @@ function requests_feature_field_default_fields() {
       'settings' => array(
         'better_formats' => array(
           'allowed_formats' => array(
-            'full_html' => 'full_html',
-            'php_code' => 'php_code',
+            'full_html' => 0,
+            'php_code' => 0,
             'plain_text' => 'plain_text',
             'wiki' => 'wiki',
           ),
-          'allowed_formats_toggle' => 0,
+          'allowed_formats_toggle' => 1,
           'default_order_toggle' => 0,
           'default_order_wrapper' => array(
             'formats' => array(
@@ -97,7 +97,7 @@ function requests_feature_field_default_fields() {
           ),
         ),
         'display_summary' => 0,
-        'text_processing' => '0',
+        'text_processing' => '1',
         'user_register_form' => FALSE,
       ),
       'widget' => array(
