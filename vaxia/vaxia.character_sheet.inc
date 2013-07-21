@@ -569,19 +569,17 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
   $cost = _vaxia_invest_calculate_cost_to_improve($level);
   $invest = $cost - $silver_invested;
   // Invested silver is spent_silver, adjusted to show the difference between spent and the cost of the current economy level.
-  $desc = t('You need to invest %invest more silver before you will reach %level economy. Invested so far %so_far.',
-    array('%invest' => number_format($invest, 0), '%level' => $level + 1, '%so_far' => $silver_invested));
+  $desc = t('You have %available silver available to invest. You need to invest %invest more silver before you will reach %level economy. Invested so far %so_far.',
+    array('%invest' => number_format($available_silver, 0), '%invest' => number_format($invest, 0), '%level' => $level + 1, '%so_far' => $silver_invested));
   if ($available_silver >= 1 ) {
     $available_silver = floor($available_silver);
-    $options = range(0, $available_silver);
-    $options[0] = '-';
     $invest = 0;
     // Figure out how many given current silver you can add.
     $form['node_info']['invest_silver'] = array(
       '#title' => t('Invest silver'),
-      '#type' => 'select',
-      '#options' => $options,
+      '#type' => 'textfield',
       '#description' => $desc,
+      '#size' => 15,
     );
     $form['node_info']['submit_economy'] = array(
       '#type' => 'submit',
@@ -844,7 +842,12 @@ function _vaxia_calculate_worth($economy) {
 function _vaxia_invest_silver_submit($form, $form_state) {
   $nid = $form_state['values']['nid'];
   $invest = $form_state['values']['invest_silver'];
-  if (is_numeric($invest) && $invest > 0 ) {
+  $silver = _character_sheet_get_xp($node->nid, 'silver');
+  $silver_spent = _character_sheet_get_xp($node->nid, 'spent_silver');
+  $silver_invested = _character_sheet_get_xp($node->nid, 'invest_silver');
+  $available_silver = $silver - ($silver_spent + $silver_invested);
+  // Act.
+  if (is_numeric($invest) && $invest > 0 && $invest <= $available_silver) {
     // Figure out how many to add based on added silver.
     $node = node_load($nid);
     $cost = _vaxia_invest_calculate_cost_to_improve($node->field_economy[$node->language][0]['value']);
