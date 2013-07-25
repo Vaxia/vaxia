@@ -734,6 +734,10 @@ function _vaxia_comment_add_kxp_submit($form, $form_state) {
   $lang = $form_state['values']['language'];
   // If posted as a character and not as narrative.
   if (!empty($form_state['values']['field_comment_character'][$lang][0]['nid']) ) {
+    if (!empty($form['cid']['#value'])) {
+      drupal_set_message('Editting an existing comment - no kxp will be awarded.');
+      return;
+    }
     // The character gains XP per wordcount.
     $wordcount = strlen($form_state['values']['comment_body'][$lang][0]['value']);
     if (is_numeric($wordcount)) {
