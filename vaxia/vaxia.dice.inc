@@ -42,7 +42,7 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
         'field_strength' => 'Strength', 
         'field_agility' => 'Agility', 
         'field_dexterity' => 'Dexterity', 
-        'field_reflexes' => 'Reflexes', 
+        'field_reflexes' => 'Finesse', 
         'field_intelligence' => 'Intelligence', 
         'field_awareness' => 'Awareness', 
         'field_spirituality' => 'Spirituality', 
@@ -123,6 +123,7 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
         '#title' => t('Using items'),
         '#type' => 'select',
         '#options' => $items,
+        '#size' => count($items),
         '#multiple' => TRUE,
       );
       $form['vaxia_rolls']['notes'] = array(
