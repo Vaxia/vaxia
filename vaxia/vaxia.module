@@ -255,7 +255,7 @@ function vaxia_workflow($op, $old_state, $new_state, $node, $force = FALSE) {
     case 'transition post';
       // Flush Entity Cache record.
       if (module_exists('entitycache')) {
-        cache_clear_all($node->nid, 'cache_entity_node');
+        cache_clear_all('*', 'cache_entity_node', TRUE);
       }
     break;
   }
