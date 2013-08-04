@@ -979,12 +979,15 @@ function _vaxia_transfer_xp_submit(&$form, &$form_state) {
         $new_xp = variable_get('vaxia_transfer_cap', 300);
       }
       $new_spent = _character_sheet_get_xp($new_character->nid, 'spent_xp');
-      if ($new_spent > 0) {
+      if ($new_spent > 5) { // 5 or under for spent xp limits for transfer.
         _character_sheet_update_xp($new_character->nid, $new_xp, 'bxp');
       }
       else {
-        _vaxia_add_xp($new_character->nid, $new_xp, 'transfer');
+        _character_sheet_update_xp($new_character->nid, $new_xp, 'xp');
       }
+      $message = t('%xp transfer xp added to %title by system.',
+        array('%xp' => $new_xp, '%title' => $new_character->title));
+      _character_sheet_update_log($new_character->nid, 'transfer', $message);
       // Update the XP recorded for the old character.
       _character_sheet_delete_xp($old_character->nid);
       _character_sheet_delete_log($old_character->nid);
