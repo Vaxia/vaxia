@@ -7,7 +7,7 @@
 #main{padding-top:0;}
 
 /* Navigation menu tweaks. */
-#navigation{margin-top:1em;}
+#navigation{margin-top:1em;height:auto;}
 #navigation #main-menu{float:none;clear:both;top:0;}
 #navigation #main-menu li{float:none;display:block;}
 #navigation a{width:100%;padding-top:10px;padding-bottom:5px;background:#000;border: solid 1px #666;border-bottom:0;}
