@@ -1,5 +1,2 @@
 /* Main width. */
 #header #logo, #main, #footer{width:auto;}
-
-/* Nav width */
-#navigation{width:660px;margin-left:300px;}
