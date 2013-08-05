@@ -21,6 +21,7 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
   $this_player = user_load($user->uid);
   $character = '_none';
   $lang = $parent_form['language']['#value'];
+
   if (isset($parent_form_state['values'])) {
     if(isset($parent_form_state['values']['field_comment_character'][$lang][0]['nid'])) {
       $character = $parent_form_state['values']['field_comment_character'][$lang][0]['nid'];
@@ -28,6 +29,30 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
   }
   elseif(!empty($this_player->field_current_character[$lang][0]['nid'])) {
     $character = $this_player->field_current_character[$lang][0]['nid'];
+  }
+  elseif(!empty($form['field_comment_character'][$lang]['#default_value'])) {
+    $character = $form['field_comment_character'][$lang]['#default_value'];
+  }
+  // Last ditch chance to grab the character.
+  $limbo_room = variable_get('vaxia_limbo_room', array());
+  if (!in_array($parent_form['#node']->nid, $limbo_room) && $character == '_none') {
+    $lang = $parent_form['language']['#value'];
+    // If none was the default, set it to the first available.
+    if ($parent_form['field_comment_character'][$lang]['#default_value'] == '_none'
+      || empty($parent_form['field_comment_character'][$lang]['#default_value'])) {
+      $keys = array();
+      if (empty($keys) && isset($parent_form['field_comment_character'][$lang]['#options']['Characters'])) {
+        $keys = array_keys($parent_form['field_comment_character'][$lang]['#options']['Characters']);
+      }
+      if (empty($keys) && isset($parent_form['field_comment_character'][$lang]['#options']['Personal NPCs'])) {
+        $keys = array_keys($parent_form['field_comment_character'][$lang]['#options']['Personal NPCs']);
+      }
+      if (empty($keys) && isset($parent_form['field_comment_character'][$lang]['#options']['Open NPCs'])) {
+        $keys = array_keys($parent_form['field_comment_character'][$lang]['#options']['Open NPCs']);
+      }
+      $parent_form['field_comment_character'][$lang]['#default_value'] = array_shift($keys);
+      $character = $parent_form['field_comment_character'][$lang]['#default_value'];
+    }
   }
   if ($character && $character != '_none' ) {
     $character = node_load($character);
