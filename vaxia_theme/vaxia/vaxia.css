@@ -170,3 +170,18 @@ div.error a, table tr.error a{color:#111 !important;}
 
 /* Wiki background color. */
 article.node-wiki-page{background-color:#666;padding:1em;}
+
+/* Collected fixes. 8/5/13 */
+tr.selected td{background:transparent;}
+div.quiz-report .dt{background:transparent;}
+.quiz-hover-menu{opacity:1;}
+.q-correct, .q-wrong{background-color:transparent;}
+.dd{width:90% !important;text-align:left;}
+.messages a, .status a{color:#111111 !important;}
+.forum-node-create-links .forum-add-node{height:30px;}
+.forum-table{width:90%;}
+.forum-table .views-field-last-updated{display:none;}
+.forum-table .views-field-totalcount{display:none;}
+.vertical-tabs ul.vertical-tabs-list li{background-color:transparent;}
+.vertical-tabs ul.vertical-tabs-list li.selected{background-color:transparent;}
+#navigation{width:660px;margin-left:300px;}
