@@ -662,7 +662,7 @@ function vaxia_form_alter(&$form, &$form_state, $form_id) {
     }
     // Add new fields.
     $form['field_refresh_rate'] = array(
-      '#type' => 'textfield',
+      '#type' => 'hidden',
       '#default_value' => isset($this_player->field_refresh_rate[$lang][0]['value']) ?
         $this_player->field_refresh_rate[$lang][0]['value'] : 30,
       '#size' => 6,
