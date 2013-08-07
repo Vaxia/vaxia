@@ -31,7 +31,7 @@ function vaxia_archives_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('vaxia_archives_form'),
   );
-  $items['admin/config/search/vaxia_archves'] = array(
+  $items['admin/config/search/vaxia_archives'] = array(
     'title' => 'Vaxia archive configurations',
     'type' => MENU_NORMAL_ITEM,
     'access arguments' => array('administer old archives'),
