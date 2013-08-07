@@ -111,9 +111,9 @@ function vaxia_archives_form($form, &$form_state) {
       '#title' => t('Raw files'),
       '#type' => 'item',
       '#markup' => '<br/>' .
-        '<b><i><a href="' . $root . '/index.html" target="_blank">Direct link to archives</a></i></b>' .
+        '<b><i><a href="/' . $root . '/index.html" target="_blank">Direct link to archives</a></i></b>' .
         '<br/><br/>' .
-        '<iframe src="' . $root . '/index.html" width="100%" height="500px"></iframe>',
+        '<iframe src="/' . $root . '/index.html" width="100%" height="500px"></iframe>',
       '#prefix' => '<div id="vaxia_archives_raw">',
       '#suffix' => '</div>',
     );
