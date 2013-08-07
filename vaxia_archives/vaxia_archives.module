@@ -62,7 +62,7 @@ function vaxia_archives_form($form, &$form_state) {
   $form['search_fieldset']['vaxia_archives_date'] = array(
     '#title' => t('Date'),
     '#type' => 'textfield',
-    '#description' => t('Enter a human readable date. Ex: April 16, 2004'),
+    '#description' => t('Enter a human readable date to limit results to that date. Ex: April 16, 2004'),
     '#size' => 15,
   );
   $form['search_fieldset']['vaxia_archives_location'] = array(
