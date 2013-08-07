@@ -270,6 +270,6 @@ function _vaxia_archives_search($month = 'any', $day = 'any', $year = 'any', $lo
     $found[$index] = $new_path;
   }
   // Create results
-  $results = '<ul><li>' . implode("</li><br/>\n<li>", $found) . '</li></ul>';
+  $results = '<ul><li>' . implode("</li>\n<li>", $found) . '</li></ul>';
   return $results;
 }
