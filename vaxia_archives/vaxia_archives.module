@@ -52,7 +52,9 @@ function vaxia_archives_form($form, &$form_state) {
   $form['vaxia_archives_style'] = array(
     '#type' => 'item',
     '#markup' => '<style>' .
-      '#vaxia-archives-form .form-type-textfield{float:left;margin-left:1em;}' .
+      '#vaxia-archives-form .form-type-textfield{float:left;margin-left:1em;height:70px;}' .
+      '#vaxia-archives-form #edit-vaxia-archives-date{float:left;margin-left:1em;height:70px;}' .
+      '#vaxia-archives-form #edit-vaxia-archives-date .form-type-select{float:left;margin-left:1em;}' .
       '#vaxia-archives-form #edit-vaxia-archives-submit{clear:left;}' .
       '</style>',
   );
@@ -61,26 +63,65 @@ function vaxia_archives_form($form, &$form_state) {
   );
   $form['search_fieldset']['vaxia_archives_date'] = array(
     '#title' => t('Date'),
-    '#type' => 'textfield',
-    '#description' => t('Enter a human readable date to limit results to that date. Ex: April 16, 2004'),
-    '#size' => 15,
+    '#type' => 'fieldset',
+    //'#description' => t('Enter a date to limit results to that date.'),
+  );
+  $form['search_fieldset']['vaxia_archives_date']['vaxia_archives_date_month'] = array(
+    '#type' => 'select',
+    '#options' => array(
+      'any' => '--',
+      'Jan' => 'Jan',
+      'Feb' => 'Feb',
+      'Mar' => 'Mar',
+      'Apr' => 'Apr',
+      'May' => 'Map',
+      'June' => 'Jun',
+      'July' => 'Jul',
+      'Aug' => 'Aug',
+      'Sept' => 'Sep',
+      'Oct' => 'Oct',
+      'Nov' => 'Nov',
+      'Dec' => 'Dec',
+    ),
+  );
+  $days = array_combine(range(1, 31), range(1, 31));
+  $days = array('any' => '--') + $days;
+  $form['search_fieldset']['vaxia_archives_date']['vaxia_archives_date_day'] = array(
+    '#type' => 'select',
+    '#options' => $days,
+  );
+  $form['search_fieldset']['vaxia_archives_date']['vaxia_archives_date_year'] = array(
+    '#type' => 'select',
+    '#options' => array(
+      'any' => '--',
+      '2004' => '2004',
+      '2005' => '2005',
+      '2006' => '2006',
+      '2007' => '2007',
+      '2008' => '2008',
+      '2009' => '2009',
+      '2010' => '2010',
+      '2011' => '2011',
+      '2012' => '2012',
+      '2013' => '2013',
+    ),
   );
   $form['search_fieldset']['vaxia_archives_location'] = array(
     '#title' => t('Location'),
     '#type' => 'textfield',
-    '#description' => t('Enter a location to search for the location in the archive filename.'),
+    //'#description' => t('Enter a location to search for the location in the archive filename.'),
     '#size' => 15,
   );
   $form['search_fieldset']['vaxia_archives_character'] = array(
     '#title' => t('Character'),
     '#type' => 'textfield',
-    '#description' => t('Enter a character to search for the location in the archive filename and text.'),
+    //'#description' => t('Enter a character to search for the location in the archive filename and text.'),
     '#size' => 15,
   );
   $form['search_fieldset']['vaxia_archives_text'] = array(
     '#title' => t('Text'),
     '#type' => 'textfield',
-    '#description' => t('Enter any string to search for the location in the archive text.'),
+    //'#description' => t('Enter any string to search for the location in the archive text.'),
     '#size' => 15,
   );
   $form['vaxia_archives_submit'] = array(
@@ -94,11 +135,15 @@ function vaxia_archives_form($form, &$form_state) {
     ),
   );
   $search_results = t('No search performed.');
-  if (!empty($form_state['values']['vaxia_archives_date']) ||
+  if (!empty($form_state['values']['vaxia_archives_date_month']) ||
+    !empty($form_state['values']['vaxia_archives_date_day']) ||
+    !empty($form_state['values']['vaxia_archives_date_year']) ||
     !empty($form_state['values']['vaxia_archives_location']) ||
     !empty($form_state['values']['vaxia_archives_character']) ||
     !empty($form_state['values']['vaxia_archives_text'])) {
-    $search_results = _vaxia_archives_search($form_state['values']['vaxia_archives_date'],
+    $search_results = _vaxia_archives_search($form_state['values']['vaxia_archives_date_month'],
+      $form_state['values']['vaxia_archives_date_day'],
+      $form_state['values']['vaxia_archives_date_year'],
       $form_state['values']['vaxia_archives_location'],
       $form_state['values']['vaxia_archives_character'],
       $form_state['values']['vaxia_archives_text']
@@ -152,18 +197,26 @@ function vaxia_archives_admin_form() {
  * Helper function, make a list of searchable results.
  * THIS IS NOT A 'proper' SEARCH SYSTEM.
  */
-function _vaxia_archives_search($date, $location, $character, $text) {
-  $date = !empty($date) ? strtotime($date) : ''; // Set date if there.
+function _vaxia_archives_search($month = 'any', $day = 'any', $year = 'any', $location, $character, $text) {
+  // Is the date set? Check that set path instead of all.
+  $path = $root;
+  if (!empty($year) && $year != 'any') {
+    $path = $root . '/archives/' . $year;
+  }
+  if (!empty($year) && $year != 'any' && !empty($month) && $month != 'any') {
+    $path = $path . '/' . $month ;
+  }
+  if (!empty($year) && $year != 'any' && !empty($month) && $month != 'any' && !empty($day) && $day != 'any') {
+    $date = strtotime($month . ' ' . $day . ' ' . $year);
+    $path = $path . '/' . date('D_j', $date) ;
+  }
+
   // Scrub the other three value.
   $location = addslashes(strip_tags($location));
   $character = addslashes(strip_tags($character));
   $text = addslashes(strip_tags($text));
   $root = variable_get('vaxia_archives_flat_file_path', '');
-  // Is the date set? Check that set path instead of all.
-  $path = $root;
-  if (!empty($date)) {
-    $path = $root . '/archives/' . date('Y', $date) . '/' . date('M', $date) . '/' . date('D_j', $date);
-  }
+
   // Check location name in file and content
   $found = array();
   if (!empty($location)) {
