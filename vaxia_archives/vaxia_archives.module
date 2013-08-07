@@ -158,7 +158,7 @@ function _vaxia_archives_search($date, $location, $character, $text) {
   // Is the date set? Check that set path instead of all.
   $path = $root;
   if (!empty($date)) {
-    $path = $root . '/archives/' . date('Y', $date) . '/' . date('M', $date) . '/' . date('D_n', $date);
+    $path = $root . '/archives/' . date('Y', $date) . '/' . date('M', $date) . '/' . date('D_j', $date);
   }
   // Check location name in file and content
   $found = array();
