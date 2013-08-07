@@ -201,7 +201,7 @@ function _vaxia_archives_search($month = 'any', $day = 'any', $year = 'any', $lo
   // Is the date set? Check that set path instead of all.
   $path = $root;
   if (!empty($year) && $year != 'any') {
-    $path = $root . '/archives/' . $year;
+    $path = $root . '/archives/archives/' . $year; // Since only the archives are org by year.
   }
   if (!empty($year) && $year != 'any' && !empty($month) && $month != 'any') {
     $path = $path . '/' . $month ;
@@ -254,7 +254,7 @@ function _vaxia_archives_search($month = 'any', $day = 'any', $year = 'any', $lo
     }
   }
   // If date was the only thing set, list the contents of that folder
-  if (!empty($date) && (empty($location) && empty($character) && empty($text))) {
+  if (!empty($year) && $year != 'any' && (empty($location) && empty($character) && empty($text))) {
     $output = '';
     $command = 'find -L ' . DRUPAL_ROOT . '/' . $path;
     exec($command, $output);
