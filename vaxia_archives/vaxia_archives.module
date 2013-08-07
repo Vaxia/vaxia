@@ -199,7 +199,7 @@ function _vaxia_archives_search($date, $location, $character, $text) {
   // Clean up the found paths for proper links through
   foreach ($found as $index => $found_path) {
     $found_path = drupal_substr($found_path, drupal_strlen(DRUPAL_ROOT) + 1);
-    $new_path = '<a href="' . $found_path . '" target="_blank">' . $found_path . '</a>';
+    $new_path = '<a href="/' . $found_path . '" target="_blank">' . $found_path . '</a>';
     $found[$index] = $new_path;
   }
   // Create results
