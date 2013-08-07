@@ -1,0 +1,5 @@
+name = Vaxia archive search
+description = Custom search system into archive files
+core = 7.x
+package = RPG
+version = 7.x-1.0

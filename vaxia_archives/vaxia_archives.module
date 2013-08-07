@@ -1,0 +1,206 @@
+<?php
+/**
+ * @file
+ * Provide a search system into the old Vaxia archives.
+ */
+
+/**
+ * Implements hook_permission().
+ */
+function vaxia_archives_permission() {
+  return array(
+    'search old archives'=> array(
+      'title' => t('search old archives'),
+      'description' => t('Search old archives.'),
+    ),
+    'administer old archives'=> array(
+      'title' => t('administer old archives'),
+      'description' => t('Administer old archives.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function vaxia_archives_menu() {
+  $items['vaxia_archives'] = array(
+    'title' => 'Archives',
+    'type' => MENU_NORMAL_ITEM,
+    'access arguments' => array('search old archives'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('vaxia_archives_form'),
+  );
+  $items['admin/config/search/vaxia_archves'] = array(
+    'title' => 'Vaxia archive configurations',
+    'type' => MENU_NORMAL_ITEM,
+    'access arguments' => array('administer old archives'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('vaxia_archives_admin_form'),
+  );
+  return $items;
+}
+
+/**
+ * Menu callback for search page.
+ */
+function vaxia_archives_form($form, &$form_state) {
+  // Generate form.
+  $form = array();
+  $form['vaxia_archives_style'] = array(
+    '#type' => 'item',
+    '#markup' => '<style>' .
+      '#vaxia-archives-form .form-type-textfield{float:left;margin-left:1em;}' .
+      '#vaxia-archives-form #edit-vaxia-archives-submit{clear:left;}' .
+      '</style>',
+  );
+  $form['search_fieldset'] = array(
+    '#type' => 'fieldset',
+  );
+  $form['search_fieldset']['vaxia_archives_date'] = array(
+    '#title' => t('Date'),
+    '#type' => 'textfield',
+    '#size' => 15,
+  );
+  $form['search_fieldset']['vaxia_archives_location'] = array(
+    '#title' => t('Location'),
+    '#type' => 'textfield',
+    '#size' => 15,
+  );
+  $form['search_fieldset']['vaxia_archives_character'] = array(
+    '#title' => t('Character'),
+    '#type' => 'textfield',
+    '#size' => 15,
+  );
+  $form['search_fieldset']['vaxia_archives_text'] = array(
+    '#title' => t('Text'),
+    '#type' => 'textfield',
+    '#size' => 15,
+  );
+  $form['vaxia_archives_submit'] = array(
+    '#type' => 'button',
+    '#value' => t('Search archives'),
+    '#ajax' => array(
+      'callback' => 'vaxia_archives_form_ajax',
+      'wrapper' => 'vaxia_archives_results',
+      'method' => 'replace',
+      'effect' => 'fade',
+    ),
+  );
+  $search_results = t('No search performed.');
+  if (!empty($form_state['values']['vaxia_archives_date']) ||
+    !empty($form_state['values']['vaxia_archives_location']) ||
+    !empty($form_state['values']['vaxia_archives_character']) ||
+    !empty($form_state['values']['vaxia_archives_text'])) {
+    $search_results = _vaxia_archives_search($form_state['values']['vaxia_archives_date'],
+      $form_state['values']['vaxia_archives_location'],
+      $form_state['values']['vaxia_archives_character'],
+      $form_state['values']['vaxia_archives_text']
+    );
+  }
+  $form['vaxia_archives_results'] = array(
+    '#title' => t('Seach results'),
+    '#type' => 'item',
+    '#markup' => $search_results,
+    '#prefix' => '<div id="vaxia_archives_results">',
+    '#suffix' => '</div>',
+  );
+  $root = variable_get('vaxia_archives_flat_file_path', '');
+  if (!empty($root)) {
+    $form['vaxia_archives_raw'] = array(
+      '#title' => t('Raw files'),
+      '#type' => 'item',
+      '#markup' => '<br/>' .
+        '<b><i><a href="' . $root . '/index.html" target="_blank">Direct link to archives</a></i></b>' .
+        '<br/><br/>' .
+        '<iframe src="' . $root . '/index.html" width="100%" height="500px"></iframe>',
+      '#prefix' => '<div id="vaxia_archives_raw">',
+      '#suffix' => '</div>',
+    );
+  }
+  // Generate display of general index - iframe.
+  return $form;
+}
+
+/**
+ * AJAX callback for search form.
+ */
+function vaxia_archives_form_ajax($form, $form_state) {
+  return $form['vaxia_archives_results'];
+}
+
+/**
+ * Menu callback for admin page.
+ */
+function vaxia_archives_admin_form() {
+  $form = array();
+  $form['vaxia_archives_flat_file_path'] = array(
+    '#title' => t('Flat file archive location'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('vaxia_archives_flat_file_path', ''),
+  );
+  return system_settings_form($form);
+}
+
+/**
+ * Helper function, make a list of searchable results.
+ * THIS IS NOT A 'proper' SEARCH SYSTEM.
+ */
+function _vaxia_archives_search($date, $location, $character, $text) {
+  $date = !empty($date) ? strtotime($date) : ''; // Set date if there.
+  // Scrub the other three value.
+  $location = addslashes(strip_tags($location));
+  $character = addslashes(strip_tags($character));
+  $text = addslashes(strip_tags($text));
+  $root = variable_get('vaxia_archives_flat_file_path', '');
+  // Is the date set? Check that set path instead of all.
+  $path = $root;
+  if (!empty($date)) {
+    $path = $root . '/archives/' . date('Y', $date) . '/' . date('M', $date) . '/' . date('D_n', $date);
+  }
+  // Check location name in file and content
+  $found = array();
+  if (!empty($location)) {
+    $output = '';
+    $command = 'find -L ' . DRUPAL_ROOT . '/' . $path . ' -iname "*' . $location . '*"';
+    exec($command, $output);
+    foreach ($output as $found_file) {
+      $found[$found_file] = $found_file;
+    }
+  }
+  // Check character name in file and content
+  if (!empty($character)) {
+    $output = '';
+    $command = 'find -L ' . DRUPAL_ROOT . '/' . $path . ' -iname "*' . $character . '*"';
+    exec($command, $output);
+    foreach ($output as $found_file) {
+      $found[$found_file] = $found_file;
+    }
+    $output = '';
+    $command = 'grep -R "' . $character . '" ' . DRUPAL_ROOT . '/' . $path;
+    exec($command, $output);
+    foreach ($output as $found_file) {
+      $found_file_parts = explode(':', $found_file);
+      $found[$found_file_parts[0]] = $found_file_parts[0];
+    }
+  }
+  // Check text in content
+  if (!empty($text)) {
+    $output = '';
+    $command = 'grep -R "' . $text . '" ' . DRUPAL_ROOT . '/' . $path;
+    exec($command, $output);
+    foreach ($output as $found_file) {
+      $found_file_parts = explode(':', $found_file);
+      $found[$found_file_parts[0]] = $found_file_parts[0];
+    }
+  }
+  // Clean up the found paths for proper links through
+  foreach ($found as $index => $found_path) {
+    $found_path = drupal_substr($found_path, drupal_strlen(DRUPAL_ROOT) + 1);
+    $new_path = '<a href="' . $found_path . '" target="_blank">' . $found_path . '</a>';
+    $found[$index] = $new_path;
+  }
+  // Create results
+  $results = '<ul><li>' . implode("</li><br/>\n<li>", $found) . '</li></ul>';
+  return $results;
+}
