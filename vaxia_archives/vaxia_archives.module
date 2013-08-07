@@ -26,6 +26,7 @@ function vaxia_archives_permission() {
 function vaxia_archives_menu() {
   $items['vaxia_archives'] = array(
     'title' => 'Archives',
+    'description' => 'Old Vaxia archives',
     'type' => MENU_NORMAL_ITEM,
     'access arguments' => array('search old archives'),
     'page callback' => 'drupal_get_form',
@@ -33,6 +34,7 @@ function vaxia_archives_menu() {
   );
   $items['admin/config/search/vaxia_archives'] = array(
     'title' => 'Vaxia archive configurations',
+    'description' => 'Old Vaxia archive configurations',
     'type' => MENU_NORMAL_ITEM,
     'access arguments' => array('administer old archives'),
     'page callback' => 'drupal_get_form',
