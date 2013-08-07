@@ -62,21 +62,25 @@ function vaxia_archives_form($form, &$form_state) {
   $form['search_fieldset']['vaxia_archives_date'] = array(
     '#title' => t('Date'),
     '#type' => 'textfield',
+    '#description' => t('Enter a human readable date. Ex: April 16, 2004'),
     '#size' => 15,
   );
   $form['search_fieldset']['vaxia_archives_location'] = array(
     '#title' => t('Location'),
     '#type' => 'textfield',
+    '#description' => t('Enter a location to search for the location in the archive filename.'),
     '#size' => 15,
   );
   $form['search_fieldset']['vaxia_archives_character'] = array(
     '#title' => t('Character'),
     '#type' => 'textfield',
+    '#description' => t('Enter a character to search for the location in the archive filename and text.'),
     '#size' => 15,
   );
   $form['search_fieldset']['vaxia_archives_text'] = array(
     '#title' => t('Text'),
     '#type' => 'textfield',
+    '#description' => t('Enter any string to search for the location in the archive text.'),
     '#size' => 15,
   );
   $form['vaxia_archives_submit'] = array(
