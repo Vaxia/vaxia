@@ -52,8 +52,8 @@ function vaxia_archives_form($form, &$form_state) {
   $form['vaxia_archives_style'] = array(
     '#type' => 'item',
     '#markup' => '<style>' .
-      '#vaxia-archives-form .form-type-textfield{float:left;margin-left:1em;height:70px;}' .
-      '#vaxia-archives-form #edit-vaxia-archives-date{float:left;margin-left:1em;height:70px;}' .
+      '#vaxia-archives-form .form-type-textfield{float:left;margin-left:1em;height:40px;}' .
+      '#vaxia-archives-form #edit-vaxia-archives-date{float:left;margin-left:1em;height:40px;}' .
       '#vaxia-archives-form #edit-vaxia-archives-date .form-type-select{float:left;margin-left:1em;}' .
       '#vaxia-archives-form #edit-vaxia-archives-submit{clear:left;}' .
       '</style>',
