@@ -196,6 +196,16 @@ function _vaxia_archives_search($date, $location, $character, $text) {
       $found[$found_file_parts[0]] = $found_file_parts[0];
     }
   }
+  // If date was the only thing set, list the contents of that folder
+  if (!empty($date) && (empty($location) && empty($character) && empty($text))) {
+    $output = '';
+    $command = 'grep -R "*" ' . DRUPAL_ROOT . '/' . $path;
+    exec($command, $output);
+    foreach ($output as $found_file) {
+      $found_file_parts = explode(':', $found_file);
+      $found[$found_file_parts[0]] = $found_file_parts[0];
+    }
+  }
   // Clean up the found paths for proper links through
   foreach ($found as $index => $found_path) {
     $found_path = drupal_substr($found_path, drupal_strlen(DRUPAL_ROOT) + 1);
