@@ -132,7 +132,11 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
             }
             $modifies_label = array();
             foreach ($modifies as $label => $value) {
-              $modifies_label[] = substr($label, 0, 3) . ':' . $value;
+              $small_label = substr($label, 0, 3);
+              if ($small_label == 'ref') {
+                $small_label = 'fin';
+              }
+              $modifies_label[] = $small_label . ':' . $value;
             }
             if (!empty($modifies_label)) {
               $item_label .= ' (' . implode(', ', $modifies_label) . ')';
