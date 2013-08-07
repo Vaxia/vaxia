@@ -349,14 +349,22 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
             if (isset($roll['stat']) && $roll['stat'] != -1) {
               // Check for overlap from an item.
               if (isset($overlap_mod) && !empty($overlap_mod)) {
-                $mod_note .= ' + item ' . substr($this_stat, 0, 3) . ' (' . $overlap_mod . ')';
+                $small_label = substr($this_stat, 0, 3);
+                if ($small_label == 'ref') {
+                  $small_label = 'fin';
+                }
+                $mod_note .= ' + item ' . $small_label . ' (' . $overlap_mod . ')';
                 $mod += $overlap_mod;
               }
               // No overlap, pull from the character sheet.
               elseif (isset($content->field_comment_character[$lang][0]['nid'])) {
                 $character = node_load($content->field_comment_character[$lang][0]['nid']);
                 $stat = isset($character->{$roll['stat']}[$lang][0]['value']) ? $character->{$roll['stat']}[$lang][0]['value'] : 0;
-                $mod_note .= ' + ' . substr($this_stat, 0, 3) . ' (' . $stat . ')';
+                $small_label = substr($this_stat, 0, 3);
+                if ($small_label == 'ref') {
+                  $small_label = 'fin';
+                }
+                $mod_note .= ' + ' . $small_label . ' (' . $stat . ')';
                 $mod += $stat;
               }
             }
