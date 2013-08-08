@@ -1,0 +1,927 @@
+<?php
+/**
+ * @file
+ * Provide a search system into the old Vaxia archives.
+ */
+
+/**
+ * Implements hook_permission().
+ */
+function vaxia_dice_ruler_permission() {
+  return array(
+    'use dice ruler'=> array(
+      'title' => t('use dice ruler'),
+      'description' => t('Use dice ruler.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function vaxia_dice_ruler_block_info() {
+  $blocks['vaxia_dice_ruler'] = array(
+    'info' => t('Dice ruler'),
+    'cache' => DRUPAL_NO_CACHE, // DRUPAL_CACHE_PER_ROLE
+  );
+  return $blocks;
+}
+
+
+/**
+ * Implements hook_block_view($delta = '').
+ */
+function vaxia_dice_ruler_block_view($delta = '') {
+  if ($delta == 'vaxia_dice_ruler') {
+    $block = array(
+      'subject' => t('Dice ruler'),
+      'content' => drupal_get_form('vaxia_dice_ruler_form'),
+    );
+  }
+  return $block;
+}
+
+/**
+ * Form callback for the dice ruler form.
+ * Mostly ajax driven results.
+ */
+function vaxia_dice_ruler_form($form, &$form_state) {
+  $form = array();
+  $form['vaxia_dice_ruler_style'] = array(
+    '#type' => 'item',
+    '#markup' => '<style>' .
+      '#vaxia-dice-ruler-form .form-type-textfield{float:left;margin-left:1em;margin-top:0;margin-bottom:0;}' .
+      '#vaxia-dice-ruler-form #edit-a--3{float:left;margin-left:1em;margin-top:0;margin-bottom:0;}' .
+      '#vaxia-dice-ruler-form #edit-b--3{float:left;margin-left:1em;margin-top:0;margin-bottom:0;}' .
+      '#vaxia-dice-ruler-form #vaxia_dice_ruler_dice_results th{padding-left:0.5em;}'.
+      '#vaxia-dice-ruler-form #vaxia_dice_ruler_dice_results td{padding-left:0.5em;}'.
+      '</style>',
+  );
+
+  // Select a type.
+  $form['roll_type'] = array(
+    '#type' => 'select',
+    '#title' => t('Roll type'),
+    '#options' => array(
+      'hidden' => t('Hide roller'),
+      'one_trait' => t('One trait'),
+      'two_trait' => t('Two trait'),
+      'trait_vs' => t('Trait vs. trait'),
+      'combat' => t('Combat'),
+      'magic' => t('Magic'),
+    ),
+    '#default_value' => 'hidden',
+  );
+
+  // Subforms for each type of roll. One trait.
+  $form['one_trait'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('One trait'),
+    '#states' => array(
+      'visible' => array(
+        ':input[name="roll_type"]' => array('value' => 'one_trait'),
+      ),
+    ),
+  );
+  $form['one_trait']['one_trait_might'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Might'),
+    '#size' => 5,
+  );
+  $form['one_trait']['one_trait_diff'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Diff.'),
+    '#size' => 5,
+  );
+  $form['one_trait']['one_trait_add_diff'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Add diff.'),
+    '#size' => 5,
+  );
+  $form['one_trait']['one_trait_rolled'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Rolled'),
+    '#size' => 5,
+  );
+
+  // Two trait.
+  $form['two_trait'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Two trait'),
+    '#states' => array(
+      'visible' => array(
+        ':input[name="roll_type"]' => array('value' => 'two_trait'),
+      ),
+    ),
+  );
+  $form['two_trait']['a'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Trait A'),
+  );
+  $form['two_trait']['a']['two_trait_might_a'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Might'),
+    '#size' => 5,
+  );
+  $form['two_trait']['a']['two_trait_diff_a'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Diff.'),
+    '#size' => 5,
+  );
+  $form['two_trait']['a']['two_trait_add_diff_a'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Add diff.'),
+    '#size' => 5,
+  );
+  $form['two_trait']['a']['two_trait_rolled_a'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Rolled'),
+    '#size' => 5,
+  );
+  $form['two_trait']['b'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Trait B'),
+  );
+  $form['two_trait']['b']['two_trait_might_b'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Might'),
+    '#size' => 5,
+  );
+  $form['two_trait']['b']['two_trait_diff_b'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Diff.'),
+    '#size' => 5,
+  );
+  $form['two_trait']['b']['two_trait_add_diff_b'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Add diff.'),
+    '#size' => 5,
+  );
+  $form['two_trait']['b']['two_trait_rolled_b'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Rolled'),
+    '#size' => 5,
+  );
+
+  // Subforms for each type of roll. One trait.
+  $form['trait_vs'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('One trait'),
+    '#states' => array(
+      'visible' => array(
+        ':input[name="roll_type"]' => array('value' => 'trait_vs'),
+      ),
+    ),
+  );
+  $form['trait_vs']['a'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Character A'),
+  );
+  $form['trait_vs']['a']['trait_vs_might_a'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Might'),
+    '#size' => 5,
+  );
+  $form['trait_vs']['a']['trait_vs_add_diff_a'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Add diff.'),
+    '#size' => 5,
+  );
+  $form['trait_vs']['a']['trait_vs_rolled_a'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Rolled'),
+    '#size' => 5,
+  );
+  $form['trait_vs']['b'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Character B'),
+  );
+  $form['trait_vs']['b']['trait_vs_might_b'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Might'),
+    '#size' => 5,
+  );
+  $form['trait_vs']['b']['trait_vs_add_diff_b'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Add diff.'),
+    '#size' => 5,
+  );
+  $form['trait_vs']['b']['trait_vs_rolled_b'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Rolled'),
+    '#size' => 5,
+  );
+
+  // Combat
+  $form['combat'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Combat'),
+    '#states' => array(
+      'visible' => array(
+        ':input[name="roll_type"]' => array('value' => 'combat'),
+      ),
+    ),
+  );
+  $form['combat']['a'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Character A'),
+  );
+  $form['combat']['a']['combat_action_count_a'] = array(
+    '#type' => 'select',
+    '#title' => t('Number of actions'),
+    '#options' => array(
+      '0' => '1',
+      '20' => '2',
+      '40' => '3',
+      '60' => '4',
+    ),
+  );
+  $form['combat']['a']['dex'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Dexterity'),
+  );
+  $form['combat']['a']['dex']['combat_might_a_dex'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Might'),
+    '#size' => 5,
+  );
+  $form['combat']['a']['dex']['combat_add_diff_a_dex'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Add diff.'),
+    '#size' => 5,
+  );
+  $form['combat']['a']['dex']['combat_rolled_a_dex'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Rolled'),
+    '#size' => 5,
+  );
+  $form['combat']['a']['str'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Strength'),
+  );
+  $form['combat']['a']['str']['combat_might_a_str'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Might'),
+    '#size' => 5,
+  );
+  $form['combat']['a']['str']['combat_add_diff_a_str'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Add diff.'),
+    '#size' => 5,
+  );
+  $form['combat']['a']['str']['combat_rolled_a_str'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Rolled'),
+    '#size' => 5,
+  );
+  $form['combat']['a']['end'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Endurance'),
+  );
+  $form['combat']['a']['end']['combat_might_a_end'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Might'),
+    '#size' => 5,
+  );
+  $form['combat']['a']['end']['combat_add_diff_a_end'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Add diff.'),
+    '#size' => 5,
+  );
+  $form['combat']['a']['end']['combat_rolled_a_end'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Rolled'),
+    '#size' => 5,
+  );
+  $form['combat']['b'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Character B'),
+  );
+  $form['combat']['b']['combat_action_count_b'] = array(
+    '#type' => 'select',
+    '#title' => t('Number of actions'),
+    '#options' => array(
+      '0' => '1',
+      '20' => '2',
+      '40' => '3',
+      '60' => '4',
+    ),
+  );
+  $form['combat']['b']['dex'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Dexterity'),
+  );
+  $form['combat']['b']['dex']['combat_might_b_dex'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Might'),
+    '#size' => 5,
+  );
+  $form['combat']['b']['dex']['combat_add_diff_b_dex'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Add diff.'),
+    '#size' => 5,
+  );
+  $form['combat']['b']['dex']['combat_rolled_b_dex'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Rolled'),
+    '#size' => 5,
+  );
+  $form['combat']['b']['str'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Strength'),
+  );
+  $form['combat']['b']['str']['combat_might_b_str'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Might'),
+    '#size' => 5,
+  );
+  $form['combat']['b']['str']['combat_add_diff_b_str'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Add diff.'),
+    '#size' => 5,
+  );
+  $form['combat']['b']['str']['combat_rolled_b_str'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Rolled'),
+    '#size' => 5,
+  );
+  $form['combat']['b']['end'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Endurance'),
+  );
+  $form['combat']['b']['end']['combat_might_b_end'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Might'),
+    '#size' => 5,
+  );
+  $form['combat']['b']['end']['combat_add_diff_b_end'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Add diff.'),
+    '#size' => 5,
+  );
+  $form['combat']['b']['end']['combat_rolled_b_end'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Rolled'),
+    '#size' => 5,
+  );
+
+  // Magic
+  $form['magic'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Magic'),
+    '#states' => array(
+      'visible' => array(
+        ':input[name="roll_type"]' => array('value' => 'magic'),
+      ),
+    ),
+  );
+  $form['magic']['a'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Intelligence'),
+  );
+  $form['magic']['a']['magic_might_a'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Might'),
+    '#size' => 5,
+  );
+  $form['magic']['a']['magic_diff_a'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Diff.'),
+    '#size' => 5,
+  );
+  $form['magic']['a']['magic_add_diff_a'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Add diff.'),
+    '#size' => 5,
+  );
+  $form['magic']['a']['magic_rolled_a'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Rolled'),
+    '#size' => 5,
+  );
+  $form['magic']['b'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Spirituality'),
+  );
+  $form['magic']['b']['magic_might_b'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Might'),
+    '#size' => 5,
+  );
+  $form['magic']['b']['magic_diff_b'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Diff.'),
+    '#size' => 5,
+  );
+  $form['magic']['b']['magic_add_diff_b'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Add diff.'),
+    '#size' => 5,
+  );
+  $form['magic']['b']['magic_rolled_b'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Rolled'),
+    '#size' => 5,
+  );
+
+  // Show results.
+  $results = t('No roll performed.');
+  if (!empty($form_state['values']['roll_type'])) {
+    switch ($form_state['values']['roll_type']) {
+      case 'one_trait':
+        $results = _vaxia_dice_ruler_one_trait(
+          $form_state['values']['one_trait_might'],
+          $form_state['values']['one_trait_diff'],
+          $form_state['values']['one_trait_add_diff'],
+          $form_state['values']['one_trait_rolled']
+        );
+      break;
+      case 'two_trait':
+        $results = _vaxia_dice_ruler_two_trait(
+          $form_state['values']['two_trait_might_a'],
+          $form_state['values']['two_trait_diff_a'],
+          $form_state['values']['two_trait_add_diff_a'],
+          $form_state['values']['two_trait_rolled_a'],
+          $form_state['values']['two_trait_might_b'],
+          $form_state['values']['two_trait_diff_b'],
+          $form_state['values']['two_trait_add_diff_b'],
+          $form_state['values']['two_trait_rolled_b']
+        );
+      break;
+      case 'trait_vs':
+        $results = _vaxia_dice_ruler_trait_vs(
+          $form_state['values']['trait_vs_might_a'],
+          $form_state['values']['trait_vs_add_diff_a'],
+          $form_state['values']['trait_vs_rolled_a'],
+          $form_state['values']['trait_vs_might_b'],
+          $form_state['values']['trait_vs_add_diff_b'],
+          $form_state['values']['trait_vs_rolled_b']
+        );
+      break;
+      case 'combat':
+        $results = _vaxia_dice_ruler_combat(
+          $form_state['values']['combat_might_a_dex'],
+          $form_state['values']['combat_add_diff_a_dex'],
+          $form_state['values']['combat_rolled_a_dex'],
+          $form_state['values']['combat_might_a_str'],
+          $form_state['values']['combat_add_diff_a_str'],
+          $form_state['values']['combat_rolled_a_str'],
+          $form_state['values']['combat_might_a_end'],
+          $form_state['values']['combat_add_diff_a_end'],
+          $form_state['values']['combat_rolled_a_end'],
+          $form_state['values']['combat_might_b_dex'],
+          $form_state['values']['combat_add_diff_b_dex'],
+          $form_state['values']['combat_rolled_b_dex'],
+          $form_state['values']['combat_might_b_str'],
+          $form_state['values']['combat_add_diff_b_str'],
+          $form_state['values']['combat_rolled_b_str'],
+          $form_state['values']['combat_might_b_end'],
+          $form_state['values']['combat_add_diff_b_end'],
+          $form_state['values']['combat_rolled_b_end']
+        );
+      break;
+      case 'magic':
+        $results = _vaxia_dice_ruler_magic(
+          $form_state['values']['magic_might_a'],
+          $form_state['values']['magic_diff_a'],
+          $form_state['values']['magic_add_diff_a'],
+          $form_state['values']['magic_rolled_a'],
+          $form_state['values']['magic_might_b'],
+          $form_state['values']['magic_diff_b'],
+          $form_state['values']['magic_add_diff_b'],
+          $form_state['values']['magic_rolled_b']
+        );
+      break;
+    }
+  }
+  $form['vaxia_dice_ruler_dice_results'] = array(
+    '#title' => t('Roll results'),
+    '#type' => 'item',
+    '#markup' => $results,
+    '#prefix' => '<div id="vaxia_dice_ruler_dice_results">',
+    '#suffix' => '</div>',
+    '#states' => array(
+      'invisible' => array(
+        ':input[name="roll_type"]' => array('value' => 'hidden'),
+      ),
+    ),
+  );
+
+  // Provide button.
+  $form['rule_dice'] = array(
+    '#type' => 'button',
+    '#value' => t('Rule roll'),
+    '#ajax' => array(
+      'callback' => 'vaxia_dice_ruler_form_ajax',
+      'wrapper' => 'vaxia_dice_ruler_dice_results',
+      'method' => 'replace',
+      'effect' => 'fade',
+    ),
+    '#states' => array(
+      'invisible' => array(
+        ':input[name="roll_type"]' => array('value' => 'hidden'),
+      ),
+    ),
+  );
+  return $form;
+}
+
+/**
+ * AJAX callback for ruling form.
+ */
+function vaxia_dice_ruler_form_ajax($form, $form_state) {
+  return $form['vaxia_dice_ruler_dice_results'];
+}
+
+/**
+ * Handle ruling for one trait.
+ */
+function _vaxia_dice_ruler_one_trait(
+  $one_trait_might = 50,
+  $one_trait_diff = 50,
+  $one_trait_add_diff = 0,
+  $one_trait_rolled = 50
+) {
+
+  // Check that all are numeric.
+  if (!empty($one_trait_might) && !is_numeric($one_trait_might)
+    || !empty($one_trait_diff) && !is_numeric($one_trait_diff)
+    || !empty($one_trait_add_diff) && !is_numeric($one_trait_add_diff)
+    || !empty($one_trait_rolled) && !is_numeric($one_trait_rolled)) {
+    return t('Not all values given were numeric. We need numbers for math.');
+  }
+  // Check our required values are set.
+  if (empty($one_trait_might)
+    || empty($one_trait_diff)
+    || empty($one_trait_rolled)) {
+    return t('Not all required values given.');
+  }
+  // Set default if empty.
+  if (empty($one_trait_add_diff)) {
+    $one_trait_add_diff = 0;
+  }
+
+  // Get results from our master function.
+  $results = _vaxia_dice_ruler_make_ruling(
+  $one_trait_might,
+  $one_trait_diff,
+  $one_trait_add_diff,
+  $one_trait_rolled);
+
+  // Now put all these into a table to display.
+  $header = array(
+    t('Might'),
+    t('Diff'),
+    t('Add diff.'),
+    t('Rolled'),
+    t('Roll needed'),
+    t('Success'),
+    t('Winsby'),
+    t('Points'),
+    t('% of diff'),
+    t('Failed might'),
+  );
+  $rows[] = $results;
+  $output = theme('table', array(
+    'header' => $header,
+    'rows' => $rows,
+  ));
+  return $output;
+}
+
+/**
+ * Handle ruling for two trait.
+ */
+function _vaxia_dice_ruler_two_trait(
+  $two_trait_might_a,
+  $two_trait_diff_a,
+  $two_trait_add_diff_a,
+  $two_trait_rolled_a,
+  $two_trait_might_b,
+  $two_trait_diff_b,
+  $two_trait_add_diff_b,
+  $two_trait_rolled_b
+) {
+
+  // Check that all are numeric.
+  if (!empty($two_trait_might_a) && !is_numeric($two_trait_might_a)
+    || !empty($two_trait_diff_a) && !is_numeric($two_trait_diff_a)
+    || !empty($two_trait_add_diff_a) && !is_numeric($two_trait_add_diff_a)
+    || !empty($two_trait_rolled_a) && !is_numeric($two_trait_rolled_a)) {
+    return t('Not all values given were numeric. We need numbers for math.');
+  }
+  // Check our required values are set.
+  if (empty($two_trait_might_a)
+    || empty($two_trait_diff_a)
+    || empty($two_trait_rolled_a)) {
+    return t('Not all required values given.');
+  }
+  // Set default if empty.
+  if (empty($two_trait_add_diff_a)) {
+    $two_trait_add_diff_a = 0;
+  }
+
+  // Check that all are numeric.
+  if (!empty($two_trait_might_b) && !is_numeric($two_trait_might_b)
+    || !empty($two_trait_diff_b) && !is_numeric($two_trait_diff_b)
+    || !empty($two_trait_add_diff_b) && !is_numeric($two_trait_add_diff_b)
+    || !empty($two_trait_rolled_b) && !is_numeric($two_trait_rolled_b)) {
+    return t('Not all values given were numeric. We need numbers for math.');
+  }
+  // Check our required values are set.
+  if (empty($two_trait_might_b)
+    || empty($two_trait_diff_b)
+    || empty($two_trait_rolled_b)) {
+    return t('Not all required values given.');
+  }
+  // Set default if empty.
+  if (empty($two_trait_add_diff_b)) {
+    $two_trait_add_diff_b = 0;
+  }
+
+  // Get results from our master function.
+  $trait_a = _vaxia_dice_ruler_make_ruling(
+  $two_trait_might_a,
+  $two_trait_diff_a,
+  $two_trait_add_diff_a,
+  $two_trait_rolled_a);
+
+  $trait_b = _vaxia_dice_ruler_make_ruling(
+  $two_trait_might_b,
+  $two_trait_diff_b,
+  $two_trait_add_diff_b,
+  $two_trait_rolled_b);
+
+  $versus_one = (($two_trait_rolled_a - $trait_a[4]) >= 0) ? $two_trait_add_diff_a : 0; // 4 => Roll needed
+  $versus_two = (($two_trait_rolled_b - $trait_b[4]) >= 0) ? $two_trait_add_diff_b : 0; // 4 => Roll needed
+  $two_trait_winsby = $trait_a[6] / 2 + $trait_b[6] / 2 + $versus_one + $versus_two; // 4 => Windsby
+  $two_trait_success = ($two_trait_winsby >= 0) ? 'yes' : 'no';
+  if ($two_trait_success == 'no') {
+    $two_trait_success = ($two_trait_winsby < -50) ? 'mishap' : 'no';
+  }
+  $two_trait_points = ($two_trait_winsby >= 0) ? ($two_trait_might_a + $two_trait_might_b) / 2 * $two_trait_winsby / 100 : 0;
+  $two_trait_perc_diff = 'n/a';
+  if ($two_trait_success != 'yes') {
+    $two_trait_diff_perc_a = $two_trait_might_a * ((tan(($two_trait_rolled_a - 50.5) / 49.5 * atan(0.06 * 50)) / 6 + 0.5) / (0.5 - tan(($two_trait_rolled_a - 50.5) / 49.5 * atan(0.06 * 50)) / 6));
+    $two_trait_diff_perc_b = $two_trait_might_b * ((tan(($two_trait_rolled_b - 50.5) / 49.5 * atan(0.06 * 50)) / 6 + 0.5) / (0.5 - tan(($two_trait_rolled_b - 50.5) / 49.5 * atan(0.06 * 50)) / 6));
+    $two_trait_perc_diff = (($two_trait_diff_perc_a / $two_trait_diff_a) + ($two_trait_diff_perc_b / $two_trait_diff_b)) / 2;
+  }
+  $two_trait_failed_might = 0;
+  if ($two_trait_success != 'yes') {
+    $two_trait_failed_might = round((($two_trait_diff_a + $two_trait_diff_b) / 2) * (1 - $two_trait_perc_diff));
+  }
+
+  // Combine results.
+  $results = array(
+    $two_trait_might_a . ' vs. ' . $two_trait_might_b, // Display the two.
+    $two_trait_diff_a . ' vs. ' . $two_trait_diff_b, // Display the two.
+    $two_trait_add_diff_a . ' vs. ' . $two_trait_add_diff_b, // Display the two.
+    $two_trait_rolled_a . ' vs. ' . $two_trait_rolled_b, // Display the two.
+    number_format($trait_a[4], 1) . ' vs. ' . number_format($trait_b[4], 1), // Display the two.
+    $two_trait_success,
+    is_numeric($two_trait_winsby) ? number_format($two_trait_winsby) : $two_trait_winsby,
+    is_numeric($two_trait_points) ? number_format($two_trait_points) : $two_trait_points,
+    is_numeric($two_trait_perc_diff) ? number_format($two_trait_perc_diff, 2) : $two_trait_perc_diff,
+    $two_trait_failed_might,
+  );
+  // Now put all these into a table to display.
+  $header = array(
+    t('Might'),
+    t('Diff'),
+    t('Add diff.'),
+    t('Rolled'),
+    t('Roll needed'),
+    t('Success'),
+    t('Winsby'),
+    t('Points'),
+    t('% of diff'),
+    t('Failed might'),
+  );
+  $rows[] = $results;
+  $output = theme('table', array(
+    'header' => $header,
+    'rows' => $rows,
+  ));
+  return $output;
+}
+
+/**
+ * Handle ruling for trait vs.
+ */
+function _vaxia_dice_ruler_trait_vs(
+  $trait_vs_might_a,
+  $trait_vs_add_diff_a,
+  $trait_vs_rolled_a,
+  $trait_vs_might_b,
+  $trait_vs_add_diff_b,
+  $trait_vs_rolled_b
+) {
+
+  // Check that all are numeric.
+  if (!empty($trait_vs_might_a) && !is_numeric($trait_vs_might_a)
+    || !empty($trait_vs_add_diff_a) && !is_numeric($trait_vs_add_diff_a)
+    || !empty($trait_vs_rolled_a) && !is_numeric($trait_vs_rolled_a)) {
+    return t('Not all values given were numeric. We need numbers for math.');
+  }
+  // Check our required values are set.
+  if (empty($trait_vs_might_a)
+    || empty($trait_vs_rolled_a)) {
+    return t('Not all required values given.');
+  }
+  // Set default if empty.
+  if (empty($trait_vs_add_diff_a)) {
+    $trait_vs_add_diff_a = 0;
+  }
+
+  // Check that all are numeric.
+  if (!empty($trait_vs_might_b) && !is_numeric($trait_vs_might_b)
+    || !empty($trait_vs_add_diff_b) && !is_numeric($trait_vs_add_diff_b)
+    || !empty($trait_vs_rolled_b) && !is_numeric($trait_vs_rolled_b)) {
+    return t('Not all values given were numeric. We need numbers for math.');
+  }
+  // Check our required values are set.
+  if (empty($trait_vs_might_b)
+    || empty($trait_vs_rolled_b)) {
+    return t('Not all required values given.');
+  }
+  // Set default if empty.
+  if (empty($trait_vs_add_diff_b)) {
+    $trait_vs_add_diff_b = 0;
+  }
+
+  // Get results from our master function.
+  $results = _vaxia_dice_ruler_make_ruling(
+  $trait_vs_might_a,
+  $trait_vs_might_b,
+  $trait_vs_add_diff_a,
+  $trait_vs_rolled_a);
+  $rows[] = $results;
+
+  // Second roll.
+  $results = _vaxia_dice_ruler_make_ruling(
+  $trait_vs_might_b,
+  $trait_vs_might_a,
+  $trait_vs_add_diff_b,
+  $trait_vs_rolled_b);
+  $rows[] = $results;
+
+  // Now put all these into a table to display.
+  $header = array(
+    t('Might'),
+    t('Diff'),
+    t('Add diff.'),
+    t('Rolled'),
+    t('Roll needed'),
+    t('Success'),
+    t('Winsby'),
+    t('Points'),
+    t('% of diff'),
+    t('Failed might'),
+  );  $output = theme('table', array(
+    'header' => $header,
+    'rows' => $rows,
+  ));
+  return $output;
+}
+
+/**
+ * Handle ruling for combat.
+ */
+function _vaxia_dice_ruler_combat(
+  $combat_might_a_dex,
+  $combat_add_diff_a_dex,
+  $combat_rolled_a_dex,
+  $combat_might_a_str,
+  $combat_add_diff_a_str,
+  $combat_rolled_a_str,
+  $combat_might_a_end,
+  $combat_add_diff_a_end,
+  $combat_rolled_a_end,
+  $combat_might_b_dex,
+  $combat_add_diff_b_dex,
+  $combat_rolled_b_dex,
+  $combat_might_b_str,
+  $combat_add_diff_b_str,
+  $combat_rolled_b_str,
+  $combat_might_b_end,
+  $combat_add_diff_b_end,
+  $combat_rolled_b_end
+) {
+  return '_vaxia_dice_ruler_combat';
+}
+
+/**
+ * Handle ruling for magic.
+ */
+function _vaxia_dice_ruler_magic(
+  $magic_might_a,
+  $magic_diff_a,
+  $magic_add_diff_a,
+  $magic_rolled_a,
+  $magic_might_b,
+  $magic_diff_b,
+  $magic_add_diff_b,
+  $magic_rolled_b
+) {
+  // Check that all are numeric.
+  if (!empty($magic_might_a) && !is_numeric($magic_might_a)
+    || !empty($magic_diff_a) && !is_numeric($magic_diff_a)
+    || !empty($magic_add_diff_a) && !is_numeric($magic_add_diff_a)
+    || !empty($magic_rolled_a) && !is_numeric($magic_rolled_a)) {
+    return t('Not all values given were numeric. We need numbers for math.');
+  }
+  // Check our required values are set.
+  if (empty($magic_might_a)
+    || empty($magic_diff_a)
+    || empty($magic_rolled_a)) {
+    return t('Not all required values given.');
+  }
+  // Set default if empty.
+  if (empty($magic_add_diff_a)) {
+    $magic_add_diff_a = 0;
+  }
+
+  // Check that all are numeric.
+  if (!empty($magic_might_b) && !is_numeric($magic_might_b)
+    || !empty($magic_diff_b) && !is_numeric($magic_diff_b)
+    || !empty($magic_add_diff_b) && !is_numeric($magic_add_diff_b)
+    || !empty($magic_rolled_b) && !is_numeric($magic_rolled_b)) {
+    return t('Not all values given were numeric. We need numbers for math.');
+  }
+  // Check our required values are set.
+  if (empty($magic_might_b)
+    || empty($magic_diff_b)
+    || empty($magic_rolled_b)) {
+    return t('Not all required values given.');
+  }
+  // Set default if empty.
+  if (empty($magic_add_diff_b)) {
+    $magic_add_diff_b = 0;
+  }
+
+  // Change difficult for dynamic difs.
+  $magic_diff_a = $magic_diff_a - ($magic_might_a - $magic_diff_a);
+  if ($magic_diff_a < 1) {
+    $magic_diff_a = 1;
+  }
+  $magic_diff_b = $magic_diff_b - ($magic_might_b - $magic_diff_b);
+  if ($magic_diff_b < 1) {
+    $magic_diff_b = 1;
+  }
+
+  // Make a standard roll after meddling with the diffs.
+  // Return that value.
+  return _vaxia_dice_ruler_two_trait(
+    $magic_might_a,
+    $magic_diff_a,
+    $magic_add_diff_a,
+    $magic_rolled_a,
+    $magic_might_b,
+    $magic_diff_b,
+    $magic_add_diff_b,
+    $magic_rolled_b
+  );
+}
+
+/**
+ * Helper function, make a roll.
+ */
+function _vaxia_dice_ruler_make_ruling(
+  $one_trait_might = 50,
+  $one_trait_diff = 50,
+  $one_trait_add_diff = 0,
+  $one_trait_rolled = 50
+) {
+  // The ladder is an eyeball. This is a gemoetric solution. I hope you like trig.
+  $roll_needed = 50.5 + atan(0.06 * (100 * ($one_trait_diff + $one_trait_add_diff) / ($one_trait_diff + $one_trait_add_diff + $one_trait_might) - 50)) * 49.5 / atan(0.06 * 50);
+  $success = ($one_trait_rolled < $roll_needed) ? 'no' : 'yes';
+  $winsby_diff = (($one_trait_rolled - $roll_needed) >= 0 ) ? $one_trait_add_diff : 0;
+  $winsby = ($one_trait_rolled - $roll_needed ) + $winsby_diff;
+  $points = 0;
+  if ($success == 'yes') {
+    $points = $one_trait_might * ( $winsby / 100);
+  }
+  $perc_diff = 'n/a';
+  if ($success == 'no') {
+    $diff_perc = $one_trait_might * ((tan(($one_trait_rolled - 50.5) / 49.5 * atan(0.06 * 50)) / 6 + 0.5) / (0.5 - tan(($one_trait_rolled - 50.5) / 49.5 * atan(0.06 * 50)) / 6));
+    $perc_diff = $diff_perc / $one_trait_diff;
+  }
+  $failed_might = 0;
+  if ($success == 'no') {
+    $failed_might = round($one_trait_diff * (1 - $perc_diff));
+  }
+
+  // Return array results.
+  return array(
+    $one_trait_might,
+    $one_trait_diff,
+    $one_trait_add_diff,
+    $one_trait_rolled,
+    $roll_needed,
+    $success,
+    $winsby,
+    $points,
+    is_numeric($perc_diff) ? number_format($perc_diff, 2) : $perc_diff,
+    $failed_might,
+  );
+}
