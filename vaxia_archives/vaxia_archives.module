@@ -78,7 +78,7 @@ function vaxia_archives_form($form, &$form_state) {
       'June' => 'Jun',
       'July' => 'Jul',
       'Aug' => 'Aug',
-      'Sept' => 'Sep',
+      'Sep' => 'Sep',
       'Oct' => 'Oct',
       'Nov' => 'Nov',
       'Dec' => 'Dec',
