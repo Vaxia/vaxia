@@ -55,7 +55,7 @@ function vaxia_dice_ruler_form($form, &$form_state) {
       '#vaxia-dice-ruler-form #edit-b--3{float:left;margin-left:1em;margin-top:0;margin-bottom:0;}' .
       '#vaxia-dice-ruler-form #vaxia_dice_ruler_dice_results th{padding-left:0.5em;text-align:center;}'.
       '#vaxia-dice-ruler-form #vaxia_dice_ruler_dice_results td{padding-left:0.5em;text-align:center;}'.
-      '#vaxia-dice-ruler-form #vaxia_dice_ruler_dice_help{float:right;}'.
+      '#vaxia-dice-ruler-form #vaxia_dice_ruler_dice_help{float:right;clear:right;margin-top:1em;margin-left:1em;}'.
       '</style>',
   );
 
