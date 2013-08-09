@@ -55,7 +55,28 @@ function vaxia_dice_ruler_form($form, &$form_state) {
       '#vaxia-dice-ruler-form #edit-b--3{float:left;margin-left:1em;margin-top:0;margin-bottom:0;}' .
       '#vaxia-dice-ruler-form #vaxia_dice_ruler_dice_results th{padding-left:0.5em;text-align:center;}'.
       '#vaxia-dice-ruler-form #vaxia_dice_ruler_dice_results td{padding-left:0.5em;text-align:center;}'.
+      '#vaxia-dice-ruler-form #vaxia_dice_ruler_dice_help{float:right;}'.
       '</style>',
+  );
+
+  $form['vaxia_dice_ruler_dice_help'] = array(
+    '#title' => t('Difficulty guidelines'),
+    '#type' => 'item',
+    '#markup' => '<ul>' . "\n" .
+'<li>1 to 10: Ridiculously easy.</li>' . "\n" .
+'<li>10 to 20: Easy.</li>' . "\n" .
+'<li>20 to 30: Normal.</li>' . "\n" .
+'<li>40 to 50: Skilled.</li>' . "\n" .
+'<li>60 to 70: Mastery.</li>' . "\n" .
+'<li>100 : Extremely Difficult.</li>' . "\n" .
+'</ul>',
+    '#prefix' => '<div id="vaxia_dice_ruler_dice_help">',
+    '#suffix' => '</div>',
+    '#states' => array(
+      'invisible' => array(
+        ':input[name="roll_type"]' => array('value' => 'hidden'),
+      ),
+    ),
   );
 
   // Select a type.
@@ -522,6 +543,7 @@ function vaxia_dice_ruler_form($form, &$form_state) {
       break;
     }
   }
+
   $form['vaxia_dice_ruler_dice_results'] = array(
     '#title' => t('Roll results'),
     '#type' => 'item',
