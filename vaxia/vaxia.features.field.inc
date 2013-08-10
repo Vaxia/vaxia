@@ -1720,7 +1720,7 @@ function vaxia_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_integer',
-          'weight' => '28',
+          'weight' => '34',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2234,7 +2234,7 @@ function vaxia_field_default_fields() {
           'module' => 'node_reference',
           'settings' => array(),
           'type' => 'node_reference_default',
-          'weight' => '29',
+          'weight' => '35',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2260,6 +2260,108 @@ function vaxia_field_default_fields() {
         ),
         'type' => 'node_reference_autocomplete',
         'weight' => '34',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-character_sheet-field_languages'.
+  $fields['node-character_sheet-field_languages'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_languages',
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'text',
+      'settings' => array(),
+      'translatable' => '0',
+      'type' => 'text_long',
+    ),
+    'field_instance' => array(
+      'bundle' => 'character_sheet',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'All characters get three languages by default on starting. Additional languages may be added through RP.<br>
+1XP - learner, you can recognize the language written or heard<br>
+2XP - basic understanding, not fluent<br>
+3XP - conversationally fluent, with an accent<br>
+4XP - conversationally fluent, with an accent and idiomatic<br>
+5XP - equivalent to native<br>',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '14',
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_languages',
+      'label' => 'Languages',
+      'required' => 0,
+      'settings' => array(
+        'better_formats' => array(
+          'allowed_formats' => array(
+            'full_html' => 'full_html',
+            'php_code' => 'php_code',
+            'plain_text' => 'plain_text',
+            'whiteboard' => 'whiteboard',
+            'wiki' => 'wiki',
+          ),
+          'allowed_formats_toggle' => 0,
+          'default_order_toggle' => 0,
+          'default_order_wrapper' => array(
+            'formats' => array(
+              'full_html' => array(
+                'weight' => '1',
+              ),
+              'php_code' => array(
+                'weight' => '11',
+              ),
+              'plain_text' => array(
+                'weight' => '10',
+              ),
+              'whiteboard' => array(
+                'weight' => '0',
+              ),
+              'wiki' => array(
+                'weight' => '0',
+              ),
+            ),
+          ),
+        ),
+        'text_processing' => '0',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'rows' => '1',
+        ),
+        'type' => 'text_textarea',
+        'weight' => '16',
       ),
     ),
   );
@@ -2898,7 +3000,7 @@ function vaxia_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '30',
+          'weight' => '36',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2983,6 +3085,7 @@ function vaxia_field_default_fields() {
           'elf' => 'elf',
           'orc' => 'orc',
           'half-orc' => 'half-orc',
+          'goblin' => 'goblin',
           'neth' => 'neth',
           'gnome' => 'gnome',
           'halfling' => 'halfling',
@@ -9941,6 +10044,7 @@ function vaxia_field_default_fields() {
           'elf' => 'elf',
           'orc' => 'orc',
           'half-orc' => 'half-orc',
+          'goblin' => 'goblin',
           'neth' => 'neth',
           'gnome' => 'gnome',
           'halfling' => 'halfling',
@@ -10800,9 +10904,13 @@ function vaxia_field_default_fields() {
       ),
       'widget' => array(
         'active' => 1,
-        'module' => 'options',
-        'settings' => array(),
-        'type' => 'options_select',
+        'module' => 'node_reference',
+        'settings' => array(
+          'autocomplete_match' => 'contains',
+          'autocomplete_path' => 'node_reference/autocomplete',
+          'size' => 60,
+        ),
+        'type' => 'node_reference_autocomplete',
         'weight' => '1',
       ),
     ),
@@ -11731,6 +11839,12 @@ function vaxia_field_default_fields() {
   t('Additional features');
   t('Additional property');
   t('Agility');
+  t('All characters get three languages by default on starting. Additional languages may be added through RP.<br>
+1XP - learner, you can recognize the language written or heard<br>
+2XP - basic understanding, not fluent<br>
+3XP - conversationally fluent, with an accent<br>
+4XP - conversationally fluent, with an accent and idiomatic<br>
+5XP - equivalent to native<br>');
   t('Apparent Age');
   t('Appearance');
   t('Artwork');
@@ -11769,6 +11883,7 @@ function vaxia_field_default_fields() {
   t('Intellegence');
   t('Intelligence');
   t('Items');
+  t('Languages');
   t('Last Name');
   t('Life');
   t('List all characters involved in this session.');

@@ -478,7 +478,6 @@ function vaxia_user_default_permissions() {
     'roles' => array(
       0 => 'administrator',
       1 => 'administrator-vaxia',
-      2 => 'storyteller',
     ),
     'module' => 'character_sheet',
   );

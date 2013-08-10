@@ -197,6 +197,11 @@ function vaxia_views_default_views() {
   $handler->display->display_options['fields']['sid']['field'] = 'sid';
   $handler->display->display_options['fields']['sid']['label'] = '';
   $handler->display->display_options['fields']['sid']['element_label_colon'] = FALSE;
+  $handler->display->display_options['defaults']['sorts'] = FALSE;
+  /* Sort criterion: Content: Title */
+  $handler->display->display_options['sorts']['title']['id'] = 'title';
+  $handler->display->display_options['sorts']['title']['table'] = 'node';
+  $handler->display->display_options['sorts']['title']['field'] = 'title';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
@@ -4253,6 +4258,85 @@ return \'Characters\';';
   $handler->display->display_options['menu']['weight'] = '0';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
+
+  /* Display: SH sessions */
+  $handler = $view->new_display('page', 'SH sessions', 'page_2');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Sessions';
+  $handler->display->display_options['display_description'] = 'SH sessions';
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: User: Name */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'users';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['relationship'] = 'uid';
+  $handler->display->display_options['fields']['name']['label'] = 'SH';
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  /* Field: Content: Session held */
+  $handler->display->display_options['fields']['field_session_held']['id'] = 'field_session_held';
+  $handler->display->display_options['fields']['field_session_held']['table'] = 'field_data_field_session_held';
+  $handler->display->display_options['fields']['field_session_held']['field'] = 'field_session_held';
+  $handler->display->display_options['fields']['field_session_held']['settings'] = array(
+    'format_type' => 'long',
+    'fromto' => 'both',
+    'multiple_number' => '',
+    'multiple_from' => '',
+    'multiple_to' => '',
+  );
+  /* Field: Content: Characters involved */
+  $handler->display->display_options['fields']['field_characters_involved']['id'] = 'field_characters_involved';
+  $handler->display->display_options['fields']['field_characters_involved']['table'] = 'field_data_field_characters_involved';
+  $handler->display->display_options['fields']['field_characters_involved']['field'] = 'field_characters_involved';
+  $handler->display->display_options['fields']['field_characters_involved']['label'] = 'Characters';
+  $handler->display->display_options['fields']['field_characters_involved']['delta_offset'] = '0';
+  /* Field: Content: Body */
+  $handler->display->display_options['fields']['body']['id'] = 'body';
+  $handler->display->display_options['fields']['body']['table'] = 'field_data_body';
+  $handler->display->display_options['fields']['body']['field'] = 'body';
+  $handler->display->display_options['fields']['body']['label'] = 'Details';
+  $handler->display->display_options['fields']['body']['alter']['max_length'] = '300';
+  $handler->display->display_options['fields']['body']['alter']['trim'] = TRUE;
+  $handler->display->display_options['fields']['body']['alter']['html'] = TRUE;
+  /* Field: Content: How good was this session? */
+  $handler->display->display_options['fields']['field_rate_session']['id'] = 'field_rate_session';
+  $handler->display->display_options['fields']['field_rate_session']['table'] = 'field_data_field_rate_session';
+  $handler->display->display_options['fields']['field_rate_session']['field'] = 'field_rate_session';
+  $handler->display->display_options['fields']['field_rate_session']['label'] = 'Rate';
+  $handler->display->display_options['fields']['field_rate_session']['click_sort_column'] = 'rating';
+  $handler->display->display_options['fields']['field_rate_session']['settings'] = array(
+    'widget' => array(
+      'fivestar_widget' => 'sites/all/modules/fivestar/widgets/outline/outline.css',
+    ),
+    'expose' => 0,
+    'style' => 'average',
+    'text' => 'average',
+  );
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: User: Uid */
+  $handler->display->display_options['arguments']['uid']['id'] = 'uid';
+  $handler->display->display_options['arguments']['uid']['table'] = 'users';
+  $handler->display->display_options['arguments']['uid']['field'] = 'uid';
+  $handler->display->display_options['arguments']['uid']['relationship'] = 'uid';
+  $handler->display->display_options['arguments']['uid']['default_action'] = 'access denied';
+  $handler->display->display_options['arguments']['uid']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['uid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['uid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['uid']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['uid']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['uid']['validate']['type'] = 'user';
+  $handler->display->display_options['arguments']['uid']['validate']['fail'] = 'access denied';
+  $handler->display->display_options['path'] = 'user/%/sessions';
+  $handler->display->display_options['menu']['type'] = 'tab';
+  $handler->display->display_options['menu']['title'] = 'Sessions';
+  $handler->display->display_options['menu']['description'] = 'Sessions this user has run';
+  $handler->display->display_options['menu']['weight'] = '0';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
   $export['sessions'] = $view;
 
   $view = new view();
@@ -4284,8 +4368,11 @@ return \'Characters\';';
     'access' => 'access',
     'contact' => 'contact',
     'rid' => 'rid',
+    'php' => 'php',
+    'field_took_ash1' => 'php',
+    'field_took_ash2' => 'php',
   );
-  $handler->display->display_options['style_options']['default'] = '-1';
+  $handler->display->display_options['style_options']['default'] = 'php';
   $handler->display->display_options['style_options']['info'] = array(
     'name' => array(
       'sortable' => 1,
@@ -4318,6 +4405,27 @@ return \'Characters\';';
       'separator' => '',
       'empty_column' => 0,
     ),
+    'php' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'desc',
+      'align' => '',
+      'separator' => '</br>',
+      'empty_column' => 0,
+    ),
+    'field_took_ash1' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_took_ash2' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
   );
   /* Field: User: Name */
   $handler->display->display_options['fields']['name']['id'] = 'name';
@@ -4344,6 +4452,47 @@ return \'Characters\';';
   $handler->display->display_options['fields']['rid']['id'] = 'rid';
   $handler->display->display_options['fields']['rid']['table'] = 'users_roles';
   $handler->display->display_options['fields']['rid']['field'] = 'rid';
+  $handler->display->display_options['fields']['rid']['label'] = '';
+  $handler->display->display_options['fields']['rid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['rid']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['rid']['separator'] = '|';
+  /* Field: Global: PHP */
+  $handler->display->display_options['fields']['php']['id'] = 'php';
+  $handler->display->display_options['fields']['php']['table'] = 'views';
+  $handler->display->display_options['fields']['php']['field'] = 'php';
+  $handler->display->display_options['fields']['php']['label'] = 'Roles';
+  $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php']['php_value'] = '$output = \'Storyhost\';
+$this_user = user_load($data->uid);
+$this_role = isset($this_user->roles) ? $this_user->roles : array();
+if (!isset($this_role[9])) {
+  $output = \'Assistant Storyhost\';
+}
+return $output;';
+  $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '2';
+  $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
+  /* Field: User: Took ASH Test One */
+  $handler->display->display_options['fields']['field_took_ash1']['id'] = 'field_took_ash1';
+  $handler->display->display_options['fields']['field_took_ash1']['table'] = 'field_data_field_took_ash1';
+  $handler->display->display_options['fields']['field_took_ash1']['field'] = 'field_took_ash1';
+  $handler->display->display_options['fields']['field_took_ash1']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_took_ash1']['alter']['text'] = '<i>Took ASH Test One:</i> [field_took_ash1]';
+  $handler->display->display_options['fields']['field_took_ash1']['type'] = 'format_interval';
+  $handler->display->display_options['fields']['field_took_ash1']['settings'] = array(
+    'interval' => '2',
+    'interval_display' => 'time ago',
+  );
+  /* Field: User: Took ASH Test Two */
+  $handler->display->display_options['fields']['field_took_ash2']['id'] = 'field_took_ash2';
+  $handler->display->display_options['fields']['field_took_ash2']['table'] = 'field_data_field_took_ash2';
+  $handler->display->display_options['fields']['field_took_ash2']['field'] = 'field_took_ash2';
+  $handler->display->display_options['fields']['field_took_ash2']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_took_ash2']['alter']['text'] = '<i>Took ASH Test Two:</i> [field_took_ash2] ';
+  $handler->display->display_options['fields']['field_took_ash2']['type'] = 'format_interval';
+  $handler->display->display_options['fields']['field_took_ash2']['settings'] = array(
+    'interval' => '2',
+    'interval_display' => 'time ago',
+  );
   /* Sort criterion: User: Name */
   $handler->display->display_options['sorts']['name']['id'] = 'name';
   $handler->display->display_options['sorts']['name']['table'] = 'users';
@@ -4359,7 +4508,9 @@ return \'Characters\';';
   $handler->display->display_options['filters']['rid']['table'] = 'users_roles';
   $handler->display->display_options['filters']['rid']['field'] = 'rid';
   $handler->display->display_options['filters']['rid']['value'] = array(
+    13 => '13',
     10 => '10',
+    15 => '15',
     9 => '9',
   );
   $handler->display->display_options['filters']['rid']['group'] = 1;

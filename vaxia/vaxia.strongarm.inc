@@ -684,6 +684,9 @@ function vaxia_strongarm() {
         'title' => array(
           'weight' => '0',
         ),
+        'path' => array(
+          'weight' => '30',
+        ),
       ),
       'display' => array(
         'dice_roller' => array(
@@ -1045,7 +1048,6 @@ smart
 charismatic
 warrior
 mage
-rogue
 transfer
 site-award';
   $export['vaxia_xp_types'] = $strongarm;

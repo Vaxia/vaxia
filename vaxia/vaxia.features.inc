@@ -71,7 +71,9 @@ function vaxia_node_info() {
       'description' => t('Artwork for character sheets'),
       'has_title' => '1',
       'title_label' => t('Title'),
-      'help' => '',
+      'help' => t('Step 1: When creating artwork we are under Fair Use policies here. In general, we also ask that you keep the art you use for your characters at the PG-13 level. Vaxia admin reserve the right to tighten down on the approval for art if the freedom is abused.
+<br/><br/>
+Step 2: Save, when ready to submit change the workflow to approved to activate the art for the site.'),
     ),
     'character_sheet' => array(
       'name' => t('Character sheet'),
@@ -79,7 +81,9 @@ function vaxia_node_info() {
       'description' => t('Character sheet'),
       'has_title' => '1',
       'title_label' => t('Name'),
-      'help' => '',
+      'help' => t('Step 1: Creating a new character, the guild lines can be found here: <a href="http://vaxia.org/wiki/character-creation">http://vaxia.org/wiki/character-creation</a>
+<br/><br/>
+Step 2: Save, when ready to submit change the workflow to submitted.'),
     ),
     'items' => array(
       'name' => t('Items'),
@@ -87,7 +91,16 @@ function vaxia_node_info() {
       'description' => t('Character held items.'),
       'has_title' => '1',
       'title_label' => t('Name'),
-      'help' => '',
+      'help' => t('Step 1. Check the wiki. Vaxia and Sirian have complete templates with item requirements, bonuses, value, as well as descriptions listed there.
+Vaxia items are here: <a href="http://www.vaxia.org/wiki/items-and-equipment">http://www.vaxia.org/wiki/items-and-equipment</a>
+Sirian items are here: <a href="http://www.vaxia.org/wiki/sirian-items-technology-and-equipment">http://www.vaxia.org/wiki/sirian-items-technology-and-equipment</a>
+An outline on material, magical and mastercraft bonuses/reductions are here: <a href="http://www.vaxia.org/wiki/smithing">http://www.vaxia.org/wiki/smithing</a>
+<br/><br/>
+Step 2. Make sure to add all the specifics of the item. Remember if the str says \'fixed\' it will need to be added in the overlap field.
+<br/><br/>
+Step 3. In the SH notes, please add which template you are basing the item off of. A simple note like \'mastercraft medium armor\' will do. As well as a more complex note like "mastercraft medium armor with snail skin backer, for extra end" so that the items approval team knows where to look to make sure the item is within the parameters.
+<br/><br/>
+Step 4. Change workflow to submitted and and click \'save.\''),
     ),
     'npc' => array(
       'name' => t('NPC'),
@@ -166,32 +179,32 @@ function vaxia_workflow_default_workflows() {
         'target_state' => 'draft',
       ),
       2 => array(
-        'roles' => 'workflow_features_author_name,administrator,administrator-vaxia',
+        'roles' => 'workflow_features_author_name,administrator-vaxia,administrator',
         'state' => 'draft',
         'target_state' => 'approved',
       ),
       3 => array(
-        'roles' => 'workflow_features_author_name,administrator,administrator-vaxia',
+        'roles' => 'workflow_features_author_name,administrator-vaxia,administrator',
         'state' => 'draft',
         'target_state' => 'removed from site',
       ),
       4 => array(
-        'roles' => 'workflow_features_author_name,administrator,administrator-vaxia',
+        'roles' => 'workflow_features_author_name,administrator-vaxia,administrator',
         'state' => 'approved',
         'target_state' => 'draft',
       ),
       5 => array(
-        'roles' => 'workflow_features_author_name,administrator,administrator-vaxia',
+        'roles' => 'workflow_features_author_name,administrator-vaxia,administrator',
         'state' => 'approved',
         'target_state' => 'removed from site',
       ),
       6 => array(
-        'roles' => 'administrator,administrator-vaxia',
+        'roles' => 'administrator-vaxia,administrator',
         'state' => 'removed from site',
         'target_state' => 'draft',
       ),
       7 => array(
-        'roles' => 'administrator,administrator-vaxia',
+        'roles' => 'administrator-vaxia,administrator',
         'state' => 'removed from site',
         'target_state' => 'approved',
       ),
@@ -204,7 +217,7 @@ function vaxia_workflow_default_workflows() {
   // Exported workflow: Item evaluation workflow
   $workflows['Item evaluation workflow'] = array(
     'name' => 'Item evaluation workflow',
-    'tab_roles' => 'author,3,7,4',
+    'tab_roles' => 'author,3,9,4',
     'options' => 'a:3:{s:16:"comment_log_node";i:1;s:15:"comment_log_tab";i:1;s:13:"name_as_title";i:1;}',
     'states' => array(
       0 => array(
@@ -250,62 +263,62 @@ function vaxia_workflow_default_workflows() {
         'target_state' => 'submitted',
       ),
       2 => array(
-        'roles' => 'workflow_features_author_name,administrator,administrator-vaxia',
+        'roles' => 'workflow_features_author_name,administrator-vaxia,administrator',
         'state' => 'draft',
         'target_state' => 'submitted',
       ),
       3 => array(
-        'roles' => 'administrator,administrator-vaxia',
+        'roles' => 'administrator-vaxia,administrator',
         'state' => 'draft',
         'target_state' => 'approved',
       ),
       4 => array(
-        'roles' => 'administrator,administrator-vaxia',
+        'roles' => 'administrator-vaxia,administrator',
         'state' => 'draft',
         'target_state' => 'disapproved',
       ),
       5 => array(
-        'roles' => 'administrator,administrator-vaxia',
+        'roles' => 'storyteller,administrator-vaxia,administrator',
         'state' => 'submitted',
         'target_state' => 'draft',
       ),
       6 => array(
-        'roles' => 'administrator,administrator-vaxia',
+        'roles' => 'storyteller,administrator-vaxia,administrator',
         'state' => 'submitted',
         'target_state' => 'approved',
       ),
       7 => array(
-        'roles' => 'administrator,administrator-vaxia',
+        'roles' => 'storyteller,administrator-vaxia,administrator',
         'state' => 'submitted',
         'target_state' => 'disapproved',
       ),
       8 => array(
-        'roles' => 'administrator,administrator-vaxia',
+        'roles' => 'storyteller,administrator-vaxia,administrator',
         'state' => 'approved',
         'target_state' => 'draft',
       ),
       9 => array(
-        'roles' => 'administrator,administrator-vaxia',
+        'roles' => 'storyteller,administrator-vaxia,administrator',
         'state' => 'approved',
         'target_state' => 'submitted',
       ),
       10 => array(
-        'roles' => 'administrator,administrator-vaxia',
+        'roles' => 'storyteller,administrator-vaxia,administrator',
         'state' => 'approved',
         'target_state' => 'disapproved',
       ),
       11 => array(
-        'roles' => 'administrator,administrator-vaxia',
+        'roles' => 'administrator-vaxia,administrator',
         'state' => 'disapproved',
         'target_state' => 'draft',
       ),
       12 => array(
-        'roles' => 'administrator,administrator-vaxia',
+        'roles' => 'administrator-vaxia,administrator',
         'state' => 'disapproved',
         'target_state' => 'submitted',
       ),
       13 => array(
-        'roles' => 'administrator,administrator-vaxia',
+        'roles' => 'administrator-vaxia,administrator',
         'state' => 'disapproved',
         'target_state' => 'approved',
       ),

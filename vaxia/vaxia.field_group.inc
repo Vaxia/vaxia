@@ -1033,6 +1033,7 @@ function vaxia_field_group_info() {
     'weight' => '7',
     'children' => array(
       0 => 'field_skill',
+      1 => 'field_languages',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -1059,6 +1060,7 @@ function vaxia_field_group_info() {
     'weight' => '8',
     'children' => array(
       0 => 'field_skill',
+      1 => 'field_languages',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
