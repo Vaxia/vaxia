@@ -13,7 +13,13 @@ function vaxia_sh_test_user_default_roles() {
   // Exported role: eligible for SH.
   $roles['eligible for SH'] = array(
     'name' => 'eligible for SH',
-    'weight' => '9',
+    'weight' => '2',
+  );
+
+  // Exported role: storyteller-expired.
+  $roles['storyteller-expired'] = array(
+    'name' => 'storyteller-expired',
+    'weight' => '6',
   );
 
   // Exported role: storyteller-newbie.
