@@ -5,12 +5,40 @@
  */
 
 /**
+ * Helper function update roles for given user.
+ */
+function vaxia_vacation_rules_event_info() {
+  $items = array(
+    'vaxia_vacation_start' => array(
+      'label' => t('Vaxia vacation start'),
+      'group' => t('Vaxia'),
+      'variables' => array(
+        'user' => array(
+            'type' => 'user',
+            'label' => t('Vacation user'),
+        ),
+      ),
+    ),
+    'vaxia_vacation_end' => array(
+      'label' => t('Vaxia vacation end'),
+      'group' => t('Vaxia'),
+      'variables' => array(
+        'user' => array(
+            'type' => 'user',
+            'label' => t('Vacation user'),
+        ),
+      ),
+    ),
+  );
+  return $items;
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  */
 function vaxia_vacation_form_user_profile_form_alter(&$form, &$form_state) {
-//drupal_set_message(print_r($form['#user'],1));
   // If user account has any of the roles to watch for.
-  $extra_roles = array('storyteller', 'storyteller-assistant', 'storyteller-evaluator');
+  $extra_roles = array('storyteller', 'storyteller-assistant', 'storyteller-newbie');
   $has_extra = FALSE;
   foreach ($extra_roles as $extra_role) {
     if (in_array($extra_role, $form['#user']->roles)) {
@@ -78,6 +106,9 @@ function _vaxia_vacation_go_on_vacation(&$form, &$form_state) {
   $account->roles = array();
   $account->roles[$role->rid] = $role->name;
   _vaxia_vacation_update_roles($account);
+  if (function_exists('rules_invoke_event')) {
+    rules_invoke_event('vaxia_vacation_start', $account);
+  }
 }
 
 /**
@@ -92,6 +123,9 @@ function _vaxia_vacation_return_from_vacation(&$form, &$form_state) {
     unset($vacation_modes[$uid]);
     variable_set('vaxia_vacation', $vacation_modes);
     _vaxia_vacation_update_roles($account);
+    if (function_exists('rules_invoke_event')) {
+      rules_invoke_event('vaxia_vacation_end', $account);
+    }
   }
 }
 
