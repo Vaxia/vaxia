@@ -459,6 +459,12 @@ function _vaxia_admin_settings() {
     '#size' => 15,
     '#default_value' => variable_get('vaxia_limbo_room', array()),
   );
+  $form['settings']['vaxia_display_dice'] = array(
+    '#title' => 'Dice rows to show',
+    '#description' => 'The number of dicerows to show in dice interface.',
+    '#type' => 'textfield',
+    '#default_value' => variable_get('vaxia_display_dice', 6),
+  );
   $form['point_cost'] = array(
     '#title' => 'Point costs',
     '#type' => 'fieldset',
