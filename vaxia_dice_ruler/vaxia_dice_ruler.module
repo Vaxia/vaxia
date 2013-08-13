@@ -1086,11 +1086,11 @@ function _vaxia_dice_ruler_magic(
   }
 
   // Change difficult for dynamic difs.
-  $magic_diff_a = $magic_diff_a - ($magic_might_a - $magic_diff_a);
+  $magic_diff_a = 2 * ($magic_diff_a + $magic_add_diff_a) - ($magic_might_a);
   if ($magic_diff_a < 1) {
     $magic_diff_a = 1;
   }
-  $magic_diff_b = $magic_diff_b - ($magic_might_b - $magic_diff_b);
+  $magic_diff_b = 2 * ($magic_diff_b + $magic_add_diff_b) - ($magic_might_b);
   if ($magic_diff_b < 1) {
     $magic_diff_b = 1;
   }
@@ -1100,11 +1100,11 @@ function _vaxia_dice_ruler_magic(
   $results = _vaxia_dice_ruler_make_two_trait_ruling(
     $magic_might_a,
     $magic_diff_a,
-    $magic_add_diff_a,
+    0,
     $magic_rolled_a,
     $magic_might_b,
     $magic_diff_b,
-    $magic_add_diff_b,
+    0,
     $magic_rolled_b
   );
 
