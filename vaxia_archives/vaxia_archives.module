@@ -220,48 +220,55 @@ function _vaxia_archives_search($month = 'any', $day = 'any', $year = 'any', $lo
 
   // Check location name in file and content
   $found = array();
-  if (!empty($location)) {
-    $output = '';
-    $command = 'find -L ' . DRUPAL_ROOT . '/' . $path . ' -iname "*' . $location . '*"';
-    exec($command, $output);
-    foreach ($output as $found_file) {
-      $found[$found_file] = $found_file;
-    }
-  }
-  // Check character name in file and content
-  if (!empty($character)) {
-    $output = '';
-    $command = 'find -L ' . DRUPAL_ROOT . '/' . $path . ' -iname "*' . $character . '*"';
-    exec($command, $output);
-    foreach ($output as $found_file) {
-      $found[$found_file] = $found_file;
-    }
-    $output = '';
-    $command = 'grep -R "' . $character . '" ' . DRUPAL_ROOT . '/' . $path;
-    exec($command, $output);
-    foreach ($output as $found_file) {
-      $found_file_parts = explode(':', $found_file);
-      $found[$found_file_parts[0]] = $found_file_parts[0];
-    }
-  }
-  // Check text in content
-  if (!empty($text)) {
-    $output = '';
-    $command = 'grep -R "' . $text . '" ' . DRUPAL_ROOT . '/' . $path;
-    exec($command, $output);
-    foreach ($output as $found_file) {
-      $found_file_parts = explode(':', $found_file);
-      $found[$found_file_parts[0]] = $found_file_parts[0];
-    }
-  }
   // If date was the only thing set, list the contents of that folder
-  if (!empty($year) && $year != 'any' && (empty($location) && empty($character) && empty($text))) {
+  if (!empty($year) && $year != 'any') {
     $output = '';
     $command = 'find -L ' . DRUPAL_ROOT . '/' . $path;
     exec($command, $output);
     foreach ($output as $found_file) {
       $found[$found_file] = $found_file;
     }
+  }
+  if (!empty($location)) {
+    $output = '';
+    $this_found = array();
+    $command = 'find -L ' . DRUPAL_ROOT . '/' . $path . ' -iname "*' . $location . '*"';
+    exec($command, $output);
+    foreach ($output as $found_file) {
+      $this_found[$found_file] = $found_file;
+    }
+    $found = empty($found) ? $this_found : array_intersect($found, $this_found);
+  }
+  // Check character name in file and content
+  if (!empty($character)) {
+    $output = '';
+    $this_found = array();
+    $command = 'find -L ' . DRUPAL_ROOT . '/' . $path . ' -iname "*' . $character . '*"';
+    exec($command, $output);
+    // If something already found, filter it down.
+    foreach ($output as $found_file) {
+      $this_found[$found_file] = $found_file;
+    }
+    $output = '';
+    $command = 'grep -R -i "' . $character . '" ' . DRUPAL_ROOT . '/' . $path;
+    exec($command, $output);
+    foreach ($output as $found_file) {
+      $found_file_parts = explode(':', $found_file);
+      $this_found[$found_file_parts[0]] = $found_file_parts[0];
+    }
+    $found = empty($found) ? $this_found : array_intersect($found, $this_found);
+  }
+  // Check text in content
+  if (!empty($text)) {
+    $output = '';
+    $this_found = array();
+    $command = 'grep -R -i "' . $text . '" ' . DRUPAL_ROOT . '/' . $path;
+    exec($command, $output);
+    foreach ($output as $found_file) {
+      $found_file_parts = explode(':', $found_file);
+      $this_found[$found_file_parts[0]] = $found_file_parts[0];
+    }
+    $found = empty($found) ? $this_found : array_intersect($found, $this_found);
   }
   // Clean up the found paths for proper links through
   global $base_url;
