@@ -1202,7 +1202,9 @@ function _vaxia_dice_ruler_make_two_trait_ruling(
 
   $versus_one = (($two_trait_rolled_a - $trait_a[4]) >= 0) ? $two_trait_add_diff_a : 0; // 4 => Roll needed
   $versus_two = (($two_trait_rolled_b - $trait_b[4]) >= 0) ? $two_trait_add_diff_b : 0; // 4 => Roll needed
-  $two_trait_winsby = $trait_a[6] / 2 + $trait_b[6] / 2 + $versus_one + $versus_two; // 4 => Windsby
+  $winsby_one = $trait_a[3] - $trait_a[4];
+  $winsby_two = $trait_b[3] - $trait_b[4];
+  $two_trait_winsby = ($winsby_one / 2) + ($winsby_two / 2) + $versus_one + $versus_two; // 6 => Windsby
   $two_trait_success = ($two_trait_winsby >= 0) ? 'yes' : 'no';
   if ($two_trait_success == 'no') {
     $two_trait_success = ($two_trait_winsby < -50) ? 'mishap' : 'no';
