@@ -1000,7 +1000,7 @@ function _vaxia_dice_ruler_combat(
   array_unshift($dodge_a_vs_b, 'A Dodges B:');
   $remove_field = array_pop($dodge_a_vs_b);
   $remove_field = array_pop($dodge_a_vs_b);
-  $dodge_a_vs_b[] = (($attack_a_points - $dodge_a_vs_b[8]) > 0) ? ($attack_a_points - $dodge_a_vs_b[8]) . t(' damage to A') : 0 . t(' damage to A');
+  $dodge_a_vs_b[] = (($attack_b_points - $dodge_a_vs_b[8]) > 0) ? ($attack_b_points - $dodge_a_vs_b[8]) . t(' damage to A') : 0 . t(' damage to A');
   $rows[] = $dodge_a_vs_b;
   $dodge_b_vs_a = _vaxia_dice_ruler_make_two_trait_ruling(
     $combat_might_b_dex,
@@ -1015,7 +1015,7 @@ function _vaxia_dice_ruler_combat(
   array_unshift($dodge_b_vs_a, 'B Dodges A:');
   $remove_field = array_pop($dodge_b_vs_a);
   $remove_field = array_pop($dodge_b_vs_a);
-  $dodge_b_vs_a[] = (($attack_b_points - $dodge_b_vs_a[8]) > 0) ? ($attack_b_points - $dodge_b_vs_a[8]) . t(' damage to B') : 0 . t(' damage to B');
+  $dodge_b_vs_a[] = (($attack_a_points - $dodge_b_vs_a[8]) > 0) ? ($attack_a_points - $dodge_b_vs_a[8]) . t(' damage to B') : 0 . t(' damage to B');
   $rows[] = $dodge_b_vs_a;
   // Now put all these into a table to display.
   $header = array(
