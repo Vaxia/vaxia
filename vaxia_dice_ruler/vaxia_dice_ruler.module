@@ -784,7 +784,7 @@ function _vaxia_dice_ruler_trait_vs(
   // Now put all these into a table to display.
   $header = array(
     t('Might'),
-    //t('Diff'),
+    t('Diff'),
     t('Add diff.'),
     t('Rolled'),
     t('Roll needed'),
