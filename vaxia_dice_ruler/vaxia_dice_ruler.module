@@ -935,10 +935,10 @@ function _vaxia_dice_ruler_combat(
     $combat_add_diff_a_end,
     $combat_rolled_a_end
   );
-  array_unshift($block_a_vs_b, 'B Blocks A:');
+  array_unshift($block_a_vs_b, 'A Blocks B:');
   $remove_field = array_pop($block_a_vs_b);
   $remove_field = array_pop($block_a_vs_b);
-  $block_a_vs_b[] = (($attack_a_points - $block_a_vs_b[8]) > 0) ? ($attack_a_points - $block_a_vs_b[8]) . t(' damage to B') : 0 . t(' damage to B');
+  $block_a_vs_b[] = (($attack_a_points - $block_a_vs_b[8]) > 0) ? ($attack_a_points - $block_a_vs_b[8]) . t(' damage to A') : 0 . t(' damage to A');
   $rows[] = $block_a_vs_b;
   $block_b_vs_a = _vaxia_dice_ruler_make_two_trait_ruling(
     $combat_might_b_str,
@@ -950,10 +950,10 @@ function _vaxia_dice_ruler_combat(
     $combat_add_diff_b_end,
     $combat_rolled_b_end
   );
-  array_unshift($block_b_vs_a, 'A Blocks A:');
+  array_unshift($block_b_vs_a, 'B Blocks A:');
   $remove_field = array_pop($block_b_vs_a);
   $remove_field = array_pop($block_b_vs_a);
-  $block_b_vs_a[] = (($attack_b_points - $block_b_vs_a[8]) > 0) ? ($attack_b_points - $block_b_vs_a[8]) . t(' damage to A') : 0 . t(' damage to A');
+  $block_b_vs_a[] = (($attack_b_points - $block_b_vs_a[8]) > 0) ? ($attack_b_points - $block_b_vs_a[8]) . t(' damage to B') : 0 . t(' damage to B');
   $rows[] = $block_b_vs_a;
   
   $parry_a_vs_b = _vaxia_dice_ruler_make_two_trait_ruling(
@@ -966,10 +966,10 @@ function _vaxia_dice_ruler_combat(
     $combat_add_diff_a_str,
     $combat_rolled_a_str
   );
-  array_unshift($parry_a_vs_b, 'B Parrys A:');
+  array_unshift($parry_a_vs_b, 'A Parrys B:');
   $remove_field = array_pop($parry_a_vs_b);
   $remove_field = array_pop($parry_a_vs_b);
-  $parry_a_vs_b[] = (($attack_a_points - $parry_a_vs_b[8]) > 0) ? ($attack_a_points - $parry_a_vs_b[8]) . t(' damage to B') : 0 . t(' damage to B');
+  $parry_a_vs_b[] = (($attack_a_points - $parry_a_vs_b[8]) > 0) ? ($attack_a_points - $parry_a_vs_b[8]) . t(' damage to A') : 0 . t(' damage to A');
   $rows[] = $parry_a_vs_b;
   $parry_b_vs_a = _vaxia_dice_ruler_make_two_trait_ruling(
     $combat_might_b_dex,
@@ -981,10 +981,10 @@ function _vaxia_dice_ruler_combat(
     $combat_add_diff_b_str,
     $combat_rolled_b_str
   );
-  array_unshift($parry_b_vs_a, 'A Parrys B:');
+  array_unshift($parry_b_vs_a, 'B Parrys A:');
   $remove_field = array_pop($parry_b_vs_a);
   $remove_field = array_pop($parry_b_vs_a);
-  $parry_b_vs_a[] = (($attack_b_points - $parry_b_vs_a[8]) > 0) ? ($attack_b_points - $parry_b_vs_a[8]) . t(' damage to A') : 0 . t(' damage to A');
+  $parry_b_vs_a[] = (($attack_b_points - $parry_b_vs_a[8]) > 0) ? ($attack_b_points - $parry_b_vs_a[8]) . t(' damage to B') : 0 . t(' damage to B');
   $rows[] = $parry_b_vs_a;
   
   $dodge_a_vs_b = _vaxia_dice_ruler_make_two_trait_ruling(
@@ -997,10 +997,10 @@ function _vaxia_dice_ruler_combat(
     $combat_add_diff_a_end,
     $combat_rolled_a_end
   );
-  array_unshift($dodge_a_vs_b, 'B Dodges A:');
+  array_unshift($dodge_a_vs_b, 'A Dodges B:');
   $remove_field = array_pop($dodge_a_vs_b);
   $remove_field = array_pop($dodge_a_vs_b);
-  $dodge_a_vs_b[] = (($attack_a_points - $dodge_a_vs_b[8]) > 0) ? ($attack_a_points - $dodge_a_vs_b[8]) . t(' damage to B') : 0 . t(' damage to B');
+  $dodge_a_vs_b[] = (($attack_a_points - $dodge_a_vs_b[8]) > 0) ? ($attack_a_points - $dodge_a_vs_b[8]) . t(' damage to A') : 0 . t(' damage to A');
   $rows[] = $dodge_a_vs_b;
   $dodge_b_vs_a = _vaxia_dice_ruler_make_two_trait_ruling(
     $combat_might_b_dex,
@@ -1012,10 +1012,10 @@ function _vaxia_dice_ruler_combat(
     $combat_add_diff_b_end,
     $combat_rolled_b_end
   );
-  array_unshift($dodge_b_vs_a, 'A Dodges B:');
+  array_unshift($dodge_b_vs_a, 'B Dodges A:');
   $remove_field = array_pop($dodge_b_vs_a);
   $remove_field = array_pop($dodge_b_vs_a);
-  $dodge_b_vs_a[] = (($attack_b_points - $dodge_b_vs_a[8]) > 0) ? ($attack_b_points - $dodge_b_vs_a[8]) . t(' damage to A') : 0 . t(' damage to A');
+  $dodge_b_vs_a[] = (($attack_b_points - $dodge_b_vs_a[8]) > 0) ? ($attack_b_points - $dodge_b_vs_a[8]) . t(' damage to B') : 0 . t(' damage to B');
   $rows[] = $dodge_b_vs_a;
   // Now put all these into a table to display.
   $header = array(
