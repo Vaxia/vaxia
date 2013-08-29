@@ -298,7 +298,7 @@ function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
       }
     }
     // If in submit / review mode then really remove access.
-    if ($user->uid == $node->uid && $node->workflow_state_name == 'submitted') {
+    if ($user->uid == $node->uid && isset($node->workflow_state_name) && $node->workflow_state_name == 'submitted') {
       $form['#disabled'] = TRUE;
     }
   }
