@@ -2295,7 +2295,9 @@ function vaxia_field_default_fields() {
       'bundle' => 'character_sheet',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => 'All characters get three languages by default on starting. Additional languages may be added through RP.<br>
+      'description' => 'All characters get three languages at native proficiency by default on starting. List the three you\'re selecting here.<br>
+<br>
+Additional languages may be added through RP at the following costs of practice posting / level:<br>
 1XP - learner, you can recognize the language written or heard<br>
 2XP - basic understanding, not fluent<br>
 3XP - conversationally fluent, with an accent<br>
@@ -11839,7 +11841,9 @@ function vaxia_field_default_fields() {
   t('Additional features');
   t('Additional property');
   t('Agility');
-  t('All characters get three languages by default on starting. Additional languages may be added through RP.<br>
+  t('All characters get three languages at native proficiency by default on starting. List the three you\'re selecting here.<br>
+<br>
+Additional languages may be added through RP at the following costs of practice posting / level:<br>
 1XP - learner, you can recognize the language written or heard<br>
 2XP - basic understanding, not fluent<br>
 3XP - conversationally fluent, with an accent<br>

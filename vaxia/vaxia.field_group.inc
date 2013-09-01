@@ -57,7 +57,7 @@ function vaxia_field_group_info() {
       'formatter' => 'collapsible',
       'instance_settings' => array(
         'description' => '',
-        'classes' => '',
+        'classes' => ' group-artwork field-group-fieldset',
       ),
     ),
   );
@@ -83,7 +83,7 @@ function vaxia_field_group_info() {
       'formatter' => 'collapsible',
       'instance_settings' => array(
         'description' => '',
-        'classes' => '',
+        'classes' => ' group-artwork field-group-fieldset',
         'required_fields' => 1,
       ),
     ),
@@ -137,7 +137,7 @@ function vaxia_field_group_info() {
       'formatter' => 'collapsible',
       'instance_settings' => array(
         'description' => '',
-        'classes' => '',
+        'classes' => ' group-associates field-group-fieldset',
       ),
     ),
   );
@@ -163,7 +163,7 @@ function vaxia_field_group_info() {
       'formatter' => 'collapsible',
       'instance_settings' => array(
         'description' => '',
-        'classes' => '',
+        'classes' => ' group-associates field-group-fieldset',
         'required_fields' => 1,
       ),
     ),
@@ -223,7 +223,7 @@ function vaxia_field_group_info() {
       'formatter' => 'collapsible',
       'instance_settings' => array(
         'description' => '',
-        'classes' => '',
+        'classes' => ' group-details field-group-fieldset',
       ),
     ),
   );
@@ -253,7 +253,7 @@ function vaxia_field_group_info() {
       'formatter' => 'collapsible',
       'instance_settings' => array(
         'description' => '',
-        'classes' => '',
+        'classes' => ' group-details field-group-fieldset',
         'required_fields' => 1,
       ),
     ),
@@ -284,7 +284,7 @@ function vaxia_field_group_info() {
       'formatter' => 'collapsible',
       'instance_settings' => array(
         'description' => '',
-        'classes' => '',
+        'classes' => ' group-details field-group-fieldset',
       ),
     ),
   );
@@ -315,7 +315,7 @@ function vaxia_field_group_info() {
       'formatter' => 'collapsible',
       'instance_settings' => array(
         'description' => '',
-        'classes' => '',
+        'classes' => ' group-details field-group-fieldset',
         'required_fields' => 1,
       ),
     ),
@@ -387,7 +387,7 @@ function vaxia_field_group_info() {
       'label' => 'Modifies',
       'instance_settings' => array(
         'required_fields' => 1,
-        'classes' => '',
+        'classes' => ' group-item-stats field-group-fieldset',
         'description' => 'Directly modify a character (or item if overlapping) stat. Negative numbers will lower the stat.',
       ),
       'formatter' => 'collapsed',
@@ -417,7 +417,7 @@ function vaxia_field_group_info() {
       'formatter' => 'collapsible',
       'instance_settings' => array(
         'description' => '',
-        'classes' => '',
+        'classes' => ' group-items field-group-fieldset',
       ),
     ),
   );
@@ -445,7 +445,7 @@ function vaxia_field_group_info() {
       'formatter' => 'collapsible',
       'instance_settings' => array(
         'description' => '',
-        'classes' => '',
+        'classes' => ' group-items field-group-fieldset',
         'required_fields' => 1,
       ),
     ),
@@ -474,7 +474,7 @@ function vaxia_field_group_info() {
       'formatter' => 'collapsible',
       'instance_settings' => array(
         'description' => '',
-        'classes' => '',
+        'classes' => ' group-notes field-group-fieldset',
       ),
     ),
   );
@@ -502,7 +502,7 @@ function vaxia_field_group_info() {
       'formatter' => 'collapsible',
       'instance_settings' => array(
         'description' => '',
-        'classes' => '',
+        'classes' => ' group-notes field-group-fieldset',
         'required_fields' => 1,
       ),
     ),
@@ -531,7 +531,7 @@ function vaxia_field_group_info() {
       'formatter' => 'collapsible',
       'instance_settings' => array(
         'description' => '',
-        'classes' => '',
+        'classes' => ' group-notes field-group-fieldset',
       ),
     ),
   );
@@ -559,7 +559,7 @@ function vaxia_field_group_info() {
       'formatter' => 'collapsible',
       'instance_settings' => array(
         'description' => '',
-        'classes' => '',
+        'classes' => ' group-notes field-group-fieldset',
         'required_fields' => 1,
       ),
     ),
@@ -628,7 +628,7 @@ function vaxia_field_group_info() {
     'format_settings' => array(
       'label' => 'Overlaps',
       'instance_settings' => array(
-        'classes' => '',
+        'classes' => ' group-overlaps field-group-fieldset',
         'description' => '',
       ),
       'formatter' => 'collapsed',
@@ -670,7 +670,7 @@ function vaxia_field_group_info() {
       'label' => 'Overlaps',
       'instance_settings' => array(
         'required_fields' => 1,
-        'classes' => '',
+        'classes' => ' group-overlaps field-group-fieldset',
         'description' => 'Replace a character stat with the item stat.',
       ),
       'formatter' => 'collapsed',
@@ -711,7 +711,7 @@ function vaxia_field_group_info() {
     'format_settings' => array(
       'label' => 'Penalties',
       'instance_settings' => array(
-        'classes' => '',
+        'classes' => ' group-penalties field-group-fieldset',
         'description' => '',
       ),
       'formatter' => 'collapsed',
@@ -753,7 +753,7 @@ function vaxia_field_group_info() {
       'label' => 'Penalties',
       'instance_settings' => array(
         'required_fields' => 1,
-        'classes' => '',
+        'classes' => ' group-penalties field-group-fieldset',
         'description' => 'If a stat is below the requirement, how much to penalize by. Use negative numbers to reduce the stat.',
       ),
       'formatter' => 'collapsed',
@@ -794,7 +794,7 @@ function vaxia_field_group_info() {
     'format_settings' => array(
       'label' => 'Percentages',
       'instance_settings' => array(
-        'classes' => '',
+        'classes' => ' group-percentages field-group-fieldset',
         'description' => '',
       ),
       'formatter' => 'collapsed',
@@ -836,7 +836,7 @@ function vaxia_field_group_info() {
       'label' => 'Percentages',
       'instance_settings' => array(
         'required_fields' => 1,
-        'classes' => '',
+        'classes' => ' group-percentages field-group-fieldset',
         'description' => 'Add a percentage of the character (or item if overlapping) stat.',
       ),
       'formatter' => 'collapsed',
@@ -869,7 +869,7 @@ function vaxia_field_group_info() {
       'formatter' => 'collapsible',
       'instance_settings' => array(
         'description' => '',
-        'classes' => '',
+        'classes' => ' group-personal field-group-fieldset',
       ),
     ),
   );
@@ -900,7 +900,7 @@ function vaxia_field_group_info() {
       'formatter' => 'collapsible',
       'instance_settings' => array(
         'description' => '',
-        'classes' => '',
+        'classes' => ' group-personal field-group-fieldset',
         'required_fields' => 1,
       ),
     ),
@@ -969,7 +969,7 @@ function vaxia_field_group_info() {
     'format_settings' => array(
       'label' => 'Requires',
       'instance_settings' => array(
-        'classes' => '',
+        'classes' => ' group-requires field-group-fieldset',
         'description' => '',
       ),
       'formatter' => 'collapsed',
@@ -1011,7 +1011,7 @@ function vaxia_field_group_info() {
       'label' => 'Requires',
       'instance_settings' => array(
         'required_fields' => 1,
-        'classes' => '',
+        'classes' => ' group-requires field-group-fieldset',
         'description' => 'Set minimum stat required by item to avoid penalties.',
       ),
       'formatter' => 'collapsed',
@@ -1040,7 +1040,7 @@ function vaxia_field_group_info() {
       'formatter' => 'collapsible',
       'instance_settings' => array(
         'description' => '',
-        'classes' => '',
+        'classes' => ' group-skills field-group-fieldset',
       ),
     ),
   );
@@ -1067,7 +1067,7 @@ function vaxia_field_group_info() {
       'formatter' => 'collapsible',
       'instance_settings' => array(
         'description' => '',
-        'classes' => '',
+        'classes' => ' group-skills field-group-fieldset',
         'required_fields' => 1,
       ),
     ),
@@ -1107,7 +1107,7 @@ function vaxia_field_group_info() {
       'formatter' => 'collapsible',
       'instance_settings' => array(
         'description' => '',
-        'classes' => '',
+        'classes' => ' group-stats field-group-fieldset',
       ),
     ),
   );
@@ -1146,7 +1146,7 @@ function vaxia_field_group_info() {
       'label' => 'Stats',
       'instance_settings' => array(
         'required_fields' => 1,
-        'classes' => '',
+        'classes' => ' group-stats field-group-fieldset',
         'description' => '',
       ),
       'formatter' => 'collapsible',
@@ -1187,7 +1187,7 @@ function vaxia_field_group_info() {
     'format_settings' => array(
       'label' => 'Modifies',
       'instance_settings' => array(
-        'classes' => '',
+        'classes' => ' group-stats field-group-fieldset',
         'description' => '',
       ),
       'formatter' => 'collapsed',

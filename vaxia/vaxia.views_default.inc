@@ -1303,7 +1303,7 @@ return $uid;';
   $handler->display->display_options['access']['type'] = 'role';
   $handler->display->display_options['access']['role'] = array(
     4 => '4',
-    6 => '6',
+    2 => '2',
     8 => '8',
   );
   $handler->display->display_options['cache']['type'] = 'none';
@@ -4353,10 +4353,7 @@ return \'Characters\';';
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['title'] = 'Storytellers and Assistants';
   $handler->display->display_options['use_more_always'] = FALSE;
-  $handler->display->display_options['access']['type'] = 'role';
-  $handler->display->display_options['access']['role'] = array(
-    8 => '8',
-  );
+  $handler->display->display_options['access']['type'] = 'none';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';

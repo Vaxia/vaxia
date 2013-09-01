@@ -38,6 +38,7 @@ function vaxia_image_default_styles() {
   // Exported image style: tiny-thumbnail.
   $styles['tiny-thumbnail'] = array(
     'name' => 'tiny-thumbnail',
+    'label' => 'tiny-thumbnail',
     'effects' => array(
       2 => array(
         'label' => 'Resize',
