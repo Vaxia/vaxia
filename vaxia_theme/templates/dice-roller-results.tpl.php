@@ -24,13 +24,23 @@
         $might = explode('=', $might);
         $might = trim($might[0]);
         $roll = implode(', ', $results);
-        $str_rolls .= '<div class="dice">' .
-          t('!note => <b>Roll:</b> @roll, <b>Might:</b> @might',
-            array('!note' => $note, '@command' => $dice_rolls[$index]['roll_command'],
-            '@roll' => $roll,
-            '@might' => $might)
-          ) .
-          '</div>'."\n";
+        if (!empty($roll)) {
+          $str_rolls .= '<div class="dice">' .
+            t('!note => <b>Roll:</b> @roll, <b>Might:</b> @might',
+              array('!note' => $note, '@command' => $dice_rolls[$index]['roll_command'],
+              '@roll' => $roll,
+              '@might' => $might)
+            ) .
+            '</div>'."\n";
+        }
+        else {
+          $str_rolls .= '<div class="dice">' .
+            t('!note => <b>Roll:</b> @roll',
+              array('!note' => $note, '@command' => $dice_rolls[$index]['roll_command'],
+              '@roll' => $might)
+            ) .
+            '</div>'."\n";
+        }
       }
     }
   }
