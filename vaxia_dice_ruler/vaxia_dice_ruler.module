@@ -51,6 +51,8 @@ function vaxia_dice_ruler_form($form, &$form_state) {
     '#type' => 'item',
     '#markup' => '<style>' .
       '#vaxia-dice-ruler-form .form-type-textfield{float:left;margin-left:1em;margin-top:0;margin-bottom:0;}' .
+      '#vaxia-dice-ruler-form .form-item-combat-weapon-a{float:none;margin-left:0;}' .
+      '#vaxia-dice-ruler-form .form-item-combat-weapon-b{float:none;margin-left:0;}' .
       '#vaxia-dice-ruler-form #edit-a--3{float:left;margin-left:1em;margin-top:0;margin-bottom:0;}' .
       '#vaxia-dice-ruler-form #edit-b--3{float:left;margin-left:1em;margin-top:0;margin-bottom:0;}' .
       '#vaxia-dice-ruler-form #vaxia_dice_ruler_dice_results th{padding-left:0.5em;text-align:center;}'.
@@ -314,6 +316,11 @@ function vaxia_dice_ruler_form($form, &$form_state) {
     '#title' => t('Rolled'),
     '#size' => 5,
   );
+  $form['combat']['a']['combat_weapon_a'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Weapon %'),
+    '#size' => 5,
+  );
   $form['combat']['b'] = array(
     '#type' => 'fieldset',
     '#title' => t('Character B'),
@@ -383,6 +390,11 @@ function vaxia_dice_ruler_form($form, &$form_state) {
   $form['combat']['b']['end']['combat_rolled_b_end'] = array(
     '#type' => 'textfield',
     '#title' => t('Rolled'),
+    '#size' => 5,
+  );
+  $form['combat']['b']['combat_weapon_b'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Weapon %'),
     '#size' => 5,
   );
 
@@ -517,6 +529,7 @@ function vaxia_dice_ruler_form($form, &$form_state) {
           $form_state['values']['combat_might_a_end'],
           $form_state['values']['combat_add_diff_a_end'],
           $form_state['values']['combat_rolled_a_end'],
+          $form_state['values']['combat_weapon_a'],
 
           $form_state['values']['combat_might_b_dex'],
           $form_state['values']['combat_add_diff_b_dex'],
@@ -526,7 +539,8 @@ function vaxia_dice_ruler_form($form, &$form_state) {
           $form_state['values']['combat_rolled_b_str'],
           $form_state['values']['combat_might_b_end'],
           $form_state['values']['combat_add_diff_b_end'],
-          $form_state['values']['combat_rolled_b_end']
+          $form_state['values']['combat_rolled_b_end'],
+          $form_state['values']['combat_weapon_b']
         );
       break;
       case 'magic':
@@ -813,6 +827,8 @@ function _vaxia_dice_ruler_combat(
   $combat_might_a_end,
   $combat_add_diff_a_end,
   $combat_rolled_a_end,
+  $combat_weapon_a,
+
   $combat_might_b_dex,
   $combat_add_diff_b_dex,
   $combat_rolled_b_dex,
@@ -821,7 +837,8 @@ function _vaxia_dice_ruler_combat(
   $combat_rolled_b_str,
   $combat_might_b_end,
   $combat_add_diff_b_end,
-  $combat_rolled_b_end
+  $combat_rolled_b_end,
+  $combat_weapon_b
 ) {
 
   // Check that all are numeric.
@@ -833,7 +850,9 @@ function _vaxia_dice_ruler_combat(
     || !empty($combat_rolled_a_str) && !is_numeric($combat_rolled_a_str)
     || !empty($combat_might_a_end) && !is_numeric($combat_might_a_end)
     || !empty($combat_add_diff_a_end) && !is_numeric($combat_add_diff_a_end)
-    || !empty($combat_rolled_a_end) && !is_numeric($combat_rolled_a_end)) {
+    || !empty($combat_rolled_a_end) && !is_numeric($combat_rolled_a_end)
+    || !empty($combat_weapon_a) && !is_numeric($combat_weapon_a)
+    ) {
     return t('Not all values given were numeric. We need numbers for math.');
   }
 
@@ -867,7 +886,9 @@ function _vaxia_dice_ruler_combat(
     || !empty($combat_rolled_b_str) && !is_numeric($combat_rolled_b_str)
     || !empty($combat_might_b_end) && !is_numeric($combat_might_b_end)
     || !empty($combat_add_diff_b_end) && !is_numeric($combat_add_diff_b_end)
-    || !empty($combat_rolled_b_end) && !is_numeric($combat_rolled_b_end)) {
+    || !empty($combat_rolled_b_end) && !is_numeric($combat_rolled_b_end)
+    || !empty($combat_weapon_b) && !is_numeric($combat_weapon_b)
+    ) {
     return t('Not all values given were numeric. We need numbers for math.');
   }
 
@@ -892,6 +913,20 @@ function _vaxia_dice_ruler_combat(
     $combat_add_diff_b_end = 0;
   }
 
+  // Prepare weapon combat damages
+  if (empty($combat_weapon_a)) {
+    $combat_weapon_a = 0;
+  }
+  elseif($combat_weapon_a > 1)  {
+    $combat_weapon_a = $combat_weapon_a / 100;
+  }
+  if (empty($combat_weapon_b)) {
+    $combat_weapon_b = 0;
+  }
+  elseif($combat_weapon_b > 1)  {
+    $combat_weapon_b = $combat_weapon_b / 100;
+  }
+
   $attack_a_vs_b = _vaxia_dice_ruler_make_two_trait_ruling(
     $combat_might_a_dex,
     $combat_might_b_dex, // Defender.
@@ -905,7 +940,7 @@ function _vaxia_dice_ruler_combat(
   array_unshift($attack_a_vs_b, 'A Attacks B:');
   $remove_field = array_pop($attack_a_vs_b);
   $remove_field = array_pop($attack_a_vs_b);
-  $attack_a_vs_b[] = $attack_a_vs_b[8] . t(' damage to B');
+  $attack_a_vs_b[] = ($attack_a_vs_b[8] + ($attack_a_vs_b[8] * $combat_weapon_a)) . t(' to B, w/ weapon');
   $rows[] = $attack_a_vs_b;
   $attack_b_vs_a = _vaxia_dice_ruler_make_two_trait_ruling(
     $combat_might_b_dex,
@@ -920,7 +955,7 @@ function _vaxia_dice_ruler_combat(
   array_unshift($attack_b_vs_a, 'B Attacks A:');
   $remove_field = array_pop($attack_b_vs_a);
   $remove_field = array_pop($attack_b_vs_a);
-  $attack_b_vs_a[] = $attack_b_vs_a[8] . t(' damage to A');
+  $attack_b_vs_a[] = ($attack_b_vs_a[8] + ($attack_b_vs_a[8] * $combat_weapon_b)) . t(' to A, w/ weapon');
   $rows[] = $attack_b_vs_a;
   $attack_a_points = $attack_a_vs_b[8]; // PP produced by a
   $attack_b_points = $attack_b_vs_a[8]; // PP produced by b
@@ -938,7 +973,8 @@ function _vaxia_dice_ruler_combat(
   array_unshift($block_a_vs_b, 'A Blocks B:');
   $remove_field = array_pop($block_a_vs_b);
   $remove_field = array_pop($block_a_vs_b);
-  $block_a_vs_b[] = (($attack_b_points - $block_a_vs_b[8]) > 0) ? ($attack_b_points - $block_a_vs_b[8]) . t(' damage to A') : 0 . t(' damage to A');
+  $block_a_vs_b[] = (($attack_b_points - $block_a_vs_b[8]) > 0) ?
+    ($attack_b_points - $block_a_vs_b[8] + (($attack_b_points - $block_a_vs_b[8]) * $combat_weapon_b)) . t(' to A, w/ weapon') : 0 . t(' to A');
   $rows[] = $block_a_vs_b;
   $block_b_vs_a = _vaxia_dice_ruler_make_two_trait_ruling(
     $combat_might_b_str,
@@ -953,7 +989,8 @@ function _vaxia_dice_ruler_combat(
   array_unshift($block_b_vs_a, 'B Blocks A:');
   $remove_field = array_pop($block_b_vs_a);
   $remove_field = array_pop($block_b_vs_a);
-  $block_b_vs_a[] = (($attack_a_points - $block_b_vs_a[8]) > 0) ? ($attack_a_points - $block_b_vs_a[8]) . t(' damage to B') : 0 . t(' damage to B');
+  $block_b_vs_a[] = (($attack_a_points - $block_b_vs_a[8]) > 0) ?
+    ($attack_a_points - $block_b_vs_a[8] + (($attack_a_points - $block_b_vs_a[8]) * $combat_weapon_a)) . t(' to B, w/ weapon') : 0 . t(' to B');
   $rows[] = $block_b_vs_a;
   
   $parry_a_vs_b = _vaxia_dice_ruler_make_two_trait_ruling(
@@ -969,7 +1006,8 @@ function _vaxia_dice_ruler_combat(
   array_unshift($parry_a_vs_b, 'A Parrys B:');
   $remove_field = array_pop($parry_a_vs_b);
   $remove_field = array_pop($parry_a_vs_b);
-  $parry_a_vs_b[] = (($attack_b_points - $parry_a_vs_b[8]) > 0) ? ($attack_b_points - $parry_a_vs_b[8]) . t(' damage to A') : 0 . t(' damage to A');
+  $parry_a_vs_b[] = (($attack_b_points - $parry_a_vs_b[8]) > 0) ?
+    ($attack_b_points - $parry_a_vs_b[8] + (($attack_b_points - $parry_a_vs_b[8]) * $combat_weapon_b)) . t(' to A, w/ weapon') : 0 . t(' to A');
   $rows[] = $parry_a_vs_b;
   $parry_b_vs_a = _vaxia_dice_ruler_make_two_trait_ruling(
     $combat_might_b_dex,
@@ -984,7 +1022,8 @@ function _vaxia_dice_ruler_combat(
   array_unshift($parry_b_vs_a, 'B Parrys A:');
   $remove_field = array_pop($parry_b_vs_a);
   $remove_field = array_pop($parry_b_vs_a);
-  $parry_b_vs_a[] = (($attack_a_points - $parry_b_vs_a[8]) > 0) ? ($attack_a_points - $parry_b_vs_a[8]) . t(' damage to B') : 0 . t(' damage to B');
+  $parry_b_vs_a[] = (($attack_a_points - $parry_b_vs_a[8]) > 0) ?
+    ($attack_a_points - $parry_b_vs_a[8] + (($attack_a_points - $parry_b_vs_a[8]) * $combat_weapon_a)) . t(' to B, w/ weapon') : 0 . t(' to B');
   $rows[] = $parry_b_vs_a;
   
   $dodge_a_vs_b = _vaxia_dice_ruler_make_two_trait_ruling(
@@ -1000,7 +1039,8 @@ function _vaxia_dice_ruler_combat(
   array_unshift($dodge_a_vs_b, 'A Dodges B:');
   $remove_field = array_pop($dodge_a_vs_b);
   $remove_field = array_pop($dodge_a_vs_b);
-  $dodge_a_vs_b[] = (($attack_b_points - $dodge_a_vs_b[8]) > 0) ? ($attack_b_points - $dodge_a_vs_b[8]) . t(' damage to A') : 0 . t(' damage to A');
+  $dodge_a_vs_b[] = (($attack_b_points - $dodge_a_vs_b[8]) > 0) ?
+    ($attack_b_points - $dodge_a_vs_b[8] + (($attack_b_points - $dodge_a_vs_b[8]) * $combat_weapon_b)) . t(' to A, w/ weapon') : 0 . t(' to A');
   $rows[] = $dodge_a_vs_b;
   $dodge_b_vs_a = _vaxia_dice_ruler_make_two_trait_ruling(
     $combat_might_b_dex,
@@ -1015,7 +1055,8 @@ function _vaxia_dice_ruler_combat(
   array_unshift($dodge_b_vs_a, 'B Dodges A:');
   $remove_field = array_pop($dodge_b_vs_a);
   $remove_field = array_pop($dodge_b_vs_a);
-  $dodge_b_vs_a[] = (($attack_a_points - $dodge_b_vs_a[8]) > 0) ? ($attack_a_points - $dodge_b_vs_a[8]) . t(' damage to B') : 0 . t(' damage to B');
+  $dodge_b_vs_a[] = (($attack_a_points - $dodge_b_vs_a[8]) > 0) ?
+    ($attack_a_points - $dodge_b_vs_a[8] + (($attack_a_points - $dodge_b_vs_a[8]) * $combat_weapon_a)) . t(' to B, w/ weapon') : 0 . t(' to B');
   $rows[] = $dodge_b_vs_a;
   // Now put all these into a table to display.
   $header = array(
