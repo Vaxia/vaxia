@@ -48,6 +48,7 @@ function _vaxia_calculate_attribute_field_value($field_info, $value) {
     $current = 0;
     $cost_modifier = isset($field_info['costs']['cost']) ? $field_info['costs']['cost'] : 1;
     $step = isset($field_info['costs']['step']) ? $field_info['costs']['step'] : 1;
+    $value--;
     while ($current < $value) {
       $current += $step;
       $total += floor($current * 0.1) * $cost_modifier;
