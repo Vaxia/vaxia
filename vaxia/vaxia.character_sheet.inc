@@ -38,7 +38,6 @@ function vaxia_character_sheet_register_systems() {
 /**
  * Value callback for determining costs. Modified from _character_sheet_calculate_field_value().
  */
- */
 function _vaxia_calculate_attribute_field_value($field_info, $value) {
   if (!isset($value)) { return 0; }
   if (isset($field_info['costs']['cost_mode']) && $field_info['costs']['cost_mode'] == 'flat') {
@@ -54,7 +53,7 @@ function _vaxia_calculate_attribute_field_value($field_info, $value) {
       $current += $step;
       $total += $base_value * $cost_modifier;
       // Increment the value on the value *after* the ten's number.
-      // The fomula is one-off from a div by ten, min 1.
+      // The formula is one-off from a div by ten, min 1.
       if ($current > 10 && ($current % 10) == 0) {
         $base_value++;
       }
