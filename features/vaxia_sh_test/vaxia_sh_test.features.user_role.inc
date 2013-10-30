@@ -16,6 +16,18 @@ function vaxia_sh_test_user_default_roles() {
     'weight' => '2',
   );
 
+  // Exported role: evaluator.
+  $roles['evaluator'] = array(
+    'name' => 'evaluator',
+    'weight' => '9',
+  );
+
+  // Exported role: storyteller-candidate.
+  $roles['storyteller-candidate'] = array(
+    'name' => 'storyteller-candidate',
+    'weight' => '6',
+  );
+
   // Exported role: storyteller-expired.
   $roles['storyteller-expired'] = array(
     'name' => 'storyteller-expired',
