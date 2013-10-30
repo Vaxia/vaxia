@@ -12,9 +12,10 @@ function vaxia_default_rules_configuration() {
   $items['rules_notify_char_eval_re_new_character'] = entity_import('rules_config', '{ "rules_notify_char_eval_re_new_character" : {
       "LABEL" : "Notify char eval re: new character",
       "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
       "TAGS" : [ "Vaxia" ],
       "REQUIRES" : [ "rules", "workflow_rules", "php" ],
-      "ON" : [ "workflow_state_changed" ],
+      "ON" : { "workflow_state_changed" : [] },
       "IF" : [
         { "node_is_of_type" : {
             "node" : [ "node" ],
@@ -42,9 +43,10 @@ function vaxia_default_rules_configuration() {
   $items['rules_notify_char_eval_re_oversight_npc'] = entity_import('rules_config', '{ "rules_notify_char_eval_re_oversight_npc" : {
       "LABEL" : "Notify char eval re: OVERSIGHT NPC",
       "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
       "TAGS" : [ "Vaxia" ],
       "REQUIRES" : [ "rules", "workflow_rules", "php" ],
-      "ON" : [ "workflow_state_changed" ],
+      "ON" : { "workflow_state_changed" : [] },
       "IF" : [
         { "node_is_of_type" : {
             "node" : [ "node" ],
@@ -78,9 +80,10 @@ function vaxia_default_rules_configuration() {
   $items['rules_notify_item_eval_re_new_item'] = entity_import('rules_config', '{ "rules_notify_item_eval_re_new_item" : {
       "LABEL" : "Notify item eval re: new item",
       "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
       "TAGS" : [ "Vaxia" ],
       "REQUIRES" : [ "rules", "workflow_rules", "php" ],
-      "ON" : [ "workflow_state_changed" ],
+      "ON" : { "workflow_state_changed" : [] },
       "IF" : [
         { "node_is_of_type" : { "node" : [ "node" ], "type" : { "value" : { "items" : "items" } } } },
         { "workflow_check_transition" : {
@@ -104,9 +107,10 @@ function vaxia_default_rules_configuration() {
   $items['rules_notify_player_when_char_disapproved'] = entity_import('rules_config', '{ "rules_notify_player_when_char_disapproved" : {
       "LABEL" : "Notify player when char disapproved",
       "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
       "TAGS" : [ "Vaxia" ],
       "REQUIRES" : [ "rules", "workflow_rules" ],
-      "ON" : [ "workflow_state_changed" ],
+      "ON" : { "workflow_state_changed" : [] },
       "IF" : [
         { "node_is_of_type" : {
             "node" : [ "node" ],
@@ -135,9 +139,10 @@ function vaxia_default_rules_configuration() {
   $items['rules_notify_player_when_char_eval'] = entity_import('rules_config', '{ "rules_notify_player_when_char_eval" : {
       "LABEL" : "Notify player when char approved",
       "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
       "TAGS" : [ "Vaxia" ],
       "REQUIRES" : [ "rules", "workflow_rules" ],
-      "ON" : [ "workflow_state_changed" ],
+      "ON" : { "workflow_state_changed" : [] },
       "IF" : [
         { "node_is_of_type" : {
             "node" : [ "node" ],
@@ -170,9 +175,10 @@ function vaxia_default_rules_configuration() {
   $items['rules_unpublish_child_rooms_when_room_unpublished'] = entity_import('rules_config', '{ "rules_unpublish_child_rooms_when_room_unpublished" : {
       "LABEL" : "Unpublish child rooms when room unpublished",
       "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
       "TAGS" : [ "Vaxia" ],
       "REQUIRES" : [ "rules" ],
-      "ON" : [ "node_update" ],
+      "ON" : { "node_update" : [] },
       "IF" : [
         { "node_is_of_type" : {
             "node" : [ "node" ],
@@ -187,7 +193,7 @@ function vaxia_default_rules_configuration() {
             "USING" : {
               "type" : "node",
               "property" : "field_parent",
-              "value" : [ "node:nid" ],
+              "value" : [ "node" ],
               "limit" : "100"
             },
             "PROVIDE" : { "entity_fetched" : { "entity_fetched" : "Fetched entity" } }
@@ -198,6 +204,7 @@ function vaxia_default_rules_configuration() {
             "ITEM" : { "list_item" : "Current list item" },
             "DO" : [
               { "node_unpublish" : { "node" : [ "list-item" ] } },
+              { "entity_save" : { "data" : [ "list-item" ], "immediate" : 1 } },
               { "drupal_message" : { "message" : "The child location [list-item:title] has also been unpublished." } }
             ]
           }

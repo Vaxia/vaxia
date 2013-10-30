@@ -3102,6 +3102,9 @@ Additional languages may be added through RP at the following costs of practice 
           'human_gargorian' => 'human - Gargorian',
           'human_demi' => 'human - Demi-Human',
           'half_elfin' => 'Half-Elfin',
+          'metal_robot' => 'Metal-born - robot',
+          'metal_nanobot' => 'Metal-born - nanbot swarm',
+          'metal_ai' => 'Metal-born - AI',
         ),
         'allowed_values_function' => '',
       ),
@@ -10061,6 +10064,9 @@ Additional languages may be added through RP at the following costs of practice 
           'human_gargorian' => 'human - Gargorian',
           'human_demi' => 'human - Demi-Human',
           'half_elfin' => 'Half-Elfin',
+          'metal_robot' => 'Metal-born - robot',
+          'metal_nanobot' => 'Metal-born - nanbot swarm',
+          'metal_ai' => 'Metal-born - AI',
         ),
         'allowed_values_function' => '',
       ),
@@ -10918,6 +10924,75 @@ Additional languages may be added through RP at the following costs of practice 
     ),
   );
 
+  // Exported field: 'node-rpg_chatroom-field_realm'.
+  $fields['node-rpg_chatroom-field_realm'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_realm',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          'Vaxia' => 'Vaxia',
+          'Sirian' => 'Sirian',
+        ),
+        'allowed_values_function' => '',
+      ),
+      'translatable' => '0',
+      'type' => 'list_text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'rpg_chatroom',
+      'default_value' => array(
+        0 => array(
+          'value' => 'Vaxia',
+        ),
+      ),
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '6',
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_realm',
+      'label' => 'Realm',
+      'required' => 1,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '32',
+      ),
+    ),
+  );
+
   // Exported field: 'node-rpg_chatroom-field_rl_weather'.
   $fields['node-rpg_chatroom-field_rl_weather'] = array(
     'field_config' => array(
@@ -11642,7 +11717,7 @@ Additional languages may be added through RP at the following costs of practice 
         'module' => 'select_image',
         'settings' => array(),
         'type' => 'select_image_select',
-        'weight' => '7',
+        'weight' => '4',
       ),
     ),
   );
@@ -11704,7 +11779,7 @@ Additional languages may be added through RP at the following costs of practice 
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '10',
+        'weight' => '7',
       ),
     ),
   );
@@ -11777,7 +11852,7 @@ Additional languages may be added through RP at the following costs of practice 
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '8',
+        'weight' => '5',
       ),
     ),
   );
@@ -11831,7 +11906,7 @@ Additional languages may be added through RP at the following costs of practice 
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '9',
+        'weight' => '6',
       ),
     ),
   );

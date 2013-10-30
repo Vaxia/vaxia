@@ -30,7 +30,7 @@ function vaxia_field_group_info() {
       'formatter' => 'collapsible',
       'instance_settings' => array(
         'description' => '',
-        'classes' => '',
+        'classes' => ' group-artwork field-group-fieldset',
         'required_fields' => 1,
       ),
     ),
@@ -110,7 +110,7 @@ function vaxia_field_group_info() {
       'formatter' => 'collapsible',
       'instance_settings' => array(
         'description' => '',
-        'classes' => '',
+        'classes' => ' group-art field-group-fieldset',
         'required_fields' => 1,
       ),
     ),
@@ -192,7 +192,7 @@ function vaxia_field_group_info() {
       'formatter' => 'collapsible',
       'instance_settings' => array(
         'description' => '',
-        'classes' => '',
+        'classes' => ' group-details field-group-fieldset',
         'required_fields' => 1,
       ),
     ),
@@ -346,7 +346,7 @@ function vaxia_field_group_info() {
       'formatter' => 'collapsible',
       'instance_settings' => array(
         'description' => '',
-        'classes' => '',
+        'classes' => ' group-details field-group-fieldset',
         'required_fields' => 1,
       ),
     ),
@@ -588,7 +588,7 @@ function vaxia_field_group_info() {
       'formatter' => 'collapsible',
       'instance_settings' => array(
         'description' => '',
-        'classes' => '',
+        'classes' => ' group-notes field-group-fieldset',
         'required_fields' => 1,
       ),
     ),
@@ -929,7 +929,7 @@ function vaxia_field_group_info() {
       'formatter' => 'collapsible',
       'instance_settings' => array(
         'description' => '',
-        'classes' => '',
+        'classes' => ' group-personal field-group-fieldset',
         'required_fields' => 1,
       ),
     ),
