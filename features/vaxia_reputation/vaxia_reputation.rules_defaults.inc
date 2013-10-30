@@ -12,9 +12,10 @@ function vaxia_reputation_default_rules_configuration() {
   $items['rules_add_v_rep_for_being_in_a_session'] = entity_import('rules_config', '{ "rules_add_v_rep_for_being_in_a_session" : {
       "LABEL" : "Give v-rep for being in a session",
       "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
       "TAGS" : [ "Vaxia Reputation" ],
       "REQUIRES" : [ "rules", "userpoints_rules" ],
-      "ON" : [ "node_insert" ],
+      "ON" : { "node_insert" : [] },
       "IF" : [
         { "node_is_of_type" : {
             "node" : [ "node" ],
@@ -47,9 +48,10 @@ function vaxia_reputation_default_rules_configuration() {
   $items['rules_give_v_rep_for_approving_character_sheet'] = entity_import('rules_config', '{ "rules_give_v_rep_for_approving_character_sheet" : {
       "LABEL" : "Give v-rep for approving sheet w\\/in 3 days",
       "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
       "TAGS" : [ "Vaxia Reputation" ],
       "REQUIRES" : [ "rules", "workflow_rules", "php", "userpoints_rules" ],
-      "ON" : [ "workflow_state_changed" ],
+      "ON" : { "workflow_state_changed" : [] },
       "IF" : [
         { "node_is_of_type" : {
             "node" : [ "node" ],
@@ -82,9 +84,10 @@ function vaxia_reputation_default_rules_configuration() {
   $items['rules_give_v_rep_when_character_approved'] = entity_import('rules_config', '{ "rules_give_v_rep_when_character_approved" : {
       "LABEL" : "Give v-rep when character approved",
       "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
       "TAGS" : [ "Vaxia Reputation" ],
       "REQUIRES" : [ "rules", "workflow_rules", "userpoints_rules" ],
-      "ON" : [ "workflow_state_changed" ],
+      "ON" : { "workflow_state_changed" : [] },
       "IF" : [
         { "node_is_of_type" : {
             "node" : [ "node" ],

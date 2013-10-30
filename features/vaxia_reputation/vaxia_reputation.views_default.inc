@@ -85,7 +85,7 @@ function vaxia_reputation_views_default_views() {
   $handler->display->display_options['relationships']['uid']['table'] = 'userpoints';
   $handler->display->display_options['relationships']['uid']['field'] = 'uid';
   $handler->display->display_options['relationships']['uid']['required'] = TRUE;
-  /* Relationship: Userpoints Transactions: Node */
+  /* Relationship: Broken/missing handler */
   $handler->display->display_options['relationships']['node']['id'] = 'node';
   $handler->display->display_options['relationships']['node']['table'] = 'userpoints_txn';
   $handler->display->display_options['relationships']['node']['field'] = 'node';
@@ -235,7 +235,7 @@ function vaxia_reputation_views_default_views() {
   $handler->display->display_options['fields']['points']['table'] = 'userpoints_txn';
   $handler->display->display_options['fields']['points']['field'] = 'points';
   $handler->display->display_options['fields']['points']['relationship'] = 'uid';
-  /* Field: Userpoints Transactions: Transaction ID */
+  /* Field: Broken/missing handler */
   $handler->display->display_options['fields']['txn_id']['id'] = 'txn_id';
   $handler->display->display_options['fields']['txn_id']['table'] = 'userpoints_txn';
   $handler->display->display_options['fields']['txn_id']['field'] = 'txn_id';

@@ -19,7 +19,7 @@ function vaxia_sh_test_user_default_roles() {
   // Exported role: storyteller-expired.
   $roles['storyteller-expired'] = array(
     'name' => 'storyteller-expired',
-    'weight' => '6',
+    'weight' => '7',
   );
 
   // Exported role: storyteller-newbie.
