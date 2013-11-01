@@ -1,0 +1,307 @@
+<?php
+/**
+ * @file
+ * Code for the Vaxia NPCs feature.
+ */
+
+include_once 'vaxia_npcs.features.inc';
+
+/**
+ * Implements hook_permission().
+ */
+function vaxia_npcs_permission() {
+  return array(
+    'claim NPC'=> array(
+      'title' => t('claim NPC'),
+      'description' => t('Claim NPC from toybox'),
+    ),
+    'administer NPC handler'=> array(
+      'title' => t('administer NPC handler'),
+      'description' => t('Administrate NPC handler'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function vaxia_npcs_menu() {
+  $items['admin/config/system/vaxia_npcs'] = array(
+    'title' => 'Vaxia NPC handling',
+    'description' => 'Configure workflow settings for NPC handling',
+    'type' => MENU_CALLBACK,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('_vaxia_npcs_admin_settings'),
+    'access arguments' => array('administer NPC handler'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  return $items;
+}
+
+/**
+* Implements hook_cron_queue_info().
+*/
+function vaxia_npcs_cron_queue_info() {
+  $queues = array();
+  $queues['vaxiaNPCReturnQueue'] = array(
+    'worker callback' => '_vaxia_npcs_return_npcs',
+    'time' => 60,
+  );
+  return $queues;
+}
+
+/**
+ * Implements hook_cron().
+ */
+function vaxia_npcs_cron() {
+  $last_run = variable_get('vaxia_npcs_cron', 0);
+  $yesterday = strtotime('-1 day');
+  //if ($last_run < $yesterday) {
+  if (1 == 1) {
+    $queue = DrupalQueue::get('vaxiaNPCReturnQueue');
+    $last_run = variable_set('vaxia_npcs_cron', strtotime('now'));
+    // On cron. Go through ALL NPC sheets.
+    // Using this query to make sure we don't load anything we really don't need to.
+    $npcs = db_query('SELECT npc.entity_id FROM {field_data_field_is_npc} npc ' . // Where an NPC
+      'LEFT JOIN {node} n ON npc.entity_id = n.nid AND npc.revision_id = n.vid ' .
+      'WHERE n.status = 1 ' . // Active node
+      'AND npc.field_is_npc_value = 1 ' . // Is an NPC
+      'UNION ' . // Merge two sets
+      'SELECT onpc.entity_id FROM {field_data_field_is_open_npc} onpc ' . // Where an open NPC
+      'LEFT JOIN {node} n2 ON onpc.entity_id = n2.nid AND onpc.revision_id = n2.vid ' .
+      'WHERE n2.status = 1 ' . // Active node
+      'AND onpc.field_is_open_npc_value = 1 ' // Is an open NPC
+    );
+    foreach ($npcs as $npc) {
+      $remove = TRUE;
+      // Determine what the latest post (if there was one) with this character was.
+      $comment_times = db_query('SELECT MAX(c.created) AS comment_time FROM {comment} c ' .
+        'LEFT JOIN {field_data_field_comment_character} npc ON c.cid = npc.entity_id ' .
+        'WHERE npc.field_comment_character_nid = :nid ',
+        array(':nid' => $npc->entity_id)
+      );
+      $timeout = strtotime(variable_get('vaxia_npcs_claim_timeout', '6 months') . ' ago');
+      foreach ($comment_times as $comment_time) {
+        if ($timeout < $comment_time->comment_time) {
+          $remove = FALSE;
+        }
+      }
+      // Remove if we still want to remove it.
+      if ($remove) {
+        $item = array(
+          'nid' => $npc->entity_id
+        );
+        $queue->createItem($item);
+      }
+    }
+  }
+}
+
+/**
+ * Helper function, calculate money for economy on cron.
+ */
+function _vaxia_npcs_return_npcs($node_data) {
+  $node = node_load($node_data['nid']);
+  if (_character_sheet_is_enabled($node)  && _character_sheet_is_playable($node) && _vaxia_npcs_is_an_npc($node)) {
+    if (!_vaxia_npcs_can_be_claimed($node)) {
+      $workflow = variable_get('vaxia_npcs_return_workflow', '');
+      workflow_execute_transition($node, $workflow, t('NPC has been returned to the wiki by timeout.'), TRUE);
+      if (function_exists('rules_invoke_event')) {
+        $user = user_load(1);
+        rules_invoke_event('vaxia_npcs_return', $user, $node);
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_rules_event_info().
+ */
+function vaxia_npcs_rules_event_info() {
+  $items = array(
+    'vaxia_npcs_claim' => array(
+      'label' => t('Vaxia NPC claimed'),
+      'group' => t('Vaxia'),
+      'variables' => array(
+        'user' => array(
+            'type' => 'user',
+            'label' => t('NPC user'),
+        ),
+        'node' => array(
+            'type' => 'node',
+            'label' => t('NPC'),
+        ),
+      ),
+    ),
+    'vaxia_npcs_return' => array(
+      'label' => t('Vaxia NPC returns'),
+      'group' => t('Vaxia'),
+      'variables' => array(
+        'user' => array(
+            'type' => 'user',
+            'label' => t('NPC user'),
+        ),
+        'node' => array(
+            'type' => 'node',
+            'label' => t('NPC'),
+        ),
+      ),
+    ),
+  );
+  return $items;
+}
+
+/*
+ * Implements hook_node_view().
+ */
+function vaxia_npcs_node_view($node, $view_mode, $langcode) {
+  // If node is a character sheet, marked as an NPC.
+  if (user_access('claim NPC') && _character_sheet_is_enabled($node) && _vaxia_npcs_is_an_npc($node)) {
+    global $user;
+    // If workflow is in the claimable mode, add button.
+    if (_vaxia_npcs_can_be_claimed($node) && ($node->uid == $user->uid || _vaxia_npcs_is_an_open_npc($node))) {
+      $node->content['vaxia_npcs_form'] = drupal_get_form('_vaxia_npcs_claim_form', $node);
+    }
+    // Else, is in active use. If the viewer is the owner give the button to return.
+    if (!_vaxia_npcs_can_be_claimed($node) && ($node->uid == $user->uid || _vaxia_npcs_is_an_open_npc($node))) {
+      $node->content['vaxia_npcs_form'] = drupal_get_form('_vaxia_npcs_return_form', $node);
+    }
+  }
+}
+
+/**
+ * Implementation of admin settings form.
+ */
+function _vaxia_npcs_claim_form($form, &$form_state, $node) {
+  $form = array();
+  $form['nid'] = array(
+    '#type' => 'hidden',
+    '#value' => $node->nid,
+  );
+  $form['vaxia_npc_claim'] = array(
+    '#type' => 'submit',
+    '#value' => t('Claim NPC'),
+  );
+  return $form;
+}
+
+/*
+ * Form callback submission for _vaxia_npcs_claim_form.
+ */
+function _vaxia_npcs_claim_form_submit($form, $form_state) {
+  $workflow = variable_get('vaxia_npcs_claim_workflow', '');
+  $node = node_load($form_state['values']['nid']);
+  workflow_execute_transition($node, $workflow, t('NPC has been claimed from the wiki.'), TRUE);
+  $time = variable_get('vaxia_npcs_claim_timeout', '6 months');
+  drupal_set_message(t('You have claimed this NPC for use in sessions. A few things to remember: This NPC will need to go through ' .
+    'approval to make sure it follows current site policies. Once you are done using the NPC, please remember to return the NPC to ' .
+    'the wiki for long term storage. If you don\'t post with the NPC for at least ' . $time . ' it will be automatically returned.'));
+  global $user;
+  if (function_exists('rules_invoke_event')) {
+    rules_invoke_event('vaxia_npcs_claim', $user, $node);
+  }
+}
+
+/**
+ * Implementation of admin settings form.
+ */
+function _vaxia_npcs_return_form($form, &$form_state, $node) {
+  $form = array();
+  $form['nid'] = array(
+    '#type' => 'hidden',
+    '#value' => $node->nid,
+  );
+  $form['vaxia_npc_return'] = array(
+    '#type' => 'submit',
+    '#value' => t('Return NPC to wiki'),
+  );
+  return $form;
+}
+
+/*
+ * Form callback submission for _vaxia_npcs_return_form.
+ */
+function _vaxia_npcs_return_form_submit($form, $form_state) {
+  $workflow = variable_get('vaxia_npcs_return_workflow', '');
+  $node = node_load($form_state['values']['nid']);
+  workflow_execute_transition($node, $workflow, t('NPC has been returned to the wiki.'), TRUE);
+  drupal_set_message(t('Thank you for returning this NPC to the wiki. This allows us to keep a clean inventory of NPCs active in the system for ' .
+    'regular use, and keep our NPCs consistant over time with existing site policy.'));
+  if (function_exists('rules_invoke_event')) {
+    global $user;
+    rules_invoke_event('vaxia_npcs_return', $user, $node);
+  }
+}
+
+/**
+ * Implementation of admin settings form.
+ */
+function _vaxia_npcs_admin_settings($form, &$form_state) {
+  // Setting for workflow to drop the NPCs into on being claimed.
+  $workflow_options = array();
+  $workflows = workflow_get_workflows();
+  foreach ($workflows as $workflow) {
+    $states = workflow_get_workflow_states_by_wid($workflow->wid);
+    foreach ($states as $state) {
+      $workflow_options[$state->sid] = $workflow->name . ':' . $state->state;
+    }
+  }
+  $form['vaxia_npcs_claim_workflow'] = array(
+    '#title' => 'Claim workflow',
+    '#description' => 'Workflow state for NPCs who are being claimed.',
+    '#type' => 'select',
+    '#options' => $workflow_options,
+    '#default_value' => variable_get('vaxia_npcs_claim_workflow', ''),
+  );
+  $form['vaxia_npcs_return_workflow'] = array(
+    '#title' => 'Return workflow',
+    '#description' => 'Workflow state for NPCs who are being returned to the wiki.',
+    '#type' => 'select',
+    '#options' => $workflow_options,
+    '#default_value' => variable_get('vaxia_npcs_return_workflow', ''),
+  );
+  // Posting timeout for how long before they post to clean them up.
+  $form['vaxia_npcs_claim_timeout'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Length of time an NPC may be claimed without being put to use posting'),
+    '#default_value' => variable_get('vaxia_npcs_claim_timeout', '6 months'),
+    '#description' => t('Use relative time frames as per spec at ' .
+      '<a href="http://www.php.net/manual/en/datetime.formats.relative.php">' .
+      'http://www.php.net/manual/en/datetime.formats.relative.php</a>.'),
+  );
+  return system_settings_form($form);
+}
+
+/**
+ * Helper function, check for NPC status.
+ */
+function _vaxia_npcs_is_an_npc($node) {
+  if (isset($node->field_is_npc[$node->language][0]['value']) && $node->field_is_npc[$node->language][0]['value'] == TRUE) {
+    return TRUE;
+  }
+  if (isset($node->field_is_open_npc[$node->language][0]['value']) && $node->field_is_open_npc[$node->language][0]['value'] == TRUE) {
+    return FALSE;
+  }
+  return FALSE;
+}
+
+/**
+ * Helper function, check for open NPC status.
+ */
+function _vaxia_npcs_is_an_open_npc($node) {
+  if (isset($node->field_is_open_npc[$node->language][0]['value']) && $node->field_is_open_npc[$node->language][0]['value'] == TRUE) {
+    return FALSE;
+  }
+  return FALSE;
+}
+
+/**
+ * Helper function, check for Claimable status.
+ */
+function _vaxia_npcs_can_be_claimed($node) {
+  $return_state = variable_get('vaxia_npcs_return_workflow', ''); // The NPC can only be claimed if the node is in this state.
+  if (isset($node->workflow) && $node->workflow == $return_state) {
+    return TRUE;
+  }
+  return FALSE;
+}
