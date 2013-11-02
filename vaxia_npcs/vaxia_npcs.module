@@ -102,7 +102,7 @@ function vaxia_npcs_cron() {
 function _vaxia_npcs_return_npcs($node_data) {
   $node = node_load($node_data['nid']);
   if (_character_sheet_is_enabled($node)  && _character_sheet_is_playable($node) && _vaxia_npcs_is_an_npc($node)) {
-    if (!_vaxia_npcs_can_be_claimed($node)) {
+    if (!_vaxia_npcs_can_be_claimed($node) && !_vaxia_npcs_recently_approved($node)) {
       $workflow = variable_get('vaxia_npcs_return_workflow', '');
       workflow_execute_transition($node, $workflow, t('NPC has been returned to the wiki by timeout.'), TRUE);
       if (function_exists('rules_invoke_event')) {
@@ -300,6 +300,17 @@ function _vaxia_npcs_is_an_open_npc($node) {
 function _vaxia_npcs_can_be_claimed($node) {
   $return_state = variable_get('vaxia_npcs_return_workflow', ''); // The NPC can only be claimed if the node is in this state.
   if (isset($node->workflow) && $node->workflow == $return_state) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+/**
+ * Helper function, check for recently approved.
+ */
+function _vaxia_npcs_recently_approved($node) {
+  $timeout = strtotime(variable_get('vaxia_npcs_claim_timeout', '6 months') . ' ago');
+  if (isset($node->workflow_stamp) && $node->workflow_stamp > $timeout) {
     return TRUE;
   }
   return FALSE;
