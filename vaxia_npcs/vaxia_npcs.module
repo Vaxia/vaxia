@@ -172,11 +172,11 @@ function vaxia_npcs_node_view($node, $view_mode, $langcode) {
   if (user_access('claim NPC') && _character_sheet_is_enabled($node) && _vaxia_npcs_is_an_npc($node)) {
     global $user;
     // If workflow is in the claimable mode and this is open or owned NPC, add button.
-    if (_vaxia_npcs_can_be_claimed($node) && ($node->uid == $user->uid || _vaxia_npcs_is_an_open_npc($node))) {
+    if (_vaxia_npcs_can_be_claimed($node) && ($node->uid == $user->uid || _vaxia_npcs_is_an_open_npc($node) || !_vaxia_npcs_owner_is_sh($node))) {
       $node->content['vaxia_npcs_form'] = drupal_get_form('_vaxia_npcs_claim_form', $node);
     }
     // If workflow is in the claimable mode and this is not open anod no owned NPC, add button.
-    if (_vaxia_npcs_can_be_claimed($node) && ($node->uid != $user->uid && !_vaxia_npcs_is_an_open_npc($node))) {
+    if (_vaxia_npcs_can_be_claimed($node) && ($node->uid != $user->uid && !_vaxia_npcs_is_an_open_npc($node) && _vaxia_npcs_owner_is_sh($node))) {
       $node->content['vaxia_npcs_form'] = drupal_get_form('_vaxia_npcs_request_form', $node);
     }
     // Else, is in active use. If the viewer is the owner give the button to return.
@@ -208,6 +208,13 @@ function _vaxia_npcs_claim_form($form, &$form_state, $node) {
 function _vaxia_npcs_claim_form_submit($form, $form_state) {
   $workflow = variable_get('vaxia_npcs_claim_workflow', '');
   $node = node_load($form_state['values']['nid']);
+  // If the current owner is no longer an SH, then the logged in user gets to claim ownership.
+  if (!_vaxia_npcs_owner_is_sh($node)) {
+    global $user;
+    $node->uid = $user->uid;
+    node_save($node);
+  }
+  // Make the transition.
   workflow_execute_transition($node, $workflow, t('NPC has been claimed from the wiki.'), TRUE);
   $time = variable_get('vaxia_npcs_claim_timeout', '6 months');
   drupal_set_message(t('You have claimed this NPC for use in sessions. A few things to remember: This NPC will need to go through ' .
@@ -317,6 +324,15 @@ function _vaxia_npcs_admin_settings($form, &$form_state) {
       '<a href="http://www.php.net/manual/en/datetime.formats.relative.php">' .
       'http://www.php.net/manual/en/datetime.formats.relative.php</a>.'),
   );
+  // storyteller role
+  $roles = user_roles(TRUE);
+  $form['vaxia_npcs_storyteller_role'] = array(
+    '#type' => 'select',
+    '#options' => $roles,
+    '#title' => t('storyteller role'),
+    '#default_value' => variable_get('vaxia_npcs_storyteller_role', ''),
+    '#description' => t('NPC owners who have a storyteller role cannot have NPCs sniped from their ownership.'),
+  );
   return system_settings_form($form);
 }
 
@@ -360,6 +376,18 @@ function _vaxia_npcs_can_be_claimed($node) {
 function _vaxia_npcs_recently_approved($node) {
   $timeout = strtotime(variable_get('vaxia_npcs_claim_timeout', '6 months') . ' ago');
   if (isset($node->workflow_stamp) && $node->workflow_stamp > $timeout) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+/**
+ * Helper function, check for if the owner is a current SH.
+ */
+function _vaxia_npcs_owner_is_sh($node) {
+  $storyteller_role = variable_get('vaxia_npcs_storyteller_role', '');
+  $user = user_load($node->uid);
+  if (in_array($storyteller_role, array_keys($user->roles))) {
     return TRUE;
   }
   return FALSE;
