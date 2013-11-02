@@ -132,6 +132,20 @@ function vaxia_npcs_rules_event_info() {
         ),
       ),
     ),
+    'vaxia_npcs_request' => array(
+      'label' => t('Vaxia NPC requested'),
+      'group' => t('Vaxia'),
+      'variables' => array(
+        'user' => array(
+            'type' => 'user',
+            'label' => t('NPC user'),
+        ),
+        'node' => array(
+            'type' => 'node',
+            'label' => t('NPC'),
+        ),
+      ),
+    ),
     'vaxia_npcs_return' => array(
       'label' => t('Vaxia NPC returns'),
       'group' => t('Vaxia'),
@@ -157,9 +171,13 @@ function vaxia_npcs_node_view($node, $view_mode, $langcode) {
   // If node is a character sheet, marked as an NPC.
   if (user_access('claim NPC') && _character_sheet_is_enabled($node) && _vaxia_npcs_is_an_npc($node)) {
     global $user;
-    // If workflow is in the claimable mode, add button.
+    // If workflow is in the claimable mode and this is open or owned NPC, add button.
     if (_vaxia_npcs_can_be_claimed($node) && ($node->uid == $user->uid || _vaxia_npcs_is_an_open_npc($node))) {
       $node->content['vaxia_npcs_form'] = drupal_get_form('_vaxia_npcs_claim_form', $node);
+    }
+    // If workflow is in the claimable mode and this is not open anod no owned NPC, add button.
+    if (_vaxia_npcs_can_be_claimed($node) && ($node->uid != $user->uid && !_vaxia_npcs_is_an_open_npc($node))) {
+      $node->content['vaxia_npcs_form'] = drupal_get_form('_vaxia_npcs_request_form', $node);
     }
     // Else, is in active use. If the viewer is the owner give the button to return.
     if (!_vaxia_npcs_can_be_claimed($node) && ($node->uid == $user->uid || _vaxia_npcs_is_an_open_npc($node))) {
@@ -195,9 +213,40 @@ function _vaxia_npcs_claim_form_submit($form, $form_state) {
   drupal_set_message(t('You have claimed this NPC for use in sessions. A few things to remember: This NPC will need to go through ' .
     'approval to make sure it follows current site policies. Once you are done using the NPC, please remember to return the NPC to ' .
     'the wiki for long term storage. If you don\'t post with the NPC for at least ' . $time . ' it will be automatically returned.'));
-  global $user;
   if (function_exists('rules_invoke_event')) {
+    global $user;
     rules_invoke_event('vaxia_npcs_claim', $user, $node);
+  }
+}
+
+/**
+ * Implementation of admin settings form.
+ */
+function _vaxia_npcs_request_form($form, &$form_state, $node) {
+  $form = array();
+  $form['nid'] = array(
+    '#type' => 'hidden',
+    '#value' => $node->nid,
+  );
+  $form['vaxia_npc_request'] = array(
+    '#type' => 'submit',
+    '#value' => t('Request NPC'),
+  );
+  return $form;
+}
+
+/*
+ * Form callback submission for _vaxia_npcs_request_form.
+ */
+function _vaxia_npcs_request_form_submit($form, $form_state) {
+  $node = node_load($form_state['values']['nid']);
+  $time = variable_get('vaxia_npcs_request_timeout', '6 months');
+  drupal_set_message(t('You have requested this NPC for use in sessions. Because it is not an open NPC, the current owner needs to ' . 
+    'coordinate use with you to avoid story conflicts with ongoing or future sagas. They have been sent an email to get that conversation ' .
+    'started, but you may want to follow up with them directly as well.'));
+  if (function_exists('rules_invoke_event')) {
+    global $user;
+    rules_invoke_event('vaxia_npcs_request', $user, $node);
   }
 }
 
