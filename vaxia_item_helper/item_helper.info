@@ -1,6 +1,0 @@
-name = Vaxia item helper
-description = Inline assist for creating items aimed at players
-core = 7.x
-package = RPG
-version = 7.x-1.0
-dependencies[] = vaxia_dice_ruler
