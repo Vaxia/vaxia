@@ -701,6 +701,12 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
       '#description' => t('Transfer HXP to this character sheet.'),
       '#autocomplete_path' => 'vaxia/transfer_xp',
     );
+    $xp = _character_sheet_get_xp($node->nid, 'spent_xp');
+    $form['transfer']['confirm']['amount'] = array(
+      '#type' => 'hidden',
+      '#value' => $xp,
+      '#description' => t('Up to ' . $xp . ' HXP is available to be transferred.'),
+    );
     $form['transfer']['confirm']['confirm'] = array(
       '#type' => 'textfield',
       '#title' => t('Confirm'),
@@ -965,6 +971,10 @@ function _vaxia_transfer_xp_validate(&$form, &$form_state) {
   if ($form_state['values']['confirm'] != 'TRANSFER') {
     form_set_error('confirm', t('Transfer was not confirmed.'));
   }
+  // Sanity check
+  if (!is_integer($form_state['values']['amount']) || $form_state['values']['amount'] < 1) {
+    form_set_error('amount', t('Amount to transfer makes no sense.'));
+  }
 }
 
 /**
@@ -978,12 +988,18 @@ function _vaxia_transfer_xp_submit(&$form, &$form_state) {
     $workflow = variable_get('vaxia_transfer_workflow', '');
     if (!empty($old_character) && !empty($new_character) && !empty($workflow) && $old_character->nid != $new_character->nid) {
       // Grab XP for this character.
-      $xp = _character_sheet_get_xp($old_character->nid, 'spent_xp');
+      $full_xp = _character_sheet_get_xp($old_character->nid, 'spent_xp');
+      $xp = $form_state['values']['amount'];
+      // Check in case user entered more than they have.
+      if ($xp > $full_xp) {
+        $xp = $full_xp;
+      }
+      // Make the transfer.
       $new_xp = floor($xp * variable_get('vaxia_transfer_percentage', 0.75));
-      watchdog('vaxia', 'Transfering ALL xp (@new_xp out of @xp max 300) from #@nid @title to #@nid2 @title2',
+      watchdog('vaxia', 'Transfering ' . $xp . ' xp (@new_xp out of @xp max 300) from #@nid @title to #@nid2 @title2',
         array('@new_xp' => $new_xp, '@xp' => $xp, '@nid' => $old_character->nid, '@title' => $old_character->title,
         '@nid2' => $new_character->nid, '@title2' => $new_character->title));
-      drupal_set_message(t('Transfering ALL xp (@new_xp out of @xp max 300) from #@nid @title to #@nid2 @title2',
+      drupal_set_message(t('Transfering ' . $xp . ' xp (@new_xp out of @xp max 300) from #@nid @title to #@nid2 @title2',
         array('@new_xp' => $new_xp, '@xp' => $xp, '@nid' => $old_character->nid, '@title' => $old_character->title,
         '@nid2' => $new_character->nid, '@title2' => $new_character->title)));
       // Now add XP to the new character.
@@ -997,15 +1013,21 @@ function _vaxia_transfer_xp_submit(&$form, &$form_state) {
       else {
         _character_sheet_update_xp($new_character->nid, $new_xp, 'xp');
       }
+      // Remove existing XP amount from both xp and spent xp (to keep balances).
+      _character_sheet_update_xp($old_character->nid, $xp, 'spent_xp');
+      _character_sheet_update_xp($old_character->nid, $xp, 'xp');
+      // Logs and cleanup.
       $message = t('%xp transfer xp added to %title by system.',
         array('%xp' => $new_xp, '%title' => $new_character->title));
       _character_sheet_update_log($new_character->nid, 'transfer', $message);
-      // Update the XP recorded for the old character.
-      _character_sheet_delete_xp($old_character->nid);
-      _character_sheet_delete_log($old_character->nid);
-      _vaxia_delete_type_tracking($old_character->nid);
-      // And update the original character status.
-      workflow_execute_transition($old_character, $workflow, t('Transferring XP to a new character'), TRUE);
+      if ($full_xp <= $xp) {
+        // Clear records for the XP recorded for the old character.
+        _character_sheet_delete_xp($old_character->nid);
+        _character_sheet_delete_log($old_character->nid);
+        _vaxia_delete_type_tracking($old_character->nid);
+        // And update the original character status.
+        workflow_execute_transition($old_character, $workflow, t('Transferred all XP to a new character'), TRUE);
+      }
     }
   }
   else {
