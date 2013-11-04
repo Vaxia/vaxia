@@ -372,6 +372,9 @@ function vaxia_character_sheet_validate_sheet($node, $old_node, $form, $form_sta
   if (isset($node->field_is_npc[$node->language][0]['value']) && $node->field_is_npc[$node->language][0]['value'] == TRUE) {
     return FALSE;
   }
+  if (isset($node->field_is_open_npc[$node->language][0]['value']) && $node->field_is_open_npc[$node->language][0]['value'] == TRUE) {
+    return FALSE;
+  }
   // Run this only for draft nodes, to cap out at 300 per field.
   // Check if the sheet has been finalized.
   if (!isset($node->workflow) || (isset($node->workflow)
