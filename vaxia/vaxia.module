@@ -231,8 +231,8 @@ function vaxia_node_insert($node) {
       (isset($node->field_is_open_npc[$lang][0]['value']) && $node->field_is_open_npc[$lang][0]['value'] == 1) ) {
       $playable_states = variable_get('character_sheet_vaxia_playable', '');
       if (is_array($playable_states)) {
-        $workflow = array_shift($playable_states);
-        workflow_execute_transition($node, $workflow, t('NPCs do not need to go through character evaluation.'), TRUE);
+//        $workflow = array_shift($playable_states);
+//        workflow_execute_transition($node, $workflow, t('NPCs do not need to go through character evaluation.'), TRUE);
       }
     }
   }
