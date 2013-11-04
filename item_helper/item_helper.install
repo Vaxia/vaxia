@@ -1,0 +1,66 @@
+<?php
+// $Id$
+
+/**
+ * @file
+ * Install, update and uninstall functions for the item_helper module.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function item_helper_schema() {
+  $schema['item_helper_item_comments'] = array(
+    'description' => 'Table that maps comments to items for history.',
+    'fields' => array(
+      'nid' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Nid of the node.',
+      ),
+      'cid' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Cid of the comment.',
+      ),
+      'roll_type' => array(
+        'type' => 'varchar',
+        'not null' => TRUE,
+        'length' => '10', // gen_pp, prep_bon, set_bon
+        'description' => 'Type of bonus for this roll.',
+      ),
+      'rp_bonus' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Value of any applied RP bonus.',
+      ),
+      'set_bonus' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Value of any applied set / material bonus.',
+      ),
+      'difficulty' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Difficulty of the roll.',
+      ),
+    ),
+    'primary key' => array('nid', 'cid'),
+  );
+  return $schema;
+}
+
+/**
+ * Implements hook_install().
+ */
+function item_helper_install() {}
+
+/**
+ * Implements hook_uninstall().
+ */
+function item_helper_uninstall() {}

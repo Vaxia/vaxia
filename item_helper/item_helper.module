@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Provide a search system into the old Vaxia archives.
+ * Provide a clean UI for item creation from a player crafter PoV.
  */
 
 /**
@@ -9,99 +9,599 @@
  */
 function item_helper_permission() {
   return array(
-    'use item helper'=> array(
+    'use item helper' => array(
       'title' => t('use item helper'),
       'description' => t('Use item helper.'),
     ),
+    'set numerical diff' => array(
+      'title' => t('set numerical diff'),
+      'description' => t('Set numerical difficulty for rolls.'),
+    ),
+    'administer item helper' => array(
+      'title' => t('administer item helper'),
+      'description' => t('Administer item helper.'),
+    ),
   );
 }
 
 /**
- * Form callback for the dice ruler form.
- * Mostly ajax driven results.
+ * Implements hook_menu().
  */
-function item_helper_form($form, &$form_state) {
-  $form = array();
-  $form['item_helper_style'] = array(
-    '#type' => 'item',
-    '#markup' => '<style>' .
-      '#vaxia-dice-ruler-form .form-type-textfield{float:left;margin-left:1em;margin-top:0;margin-bottom:0;}' .
-      '#vaxia-dice-ruler-form #edit-a--3{float:left;margin-left:1em;margin-top:0;margin-bottom:0;}' .
-      '#vaxia-dice-ruler-form #edit-b--3{float:left;margin-left:1em;margin-top:0;margin-bottom:0;}' .
-      '#vaxia-dice-ruler-form #item_helper_dice_results th{padding-left:0.5em;text-align:center;}'.
-      '#vaxia-dice-ruler-form #item_helper_dice_results td{padding-left:0.5em;text-align:center;}'.
-      '#vaxia-dice-ruler-form #item_helper_dice_help{float:right;clear:right;margin-top:1em;margin-left:1em;}'.
-      '</style>',
+function item_helper_menu() {
+  $items['admin/config/system/item_helper'] = array(
+    'title' => 'Vaxia item assist configuration',
+    'description' => 'Configure content type association settings for item handling',
+    'type' => MENU_CALLBACK,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('_item_helper_admin_settings'),
+    'access arguments' => array('administer item helper'),
   );
+  $items['vaxia/item_helper/autocomplete/room'] = array(
+    'title' => 'Item assist room lookup',
+    'type' => MENU_CALLBACK,
+    'page callback' => '_item_helper_autocomplete_room',
+    'access arguments' => array('use item helper'),
+  );
+  return $items;
+}
 
-  // Select a type.
-  $form['roll_type'] = array(
+/**
+ * Implements hook_node_insert().
+ */
+function item_helper_node_insert($node) {
+  item_helper_node_update($node);
+}
+
+/**
+ * Implements hook_node_update().
+ */
+function item_helper_node_update($node) {
+  $item_type = variable_get('item_helper_item_type', '');
+  if (!empty($item_type) && $item_type == $node->type) {  
+    $nid = $node->nid;
+    // Collect content info.
+    $save_comments = !empty($node->included_comments_table)
+      ? $node->included_comments_table : array();
+    foreach ($save_comments as $cid => $comment) {
+      // If marked, and not already in the list, add it.
+      $this_comment = (object) $comment;
+      $this_comment->nid = $nid;
+      $this_comment->cid = $cid;
+      $save_comments[$cid] = $this_comment;
+    }
+    // Save each one to the nid.
+    _item_helper_delete_comments($nid);
+    foreach ($save_comments as $cid => $item_comment) {
+      // Don't save what's marked for removal.
+      if ($item_comment->remove == 0) {
+        $item_comment->roll_type = isset($found_comments[$cid]->roll_type) ? $found_comments[$cid]->roll_type : 'gen_pp';
+        $item_comment->set_bonus = isset($found_comments[$cid]->set_bonus) ? $found_comments[$cid]->set_bonus : 0;
+        $item_comment->difficulty = isset($found_comments[$cid]->difficulty) ? $found_comments[$cid]->difficulty : 45;
+        $item_comment->rp_bonus = isset($found_comments[$cid]->rp_bonus) ? $found_comments[$cid]->rp_bonus : 0;
+        _item_helper_update_comment($item_comment);
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_node_delete().
+ */
+function item_helper_node_delete($node) {
+  _item_helper_delete_comments($node->nid);
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
+  $item_type = variable_get('item_helper_item_type', '');
+  if (!empty($item_type) && !empty($form['#node']->type) && $item_type == $form['#node']->type) {
+    // Collapsible interface.
+    $form['item_helper'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Item Build Assistant'),
+      '#description' => t('Use this assistant to attach item creation posts to the item and ' .
+        'get an estimate of the PP generated over the course of the RP. Values calculated under ' .
+        'this system are estimates ONLY. Once submitted the final ruling will be determined by ' .
+        'the evaluator for this item. The assistant is only meant to make the math easier.'),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      '#weight' => -40,
+    );
+    // Part one, add more comments.
+    $form['item_helper']['add_comments'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Add new comments'),
+      '#description' => t('Search for comments by room. Select the comments to apply to this item for ' .
+        'calculating creation rolls.'),
+    );
+    $form['item_helper']['add_comments']['search_room'] = array(
+      '#title' => t('Comments from room'),
+      '#type' => 'textfield',
+      '#autocomplete_path' => 'vaxia/item_helper/autocomplete/room',
+      '#ajax' => array(
+        'callback' => '_item_helper_ajax_load_room_comments',
+        'wrapper' => 'item-helper-add-comments-table',
+        'method' => 'replace',
+        'effect' => 'fade',
+      ),
+    );
+    $room = !empty($form_state['values']['search_room']) ? $form_state['values']['search_room'] : '';
+    $options = array();
+    if (!empty($room)) {
+      $room_nid = _item_helper_autocomplete_get_nid($room);
+      if ($room_nid != FALSE) {
+        $found_comments = _item_helper_get_comments_by_room($room_nid);
+        foreach ($found_comments as $found_comment) {
+          $comment = comment_load($found_comment->cid);
+          $comment_display = '<a href="#" title="' .
+            check_plain($comment->comment_body[$comment->language][0]['value']) . '">' .
+            check_plain($comment->subject) .
+            '</a>';
+          $character = node_load($comment->field_comment_character[$comment->language][0]['nid']);
+          $character_name = isset($character->title) ? $character->title : '';
+          $dice_rolls = _dice_roller_get_roll($found_comment->cid, 'c');
+          $dice_rolls = !empty($dice_rolls)
+            ? theme('dice_roller_results', array('dice_rolls' => $dice_rolls))
+            : t('No rolls found');
+          $options[$found_comment->cid] = array(
+            $comment_display,
+            check_plain($character_name),
+            check_plain($comment->name),
+            $dice_rolls,
+            date('m/d/Y H:i:s', $comment->changed),
+          );
+        }
+      }
+    }
+    $form['item_helper']['add_comments']['add_comments_table'] = array(
+      '#prefix' => '<div id="item-helper-add-comments-table">',
+      '#suffix' => '</div>',
+      '#type' => 'tableselect',
+      '#header' => array(
+        t('Comment'),
+        t('Character'),
+        t('Player'),
+        t('Rolls'),
+        t('Date'),
+      ),
+      '#options' => $options,
+      '#js_select' => FALSE,
+      '#multiple' => TRUE,
+      '#empty' => t('No comments found.'),
+    );
+    $form['item_helper']['add_comments']['add'] = array(
+      '#type' => 'button',
+      '#value' => t('Add Comments'),
+      '#limit_validation_errors' => array(array('add_comments_table'), array('included_comments_table')),
+      // DOUBLE ARRAY. Because drupal docs suck.
+      '#ajax' => array(
+        'callback' => '_item_helper_ajax_add_comments',
+        'wrapper' => 'item-helper-included-comments-table',
+        'method' => 'replace',
+        'effect' => 'fade',
+      ),
+    );
+    // Part two, included comment.
+    $form['item_helper']['included_comments'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Included comments'),
+    );
+    // Setup table format.
+    $form['item_helper']['included_comments']['included_comments_table'] = array(
+      '#prefix' => '<div id="item-helper-included-comments-table">',
+      '#suffix' => '</div>',
+      '#theme' => 'table',
+      '#header' => array(
+        t('Item creation posts'),
+        t('Roll type'),
+        t('Set bonus'),
+        t('Difficulty'),
+        t('RP?'),
+        t('Result'),
+        t('X?'),
+      ),
+      '#rows' => array(),
+      '#attributes' => array('id' => 'item_helper_included_comments_table'),
+      '#empty' => t('No comments found.'),
+      '#tree' => TRUE, // So can be picked up later.
+    );
+    // Create baseline diff display (if user vs SH).
+    $diffs = array(
+      '#type' => 'select',
+      '#options' => array(
+        '5' => t('Ridiculously easy'),
+        '15' => t('Easy'),
+        '25' => t('Normal'),
+        '45' => t('Skilled'),
+        '65' => t('Mastery'),
+        '100' => t('Extremely Difficult'),
+      ),
+    );
+    if (user_access('set numerical diff')) {
+      $diffs = array(
+        '#type' => 'textfield',
+        '#size' => 4,
+      );
+    }
+    // Gather comments for display from various sources.
+    $found_comments = array();
+    // Check for comments still saved on the node.
+    if (isset($form['#node']->nid)) {
+      $set_comments = _item_helper_get_comments($form['#node']->nid);
+      foreach ($set_comments as $set_comment) {
+        $found_comments[$set_comment->cid] = $set_comment;
+      }
+    }
+    // Gather comments existing under AJAX.
+    $exist_comments_table = !empty($form_state['values']['included_comments_table'])
+      ? $form_state['values']['included_comments_table'] : array();
+    foreach ($exist_comments_table as $existing_cid => $existing_comment) {
+      // If marked add it.
+      if ($existing_comment['remove'] == 0) {
+        $this_comment = (object) $existing_comment;
+        $this_comment->cid = $existing_cid;
+        $found_comments[$existing_cid] = $this_comment;
+      }
+      if ($existing_comment['remove'] == 1) {
+        // Delete it as much as possible from the system.
+        unset($form_state['values']['included_comments_table'][$existing_cid]);
+        unset($found_comments[$existing_cid]);
+        if (isset($form['#node']->nid)) {
+          _item_helper_delete_comment($form['#node']->nid, $existing_cid);
+        }
+      }
+    }
+    // Gather comments added via AJAX.
+    $add_comments_table = !empty($form_state['values']['add_comments_table']) ? $form_state['values']['add_comments_table'] : array();
+    // Reverse the order to match posting order.
+    $add_comments_table = array_reverse($add_comments_table, TRUE);
+    foreach ($add_comments_table as $add_comment => $added) {
+      // If marked, and not already in the list, add it.
+      if ($added && !in_array($add_comment, array_keys($found_comments))) {
+        $this_comment->cid = $add_comment;
+        $found_comments[$add_comment] = $this_comment;
+      }
+    }
+    // One last organization of all of these by cid.
+    ksort($found_comments);
+    // Calculate the results for the set
+    $found_comments = _item_helper_calculate_results($found_comments);
+    // Add the comments.
+    foreach ($found_comments as $cid => $item_comment) {
+      $comment = comment_load($cid);
+      $comment_display = '<a href="#" title="' .
+        check_plain($comment->comment_body[$comment->language][0]['value']) . '">' .
+        check_plain($comment->subject) .
+        '</a>';
+      $comment_display = array(
+        '#type' => 'item',
+        '#markup' => $comment_display,
+      );
+      $dice_rolls = _dice_roller_get_roll($cid, 'c');
+      $comment_display['#markup'] .= !empty($dice_rolls)
+        ? theme('dice_roller_results', array('dice_rolls' => $dice_rolls))
+        : '</br>' . t('No rolls found');
+      $roll_type = array(
+        '#type' => 'radios',
+        '#options' => array(
+          'gen_pp' => t('PP for item'),
+          'prep_bon' => t('Prep bonus'),
+          'prep_set' => t('Set bonus'),
+        ),
+        '#default_value' => isset($item_comment->roll_type) ? $item_comment->roll_type : 'gen_pp',
+      );
+      $set_bonus = array(
+        '#type' => 'textfield',
+        '#default_value' => isset($item_comment->set_bonus) ? $item_comment->set_bonus : 0,
+        '#size' => 4,
+      );
+      $difficulty = $diffs;
+      $difficulty['#default_value'] = isset($item_comment->difficulty) ? $item_comment->difficulty : 45;
+      $rp_bonus = array(
+        '#type' => 'checkbox',
+        '#return_value' => 1,
+        '#default_value' => isset($item_comment->rp_bonus) ? $item_comment->rp_bonus : 0,
+      );
+      $results = array(
+        '#type' => 'item',
+        '#markup' => isset($item_comment->results) ? $item_comment->results : t('Not calculated'),
+      );
+      $remove = array(
+        '#type' => 'checkbox',
+        '#return_value' => 1,
+        '#default_value' => 0,
+      );
+      $form['item_helper']['included_comments']['included_comments_table'][$cid] = array(
+        'comment_display' => &$comment_display,
+        'roll_type' => &$roll_type,
+        'rp_bonus' => &$rp_bonus,
+        'set_bonus'=> &$set_bonus,
+        'difficulty' => &$difficulty,
+        'results' => &$results,
+        'order' => &$order,
+        'remove' => &$remove,
+      );
+      $form['item_helper']['included_comments']['included_comments_table']['#rows'][] = array(
+        'class' => array('draggable'),
+        'data' => array(
+          array('data' => &$comment_display),
+          array('data' => &$roll_type),
+          array('data' => &$set_bonus),
+          array('data' => &$difficulty),
+          array('data' => &$rp_bonus),
+          array('data' => &$results),
+          array('data' => &$remove),
+        )
+      );
+      unset($comment_display);
+      unset($roll_type);
+      unset($rp_bonus);
+      unset($set_bonus);
+      unset($difficulty);
+      unset($results);
+      unset($remove);
+    }
+    // Add calculate button.
+    $form['item_helper']['included_comments']['recalculate'] = array(
+      '#type' => 'button',
+      '#value' => t('Calculate PP'),
+      '#limit_validation_errors' => array(array('included_comments_table')),
+      // DOUBLE ARRAY. Because drupal docs suck.
+      '#ajax' => array(
+        'callback' => '_item_helper_ajax_add_comments',
+        'wrapper' => 'item-helper-included-comments-table',
+        'method' => 'replace',
+        'effect' => 'fade',
+      ),
+    );
+  }
+}
+
+/**
+ * AJAX function, callback for load comments after room selected.
+ */
+function _item_helper_ajax_load_room_comments($form, $form_state) {
+  return $form['item_helper']['add_comments']['add_comments_table'];
+}
+
+/**
+ * AJAX function, callback for load comments after room selected.
+ */
+function _item_helper_ajax_add_comments($form, $form_state) {
+  return $form['item_helper']['included_comments']['included_comments_table'];
+}
+
+/**
+ * Autocomplete function, callback for room look up.
+ */
+function _item_helper_autocomplete_room($string = '') {
+  $matches = array();
+  $room_type = variable_get('item_helper_room_type', '');
+  if (!empty($string) && !empty($room_type)) {
+    $results = db_query('SELECT n.nid, n.title FROM {node} n ' .
+      'WHERE n.type LIKE :type ' .
+      'AND n.title LIKE :title',
+      array(':type' => $room_type, ':title' => '%' . $string . '%'));
+    foreach ($results as $result) {
+      $label = $result->title . ' [nid:' . $result->nid . ']';
+      $matches[ check_plain($label) ] = check_plain($label);
+    }
+  }
+  drupal_json_output($matches);
+}
+
+/**
+ * Implementation of admin settings form.
+ */
+function _item_helper_admin_settings($form, &$form_state) {
+  // Setting for workflow to drop the NPCs into on being claimed.
+  $content_types = node_type_get_types();
+  $types = array();
+  foreach ($content_types as $type_id => $content_type) {
+    $types[$type_id] = $content_type->name;
+  }
+  $form['item_helper_item_type'] = array(
+    '#title' => t('Item content type'),
+    '#description' => t('Content type for items.'),
     '#type' => 'select',
-    '#title' => t('Roll type'),
-    '#options' => array(
-      'hidden' => t('Hide roller'),
-      'one_trait' => t('One trait'),
-      'two_trait' => t('Two trait'),
-      'trait_vs' => t('Trait vs. trait'),
-      'combat' => t('Combat'),
-      'magic' => t('Magic'),
-    ),
-    '#default_value' => 'hidden',
+    '#options' => $types,
+    '#default_value' => variable_get('item_helper_item_type', ''),
   );
-
-  // Subforms for each type of roll. One trait.
-  $form['one_trait'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('One trait'),
-    '#states' => array(
-      'visible' => array(
-        ':input[name="roll_type"]' => array('value' => 'one_trait'),
-      ),
-    ),
+  $form['item_helper_room_type'] = array(
+    '#title' => t('Room content type'),
+    '#description' => t('Content type for rooms.'),
+    '#type' => 'select',
+    '#options' => $types,
+    '#default_value' => variable_get('item_helper_room_type', ''),
   );
-  $form['one_trait']['one_trait_might'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Might'),
-    '#size' => 5,
-  );
-  $form['one_trait']['one_trait_diff'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Diff.'),
-    '#size' => 5,
-  );
-  $form['one_trait']['one_trait_add_diff'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Add diff.'),
-    '#size' => 5,
-  );
-  $form['one_trait']['one_trait_rolled'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Rolled'),
-    '#size' => 5,
-  );
-
-  // Provide button.
-  $form['rule_dice'] = array(
-    '#type' => 'button',
-    '#value' => t('Rule roll'),
-    '#ajax' => array(
-      'callback' => 'item_helper_form_ajax',
-      'wrapper' => 'item_helper_dice_results',
-      'method' => 'replace',
-      'effect' => 'fade',
-    ),
-    '#states' => array(
-      'invisible' => array(
-        ':input[name="roll_type"]' => array('value' => 'hidden'),
-      ),
-    ),
-  );
-  return $form;
+  return system_settings_form($form);
 }
 
 /**
- * AJAX callback for ruling form.
+ * Helper function, given a set of partial or full comments, calculate results.
  */
-function item_helper_form_ajax($form, $form_state) {
-  return $form['item_helper_dice_results'];
+function _item_helper_calculate_results($found_comments) {
+  $ongoing_PP = 0;
+  $ongoing_100 = 0;
+  $ongoing_1 = 0;
+  $ongoing_prep_bonus = 0;
+  foreach ($found_comments as $cid => $item_comment) {
+    // Set defaults if not already set.
+    $item_comment->roll_type = isset($item_comment->roll_type) ? $item_comment->roll_type : 'gen_pp';
+    $item_comment->set_bonus = isset($item_comment->set_bonus) ? $item_comment->set_bonus : 0;
+    $item_comment->difficulty = isset($item_comment->difficulty) ? $item_comment->difficulty : 45;
+    $item_comment->rp_bonus = isset($item_comment->rp_bonus) ? $item_comment->rp_bonus : 0;
+    // Grab rolls and start calculations.
+    $dice_rolls = _dice_roller_get_roll($cid, 'c');
+    if (!empty($dice_rolls)) {
+      $mights = array();
+      $rolls = array();
+      foreach ($dice_rolls as $index => $dice_roll) {
+        $results = explode(',', $dice_rolls[$index]['roll_result']);
+        $might = array_pop($results);
+        $might = explode('=', $might);
+        $mights[] = trim($might[0]);
+        $rolls[] = trim($results[0]);
+      }
+      $rp_bonus = 0;
+      if ($item_comment->rp_bonus > 0) {
+        $rp_bonus = 5;
+      }
+      $roll_ruling = array();
+      if (count($mights) == 1) {
+        $roll_ruling = _vaxia_dice_ruler_make_ruling(
+          $mights[0] + $rp_bonus + $ongoing_prep_bonus,
+          $item_comment->difficulty,
+          0,
+          $rolls[0]
+        );
+        if ($rolls[0] == 1) {
+          $ongoing_1++;
+        }
+        if ($rolls[0] == 100) {
+          $ongoing_100++;
+        }
+      }
+      if (count($mights) > 1) {
+        $roll_ruling = _vaxia_dice_ruler_make_two_trait_ruling(
+          $mights[0] + $rp_bonus + $ongoing_prep_bonus,
+          $item_comment->difficulty,
+          0,
+          $rolls[0],
+          $mights[1] + $rp_bonus + $ongoing_prep_bonus,
+          $item_comment->difficulty,
+          0,
+          $rolls[1]
+        );
+        if ($rolls[0] == 1) {
+          $ongoing_1++;
+        }
+        if ($rolls[0] == 100) {
+          $ongoing_100++;
+        }
+        if ($rolls[1] == 1) {
+          $ongoing_1++;
+        }
+        if ($rolls[1] == 100) {
+          $ongoing_100++;
+        }
+      }
+      if (!empty($roll_ruling)) {
+        $PP_generated = $roll_ruling[7];
+        if ($item_comment->roll_type == 'gen_pp') { // If just gen_add, then add.
+          $ongoing_PP += $PP_generated;
+        }
+        if ($item_comment->roll_type == 'prep_bon') { // If prep_bonus, divide, add.
+          $ongoing_prep_bonus += floor($PP_generated / 7);
+        }
+        if ($item_comment->roll_type == 'prep_set') { // If just set_bonus, then add.
+          $ongoing_prep_bonus += $item_comment->set_bonus;
+        }
+      }
+    }
+    $item_comment->results = t(':PP PP / :100 100\'s / :1 1\'s',
+      array(':PP' => number_format($ongoing_PP), ':100' => $ongoing_100, ':1' => $ongoing_1));
+  }
+  return $found_comments;
+}
+
+/**
+ * Helper function, given a string retrieve any nid in the format [nid:XXX].
+ * Or look for the node by title.
+ */
+function _item_helper_autocomplete_get_nid($room_selected) {
+  $result = preg_match('/\[nid:([0-9]+)\]$/', $room_selected, $matches);
+  if ($result > 0) {
+    $nid = $matches[$result];
+    $node = node_load($nid);
+    if (empty($node)) {
+      $nodes = node_load_multiple(array(), array('title' => $room_selected));
+      foreach ($nodes as $nid => $this_node) {
+        $node = $this_node;
+      }
+    }
+    $room_type = variable_get('item_helper_room_type', '');
+    if (!empty($node) && $node->type == $room_type && $node->status == 1) {
+      return $node->nid;
+    }
+  }
+  return FALSE;
+}
+
+/**
+ * DB function, get comments per room.
+ */
+function _item_helper_get_comments_by_room($nid) {
+  $results = db_query('SELECT * FROM {comment} ' .
+    'WHERE nid = :nid ' .
+    'ORDER BY created DESC LIMIT 0, 50',
+    array(':nid' => $nid))->fetchAll();
+  return $results;
+}
+
+/**
+ * DB function, get comments by item nid.
+ */
+function _item_helper_get_comments($nid) {
+  $results = db_query('SELECT * FROM {item_helper_item_comments} ' .
+    'WHERE nid = :nid ' .
+    'ORDER BY cid ASC',
+    array(':nid' => $nid))->fetchAll();
+  return $results;
+}
+
+/**
+ * DB function, delete comment by item nid.
+ */
+function _item_helper_delete_comments($nid) {
+  db_query('DELETE FROM {item_helper_item_comments} ' .
+    'WHERE nid = :nid',
+    array(':nid' => $nid));
+}
+
+/**
+ * CRUD function, get comment by item nid, cid.
+ */
+function _item_helper_get_comment($nid, $cid) {
+  $results = db_query('SELECT * FROM {item_helper_item_comments} ' .
+    'WHERE nid = :nid AND cid = :cid',
+    array(':nid' => $nid, ':cid' => $cid))->fetchAll();
+  return $results;
+}
+
+/**
+ * CRUD function, get comments by item nid.
+ */
+function _item_helper_insert_comment($data) {
+  $data = (array) $data;
+  $result = _item_helper_get_comment($data['nid'], $data['cid']);
+  if (!empty($result)) {
+    _item_helper_update_comment($data);
+  }
+  drupal_write_record('item_helper_item_comments', $data);
+  return $results;
+}
+
+/**
+ * CRUD function, get comments by item nid.
+ */
+function _item_helper_update_comment($data) {
+  $data = (array) $data;
+  $result = _item_helper_get_comment($data['nid'], $data['cid']);
+  if (empty($result)) {
+    _item_helper_insert_comment($data);
+  }
+  drupal_write_record('item_helper_item_comments', $data, array('nid', 'cid'));
+  return $results;
+}
+
+/**
+ * CRUD function, get comment by item nid, cid.
+ */
+function _item_helper_delete_comment($nid, $cid) {
+  db_query('DELETE FROM {item_helper_item_comments} ' .
+    'WHERE nid = :nid AND cid = :cid',
+    array(':nid' => $nid, ':cid' => $cid));
 }
