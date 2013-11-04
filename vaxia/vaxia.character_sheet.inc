@@ -972,7 +972,7 @@ function _vaxia_transfer_xp_validate(&$form, &$form_state) {
     form_set_error('confirm', t('Transfer was not confirmed.'));
   }
   // Sanity check
-  if (!is_integer($form_state['values']['amount']) || $form_state['values']['amount'] < 1) {
+  if (!is_numeric(trim($form_state['values']['amount'])) || $form_state['values']['amount'] < 1) {
     form_set_error('amount', t('Amount to transfer makes no sense.'));
   }
 }
