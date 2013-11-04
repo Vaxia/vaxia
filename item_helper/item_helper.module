@@ -31,7 +31,6 @@ function item_helper_menu() {
   $items['admin/config/system/item_helper'] = array(
     'title' => 'Vaxia item assist configuration',
     'description' => 'Configure content type association settings for item handling',
-    'type' => MENU_CALLBACK,
     'page callback' => 'drupal_get_form',
     'page arguments' => array('_item_helper_admin_settings'),
     'access arguments' => array('administer item helper'),
