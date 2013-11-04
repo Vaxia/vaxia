@@ -500,8 +500,9 @@ function _item_helper_calculate_results($found_comments) {
         }
       }
     }
-    $item_comment->results = t(':PP PP / :100 100\'s / :1 1\'s',
-      array(':PP' => number_format($ongoing_PP), ':100' => $ongoing_100, ':1' => $ongoing_1));
+    $item_comment->results = t(':PP PP / :100 100\'s / :1 1\'s </br> :rp RP bonus / :prep Prep bonus',
+      array(':PP' => number_format($ongoing_PP), ':100' => $ongoing_100, ':1' => $ongoing_1,
+        ':rp' => $rp_bonus, ':prep' => $ongoing_prep_bonus ));
   }
   return $found_comments;
 }
