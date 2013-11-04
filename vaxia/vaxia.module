@@ -498,10 +498,11 @@ function _vaxia_node_form_workflow_after_build($form, $form_state) {
       $options = $form['workflow'][$workflow_name]['#options'];
       $index = array_search('approved', $options);
       if ($index !== FALSE && $index != $node->workflow) {
-        drupal_set_message(t('You cannot set a character sheet you own to approved.'));
+        drupal_set_message(t('You cannot set a character sheet you own to approved. Currently: ' . $node->workflow_state_name));
         unset($options[$index]);
         unset($form['workflow'][$workflow_name][$index]);
         $form['workflow'][$workflow_name]['#options'] = $options;
+        $form['workflow'][$workflow_name]['#default_value'] = $node->workflow;
       }
     }
     /*
@@ -510,10 +511,11 @@ function _vaxia_node_form_workflow_after_build($form, $form_state) {
       $options = $form['workflow'][$workflow_name]['#options'];
       $index = array_search('approved', $options);
       if ($index !== FALSE && $index != $node->workflow) {
-        drupal_set_message(t('You cannot set an item you own to approved.'));
+        drupal_set_message(t('You cannot set an item you own to approved. Currently: ' . $node->workflow_state_name));
         unset($options[$index]);
         unset($form['workflow'][$workflow_name][$index]);
         $form['workflow'][$workflow_name]['#options'] = $options;
+        $form['workflow'][$workflow_name]['#default_value'] = $node->workflow;
       }
     }
     */
@@ -568,9 +570,10 @@ function vaxia_form_workflow_tab_form_alter(&$form, &$form_state, $form_id) {
       $options = $form['workflow'][$workflow_name]['#options'];
       $index = array_search('approved', $options);
       if ($index !== FALSE && $index != $node->workflow) {
-        drupal_set_message(t('You cannot set a character sheet you own to approved.'));
+        drupal_set_message(t('You cannot set a character sheet you own to approved. Currently: ' . $node->workflow_state_name));
         unset($options[$index]);
         $form['workflow'][$workflow_name]['#options'] = $options;
+        $form['workflow'][$workflow_name]['#default_value'] = $;
       }
     }
   }
@@ -581,9 +584,10 @@ function vaxia_form_workflow_tab_form_alter(&$form, &$form_state, $form_id) {
       $options = $form['workflow'][$workflow_name]['#options'];
       $index = array_search('approved', $options);
       if ($index !== FALSE && $index != $node->workflow) {
-        drupal_set_message(t('You cannot set an item you own to approved.'));
+        drupal_set_message(t('You cannot set an item you own to approved. Currently: ' . $node->workflow_state_name));
         unset($options[$index]);
         $form['workflow'][$workflow_name]['#options'] = $options;
+        $form['workflow'][$workflow_name]['#default_value'] = $node->workflow;
       }
     }
   }
