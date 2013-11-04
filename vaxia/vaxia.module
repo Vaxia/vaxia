@@ -573,7 +573,7 @@ function vaxia_form_workflow_tab_form_alter(&$form, &$form_state, $form_id) {
         drupal_set_message(t('You cannot set a character sheet you own to approved. Currently: ' . $node->workflow_state_name));
         unset($options[$index]);
         $form['workflow'][$workflow_name]['#options'] = $options;
-        $form['workflow'][$workflow_name]['#default_value'] = $;
+        $form['workflow'][$workflow_name]['#default_value'] = $$node->workflow;
       }
     }
   }
