@@ -111,12 +111,12 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
     // Part one, add more comments.
     $form['item_helper']['add_comments'] = array(
       '#type' => 'fieldset',
-      '#title' => t('Add new comments'),
-      '#description' => t('Search for comments by room. Select the comments to apply to this item for ' .
+      '#title' => t('Add new posts'),
+      '#description' => t('Search for posts by room. Select the posts to apply to this item for ' .
         'calculating creation rolls.'),
     );
     $form['item_helper']['add_comments']['search_room'] = array(
-      '#title' => t('Comments from room'),
+      '#title' => t('Posts from room'),
       '#type' => 'textfield',
       '#autocomplete_path' => 'vaxia/item_helper/autocomplete/room',
       '#ajax' => array(
@@ -159,7 +159,7 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
       '#suffix' => '</div>',
       '#type' => 'tableselect',
       '#header' => array(
-        t('Comment'),
+        t('Posts'),
         t('Character'),
         t('Player'),
         t('Rolls'),
@@ -168,11 +168,11 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
       '#options' => $options,
       '#js_select' => FALSE,
       '#multiple' => TRUE,
-      '#empty' => t('No comments found.'),
+      '#empty' => t('No posts found.'),
     );
     $form['item_helper']['add_comments']['add'] = array(
       '#type' => 'button',
-      '#value' => t('Add Comments'),
+      '#value' => t('Add Posts'),
       '#limit_validation_errors' => array(array('add_comments_table'), array('included_comments_table')),
       // DOUBLE ARRAY. Because drupal docs suck.
       '#ajax' => array(
@@ -185,7 +185,7 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
     // Part two, included comment.
     $form['item_helper']['included_comments'] = array(
       '#type' => 'fieldset',
-      '#title' => t('Included comments'),
+      '#title' => t('Included posts'),
     );
     // Setup table format.
     $form['item_helper']['included_comments']['included_comments_table'] = array(
@@ -203,7 +203,7 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
       ),
       '#rows' => array(),
       '#attributes' => array('id' => 'item_helper_included_comments_table'),
-      '#empty' => t('No comments found.'),
+      '#empty' => t('No posts found.'),
       '#tree' => TRUE, // So can be picked up later.
     );
     // Create baseline diff display (if user vs SH).
