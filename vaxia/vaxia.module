@@ -222,7 +222,7 @@ function vaxia_node_view($node, $view_mode, $langcode) {
 
 /*
  * Implements hook_node_insert().
- */
+
 function vaxia_node_insert($node) {
   if (_character_sheet_is_enabled($node)) {
     // Check for the value of npc, onpc. If either is set - fast forward workflow.
@@ -237,13 +237,14 @@ function vaxia_node_insert($node) {
     }
   }
 }
+*/
 
 /*
  * Implements hook_node_update().
  */
 function vaxia_node_update($node) {
   if (_character_sheet_is_enabled($node)) {
-    vaxia_node_insert($node);
+    //vaxia_node_insert($node);
     // Flush Entity Cache record.
     if (module_exists('entitycache')) {
       cache_clear_all('*', 'cache_entity_node', TRUE);
