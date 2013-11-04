@@ -244,6 +244,10 @@ function vaxia_node_insert($node) {
 function vaxia_node_update($node) {
   if (_character_sheet_is_enabled($node)) {
     vaxia_node_insert($node);
+    // Flush Entity Cache record.
+    if (module_exists('entitycache')) {
+      cache_clear_all('*', 'cache_entity_node', TRUE);
+    }
   }
 }
 
