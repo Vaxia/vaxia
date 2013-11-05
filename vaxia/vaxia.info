@@ -261,6 +261,7 @@ features[rules_config][] = rules_notify_item_eval_re_new_item
 features[rules_config][] = rules_notify_player_when_char_disapproved
 features[rules_config][] = rules_notify_player_when_char_eval
 features[rules_config][] = rules_unpublish_child_rooms_when_room_unpublished
+features[rules_config][] = vaxia_notify_char_eval_re_oversight_npc_pass_npc
 features[taxonomy][] = forums
 features[user_permission][] = access comments
 features[user_permission][] = access content

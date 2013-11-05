@@ -33,6 +33,7 @@ function vaxia_npcs_views_default_views() {
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
     'title' => 'title',
+    'name' => 'name',
     'field_realm' => 'field_realm',
     'field_race' => 'field_race',
     'field_description' => 'field_description',
@@ -40,6 +41,13 @@ function vaxia_npcs_views_default_views() {
   $handler->display->display_options['style_options']['default'] = 'title';
   $handler->display->display_options['style_options']['info'] = array(
     'title' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'name' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -149,7 +157,6 @@ function vaxia_npcs_views_default_views() {
   $handler->display->display_options['filters']['field_realm_value']['table'] = 'field_data_field_realm';
   $handler->display->display_options['filters']['field_realm_value']['field'] = 'field_realm_value';
   $handler->display->display_options['filters']['field_realm_value']['value'] = array(
-    'all' => 'all',
     'Vaxia' => 'Vaxia',
     'Sirian' => 'Sirian',
   );
@@ -172,17 +179,15 @@ function vaxia_npcs_views_default_views() {
     15 => 0,
     9 => 0,
     14 => 0,
-    3 => 0,
     4 => 0,
+    3 => 0,
     11 => 0,
-    16 => 0,
   );
   /* Filter criterion: Content: Race (field_race) */
   $handler->display->display_options['filters']['field_race_value']['id'] = 'field_race_value';
   $handler->display->display_options['filters']['field_race_value']['table'] = 'field_data_field_race';
   $handler->display->display_options['filters']['field_race_value']['field'] = 'field_race_value';
   $handler->display->display_options['filters']['field_race_value']['value'] = array(
-    'all' => 'all',
     'human' => 'human',
     'half-elf' => 'half-elf',
     'elf' => 'elf',
@@ -226,10 +231,9 @@ function vaxia_npcs_views_default_views() {
     15 => 0,
     9 => 0,
     14 => 0,
-    3 => 0,
     4 => 0,
+    3 => 0,
     11 => 0,
-    16 => 0,
   );
   /* Filter criterion: User: Name */
   $handler->display->display_options['filters']['uid']['id'] = 'uid';
@@ -274,6 +278,33 @@ function vaxia_npcs_views_default_views() {
     1 => '1',
   );
   $handler->display->display_options['filters']['field_is_npc_value']['group'] = 2;
+  /* Filter criterion: Content: Title */
+  $handler->display->display_options['filters']['title']['id'] = 'title';
+  $handler->display->display_options['filters']['title']['table'] = 'node';
+  $handler->display->display_options['filters']['title']['field'] = 'title';
+  $handler->display->display_options['filters']['title']['operator'] = 'contains';
+  $handler->display->display_options['filters']['title']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['title']['expose']['operator_id'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['label'] = 'NPC Name';
+  $handler->display->display_options['filters']['title']['expose']['use_operator'] = TRUE;
+  $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
+  $handler->display->display_options['filters']['title']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['title']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    12 => 0,
+    8 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    9 => 0,
+    14 => 0,
+    4 => 0,
+    3 => 0,
+    11 => 0,
+  );
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'vaxia_npcs_list');
