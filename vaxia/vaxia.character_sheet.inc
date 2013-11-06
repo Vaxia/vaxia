@@ -502,6 +502,11 @@ function _vaxia_admin_settings() {
     '#type' => 'textfield',
     '#default_value' => variable_get('vaxia_transfer_percentage', 0.75),
   );
+  $form['point_cost']['vaxia_transfer_cap_on'] = array(
+    '#title' => 'Cap XP to be transferred?',
+    '#type' => 'checkbox',
+    '#default_value' => variable_get('vaxia_transfer_cap_on', TRUE),
+  );
   $form['point_cost']['vaxia_transfer_cap'] = array(
     '#title' => 'Cap of XP',
     '#description' => 'Amount of total XP that can be transferred, anything more is lost.',
@@ -1006,8 +1011,10 @@ function _vaxia_transfer_xp_submit(&$form, &$form_state) {
         array('@new_xp' => $new_xp, '@xp' => $xp, '@nid' => $old_character->nid, '@title' => $old_character->title,
         '@nid2' => $new_character->nid, '@title2' => $new_character->title)));
       // Now add XP to the new character.
-      if ($new_xp > variable_get('vaxia_transfer_cap', 300)) {
-        $new_xp = variable_get('vaxia_transfer_cap', 300);
+      if (variable_get('vaxia_transfer_cap_on', TRUE)) {
+        if ($new_xp > variable_get('vaxia_transfer_cap', 300)) {
+          $new_xp = variable_get('vaxia_transfer_cap', 300);
+        }
       }
       $new_spent = _character_sheet_get_xp($new_character->nid, 'spent_xp');
       if ($new_spent > 5) { // 5 or under for spent xp limits for transfer.
