@@ -73,10 +73,10 @@ function item_helper_node_update($node) {
     foreach ($save_comments as $cid => $item_comment) {
       // Don't save what's marked for removal.
       if ($item_comment->remove == 0) {
-        $item_comment->roll_type = isset($found_comments[$cid]->roll_type) ? $found_comments[$cid]->roll_type : 'gen_pp';
-        $item_comment->set_bonus = isset($found_comments[$cid]->set_bonus) ? $found_comments[$cid]->set_bonus : 0;
-        $item_comment->difficulty = isset($found_comments[$cid]->difficulty) ? $found_comments[$cid]->difficulty : 45;
-        $item_comment->rp_bonus = isset($found_comments[$cid]->rp_bonus) ? $found_comments[$cid]->rp_bonus : 0;
+        $item_comment->roll_type = isset($item_comment->roll_type) ? $item_comment->roll_type : 'gen_pp';
+        $item_comment->set_bonus = isset($item_comment->set_bonus) ? $item_comment->set_bonus : 0;
+        $item_comment->difficulty = isset($item_comment->difficulty) ? $item_comment->difficulty : 45;
+        $item_comment->rp_bonus = isset($item_comment->rp_bonus) ? $item_comment->rp_bonus : 0;
         _item_helper_update_comment($item_comment);
       }
     }
