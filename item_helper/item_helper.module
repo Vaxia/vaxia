@@ -96,13 +96,19 @@ function item_helper_node_delete($node) {
 function item_helper_node_view($node, $view_mode, $langcode) {
   $item_type = variable_get('item_helper_item_type', '');
   if ($view_mode == 'full' && user_access('use item helper') && !empty($item_type) && !empty($node->type) && $item_type == $node->type) {
-    $form = drupal_get_form('item_helper_form_node_form_alter');
-    $form['#node'] = $node;
-    $node->content['item_helper'] = array(
-      '#markup' => drupal_render($form),
-      '#weight' => -40,
-    );
+    $form = drupal_get_form('item_helper_form_node_form_alter_wrapper', node_load($node->nid));
+    $node->content['item_helper'] = $form;
   }
+}
+
+/**
+ * Helper function, wraps node base for purposes of passing #node info from non node_base pg.
+ */
+function item_helper_form_node_form_alter_wrapper($form, &$form_state, $node) {
+  $form['#node'] = node_load($node->nid); // New node object.
+  item_helper_form_node_form_alter(&$form, &$form_state, $form_id);
+  $form['#weight'] = -40;
+  return $form;
 }
 
 /**
