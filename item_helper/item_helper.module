@@ -91,6 +91,21 @@ function item_helper_node_delete($node) {
 }
 
 /**
+ * Implements hook_node_view().
+ */
+function item_helper_node_view($node, $view_mode, $langcode) {
+  $item_type = variable_get('item_helper_item_type', '');
+  if ($view_mode == 'full' && user_access('use item helper') && !empty($item_type) && !empty($node->type) && $item_type == $node->type) {
+    $form = drupal_get_form('item_helper_form_node_form_alter');
+    $form['#node'] = $node;
+    $node->content['item_helper'] = array(
+      '#markup' => drupal_render($form),
+      '#weight' => -40,
+    );
+  }
+}
+
+/**
  * Implements hook_form_BASE_FORM_ID_alter().
  */
 function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
