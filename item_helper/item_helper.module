@@ -149,8 +149,8 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
         $found_comments = _item_helper_get_comments_by_room($room_nid);
         foreach ($found_comments as $found_comment) {
           $comment = comment_load($found_comment->cid);
-          $comment_path = comment_uri($comment);
-          $comment_display = '<a href="' . $comment_uri['path'] . '#' . $comment_uri['options']['fragment'] . '" title="' .
+          $comment_uri = comment_uri($comment);
+          $comment_display = '<a href="/' . $comment_uri['path'] . '#' . $comment_uri['options']['fragment'] . '" title="' .
             check_plain($comment->comment_body[$comment->language][0]['value']) . '">' .
             check_plain($comment->subject) .
             '</a>';
@@ -286,8 +286,8 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
     // Add the comments.
     foreach ($found_comments as $cid => $item_comment) {
       $comment = comment_load($cid);
-      $comment_path = comment_uri($comment);
-      $comment_display = '<a href="' . $comment_uri['path'] . '#' . $comment_uri['options']['fragment'] . '" title="' .
+      $comment_uri = comment_uri($comment);
+      $comment_display = '<a href="/' . $comment_uri['path'] . '#' . $comment_uri['options']['fragment'] . '" title="' .
         check_plain($comment->comment_body[$comment->language][0]['value']) . '">' .
         check_plain($comment->subject) .
         '</a>';
