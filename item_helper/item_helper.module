@@ -392,7 +392,8 @@ function _item_helper_ajax_load_room_comments($form, $form_state) {
  * AJAX function, callback for load comments after room selected.
  */
 function _item_helper_ajax_add_comments($form, $form_state) {
-  return $form['item_helper']['included_comments']['included_comments_table'];
+  return isset($form['item_helper']['included_comments']['included_comments_table']) ?
+    $form['item_helper']['included_comments']['included_comments_table'] : '';
 }
 
 /**
