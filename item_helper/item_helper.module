@@ -104,7 +104,7 @@ function item_helper_node_view($node, $view_mode, $langcode) {
 /**
  * Helper function, wraps node base for purposes of passing #node info from non node_base pg.
  */
-function item_helper_form_node_form_alter_wrapper(&$form, &$form_state, $node) {
+function item_helper_form_node_form_alter_wrapper($form, &$form_state, $node) {
   $form['#node'] = node_load($node->nid); // New node object.
   item_helper_form_node_form_alter($form, $form_state, 'item_helper_form_node_form_alter');
   $form['#weight'] = -40;
