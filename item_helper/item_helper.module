@@ -465,8 +465,8 @@ function _item_helper_calculate_results($found_comments) {
         $results = explode(',', $dice_rolls[$index]['roll_result']);
         $might = array_pop($results);
         $might = explode('=', $might);
-        $mights[] = trim($might[0]);
-        $rolls[] = trim($results[0]);
+        $mights[] = empty($might[0]) ? trim($might[0]) : 0;
+        $rolls[] = empty($results[0]) ? trim($results[0]) : 0;
       }
       if ($item_comment->rp_bonus > 0) {
         $rp_bonus = 5;
