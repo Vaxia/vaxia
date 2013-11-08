@@ -455,6 +455,7 @@ function _item_helper_calculate_results($found_comments) {
     $item_comment->set_bonus = isset($item_comment->set_bonus) ? $item_comment->set_bonus : 0;
     $item_comment->difficulty = isset($item_comment->difficulty) ? $item_comment->difficulty : 45;
     $item_comment->rp_bonus = isset($item_comment->rp_bonus) ? $item_comment->rp_bonus : 0;
+    $rp_bonus = 0;
     // Grab rolls and start calculations.
     $dice_rolls = _dice_roller_get_roll($cid, 'c');
     if (!empty($dice_rolls)) {
@@ -467,7 +468,6 @@ function _item_helper_calculate_results($found_comments) {
         $mights[] = trim($might[0]);
         $rolls[] = trim($results[0]);
       }
-      $rp_bonus = 0;
       if ($item_comment->rp_bonus > 0) {
         $rp_bonus = 5;
       }
