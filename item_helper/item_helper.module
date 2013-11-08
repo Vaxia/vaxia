@@ -606,7 +606,6 @@ function _item_helper_insert_comment($data) {
     _item_helper_update_comment($data);
   }
   drupal_write_record('item_helper_item_comments', $data);
-  return $results;
 }
 
 /**
@@ -619,7 +618,6 @@ function _item_helper_update_comment($data) {
     _item_helper_insert_comment($data);
   }
   drupal_write_record('item_helper_item_comments', $data, array('nid', 'cid'));
-  return $results;
 }
 
 /**
