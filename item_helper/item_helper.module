@@ -106,6 +106,7 @@ function item_helper_node_view($node, $view_mode, $langcode) {
  */
 function item_helper_form_node_form_alter_wrapper($form, &$form_state, $node) {
   $form['#node'] = node_load($node->nid); // New node object.
+  $form['type']['#value'] = $node->type;
   item_helper_form_node_form_alter($form, $form_state, 'item_helper_form_node_form_alter');
   $form['#weight'] = -40;
   return $form;
