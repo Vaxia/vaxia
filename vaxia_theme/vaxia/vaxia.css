@@ -89,7 +89,9 @@ article #comment-body-add-more-wrapper #edit-comment-body-und-0-format{display:n
 #edit-vaxia-rolls{font-size:80%;}
 article.node-rpg-chatroom.clearfix:after, .field-type-node-reference.clearfix:after{clear:none;}
 #block-views-rpg-chats-rpg-chats-children {float:right;clear:right;padding-left:2em;}
-.rpg-chat-narrative header{display:none;}
+/* .rpg-chat-narrative header{display:none;} */
+.rpg-chat-narrative header a{display:none;}
+.rpg-chat-narrative header a.permalink{display:inline;}
 
 /* RPG room arrangement. */
 .rpg-chat-node #rpg-chat-userlist{float:none;clear:none;width:auto;}
