@@ -574,9 +574,9 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
   $level = isset($node->field_economy[$node->language][0]['value']) ? $node->field_economy[$node->language][0]['value'] : 0;
   $econ[] = t('Your current economy level is %level.', array('%level' => $level));
   $income = (float) _vaxia_get_month_income($level);
-  $econ[] = t('Your monthly disposable income is %income.', array('%income' => number_format($income, 0)));
+  $econ[] = t('Your monthly disposable income is %income.', array('%income' => number_format($income, 2)));
   $pay = _vaxia_get_daily_pay($level);
-  $econ[] = t('You get paid %pay a day.', array('%pay' => number_format($pay, 1)));
+  $econ[] = t('You get paid %pay a day.', array('%pay' => number_format($pay, 2)));
   $form['node_info']['economy'] = array(
     '#type' => 'item',
     '#title' => t('Economy'),
@@ -590,7 +590,7 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
   $invest = $cost - $silver_invested;
   // Invested silver is spent_silver, adjusted to show the difference between spent and the cost of the current economy level.
   $desc = t('You have %available silver available to invest. You need to invest %invest more silver before you will reach %level economy. Invested so far %so_far.',
-    array('%available' => number_format($available_silver, 0), '%invest' => number_format($invest, 0), '%level' => $level + 1, '%so_far' => $silver_invested));
+    array('%available' => number_format($available_silver, 2), '%invest' => number_format($invest, 2), '%level' => $level + 1, '%so_far' => $silver_invested));
 
   global $user;
   if ($user->uid == $node->uid) {
@@ -800,7 +800,7 @@ function _vaxia_xp_display($node) {
   $silver_spent = _character_sheet_get_xp($node->nid, 'spent_silver');
   $silver_invested = _character_sheet_get_xp($node->nid, 'invest_silver');
   $available_silver = $silver - ($silver_spent + $silver_invested);
-  $xps['available_silver'] = t('Have %posted silver.', array('%posted' => $available_silver));
+  $xps['available_silver'] = t('Have %posted silver.', array('%posted' => number_format($available_silver, 2)));
   return $xps;
 }
 
@@ -963,7 +963,7 @@ function _add_silver_submit_form_remove_silver($nid, $add_silver) {
       $converted_silver = _vaxia_invest_calculate_cost_to_remove($economy);
       _character_sheet_update_xp($nid, $converted_silver, 'silver');
       drupal_set_message(t('Converted economy from level %economy to %less_economy, for %converted silver.',
-        array('%economy' => $economy, '%less_economy' => $economy - 1, '%converted' => $converted_silver)));
+        array('%economy' => $economy, '%less_economy' => $economy - 1, '%converted' => number_format($converted_silver, 2))));
       // Remove econmy.
       $economy--;
       $node->field_economy[$node->language][0]['value'] = $economy;
