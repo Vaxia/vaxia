@@ -247,6 +247,23 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
         '#size' => 4,
       );
     }
+    // Create baseline diff display (if user vs SH).
+    $rp_bons = array(
+      '#type' => 'select',
+      '#options' => array(
+        '0' => t('None'),
+        '5' => t('Minor'),
+        '10' => t('Average'),
+        '15' => t('Good'),
+        '20' => t('Excellent'),
+      ),
+    );
+    if (user_access('set numerical diff')) {
+      $rp_bons = array(
+        '#type' => 'textfield',
+        '#size' => 4,
+      );
+    }
     // Gather comments for display from various sources.
     $found_comments = array();
     // Check for comments still saved on the node.
@@ -322,11 +339,8 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
       );
       $difficulty = $diffs;
       $difficulty['#default_value'] = isset($item_comment->difficulty) ? $item_comment->difficulty : 45;
-      $rp_bonus = array(
-        '#type' => 'checkbox',
-        '#return_value' => 1,
-        '#default_value' => isset($item_comment->rp_bonus) ? $item_comment->rp_bonus : 0,
-      );
+      $rp_bonus = $rp_bons;
+      $rp_bonus['#default_value'] = isset($item_comment->rp_bonus) ? $item_comment->rp_bonus : 0;
       $results = array(
         '#type' => 'item',
         '#markup' => isset($item_comment->results) ? $item_comment->results : t('Not calculated'),
@@ -457,7 +471,7 @@ function _item_helper_calculate_results($found_comments) {
     $item_comment->set_bonus = isset($item_comment->set_bonus) ? $item_comment->set_bonus : 0;
     $item_comment->difficulty = isset($item_comment->difficulty) ? $item_comment->difficulty : 45;
     $item_comment->rp_bonus = isset($item_comment->rp_bonus) ? $item_comment->rp_bonus : 0;
-    $rp_bonus = 0;
+    $rp_bonus = isset($item_comment->rp_bonus) ? $item_comment->rp_bonus : 0;
     // Grab rolls and start calculations.
     $dice_rolls = _dice_roller_get_roll($cid, 'c');
     if (!empty($dice_rolls)) {
@@ -469,9 +483,6 @@ function _item_helper_calculate_results($found_comments) {
         $might = explode('=', $might);
         $mights[] = isset($might[0]) ? trim($might[0]) : 0;
         $rolls[] = isset($results[0]) ? trim($results[0]) : 0;
-      }
-      if ($item_comment->rp_bonus > 0) {
-        $rp_bonus = 5;
       }
       $roll_ruling = array();
       if (count($mights) == 1) {
