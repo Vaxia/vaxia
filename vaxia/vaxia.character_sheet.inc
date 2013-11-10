@@ -591,29 +591,33 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
   // Invested silver is spent_silver, adjusted to show the difference between spent and the cost of the current economy level.
   $desc = t('You have %available silver available to invest. You need to invest %invest more silver before you will reach %level economy. Invested so far %so_far.',
     array('%available' => number_format($available_silver, 0), '%invest' => number_format($invest, 0), '%level' => $level + 1, '%so_far' => $silver_invested));
-  if ($available_silver >= 1 ) {
-    $available_silver = floor($available_silver);
-    $invest = 0;
-    // Figure out how many given current silver you can add.
-    $form['node_info']['invest_silver'] = array(
-      '#title' => t('Invest silver'),
-      '#type' => 'textfield',
-      '#description' => $desc,
-      '#size' => 15,
-    );
-    $form['node_info']['submit_economy'] = array(
-      '#type' => 'submit',
-      '#value' => t('Invest silver'),
-      '#validate' => array(),
-      '#submit' => array('_vaxia_invest_silver_submit'),
-    );
-  }
-  else {
-    $form['node_info']['invest_silver'] = array(
-      '#type' => 'item',
-      '#value' => t('You currectly have no silver available to invest.'),
-      '#description' => $desc,
-    );
+
+  global $user;
+  if ($user->uid == $node->uid) {
+    if ($available_silver >= 1) {
+      $available_silver = floor($available_silver);
+      $invest = 0;
+      // Figure out how many given current silver you can add.
+      $form['node_info']['invest_silver'] = array(
+        '#title' => t('Invest silver'),
+        '#type' => 'textfield',
+        '#description' => $desc,
+        '#size' => 15,
+      );
+      $form['node_info']['submit_economy'] = array(
+        '#type' => 'submit',
+        '#value' => t('Invest silver'),
+        '#validate' => array(),
+        '#submit' => array('_vaxia_invest_silver_submit'),
+      );
+    }
+    else {
+      $form['node_info']['invest_silver'] = array(
+        '#type' => 'item',
+        '#value' => t('You currectly have no silver available to invest.'),
+        '#description' => $desc,
+      );
+    }
   }
 
   // Add additional options for xp IIF allowed.
