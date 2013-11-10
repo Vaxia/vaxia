@@ -158,7 +158,8 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
           $comment = comment_load($found_comment->cid);
           $comment_uri = comment_uri($comment);
           $comment_display = '<a href="/' . $comment_uri['path'] . '#' . $comment_uri['options']['fragment'] . '" title="' .
-            check_plain($comment->comment_body[$comment->language][0]['value']) . '">' .
+            check_plain($comment->comment_body[$comment->language][0]['value']) . "\n" .
+            check_plain($comment->field_ooc[$comment->language][0]['value']) . '">' .
             check_plain($comment->subject) .
             '</a>';
           $character = node_load($comment->field_comment_character[$comment->language][0]['nid']);
@@ -312,7 +313,8 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
       $comment = comment_load($cid);
       $comment_uri = comment_uri($comment);
       $comment_display = '<a href="/' . $comment_uri['path'] . '#' . $comment_uri['options']['fragment'] . '" title="' .
-        check_plain($comment->comment_body[$comment->language][0]['value']) . '">' .
+        check_plain($comment->comment_body[$comment->language][0]['value']) . "\n" .
+        check_plain($comment->field_ooc[$comment->language][0]['value']) . '">' .
         check_plain($comment->subject) .
         '</a>';
       $comment_display = array(
