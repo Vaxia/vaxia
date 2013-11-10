@@ -61,16 +61,16 @@ function item_helper_node_update($node) {
     // Collect content info.
     $save_comments = !empty($node->included_comments_table)
       ? $node->included_comments_table : array();
+    // Save each one to the nid.
+    if (empty($save_comments)) {
+      return;
+    }
     foreach ($save_comments as $cid => $comment) {
       // If marked, and not already in the list, add it.
       $this_comment = (object) $comment;
       $this_comment->nid = $nid;
       $this_comment->cid = $cid;
       $save_comments[$cid] = $this_comment;
-    }
-    // Save each one to the nid.
-    if (!empty($save_comments)) {
-      _item_helper_delete_comments($nid);
     }
     foreach ($save_comments as $cid => $item_comment) {
       // Don't save what's marked for removal.
