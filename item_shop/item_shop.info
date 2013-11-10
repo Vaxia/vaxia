@@ -1,0 +1,6 @@
+name = Vaxia item shop
+description = Shop for allowing PCs to buy base items out of hand
+package = RPG
+core = 7.x
+dependencies[] = vaxia
+version = 7.x-1.0
