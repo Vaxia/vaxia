@@ -1,0 +1,44 @@
+<?php
+/**
+ * @file
+ * Code for the Item shop feature.
+ */
+
+include_once 'item_shop.features.inc';
+
+/**
+ * Implements hook_permission().
+ */
+function item_shop_permission() {
+  return array(
+    'use item shop' => array(
+      'title' => t('use item shop'),
+      'description' => t('Use item shop.'),
+    ),
+    'set item for shop' => array(
+      'title' => t('set item for shop'),
+      'description' => t('Set item for shop.'),
+    ),
+    'administer item shop' => array(
+      'title' => t('administer item shop'),
+      'description' => t('Administer item shop.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function item_shop_form_views_form_item_shop_item_shop_alter(&$form, &$form_state, $form_id) {
+  $form['actions']['submit']['#value'] = t('Purchase items');
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function item_shop_form_items_node_form_alter(&$form, &$form_state, $form_id) {
+  if (!user_access('set item for shop')) {
+    $form['field_in_shop']['#access'] = FALSE;
+    $form['field_in_shop']['#value'] = $form['field_in_shop']['#default_value'];
+  }
+}

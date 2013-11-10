@@ -1,6 +1,13 @@
-name = Vaxia item shop
-description = Shop for allowing PCs to buy base items out of hand
-package = RPG
+name = Item shop
+description = Display items for item shop
 core = 7.x
-dependencies[] = vaxia
+package = RPG
+php = 5.2.4
 version = 7.x-1.0
+project = item_shop
+files[] = 'item_shop_field_handler_add_item.inc'
+dependencies[] = ctools
+dependencies[] = views
+features[ctools][] = views:views_default:3.0
+features[features_api][] = api:1
+features[views_view][] = item_shop
