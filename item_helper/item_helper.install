@@ -25,6 +25,24 @@ function item_helper_schema() {
         'default' => 0,
         'description' => 'Cid of the comment.',
       ),
+      'override_might' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Mark if might is overridden.',
+      ),
+      'might_1' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Mark if might is overridden.',
+      ),
+      'might_2' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Mark if might is overridden.',
+      ),
       'roll_type' => array(
         'type' => 'varchar',
         'not null' => TRUE,
@@ -64,3 +82,33 @@ function item_helper_install() {}
  * Implements hook_uninstall().
  */
 function item_helper_uninstall() {}
+
+/**
+ * Implements hook_update_N().
+ */
+function item_helper_update_7001(&$sandbox) {
+  $new_fields = array(
+    'override_might' => array(
+      'type' => 'int',
+      'not null' => TRUE,
+      'default' => 0,
+      'description' => 'Mark if might is overridden.',
+    ),
+    'might_1' => array(
+      'type' => 'int',
+      'not null' => TRUE,
+      'default' => 0,
+      'description' => 'Mark if might is overridden.',
+    ),
+    'might_2' => array(
+      'type' => 'int',
+      'not null' => TRUE,
+      'default' => 0,
+      'description' => 'Mark if might is overridden.',
+    ),
+  );
+  // Add new fields.
+  foreach ($new_fields as $name => $new_field) {
+    db_add_field('item_helper_item_comments', $name, $new_field);
+  }
+}
