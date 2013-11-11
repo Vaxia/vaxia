@@ -755,3 +755,11 @@ function vaxia_rpg_chat_user_refresh($refresh) {
     $this_player->field_refresh_rate[$lang][0]['value'] : 60;
   return $refresh;
 }
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function vaxia_form_comment_form_alter(array &$form, array &$form_state) {
+  $is_update = isset($form['cid']['#value']);
+  $form['author']['subscriptions_notify']['#access'] = FALSE;
+}
