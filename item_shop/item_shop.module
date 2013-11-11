@@ -84,7 +84,15 @@ function _item_shop_access_callback($options = array()) {
  * Implements hook_form_FORM_ID_alter().
  */
 function item_shop_form_views_form_item_shop_item_shop_alter(&$form, &$form_state, $form_id) {
+  // Change text.
   $form['actions']['submit']['#value'] = t('Purchase items');
+  // Change acess.
+  global $user;
+  $node = node_load(arg(1));
+  if ($user->uid != $node->uid) {
+    $form['actions']['submit']['#disabled'] = TRUE;
+    $form['actions']['submit']['#value'] = t('This is not your character sheet');     
+  }
 }
 
 /**
