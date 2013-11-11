@@ -132,6 +132,8 @@ function vaxia_user_default_permissions() {
     'roles' => array(
       0 => 'administrator',
       1 => 'storyteller',
+      2 => 'storyteller-assistant',
+      3 => 'storyteller-candidate',
     ),
     'module' => 'vaxia',
   );
@@ -166,7 +168,10 @@ function vaxia_user_default_permissions() {
     'roles' => array(
       0 => 'administrator',
       1 => 'administrator-vaxia',
-      2 => 'storyteller',
+      2 => 'beta',
+      3 => 'storyteller',
+      4 => 'storyteller-assistant',
+      5 => 'storyteller-candidate',
     ),
     'module' => 'node',
   );
@@ -178,6 +183,8 @@ function vaxia_user_default_permissions() {
       0 => 'administrator',
       1 => 'administrator-vaxia',
       2 => 'storyteller',
+      3 => 'storyteller-assistant',
+      4 => 'storyteller-candidate',
     ),
     'module' => 'node',
   );
@@ -188,6 +195,8 @@ function vaxia_user_default_permissions() {
     'roles' => array(
       0 => 'administrator',
       1 => 'storyteller',
+      2 => 'storyteller-assistant',
+      3 => 'storyteller-candidate',
     ),
     'module' => 'vaxia',
   );
@@ -340,6 +349,8 @@ function vaxia_user_default_permissions() {
       0 => 'administrator',
       1 => 'administrator-vaxia',
       2 => 'storyteller',
+      3 => 'storyteller-assistant',
+      4 => 'storyteller-candidate',
     ),
     'module' => 'node',
   );
@@ -351,6 +362,8 @@ function vaxia_user_default_permissions() {
       0 => 'administrator',
       1 => 'administrator-vaxia',
       2 => 'storyteller',
+      3 => 'storyteller-assistant',
+      4 => 'storyteller-candidate',
     ),
     'module' => 'node',
   );
@@ -414,6 +427,7 @@ function vaxia_user_default_permissions() {
     'roles' => array(
       0 => 'administrator',
       1 => 'administrator-vaxia',
+      2 => 'beta',
     ),
     'module' => 'node',
   );
@@ -425,6 +439,8 @@ function vaxia_user_default_permissions() {
       0 => 'administrator',
       1 => 'administrator-vaxia',
       2 => 'storyteller',
+      3 => 'storyteller-assistant',
+      4 => 'storyteller-candidate',
     ),
     'module' => 'node',
   );

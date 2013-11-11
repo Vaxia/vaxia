@@ -87,7 +87,7 @@ Step 2: Save, when ready to submit change the workflow to approved to activate t
 Step 2: Save, when ready to submit change the workflow to submitted.'),
     ),
     'items' => array(
-      'name' => t('Items'),
+      'name' => t('Item'),
       'base' => 'node_content',
       'description' => t('Character held items.'),
       'has_title' => '1',

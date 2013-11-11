@@ -278,6 +278,8 @@ function vaxia_field_group_info() {
       2 => 'field_percents',
       3 => 'field_value',
       4 => 'field_character_owner',
+      5 => 'field_realm',
+      6 => 'field_in_shop',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -308,7 +310,9 @@ function vaxia_field_group_info() {
       2 => 'field_percents',
       3 => 'field_value',
       4 => 'field_character_owner',
-      5 => 'title',
+      5 => 'field_realm',
+      6 => 'field_in_shop',
+      7 => 'title',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(

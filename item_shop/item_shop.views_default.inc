@@ -85,29 +85,31 @@ function item_shop_views_default_views() {
   $handler->display->display_options['footer']['php']['label'] = 'Output economy information';
   $handler->display->display_options['footer']['php']['empty'] = TRUE;
   $handler->display->display_options['footer']['php']['php_output'] = '<?php
-// Get argument - character node.
+// Get arguments.
+global $user;
 $node = node_load(arg(1));
-// Grab the view, and load it with correct arguments.
-$lang = $node->language;
-$realm = isset($node->field_realm[$lang][0][\'value\']) ? $node->field_realm[$lang][0][\'value\'] : \'Vaxia\';
-$economy = isset($node->field_economy[$lang][0][\'value\']) ? $node->field_economy[$lang][0][\'value\'] : 0;
-// Figure out the players silver and economic values.
-$silver = _character_sheet_get_xp($node->nid, \'silver\');
-$silver_spent = _character_sheet_get_xp($node->nid, \'spent_silver\');
-$silver_invested = _character_sheet_get_xp($node->nid, \'invest_silver\');
-$available_silver = $silver - ($silver_spent + $silver_invested);
-// Available economy.
-$worth = _vaxia_calculate_worth($economy);
-// Grand total available.
-$total_worth = $available_silver + $worth;
-// Display.
-$output  = \'\';
-$output .= \'</br>\'. t(\'You have :silver available to spend.\', array(\':silver\' => number_format($available_silver,2)));
-$output .= \'</br>\'. t(\'If you cash in your economy levels, you have an additional :worth silver available to spend.\',
-  array(\':worth\' => number_format($worth,2)));
-$output .= \'</br>\'. t(\'Your total worth including silver and economy is :total_worth silver.\',
-  array(\':total_worth\' => number_format($total_worth,2)));
-
+if ($user->uid == $node->uid) {
+  // Grab the view, and load it with correct arguments.
+  $lang = $node->language;
+  $realm = isset($node->field_realm[$lang][0][\'value\']) ? $node->field_realm[$lang][0][\'value\'] : \'Vaxia\';
+  $economy = isset($node->field_economy[$lang][0][\'value\']) ? $node->field_economy[$lang][0][\'value\'] : 0;
+  // Figure out the players silver and economic values.
+  $silver = _character_sheet_get_xp($node->nid, \'silver\');
+  $silver_spent = _character_sheet_get_xp($node->nid, \'spent_silver\');
+  $silver_invested = _character_sheet_get_xp($node->nid, \'invest_silver\');
+  $available_silver = $silver - ($silver_spent + $silver_invested);
+  // Available economy.
+  $worth = _vaxia_calculate_worth($economy);
+  // Grand total available.
+  $total_worth = $available_silver + $worth;
+  // Display.
+  $output  = \'\';
+  $output .= \'</br>\'. t(\'You have :silver available to spend.\', array(\':silver\' => number_format($available_silver,2)));
+  $output .= \'</br>\'. t(\'If you cash in your economy levels, you have an additional :worth silver available to spend.\',
+    array(\':worth\' => number_format($worth,2)));
+  $output .= \'</br>\'. t(\'Your total worth including silver and economy is :total_worth silver.\',
+    array(\':total_worth\' => number_format($total_worth,2)));
+}
 print $output;
 ?>';
   /* No results behavior: Global: Text area */

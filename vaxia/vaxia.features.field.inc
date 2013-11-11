@@ -3929,6 +3929,75 @@ Additional languages may be added through RP at the following costs of practice 
     ),
   );
 
+  // Exported field: 'node-items-field_in_shop'.
+  $fields['node-items-field_in_shop'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_in_shop',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => '',
+          1 => '',
+        ),
+        'allowed_values_function' => '',
+      ),
+      'translatable' => '0',
+      'type' => 'list_boolean',
+    ),
+    'field_instance' => array(
+      'bundle' => 'items',
+      'default_value' => array(
+        0 => array(
+          'value' => 0,
+        ),
+      ),
+      'deleted' => '0',
+      'description' => 'If checked this item will be available in the player shop.',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => '55',
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_in_shop',
+      'label' => 'In shop',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(
+          'display_label' => 1,
+        ),
+        'type' => 'options_onoff',
+        'weight' => '4',
+      ),
+    ),
+  );
+
   // Exported field: 'node-items-field_item_agility'.
   $fields['node-items-field_item_agility'] = array(
     'field_config' => array(
@@ -4305,7 +4374,7 @@ Additional languages may be added through RP at the following costs of practice 
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '53',
+          'weight' => '56',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -4355,7 +4424,7 @@ Additional languages may be added through RP at the following costs of practice 
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '2',
+        'weight' => '5',
       ),
     ),
   );
@@ -4602,7 +4671,7 @@ Additional languages may be added through RP at the following costs of practice 
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '54',
+          'weight' => '57',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -4652,7 +4721,7 @@ Additional languages may be added through RP at the following costs of practice 
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '3',
+        'weight' => '6',
       ),
     ),
   );
@@ -9097,7 +9166,7 @@ Additional languages may be added through RP at the following costs of practice 
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '56',
+          'weight' => '58',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -9151,7 +9220,7 @@ Additional languages may be added through RP at the following costs of practice 
           'rows' => '2',
         ),
         'type' => 'text_textarea',
-        'weight' => '5',
+        'weight' => '7',
       ),
     ),
   );
@@ -9248,6 +9317,76 @@ Additional languages may be added through RP at the following costs of practice 
         ),
         'type' => 'text_textarea',
         'weight' => '50',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-items-field_realm'.
+  $fields['node-items-field_realm'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_realm',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          'Vaxia' => 'Vaxia',
+          'Sirian' => 'Sirian',
+        ),
+        'allowed_values_function' => '',
+      ),
+      'translatable' => '0',
+      'type' => 'list_text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'items',
+      'default_value' => array(
+        0 => array(
+          'value' => 'Vaxia',
+        ),
+      ),
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => '53',
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_realm',
+      'label' => 'Realm',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '2',
       ),
     ),
   );
@@ -9487,7 +9626,7 @@ Additional languages may be added through RP at the following costs of practice 
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '55',
+          'weight' => '54',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -9511,7 +9650,7 @@ Additional languages may be added through RP at the following costs of practice 
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '4',
+        'weight' => '3',
       ),
     ),
   );
@@ -11958,7 +12097,9 @@ Additional languages may be added through RP at the following costs of practice 
   t('Health');
   t('History');
   t('How good was this session?');
+  t('If checked this item will be available in the player shop.');
   t('Image');
+  t('In shop');
   t('Intellegence');
   t('Intelligence');
   t('Items');
