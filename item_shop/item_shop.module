@@ -27,6 +27,60 @@ function item_shop_permission() {
 }
 
 /**
+ * Implements hook_menu_alter().
+ */
+function item_shop_menu_alter(&$items) {
+  // Set a custom access callback function for our view page display path.
+  $items['node/%/item_shop']['access callback'] = '_item_shop_access_callback';
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function item_shop_module_implements_alter(&$implementations, $hook) {
+  // When the implementations of hook_menu_alter are called, we need our module
+  // to be called after views, so let's remove it from the implementations then
+  // add it to the end.
+  if ($hook == 'menu_alter') {
+    if (isset($implementations['item_shop'])) {
+      unset($implementations['item_shop']);
+      $implementations['item_shop'] = FALSE;
+    }
+  }
+}
+
+/**
+ * A custom 'access callback' function used by our view page display
+ * to determine if its local task menu tab should show up or not.
+ */
+function _item_shop_access_callback($options = array()) {
+  // Grab the default access callback function name, prepare the access
+  // arguments, then see what the default access call back result is
+  // according to views.
+  $access_callback = $options[0];
+  $access_arguments = $options[1];
+  $access = call_user_func_array($access_callback, $access_arguments);
+
+  // If the default access call back was false, then the user is not allowed
+  // access.
+  if (!$access) {
+    return FALSE;
+  }
+
+  // So far the user is allowed access from the views' settings, let's now
+  // determine if we want to customize the access to the tab.
+  // If the node type is not an article, then we'll deny access, otherwise grant
+  // access. 
+  $node = node_load(arg(1));
+  if ($node && $node->type != 'character_sheet') {
+    return FALSE;
+  }
+  else {
+    return TRUE; 
+  }
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  */
 function item_shop_form_views_form_item_shop_item_shop_alter(&$form, &$form_state, $form_id) {
