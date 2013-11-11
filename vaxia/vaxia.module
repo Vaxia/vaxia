@@ -760,6 +760,6 @@ function vaxia_rpg_chat_user_refresh($refresh) {
  * Implements hook_form_FORM_ID_alter().
  */
 function vaxia_form_comment_form_alter(array &$form, array &$form_state) {
-  $is_update = isset($form['cid']['#value']);
+  // Disable the extra box on comment forms.
   $form['author']['subscriptions_notify']['#access'] = FALSE;
 }
