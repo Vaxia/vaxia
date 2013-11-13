@@ -590,7 +590,7 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
   $invest = $cost - $silver_invested;
   // Invested silver is spent_silver, adjusted to show the difference between spent and the cost of the current economy level.
   $desc = t('You have %available silver available to invest. You need to invest %invest more silver before you will reach %level economy. Invested so far %so_far.',
-    array('%available' => number_format($available_silver, 2), '%invest' => number_format($invest, 2), '%level' => $level + 1, '%so_far' => $silver_invested));
+    array('%available' => floor($available_silver), '%invest' => ceil($invest), '%level' => $level + 1, '%so_far' => $silver_invested));
 
   global $user;
   if ($user->uid == $node->uid) {
