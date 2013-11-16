@@ -1240,7 +1240,10 @@ function _vaxia_dice_ruler_make_ruling(
   $perc_diff = 'n/a';
   if ($success == 'no') {
     $diff_perc = $one_trait_might * ((tan(($one_trait_rolled - 50.5) / 49.5 * atan(0.06 * 50)) / 6 + 0.5) / (0.5 - tan(($one_trait_rolled - 50.5) / 49.5 * atan(0.06 * 50)) / 6));
-    $perc_diff = $diff_perc / $one_trait_diff;
+    $perc_diff = 0;
+    if ($one_trait_diff != 0) {
+      $perc_diff = $diff_perc / $one_trait_diff;
+    }
   }
   $failed_might = 0;
   if ($success == 'no') {

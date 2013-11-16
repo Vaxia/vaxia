@@ -61,6 +61,10 @@ function item_helper_node_update($node) {
     // Collect content info.
     $save_comments = !empty($node->included_comments_table)
       ? $node->included_comments_table : array();
+    // Save each one to the nid.
+    if (empty($save_comments)) {
+      return;
+    }
     foreach ($save_comments as $cid => $comment) {
       // If marked, and not already in the list, add it.
       $this_comment = (object) $comment;
@@ -68,12 +72,13 @@ function item_helper_node_update($node) {
       $this_comment->cid = $cid;
       $save_comments[$cid] = $this_comment;
     }
-    // Save each one to the nid.
-    _item_helper_delete_comments($nid);
     foreach ($save_comments as $cid => $item_comment) {
       // Don't save what's marked for removal.
       if ($item_comment->remove == 0) {
         $item_comment->roll_type = isset($item_comment->roll_type) ? $item_comment->roll_type : 'gen_pp';
+        $item_comment->override_might = isset($item_comment->mights['override_might']) ? $item_comment->mights['override_might'] : 0;
+        $item_comment->might_1 = isset($item_comment->mights['might_1']) ? $item_comment->mights['might_1'] : 0;
+        $item_comment->might_2 = isset($item_comment->mights['might_2']) ? $item_comment->mights['might_2'] : 0;    
         $item_comment->set_bonus = isset($item_comment->set_bonus) ? $item_comment->set_bonus : 0;
         $item_comment->difficulty = isset($item_comment->difficulty) ? $item_comment->difficulty : 45;
         $item_comment->rp_bonus = isset($item_comment->rp_bonus) ? $item_comment->rp_bonus : 0;
@@ -106,7 +111,8 @@ function item_helper_node_view($node, $view_mode, $langcode) {
  */
 function item_helper_form_node_form_alter_wrapper($form, &$form_state, $node) {
   $form['#node'] = node_load($node->nid); // New node object.
-  item_helper_form_node_form_alter(&$form, &$form_state, $form_id);
+  $form['type']['#value'] = $node->type;
+  item_helper_form_node_form_alter($form, $form_state, 'item_helper_form_node_form_alter');
   $form['#weight'] = -40;
   return $form;
 }
@@ -157,7 +163,8 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
           $comment = comment_load($found_comment->cid);
           $comment_uri = comment_uri($comment);
           $comment_display = '<a href="/' . $comment_uri['path'] . '#' . $comment_uri['options']['fragment'] . '" title="' .
-            check_plain($comment->comment_body[$comment->language][0]['value']) . '">' .
+            check_plain($comment->comment_body[$comment->language][0]['value']) . "\n" .
+            'OOC: ' . check_plain($comment->field_ooc[$comment->language][0]['value']) . '">' .
             check_plain($comment->subject) .
             '</a>';
           $character = node_load($comment->field_comment_character[$comment->language][0]['nid']);
@@ -217,7 +224,7 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
       '#header' => array(
         t('Item creation posts'),
         t('Roll type'),
-        t('Set bonus'),
+        t('Flat bonus'),
         t('Difficulty'),
         t('RP?'),
         t('Result'),
@@ -246,6 +253,23 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
         '#size' => 4,
       );
     }
+    // Create baseline diff display (if user vs SH).
+    $rp_bons = array(
+      '#type' => 'select',
+      '#options' => array(
+        '0' => t('None'),
+        '5' => t('Minor'),
+        '10' => t('Average'),
+        '15' => t('Good'),
+        '20' => t('Excellent'),
+      ),
+    );
+    if (user_access('set numerical diff')) {
+      $rp_bons = array(
+        '#type' => 'textfield',
+        '#size' => 4,
+      );
+    }
     // Gather comments for display from various sources.
     $found_comments = array();
     // Check for comments still saved on the node.
@@ -258,7 +282,7 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
     // Gather comments existing under AJAX.
     $exist_comments_table = !empty($form_state['values']['included_comments_table'])
       ? $form_state['values']['included_comments_table'] : array();
-    foreach ($exist_comments_table as $existing_cid => $existing_comment) {
+    foreach ($exist_comments_table as $existing_cid => $existing_comment) { 
       // If marked add it.
       if ($existing_comment['remove'] == 0) {
         $this_comment = (object) $existing_comment;
@@ -294,7 +318,8 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
       $comment = comment_load($cid);
       $comment_uri = comment_uri($comment);
       $comment_display = '<a href="/' . $comment_uri['path'] . '#' . $comment_uri['options']['fragment'] . '" title="' .
-        check_plain($comment->comment_body[$comment->language][0]['value']) . '">' .
+        check_plain($comment->comment_body[$comment->language][0]['value']) . "\n" .
+        'OOC: ' . check_plain($comment->field_ooc[$comment->language][0]['value']) . '">' .
         check_plain($comment->subject) .
         '</a>';
       $comment_display = array(
@@ -305,12 +330,47 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
       $comment_display['#markup'] .= !empty($dice_rolls)
         ? theme('dice_roller_results', array('dice_rolls' => $dice_rolls))
         : '</br>' . t('No rolls found');
+      $mights['comment_text'] = $comment_display;
+      $mights['override_might'] = array(
+        '#type' => 'checkbox',
+        '#title' => t('Override mights'),
+        '#default_value' => isset($item_comment->override_might) ? $item_comment->override_might : FALSE,
+        '#return_value' => TRUE,
+      );
+      $mights['might_1'] = array(
+        '#prefix' => '<table class="item_helper_mights" style="margin:0;padding:0;">' .
+          '<tbody style="border:none;"><tr><td>',
+        '#suffix' => '</td>',
+        '#type' => 'textfield',
+        '#title' => t('First might'),
+        '#default_value' => isset($item_comment->might_1) ? $item_comment->might_1 : 0,
+        '#size' => 4,
+        '#states' => array(
+          'visible' => array(
+            ':input[name="included_comments_table[' . $item_comment->cid . '][mights][override_might]"]' => array('checked' => TRUE),
+          ),
+        ),
+      );
+      $mights['might_2'] = array(
+        '#prefix' => '<td style="padding-left:1em;">',
+        '#suffix' => '</td></tr></tbody></table>',
+        '#type' => 'textfield',
+        '#title' => t('Second might'),
+        '#default_value' => isset($item_comment->might_2) ? $item_comment->might_2 : 0,
+        '#size' => 4,
+        '#states' => array(
+          'visible' => array(
+            ':input[name="included_comments_table[' . $item_comment->cid . '][mights][override_might]"]' => array('checked' => TRUE),
+          ),
+        ),
+      );
+
       $roll_type = array(
         '#type' => 'radios',
         '#options' => array(
           'gen_pp' => t('PP for item'),
-          'prep_bon' => t('Prep bonus'),
-          'prep_set' => t('Set bonus'),
+          'prep_bon' => t('PP for bonus'),
+          'no_calcs' => t('No roll'),
         ),
         '#default_value' => isset($item_comment->roll_type) ? $item_comment->roll_type : 'gen_pp',
       );
@@ -321,11 +381,8 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
       );
       $difficulty = $diffs;
       $difficulty['#default_value'] = isset($item_comment->difficulty) ? $item_comment->difficulty : 45;
-      $rp_bonus = array(
-        '#type' => 'checkbox',
-        '#return_value' => 1,
-        '#default_value' => isset($item_comment->rp_bonus) ? $item_comment->rp_bonus : 0,
-      );
+      $rp_bonus = $rp_bons;
+      $rp_bonus['#default_value'] = isset($item_comment->rp_bonus) ? $item_comment->rp_bonus : 0;
       $results = array(
         '#type' => 'item',
         '#markup' => isset($item_comment->results) ? $item_comment->results : t('Not calculated'),
@@ -336,7 +393,7 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
         '#default_value' => 0,
       );
       $form['item_helper']['included_comments']['included_comments_table'][$cid] = array(
-        'comment_display' => &$comment_display,
+        'mights' => &$mights,
         'roll_type' => &$roll_type,
         'rp_bonus' => &$rp_bonus,
         'set_bonus'=> &$set_bonus,
@@ -348,7 +405,7 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
       $form['item_helper']['included_comments']['included_comments_table']['#rows'][] = array(
         'class' => array('draggable'),
         'data' => array(
-          array('data' => &$comment_display),
+          array('data' => &$mights),
           array('data' => &$roll_type),
           array('data' => &$set_bonus),
           array('data' => &$difficulty),
@@ -357,7 +414,7 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
           array('data' => &$remove),
         )
       );
-      unset($comment_display);
+      unset($mights);
       unset($roll_type);
       unset($rp_bonus);
       unset($set_bonus);
@@ -392,7 +449,8 @@ function _item_helper_ajax_load_room_comments($form, $form_state) {
  * AJAX function, callback for load comments after room selected.
  */
 function _item_helper_ajax_add_comments($form, $form_state) {
-  return $form['item_helper']['included_comments']['included_comments_table'];
+  return isset($form['item_helper']['included_comments']['included_comments_table']) ?
+    $form['item_helper']['included_comments']['included_comments_table'] : '';
 }
 
 /**
@@ -452,24 +510,42 @@ function _item_helper_calculate_results($found_comments) {
   foreach ($found_comments as $cid => $item_comment) {
     // Set defaults if not already set.
     $item_comment->roll_type = isset($item_comment->roll_type) ? $item_comment->roll_type : 'gen_pp';
+    if (isset($item_comment->mights)) {
+      $item_comment->override_might = isset($item_comment->mights['override_might']) ? $item_comment->mights['override_might'] : 0;
+      $item_comment->might_1 = isset($item_comment->mights['might_1']) ? $item_comment->mights['might_1'] : 0;
+      $item_comment->might_2 = isset($item_comment->mights['might_2']) ? $item_comment->mights['might_2'] : 0;
+    }
+    $item_comment->rp_bonus = isset($item_comment->rp_bonus) ? $item_comment->rp_bonus : 0;
     $item_comment->set_bonus = isset($item_comment->set_bonus) ? $item_comment->set_bonus : 0;
     $item_comment->difficulty = isset($item_comment->difficulty) ? $item_comment->difficulty : 45;
     $item_comment->rp_bonus = isset($item_comment->rp_bonus) ? $item_comment->rp_bonus : 0;
+    $rp_bonus = isset($item_comment->rp_bonus) ? $item_comment->rp_bonus : 0;
     // Grab rolls and start calculations.
     $dice_rolls = _dice_roller_get_roll($cid, 'c');
+    $set_bonus_txt = '';
+    $no_roll_txt = '';
+    if (!empty($item_comment->set_bonus)) {
+      $ongoing_prep_bonus += $item_comment->set_bonus;
+      $set_bonus_txt = t('Add @set_bonus flat circumstance bonus.', array('@set_bonus' => $item_comment->set_bonus));
+    }
+
     if (!empty($dice_rolls)) {
       $mights = array();
       $rolls = array();
       foreach ($dice_rolls as $index => $dice_roll) {
         $results = explode(',', $dice_rolls[$index]['roll_result']);
-        $might = array_pop($results);
-        $might = explode('=', $might);
-        $mights[] = trim($might[0]);
-        $rolls[] = trim($results[0]);
-      }
-      $rp_bonus = 0;
-      if ($item_comment->rp_bonus > 0) {
-        $rp_bonus = 5;
+        if ($item_comment->override_might) {
+          $mights[] = $item_comment->might_1;
+          if (!empty($item_comment->might_2)) {
+            $mights[] = $item_comment->might_2;
+          }
+        }
+        else {
+          $might = array_pop($results);
+          $might = explode('=', $might);
+          $mights[] = isset($might[0]) ? trim($might[0]) : 0;
+        }
+        $rolls[] = isset($results[0]) ? trim($results[0]) : 0;
       }
       $roll_ruling = array();
       if (count($mights) == 1) {
@@ -513,18 +589,30 @@ function _item_helper_calculate_results($found_comments) {
       if (!empty($roll_ruling)) {
         $PP_generated = $roll_ruling[7];
         if ($item_comment->roll_type == 'gen_pp') { // If just gen_add, then add.
+          $roll_txt = t('Roll generated PP for item.');
           $ongoing_PP += $PP_generated;
         }
         if ($item_comment->roll_type == 'prep_bon') { // If prep_bonus, divide, add.
+          $roll_txt = t('Roll added bonus for future rolls.');
           $ongoing_prep_bonus += floor($PP_generated / 7);
         }
-        if ($item_comment->roll_type == 'prep_set') { // If just set_bonus, then add.
-          $ongoing_prep_bonus += $item_comment->set_bonus;
+        if ($item_comment->roll_type == 'no_calcs') { // If just set_bonus, then add.
+          $roll_txt = t('No roll on this post.');
         }
       }
     }
-    $item_comment->results = t(':PP PP / :100 100\'s / :1 1\'s </br> :rp RP bonus / :prep Prep bonus',
-      array(':PP' => number_format($ongoing_PP), ':100' => $ongoing_100, ':1' => $ongoing_1,
+    $might_2 = empty($mights[1]) ? '' : '/ ' . $mights[1];
+    $break_1 = empty($set_bonus_txt) ? '' : '</br>';
+    $break_2 = empty($roll_txt) ? '' : '</br>';
+    $item_comment->results = t(
+      ':set_bonus_txt' . $break_1 .
+      ':roll_txt' . $break_2 .
+      'Mights :might1 :might2 </br> ' .
+      ':PP PP / :100 100\'s / :1 1\'s </br> ' .
+      ':rp RP bonus / :prep Prep bonus',
+      array(':set_bonus_txt' => $set_bonus_txt, ':roll_txt' => $roll_txt,
+        ':might1' => $mights[0], ':might2' => $might_2,
+        ':PP' => number_format($ongoing_PP), ':100' => $ongoing_100, ':1' => $ongoing_1,
         ':rp' => $rp_bonus, ':prep' => $ongoing_prep_bonus ));
   }
   return $found_comments;
@@ -604,7 +692,6 @@ function _item_helper_insert_comment($data) {
     _item_helper_update_comment($data);
   }
   drupal_write_record('item_helper_item_comments', $data);
-  return $results;
 }
 
 /**
@@ -617,7 +704,6 @@ function _item_helper_update_comment($data) {
     _item_helper_insert_comment($data);
   }
   drupal_write_record('item_helper_item_comments', $data, array('nid', 'cid'));
-  return $results;
 }
 
 /**
