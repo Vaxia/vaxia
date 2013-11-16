@@ -172,7 +172,7 @@ function rpg_chat_node_view_alter(&$build) {
     $user_string = '<div id="rpg-chat-userlist">' .
       theme('item_list', array('title' => t('Users in this room'), 'items' => $user_names)) .
       '</div>';
-    $build['comments']['comments']['#prefix'] = '<a href="#rpg_chat"></a><div id="rpg-chat-wrapper">' . $user_string . '<div id="rpg-chat">';
+    $build['comments']['comments']['#prefix'] = '<div id="rpg-chat-wrapper">' . $user_string . '<div id="rpg-chat">';
     $build['comments']['comments']['#suffix'] = '</div></div>';
   }
 }
