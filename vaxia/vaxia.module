@@ -754,7 +754,7 @@ function _vaxia_comment_add_kxp_submit($form, $form_state) {
  * Redirection submit handler to clip the anchor.
  */
 function _vaxia_comment_redirect_submit($form, &$form_state) {
-  $form_state['redirect'] = 'node/' . $form_state['values']['nid'];
+  $form_state['redirect'] = 'node/' . $form_state['values']['nid'] . '#rpg_chat';
 }
 
 /**
