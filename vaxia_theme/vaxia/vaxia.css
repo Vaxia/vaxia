@@ -187,3 +187,14 @@ div.quiz-report .dt{background:transparent;}
 .vertical-tabs ul.vertical-tabs-list li{background-color:transparent;}
 .vertical-tabs ul.vertical-tabs-list li.selected{background-color:transparent;}
 #navigation{position:relative;height:0;}
+
+/* Collected fixes. 11/17/13 */
+.form-item{margin:0;}
+.item-list .pager li{float:left;}
+.messages{border:1px solid;padding:0.5em;font-weight:bold;}
+.messages--status{background-color:#0A0;}
+.messages--error{background-color:#A00;}
+.rpg-chat-node #vaxia-dice-roller .form-item-vaxia-rolls-items .form-select{width:100%;}
+.rpg-chat-node article.rpg-chat-narrative .field-name-comment-body{min-height:10px !important;}
+#edit-subscriptions-notify .description{display:none;}
+.wiki_category_tag{display:inline;padding-right:1em;}
