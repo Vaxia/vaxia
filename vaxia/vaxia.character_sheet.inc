@@ -621,8 +621,8 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
   }
 
   // Add additional options for xp IIF allowed.
-  if (isset($form['add_xp']) && ($node->field_is_storyteller[$node->language][0]['value'] == 0) 
-  	&& ($node->field_is_npc[$node->language][0]['value'] == 0) && ($node->field_is_open_npc[$node->language][0]['value'] == 0)) {
+  if (isset($form['add_xp']) && $node->field_is_storyteller[$node->language][0]['value'] == 0 
+  	&& $node->field_is_npc[$node->language][0]['value'] == 0 && $node->field_is_open_npc[$node->language][0]['value'] == 0) {
     $form['add_xp']['xp']['#options'] = range(0, 500);
     $xp_types = array();
     foreach(explode("\n", variable_get('vaxia_xp_types', "good\nevil\nsmart\nclever\nwarrior\nmage\nrogue")) as $type) {
@@ -651,8 +651,10 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
 
   // And add the transfer options. But only if this sheet is a storyteller sheet.
   $rxp = _character_sheet_get_xp($node->nid, 'rxp');
-  if ($rxp > 0 && ($node->field_is_storyteller[$node->language][0]['value'] == 1) &&
-    (($node->uid == $user->uid && user_access('transfer rxp')) || user_access('transfer others sheets'))
+  if ($rxp > 0 &&
+  	($node->field_is_storyteller[$node->language][0]['value'] == 1 || $node->field_is_npc[$node->language][0]['value'] == 1 ||
+  	  $node->field_is_open_npc[$node->language][0]['value'] == 1) &&
+    ($node->uid == $user->uid && user_access('transfer rxp') || user_access('transfer others sheets'))
   ) {
     $form['transfer_rxp'] = array(
       '#type' => 'fieldset',
