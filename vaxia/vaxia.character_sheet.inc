@@ -1067,7 +1067,7 @@ function _vaxia_transfer_rxp_submit(&$form, &$form_state) {
         array('@amount' => $amount, '@nid' => $old_character->nid, '@title' => $old_character->title,
         '@nid2' => $new_character->nid, '@title2' => $new_character->title)));
       _character_sheet_update_xp($old_character->nid, $amount * -1, 'rxp');
-      _character_sheet_update_xp($new_character->nid, $amount, 'xp'); // XP for immediate use.
+      _character_sheet_update_xp($new_character->nid, $amount, 'bxp'); // Transfer as BXP to be unlocked.
       global $user;
       $message = t('%xp %type xp added to %title by %user.',
         array('%xp' => $amount, '%type' => 'SH-RXP', '%title' => $new_character->title, '%user' => $user->name));
