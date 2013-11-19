@@ -35,6 +35,10 @@ function vaxia_permission() {
       'title' => t('transfer others sheets'),
       'description' => t('Transfer the XP of others sheets.'),
     ),
+    'create SHs' => array(
+      'title' => t('create SHs'),
+      'description' => t('Create SHs for running games.'),
+    ),
     'create NPCs' => array(
       'title' => t('create NPCs'),
       'description' => t('Create NPCs for posting.'),
