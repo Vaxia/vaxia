@@ -85,6 +85,11 @@ function vaxia_menu() {
     'access arguments' => array('access content'),
     'page callback' => '_vaxia_transfer_xp_autocomplete',
   );
+  $items['vaxia/dice_proof'] = array(
+    'title' => 'Vaxia diceroller',
+    'access arguments' => array('view dice rolls'),
+    'page callback' => '_vaxia_dice_proof',
+  );
   return $items;
 }
 
@@ -666,6 +671,7 @@ function vaxia_form_alter(&$form, &$form_state, $form_id) {
     $form['actions']['submit']['#value'] = t('Post');
     $form['#submit'][] = '_vaxia_comment_set_profile_values_submit';
     $form['#submit'][] = '_vaxia_comment_add_kxp_submit';
+    $form['#submit'][] = '_vaxia_comment_redirect_submit';
     $new_post = $form['actions']['submit'];
     $new_post['#weight'] = -10;
     array_unshift($form, $new_post);
@@ -745,6 +751,13 @@ function _vaxia_comment_add_kxp_submit($form, $form_state) {
 }
 
 /**
+ * Redirection submit handler to clip the anchor.
+ */
+function _vaxia_comment_redirect_submit($form, &$form_state) {
+  $form_state['redirect'] = 'node/' . $form_state['values']['nid'];
+}
+
+/**
  * Implements hook_rpg_chat_user_refresh().
  */
 function vaxia_rpg_chat_user_refresh($refresh) {
@@ -762,4 +775,52 @@ function vaxia_rpg_chat_user_refresh($refresh) {
 function vaxia_form_comment_form_alter(array &$form, array &$form_state) {
   // Disable the extra box on comment forms.
   $form['author']['subscriptions_notify']['#access'] = FALSE;
+}
+
+/**
+ * Menu callback.
+ */
+function _vaxia_dice_proof() {
+  // Given dice patterns in the past, provide a page to analyze the dice rolled to date and calculate results as proof.
+  $dice_rolls = db_query('SELECT roll_result FROM {dice_roller} WHERE roll_command LIKE :rolls', array(':rolls' => '1d100%'));
+  $roll_set = array();
+  $count = 0;
+  foreach ($dice_rolls as $dice_roll) {
+    $result = explode('=', $dice_roll->roll_result);
+    $rolls = explode(',', $result[0]);
+    $roll = trim($rolls[0]);
+    if (is_numeric($roll)) {
+      $count++;
+      if (!isset($roll_set[$roll])) {
+        $roll_set[$roll] = 0;
+      }
+      $roll_set[$roll]++;
+    }
+  }
+  // Display.
+  $output = '<style>';
+  $output .= '.dice_proof_row{}';
+  $output .= '.dice_proof_label{padding-left:0.5em;}';
+  $output .= '.dice_proof_average{border-right:solid 1px #111;display:block;}';
+  $output .= '.dice_proof_value{background:green;display:block;}';
+  $output .= '</style>';
+  $output .= '<div class="dice_proof_title">Across ' . $count . ' Rolls:</div>';
+  $average = array_sum($roll_set) / 100;
+  $cut = $average > 100 ? $average / 2 : 0;
+  for ($n = 1; $n < 101; $n++) {
+    if (!isset($roll_set[$n])) {
+      $roll_set[$n] = 0;
+    }
+    $width = $roll_set[$n] - $cut;
+    $average = $average - $cut;
+    $output .= '<div>' .
+      '<span class="dice_proof_value" style="width:' . $width . 'em;">' .
+      '  <span class="dice_proof_average" style="width:' . $average . 'em;">&nbsp;' .
+      '    <span class="dice_proof_label">' . $n .
+      '    </span>' .
+      '  </span>' .
+      '</span>' .
+      '</div>';
+  }
+  return $output;
 }
