@@ -1132,7 +1132,7 @@ function _vaxia_get_field_value_flat($node, $field_key, $field_info, $nodes_seen
               }
               else {
                 // The sub node hasn't been saved yet either.
-                $sub_node = isset($delta_field['entity']) ? $delta_field['entity']; : '';
+                $sub_node = isset($delta_field['entity']) ? $delta_field['entity'] : '';
               }
             }
           }
