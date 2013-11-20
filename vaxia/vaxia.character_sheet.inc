@@ -341,7 +341,7 @@ function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
 
   // Do this for all forms.
   // Remove the NPC / ONPC buttons if the user is not permissioned.
-  if (!user_access('create SHs')) {
+  if (!user_access('create SHs') || !empty(_vaxia_get_SH_characters($node->uid)) ) {
     $form['field_is_storyteller'][$lang]['#access'] = FALSE;
     $form['field_is_storyteller'][$lang]['#value'] =
       isset($form['field_is_storyteller'][$lang]['#default_value']) ? $form['field_is_storyteller'][$lang]['#default_value'] : FALSE;
@@ -356,6 +356,20 @@ function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
     $form['field_is_open_npc'][$lang]['#value'] =
       isset($form['field_is_open_npc'][$lang]['#default_value']) ? $form['field_is_open_npc'][$lang]['#default_value'] : FALSE;
   }
+}
+
+/**
+ * Helper function, retrieve SH information from player.
+ */
+function _vaxia_get_SH_characters($uid) {
+  $character_nids = array();
+  $nodes = node_load_multiple(array(), array('type' => 'character_sheet', 'uid' => $uid));
+  foreach ($nodes as $nid => $node) {
+    if ($node->field_is_npc[$node->language][0]['value'] == 1) {
+      $character_nids[] = $nid;
+    }
+  }
+  return $character_nids;
 }
 
 /**
