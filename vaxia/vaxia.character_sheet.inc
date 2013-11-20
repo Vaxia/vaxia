@@ -343,9 +343,7 @@ function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
   // Remove the NPC / ONPC buttons if the user is not permissioned.
   $sh_users = _vaxia_get_SH_characters($node->uid);
   if (!user_access('create SHs') || !empty($sh_users)) {
-    $form['field_is_storyteller'][$lang]['#access'] = FALSE;
-    $form['field_is_storyteller'][$lang]['#value'] =
-      isset($form['field_is_storyteller'][$lang]['#default_value']) ? $form['field_is_storyteller'][$lang]['#default_value'] : FALSE;
+    $form['field_is_storyteller'][$lang]['#disabled'] = TRUE;
   }
   if (!user_access('create NPCs')) {
     $form['field_is_npc'][$lang]['#access'] = FALSE;
