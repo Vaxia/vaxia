@@ -2146,7 +2146,7 @@ function vaxia_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_is_storyteller',
-      'label' => 'Storyteller',
+      'label' => 'Storyhost',
       'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
@@ -2232,9 +2232,11 @@ function vaxia_field_default_fields() {
         'default' => array(
           'label' => 'above',
           'module' => 'node_reference',
-          'settings' => array(),
-          'type' => 'node_reference_default',
-          'weight' => '35',
+          'settings' => array(
+            'node_reference_view_mode' => 'full',
+          ),
+          'type' => 'node_reference_node',
+          'weight' => '36',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2297,12 +2299,13 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'description' => 'All characters get three languages at native proficiency by default on starting. List the three you\'re selecting here.<br>
 <br>
-Additional languages may be added through RP at the following costs of practice posting / level:<br>
-1XP - learner, you can recognize the language written or heard<br>
-2XP - basic understanding, not fluent<br>
-3XP - conversationally fluent, with an accent<br>
-4XP - conversationally fluent, with an accent and idiomatic<br>
-5XP - equivalent to native<br>',
+Additional languages may be added through RP at the following # of posts indicating practice:<br>
+post worth 1XP - learner, you can recognize the language written or heard<br>
+post worth 2XP - basic understanding, not fluent<br>
+post worth 3XP - conversationally fluent, with an accent<br>
+post worth 4XP - conversationally fluent, with an accent and idiomatic<br>
+post worth 5XP - equivalent to native<br>
+Posting does not have to occur all at once, so feel free to spread it out across encounters.',
       'display' => array(
         'default' => array(
           'label' => 'above',
@@ -2325,6 +2328,7 @@ Additional languages may be added through RP at the following costs of practice 
       'settings' => array(
         'better_formats' => array(
           'allowed_formats' => array(
+            'filtered_html' => 0,
             'full_html' => 'full_html',
             'php_code' => 'php_code',
             'plain_text' => 'plain_text',
@@ -2335,6 +2339,9 @@ Additional languages may be added through RP at the following costs of practice 
           'default_order_toggle' => 0,
           'default_order_wrapper' => array(
             'formats' => array(
+              'filtered_html' => array(
+                'weight' => '0',
+              ),
               'full_html' => array(
                 'weight' => '1',
               ),
@@ -3002,7 +3009,7 @@ Additional languages may be added through RP at the following costs of practice 
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '36',
+          'weight' => '35',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -12057,12 +12064,13 @@ Additional languages may be added through RP at the following costs of practice 
   t('Agility');
   t('All characters get three languages at native proficiency by default on starting. List the three you\'re selecting here.<br>
 <br>
-Additional languages may be added through RP at the following costs of practice posting / level:<br>
-1XP - learner, you can recognize the language written or heard<br>
-2XP - basic understanding, not fluent<br>
-3XP - conversationally fluent, with an accent<br>
-4XP - conversationally fluent, with an accent and idiomatic<br>
-5XP - equivalent to native<br>');
+Additional languages may be added through RP at the following # of posts indicating practice:<br>
+post worth 1XP - learner, you can recognize the language written or heard<br>
+post worth 2XP - basic understanding, not fluent<br>
+post worth 3XP - conversationally fluent, with an accent<br>
+post worth 4XP - conversationally fluent, with an accent and idiomatic<br>
+post worth 5XP - equivalent to native<br>
+Posting does not have to occur all at once, so feel free to spread it out across encounters.');
   t('Apparent Age');
   t('Appearance');
   t('Artwork');
@@ -12131,7 +12139,7 @@ Additional languages may be added through RP at the following costs of practice 
   t('Sex');
   t('Skill');
   t('Spirituality');
-  t('Storyteller');
+  t('Storyhost');
   t('Strength');
   t('Sub-locations');
   t('Titles');

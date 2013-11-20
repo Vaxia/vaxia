@@ -70,7 +70,6 @@ function vaxia_user_default_permissions() {
     'name' => 'administer comments',
     'roles' => array(
       0 => 'administrator',
-      1 => 'authenticated user',
     ),
     'module' => 'comment',
   );
@@ -101,6 +100,7 @@ function vaxia_user_default_permissions() {
     'roles' => array(
       0 => 'administrator',
       1 => 'administrator-vaxia',
+      2 => 'authenticated user',
     ),
     'module' => 'vaxia',
   );
@@ -471,7 +471,8 @@ function vaxia_user_default_permissions() {
     'name' => 'post comments',
     'roles' => array(
       0 => 'administrator',
-      1 => 'player',
+      1 => 'authenticated user',
+      2 => 'player',
     ),
     'module' => 'comment',
   );
@@ -525,7 +526,8 @@ function vaxia_user_default_permissions() {
     'name' => 'search content',
     'roles' => array(
       0 => 'administrator',
-      1 => 'player',
+      1 => 'authenticated user',
+      2 => 'player',
     ),
     'module' => 'search',
   );
@@ -567,7 +569,8 @@ function vaxia_user_default_permissions() {
     'name' => 'use advanced search',
     'roles' => array(
       0 => 'administrator',
-      1 => 'player',
+      1 => 'authenticated user',
+      2 => 'player',
     ),
     'module' => 'search',
   );
@@ -578,7 +581,8 @@ function vaxia_user_default_permissions() {
     'roles' => array(
       0 => 'administrator',
       1 => 'administrator-vaxia',
-      2 => 'player',
+      2 => 'authenticated user',
+      3 => 'player',
     ),
     'module' => 'dice_roller',
   );
@@ -603,7 +607,8 @@ function vaxia_user_default_permissions() {
     'name' => 'view dice rolls',
     'roles' => array(
       0 => 'administrator',
-      1 => 'player',
+      1 => 'authenticated user',
+      2 => 'player',
     ),
     'module' => 'dice_roller',
   );
@@ -634,7 +639,8 @@ function vaxia_user_default_permissions() {
     'roles' => array(
       0 => 'administrator',
       1 => 'administrator-vaxia',
-      2 => 'player',
+      2 => 'authenticated user',
+      3 => 'player',
     ),
     'module' => 'rpg_chat',
   );
@@ -644,7 +650,8 @@ function vaxia_user_default_permissions() {
     'name' => 'view rpg mature chat',
     'roles' => array(
       0 => 'administrator',
-      1 => 'player',
+      1 => 'authenticated user',
+      2 => 'player',
     ),
     'module' => 'rpg_chat',
   );
