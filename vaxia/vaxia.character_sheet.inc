@@ -366,7 +366,7 @@ function _vaxia_get_SH_characters($uid) {
   $character_nids = array();
   $nodes = node_load_multiple(array(), array('type' => 'character_sheet', 'uid' => $uid));
   foreach ($nodes as $nid => $node) {
-    if ($node->field_is_npc[$node->language][0]['value'] == 1) {
+    if ($node->field_is_storyteller[$node->language][0]['value'] == 1) {
       $character_nids[] = $nid;
     }
   }
