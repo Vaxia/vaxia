@@ -748,7 +748,8 @@ function _vaxia_comment_add_kxp_submit($form, $form_state) {
       $kxp = $kxp <= $max_kxp ? $kxp : $max_kxp;
       $character = node_load($form_state['values']['field_comment_character'][$lang][0]['nid']);
       // Posting with an NPC? Mark the XP to the SH character.
-      if ($node->field_is_npc[$node->language][0]['value'] == 1 || $node->field_is_open_npc[$node->language][0]['value'] == 1) {
+      if ($character->field_is_npc[$character->language][0]['value'] == 1 
+        || $character->field_is_open_npc[$character->language][0]['value'] == 1) {
         global $user;
         $sh_characters = _vaxia_get_SH_characters($user->uid);
         foreach ($sh_characters as $nid => $sh_character) {
