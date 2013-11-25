@@ -341,6 +341,10 @@ function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
 
   // Do this for all forms.
   // Remove the NPC / ONPC buttons if the user is not permissioned.
+  $sh_users = _vaxia_get_SH_characters($node->uid);
+  if (!user_access('create SHs') || !empty($sh_users)) {
+    $form['field_is_storyteller'][$lang]['#disabled'] = TRUE;
+  }
   if (!user_access('create NPCs')) {
     $form['field_is_npc'][$lang]['#access'] = FALSE;
     $form['field_is_npc'][$lang]['#value'] =
@@ -1129,7 +1133,7 @@ function _vaxia_get_field_value_flat($node, $field_key, $field_info, $nodes_seen
               }
               else {
                 // The sub node hasn't been saved yet either.
-                $sub_node = $delta_field['entity'];
+                $sub_node = isset($delta_field['entity']) ? $delta_field['entity'] : '';
               }
             }
           }

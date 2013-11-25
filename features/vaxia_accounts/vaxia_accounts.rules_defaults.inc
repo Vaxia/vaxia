@@ -183,6 +183,7 @@ function vaxia_accounts_default_rules_configuration() {
       "ON" : { "user_stats_day_older" : [] },
       "IF" : [
         { "NOT user_is_blocked" : { "account" : [ "user" ] } },
+        { "user_has_role" : { "account" : [ "user" ], "roles" : { "value" : { "8" : "8" } } } },
         { "data_is" : {
             "data" : [ "user:created" ],
             "op" : "\\u003C",
@@ -203,14 +204,14 @@ function vaxia_accounts_default_rules_configuration() {
         }
       ],
       "DO" : [
+        { "user_block" : { "account" : [ "user" ] } },
         { "mail" : {
             "to" : "bastlynn@gmail.com",
             "subject" : "[Vaxia] User blocked for inactivity [user:name]",
             "message" : "User blocked for inactivity for 1 yr on: [user:name]  - last access: [user:last-access]",
             "language" : [ "" ]
           }
-        },
-        { "user_block" : { "account" : [ "user" ] } }
+        }
       ]
     }
   }');
@@ -430,6 +431,46 @@ function vaxia_accounts_default_rules_configuration() {
             "operation" : "Remove",
             "display" : 0,
             "moderate" : "approved"
+          }
+        }
+      ]
+    }
+  }');
+  $items['vaxia_accounts_delete_non_player_user_account'] = entity_import('rules_config', '{ "vaxia_accounts_delete_non_player_user_account" : {
+      "LABEL" : "Delete non-player user account",
+      "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
+      "TAGS" : [ "Retire" ],
+      "REQUIRES" : [ "rules", "user_stats" ],
+      "ON" : { "user_stats_day_older" : [] },
+      "IF" : [
+        { "NOT user_is_blocked" : { "account" : [ "user" ] } },
+        { "NOT user_has_role" : {
+            "account" : [ "user" ],
+            "roles" : { "value" : { "8" : "8" } },
+            "operation" : "OR"
+          }
+        },
+        { "data_is" : {
+            "data" : [ "user:created" ],
+            "op" : "\\u003C",
+            "value" : { "select" : "site:current-date", "date_offset" : { "value" : -259200 } }
+          }
+        },
+        { "data_is" : {
+            "data" : [ "user:last-login" ],
+            "op" : "\\u003C",
+            "value" : { "select" : "site:current-date", "date_offset" : { "value" : -1209600 } }
+          }
+        }
+      ],
+      "DO" : [
+        { "entity_delete" : { "data" : [ "user" ] } },
+        { "mail" : {
+            "to" : "bastlynn@gmail.com",
+            "subject" : "[Vaxia] User deleted [user:name]",
+            "message" : "[Vaxia] User deleted [user:name]",
+            "language" : [ "" ]
           }
         }
       ]

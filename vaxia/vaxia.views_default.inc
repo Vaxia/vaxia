@@ -5121,7 +5121,7 @@ return $output;';
     0 => '0',
   );
   $handler->display->display_options['filters']['field_is_open_npc_value']['group'] = 1;
-  /* Filter criterion: Content: Storyteller (field_is_storyteller) */
+  /* Filter criterion: Content: Storyhost (field_is_storyteller) */
   $handler->display->display_options['filters']['field_is_storyteller_value']['id'] = 'field_is_storyteller_value';
   $handler->display->display_options['filters']['field_is_storyteller_value']['table'] = 'field_data_field_is_storyteller';
   $handler->display->display_options['filters']['field_is_storyteller_value']['field'] = 'field_is_storyteller_value';
@@ -5399,7 +5399,7 @@ return $row->type;';
     0 => '0',
   );
   $handler->display->display_options['filters']['field_is_open_npc_value']['group'] = 1;
-  /* Filter criterion: Content: Storyteller (field_is_storyteller) */
+  /* Filter criterion: Content: Storyhost (field_is_storyteller) */
   $handler->display->display_options['filters']['field_is_storyteller_value']['id'] = 'field_is_storyteller_value';
   $handler->display->display_options['filters']['field_is_storyteller_value']['table'] = 'field_data_field_is_storyteller';
   $handler->display->display_options['filters']['field_is_storyteller_value']['field'] = 'field_is_storyteller_value';
