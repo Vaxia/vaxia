@@ -377,8 +377,10 @@ function vaxia_character_sheet_validate_sheet($node, $old_node, $form, $form_sta
   }
   // Run this only for draft nodes, to cap out at 300 per field.
   // Check if the sheet has been finalized.
-  if (!isset($node->workflow) || (isset($node->workflow)
-    && ($node->workflow == variable_get('vaxia_draft_workflow', '') ))) {
+  if ( !isset($old_node->workflow) || // Brand new node.
+  	!isset($node->workflow) || // Current node has no workflow.
+  	(isset($node->workflow) && ($node->workflow == variable_get('vaxia_draft_workflow', ''))) // Created node but still in draft.
+  ) {
     // Total the value of points against starting points flat.
     $available_xp = variable_get('vaxia_starting_points', 300);
     $fields_info = _character_sheet_get_field_info($node);
