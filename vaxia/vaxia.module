@@ -799,18 +799,21 @@ function _vaxia_dice_proof() {
   $dice_rolls = db_query('SELECT roll_result FROM {dice_roller} WHERE roll_command LIKE :rolls', array(':rolls' => '1d100%'));
   $roll_set = array();
   $count = 0;
+  $average = 0;
   foreach ($dice_rolls as $dice_roll) {
     $result = explode('=', $dice_roll->roll_result);
     $rolls = explode(',', $result[0]);
     $roll = trim($rolls[0]);
     if (is_numeric($roll)) {
       $count++;
+      $average += $roll;
       if (!isset($roll_set[$roll])) {
         $roll_set[$roll] = 0;
       }
       $roll_set[$roll]++;
     }
   }
+  $average = $average / $count;
   // Display.
   $output = '<style>';
   $output .= '.dice_proof_row{}';
@@ -819,23 +822,25 @@ function _vaxia_dice_proof() {
   $output .= '.dice_proof_value{background:green;display:block;}';
   $output .= '</style>';
   $output .= '<div class="dice_proof_title">Across ' . $count . ' Rolls:</div>';
-  $average = array_sum($roll_set) / 100;
-  $cut = $average > 100 ? $average / 2 : 0;
+  $counts = array_sum($roll_set) / 100;
+  $cut = $counts > 100 ? $counts / 2 : 0;
+  $mark = $counts - $cut;
   for ($n = 1; $n < 101; $n++) {
     if (!isset($roll_set[$n])) {
       $roll_set[$n] = 0;
     }
     $width = $roll_set[$n] - $cut;
-    $average = $average - $cut;
     $output .= '<div>' .
       '<span class="dice_proof_value" style="width:' . $width . 'em;">' .
-      '  <span class="dice_proof_average" style="width:' . $average . 'em;">&nbsp;' .
+      '  <span class="dice_proof_average" style="width:' . $mark . 'em;">&nbsp;' .
       '    <span class="dice_proof_label">' . $n .
       '    </span>' .
       '  </span>' .
       '</span>' .
       '</div>';
   }
+  $output .= '<div class="dice_proof_title">Expected mathematical average of all rolls: 50 / 51</div>';
+  $output .= '<div class="dice_proof_title">Actual mathematical average of all rolls: ' . $average . '</div>';
   return $output;
 }
 
