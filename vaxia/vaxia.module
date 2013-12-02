@@ -98,6 +98,59 @@ function vaxia_menu() {
 }
 
 /**
+ * Implements hook_rules_event_info().
+ */
+function vaxia_vacation_rules_event_info() {
+  $items = array(
+    'vaxia_gain_kxp' => array(
+      'label' => t('Vaxia gain kxp'),
+      'group' => t('Vaxia'),
+      'variables' => array(
+        'user' => array(
+            'type' => 'user',
+            'label' => t('Player'),
+        ),
+        'character' => array(
+            'type' => 'node',
+            'label' => t('Character'),
+        ),
+        'location' => array(
+            'type' => 'node',
+            'label' => t('Location'),
+        ),
+        'xp_amount' => array(
+            'type' => 'integer',
+            'label' => t('XP Amount'),
+         ),
+      ),
+    ),
+    'vaxia_gain_xp' => array(
+      'label' => t('Vaxia gain xp'),
+      'group' => t('Vaxia'),
+      'variables' => array(
+        'user' => array(
+            'type' => 'user',
+            'label' => t('Player'),
+        ),
+        'character' => array(
+            'type' => 'node',
+            'label' => t('Character'),
+        ),
+        'xp_amount' => array(
+            'type' => 'integer',
+            'label' => t('XP Amount'),
+         ),
+        'xp_type' => array(
+            'type' => 'text',
+            'label' => t('XP type'),
+         ),
+      ),
+    ),
+  );
+  return $items;
+}
+
+/**
 * Implements hook_cron_queue_info().
 */
 function vaxia_cron_queue_info() {
@@ -758,7 +811,12 @@ function _vaxia_comment_add_kxp_submit($form, $form_state) {
       }
       // Mark the XP.
       if ($character->type == 'character_sheet') {
-        _vaxia_add_xp($form_state['values']['field_comment_character'][$lang][0]['nid'], $kxp, 'kxp');
+        _vaxia_add_xp($character->nid, $kxp, 'kxp');
+        if (function_exists('rules_invoke_event')) {
+          $player = user_load($character->uid);
+          $location = $form['#node'];
+          rules_invoke_event('vaxia_gain_xp', $player, $character, $location, $kxp, 'kxp');
+        }
       }
     }  
   }

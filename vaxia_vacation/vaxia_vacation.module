@@ -5,7 +5,7 @@
  */
 
 /**
- * Helper function update roles for given user.
+ * Implements hook_rules_event_info().
  */
 function vaxia_vacation_rules_event_info() {
   $items = array(
