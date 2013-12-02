@@ -100,7 +100,7 @@ function vaxia_menu() {
 /**
  * Implements hook_rules_event_info().
  */
-function vaxia_vacation_rules_event_info() {
+function vaxia_rules_event_info() {
   $items = array(
     'vaxia_gain_kxp' => array(
       'label' => t('Vaxia gain kxp'),
