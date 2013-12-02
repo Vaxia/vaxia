@@ -1220,6 +1220,10 @@ function _vaxia_add_xp($nid, $xp, $type) {
     _vaxia_update_type_tracking(array('nid' => $nid, 'xp' => $xp, 'type' => $type)); // Add to the type given.
     $message = t('%xp %type XP added to %title by %user.',
       array('%xp' => $xp, '%type' => $type, '%title' => $node->title, '%user' => $user->name));
+    if (function_exists('rules_invoke_event')) {
+      $player = user_load($node->uid);
+  	  rules_invoke_event('vaxia_gain_xp', $player, $node, $xp, $type);
+    }
     $type = 'xp';
   }
   switch ($type) {
@@ -1245,10 +1249,18 @@ function _vaxia_add_xp($nid, $xp, $type) {
     case 'bxp':
       // If bxp is added directly, just add it to the bxp score.
       _character_sheet_update_xp($nid, $xp, 'bxp');
+      if (function_exists('rules_invoke_event')) {
+        $player = user_load($nid->uid);
+        rules_invoke_event('vaxia_gain_xp', $player, $node, $xp, $type);
+      }
     break;
     case 'rxp':
       // If rxp is added directly, just add it to the rxp score.
       _character_sheet_update_xp($nid, $xp, 'rxp');
+      if (function_exists('rules_invoke_event')) {
+        $player = user_load($nid->uid);
+        rules_invoke_event('vaxia_gain_xp', $player, $node, $xp, $type);
+      }
     break;
     case 'silver':
       $message = t('%xp %type silver added to %title by %user.',
@@ -1278,6 +1290,10 @@ function _vaxia_add_xp($nid, $xp, $type) {
       _character_sheet_update_xp($nid, $rxp_to_charge * -1, 'rxp');
       _character_sheet_update_xp($nid, $xp_to_add, 'xp');
       _character_sheet_update_xp($nid, $bxp_to_add, 'bxp');
+      if (function_exists('rules_invoke_event')) {
+        $player = user_load($nid->uid);
+        rules_invoke_event('vaxia_gain_xp', $player, $node, $xp, $type);
+      }
     break;
   }
   // Flush Entity Cache record.
