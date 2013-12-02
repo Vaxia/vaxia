@@ -290,9 +290,9 @@ function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
   $lang = $form['language']['#value'];
   // Only on a character sheet that isn't yet enabled.
   if (_character_sheet_is_enabled($node) && !_character_sheet_is_playable($node)) {
-    // Hide these fields.
+    // Hide these fields for new characters.
     $disabled = array('field_economy', 'field_npcs', 'field_items', 'field_property',
-      'field_sh_notes', 'field_sh_private_notes', 'field_player_notes');
+      'field_sh_notes', 'field_sh_private_notes');
     foreach ($disabled as $field_name) {
       $form[$field_name]['#access'] = FALSE;
       $form[$field_name][$lang][0]['#access'] = FALSE;
@@ -301,6 +301,28 @@ function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
       }
       if (isset($form[$field_name][$lang]['add_more'])) {
         $form[$field_name][$lang]['add_more']['#access'] = FALSE;
+      }
+    }
+    // If the owner, and new, and user isn't an SH sort.
+    if ($user->uid = $node->uid && !user_access('create NPCs') && !user_access('create open NPCs')) {
+      $reduced = array('field_life', 'field_endurance', 'field_strength', 'field_dexterity',
+        'field_intelligence', 'field_spirituality', 'field_charisma');
+      $options = array_combine(range(10, 40), range(10, 40));
+      foreach ($reduced as $field_name) {
+        if (isset($form[$field_name][$lang][0]['value']['#type']) && $form[$field_name][$lang][0]['value']['#type'] == 'textfield') {
+          $form[$field_name][$lang][0]['value']['#type'] = 'select';
+          $form[$field_name][$lang][0]['value']['#size'] = 1;
+          $form[$field_name][$lang][0]['value']['#options'] = $options;
+        }
+      }
+      $options = array_combine(range(1, 40), range(1, 40));
+      foreach ($form['field_skill'][$lang] as $delta => $field) {
+        if (isset($form['field_skill'][$lang][$delta]['field_skill_value'][$lang][0]['value']['#type'])
+         && $form['field_skill'][$lang][$delta]['field_skill_value'][$lang][0]['value']['#type'] == 'textfield') {
+          $form['field_skill'][$lang][$delta]['field_skill_value'][$lang][0]['value']['#type'] = 'select';
+          $form['field_skill'][$lang][$delta]['field_skill_value'][$lang][0]['value']['#size'] = 1;
+          $form['field_skill'][$lang][$delta]['field_skill_value'][$lang][0]['value']['#options'] = $options;
+        }
       }
     }
     // If in submit / review mode then really remove access.
@@ -341,8 +363,8 @@ function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
 
   // Do this for all forms.
   // Remove the NPC / ONPC buttons if the user is not permissioned.
-  $sh_users = _vaxia_get_SH_characters($node->uid);
-  if (!user_access('create SHs') || !empty($sh_users)) {
+  $sh_chars = _vaxia_get_SH_characters($node->uid);
+  if (!user_access('create SHs') || !empty($sh_chars)) {
     $form['field_is_storyteller'][$lang]['#disabled'] = TRUE;
   }
   if (!user_access('create NPCs')) {
