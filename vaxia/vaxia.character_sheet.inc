@@ -309,7 +309,8 @@ function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
         'field_intelligence', 'field_spirituality', 'field_charisma');
       $options = array_combine(range(10, 40), range(10, 40));
       foreach ($reduced as $field_name) {
-        if (isset($form[$field_name][$lang][0]['value']['#type']) && $form[$field_name][$lang][0]['value']['#type'] == 'textfield') {
+        if (isset($form[$field_name][$lang][0]['value']['#type'])
+          && $form[$field_name][$lang][0]['value']['#type'] == 'textfield') {
           $form[$field_name][$lang][0]['value']['#type'] = 'select';
           $form[$field_name][$lang][0]['value']['#size'] = 1;
           $form[$field_name][$lang][0]['value']['#options'] = $options;
@@ -317,8 +318,8 @@ function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
       }
       $options = array_combine(range(1, 40), range(1, 40));
       foreach ($form['field_skill'][$lang] as $delta => $field) {
-        if (isset($form['field_skill'][$lang][$delta]['field_skill_value'][$lang][0]['value']['#type'])
-         && $form['field_skill'][$lang][$delta]['field_skill_value'][$lang][0]['value']['#type'] == 'textfield') {
+        if (is_array($field) && isset($form['field_skill'][$lang][$delta]['field_skill_value'][$lang][0]['value']['#type'])
+          && $form['field_skill'][$lang][$delta]['field_skill_value'][$lang][0]['value']['#type'] == 'textfield') {
           $form['field_skill'][$lang][$delta]['field_skill_value'][$lang][0]['value']['#type'] = 'select';
           $form['field_skill'][$lang][$delta]['field_skill_value'][$lang][0]['value']['#size'] = 1;
           $form['field_skill'][$lang][$delta]['field_skill_value'][$lang][0]['value']['#options'] = $options;
