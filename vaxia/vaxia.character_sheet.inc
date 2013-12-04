@@ -1251,7 +1251,7 @@ function _vaxia_add_xp($nid, $xp, $type) {
       // If bxp is added directly, just add it to the bxp score.
       _character_sheet_update_xp($nid, $xp, 'bxp');
       if (function_exists('rules_invoke_event')) {
-        $player = user_load($nid->uid);
+        $player = user_load($node->uid);
         rules_invoke_event('vaxia_gain_xp', $player, $node, $xp, $type);
       }
     break;
@@ -1259,7 +1259,7 @@ function _vaxia_add_xp($nid, $xp, $type) {
       // If rxp is added directly, just add it to the rxp score.
       _character_sheet_update_xp($nid, $xp, 'rxp');
       if (function_exists('rules_invoke_event')) {
-        $player = user_load($nid->uid);
+        $player = user_load($node->uid);
         rules_invoke_event('vaxia_gain_xp', $player, $node, $xp, $type);
       }
     break;
