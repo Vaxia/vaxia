@@ -1298,6 +1298,8 @@ function _vaxia_add_xp($nid, $xp, $type) {
       }
     break;
   }
+  // Echo log message to user.
+  drupal_set_message($message);
   // Flush Entity Cache record.
   if (module_exists('entitycache')) {
     cache_clear_all($nid, 'cache_entity_node');
