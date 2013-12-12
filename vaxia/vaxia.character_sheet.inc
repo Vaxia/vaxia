@@ -1269,6 +1269,8 @@ function _vaxia_add_xp($nid, $xp, $type) {
       _character_sheet_update_log($nid, 'silver', $message, $variables = array());
       // Silver is just added directly.
       _character_sheet_update_xp($nid, $xp, 'silver');
+      // Echo log message to user.
+      drupal_set_message($message);
     break;
     case 'xp':
     default:
@@ -1296,10 +1298,10 @@ function _vaxia_add_xp($nid, $xp, $type) {
         $player = user_load($node->uid);
         rules_invoke_event('vaxia_gain_xp', $player, $node, $orig_xp, $type);
       }
+      // Echo log message to user.
+      drupal_set_message($message);
     break;
   }
-  // Echo log message to user.
-  drupal_set_message($message);
   // Flush Entity Cache record.
   if (module_exists('entitycache')) {
     cache_clear_all($nid, 'cache_entity_node');
