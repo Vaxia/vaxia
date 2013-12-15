@@ -633,7 +633,7 @@ function vaxia_form_workflow_tab_form_alter(&$form, &$form_state, $form_id) {
   global $user;
   $node = isset($form['node']['#value']) ? $form['node']['#value'] : '';
   if (!empty($node) && $user->uid == $node->uid) {
-    if ($node->type == 'character_sheet') {
+    if ($node->type == 'character_sheet' || $node->type == 'items') {
       $workflow_name = $form['#wf']->name;
       $options = $form['workflow'][$workflow_name]['#options'];
       $index = array_search('approved', $options);
