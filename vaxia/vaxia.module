@@ -564,6 +564,7 @@ function vaxia_form_items_node_form_alter(&$form, &$form_state, $form_id) {
     drupal_set_message('You are attempting to edit an Item that has already been approved for play. Item numbers cannot be further edited ' .
       'after approval. Please revert this Item to draft, and take it through the approval process again if you need to update numbers.');
   }
+  $form['#after_build'][] = '_vaxia_node_form_workflow_after_build';
 }
 
 /**
