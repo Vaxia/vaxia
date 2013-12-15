@@ -600,7 +600,7 @@ function _item_helper_calculate_results($found_comments) {
         $PP_generated = $roll_ruling[7];
         if ($winsby_generated < 0 && $item_comment->roll_type == 'gen_pp') { // If just gen_add, then add.
           $lost_PP = floor( $ongoing_PP * (($winsby_generated * -1) / 100) );
-          $roll_txt = t('Roll lost ' . $lost_PP . 'PP for item, winsby of ' . $winsby_generated . '%.');
+          $roll_txt = t('Roll lost ' . $lost_PP . 'PP, ' . $winsby_generated . ' winsby.');
           $ongoing_PP -= $lost_PP;
         }
         if ($winsby_generated >= 0 && $item_comment->roll_type == 'gen_pp') { // If just gen_add, then add.
