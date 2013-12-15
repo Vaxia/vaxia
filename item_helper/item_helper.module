@@ -630,7 +630,8 @@ function _item_helper_calculate_results($found_comments) {
       ':roll_txt' . $break_2 .
       'Mights :might1 :might2 </br> ' .
       ':PP PP / :100 100\'s / :1 1\'s </br> ' .
-      ':rp RP bonus / :prep Prep bonus / :diff Diff mod',
+      ':rp RP bonus </br> ' .
+      ':prep Prep bonus / :diff Diff mod',
       array(':set_bonus_txt' => $set_bonus_txt, ':roll_txt' => $roll_txt,
         ':might1' => $mights[0], ':might2' => $might_2,
         ':PP' => number_format($ongoing_PP), ':100' => $ongoing_100, ':1' => $ongoing_1,
