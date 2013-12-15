@@ -553,17 +553,17 @@ function vaxia_form_character_sheet_node_form_alter(&$form, &$form_state, $form_
  */
 function vaxia_form_items_node_form_alter(&$form, &$form_state, $form_id) {
   $node = isset($form['#node']) ? $form['#node'] : '';
-  $allowed_edit = array('field_age_app', 'field_background', 'field_personality', 'field_description', 'field_occupation',
-    'field_last_name', 'field_titles', 'field_is_open_npc', 'field_race', 'field_sex', 'field_age_real',
-    'field_character_owner', 'field_sh_notes', 'field_sh_private_notes', 'field_player_notes');
-  foreach (element_children($form) as $child) {
-    if ((strpos($child, 'field_') === 0 || $child == 'title') && !in_array($child, $allowed_edit)) {
-      $form[$child]['#disabled'] = TRUE;
+  if (empty($node->clone_from_original_nid) && isset($node->workflow) && ($node->workflow_state_name == t('approved') || $node->workflow == 4)) {
+    $allowed_edit = array('field_item_desc', 'field_item_history',
+      'field_character_owner', 'field_sh_notes', 'field_sh_private_notes', 'field_player_notes');
+    foreach (element_children($form) as $child) {
+      if ((strpos($child, 'field_') === 0 || $child == 'title') && !in_array($child, $allowed_edit)) {
+        $form[$child]['#disabled'] = TRUE;
+      }
     }
+    drupal_set_message('You are attempting to edit an Item that has already been approved for play. Item numbers cannot be further edited ' .
+      'after approval. Please revert this Item to draft, and take it through the approval process again if you need to update numbers.');
   }
-  drupal_set_message('You are attempting to edit an item that has already been approved for play. Item numbers cannot be further edited ' .
-    'after approval. Please revert this item to draft, and take it through the approval process again if you need to update numbers.');
-  $form['#after_build'][] = '_vaxia_node_form_workflow_after_build';
 }
 
 /**
@@ -605,24 +605,6 @@ function _vaxia_node_form_workflow_after_build($form, $form_state) {
     }
   }
   return $form;
-}
-
-/**
- * Implements hook_form_FORM_ID_alter().
- */
-function vaxia_form_items_node_form_alter(&$form, &$form_state, $form_id) {
-  $node = isset($form['#node']) ? $form['#node'] : '';
-  if (empty($node->clone_from_original_nid) && isset($node->workflow) && ($node->workflow_state_name == t('approved') || $node->workflow == 4)) {
-    $allowed_edit = array('field_item_desc', 'field_item_history',
-      'field_character_owner', 'field_sh_notes', 'field_sh_private_notes', 'field_player_notes');
-    foreach (element_children($form) as $child) {
-      if ((strpos($child, 'field_') === 0 || $child == 'title') && !in_array($child, $allowed_edit)) {
-        $form[$child]['#disabled'] = TRUE;
-      }
-    }
-    drupal_set_message('You are attempting to edit an Item that has already been approved for play. Item numbers cannot be further edited ' .
-      'after approval. Please revert this Item to draft, and take it through the approval process again if you need to update numbers.');
-  }
 }
 
 /**
