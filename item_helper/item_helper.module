@@ -547,7 +547,7 @@ function _item_helper_calculate_results($found_comments) {
       $rolls = array();
       foreach ($dice_rolls as $index => $dice_roll) {
         $results = explode(',', $dice_rolls[$index]['roll_result']);
-        if ($item_comment->override_might) {
+        if (!empty($item_comment->override_might)) {
           $mights[] = $item_comment->might_1;
           if (!empty($item_comment->might_2)) {
             $mights[] = $item_comment->might_2;
