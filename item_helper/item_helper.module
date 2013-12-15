@@ -370,7 +370,8 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
         '#type' => 'radios',
         '#options' => array(
           'gen_pp' => t('PP for item'),
-          'prep_bon' => t('PP for bonus'),
+          'prep_bon' => t('PP to might bonus'),
+          'prep_diff' => t('PP to reduce diff'),
           'no_calcs' => t('No roll'),
         ),
         '#default_value' => isset($item_comment->roll_type) ? $item_comment->roll_type : 'gen_pp',
@@ -515,6 +516,7 @@ function _item_helper_calculate_results($found_comments) {
   $ongoing_100 = 0;
   $ongoing_1 = 0;
   $ongoing_prep_bonus = 0;
+  $ongoing_prep_diff = 0;
   foreach ($found_comments as $cid => $item_comment) {
     // Set defaults if not already set.
     $item_comment->roll_type = isset($item_comment->roll_type) ? $item_comment->roll_type : 'gen_pp';
@@ -560,7 +562,7 @@ function _item_helper_calculate_results($found_comments) {
       if (count($mights) == 1) {
         $roll_ruling = _vaxia_dice_ruler_make_ruling(
           $mights[0] + $rp_bonus + $ongoing_prep_bonus,
-          $item_comment->difficulty,
+          $item_comment->difficulty - $ongoing_prep_diff,
           0,
           $rolls[0]
         );
@@ -574,11 +576,11 @@ function _item_helper_calculate_results($found_comments) {
       if (count($mights) > 1) {
         $roll_ruling = _vaxia_dice_ruler_make_two_trait_ruling(
           $mights[0] + $rp_bonus + $ongoing_prep_bonus,
-          $item_comment->difficulty,
+          $item_comment->difficulty - $ongoing_prep_diff,
           0,
           $rolls[0],
           $mights[1] + $rp_bonus + $ongoing_prep_bonus,
-          $item_comment->difficulty,
+          $item_comment->difficulty - $ongoing_prep_diff,
           0,
           $rolls[1]
         );
@@ -607,6 +609,10 @@ function _item_helper_calculate_results($found_comments) {
           $roll_txt = t('Roll generated PP for item.');
           $ongoing_PP += $PP_generated;
         }
+        if ($item_comment->roll_type == 'prep_diff') { // If prep_bonus, divide, add.
+          $roll_txt = t('Roll reduces diff for future rolls.');
+          $ongoing_prep_diff += floor($PP_generated / 7);
+        }
         if ($item_comment->roll_type == 'prep_bon') { // If prep_bonus, divide, add.
           $roll_txt = t('Roll added bonus for future rolls.');
           $ongoing_prep_bonus += floor($PP_generated / 7);
@@ -624,11 +630,11 @@ function _item_helper_calculate_results($found_comments) {
       ':roll_txt' . $break_2 .
       'Mights :might1 :might2 </br> ' .
       ':PP PP / :100 100\'s / :1 1\'s </br> ' .
-      ':rp RP bonus / :prep Prep bonus',
+      ':rp RP bonus / :prep Prep bonus / :diff Diff mod',
       array(':set_bonus_txt' => $set_bonus_txt, ':roll_txt' => $roll_txt,
         ':might1' => $mights[0], ':might2' => $might_2,
         ':PP' => number_format($ongoing_PP), ':100' => $ongoing_100, ':1' => $ongoing_1,
-        ':rp' => $rp_bonus, ':prep' => $ongoing_prep_bonus ));
+        ':rp' => $rp_bonus, ':prep' => $ongoing_prep_bonus, ':diff' => $ongoing_prep_diff * -1 ));
   }
   return $found_comments;
 }
