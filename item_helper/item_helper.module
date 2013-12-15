@@ -594,6 +594,7 @@ function _item_helper_calculate_results($found_comments) {
           $ongoing_100++;
         }
       }
+      $roll_txt = t('No roll on this post.');
       if (!empty($roll_ruling)) {
         $winsby_generated = $roll_ruling[6];
         $PP_generated = $roll_ruling[7];
