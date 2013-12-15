@@ -228,7 +228,7 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
         t('Difficulty'),
         t('RP?'),
         t('Result'),
-        t('X?'),
+        t('(X)'),
       ),
       '#rows' => array(),
       '#attributes' => array('id' => 'item_helper_included_comments_table'),
@@ -258,10 +258,10 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
       '#type' => 'select',
       '#options' => array(
         '0' => t('None'),
-        '5' => t('Minor'),
-        '10' => t('Average'),
-        '15' => t('Good'),
-        '20' => t('Excellent'),
+        '5' => t('Average'),
+        '10' => t('Good'),
+        '15' => t('Excellent'),
+        '20' => t('Superior'),
       ),
     );
     if (user_access('set numerical diff')) {
@@ -383,7 +383,7 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
       $difficulty = $diffs;
       $difficulty['#default_value'] = isset($item_comment->difficulty) ? $item_comment->difficulty : 45;
       $rp_bonus = $rp_bons;
-      $rp_bonus['#default_value'] = isset($item_comment->rp_bonus) ? $item_comment->rp_bonus : 0;
+      $rp_bonus['#default_value'] = isset($item_comment->rp_bonus) ? $item_comment->rp_bonus : 5;
       $results = array(
         '#type' => 'item',
         '#markup' => isset($item_comment->results) ? $item_comment->results : t('Not calculated'),
@@ -497,6 +497,13 @@ function _item_helper_admin_settings($form, &$form_state) {
     '#options' => $types,
     '#default_value' => variable_get('item_helper_room_type', ''),
   );
+  $form['item_helper_num_posts'] = array(
+    '#title' => t('Number of posts'),
+    '#description' => t('Number of posts to display in interface.'),
+    '#type' => 'select',
+    '#options' => $types,
+    '#default_value' => variable_get('item_helper_num_posts', 50),
+  );
   return system_settings_form($form);
 }
 
@@ -588,7 +595,13 @@ function _item_helper_calculate_results($found_comments) {
         }
       }
       if (!empty($roll_ruling)) {
+        $winsby_generated = $roll_ruling[6];
         $PP_generated = $roll_ruling[7];
+        if ($winsby_generated < 0 && $item_comment->roll_type == 'gen_pp') { // If just gen_add, then add.
+          $lost_PP = floor( $ongoing_PP * (($winsby_generated * -1) / 100) );
+          $roll_txt = t('Roll lost ' . $lost_PP . 'PP for item, winsby of ' . $winsby_generated . '%.');
+          $ongoing_PP -= $lost_PP;
+        }
         if ($item_comment->roll_type == 'gen_pp') { // If just gen_add, then add.
           $roll_txt = t('Roll generated PP for item.');
           $ongoing_PP += $PP_generated;
@@ -646,9 +659,10 @@ function _item_helper_autocomplete_get_nid($room_selected) {
  * DB function, get comments per room.
  */
 function _item_helper_get_comments_by_room($nid) {
+  $post_limit = variable_get('item_helper_num_posts', 50);
   $results = db_query('SELECT * FROM {comment} ' .
     'WHERE nid = :nid ' .
-    'ORDER BY created DESC LIMIT 0, 50',
+    'ORDER BY created DESC LIMIT 0, ' . $post_limit,
     array(':nid' => $nid))->fetchAll();
   return $results;
 }
