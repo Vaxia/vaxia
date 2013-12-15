@@ -147,7 +147,7 @@ class item_shop_field_handler_add_item extends views_handler_field {
             ':title has NOT been added to this character. No silver charged.',
             array(':title' => $node->title)));
         }
-        $error=1;
+
         if(!$error) {
           // Charge silver.
           _add_silver_submit_form_remove_silver($char, -1 * $this_value);
