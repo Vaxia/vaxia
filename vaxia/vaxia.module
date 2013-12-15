@@ -555,32 +555,36 @@ function _vaxia_node_form_workflow_after_build($form, $form_state) {
   global $user;
   $node = isset($form['#node']) ? $form['#node'] : '';
   if (!empty($form['#wf']->name) && !empty($node) && $user->uid == $node->uid) {
-    if ($node->type == 'character_sheet') {
+    if ($node->type == 'character_sheet' || $node->type == 'items') {
       $workflow_name = $form['#wf']->name;
       $options = $form['workflow'][$workflow_name]['#options'];
       $index = array_search('approved', $options);
       if ($index !== FALSE && $index != $node->workflow) {
-        drupal_set_message(t('You cannot set a character sheet you own to approved. Currently: ' . $node->workflow_state_name));
+        drupal_set_message(t('You own this node, you cannot set it to approved. Currently: ' . $node->workflow_state_name));
         unset($options[$index]);
         unset($form['workflow'][$workflow_name][$index]);
         $form['workflow'][$workflow_name]['#options'] = $options;
         $form['workflow'][$workflow_name]['#default_value'] = $node->workflow;
       }
     }
-    /*
-    if ($node->type == 'items') {
+  }
+  if ($node->type == 'items') {
+    $lang = $node->language;
+    $character_owner = isset($node->field_character_owner[$lang][0]['nid'])
+      ? node_load($node->field_character_owner[$lang][0]['nid']) : FALSE;
+    if ($character_owner && !empty($form['#wf']->name) && !empty($node) && $user->uid == $character_owner->uid) {
       $workflow_name = $form['#wf']->name;
       $options = $form['workflow'][$workflow_name]['#options'];
       $index = array_search('approved', $options);
       if ($index !== FALSE && $index != $node->workflow) {
-        drupal_set_message(t('You cannot set an item you own to approved. Currently: ' . $node->workflow_state_name));
+        drupal_set_message(t('You own the character that owns this item, you cannot set it to approved. ' .
+          'Currently: ' . $node->workflow_state_name));
         unset($options[$index]);
         unset($form['workflow'][$workflow_name][$index]);
         $form['workflow'][$workflow_name]['#options'] = $options;
         $form['workflow'][$workflow_name]['#default_value'] = $node->workflow;
       }
     }
-    */
   }
   return $form;
 }
@@ -633,28 +637,31 @@ function vaxia_form_workflow_tab_form_alter(&$form, &$form_state, $form_id) {
       $options = $form['workflow'][$workflow_name]['#options'];
       $index = array_search('approved', $options);
       if ($index !== FALSE && $index != $node->workflow) {
-        drupal_set_message(t('You cannot set a character sheet you own to approved. Currently: ' . $node->workflow_state_name));
+        drupal_set_message(t('You own this node, you cannot set it to approved. Currently: ' . $node->workflow_state_name));
         unset($options[$index]);
         $form['workflow'][$workflow_name]['#options'] = $options;
         $form['workflow'][$workflow_name]['#default_value'] = $node->workflow;
       }
     }
   }
-  /*
-  if (!empty($node) && $user->uid == $node->uid) {
-    if ($node->type == 'items') {
+  if ($node->type == 'items') {
+    $lang = $node->language;
+    $character_owner = isset($node->field_character_owner[$lang][0]['nid'])
+      ? node_load($node->field_character_owner[$lang][0]['nid']) : FALSE;
+    if ($character_owner && !empty($form['#wf']->name) && !empty($node) && $user->uid == $character_owner->uid) {
       $workflow_name = $form['#wf']->name;
       $options = $form['workflow'][$workflow_name]['#options'];
       $index = array_search('approved', $options);
       if ($index !== FALSE && $index != $node->workflow) {
-        drupal_set_message(t('You cannot set an item you own to approved. Currently: ' . $node->workflow_state_name));
+        drupal_set_message(t('You own the character that owns this item, you cannot set it to approved. ' .
+          'Currently: ' . $node->workflow_state_name));
         unset($options[$index]);
+        unset($form['workflow'][$workflow_name][$index]);
         $form['workflow'][$workflow_name]['#options'] = $options;
         $form['workflow'][$workflow_name]['#default_value'] = $node->workflow;
       }
     }
   }
-  */
 }
 
 /**
@@ -768,13 +775,6 @@ function _vaxia_comment_set_profile_values_submit($form, $form_state) {
     $this_player->field_refresh_rate[$lang][0]['value'] = $refresh_rate;
   }
   user_save($this_player);
-  // Fall back on dice handler cookies for this value, prevent bad saves.
-  //if (!empty($artwork) && !empty($character)) {
-  //  // Save the updated art to the character.
-  //  $this_character = node_load($character);
-  //  $this_character->field_artwork[$lang][0]['nid'] = $artwork;
-  //  node_save($this_character);
-  //}
 }
 
 /**
