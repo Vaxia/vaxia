@@ -45,6 +45,8 @@ class item_shop_field_handler_add_item extends views_handler_field {
    * Form submit method.
    */
   function views_form_submit($form, &$form_state) {
+    // Display message.
+    drupal_set_message(t('Processing your purchase...'));
     // Determine which nodes we need to update.
     $buy = array();
     // Iterate over the view result.
@@ -53,7 +55,7 @@ class item_shop_field_handler_add_item extends views_handler_field {
       $value = $form_state['values'][$this->options['id']][$row_index];
       // If the submitted value is true, we're buying this one.
       if ($value) {
-        $buy[$row->{$this->aliases['nid']}] = $value;
+        $buy[] = $row->{$this->aliases['nid']};
       }
     }
     // Get node vlaues form path.
@@ -63,6 +65,7 @@ class item_shop_field_handler_add_item extends views_handler_field {
     $char = isset($node->nid) ? $node->nid : '';
     // Check values are ok.
     if (empty($char)) {
+      drupal_set_message(t('No character found for this purchase.'));
       return;
     }
 
@@ -70,6 +73,7 @@ class item_shop_field_handler_add_item extends views_handler_field {
     $user = user_load($node->uid);
     // Check values are ok.
     if (empty($user)) {
+      drupal_set_message(t('No player found for this purchase.'));
       return;
     }
 
@@ -77,6 +81,7 @@ class item_shop_field_handler_add_item extends views_handler_field {
     $realm = isset($node->field_realm[$lang][0]['value']) ? $node->field_realm[$lang][0]['value'] : 'Vaxia';
     // Check values are ok.
     if (empty($realm)) {
+      drupal_set_message(t('No realm found for this purchase.'));
       return;
     }
 
@@ -93,24 +98,12 @@ class item_shop_field_handler_add_item extends views_handler_field {
     $silver = isset($total_worth) ? $total_worth : 0;
     // Check values are ok.
     if (empty($silver)) {
-      return;
-    }
-
-    $item = node_load($row->nid);
-    // Check the silver value for this item.
-    $lang = $item->language;
-    $this_value = $item->field_value[$lang][0]['value'];
-    $this_value = str_replace(',', '', $this_value);
-    $this_value = str_replace('.', '', $this_value);
-    if (!is_numeric($this_value)) {
-      return;
-    }
-    if ($silver < $this_value) {
+      drupal_set_message(t('No silver found for this purchase.'));
       return;
     }
 
     // Grab the nodes we need to update and update them.
-    $nodes = node_load_multiple(array_keys($buy));
+    $nodes = node_load_multiple($buy);
     // Purchasing nodes.
     $total_cost = 0;
     foreach($nodes as $nid => $node) {
@@ -176,6 +169,7 @@ class item_shop_field_handler_add_item extends views_handler_field {
         }
       }
     }
+    drupal_set_message(t('Purchase complete.'));
   }
 
 }
