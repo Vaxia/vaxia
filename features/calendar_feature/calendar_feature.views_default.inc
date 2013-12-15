@@ -81,7 +81,7 @@ function calendar_feature_views_default_views() {
   $handler->display->display_options['filters']['field_when_value']['table'] = 'field_data_field_when';
   $handler->display->display_options['filters']['field_when_value']['field'] = 'field_when_value';
   $handler->display->display_options['filters']['field_when_value']['operator'] = '>=';
-  $handler->display->display_options['filters']['field_when_value']['default_date'] = 'now';
+  $handler->display->display_options['filters']['field_when_value']['default_date'] = 'first day of this month';
   $handler->display->display_options['filters']['field_when_value']['year_range'] = '-0:+1';
 
   /* Display: Feed */
@@ -90,8 +90,6 @@ function calendar_feature_views_default_views() {
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['style_plugin'] = 'date_ical';
   $handler->display->display_options['style_options']['cal_name'] = 'Events';
-  $handler->display->display_options['style_options']['no_calname'] = 0;
-  $handler->display->display_options['style_options']['disable_webcal'] = 0;
   $handler->display->display_options['row_plugin'] = 'date_ical';
   $handler->display->display_options['row_options']['date_field'] = 'field_data_field_when.field_when_value';
   $handler->display->display_options['row_options']['summary_field'] = 'default_title';

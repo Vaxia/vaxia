@@ -247,6 +247,7 @@ function vaxia_field_group_info() {
       2 => 'field_race',
       3 => 'field_realm',
       4 => 'field_sex',
+      5 => 'field_conditions',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -524,7 +525,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Notes',
-    'weight' => '6',
+    'weight' => '10',
     'children' => array(
       0 => 'field_player_notes',
       1 => 'field_sh_notes',
@@ -610,7 +611,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Overlaps',
-    'weight' => '3',
+    'weight' => '7',
     'children' => array(
       0 => 'field_item_over_agility',
       1 => 'field_item_over_appearance',
@@ -693,7 +694,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Penalties',
-    'weight' => '5',
+    'weight' => '9',
     'children' => array(
       0 => 'field_item_pen_agility',
       1 => 'field_item_pen_appearance',
@@ -776,7 +777,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Percentages',
-    'weight' => '2',
+    'weight' => '6',
     'children' => array(
       0 => 'field_item_perc_agility',
       1 => 'field_item_perc_appearance',
@@ -951,7 +952,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Requires',
-    'weight' => '4',
+    'weight' => '8',
     'children' => array(
       0 => 'field_item_required_agility',
       1 => 'field_item_required_appearance',
@@ -1169,7 +1170,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Modifies',
-    'weight' => '1',
+    'weight' => '5',
     'children' => array(
       0 => 'field_item_agility',
       1 => 'field_item_appearance',

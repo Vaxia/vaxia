@@ -9,6 +9,28 @@
  */
 function vaxia_default_rules_configuration() {
   $items = array();
+  $items['rules_mark_xp_on_user_on_character_gain'] = entity_import('rules_config', '{ "rules_mark_xp_on_user_on_character_gain" : {
+      "LABEL" : "Mark XP on user on character gain",
+      "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
+      "TAGS" : [ "Vaxia" ],
+      "REQUIRES" : [ "rules", "vaxia" ],
+      "ON" : { "vaxia_gain_xp" : [] },
+      "IF" : [ { "text_matches" : { "text" : [ "xp-type" ], "match" : "xp" } } ],
+      "DO" : [
+        { "data_calc" : {
+            "USING" : {
+              "input_1" : [ "user:field-xp-over-time" ],
+              "op" : "+",
+              "input_2" : [ "xp-amount" ]
+            },
+            "PROVIDE" : { "result" : { "new_user_xp" : "New User XP" } }
+          }
+        },
+        { "data_set" : { "data" : [ "user:field-xp-over-time" ], "value" : [ "new-user-xp" ] } }
+      ]
+    }
+  }');
   $items['rules_notify_char_eval_re_new_character'] = entity_import('rules_config', '{ "rules_notify_char_eval_re_new_character" : {
       "LABEL" : "Notify char eval re: new character",
       "PLUGIN" : "reaction rule",
@@ -61,7 +83,7 @@ function vaxia_default_rules_configuration() {
             "new_state" : { "value" : { "3" : "3" } }
           }
         },
-        { "php_eval" : { "code" : "$return_value = FALSE;\\r\\n$fields = array(\\u0027life\\u0027, \\u0027health\\u0027, \\u0027endurance\\u0027, \\u0027constitution\\u0027, \\u0027strength\\u0027, \\u0027agility\\u0027, \\u0027dexterity\\u0027,\\r\\n\\u0027reflexes\\u0027, \\u0027intelligence\\u0027, \\u0027awareness\\u0027, \\u0027spirituality\\u0027, \\u0027presence\\u0027, \\u0027charisma\\u0027, \\u0027appearance\\u0027,\\r\\n);\\r\\n$lang = $node-\\u003Elanguage;\\r\\nforeach ($fields as $field_name) {\\r\\n  $field_name = \\u0027field_\\u0027 . $field_name;\\r\\n  $stat = isset($node-\\u003E{$field_name}[$lang][0][\\u0027value\\u0027]) ?\\r\\n    $node-\\u003E{$field_name}[$lang][0][\\u0027value\\u0027] : 0;\\r\\n  if ($stat \\u003E 70) {\\r\\n    $return_value = TRUE;\\r\\n  }\\r\\n  foreach ($node-\\u003Efield_skill[$lang] as $delta =\\u003E $skill) {\\r\\n    $this_skill = field_collection_item_load($skill[\\u0027value\\u0027]);\\r\\n    $skill_lang = isset($skill-\\u003Elanguage) ? $skill-\\u003Elanguage : $lang;\\r\\n    $stat = isset($this_skill-\\u003Efield_skill_value[$skill_lang][0][\\u0027value\\u0027]) ?\\r\\n      $this_skill-\\u003Efield_skill_value[$skill_lang][0][\\u0027value\\u0027] : 0;\\r\\n    if ($stat \\u003E 70) {\\r\\n      $return_value = TRUE;\\r\\n    }\\r\\n  }\\r\\n}\\r\\nreturn $return_value;" } },
+        { "php_eval" : { "code" : "$limit = 70;\\r\\n$return_value = FALSE;\\r\\n$fields = array(\\u0027life\\u0027, \\u0027health\\u0027, \\u0027endurance\\u0027, \\u0027constitution\\u0027, \\u0027strength\\u0027, \\u0027agility\\u0027, \\u0027dexterity\\u0027,\\r\\n\\u0027reflexes\\u0027, \\u0027intelligence\\u0027, \\u0027awareness\\u0027, \\u0027spirituality\\u0027, \\u0027presence\\u0027, \\u0027charisma\\u0027, \\u0027appearance\\u0027,\\r\\n);\\r\\n$lang = $node-\\u003Elanguage;\\r\\nforeach ($fields as $field_name) {\\r\\n  $field_name = \\u0027field_\\u0027 . $field_name;\\r\\n  $stat = isset($node-\\u003E{$field_name}[$lang][0][\\u0027value\\u0027]) ?\\r\\n    $node-\\u003E{$field_name}[$lang][0][\\u0027value\\u0027] : 0;\\r\\n  if ($stat \\u003E= $limit) {\\r\\n    $return_value = TRUE;\\r\\n  }\\r\\n  foreach ($node-\\u003Efield_skill[$lang] as $delta =\\u003E $skill) {\\r\\n    $this_skill = field_collection_item_load($skill[\\u0027value\\u0027]);\\r\\n    $skill_lang = isset($skill-\\u003Elanguage) ? $skill-\\u003Elanguage : $lang;\\r\\n    $stat = isset($this_skill-\\u003Efield_skill_value[$skill_lang][0][\\u0027value\\u0027]) ?\\r\\n      $this_skill-\\u003Efield_skill_value[$skill_lang][0][\\u0027value\\u0027] : 0;\\r\\n    if ($stat \\u003E= $limit) {\\r\\n      $return_value = TRUE;\\r\\n    }\\r\\n  }\\r\\n}\\r\\nreturn $return_value;" } },
         { "OR" : [
             { "data_is" : { "data" : [ "node:field-is-npc" ], "value" : 1 } },
             { "data_is" : { "data" : [ "node:field-is-open-npc" ], "value" : 1 } }
@@ -175,11 +197,7 @@ function vaxia_default_rules_configuration() {
             "language" : [ "" ]
           }
         },
-        { "user_add_role" : {
-            "account" : [ "node:author" ],
-            "roles" : { "value" : { "8" : "8", "12" : "12" } }
-          }
-        }
+        { "user_add_role" : { "account" : [ "node:author" ], "roles" : { "value" : { "8" : "8" } } } }
       ]
     }
   }');
@@ -223,6 +241,44 @@ function vaxia_default_rules_configuration() {
       ]
     }
   }');
+  $items['vaxia_notify_char_eval_re_new_character_other'] = entity_import('rules_config', '{ "vaxia_notify_char_eval_re_new_character_other" : {
+      "LABEL" : "Notify char eval re: new character OTHER",
+      "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
+      "TAGS" : [ "Vaxia" ],
+      "REQUIRES" : [ "rules", "workflow_rules" ],
+      "ON" : { "workflow_state_changed" : [] },
+      "IF" : [
+        { "node_is_of_type" : {
+            "node" : [ "node" ],
+            "type" : { "value" : { "character_sheet" : "character_sheet" } }
+          }
+        },
+        { "workflow_check_transition" : {
+            "node" : [ "node" ],
+            "old_state" : { "value" : { "ANY" : "ANY" } },
+            "new_state" : { "value" : { "3" : "3" } }
+          }
+        },
+        { "data_is" : { "data" : [ "node:field-is-npc" ], "value" : 0 } },
+        { "data_is" : { "data" : [ "node:field-is-open-npc" ], "value" : 0 } },
+        { "OR" : [
+            { "data_is" : { "data" : [ "node:field-race" ], "value" : "other" } },
+            { "data_is" : { "data" : [ "node:field-conditions" ], "value" : "other" } }
+          ]
+        }
+      ],
+      "DO" : [
+        { "mail_to_users_of_role" : {
+            "roles" : { "value" : { "9" : "9", "4" : "4", "3" : "3" } },
+            "subject" : "[Vaxia] A character is ready to be reviewed with \\u0022Other\\u0022 values",
+            "message" : "A character is ready to be reviewed.\\r\\n\\r\\nBecause this character has listed \\u0022Other\\u0022 in Race or Conditions, this character is subject to additional World overview. The character, for whatever reason, needs to be reviewed and the player checked to make sure this character is appropriate for the setting. If you want to look at the character, please do so so you will be familiar with the character when it shows up in sessions.\\r\\n\\r\\nBecause this character requires World approval, please allow World for the Realm involved to take a look and issue approval.\\r\\n\\r\\nYou are receiving this email because you are one of the people available to evaluate characters. If you are not comfortable with approving characters at all, please speak to any of the current heads to update your access privileges.\\r\\n\\r\\nCharacter: [node:title]\\r\\nLink: [node:url]\\r\\n\\r\\n~~~~~~\\r\\nThis email was automatically generated by vaxia.org.\\r\\nYou are receiving this email as part of your membership at vaxia.org.\\r\\nDo not reply this this email, it is not a monitored account and messages will not be received by a human.\\r\\n~~~~~~"
+          }
+        },
+        { "drupal_message" : { "message" : "Your character has listed \\u0022Other\\u0022 in Race or Conditions. This character is subject to World approval. Please keep an eye on your email and PMs so our evaluators can follow up with you for this character." } }
+      ]
+    }
+  }');
   $items['vaxia_notify_char_eval_re_oversight_npc_pass_npc'] = entity_import('rules_config', '{ "vaxia_notify_char_eval_re_oversight_npc_pass_npc" : {
       "LABEL" : "Notify char eval re: OVERSIGHT NPC - pass_npc",
       "PLUGIN" : "reaction rule",
@@ -242,7 +298,7 @@ function vaxia_default_rules_configuration() {
             "new_state" : { "value" : { "3" : "3" } }
           }
         },
-        { "NOT php_eval" : { "code" : "$return_value = FALSE;\\r\\n$fields = array(\\u0027life\\u0027, \\u0027health\\u0027, \\u0027endurance\\u0027, \\u0027constitution\\u0027, \\u0027strength\\u0027, \\u0027agility\\u0027, \\u0027dexterity\\u0027,\\r\\n\\u0027reflexes\\u0027, \\u0027intelligence\\u0027, \\u0027awareness\\u0027, \\u0027spirituality\\u0027, \\u0027presence\\u0027, \\u0027charisma\\u0027, \\u0027appearance\\u0027,\\r\\n);\\r\\n$lang = $node-\\u003Elanguage;\\r\\nforeach ($fields as $field_name) {\\r\\n  $field_name = \\u0027field_\\u0027 . $field_name;\\r\\n  $stat = isset($node-\\u003E{$field_name}[$lang][0][\\u0027value\\u0027]) ?\\r\\n    $node-\\u003E{$field_name}[$lang][0][\\u0027value\\u0027] : 0;\\r\\n  if ($stat \\u003E 70) {\\r\\n    $return_value = TRUE;\\r\\n  }\\r\\n  foreach ($node-\\u003Efield_skill[$lang] as $delta =\\u003E $skill) {\\r\\n    $this_skill = field_collection_item_load($skill[\\u0027value\\u0027]);\\r\\n    $skill_lang = isset($skill-\\u003Elanguage) ? $skill-\\u003Elanguage : $lang;\\r\\n    $stat = isset($this_skill-\\u003Efield_skill_value[$skill_lang][0][\\u0027value\\u0027]) ?\\r\\n      $this_skill-\\u003Efield_skill_value[$skill_lang][0][\\u0027value\\u0027] : 0;\\r\\n    if ($stat \\u003E 70) {\\r\\n      $return_value = TRUE;\\r\\n    }\\r\\n  }\\r\\n}\\r\\nreturn $return_value;" } },
+        { "NOT php_eval" : { "code" : "$limit = 70;\\r\\n$return_value = FALSE;\\r\\n$fields = array(\\u0027life\\u0027, \\u0027health\\u0027, \\u0027endurance\\u0027, \\u0027constitution\\u0027, \\u0027strength\\u0027, \\u0027agility\\u0027, \\u0027dexterity\\u0027,\\r\\n\\u0027reflexes\\u0027, \\u0027intelligence\\u0027, \\u0027awareness\\u0027, \\u0027spirituality\\u0027, \\u0027presence\\u0027, \\u0027charisma\\u0027, \\u0027appearance\\u0027,\\r\\n);\\r\\n$lang = $node-\\u003Elanguage;\\r\\nforeach ($fields as $field_name) {\\r\\n  $field_name = \\u0027field_\\u0027 . $field_name;\\r\\n  $stat = isset($node-\\u003E{$field_name}[$lang][0][\\u0027value\\u0027]) ?\\r\\n    $node-\\u003E{$field_name}[$lang][0][\\u0027value\\u0027] : 0;\\r\\n  if ($stat \\u003E= $limit) {\\r\\n    $return_value = TRUE;\\r\\n  }\\r\\n  foreach ($node-\\u003Efield_skill[$lang] as $delta =\\u003E $skill) {\\r\\n    $this_skill = field_collection_item_load($skill[\\u0027value\\u0027]);\\r\\n    $skill_lang = isset($skill-\\u003Elanguage) ? $skill-\\u003Elanguage : $lang;\\r\\n    $stat = isset($this_skill-\\u003Efield_skill_value[$skill_lang][0][\\u0027value\\u0027]) ?\\r\\n      $this_skill-\\u003Efield_skill_value[$skill_lang][0][\\u0027value\\u0027] : 0;\\r\\n    if ($stat \\u003E= $limit) {\\r\\n      $return_value = TRUE;\\r\\n    }\\r\\n  }\\r\\n}\\r\\nreturn $return_value;" } },
         { "OR" : [
             { "data_is" : { "data" : [ "node:field-is-npc" ], "value" : 1 } },
             { "data_is" : { "data" : [ "node:field-is-open-npc" ], "value" : 1 } }
@@ -250,14 +306,19 @@ function vaxia_default_rules_configuration() {
         }
       ],
       "DO" : [
+        { "workflow_rules_set_state" : {
+            "node" : [ "node" ],
+            "workflow_state" : { "value" : { "4" : "4" } },
+            "workflow_comment" : "Passing NPC to approved. All stats and skills under 70. (executed by system:rules:oversight_npc_pass)"
+          }
+        },
+        { "php_eval" : { "code" : "\\u003C?php\\r\\n\\/\\/ Update the timestamp for the latest workflow to avoid a timestamp collision.\\r\\ndb_query(\\u0027UPDATE {workflow_node_history} \\u0027 .\\r\\n  \\u0027SET stamp = stamp+10 \\u0027 .\\r\\n  \\u0027WHERE nid = :nid \\u0027 .\\r\\n  \\u0027ORDER BY hid DESC \\u0027 .\\r\\n  \\u0027LIMIT 1\\u0027,\\r\\n  array(\\u0027:nid\\u0027 =\\u003E $node-\\u003Enid)\\r\\n);\\r\\n?\\u003E" } },
         { "drupal_message" : {
             "message" : "This character has all stat and skills under 70 points. Therefore the character does not require oversight and has been passed along directly to approval.",
             "type" : "warning",
             "repeat" : 0
           }
-        },
-        { "workflow_rules_set_state" : { "node" : [ "node" ], "workflow_state" : { "value" : { "4" : "4" } } } },
-        { "php_eval" : { "code" : "\\u003C?php\\r\\n\\/\\/ Update the timestamp for the latest workflow to avoid a timestamp collision.\\r\\ndb_query(\\u0027UPDATE {workflow_node_history} \\u0027 .\\r\\n  \\u0027SET stamp = stamp+10 \\u0027 .\\r\\n  \\u0027WHERE nid = :nid \\u0027 .\\r\\n  \\u0027ORDER BY hid DESC \\u0027 .\\r\\n  \\u0027LIMIT 1\\u0027,\\r\\n  array(\\u0027:nid\\u0027 =\\u003E $node-\\u003Enid)\\r\\n);\\r\\n?\\u003E" } }
+        }
       ]
     }
   }');

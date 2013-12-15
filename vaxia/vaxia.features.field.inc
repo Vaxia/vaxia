@@ -683,20 +683,25 @@ function vaxia_field_default_fields() {
         'default_image' => 0,
         'file_directory' => 'artwork',
         'file_extensions' => 'png gif jpg jpeg',
-        'max_filesize' => '',
-        'max_resolution' => '200x200',
+        'max_filesize' => '50MB',
+        'max_resolution' => '',
         'min_resolution' => '',
         'title_field' => 0,
         'user_register_form' => FALSE,
       ),
       'widget' => array(
         'active' => 1,
-        'module' => 'image',
+        'module' => 'imagefield_crop',
         'settings' => array(
+          'collapsible' => '2',
+          'croparea' => '500x500',
+          'enforce_minimum' => 0,
+          'enforce_ratio' => 1,
           'preview_image_style' => 'thumbnail',
           'progress_indicator' => 'throbber',
+          'resolution' => '200x200',
         ),
-        'type' => 'image_image',
+        'type' => 'imagefield_crop_widget',
         'weight' => '2',
       ),
     ),
@@ -913,7 +918,7 @@ function vaxia_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '22',
+        'weight' => '23',
       ),
     ),
   );
@@ -985,7 +990,7 @@ function vaxia_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '21',
+        'weight' => '22',
       ),
     ),
   );
@@ -1403,7 +1408,11 @@ function vaxia_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'character_sheet',
-      'default_value' => NULL,
+      'default_value' => array(
+        0 => array(
+          'value' => '25',
+        ),
+      ),
       'deleted' => '0',
       'description' => 'Contributes to Presence and Appearance.',
       'display' => array(
@@ -1443,6 +1452,72 @@ function vaxia_field_default_fields() {
         'settings' => array(),
         'type' => 'number',
         'weight' => '27',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-character_sheet-field_conditions'.
+  $fields['node-character_sheet-field_conditions'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_conditions',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          'vampire' => 'Vampire',
+          'were' => 'Were',
+          'walker' => 'Walker',
+          'ghost' => 'Ghost',
+          'other' => 'Other',
+        ),
+        'allowed_values_function' => '',
+      ),
+      'translatable' => '0',
+      'type' => 'list_text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'character_sheet',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'Most characters should start play with no conditions. Starting play with a condition requires oversight and approval from the World department. It is strongly recommended that new players start play as one of the pre-approved races instead to get familiar with the setting and community first.',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 37,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_conditions',
+      'label' => 'Conditions',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '20',
       ),
     ),
   );
@@ -1637,7 +1712,11 @@ function vaxia_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'character_sheet',
-      'default_value' => NULL,
+      'default_value' => array(
+        0 => array(
+          'value' => '25',
+        ),
+      ),
       'deleted' => '0',
       'description' => 'Contributes to Agility and Reflexes.',
       'display' => array(
@@ -1771,7 +1850,11 @@ function vaxia_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'character_sheet',
-      'default_value' => NULL,
+      'default_value' => array(
+        0 => array(
+          'value' => '25',
+        ),
+      ),
       'deleted' => '0',
       'description' => 'Contributes to Health and Constitution.',
       'display' => array(
@@ -1906,7 +1989,11 @@ function vaxia_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'character_sheet',
-      'default_value' => NULL,
+      'default_value' => array(
+        0 => array(
+          'value' => '25',
+        ),
+      ),
       'deleted' => '0',
       'description' => 'Contributes to Reflexes and Awareness.',
       'display' => array(
@@ -2303,7 +2390,7 @@ Additional languages may be added through RP at the following # of posts indicat
 post worth 1XP - learner, you can recognize the language written or heard<br>
 post worth 2XP - basic understanding, not fluent<br>
 post worth 3XP - conversationally fluent, with an accent<br>
-post worth 4XP - conversationally fluent, with an accent and idiomatic<br>
+post worth 4XP - conversationally fluent, mastery of idiomatic phrases, but still with an accent<br>
 post worth 5XP - equivalent to native<br>
 Posting does not have to occur all at once, so feel free to spread it out across encounters.',
       'display' => array(
@@ -2468,7 +2555,11 @@ Posting does not have to occur all at once, so feel free to spread it out across
     ),
     'field_instance' => array(
       'bundle' => 'character_sheet',
-      'default_value' => NULL,
+      'default_value' => array(
+        0 => array(
+          'value' => '25',
+        ),
+      ),
       'deleted' => '0',
       'description' => 'Contributes to Appearance and Health.',
       'display' => array(
@@ -3089,29 +3180,30 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
-          'human' => 'human',
-          'half-elf' => 'half-elf',
-          'elf' => 'elf',
-          'orc' => 'orc',
-          'half-orc' => 'half-orc',
-          'goblin' => 'goblin',
-          'neth' => 'neth',
-          'gnome' => 'gnome',
-          'halfling' => 'halfling',
-          'lurai' => 'lurai',
-          'fairy' => 'fairy',
-          'aratay' => 'aratay',
-          'mojingan' => 'mojingan',
-          'dwarf' => 'dwarf',
-          'human_dalhan' => 'human - Dalhan',
-          'human_rohearn' => 'human - Rohearn',
+          'human' => 'Human',
+          'elf' => 'Elf',
+          'half-elf' => 'Half-elf',
+          'dwarf' => 'Dwarf',
+          'gnome' => 'Gnome',
+          'halfling' => 'Halfling',
+          'orc' => 'Orc',
+          'half-orc' => 'Half-orc',
+          'goblin' => 'Goblin',
+          'neth' => 'Neth',
+          'half-neth' => 'Half-neth',
+          'lurai' => 'Lurai',
+          'aratay' => 'Aratay',
+          'mojingan' => 'Mojingan',
+          'centaur' => 'Centaur',
+          'merfolk' => 'Merfolk',
+          'yeek' => 'Yeek',
           'human_clanspeople' => 'human - Clanspeople',
+          'human_dalhan' => 'human - Dalhan',
+          'human_mountainese' => 'human - Mountainese',
+          'human_rohearn' => 'human - Rohearn',
           'human_gargorian' => 'human - Gargorian',
           'human_demi' => 'human - Demi-Human',
-          'half_elfin' => 'Half-Elfin',
-          'metal_robot' => 'Metal-born - robot',
-          'metal_nanobot' => 'Metal-born - nanbot swarm',
-          'metal_ai' => 'Metal-born - AI',
+          'other' => 'Other',
         ),
         'allowed_values_function' => '',
       ),
@@ -3126,7 +3218,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
         ),
       ),
       'deleted' => '0',
-      'description' => '',
+      'description' => 'If the race you want to play is not listed here, select \'Other\'. Other races *do* require oversight and approval from the World department. It is strongly recommended that new players start play as one of the pre-approved races instead to get familiar with the setting and community first.',
       'display' => array(
         'default' => array(
           'label' => 'inline',
@@ -3365,7 +3457,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '20',
+        'weight' => '21',
       ),
     ),
   );
@@ -3657,7 +3749,11 @@ Posting does not have to occur all at once, so feel free to spread it out across
     ),
     'field_instance' => array(
       'bundle' => 'character_sheet',
-      'default_value' => NULL,
+      'default_value' => array(
+        0 => array(
+          'value' => '25',
+        ),
+      ),
       'deleted' => '0',
       'description' => 'Contributes to Awareness and Presence.',
       'display' => array(
@@ -3722,7 +3818,11 @@ Posting does not have to occur all at once, so feel free to spread it out across
     ),
     'field_instance' => array(
       'bundle' => 'character_sheet',
-      'default_value' => NULL,
+      'default_value' => array(
+        0 => array(
+          'value' => '25',
+        ),
+      ),
       'deleted' => '0',
       'description' => 'Contributes to Constitution and Agility.',
       'display' => array(
@@ -3902,11 +4002,11 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'hidden',
           'module' => 'node_reference',
           'settings' => array(),
           'type' => 'node_reference_default',
-          'weight' => '52',
+          'weight' => '0',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -3974,10 +4074,9 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'display' => array(
         'default' => array(
           'label' => 'hidden',
-          'module' => 'list',
           'settings' => array(),
-          'type' => 'list_default',
-          'weight' => '55',
+          'type' => 'hidden',
+          'weight' => '13',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -4381,7 +4480,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '56',
+          'weight' => '2',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -4678,7 +4777,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '57',
+          'weight' => '3',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -9173,7 +9272,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '58',
+          'weight' => '4',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -9368,11 +9467,11 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'hidden',
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => '53',
+          'weight' => '1',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -9629,11 +9728,10 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'inline',
-          'module' => 'text',
+          'label' => 'hidden',
           'settings' => array(),
-          'type' => 'text_default',
-          'weight' => '54',
+          'type' => 'hidden',
+          'weight' => '14',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -10190,29 +10288,30 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
-          'human' => 'human',
-          'half-elf' => 'half-elf',
-          'elf' => 'elf',
-          'orc' => 'orc',
-          'half-orc' => 'half-orc',
-          'goblin' => 'goblin',
-          'neth' => 'neth',
-          'gnome' => 'gnome',
-          'halfling' => 'halfling',
-          'lurai' => 'lurai',
-          'fairy' => 'fairy',
-          'aratay' => 'aratay',
-          'mojingan' => 'mojingan',
-          'dwarf' => 'dwarf',
-          'human_dalhan' => 'human - Dalhan',
-          'human_rohearn' => 'human - Rohearn',
+          'human' => 'Human',
+          'elf' => 'Elf',
+          'half-elf' => 'Half-elf',
+          'dwarf' => 'Dwarf',
+          'gnome' => 'Gnome',
+          'halfling' => 'Halfling',
+          'orc' => 'Orc',
+          'half-orc' => 'Half-orc',
+          'goblin' => 'Goblin',
+          'neth' => 'Neth',
+          'half-neth' => 'Half-neth',
+          'lurai' => 'Lurai',
+          'aratay' => 'Aratay',
+          'mojingan' => 'Mojingan',
+          'centaur' => 'Centaur',
+          'merfolk' => 'Merfolk',
+          'yeek' => 'Yeek',
           'human_clanspeople' => 'human - Clanspeople',
+          'human_dalhan' => 'human - Dalhan',
+          'human_mountainese' => 'human - Mountainese',
+          'human_rohearn' => 'human - Rohearn',
           'human_gargorian' => 'human - Gargorian',
           'human_demi' => 'human - Demi-Human',
-          'half_elfin' => 'Half-Elfin',
-          'metal_robot' => 'Metal-born - robot',
-          'metal_nanobot' => 'Metal-born - nanbot swarm',
-          'metal_ai' => 'Metal-born - AI',
+          'other' => 'Other',
         ),
         'allowed_values_function' => '',
       ),
@@ -11848,7 +11947,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'label' => 'hidden',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '3',
+          'weight' => '9',
         ),
       ),
       'entity_type' => 'user',
@@ -11907,7 +12006,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'label' => 'hidden',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '5',
+          'weight' => '11',
         ),
       ),
       'entity_type' => 'user',
@@ -11983,7 +12082,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'label' => 'hidden',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '6',
+          'weight' => '12',
         ),
       ),
       'entity_type' => 'user',
@@ -12033,7 +12132,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'label' => 'hidden',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '4',
+          'weight' => '10',
         ),
       ),
       'entity_type' => 'user',
@@ -12068,7 +12167,7 @@ Additional languages may be added through RP at the following # of posts indicat
 post worth 1XP - learner, you can recognize the language written or heard<br>
 post worth 2XP - basic understanding, not fluent<br>
 post worth 3XP - conversationally fluent, with an accent<br>
-post worth 4XP - conversationally fluent, with an accent and idiomatic<br>
+post worth 4XP - conversationally fluent, mastery of idiomatic phrases, but still with an accent<br>
 post worth 5XP - equivalent to native<br>
 Posting does not have to occur all at once, so feel free to spread it out across encounters.');
   t('Apparent Age');
@@ -12086,6 +12185,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
   t('Check this box if the character is intended to be an openly available NPC.');
   t('Color');
   t('Comment color');
+  t('Conditions');
   t('Constitution');
   t('Contributes to Agility and Reflexes.');
   t('Contributes to Appearance and Health.');
@@ -12106,6 +12206,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
   t('History');
   t('How good was this session?');
   t('If checked this item will be available in the player shop.');
+  t('If the race you want to play is not listed here, select \'Other\'. Other races *do* require oversight and approval from the World department. It is strongly recommended that new players start play as one of the pre-approved races instead to get familiar with the setting and community first.');
   t('Image');
   t('In shop');
   t('Intellegence');
@@ -12116,6 +12217,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
   t('Life');
   t('List all characters involved in this session.');
   t('Mark this sheet as a storyteller sheet.');
+  t('Most characters should start play with no conditions. Starting play with a condition requires oversight and approval from the World department. It is strongly recommended that new players start play as one of the pre-approved races instead to get familiar with the setting and community first.');
   t('NPC');
   t('Name');
   t('Not any additional features or etherial qualities this item has.');

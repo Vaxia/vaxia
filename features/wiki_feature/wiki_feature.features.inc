@@ -48,25 +48,28 @@ function wiki_feature_workflow_default_workflows() {
   $workflows['Wiki workflow'] = array(
     'name' => 'Wiki workflow',
     'tab_roles' => '3,4',
-    'options' => 'a:3:{s:16:"comment_log_node";i:1;s:15:"comment_log_tab";i:1;s:13:"name_as_title";i:1;}',
+    'options' => 'a:4:{s:16:"comment_log_node";i:1;s:15:"comment_log_tab";i:1;s:13:"name_as_title";i:1;s:12:"watchdog_log";i:1;}',
     'states' => array(
       0 => array(
         'state' => '(creation)',
         'weight' => '-50',
         'sysid' => '1',
         'status' => '1',
+        'name' => 'Wiki workflow',
       ),
       1 => array(
         'state' => 'open',
         'weight' => '0',
         'sysid' => '0',
         'status' => '1',
+        'name' => 'Wiki workflow',
       ),
       2 => array(
         'state' => 'locked',
         'weight' => '0',
         'sysid' => '0',
         'status' => '1',
+        'name' => 'Wiki workflow',
       ),
     ),
     'transitions' => array(
@@ -81,15 +84,18 @@ function wiki_feature_workflow_default_workflows() {
         'target_state' => 'locked',
       ),
       2 => array(
-        'roles' => 'administrator,administrator-vaxia',
+        'roles' => 'administrator-vaxia,administrator',
         'state' => 'open',
         'target_state' => 'locked',
       ),
       3 => array(
-        'roles' => 'administrator,administrator-vaxia',
+        'roles' => 'administrator-vaxia,administrator',
         'state' => 'locked',
         'target_state' => 'open',
       ),
+    ),
+    'node_types' => array(
+      0 => 'wiki_page',
     ),
   );
 

@@ -189,28 +189,29 @@ function vaxia_npcs_views_default_views() {
   $handler->display->display_options['filters']['field_race_value']['field'] = 'field_race_value';
   $handler->display->display_options['filters']['field_race_value']['value'] = array(
     'human' => 'human',
-    'half-elf' => 'half-elf',
     'elf' => 'elf',
+    'half-elf' => 'half-elf',
+    'dwarf' => 'dwarf',
+    'gnome' => 'gnome',
+    'halfling' => 'halfling',
     'orc' => 'orc',
     'half-orc' => 'half-orc',
     'goblin' => 'goblin',
     'neth' => 'neth',
-    'gnome' => 'gnome',
-    'halfling' => 'halfling',
+    'half-neth' => 'half-neth',
     'lurai' => 'lurai',
-    'fairy' => 'fairy',
     'aratay' => 'aratay',
     'mojingan' => 'mojingan',
-    'dwarf' => 'dwarf',
-    'human_dalhan' => 'human_dalhan',
-    'human_rohearn' => 'human_rohearn',
+    'centaur' => 'centaur',
+    'merfolk' => 'merfolk',
+    'yeek' => 'yeek',
     'human_clanspeople' => 'human_clanspeople',
+    'human_dalhan' => 'human_dalhan',
+    'human_mountainese' => 'human_mountainese',
+    'human_rohearn' => 'human_rohearn',
     'human_gargorian' => 'human_gargorian',
     'human_demi' => 'human_demi',
-    'half_elfin' => 'half_elfin',
-    'metal_robot' => 'metal_robot',
-    'metal_nanobot' => 'metal_nanobot',
-    'metal_ai' => 'metal_ai',
+    'other' => 'other',
   );
   $handler->display->display_options['filters']['field_race_value']['group'] = 1;
   $handler->display->display_options['filters']['field_race_value']['exposed'] = TRUE;
@@ -234,6 +235,7 @@ function vaxia_npcs_views_default_views() {
     4 => 0,
     3 => 0,
     11 => 0,
+    18 => 0,
   );
   /* Filter criterion: User: Name */
   $handler->display->display_options['filters']['uid']['id'] = 'uid';

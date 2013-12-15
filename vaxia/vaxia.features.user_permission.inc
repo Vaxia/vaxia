@@ -79,7 +79,6 @@ function vaxia_user_default_permissions() {
     'name' => 'administer dice roller',
     'roles' => array(
       0 => 'administrator',
-      1 => 'administrator-vaxia',
     ),
     'module' => 'dice_roller',
   );
@@ -131,9 +130,10 @@ function vaxia_user_default_permissions() {
     'name' => 'create NPCs',
     'roles' => array(
       0 => 'administrator',
-      1 => 'storyteller',
-      2 => 'storyteller-assistant',
-      3 => 'storyteller-candidate',
+      1 => 'administrator-vaxia',
+      2 => 'storyteller',
+      3 => 'storyteller-assistant',
+      4 => 'storyteller-candidate',
     ),
     'module' => 'vaxia',
   );
@@ -179,13 +179,7 @@ function vaxia_user_default_permissions() {
   // Exported permission: create npc content.
   $permissions['create npc content'] = array(
     'name' => 'create npc content',
-    'roles' => array(
-      0 => 'administrator',
-      1 => 'administrator-vaxia',
-      2 => 'storyteller',
-      3 => 'storyteller-assistant',
-      4 => 'storyteller-candidate',
-    ),
+    'roles' => array(),
     'module' => 'node',
   );
 
@@ -194,9 +188,10 @@ function vaxia_user_default_permissions() {
     'name' => 'create open NPCs',
     'roles' => array(
       0 => 'administrator',
-      1 => 'storyteller',
-      2 => 'storyteller-assistant',
-      3 => 'storyteller-candidate',
+      1 => 'administrator-vaxia',
+      2 => 'storyteller',
+      3 => 'storyteller-assistant',
+      4 => 'storyteller-candidate',
     ),
     'module' => 'vaxia',
   );
@@ -417,6 +412,8 @@ function vaxia_user_default_permissions() {
     'name' => 'edit own comments',
     'roles' => array(
       0 => 'administrator',
+      1 => 'administrator-vaxia',
+      2 => 'player',
     ),
     'module' => 'comment',
   );
@@ -471,7 +468,7 @@ function vaxia_user_default_permissions() {
     'name' => 'post comments',
     'roles' => array(
       0 => 'administrator',
-      1 => 'authenticated user',
+      1 => 'administrator-vaxia',
       2 => 'player',
     ),
     'module' => 'comment',
@@ -537,7 +534,8 @@ function vaxia_user_default_permissions() {
     'name' => 'skip comment approval',
     'roles' => array(
       0 => 'administrator',
-      1 => 'player',
+      1 => 'administrator-vaxia',
+      2 => 'player',
     ),
     'module' => 'comment',
   );
@@ -557,9 +555,10 @@ function vaxia_user_default_permissions() {
     'name' => 'use NPCs',
     'roles' => array(
       0 => 'administrator',
-      1 => 'storyteller',
-      2 => 'storyteller-assistant',
-      3 => 'storyteller-candidate',
+      1 => 'administrator-vaxia',
+      2 => 'storyteller',
+      3 => 'storyteller-assistant',
+      4 => 'storyteller-candidate',
     ),
     'module' => 'vaxia',
   );
@@ -618,7 +617,8 @@ function vaxia_user_default_permissions() {
     'name' => 'view own unpublished content',
     'roles' => array(
       0 => 'administrator',
-      1 => 'player',
+      1 => 'administrator-vaxia',
+      2 => 'player',
     ),
     'module' => 'node',
   );
@@ -628,7 +628,8 @@ function vaxia_user_default_permissions() {
     'name' => 'view revisions',
     'roles' => array(
       0 => 'administrator',
-      1 => 'player',
+      1 => 'administrator-vaxia',
+      2 => 'player',
     ),
     'module' => 'node',
   );

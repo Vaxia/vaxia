@@ -899,7 +899,6 @@ return $uid;';
   $handler->display->display_options['access']['type'] = 'role';
   $handler->display->display_options['access']['role'] = array(
     4 => '4',
-    8 => '8',
     9 => '9',
   );
   $handler->display->display_options['cache']['type'] = 'none';
@@ -1604,12 +1603,36 @@ return $uid;';
     4 => '4',
   );
   $handler->display->display_options['filters']['sid']['group'] = 1;
+  /* Filter criterion: User: Active */
+  $handler->display->display_options['filters']['status_1']['id'] = 'status_1';
+  $handler->display->display_options['filters']['status_1']['table'] = 'users';
+  $handler->display->display_options['filters']['status_1']['field'] = 'status';
+  $handler->display->display_options['filters']['status_1']['relationship'] = 'uid';
+  $handler->display->display_options['filters']['status_1']['value'] = '1';
+  $handler->display->display_options['filters']['status_1']['group'] = 1;
+  /* Filter criterion: Content: NPC (field_is_npc) */
+  $handler->display->display_options['filters']['field_is_npc_value']['id'] = 'field_is_npc_value';
+  $handler->display->display_options['filters']['field_is_npc_value']['table'] = 'field_data_field_is_npc';
+  $handler->display->display_options['filters']['field_is_npc_value']['field'] = 'field_is_npc_value';
+  $handler->display->display_options['filters']['field_is_npc_value']['value'] = array(
+    0 => '0',
+  );
+  $handler->display->display_options['filters']['field_is_npc_value']['group'] = 1;
+  /* Filter criterion: Content: Open NPC (field_is_open_npc) */
+  $handler->display->display_options['filters']['field_is_open_npc_value']['id'] = 'field_is_open_npc_value';
+  $handler->display->display_options['filters']['field_is_open_npc_value']['table'] = 'field_data_field_is_open_npc';
+  $handler->display->display_options['filters']['field_is_open_npc_value']['field'] = 'field_is_open_npc_value';
+  $handler->display->display_options['filters']['field_is_open_npc_value']['value'] = array(
+    0 => '0',
+  );
+  $handler->display->display_options['filters']['field_is_open_npc_value']['group'] = 1;
   /* Filter criterion: User: Name */
   $handler->display->display_options['filters']['uid']['id'] = 'uid';
   $handler->display->display_options['filters']['uid']['table'] = 'users';
   $handler->display->display_options['filters']['uid']['field'] = 'uid';
   $handler->display->display_options['filters']['uid']['relationship'] = 'uid';
   $handler->display->display_options['filters']['uid']['value'] = '';
+  $handler->display->display_options['filters']['uid']['group'] = 1;
   $handler->display->display_options['filters']['uid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['uid']['expose']['operator_id'] = 'uid_op';
   $handler->display->display_options['filters']['uid']['expose']['label'] = 'Player';
@@ -1632,12 +1655,38 @@ return $uid;';
     5 => 0,
     4 => 0,
   );
-  /* Filter criterion: User: Active */
-  $handler->display->display_options['filters']['status_1']['id'] = 'status_1';
-  $handler->display->display_options['filters']['status_1']['table'] = 'users';
-  $handler->display->display_options['filters']['status_1']['field'] = 'status';
-  $handler->display->display_options['filters']['status_1']['relationship'] = 'uid';
-  $handler->display->display_options['filters']['status_1']['value'] = '1';
+  /* Filter criterion: Content: Realm (field_realm) */
+  $handler->display->display_options['filters']['field_realm_value']['id'] = 'field_realm_value';
+  $handler->display->display_options['filters']['field_realm_value']['table'] = 'field_data_field_realm';
+  $handler->display->display_options['filters']['field_realm_value']['field'] = 'field_realm_value';
+  $handler->display->display_options['filters']['field_realm_value']['value'] = array(
+    'Vaxia' => 'Vaxia',
+    'Sirian' => 'Sirian',
+  );
+  $handler->display->display_options['filters']['field_realm_value']['group'] = 1;
+  $handler->display->display_options['filters']['field_realm_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_realm_value']['expose']['operator_id'] = 'field_realm_value_op';
+  $handler->display->display_options['filters']['field_realm_value']['expose']['label'] = 'Realm (field_realm)';
+  $handler->display->display_options['filters']['field_realm_value']['expose']['use_operator'] = TRUE;
+  $handler->display->display_options['filters']['field_realm_value']['expose']['operator'] = 'field_realm_value_op';
+  $handler->display->display_options['filters']['field_realm_value']['expose']['identifier'] = 'field_realm_value';
+  $handler->display->display_options['filters']['field_realm_value']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_realm_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    12 => 0,
+    8 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    9 => 0,
+    14 => 0,
+    4 => 0,
+    3 => 0,
+    11 => 0,
+    18 => 0,
+  );
   $handler->display->display_options['path'] = 'character-sheets/all';
   $handler->display->display_options['menu']['type'] = 'default tab';
   $handler->display->display_options['menu']['title'] = 'Characters';
@@ -1745,20 +1794,6 @@ return $uid;';
     5 => '5',
   );
   $handler->display->display_options['filters']['sid']['group'] = 1;
-  /* Filter criterion: Content: NPC (field_is_npc) */
-  $handler->display->display_options['filters']['field_is_npc_value']['id'] = 'field_is_npc_value';
-  $handler->display->display_options['filters']['field_is_npc_value']['table'] = 'field_data_field_is_npc';
-  $handler->display->display_options['filters']['field_is_npc_value']['field'] = 'field_is_npc_value';
-  $handler->display->display_options['filters']['field_is_npc_value']['value'] = array(
-    0 => '0',
-  );
-  /* Filter criterion: Content: Open NPC (field_is_open_npc) */
-  $handler->display->display_options['filters']['field_is_open_npc_value']['id'] = 'field_is_open_npc_value';
-  $handler->display->display_options['filters']['field_is_open_npc_value']['table'] = 'field_data_field_is_open_npc';
-  $handler->display->display_options['filters']['field_is_open_npc_value']['field'] = 'field_is_open_npc_value';
-  $handler->display->display_options['filters']['field_is_open_npc_value']['value'] = array(
-    0 => '0',
-  );
   $handler->display->display_options['path'] = 'character-sheets/mine';
   $handler->display->display_options['menu']['type'] = 'tab';
   $handler->display->display_options['menu']['title'] = 'My characters';
@@ -2414,9 +2449,37 @@ return \'Characters\';';
   $handler->display->display_options['filters']['sid']['table'] = 'workflow_node';
   $handler->display->display_options['filters']['sid']['field'] = 'sid';
   $handler->display->display_options['filters']['sid']['value'] = array(
+    2 => '2',
+    3 => '3',
     4 => '4',
+    5 => '5',
   );
   $handler->display->display_options['filters']['sid']['group'] = 1;
+  $handler->display->display_options['filters']['sid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['sid']['expose']['operator_id'] = 'sid_op';
+  $handler->display->display_options['filters']['sid']['expose']['label'] = 'Current state';
+  $handler->display->display_options['filters']['sid']['expose']['operator'] = 'sid_op';
+  $handler->display->display_options['filters']['sid']['expose']['identifier'] = 'sid';
+  $handler->display->display_options['filters']['sid']['expose']['required'] = TRUE;
+  $handler->display->display_options['filters']['sid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['sid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['sid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    12 => 0,
+    8 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    9 => 0,
+    14 => 0,
+    4 => 0,
+    3 => 0,
+    11 => 0,
+    18 => 0,
+  );
+  $handler->display->display_options['filters']['sid']['expose']['reduce'] = TRUE;
   $handler->display->display_options['path'] = 'user/%/characters';
   $handler->display->display_options['menu']['type'] = 'tab';
   $handler->display->display_options['menu']['title'] = 'Characters';

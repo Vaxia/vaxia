@@ -25,7 +25,7 @@ function item_shop_views_default_views() {
   $handler->display->display_options['title'] = 'Item shop';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'perm';
-  $handler->display->display_options['access']['perm'] = 'use item helper';
+  $handler->display->display_options['access']['perm'] = 'use item shop';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
@@ -240,29 +240,29 @@ print $output;
   $handler->display->display_options['filters']['php']['group'] = 1;
   $handler->display->display_options['filters']['php']['use_php_setup'] = 0;
   $handler->display->display_options['filters']['php']['php_filter'] = '// Get argument - character node.
-$node = node_load(arg(1));
-$lang = $node->language;
+$character = node_load(arg(1));
+$lang = $character->language;
 // Get char from argument.
-$char = isset($node->nid) ? $node->nid : \'\';
+$char = isset($character->nid) ? $character->nid : \'\';
 // Check values are ok.
 if (empty($char)) {
   return TRUE;
 }
 
 // Get realm from argument.
-$realm = isset($node->field_realm[$lang][0][\'value\']) ? $node->field_realm[$lang][0][\'value\'] : \'Vaxia\';
+$realm = isset($character->field_realm[$lang][0][\'value\']) ? $character->field_realm[$lang][0][\'value\'] : \'Vaxia\';
 // Check values are ok.
 if (empty($realm)) {
   return TRUE;
 }
 
 // Get available silver from character.
-$silver = _character_sheet_get_xp($node->nid, \'silver\');
-$silver_spent = _character_sheet_get_xp($node->nid, \'spent_silver\');
-$silver_invested = _character_sheet_get_xp($node->nid, \'invest_silver\');
+$silver = _character_sheet_get_xp($character->nid, \'silver\');
+$silver_spent = _character_sheet_get_xp($character->nid, \'spent_silver\');
+$silver_invested = _character_sheet_get_xp($character->nid, \'invest_silver\');
 $available_silver = $silver - ($silver_spent + $silver_invested);
 // Available economy.
-$economy = isset($node->field_economy[$lang][0][\'value\']) ? $node->field_economy[$lang][0][\'value\'] : 0;
+$economy = isset($character->field_economy[$lang][0][\'value\']) ? $character->field_economy[$lang][0][\'value\'] : 0;
 $worth = _vaxia_calculate_worth($economy);
 // Grand total available.
 $total_worth = $available_silver + $worth;
@@ -282,6 +282,10 @@ if (!is_numeric($this_value)) {
   return TRUE;
 }
 if ($silver < $this_value) {
+  return TRUE;
+}
+$this_realm = isset($item->field_realm[$lang][0][\'value\']) ? $item->field_realm[$lang][0][\'value\'] : \'Vaxia\';
+if ($realm != $this_realm) {
   return TRUE;
 }
 

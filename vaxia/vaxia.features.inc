@@ -82,9 +82,11 @@ Step 2: Save, when ready to submit change the workflow to approved to activate t
       'description' => t('Character sheet'),
       'has_title' => '1',
       'title_label' => t('Name'),
-      'help' => t('Step 1: Creating a new character, the guild lines can be found here: <a href="http://vaxia.org/wiki/character-creation">http://vaxia.org/wiki/character-creation</a>
+      'help' => t('Step 1: Creating a new character, the guidelines can be found here: <a href="http://vaxia.org/wiki/character-creation">http://vaxia.org/wiki/character-creation</a>
 <br/><br/>
-Step 2: Save, when ready to submit change the workflow to submitted.'),
+Step 2: Save, when ready to submit change the workflow to submitted.
+<br/><br/>
+Things to remember: you get 300 points to allocate between stats and skills pre-play. Those points are flat. 30 points in a stat is 30 points from your pool, 20 points in a skill is 20 from the pool. It is only once in play, when you are spending XP, that the cost of higher values will scale.'),
     ),
     'items' => array(
       'name' => t('Item'),
@@ -140,32 +142,36 @@ function vaxia_workflow_default_workflows() {
   // Exported workflow: Art evaluation workflow
   $workflows['Art evaluation workflow'] = array(
     'name' => 'Art evaluation workflow',
-    'tab_roles' => 'author,3,4',
-    'options' => 'a:3:{s:16:"comment_log_node";i:1;s:15:"comment_log_tab";i:1;s:13:"name_as_title";i:1;}',
+    'tab_roles' => 'author,4,3',
+    'options' => 'a:4:{s:16:"comment_log_node";i:1;s:15:"comment_log_tab";i:1;s:13:"name_as_title";i:1;s:12:"watchdog_log";i:1;}',
     'states' => array(
       0 => array(
         'state' => '(creation)',
         'weight' => '-50',
         'sysid' => '1',
         'status' => '1',
+        'name' => 'Art evaluation workflow',
       ),
       1 => array(
         'state' => 'draft',
         'weight' => '0',
         'sysid' => '0',
         'status' => '1',
+        'name' => 'Art evaluation workflow',
       ),
       2 => array(
         'state' => 'approved',
         'weight' => '0',
         'sysid' => '0',
         'status' => '1',
+        'name' => 'Art evaluation workflow',
       ),
       3 => array(
         'state' => 'removed from site',
         'weight' => '0',
         'sysid' => '0',
         'status' => '1',
+        'name' => 'Art evaluation workflow',
       ),
     ),
     'transitions' => array(
@@ -175,36 +181,31 @@ function vaxia_workflow_default_workflows() {
         'target_state' => 'approved',
       ),
       1 => array(
-        'roles' => 'workflow_features_author_name',
-        'state' => '(creation)',
-        'target_state' => 'draft',
-      ),
-      2 => array(
         'roles' => 'workflow_features_author_name,administrator-vaxia,administrator',
         'state' => 'draft',
         'target_state' => 'approved',
       ),
-      3 => array(
+      2 => array(
         'roles' => 'workflow_features_author_name,administrator-vaxia,administrator',
         'state' => 'draft',
         'target_state' => 'removed from site',
       ),
-      4 => array(
+      3 => array(
         'roles' => 'workflow_features_author_name,administrator-vaxia,administrator',
         'state' => 'approved',
         'target_state' => 'draft',
       ),
-      5 => array(
+      4 => array(
         'roles' => 'workflow_features_author_name,administrator-vaxia,administrator',
         'state' => 'approved',
         'target_state' => 'removed from site',
       ),
-      6 => array(
+      5 => array(
         'roles' => 'administrator-vaxia,administrator',
         'state' => 'removed from site',
         'target_state' => 'draft',
       ),
-      7 => array(
+      6 => array(
         'roles' => 'administrator-vaxia,administrator',
         'state' => 'removed from site',
         'target_state' => 'approved',
@@ -219,37 +220,42 @@ function vaxia_workflow_default_workflows() {
   $workflows['Item evaluation workflow'] = array(
     'name' => 'Item evaluation workflow',
     'tab_roles' => 'author,3,9,4',
-    'options' => 'a:3:{s:16:"comment_log_node";i:1;s:15:"comment_log_tab";i:1;s:13:"name_as_title";i:1;}',
+    'options' => 'a:4:{s:16:"comment_log_node";i:1;s:15:"comment_log_tab";i:1;s:13:"name_as_title";i:1;s:12:"watchdog_log";i:1;}',
     'states' => array(
       0 => array(
         'state' => '(creation)',
         'weight' => '-50',
         'sysid' => '1',
         'status' => '1',
+        'name' => 'Item evaluation workflow',
       ),
       1 => array(
         'state' => 'draft',
         'weight' => '0',
         'sysid' => '0',
         'status' => '1',
+        'name' => 'Item evaluation workflow',
       ),
       2 => array(
         'state' => 'submitted',
         'weight' => '0',
         'sysid' => '0',
         'status' => '1',
+        'name' => 'Item evaluation workflow',
       ),
       3 => array(
         'state' => 'approved',
         'weight' => '0',
         'sysid' => '0',
         'status' => '1',
+        'name' => 'Item evaluation workflow',
       ),
       4 => array(
         'state' => 'disapproved',
         'weight' => '0',
         'sysid' => '0',
         'status' => '1',
+        'name' => 'Item evaluation workflow',
       ),
     ),
     'transitions' => array(
