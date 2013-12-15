@@ -370,8 +370,8 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
         '#type' => 'radios',
         '#options' => array(
           'gen_pp' => t('PP for item'),
-          'prep_bon' => t('PP to might bonus'),
-          'prep_diff' => t('PP to reduce diff'),
+          'prep_bon' => t('1/7 PP might bon'),
+          'prep_diff' => t('1/7 PP reduce diff'),
           'no_calcs' => t('No roll'),
         ),
         '#default_value' => isset($item_comment->roll_type) ? $item_comment->roll_type : 'gen_pp',
