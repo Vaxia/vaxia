@@ -162,12 +162,15 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
         foreach ($found_comments as $found_comment) {
           $comment = comment_load($found_comment->cid);
           $comment_uri = comment_uri($comment);
+          $comment_text = isset($comment->comment_body[$comment->language][0]['value']) ? $comment->comment_body[$comment->language][0]['value'] : '';
+          $ooc_text = isset($comment->field_ooc[$comment->language][0]['value']) ? $comment->field_ooc[$comment->language][0]['value'] : '';
           $comment_display = '<a href="/' . $comment_uri['path'] . '#' . $comment_uri['options']['fragment'] . '" title="' .
-            check_plain($comment->comment_body[$comment->language][0]['value']) . "\n" .
-            'OOC: ' . check_plain($comment->field_ooc[$comment->language][0]['value']) . '">' .
+            check_plain($comment_text) . "\n" .
+            'OOC: ' . check_plain($ooc_text) . '">' .
             check_plain($comment->subject) .
             '</a>';
-          $character = node_load($comment->field_comment_character[$comment->language][0]['nid']);
+          $character = isset($comment->field_comment_character[$comment->language][0]['nid']) ? $comment->field_comment_character[$comment->language][0]['nid'] : '';
+          $character = node_load($character);
           $character_name = isset($character->title) ? $character->title : '';
           $dice_rolls = _dice_roller_get_roll($found_comment->cid, 'c');
           $dice_rolls = !empty($dice_rolls)
