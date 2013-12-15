@@ -81,7 +81,7 @@ function item_helper_node_update($node) {
         $item_comment->might_2 = isset($item_comment->mights['might_2']) ? $item_comment->mights['might_2'] : 0;    
         $item_comment->set_bonus = isset($item_comment->set_bonus) ? $item_comment->set_bonus : 0;
         $item_comment->difficulty = isset($item_comment->difficulty) ? $item_comment->difficulty : 45;
-        $item_comment->rp_bonus = isset($item_comment->rp_bonus) ? $item_comment->rp_bonus : 0;
+        $item_comment->rp_bonus = isset($item_comment->rp_bonus) ? $item_comment->rp_bonus : 5;
         _item_helper_update_comment($item_comment);
       }
     }
@@ -525,11 +525,10 @@ function _item_helper_calculate_results($found_comments) {
       $item_comment->might_1 = isset($item_comment->mights['might_1']) ? $item_comment->mights['might_1'] : 0;
       $item_comment->might_2 = isset($item_comment->mights['might_2']) ? $item_comment->mights['might_2'] : 0;
     }
-    $item_comment->rp_bonus = isset($item_comment->rp_bonus) ? $item_comment->rp_bonus : 0;
     $item_comment->set_bonus = isset($item_comment->set_bonus) ? $item_comment->set_bonus : 0;
     $item_comment->difficulty = isset($item_comment->difficulty) ? $item_comment->difficulty : 45;
-    $item_comment->rp_bonus = isset($item_comment->rp_bonus) ? $item_comment->rp_bonus : 0;
-    $rp_bonus = isset($item_comment->rp_bonus) ? $item_comment->rp_bonus : 0;
+    $item_comment->rp_bonus = isset($item_comment->rp_bonus) ? $item_comment->rp_bonus : 5;
+    $rp_bonus = isset($item_comment->rp_bonus) ? $item_comment->rp_bonus : 5;
     // Grab rolls and start calculations.
     $dice_rolls = _dice_roller_get_roll($cid, 'c');
     $set_bonus_txt = '';
