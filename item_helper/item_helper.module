@@ -226,7 +226,7 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
         t('Roll type'),
         t('Flat bonus'),
         t('Difficulty'),
-        t('RP?'),
+        t('RP Bonus'),
         t('Result'),
         t('(X)'),
       ),
