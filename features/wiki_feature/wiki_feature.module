@@ -171,7 +171,7 @@ function wiki_feature_form_wiki_page_node_form_alter(&$form, &$form_state) {
   	return;
   }
   // Else check for workflow state.
-  if ($form['#node']->type == 'wiki_page' && _wiki_feature_locked($form['#node'])) {
+  if (!empty($form['#node']->type) && $form['#node']->type == 'wiki_page' && _wiki_feature_locked($form['#node'])) {
     drupal_set_message(t('This wiki article is locked. You are not allowed to edit it.'));
     foreach (element_children($form) as $child) {
 	    unset($form[$child]);
