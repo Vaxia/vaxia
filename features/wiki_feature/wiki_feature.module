@@ -117,7 +117,7 @@ function theme_wiki_feature_links($vars) {
   }
   return '<div class="wiki-feature wiki-feature-links menu">' .
     '<ul class="wiki-feature-links menu">' . 
-    '<li>' . implode('</li><li class="menu__item is-leaf leaf">', $themed_links) . '</li>' . 
+    '<li class="menu__item is-leaf leaf">' . implode('</li><li class="menu__item is-leaf leaf">', $themed_links) . '</li>' . 
     '</ul>' .
     '</div>';
 }
