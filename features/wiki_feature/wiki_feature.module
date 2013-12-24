@@ -31,7 +31,7 @@ function wiki_feature_menu_alter(&$items) {
  * Menu access callback.
  */
 function _wiki_feature_edit_access_callback($node) {
-  if (empty($node->type) || ($node->type == 'wiki_page' && _wiki_feature_locked($node))) {
+  if (!empty($node->type) && $node->type == 'wiki_page' && _wiki_feature_locked($node)) {
     return FALSE;
   }
   return TRUE;
