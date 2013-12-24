@@ -645,7 +645,7 @@ function vaxia_form_workflow_tab_form_alter(&$form, &$form_state, $form_id) {
       }
     }
   }
-  if ($node->type == 'items') {
+  if (!empty($node) && !empty($node->type) && $node->type == 'items') {
     $lang = $node->language;
     $character_owner = isset($node->field_character_owner[$lang][0]['nid'])
       ? node_load($node->field_character_owner[$lang][0]['nid']) : FALSE;
