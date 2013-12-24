@@ -7,17 +7,179 @@
 include_once 'wiki_feature.features.inc';
 
 /**
+ * Implements hook_permission().
+ */
+function wiki_feature_permission() {
+  return array(
+    'edit locked wiki'=> array(
+      'title' => t('edit locked wiki'),
+      'description' => t('Edit a wiki in a locked workflow state.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu_alter().
+ */
+function wiki_feature_menu_alter(&$items) {
+  if (isset($items['node/%node/edit'])) {
+    $items['node/%node/edit']['access callback'] = '_wiki_feature_edit_access_callback';
+  }
+}
+
+/**
+ * Menu access callback.
+ */
+function _wiki_feature_edit_access_callback($node) {
+  if ($node->type == 'wiki_page' && _wiki_feature_locked($node)) {
+    return FALSE;
+  }
+  return TRUE;
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function wiki_feature_block_info() {
+  $blocks = array();
+  $blocks['wiki_feature_parent_breadcrumb'] = array(
+    'info' => t('Wiki Parent Breadcrumb'),
+    'cache' => DRUPAL_CACHE_PER_PAGE,
+  );
+  $blocks['wiki_feature_parent_links'] = array(
+    'info' => t('Wiki Parent Links'),
+    'cache' => DRUPAL_CACHE_PER_PAGE,
+  );
+  $blocks['wiki_feature_sibling_links'] = array(
+    'info' => t('Wiki Sibling Links'),
+    'cache' => DRUPAL_CACHE_PER_PAGE,
+  );
+  $blocks['wiki_feature_children_links'] = array(
+    'info' => t('Wiki Child Links'),
+    'cache' => DRUPAL_CACHE_PER_PAGE,
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function wiki_feature_theme($existing, $type, $theme, $path) {
+  $themes['wiki_feature_breadcrumb'] = array(
+    'variables' => array(
+      'links' => array(),
+    ),
+  );
+  $themes['wiki_feature_links'] = array(
+    'variables' => array(
+      'links' => array(),
+    ),
+  );
+  return $themes;
+}
+
+/**
+ * Default theme function.
+ */
+function theme_wiki_feature_breadcrumb($vars) {
+  $links = $vars['links'];
+  foreach ($links) {
+    // Gather #title, #href, #localized_options, #attributes, #below
+    //theme_menu_link(array $variables)
+  }
+}
+
+/**
+ * Default theme function.
+ */
+function theme_wiki_feature_links($vars) {
+  $links = $vars['links'];
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function wiki_feature_block_view($delta = '') {
+  // If we're not on a wiki page, skip it.
+  $node = menu_get_object();
+  if ($node->type != 'wiki_page') {
+    return array();
+  }
+  $block = array();
+  $path = menu_get_item();
+  // Per delta, select an output.
+  switch ($delta) {
+    case 'wiki_feature_parent_breadcrumb':
+      $links = _wiki_feature_get_parent_links($path['path']);
+      $block['subject'] = t('Wiki Parent Breadcrumb');
+      $block['content'] = theme('wiki_feature_breadcrumb', array('links' => $links));
+    break;
+    case 'wiki_feature_parent_links':
+      $links = _wiki_feature_get_parent_links($path['path']);
+      $block['subject'] = t('Wiki Parent Links');
+      $block['content'] = theme('wiki_feature_links', array('links' => $links));
+    break;
+    case 'wiki_feature_sibling_links':
+      $links = _wiki_feature_get_sibling_links($path['path']);
+      $block['subject'] = t('Wiki Sibling Links');
+      $block['content'] = theme('wiki_feature_links', array('links' => $links));
+    break;
+    case 'wiki_feature_children_links':
+      $links = _wiki_feature_get_child_links($path['path']);
+      $block['subject'] = t('Wiki Child Links');
+      $block['content'] = theme('wiki_feature_links', array('links' => $links));
+    break;
+    default:
+      /// Do nothing.
+    break;
+  }
+  return $block;
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  */
 function wiki_feature_form_wiki_page_node_form_alter(&$form, &$form_state) {
-  $node = $form['#node'];
+  // Allow permissioned user to edit the wiki.
+  if (user_access('edit locked wiki')) {
+  	return;
+  }
+  // Else check for workflow state.
+  if ($form['#node']->type == 'wiki_page' && _wiki_feature_locked($form['#node'])) {
+    drupal_set_message(t('This wiki article is locked. You are not allowed to edit it.'));
+    foreach (element_children($form) as $child) {
+	  unset($form[$child]);
+    }
+  }
+}
+
+/**
+ * Helper function, determine if the wiki page is locked.
+ */
+function _wiki_feature_locked($node) {
   if (isset($node->nid) && $state = workflow_get_workflow_node_by_nid($node->nid)) {
     $state = workflow_get_workflow_states_by_sid($state->sid);
     if ($state->state == 'locked') {
-      drupal_set_message(t('This wiki article is locked. You are not allowed to edit it.'));
-      foreach (element_children($form) as $child) {
-        unset($form[$child]);
-      }
+      return TRUE;
     }
   }
+  return FALSE;
+}
+
+/**
+ * DB function, pull the links from the DB.
+ */
+function _wiki_feature_get_parent_links($path) {
+}
+
+/**
+ * DB function, pull the links from the DB.
+ */
+function _wiki_feature_get_child_links($path) {
+}
+
+/**
+ * DB function, pull the links from the DB.
+ */
+function _wiki_feature_get_sibling_links($path) {
 }
