@@ -83,10 +83,21 @@ function wiki_feature_theme($existing, $type, $theme, $path) {
  */
 function theme_wiki_feature_breadcrumb($vars) {
   $links = $vars['links'];
-  foreach ($links) {
-    // Gather #title, #href, #localized_options, #attributes, #below
-    //theme_menu_link(array $variables)
+  $themed_links = array();
+  foreach ($links as $i => $link) {
+    $link = menu_get_item(drupal_get_normal_path($link));
+    if (!empty($link['title'])) {
+      $themed_links[] = l($link['title'], $link['href']);
+    }
   }
+  if (empty($themed_links)) {
+    return '<div class="wiki-feature wiki-feature-links breadcrumb"></div>';
+  }
+  return '<div class="wiki-feature wiki-feature-links breadcrumb">' .
+    '<ol class="wiki-feature-links breadcrumb">' . 
+    '<li>' . implode(' › </li><li>', $themed_links) . '</li>' . 
+    '</ol>' .
+    '</div>';
 }
 
 /**
@@ -94,6 +105,21 @@ function theme_wiki_feature_breadcrumb($vars) {
  */
 function theme_wiki_feature_links($vars) {
   $links = $vars['links'];
+  $themed_links = array();
+  foreach ($links as $i => $link) {
+    $link = menu_get_item(drupal_get_normal_path($link));
+    if (!empty($link['title'])) {
+      $themed_links[] = l($link['title'], $link['href']);
+    }
+  }
+  if (empty($themed_links)) {
+    return '<div class="wiki-feature wiki-feature-links menu"></div>';
+  }
+  return '<div class="wiki-feature wiki-feature-links menu">' .
+    '<ul class="wiki-feature-links menu">' . 
+    '<li>' . implode('</li><li class="menu__item is-leaf leaf">', $themed_links) . '</li>' . 
+    '</ul>' .
+    '</div>';
 }
 
 /**
@@ -102,30 +128,30 @@ function theme_wiki_feature_links($vars) {
 function wiki_feature_block_view($delta = '') {
   // If we're not on a wiki page, skip it.
   $node = menu_get_object();
-  if ($node->type != 'wiki_page') {
+  if (!isset($node->type) || $node->type != 'wiki_page') {
     return array();
   }
   $block = array();
-  $path = menu_get_item();
+  $path = drupal_get_path_alias();
   // Per delta, select an output.
   switch ($delta) {
     case 'wiki_feature_parent_breadcrumb':
-      $links = _wiki_feature_get_parent_links($path['path']);
+      $links = _wiki_feature_get_parent_links($path);
       $block['subject'] = t('Wiki Parent Breadcrumb');
       $block['content'] = theme('wiki_feature_breadcrumb', array('links' => $links));
     break;
     case 'wiki_feature_parent_links':
-      $links = _wiki_feature_get_parent_links($path['path']);
+      $links = _wiki_feature_get_parent_links($path);
       $block['subject'] = t('Wiki Parent Links');
       $block['content'] = theme('wiki_feature_links', array('links' => $links));
     break;
     case 'wiki_feature_sibling_links':
-      $links = _wiki_feature_get_sibling_links($path['path']);
+      $links = _wiki_feature_get_sibling_links($path);
       $block['subject'] = t('Wiki Sibling Links');
       $block['content'] = theme('wiki_feature_links', array('links' => $links));
     break;
     case 'wiki_feature_children_links':
-      $links = _wiki_feature_get_child_links($path['path']);
+      $links = _wiki_feature_get_child_links($path);
       $block['subject'] = t('Wiki Child Links');
       $block['content'] = theme('wiki_feature_links', array('links' => $links));
     break;
@@ -148,7 +174,7 @@ function wiki_feature_form_wiki_page_node_form_alter(&$form, &$form_state) {
   if ($form['#node']->type == 'wiki_page' && _wiki_feature_locked($form['#node'])) {
     drupal_set_message(t('This wiki article is locked. You are not allowed to edit it.'));
     foreach (element_children($form) as $child) {
-	  unset($form[$child]);
+	    unset($form[$child]);
     }
   }
 }
@@ -170,16 +196,42 @@ function _wiki_feature_locked($node) {
  * DB function, pull the links from the DB.
  */
 function _wiki_feature_get_parent_links($path) {
+  // Given a string path, find the router parents above it.
+  $components = explode('/', $path);
+  $parent_path = '';
+  $slash = '';
+  $parent_links = array();
+  foreach ($components as $component) {
+    $parent_path .= $slash . $component;
+    $slash = '/';
+    $parent_links[] = $parent_path;
+  }
+  return $parent_links;
 }
 
 /**
  * DB function, pull the links from the DB.
  */
 function _wiki_feature_get_child_links($path) {
+  // Given a string path, find the router parents above it.
+  $parent_path = '';
+  $slash = '';  
+  $links = db_query('SELECT alias FROM {url_alias} WHERE alias LIKE :parent', array(':parent' => $path . '/%'));
+  $child_links = array();
+  foreach ($links as $link) {
+    $child_links[] = $link->alias;
+  }
+  return $child_links;
 }
 
 /**
  * DB function, pull the links from the DB.
  */
 function _wiki_feature_get_sibling_links($path) {
+  // Given a string path, find the router parents above it.
+  $components = explode('/', $path);
+  $self = array_pop($components);
+  $parent_path = implode('/', $components);
+  $links = _wiki_feature_get_child_links($parent_path);
+  return array_diff($links, array($path));
 }
