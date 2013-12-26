@@ -174,8 +174,12 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
             // And consolidate into one label.
             if (!empty($modifies_label)) {
               $item_label .= ' (' . implode(', ', $modifies_label) . ')';
+              $items[$this_item->nid] = $item_label;
             }
-            $items[$this_item->nid] = $item_label;
+            else {
+              // This item doesn't modify anything - we shouldn't have it in the list!
+              unset($items[$this_item->nid]);
+            }
           }
         } // End items loop
       }
