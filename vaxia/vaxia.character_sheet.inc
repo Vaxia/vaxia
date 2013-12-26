@@ -522,6 +522,11 @@ function _vaxia_admin_settings() {
     '#type' => 'textfield',
     '#default_value' => variable_get('vaxia_display_dice', 6),
   );
+  $form['settings']['vaxia_dice_roller_stacking'] = array(
+    '#title' => 'Allow items to stack for dice rolling.',
+    '#type' => 'checkbox',
+    '#default_value' => variable_get('vaxia_dice_roller_stacking', TRUE),
+  );
   $form['point_cost'] = array(
     '#title' => 'Point costs',
     '#type' => 'fieldset',

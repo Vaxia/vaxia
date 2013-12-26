@@ -241,205 +241,148 @@ function _vaxia_dice_roller_row($dice_size, $stat, $skill) {
  * Implementation of hook_dice_roller_form_submit(), which returns a form for handling basic style rolls.
  */
 function vaxia_dice_roller_form_submit($content, $origin = 'node') {
+  $item_stack = variable_get('vaxia_item_stack', TRUE);
   switch ($origin) {
     case 'comment':
       if (!empty($content->vaxia_rolls)) {
         $command = '';
         $note = $content->vaxia_rolls['notes'] . '<br>';
         $lang = $content->language;
-        $stat_set = array('life', 'health', 'endurance', 'constitution', 'strength', 'agility', 'dexterity',
-          'reflexes', 'intelligence', 'awareness', 'spirituality', 'presence', 'charisma', 'appearance', 'skill',
-        );
+
+        // Gather the character information if it's set.
+        $character = '';
+        if (isset($content->field_comment_character[$lang][0]['nid'])) {
+          $character = node_load($content->field_comment_character[$lang][0]['nid']);
+        }
+
+        // Gather the item mods. Sorted by stat.
+        $item_mods = array();
+        // Check items against stats.
+        if (isset($content->vaxia_rolls['items'])) {
+          // If character set, get the stats and items.
+          if (!empty($character)) {
+            $item_mods = _vaxia_dice_roller_form_submit_item_mods($character, $content->vaxia_rolls['items']);
+          }
+        }
+        /**
+         *  Returns in the format:
+         *  array(
+         *   'stat1' => array(
+         *      'modify' => X,
+         *      'percentage' => X,
+         *      'overlap' => X,
+         *      'notes' => X,
+         *    ),
+         *    'stat2' => array(
+         *      'modify' => X,
+         *      'percentage' => X,
+         *      'overlap' => X,
+         *      'notes' => X,
+         *    ),
+         *  );
+         */
 
         // Calculate mods and mod note for stats, skills, etc.
         foreach ($content->vaxia_rolls['dice'] as $delta => $roll) {
+          // Only roll if we have at least one die to roll.
           if ($roll['number'] > 0) {
+            // Base command.
             $this_command = $roll['number'] . 'd' . $roll['size'];
-            // Check items: For This Stat Only.
-            $this_stat = substr($roll['stat'], 6); // Trim "field_" off the top.
-            // Mods for *this* item.
-            $item_notes = '';
-            $item_mod = 0;
-            $overlap_mod = '';
-            // Check items against stats.
-            if (isset($content->vaxia_rolls['items'])) {
-              // If character set, get the stats and items.
-              if (isset($content->field_comment_character[$lang][0]['nid'])) {
-                // Grab the character and items.
-                $character = node_load($content->field_comment_character[$lang][0]['nid']);
-                $char_lang = $character->language;
-                // Gather each item and mods.
-                foreach ($content->vaxia_rolls['items'] as $this_item) {
-                  $this_item = node_load($this_item);
-                  if (isset($this_item->nid)) {
-                    $item_lang = $this_item->language;
-                    $modifies = $percent_message = $overlaps = $penalties = array();
-                    $qualifies = TRUE;
-                    // Loop for each stat.
-                    foreach ($stat_set as $stat_name) {
-                      // Get character's stat value.
-                      $field_name = 'field_' . $stat_name;
-                      $stat = isset($character->{$field_name}[$char_lang][0]['value']) ?
-                        $character->{$field_name}[$char_lang][0]['value'] : 0;
-                      if ($stat_name == 'skill') {
-                        $stat = 0;
-                        if (isset($roll['skill']) && $roll['skill'] != -1) {
-                          $skill = field_collection_item_load($roll['skill']);
-                          $skill_lang = isset($skill->language) ? $skill->language : $char_lang;
-                          $stat = isset($skill->field_skill_value[$skill_lang][0]['value']) ?
-                            $skill->field_skill_value[$skill_lang][0]['value'] : 0;
-                        }
-                      }
-
-                      // Get item modified
-                      $field_name = 'field_item_' . $stat_name;
-                      $modify = isset($this_item->{$field_name}[$item_lang][0]['value']) ?
-                        $this_item->{$field_name}[$item_lang][0]['value'] : 0;
-
-                      // Get item percentage
-                      $field_name = 'field_item_perc_' . $stat_name;
-                      $percentage = isset($this_item->{$field_name}[$item_lang][0]['value']) ?
-                        $this_item->{$field_name}[$item_lang][0]['value'] : 0;
-
-                      // Get item overlap
-                      $field_name = 'field_item_over_' . $stat_name;
-                      $overlap = isset($this_item->{$field_name}[$item_lang][0]['value']) ?
-                        $this_item->{$field_name}[$item_lang][0]['value'] : 0;
-
-                      // Get item required
-                      $field_name = 'field_item_required_' . $stat_name;
-                      $required = isset($this_item->{$field_name}[$item_lang][0]['value']) ?
-                        $this_item->{$field_name}[$item_lang][0]['value'] : 0;
-
-                      // Get item penalty
-                      $field_name = 'field_item_pen_' . $stat_name;
-                      $penalty = isset($this_item->{$field_name}[$item_lang][0]['value']) ?
-                        $this_item->{$field_name}[$item_lang][0]['value'] : 0;
-
-                      // Set modifier from the item stat and stat affected.
-                      if ($overlap != 0) {
-                        $overlaps[$stat_name] = $overlap;
-                        $stat = $overlap;
-                      }
-                      if ($modify != 0) {
-                        $modifies[$stat_name] = $modify;
-                      }
-                      if ($percentage != 0) {
-                        $this_modifier = isset($modifies[$stat_name]) ? $modifies[$stat_name] : 0;
-                        $modifies[$stat_name] = $this_modifier + (($percentage/100) * $stat);
-                        $percent_message[$stat_name] = $percentage . '%';
-                      }
-                      if ($penalty != 0) {
-                        $penalties[$stat_name] = $penalty;
-                      }
-                      if ($stat < $required) {
-                        $qualifies = FALSE;
-                      }
-                    } // End loop for each stat for this item.
-
-                    // Once gathered, make sure we go through all relevant penalities from items based on mods.
-                    if (!$qualifies) {
-                      // This item triggers a penalty! So we need to go through the loop again.
-                      // Add all penalities for this item to the modifiers.
-                      foreach ($stat_set as $stat_name) {
-                        if (isset($penalties[$stat_name])) {
-                          $this_modifier = isset($modifies[$stat_name]) ? $modifies[$stat_name] : 0;
-                          $modifies[$stat_name] = $this_modifier + $penalties[$stat_name];
-                        }
-                      }
-                    }
-                    // Condense the skill mods to the stat, based on if a skill was selected for this item use.
-                    if (isset($modifies['skill']) && $modifies['skill'] != 0 && isset($roll['skill']) && $roll['skill'] != -1) {
-                      $skill_mod = isset($modifies[$this_stat]) ? $modifies[$this_stat] : 0;
-                      $modifies[$this_stat] = $skill_mod + $modifies['skill'];
-                    }
-
-                    // Set descriptive text, this item affects the selected stat so we'll need this.
-                    if (isset($modifies[$this_stat]) && $modifies[$this_stat] != 0 ) {
-                      if (!empty($percent_message[$this_stat])) {
-                        $item_notes .= ' + ' . $this_item->title . ' (' . $percent_message[$this_stat] . ' : ' . $modifies[$this_stat] . ')';
-                      }
-                      else {
-                        $item_notes .= ' + ' . $this_item->title . ' (' . $modifies[$this_stat] . ')';
-                      }
-                      $item_mod += $modifies[$this_stat];
-                    }
-                    // Add percentage descriptions to mod_note. TXT percentages that need to be removed over time.
-                    if (isset($this_item->field_percents[$item_lang][0]['value'])
-                      && !empty($this_item->field_percents[$item_lang][0]['value'])) {
-                      $item_notes .= ' + ' . $this_item->title . ' (' .
-                        $this_item->field_percents[$item_lang][0]['value'] . ')';
-                    }
-                    // Adjust for overlap.
-                    if (isset($overlaps[$this_stat])) {
-                      $overlap_mod = $overlaps[$this_stat];
-                    }
-                  } // End if item exists.
-                } // End loop per item.
-              } // End if character set.
-            } // End if items set.
-            // End item information gathered for this stat.
-
             // Build up the command for the given stat based on character and gathered item information.
+            $this_stat = '';
             $mod_note = '';
-            $mod = 0;
+            $mod = $item_mod = 0;
+            $stat_note = $skill_note = '';
 
-            // If stat is selected, grab the basic stat OR the overlap if it's been set.
+            // If stat is selected, grab the basic stat AND/OR the overlap if it's been set.
             if (isset($roll['stat']) && $roll['stat'] != -1) {
+              // Note which stat this is for.
+              $this_stat = substr($roll['stat'], 6); // Trim "field_" off the top.
               // Check for overlap from an item.
-              if (isset($overlap_mod) && !empty($overlap_mod)) {
-                $small_label = substr($this_stat, 0, 3);
-                if ($small_label == 'ref') {
-                  $small_label = 'fin';
-                }
-                $mod_note .= ' + item ' . $small_label . ' (' . $overlap_mod . ')';
-                $mod += $overlap_mod;
+              if (isset($item_mods[$this_stat]['overlap']) && !empty($item_mods[$this_stat]['overlap'])) {
+                $stat = $item_mods[$this_stat]['overlap'];
               }
-              // No overlap, pull from the character sheet.
-              elseif (isset($content->field_comment_character[$lang][0]['nid'])) {
-                $character = node_load($content->field_comment_character[$lang][0]['nid']);
+              elseif (isset($character)) {
                 $stat = isset($character->{$roll['stat']}[$lang][0]['value']) ? $character->{$roll['stat']}[$lang][0]['value'] : 0;
-                $small_label = substr($this_stat, 0, 3);
-                if ($small_label == 'ref') {
-                  $small_label = 'fin';
-                }
-                $mod_note .= ' + ' . $small_label . ' (' . $stat . ')';
-                $mod += $stat;
               }
+              // Check for percentages from an item.
+              if (isset($item_mods[$this_stat]['percentage']) && !empty($item_mods[$this_stat]['percentage'])) {
+                $item_mod += (($item_mods[$this_stat]['percentage']/100) * $stat); // Add the percentage to the stat.
+              }
+              // Set the stat message and label.
+              $small_label = substr($this_stat, 0, 3);
+              if ($small_label == 'ref') {
+                $small_label = 'fin';
+              }
+              $mod_note .= ' + ' . $small_label . ' (' . $stat . ')';
+              $mod += $stat;
+
+              // Add item mods for stats.
+              if (isset($item_mods[$this_stat]['modify']) && !empty($item_mods[$this_stat]['modify'])) {
+                $item_mod += $item_mods[$this_stat]['modify'];
+              }
+              $stat_note .= isset($item_mods[$this_stat]['notes']) ? $item_mods[$this_stat]['notes'] : '';
             }
 
             // If skill selected, grab the skill for mods.
             if (isset($roll['skill']) && $roll['skill'] != -1) {
-              $skill = field_collection_item_load($roll['skill']);
-              $skill_value = isset($skill->field_skill_value[$lang][0]['value']) ? $skill->field_skill_value[$lang][0]['value'] : 0;
-              $skill_name = isset($skill->field_skill_name[$lang][0]['value']) ? $skill->field_skill_name[$lang][0]['value'] : 'skill';
-              $skill_desc = isset($skill->field_skill_desc[$lang][0]['value']) ? $skill->field_skill_desc[$lang][0]['value'] : '';
-              $mod_note .= ' +  <a title="' . $skill_desc . '" href="#">' . $skill_name . '</a> (' . $skill_value . ')';
-              $mod += $skill_value;
+              // Check for overlap from an item.
+              if (isset($item_mods['skill']['overlap']) && !empty($item_mods['skill']['overlap'])) {
+                $skill = $item_mods['skill']['overlap'];
+              }
+              elseif (isset($character)) {
+                $skill_details = field_collection_item_load($roll['skill']);
+                $skill = isset($skill_details->field_skill_value[$lang][0]['value']) ? $skill_details->field_skill_value[$lang][0]['value'] : 0;
+              }
+              // Check for percentages from an item.
+              if (isset($item_mods['skill']['percentage']) && !empty($item_mods['skill']['percentage'])) {
+                $item_mod += (($item_mods['skill']['percentage']/100) * $skill); // Add the percentage to the stat.
+              }
+              // Set the stat message and label.
+              $small_label = substr($this_stat, 0, 3);
+              if ($small_label == 'ref') {
+                $small_label = 'fin';
+              }
+              $skill_name = isset($skill_details->field_skill_name[$lang][0]['value']) ? $skill_details->field_skill_name[$lang][0]['value'] : 'skill';
+              $skill_desc = isset($skill_details->field_skill_desc[$lang][0]['value']) ? $skill_details->field_skill_desc[$lang][0]['value'] : '';
+              $mod_note .= ' +  <a title="' . $skill_desc . '" href="#">' . $skill_name . '</a> (' . $skill . ')';
+              $mod += $skill;
+
+              // Add item mods for stats.
+              if (isset($item_mods['skill']['modify']) && !empty($item_mods['skill']['modify'])) {
+                $item_mod += $item_mods['skill']['modify'];
+              }
+              $skill_note .= isset($item_mods['skill']['notes']) ? $item_mods['skill']['notes'] : '';
             }
 
-            // Add item mods.
-            if (isset($item_notes) && !empty($item_notes)) {
-              $this_mod = isset($item_mod) ? $item_mod : 'n/a';
-              $mod_note .= ' +  <a title="' . $item_notes . '" href="#">Items</a> (' . $this_mod . ')';
-            }
+            // Sum up the mods for items from stats and skills, and add to the final mods.
             if (isset($item_mod) && !empty($item_mod)) {
               $mod += $item_mod;
             }
+            if (!empty($stat_note) || !empty($skill_note)) {
+              $item_notes = $stat_note . ' ' . $skill_note;
+              $item_notes = trim($item_notes);
+              if (empty($item_notes)) {
+                $item_notes = 'n/a';
+              }
+              if (!isset($item_mod) || empty($item_mod)) {
+                $item_mod = 'n/a';
+              }
+              $mod_note .= ' +  <a title="' . $item_notes . '" href="#">Items</a> (' . $item_mod . ')';
+            }
 
-            // And add the command to the roll set.
+            // And add the command to the roll set to be processed.
+            $note .= 'Roll '. $delta + 1 .' : roll(' . $this_command . ')' . $mod_note . '<br>';
             if ($mod != 0) {
-              $note .= 'Roll '. $delta + 1 .' : roll(' . $this_command . ')' . $mod_note . '<br>';
               $command .= $this_command . '+' . $mod .';';
             }
             else {
-              $note .= 'Roll '. $delta + 1 .' : roll(' . $this_command . ')<br>';
               $command .= $this_command .';';
             }
 
-          } // End Combine item info with this dice info.
-        } // End Roll for each dice selected.
-      } // End check for empty rolls
+          } // End building up the command for this roll.
+        } // End loop for each roll selected.
+      } // End check for empty rolls.
 
       // Apply the set of rolls.
       if (!empty($command)) {
@@ -448,4 +391,163 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
       }
       break;
   }
+}
+
+/**
+ * Helper function, gather item mods per owner character and selected set of items for a roll.
+ *  Returns in the format:
+ *  array(
+ *   'stat1' => array(
+ *      'modify' => X,
+ *      'percentage' => X,
+ *      'overlap' => X,
+ *      'notes' => X,
+ *    ),
+ *    'stat2' => array(
+ *      'modify' => X,
+ *      'percentage' => X,
+ *      'overlap' => X,
+ *      'notes' => X,
+ *    ),
+ *  );
+ */
+function _vaxia_dice_roller_form_submit_item_mods($character, $items, $skills) {
+  $stacking = variable_get('vaxia_dice_roller_stacking', TRUE);
+  $item_mods = array();
+  $item_notes = '';
+  $lang = $character->language;
+  $stat_set = array('life', 'health', 'endurance', 'constitution', 'strength', 'agility', 'dexterity',
+    'reflexes', 'intelligence', 'awareness', 'spirituality', 'presence', 'charisma', 'appearance', 'skill',
+  );
+
+  // Loop for each item.
+  foreach ($items as $item) {
+    $item = node_load($item);
+    // Only do something if the item exists.
+    if (isset($item->nid)) {
+      $item_lang = $item->language;
+      // Assume all items qualify.
+      $qualifies = TRUE;
+      // While looping for each item, loop again for each stat.
+      foreach ($stat_set as $stat_name) {
+        // Get character's stat value.
+        $field_name = 'field_' . $stat_name;
+        $stat = isset($character->{$field_name}[$lang][0]['value']) ? $character->{$field_name}[$lang][0]['value'] : 0;
+        $small_label = substr($stat_name, 0, 3);
+        if ($small_label == 'ref') {
+          $small_label = 'fin';
+        }
+        //if ($stat_name == 'skill') {
+        //  $stat = 0;
+        //  if (isset($roll['skill']) && $roll['skill'] != -1) {
+        //    $skill = field_collection_item_load($roll['skill']);
+        //    $skill_lang = isset($skill->language) ? $skill->language : $lang;
+        //    $stat = isset($skill->field_skill_value[$skill_lang][0]['value']) ?
+        //    $skill->field_skill_value[$skill_lang][0]['value'] : 0;
+        //  }
+        //}
+
+        // Get item modify, percent, overlap, required and penalty values for this stat.
+        $field_name = 'field_item_' . $stat_name;
+        $modify = isset($item->{$field_name}[$item_lang][0]['value']) ? $item->{$field_name}[$item_lang][0]['value'] : 0;
+        $field_name = 'field_item_perc_' . $stat_name;
+        $percentage = isset($item->{$field_name}[$item_lang][0]['value']) ? $item->{$field_name}[$item_lang][0]['value'] : 0;
+        $field_name = 'field_item_over_' . $stat_name;
+        $overlap = isset($item->{$field_name}[$item_lang][0]['value']) ? $item->{$field_name}[$item_lang][0]['value'] : 0;
+        $field_name = 'field_item_required_' . $stat_name;
+        $required = isset($item->{$field_name}[$item_lang][0]['value']) ? $item->{$field_name}[$item_lang][0]['value'] : 0;
+
+        // Set modify value into return array. Use the largest one IFF set to not allow stacking.
+        if ($stacking) {
+          if ($modify != 0) {
+            $item_mods[$stat_name]['modify'] += $modify;
+            $item_mods[$stat_name]['notes'] .= ' + ' . $item->title . ' (' . $modify . ' ' . $small_label .')';
+          }
+        }
+        else {
+          if ($modify != 0) {
+            if (!empty($item_mods[$stat_name]['modify'])) {
+              if ($modify > $item_mods[$stat_name]['modify']) {
+                $item_mods[$stat_name]['modify'] = $modify;
+                $item_mods[$stat_name]['notes'] = ' + ' . $item->title . ' (' . $modify . ' ' . $small_label .')';
+              }
+            }
+            else {
+              $item_mods[$stat_name]['modify'] = $modify;
+              $item_mods[$stat_name]['notes'] = ' + ' . $item->title . ' (' . $modify . ' ' . $small_label .')';
+            }
+          }
+        }
+
+        // Set percentages into return array. Use the largest one.
+        if ($percentage != 0) {
+          if (!empty($item_mods[$stat_name]['percentage'])) {
+            if ($percentage > $item_mods[$stat_name]['percentage']) {
+              $item_mods[$stat_name]['percentage'] = $percentage;
+              $stat_bonus = ($percentage/100) * $stat;
+              $stat_bonus = number_format($stat_bonus, 2);
+              $item_mods[$stat_name]['notes']  = ' + ' . $item->title . ' (' . $percentage . '% : ' . $stat_bonus . ' ' . $small_label .')';
+            }
+          }
+          else {
+            $item_mods[$stat_name]['percentage'] = $percentage;
+            $stat_bonus = ($percentage/100) * $stat;
+            $stat_bonus = number_format($stat_bonus, 2);
+            $item_mods[$stat_name]['notes']  = ' + ' . $item->title . ' (' . $percentage . '% : ' . $stat_bonus . ' ' . $small_label .')';
+          }
+        }
+
+        // Set overlap value into return array. Use the largest one.
+        if ($overlap != 0) {
+          if (!empty($item_mods[$stat_name]['overlap'])) {
+            if ($overlap > $item_mods[$stat_name]['overlap']) {
+              $item_mods[$stat_name]['overlap'] = $overlap;
+              $item_mods[$stat_name]['notes'] = ' + ' . $item->title . ' (' . $overlap . ' flat ' . $small_label .')';
+            }
+          }
+          else {
+            $item_mods[$stat_name]['overlap'] = $overlap;
+            $item_mods[$stat_name]['notes'] = ' + item ' . $item->title . ' (' . $overlap . ' flat ' . $small_label .')';
+          }
+        }
+
+        // Make additional changes if this item triggered a problem.
+        if ($stat < $required) {
+          $qualifies = FALSE;
+        }        
+      } // End loop for each stat for this item.
+
+      // We are still in the each item loop.
+      // We now know this item's mods and if it triggered a penalty.
+
+      // If we did trigger a penalty with this item, make the changes we need to.
+      if (!$qualifies) {
+        // This item triggers a penalty! So we need to go through the stat loop again.
+        // Grab the penalties for this item, and apply them.
+        foreach ($stat_set as $stat_name) {
+          $field_name = 'field_item_pen_' . $stat_name;
+          $penalty = isset($item->{$field_name}[$item_lang][0]['value']) ?$item->{$field_name}[$item_lang][0]['value'] : 0;
+          if ($penalty != 0) {
+            $item_mods[$stat_name]['modify'] += $penalty;
+            $item_mods[$stat_name]['notes'] .= ' + ' . $item->title . ' (' . $penalty . ' ' . $small_label .')';
+          }
+        }
+      }
+
+      // Condense the skill mods to the stat, based on if a skill was selected for this item use.
+      //if (isset($modifies['skill']) && $modifies['skill'] != 0 && isset($roll['skill']) && $roll['skill'] != -1) {
+      //  $skill_mod = isset($modifies[$this_stat]) ? $modifies[$this_stat] : 0;
+      //  $modifies[$this_stat] = $skill_mod + $modifies['skill'];
+      //}
+
+      // Add percentage descriptions to mod_note. TXT percentages that need to be removed over time.
+      if (isset($item->field_percents[$item_lang][0]['value'])
+        && !empty($item->field_percents[$item_lang][0]['value'])) {
+        $item_notes .= ' + ' . $item->title . ' (' .
+        $item->field_percents[$item_lang][0]['value'] . ')';
+      }
+
+    } // End if item exists.
+  } // End loop per item.
+  return $item_mods;
 }
