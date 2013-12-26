@@ -627,6 +627,7 @@ function _item_helper_calculate_results($found_comments) {
         }
       }
     }
+    $might_1 = empty($mights[0]) ? '' : $mights[0];
     $might_2 = empty($mights[1]) ? '' : '/ ' . $mights[1];
     $break_1 = empty($set_bonus_txt) ? '' : '</br>';
     $break_2 = empty($roll_txt) ? '' : '</br>';
@@ -638,7 +639,7 @@ function _item_helper_calculate_results($found_comments) {
       ':rp RP bonus </br> ' .
       ':prep Prep bonus / :diff Diff mod',
       array(':set_bonus_txt' => $set_bonus_txt, ':roll_txt' => $roll_txt,
-        ':might1' => $mights[0], ':might2' => $might_2,
+        ':might1' => $might_1, ':might2' => $might_2,
         ':PP' => number_format($ongoing_PP), ':100' => $ongoing_100, ':1' => $ongoing_1,
         ':rp' => $rp_bonus, ':prep' => $ongoing_prep_bonus, ':diff' => $ongoing_prep_diff * -1 ));
   }
