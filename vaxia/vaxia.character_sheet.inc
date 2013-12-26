@@ -405,27 +405,46 @@ function vaxia_character_sheet_validate_sheet($node, $old_node, $form, $form_sta
   // Run this only for draft nodes, to cap out at 300 per field.
   // Check if the sheet has been finalized.
   if ( !isset($old_node->workflow) || // Brand new node.
-  	!isset($node->workflow) || // Current node has no workflow.
-  	(isset($node->workflow) && ($node->workflow == variable_get('vaxia_draft_workflow', ''))) // Created node but still in draft.
+    !isset($node->workflow) || // Current node has no workflow.
+    (isset($node->workflow) && ($node->workflow == variable_get('vaxia_draft_workflow', ''))) // Created node but still in draft.
   ) {
     // Total the value of points against starting points flat.
     $available_xp = variable_get('vaxia_starting_points', 300);
     $fields_info = _character_sheet_get_field_info($node);
     $spent_xp = array();
+    $spent_on_stats = 0;
+    $spent_on_skills = 0;
+    $numb_skills = 0;
     foreach ($fields_info as $field_key => $field_info) {
       if (isset($field_info['costs']['xp_type'])) {
         // Calculate cost difference.
-        $new_value = _vaxia_get_field_value_flat($node, $field_key, $fields_info);
+        $totals = _vaxia_get_field_value_flat($node, $field_key, $fields_info);
+        $new_value = $totals['total'];
         // Add the debt to the ongoing total for this type.
         $xp_type = $field_info['costs']['xp_type'];
         $cost = $new_value;
         $spent_xp[$xp_type] = isset($spent_xp[$xp_type]) ? $spent_xp[$xp_type] + $cost : $cost;
+        if ($field_key != 'field_skill_value') {
+          $spent_on_stats += $cost;
+        }
+        else {
+          $spent_on_skills += $cost;
+          $numb_skills = $totals['number'];
+        }
         if ($spent_xp[$xp_type] > $available_xp) {
           return $error = array('field' => '', 'message' => 
             t('You have spent %spent_xp xp out of %available_xp available xp. Please revise your sheet.',
               array('%spent_xp' => $spent_xp[$xp_type], '%available_xp' => $available_xp)));
         }
       }
+    }
+    $skill_average = ($numb_skills > 0) ? $spent_on_skills / $numb_skills : 0;
+    if ($spent_on_stats >= 240 || $skill_average <= 20) {
+      drupal_set_message(t('This character spent %spent_on_stats on stats, and an average of %skill_average on skills. This is ' .
+        'a character design approach that is likely to be reviewed by our evaluation staff as a potential min-maxed build. ' .
+        'We strongly encourage new characters to have a wider base of skills and at most two stats at 40. You may want to ' .
+        'revise your build or expect for an evaluator to assist with this character build.',
+        array('%spent_on_stats' => $spent_on_stats, '%skill_average' => number_format($skill_average, 2))), 'warning');
     }
     if ($spent_xp[$xp_type] < $available_xp) {
       return $error = array('field' => '', 'message' => 
@@ -651,7 +670,7 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
 
   // Add additional options for xp IIF allowed.
   if (isset($form['add_xp']) && $node->field_is_storyteller[$node->language][0]['value'] == 0 
-  	&& $node->field_is_npc[$node->language][0]['value'] == 0 && $node->field_is_open_npc[$node->language][0]['value'] == 0) {
+    && $node->field_is_npc[$node->language][0]['value'] == 0 && $node->field_is_open_npc[$node->language][0]['value'] == 0) {
     $form['add_xp']['xp']['#options'] = range(0, 500);
     $xp_types = array();
     foreach(explode("\n", variable_get('vaxia_xp_types', "good\nevil\nsmart\nclever\nwarrior\nmage\nrogue")) as $type) {
@@ -675,14 +694,14 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
     );
   }
   else {
-  	$form['add_xp']['#access'] = FALSE;
+    $form['add_xp']['#access'] = FALSE;
   }
 
   // And add the transfer options. But only if this sheet is a storyteller sheet.
   $rxp = _character_sheet_get_xp($node->nid, 'rxp');
   if ($rxp > 0 &&
-  	($node->field_is_storyteller[$node->language][0]['value'] == 1 || $node->field_is_npc[$node->language][0]['value'] == 1 ||
-  	  $node->field_is_open_npc[$node->language][0]['value'] == 1) &&
+    ($node->field_is_storyteller[$node->language][0]['value'] == 1 || $node->field_is_npc[$node->language][0]['value'] == 1 ||
+    $node->field_is_open_npc[$node->language][0]['value'] == 1) &&
     ($node->uid == $user->uid && user_access('transfer rxp') || user_access('transfer others sheets'))
   ) {
     $form['transfer_rxp'] = array(
@@ -1122,7 +1141,10 @@ function _vaxia_transfer_rxp_submit(&$form, &$form_state) {
 function _vaxia_get_field_value_flat($node, $field_key, $field_info, $nodes_seen = array()) {
   $nodes_seen[] = isset($node->nid) ? $node->nid : ''; // No nid to be found.
   // Given a node, find the key and patch to the information for that key.
-  $total = 0;
+  $values = array(
+    'total' => 0,
+    'number' => 0,
+  );
   $language = isset($node->language) ? $node->language : 'und';
   $walkable_node = (array) $node;
   if (isset($walkable_node[$field_key]) && is_array($walkable_node[$field_key][$language])) {
@@ -1131,7 +1153,8 @@ function _vaxia_get_field_value_flat($node, $field_key, $field_info, $nodes_seen
     foreach ($walkable_node[$field_key][$language] as $delta => $delta_field) {
       if (isset($delta_field['value']) && is_numeric($delta_field['value'])) {
         // Otherwise, let's build up the value point by point according to the given cost.
-        $total += $delta_field['value']; // CHANGE: FLAT VALUE TOTAL HERE.
+        $values['total'] += $delta_field['value']; // CHANGE: FLAT VALUE TOTAL HERE.
+        $values['number']++;
       }
     }
   }
@@ -1164,14 +1187,16 @@ function _vaxia_get_field_value_flat($node, $field_key, $field_info, $nodes_seen
           if (!empty($sub_node)) {
             // NOTE: THIS DOES NOT HANDLE RECUSIVE LOOPS WELL - SO DON'T RECOUNT THINGS COUNTED.
             if (!isset($sub_node->nid) || !in_array($sub_node->nid, $nodes_seen)) {
-              $total += _vaxia_get_field_value_flat($sub_node, $field_key, $field_info, $nodes_seen);
+              $new_totals = _vaxia_get_field_value_flat($sub_node, $field_key, $field_info, $nodes_seen);
+              $values['total'] += $new_totals['total'];
+              $values['number'] += $new_totals['number'];
             }
           }
         }
       }
     }
   }
-  return $total;
+  return $values;
 }
 
 /**
@@ -1223,7 +1248,7 @@ function _vaxia_add_xp($nid, $xp, $type) {
       array('%xp' => $xp, '%type' => $type, '%title' => $node->title, '%user' => $user->name));
     if (function_exists('rules_invoke_event')) {
       $player = user_load($node->uid);
-  	  rules_invoke_event('vaxia_gain_xp', $player, $node, $xp, $type);
+      rules_invoke_event('vaxia_gain_xp', $player, $node, $xp, $type);
     }
     $type = 'xp';
   }
