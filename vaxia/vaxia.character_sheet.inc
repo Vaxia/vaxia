@@ -252,8 +252,8 @@ function vaxia_character_sheet_field_info() {
     ),
     'field_items' => array(
       'permissions' => array(
-        'owner' => DISABLE_SHEET,
-        'other' => DISABLE_SHEET,
+        'owner' => DISABLE_SHEET, // Disabled for all, we're using the CNR module to handle this.
+        'other' => DISABLE_SHEET, // So we don't want this value getting meddled with.
       ),
     ),
     'field_property' => array(
