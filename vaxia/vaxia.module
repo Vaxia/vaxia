@@ -275,6 +275,17 @@ function vaxia_node_view($node, $view_mode, $langcode) {
     if (!($user->uid == $node->uid || user_access('edit SH notes'))) {
       unset($node->content['field_player_notes']);
     }
+    // Hide items that aren't approved yet.
+    $lang = $node->language;
+    if (!empty($node->field_items[$lang])) {
+      foreach ($node->field_items[$lang] as $index => $this_item) {
+        $this_item = $this_item['node'];
+        if (!isset($this_item->workflow_state_name) || $this_item->workflow_state_name != t('approved')) {
+          // Remove this item from display.
+          unset($node->content['field_items']['#items'][$index]);
+        }
+      }
+    }
   }
   // If node is an RPG chatroom, add the js for additional behaviors.
   if ($node->type == 'rpg_chatroom') {
