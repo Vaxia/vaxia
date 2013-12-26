@@ -94,15 +94,24 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
             && (isset($this_item->workflow_state_name) && $this_item->workflow_state_name == t('approved') || $this_item->workflow == 4)) {
             $mods = array();
             $item_label = $this_item->title;
-            $modifies = $penalties = array();
+            $modifies = $percentages = $overlaps = $penalties = array();
             $qualifies = TRUE;
             foreach ($stat_set as $stat_name) {
-              // Grab the stat mod.
+              // Grab the stat.
               $field_name = 'field_' . $stat_name;
               $stat_stat = isset($character->{$field_name}[$character->language][0]['value']) ?
                 $character->{$field_name}[$character->language][0]['value'] : 0;
+              //  Get item mod.
               $field_name = 'field_item_' . $stat_name;
               $stat_mod = isset($this_item->{$field_name}[$this_item->language][0]['value']) ?
+                $this_item->{$field_name}[$this_item->language][0]['value'] : 0;
+              // Get item percentage.
+              $field_name = 'field_item_perc_' . $stat_name;
+              $stat_perc = isset($this_item->{$field_name}[$this_item->language][0]['value']) ?
+                $this_item->{$field_name}[$this_item->language][0]['value'] : 0;
+              // Get item overlap.
+              $field_name = 'field_item_over_' . $stat_name;
+              $stat_over = isset($this_item->{$field_name}[$this_item->language][0]['value']) ?
                 $this_item->{$field_name}[$this_item->language][0]['value'] : 0;
               $field_name = 'field_item_required_' . $stat_name;
               $stat_req = isset($this_item->{$field_name}[$this_item->language][0]['value']) ? 
@@ -114,6 +123,12 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
               if ($stat_mod != 0) {
                 $modifies[$stat_name] = $stat_mod;
               }
+              if ($stat_perc != 0) {
+                $percentages[$stat_name] = $stat_perc;
+              }
+              if ($stat_over != 0) {
+                $overlaps[$stat_name] = $stat_over;
+              }
               if ($stat_pen != 0) {
                 $penalties[$stat_name] = $stat_pen;
               }
@@ -121,9 +136,9 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
                 $qualifies = FALSE;
               }
             } // End stat loop
-            // Once gathered, make sure we go through all relevant penalities for mods.      
+            // Once gathered, make sure we go through all relevant penalities for mods.   
+            // Add all penalities for this item to the modifiers.   
             if (!$qualifies) {
-              // Add all penalities for this item to the modifiers.
               foreach ($stat_set as $stat_name) {
                 if (isset($penalties[$stat_name])) {
                   $this_modifier = isset($modifies[$stat_name]) ? $modifies[$stat_name] : 0;
@@ -131,6 +146,7 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
                 }
               }
             }
+            // And set the labels for basic mods.
             $modifies_label = array();
             foreach ($modifies as $label => $value) {
               $small_label = substr($label, 0, 3);
@@ -139,6 +155,23 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
               }
               $modifies_label[] = $small_label . ':' . $value;
             }
+            // And set the labels for percentage mods.
+            foreach ($percentages as $label => $value) {
+              $small_label = substr($label, 0, 3);
+              if ($small_label == 'ref') {
+                $small_label = 'fin';
+              }
+              $modifies_label[] = $small_label . ':' . number_format($value) . '%';
+            }
+            // And set the labels for overlap mods.
+            foreach ($overlaps as $label => $value) {
+              $small_label = substr($label, 0, 3);
+              if ($small_label == 'ref') {
+                $small_label = 'fin';
+              }
+              $modifies_label[] = $small_label . ':' . number_format($value) . ' flat';
+            }
+            // And consolidate into one label.
             if (!empty($modifies_label)) {
               $item_label .= ' (' . implode(', ', $modifies_label) . ')';
             }
