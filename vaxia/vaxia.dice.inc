@@ -411,7 +411,7 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
  *    ),
  *  );
  */
-function _vaxia_dice_roller_form_submit_item_mods($character, $items, $skills) {
+function _vaxia_dice_roller_form_submit_item_mods($character, $items) {
   $stacking = variable_get('vaxia_dice_roller_stacking', TRUE);
   $item_mods = array();
   $item_notes = '';
@@ -533,12 +533,6 @@ function _vaxia_dice_roller_form_submit_item_mods($character, $items, $skills) {
           }
         }
       }
-
-      // Condense the skill mods to the stat, based on if a skill was selected for this item use.
-      //if (isset($modifies['skill']) && $modifies['skill'] != 0 && isset($roll['skill']) && $roll['skill'] != -1) {
-      //  $skill_mod = isset($modifies[$this_stat]) ? $modifies[$this_stat] : 0;
-      //  $modifies[$this_stat] = $skill_mod + $modifies['skill'];
-      //}
 
       // Add percentage descriptions to mod_note. TXT percentages that need to be removed over time.
       if (isset($item->field_percents[$item_lang][0]['value'])
