@@ -630,11 +630,13 @@ function vaxia_form_user_profile_form_alter(&$form, &$form_state, $form_id) {
   $form['field_comment_color']['#access'] = FALSE;
   $form['field_current_character']['#access'] = FALSE;
   $form['field_refresh_rate']['#access'] = FALSE;
+  $form['field_xp_over_time']['#access'] = FALSE;
   $form['field_took_ash1']['#access'] = FALSE;
   $form['field_took_ash2']['#access'] = FALSE;
   $form['field_took_ash3']['#access'] = FALSE;
   $form['field_became_sh']['#access'] = FALSE;
-  $form['field_xp_over_time']['#access'] = FALSE;
+  $form['field_took_eval_test']['#access'] = FALSE;
+  $form['field_became_evaluator']['#access'] = FALSE;
 }
 
 /**
