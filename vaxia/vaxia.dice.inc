@@ -469,7 +469,7 @@ function _vaxia_dice_roller_form_submit_item_mods($character, $items) {
         else {
           if ($modify != 0) {
             if (!empty($item_mods[$stat_name]['modify'])) {
-              if ($modify >= 0 && $modify > $item_mods[$stat_name]['modify']) {
+              if ($modify > 0 && $modify > $item_mods[$stat_name]['modify']) {
                 $item_mods[$stat_name]['modify'] = $modify;
                 $item_mods[$stat_name]['notes'] = ' + ' . $item->title . ' (' . $modify . ' ' . $small_label .')';
               }
