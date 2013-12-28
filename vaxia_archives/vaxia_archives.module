@@ -47,13 +47,18 @@ function vaxia_archives_menu() {
  * Menu callback for search page.
  */
 function vaxia_archives_form($form, &$form_state) {
+  $root = variable_get('vaxia_archives_flat_file_path', '');
   // Generate form.
   $form = array();
   $form['vaxia_archives_style'] = array(
     '#type' => 'item',
     '#markup' => '<style>' .
       '#vaxia-archives-form .form-type-textfield{float:left;margin-left:1em;height:40px;}' .
+      '#vaxia-archives-form .form-type-select{float:left;margin-left:1em;height:40px;}' .
+      '#vaxia-archives-form .form-type-select select{width:12em;}' .
+      '#vaxia-archives-form .form-type-radios{float:left;margin-left:1em;height:40px;}' .
       '#vaxia-archives-form #edit-vaxia-archives-date{float:left;margin-left:1em;height:40px;}' .
+      '#vaxia-archives-form #edit-vaxia-archives-date select{width:5em;}' .
       '#vaxia-archives-form #edit-vaxia-archives-date .form-type-select{float:left;margin-left:1em;}' .
       '#vaxia-archives-form #edit-vaxia-archives-submit{clear:left;}' .
       '</style>',
@@ -61,68 +66,106 @@ function vaxia_archives_form($form, &$form_state) {
   $form['search_fieldset'] = array(
     '#type' => 'fieldset',
   );
-  $form['search_fieldset']['vaxia_archives_date'] = array(
+  $form['search_fieldset']['vaxia_archives_specifics'] = array(
+    '#title' => t('Specifics'),
+    '#type' => 'fieldset',
+    //'#description' => t('Enter a date to limit results to that date.'),
+  );
+  $form['search_fieldset']['vaxia_archives_specifics']['vaxia_archives_date'] = array(
     '#title' => t('Date'),
     '#type' => 'fieldset',
     //'#description' => t('Enter a date to limit results to that date.'),
   );
-  $form['search_fieldset']['vaxia_archives_date']['vaxia_archives_date_month'] = array(
+  $form['search_fieldset']['vaxia_archives_specifics']['vaxia_archives_date']['vaxia_archives_date_month'] = array(
     '#type' => 'select',
     '#options' => array(
       'any' => '--',
-      'Jan' => 'Jan',
-      'Feb' => 'Feb',
-      'Mar' => 'Mar',
-      'Apr' => 'Apr',
-      'May' => 'Map',
-      'June' => 'Jun',
-      'July' => 'Jul',
-      'Aug' => 'Aug',
-      'Sep' => 'Sep',
-      'Oct' => 'Oct',
-      'Nov' => 'Nov',
-      'Dec' => 'Dec',
+      '01' => 'Jan',
+      '02' => 'Feb',
+      '03' => 'Mar',
+      '04' => 'Apr',
+      '05' => 'Map',
+      '06' => 'Jun',
+      '07' => 'Jul',
+      '08' => 'Aug',
+      '09' => 'Sep',
+      '10' => 'Oct',
+      '11' => 'Nov',
+      '12' => 'Dec',
     ),
   );
-  $days = array_combine(range(1, 31), range(1, 31));
+  $day_ranges = range(1, 31);
+  foreach ($day_ranges as $day_range) {
+    if ($day_range < 10) {
+      $day_range = '0' . $day_range;
+    }
+    $days[$day_range] = $day_range;
+  }
+  $days = array_combine($days, $days);
   $days = array('any' => '--') + $days;
-  $form['search_fieldset']['vaxia_archives_date']['vaxia_archives_date_day'] = array(
+  $form['search_fieldset']['vaxia_archives_specifics']['vaxia_archives_date']['vaxia_archives_date_day'] = array(
     '#type' => 'select',
     '#options' => $days,
   );
-  $form['search_fieldset']['vaxia_archives_date']['vaxia_archives_date_year'] = array(
+  $years = array_combine(range(2004, date('Y')), range(2004, date('Y')));
+  $years = array('any' => '--') + $years;
+  $form['search_fieldset']['vaxia_archives_specifics']['vaxia_archives_date']['vaxia_archives_date_year'] = array(
     '#type' => 'select',
-    '#options' => array(
-      'any' => '--',
-      '2004' => '2004',
-      '2005' => '2005',
-      '2006' => '2006',
-      '2007' => '2007',
-      '2008' => '2008',
-      '2009' => '2009',
-      '2010' => '2010',
-      '2011' => '2011',
-      '2012' => '2012',
-      '2013' => '2013',
-    ),
+    '#options' => $years,
   );
-  $form['search_fieldset']['vaxia_archives_location'] = array(
+  $location = _vaxia_archives_read_data_file($root .'/d/location.data');
+  asort($location);
+  $location = array('any' => '--') + $location;
+  $form['search_fieldset']['vaxia_archives_specifics']['vaxia_archives_location'] = array(
     '#title' => t('Location'),
-    '#type' => 'textfield',
+    '#type' => 'select',
     //'#description' => t('Enter a location to search for the location in the archive filename.'),
-    '#size' => 15,
+    '#options' => $location,
+    '#default_value' => 'any',
   );
-  $form['search_fieldset']['vaxia_archives_character'] = array(
+  $character = _vaxia_archives_read_data_file($root .'/d/character.data');
+  asort($character);
+  $character = array('any' => '--') + $character;
+  $form['search_fieldset']['vaxia_archives_specifics']['vaxia_archives_character'] = array(
     '#title' => t('Character'),
-    '#type' => 'textfield',
+    '#type' => 'select',
     //'#description' => t('Enter a character to search for the location in the archive filename and text.'),
-    '#size' => 15,
+    '#options' => $character,
+    '#default_value' => 'any',
   );
-  $form['search_fieldset']['vaxia_archives_text'] = array(
+  $player = _vaxia_archives_read_data_file($root .'/d/player.data');
+  asort($player);
+  $player = array('any' => '--') + $player;
+  $form['search_fieldset']['vaxia_archives_specifics']['vaxia_archives_player'] = array(
+    '#title' => t('Player'),
+    '#type' => 'select',
+    //'#description' => t('Enter a character to search for the location in the archive filename and text.'),
+    '#options' => $player,
+    '#default_value' => 'any',
+    '#suffix' => '<div style="clear:both;">&nbsp;</div>',
+  );
+  $form['search_fieldset']['vaxia_archives_contents'] = array(
+    '#title' => t('Contents'),
+    '#type' => 'fieldset',
+    //'#description' => t('Enter a date to limit results to that date.'),
+  );
+  $form['search_fieldset']['vaxia_archives_contents']['vaxia_archives_text'] = array(
     '#title' => t('Text'),
     '#type' => 'textfield',
     //'#description' => t('Enter any string to search for the location in the archive text.'),
     '#size' => 15,
+  );
+  $form['search_fieldset']['vaxia_archives_contents']['vaxia_archives_type'] = array(
+    '#title' => t('Type'),
+    '#type' => 'radios',
+    //'#description' => t('Enter any string to search for the location in the archive text.'),
+    '#options' => array(
+      'any' => t('Any Post'),
+      'room' => t('Chat Room Post'),
+      'forum' => t('Forum Post'),
+    ),
+    '#default_value' => 'any',
+    '#suffix' => '<div style="clear:both;">&nbsp;</div>',
   );
   $form['vaxia_archives_submit'] = array(
     '#type' => 'button',
@@ -138,14 +181,19 @@ function vaxia_archives_form($form, &$form_state) {
   if (!empty($form_state['values']['vaxia_archives_date_month']) ||
     !empty($form_state['values']['vaxia_archives_date_day']) ||
     !empty($form_state['values']['vaxia_archives_date_year']) ||
+    !empty($form_state['values']['vaxia_archives_type']) ||
     !empty($form_state['values']['vaxia_archives_location']) ||
     !empty($form_state['values']['vaxia_archives_character']) ||
+    !empty($form_state['values']['vaxia_archives_player']) ||
     !empty($form_state['values']['vaxia_archives_text'])) {
-    $search_results = _vaxia_archives_search($form_state['values']['vaxia_archives_date_month'],
+    $search_results = _vaxia_archives_search(
+      $form_state['values']['vaxia_archives_date_month'],
       $form_state['values']['vaxia_archives_date_day'],
       $form_state['values']['vaxia_archives_date_year'],
+      $form_state['values']['vaxia_archives_type'],
       $form_state['values']['vaxia_archives_location'],
       $form_state['values']['vaxia_archives_character'],
+      $form_state['values']['vaxia_archives_player'],
       $form_state['values']['vaxia_archives_text']
     );
   }
@@ -156,15 +204,14 @@ function vaxia_archives_form($form, &$form_state) {
     '#prefix' => '<div id="vaxia_archives_results">',
     '#suffix' => '</div>',
   );
-  $root = variable_get('vaxia_archives_flat_file_path', '');
   if (!empty($root)) {
     $form['vaxia_archives_raw'] = array(
       '#title' => t('Raw files'),
       '#type' => 'item',
       '#markup' => '<br/>' .
-        '<b><i><a href="/' . $root . '/index.html" target="_blank">Direct link to archives</a></i></b>' .
+        '<b><i><a href="' . $root . '" target="_blank">Direct link to archives</a></i></b>' .
         '<br/><br/>' .
-        '<iframe src="/' . $root . '/index.html" width="100%" height="500px"></iframe>',
+        '<iframe src="' . $root . '" width="100%" height="500px"></iframe>',
       '#prefix' => '<div id="vaxia_archives_raw">',
       '#suffix' => '</div>',
     );
@@ -194,33 +241,55 @@ function vaxia_archives_admin_form() {
 }
 
 /**
+ * Helper function, read in a CSV .data file to get a list of returns.
+ */
+function _vaxia_archives_read_data_file($path) {
+  $results = array();
+  if (is_file($path) && ($file = fopen($path, 'r')) !== FALSE) {
+    while (($row = fgetcsv($file, 1000, ",")) !== FALSE) {
+      if (!empty($row[0])) {
+        $results[$row[0]] = $row[0];
+      }
+    }
+  }
+  return $results;
+}
+
+/**
  * Helper function, make a list of searchable results.
  * THIS IS NOT A 'proper' SEARCH SYSTEM.
  */
-function _vaxia_archives_search($month = 'any', $day = 'any', $year = 'any', $location, $character, $text) {
+function _vaxia_archives_search($month = 'any', $day = 'any', $year = 'any', $type = 'any', $location, $character, $player, $text) {
   // Is the date set? Check that set path instead of all.
   $root = variable_get('vaxia_archives_flat_file_path', '');
+
+  // Set the path if thos values were selected.
   $path = $root;
   if (!empty($year) && $year != 'any') {
-    $path = $root . '/archives/' . $year; // Since only the archives are org by year.
+    $path = $root . '/' . $year; // Since only the archives are org by year.
   }
   if (!empty($year) && $year != 'any' && !empty($month) && $month != 'any') {
     $path = $path . '/' . $month ;
   }
   if (!empty($year) && $year != 'any' && !empty($month) && $month != 'any' && !empty($day) && $day != 'any') {
-    $date = strtotime($month . ' ' . $day . ' ' . $year);
-    $path = $path . '/' . date('D_j', $date) ;
+    $path = $path . '/' . $day ;
+  }
+  if (!empty($year) && $year != 'any' && !empty($month) && $month != 'any' && !empty($day) && $day != 'any' && !empty($type) && $type != 'any') {
+    $path = $path . '/' . $type ;
   }
 
-  // Scrub the other three value.
-  $location = addslashes(strip_tags($location));
-  $character = addslashes(strip_tags($character));
-  $text = addslashes(strip_tags($text));
+  // Scrub the other values.
+  $location = trim(addslashes(strip_tags($location)));
+  $character = trim(addslashes(strip_tags($character)));
+  $player = trim(addslashes(strip_tags($player)));
+  $text = trim(addslashes(strip_tags($text)));
+
+  // Start from the root.
   $root = variable_get('vaxia_archives_flat_file_path', '');
 
   // Check location name in file and content
   $found = array();
-  // If date was the only thing set, list the contents of that folder
+  // If date was the only thing set, first get the contents of that folder
   if (!empty($year) && $year != 'any') {
     $output = '';
     $command = 'find -L ' . DRUPAL_ROOT . '/' . $path;
@@ -229,26 +298,25 @@ function _vaxia_archives_search($month = 'any', $day = 'any', $year = 'any', $lo
       $found[$found_file] = $found_file;
     }
   }
-  if (!empty($location)) {
+
+  // Check for location info.
+  if (!empty($location) && $location != 'any') {
     $output = '';
     $this_found = array();
     $command = 'find -L ' . DRUPAL_ROOT . '/' . $path . ' -iname "*' . $location . '*"';
     exec($command, $output);
     foreach ($output as $found_file) {
-      $this_found[$found_file] = $found_file;
+        $this_found[$found_file] = $found_file;
+    }
+    // Only use the results that show under both.
+    if (empty($this_found)) {
+      $found = array();
     }
     $found = empty($found) ? $this_found : array_intersect($found, $this_found);
   }
-  // Check character name in file and content
-  if (!empty($character)) {
-    $output = '';
-    $this_found = array();
-    $command = 'find -L ' . DRUPAL_ROOT . '/' . $path . ' -iname "*' . $character . '*"';
-    exec($command, $output);
-    // If something already found, filter it down.
-    foreach ($output as $found_file) {
-      $this_found[$found_file] = $found_file;
-    }
+
+  // Check character name in content
+  if (!empty($character) && $character != 'any') {
     $output = '';
     $command = 'grep -R -i "' . $character . '" ' . DRUPAL_ROOT . '/' . $path;
     exec($command, $output);
@@ -256,8 +324,29 @@ function _vaxia_archives_search($month = 'any', $day = 'any', $year = 'any', $lo
       $found_file_parts = explode(':', $found_file);
       $this_found[$found_file_parts[0]] = $found_file_parts[0];
     }
+    // Only use the results that show under both.
+    if (empty($this_found)) {
+      $found = array();
+    }
     $found = empty($found) ? $this_found : array_intersect($found, $this_found);
   }
+
+  // Check player name in content
+  if (!empty($player) && $player != 'any') {
+    $output = '';
+    $command = 'grep -R -i "' . $player . '" ' . DRUPAL_ROOT . '/' . $path;
+    exec($command, $output);
+    foreach ($output as $found_file) {
+      $found_file_parts = explode(':', $found_file);
+      $this_found[$found_file_parts[0]] = $found_file_parts[0];
+    }
+    // Only use the results that show under both.
+    if (empty($this_found)) {
+      $found = array();
+    }
+    $found = empty($found) ? $this_found : array_intersect($found, $this_found);
+  }
+
   // Check text in content
   if (!empty($text)) {
     $output = '';
@@ -268,8 +357,13 @@ function _vaxia_archives_search($month = 'any', $day = 'any', $year = 'any', $lo
       $found_file_parts = explode(':', $found_file);
       $this_found[$found_file_parts[0]] = $found_file_parts[0];
     }
+    // Only use the results that show under both.
+    if (empty($this_found)) {
+      $found = array();
+    }
     $found = empty($found) ? $this_found : array_intersect($found, $this_found);
   }
+
   // Clean up the found paths for proper links through
   global $base_url;
   foreach ($found as $index => $found_path) {
@@ -277,7 +371,13 @@ function _vaxia_archives_search($month = 'any', $day = 'any', $year = 'any', $lo
     $new_path = '<a href="' . $base_url . '/' . $found_path . '" target="_blank">' . $found_path . '</a>';
     $found[$index] = $new_path;
   }
+
   // Create results
-  $results = '<ul><li>' . implode("</li>\n<li>", $found) . '</li></ul>';
+  if (!empty($found)) {
+    $results = '<ul><li>' . implode("</li>\n<li>", $found) . '</li></ul>';
+  }
+  else {
+    $results = '<ul><li>' . t('No results found.') . '</li></ul>';
+  }
   return $results;
 }
