@@ -279,9 +279,9 @@ function _vaxia_archives_search($month = 'any', $day = 'any', $year = 'any', $ty
   }
 
   // Scrub the other values.
-  $location = trim(addslashes(strip_tags($location)));
-  $character = trim(addslashes(strip_tags($character)));
-  $player = trim(addslashes(strip_tags($player)));
+  $location = trim($location);
+  $character = trim($character);
+  $player = trim($player);
   $text = trim(addslashes(strip_tags($text)));
 
   // Start from the root.
@@ -301,13 +301,14 @@ function _vaxia_archives_search($month = 'any', $day = 'any', $year = 'any', $ty
 
   // Check for location info.
   if (!empty($location) && $location != 'any') {
-    $output = '';
-    $this_found = array();
-    $command = 'find -L ' . DRUPAL_ROOT . '/' . $path . ' -iname "*' . $location . '*"';
-    exec($command, $output);
-    foreach ($output as $found_file) {
-        $this_found[$found_file] = $found_file;
-    }
+    //$output = '';
+    //$this_found = array();
+    //$command = 'find -L ' . DRUPAL_ROOT . '/' . $path . ' -iname "*' . $location . '*"';
+    //exec($command, $output);
+    //foreach ($output as $found_file) {
+    //    $this_found[$found_file] = $found_file;
+    //}
+    $found = _vaxia_archives_read_data_file($root .'/d/location.' . str_replace(' ', '-', $location) . '.data');
     // Only use the results that show under both.
     if (empty($this_found)) {
       $found = array();
@@ -317,13 +318,14 @@ function _vaxia_archives_search($month = 'any', $day = 'any', $year = 'any', $ty
 
   // Check character name in content
   if (!empty($character) && $character != 'any') {
-    $output = '';
-    $command = 'grep -R -i "' . $character . '" ' . DRUPAL_ROOT . '/' . $path;
-    exec($command, $output);
-    foreach ($output as $found_file) {
-      $found_file_parts = explode(':', $found_file);
-      $this_found[$found_file_parts[0]] = $found_file_parts[0];
-    }
+    //$output = '';
+    //$command = 'grep -R -i "' . $character . '" ' . DRUPAL_ROOT . '/' . $path;
+    //exec($command, $output);
+    //foreach ($output as $found_file) {
+    //  $found_file_parts = explode(':', $found_file);
+    //  $this_found[$found_file_parts[0]] = $found_file_parts[0];
+    //}
+    $found = _vaxia_archives_read_data_file($root .'/d/character.' . str_replace(' ', '-', $character) . '.data');
     // Only use the results that show under both.
     if (empty($this_found)) {
       $found = array();
@@ -333,13 +335,14 @@ function _vaxia_archives_search($month = 'any', $day = 'any', $year = 'any', $ty
 
   // Check player name in content
   if (!empty($player) && $player != 'any') {
-    $output = '';
-    $command = 'grep -R -i "' . $player . '" ' . DRUPAL_ROOT . '/' . $path;
-    exec($command, $output);
-    foreach ($output as $found_file) {
-      $found_file_parts = explode(':', $found_file);
-      $this_found[$found_file_parts[0]] = $found_file_parts[0];
-    }
+    //$output = '';
+    //$command = 'grep -R -i "' . $player . '" ' . DRUPAL_ROOT . '/' . $path;
+    //exec($command, $output);
+    //foreach ($output as $found_file) {
+    //  $found_file_parts = explode(':', $found_file);
+    //  $this_found[$found_file_parts[0]] = $found_file_parts[0];
+    //}
+    $found = _vaxia_archives_read_data_file($root .'/d/player.' . str_replace(' ', '-', $player) . '.data');
     // Only use the results that show under both.
     if (empty($this_found)) {
       $found = array();
