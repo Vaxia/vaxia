@@ -458,8 +458,8 @@ function _vaxia_dice_roller_form_submit_item_mods($character, $items) {
         $required = isset($item->{$field_name}[$item_lang][0]['value']) ? $item->{$field_name}[$item_lang][0]['value'] : 0;
 
         // Set modify value into return array. Use the largest one IFF set to not allow stacking.
-        $item_mods[$stat_name]['modify'] = '';
-        $item_mods[$stat_name]['notes'] = '';
+        $item_mods[$stat_name]['modify'] = isset($item_mods[$stat_name]['modify']) ? $item_mods[$stat_name]['modify'] : '';
+        $item_mods[$stat_name]['notes'] = isset($item_mods[$stat_name]['notes']) ? $item_mods[$stat_name]['notes'] : '';
         if ($stacking) {
           if ($modify != 0) {
             $item_mods[$stat_name]['modify'] += $modify;
@@ -482,7 +482,7 @@ function _vaxia_dice_roller_form_submit_item_mods($character, $items) {
         }
 
         // Set percentages into return array. Use the largest one.
-        $item_mods[$stat_name]['percentage'] = '';
+        $item_mods[$stat_name]['percentage'] = isset($item_mods[$stat_name]['percentage']) ? $item_mods[$stat_name]['percentage'] : '';
         if ($percentage != 0) {
           if (!empty($item_mods[$stat_name]['percentage'])) {
             if ($percentage > $item_mods[$stat_name]['percentage']) {
@@ -501,7 +501,7 @@ function _vaxia_dice_roller_form_submit_item_mods($character, $items) {
         }
 
         // Set overlap value into return array. Use the largest one.
-        $item_mods[$stat_name]['overlap'] = '';
+        $item_mods[$stat_name]['overlap'] = isset($item_mods[$stat_name]['overlap']) ? $item_mods[$stat_name]['overlap'] : '';
         if ($overlap != 0) {
           if (!empty($item_mods[$stat_name]['overlap'])) {
             if ($overlap > $item_mods[$stat_name]['overlap']) {
