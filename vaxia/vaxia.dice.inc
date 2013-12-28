@@ -459,7 +459,7 @@ function _vaxia_dice_roller_form_submit_item_mods($character, $items) {
 
         // Set modify value into return array. Use the largest one IFF set to not allow stacking.
         $item_mods[$stat_name]['modify'] = isset($item_mods[$stat_name]['modify']) ? $item_mods[$stat_name]['modify'] : '';
-        $item_mods[$stat_name]['notes'] = isset($item_mods[$stat_name]['notes']) ? $item_mods[$stat_name]['modify'] : '';
+        $item_mods[$stat_name]['notes'] = isset($item_mods[$stat_name]['notes']) ? $item_mods[$stat_name]['notes'] : '';
         if ($stacking) {
           if ($modify != 0) {
             $item_mods[$stat_name]['modify'] += $modify;
