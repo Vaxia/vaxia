@@ -295,18 +295,18 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
             $stat_note = $skill_note = '';
 
             // If stat is selected, grab the basic stat AND/OR the overlap if it's been set.
-            if (isset($roll['stat']) && $roll['stat'] != -1) {
+            if (!empty($roll['stat']) && $roll['stat'] != -1) {
               // Note which stat this is for.
               $this_stat = substr($roll['stat'], 6); // Trim "field_" off the top.
               // Check for overlap from an item.
-              if (isset($item_mods[$this_stat]['overlap']) && !empty($item_mods[$this_stat]['overlap'])) {
+              if (!empty($item_mods[$this_stat]['overlap']) && !empty($item_mods[$this_stat]['overlap'])) {
                 $stat = $item_mods[$this_stat]['overlap'];
               }
-              elseif (isset($character)) {
-                $stat = isset($character->{$roll['stat']}[$lang][0]['value']) ? $character->{$roll['stat']}[$lang][0]['value'] : 0;
+              elseif (!empty($character)) {
+                $stat = !empty($character->{$roll['stat']}[$lang][0]['value']) ? $character->{$roll['stat']}[$lang][0]['value'] : 0;
               }
               // Check for percentages from an item.
-              if (isset($item_mods[$this_stat]['percentage']) && !empty($item_mods[$this_stat]['percentage'])) {
+              if (!empty($item_mods[$this_stat]['percentage'])) {
                 $item_mod += (($item_mods[$this_stat]['percentage']/100) * $stat); // Add the percentage to the stat.
               }
               // Set the stat message and label.
@@ -318,24 +318,24 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
               $mod += $stat;
 
               // Add item mods for stats.
-              if (isset($item_mods[$this_stat]['modify']) && !empty($item_mods[$this_stat]['modify'])) {
+              if (!empty($item_mods[$this_stat]['modify'])) {
                 $item_mod += $item_mods[$this_stat]['modify'];
               }
-              $stat_note .= isset($item_mods[$this_stat]['notes']) ? $item_mods[$this_stat]['notes'] : '';
+              $stat_note .= !empty($item_mods[$this_stat]['notes']) ? $item_mods[$this_stat]['notes'] : '';
             }
 
             // If skill selected, grab the skill for mods.
-            if (isset($roll['skill']) && $roll['skill'] != -1) {
+            if (!empty($roll['skill']) && $roll['skill'] != -1) {
               // Check for overlap from an item.
-              if (isset($item_mods['skill']['overlap']) && !empty($item_mods['skill']['overlap'])) {
+              if (!empty($item_mods['skill']['overlap'])) {
                 $skill = $item_mods['skill']['overlap'];
               }
-              elseif (isset($character)) {
+              elseif (!empty($character)) {
                 $skill_details = field_collection_item_load($roll['skill']);
-                $skill = isset($skill_details->field_skill_value[$lang][0]['value']) ? $skill_details->field_skill_value[$lang][0]['value'] : 0;
+                $skill = !empty($skill_details->field_skill_value[$lang][0]['value']) ? $skill_details->field_skill_value[$lang][0]['value'] : 0;
               }
               // Check for percentages from an item.
-              if (isset($item_mods['skill']['percentage']) && !empty($item_mods['skill']['percentage'])) {
+              if (!empty($item_mods['skill']['percentage'])) {
                 $item_mod += (($item_mods['skill']['percentage']/100) * $skill); // Add the percentage to the stat.
               }
               // Set the stat message and label.
@@ -343,20 +343,20 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
               if ($small_label == 'ref') {
                 $small_label = 'fin';
               }
-              $skill_name = isset($skill_details->field_skill_name[$lang][0]['value']) ? $skill_details->field_skill_name[$lang][0]['value'] : 'skill';
-              $skill_desc = isset($skill_details->field_skill_desc[$lang][0]['value']) ? $skill_details->field_skill_desc[$lang][0]['value'] : '';
+              $skill_name = !empty($skill_details->field_skill_name[$lang][0]['value']) ? $skill_details->field_skill_name[$lang][0]['value'] : 'skill';
+              $skill_desc = !empty($skill_details->field_skill_desc[$lang][0]['value']) ? $skill_details->field_skill_desc[$lang][0]['value'] : '';
               $mod_note .= ' +  <a title="' . $skill_desc . '" href="#">' . $skill_name . '</a> (' . $skill . ')';
               $mod += $skill;
 
               // Add item mods for stats.
-              if (isset($item_mods['skill']['modify']) && !empty($item_mods['skill']['modify'])) {
+              if (!empty($item_mods['skill']['modify'])) {
                 $item_mod += $item_mods['skill']['modify'];
               }
-              $skill_note .= isset($item_mods['skill']['notes']) ? $item_mods['skill']['notes'] : '';
+              $skill_note .= !empty($item_mods['skill']['notes']) ? $item_mods['skill']['notes'] : '';
             }
 
             // Sum up the mods for items from stats and skills, and add to the final mods.
-            if (isset($item_mod) && !empty($item_mod)) {
+            if (!empty($item_mod)) {
               $mod += $item_mod;
             }
             if (!empty($stat_note) || !empty($skill_note)) {
@@ -365,7 +365,7 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
               if (empty($item_notes)) {
                 $item_notes = 'n/a';
               }
-              if (!isset($item_mod) || empty($item_mod)) {
+              if (empty($item_mod)) {
                 $item_mod = 'n/a';
               }
               $mod_note .= ' +  <a title="' . $item_notes . '" href="#">Items</a> (' . $item_mod . ')';
@@ -458,6 +458,8 @@ function _vaxia_dice_roller_form_submit_item_mods($character, $items) {
         $required = isset($item->{$field_name}[$item_lang][0]['value']) ? $item->{$field_name}[$item_lang][0]['value'] : 0;
 
         // Set modify value into return array. Use the largest one IFF set to not allow stacking.
+        $item_mods[$stat_name]['modify'] = '';
+        $item_mods[$stat_name]['notes'] = '';
         if ($stacking) {
           if ($modify != 0) {
             $item_mods[$stat_name]['modify'] += $modify;
@@ -480,6 +482,7 @@ function _vaxia_dice_roller_form_submit_item_mods($character, $items) {
         }
 
         // Set percentages into return array. Use the largest one.
+        $item_mods[$stat_name]['percentage'] = '';
         if ($percentage != 0) {
           if (!empty($item_mods[$stat_name]['percentage'])) {
             if ($percentage > $item_mods[$stat_name]['percentage']) {
@@ -498,6 +501,7 @@ function _vaxia_dice_roller_form_submit_item_mods($character, $items) {
         }
 
         // Set overlap value into return array. Use the largest one.
+        $item_mods[$stat_name]['overlap'] = '';
         if ($overlap != 0) {
           if (!empty($item_mods[$stat_name]['overlap'])) {
             if ($overlap > $item_mods[$stat_name]['overlap']) {
