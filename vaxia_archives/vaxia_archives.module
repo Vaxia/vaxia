@@ -244,7 +244,6 @@ function vaxia_archives_admin_form() {
  * Helper function, read in a CSV .data file to get a list of returns.
  */
 function _vaxia_archives_read_data_file($path) {
-drupal_set_message($path);
   $results = array();
   if (is_file($path) && ($file = fopen($path, 'r')) !== FALSE) {
     while (($row = fgetcsv($file, 1000, ",")) !== FALSE) {
