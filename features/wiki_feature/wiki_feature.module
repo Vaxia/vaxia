@@ -188,6 +188,20 @@ function wiki_feature_form_wiki_page_node_form_alter(&$form, &$form_state) {
 }
 
 /**
+ * Implements hook_freelinking().
+ */
+function wiki_feature_freelink_alter(&$link, $target, $plugin_name, $plugin) {
+  // Trim title down to the last leaf.
+  $title = $link[0];
+  $title = explode('/', $title);
+  if (is_array($title)) {
+    $title = array_pop($title);
+  }
+  // And set it.
+  $link[0] = $title;
+}
+
+/**
  * Helper function, determine if the wiki page is locked.
  */
 function _wiki_feature_locked($node) {
