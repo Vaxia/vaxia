@@ -360,6 +360,10 @@ function _vaxia_archives_search($month = 'any', $day = 'any', $year = 'any', $ty
       $found_file_parts = explode(':', $found_file);
       $this_found[$found_file_parts[0]] = $found_file_parts[0];
     }
+    foreach ($this_found as $index => $found_path) {
+      $length = drupal_strlen(DRUPAL_ROOT) + drupal_strlen($root) + 1;
+      $this_found[$index] = drupal_substr($found_path, $length);
+    }
     // Only use the results that show under both.
     if (empty($this_found)) {
       $found = array();
@@ -370,7 +374,7 @@ function _vaxia_archives_search($month = 'any', $day = 'any', $year = 'any', $ty
   // Clean up the found paths for proper links through
   global $base_url;
   foreach ($found as $index => $found_path) {
-    $found_path = drupal_substr($found_path, drupal_strlen(DRUPAL_ROOT) + 1);
+    $found_path = $root . $found_path;
     $new_path = '<a href="' . $base_url . '/' . $found_path . '" target="_blank">' . $found_path . '</a>';
     $found[$index] = $new_path;
   }
