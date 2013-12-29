@@ -366,6 +366,7 @@ function _vaxia_archives_search($month = 'any', $day = 'any', $year = 'any', $ty
 
   // Create results
   if (!empty($found)) {
+    asort($found);
     $results = '<ul><li>' . implode("</li>\n<li>", $found) . '</li></ul>';
   }
   else {
