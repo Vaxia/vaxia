@@ -211,7 +211,7 @@ function vaxia_archives_form($form, &$form_state) {
       '#markup' => '<br/>' .
         '<b><i><a href="' . $root . '" target="_blank">Direct link to archives</a></i></b>' .
         '<br/><br/>' .
-        '<iframe src="' . $root . '" width="100%" height="500px"></iframe>',
+        '<iframe src="' . $root . '" width="100%" height="500px" style="background:#FFF;"></iframe>',
       '#prefix' => '<div id="vaxia_archives_raw">',
       '#suffix' => '</div>',
     );
