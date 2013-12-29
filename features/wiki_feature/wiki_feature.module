@@ -88,7 +88,9 @@ function theme_wiki_feature_breadcrumb($vars) {
     $link = menu_get_item(drupal_get_normal_path($link));
     if (!empty($link['title'])) {
       $short_title = explode('/', $link['title']);
-      $short_title = array_pop($short_title);
+      if (is_array($short_title)) {
+        $short_title = array_pop($short_title);
+      }
       $themed_links[] = l($short_title, $link['href']);
     }
   }
@@ -112,7 +114,9 @@ function theme_wiki_feature_links($vars) {
     $link = menu_get_item(drupal_get_normal_path($link));
     if (!empty($link['title'])) {
       $short_title = explode('/', $link['title']);
-      $short_title = array_pop($short_title);
+      if (is_array($short_title)) {
+        $short_title = array_pop($short_title);
+      }
       $themed_links[] = l($short_title, $link['href']);
     }
   }

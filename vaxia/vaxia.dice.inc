@@ -38,7 +38,7 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
   if (!in_array($parent_form['#node']->nid, $limbo_room) && $character == '_none') {
     $lang = $parent_form['language']['#value'];
     // If none was the default, set it to the first available.
-    if ($parent_form['field_comment_character'][$lang]['#default_value'] == '_none'
+    if ((isset($parent_form['field_comment_character'][$lang]['#default_value']) && $parent_form['field_comment_character'][$lang]['#default_value'] == '_none')
       || empty($parent_form['field_comment_character'][$lang]['#default_value'])) {
       $keys = array();
       if (empty($keys) && isset($parent_form['field_comment_character'][$lang]['#options']['Characters'])) {
