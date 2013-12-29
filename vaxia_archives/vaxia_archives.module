@@ -374,7 +374,7 @@ function _vaxia_archives_search($month = 'any', $day = 'any', $year = 'any', $ty
   // Clean up the found paths for proper links through
   global $base_url;
   foreach ($found as $index => $found_path) {
-    $found_path = $root . $found_path;
+    $found_path = $root . '/' . $found_path;
     $new_path = '<a href="' . $base_url . '/' . $found_path . '" target="_blank">' . $found_path . '</a>';
     $found[$index] = $new_path;
   }
