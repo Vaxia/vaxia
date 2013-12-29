@@ -244,6 +244,7 @@ function vaxia_archives_admin_form() {
  * Helper function, read in a CSV .data file to get a list of returns.
  */
 function _vaxia_archives_read_data_file($path) {
+drupal_set_message($path);
   $results = array();
   if (is_file($path) && ($file = fopen($path, 'r')) !== FALSE) {
     while (($row = fgetcsv($file, 1000, ",")) !== FALSE) {
@@ -308,7 +309,7 @@ function _vaxia_archives_search($month = 'any', $day = 'any', $year = 'any', $ty
     //foreach ($output as $found_file) {
     //    $this_found[$found_file] = $found_file;
     //}
-    $found = _vaxia_archives_read_data_file($root .'/d/location.' . str_replace(' ', '-', $location) . '.data');
+    $this_found = _vaxia_archives_read_data_file($root .'/d/location.' . str_replace(' ', '-', $location) . '.data');
     // Only use the results that show under both.
     if (empty($this_found)) {
       $found = array();
@@ -325,7 +326,7 @@ function _vaxia_archives_search($month = 'any', $day = 'any', $year = 'any', $ty
     //  $found_file_parts = explode(':', $found_file);
     //  $this_found[$found_file_parts[0]] = $found_file_parts[0];
     //}
-    $found = _vaxia_archives_read_data_file($root .'/d/character.' . str_replace(' ', '-', $character) . '.data');
+    $this_found = _vaxia_archives_read_data_file($root .'/d/character.' . str_replace(' ', '-', $character) . '.data');
     // Only use the results that show under both.
     if (empty($this_found)) {
       $found = array();
@@ -342,7 +343,7 @@ function _vaxia_archives_search($month = 'any', $day = 'any', $year = 'any', $ty
     //  $found_file_parts = explode(':', $found_file);
     //  $this_found[$found_file_parts[0]] = $found_file_parts[0];
     //}
-    $found = _vaxia_archives_read_data_file($root .'/d/player.' . str_replace(' ', '-', $player) . '.data');
+    $this_found = _vaxia_archives_read_data_file($root .'/d/player.' . str_replace(' ', '-', $player) . '.data');
     // Only use the results that show under both.
     if (empty($this_found)) {
       $found = array();
