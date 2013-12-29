@@ -296,7 +296,7 @@ function _vaxia_archives_search($month = 'any', $day = 'any', $year = 'any', $ty
     $command = 'find -L ' . DRUPAL_ROOT . '/' . $path;
     exec($command, $output);
     foreach ($output as $found_file) {
-      $this_found[$found_file] = $found_file;
+      $this_found[] = $found_file;
     }
     foreach ($this_found as $index => $found_path) {
       $length = drupal_strlen(DRUPAL_ROOT) + drupal_strlen($root) + 2;
@@ -337,16 +337,16 @@ function _vaxia_archives_search($month = 'any', $day = 'any', $year = 'any', $ty
 
   // Check text in content
   if (!empty($text)) {
-    $output = '';
     $this_found = array();
+    $output = '';
     $command = 'grep -R -i "' . $text . '" ' . DRUPAL_ROOT . '/' . $path;
     exec($command, $output);
     foreach ($output as $found_file) {
       $found_file_parts = explode(':', $found_file);
-      $this_found[$found_file_parts[0]] = $found_file_parts[0];
+      $this_found[] = $found_file_parts[0];
     }
     foreach ($this_found as $index => $found_path) {
-      $length = drupal_strlen(DRUPAL_ROOT) + drupal_strlen($root) + 1;
+      $length = drupal_strlen(DRUPAL_ROOT) + drupal_strlen($root) + 2;
       $this_found[$index] = drupal_substr($found_path, $length);
     }
     // Only use the results that show under both.
