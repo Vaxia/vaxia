@@ -223,8 +223,8 @@ function _wiki_feature_get_parent_links($path) {
 function _wiki_feature_get_child_links($path) {
   // Given a string path, find the router parents above it.
   $parent_path = '';
-  $slash = '';  
-  $links = db_query('SELECT alias FROM {url_alias} WHERE alias LIKE :parent', array(':parent' => $path . '/%'));
+  $regexp = '^' . $path . '/[a-zA-Z0-9-]+$';
+  $links = db_query('SELECT alias FROM {url_alias} WHERE alias REGEXP :regexp', array(':regexp' => $regexp));
   $child_links = array();
   foreach ($links as $link) {
     $child_links[] = $link->alias;
