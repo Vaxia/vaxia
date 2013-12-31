@@ -637,6 +637,7 @@ function vaxia_form_user_profile_form_alter(&$form, &$form_state, $form_id) {
   $form['field_became_sh']['#access'] = FALSE;
   $form['field_took_eval_test']['#access'] = FALSE;
   $form['field_became_evaluator']['#access'] = FALSE;
+  $form['field_voting_record']['#access'] = FALSE;
 }
 
 /**
