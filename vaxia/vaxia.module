@@ -245,6 +245,21 @@ function _vaxia_ownership($node) {
   return drupal_get_form('_vaxia_change_ownership_form', $node);
 }
 
+/**
+ * Implements hook_node_access().
+ */
+function vaxia_node_access($node, $op, $account) {
+  if ($op == 'create' && user_is_anonymous()) {
+    return NODE_ACCESS_DENY;
+  }
+  if ($op == 'update' && user_is_anonymous()) {
+    return NODE_ACCESS_DENY;
+  }
+  if ($op == 'delete' && user_is_anonymous()) {
+    return NODE_ACCESS_DENY;
+  }
+}
+
 /*
  * Implements hook_node_view().
  */
