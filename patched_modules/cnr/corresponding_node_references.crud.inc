@@ -251,7 +251,6 @@ function corresponding_node_references_delete($home_node, $home_field, $away_nod
 function _corresponding_node_references_update(&$node) {
   field_attach_presave('node', $node);
   field_attach_update('node', $node);
-  // EDIT BY DEV https://drupal.org/node/1399906#comment-7532867
   // Flush Entity Cache record.
   if (module_exists('entitycache')) {
     cache_clear_all($node->nid, 'cache_entity_node');
