@@ -767,8 +767,8 @@ function vaxia_form_alter(&$form, &$form_state, $form_id) {
     // Lockout.
     global $user;
     $this_user = user_load($user->uid);
-    $became_voter = isset($this_user->field_became_voter[$this_user->lang][0]['value'])
-      ? $this_user->field_became_voter[$this_user->lang][0]['value'] : strtotime('1/1/3000');
+    $lang = $this_user->language;
+    $became_voter = isset($this_user->field_became_voter[$lang][0]['value']) ? $this_user->field_became_voter[$lang][0]['value'] : strtotime('1/1/3000');
     $webform_created = isset($form['#node']->created) ? $form['#node']->created : strtotime('now');
     if ($webform_created < $became_voter) {
       drupal_set_message('You gained voting privileges on this site after this webform was created. You are not eligible to vote on this issue.', 'warning');
