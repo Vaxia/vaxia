@@ -759,7 +759,21 @@ function vaxia_form_alter(&$form, &$form_state, $form_id) {
     $new_refresh = $form['actions']['refresh_chat'];
     $new_refresh['#weight'] = -11;
     array_unshift($form, $new_refresh);
-  }
+  } // End alter for comment forms.
+  
+  // If we're viewing a webform.
+  // Why hook_form_alter and not hook_form_FORM_ID_alter? Because webform's form id varies: webform_client_form_NID.
+  if (strstr($form_id, 'webform_client_form') !== FALSE) {
+    // Lockout.
+    global $user;
+    $became_voter = isset($user->field_became_voter[$user->lang][0]['value']) ? $user->field_became_voter[$user->lang][0]['value'] : strtotime('1/1/3000');
+    $webform_created = isset($form['#node']->created) ? $form['#node']->created : strtotime('now');
+    if ($webform_created < $became_voter) {
+      drupal_set_message('You gained voting privlidges on this site after this webform was created. You are not eligable to vote on this issue.', 'warning');
+      $form['#disabled'] = TRUE;
+    }
+  } // End alter of webform.
+
   return $form;
 }
 
