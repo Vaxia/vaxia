@@ -263,7 +263,7 @@ function _vaxia_archives_search($month = 'any', $day = 'any', $year = 'any', $ty
   // Is the date set? Check that set path instead of all.
   $root = variable_get('vaxia_archives_flat_file_path', '');
 
-  // Set the path if thos values were selected.
+  // Set the path if those values were selected.
   $path = '';
   if (!empty($year) && $year != 'any') {
     $path = $path . '/' . $year; // Since only the archives are org by year.
@@ -287,18 +287,20 @@ function _vaxia_archives_search($month = 'any', $day = 'any', $year = 'any', $ty
   // Check location name in file and content
   $found = array();
   // First get the contents of folders on the path matching .html.
-  $this_found = array();
-  $output = '';
-  $command = 'find -L ' . DRUPAL_ROOT . '/' . $root . '/' . $path . ' -name "*.html"';
-  exec($command, $output);
-  foreach ($output as $found_file) {
-    $this_found[] = $found_file;
+  if (!empty($year) && $year != 'any') {
+    $this_found = array();
+    $output = '';
+    $command = 'find -L ' . DRUPAL_ROOT . '/' . $root . $path . ' -name "*.html"';
+    exec($command, $output);
+    foreach ($output as $found_file) {
+	  $this_found[] = $found_file;
+    }
+    foreach ($this_found as $index => $found_path) {
+	  $length = drupal_strlen(DRUPAL_ROOT) + drupal_strlen($root) + 2;
+	  $this_found[$index] = drupal_substr($found_path, $length);
+    }
+    $found = empty($found) ? $this_found : array_intersect($found, $this_found);
   }
-  foreach ($this_found as $index => $found_path) {
-    $length = drupal_strlen(DRUPAL_ROOT) + drupal_strlen($root) + 2;
-    $this_found[$index] = drupal_substr($found_path, $length);
-  }
-  $found = empty($found) ? $this_found : array_intersect($found, $this_found);
 
   // Check for location info.
   if (!empty($location) && $location != 'any') {
@@ -334,7 +336,7 @@ function _vaxia_archives_search($month = 'any', $day = 'any', $year = 'any', $ty
   if (!empty($text)) {
     $this_found = array();
     $output = '';
-    $command = 'grep -R -i -c -m 1 --exclude=' . DRUPAL_ROOT . '/' . $root . '/d "' . $text . '" ' . DRUPAL_ROOT . '/' . $root . '/' . $path;
+    $command = 'grep -R -i -c -m 1 --exclude=' . DRUPAL_ROOT . '/' . $root . '/d "' . $text . '" ' . DRUPAL_ROOT . '/' . $root cd .. $path;
     exec($command, $output);
     foreach ($output as $found_file) {
       $found_file_parts = explode(':', $found_file);
