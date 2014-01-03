@@ -334,11 +334,13 @@ function _vaxia_archives_search($month = 'any', $day = 'any', $year = 'any', $ty
   if (!empty($text)) {
     $this_found = array();
     $output = '';
-    $command = 'grep -R -i "' . $text . '" ' . DRUPAL_ROOT . '/' . $root . '/' . $path;
+    $command = 'grep -R -i -c -m 1 --exclude=' . DRUPAL_ROOT . '/' . $root . '/d "' . $text . '" ' . DRUPAL_ROOT . '/' . $root . '/' . $path;
     exec($command, $output);
     foreach ($output as $found_file) {
       $found_file_parts = explode(':', $found_file);
-      $this_found[] = $found_file_parts[0];
+      if ($found_file_parts[1] > 0) {
+        $this_found[] = $found_file_parts[0];
+      }
     }
     foreach ($this_found as $index => $found_path) {
       $length = drupal_strlen(DRUPAL_ROOT) + drupal_strlen($root) + 2;
