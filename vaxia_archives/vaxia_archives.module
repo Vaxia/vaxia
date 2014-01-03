@@ -84,7 +84,7 @@ function vaxia_archives_form($form, &$form_state) {
       '02' => 'Feb',
       '03' => 'Mar',
       '04' => 'Apr',
-      '05' => 'Map',
+      '05' => 'May',
       '06' => 'Jun',
       '07' => 'Jul',
       '08' => 'Aug',
@@ -264,9 +264,9 @@ function _vaxia_archives_search($month = 'any', $day = 'any', $year = 'any', $ty
   $root = variable_get('vaxia_archives_flat_file_path', '');
 
   // Set the path if thos values were selected.
-  $path = $root;
+  $path = '';
   if (!empty($year) && $year != 'any') {
-    $path = $root . '/' . $year; // Since only the archives are org by year.
+    $path = $path . '/' . $year; // Since only the archives are org by year.
   }
   if (!empty($year) && $year != 'any' && !empty($month) && $month != 'any') {
     $path = $path . '/' . $month ;
@@ -284,26 +284,21 @@ function _vaxia_archives_search($month = 'any', $day = 'any', $year = 'any', $ty
   $player = trim($player);
   $text = trim(addslashes(strip_tags($text)));
 
-  // Start from the root.
-  $root = variable_get('vaxia_archives_flat_file_path', '');
-
   // Check location name in file and content
   $found = array();
-  // If date was the only thing set, first get the contents of that folder
-  if (!empty($year) && $year != 'any') {
-    $this_found = array();
-    $output = '';
-    $command = 'find -L ' . DRUPAL_ROOT . '/' . $path;
-    exec($command, $output);
-    foreach ($output as $found_file) {
-      $this_found[] = $found_file;
-    }
-    foreach ($this_found as $index => $found_path) {
-      $length = drupal_strlen(DRUPAL_ROOT) + drupal_strlen($root) + 2;
-      $this_found[$index] = drupal_substr($found_path, $length);
-    }
-    $found = empty($found) ? $this_found : array_intersect($found, $this_found);
+  // First get the contents of folders on the path matching .html.
+  $this_found = array();
+  $output = '';
+  $command = 'find -L ' . DRUPAL_ROOT . '/' . $root . '/' . $path . ' -name "*.html"';
+  exec($command, $output);
+  foreach ($output as $found_file) {
+    $this_found[] = $found_file;
   }
+  foreach ($this_found as $index => $found_path) {
+    $length = drupal_strlen(DRUPAL_ROOT) + drupal_strlen($root) + 2;
+    $this_found[$index] = drupal_substr($found_path, $length);
+  }
+  $found = empty($found) ? $this_found : array_intersect($found, $this_found);
 
   // Check for location info.
   if (!empty($location) && $location != 'any') {
@@ -339,7 +334,7 @@ function _vaxia_archives_search($month = 'any', $day = 'any', $year = 'any', $ty
   if (!empty($text)) {
     $this_found = array();
     $output = '';
-    $command = 'grep -R -i "' . $text . '" ' . DRUPAL_ROOT . '/' . $path;
+    $command = 'grep -R -i "' . $text . '" ' . DRUPAL_ROOT . '/' . $root . '/' . $path;
     exec($command, $output);
     foreach ($output as $found_file) {
       $found_file_parts = explode(':', $found_file);
