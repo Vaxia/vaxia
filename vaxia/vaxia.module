@@ -250,7 +250,7 @@ function _vaxia_ownership($node) {
  */
 function vaxia_entity_info_alter(&$entity_info) {
   $entity_info['node']['view modes']['artwork'] = array(
-    'label' => t('vaxia just image'),
+    'label' => t('Vaxia - Just the image'),
     'custom settings' => TRUE,
   );
 }
