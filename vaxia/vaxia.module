@@ -245,6 +245,16 @@ function _vaxia_ownership($node) {
   return drupal_get_form('_vaxia_change_ownership_form', $node);
 }
 
+/**
+ * Implements hook_entity_info_alter().
+ */
+function vaxia_entity_info_alter(&$entity_info) {
+  $entity_info['node']['view modes']['artwork'] = array(
+    'label' => t('vaxia just image'),
+    'custom settings' => TRUE,
+  );
+}
+
 /*
  * Implements hook_node_view().
  */
