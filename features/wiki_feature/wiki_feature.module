@@ -102,13 +102,23 @@ function theme_wiki_feature_links($vars) {
   $links = $vars['links'];
   $themed_links = array();
   foreach ($links as $i => $link) {
-    $link = menu_get_item(drupal_get_normal_path($link));
-    if (!empty($link['title'])) {
-      $short_title = explode('/', $link['title']);
-      if (is_array($short_title)) {
-        $short_title = array_pop($short_title);
+    $link = drupal_get_normal_path($link);
+    $node = array();
+    if (strpos($link, 'node/')  !== FALSE) {
+      $node_id = substr($link, 5);
+      if (is_numeric($node_id)) {
+        $node = node_load($node_id);
       }
-      $themed_links[] = l($short_title, $link['href']);
+    }
+    if (strpos($link, 'node/') === FALSE || (!empty($node) && $node->status == 1)) { // Not a node (view link), or if a published node.
+      $link = menu_get_item($link);
+      if (!empty($link['title'])) {
+        $short_title = explode('/', $link['title']);
+        if (is_array($short_title)) {
+          $short_title = array_pop($short_title);
+        }
+        $themed_links[] = l($short_title, $link['href']);
+      }
     }
   }
   if (empty($themed_links)) {
