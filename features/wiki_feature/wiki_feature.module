@@ -110,7 +110,7 @@ function theme_wiki_feature_links($vars) {
         $node = node_load($node_id);
       }
     }
-    if (strpos($link, 'node/') === FALSE || (!empty($node) && $node->status == 1)) { // Not a node (view link), or if a published node.
+    if (strpos($link, 'node/') === FALSE || (!empty($node) && node_access('view', $node))) { // Not a node (view link), or if a published node.
       $link = menu_get_item($link);
       if (!empty($link['title'])) {
         $short_title = explode('/', $link['title']);
