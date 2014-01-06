@@ -56,13 +56,13 @@ function wiki_feature_block_info() {
  * Implements hook_freelinking_alter().
  */
 function wiki_feature_freelinking_alter(&$freelinkings) {
-  foreach ($freelinkings as $&$freelinking) {
+  //foreach ($freelinkings as $&$freelinking) {
     // Only change for the nodetitle default freelink module.
-    if () {
+  //  if (1) {
       // Override the value for callback.
-      
-    }
-  }
+      //
+  //  }
+  //}
 }
 
 /**
