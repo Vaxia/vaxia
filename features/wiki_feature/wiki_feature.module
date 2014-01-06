@@ -53,6 +53,174 @@ function wiki_feature_block_info() {
 }
 
 /**
+ * Implements hook_freelinking_alter().
+ */
+function wiki_feature_freelinking_alter(&$freelinkings) {
+  foreach ($freelinkings as $&$freelinking) {
+    // Only change for the nodetitle default freelink module.
+    if () {
+      // Override the value for callback.
+      
+    }
+  }
+}
+
+/**
+ * Replacement callback for nodetitle plugin
+ */
+function wiki_feature_freelinking_nodetitle_callback($target, $plugin) {
+  $node = wiki_feature_freelinking_nodetitle_nid_from_title($target); // WIKI FEARTURE: This is where the big change is. Call diff function.
+  // If no node was found, identify proceed with configured failover
+  if (!$node) {
+    return _freelinking_nodetitle_failure($target);
+  }
+  // Construct values for link.
+  $title = $target['text'] ? $target['text'] : $node->title;
+  if (!$target['tooltip']) {
+    $target['tooltip'] = freelinking_internal_tooltip('node', $node->nid);
+  }
+  // Return link structure.
+  return array($title, 'node/' . $node->nid, array(
+      'attributes' => array('title' => $target['tooltip']),
+      'language' => $node->language,
+  ));
+}
+
+/**
+ * Grab the nid associated with the title.
+ * Attempt some degree of language sensibility
+ */
+function wiki_feature_freelinking_nodetitle_nid_from_title(&$target) {
+  $title = $target['dest'];
+  // Get any content type restriction.
+  if (isset($target['type'])) {
+    $type = check_plain($target['type']);
+  }
+  else {
+    $type = variable_get('freelinking_nodetitle_searchcontenttype', 'none');
+  }
+  $sql = "SELECT title, nid, language FROM {node} WHERE title = :title"; 
+  $params = array(':title' => $title);
+  if ($type != 'none') {
+    $sql .= " AND type = :type";
+    $params[':type'] = $type;
+  }
+  $result = db_query($sql, $params);
+  $set = array();
+  foreach ($result as $record) {
+    $set[] = $record;
+  }
+  // WIKI FEARTURE: This is where the big change is. Allow partial match on title IFF not found on full match.
+  if (empty($set)) {
+    $sql = "SELECT title, nid, language FROM {node} WHERE title LIKE '%:title"; 
+    $params = array(':title' => $title);
+    if ($type != 'none') {
+      $sql .= " AND type = :type";
+      $params[':type'] = $type;
+    }
+    $result = db_query($sql, $params);
+    $set = array();
+    foreach ($result as $record) {
+      $set[] = $record;
+    }
+  }
+  // And if nothing was found even then - only then return NULL.
+  if (empty($set)) {
+    return NULL;
+  }
+  // Language restriction. Includes next-best-language logic.
+  $language = array(language_default('language'), '');
+  if (module_exists('locale')) {
+    if (isset($target['language'])) {
+      array_unshift($language, $target['language']);
+    }
+    foreach ($language as $priority) {
+      foreach ($set as $node) {
+        if ($priority == $node->language) {
+          $retn = $node;
+          break 2;
+        }
+      }
+    }
+  }
+  else {
+    $retn = $set[0];
+  }
+  return $retn;
+}
+
+/**
+ * Implements hook_freelink_alter().
+ */
+function wiki_feature_freelink_alter(&$link, $target, $plugin_name, $plugin) {
+  // Trim title down to the last leaf for displaying the link.
+  $title = $link[0];
+  $title = explode('/', $title);
+  if (is_array($title)) {
+    $title = array_pop($title);
+  }
+  // And set it.
+  $link[0] = $title;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function wiki_feature_block_view($delta = '') {
+  // If we're not on a wiki page, skip it.
+  $node = menu_get_object();
+  if (!isset($node->type) || $node->type != 'wiki_page') {
+    return array();
+  }
+  $block = array();
+  $path = drupal_get_path_alias();
+  // Per delta, select an output.
+  switch ($delta) {
+    case 'wiki_feature_parent_breadcrumb':
+      $links = _wiki_feature_get_parent_links($path);
+      $block['subject'] = t('Wiki Parent Breadcrumb');
+      $block['content'] = theme('wiki_feature_breadcrumb', array('links' => $links));
+    break;
+    case 'wiki_feature_parent_links':
+      $links = _wiki_feature_get_parent_links($path);
+      $block['subject'] = t('Wiki Parent Links');
+      $block['content'] = theme('wiki_feature_links', array('links' => $links));
+    break;
+    case 'wiki_feature_sibling_links':
+      $links = _wiki_feature_get_sibling_links($path);
+      $block['subject'] = t('Wiki Sibling Links');
+      $block['content'] = theme('wiki_feature_links', array('links' => $links));
+    break;
+    case 'wiki_feature_children_links':
+      $links = _wiki_feature_get_child_links($path);
+      $block['subject'] = t('Wiki Child Links');
+      $block['content'] = theme('wiki_feature_links', array('links' => $links));
+    break;
+    default:
+      /// Do nothing.
+    break;
+  }
+  return $block;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function wiki_feature_form_wiki_page_node_form_alter(&$form, &$form_state) {
+  // Allow permissioned user to edit the wiki.
+  if (user_access('edit locked wiki')) {
+  	return;
+  }
+  // Else check for workflow state.
+  if (!empty($form['#node']->type) && $form['#node']->type == 'wiki_page' && _wiki_feature_locked($form['#node'])) {
+    drupal_set_message(t('This wiki article is locked. You are not allowed to edit it.'));
+    foreach (element_children($form) as $child) {
+	    unset($form[$child]);
+    }
+  }
+}
+
+/**
  * Implements hook_theme().
  */
 function wiki_feature_theme($existing, $type, $theme, $path) {
@@ -129,77 +297,6 @@ function theme_wiki_feature_links($vars) {
     '<li class="menu__item is-leaf leaf">' . implode('</li><li class="menu__item is-leaf leaf">', $themed_links) . '</li>' . 
     '</ul>' .
     '</div>';
-}
-
-/**
- * Implements hook_block_view().
- */
-function wiki_feature_block_view($delta = '') {
-  // If we're not on a wiki page, skip it.
-  $node = menu_get_object();
-  if (!isset($node->type) || $node->type != 'wiki_page') {
-    return array();
-  }
-  $block = array();
-  $path = drupal_get_path_alias();
-  // Per delta, select an output.
-  switch ($delta) {
-    case 'wiki_feature_parent_breadcrumb':
-      $links = _wiki_feature_get_parent_links($path);
-      $block['subject'] = t('Wiki Parent Breadcrumb');
-      $block['content'] = theme('wiki_feature_breadcrumb', array('links' => $links));
-    break;
-    case 'wiki_feature_parent_links':
-      $links = _wiki_feature_get_parent_links($path);
-      $block['subject'] = t('Wiki Parent Links');
-      $block['content'] = theme('wiki_feature_links', array('links' => $links));
-    break;
-    case 'wiki_feature_sibling_links':
-      $links = _wiki_feature_get_sibling_links($path);
-      $block['subject'] = t('Wiki Sibling Links');
-      $block['content'] = theme('wiki_feature_links', array('links' => $links));
-    break;
-    case 'wiki_feature_children_links':
-      $links = _wiki_feature_get_child_links($path);
-      $block['subject'] = t('Wiki Child Links');
-      $block['content'] = theme('wiki_feature_links', array('links' => $links));
-    break;
-    default:
-      /// Do nothing.
-    break;
-  }
-  return $block;
-}
-
-/**
- * Implements hook_form_FORM_ID_alter().
- */
-function wiki_feature_form_wiki_page_node_form_alter(&$form, &$form_state) {
-  // Allow permissioned user to edit the wiki.
-  if (user_access('edit locked wiki')) {
-  	return;
-  }
-  // Else check for workflow state.
-  if (!empty($form['#node']->type) && $form['#node']->type == 'wiki_page' && _wiki_feature_locked($form['#node'])) {
-    drupal_set_message(t('This wiki article is locked. You are not allowed to edit it.'));
-    foreach (element_children($form) as $child) {
-	    unset($form[$child]);
-    }
-  }
-}
-
-/**
- * Implements hook_freelinking().
- */
-function wiki_feature_freelink_alter(&$link, $target, $plugin_name, $plugin) {
-  // Trim title down to the last leaf.
-  $title = $link[0];
-  $title = explode('/', $title);
-  if (is_array($title)) {
-    $title = array_pop($title);
-  }
-  // And set it.
-  $link[0] = $title;
 }
 
 /**
