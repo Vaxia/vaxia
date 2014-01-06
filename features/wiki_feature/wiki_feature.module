@@ -55,14 +55,14 @@ function wiki_feature_block_info() {
 /**
  * Implements hook_freelinking_alter().
  */
-function wiki_feature_freelinking_alter(&$freelinkings) {
-  //foreach ($freelinkings as $&$freelinking) {
+function wiki_feature_freelinking_alter(&$freelinking) {
+  foreach ($freelinking as $plugin => $details) {
     // Only change for the nodetitle default freelink module.
-  //  if (1) {
+    if ($plugin == 'nodetitle') {
       // Override the value for callback.
-      //
-  //  }
-  //}
+      $freelinking[$plugin]['callback'] = 'wiki_feature_freelinking_nodetitle_callback';
+    }
+  }
 }
 
 /**
