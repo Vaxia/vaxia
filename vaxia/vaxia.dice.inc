@@ -316,7 +316,7 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
               if ($small_label == 'ref') {
                 $small_label = 'fin';
               }
-              $mod_note .= ' + ' . $small_label . ' (' . $stat . $perc_message)';
+              $mod_note .= ' + ' . $small_label . ' (' . $stat . $perc_message . ')';
               $mod += $stat;
 
               // Add item mods for stats.
