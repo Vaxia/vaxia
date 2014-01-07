@@ -309,7 +309,7 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
               $perc_note = '';
               if (!empty($item_mods[$this_stat]['percentage'])) {
               //  $item_mod += (($item_mods[$this_stat]['percentage']/100) * $stat); // Add the percentage to the stat.
-                $perc_note = ' ' . t('add :perc% PP', array(':perc' => $item_mods[$this_stat]['percentage']));
+                $perc_note = ' ' . t('add @perc% PP', array('@perc' => $item_mods[$this_stat]['percentage']));
               }
               // Set the stat message and label.
               $small_label = substr($this_stat, 0, 3);
