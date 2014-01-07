@@ -307,7 +307,7 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
               }
               // Check for percentages from an item.
               if (!empty($item_mods[$this_stat]['percentage'])) {
-                $item_mods[$this_stat]['modify'] = '+' . $item_mods[$this_stat]['percentage'] . '% PP');
+                $item_mods[$this_stat]['modify'] = '+' . $item_mods[$this_stat]['percentage'] . '% PP';
               }
               // Set the stat message and label.
               $small_label = substr($this_stat, 0, 3);
@@ -336,7 +336,7 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
               }
               // Check for percentages from an item.
               if (!empty($item_mods['skill']['percentage'])) {
-                $item_mods['skill']['modify'] = '+' . $item_mods['skill']['percentage'] . '% PP');
+                $item_mods['skill']['modify'] = '+' . $item_mods['skill']['percentage'] . '% PP';
               }
               // Set the stat message and label.
               $small_label = substr($this_stat, 0, 3);
