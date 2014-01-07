@@ -161,7 +161,7 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
               if ($small_label == 'ref') {
                 $small_label = 'fin';
               }
-              $modifies_label[] = $small_label . ':' . number_format($value) . '%';
+              $modifies_label[] = $small_label . ':' . number_format($value) . '% PP';
             }
             // And set the labels for overlap mods.
             foreach ($overlaps as $label => $value) {
@@ -306,15 +306,17 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
                 $stat = !empty($character->{$roll['stat']}[$lang][0]['value']) ? $character->{$roll['stat']}[$lang][0]['value'] : 0;
               }
               // Check for percentages from an item.
+              $perc_message = '';
               if (!empty($item_mods[$this_stat]['percentage'])) {
-                $item_mod += (($item_mods[$this_stat]['percentage']/100) * $stat); // Add the percentage to the stat.
+              //  $item_mod += (($item_mods[$this_stat]['percentage']/100) * $stat); // Add the percentage to the stat.
+                $perc_message = ' ' . t('add :perc% PP gen', array(':perc' => $item_mods[$this_stat]['percentage']));
               }
               // Set the stat message and label.
               $small_label = substr($this_stat, 0, 3);
               if ($small_label == 'ref') {
                 $small_label = 'fin';
               }
-              $mod_note .= ' + ' . $small_label . ' (' . $stat . ')';
+              $mod_note .= ' + ' . $small_label . ' (' . $stat . $perc_message)';
               $mod += $stat;
 
               // Add item mods for stats.
