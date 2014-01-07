@@ -34,7 +34,7 @@ Drupal.behaviors.diceHelper = {
   function quickPick(type) {
     $('#edit-vaxia-rolls-dice-0-number').val(1);
     $('#edit-vaxia-rolls-dice-0-size').val(100);
-    if (type=='melee' || 'ranged') {
+    if (type=='attack') {
       $('#edit-vaxia-rolls-dice-1-number').val(1);
       $('#edit-vaxia-rolls-dice-1-size').val(100);
       $('#edit-vaxia-rolls-dice-2-number').val(1);
@@ -127,8 +127,7 @@ Drupal.behaviors.diceHelper = {
       );
       $('#vaxia-dice-roller').before('' +
         '<div id="dice-helper" style="">' +
-        '<input type="button" value="Melee" class="dice-helper-button">' +
-        '<input type="button" value="Ranged" class="dice-helper-button">' +
+        '<input type="button" value="Attack" class="dice-helper-button">' +
         '<input type="button" value="Magic" class="dice-helper-button">' +
         '<input type="button" value="Tech" class="dice-helper-button">' +
         '<input type="button" value="Aware" class="dice-helper-button">' +
@@ -138,7 +137,7 @@ Drupal.behaviors.diceHelper = {
       // Check the cookie against the helper value to set pic and color.
       var narr = getCookie('vaxia_dice_helper_narrative');
       if (typeof narr !== 'undefined' && narr.length > 0 && narr == 'true') {
-        $('#edit-field-comment-narrative-und').attr('checked','checked');;
+        $('#edit-field-comment-narrative-und').attr('checked','checked');
       }
       // Check the dice helper on load.
       setDiceHelper();
