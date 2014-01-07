@@ -306,17 +306,17 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
                 $stat = !empty($character->{$roll['stat']}[$lang][0]['value']) ? $character->{$roll['stat']}[$lang][0]['value'] : 0;
               }
               // Check for percentages from an item.
-              $perc_message = '';
+              $perc_note = '';
               if (!empty($item_mods[$this_stat]['percentage'])) {
               //  $item_mod += (($item_mods[$this_stat]['percentage']/100) * $stat); // Add the percentage to the stat.
-                $perc_message = ' ' . t('add :perc% PP gen', array(':perc' => $item_mods[$this_stat]['percentage']));
+                $perc_note = ' ' . t('add :perc% PP', array(':perc' => $item_mods[$this_stat]['percentage']));
               }
               // Set the stat message and label.
               $small_label = substr($this_stat, 0, 3);
               if ($small_label == 'ref') {
                 $small_label = 'fin';
               }
-              $mod_note .= ' + ' . $small_label . ' (' . $stat . $perc_message . ')';
+              $mod_note .= ' + ' . $small_label . ' (' . $stat . ')';
               $mod += $stat;
 
               // Add item mods for stats.
@@ -362,7 +362,7 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
               $mod += $item_mod;
             }
             if (!empty($stat_note) || !empty($skill_note)) {
-              $item_notes = $stat_note . ' ' . $skill_note;
+              $item_notes = $stat_note . ' ' . $skill_note . ' ' . $perc_note;
               $item_notes = trim($item_notes);
               if (empty($item_notes)) {
                 $item_notes = 'n/a';
