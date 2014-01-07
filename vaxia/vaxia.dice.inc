@@ -161,7 +161,7 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
               if ($small_label == 'ref') {
                 $small_label = 'fin';
               }
-              $modifies_label[] = 'PP :' . number_format($value) . '% based on ' . $small_label;
+              $modifies_label[] = 'PP: +' . number_format($value) . '% based on ' . $small_label;
             }
             // And set the labels for overlap mods.
             foreach ($overlaps as $label => $value) {
