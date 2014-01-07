@@ -500,7 +500,7 @@ function _vaxia_dice_roller_form_submit_item_mods($character, $items) {
             $item_mods[$stat_name]['percentage'] = $percentage;
             $stat_bonus = ($percentage/100) * $stat;
             $stat_bonus = number_format($stat_bonus, 2);
-            $item_mods[$stat_name]['notes']  = ' + ' . $item->title . ' (' . $percentage . '% : ' . $stat_bonus . ' ' . $small_label .')';
+            $item_mods[$stat_name]['notes']  = ' + ' . $item->title . ' (add ' . $percentage . '% PP based on ' . $small_label .')';
           }
         }
 
