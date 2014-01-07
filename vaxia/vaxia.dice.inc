@@ -361,7 +361,7 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
             if (!empty($item_mod)) {
               $mod += $item_mod;
             }
-            if (!empty($stat_note) || !empty($skill_note)) {
+            if (!empty($stat_note) || !empty($skill_note) || !empty($perc_note)) {
               $item_notes = $stat_note . ' ' . $skill_note . ' ' . $perc_note;
               $item_notes = trim($item_notes);
               if (empty($item_notes)) {
