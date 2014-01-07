@@ -161,7 +161,7 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
               if ($small_label == 'ref') {
                 $small_label = 'fin';
               }
-              $modifies_label[] = $small_label . ':' . number_format($value) . '% PP';
+              $modifies_label[] = 'PP :' . number_format($value) . '% based on ' . $small_label;
             }
             // And set the labels for overlap mods.
             foreach ($overlaps as $label => $value) {
@@ -306,11 +306,9 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
                 $stat = !empty($character->{$roll['stat']}[$lang][0]['value']) ? $character->{$roll['stat']}[$lang][0]['value'] : 0;
               }
               // Check for percentages from an item.
-              $perc_note = '';
-              if (!empty($item_mods[$this_stat]['percentage'])) {
+              //if (!empty($item_mods[$this_stat]['percentage'])) {
               //  $item_mod += (($item_mods[$this_stat]['percentage']/100) * $stat); // Add the percentage to the stat.
-                $perc_note = ' ' . t('add @perc% PP', array('@perc' => $item_mods[$this_stat]['percentage']));
-              }
+              //}
               // Set the stat message and label.
               $small_label = substr($this_stat, 0, 3);
               if ($small_label == 'ref') {
@@ -337,9 +335,9 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
                 $skill = !empty($skill_details->field_skill_value[$lang][0]['value']) ? $skill_details->field_skill_value[$lang][0]['value'] : 0;
               }
               // Check for percentages from an item.
-              if (!empty($item_mods['skill']['percentage'])) {
-                $item_mod += (($item_mods['skill']['percentage']/100) * $skill); // Add the percentage to the stat.
-              }
+              //if (!empty($item_mods['skill']['percentage'])) {
+              //  $item_mod += (($item_mods['skill']['percentage']/100) * $skill); // Add the percentage to the stat.
+              //}
               // Set the stat message and label.
               $small_label = substr($this_stat, 0, 3);
               if ($small_label == 'ref') {
@@ -361,8 +359,8 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
             if (!empty($item_mod)) {
               $mod += $item_mod;
             }
-            if (!empty($stat_note) || !empty($skill_note) || !empty($perc_note)) {
-              $item_notes = $stat_note . ' ' . $skill_note . ' ' . $perc_note;
+            if (!empty($stat_note) || !empty($skill_note)) {
+              $item_notes = $stat_note . ' ' . $skill_note;
               $item_notes = trim($item_notes);
               if (empty($item_notes)) {
                 $item_notes = 'n/a';
@@ -495,7 +493,7 @@ function _vaxia_dice_roller_form_submit_item_mods($character, $items) {
               $item_mods[$stat_name]['percentage'] = $percentage;
               $stat_bonus = ($percentage/100) * $stat;
               $stat_bonus = number_format($stat_bonus, 2);
-              $item_mods[$stat_name]['notes']  = ' + ' . $item->title . ' (' . $percentage . '% : ' . $stat_bonus . ' ' . $small_label .')';
+              $item_mods[$stat_name]['notes']  = ' + ' . $item->title . ' (add ' . $percentage . '% PP based on ' . $small_label .')';
             }
           }
           else {
