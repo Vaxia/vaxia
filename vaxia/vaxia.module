@@ -188,7 +188,7 @@ function _vaxia_cron_dblog_cleanup() {
     );
     // Cleanup.
     foreach ($severity_levels as $severity_level) {
-      db_delete('node')
+      db_delete('watchdog')
         ->condition('severity', $severity_level)
         ->execute();
     }
