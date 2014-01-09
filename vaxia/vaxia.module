@@ -166,6 +166,39 @@ function vaxia_cron_queue_info() {
  * Implements hook_cron().
  */
 function vaxia_cron() {
+  _vaxia_cron_silver();
+  _vaxia_cron_dblog_cleanup();
+}
+
+/**
+ * Cron job for cleaning up useless dblog entries.
+ */
+function _vaxia_cron_dblog_cleanup() {
+  if (function_exists('dblog_watchdog')) {
+    // Severity levels to remove.
+    $severity_levels = array(
+//    WATCHDOG_EMERGENCY,
+//    WATCHDOG_ALERT,
+//    WATCHDOG_CRITICAL,
+//    WATCHDOG_ERROR,
+//    WATCHDOG_WARNING,
+      WATCHDOG_NOTICE,
+      WATCHDOG_INFO,
+      WATCHDOG_DEBUG,
+    );
+    // Cleanup.
+    foreach ($severity_levels as $severity_level) {
+      db_delete('node')
+        ->condition('severity', $severity_level)
+        ->execute();
+    }
+  }
+}
+
+/**
+ * Cron job for silver handling.
+ */
+function _vaxia_cron_silver() {
   $last_run = variable_get('vaxia_character_sheet_cron', 0);
   $yesterday = strtotime('-1 day');
   if ($last_run < $yesterday) {
