@@ -47,12 +47,10 @@ function wiki_feature_menu() {
  */
 function _wiki_feature_autocomplete_room($string = '') {
   $matches = array();
-  $room_type = variable_get('item_helper_room_type', '');
-  if (!empty($string) && !empty($room_type)) {
+  if (!empty($string)) {
     $results = db_query('SELECT n.nid, n.title FROM {node} n ' .
-      'WHERE n.type LIKE :type ' .
-      'AND n.title LIKE :title',
-      array(':type' => $room_type, ':title' => '%' . $string . '%'));
+      'WHERE n.title LIKE :title',
+      array(':title' => '%' . $string . '%'));
     foreach ($results as $result) {
       $label = $result->title . ' [nid:' . $result->nid . ']';
       $matches[ check_plain($label) ] = check_plain($label);
@@ -390,8 +388,7 @@ function _wiki_feature_autocomplete_get_nid($room_selected) {
         $node = $this_node;
       }
     }
-    $room_type = variable_get('item_helper_room_type', '');
-    if (!empty($node) && $node->type == $room_type && $node->status == 1) {
+    if (!empty($node) && $node->status == 1) {
       return $node->nid;
     }
   }
