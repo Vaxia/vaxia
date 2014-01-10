@@ -238,17 +238,23 @@ function wiki_feature_block_view($delta = '') {
     case 'wiki_feature_parent_links':
       $links = _wiki_feature_get_parent_links($path);
       $block['subject'] = t('Wiki Parent Links');
-      $block['content'] = theme('wiki_feature_links', array('links' => $links));
+      if (!empty($links)) {
+        $block['content'] = theme('wiki_feature_links', array('links' => $links));
+      }
     break;
     case 'wiki_feature_sibling_links':
       $links = _wiki_feature_get_sibling_links($path);
       $block['subject'] = t('Wiki Sibling Links');
-      $block['content'] = theme('wiki_feature_links', array('links' => $links));
+      if (!empty($links)) {
+        $block['content'] = theme('wiki_feature_links', array('links' => $links));
+      }
     break;
     case 'wiki_feature_children_links':
       $links = _wiki_feature_get_child_links($path);
       $block['subject'] = t('Wiki Child Links');
-      $block['content'] = theme('wiki_feature_links', array('links' => $links));
+      if (!empty($links)) {
+        $block['content'] = theme('wiki_feature_links', array('links' => $links));
+      }
     break;
     default:
       /// Do nothing.
