@@ -299,8 +299,10 @@ function theme_wiki_feature_breadcrumb($vars) {
   $root = variable_get('wiki_feature_root', '');
   if (!empty($root)) {
     $root = _wiki_feature_autocomplete_get_nid($root);
-    // Add root at front of stack.
-    array_unshift($vars['links'], 'node/' . $root);
+    if ($vars['links'][0] != $root) {
+      // Add root at front of stack.
+      array_unshift($vars['links'], 'node/' . $root);
+    }
   }
   // Process all links.
   $themed_links = array();
