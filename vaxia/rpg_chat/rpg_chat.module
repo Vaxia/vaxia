@@ -199,13 +199,6 @@ function rpg_chat_form_comment_form_alter(&$form, &$form_state, $form_id) {
       'effect' => 'fade',
       'event' => 'click', // To allow our refresh script to hit it.
     );
-    // When clicked refresh the comment display in addition to a submit.
-    //$form['actions']['submit']['#ajax'] = array(
-    //  'callback' => '_rpg_chat_refresh_js',
-    //  'wrapper' => 'rpg-chat-wrapper',
-    //  'method' => 'replace',
-    //  'effect' => 'fade',
-    //);
     // Refresh this user's last login to this room.
     global $user;
     _rpg_chat_set_room_users($form['#node']->nid, $user->uid);
