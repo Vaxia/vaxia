@@ -17,9 +17,6 @@ Drupal.behaviors.rpgChat = {
     if (paused == false) {
       $("#edit-refresh-chat").triggerHandler("click");
     }
-    else {
-      timer = setTimeout(refreshChat, refreshRate * 1000);
-    }
   }
 
   // Once, on page load, add the pause button to the interface.
@@ -41,6 +38,7 @@ Drupal.behaviors.rpgChat = {
     else {
       paused = false;
       $('.toggle-rpg-chat-pause').css('font-weight', '').css('color', 'graytext');
+      $("#edit-refresh-chat").triggerHandler("click");
     }
     // Otherwise do nothing.
     return false;
