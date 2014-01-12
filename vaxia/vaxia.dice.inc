@@ -346,9 +346,9 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
             // If skill selected, grab the skill for mods.
             if (!empty($roll['skill']) && $roll['skill'] != -1) {
               // Pull skill value.
-              if (strpos($roll['stat'], 'field_npc_skill_') !== FALSE) {
+              if (strpos($roll['skill'], 'field_npc_skill_') !== FALSE) {
                 // An NPC roll pull from skill directly.
-                $skill = substr($roll['stat'], 16); // Trim "field_npc_skill_" off the top.
+                $skill = substr($roll['skill'], 16); // Trim "field_npc_skill_" off the top.
               }
               else {
                 // Pull from character sheet.
