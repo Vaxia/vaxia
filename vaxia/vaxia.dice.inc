@@ -346,9 +346,11 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
             // If skill selected, grab the skill for mods.
             if (!empty($roll['skill']) && $roll['skill'] != -1) {
               // Pull skill value.
-              if (strpos($roll['stat'], 'field_npc_skill_') !== FALSE) {
+              if (strpos($roll['skill'], 'field_npc_skill_') !== FALSE) {
                 // An NPC roll pull from skill directly.
-                $skill = substr($roll['stat'], 16); // Trim "field_npc_skill_" off the top.
+                $skill = substr($roll['skill'], 16); // Trim "field_npc_skill_" off the top.
+                $skill_name = 'npc skill';
+                $skill_desc = t('A placeholder for an NPC skill - for use by SH staff to roll quick rolls with.');
               }
               else {
                 // Pull from character sheet.
@@ -360,14 +362,14 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
                   $skill_details = field_collection_item_load($roll['skill']);
                   $skill = !empty($skill_details->field_skill_value[$lang][0]['value']) ? $skill_details->field_skill_value[$lang][0]['value'] : 0;
                 }
+                $skill_name = !empty($skill_details->field_skill_name[$lang][0]['value']) ? $skill_details->field_skill_name[$lang][0]['value'] : 'skill';
+                $skill_desc = !empty($skill_details->field_skill_desc[$lang][0]['value']) ? $skill_details->field_skill_desc[$lang][0]['value'] : '';
               }
               // Set the stat message and label.
               $small_label = substr($this_stat, 0, 3);
               if ($small_label == 'ref') {
                 $small_label = 'fin';
               }
-              $skill_name = !empty($skill_details->field_skill_name[$lang][0]['value']) ? $skill_details->field_skill_name[$lang][0]['value'] : 'skill';
-              $skill_desc = !empty($skill_details->field_skill_desc[$lang][0]['value']) ? $skill_details->field_skill_desc[$lang][0]['value'] : '';
               $mod_note .= ' +  <a title="' . $skill_desc . '" href="#">' . $skill_name . '</a> (' . $skill . ')';
               $mod += $skill;
 
