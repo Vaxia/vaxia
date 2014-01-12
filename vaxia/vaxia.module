@@ -31,6 +31,10 @@ function vaxia_permission() {
       'title' => t('transfer rxp'),
       'description' => t('Transfer RXP of your own sheets.'),
     ),
+    'use SH dice options' => array(
+      'title' => t('use SH dice options'),
+      'description' => t('Use SH dice options.'),
+    ),
     'transfer others sheets' => array(
       'title' => t('transfer others sheets'),
       'description' => t('Transfer the XP of others sheets.'),

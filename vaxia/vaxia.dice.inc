@@ -75,11 +75,24 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
         'field_charisma' => 'Charisma', 
         'field_appearance' => 'Appearance'
       );
+      // Add SH stats for listing. 25 to 70 as NPC max.
+      $SH_character = _vaxia_get_SH_characters($user->uid);
+      if (user_access('use SH dice options') && in_array($character->nid, array_keys($SH_character))) {
+        for ($i = 25; $i < 71; $i + 5) {
+          $stat['field_npc_stat_' . $i] = 'NPC: Stat @ ' . $i;
+        }
+      }
       $skills = array(-1 => '<none>');
       if (isset($character->field_skill[$character->language])) {
         foreach ($character->field_skill[$character->language] as $delta => $skill) {
           $this_skill = field_collection_item_load($skill['value']);
           $skills[$skill['value']] = $this_skill->field_skill_name[$character->language][0]['value'];  
+        }
+      }
+      // Add SH stats for listing. 25 to 70 as NPC max.
+      if (user_access('use SH dice options') && in_array($character->nid, array_keys($SH_character))) {
+        for ($i = 25; $i < 71; $i + 5) {
+          $stat['field_npc_skill_' . $i] = 'NPC: Skill @ ' . $i;
         }
       }
       $items = array(-1 => '<none>');
@@ -296,14 +309,24 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
 
             // If stat is selected, grab the basic stat AND/OR the overlap if it's been set.
             if (!empty($roll['stat']) && $roll['stat'] != -1) {
-              // Note which stat this is for.
-              $this_stat = substr($roll['stat'], 6); // Trim "field_" off the top.
-              // Check for overlap from an item.
-              if (!empty($item_mods[$this_stat]['overlap']) && !empty($item_mods[$this_stat]['overlap'])) {
-                $stat = $item_mods[$this_stat]['overlap'];
+              // Pull stat value.
+              $this_stat = '';
+              if (strpos($roll['stat'], 'field_npc_stat_') !== FALSE) {
+                // An NPC roll pull from stat directly.
+                $this_stat = 'npc';
+                $stat = substr($roll['stat'], 15); // Trim "field_npc_stat_" off the top.
               }
-              elseif (!empty($character)) {
-                $stat = !empty($character->{$roll['stat']}[$lang][0]['value']) ? $character->{$roll['stat']}[$lang][0]['value'] : 0;
+              else {
+                // Pull from character sheet.
+                // Note which stat this is for.
+                $this_stat = substr($roll['stat'], 6); // Trim "field_" off the top.
+                // Check for overlap from an item.
+                if (!empty($item_mods[$this_stat]['overlap']) && !empty($item_mods[$this_stat]['overlap'])) {
+                  $stat = $item_mods[$this_stat]['overlap'];
+                }
+                elseif (!empty($character)) {
+                  $stat = !empty($character->{$roll['stat']}[$lang][0]['value']) ? $character->{$roll['stat']}[$lang][0]['value'] : 0;
+                }
               }
               // Set the stat message and label.
               $small_label = substr($this_stat, 0, 3);
@@ -322,13 +345,21 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
 
             // If skill selected, grab the skill for mods.
             if (!empty($roll['skill']) && $roll['skill'] != -1) {
-              // Check for overlap from an item.
-              if (!empty($item_mods['skill']['overlap'])) {
-                $skill = $item_mods['skill']['overlap'];
+              // Pull skill value.
+              if (strpos($roll['stat'], 'field_npc_stat_') !== FALSE) {
+                // An NPC roll pull from skill directly.
+                $skill = substr($roll['stat'], 16); // Trim "field_npc_skill_" off the top.
               }
-              elseif (!empty($character)) {
-                $skill_details = field_collection_item_load($roll['skill']);
-                $skill = !empty($skill_details->field_skill_value[$lang][0]['value']) ? $skill_details->field_skill_value[$lang][0]['value'] : 0;
+              else {
+                // Pull from character sheet.
+                // Check for overlap from an item.
+                if (!empty($item_mods['skill']['overlap'])) {
+                  $skill = $item_mods['skill']['overlap'];
+                }
+                elseif (!empty($character)) {
+                  $skill_details = field_collection_item_load($roll['skill']);
+                  $skill = !empty($skill_details->field_skill_value[$lang][0]['value']) ? $skill_details->field_skill_value[$lang][0]['value'] : 0;
+                }
               }
               // Set the stat message and label.
               $small_label = substr($this_stat, 0, 3);
@@ -340,7 +371,7 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
               $mod_note .= ' +  <a title="' . $skill_desc . '" href="#">' . $skill_name . '</a> (' . $skill . ')';
               $mod += $skill;
 
-              // Add item mods for stats.
+              // Add item mods for skills.
               if (!empty($item_mods['skill']['modify'])) {
                 $item_mod += $item_mods['skill']['modify'];
               }
