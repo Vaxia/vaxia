@@ -77,7 +77,7 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
       );
       // Add SH stats for listing. 25 to 70 as NPC max.
       if (user_access('use SH dice options')) {
-        for ($i = 25; $i < 71; $i + 5) {
+        for ($i = 25; $i < 71; $i = $i + 5) {
           $stat['field_npc_stat_' . $i] = 'NPC: Stat @ ' . $i;
         }
       }
@@ -90,7 +90,7 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
       }
       // Add SH stats for listing. 25 to 70 as NPC max.
       if (user_access('use SH dice options')) {
-        for ($i = 25; $i < 71; $i + 5) {
+        for ($i = 25; $i < 71; $i = $i + 5) {
           $skills['field_npc_skill_' . $i] = 'NPC: Skill @ ' . $i;
         }
       }
