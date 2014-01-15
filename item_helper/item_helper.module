@@ -318,37 +318,25 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
     $diffs = array(
       '#type' => 'select',
       '#options' => array(
-        '5' => t('Ridiculously easy'),
-        '15' => t('Easy'),
-        '25' => t('Normal'),
-        '45' => t('Skilled'),
-        '65' => t('Mastery'),
-        '100' => t('Extremely Difficult'),
+        '5' => t('Ridiculously easy (5)'),
+        '15' => t('Easy (15)'),
+        '25' => t('Normal (25)'),
+        '45' => t('Skilled (45)'),
+        '65' => t('Mastery (65)'),
+        '100' => t('Extremely Difficult (100)'),
       ),
     );
-    if (user_access('set numerical diff')) {
-      $diffs = array(
-        '#type' => 'textfield',
-        '#size' => 4,
-      );
-    }
     // Create baseline diff display (if user vs SH).
     $rp_bons = array(
       '#type' => 'select',
       '#options' => array(
-        '0' => t('None'),
-        '5' => t('Average'),
-        '10' => t('Good'),
-        '15' => t('Excellent'),
-        '20' => t('Superior'),
+        '0' => t('None (0)'),
+        '5' => t('Average (5)'),
+        '10' => t('Good (10)'),
+        '15' => t('Excellent (15)'),
+        '20' => t('Superior (20)'),
       ),
     );
-    if (user_access('set numerical diff')) {
-      $rp_bons = array(
-        '#type' => 'textfield',
-        '#size' => 4,
-      );
-    }
     // Gather comments for display from various sources.
     $found_comments = array();
     // Check for comments still saved on the node.
@@ -460,10 +448,26 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
         '#default_value' => isset($item_comment->set_bonus) ? $item_comment->set_bonus : 0,
         '#size' => 4,
       );
-      $difficulty = $diffs;
-      $difficulty['#default_value'] = isset($item_comment->difficulty) ? $item_comment->difficulty : 45;
-      $rp_bonus = $rp_bons;
-      $rp_bonus['#default_value'] = isset($item_comment->rp_bonus) ? $item_comment->rp_bonus : 5;
+      $item_difficulty = isset($item_comment->difficulty) ? $item_comment->difficulty : 45;
+      $this_diff = $diffs;
+      if (user_access('set numerical diff') || !in_array($item_difficulty, array_keys($diffs['#options']))) {
+        $this_diff = array(
+        '#type' => 'textfield',
+        '#size' => 4,
+        );
+      }
+      $difficulty = $this_diff;
+      $difficulty['#default_value'] = $item_difficulty;
+      $item_rp_bonus = isset($item_comment->rp_bonus) ? $item_comment->rp_bonus : 5;
+      $this_rp_bons = $rp_bons;
+      if (user_access('set numerical diff') || !in_array($item_rp_bonus, array_keys($rp_bons['#options']))) {
+        $this_rp_bons = array(
+        '#type' => 'textfield',
+        '#size' => 4,
+        );
+      }
+      $rp_bonus = $this_rp_bons;
+      $rp_bonus['#default_value'] = $item_rp_bonus;
       $results = array(
         '#type' => 'item',
         '#markup' => isset($item_comment->results) ? $item_comment->results : t('Not calculated'),
@@ -516,6 +520,10 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
         'effect' => 'fade',
       ),
     );
+    // Check workflow state and disable from changing.
+    if (isset($node->workflow) && (isset($node->workflow_state_name) && $node->workflow_state_name == t('approved'))) {
+      $form['item_helper']['#disabled'] = TRUE;
+    }
   }
 }
 
@@ -705,10 +713,10 @@ function _item_helper_calculate_results($found_comments) {
     $break_1 = empty($set_bonus_txt) ? '' : '</br>';
     $break_2 = empty($roll_txt) ? '' : '</br>';
     if ($ongoing_100 == 0) {
-    	$ongoing_100 = 'no';
+      $ongoing_100 = 'no';
     }
     if ($ongoing_1 == 0) {
-    	$ongoing_1 = 'no';
+      $ongoing_1 = 'no';
     }
     $item_comment->results = t(
       ':set_bonus_txt' . $break_1 .
