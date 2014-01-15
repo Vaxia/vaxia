@@ -520,9 +520,10 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
         'effect' => 'fade',
       ),
     );
-    // Check workflow state and disable from changing.
+    // Check workflow state and disable from changing IFF workflow approved.
     if (isset($node->workflow) && (isset($node->workflow_state_name) && $node->workflow_state_name == t('approved'))) {
-      $form['item_helper']['#disabled'] = TRUE;
+      $form['item_helper']['add_comments']['#disabled'] = TRUE;
+      $form['item_helper']['included_comments']['#disabled'] = TRUE;
     }
   }
 }
