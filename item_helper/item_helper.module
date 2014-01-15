@@ -101,12 +101,83 @@ function item_helper_node_delete($node) {
 function item_helper_node_view($node, $view_mode, $langcode) {
   $item_type = variable_get('item_helper_item_type', '');
   if ($view_mode == 'full' && user_access('use item helper') && !empty($item_type) && !empty($node->type) && $item_type == $node->type) {
-    // Only display if in workflow not-approved.
-    if (isset($node->workflow) && (isset($node->workflow_state_name) && $node->workflow_state_name != t('approved'))) {
-      $form = drupal_get_form('item_helper_form_node_form_alter_wrapper', node_load($node->nid));
+    $set_comments = _item_helper_get_comments($node->nid);
+    if (!empty($set_comments)) {
+      $form = drupal_get_form('item_helper_form_node_view_data', node_load($node->nid), $set_comments);
+      // Display on item.
       $node->content['item_helper'] = $form;
     }
   }
+}
+
+/**
+ * Helper function, wraps node base for purposes of passing #node info from non node_base pg.
+ */
+function item_helper_form_node_view_data($form, &$form_state, $node, $set_comments) {
+  $form['item_helper'] = array(
+    '#type' => 'fieldset',
+     '#title' => t('Item Build Assistant'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  $headers = array(
+    t('Item creation posts'),
+    t('Roll type'),
+    t('Flat bonus'),
+    t('Difficulty'),
+    t('RP Bonus'),
+    t('Result'),
+  );
+  $rows = array();
+
+  // Create table data.
+  $roll_types = array(
+    'gen_pp' => t('PP for item'),
+    'prep_bon' => t('1/7 PP might bon'),
+    'prep_diff' => t('1/7 PP reduce diff'),
+    'no_calcs' => t('No roll'),
+  );
+  $found_comments = array();
+  foreach ($set_comments as $set_comment) {
+    $found_comments[$set_comment->cid] = $set_comment;
+  }
+  // One last organization of all of these by cid.
+  ksort($found_comments);
+  // Get values.
+  $found_comments = _item_helper_calculate_results($found_comments);
+  // Loop for display.
+  foreach ($found_comments as $cid => $item_comment) {
+    // Get comment display.
+    $comment = comment_load($cid);
+    $comment_uri = comment_uri($comment);
+    $ooc = isset($comment->field_ooc[$comment->language][0]['value']) ? $comment->field_ooc[$comment->language][0]['value'] : '';
+    $comment_display = '<a href="/' . $comment_uri['path'] . '#' . $comment_uri['options']['fragment'] . '" title="' .
+      check_plain($comment->comment_body[$comment->language][0]['value']) . "\n" .
+      'OOC: ' . check_plain($ooc) . '">' .
+      check_plain($comment->subject) .
+      '</a>';
+    // Get dice display.
+    $dice_rolls = _dice_roller_get_roll($cid, 'c');
+    $comment_display .= !empty($dice_rolls)
+      ? theme('dice_roller_results', array('dice_rolls' => $dice_rolls))
+      : '</br>' . t('No rolls found');
+    // Add to rows.
+    $rows[] = array(
+      $comment_display,
+      $roll_types[$item_comment->roll_type],
+      $item_comment->set_bonus,
+      $item_comment->difficulty,
+      $item_comment->rp_bonus,
+      $item_comment->results,
+    );
+  }
+
+  // Add to form.
+  $form['item_helper']['display'] = array(
+    '#type' => 'item',
+    '#markup' => theme('table', array('header' => $headers, 'rows' => $rows)),
+  );
+  return $form;
 }
 
 /**
@@ -144,6 +215,7 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
       '#title' => t('Add new posts'),
       '#description' => t('Search for posts by room. Select the posts to apply to this item for ' .
         'calculating creation rolls.'),
+      '#collapsible' => TRUE,
     );
     $form['item_helper']['add_comments']['search_room'] = array(
       '#title' => t('Posts from room'),
@@ -221,6 +293,7 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
     $form['item_helper']['included_comments'] = array(
       '#type' => 'fieldset',
       '#title' => t('Included posts'),
+      '#collapsible' => TRUE,
     );
     // Setup table format.
     $form['item_helper']['included_comments']['included_comments_table'] = array(
@@ -631,13 +704,20 @@ function _item_helper_calculate_results($found_comments) {
     $might_2 = empty($mights[1]) ? '' : '/ ' . $mights[1];
     $break_1 = empty($set_bonus_txt) ? '' : '</br>';
     $break_2 = empty($roll_txt) ? '' : '</br>';
+    if ($ongoing_100 == 0) {
+    	$ongoing_100 = 'no';
+    }
+    if ($ongoing_1 == 0) {
+    	$ongoing_1 = 'no';
+    }
     $item_comment->results = t(
       ':set_bonus_txt' . $break_1 .
       ':roll_txt' . $break_2 .
       'Mights :might1 :might2 </br> ' .
-      ':PP PP / :100 100\'s / :1 1\'s </br> ' .
       ':rp RP bonus </br> ' .
-      ':prep Prep bonus / :diff Diff mod',
+      ':prep Prep bonus / :diff Diff mod </br> ' .
+      '<span style="font-weight:bold;">:PP PP / <span style="color:green;">:100 100s</span> / <span style="color:red;">:1 1s</span></span>' .
+      '',
       array(':set_bonus_txt' => $set_bonus_txt, ':roll_txt' => $roll_txt,
         ':might1' => $might_1, ':might2' => $might_2,
         ':PP' => number_format($ongoing_PP), ':100' => $ongoing_100, ':1' => $ongoing_1,
