@@ -731,6 +731,7 @@ function vaxia_form_workflow_tab_form_alter(&$form, &$form_state, $form_id) {
  * Implements hook_form_alter().
  */
 function vaxia_form_alter(&$form, &$form_state, $form_id) {
+
   // If we're viewing a comment form, allow for user profile to set RPG chat additional fields.
   if (substr($form_id, 0, 7) == 'comment' && isset($form['#node'])) {
     $type = $form['#node']->type;
@@ -823,6 +824,30 @@ function vaxia_form_alter(&$form, &$form_state, $form_id) {
       $form['#disabled'] = TRUE;
     }
   } // End alter of webform.
+
+  // Edit the webform form for creators to limit to the right roles.
+  if ($form_id == 'webform_configure_form' && $form['#node']->type == 'proposal') {
+    // Disable redirections.
+    $form['submission']['redirection']['#access'] = FALSE;
+    // Only one per customer.
+    $form['submission']['total_submit_limit']['#access'] = FALSE;
+    $form['submission']['submit_limit']['#access'] = FALSE;
+    $form['submission']['submit_limit']['enforce_limit']['#value'] = 'yes';
+    $form['submission']['submit_limit']['enforce_limit']['#default_value'] = 'yes';
+    $form['submission']['submit_limit']['submit_limit']['#value'] = 1;
+    $form['submission']['submit_limit']['submit_limit']['#default_value'] = 1;
+    // And only particular users, tweak the descriptions.
+    $form['role_control']['#description'] = t('These permissions affect which roles can submit this webform. It does not prevent access to the webform page.');
+    $allowed_roles = array('storyteller', 'evaluator', 'voting player');
+    foreach ($form['role_control']['roles']['#options'] as $rid => $role_name) {
+      if (!in_array($role_name, $allowed_roles)) {
+        unset($form['role_control']['roles']['#options'][$rid]);
+      }
+    }
+    $form['role_control']['roles']['#description'] = t('Voting players are players who have posted on the site in the last six months.');
+    // And no advanced formats.
+    $form['advanced']['#access'] = FALSE;
+  }
 
   return $form;
 }
