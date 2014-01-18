@@ -12,7 +12,7 @@ Drupal.behaviors.diceRuler = {
     // On page load, inject the button into place in the DOM.
     var rules = $('.dice_rule').length;
     if (rules == 0) {
-      var rule_link = '<div class="dice_rule"><a href="#">*</a></div>';
+      var rule_link = '<span class="dice_rule"><a href="#">*</a></span>';
       $('.suggested_rule').before(rule_link);
     }
   });

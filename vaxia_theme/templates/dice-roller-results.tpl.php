@@ -12,7 +12,7 @@
 <?php
   $str_rolls = '';
   if (isset($dice_rolls) && is_array($dice_rolls)) {
-    $stats_involved = array();
+    $rolls_found = array();
     $stats_rolled = '';
     if (isset($dice_rolls[0]['roll_notes'])) {
       // Notes starts as a list of all rolls and results, separated by "<br>".
@@ -27,7 +27,6 @@
           $results = explode('+', $note);
           $results = explode(' ', trim($results[1]));
           $stat = trim($results[0]);
-          $stats_involved[] = $stat;
         }
         // The roll and the might are pulled out of the roll results.
         // That starts as a format: 28, 26 = 54, everything after the "=" can be ignored.
@@ -47,12 +46,8 @@
             // Add the hidden div for jQuery to tie into for the ruler.
             // All hidden, so no need for text translation here.
           $rolls = explode(',', $rolls);
-          foreach ($rolls as $roll) {
-            $stats_rolled .=  '  <div class="dice_roll dice_roll_' . $stat . ' dice_roll_' . $index . '" style="display:none;">' . "\n" .
-              '    <div class="stat">' . $stat . '</div>' . "\n" .
-              '    <div class="roll">' . trim($roll) . '</div>' . "\n" .
-              '    <div class="might">' . $might . '</div>' . "\n" .
-              '  </div>'. "\n" ;
+          foreach ($rolls as $index => $roll) {
+            $rolls_found[$index][$stat] = array('might' => $might, 'roll' => trim($roll));
           }
         }
         else {
@@ -60,31 +55,44 @@
         }
       } // End loop processing this roll.
     } // End if protecting the roll set.
-    // We now know all the stats involved in this roll.
-    $roll_type = 'unknown';
-    if (count($stats_involved) == 1) {
-      $roll_type = 'one-trait';
-    }
-    if (count($stats_involved) == 2) {
-      $roll_type = 'two-trait';
-      $magic_stats = array('int', 'spi');
-      $diffs = array_diff($stats_involved, $magic_stats);
-      if (empty($diffs)) {
-        $roll_type = 'magic';
+    // We now know all the stats involved in this roll and have the rolls collected into a sorted array.
+    foreach ($rolls_found as $index => $roll_set) {
+      $roll_type = 'unknown';
+      if (count(array_keys($roll_set)) == 1) {
+        $roll_type = 'one-trait';
       }
-    }
-    if (count($stats_involved) == 3) {
-      $magic_stats = array('dex', 'str', 'end');
-      $diffs = array_diff($stats_involved, $magic_stats);
-      if (empty($diffs)) {
-        $roll_type = 'combat';
+      if (count(array_keys($roll_set)) == 2) {
+        $roll_type = 'two-trait';
+        $magic_stats = array('int', 'spi');
+        $diffs = array_diff(array_keys($roll_set), $magic_stats);
+        if (empty($diffs)) {
+          $roll_type = 'magic';
+        }
       }
-    }
-    if ($roll_type != 'unknown') {
-      $str_rolls .= '<div class="dice_rolls">'. "\n"  .
-        '  <div class="suggested_rule" style="display:none;">' . $roll_type . '</div>'. "\n"  .
-        $stats_rolled. "\n"  .
-        '</div>'. "\n";
+      if (count(array_keys($roll_set)) == 3) {
+        $magic_stats = array('dex', 'str', 'end');
+        $diffs = array_diff(array_keys($roll_set), $magic_stats);
+        if (empty($diffs)) {
+          $roll_type = 'combat';
+        }
+      }
+      if ($roll_type != 'unknown') {
+        $str_rolls .= 
+          '<span class="dice_rolls">'. "\n"  .
+          '  <span class="suggested_rule" style="display:none;">' . $roll_type . '</span>'. "\n";
+          $count = 0;
+          foreach ($roll_set as $stat => $roll) {
+            $str_rolls .= 
+              '  <span class="dice_roll dice_roll_' . $stat . ' dice_roll_' . $count . '" style="display:none;">' . "\n" .
+              '    <span class="stat">' . $stat . '</span>' . "\n" .
+              '    <span class="roll">' . $roll['roll'] . '</span>' . "\n" .
+              '    <span class="might">' . $roll['might'] . '</span>' . "\n" .
+              '  </span>'. "\n";
+              $count++;
+          }
+          $str_rolls .=
+          '</span>'. "\n";
+      }
     }
   }
   print $str_rolls;
