@@ -587,6 +587,9 @@ function vaxia_dice_ruler_form($form, &$form_state) {
       ),
     ),
   );
+  
+  // Attach the JS for this ruler to pick up results from the chatroom.
+  drupal_add_js(drupal_get_path('module', 'vaxia_dice_ruler') . '/js/dice_ruler.js');
   return $form;
 }
 
