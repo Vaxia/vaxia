@@ -1,0 +1,5 @@
+name = Dice ruler
+description = Inline / block dice form for on-site dice ruling
+core = 7.x
+package = Vaxia
+version = 7.x-1.0
