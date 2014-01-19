@@ -10,6 +10,154 @@
 function vaxia_accounts_field_default_fields() {
   $fields = array();
 
+  // Exported field: 'node-proposal-body'.
+  $fields['node-proposal-body'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(
+        0 => 'node',
+      ),
+      'field_name' => 'body',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'text',
+      'settings' => array(),
+      'translatable' => '0',
+      'type' => 'text_with_summary',
+    ),
+    'field_instance' => array(
+      'bundle' => 'proposal',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '1',
+        ),
+        'teaser' => array(
+          'label' => 'hidden',
+          'module' => 'text',
+          'settings' => array(
+            'trim_length' => 600,
+          ),
+          'type' => 'text_summary_or_trimmed',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'body',
+      'label' => 'Body',
+      'required' => FALSE,
+      'settings' => array(
+        'display_summary' => TRUE,
+        'text_processing' => 1,
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'module' => 'text',
+        'settings' => array(
+          'rows' => 20,
+          'summary_rows' => 5,
+        ),
+        'type' => 'text_textarea_with_summary',
+        'weight' => '2',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-proposal-taxonomy_forums'.
+  $fields['node-proposal-taxonomy_forums'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'taxonomy_forums',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'forums',
+            'parent' => 0,
+          ),
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'proposal',
+      'default_value' => array(
+        0 => array(
+          'tid' => '16',
+        ),
+      ),
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'taxonomy',
+          'settings' => array(),
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => '0',
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'taxonomy_forums',
+      'label' => 'Forums',
+      'required' => 1,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '1',
+      ),
+    ),
+  );
+
   // Exported field: 'node-strike-body'.
   $fields['node-strike-body'] = array(
     'field_config' => array(
@@ -449,11 +597,13 @@ function vaxia_accounts_field_default_fields() {
   // Translatables
   // Included for use with string extractors like potx.
   t('A yellow warning, like a yellow card in soccer is a moderate warning but does not immediately require a suspension. A red warning is a ban-able offense and should come with a temporary suspension from the site. Multiple yellow warnings can be upgraded to a red. Multiple red warnings can be upgraded to a permanent ban, as needed for the health of the site.');
+  t('Body');
   t('Category');
   t('Category - the type of offense.');
   t('Describe the situation, include players related to the event - and all documentary evidence as an attached file. THIS IS REQUIRED. We want documentation to be transparent so the next time an issue comes up the reviewing SH can see all prior data incase you yourself are no longer available for comment. Please leave a track record for others.');
   t('Description');
   t('Documentation');
+  t('Forums');
   t('Player');
   t('Screenshots, interviews, and other documentary evidence of misconduct. Please include this information as part of the case for the strike so that if a pattern emerges other SHs have all documentation on hand as needed if you are not available at the time.');
   t('Severity');
