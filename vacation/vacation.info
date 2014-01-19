@@ -1,4 +1,4 @@
-name = Vacation mode
+name = Vacation
 description = Adding vacation mode to the user settings page
 core = 7.x
 package = Other

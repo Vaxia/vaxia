@@ -408,8 +408,8 @@ function vaxia_accounts_default_rules_configuration() {
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
       "TAGS" : [ "Positions" ],
-      "REQUIRES" : [ "rules", "vaxia_vacation" ],
-      "ON" : { "vaxia_vacation_end" : [] },
+      "REQUIRES" : [ "rules", "vacation" ],
+      "ON" : { "vacation_end" : [] },
       "DO" : [
         { "mail_to_users_of_role" : {
             "roles" : { "value" : { "9" : "9", "4" : "4" } },
@@ -427,8 +427,8 @@ function vaxia_accounts_default_rules_configuration() {
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
       "TAGS" : [ "Positions" ],
-      "REQUIRES" : [ "rules", "vaxia_vacation" ],
-      "ON" : { "vaxia_vacation_start" : [] },
+      "REQUIRES" : [ "rules", "vacation" ],
+      "ON" : { "vacation_start" : [] },
       "DO" : [
         { "mail_to_users_of_role" : {
             "roles" : { "value" : { "9" : "9", "4" : "4" } },
