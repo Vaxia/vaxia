@@ -13,7 +13,7 @@ function requests_feature_views_default_views() {
   $view = new view();
   $view->name = 'feature_request_list';
   $view->description = 'Feature request list';
-  $view->tag = 'default';
+  $view->tag = 'Feature request';
   $view->base_table = 'node';
   $view->human_name = 'Feature request list';
   $view->core = 7;
@@ -154,7 +154,7 @@ If you have a request, we will gladly consider it, but we do need to know *exact
   );
 
   /* Display: Page */
-  $handler = $view->new_display('page', 'Page', 'page');
+  $handler = $view->new_display('page', 'Page', 'feature_request');
   $handler->display->display_options['path'] = 'feature-request-list';
   $handler->display->display_options['menu']['type'] = 'normal';
   $handler->display->display_options['menu']['title'] = 'Feature requests';
