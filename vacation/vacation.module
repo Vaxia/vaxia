@@ -46,8 +46,8 @@ function vacation_admin_form() {
     '#default_value' => variable_get('vacation_roles', array()),
   );
   $default_message = t('<b>If you know you will be absent for some time: Please let us know! '.
-    'We need to know if you\'ll be around or not.</b> <br/> When you go on vcation mode all of ' .
-    'your additional permissions are removed. During this time you will not recieve emails, ' .
+    'We need to know if you\'ll be around or not.</b> <br/> When you go on vacation mode all of ' .
+    'your additional permissions are removed. During this time you will not receive emails, ' .
     'notifications, or other communications from the site and we won\'t expect you to perform ' .
     'duties. When you return, hit the button and your permissions will be returned to you.');
   $form['vacation_description'] = array(
