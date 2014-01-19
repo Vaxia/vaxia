@@ -589,7 +589,7 @@ function _vaxia_node_form_workflow_after_build($form, $form_state) {
   global $user;
   $node = isset($form['#node']) ? $form['#node'] : '';
   // You own the item.
-  if (!empty($form['#wf']->name) && !empty($node) && $user->uid == $node->uid) && $node->type == 'items') {
+  if (!empty($form['#wf']->name) && !empty($node) && $user->uid == $node->uid && $node->type == 'items') {
     $workflow_name = $form['#wf']->name;
     $options = $form['workflow'][$workflow_name]['#options'];
     $index = array_search('approved', $options);
