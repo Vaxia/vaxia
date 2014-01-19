@@ -1,0 +1,336 @@
+<?php
+
+/**
+ * @file
+ * Defines selection, check box and radio button widgets for text and numeric fields.
+ */
+
+/**
+ * Implements hook_help().
+ */
+function select_image_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#options':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('The Select Image module defines image friendly selection input widgets for the Field module. See the <a href="@field-help">Field module help page</a> for more information about fields.', array('@field-help' => url('admin/help/field'))) . '</p>';
+      return $output;
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function select_image_theme() {
+  return array(
+    'select_image_none' => array(
+      'variables' => array('instance' => NULL, 'option' => NULL),
+    ),
+    'select_image' => array(
+      'render element' => 'element',
+      'type' => 'module',
+      'function' => 'theme_select_image',
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_widget_info().
+ *
+ * Field type modules willing to use those widgets should:
+ * - Use hook_field_widget_info_alter() to append their field own types to the
+ *   list of types supported by the widgets,
+ * - Implement hook_options_list() to provide the list of options.
+ * See list.module.
+ */
+function select_image_field_widget_info() {
+  return array(
+    'select_image_select' => array(
+      'label' => t('Select image list'),
+      'field types' => array(
+        'list_text',
+        'node_reference',
+      ),
+      'behaviors' => array(
+        'multiple values' => FIELD_BEHAVIOR_CUSTOM,
+      ),
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_widget_form().
+ */
+function select_image_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
+  // Abstract over the actual field columns, to allow different field types to
+  // reuse those widgets.
+  $value_key = key($field['columns']);
+  $multiple = $field['cardinality'] > 1 || $field['cardinality'] == FIELD_CARDINALITY_UNLIMITED;
+  $required = $element['#required'];
+  $has_value = isset($items[0][$value_key]);
+  $properties = _select_image_properties($multiple, $required, $has_value);
+  // Prepare the list of select_image.
+  $options = _select_image_get_options($field, $instance, $properties);
+  // Put current field values in shape.
+  $default_value = _select_image_storage_to_form($items, $options, $value_key, $properties);
+  $element += array(
+    '#type' => 'select',
+    '#default_value' => $default_value,
+    '#multiple' => $multiple && count($options) > 1,
+    '#options' => $options,
+    '#value_key' => $value_key,
+    '#element_validate' => array('select_image_field_widget_validate'),
+    '#properties' => $properties,
+    '#theme' => 'select_image', // Theming: New form element for rendering. This handles our new format.
+  );
+  return $element;
+}
+
+/**
+ * Form element validation handler for options element.
+ */
+function select_image_field_widget_validate($element, &$form_state) {
+  if ($element['#required'] && $element['#value'] == '_none') {
+    form_error($element, t('!name field is required.', array('!name' => $element['#title'])));
+  }
+  // Transpose selections from field => delta to delta => field, turning
+  // multiple selected options into multiple parent elements.
+  $items = _select_image_form_to_storage($element);
+  form_set_value($element, $items, $form_state);
+}
+
+/**
+ * Describes the preparation steps required by each widget.
+ */
+function _select_image_properties($multiple, $required, $has_value) {
+  $properties = array(
+    'filter_xss' => FALSE,
+    'strip_tags' => FALSE,
+    'empty_option' => FALSE,
+    'optgroups' => TRUE,
+  );
+  if ($multiple) {
+    // Multiple select: add a 'none' option for non-required fields.
+    if (!$required) {
+      $properties['empty_option'] = 'option_none';
+    }
+  }
+  else {
+    // Single select: add a 'none' option for non-required fields,
+    // and a 'select a value' option for required fields that do not come
+    // with a value selected.
+    if (!$required) {
+      $properties['empty_option'] = 'option_none';
+    }
+    else if (!$has_value) {
+      $properties['empty_option'] = 'option_select';
+    }
+  }
+  return $properties;
+}
+
+/**
+ * Collects the options for a field.
+ */
+function _select_image_get_options($field, $instance, $properties) {
+  // Get the list of options.
+  $options = (array) module_invoke($field['module'], 'options_list', $field, $instance);
+  // Sanitize the options.
+  _select_image_prepare_options($options, $properties);
+  if (!$properties['optgroups']) {
+    $options = select_image_array_flatten($options);
+  }
+  if ($properties['empty_option']) {
+    $label = theme('select_image_none', array('instance' => $instance, 'option' => $properties['empty_option']));
+    $options = array('_none' => $label) + $options;
+  }
+  return $options;
+}
+
+/**
+ * Sanitizes the options.
+ *
+ * The function is recursive to support optgroups.
+ */
+function _select_image_prepare_options(&$options, $properties) {
+  foreach ($options as $value => $label) {
+    // Recurse for optgroups.
+    if (is_array($label)) {
+      _select_image_prepare_options($options[$value], $properties);
+    }
+    else {
+      if ($properties['filter_xss']) {
+        $options[$value] = field_filter_xss($label);
+      }
+    }
+  }
+}
+
+/**
+ * Transforms stored field values into the format the widgets need.
+ */
+function _select_image_storage_to_form($items, $options, $column, $properties) {
+  $items_transposed = select_image_array_transpose($items);
+  $values = (isset($items_transposed[$column]) && is_array($items_transposed[$column])) ? $items_transposed[$column] : array();
+  // Discard values that are not in the current list of options. Flatten the
+  // array if needed.
+  if ($properties['optgroups']) {
+    $options = select_image_array_flatten($options);
+  }
+  $values = array_values(array_intersect($values, array_keys($options)));
+  return $values;
+}
+
+/**
+ * Transforms submitted form values into field storage format.
+ */
+function _select_image_form_to_storage($element) {
+  $values = array_values((array) $element['#value']);
+  $properties = $element['#properties'];
+  // Filter out the 'none' option. Use a strict comparison, because
+  // 0 == 'any string'.
+  if ($properties['empty_option']) {
+    $index = array_search('_none', $values, TRUE);
+    if ($index !== FALSE) {
+      unset($values[$index]);
+    }
+  }
+  // Make sure we populate at least an empty value.
+  if (empty($values)) {
+    $values = array(NULL);
+  }
+  $result = select_image_array_transpose(array($element['#value_key'] => $values));
+  return $result;
+}
+
+/**
+ * Manipulates a 2D array to reverse rows and columns.
+ *
+ * The default data storage for fields is delta first, column names second.
+ * This is sometimes inconvenient for field modules, so this function can be
+ * used to present the data in an alternate format.
+ *
+ * @param $array
+ *   The array to be transposed. It must be at least two-dimensional, and
+ *   the subarrays must all have the same keys or behavior is undefined.
+ * @return
+ *   The transposed array.
+ */
+function select_image_array_transpose($array) {
+  $result = array();
+  if (is_array($array)) {
+    foreach ($array as $key1 => $value1) {
+      if (is_array($value1)) {
+        foreach ($value1 as $key2 => $value2) {
+          if (!isset($result[$key2])) {
+            $result[$key2] = array();
+          }
+          $result[$key2][$key1] = $value2;
+        }
+      }
+    }
+  }
+  return $result;
+}
+
+/**
+ * Flattens an array of allowed values.
+ *
+ * @param $array
+ *   A single or multidimensional array.
+ * @return
+ *   A flattened array.
+ */
+function select_image_array_flatten($array) {
+  $result = array();
+  if (is_array($array)) {
+    foreach ($array as $key => $value) {
+      if (is_array($value)) {
+        $result += select_image_array_flatten($value);
+      }
+      else {
+        $result[$key] = $value;
+      }
+    }
+  }
+  return $result;
+}
+
+/**
+ * Implements hook_field_widget_error().
+ */
+function select_image_field_widget_error($element, $error, $form, &$form_state) {
+  form_error($element, $error['message']);
+}
+
+/**
+ * Returns HTML for the label for the empty value for options that are not required.
+ *
+ * The default theme will display N/A for a radio list and '- None -' for a select.
+ *
+ * @param $variables
+ *   An associative array containing:
+ *   - instance: An array representing the widget requesting the select_image.
+ *
+ * @ingroup themeable
+ */
+function theme_select_image_none($variables) {
+  $instance = $variables['instance'];
+  $option = $variables['option'];
+  $output = '';
+  $output = ($option == 'option_none' ? t('- None -') : t('- Select a value -'));
+  return $output;
+}
+
+/**
+ * Special theming for the select object, avoid the issue with HTML in options.
+ */
+function theme_select_image($variables) {
+  $element = $variables['element'];
+  element_set_attributes($element, array('id', 'name', 'size'));
+  _form_set_class($element, array('form-select form-select-image'));
+  $select = '<select' . drupal_attributes($element['#attributes']) . '>' . form_select_image_options($element) . '</select>';
+  // Include the JS and CSS we need.
+  drupal_add_js(drupal_get_path('module', 'select_image') . '/js/jquery.dd.min.js');
+  drupal_add_js(drupal_get_path('module', 'select_image') . '/js/select_image.js');
+  drupal_add_css(drupal_get_path('module', 'select_image') . '/css/dd.css');
+  drupal_add_css(drupal_get_path('module', 'select_image') . '/css/select_image.css');
+  return $select;
+}
+
+/**
+ * Special theming for the select object, avoid the issue with HTML in options.
+ */
+function form_select_image_options($element, $choices = NULL) {
+  if (!isset($choices)) {
+    $choices = $element['#options'];
+  }
+  // array_key_exists() accommodates the rare event where $element['#value'] is NULL.
+  // isset() fails in this situation.
+  $value_valid = isset($element['#value']) || array_key_exists('#value', $element);
+  $value_is_array = $value_valid && is_array($element['#value']);
+  $options = '';
+  foreach ($choices as $key => $choice) {
+    if (is_array($choice)) {
+      $options .= '<optgroup label="' . $key . '">';
+      $options .= form_select_image_options($element, $choice);
+      $options .= '</optgroup>';
+    }
+    elseif (is_object($choice)) {
+      $options .= form_select_image_options($element, $choice->option);
+    }
+    else {
+      $key = (string) $key;
+      if ($value_valid && (!$value_is_array && (string) $element['#value'] === $key ||
+        ($value_is_array && in_array($key, $element['#value'])))) {
+          $selected = ' selected="selected"';
+      }
+      else {
+        $selected = '';
+      }
+      // Grab the first image listed out of the choice.
+      $options .= '<option value="' . check_plain($key) . '"' . $selected . '>' . check_plain($choice) . '</option>';
+    }
+  }
+  return $options;
+}

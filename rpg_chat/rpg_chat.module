@@ -1,0 +1,538 @@
+<?php
+// $Id$
+
+/**
+ * @file
+ * Reskin existing nodes and comments with a chat-room like UI.
+ */
+
+/**
+ * Implements hook_cron().
+ */
+function rpg_chat_cron() {
+  db_query('DELETE FROM {rpg_chat_room_users} WHERE timestamp < :timestamp',
+    array(':timestamp' => strtotime('-15 minutes')));
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Alter content type settings to add "Enable rpg chat?" checkbox.
+ */
+function rpg_chat_form_node_type_form_alter(&$form, &$form_state) {
+  if (isset($form['type'])) {
+    $form['rpg_chat'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('RPG chat settings'),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      '#group' => 'additional_settings',
+    );
+    $form['rpg_chat']['rpg_chat'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Enable RPG chat?'),
+      '#default_value' => variable_get('rpg_chat_' . $form['#node_type']->type, FALSE),
+      '#description' => t('Enable this checkbox if you want to provide a RPG chat UI '.  
+        'for your users with this content type.'),
+    );
+  }
+}
+
+/**
+ * Implements hook_permission().
+ */
+function rpg_chat_permission() {
+  return array(
+    'administer rpg chat' => array(
+      'title' => t('Administer RPG chat'),
+      'description' => t('Administer RPG chat configurations.'),
+    ),
+    'view rpg chat' => array(
+      'title' => t('View RPG chat'),
+      'description' => t('View RPG chat conversations.'),
+    ),
+    'view rpg mature chat' => array(
+      'title' => t('View RPG mature chat'),
+      'description' => t('View RPG mature chat conversations.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_node_access().
+ */
+function rpg_chat_node_access($node, $op, $account) {
+  // Only check if this is an rpg_node.
+  if (!isset($node->type) ) {
+    return NODE_ACCESS_IGNORE;
+  }
+  else {
+    $node = node_load($node->nid);
+  }
+  if (!_rpg_chat_is_enabled($node->type) ) {
+    return NODE_ACCESS_IGNORE;
+  }
+  if (_rpg_chat_node_access($node, $account)) {
+    return NODE_ACCESS_IGNORE;
+  }
+  else {
+    return NODE_ACCESS_DENY;
+  }
+}
+
+/**
+ * Implements hook_node_load().
+ */
+function rpg_chat_node_load($nodes) {
+  foreach ($nodes as $node) {
+    // Load all the chat related bits for this node.
+    if (isset($node->type) && _rpg_chat_is_enabled($node->type)) {
+      $room = _rpg_chat_get_room($node->nid);
+      if ($room) {
+        $nodes[$node->nid]->rpg_chat_min_refresh = $room->min_refresh;
+        $nodes[$node->nid]->rpg_chat_mature = $room->mature;
+        $nodes[$node->nid]->rpg_chat_locked = $room->locked;
+        $nodes[$node->nid]->rpg_chat_allowed_users = unserialize($room->allowed_users);
+        $nodes[$node->nid]->rpg_chat_banned_users = unserialize($room->banned_users);
+        $nodes[$node->nid]->rpg_chat_current_users = _rpg_chat_get_room_users($node->nid);
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_node_delete().
+ */
+function rpg_chat_node_delete($node) {
+  if (_rpg_chat_is_enabled($node->type)) {
+    _rpg_chat_delete_room($node->nid);
+  }
+}
+
+/**
+ * Implements hook_node_view().
+ */
+function rpg_chat_node_view($node, $view_mode = 'full', $langcode) {
+  if (_rpg_chat_is_enabled($node->type) && $view_mode == 'full' ) {
+    // Modify the node with UI changes. This drives the reload.
+    // Default is 60 seconds.
+    $refresh = $min_refresh = 60;
+    if (isset($node->rpg_chat_min_refresh)) {
+      $refresh = $min_refresh = $node->rpg_chat_min_refresh;
+    }
+    // Allow other modules to provide custom refresh rates for users.
+    // Such as from a specific implementation of a character sheet.
+    $refresh = module_invoke_all('rpg_chat_user_refresh', $refresh);
+    $refresh = $refresh[0];
+    if ($refresh < $min_refresh) {
+      $refresh = $min_refresh;
+    }
+    // And add the JS we need to drive the conversation.
+    drupal_add_js(array('rpg_chat' => array('refreshRate' => $refresh)), 'setting');
+    drupal_add_js(drupal_get_path('module', 'rpg_chat').'/js/rpg_chat.js');
+    drupal_add_css(drupal_get_path('module', 'rpg_chat').'/css/rpg_chat.css');
+  }
+}
+
+/**
+ * Implements process suggestion for comment theme. This allows us to override parts of the comment form.
+ */
+function rpg_chat_process_comment(&$variables) {
+  if (_rpg_chat_is_enabled($variables['node']->type)) {
+    $variables['classes'] .= ' rpg-chat-post';
+    // Looks for comment--rpg-chat.tpl.php in your theme directory. If not there, it uses the available comment theme.
+    $variables['theme_hook_suggestion'] = 'comment__rpg_chat';
+  }
+}
+
+/**
+ * Implements process suggestion for node theme. This allows us to override parts of the node form.
+ */
+function rpg_chat_process_node(&$variables) {
+  if (_rpg_chat_is_enabled($variables['node']->type)) {
+    $variables['classes'] .= ' rpg-chat-node';
+    // Looks for node--rpg-chat.tpl.php in your theme directory.
+    $variables['theme_hook_suggestion'] = 'node__rpg_chat';
+  }
+}
+
+/**
+ * Implements hook_node_view_alter().
+ * Wrap all comments in an ID wrapper for our AJAX to pick up.
+ */
+function rpg_chat_node_view_alter(&$build) {
+  if (_rpg_chat_is_enabled($build['#node']->type) ) {
+    // Get users for display in addition to the wrapper.
+    $user_names = array();
+    $users = _rpg_chat_get_room_users($build['#node']->nid);
+    foreach ($users as $found_user) {
+      $this_user = user_load($found_user->uid);
+      $user_names[] = $this_user->name;
+    }
+    $user_string = '<div id="rpg-chat-userlist">' .
+      theme('item_list', array('title' => t('Users in this room'), 'items' => $user_names)) .
+      '</div>';
+    $build['comments']['comments']['#prefix'] = '<div id="rpg-chat-wrapper">' . $user_string . '<div id="rpg-chat">';
+    $build['comments']['comments']['#suffix'] = '</div></div>';
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter(). Alter the comment form with our controls.
+ */
+function rpg_chat_form_comment_form_alter(&$form, &$form_state, $form_id) {
+  // Check to see if this node type is a rpg chatroom.
+  if (_rpg_chat_is_enabled($form['#node']->type) ) {
+    // Display the refresh submit.
+    $form['actions']['refresh_chat'] = array(
+      '#type' => 'submit',
+      '#value' => t('Refresh'),
+      '#access' => 1,
+      '#submit' => array(),
+      '#limit_validation_errors' => array(), // No validation for a refresh.
+    );
+    // When clicked refresh the comment display.
+    $form['actions']['refresh_chat']['#ajax'] = array(
+      'callback' => '_rpg_chat_refresh_js',
+      'wrapper' => 'rpg-chat-wrapper',
+      'method' => 'replace',
+      'effect' => 'fade',
+      'event' => 'click', // To allow our refresh script to hit it.
+    );
+    // Refresh this user's last login to this room.
+    global $user;
+    _rpg_chat_set_room_users($form['#node']->nid, $user->uid);
+  }
+}
+
+/**
+ * AJAX callback, refreshes the comments displayed for this chatroom.
+ */
+function _rpg_chat_refresh_js($form, &$form_state) {
+  // This is to remove the "Your comment has been posted" status message.
+  unset($_SESSION['messages']['status']);
+  $node = node_load($form['#node']->nid);
+  // COPIED from comment_node_page_additions();
+  // Only attempt to render comments if the node has visible comments.
+  // Unpublished comments are not included in $node->comment_count, so show
+  // comments unconditionally if the user is an administrator.
+  if (($node->comment_count && user_access('access comments'))
+    || user_access('administer comments')) {
+    $mode = variable_get('comment_default_mode_' . $node->type, COMMENT_MODE_THREADED);
+    $comments_per_page = variable_get('comment_default_per_page_' . $node->type, 50);
+    if ($cids = comment_get_thread($node, $mode, $comments_per_page)) {
+      $found_comments = comment_load_multiple($cids);
+      comment_prepare_thread($found_comments);
+      $comments = comment_view_multiple($found_comments, $node);
+    }
+  }
+  $user_names = array();
+  $users = _rpg_chat_get_room_users($node->nid);
+  foreach ($users as $found_user) {
+    $this_user = user_load($found_user->uid);
+    $user_names[] = $this_user->name;
+  }
+  $return_string = '<div id="rpg-chat-wrapper"><div id="rpg-chat-userlist">' .
+    theme('item_list', array('title' => t('Users in this room'), 'items' => $user_names)) .
+    '</div>';
+  $return_string .= '<div id="rpg-chat">';
+
+  if (!empty($comments) && is_array($comments)) {
+    foreach ($comments as $cid => $comment) {
+      if (is_numeric($cid)) {
+        $return_string .= drupal_render($comment);
+      }
+    }
+  }
+  $return_string .= '</div></div>';
+  // Refresh this user's last login to this room.
+  global $user;
+  _rpg_chat_set_room_users($node->nid, $user->uid);
+  return $return_string;
+}
+
+/**
+ * Implements hook_form_alter().
+ *
+ * Add RPG chat settings to node forms with RPG chat enabled.
+ */
+function rpg_chat_form_alter(&$form, &$form_state, $form_id) {
+  if (!isset($form['type']['#value']) || !_rpg_chat_is_enabled($form['type']['#value'])) {
+    return;
+  }
+  // If this is a node form, add the rpg_chat feature set.
+  if (strpos($form['#form_id'], '_node_form') !== FALSE) {
+    // Load a node if it exists.
+    if (isset($form_state['node'])) {
+      $node = $form_state['node'];
+    }
+    $form['rpg_chat'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('RPG chat settings'),
+      '#description' => t('Configure RPG chat settings'),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      '#group' => 'additional_settings',
+    );
+    // RPG Chat values are loaded by node_load.
+    $form['rpg_chat']['min_refresh'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Minimum refresh rate'),
+      '#description' => t('How fast (in seconds) to allow users to refresh the room. This can impact performance.'),
+      '#default_value' => isset($node->rpg_chat_min_refresh) ? $node->rpg_chat_min_refresh : 60,
+    );
+    $form['rpg_chat']['mature'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Mature room?'),
+      '#description' => t('If "mature" this is a chatroom that will have mature content.'),
+      '#default_value' => isset($node->rpg_chat_mature) ? $node->rpg_chat_mature : FALSE,
+    );
+    $form['rpg_chat']['locked'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Locked room?'),
+      '#description' => t('If "locked" this chatroom will be allowed only for those with "administer rpg chat" rights.'),
+      '#default_value' => isset($node->rpg_chat_locked) ? $node->rpg_chat_locked : FALSE,
+    );
+    // TODO - eventually this should become a AJAX driven interface.
+    $allow_list = isset($node->rpg_chat_allowed_users) ? $node->rpg_chat_allowed_users : array();
+    $ban_list = isset($node->rpg_chat_banned_users) ? $node->rpg_chat_banned_users : array();
+    // Display allow / ban with list generated from default or form_state.
+    $allow_string = '';
+    foreach ($allow_list as $uid) {
+      $this_user = user_load($uid);
+      $allow_string .= $this_user->name . "\n";
+    }
+    $form['rpg_chat']['allow'] = array(
+      '#type' => 'textarea',
+      '#title' => t('Allowed users'),
+      '#description' => t('Enter usernames one per line. If left empty, any user with "view rpg chat" rights may use this room.'),
+      '#default_value' => $allow_string,
+    );
+    $ban_string = '';
+    foreach ($ban_list as $uid) {
+      $this_user = user_load($uid);
+      $ban_string .= $this_user->name . "\n";
+    }
+    $form['rpg_chat']['ban'] = array(
+      '#type' => 'textarea',
+      '#title' => t('Banned users'),
+      '#description' => t('Enter usernames one per line. Users listed may not use this room.'),
+      '#default_value' => $ban_string,
+    );
+    $form['#validate'][] = '_rpg_chat_add_room_validate';
+  }
+}
+
+/*
+ * Form callback validation for _rpg_chat_node_forms.
+ */
+function _rpg_chat_add_room_validate($form, $form_state) {
+  // Check all allowed usernames.
+  $allow = $form_state['values']['allow'];
+  $allow_list = explode("\n", $allow);
+  $error_list = array();
+  foreach ($allow_list as $name) {
+    $name = trim($name);
+    $count = db_query("SELECT COUNT(*) FROM {users} WHERE name = :name", array(':name' => $name))->fetchField();
+    if (intval($count) != 1) {
+      $error_list[] = $name;
+    }
+  }
+  if (!empty($error_list)) {
+    form_set_error('allow', t('Please enter valid usernames. Invalid names: %names', array('%names' => implode(', ', $error_list))));
+  }
+  // Check all banned usernames.
+  $ban = $form_state['values']['ban'];
+  $ban_list = explode("\n", $ban);
+  $error_list = array();
+  foreach ($ban_list as $name) {
+    $name = trim($name);
+    $count = db_query("SELECT COUNT(*) FROM {users} WHERE name = :name", array(':name' => $name))->fetchField();
+    if (intval($count) != 1) {
+      $error_list[] = $name;
+    }
+  }
+  if (!empty($error_list)) {
+    form_set_error('ban', t('Please enter valid usernames. Invalid names: %names', array('%names' => implode(', ', $error_list))));
+  }
+}
+
+/*
+ * Implements hook_node_insert().
+ */
+function rpg_chat_node_insert($node) {
+  if(_rpg_chat_is_enabled($node->type)) {
+    rpg_chat_node_update($node);
+  }
+}
+
+/*
+ * Implements hook_node_update().
+ */
+function rpg_chat_node_update($node) {
+  if(_rpg_chat_is_enabled($node->type)) {
+    // Gather all values and save them.
+    $variables = array();
+    $variables['nid'] = $node->nid;
+    $variables['min_refresh'] = isset($node->min_refresh) ? $node->min_refresh : 60;
+    $variables['mature'] = isset($node->mature) ? $node->mature : 0;
+    $variables['locked'] =isset($node->locked) ? $node->locked : 0;
+    // We're doing this as an allowed /banned userlist by username.
+    $allow = isset($node->allow) ? $node->allow : '';
+    $allow_list = explode("\n", $allow);
+    $allowed_users = array();
+    foreach ($allow_list as $name) {
+      $name = trim($name);
+      $uid = db_query("SELECT uid FROM {users} WHERE name = :name", array(':name' => $name))->fetchField();
+      if (intval($uid) == 1) {
+        $allowed_users[] = $uid;
+      }
+    }
+    $ban = isset($node->ban) ? $node->ban : '';
+    $ban_list = explode("\n", $ban);
+    $banned_users = array();
+    foreach ($ban_list as $name) {
+      $name = trim($name);
+      $uid = db_query("SELECT uid FROM {users} WHERE name = :name", array(':name' => $name))->fetchField();
+      if (intval($uid) == 1) {
+        $banned_users[] = $uid;
+      }
+    }
+    // And save the constructed array.
+    $variables['allowed_users'] = array_unique($allowed_users);
+    $variables['banned_users'] = array_unique($banned_users);
+    _rpg_chat_set_room($node->nid, $variables);
+  }
+}
+
+/**
+ * Implements hook_views_api(). From Views module.
+ */
+function rpg_chat_views_api() {
+  return array(
+    'api' => 2,
+  );
+}
+
+/**
+ * Helper function, determine access for a given node and account.
+ */
+function _rpg_chat_node_access($node, $account) {
+  // You you can't view it, and you're not an admin for chat or the site.
+  if (!user_access('view rpg chat', $account) && !user_access('administer rpg chat', $account)) {
+    return FALSE;
+  }
+  // If this is flagged as a mature room and you're not mature. (Let's face it. No one is.)
+  if (!user_access('view rpg mature chat', $account) && $node->rpg_chat_mature) {
+    return FALSE;
+  }  
+  // If this is flagged as a locked room and you're not an admin.
+  if (!user_access('administer rpg chat', $account) && $node->rpg_chat_locked) {
+    return FALSE;
+  }
+  // Check user specific settings.
+  $allowed_users = isset($node->rpg_char_allowed_users) ? $node->rpg_char_allowed_users : array();
+  $banned_users = isset($node->rpg_chat_banned_users) ? $node->rpg_chat_banned_users : array();
+  // If you are on the banned users list, and not on the allowed users list.
+  if (in_array($account->uid, $banned_users) && !in_array($account->uid, $allowed_users)) {
+    return FALSE;
+  }
+  // If the allowed users list is set, and you are not on it.
+  if (count($allowed_users) > 0 && !in_array($account->uid, $allowed_users)) {
+    return FALSE;
+  }
+  // Still good? Great. Go chat.
+  return TRUE;
+}
+
+/**
+ * Helper function. Return RPG chat status.
+ */
+function _rpg_chat_is_enabled($type) {
+  return variable_get('rpg_chat_' . $type, FALSE);
+}
+
+/**
+ * DB function. Get room info for a node.
+ */
+function _rpg_chat_get_room($nid) {
+  $results = db_query('SELECT * FROM {rpg_chat_room} WHERE nid = :nid', array(':nid' => $nid));
+  foreach ($results as $result) {
+    return $result;
+  }
+  return FALSE;
+}
+
+/**
+ * DB function. Get nodes for all rooms.
+ */
+function _rpg_chat_get_rooms() {
+  $results = db_query('SELECT r.nid, n.title FROM {rpg_chat_room} r ' .
+    'LEFT JOIN {node} n ON r.nid = n.nid')->fetchAll();
+  return $results;
+}
+
+/**
+ * DB function. Set room info for a node.
+ */
+function _rpg_chat_set_room($nid, $values) {
+  // Prepare the user arrays for input.
+  $values['allowed_users'] = serialize($values['allowed_users']);
+  $values['banned_users'] = serialize($values['banned_users']);
+  $room = _rpg_chat_get_room($nid);
+  if ($room) {
+    drupal_write_record('rpg_chat_room', $values, 'nid');
+  }
+  else {
+    drupal_write_record('rpg_chat_room', $values);
+  }
+}
+
+/**
+ * DB function. Delete room info for a node.
+ */
+function _rpg_chat_delete_room($nid) {
+  db_query('DELETE FROM {rpg_chat_room} WHERE nid = :nid', array(':nid' => $nid));
+}
+
+/**
+ * DB function. Get users recently viewing a room.
+ */
+function _rpg_chat_get_room_users($nid) {
+  // Clear out anything past a certain timeline / session for ALL ROOMS.
+  db_query('DELETE FROM {rpg_chat_room_users} WHERE timestamp < :timestamp',
+    array(':timestamp' => strtotime('-15 minutes') ));
+  $users = array();
+  $results = db_query('SELECT * FROM {rpg_chat_room_users} WHERE nid = :nid', array(':nid' => $nid));
+  foreach ($results as $result) {
+    $users[] = $result;
+  }
+  return $users;
+}
+
+/**
+ * DB function. Set users recently viewing a room, clear out logouts.
+ */
+function _rpg_chat_set_room_users($nid, $uid) {
+  // Clear out anything past a certain timeline / session for ALL ROOMS.
+  db_query('DELETE FROM {rpg_chat_room_users} WHERE timestamp < :timestamp',
+    array(':timestamp' => strtotime('-15 minutes') ));
+  // Clear out this user and nid connection.
+  db_query('DELETE FROM {rpg_chat_room_users} WHERE nid = :nid AND uid = :uid',
+    array(':nid' => $nid, ':uid' => $uid));
+  // Mark the timestamp for the nid/uid combination.
+  $record = array(
+    'uid' => $uid,
+    'nid' => $nid,
+    'timestamp' => strtotime('now'),
+  );
+  drupal_write_record('rpg_chat_room_users', $record);
+}
+
+/**
+ * DB function. Delete users recently viewing a room.
+ */
+function _rpg_chat_delete_room_users($nid) {
+  db_query('DELETE FROM {rpg_chat_room_users} WHERE nid = :nid', array(':nid' => $nid));
+}
+
