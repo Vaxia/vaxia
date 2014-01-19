@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Drupal needs this blank file.
+ */
+
+include_once 'vaxia_sh_test.features.inc';
