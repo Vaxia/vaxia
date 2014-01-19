@@ -563,10 +563,17 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'description' => '',
       'display' => array(
-        'default' => array(
-          'label' => 'inline',
+        'artwork' => array(
+          'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
+          'weight' => '4',
+        ),
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
           'weight' => '2',
         ),
         'teaser' => array(
@@ -657,6 +664,16 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'hidden',
+          'module' => 'image',
+          'settings' => array(
+            'image_link' => '',
+            'image_style' => 'medium',
+          ),
+          'type' => 'image',
+          'weight' => '0',
+        ),
         'default' => array(
           'label' => 'hidden',
           'module' => 'image',
@@ -742,10 +759,17 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'description' => '',
       'display' => array(
-        'default' => array(
-          'label' => 'inline',
+        'artwork' => array(
+          'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
+          'weight' => '3',
+        ),
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
           'weight' => '1',
         ),
         'teaser' => array(
@@ -813,6 +837,12 @@ function vaxia_field_default_fields() {
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'default' => array(
           'label' => 'hidden',
           'module' => 'text',
@@ -894,7 +924,7 @@ function vaxia_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '32',
+          'weight' => '10',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -966,7 +996,7 @@ function vaxia_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '31',
+          'weight' => '9',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1189,7 +1219,7 @@ function vaxia_field_default_fields() {
           'label' => 'hidden',
           'module' => 'node_reference',
           'settings' => array(
-            'node_reference_view_mode' => 'full',
+            'node_reference_view_mode' => 'artwork',
           ),
           'type' => 'node_reference_node',
           'weight' => '3',
@@ -1492,17 +1522,11 @@ function vaxia_field_default_fields() {
       'description' => 'Most characters should start play with no conditions. Starting play with a condition requires oversight and approval from the World department. It is strongly recommended that new players start play as one of the pre-approved races instead to get familiar with the setting and community first.',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => 37,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
+          'weight' => '7',
         ),
       ),
       'entity_type' => 'node',
@@ -2058,8 +2082,8 @@ function vaxia_field_default_fields() {
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
-          0 => '',
-          1 => '',
+          0 => 'No',
+          1 => 'Yes',
         ),
         'allowed_values_function' => '',
       ),
@@ -2077,11 +2101,11 @@ function vaxia_field_default_fields() {
       'description' => 'Check this box if the character is intended to be an NPC.',
       'display' => array(
         'default' => array(
-          'label' => 'hidden',
+          'label' => 'inline',
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => '0',
+          'weight' => '3',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2130,8 +2154,8 @@ function vaxia_field_default_fields() {
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
-          0 => '',
-          1 => '',
+          0 => 'No',
+          1 => 'Yes',
         ),
         'allowed_values_function' => '',
       ),
@@ -2149,11 +2173,11 @@ function vaxia_field_default_fields() {
       'description' => 'Check this box if the character is intended to be an openly available NPC.',
       'display' => array(
         'default' => array(
-          'label' => 'hidden',
+          'label' => 'inline',
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => '1',
+          'weight' => '4',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2199,8 +2223,8 @@ function vaxia_field_default_fields() {
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
-          0 => '',
-          1 => '',
+          0 => 'No',
+          1 => 'Yes',
         ),
         'allowed_values_function' => '',
       ),
@@ -2218,17 +2242,11 @@ function vaxia_field_default_fields() {
       'description' => 'Mark this sheet as a storyteller sheet.',
       'display' => array(
         'default' => array(
-          'label' => 'hidden',
+          'label' => 'inline',
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
           'weight' => '2',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
         ),
       ),
       'entity_type' => 'node',
@@ -2296,9 +2314,10 @@ function vaxia_field_default_fields() {
           'rpg_chatroom' => 0,
           'session_report' => 0,
           'short_answer' => 0,
+          'storyhost_application' => 0,
+          'strike' => 0,
           'truefalse' => 0,
           'webform' => 0,
-          'whiteboard' => 0,
           'wiki_page' => 0,
         ),
         'view' => array(
@@ -2314,16 +2333,16 @@ function vaxia_field_default_fields() {
       'bundle' => 'character_sheet',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => '',
+      'description' => 'Items are added to characters from the Item form, not the Character Sheet form. If you need to add an item to this character, go to the item to set the IC owner.',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'hidden',
           'module' => 'node_reference',
           'settings' => array(
-            'node_reference_view_mode' => 'full',
+            'node_reference_view_mode' => 'artwork',
           ),
           'type' => 'node_reference_node',
-          'weight' => '36',
+          'weight' => '35',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2345,7 +2364,7 @@ function vaxia_field_default_fields() {
         'settings' => array(
           'autocomplete_match' => 'contains',
           'autocomplete_path' => 'node_reference/autocomplete',
-          'size' => 60,
+          'size' => '60',
         ),
         'type' => 'node_reference_autocomplete',
         'weight' => '34',
@@ -2400,12 +2419,6 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'settings' => array(),
           'type' => 'text_default',
           'weight' => '14',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
         ),
       ),
       'entity_type' => 'node',
@@ -3096,11 +3109,11 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'hidden',
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '35',
+          'weight' => '36',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -3225,7 +3238,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => '1',
+          'weight' => '6',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -3295,7 +3308,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => '0',
+          'weight' => '5',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -3433,7 +3446,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '2',
+          'weight' => '8',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -3938,6 +3951,113 @@ Posting does not have to occur all at once, so feel free to spread it out across
     ),
   );
 
+  // Exported field: 'node-items-field_base_item_template'.
+  $fields['node-items-field_base_item_template'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_base_item_template',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          'Arrowheads/Dagger' => 'Set of Arrowheads/Dagger: 50 to 75 PP',
+          'Sword/Axe' => 'Sword/Axe: 125 to 150 PP',
+          'Mace/Maul' => 'Mace/Maul: 150 to 175 PP',
+          'Topper/Spikes/Fist Weapons' => 'Topper/Spikes/Fist Weapons: 50  to 100 PP',
+          'Boots (Light)' => 'Boots (Light): 100 PP',
+          'Bracers (Light)' => 'Bracers (Light): 75 PP',
+          'Gauntlets (Light)' => 'Gauntlets (Light): 100 PP',
+          'Grieves (Light)' => 'Grieves (Light): 100 PP',
+          'Torso (Light) ' => 'Torso (Light) : 200 PP',
+          'Helmets (Light)' => 'Helmets (Light): 75 PP',
+          'Boots (Medium)' => 'Boots (Medium): 150 to 200 PP',
+          'Bracers (Medium)' => 'Bracers (Medium): 125 to 200 PP',
+          'Gauntlets (Medium)' => 'Gauntlets (Medium): 150 to 225 PP',
+          'Grieves (Medium)' => 'Grieves (Medium): 150 to 225 PP',
+          'Torso (Medium)' => 'Torso (Medium): 150 to 225 PP',
+          'Helmets (Medium)' => 'Helmets (Medium): 125 to 200 PP',
+          'Boots (Heavy)' => 'Boots (Heavy): 150 to 200 PP',
+          'Bracers (Heavy)' => 'Bracers (Heavy): 125 to 200 PP',
+          'Gauntlets (Heavy)' => 'Gauntlets (Heavy): 150 to 225 PP',
+          'Grieves (Heavy)' => 'Grieves (Heavy): 150 to 225 PP',
+          'Torso (Heavy)' => 'Torso (Heavy): 150 to 225 PP',
+          'Helmets (Heavy)' => 'Helmets (Heavy): 125 to 200 PP',
+          'Bodysuit (Light):' => 'Bodysuit (Light): unk PP',
+          'Half-Plate Torso (Heavy)' => 'Half-Plate Torso (Heavy): 600 to 700 PP',
+          'Full-Plate Torso (Heavy)' => 'Full-Plate Torso (Heavy): 600 to 700 PP',
+          'Scalemail' => 'Scalemail: 300 PP',
+          'Chainmail' => 'Chainmail: 400 PP',
+          'Double Chainmail' => 'Double Chainmail: 500 PP',
+          'Helm (Heavy)' => 'Helm (Heavy): unk PP',
+          'Helm (Light)' => 'Helm (Light): unk PP',
+          'Small Shield' => 'Small Shield: unk PP',
+          'Large Shield' => 'Large Shield: unk PP',
+          'Tower Shield' => 'Tower Shield: unk PP',
+          'Enchanted Item (Misc)' => 'Enchanted Item (Misc): varies PP',
+          'Potion (Misc)' => 'Potion (Misc): varies PP',
+          'Alchemy (Misc)' => 'Alchemy (Misc): varies PP',
+          'Gun - Kinetic' => 'Gun - Kinetic (Sirian Only): 125 to 200 PP',
+          'Gun - Energy' => 'Gun - Energy (Sirian Only): 200 to 275 PP',
+          'Gun / Weapon Mods' => 'Gun / Weapon Mods (Sirian Only): 50 to 100 PP',
+          'Explosives' => 'Explosives: 125 to 200 PP',
+          'Headphones: 50 to 75' => 'Headphones (Sirian Only): 50 to 75 PP',
+          'Datapad' => 'Datapad (Sirian Only): 125 to 150 PP',
+          'Glass HUD' => 'Glass HUD (Sirian Only): 250 PP',
+          'Tech Mods' => 'Tech Mods (Sirian Only): 50 to 100 PP',
+          'Fleet/Space Suit' => 'Fleet/Space Suit (Sirian Only): 225 PP',
+          'Software Script' => 'Software Script (Sirian Only): 50 to 75 PP',
+          'Software App' => 'Software App (Sirian Only): 125 to 225 PP',
+        ),
+        'allowed_values_function' => '',
+      ),
+      'translatable' => '0',
+      'type' => 'list_text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'items',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'Select a base item template so evaluators may easily identify the basic type of item you are creating. The PP to make this item is noted in the drop-down. The PP listed is an estimate of an average item, an evaluator may rule your item as requiring more or less PP.',
+      'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '11',
+        ),
+        'default' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '15',
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_base_item_template',
+      'label' => 'Base Item Template',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '3',
+      ),
+    ),
+  );
+
   // Exported field: 'node-items-field_character_owner'.
   $fields['node-items-field_character_owner'] = array(
     'field_config' => array(
@@ -3981,9 +4101,10 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'rpg_chatroom' => 0,
           'session_report' => 0,
           'short_answer' => 0,
+          'storyhost_application' => 0,
+          'strike' => 0,
           'truefalse' => 0,
           'webform' => 0,
-          'whiteboard' => 0,
           'wiki_page' => 0,
         ),
         'view' => array(
@@ -4001,24 +4122,24 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
-        'default' => array(
+        'artwork' => array(
           'label' => 'hidden',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '9',
+        ),
+        'default' => array(
+          'label' => 'inline',
           'module' => 'node_reference',
           'settings' => array(),
           'type' => 'node_reference_default',
           'weight' => '0',
         ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
       ),
       'entity_type' => 'node',
       'field_name' => 'field_character_owner',
       'label' => 'Character owner',
-      'required' => 0,
+      'required' => 1,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
@@ -4031,7 +4152,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'size' => '60',
         ),
         'type' => 'node_reference_autocomplete',
-        'weight' => '0',
+        'weight' => '1',
       ),
     ),
   );
@@ -4072,17 +4193,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => 'If checked this item will be available in the player shop.',
       'display' => array(
-        'default' => array(
-          'label' => 'hidden',
+        'artwork' => array(
+          'label' => 'inline',
           'settings' => array(),
           'type' => 'hidden',
           'weight' => '13',
         ),
-        'teaser' => array(
-          'label' => 'above',
+        'default' => array(
+          'label' => 'inline',
+          'module' => 'list',
           'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
+          'type' => 'list_default',
+          'weight' => '3',
         ),
       ),
       'entity_type' => 'node',
@@ -4099,7 +4221,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'display_label' => 1,
         ),
         'type' => 'options_onoff',
-        'weight' => '4',
+        'weight' => '5',
       ),
     ),
   );
@@ -4131,6 +4253,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '27',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -4198,6 +4332,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '35',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -4265,6 +4411,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '31',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -4332,6 +4490,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '34',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -4399,6 +4569,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '25',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -4475,12 +4657,19 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
-        'default' => array(
+        'artwork' => array(
           'label' => 'above',
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '2',
+          'weight' => '0',
+        ),
+        'default' => array(
+          'label' => 'hidden',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '4',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -4530,7 +4719,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '5',
+        'weight' => '2',
       ),
     ),
   );
@@ -4562,6 +4751,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '28',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -4629,6 +4830,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '24',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -4696,6 +4909,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '23',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -4772,12 +4997,19 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
-        'default' => array(
+        'artwork' => array(
           'label' => 'above',
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '3',
+          'weight' => '1',
+        ),
+        'default' => array(
+          'label' => 'hidden',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '5',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -4827,7 +5059,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '6',
+        'weight' => '3',
       ),
     ),
   );
@@ -4859,6 +5091,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '30',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -4926,6 +5170,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '22',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -4990,6 +5246,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '13',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -5054,6 +5322,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '21',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -5118,6 +5398,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '17',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -5182,6 +5474,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '20',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -5246,6 +5550,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '11',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -5310,6 +5626,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '14',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -5374,6 +5702,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '10',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -5438,6 +5778,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '9',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -5502,6 +5854,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '16',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -5566,6 +5930,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '8',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -5630,6 +6006,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '19',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -5694,6 +6082,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '15',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -5758,6 +6158,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '22',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -5822,6 +6234,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '18',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -5886,6 +6310,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '12',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -5953,6 +6389,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '24',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -6020,6 +6468,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '32',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -6087,6 +6547,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '28',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -6154,6 +6626,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '31',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -6221,6 +6705,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '22',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -6288,6 +6784,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '25',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -6355,6 +6863,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '21',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -6422,6 +6942,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '20',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -6489,6 +7021,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '27',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -6556,6 +7100,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '19',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -6623,6 +7179,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '30',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -6690,6 +7258,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '26',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -6757,6 +7337,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '33',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -6824,6 +7416,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '29',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -6891,6 +7495,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '23',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -6955,6 +7571,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '20',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -7019,6 +7647,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '28',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -7083,6 +7723,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '24',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -7147,6 +7799,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '27',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -7211,6 +7875,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '18',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -7275,6 +7951,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '21',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -7339,6 +8027,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '17',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -7403,6 +8103,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '16',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -7467,6 +8179,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '23',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -7531,6 +8255,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '15',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -7595,6 +8331,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '26',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -7659,6 +8407,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '22',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -7723,6 +8483,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '29',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -7787,6 +8559,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '25',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -7851,6 +8635,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '19',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -7918,6 +8714,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '33',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -7985,6 +8793,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '29',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -8052,6 +8872,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '26',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -8119,6 +8951,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '34',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -8186,6 +9030,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '30',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -8253,6 +9109,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '33',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -8320,6 +9188,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '24',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -8387,6 +9267,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '27',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -8454,6 +9346,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '23',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -8521,6 +9425,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '22',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -8588,6 +9504,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '29',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -8655,6 +9583,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '21',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -8722,6 +9662,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '32',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -8789,6 +9741,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '28',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -8856,6 +9820,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '35',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -8923,6 +9899,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '31',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -8990,6 +9978,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '25',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -9057,6 +10057,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '36',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -9124,6 +10136,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '32',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -9191,6 +10215,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 2,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_decimal',
+          'weight' => '26',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'number',
@@ -9263,16 +10299,27 @@ Posting does not have to occur all at once, so feel free to spread it out across
     ),
     'field_instance' => array(
       'bundle' => 'items',
-      'default_value' => NULL,
+      'default_value' => array(
+        0 => array(
+          'value' => '',
+        ),
+      ),
       'deleted' => '0',
       'description' => 'Not any additional features or etherial qualities this item has.',
       'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '2',
+        ),
         'default' => array(
           'label' => 'hidden',
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '4',
+          'weight' => '6',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -9288,16 +10335,20 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'settings' => array(
         'better_formats' => array(
           'allowed_formats' => array(
-            'full_html' => 'full_html',
-            'php_code' => 'php_code',
+            'filtered_html' => 0,
+            'full_html' => 0,
+            'php_code' => 0,
             'plain_text' => 'plain_text',
-            'whiteboard' => 'whiteboard',
-            'wiki' => 'wiki',
+            'whiteboard' => 0,
+            'wiki' => 0,
           ),
-          'allowed_formats_toggle' => 0,
+          'allowed_formats_toggle' => 1,
           'default_order_toggle' => 0,
           'default_order_wrapper' => array(
             'formats' => array(
+              'filtered_html' => array(
+                'weight' => '0',
+              ),
               'full_html' => array(
                 'weight' => '1',
               ),
@@ -9316,7 +10367,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
             ),
           ),
         ),
-        'text_processing' => '0',
+        'text_processing' => '1',
         'user_register_form' => FALSE,
       ),
       'widget' => array(
@@ -9326,7 +10377,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'rows' => '2',
         ),
         'type' => 'text_textarea',
-        'weight' => '7',
+        'weight' => '4',
       ),
     ),
   );
@@ -9367,6 +10418,13 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '20',
+        ),
         'default' => array(
           'label' => 'above',
           'module' => 'text',
@@ -9466,18 +10524,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '10',
+        ),
         'default' => array(
-          'label' => 'hidden',
+          'label' => 'inline',
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
           'weight' => '1',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
         ),
       ),
       'entity_type' => 'node',
@@ -9533,6 +10591,13 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '18',
+        ),
         'default' => array(
           'label' => 'above',
           'module' => 'text',
@@ -9629,6 +10694,13 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '19',
+        ),
         'default' => array(
           'label' => 'above',
           'module' => 'text',
@@ -9727,11 +10799,18 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
-        'default' => array(
-          'label' => 'hidden',
+        'artwork' => array(
+          'label' => 'inline',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '14',
+          'weight' => '12',
+        ),
+        'default' => array(
+          'label' => 'inline',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '2',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -9755,7 +10834,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '3',
+        'weight' => '4',
       ),
     ),
   );
@@ -9798,6 +10877,12 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'default' => array(
           'label' => 'hidden',
           'module' => 'text',
@@ -9901,6 +10986,12 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'text',
@@ -9973,6 +11064,12 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'text',
@@ -10059,6 +11156,12 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'default' => array(
           'label' => 'hidden',
           'module' => 'node_reference',
@@ -10137,6 +11240,12 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'text',
@@ -10207,6 +11316,12 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'default' => array(
           'label' => 'above',
           'module' => 'text',
@@ -10324,6 +11439,12 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'list',
@@ -10390,6 +11511,12 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'default' => array(
           'label' => 'above',
           'module' => 'list',
@@ -10459,6 +11586,12 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'text',
@@ -10529,6 +11662,12 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'default' => array(
           'label' => 'above',
           'module' => 'text',
@@ -10625,6 +11764,12 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'default' => array(
           'label' => 'above',
           'module' => 'text',
@@ -10723,6 +11868,12 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'text',
@@ -10946,7 +12097,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'label' => 'hidden',
           'module' => 'node_reference',
           'settings' => array(
-            'node_reference_view_mode' => 'full',
+            'node_reference_view_mode' => 'artwork',
           ),
           'type' => 'node_reference_node',
           'weight' => '4',
@@ -10970,7 +12121,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
         'module' => 'select_image',
         'settings' => array(),
         'type' => 'select_image_select',
-        'weight' => '3',
+        'weight' => '5',
       ),
     ),
   );
@@ -11031,12 +12182,6 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'type' => 'nodereferrer_default',
           'weight' => '2',
         ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
       ),
       'entity_type' => 'node',
       'field_name' => 'field_children',
@@ -11052,7 +12197,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
         'module' => 'nodereferrer',
         'settings' => array(),
         'type' => 'nodereferrer_list',
-        'weight' => '2',
+        'weight' => '3',
       ),
     ),
   );
@@ -11164,7 +12309,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'size' => 60,
         ),
         'type' => 'node_reference_autocomplete',
-        'weight' => '1',
+        'weight' => '2',
       ),
     ),
   );
@@ -11214,12 +12359,6 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'type' => 'hidden',
           'weight' => '6',
         ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
       ),
       'entity_type' => 'node',
       'field_name' => 'field_realm',
@@ -11233,7 +12372,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '32',
+        'weight' => '1',
       ),
     ),
   );
@@ -11439,12 +12578,6 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'type' => 'hidden',
           'weight' => '5',
         ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
       ),
       'entity_type' => 'node',
       'field_name' => 'field_rl_weather',
@@ -11635,12 +12768,6 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'type' => 'node_reference_default',
           'weight' => '1',
         ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
       ),
       'entity_type' => 'node',
       'field_name' => 'field_characters_involved',
@@ -11704,12 +12831,6 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'type' => 'fivestar_formatter_default',
           'weight' => '4',
         ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
       ),
       'entity_type' => 'node',
       'field_name' => 'field_rate_session',
@@ -11757,6 +12878,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'second' => 0,
           'year' => 'year',
         ),
+        'repeat' => 0,
         'timezone_db' => '',
         'todate' => '',
         'tz_handling' => 'none',
@@ -11778,15 +12900,10 @@ Posting does not have to occur all at once, so feel free to spread it out across
             'multiple_from' => '',
             'multiple_number' => '',
             'multiple_to' => '',
+            'show_repeat_rule' => 'show',
           ),
           'type' => 'date_default',
           'weight' => '3',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
         ),
       ),
       'entity_type' => 'node',
@@ -11808,6 +12925,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'input_format' => 'm/d/Y - H:i:s',
           'input_format_custom' => '',
           'label_position' => 'above',
+          'repeat_collapsed' => 0,
           'text_parts' => array(),
           'year_range' => '-0:+3',
         ),
@@ -11866,12 +12984,6 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'settings' => array(),
           'type' => 'taxonomy_term_reference_link',
           'weight' => '0',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
         ),
       ),
       'entity_type' => 'node',
@@ -11945,9 +13057,12 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'display' => array(
         'default' => array(
           'label' => 'hidden',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '9',
+          'module' => 'node_reference',
+          'settings' => array(
+            'node_reference_view_mode' => 'artwork',
+          ),
+          'type' => 'node_reference_node',
+          'weight' => '0',
         ),
       ),
       'entity_type' => 'user',
@@ -11962,7 +13077,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
         'module' => 'select_image',
         'settings' => array(),
         'type' => 'select_image_select',
-        'weight' => '4',
+        'weight' => '1',
       ),
     ),
   );
@@ -12006,7 +13121,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'label' => 'hidden',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '11',
+          'weight' => '8',
         ),
       ),
       'entity_type' => 'user',
@@ -12082,7 +13197,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'label' => 'hidden',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '12',
+          'weight' => '9',
         ),
       ),
       'entity_type' => 'user',
@@ -12132,7 +13247,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'label' => 'hidden',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '10',
+          'weight' => '7',
         ),
       ),
       'entity_type' => 'user',
@@ -12177,6 +13292,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
   t('As narrative');
   t('Awareness');
   t('Background');
+  t('Base Item Template');
   t('Body');
   t('Character owner');
   t('Characters involved');
@@ -12212,6 +13328,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
   t('Intellegence');
   t('Intelligence');
   t('Items');
+  t('Items are added to characters from the Item form, not the Character Sheet form. If you need to add an item to this character, go to the item to set the IC owner.');
   t('Languages');
   t('Last Name');
   t('Life');
@@ -12237,6 +13354,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
   t('Reflexes');
   t('Refresh rate');
   t('SH Notes');
+  t('Select a base item template so evaluators may easily identify the basic type of item you are creating. The PP to make this item is noted in the drop-down. The PP listed is an estimate of an average item, an evaluator may rule your item as requiring more or less PP.');
   t('Session held');
   t('Sex');
   t('Skill');

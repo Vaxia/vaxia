@@ -11,81 +11,6 @@ function wiki_feature_views_default_views() {
   $export = array();
 
   $view = new view();
-  $view->name = 'wiki_categories';
-  $view->description = 'Wiki tag categories';
-  $view->tag = 'Wiki';
-  $view->base_table = 'taxonomy_term_data';
-  $view->human_name = 'Wiki categories';
-  $view->core = 7;
-  $view->api_version = '3.0';
-  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
-
-  /* Display: Master */
-  $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Wiki categories';
-  $handler->display->display_options['use_more_always'] = FALSE;
-  $handler->display->display_options['access']['type'] = 'perm';
-  $handler->display->display_options['cache']['type'] = 'none';
-  $handler->display->display_options['query']['type'] = 'views_query';
-  $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['pager']['type'] = 'full';
-  $handler->display->display_options['pager']['options']['items_per_page'] = '100';
-  $handler->display->display_options['pager']['options']['offset'] = '0';
-  $handler->display->display_options['pager']['options']['id'] = '0';
-  $handler->display->display_options['pager']['options']['quantity'] = '9';
-  $handler->display->display_options['style_plugin'] = 'default';
-  $handler->display->display_options['style_options']['row_class'] = 'wiki_category_tag';
-  $handler->display->display_options['row_plugin'] = 'fields';
-  $handler->display->display_options['row_options']['inline'] = array(
-    'name' => 'name',
-  );
-  /* Header: Global: Text area */
-  $handler->display->display_options['header']['area']['id'] = 'area';
-  $handler->display->display_options['header']['area']['table'] = 'views';
-  $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['content'] = 'Wiki categories with 5 or more articles associated.';
-  $handler->display->display_options['header']['area']['format'] = 'wiki';
-  /* Field: Taxonomy term: Name */
-  $handler->display->display_options['fields']['name']['id'] = 'name';
-  $handler->display->display_options['fields']['name']['table'] = 'taxonomy_term_data';
-  $handler->display->display_options['fields']['name']['field'] = 'name';
-  $handler->display->display_options['fields']['name']['label'] = '';
-  $handler->display->display_options['fields']['name']['alter']['word_boundary'] = FALSE;
-  $handler->display->display_options['fields']['name']['alter']['ellipsis'] = FALSE;
-  $handler->display->display_options['fields']['name']['link_to_taxonomy'] = TRUE;
-  /* Field: Taxonomy term: Term ID */
-  $handler->display->display_options['fields']['tid']['id'] = 'tid';
-  $handler->display->display_options['fields']['tid']['table'] = 'taxonomy_term_data';
-  $handler->display->display_options['fields']['tid']['field'] = 'tid';
-  $handler->display->display_options['fields']['tid']['label'] = '';
-  $handler->display->display_options['fields']['tid']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['tid']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['tid']['separator'] = '';
-  /* Filter criterion: Taxonomy vocabulary: Machine name */
-  $handler->display->display_options['filters']['machine_name']['id'] = 'machine_name';
-  $handler->display->display_options['filters']['machine_name']['table'] = 'taxonomy_vocabulary';
-  $handler->display->display_options['filters']['machine_name']['field'] = 'machine_name';
-  $handler->display->display_options['filters']['machine_name']['value'] = array(
-    'tags' => 'tags',
-    'wiki_categories' => 'wiki_categories',
-  );
-  /* Filter criterion: Global: PHP */
-  $handler->display->display_options['filters']['php']['id'] = 'php';
-  $handler->display->display_options['filters']['php']['table'] = 'views';
-  $handler->display->display_options['filters']['php']['field'] = 'php';
-  $handler->display->display_options['filters']['php']['use_php_setup'] = 0;
-  $handler->display->display_options['filters']['php']['php_filter'] = '$count = count( taxonomy_select_nodes($row->tid, FALSE) );
-if ($count < 5) {
-  return TRUE;
-}
-return FALSE;';
-
-  /* Display: Wiki categories */
-  $handler = $view->new_display('block', 'Wiki categories', 'wiki_categories_block');
-  $handler->display->display_options['display_description'] = 'Wiki categories block';
-  $export['wiki_categories'] = $view;
-
-  $view = new view();
   $view->name = 'wiki_admin_content';
   $view->description = 'The display of wiki entries on administrative content pages';
   $view->tag = 'Wiki';
@@ -496,6 +421,81 @@ return FALSE;';
   $export['wiki_admin_content'] = $view;
 
   $view = new view();
+  $view->name = 'wiki_categories';
+  $view->description = 'Wiki tag categories';
+  $view->tag = 'Wiki';
+  $view->base_table = 'taxonomy_term_data';
+  $view->human_name = 'Wiki categories';
+  $view->core = 7;
+  $view->api_version = '3.0';
+  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Master */
+  $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['title'] = 'Wiki categories';
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '100';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['quantity'] = '9';
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['style_options']['row_class'] = 'wiki_category_tag';
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['row_options']['inline'] = array(
+    'name' => 'name',
+  );
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['content'] = 'Wiki categories with 5 or more articles associated.';
+  $handler->display->display_options['header']['area']['format'] = 'wiki';
+  /* Field: Taxonomy term: Name */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'taxonomy_term_data';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['label'] = '';
+  $handler->display->display_options['fields']['name']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['name']['alter']['ellipsis'] = FALSE;
+  $handler->display->display_options['fields']['name']['link_to_taxonomy'] = TRUE;
+  /* Field: Taxonomy term: Term ID */
+  $handler->display->display_options['fields']['tid']['id'] = 'tid';
+  $handler->display->display_options['fields']['tid']['table'] = 'taxonomy_term_data';
+  $handler->display->display_options['fields']['tid']['field'] = 'tid';
+  $handler->display->display_options['fields']['tid']['label'] = '';
+  $handler->display->display_options['fields']['tid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['tid']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['tid']['separator'] = '';
+  /* Filter criterion: Taxonomy vocabulary: Machine name */
+  $handler->display->display_options['filters']['machine_name']['id'] = 'machine_name';
+  $handler->display->display_options['filters']['machine_name']['table'] = 'taxonomy_vocabulary';
+  $handler->display->display_options['filters']['machine_name']['field'] = 'machine_name';
+  $handler->display->display_options['filters']['machine_name']['value'] = array(
+    'tags' => 'tags',
+    'wiki_categories' => 'wiki_categories',
+  );
+  /* Filter criterion: Global: PHP */
+  $handler->display->display_options['filters']['php']['id'] = 'php';
+  $handler->display->display_options['filters']['php']['table'] = 'views';
+  $handler->display->display_options['filters']['php']['field'] = 'php';
+  $handler->display->display_options['filters']['php']['use_php_setup'] = 0;
+  $handler->display->display_options['filters']['php']['php_filter'] = '$count = count( taxonomy_select_nodes($row->tid, FALSE) );
+if ($count < 5) {
+  return TRUE;
+}
+return FALSE;';
+
+  /* Display: Wiki categories */
+  $handler = $view->new_display('block', 'Wiki categories', 'wiki_categories_block');
+  $handler->display->display_options['display_description'] = 'Wiki categories block';
+  $export['wiki_categories'] = $view;
+
+  $view = new view();
   $view->name = 'wiki_recently_editted';
   $view->description = 'Recently edited wiki content';
   $view->tag = 'Wiki';
@@ -630,16 +630,16 @@ return FALSE;';
   $handler->display->display_options['fields']['name_1']['field'] = 'name';
   $handler->display->display_options['fields']['name_1']['relationship'] = 'uid_1';
   $handler->display->display_options['fields']['name_1']['label'] = 'Updated By';
-  /* Field: Content: Wiki categories */
+  /* Field: Content: Categories */
   $handler->display->display_options['fields']['field_wiki_categories']['id'] = 'field_wiki_categories';
   $handler->display->display_options['fields']['field_wiki_categories']['table'] = 'field_data_field_wiki_categories';
   $handler->display->display_options['fields']['field_wiki_categories']['field'] = 'field_wiki_categories';
-  $handler->display->display_options['fields']['field_wiki_categories']['label'] = 'Categories';
   $handler->display->display_options['fields']['field_wiki_categories']['delta_offset'] = '0';
-  /* Field: Content: Additional tagging */
+  /* Field: Content: Tags */
   $handler->display->display_options['fields']['field_additional_tagging']['id'] = 'field_additional_tagging';
   $handler->display->display_options['fields']['field_additional_tagging']['table'] = 'field_data_field_additional_tagging';
   $handler->display->display_options['fields']['field_additional_tagging']['field'] = 'field_additional_tagging';
+  $handler->display->display_options['fields']['field_additional_tagging']['label'] = 'Additional tagging';
   $handler->display->display_options['fields']['field_additional_tagging']['delta_offset'] = '0';
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';

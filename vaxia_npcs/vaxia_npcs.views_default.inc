@@ -13,7 +13,7 @@ function vaxia_npcs_views_default_views() {
   $view = new view();
   $view->name = 'wiki_npcs_list';
   $view->description = 'NPC master list for wiki display';
-  $view->tag = 'Vaxia NPCs';
+  $view->tag = 'Vaxia';
   $view->base_table = 'node';
   $view->human_name = 'Wiki NPCs List';
   $view->core = 7;
@@ -308,8 +308,8 @@ function vaxia_npcs_views_default_views() {
     11 => 0,
   );
 
-  /* Display: Page */
-  $handler = $view->new_display('page', 'Page', 'vaxia_npcs_list');
+  /* Display: Wiki NPCs List */
+  $handler = $view->new_display('page', 'Wiki NPCs List', 'wiki_npcs_list');
   $handler->display->display_options['path'] = 'wiki/wiki-npcs-list';
   $export['wiki_npcs_list'] = $view;
 

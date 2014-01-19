@@ -488,7 +488,7 @@ function vaxia_strongarm() {
   $strongarm->value = array(
     'view_modes' => array(
       'teaser' => array(
-        'custom_settings' => TRUE,
+        'custom_settings' => FALSE,
       ),
       'full' => array(
         'custom_settings' => FALSE,
@@ -502,19 +502,39 @@ function vaxia_strongarm() {
       'search_result' => array(
         'custom_settings' => FALSE,
       ),
+      'artwork' => array(
+        'custom_settings' => TRUE,
+      ),
+      'ical' => array(
+        'custom_settings' => FALSE,
+      ),
+      'diff_standard' => array(
+        'custom_settings' => FALSE,
+      ),
+      'token' => array(
+        'custom_settings' => FALSE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(),
       'display' => array(
         'workflow_current_state' => array(
           'default' => array(
-            'weight' => '-99',
+            'weight' => '3',
+            'visible' => TRUE,
+          ),
+          'artwork' => array(
+            'weight' => '1',
             'visible' => FALSE,
           ),
         ),
         'workflow' => array(
           'default' => array(
-            'weight' => '99',
+            'weight' => '4',
+            'visible' => FALSE,
+          ),
+          'artwork' => array(
+            'weight' => '2',
             'visible' => FALSE,
           ),
         ),
@@ -530,7 +550,7 @@ function vaxia_strongarm() {
   $strongarm->value = array(
     'view_modes' => array(
       'teaser' => array(
-        'custom_settings' => TRUE,
+        'custom_settings' => FALSE,
       ),
       'full' => array(
         'custom_settings' => FALSE,
@@ -551,6 +571,9 @@ function vaxia_strongarm() {
         'custom_settings' => FALSE,
       ),
       'token' => array(
+        'custom_settings' => FALSE,
+      ),
+      'artwork' => array(
         'custom_settings' => FALSE,
       ),
     ),
@@ -569,13 +592,13 @@ function vaxia_strongarm() {
       'display' => array(
         'workflow_current_state' => array(
           'default' => array(
-            'weight' => '11',
-            'visible' => FALSE,
+            'weight' => '8',
+            'visible' => TRUE,
           ),
         ),
         'workflow' => array(
           'default' => array(
-            'weight' => '12',
+            'weight' => '9',
             'visible' => FALSE,
           ),
         ),
@@ -591,7 +614,7 @@ function vaxia_strongarm() {
   $strongarm->value = array(
     'view_modes' => array(
       'teaser' => array(
-        'custom_settings' => TRUE,
+        'custom_settings' => FALSE,
       ),
       'full' => array(
         'custom_settings' => FALSE,
@@ -614,29 +637,40 @@ function vaxia_strongarm() {
       'token' => array(
         'custom_settings' => FALSE,
       ),
+      'artwork' => array(
+        'custom_settings' => TRUE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(
         'title' => array(
-          'weight' => '1',
+          'weight' => '0',
         ),
         'path' => array(
-          'weight' => '7',
+          'weight' => '13',
         ),
         'workflow' => array(
-          'weight' => '8',
+          'weight' => '14',
         ),
       ),
       'display' => array(
         'workflow_current_state' => array(
           'default' => array(
-            'weight' => '12',
+            'weight' => '13',
+            'visible' => TRUE,
+          ),
+          'artwork' => array(
+            'weight' => '14',
             'visible' => FALSE,
           ),
         ),
         'workflow' => array(
           'default' => array(
-            'weight' => '11',
+            'weight' => '14',
+            'visible' => FALSE,
+          ),
+          'artwork' => array(
+            'weight' => '15',
             'visible' => FALSE,
           ),
         ),
@@ -652,7 +686,7 @@ function vaxia_strongarm() {
   $strongarm->value = array(
     'view_modes' => array(
       'teaser' => array(
-        'custom_settings' => TRUE,
+        'custom_settings' => FALSE,
       ),
       'full' => array(
         'custom_settings' => FALSE,
@@ -675,17 +709,20 @@ function vaxia_strongarm() {
       'token' => array(
         'custom_settings' => FALSE,
       ),
+      'artwork' => array(
+        'custom_settings' => FALSE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(
         'dice_roller' => array(
-          'weight' => '5',
+          'weight' => '7',
         ),
         'title' => array(
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '30',
+          'weight' => '8',
         ),
       ),
       'display' => array(
@@ -707,7 +744,7 @@ function vaxia_strongarm() {
   $strongarm->value = array(
     'view_modes' => array(
       'teaser' => array(
-        'custom_settings' => TRUE,
+        'custom_settings' => FALSE,
       ),
       'full' => array(
         'custom_settings' => FALSE,
@@ -719,6 +756,18 @@ function vaxia_strongarm() {
         'custom_settings' => FALSE,
       ),
       'search_result' => array(
+        'custom_settings' => FALSE,
+      ),
+      'ical' => array(
+        'custom_settings' => FALSE,
+      ),
+      'diff_standard' => array(
+        'custom_settings' => FALSE,
+      ),
+      'token' => array(
+        'custom_settings' => FALSE,
+      ),
+      'artwork' => array(
         'custom_settings' => FALSE,
       ),
     ),

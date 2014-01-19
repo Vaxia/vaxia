@@ -13,7 +13,7 @@ function vaxia_accounts_views_default_views() {
   $view = new view();
   $view->name = 'strikes';
   $view->description = 'Player\'s earned strikes';
-  $view->tag = 'default';
+  $view->tag = 'Vaxia';
   $view->base_table = 'node';
   $view->human_name = 'Strikes';
   $view->core = 7;
@@ -145,7 +145,6 @@ function vaxia_accounts_views_default_views() {
 
   /* Display: Strikes */
   $handler = $view->new_display('page', 'Strikes', 'strikes');
-  $handler->display->display_options['display_description'] = 'Strikes ';
   $handler->display->display_options['path'] = 'user/%/strikes';
   $handler->display->display_options['menu']['type'] = 'tab';
   $handler->display->display_options['menu']['title'] = 'Strikes';

@@ -12,7 +12,7 @@ function vaxia_views_default_views() {
 
   $view = new view();
   $view->name = 'artwork';
-  $view->description = 'Artwork';
+  $view->description = 'View user uploaded artwork';
   $view->tag = 'Vaxia';
   $view->base_table = 'node';
   $view->human_name = 'Artwork';
@@ -137,7 +137,7 @@ function vaxia_views_default_views() {
   $handler = $view->new_display('page', 'Artwork', 'artwork');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Artwork';
-  $handler->display->display_options['display_description'] = 'Artwork';
+  $handler->display->display_options['display_description'] = 'View user uploaded art';
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: Title */
@@ -171,7 +171,7 @@ function vaxia_views_default_views() {
 
   /* Display: My artwork */
   $handler = $view->new_display('page', 'My artwork', 'artwork_mine');
-  $handler->display->display_options['display_description'] = 'My artwork';
+  $handler->display->display_options['display_description'] = 'View my artwork';
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: Title */
@@ -246,7 +246,7 @@ function vaxia_views_default_views() {
   $handler = $view->new_display('references', 'My artwork refs', 'artwork_mine_refs');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'My artwork refs';
-  $handler->display->display_options['display_description'] = 'My artwork refs';
+  $handler->display->display_options['display_description'] = 'My artwork references';
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
@@ -321,132 +321,14 @@ function vaxia_views_default_views() {
     10 => '10',
   );
   $handler->display->display_options['filters']['sid']['group'] = 1;
-
-  /* Display: Artwork evaluate */
-  $handler = $view->new_display('page', 'Artwork evaluate', 'artwork_evaluate');
-  $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Artwork evaluate';
-  $handler->display->display_options['display_description'] = 'Artwork evaluate';
-  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
-  $handler->display->display_options['defaults']['access'] = FALSE;
-  $handler->display->display_options['access']['type'] = 'role';
-  $handler->display->display_options['access']['role'] = array(
-    4 => '4',
-    5 => '5',
-  );
-  $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Content: Title */
-  $handler->display->display_options['fields']['title']['id'] = 'title';
-  $handler->display->display_options['fields']['title']['table'] = 'node';
-  $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = '';
-  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
-  /* Field: Content: Image */
-  $handler->display->display_options['fields']['field_artwork_image']['id'] = 'field_artwork_image';
-  $handler->display->display_options['fields']['field_artwork_image']['table'] = 'field_data_field_artwork_image';
-  $handler->display->display_options['fields']['field_artwork_image']['field'] = 'field_artwork_image';
-  $handler->display->display_options['fields']['field_artwork_image']['label'] = '';
-  $handler->display->display_options['fields']['field_artwork_image']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_artwork_image']['click_sort_column'] = 'fid';
-  $handler->display->display_options['fields']['field_artwork_image']['settings'] = array(
-    'image_style' => 'thumbnail',
-    'image_link' => 'content',
-  );
-  /* Field: Workflow: Current state */
-  $handler->display->display_options['fields']['sid']['id'] = 'sid';
-  $handler->display->display_options['fields']['sid']['table'] = 'workflow_node';
-  $handler->display->display_options['fields']['sid']['field'] = 'sid';
-  $handler->display->display_options['fields']['sid']['label'] = '';
-  $handler->display->display_options['fields']['sid']['element_label_colon'] = FALSE;
-  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
-  $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Content: Published */
-  $handler->display->display_options['filters']['status']['id'] = 'status';
-  $handler->display->display_options['filters']['status']['table'] = 'node';
-  $handler->display->display_options['filters']['status']['field'] = 'status';
-  $handler->display->display_options['filters']['status']['value'] = 1;
-  $handler->display->display_options['filters']['status']['group'] = 1;
-  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Content: Type */
-  $handler->display->display_options['filters']['type']['id'] = 'type';
-  $handler->display->display_options['filters']['type']['table'] = 'node';
-  $handler->display->display_options['filters']['type']['field'] = 'type';
-  $handler->display->display_options['filters']['type']['value'] = array(
-    'artwork' => 'artwork',
-  );
-  $handler->display->display_options['filters']['type']['group'] = 1;
-  /* Filter criterion: Workflow: Current state */
-  $handler->display->display_options['filters']['sid']['id'] = 'sid';
-  $handler->display->display_options['filters']['sid']['table'] = 'workflow_node';
-  $handler->display->display_options['filters']['sid']['field'] = 'sid';
-  $handler->display->display_options['filters']['sid']['value'] = array(
-    '' => '',
-    8 => '8',
-    9 => '9',
-    10 => '10',
-    11 => '11',
-  );
-  $handler->display->display_options['filters']['sid']['group'] = 1;
-  $handler->display->display_options['filters']['sid']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['sid']['expose']['operator_id'] = 'sid_op';
-  $handler->display->display_options['filters']['sid']['expose']['label'] = 'Current state';
-  $handler->display->display_options['filters']['sid']['expose']['use_operator'] = TRUE;
-  $handler->display->display_options['filters']['sid']['expose']['operator'] = 'sid_op';
-  $handler->display->display_options['filters']['sid']['expose']['identifier'] = 'sid';
-  $handler->display->display_options['filters']['sid']['expose']['remember'] = TRUE;
-  $handler->display->display_options['filters']['sid']['expose']['multiple'] = TRUE;
-  $handler->display->display_options['filters']['sid']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    3 => 0,
-    8 => 0,
-    9 => 0,
-    10 => 0,
-    6 => 0,
-    7 => 0,
-    5 => 0,
-    4 => 0,
-  );
-  $handler->display->display_options['filters']['sid']['expose']['reduce'] = TRUE;
-  /* Filter criterion: User: Name */
-  $handler->display->display_options['filters']['uid']['id'] = 'uid';
-  $handler->display->display_options['filters']['uid']['table'] = 'users';
-  $handler->display->display_options['filters']['uid']['field'] = 'uid';
-  $handler->display->display_options['filters']['uid']['relationship'] = 'uid';
-  $handler->display->display_options['filters']['uid']['value'] = '';
-  $handler->display->display_options['filters']['uid']['group'] = 1;
-  $handler->display->display_options['filters']['uid']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['uid']['expose']['operator_id'] = 'uid_op';
-  $handler->display->display_options['filters']['uid']['expose']['label'] = 'Player Name';
-  $handler->display->display_options['filters']['uid']['expose']['operator'] = 'uid_op';
-  $handler->display->display_options['filters']['uid']['expose']['identifier'] = 'uid';
-  $handler->display->display_options['filters']['uid']['expose']['remember'] = TRUE;
-  $handler->display->display_options['filters']['uid']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    3 => 0,
-    8 => 0,
-    9 => 0,
-    10 => 0,
-    6 => 0,
-    7 => 0,
-    5 => 0,
-    4 => 0,
-  );
-  $handler->display->display_options['path'] = 'artwork/evaluate';
-  $handler->display->display_options['menu']['type'] = 'tab';
-  $handler->display->display_options['menu']['title'] = 'Art evaluation';
-  $handler->display->display_options['menu']['description'] = 'Art evaluation';
-  $handler->display->display_options['menu']['weight'] = '2';
-  $handler->display->display_options['menu']['name'] = 'menu-vaxia';
   $export['artwork'] = $view;
 
   $view = new view();
   $view->name = 'character_items';
-  $view->description = 'Character items';
+  $view->description = 'Show character items in the system';
   $view->tag = 'Vaxia';
   $view->base_table = 'node';
-  $view->human_name = 'Character items';
+  $view->human_name = 'Character Items';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
@@ -458,6 +340,7 @@ function vaxia_views_default_views() {
   $handler->display->display_options['access']['type'] = 'role';
   $handler->display->display_options['access']['role'] = array(
     4 => '4',
+    9 => '9',
   );
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
@@ -469,12 +352,15 @@ function vaxia_views_default_views() {
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
     'title' => 'title',
-    'name' => 'name',
     'field_character_owner' => 'field_character_owner',
+    'name_2' => 'field_character_owner',
+    'name' => 'name',
     'created' => 'created',
     'changed' => 'changed',
+    'name_1' => 'name_1',
     'sid' => 'sid',
     'edit_node' => 'edit_node',
+    'delete_node' => 'edit_node',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
@@ -485,14 +371,21 @@ function vaxia_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
-    'name' => array(
+    'field_character_owner' => array(
       'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => ' ',
+      'empty_column' => 0,
+    ),
+    'name_2' => array(
+      'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
-    'field_character_owner' => array(
+    'name' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -513,6 +406,13 @@ function vaxia_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
+    'name_1' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
     'sid' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
@@ -522,6 +422,11 @@ function vaxia_views_default_views() {
     ),
     'edit_node' => array(
       'align' => '',
+      'separator' => ' ',
+      'empty_column' => 0,
+    ),
+    'delete_node' => array(
+      'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
@@ -530,6 +435,22 @@ function vaxia_views_default_views() {
   $handler->display->display_options['relationships']['uid']['id'] = 'uid';
   $handler->display->display_options['relationships']['uid']['table'] = 'node';
   $handler->display->display_options['relationships']['uid']['field'] = 'uid';
+  /* Relationship: Workflow: Last changed user */
+  $handler->display->display_options['relationships']['uid_1']['id'] = 'uid_1';
+  $handler->display->display_options['relationships']['uid_1']['table'] = 'workflow_node';
+  $handler->display->display_options['relationships']['uid_1']['field'] = 'uid';
+  $handler->display->display_options['relationships']['uid_1']['label'] = 'Workflow';
+  /* Relationship: Content: Character owner (field_character_owner) */
+  $handler->display->display_options['relationships']['field_character_owner_nid']['id'] = 'field_character_owner_nid';
+  $handler->display->display_options['relationships']['field_character_owner_nid']['table'] = 'field_data_field_character_owner';
+  $handler->display->display_options['relationships']['field_character_owner_nid']['field'] = 'field_character_owner_nid';
+  $handler->display->display_options['relationships']['field_character_owner_nid']['delta'] = '-1';
+  /* Relationship: Content: Author */
+  $handler->display->display_options['relationships']['uid_2']['id'] = 'uid_2';
+  $handler->display->display_options['relationships']['uid_2']['table'] = 'node';
+  $handler->display->display_options['relationships']['uid_2']['field'] = 'uid';
+  $handler->display->display_options['relationships']['uid_2']['relationship'] = 'field_character_owner_nid';
+  $handler->display->display_options['relationships']['uid_2']['label'] = 'Player';
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -538,39 +459,62 @@ function vaxia_views_default_views() {
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  /* Field: Content: Character owner */
+  $handler->display->display_options['fields']['field_character_owner']['id'] = 'field_character_owner';
+  $handler->display->display_options['fields']['field_character_owner']['table'] = 'field_data_field_character_owner';
+  $handler->display->display_options['fields']['field_character_owner']['field'] = 'field_character_owner';
+  $handler->display->display_options['fields']['field_character_owner']['label'] = 'Character';
+  /* Field: User: Name */
+  $handler->display->display_options['fields']['name_2']['id'] = 'name_2';
+  $handler->display->display_options['fields']['name_2']['table'] = 'users';
+  $handler->display->display_options['fields']['name_2']['field'] = 'name';
+  $handler->display->display_options['fields']['name_2']['relationship'] = 'uid_2';
+  $handler->display->display_options['fields']['name_2']['label'] = 'Player';
+  $handler->display->display_options['fields']['name_2']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['name_2']['alter']['text'] = '([name_2])';
   /* Field: User: Name */
   $handler->display->display_options['fields']['name']['id'] = 'name';
   $handler->display->display_options['fields']['name']['table'] = 'users';
   $handler->display->display_options['fields']['name']['field'] = 'name';
   $handler->display->display_options['fields']['name']['relationship'] = 'uid';
-  $handler->display->display_options['fields']['name']['label'] = 'Player';
-  /* Field: Content: Character owner */
-  $handler->display->display_options['fields']['field_character_owner']['id'] = 'field_character_owner';
-  $handler->display->display_options['fields']['field_character_owner']['table'] = 'field_data_field_character_owner';
-  $handler->display->display_options['fields']['field_character_owner']['field'] = 'field_character_owner';
+  $handler->display->display_options['fields']['name']['label'] = 'Creator';
   /* Field: Content: Post date */
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'node';
   $handler->display->display_options['fields']['created']['field'] = 'created';
+  $handler->display->display_options['fields']['created']['label'] = 'Created';
   $handler->display->display_options['fields']['created']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['created']['date_format'] = 'short';
   /* Field: Content: Updated date */
   $handler->display->display_options['fields']['changed']['id'] = 'changed';
   $handler->display->display_options['fields']['changed']['table'] = 'node';
   $handler->display->display_options['fields']['changed']['field'] = 'changed';
-  $handler->display->display_options['fields']['changed']['label'] = 'Last updated';
+  $handler->display->display_options['fields']['changed']['label'] = 'Updated';
   $handler->display->display_options['fields']['changed']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['changed']['date_format'] = 'short';
+  /* Field: User: Name */
+  $handler->display->display_options['fields']['name_1']['id'] = 'name_1';
+  $handler->display->display_options['fields']['name_1']['table'] = 'users';
+  $handler->display->display_options['fields']['name_1']['field'] = 'name';
+  $handler->display->display_options['fields']['name_1']['relationship'] = 'uid_1';
+  $handler->display->display_options['fields']['name_1']['label'] = 'Workflow By';
   /* Field: Workflow: Current state */
   $handler->display->display_options['fields']['sid']['id'] = 'sid';
   $handler->display->display_options['fields']['sid']['table'] = 'workflow_node';
   $handler->display->display_options['fields']['sid']['field'] = 'sid';
+  $handler->display->display_options['fields']['sid']['label'] = 'Workflow';
   /* Field: Content: Edit link */
   $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
   $handler->display->display_options['fields']['edit_node']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['edit_node']['field'] = 'edit_node';
-  $handler->display->display_options['fields']['edit_node']['label'] = 'edit';
+  $handler->display->display_options['fields']['edit_node']['label'] = 'Operations';
   $handler->display->display_options['fields']['edit_node']['element_label_colon'] = FALSE;
+  /* Field: Content: Delete link */
+  $handler->display->display_options['fields']['delete_node']['id'] = 'delete_node';
+  $handler->display->display_options['fields']['delete_node']['table'] = 'views_entity_node';
+  $handler->display->display_options['fields']['delete_node']['field'] = 'delete_node';
+  $handler->display->display_options['fields']['delete_node']['label'] = 'Delete';
+  $handler->display->display_options['fields']['delete_node']['text'] = 'delete';
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
@@ -596,7 +540,125 @@ function vaxia_views_default_views() {
   $handler->display->display_options['filters']['sid']['table'] = 'workflow_node';
   $handler->display->display_options['filters']['sid']['field'] = 'sid';
   $handler->display->display_options['filters']['sid']['value'] = array(
+    13 => '13',
+    14 => '14',
     15 => '15',
+    16 => '16',
+    21 => '21',
+    22 => '22',
+  );
+  $handler->display->display_options['filters']['sid']['group'] = 1;
+  $handler->display->display_options['filters']['sid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['sid']['expose']['operator_id'] = 'sid_op';
+  $handler->display->display_options['filters']['sid']['expose']['label'] = 'Current state';
+  $handler->display->display_options['filters']['sid']['expose']['operator'] = 'sid_op';
+  $handler->display->display_options['filters']['sid']['expose']['identifier'] = 'sid';
+  $handler->display->display_options['filters']['sid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['sid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['sid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    8 => 0,
+    19 => 0,
+    12 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    9 => 0,
+    20 => 0,
+    14 => 0,
+    4 => 0,
+    3 => 0,
+    11 => 0,
+  );
+  $handler->display->display_options['filters']['sid']['expose']['reduce'] = TRUE;
+  /* Filter criterion: Content: Title */
+  $handler->display->display_options['filters']['title']['id'] = 'title';
+  $handler->display->display_options['filters']['title']['table'] = 'node';
+  $handler->display->display_options['filters']['title']['field'] = 'title';
+  $handler->display->display_options['filters']['title']['operator'] = 'contains';
+  $handler->display->display_options['filters']['title']['group'] = 1;
+  $handler->display->display_options['filters']['title']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['title']['expose']['operator_id'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['label'] = 'Item Name';
+  $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
+  $handler->display->display_options['filters']['title']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['title']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    8 => 0,
+    19 => 0,
+    12 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    9 => 0,
+    20 => 0,
+    14 => 0,
+    4 => 0,
+    3 => 0,
+    11 => 0,
+  );
+  /* Filter criterion: Content: Character owner (field_character_owner) */
+  $handler->display->display_options['filters']['field_character_owner_nid']['id'] = 'field_character_owner_nid';
+  $handler->display->display_options['filters']['field_character_owner_nid']['table'] = 'field_data_field_character_owner';
+  $handler->display->display_options['filters']['field_character_owner_nid']['field'] = 'field_character_owner_nid';
+  $handler->display->display_options['filters']['field_character_owner_nid']['group'] = 1;
+  $handler->display->display_options['filters']['field_character_owner_nid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_character_owner_nid']['expose']['operator_id'] = 'field_character_owner_nid_op';
+  $handler->display->display_options['filters']['field_character_owner_nid']['expose']['label'] = 'Character';
+  $handler->display->display_options['filters']['field_character_owner_nid']['expose']['operator'] = 'field_character_owner_nid_op';
+  $handler->display->display_options['filters']['field_character_owner_nid']['expose']['identifier'] = 'field_character_owner_nid';
+  $handler->display->display_options['filters']['field_character_owner_nid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_character_owner_nid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    8 => 0,
+    19 => 0,
+    12 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    9 => 0,
+    20 => 0,
+    14 => 0,
+    4 => 0,
+    3 => 0,
+    11 => 0,
+  );
+  /* Filter criterion: User: Name */
+  $handler->display->display_options['filters']['uid_1']['id'] = 'uid_1';
+  $handler->display->display_options['filters']['uid_1']['table'] = 'users';
+  $handler->display->display_options['filters']['uid_1']['field'] = 'uid';
+  $handler->display->display_options['filters']['uid_1']['relationship'] = 'uid_2';
+  $handler->display->display_options['filters']['uid_1']['value'] = '';
+  $handler->display->display_options['filters']['uid_1']['group'] = 1;
+  $handler->display->display_options['filters']['uid_1']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['uid_1']['expose']['operator_id'] = 'uid_1_op';
+  $handler->display->display_options['filters']['uid_1']['expose']['label'] = 'Player';
+  $handler->display->display_options['filters']['uid_1']['expose']['operator'] = 'uid_1_op';
+  $handler->display->display_options['filters']['uid_1']['expose']['identifier'] = 'uid_1';
+  $handler->display->display_options['filters']['uid_1']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['uid_1']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    8 => 0,
+    19 => 0,
+    12 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    9 => 0,
+    20 => 0,
+    14 => 0,
+    4 => 0,
+    3 => 0,
+    11 => 0,
   );
   /* Filter criterion: User: Name */
   $handler->display->display_options['filters']['uid']['id'] = 'uid';
@@ -604,40 +666,43 @@ function vaxia_views_default_views() {
   $handler->display->display_options['filters']['uid']['field'] = 'uid';
   $handler->display->display_options['filters']['uid']['relationship'] = 'uid';
   $handler->display->display_options['filters']['uid']['value'] = '';
+  $handler->display->display_options['filters']['uid']['group'] = 1;
   $handler->display->display_options['filters']['uid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['uid']['expose']['operator_id'] = 'uid_op';
-  $handler->display->display_options['filters']['uid']['expose']['label'] = 'Player';
+  $handler->display->display_options['filters']['uid']['expose']['label'] = 'Creator';
   $handler->display->display_options['filters']['uid']['expose']['operator'] = 'uid_op';
   $handler->display->display_options['filters']['uid']['expose']['identifier'] = 'uid';
   $handler->display->display_options['filters']['uid']['expose']['remember'] = TRUE;
   $handler->display->display_options['filters']['uid']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
-    3 => 0,
     8 => 0,
-    9 => 0,
+    19 => 0,
+    12 => 0,
+    13 => 0,
     10 => 0,
-    6 => 0,
-    7 => 0,
-    5 => 0,
+    17 => 0,
+    15 => 0,
+    9 => 0,
+    20 => 0,
+    14 => 0,
     4 => 0,
+    3 => 0,
+    11 => 0,
   );
-  /* Filter criterion: User: Active */
-  $handler->display->display_options['filters']['status_1']['id'] = 'status_1';
-  $handler->display->display_options['filters']['status_1']['table'] = 'users';
-  $handler->display->display_options['filters']['status_1']['field'] = 'status';
-  $handler->display->display_options['filters']['status_1']['relationship'] = 'uid';
-  $handler->display->display_options['filters']['status_1']['value'] = '1';
 
   /* Display: Character items */
   $handler = $view->new_display('page', 'Character items', 'character_items');
   $handler->display->display_options['display_description'] = 'Character items';
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
-  $handler->display->display_options['path'] = 'character-items/all';
-  $handler->display->display_options['menu']['type'] = 'default tab';
+  $handler->display->display_options['path'] = 'character-items';
+  $handler->display->display_options['menu']['type'] = 'normal';
   $handler->display->display_options['menu']['title'] = 'Character items';
   $handler->display->display_options['menu']['description'] = 'Character items';
   $handler->display->display_options['menu']['weight'] = '0';
+  $handler->display->display_options['menu']['name'] = 'menu-vaxia';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
   $handler->display->display_options['tab_options']['type'] = 'normal';
   $handler->display->display_options['tab_options']['title'] = 'Items';
   $handler->display->display_options['tab_options']['description'] = 'Items';
@@ -647,7 +712,7 @@ function vaxia_views_default_views() {
   /* Display: Character items refs */
   $handler = $view->new_display('references', 'Character items refs', 'character_items_ref');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['display_description'] = 'Character items refs';
+  $handler->display->display_options['display_description'] = 'Character item references';
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
@@ -715,171 +780,6 @@ return $uid;';
     15 => '15',
   );
   $handler->display->display_options['filters']['sid_1']['group'] = 1;
-
-  /* Display: My character items */
-  $handler = $view->new_display('page', 'My character items', 'character_items_mine');
-  $handler->display->display_options['display_description'] = 'My character items';
-  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
-  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
-  $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Content: Published */
-  $handler->display->display_options['filters']['status']['id'] = 'status';
-  $handler->display->display_options['filters']['status']['table'] = 'node';
-  $handler->display->display_options['filters']['status']['field'] = 'status';
-  $handler->display->display_options['filters']['status']['value'] = 1;
-  $handler->display->display_options['filters']['status']['group'] = 0;
-  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Content: Type */
-  $handler->display->display_options['filters']['type']['id'] = 'type';
-  $handler->display->display_options['filters']['type']['table'] = 'node';
-  $handler->display->display_options['filters']['type']['field'] = 'type';
-  $handler->display->display_options['filters']['type']['value'] = array(
-    'items' => 'items',
-  );
-  /* Filter criterion: User: Current */
-  $handler->display->display_options['filters']['uid_current']['id'] = 'uid_current';
-  $handler->display->display_options['filters']['uid_current']['table'] = 'users';
-  $handler->display->display_options['filters']['uid_current']['field'] = 'uid_current';
-  $handler->display->display_options['filters']['uid_current']['relationship'] = 'uid';
-  $handler->display->display_options['filters']['uid_current']['value'] = '1';
-  $handler->display->display_options['path'] = 'character-items/mine';
-  $handler->display->display_options['menu']['type'] = 'tab';
-  $handler->display->display_options['menu']['title'] = 'My character items';
-  $handler->display->display_options['menu']['description'] = 'My character items';
-  $handler->display->display_options['menu']['weight'] = '1';
-  $handler->display->display_options['menu']['name'] = 'menu-vaxia';
-
-  /* Display: Character items evaluate */
-  $handler = $view->new_display('page', 'Character items evaluate', 'character_items_evaluate');
-  $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Character items evaluate';
-  $handler->display->display_options['display_description'] = 'Character items evaluate';
-  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
-  $handler->display->display_options['defaults']['access'] = FALSE;
-  $handler->display->display_options['access']['type'] = 'role';
-  $handler->display->display_options['access']['role'] = array(
-    4 => '4',
-    9 => '9',
-  );
-  $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Content: Title */
-  $handler->display->display_options['fields']['title']['id'] = 'title';
-  $handler->display->display_options['fields']['title']['table'] = 'node';
-  $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = 'Item';
-  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
-  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
-  /* Field: User: Name */
-  $handler->display->display_options['fields']['name']['id'] = 'name';
-  $handler->display->display_options['fields']['name']['table'] = 'users';
-  $handler->display->display_options['fields']['name']['field'] = 'name';
-  $handler->display->display_options['fields']['name']['relationship'] = 'uid';
-  $handler->display->display_options['fields']['name']['label'] = 'Player';
-  /* Field: Content: Post date */
-  $handler->display->display_options['fields']['created']['id'] = 'created';
-  $handler->display->display_options['fields']['created']['table'] = 'node';
-  $handler->display->display_options['fields']['created']['field'] = 'created';
-  $handler->display->display_options['fields']['created']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['created']['date_format'] = 'long';
-  /* Field: Content: Updated date */
-  $handler->display->display_options['fields']['changed']['id'] = 'changed';
-  $handler->display->display_options['fields']['changed']['table'] = 'node';
-  $handler->display->display_options['fields']['changed']['field'] = 'changed';
-  $handler->display->display_options['fields']['changed']['label'] = 'Last updated';
-  $handler->display->display_options['fields']['changed']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['changed']['date_format'] = 'long';
-  /* Field: Workflow: Current state */
-  $handler->display->display_options['fields']['sid']['id'] = 'sid';
-  $handler->display->display_options['fields']['sid']['table'] = 'workflow_node';
-  $handler->display->display_options['fields']['sid']['field'] = 'sid';
-  $handler->display->display_options['fields']['sid']['element_label_colon'] = FALSE;
-  /* Field: Content: Edit link */
-  $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
-  $handler->display->display_options['fields']['edit_node']['table'] = 'views_entity_node';
-  $handler->display->display_options['fields']['edit_node']['field'] = 'edit_node';
-  $handler->display->display_options['fields']['edit_node']['label'] = 'edit';
-  $handler->display->display_options['fields']['edit_node']['element_label_colon'] = FALSE;
-  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
-  $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Content: Published */
-  $handler->display->display_options['filters']['status']['id'] = 'status';
-  $handler->display->display_options['filters']['status']['table'] = 'node';
-  $handler->display->display_options['filters']['status']['field'] = 'status';
-  $handler->display->display_options['filters']['status']['value'] = 1;
-  $handler->display->display_options['filters']['status']['group'] = 0;
-  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Content: Type */
-  $handler->display->display_options['filters']['type']['id'] = 'type';
-  $handler->display->display_options['filters']['type']['table'] = 'node';
-  $handler->display->display_options['filters']['type']['field'] = 'type';
-  $handler->display->display_options['filters']['type']['value'] = array(
-    'items' => 'items',
-  );
-  /* Filter criterion: Workflow: Current state */
-  $handler->display->display_options['filters']['sid']['id'] = 'sid';
-  $handler->display->display_options['filters']['sid']['table'] = 'workflow_node';
-  $handler->display->display_options['filters']['sid']['field'] = 'sid';
-  $handler->display->display_options['filters']['sid']['value'] = array(
-    '' => '',
-    13 => '13',
-    14 => '14',
-    15 => '15',
-  );
-  $handler->display->display_options['filters']['sid']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['sid']['expose']['operator_id'] = 'sid_op';
-  $handler->display->display_options['filters']['sid']['expose']['label'] = 'Current state';
-  $handler->display->display_options['filters']['sid']['expose']['use_operator'] = TRUE;
-  $handler->display->display_options['filters']['sid']['expose']['operator'] = 'sid_op';
-  $handler->display->display_options['filters']['sid']['expose']['identifier'] = 'sid';
-  $handler->display->display_options['filters']['sid']['expose']['remember'] = TRUE;
-  $handler->display->display_options['filters']['sid']['expose']['multiple'] = TRUE;
-  $handler->display->display_options['filters']['sid']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    3 => 0,
-    8 => 0,
-    9 => 0,
-    10 => 0,
-    6 => 0,
-    7 => 0,
-    5 => 0,
-    4 => 0,
-  );
-  $handler->display->display_options['filters']['sid']['expose']['reduce'] = TRUE;
-  /* Filter criterion: User: Name */
-  $handler->display->display_options['filters']['uid']['id'] = 'uid';
-  $handler->display->display_options['filters']['uid']['table'] = 'users';
-  $handler->display->display_options['filters']['uid']['field'] = 'uid';
-  $handler->display->display_options['filters']['uid']['relationship'] = 'uid';
-  $handler->display->display_options['filters']['uid']['value'] = '';
-  $handler->display->display_options['filters']['uid']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['uid']['expose']['operator_id'] = 'uid_op';
-  $handler->display->display_options['filters']['uid']['expose']['label'] = 'Name';
-  $handler->display->display_options['filters']['uid']['expose']['operator'] = 'uid_op';
-  $handler->display->display_options['filters']['uid']['expose']['identifier'] = 'uid';
-  $handler->display->display_options['filters']['uid']['expose']['remember'] = TRUE;
-  $handler->display->display_options['filters']['uid']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    3 => 0,
-    8 => 0,
-    9 => 0,
-    12 => 0,
-    13 => 0,
-    10 => 0,
-    11 => 0,
-    6 => 0,
-    7 => 0,
-    5 => 0,
-    4 => 0,
-  );
-  $handler->display->display_options['path'] = 'character-items/evaluate';
-  $handler->display->display_options['menu']['type'] = 'tab';
-  $handler->display->display_options['menu']['title'] = 'Character item evaluation';
-  $handler->display->display_options['menu']['description'] = 'Character item evaluation';
-  $handler->display->display_options['menu']['weight'] = '2';
-  $handler->display->display_options['menu']['name'] = 'menu-vaxia';
   $export['character_items'] = $view;
 
   $view = new view();
@@ -1572,11 +1472,10 @@ return $uid;';
   );
   $handler->display->display_options['filters']['sid']['group'] = 1;
 
-  /* Display: Character sheets */
-  $handler = $view->new_display('page', 'Character sheets', 'character_sheets');
+  /* Display: Character Sheets */
+  $handler = $view->new_display('page', 'Character Sheets', 'character_sheets');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Character sheets';
-  $handler->display->display_options['display_description'] = 'Character sheets';
+  $handler->display->display_options['title'] = 'Character Sheets';
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
@@ -2492,10 +2391,10 @@ return \'Characters\';';
 
   $view = new view();
   $view->name = 'character_sheet_moderation_log';
-  $view->description = 'Character evaluation log';
+  $view->description = 'View the log of character changes over time';
   $view->tag = 'Vaxia';
   $view->base_table = 'character_sheet_log';
-  $view->human_name = 'Character evaluation log';
+  $view->human_name = 'Character Changes Log';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
@@ -2519,64 +2418,64 @@ return \'Characters\';';
   $handler->display->display_options['pager']['options']['items_per_page'] = '35';
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
-    'lid' => 'lid',
-    'type' => 'type',
-    'title' => 'title',
-    'name_1' => 'name_1',
-    'message' => 'message',
-    'name' => 'name',
     'timestamp' => 'timestamp',
+    'name' => 'name',
+    'title' => 'title',
+    'name_1' => 'title',
+    'type' => 'type',
+    'message' => 'message',
     'hostname' => 'hostname',
   );
-  $handler->display->display_options['style_options']['default'] = '-1';
+  $handler->display->display_options['style_options']['default'] = 'timestamp';
   $handler->display->display_options['style_options']['info'] = array(
-    'lid' => array(
+    'timestamp' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'desc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'name' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
+      'empty_column' => 0,
+    ),
+    'title' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => ' ',
+      'empty_column' => 0,
+    ),
+    'name_1' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
     ),
     'type' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
-    ),
-    'title' => array(
-      'sortable' => 1,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-    ),
-    'name_1' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
+      'empty_column' => 0,
     ),
     'message' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
-    ),
-    'name' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-    ),
-    'timestamp' => array(
-      'sortable' => 1,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
+      'empty_column' => 0,
     ),
     'hostname' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
+      'empty_column' => 0,
     ),
   );
   /* Relationship: Character sheet log: Character sheet log node */
@@ -2592,20 +2491,26 @@ return \'Characters\';';
   $handler->display->display_options['relationships']['uid_1']['table'] = 'node';
   $handler->display->display_options['relationships']['uid_1']['field'] = 'uid';
   $handler->display->display_options['relationships']['uid_1']['relationship'] = 'nid';
-  /* Field: Character sheet log: Log ID */
-  $handler->display->display_options['fields']['lid']['id'] = 'lid';
-  $handler->display->display_options['fields']['lid']['table'] = 'character_sheet_log';
-  $handler->display->display_options['fields']['lid']['field'] = 'lid';
-  /* Field: Character sheet log: Log type */
-  $handler->display->display_options['fields']['type']['id'] = 'type';
-  $handler->display->display_options['fields']['type']['table'] = 'character_sheet_log';
-  $handler->display->display_options['fields']['type']['field'] = 'type';
-  $handler->display->display_options['fields']['type']['hide_alter_empty'] = FALSE;
+  /* Field: Character sheet log: Timestamp */
+  $handler->display->display_options['fields']['timestamp']['id'] = 'timestamp';
+  $handler->display->display_options['fields']['timestamp']['table'] = 'character_sheet_log';
+  $handler->display->display_options['fields']['timestamp']['field'] = 'timestamp';
+  $handler->display->display_options['fields']['timestamp']['label'] = 'When';
+  $handler->display->display_options['fields']['timestamp']['hide_alter_empty'] = FALSE;
+  $handler->display->display_options['fields']['timestamp']['date_format'] = 'short';
+  /* Field: User: Name */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'users';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['relationship'] = 'uid';
+  $handler->display->display_options['fields']['name']['label'] = 'Changed By';
+  $handler->display->display_options['fields']['name']['hide_alter_empty'] = FALSE;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['relationship'] = 'nid';
+  $handler->display->display_options['fields']['title']['label'] = 'Character';
   $handler->display->display_options['fields']['title']['hide_alter_empty'] = FALSE;
   /* Field: User: Name */
   $handler->display->display_options['fields']['name_1']['id'] = 'name_1';
@@ -2613,51 +2518,192 @@ return \'Characters\';';
   $handler->display->display_options['fields']['name_1']['field'] = 'name';
   $handler->display->display_options['fields']['name_1']['relationship'] = 'uid_1';
   $handler->display->display_options['fields']['name_1']['label'] = 'Player';
+  $handler->display->display_options['fields']['name_1']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['name_1']['alter']['text'] = '([name_1])';
   $handler->display->display_options['fields']['name_1']['hide_alter_empty'] = FALSE;
+  /* Field: Character sheet log: Log type */
+  $handler->display->display_options['fields']['type']['id'] = 'type';
+  $handler->display->display_options['fields']['type']['table'] = 'character_sheet_log';
+  $handler->display->display_options['fields']['type']['field'] = 'type';
+  $handler->display->display_options['fields']['type']['hide_alter_empty'] = FALSE;
   /* Field: Character sheet log: Message */
   $handler->display->display_options['fields']['message']['id'] = 'message';
   $handler->display->display_options['fields']['message']['table'] = 'character_sheet_log';
   $handler->display->display_options['fields']['message']['field'] = 'message';
+  $handler->display->display_options['fields']['message']['alter']['text'] = '[message]';
+  $handler->display->display_options['fields']['message']['alter']['trim_whitespace'] = TRUE;
+  $handler->display->display_options['fields']['message']['alter']['strip_tags'] = TRUE;
   $handler->display->display_options['fields']['message']['hide_alter_empty'] = FALSE;
-  /* Field: User: Name */
-  $handler->display->display_options['fields']['name']['id'] = 'name';
-  $handler->display->display_options['fields']['name']['table'] = 'users';
-  $handler->display->display_options['fields']['name']['field'] = 'name';
-  $handler->display->display_options['fields']['name']['relationship'] = 'uid';
-  $handler->display->display_options['fields']['name']['label'] = 'Logged user';
-  $handler->display->display_options['fields']['name']['hide_alter_empty'] = FALSE;
-  /* Field: Character sheet log: Timestamp */
-  $handler->display->display_options['fields']['timestamp']['id'] = 'timestamp';
-  $handler->display->display_options['fields']['timestamp']['table'] = 'character_sheet_log';
-  $handler->display->display_options['fields']['timestamp']['field'] = 'timestamp';
-  $handler->display->display_options['fields']['timestamp']['hide_alter_empty'] = FALSE;
-  $handler->display->display_options['fields']['timestamp']['date_format'] = 'long';
-  /* Field: Character sheet log: Hostname */
-  $handler->display->display_options['fields']['hostname']['id'] = 'hostname';
-  $handler->display->display_options['fields']['hostname']['table'] = 'character_sheet_log';
-  $handler->display->display_options['fields']['hostname']['field'] = 'hostname';
-  $handler->display->display_options['fields']['hostname']['hide_alter_empty'] = FALSE;
   /* Sort criterion: Character sheet log: Timestamp */
   $handler->display->display_options['sorts']['timestamp']['id'] = 'timestamp';
   $handler->display->display_options['sorts']['timestamp']['table'] = 'character_sheet_log';
   $handler->display->display_options['sorts']['timestamp']['field'] = 'timestamp';
   $handler->display->display_options['sorts']['timestamp']['order'] = 'DESC';
+  /* Filter criterion: Content: Title */
+  $handler->display->display_options['filters']['title']['id'] = 'title';
+  $handler->display->display_options['filters']['title']['table'] = 'node';
+  $handler->display->display_options['filters']['title']['field'] = 'title';
+  $handler->display->display_options['filters']['title']['relationship'] = 'nid';
+  $handler->display->display_options['filters']['title']['operator'] = 'contains';
+  $handler->display->display_options['filters']['title']['group'] = 1;
+  $handler->display->display_options['filters']['title']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['title']['expose']['operator_id'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['label'] = 'Character';
+  $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
+  $handler->display->display_options['filters']['title']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['title']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    8 => 0,
+    19 => 0,
+    12 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    9 => 0,
+    20 => 0,
+    14 => 0,
+    4 => 0,
+    3 => 0,
+    11 => 0,
+  );
+  /* Filter criterion: User: Name */
+  $handler->display->display_options['filters']['uid_1']['id'] = 'uid_1';
+  $handler->display->display_options['filters']['uid_1']['table'] = 'users';
+  $handler->display->display_options['filters']['uid_1']['field'] = 'uid';
+  $handler->display->display_options['filters']['uid_1']['relationship'] = 'uid';
+  $handler->display->display_options['filters']['uid_1']['value'] = '';
+  $handler->display->display_options['filters']['uid_1']['group'] = 1;
+  $handler->display->display_options['filters']['uid_1']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['uid_1']['expose']['operator_id'] = 'uid_1_op';
+  $handler->display->display_options['filters']['uid_1']['expose']['label'] = 'Player';
+  $handler->display->display_options['filters']['uid_1']['expose']['operator'] = 'uid_1_op';
+  $handler->display->display_options['filters']['uid_1']['expose']['identifier'] = 'uid_1';
+  $handler->display->display_options['filters']['uid_1']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['uid_1']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    8 => 0,
+    19 => 0,
+    12 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    9 => 0,
+    20 => 0,
+    14 => 0,
+    4 => 0,
+    3 => 0,
+    11 => 0,
+  );
+  /* Filter criterion: User: Name */
+  $handler->display->display_options['filters']['uid']['id'] = 'uid';
+  $handler->display->display_options['filters']['uid']['table'] = 'users';
+  $handler->display->display_options['filters']['uid']['field'] = 'uid';
+  $handler->display->display_options['filters']['uid']['relationship'] = 'uid';
+  $handler->display->display_options['filters']['uid']['value'] = '';
+  $handler->display->display_options['filters']['uid']['group'] = 1;
+  $handler->display->display_options['filters']['uid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['uid']['expose']['operator_id'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['label'] = 'Changed By';
+  $handler->display->display_options['filters']['uid']['expose']['operator'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['identifier'] = 'uid';
+  $handler->display->display_options['filters']['uid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['uid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    8 => 0,
+    19 => 0,
+    12 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    9 => 0,
+    20 => 0,
+    14 => 0,
+    4 => 0,
+    3 => 0,
+    11 => 0,
+  );
+  /* Filter criterion: Character sheet log: Log type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'character_sheet_log';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['operator'] = 'contains';
+  $handler->display->display_options['filters']['type']['group'] = 1;
+  $handler->display->display_options['filters']['type']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['type']['expose']['operator_id'] = 'type_op';
+  $handler->display->display_options['filters']['type']['expose']['label'] = 'Log type';
+  $handler->display->display_options['filters']['type']['expose']['operator'] = 'type_op';
+  $handler->display->display_options['filters']['type']['expose']['identifier'] = 'type';
+  $handler->display->display_options['filters']['type']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['type']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    8 => 0,
+    19 => 0,
+    12 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    9 => 0,
+    20 => 0,
+    14 => 0,
+    4 => 0,
+    3 => 0,
+    11 => 0,
+  );
+  /* Filter criterion: Character sheet log: Hostname */
+  $handler->display->display_options['filters']['hostname']['id'] = 'hostname';
+  $handler->display->display_options['filters']['hostname']['table'] = 'character_sheet_log';
+  $handler->display->display_options['filters']['hostname']['field'] = 'hostname';
+  $handler->display->display_options['filters']['hostname']['operator'] = 'contains';
+  $handler->display->display_options['filters']['hostname']['group'] = 1;
+  $handler->display->display_options['filters']['hostname']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['hostname']['expose']['operator_id'] = 'hostname_op';
+  $handler->display->display_options['filters']['hostname']['expose']['label'] = 'IP Address';
+  $handler->display->display_options['filters']['hostname']['expose']['operator'] = 'hostname_op';
+  $handler->display->display_options['filters']['hostname']['expose']['identifier'] = 'hostname';
+  $handler->display->display_options['filters']['hostname']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['hostname']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    8 => 0,
+    19 => 0,
+    12 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    9 => 0,
+    20 => 0,
+    14 => 0,
+    4 => 0,
+    3 => 0,
+    11 => 0,
+  );
 
-  /* Display: Character evaluation log */
-  $handler = $view->new_display('page', 'Character evaluation log', 'character_evaluation_log');
-  $handler->display->display_options['display_description'] = 'Character evaluation log';
+  /* Display: Character changes log */
+  $handler = $view->new_display('page', 'Character changes log', 'character_changes_log');
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
-  $handler->display->display_options['path'] = 'character-sheets/evaluate/log';
-  $handler->display->display_options['menu']['type'] = 'tab';
-  $handler->display->display_options['menu']['title'] = 'Evaluation log';
-  $handler->display->display_options['menu']['description'] = 'Evaluation log';
+  $handler->display->display_options['path'] = 'character-log';
+  $handler->display->display_options['menu']['type'] = 'normal';
+  $handler->display->display_options['menu']['title'] = 'Character change log';
+  $handler->display->display_options['menu']['description'] = 'Character change log';
   $handler->display->display_options['menu']['weight'] = '3';
   $handler->display->display_options['menu']['name'] = 'menu-vaxia';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
   $export['character_sheet_moderation_log'] = $view;
 
   $view = new view();
   $view->name = 'chat_archives';
-  $view->description = 'Chat Archives';
+  $view->description = 'View the archives of posts in a specific chatroom';
   $view->tag = 'Vaxia';
   $view->base_table = 'comment';
   $view->human_name = 'Chat Archives';
@@ -3130,7 +3176,7 @@ return \'Characters\';';
   $handler->display->display_options['filters']['rid']['reduce_duplicates'] = TRUE;
 
   /* Display: Oversight NPCS */
-  $handler = $view->new_display('page', 'Oversight NPCS', 'page');
+  $handler = $view->new_display('page', 'Oversight NPCS', 'oversight_npcs');
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
@@ -3422,7 +3468,7 @@ return \'Characters\';';
   $handler->display->display_options['tab_options']['name'] = 'menu-vaxia';
 
   /* Display: Oversight Items */
-  $handler = $view->new_display('page', 'Oversight Items', 'page_1');
+  $handler = $view->new_display('page', 'Oversight Items', 'oversight_items');
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
@@ -3744,7 +3790,7 @@ return \'Characters\';';
 
   $view = new view();
   $view->name = 'players';
-  $view->description = 'Players';
+  $view->description = 'View a list of all players';
   $view->tag = 'Vaxia';
   $view->base_table = 'users';
   $view->human_name = 'Players';
@@ -3803,8 +3849,7 @@ return \'Characters\';';
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
 
   /* Display: Players */
-  $handler = $view->new_display('page', 'Players', 'all_players');
-  $handler->display->display_options['display_description'] = 'Players';
+  $handler = $view->new_display('page', 'Players', 'players');
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['path'] = 'players';
   $handler->display->display_options['menu']['type'] = 'normal';
@@ -3822,7 +3867,7 @@ return \'Characters\';';
 
   $view = new view();
   $view->name = 'rpg_chats';
-  $view->description = 'RPG Chats';
+  $view->description = 'Display a list of RPG chats';
   $view->tag = 'Vaxia';
   $view->base_table = 'node';
   $view->human_name = 'RPG Chats';
@@ -3920,7 +3965,6 @@ return \'Characters\';';
 
   /* Display: RPG Chats */
   $handler = $view->new_display('page', 'RPG Chats', 'rpg_chats');
-  $handler->display->display_options['display_description'] = 'RPG Chats';
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'table';
@@ -4202,7 +4246,7 @@ return \'Characters\';';
   $view = new view();
   $view->name = 'sessions';
   $view->description = 'A list of your sessions';
-  $view->tag = 'default';
+  $view->tag = 'Vaxia';
   $view->base_table = 'node';
   $view->human_name = 'Sessions';
   $view->core = 7;
@@ -4348,15 +4392,15 @@ return \'Characters\';';
   );
 
   /* Display: Sessions */
-  $handler = $view->new_display('page', 'Sessions', 'page');
-  $handler->display->display_options['display_description'] = 'Sessions';
+  $handler = $view->new_display('page', 'Sessions', 'sessions');
+  $handler->display->display_options['display_description'] = 'A list of all sessions';
   $handler->display->display_options['path'] = 'sessions';
   $handler->display->display_options['menu']['type'] = 'normal';
   $handler->display->display_options['menu']['title'] = 'Sessions';
   $handler->display->display_options['menu']['name'] = 'menu-vaxia';
 
   /* Display: Character sessions */
-  $handler = $view->new_display('page', 'Character sessions', 'page_1');
+  $handler = $view->new_display('page', 'Character sessions', 'character_sessions');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Character sessions';
   $handler->display->display_options['display_description'] = 'Character sessions';
@@ -4438,9 +4482,9 @@ return \'Characters\';';
   $handler->display->display_options['menu']['context_only_inline'] = 0;
 
   /* Display: SH sessions */
-  $handler = $view->new_display('page', 'SH sessions', 'page_2');
+  $handler = $view->new_display('page', 'SH sessions', 'sh_sessions');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Sessions';
+  $handler->display->display_options['title'] = 'SH Sessions';
   $handler->display->display_options['display_description'] = 'SH sessions';
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: User: Name */
@@ -4519,8 +4563,8 @@ return \'Characters\';';
 
   $view = new view();
   $view->name = 'storytellers_and_assistants';
-  $view->description = 'Storytellers and Assistants';
-  $view->tag = 'default';
+  $view->description = 'Show a list of SHs and ASHs';
+  $view->tag = 'Vaxia';
   $view->base_table = 'users';
   $view->human_name = 'Storytellers and Assistants';
   $view->core = 7;
@@ -4691,15 +4735,15 @@ return $output;';
   $handler->display->display_options['filters']['rid']['group'] = 1;
   $handler->display->display_options['filters']['rid']['reduce_duplicates'] = TRUE;
 
-  /* Display: Page */
-  $handler = $view->new_display('page', 'Page', 'page');
+  /* Display: Storytellers and Assistants */
+  $handler = $view->new_display('page', 'Storytellers and Assistants', 'sh_and_ash');
   $handler->display->display_options['path'] = 'wiki/storytellers-and-assistants';
   $export['storytellers_and_assistants'] = $view;
 
   $view = new view();
   $view->name = 'tolex_power_search';
-  $view->description = '';
-  $view->tag = 'default';
+  $view->description = 'Power Search for RP on site';
+  $view->tag = 'Vaxia';
   $view->base_table = 'comment';
   $view->human_name = 'Tolex Power Search';
   $view->core = 7;
@@ -4950,8 +4994,8 @@ return $output;';
     4 => 0,
   );
 
-  /* Display: Page */
-  $handler = $view->new_display('page', 'Page', 'page');
+  /* Display: Power Search */
+  $handler = $view->new_display('page', 'Power Search', 'power_search');
   $handler->display->display_options['path'] = 'power-search-archive';
   $handler->display->display_options['menu']['type'] = 'normal';
   $handler->display->display_options['menu']['title'] = 'Power search';
@@ -4964,8 +5008,8 @@ return $output;';
 
   $view = new view();
   $view->name = 'top_tens';
-  $view->description = 'Top Tens';
-  $view->tag = 'default';
+  $view->description = 'View the top tens';
+  $view->tag = 'Vaxia';
   $view->base_table = 'vaxia_xp_type_totals';
   $view->human_name = 'Top Tens';
   $view->core = 7;
@@ -5068,7 +5112,12 @@ return $output;';
   $handler->display->display_options['footer']['area']['table'] = 'views';
   $handler->display->display_options['footer']['area']['field'] = 'area';
   $handler->display->display_options['footer']['area']['empty'] = TRUE;
-  $handler->display->display_options['footer']['area']['content'] = '<div style="clear:both;">NOTE: This display updates once a day, due to impact on the database.</div>';
+  $handler->display->display_options['footer']['area']['content'] = '<div style="clear:both;">&nbsp;</div>
+<p>Since SHs can reward multiple flavors of XP in a session you should read the Top Ten rankings as a whole. While a character may have a high raking in Evil XP, they may also have a high ranking in Good XP. These are an eyeball summary of a character\'s behavior overall.</p>
+
+<p>Rankings should not be taken as an indication of anything more than activity levels of characters. Some characters have a long history on the site and a long record of XP to show for it, while others are much newer but also much more active. Rankings on this page reflect the activities of individual characters and should not be used to rank players.</p>
+
+<p>The Top Ten shows appreciation for those players who have consistently portrayed  their characters through their actions over time.</p>';
   $handler->display->display_options['footer']['area']['format'] = 'full_html';
   /* Relationship: Vaxia type xp: Vaxia sheet xp node */
   $handler->display->display_options['relationships']['nid']['id'] = 'nid';
@@ -5236,7 +5285,6 @@ return TRUE;';
 
   /* Display: Top Tens */
   $handler = $view->new_display('page', 'Top Tens', 'top_ten_page');
-  $handler->display->display_options['display_description'] = 'Top Tens';
   $handler->display->display_options['path'] = 'top-ten-displays';
   $handler->display->display_options['menu']['type'] = 'normal';
   $handler->display->display_options['menu']['title'] = 'Top tens';
@@ -5249,8 +5297,8 @@ return TRUE;';
 
   $view = new view();
   $view->name = 'total_top_ten';
-  $view->description = 'Total top ten';
-  $view->tag = 'default';
+  $view->description = 'A view of the total top tens';
+  $view->tag = 'Vaxia';
   $view->base_table = 'character_sheet_xp';
   $view->human_name = 'Total top ten';
   $view->core = 7;
@@ -5259,7 +5307,7 @@ return TRUE;';
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Total top ten';
+  $handler->display->display_options['title'] = 'Total Top Ten';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'role';
   $handler->display->display_options['access']['role'] = array(
@@ -5512,8 +5560,8 @@ if ($displayed < 11) {
 }
 return TRUE;';
 
-  /* Display: Page */
-  $handler = $view->new_display('page', 'Page', 'top_ten_page_two');
+  /* Display: Total Top Ten */
+  $handler = $view->new_display('page', 'Total Top Ten', 'top_ten_page_two');
   $handler->display->display_options['path'] = 'total-top-ten';
   $export['total_top_ten'] = $view;
 

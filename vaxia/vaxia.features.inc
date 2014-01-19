@@ -231,28 +231,42 @@ function vaxia_workflow_default_workflows() {
       ),
       1 => array(
         'state' => 'draft',
-        'weight' => '0',
+        'weight' => '-19',
         'sysid' => '0',
         'status' => '1',
         'name' => 'Item evaluation workflow',
       ),
       2 => array(
         'state' => 'submitted',
-        'weight' => '0',
+        'weight' => '-18',
         'sysid' => '0',
         'status' => '1',
         'name' => 'Item evaluation workflow',
       ),
       3 => array(
         'state' => 'approved',
-        'weight' => '0',
+        'weight' => '-17',
         'sysid' => '0',
         'status' => '1',
         'name' => 'Item evaluation workflow',
       ),
       4 => array(
         'state' => 'disapproved',
-        'weight' => '0',
+        'weight' => '-16',
+        'sysid' => '0',
+        'status' => '1',
+        'name' => 'Item evaluation workflow',
+      ),
+      5 => array(
+        'state' => 'moved to property tab',
+        'weight' => '-15',
+        'sysid' => '0',
+        'status' => '1',
+        'name' => 'Item evaluation workflow',
+      ),
+      6 => array(
+        'state' => 'removed from game',
+        'weight' => '-14',
         'sysid' => '0',
         'status' => '1',
         'name' => 'Item evaluation workflow',
@@ -270,7 +284,7 @@ function vaxia_workflow_default_workflows() {
         'target_state' => 'submitted',
       ),
       2 => array(
-        'roles' => 'workflow_features_author_name,administrator-vaxia,administrator',
+        'roles' => 'workflow_features_author_name,storyteller,evaluator,administrator-vaxia,administrator',
         'state' => 'draft',
         'target_state' => 'submitted',
       ),
@@ -285,49 +299,129 @@ function vaxia_workflow_default_workflows() {
         'target_state' => 'disapproved',
       ),
       5 => array(
-        'roles' => 'storyteller,administrator-vaxia,administrator',
+        'roles' => 'storyteller,evaluator,administrator-vaxia,administrator',
         'state' => 'submitted',
         'target_state' => 'draft',
       ),
       6 => array(
-        'roles' => 'storyteller,administrator-vaxia,administrator',
+        'roles' => 'storyteller,evaluator,administrator-vaxia,administrator',
         'state' => 'submitted',
         'target_state' => 'approved',
       ),
       7 => array(
-        'roles' => 'storyteller,administrator-vaxia,administrator',
+        'roles' => 'storyteller,evaluator,administrator-vaxia,administrator',
         'state' => 'submitted',
         'target_state' => 'disapproved',
       ),
       8 => array(
-        'roles' => 'storyteller,administrator-vaxia,administrator',
+        'roles' => 'storyteller,evaluator,administrator-vaxia,administrator',
+        'state' => 'submitted',
+        'target_state' => 'moved to property tab',
+      ),
+      9 => array(
+        'roles' => 'administrator-vaxia,administrator',
+        'state' => 'submitted',
+        'target_state' => 'removed from game',
+      ),
+      10 => array(
+        'roles' => 'storyteller,evaluator,administrator-vaxia,administrator',
         'state' => 'approved',
         'target_state' => 'draft',
       ),
-      9 => array(
-        'roles' => 'storyteller,administrator-vaxia,administrator',
+      11 => array(
+        'roles' => 'storyteller,evaluator,administrator-vaxia,administrator',
         'state' => 'approved',
         'target_state' => 'submitted',
       ),
-      10 => array(
-        'roles' => 'storyteller,administrator-vaxia,administrator',
+      12 => array(
+        'roles' => 'storyteller,evaluator,administrator-vaxia,administrator',
         'state' => 'approved',
         'target_state' => 'disapproved',
       ),
-      11 => array(
+      13 => array(
+        'roles' => 'storyteller,evaluator,administrator-vaxia,administrator',
+        'state' => 'approved',
+        'target_state' => 'moved to property tab',
+      ),
+      14 => array(
+        'roles' => 'storyteller,evaluator,administrator-vaxia,administrator',
+        'state' => 'approved',
+        'target_state' => 'removed from game',
+      ),
+      15 => array(
         'roles' => 'administrator-vaxia,administrator',
         'state' => 'disapproved',
         'target_state' => 'draft',
       ),
-      12 => array(
+      16 => array(
         'roles' => 'administrator-vaxia,administrator',
         'state' => 'disapproved',
         'target_state' => 'submitted',
       ),
-      13 => array(
+      17 => array(
         'roles' => 'administrator-vaxia,administrator',
         'state' => 'disapproved',
         'target_state' => 'approved',
+      ),
+      18 => array(
+        'roles' => 'administrator-vaxia,administrator',
+        'state' => 'disapproved',
+        'target_state' => 'moved to property tab',
+      ),
+      19 => array(
+        'roles' => 'administrator-vaxia,administrator',
+        'state' => 'disapproved',
+        'target_state' => 'removed from game',
+      ),
+      20 => array(
+        'roles' => 'administrator-vaxia,administrator',
+        'state' => 'moved to property tab',
+        'target_state' => 'draft',
+      ),
+      21 => array(
+        'roles' => 'administrator-vaxia,administrator',
+        'state' => 'moved to property tab',
+        'target_state' => 'submitted',
+      ),
+      22 => array(
+        'roles' => 'administrator-vaxia,administrator',
+        'state' => 'moved to property tab',
+        'target_state' => 'approved',
+      ),
+      23 => array(
+        'roles' => 'administrator-vaxia,administrator',
+        'state' => 'moved to property tab',
+        'target_state' => 'disapproved',
+      ),
+      24 => array(
+        'roles' => 'administrator-vaxia,administrator',
+        'state' => 'moved to property tab',
+        'target_state' => 'removed from game',
+      ),
+      25 => array(
+        'roles' => 'administrator-vaxia,administrator',
+        'state' => 'removed from game',
+        'target_state' => 'draft',
+      ),
+      26 => array(
+        'roles' => 'administrator-vaxia,administrator',
+        'state' => 'removed from game',
+        'target_state' => 'submitted',
+      ),
+      27 => array(
+        'roles' => 'administrator-vaxia,administrator',
+        'state' => 'removed from game',
+        'target_state' => 'approved',
+      ),
+      28 => array(
+        'roles' => 'administrator-vaxia,administrator',
+        'state' => 'removed from game',
+        'target_state' => 'disapproved',
+      ),
+      29 => array(
+        'roles' => 'administrator-vaxia,administrator',
+        'state' => 'removed from game',
+        'target_state' => 'moved to property tab',
       ),
     ),
     'node_types' => array(

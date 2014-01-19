@@ -48,6 +48,12 @@ function vaxia_accounts_field_default_fields() {
       'deleted' => '0',
       'description' => 'Describe the situation, include players related to the event - and all documentary evidence as an attached file. THIS IS REQUIRED. We want documentation to be transparent so the next time an issue comes up the reviewing SH can see all prior data incase you yourself are no longer available for comment. Please leave a track record for others.',
       'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'default' => array(
           'label' => 'above',
           'module' => 'text',
@@ -156,6 +162,12 @@ function vaxia_accounts_field_default_fields() {
       'deleted' => '0',
       'description' => 'Category - the type of offense.',
       'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'default' => array(
           'label' => 'above',
           'module' => 'list',
@@ -223,6 +235,12 @@ function vaxia_accounts_field_default_fields() {
       'deleted' => '0',
       'description' => 'Screenshots, interviews, and other documentary evidence of misconduct. Please include this information as part of the case for the strike so that if a pattern emerges other SHs have all documentation on hand as needed if you are not available at the time.',
       'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'default' => array(
           'label' => 'above',
           'module' => 'file',
@@ -314,6 +332,12 @@ function vaxia_accounts_field_default_fields() {
       'deleted' => '0',
       'description' => 'The player being striked. All misbehaviors on any character in any setting are strikes against the player account.',
       'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'default' => array(
           'label' => 'above',
           'module' => 'user_reference',
@@ -385,6 +409,12 @@ function vaxia_accounts_field_default_fields() {
       'deleted' => '0',
       'description' => 'A yellow warning, like a yellow card in soccer is a moderate warning but does not immediately require a suspension. A red warning is a ban-able offense and should come with a temporary suspension from the site. Multiple yellow warnings can be upgraded to a red. Multiple red warnings can be upgraded to a permanent ban, as needed for the health of the site.',
       'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'default' => array(
           'label' => 'above',
           'module' => 'list',

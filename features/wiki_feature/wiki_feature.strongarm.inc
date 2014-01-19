@@ -66,7 +66,7 @@ function wiki_feature_strongarm() {
   $strongarm->value = array(
     'view_modes' => array(
       'teaser' => array(
-        'custom_settings' => TRUE,
+        'custom_settings' => FALSE,
       ),
       'full' => array(
         'custom_settings' => FALSE,
@@ -89,6 +89,9 @@ function wiki_feature_strongarm() {
       'ical' => array(
         'custom_settings' => FALSE,
       ),
+      'artwork' => array(
+        'custom_settings' => FALSE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(
@@ -96,23 +99,23 @@ function wiki_feature_strongarm() {
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '2',
+          'weight' => '7',
         ),
         'workflow' => array(
-          'weight' => '6',
+          'weight' => '8',
         ),
       ),
       'display' => array(
         'workflow_current_state' => array(
           'default' => array(
-            'weight' => '-99',
+            'weight' => '5',
             'visible' => TRUE,
           ),
         ),
         'workflow' => array(
           'default' => array(
-            'weight' => '99',
-            'visible' => TRUE,
+            'weight' => '6',
+            'visible' => FALSE,
           ),
         ),
       ),

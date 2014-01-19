@@ -13,9 +13,9 @@ function item_shop_views_default_views() {
   $view = new view();
   $view->name = 'item_shop';
   $view->description = 'Display items for item shop';
-  $view->tag = 'Vaxia item shop';
+  $view->tag = 'Vaxia';
   $view->base_table = 'node';
-  $view->human_name = 'Item shop';
+  $view->human_name = 'Item Shop';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
@@ -291,8 +291,8 @@ if ($realm != $this_realm) {
 
 return FALSE;';
 
-  /* Display: Page */
-  $handler = $view->new_display('page', 'Page', 'item_shop');
+  /* Display: Item Shop */
+  $handler = $view->new_display('page', 'Item Shop', 'item_shop');
   $handler->display->display_options['path'] = 'node/%/item_shop';
   $handler->display->display_options['menu']['type'] = 'tab';
   $handler->display->display_options['menu']['title'] = 'Item shop';

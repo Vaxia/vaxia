@@ -48,12 +48,6 @@ function wiki_feature_field_default_fields() {
       'deleted' => '0',
       'description' => '',
       'display' => array(
-        'artwork' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
         'default' => array(
           'label' => 'hidden',
           'module' => 'text',
@@ -114,7 +108,7 @@ function wiki_feature_field_default_fields() {
           'summary_rows' => 5,
         ),
         'type' => 'text_textarea_with_summary',
-        'weight' => '3',
+        'weight' => '2',
       ),
     ),
   );
@@ -162,18 +156,12 @@ function wiki_feature_field_default_fields() {
       'deleted' => '0',
       'description' => '',
       'display' => array(
-        'artwork' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'taxonomy',
           'settings' => array(),
           'type' => 'taxonomy_term_reference_link',
-          'weight' => '2',
+          'weight' => '4',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -184,7 +172,7 @@ function wiki_feature_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_additional_tagging',
-      'label' => 'Additional tagging',
+      'label' => 'Tags',
       'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
@@ -238,23 +226,11 @@ function wiki_feature_field_default_fields() {
       'deleted' => '0',
       'description' => '',
       'display' => array(
-        'artwork' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
         'default' => array(
           'label' => 'hidden',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '3',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
+          'weight' => '7',
         ),
       ),
       'entity_type' => 'node',
@@ -319,18 +295,12 @@ function wiki_feature_field_default_fields() {
       'deleted' => '0',
       'description' => 'Check the relevant category for this article, this will help us sort out areas of the wiki by over-arching segment of the site.',
       'display' => array(
-        'artwork' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'taxonomy',
           'settings' => array(),
           'type' => 'taxonomy_term_reference_link',
-          'weight' => '1',
+          'weight' => '3',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -341,7 +311,7 @@ function wiki_feature_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_wiki_categories',
-      'label' => 'Wiki categories',
+      'label' => 'Categories',
       'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
@@ -351,7 +321,7 @@ function wiki_feature_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '7',
+        'weight' => '5',
       ),
     ),
   );
@@ -395,18 +365,12 @@ function wiki_feature_field_default_fields() {
       'deleted' => '0',
       'description' => 'Upload any files to go with this article.',
       'display' => array(
-        'artwork' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
         'default' => array(
-          'label' => 'hidden',
+          'label' => 'inline',
           'module' => 'file',
           'settings' => array(),
           'type' => 'file_table',
-          'weight' => '5',
+          'weight' => '2',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -417,7 +381,7 @@ function wiki_feature_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_wiki_files',
-      'label' => 'Wiki files',
+      'label' => 'Files',
       'required' => 0,
       'settings' => array(
         'description_field' => 1,
@@ -433,7 +397,7 @@ function wiki_feature_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '5',
+        'weight' => '4',
       ),
     ),
   );
@@ -476,12 +440,6 @@ function wiki_feature_field_default_fields() {
       'deleted' => '0',
       'description' => 'Upload any images to go with this article.',
       'display' => array(
-        'artwork' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
         'default' => array(
           'label' => 'hidden',
           'module' => 'image',
@@ -490,7 +448,7 @@ function wiki_feature_field_default_fields() {
             'image_style' => 'medium',
           ),
           'type' => 'image',
-          'weight' => '4',
+          'weight' => '1',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -501,7 +459,7 @@ function wiki_feature_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_wiki_images',
-      'label' => 'Wiki images',
+      'label' => 'Images',
       'required' => 0,
       'settings' => array(
         'alt_field' => 1,
@@ -522,22 +480,22 @@ function wiki_feature_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'image_image',
-        'weight' => '4',
+        'weight' => '3',
       ),
     ),
   );
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('Additional tagging');
   t('Body');
+  t('Categories');
   t('Check the relevant category for this article, this will help us sort out areas of the wiki by over-arching segment of the site.');
+  t('Files');
   t('Flag for deletion');
+  t('Images');
+  t('Tags');
   t('Upload any files to go with this article.');
   t('Upload any images to go with this article.');
-  t('Wiki categories');
-  t('Wiki files');
-  t('Wiki images');
 
   return $fields;
 }

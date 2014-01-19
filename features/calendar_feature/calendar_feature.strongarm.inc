@@ -66,7 +66,7 @@ function calendar_feature_strongarm() {
   $strongarm->value = array(
     'view_modes' => array(
       'teaser' => array(
-        'custom_settings' => TRUE,
+        'custom_settings' => FALSE,
       ),
       'full' => array(
         'custom_settings' => FALSE,
@@ -88,6 +88,9 @@ function calendar_feature_strongarm() {
       ),
       'ical' => array(
         'custom_settings' => TRUE,
+      ),
+      'artwork' => array(
+        'custom_settings' => FALSE,
       ),
     ),
     'extra_fields' => array(

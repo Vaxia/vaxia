@@ -48,12 +48,6 @@ function calendar_feature_field_default_fields() {
       'deleted' => '0',
       'description' => '',
       'display' => array(
-        'artwork' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
         'default' => array(
           'label' => 'hidden',
           'module' => 'text',
@@ -64,8 +58,10 @@ function calendar_feature_field_default_fields() {
         'ical' => array(
           'label' => 'hidden',
           'module' => 'text',
-          'settings' => array(),
-          'type' => 'text_default',
+          'settings' => array(
+            'trim_length' => '400',
+          ),
+          'type' => 'text_trimmed',
           'weight' => '0',
         ),
         'teaser' => array(
@@ -153,12 +149,6 @@ function calendar_feature_field_default_fields() {
       'deleted' => '0',
       'description' => '',
       'display' => array(
-        'artwork' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
         'default' => array(
           'label' => 'hidden',
           'module' => 'fivestar',
@@ -178,12 +168,6 @@ function calendar_feature_field_default_fields() {
           'settings' => array(),
           'type' => 'hidden',
           'weight' => '3',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
         ),
       ),
       'entity_type' => 'node',
@@ -245,12 +229,6 @@ function calendar_feature_field_default_fields() {
       'deleted' => '0',
       'description' => 'This field can handle your timezone shift for you. Make sure you configure your preferred time-zone under <a href="/user">your account information</a>. After you set that, dates and times throughout this site will be displayed using your time zone. This allows you to enter times in your preferred time zone. They will display for other site members in their preferred time zone and on the calendar in default EST.',
       'display' => array(
-        'artwork' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'date',
@@ -270,12 +248,6 @@ function calendar_feature_field_default_fields() {
           'settings' => array(),
           'type' => 'hidden',
           'weight' => '1',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
         ),
       ),
       'entity_type' => 'node',
@@ -350,12 +322,6 @@ function calendar_feature_field_default_fields() {
       'deleted' => '0',
       'description' => '',
       'display' => array(
-        'artwork' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
         'default' => array(
           'label' => 'above',
           'module' => 'taxonomy',
@@ -368,12 +334,6 @@ function calendar_feature_field_default_fields() {
           'settings' => array(),
           'type' => 'hidden',
           'weight' => '2',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
         ),
       ),
       'entity_type' => 'node',

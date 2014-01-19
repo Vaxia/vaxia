@@ -13,25 +13,25 @@ function vaxia_user_default_roles() {
   // Exported role: administrator-vaxia.
   $roles['administrator-vaxia'] = array(
     'name' => 'administrator-vaxia',
-    'weight' => '10',
+    'weight' => '12',
   );
 
   // Exported role: player.
   $roles['player'] = array(
     'name' => 'player',
-    'weight' => '3',
+    'weight' => '2',
   );
 
   // Exported role: storyteller.
   $roles['storyteller'] = array(
     'name' => 'storyteller',
-    'weight' => '8',
+    'weight' => '9',
   );
 
   // Exported role: storyteller-assistant.
   $roles['storyteller-assistant'] = array(
     'name' => 'storyteller-assistant',
-    'weight' => '5',
+    'weight' => '6',
   );
 
   return $roles;

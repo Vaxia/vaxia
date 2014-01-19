@@ -48,6 +48,12 @@ function vaxia_sh_test_field_default_fields() {
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'default' => array(
           'label' => 'hidden',
           'module' => 'text',
