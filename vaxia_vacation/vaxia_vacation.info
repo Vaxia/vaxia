@@ -1,6 +1,0 @@
-name = Vaxia vacation mode
-description = Adding vacation mode to the user settings page
-core = 7.x
-package = Vaxia
-version = 7.x-1.0
-dependencies[] = vaxia

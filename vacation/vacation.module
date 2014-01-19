@@ -5,13 +5,68 @@
  */
 
 /**
+ * Implements hook_permission().
+ */
+function vacation_permission() {
+  return array(
+    'administer vacation'=> array(
+      'title' => t('administer vacation'),
+      'description' => t('Administer vacation.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function vacation_menu() {
+  $items['admin/config/search/vacation'] = array(
+    'title' => 'Vacation configurations',
+    'description' => 'Vacation configurations',
+    'type' => MENU_NORMAL_ITEM,
+    'access arguments' => array('administer vacation'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('vacation_admin_form'),
+  );
+  return $items;
+}
+
+/**
+ * Menu callback for admin page.
+ */
+function vacation_admin_form() {
+  $form = array();
+  $roles = ();
+  foreach (user_roles() as $rid => $name) {
+    $roles[$name] = $name;
+  }
+  $form['vacation_roles'] = array(
+    '#title' => t('Vacation roles'),
+    '#type' => 'select',
+    '#options' =>  $roles,
+    '#default_value' => variable_get('vacation_roles', array()),
+  );
+  $default_message = t('<b>If you know you will be absent for some time: Please let us know! '.
+    'We need to know if you\'ll be around or not.</b> <br/> When you go on vcation mode all of ' .
+    'your additional permissions are removed. During this time you will not recieve emails, ' .
+    'notifications, or other communications from the site and we won\'t expect you to perform ' .
+    'duties. When you return, hit the button and your permissions will be returned to you.');
+  $form['vacation_description'] = array(
+    '#title' => t('Vacation descriptions'),
+    '#type' => 'textarea',
+    '#default_value' => variable_get('vacation_description', $default_message),
+  );
+  return system_settings_form($form);
+}
+
+/**
  * Implements hook_rules_event_info().
  */
 function vacation_rules_event_info() {
   $items = array(
     'vacation_start' => array(
-      'label' => t('Vaxia vacation start'),
-      'group' => t('Vaxia'),
+      'label' => t('Vacation start'),
+      'group' => t('Vacation'),
       'variables' => array(
         'user' => array(
             'type' => 'user',
@@ -20,8 +75,8 @@ function vacation_rules_event_info() {
       ),
     ),
     'vacation_end' => array(
-      'label' => t('Vaxia vacation end'),
-      'group' => t('Vaxia'),
+      'label' => t('Vacation end'),
+      'group' => t('Vacation'),
       'variables' => array(
         'user' => array(
             'type' => 'user',
@@ -38,7 +93,8 @@ function vacation_rules_event_info() {
  */
 function vacation_form_user_profile_form_alter(&$form, &$form_state) {
   // If user account has any of the roles to watch for.
-  $extra_roles = array('storyteller', 'storyteller-assistant', 'storyteller-newbie');
+  $extra_roles = variable_get('vacation_roles', array());
+  $default_message = variable_get('vacation_description', '');
   $has_extra = FALSE;
   foreach ($extra_roles as $extra_role) {
     if (in_array($extra_role, $form['#user']->roles)) {
@@ -52,11 +108,7 @@ function vacation_form_user_profile_form_alter(&$form, &$form_state) {
     $form['vacation'] = array(
       '#type' => 'fieldset',
       '#title' => t('Vacation mode'),
-      '#description' => t('<b>If you know you will be absent for some time: Please let us know! We need to know ' .
-        'if you\'ll be around or not.</b> <br/> When you go on vcation mode all of your powers as a storyteller ' .
-        'or evaluator are removed. During this time you will not recieve emails, notifications, or other ' .
-        'communications from the site and we won\'t expect you to perform duties. When you return, hit the ' .
-        'button and your permissions will be returned to you.'),
+      '#description' => $default_message,
       '#weight' => 1000,
     );
     $form['vacation']['vacation_uid'] = array(
@@ -74,11 +126,7 @@ function vacation_form_user_profile_form_alter(&$form, &$form_state) {
     $form['vacation'] = array(
       '#type' => 'fieldset',
       '#title' => t('Vacation mode'),
-      '#description' => t('<b>If you know you will be absent for some time: Please let us know! We need to know ' .
-        'if you\'ll be around or not.</b> <br/> When you go on vcation mode all of your powers as a storyteller ' .
-        'or evaluator are removed. During this time you will not recieve emails, notifications, or other ' .
-        'communications from the site and we won\'t expect you to perform duties. When you return, hit the ' .
-        'button and your permissions will be returned to you.'),
+      '#description' => $default_message,
       '#weight' => 1000,
     );
     $form['vacation']['vacation_uid'] = array(
