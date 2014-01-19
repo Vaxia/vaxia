@@ -41,7 +41,7 @@ function vacation_admin_form() {
   }
   $form['vacation_roles'] = array(
     '#title' => t('Vacation roles'),
-    '#type' => 'select',
+    '#type' => 'checkboxes',
     '#options' =>  $roles,
     '#default_value' => variable_get('vacation_roles', array()),
   );
