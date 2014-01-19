@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the Vaxia reputation feature.
- */
-
-include_once 'vaxia_reputation.features.inc';
