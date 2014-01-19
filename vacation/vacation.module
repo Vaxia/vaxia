@@ -36,7 +36,6 @@ function vacation_menu() {
  */
 function vacation_admin_form() {
   $form = array();
-  $roles = ();
   foreach (user_roles() as $rid => $name) {
     $roles[$name] = $name;
   }
