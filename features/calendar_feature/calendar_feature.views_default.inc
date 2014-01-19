@@ -11,11 +11,11 @@ function calendar_feature_views_default_views() {
   $export = array();
 
   $view = new view();
-  $view->name = 'calender_feed';
-  $view->description = 'Calender Feed';
-  $view->tag = 'default';
+  $view->name = 'calendar_feed';
+  $view->description = 'Calendar feed for export to other systems';
+  $view->tag = 'Calendar';
   $view->base_table = 'node';
-  $view->human_name = 'Calender Feed';
+  $view->human_name = 'Calendar Feed';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
@@ -84,8 +84,9 @@ function calendar_feature_views_default_views() {
   $handler->display->display_options['filters']['field_when_value']['default_date'] = 'first day of this month';
   $handler->display->display_options['filters']['field_when_value']['year_range'] = '-0:+1';
 
-  /* Display: Feed */
-  $handler = $view->new_display('feed', 'Feed', 'feed_1');
+  /* Display: Calendar Feed */
+  $handler = $view->new_display('feed', 'Calendar Feed', 'calendar_feed');
+  $handler->display->display_options['display_description'] = 'Calendar feed for export to other systems';
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['style_plugin'] = 'date_ical';
@@ -95,7 +96,7 @@ function calendar_feature_views_default_views() {
   $handler->display->display_options['row_options']['summary_field'] = 'default_title';
   $handler->display->display_options['row_options']['location_field'] = 'none';
   $handler->display->display_options['path'] = 'calendar/ical';
-  $export['calender_feed'] = $view;
+  $export['calendar_feed'] = $view;
 
   return $export;
 }
