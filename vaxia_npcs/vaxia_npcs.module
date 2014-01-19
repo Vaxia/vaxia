@@ -229,14 +229,17 @@ function vaxia_npcs_node_view($node, $view_mode, $langcode) {
     // If workflow is in the claimable mode and this is open or owned NPC, add button.
     if (_vaxia_npcs_can_be_claimed($node) && ($node->uid == $user->uid || _vaxia_npcs_is_an_open_npc($node) || !_vaxia_npcs_owner_is_sh($node))) {
       $node->content['vaxia_npcs_form'] = drupal_get_form('_vaxia_npcs_claim_form', $node);
+      $node->content['vaxia_npcs_form']['#weight'] = -100;
     }
     // If workflow is in the claimable mode and this is not open anod no owned NPC, add button.
     if (_vaxia_npcs_can_be_claimed($node) && ($node->uid != $user->uid && !_vaxia_npcs_is_an_open_npc($node) && _vaxia_npcs_owner_is_sh($node))) {
       $node->content['vaxia_npcs_form'] = drupal_get_form('_vaxia_npcs_request_form', $node);
+      $node->content['vaxia_npcs_form']['#weight'] = -100;
     }
     // Else, is in active use. If the viewer is the owner give the button to return.
     if (!_vaxia_npcs_can_be_claimed($node) && ($node->uid == $user->uid || _vaxia_npcs_is_an_open_npc($node))) {
       $node->content['vaxia_npcs_form'] = drupal_get_form('_vaxia_npcs_return_form', $node);
+      $node->content['vaxia_npcs_form']['#weight'] = -100;
     }
   }
 }
