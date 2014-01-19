@@ -20,7 +20,7 @@ function vacation_permission() {
  * Implements hook_menu().
  */
 function vacation_menu() {
-  $items['admin/config/search/vacation'] = array(
+  $items['admin/config/people/vacation'] = array(
     'title' => 'Vacation configurations',
     'description' => 'Vacation configurations',
     'type' => MENU_NORMAL_ITEM,
