@@ -136,7 +136,7 @@ function vaxia_user_default_permissions() {
       3 => 'storyteller-assistant',
       4 => 'storyteller-candidate',
     ),
-    'module' => 'vaxia',
+    'module' => 'vaxia_npcs',
   );
 
   // Exported permission: create artwork content.
@@ -177,7 +177,10 @@ function vaxia_user_default_permissions() {
   // Exported permission: create npc content.
   $permissions['create npc content'] = array(
     'name' => 'create npc content',
-    'roles' => array(),
+    'roles' => array(
+      0 => 'administrator',
+      1 => 'administrator-vaxia',
+    ),
     'module' => 'node',
   );
 
@@ -191,7 +194,7 @@ function vaxia_user_default_permissions() {
       3 => 'storyteller-assistant',
       4 => 'storyteller-candidate',
     ),
-    'module' => 'vaxia',
+    'module' => 'vaxia_npcs',
   );
 
   // Exported permission: create rpg_chatroom content.
@@ -556,7 +559,7 @@ function vaxia_user_default_permissions() {
       3 => 'storyteller-assistant',
       4 => 'storyteller-candidate',
     ),
-    'module' => 'vaxia',
+    'module' => 'vaxia_npcs',
   );
 
   // Exported permission: use advanced search.
