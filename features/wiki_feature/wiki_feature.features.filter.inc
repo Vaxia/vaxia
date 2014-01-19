@@ -43,11 +43,6 @@ function wiki_feature_filter_default_formats() {
         'status' => '1',
         'settings' => array(),
       ),
-      'Mediawiki Format' => array(
-        'weight' => '-44',
-        'status' => '1',
-        'settings' => array(),
-      ),
       'filter_htmlcorrector' => array(
         'weight' => '-41',
         'status' => '1',

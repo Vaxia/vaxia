@@ -48,6 +48,12 @@ function calendar_feature_field_default_fields() {
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'default' => array(
           'label' => 'hidden',
           'module' => 'text',
@@ -147,6 +153,12 @@ function calendar_feature_field_default_fields() {
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'default' => array(
           'label' => 'hidden',
           'module' => 'fivestar',
@@ -220,6 +232,7 @@ function calendar_feature_field_default_fields() {
           'second' => 0,
           'year' => 'year',
         ),
+        'repeat' => 0,
         'timezone_db' => 'UTC',
         'todate' => 'required',
         'tz_handling' => 'site',
@@ -232,6 +245,12 @@ function calendar_feature_field_default_fields() {
       'deleted' => '0',
       'description' => 'This field can handle your timezone shift for you. Make sure you configure your preferred time-zone under <a href="/user">your account information</a>. After you set that, dates and times throughout this site will be displayed using your time zone. This allows you to enter times in your preferred time zone. They will display for other site members in their preferred time zone and on the calendar in default EST.',
       'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'date',
@@ -241,6 +260,7 @@ function calendar_feature_field_default_fields() {
             'multiple_from' => '',
             'multiple_number' => '',
             'multiple_to' => '',
+            'show_repeat_rule' => 'show',
           ),
           'type' => 'date_default',
           'weight' => '1',
@@ -277,6 +297,7 @@ function calendar_feature_field_default_fields() {
           'input_format' => 'm/d/Y - g:i:sa',
           'input_format_custom' => '',
           'label_position' => 'above',
+          'repeat_collapsed' => 0,
           'text_parts' => array(),
           'year_range' => '-0:+3',
         ),
@@ -329,6 +350,12 @@ function calendar_feature_field_default_fields() {
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'default' => array(
           'label' => 'above',
           'module' => 'taxonomy',

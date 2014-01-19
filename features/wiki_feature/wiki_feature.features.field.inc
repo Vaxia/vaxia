@@ -48,6 +48,12 @@ function wiki_feature_field_default_fields() {
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'default' => array(
           'label' => 'hidden',
           'module' => 'text',
@@ -156,6 +162,12 @@ function wiki_feature_field_default_fields() {
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'taxonomy',
@@ -226,6 +238,12 @@ function wiki_feature_field_default_fields() {
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'default' => array(
           'label' => 'hidden',
           'settings' => array(),
@@ -301,6 +319,12 @@ function wiki_feature_field_default_fields() {
       'deleted' => '0',
       'description' => 'Check the relevant category for this article, this will help us sort out areas of the wiki by over-arching segment of the site.',
       'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'taxonomy',
@@ -371,6 +395,12 @@ function wiki_feature_field_default_fields() {
       'deleted' => '0',
       'description' => 'Upload any files to go with this article.',
       'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'default' => array(
           'label' => 'hidden',
           'module' => 'file',
@@ -446,6 +476,12 @@ function wiki_feature_field_default_fields() {
       'deleted' => '0',
       'description' => 'Upload any images to go with this article.',
       'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'default' => array(
           'label' => 'hidden',
           'module' => 'image',

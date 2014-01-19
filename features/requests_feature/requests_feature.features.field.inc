@@ -48,6 +48,12 @@ function requests_feature_field_default_fields() {
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'default' => array(
           'label' => 'hidden',
           'module' => 'text',
@@ -160,6 +166,12 @@ function requests_feature_field_default_fields() {
       'deleted' => '0',
       'description' => 'Complexity - a measurement of the difficulty of the feature, used to help coders estimate which release the feature can fit into',
       'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'default' => array(
           'label' => 'above',
           'module' => 'list',
@@ -218,6 +230,12 @@ function requests_feature_field_default_fields() {
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'default' => array(
           'label' => 'above',
           'module' => 'fivestar',
@@ -301,6 +319,12 @@ function requests_feature_field_default_fields() {
       'deleted' => '0',
       'description' => 'Priority - how important to the operation of the site is this feature.',
       'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'default' => array(
           'label' => 'above',
           'module' => 'list',
@@ -375,6 +399,12 @@ function requests_feature_field_default_fields() {
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'default' => array(
           'label' => 'above',
           'module' => 'list',

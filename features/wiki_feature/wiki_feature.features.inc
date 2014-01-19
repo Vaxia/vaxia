@@ -47,8 +47,8 @@ function wiki_feature_workflow_default_workflows() {
   // Exported workflow: Wiki workflow
   $workflows['Wiki workflow'] = array(
     'name' => 'Wiki workflow',
-    'tab_roles' => '3,4',
-    'options' => 'a:4:{s:16:"comment_log_node";i:1;s:15:"comment_log_tab";i:1;s:13:"name_as_title";i:1;s:12:"watchdog_log";i:1;}',
+    'tab_roles' => '14,4,3',
+    'options' => 'a:4:{s:16:"comment_log_node";s:1:"1";s:15:"comment_log_tab";s:1:"1";s:13:"name_as_title";s:1:"1";s:12:"watchdog_log";s:1:"1";}',
     'states' => array(
       0 => array(
         'state' => '(creation)',
@@ -74,22 +74,22 @@ function wiki_feature_workflow_default_workflows() {
     ),
     'transitions' => array(
       0 => array(
-        'roles' => 'workflow_features_author_name',
+        'roles' => 'workflow_features_author_name,evaluator',
         'state' => '(creation)',
         'target_state' => 'open',
       ),
       1 => array(
-        'roles' => 'workflow_features_author_name',
+        'roles' => 'workflow_features_author_name,evaluator',
         'state' => '(creation)',
         'target_state' => 'locked',
       ),
       2 => array(
-        'roles' => 'administrator-vaxia,administrator',
+        'roles' => 'evaluator,administrator-vaxia,administrator',
         'state' => 'open',
         'target_state' => 'locked',
       ),
       3 => array(
-        'roles' => 'administrator-vaxia,administrator',
+        'roles' => 'evaluator,administrator-vaxia,administrator',
         'state' => 'locked',
         'target_state' => 'open',
       ),
