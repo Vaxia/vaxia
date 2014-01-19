@@ -1,6 +1,6 @@
 name = Dice Helper
 description = Provides additional javascript to aid dice rolling
-package = RPG
+package = Vaxia
 core = 7.x
 dependencies[] = vaxia
 version = 7.x-1.0

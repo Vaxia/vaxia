@@ -1,7 +1,7 @@
 name = Vaxia accounts
 description = Vaxia account handling rulesets
 core = 7.x
-package = RPG
+package = Vaxia
 php = 5.2.4
 version = 7.x-1.7
 project = vaxia_accounts
