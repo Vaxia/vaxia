@@ -1294,7 +1294,7 @@ function _vaxia_add_xp($nid, $xp, $type) {
       }
     break;
     case 'silver':
-      $message = t('%xp %type silver added to %title by %user.',
+      $message = t('%xp %type added to %title by %user.',
         array('%xp' => $xp, '%type' => $type, '%title' => $node->title, '%user' => $user->name));
       _character_sheet_update_log($nid, 'silver', $message, $variables = array());
       // Silver is just added directly.
