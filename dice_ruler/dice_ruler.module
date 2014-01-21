@@ -50,6 +50,7 @@ function dice_ruler_form($form, &$form_state) {
   $form['dice_ruler_style'] = array(
     '#type' => 'item',
     '#markup' => '<style>' .
+      '#dice-ruler-form table{margin-top:0px;}'.
       '#dice-ruler-form .form-type-textfield{float:left;margin-left:1em;margin-top:0;margin-bottom:0;}' .
       '#dice-ruler-form .form-item-combat-weapon-a{float:none;margin-left:0;}' .
       '#dice-ruler-form .form-item-combat-weapon-b{float:none;margin-left:0;}' .
