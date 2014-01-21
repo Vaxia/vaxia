@@ -938,12 +938,21 @@ function _dice_ruler_combat(
 
   // Check our required values are set.
   if (empty($combat_might_a_dex)
-    || empty($combat_rolled_a_dex)
     || empty($combat_might_a_str)
-    || empty($combat_rolled_a_str)
-    || empty($combat_might_a_end)
-    || empty($combat_rolled_a_end)) {
+    || empty($combat_might_a_end)) {
     return t('Not all required values given, or values are zero.');
+  }
+
+  // It is not possible in an un-even contest for the might to be zero. They will always have at least a might.
+  // But they might not have a roll - if so, default to zero.
+  if (empty($combat_rolled_a_dex)) {
+    $combat_rolled_a_dex = 1;
+  }
+  if (empty($combat_rolled_a_str)) {
+    $combat_rolled_a_str = 1;
+  }
+  if (empty($combat_rolled_a_end)) {
+    $combat_rolled_a_end = 1;
   }
 
   // Set default if empty.
@@ -974,12 +983,21 @@ function _dice_ruler_combat(
 
   // Check our required values are set.
   if (!isset($combat_might_b_dex)
-    || !isset($combat_rolled_b_dex)
     || !isset($combat_might_b_str)
-    || !isset($combat_rolled_b_str)
-    || !isset($combat_might_b_end)
-    || !isset($combat_rolled_b_end)) {
+    || !isset($combat_might_b_end)) {
     return t('Not all required values given, or values are zero.');
+  }
+
+  // It is not possible in an un-even contest for the might to be zero. They will always have at least a might.
+  // But they might not have a roll - if so, default to zero.
+  if (empty($combat_rolled_b_dex)) {
+    $combat_rolled_b_dex = 1;
+  }
+  if (empty($combat_rolled_b_str)) {
+    $combat_rolled_b_str = 1;
+  }
+  if (empty($combat_rolled_b_end)) {
+    $combat_rolled_b_end = 1;
   }
 
   // Set default if empty.
