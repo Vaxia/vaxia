@@ -565,7 +565,8 @@ function dice_ruler_form($form, &$form_state) {
       break;
       case 'combat':
         $results = '';
-        for ($i = 1; $i < 5; $i++) {
+        $attacks = ($form_state['values']['combat_action_count_a'] / 20) +1;
+        for ($i = 1; $i < $attacks + 1; $i++) {
           // Remove from mights based on action counts.
           $form_state['values']['combat_might_a_dex_' . $i] -= $form_state['values']['combat_action_count_a'];
           if ($form_state['values']['combat_might_a_dex_' . $i] < 0) {
