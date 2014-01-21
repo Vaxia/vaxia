@@ -53,11 +53,16 @@ function dice_ruler_form($form, &$form_state) {
       '#dice-ruler-form .form-type-textfield{float:left;margin-left:1em;margin-top:0;margin-bottom:0;}' .
       '#dice-ruler-form .form-item-combat-weapon-a{float:none;margin-left:0;}' .
       '#dice-ruler-form .form-item-combat-weapon-b{float:none;margin-left:0;}' .
-      '#dice-ruler-form #edit-a--3{float:left;margin-left:1em;margin-top:0;margin-bottom:0;}' .
-      '#dice-ruler-form #edit-b--3{float:left;margin-left:1em;margin-top:0;margin-bottom:0;}' .
+      '#dice-ruler-form .fieldset{margin-right:220px;}' .
+      '#dice-ruler-form #dice_ruler_dice_results{margin-right:220px;} '.
       '#dice-ruler-form #dice_ruler_dice_results th{padding-left:0.5em;text-align:center;}'.
       '#dice-ruler-form #dice_ruler_dice_results td{padding-left:0.5em;text-align:center;}'.
+      '#dice-ruler-form #edit-a--3{float:left;margin-left:1em;margin-top:0;margin-bottom:0;}' .
+      '#dice-ruler-form #edit-b--3{float:left;margin-left:1em;margin-top:0;margin-bottom:0;}' .
       '#dice-ruler-form #dice_ruler_dice_help{float:right;clear:right;margin-top:1em;margin-left:1em;}'.
+      '#dice-ruler-form #dice_ruler_dice_help{width:210px;}'.
+      '#dice-ruler-form #dice_ruler_dice_help_2{float:right;clear:right;margin-top:1em;margin-left:1em;}'.
+      '#dice-ruler-form #dice_ruler_dice_help_2{width:210px;}'.
       '</style>',
   );
 
@@ -65,13 +70,13 @@ function dice_ruler_form($form, &$form_state) {
     '#title' => t('Difficulty guidelines'),
     '#type' => 'item',
     '#markup' => '<ul>' . "\n" .
-'<li>1 to 10: Ridiculously easy.</li>' . "\n" .
-'<li>10 to 20: Easy.</li>' . "\n" .
-'<li>20 to 30: Normal.</li>' . "\n" .
-'<li>40 to 50: Skilled.</li>' . "\n" .
-'<li>60 to 70: Mastery.</li>' . "\n" .
-'<li>100 : Extremely Difficult.</li>' . "\n" .
-'</ul>',
+        '<li>1 to 10: Ridiculously easy.</li>' . "\n" .
+        '<li>10 to 20: Easy.</li>' . "\n" .
+        '<li>20 to 30: Normal.</li>' . "\n" .
+        '<li>40 to 50: Skilled.</li>' . "\n" .
+        '<li>60 to 70: Mastery.</li>' . "\n" .
+       '<li>100 : Extremely Difficult.</li>' . "\n" .
+        '</ul>',
     '#prefix' => '<div id="dice_ruler_dice_help">',
     '#suffix' => '</div>',
     '#states' => array(
@@ -80,7 +85,24 @@ function dice_ruler_form($form, &$form_state) {
       ),
     ),
   );
-
+  $form['dice_ruler_dice_help_2'] = array(
+    '#title' => t('Magic resistance skills'),
+    '#type' => 'item',
+    '#markup' => '<p>' .
+        t('For magic: Most skills will not apply for pasively resisting a magical attack. If the target ' .
+        'is actively resisting with a skill, roll and use their PP to counter the PP of the caster\'s roll. ' .
+        'See !magic_url for more details.',
+        array('!magic_url' => l('the magic rules', 'wiki/system-rules/ruling/magic-ruling'))) . 
+        '</p>',
+    '#prefix' => '<div id="dice_ruler_dice_help_2">',
+    '#suffix' => '</div>',
+    '#states' => array(
+      'visible' => array(
+        ':input[name="roll_type"]' => array('value' => 'magic'),
+      ),
+    ),
+  );
+  
   // Select a type.
   $form['roll_type'] = array(
     '#type' => 'select',
@@ -456,6 +478,21 @@ function dice_ruler_form($form, &$form_state) {
     '#title' => t('Rolled'),
     '#size' => 5,
   );
+  $form['magic']['target'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Target Resistance'),
+
+  );
+  $form['magic']['target']['magic_target_stat'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Stat'),
+    '#size' => 5,
+  );
+  $form['magic']['target']['magic_target_skill'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Skill*'),
+    '#size' => 5,
+  );
 
   // Show results.
   $results = t('No roll performed.');
@@ -552,7 +589,9 @@ function dice_ruler_form($form, &$form_state) {
           $form_state['values']['magic_might_b'],
           $form_state['values']['magic_diff_b'],
           $form_state['values']['magic_add_diff_b'],
-          $form_state['values']['magic_rolled_b']
+          $form_state['values']['magic_rolled_b'],
+          $form_state['values']['magic_target_stat'],
+          $form_state['values']['magic_target_skill']
         );
       break;
     }
@@ -1091,8 +1130,13 @@ function _dice_ruler_magic(
   $magic_might_b,
   $magic_diff_b,
   $magic_add_diff_b,
-  $magic_rolled_b
+  $magic_rolled_b,
+  $magic_target_stat,
+  $magic_target_skill
 ) {
+  // How this normally works.
+  // Add the difficulty for the casting to the target stat.
+  // And figure out if the target was affected...
   // Check that all are numeric.
   if (!empty($magic_might_a) && !is_numeric($magic_might_a)
     || !empty($magic_diff_a) && !is_numeric($magic_diff_a)
@@ -1129,7 +1173,93 @@ function _dice_ruler_magic(
     $magic_add_diff_b = 0;
   }
 
-  // Change difficult for dynamic difs.
+  // Set defaults for the target.
+  if (empty($magic_target_stat)) {
+    $magic_target_stat = 0;
+  }
+  if (empty($magic_target_skill)) {
+    $magic_target_skill = 0;
+  }
+
+  // Check that all are numeric.
+  if (!empty($magic_target_stat) && !is_numeric($magic_target_stat)
+    || !empty($magic_target_skill) && !is_numeric($magic_target_skill)) {
+    return t('Not all values given were numeric. We need numbers for math.');
+  }
+
+  // Now put all these into a table to display.
+  $header = array(
+    t('Might'),
+    t('Diff'),
+    t('Add diff.'),
+    t('Rolled'),
+    t('Roll needed'),
+    t('Success'),
+    t('Winsby'),
+    t('Points'),
+    t('% of diff'),
+    t('Failed might'),
+  );
+
+  // Combine results.
+  $rows = array();
+  $results = _dice_ruler_make_magic_ruling(
+    $magic_might_a,
+    $magic_diff_a,
+    $magic_add_diff_a,
+    $magic_rolled_a,
+    $magic_might_b,
+    $magic_diff_b,
+    $magic_add_diff_b,
+    $magic_rolled_b);
+  $rows[] = $results;
+
+  $output .= theme('table', array(
+    'header' => $header,
+    'rows' => $rows,
+  ));
+
+  if ($magic_target_stat != 0 || $magic_target_skill != 0) {
+    $output .= '<div><b>' . t('Resisted roll results') . ':</b></div>';
+  
+    // Set the target diffs for resisted.
+    $magic_diff_a = $magic_diff_a + $magic_target_stat + $magic_target_skill;
+    $magic_diff_b = $magic_diff_b + $magic_target_stat + $magic_target_skill;
+    $output .= '<div>' . t('With target\'s resistance, the difficulty is') .': '. $magic_diff_a .  ' / ' . $magic_diff_b . '</div>';
+
+    // Combine results.
+    $rows = array();
+    $results = _dice_ruler_make_magic_ruling(
+      $magic_might_a,
+      $magic_diff_a,
+      $magic_add_diff_a,
+      $magic_rolled_a,
+      $magic_might_b,
+      $magic_diff_b,
+      $magic_add_diff_b,
+      $magic_rolled_b);
+    $rows[] = $results;
+  
+    $output .= theme('table', array(
+      'header' => $header,
+      'rows' => $rows,
+    ));
+  }
+
+  return $output;
+}
+
+function _dice_ruler_make_magic_ruling(
+  $magic_might_a,
+  $magic_diff_a,
+  $magic_add_diff_a,
+  $magic_rolled_a,
+  $magic_might_b,
+  $magic_diff_b,
+  $magic_add_diff_b,
+  $magic_rolled_b) {
+
+  // Change difficulty for dynamic difs.
   $magic_diff_a = 2 * ($magic_diff_a + $magic_add_diff_a) - ($magic_might_a);
   if ($magic_diff_a < 1) {
     $magic_diff_a = 1;
@@ -1138,19 +1268,6 @@ function _dice_ruler_magic(
   if ($magic_diff_b < 1) {
     $magic_diff_b = 1;
   }
-
-  // Make a standard roll after meddling with the diffs.
-  // Return that value.
-  $results = _dice_ruler_make_two_trait_ruling(
-    $magic_might_a,
-    $magic_diff_a,
-    0,
-    $magic_rolled_a,
-    $magic_might_b,
-    $magic_diff_b,
-    0,
-    $magic_rolled_b
-  );
 
   // Get results from our master function.
   $magic_a = _dice_ruler_make_ruling(
@@ -1186,8 +1303,7 @@ function _dice_ruler_magic(
     $magic_failed_might = round((($magic_diff_a + $magic_diff_b) / 2) * (1 - $magic_perc_diff));
   }
 
-  // Combine results.
-  $results = array(
+  return array(
     '<div>' . $magic_might_a . '</div><div style="border-top:1px solid;">' . $magic_might_b . '</div>', // Display the two.
     '<div>' . $magic_diff_a . '</div><div style="border-top:1px solid;">' . $magic_diff_b . '</div>', // Display the two.
     '<div>' . $magic_add_diff_a . '</div><div style="border-top:1px solid;">' . $magic_add_diff_b . '</div>', // Display the two.
@@ -1199,26 +1315,6 @@ function _dice_ruler_magic(
     is_numeric($magic_perc_diff) ? number_format($magic_perc_diff, 2) : $magic_perc_diff,
     $magic_failed_might,
   );
-
-  // Now put all these into a table to display.
-  $header = array(
-    t('Might'),
-    t('Diff'),
-    t('Add diff.'),
-    t('Rolled'),
-    t('Roll needed'),
-    t('Success'),
-    t('Winsby'),
-    t('Points'),
-    t('% of diff'),
-    t('Failed might'),
-  );
-  $rows[] = $results;
-  $output = theme('table', array(
-    'header' => $header,
-    'rows' => $rows,
-  ));
-  return $output;
 }
 
 /**
