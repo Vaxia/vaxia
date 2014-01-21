@@ -52,8 +52,6 @@ function dice_ruler_form($form, &$form_state) {
     '#markup' => '<style>' .
       '#dice-ruler-form table{margin-top:0px;}'.
       '#dice-ruler-form .form-type-textfield{float:left;margin-left:1em;margin-top:0;margin-bottom:0;}' .
-      '#dice-ruler-form .form-item-combat-weapon-a{float:none;margin-left:0;}' .
-      '#dice-ruler-form .form-item-combat-weapon-b{float:none;margin-left:0;}' .
       '#dice-ruler-form .fieldset{margin-right:220px;}' .
       '#dice-ruler-form #dice_ruler_dice_results{margin-right:220px;} '.
       '#dice-ruler-form #dice_ruler_dice_results th{padding-left:0.5em;text-align:center;}'.
@@ -64,6 +62,8 @@ function dice_ruler_form($form, &$form_state) {
       '#dice-ruler-form #dice_ruler_dice_help{width:210px;}'.
       '#dice-ruler-form #dice_ruler_dice_help_2{float:right;clear:right;margin-top:1em;margin-left:1em;}'.
       '#dice-ruler-form #dice_ruler_dice_help_2{width:210px;}'.
+      '#dice-ruler-form .form-item-combat-action-count-a, #dice-ruler-form .form-item-combat-action-count-b{float:left}' .
+      '#dice-ruler-form .form-item-combat-weapon-a, #dice-ruler-form .form-item-combat-weapon-b{float:none; margin-left:65px;}' .
       '</style>',
   );
 
@@ -274,13 +274,18 @@ function dice_ruler_form($form, &$form_state) {
   );
   $form['combat']['a']['combat_action_count_a'] = array(
     '#type' => 'select',
-    '#title' => t('Number of actions'),
+    '#title' => t('Actions'),
     '#options' => array(
       '0' => '1',
       '20' => '2',
       '40' => '3',
       '60' => '4',
     ),
+  );
+  $form['combat']['a']['combat_weapon_a'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Weapon %'),
+    '#size' => 5,
   );
   $form['combat']['a']['dex'] = array(
     '#type' => 'fieldset',
@@ -339,24 +344,25 @@ function dice_ruler_form($form, &$form_state) {
     '#title' => t('Rolled'),
     '#size' => 5,
   );
-  $form['combat']['a']['combat_weapon_a'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Weapon %'),
-    '#size' => 5,
-  );
+
   $form['combat']['b'] = array(
     '#type' => 'fieldset',
     '#title' => t('Character B'),
   );
   $form['combat']['b']['combat_action_count_b'] = array(
     '#type' => 'select',
-    '#title' => t('Number of actions'),
+    '#title' => t('Actions'),
     '#options' => array(
       '0' => '1',
       '20' => '2',
       '40' => '3',
       '60' => '4',
     ),
+  );
+  $form['combat']['b']['combat_weapon_b'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Weapon %'),
+    '#size' => 5,
   );
   $form['combat']['b']['dex'] = array(
     '#type' => 'fieldset',
@@ -413,11 +419,6 @@ function dice_ruler_form($form, &$form_state) {
   $form['combat']['b']['end']['combat_rolled_b_end'] = array(
     '#type' => 'textfield',
     '#title' => t('Rolled'),
-    '#size' => 5,
-  );
-  $form['combat']['b']['combat_weapon_b'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Weapon %'),
     '#size' => 5,
   );
 
