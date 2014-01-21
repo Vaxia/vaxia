@@ -30,7 +30,7 @@ Drupal.behaviors.diceRuler = {
       break;
       case 'two-trait':
         $('#edit-roll-type').val('two_trait').trigger('change');
-        $('#edit-two-trait-might-a').val( rolls.find('.dice_roll_0 .might').html() );
+        $('#edit-two-trait-might-a').val( rolls.find('.dice_set_0 .might').html() );
         $('#edit-two-trait-rolled-a').val( rolls.find('.dice_roll_0 .roll').html() );
         $('#edit-two-trait-might-b').val( rolls.find('.dice_roll_1 .might').html() );
         $('#edit-two-trait-rolled-b').val( rolls.find('.dice_roll_1 .roll').html() );
@@ -44,12 +44,17 @@ Drupal.behaviors.diceRuler = {
       break;
       case 'combat':
         $('#edit-roll-type').val('combat').trigger('change');
-        $('#edit-combat-might-a-dex').val( rolls.find('.dice_roll_dex .might').html() );
-        $('#edit-combat-rolled-a-dex').val( rolls.find('.dice_roll_dex .roll').html() );
-        $('#edit-combat-might-a-str').val( rolls.find('.dice_roll_str .might').html() );
-        $('#edit-combat-rolled-a-str').val( rolls.find('.dice_roll_str .roll').html() );
-        $('#edit-combat-might-a-end').val( rolls.find('.dice_roll_end .might').html() );
-        $('#edit-combat-rolled-a-end').val( rolls.find('.dice_roll_end .roll').html() );
+        rolls.find('.dice_set').each( function() {
+          var index = ($(this).find('.roll_set').html() * 1) + 1; // Convert to number.
+          var attacks = (index - 1) * 20;
+          $('#edit-combat-action-count-a').val(attacks).trigger('change');
+          $('#edit-combat-might-a-dex-' + index).val( $(this).find('.dice_roll_dex .might').html() );
+          $('#edit-combat-rolled-a-dex-' + index).val( $(this).find('.dice_roll_dex .roll').html() );
+          $('#edit-combat-might-a-str-' + index).val( $(this).find('.dice_roll_str .might').html() );
+          $('#edit-combat-rolled-a-str-' + index).val( $(this).find('.dice_roll_str .roll').html() );
+          $('#edit-combat-might-a-end-' + index).val( $(this).find('.dice_roll_end .might').html() );
+          $('#edit-combat-rolled-a-end-' + index).val( $(this).find('.dice_roll_end .roll').html() );
+        });
       break;
     }
     return false; // Don't go anywhere.

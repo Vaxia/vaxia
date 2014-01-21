@@ -56,19 +56,32 @@
       } // End loop processing this roll.
     } // End if protecting the roll set.
     // We now know all the stats involved in this roll and have the rolls collected into a sorted array.
-    foreach ($rolls_found as $index => $roll_set) {
-      $roll_type = 'unknown';
-      if (count(array_keys($roll_set)) == 1) {
-        $roll_type = 'one-trait';
-      }
-      if (count(array_keys($roll_set)) == 2) {
-        $roll_type = 'two-trait';
-        $magic_stats = array('int', 'spi');
-        $diffs = array_diff(array_keys($roll_set), $magic_stats);
-        if (empty($diffs)) {
-          $roll_type = 'magic';
+    // Figure out what kind of roll it is.
+    $roll_type = 'unknown';
+    // If we only have one roll, and one trait.
+    if (count(array_keys($rolls_found)) == 1) {
+      foreach ($rolls_found as $index => $roll_set) {
+        if (count(array_keys($roll_set)) == 1) {
+          $roll_type = 'one-trait';
         }
       }
+    }
+    // If we only have one roll, and two traits.
+    if (count(array_keys($rolls_found)) == 1) {
+      foreach ($rolls_found as $index => $roll_set) {
+        if (count(array_keys($roll_set)) == 2) {
+          $roll_type = 'two-trait';
+          $magic_stats = array('int', 'spi');
+          $diffs = array_diff(array_keys($roll_set), $magic_stats);
+          if (empty($diffs)) {
+            $roll_type = 'magic';
+          }
+        }
+      }
+    }
+    // Combat is the only thing that does multiple rolls in a round.
+    // And it's specific stats involved.
+    foreach ($rolls_found as $index => $roll_set) {
       if (count(array_keys($roll_set)) == 3) {
         $magic_stats = array('dex', 'str', 'end');
         $diffs = array_diff(array_keys($roll_set), $magic_stats);
@@ -76,23 +89,29 @@
           $roll_type = 'combat';
         }
       }
-      if ($roll_type != 'unknown') {
-        $str_rolls .= 
-          '<span class="dice_rolls">'. "\n"  .
-          '  <span class="suggested_rule" style="display:none;">' . $roll_type . '</span>'. "\n";
-          $count = 0;
-          foreach ($roll_set as $stat => $roll) {
-            $str_rolls .= 
-              '  <span class="dice_roll dice_roll_' . $stat . ' dice_roll_' . $count . '" style="display:none;">' . "\n" .
-              '    <span class="stat">' . $stat . '</span>' . "\n" .
-              '    <span class="roll">' . $roll['roll'] . '</span>' . "\n" .
-              '    <span class="might">' . $roll['might'] . '</span>' . "\n" .
-              '  </span>'. "\n";
-              $count++;
-          }
-          $str_rolls .=
-          '</span>'. "\n";
+    }
+    // And output it.
+    if ($roll_type != 'unknown') {
+      $count = 0;
+	  $str_rolls .= '<span class="dice_rolls">'. "\n"  .
+	    '  <span class="suggested_rule" style="display:none;">' . $roll_type . '</span>'. "\n";
+      foreach ($rolls_found as $index => $roll_set) {
+	    $str_rolls .= '  <span class="dice_set dice_set_' . $index . '" style="display:none;">'. "\n" .
+	      '    <span class="roll_set">' . $index . '</span>' . "\n";
+	    $dice_roll = 0;
+        foreach ($roll_set as $stat => $roll) {
+          $str_rolls .= 
+            '    <span class="dice_roll dice_roll_' . $stat . ' dice_roll_' . $dice_roll . '">' . "\n" .
+            '      <span class="stat">' . $stat . '</span>' . "\n" .
+            '      <span class="roll">' . $roll['roll'] . '</span>' . "\n" .
+            '      <span class="might">' . $roll['might'] . '</span>' . "\n" .
+            '    </span>'. "\n";
+            $dice_roll++;
+        }
+        $str_rolls .= '  </span>'. "\n";
+        $count++;
       }
+      $str_rolls .= '</span>'. "\n";
     }
   }
   print $str_rolls;
