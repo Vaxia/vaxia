@@ -1090,8 +1090,8 @@ function _vaxia_transfer_xp_submit(&$form, &$form_state) {
       _character_sheet_update_xp($old_character->nid, $xp, 'spent_xp');
       _character_sheet_update_xp($old_character->nid, $xp, 'xp');
       // Logs and cleanup.
-      $message = t('%xp transfer xp added to %title by system.',
-        array('%xp' => $new_xp, '%title' => $new_character->title));
+      $message = t('@xp transfer xp added to @title by system.',
+        array('@xp' => $new_xp, '@title' => $new_character->title));
       _character_sheet_update_log($new_character->nid, 'transfer', $message);
       if ($full_xp <= $xp) {
         // Clear records for the XP recorded for the old character.
@@ -1128,8 +1128,8 @@ function _vaxia_transfer_rxp_submit(&$form, &$form_state) {
       _character_sheet_update_xp($old_character->nid, $amount * -1, 'rxp');
       _character_sheet_update_xp($new_character->nid, $amount, 'bxp'); // Transfer as BXP to be unlocked.
       global $user;
-      $message = t('%xp %type xp added to %title by %user.',
-        array('%xp' => $amount, '%type' => 'SH-RXP', '%title' => $new_character->title, '%user' => $user->name));
+      $message = t('@xp @type xp added to @title by @user.',
+        array('@xp' => $amount, '@type' => 'SH-RXP', '@title' => $new_character->title, '@user' => $user->name));
       _character_sheet_update_log($new_character->nid, 'SH-RXP', $message, $variables = array());
     }
   }
@@ -1245,12 +1245,12 @@ function _vaxia_add_xp($nid, $xp, $type) {
   global $user;
   $node = node_load($nid);
   $meaningful_types = _vaxia_meaningful_xp_types();
-  $message = t('%xp %type XP added to %title by %user.',
-    array('%xp' => $xp, '%type' => $type, '%title' => $node->title, '%user' => $user->name));
+  $message = t('@xp @type XP added to @title by @user.',
+    array('@xp' => $xp, '@type' => $type, '@title' => $node->title, '@user' => $user->name));
   if (!in_array($type, $meaningful_types)) {
     _vaxia_update_type_tracking(array('nid' => $nid, 'xp' => $xp, 'type' => $type)); // Add to the type given.
-    $message = t('%xp %type XP added to %title by %user.',
-      array('%xp' => $xp, '%type' => $type, '%title' => $node->title, '%user' => $user->name));
+    $message = t('@xp @type XP added to @title by @user.',
+      array('@xp' => $xp, '@type' => $type, '@title' => $node->title, '@user' => $user->name));
     if (function_exists('rules_invoke_event')) {
       $player = user_load($node->uid);
       rules_invoke_event('vaxia_gain_xp', $player, $node, $xp, $type);
@@ -1294,8 +1294,8 @@ function _vaxia_add_xp($nid, $xp, $type) {
       }
     break;
     case 'silver':
-      $message = t('%xp %type added to %title by %user.',
-        array('%xp' => $xp, '%type' => $type, '%title' => $node->title, '%user' => $user->name));
+      $message = t('@xp @ype added to @title by @user.',
+        array('@xp' => $xp, '@type' => $type, '@title' => $node->title, '@user' => $user->name));
       _character_sheet_update_log($nid, 'silver', $message, $variables = array());
       // Silver is just added directly.
       _character_sheet_update_xp($nid, $xp, 'silver');
