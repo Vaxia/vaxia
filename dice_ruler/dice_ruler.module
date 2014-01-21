@@ -268,6 +268,7 @@ function dice_ruler_form($form, &$form_state) {
       ),
     ),
   );
+
   $form['combat']['a'] = array(
     '#type' => 'fieldset',
     '#title' => t('Character A'),
@@ -287,63 +288,79 @@ function dice_ruler_form($form, &$form_state) {
     '#title' => t('Weapon %'),
     '#size' => 5,
   );
-  $form['combat']['a']['dex'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Dexterity'),
-  );
-  $form['combat']['a']['dex']['combat_might_a_dex'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Might'),
-    '#size' => 5,
-  );
-  $form['combat']['a']['dex']['combat_add_diff_a_dex'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Add diff.'),
-    '#size' => 5,
-  );
-  $form['combat']['a']['dex']['combat_rolled_a_dex'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Rolled'),
-    '#size' => 5,
-  );
-  $form['combat']['a']['str'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Strength'),
-  );
-  $form['combat']['a']['str']['combat_might_a_str'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Might'),
-    '#size' => 5,
-  );
-  $form['combat']['a']['str']['combat_add_diff_a_str'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Add diff.'),
-    '#size' => 5,
-  );
-  $form['combat']['a']['str']['combat_rolled_a_str'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Rolled'),
-    '#size' => 5,
-  );
-  $form['combat']['a']['end'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Endurance'),
-  );
-  $form['combat']['a']['end']['combat_might_a_end'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Might'),
-    '#size' => 5,
-  );
-  $form['combat']['a']['end']['combat_add_diff_a_end'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Add diff.'),
-    '#size' => 5,
-  );
-  $form['combat']['a']['end']['combat_rolled_a_end'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Rolled'),
-    '#size' => 5,
-  );
+  $values = array();
+  for ($i = 1; $i < 5; $i++) {
+    $values[] = array('value' => ($i - 1) * 20);
+  }
+  for ($i = 1; $i < 5; $i++) {
+    $form['combat']['a']['attack_a_'.$i] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Attack #' . $i),
+      '#states' => array(
+        'visible' => array(
+          ':input[name="combat_action_count_a"]' => $values,
+        ),
+      ),
+    );
+    array_shift($values);
+    $form['combat']['a']['attack_a_'.$i]['dex'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Dexterity'),
+    );
+    $form['combat']['a']['attack_a_'.$i]['dex']['combat_might_a_dex_' . $i] = array(
+      '#type' => 'textfield',
+      '#title' => t('Might'),
+      '#size' => 5,
+    );
+    $form['combat']['a']['attack_a_'.$i]['dex']['combat_add_diff_a_dex_' . $i] = array(
+      '#type' => 'textfield',
+      '#title' => t('Add diff.'),
+      '#size' => 5,
+    );
+    $form['combat']['a']['attack_a_'.$i]['dex']['combat_rolled_a_dex_' . $i] = array(
+      '#type' => 'textfield',
+      '#title' => t('Rolled'),
+      '#size' => 5,
+    );
+    $form['combat']['a']['attack_a_'.$i]['str'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Strength'),
+    );
+    $form['combat']['a']['attack_a_'.$i]['str']['combat_might_a_str_' . $i] = array(
+      '#type' => 'textfield',
+      '#title' => t('Might'),
+      '#size' => 5,
+    );
+    $form['combat']['a']['attack_a_'.$i]['str']['combat_add_diff_a_str_' . $i] = array(
+      '#type' => 'textfield',
+      '#title' => t('Add diff.'),
+      '#size' => 5,
+    );
+    $form['combat']['a']['attack_a_'.$i]['str']['combat_rolled_a_str_' . $i] = array(
+      '#type' => 'textfield',
+      '#title' => t('Rolled'),
+      '#size' => 5,
+    );
+    $form['combat']['a']['attack_a_'.$i]['end'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Endurance'),
+    );
+    $form['combat']['a']['attack_a_'.$i]['end']['combat_might_a_end_' . $i] = array(
+      '#type' => 'textfield',
+      '#title' => t('Might'),
+      '#size' => 5,
+    );
+    $form['combat']['a']['attack_a_'.$i]['end']['combat_add_diff_a_end_' . $i] = array(
+      '#type' => 'textfield',
+      '#title' => t('Add diff.'),
+      '#size' => 5,
+    );
+    $form['combat']['a']['attack_a_'.$i]['end']['combat_rolled_a_end_' . $i] = array(
+      '#type' => 'textfield',
+      '#title' => t('Rolled'),
+      '#size' => 5,
+    );
+  }
 
   $form['combat']['b'] = array(
     '#type' => 'fieldset',
@@ -364,63 +381,79 @@ function dice_ruler_form($form, &$form_state) {
     '#title' => t('Weapon %'),
     '#size' => 5,
   );
-  $form['combat']['b']['dex'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Dexterity'),
-  );
-  $form['combat']['b']['dex']['combat_might_b_dex'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Might'),
-    '#size' => 5,
-  );
-  $form['combat']['b']['dex']['combat_add_diff_b_dex'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Add diff.'),
-    '#size' => 5,
-  );
-  $form['combat']['b']['dex']['combat_rolled_b_dex'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Rolled'),
-    '#size' => 5,
-  );
-  $form['combat']['b']['str'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Strength'),
-  );
-  $form['combat']['b']['str']['combat_might_b_str'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Might'),
-    '#size' => 5,
-  );
-  $form['combat']['b']['str']['combat_add_diff_b_str'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Add diff.'),
-    '#size' => 5,
-  );
-  $form['combat']['b']['str']['combat_rolled_b_str'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Rolled'),
-    '#size' => 5,
-  );
-  $form['combat']['b']['end'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Endurance'),
-  );
-  $form['combat']['b']['end']['combat_might_b_end'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Might'),
-    '#size' => 5,
-  );
-  $form['combat']['b']['end']['combat_add_diff_b_end'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Add diff.'),
-    '#size' => 5,
-  );
-  $form['combat']['b']['end']['combat_rolled_b_end'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Rolled'),
-    '#size' => 5,
-  );
+  $values = array();
+  for ($i = 1; $i < 5; $i++) {
+    $values[] = array('value' => ($i - 1) * 20);
+  }
+  for ($i = 1; $i < 5; $i++) {
+    $form['combat']['b']['attack_'.$i] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Attack #' . $i),
+      '#states' => array(
+        'visible' => array(
+          ':input[name="combat_action_count_b"]' => $values,
+        ),
+      ),
+    );
+    array_shift($values);
+    $form['combat']['b']['attack_'.$i]['dex'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Dexterity'),
+    );
+    $form['combat']['b']['attack_'.$i]['dex']['combat_might_b_dex_' . $i] = array(
+      '#type' => 'textfield',
+      '#title' => t('Might'),
+      '#size' => 5,
+    );
+    $form['combat']['b']['attack_'.$i]['dex']['combat_add_diff_b_dex_' . $i] = array(
+      '#type' => 'textfield',
+      '#title' => t('Add diff.'),
+      '#size' => 5,
+    );
+    $form['combat']['b']['attack_'.$i]['dex']['combat_rolled_b_dex_' . $i] = array(
+      '#type' => 'textfield',
+      '#title' => t('Rolled'),
+      '#size' => 5,
+    );
+    $form['combat']['b']['attack_'.$i]['str'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Strength'),
+    );
+    $form['combat']['b']['attack_'.$i]['str']['combat_might_b_str_' . $i] = array(
+      '#type' => 'textfield',
+      '#title' => t('Might'),
+      '#size' => 5,
+    );
+    $form['combat']['b']['attack_'.$i]['str']['combat_add_diff_b_str_' . $i] = array(
+      '#type' => 'textfield',
+      '#title' => t('Add diff.'),
+      '#size' => 5,
+    );
+    $form['combat']['b']['attack_'.$i]['str']['combat_rolled_b_str_' . $i] = array(
+      '#type' => 'textfield',
+      '#title' => t('Rolled'),
+      '#size' => 5,
+    );
+    $form['combat']['b']['attack_'.$i]['end'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Endurance'),
+    );
+    $form['combat']['b']['attack_'.$i]['end']['combat_might_b_end_' . $i] = array(
+      '#type' => 'textfield',
+      '#title' => t('Might'),
+      '#size' => 5,
+    );
+    $form['combat']['b']['attack_'.$i]['end']['combat_add_diff_b_end_' . $i] = array(
+      '#type' => 'textfield',
+      '#title' => t('Add diff.'),
+      '#size' => 5,
+    );
+    $form['combat']['b']['attack_'.$i]['end']['combat_rolled_b_end_' . $i] = array(
+      '#type' => 'textfield',
+      '#title' => t('Rolled'),
+      '#size' => 5,
+    );
+  }
 
   // Magic
   $form['magic'] = array(
@@ -531,56 +564,58 @@ function dice_ruler_form($form, &$form_state) {
         );
       break;
       case 'combat':
-        // Remove from mights based on action counts.
-        $form_state['values']['combat_might_a_dex'] -= $form_state['values']['combat_action_count_a'];
-        if ($form_state['values']['combat_might_a_dex'] < 0) {
-          $form_state['values']['combat_might_a_dex'] = 0;
+        $results = '';
+        for ($i = 1; $i < 5; $i++) {
+          // Remove from mights based on action counts.
+          $form_state['values']['combat_might_a_dex_' . $i] -= $form_state['values']['combat_action_count_a'];
+          if ($form_state['values']['combat_might_a_dex_' . $i] < 0) {
+            $form_state['values']['combat_might_a_dex_' . $i] = 0;
+          }
+          $form_state['values']['combat_might_a_str_' . $i] -= $form_state['values']['combat_action_count_a']; 
+          if ($form_state['values']['combat_might_a_str_' . $i] < 0) {
+            $form_state['values']['combat_might_a_str_' . $i] = 0;
+          }
+          $form_state['values']['combat_might_a_end_' . $i] -= $form_state['values']['combat_action_count_a']; 
+          if ($form_state['values']['combat_might_a_end_' . $i] < 0) {
+            $form_state['values']['combat_might_a_end_' . $i] = 0;
+          }
+          $form_state['values']['combat_might_b_dex_' . $i] -= $form_state['values']['combat_action_count_b'];
+          if ($form_state['values']['combat_might_b_dex_' . $i] < 0) {
+            $form_state['values']['combat_might_b_dex_' . $i] = 0;
+          }
+          $form_state['values']['combat_might_b_str_' . $i] -= $form_state['values']['combat_action_count_b']; 
+          if ($form_state['values']['combat_might_b_str_' . $i] < 0) {
+            $form_state['values']['combat_might_b_str_' . $i] = 0;
+          }
+          $form_state['values']['combat_might_b_end_' . $i] -= $form_state['values']['combat_action_count_b']; 
+          if ($form_state['values']['combat_might_b_end_' . $i] < 0) {
+            $form_state['values']['combat_might_b_end_' . $i] = 0;
+          }
+          // Get results.
+          $results .= _dice_ruler_combat(
+            $form_state['values']['combat_might_a_dex_' . $i],
+            $form_state['values']['combat_add_diff_a_dex_' . $i],
+            $form_state['values']['combat_rolled_a_dex_' . $i],
+            $form_state['values']['combat_might_a_str_' . $i],
+            $form_state['values']['combat_add_diff_a_str_' . $i],
+            $form_state['values']['combat_rolled_a_str_' . $i],
+            $form_state['values']['combat_might_a_end_' . $i],
+            $form_state['values']['combat_add_diff_a_end_' . $i],
+            $form_state['values']['combat_rolled_a_end_' . $i],
+            $form_state['values']['combat_weapon_a'],
+  
+            $form_state['values']['combat_might_b_dex_' . $i],
+            $form_state['values']['combat_add_diff_b_dex_' . $i],
+            $form_state['values']['combat_rolled_b_dex_' . $i],
+            $form_state['values']['combat_might_b_str_' . $i],
+            $form_state['values']['combat_add_diff_b_str_' . $i],
+            $form_state['values']['combat_rolled_b_str_' . $i],
+            $form_state['values']['combat_might_b_end_' . $i],
+            $form_state['values']['combat_add_diff_b_end_' . $i],
+            $form_state['values']['combat_rolled_b_end_' . $i],
+            $form_state['values']['combat_weapon_b']
+          ) . '</br>';
         }
-        $form_state['values']['combat_might_a_str'] -= $form_state['values']['combat_action_count_a']; 
-        if ($form_state['values']['combat_might_a_str'] < 0) {
-          $form_state['values']['combat_might_a_str'] = 0;
-        }
-        $form_state['values']['combat_might_a_end'] -= $form_state['values']['combat_action_count_a']; 
-        if ($form_state['values']['combat_might_a_end'] < 0) {
-          $form_state['values']['combat_might_a_end'] = 0;
-        }
-        $form_state['values']['combat_might_b_dex'] -= $form_state['values']['combat_action_count_b'];
-        if ($form_state['values']['combat_might_b_dex'] < 0) {
-          $form_state['values']['combat_might_b_dex'] = 0;
-        }
-        $form_state['values']['combat_might_b_str'] -= $form_state['values']['combat_action_count_b']; 
-        if ($form_state['values']['combat_might_b_str'] < 0) {
-          $form_state['values']['combat_might_b_str'] = 0;
-        }
-        $form_state['values']['combat_might_b_end'] -= $form_state['values']['combat_action_count_b']; 
-        if ($form_state['values']['combat_might_b_end'] < 0) {
-          $form_state['values']['combat_might_b_end'] = 0;
-        }
-
-        // Get results.
-        $results = _dice_ruler_combat(
-          $form_state['values']['combat_might_a_dex'],
-          $form_state['values']['combat_add_diff_a_dex'],
-          $form_state['values']['combat_rolled_a_dex'],
-          $form_state['values']['combat_might_a_str'],
-          $form_state['values']['combat_add_diff_a_str'],
-          $form_state['values']['combat_rolled_a_str'],
-          $form_state['values']['combat_might_a_end'],
-          $form_state['values']['combat_add_diff_a_end'],
-          $form_state['values']['combat_rolled_a_end'],
-          $form_state['values']['combat_weapon_a'],
-
-          $form_state['values']['combat_might_b_dex'],
-          $form_state['values']['combat_add_diff_b_dex'],
-          $form_state['values']['combat_rolled_b_dex'],
-          $form_state['values']['combat_might_b_str'],
-          $form_state['values']['combat_add_diff_b_str'],
-          $form_state['values']['combat_rolled_b_str'],
-          $form_state['values']['combat_might_b_end'],
-          $form_state['values']['combat_add_diff_b_end'],
-          $form_state['values']['combat_rolled_b_end'],
-          $form_state['values']['combat_weapon_b']
-        );
       break;
       case 'magic':
         $results = _dice_ruler_magic(
@@ -662,7 +697,7 @@ function _dice_ruler_one_trait(
   if (empty($one_trait_might)
     || empty($one_trait_diff)
     || empty($one_trait_rolled)) {
-    return t('Not all required values given.');
+    return t('Not all required values given, or values are zero.');
   }
   // Set default if empty.
   if (empty($one_trait_add_diff)) {
@@ -722,7 +757,7 @@ function _dice_ruler_two_trait(
   if (empty($two_trait_might_a)
     || empty($two_trait_diff_a)
     || empty($two_trait_rolled_a)) {
-    return t('Not all required values given.');
+    return t('Not all required values given, or values are zero.');
   }
   // Set default if empty.
   if (empty($two_trait_add_diff_a)) {
@@ -740,7 +775,7 @@ function _dice_ruler_two_trait(
   if (empty($two_trait_might_b)
     || empty($two_trait_diff_b)
     || empty($two_trait_rolled_b)) {
-    return t('Not all required values given.');
+    return t('Not all required values given, or values are zero.');
   }
   // Set default if empty.
   if (empty($two_trait_add_diff_b)) {
@@ -800,7 +835,7 @@ function _dice_ruler_trait_vs(
   // Check our required values are set.
   if (empty($trait_vs_might_a)
     || empty($trait_vs_rolled_a)) {
-    return t('Not all required values given.');
+    return t('Not all required values given, or values are zero.');
   }
   // Set default if empty.
   if (empty($trait_vs_add_diff_a)) {
@@ -816,7 +851,7 @@ function _dice_ruler_trait_vs(
   // Check our required values are set.
   if (empty($trait_vs_might_b)
     || empty($trait_vs_rolled_b)) {
-    return t('Not all required values given.');
+    return t('Not all required values given, or values are zero.');
   }
   // Set default if empty.
   if (empty($trait_vs_add_diff_b)) {
@@ -907,7 +942,7 @@ function _dice_ruler_combat(
     || empty($combat_rolled_a_str)
     || empty($combat_might_a_end)
     || empty($combat_rolled_a_end)) {
-    return t('Not all required values given.');
+    return t('Not all required values given, or values are zero.');
   }
 
   // Set default if empty.
@@ -943,7 +978,7 @@ function _dice_ruler_combat(
     || !isset($combat_rolled_b_str)
     || !isset($combat_might_b_end)
     || !isset($combat_rolled_b_end)) {
-    return t('Not all required values given.');
+    return t('Not all required values given, or values are zero.');
   }
 
   // Set default if empty.
@@ -1150,7 +1185,7 @@ function _dice_ruler_magic(
   if (empty($magic_might_a)
     || empty($magic_diff_a)
     || empty($magic_rolled_a)) {
-    return t('Not all required values given.');
+    return t('Not all required values given, or values are zero.');
   }
   // Set default if empty.
   if (empty($magic_add_diff_a)) {
@@ -1168,7 +1203,7 @@ function _dice_ruler_magic(
   if (empty($magic_might_b)
     || empty($magic_diff_b)
     || empty($magic_rolled_b)) {
-    return t('Not all required values given.');
+    return t('Not all required values given, or values are zero.');
   }
   // Set default if empty.
   if (empty($magic_add_diff_b)) {
