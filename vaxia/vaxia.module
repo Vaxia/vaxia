@@ -630,6 +630,15 @@ function _vaxia_node_form_workflow_after_build($form, $form_state) {
  * Implements hook_form_FORM_ID_alter().
  */
 function vaxia_form_proposal_node_form_alter(&$form, &$form_state, $form_id) {
+  // Insert our submit call before webforms call to make sure we complete properly.
+  // Since webform doesn't allow us to mark the content type as a primary.
+  $form['actions']['submit']['#submit'][] = '_vaxia_form_proposal_node_form_submit';
+}
+
+/**
+ * Form submit callback().
+ */
+function _vaxia_form_proposal_node_form_submit($form, &$form_alter) {
   // Get the node.
   $node = node_load($form_state['nid']);
   // Set up the webform defaults if node hasn't yet.
@@ -661,7 +670,7 @@ function vaxia_form_proposal_node_form_alter(&$form, &$form_state, $form_id) {
       db_insert('webform_roles')->fields(array('nid' => $node->nid, 'rid' => $rid))->execute();
     }
   }
-  $form['actions']['submit']['#submit'][] = 'webform_form_submit';
+  webform_form_submit($form, $form_state);
 }
 
 /**
