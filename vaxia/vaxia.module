@@ -99,9 +99,9 @@ function vaxia_menu_alter(&$items) {
   $items['node/%webform_menu/webform-results']['access callback'] = 'user_access';
   $items['node/%webform_menu/webform-results']['access arguments'] = array('access content');
   // Over ride an individual submission.
-  $items['node/%webform_menu/submission/%webform_menu_submission']['page callback'] = '_vaxia_webform_submission_page';
-  $items['node/%webform_menu/submission/%webform_menu_submission']['access callback'] = 'user_access';
-  $items['node/%webform_menu/submission/%webform_menu_submission']['access arguments'] = array('access content');
+  $items['node/%webform_menu/webform-results/table']['page callback'] = '_vaxia_webform_results_table';
+  $items['node/%webform_menu/webform-results/table']['access callback'] = 'user_access';
+  $items['node/%webform_menu/webform-results/table']['access arguments'] = array('access content');
 }
 
 /**
@@ -162,11 +162,12 @@ function _vaxia_webform_results_submissions($node, $user_filter, $pager_count) {
     else {
       $row[] = '***.***.***.***';
     }
-    $row[] = l(t('View'), "node/$node->nid/submission/$sid");
-    $operation_count = 1;
+    $operation_count = 0;
     // No need to call this multiple times, just reference this in a variable.
     $destination = drupal_get_destination();
     if (webform_submission_access($node, $submission, 'edit', $user)) {
+      $row[] = l(t('View'), "node/$node->nid/submission/$sid");
+      $operation_count++;
       $row[] = l(t('Edit'), "node/$node->nid/submission/$sid/edit", array('query' => $destination));
       $operation_count++;
     }
@@ -196,53 +197,35 @@ function _vaxia_webform_results_submissions($node, $user_filter, $pager_count) {
   $element['table']['#operation_total'] = $operation_total;
   return drupal_render($element);
 }
-
 /**
- * Override normal webform_submission_page().
+ * Override normal webform_results_table(),
  */
-function _vaxia_webform_submission_page($node, $submission, $format) {
-  global $user;
-  // Render the admin UI breadcrumb.
-  webform_set_breadcrumb($node, $submission);
-  // Set the correct page title.
-  drupal_set_title(webform_submission_title($node, $submission));
-  $renderable = webform_submission_render($node, $submission, NULL, $format);
-  $output = drupal_render($renderable);
-  // Determine the mode in which we're displaying this submission.
-  $mode = 'display';
-  // Add navigation for administrators.
-  $navigation = theme('webform_submission_navigation', array('node' => $node, 'submission' => $submission, 'mode' => $mode));
-  $information = theme('webform_submission_information', array('node' => $node, 'submission' => $submission, 'mode' => $mode));
-  // Actions may be shown to all users.
-  $actions = theme('links', array('links' => module_invoke_all('webform_submission_actions', $node, $submission),
-    'attributes' => array('class' => array('links', 'inline', 'webform-submission-actions'))));
-  // Disable the page cache for anonymous users viewing or editing submissions.
-  if (!$user->uid) {
-    webform_disable_page_cache();
+function _vaxia_webform_results_table($node, $pager_count = 0) { {
+  if (isset($_GET['results']) && is_numeric($_GET['results'])) {
+    $pager_count = $_GET['results'];
   }
-  $page = array(
-    '#theme' => 'webform_submission_page', 
-    '#node' => $node,
-    '#mode' => $mode,
-    '#submission' => $submission, 
-    '#submission_content' => $output,
-    '#submission_navigation' => $navigation,
-    '#submission_information' => $information,
-    '#submission_actions' => $actions,
+  // Get all the submissions for the node.
+  $header = theme('webform_results_table_header', array('node' => $node));
+  $submissions = webform_get_submissions($node->nid, $header, $pager_count);
+  global $user;
+  if (!webform_results_access($node, $user)) {
+    foreach ($submissions as $sid => $data) {
+      $submissions[$sid]->name = '*****';
+      $submissions[$sid]->remote_addr = '***.***.***.***';
+    }
+  }
+  $total_count = webform_get_submission_count($node->nid);
+  $output = theme('webform_results_table', array(
+    'node' => $node,
+    'components' => $node->webform['components'],
+    'submissions' => $submissions,
+    'total_count' => $total_count,
+    'pager_count' => $pager_count)
   );
-  $page['#attached']['library'][] = array('webform', 'admin');
-  return $page;
-}
-
-/**
- * Implements hook_webform_submission_render_alter().
- */
-function vaxia_webform_submission_render_alter(&$renderable) {
-  global $user;
-  if (!webform_results_access($renderable['#node'], $user)) {
-    $renderable['#submission']['name'] = '*****';
-    $renderable['#submission']['remote_addr'] = '***.***.***.***';
+  if ($pager_count) {
+    $output .= theme('pager');
   }
+  return $output;
 }
 
 /**
