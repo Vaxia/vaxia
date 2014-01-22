@@ -667,7 +667,7 @@ function _vaxia_form_proposal_node_form_submit($form, &$form_state) {
     }
     // Set the per-role submission access control.
     foreach (user_roles() as $rid => $role_name) {
-      if ($role_name == 'voting player')) {
+      if ($role_name == 'voting player') {
         $node->webform['roles'][] => $rid;
       }
     }
