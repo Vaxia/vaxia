@@ -637,8 +637,7 @@ function vaxia_form_proposal_node_form_alter(&$form, &$form_state, $form_id) {
  * Redirect the form after submission is done.
  */
 function _vaxia_form_proposal_node_form_redirect($form, &$form_state) {
-	$form_state['rebuild'] = TRUE;
-  $form_state['redirect'] = 'node/'. $form_state['nid'] . '/webform';
+  $_GET['destination'] = $form_state['redirect'] = 'node/'. $form_state['nid'] . '/webform';
 }
 
 /**
