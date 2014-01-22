@@ -666,8 +666,8 @@ function _vaxia_form_proposal_node_form_submit($form, &$form_state) {
     // Save the node.
     node_save($node);
   }
-  drupal_set_message(t('The webform %title has been updated. ' .
-    'Add new fields to your webform with the form below.', array('%title' => $form_state['values']['title'])));
+  drupal_set_message(t('The webform %title has been updated. Add new fields to your webform with the form below.',
+    array('%title' => $form_state['values']['title'])));
   $form_state['redirect'] = 'node/' . $form_state['nid'] . '/webform/components';
 }
 
