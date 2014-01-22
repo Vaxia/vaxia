@@ -117,6 +117,7 @@ function _vaxia_webform_results_table($node, $pager_count = 0) {
   global $user;
   if (!webform_results_access($node, $user)) {
     foreach ($submissions as $sid => $data) {
+      $submissions[$sid]->uid = '';
       $submissions[$sid]->name = '*****';
       $submissions[$sid]->remote_addr = '***.***.***.***';
     }
