@@ -784,9 +784,10 @@ function vaxia_form_alter(&$form, &$form_state, $form_id) {
 
   // Edit the webform form for creators to limit to the right roles.
   if ($form_id == 'webform_configure_form' && $form['#node']->type == 'proposal') {
-    $form['submission']['status']['#access'] = FALSE;
+    // Change the form around.
+    $form['submission']['status']['#disabled'] = TRUE;
     // Leave it to the machine to open and close the proposal. No early, no late.
-    $form['submission']['redirection']['#disabled'] = TRUE; 
+    $form['submission']['redirection']['#access'] = FALSE;
     // Only one per customer.
     $form['submission']['total_submit_limit']['#access'] = FALSE;
     $form['submission']['submit_limit']['#access'] = FALSE;
