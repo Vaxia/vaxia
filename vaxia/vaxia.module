@@ -96,6 +96,7 @@ function vaxia_menu() {
 function vaxia_menu_alter(&$items) {
   // Copy the regular table output for a user access one.
   $items['node/%webform_menu/webform-table'] = $items['node/%webform_menu/webform-results'];
+  $items['node/%webform_menu/webform-table']['title'] = 'Submissions';
   $items['node/%webform_menu/webform-table']['page callback'] = '_vaxia_webform_results_table';
   $items['node/%webform_menu/webform-table']['access callback'] = 'user_access';
   $items['node/%webform_menu/webform-table']['access arguments'] = array('access content');
@@ -106,7 +107,7 @@ function vaxia_menu_alter(&$items) {
 /**
  * Override normal webform_results_table(),
  */
-function _vaxia_webform_results_table($node, $pager_count = 0) { {
+function _vaxia_webform_results_table($node, $pager_count = 0) {
   if (isset($_GET['results']) && is_numeric($_GET['results'])) {
     $pager_count = $_GET['results'];
   }
