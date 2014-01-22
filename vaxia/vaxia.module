@@ -89,6 +89,15 @@ function vaxia_menu() {
   return $items;
 }
 
+
+/**
+ * Implements hook_menu_alter().
+ */
+function vaxia_menu_alter(&$items) {
+  $items['node/%webform_menu/webform-results']['access callback'] = 'user_access';
+  $items['node/%webform_menu/webform-results']['access arguments'] = array('access content');
+}
+
 /**
  * Implements hook_rules_event_info().
  */
