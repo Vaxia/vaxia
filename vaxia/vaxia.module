@@ -94,8 +94,111 @@ function vaxia_menu() {
  * Implements hook_menu_alter().
  */
 function vaxia_menu_alter(&$items) {
+  // Override the submissions display page.
+  $items['node/%webform_menu/webform-results']['page callback'] = '_vaxia_webform_results_submissions';
   $items['node/%webform_menu/webform-results']['access callback'] = 'user_access';
   $items['node/%webform_menu/webform-results']['access arguments'] = array('access content');
+  // Over ride an individual submission.
+//  $items['node/%webform_menu/submission/%webform_menu_submission']['page callback'] = '_vaxia_webform_submission_page';
+  $items['node/%webform_menu/submission/%webform_menu_submission']['access callback'] = 'user_access';
+  $items['node/%webform_menu/submission/%webform_menu_submission']['access arguments'] = array('access content');
+}
+
+/**
+ * Override normal webform_results_submissions().
+ */
+function _vaxia_webform_results_submissions($node, $user_filter, $pager_count) {
+  global $user;
+  if (isset($_GET['results']) && is_numeric($_GET['results'])) {
+    $pager_count = $_GET['results'];
+  }
+
+  // Get header information.
+  $columns = array(
+    array(
+      'data' => t('#'),
+      'field' => 'sid',
+      'sort' => 'desc',
+    ),
+    array(
+      'data' => t('Submitted'),
+      'field' => 'submitted',
+    ),
+  );
+  $columns[] = array(
+    'data' => t('User'),
+    'field' => 'name',
+  );
+  if (webform_results_access($node)) {
+    $columns[] = array(
+      'data' => t('IP Address'),
+      'field' => 'remote_addr',
+    );
+  }
+  $columns[] = array(
+    'data' => t('Operations'),
+    'colspan' => module_exists('print') ? 5 : 3,
+  );
+  $header = $columns;
+
+  // Get rows.
+  $submissions = webform_get_submissions($node->nid, $header, $pager_count);
+  $count = webform_get_submission_count($node->nid);
+  $operation_column = end($header);
+  $operation_total = $operation_column['colspan'];
+  $rows = array();
+  foreach ($submissions as $sid => $submission) {
+    $row = array(
+      $submission->is_draft ? t('@sid (draft)', array('@sid' => $sid)) : $sid,
+      format_date($submission->submitted, 'short'),
+    );
+    if (webform_results_access($node, $user)) {
+      $row[] = theme('username', array('account' => $submission));
+    }
+    else {
+      $row[] = '*****';
+    }
+    if (webform_results_access($node, $user)) {
+      $row[] = $submission->remote_addr;
+    }
+    $row[] = l(t('View'), "node/$node->nid/submission/$sid");
+    $operation_count = 1;
+    // No need to call this multiple times, just reference this in a variable.
+    $destination = drupal_get_destination();
+    if (webform_submission_access($node, $submission, 'edit', $user)) {
+      $row[] = l(t('Edit'), "node/$node->nid/submission/$sid/edit", array('query' => $destination));
+      $operation_count++;
+    }
+    if (webform_submission_access($node, $submission, 'delete', $user)) {
+      $row[] = l(t('Delete'), "node/$node->nid/submission/$sid/delete", array('query' => $destination));
+      $operation_count++;
+    }
+    if ($operation_count < $operation_total) {
+      $row[count($row) - 1] = array(
+        'data' => $row[count($row) - 1],
+        'colspan' => $operation_total - $operation_count + 1,
+      );
+    }
+    $rows[] = $row;
+  }
+
+  $element['#theme'] = 'webform_results_submissions';
+  $element['#node'] = $node;
+  $element['#submissions'] = $submissions;
+  $element['#total_count'] = $count;
+  $element['#pager_count'] = $pager_count;
+  $element['#attached']['library'][] = array('webform', 'admin');
+  $element['table']['#theme'] = 'table';
+  $element['table']['#header'] = $header;
+  $element['table']['#rows'] = $rows;
+  $element['table']['#operation_total'] = $operation_total;
+  return drupal_render($element);
+}
+
+/**
+ * Override normal webform_submission_page().
+ */
+function _vaxia_webform_submission_page($node, $submission, $format) {
 }
 
 /**
