@@ -212,10 +212,8 @@ function _vaxia_webform_submission_page($node, $submission, $format) {
   // Determine the mode in which we're displaying this submission.
   $mode = 'display';
   // Add navigation for administrators.
-//  if (webform_results_access($node)) {
-    $navigation = theme('webform_submission_navigation', array('node' => $node, 'submission' => $submission, 'mode' => $mode));
-    $information = theme('webform_submission_information', array('node' => $node, 'submission' => $submission, 'mode' => $mode));
-//  }
+  $navigation = theme('webform_submission_navigation', array('node' => $node, 'submission' => $submission, 'mode' => $mode));
+  $information = theme('webform_submission_information', array('node' => $node, 'submission' => $submission, 'mode' => $mode));
 
   // Actions may be shown to all users.
   $actions = theme('links', array('links' => module_invoke_all('webform_submission_actions', $node, $submission),
@@ -244,7 +242,11 @@ function _vaxia_webform_submission_page($node, $submission, $format) {
  * Implements hook_webform_submission_render_alter().
  */
 function vaxia_webform_submission_render_alter(&$renderable) {
-  drupal_set_message(print_r($renderable,1));
+  global $user;
+  if (!webform_results_access($renderable['#node'], $user)) {
+    $renderable['#submission']['name'] = '*****';
+    $renderable['#submission']['remote_addr'] = '***.***.***.***';
+  }
 }
 
 /**
