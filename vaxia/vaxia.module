@@ -208,22 +208,18 @@ function _vaxia_webform_submission_page($node, $submission, $format) {
   drupal_set_title(webform_submission_title($node, $submission));
   $renderable = webform_submission_render($node, $submission, NULL, $format);
   $output = drupal_render($renderable);
-
   // Determine the mode in which we're displaying this submission.
   $mode = 'display';
   // Add navigation for administrators.
   $navigation = theme('webform_submission_navigation', array('node' => $node, 'submission' => $submission, 'mode' => $mode));
   $information = theme('webform_submission_information', array('node' => $node, 'submission' => $submission, 'mode' => $mode));
-
   // Actions may be shown to all users.
   $actions = theme('links', array('links' => module_invoke_all('webform_submission_actions', $node, $submission),
     'attributes' => array('class' => array('links', 'inline', 'webform-submission-actions'))));
-
   // Disable the page cache for anonymous users viewing or editing submissions.
   if (!$user->uid) {
     webform_disable_page_cache();
   }
-
   $page = array(
     '#theme' => 'webform_submission_page', 
     '#node' => $node,
