@@ -284,6 +284,7 @@ function vaxia_entity_info_alter(&$entity_info) {
  * Implements hook_node_view().
  */
 function vaxia_node_view($node, $view_mode, $langcode) {
+
   // If node is a character sheet.
   if (_character_sheet_is_enabled($node)) {
     unset($node->content['character_sheet_log']);
@@ -322,13 +323,15 @@ function vaxia_node_view($node, $view_mode, $langcode) {
       }
     }
   }
+
   // If node is an RPG chatroom, add the js for additional behaviors.
   if ($node->type == 'rpg_chatroom') {
     drupal_add_js( drupal_get_path('module', 'vaxia') . '/js/vaxia.js' );
   }
+
 }
 
-/*
+/**
  * Implements hook_node_update().
  */
 function vaxia_node_update($node) {
@@ -621,6 +624,22 @@ function _vaxia_node_form_workflow_after_build($form, $form_state) {
     }
   }
   return $form;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function vaxia_form_proposal_node_form_alter(&$form, &$form_state, $form_id) {
+  $form['#submit'][] = 'vaxia_form_proposal_node_form_redirect';
+}
+
+/**
+ * Redirect the form after submission is done.
+ */
+function vaxia_form_proposal_node_form_redirect() {
+  if ($form_state['nid']) {
+    $form_state['redirect'] = 'node/'. $form_state['nid'] . '/webform';
+  }
 }
 
 /**
