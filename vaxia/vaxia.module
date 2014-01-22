@@ -329,6 +329,13 @@ function vaxia_node_view($node, $view_mode, $langcode) {
     drupal_add_js( drupal_get_path('module', 'vaxia') . '/js/vaxia.js' );
   }
 
+  // If node is a proposal.
+  if ($node->type == 'proposal') {
+    $date = date('m/d/Y', strtotime('+2 weeks', $node->updated));
+    drupal_set_message(t('This proposal will stay open for two weeks since it was last updated. It is set to close on @date.',
+      array('@date' => $date)));
+  }
+
 }
 
 /**
@@ -646,8 +653,6 @@ function _vaxia_form_proposal_node_form_submit($form, &$form_state) {
     $node->webform = webform_node_defaults();
   }
   if ($node->webform == webform_node_defaults()) {
-    module_load_include('inc', 'webform', 'includes/webform.components');
-    module_load_include('inc', 'webform', 'includes/webform.emails');
     // Insert the webform.
     $node->webform['nid'] = $node->nid;
     $node->webform['record_exists'] = (bool) drupal_write_record('webform', $node->webform);
@@ -835,6 +840,8 @@ function vaxia_form_alter(&$form, &$form_state, $form_id) {
   if ($form_id == 'webform_configure_form' && $form['#node']->type == 'proposal') {
     // Change the form around.
     $form['submission']['status']['#disabled'] = TRUE;
+    $form['submission']['status']['#description'] .= ' ' .
+      t('This propsal will remain open for submission for two weeks from the last time it was updated.');
     // Leave it to the machine to open and close the proposal. No early, no late.
     $form['submission']['redirection']['#access'] = FALSE;
     // Only one per customer.
