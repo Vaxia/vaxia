@@ -630,13 +630,13 @@ function _vaxia_node_form_workflow_after_build($form, $form_state) {
  * Implements hook_form_FORM_ID_alter().
  */
 function vaxia_form_proposal_node_form_alter(&$form, &$form_state, $form_id) {
-  $form['#submit'][] = 'vaxia_form_proposal_node_form_redirect';
+  $form['#submit'][] = '_vaxia_form_proposal_node_form_redirect';
 }
 
 /**
  * Redirect the form after submission is done.
  */
-function vaxia_form_proposal_node_form_redirect() {
+function _vaxia_form_proposal_node_form_redirect() {
   if ($form_state['nid']) {
     $form_state['redirect'] = 'node/'. $form_state['nid'] . '/webform';
   }
