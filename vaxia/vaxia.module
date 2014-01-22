@@ -97,7 +97,7 @@ function vaxia_menu_alter(&$items) {
   $items['node/%webform_menu/webform-table'] = $items['node/%webform_menu/webform-results'];
   $items['node/%webform_menu/webform-table']['title'] = 'Submissions';
   $items['node/%webform_menu/webform-table']['page callback'] = '_vaxia_webform_results_table';
-  $items['node/%webform_menu/webform-table']['access callback'] = '_vaxia_webform_results_table';
+  $items['node/%webform_menu/webform-table']['access callback'] = '_vaxia_webform_results_table_access';
   $items['node/%webform_menu/webform-table']['access arguments'] = array(1);
   unset($items['node/%webform_menu/webform-table']['file']);
   $items['node/%webform_menu/webform-table']['type'] = MENU_LOCAL_TASK;
@@ -106,7 +106,7 @@ function vaxia_menu_alter(&$items) {
 /**
  * Menu access call for _vaxia_webform_results_table().
  */
-function _vaxia_webform_results_table($node) {
+function _vaxia_webform_results_table_access($node) {
   // Only show for a FINISHED contest. We do NOT need peopel vote stacking cause they know results.
   if ($node->webform['status'] == FALSE) {
     global $user;
