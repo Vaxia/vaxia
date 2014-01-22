@@ -666,11 +666,18 @@ function _vaxia_form_proposal_node_form_submit($form, &$form_state) {
       }
     }
     // Set the per-role submission access control.
+    foreach (user_roles() as $rid => $role_name) {
+      if ($role_name == 'voting player')) {
+        $node->webform['roles'][] => $rid;
+      }
+    }
     foreach (array_filter($node->webform['roles']) as $rid) {
       db_insert('webform_roles')->fields(array('nid' => $node->nid, 'rid' => $rid))->execute();
     }
   }
-  webform_form_submit($form, $form_state);
+  drupal_set_message(t('The webform %title has been updated. ' .
+    'Add new fields to your webform with the form below.', array('%title' => $form_state['values']['title'])));
+  $form_state['redirect'] = 'node/' . $form_state['nid'] . '/webform/components';
 }
 
 /**
