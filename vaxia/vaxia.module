@@ -228,16 +228,23 @@ function _vaxia_webform_submission_page($node, $submission, $format) {
 
   $page = array(
     '#theme' => 'webform_submission_page', 
-    '#node' => $node, 
-    '#mode' => $mode, 
+    '#node' => $node,
+    '#mode' => $mode,
     '#submission' => $submission, 
-    '#submission_content' => $output, 
-    '#submission_navigation' => $navigation, 
-    '#submission_information' => $information, 
+    '#submission_content' => $output,
+    '#submission_navigation' => $navigation,
+    '#submission_information' => $information,
     '#submission_actions' => $actions,
   );
   $page['#attached']['library'][] = array('webform', 'admin');
   return $page;
+}
+
+/**
+ * Implements hook_webform_submission_render_alter().
+ */
+function vaxia_webform_submission_render_alter(&$renderable) {
+  drupal_set_message(print_r($renderable,1));
 }
 
 /**
