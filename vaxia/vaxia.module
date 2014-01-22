@@ -629,6 +629,13 @@ function _vaxia_node_form_workflow_after_build($form, $form_state) {
 /**
  * Implements hook_form_FORM_ID_alter().
  */
+function vaxia_form_proposal_node_form_alter(&$form, &$form_state, $form_id) {
+  $form['actions']['submit']['#submit'][] = 'webform_form_submit';
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
 function vaxia_form_user_profile_form_alter(&$form, &$form_state, $form_id) {
   $form['picture']['picture_delete']['#access'] = FALSE;
   $form['picture']['picture_upload']['#access'] = FALSE;
