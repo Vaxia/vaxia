@@ -106,7 +106,7 @@ function vaxia_menu_alter(&$items) {
 /**
  * Menu access call for _vaxia_webform_results_table().
  */
-function _vaxia_webform_results_table($nod) {
+function _vaxia_webform_results_table($node) {
   // Only show for a FINISHED contest. We do NOT need peopel vote stacking cause they know results.
   if ($node->webform['status'] == FALSE) {
     global $user;
