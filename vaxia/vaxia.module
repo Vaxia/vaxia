@@ -638,7 +638,7 @@ function vaxia_form_proposal_node_form_alter(&$form, &$form_state, $form_id) {
 /**
  * Form submit callback().
  */
-function _vaxia_form_proposal_node_form_submit($form, &$form_alter) {
+function _vaxia_form_proposal_node_form_submit($form, &$form_state) {
   // Get the node.
   $node = node_load($form_state['nid']);
   // Set up the webform defaults if node hasn't yet.
