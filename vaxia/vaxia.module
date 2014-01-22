@@ -331,7 +331,7 @@ function vaxia_node_view($node, $view_mode, $langcode) {
 
   // If node is a proposal.
   if ($node->type == 'proposal') {
-    $date = date('m/d/Y', strtotime('+2 weeks', $node->updated));
+    $date = date('m/d/Y', strtotime('+2 weeks', $node->changed));
     drupal_set_message(t('This proposal will stay open for two weeks since it was last updated. It is set to close on @date.',
       array('@date' => $date)));
   }
