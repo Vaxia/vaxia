@@ -630,6 +630,37 @@ function _vaxia_node_form_workflow_after_build($form, $form_state) {
  * Implements hook_form_FORM_ID_alter().
  */
 function vaxia_form_proposal_node_form_alter(&$form, &$form_state, $form_id) {
+  // Get the node.
+  $node = node_load($form_state['nid']);
+  // Set up the webform defaults if node hasn't yet.
+  if (!isset($node->webform)) {
+    $node->webform = webform_node_defaults();
+  }
+  if ($node->webform == webform_node_defaults()) {
+    module_load_include('inc', 'webform', 'includes/webform.components');
+    module_load_include('inc', 'webform', 'includes/webform.emails');
+    // Insert the webform.
+    $node->webform['nid'] = $node->nid;
+    $node->webform['record_exists'] = (bool) drupal_write_record('webform', $node->webform);
+    // Insert the components into the database. Used with clone.module.
+    if (isset($node->webform['components']) && !empty($node->webform['components'])) {
+      foreach ($node->webform['components'] as $cid => $component) {
+        $component['nid'] = $node->nid; // Required for clone.module.
+        webform_component_insert($component);
+      }
+    }
+    // Insert emails. Also used with clone.module.
+    if (isset($node->webform['emails']) && !empty($node->webform['emails'])) {
+      foreach ($node->webform['emails'] as $eid => $email) {
+        $email['nid'] = $node->nid;
+        webform_email_insert($email);
+      }
+    }
+    // Set the per-role submission access control.
+    foreach (array_filter($node->webform['roles']) as $rid) {
+      db_insert('webform_roles')->fields(array('nid' => $node->nid, 'rid' => $rid))->execute();
+    }
+  }
   $form['actions']['submit']['#submit'][] = 'webform_form_submit';
 }
 
@@ -787,7 +818,8 @@ function vaxia_form_alter(&$form, &$form_state, $form_id) {
     $became_voter = strtotime($became_voter);
     $webform_created = isset($form['#node']->created) ? $form['#node']->created : strtotime('now');
     if ($webform_created < $became_voter) {
-      drupal_set_message('You gained voting privileges on this site after this webform was created. You are not eligible to vote on this issue.', 'warning');
+      drupal_set_message('You gained voting privileges on this site after this webform was created. ' .
+        'You are not eligible to vote on this issue.', 'warning');
       $form['#disabled'] = TRUE;
     }
   } // End alter of webform.
@@ -806,11 +838,17 @@ function vaxia_form_alter(&$form, &$form_state, $form_id) {
     $form['submission']['submit_limit']['submit_limit']['#value'] = 1;
     $form['submission']['submit_limit']['submit_limit']['#default_value'] = 1;
     // And only particular users, tweak the descriptions.
-    $form['role_control']['#description'] = t('These permissions affect which roles can submit this webform. It does not prevent access to the webform page.');
+    $form['role_control']['#description'] = t('These permissions affect which roles can submit this webform. ' .
+      'It does not prevent access to the webform page.');
     $allowed_roles = array('storyteller', 'evaluator', 'voting player');
     foreach ($form['role_control']['roles']['#options'] as $rid => $role_name) {
       if (!in_array($role_name, $allowed_roles)) {
         unset($form['role_control']['roles']['#options'][$rid]);
+      }
+      // And set voting players as default.
+      if ($role_name == 'voting player') {
+        $form['role_control']['roles']['#default_value'] = isset($form['role_control']['roles']['#default_value']) ?
+          $form['role_control']['roles']['#default_value'] : array($rid);
       }
     }
     $form['role_control']['roles']['#description'] = t('Voting players are players who have posted on the site in the last six months.');
