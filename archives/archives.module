@@ -273,7 +273,7 @@ function archive_posts_form($form, &$form_state) {
     $date = format_date($date);
   }
   $form['archive_date'] = array(
-    '#markup' => t('Archives last run') . ': ' . $date,
+    '#markup' => '<div>' . t('Archives last run') . ': ' . $date . '</div>',
   );
   $form['archive'] = array(
     '#type' => 'submit',
