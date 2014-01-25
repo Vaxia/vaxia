@@ -90,77 +90,6 @@ function vaxia_menu() {
 }
 
 /**
- * Implements hook_menu_alter().
- */
-function vaxia_menu_alter(&$items) {
-  // Copy the regular table output for a user access one.
-  $items['node/%webform_menu/webform-table'] = $items['node/%webform_menu/webform-results'];
-  $items['node/%webform_menu/webform-table']['title'] = 'Submissions';
-  $items['node/%webform_menu/webform-table']['page callback'] = '_vaxia_webform_results_table';
-  $items['node/%webform_menu/webform-table']['access callback'] = '_vaxia_webform_results_table_access';
-  $items['node/%webform_menu/webform-table']['access arguments'] = array(1);
-  unset($items['node/%webform_menu/webform-table']['file']);
-  $items['node/%webform_menu/webform-table']['type'] = MENU_LOCAL_TASK;
-  // That goes for the owner as well.
-  $items['node/%webform_menu/webform-results']['access callback'] = '_vaxia_webform_results_access';
-}
-
-/**
- * Menu access call for _vaxia_webform_results_table().
- */
-function _vaxia_webform_results_table_access($node) {
-  // Only show for a FINISHED contest. We do NOT need peopel vote stacking cause they know results.
-  if ($node->webform['status'] == FALSE) {
-    global $user;
-    return node_access('view', $node, $user);
-  }
-  return FALSE;
-}
-
-/**
- * Menu access call for _vaxia_webform_results_table().
- */
-function _vaxia_webform_results_access($node) {
-  // Only show for a FINISHED contest. We do NOT need peopel vote stacking cause they know results.
-  if ($node->webform['status'] == FALSE) {
-    return webform_results_access($node, $account = NULL);
-  }
-  return FALSE;
-}
-
-/**
- * Override normal webform_results_table(),
- */
-function _vaxia_webform_results_table($node, $pager_count = 0) {
-  if (isset($_GET['results']) && is_numeric($_GET['results'])) {
-    $pager_count = $_GET['results'];
-  }
-  // Get all the submissions for the node.
-  $header = theme('webform_results_table_header', array('node' => $node));
-  $submissions = webform_get_submissions($node->nid, $header, $pager_count);
-  global $user;
-  if (!webform_results_access($node, $user)) {
-    foreach ($submissions as $sid => $data) {
-      $submissions[$sid]->uid = '';
-      $submissions[$sid]->name = '*****';
-      $submissions[$sid]->remote_addr = '***.***.***.***';
-    }
-  }
-  $total_count = webform_get_submission_count($node->nid);
-  $output = theme('webform_results_table', array(
-    'node' => $node,
-    'components' => $node->webform['components'],
-    'submissions' => $submissions,
-    'total_count' => $total_count,
-    'pager_count' => $pager_count)
-  );
-  if ($pager_count) {
-    $output .= theme('pager');
-  }
-  return $output;
-}
-
-/**
  * Implements hook_rules_event_info().
  */
 function vaxia_rules_event_info() {
@@ -346,7 +275,7 @@ function _vaxia_ownership($node) {
  */
 function vaxia_entity_info_alter(&$entity_info) {
   $entity_info['node']['view modes']['artwork'] = array(
-    'label' => t('Vaxia - Just the image'),
+    'label' => t('Secondary'),
     'custom settings' => TRUE,
   );
 }
@@ -399,14 +328,6 @@ function vaxia_node_view($node, $view_mode, $langcode) {
   if ($node->type == 'rpg_chatroom') {
     drupal_add_js( drupal_get_path('module', 'vaxia') . '/js/vaxia.js' );
   }
-
-  // If node is a proposal.
-  if ($node->type == 'proposal') {
-    $date = date('m/d/Y', strtotime('+2 weeks', $node->changed));
-    drupal_set_message(t('This proposal will stay open for two weeks since it was last updated. It is set to close on @date.',
-      array('@date' => $date)));
-  }
-
 }
 
 /**
@@ -560,14 +481,16 @@ function vaxia_process_comment(&$variables) {
           '@char' => $character->field_charisma[$lang][0]['value'],
           '@app' => $character->field_appearance[$lang][0]['value']));
       $link_options = array('html' => TRUE, 'attributes' => array('target' => '_blank'));
-      $variables['picture'] = l( _vaxia_create_avatar_image_link(-1, $character_name, $alt), 'node/' . $character->nid, $link_options);
+      $variables['picture'] = l( _vaxia_create_avatar_image_link(-1, $character_name, $alt),
+        'node/' . $character->nid, $link_options);
       // Check first against the selected comment, it should by default be the character selected on load.
       // If not, fall back to the character itself.
       if (isset($comment->field_artwork[$lang][0]['nid'])) {
         $artwork = node_load($comment->field_artwork[$lang][0]['nid']);
         if (isset($artwork->field_artwork_image[$lang][0]['fid'])) {
           $variables['picture'] = l( _vaxia_create_avatar_image_link(
-            $artwork->field_artwork_image[$lang][0]['fid'], $character->title, $alt), 'node/' . $character->nid, $link_options);
+            $artwork->field_artwork_image[$lang][0]['fid'], $character->title, $alt),
+              'node/' . $character->nid, $link_options);
         }
       }
     }
@@ -702,49 +625,6 @@ function _vaxia_node_form_workflow_after_build($form, $form_state) {
     }
   }
   return $form;
-}
-
-/**
- * Implements hook_form_FORM_ID_alter().
- */
-function vaxia_form_proposal_node_form_alter(&$form, &$form_state, $form_id) {
-  // Insert our submit call before webforms call to make sure we complete properly.
-  // Since webform doesn't allow us to mark the content type as a primary.
-  $form['actions']['submit']['#submit'][] = '_vaxia_form_proposal_node_form_submit';
-}
-
-/**
- * Form submit callback().
- */
-function _vaxia_form_proposal_node_form_submit($form, &$form_state) {
-  // Get the node.
-  $node = node_load($form_state['nid']);
-  // Set up the webform defaults if node hasn't yet.
-  if (!isset($node->webform)) {
-    $node->webform = webform_node_defaults();
-  }
-  if ($node->webform == webform_node_defaults()) {
-    // Insert the webform.
-    $node->webform['nid'] = $node->nid;
-    $node->webform['record_exists'] = (bool) drupal_write_record('webform', $node->webform);
-    // Set the webform body
-    $node->body[$entity_created->language][0]['value'] = $output;
-    $node->webform['confirmation'] = t('Thank you for participating!');
-    $node->webform['confirmation_format'] = 'plain_text';
-    $node->webform['submit_limit'] = 1;
-    // Set the per-role submission access control.
-    foreach (user_roles() as $rid => $role_name) {
-      if ($role_name == 'voting player') {
-        $node->webform['roles'] = array();
-        $node->webform['roles'] = array($rid);
-      }
-    }
-    // Save the node.
-    node_save($node);
-  }
-  drupal_set_message(t('The webform %title has been updated. Add new fields to your webform with the form below.',
-    array('%title' => $form_state['values']['title'])));
-  $form_state['redirect'] = 'node/' . $form_state['nid'] . '/webform/components';
 }
 
 /**
@@ -889,57 +769,7 @@ function vaxia_form_alter(&$form, &$form_state, $form_id) {
     $new_refresh['#weight'] = -11;
     array_unshift($form, $new_refresh);
   } // End alter for comment forms.
-  
-  // If we're viewing a webform.
-  // Why hook_form_alter and not hook_form_FORM_ID_alter? Because webform's form id varies: webform_client_form_NID.
-  if (strstr($form_id, 'webform_client_form') !== FALSE) {
-    // Lockout.
-    global $user;
-    $this_user = user_load($user->uid);
-    $lang = !empty($this_user->language) ? $this_user->language : 'und';
-    $became_voter = isset($this_user->field_became_voter[$lang][0]['value']) ? $this_user->field_became_voter[$lang][0]['value'] : '1/1/3000 00:00:00';
-    $became_voter = strtotime($became_voter);
-    $webform_created = isset($form['#node']->created) ? $form['#node']->created : strtotime('now');
-    if ($webform_created < $became_voter) {
-      drupal_set_message('You gained voting privileges on this site after this webform was created. ' .
-        'You are not eligible to vote on this issue.', 'warning');
-      $form['#disabled'] = TRUE;
-    }
-  } // End alter of webform.
 
-  // Edit the webform form for creators to limit to the right roles.
-  if ($form_id == 'webform_configure_form' && $form['#node']->type == 'proposal') {
-    // Change the form around.
-    $form['submission']['status']['#disabled'] = TRUE;
-    $form['submission']['status']['#description'] .= ' ' .
-      t('This propsal will remain open for submission for two weeks from the last time it was updated.');
-    // Leave it to the machine to open and close the proposal. No early, no late.
-    $form['submission']['redirection']['#access'] = FALSE;
-    // Only one per customer.
-    $form['submission']['total_submit_limit']['#access'] = FALSE;
-    $form['submission']['submit_limit']['#access'] = FALSE;
-    $form['submission']['submit_limit']['enforce_limit']['#value'] = 'yes';
-    $form['submission']['submit_limit']['enforce_limit']['#default_value'] = 'yes';
-    $form['submission']['submit_limit']['submit_limit']['#value'] = 1;
-    $form['submission']['submit_limit']['submit_limit']['#default_value'] = 1;
-    // And only particular users, tweak the descriptions.
-    $form['role_control']['#description'] = t('These permissions affect which roles can submit this webform. ' .
-      'It does not prevent access to the webform page.');
-    $allowed_roles = array('storyteller', 'evaluator', 'voting player');
-    foreach ($form['role_control']['roles']['#options'] as $rid => $role_name) {
-      if (!in_array($role_name, $allowed_roles)) {
-        unset($form['role_control']['roles']['#options'][$rid]);
-      }
-      // And set voting players as default.
-      if ($role_name == 'voting player') {
-        $form['role_control']['roles']['#default_value'] = isset($form['role_control']['roles']['#default_value']) ?
-          $form['role_control']['roles']['#default_value'] : array($rid);
-      }
-    }
-    $form['role_control']['roles']['#description'] = t('Voting players are players who have posted on the site in the last six months.');
-    // And no advanced formats.
-    $form['advanced']['#access'] = FALSE;
-  }
   return $form;
 }
 
