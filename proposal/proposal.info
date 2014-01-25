@@ -15,4 +15,4 @@ features[ctools][] = views:views_default:3.0
 features[features_api][] = api:1
 features[node][] = proposal
 features[rules_config][] = rules_close_open_proposals
-features[views_view][] = proposals
+features[views_view][] = proposal
