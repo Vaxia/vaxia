@@ -473,10 +473,10 @@ function vaxia_process_comment(&$variables) {
       // Set the submitted variable with the updated character name.
       global $base_url;
       $char_desc = isset($character->field_description[$lang][0]['value']) ? $character->field_description[$lang][0]['value'] : '';
+      $options = array('attributes' => array('title' => $char_desc));
       $variables['submitted'] = t('!username </br> !datetime',
         array(
-          '!username' => l($character_name, 'node/' . $character->nid,
-            array('attributes' => array('tilte' => $char_desc))),
+          '!username' => l($character_name, 'node/' . $character->nid, $options),
           '!datetime' => $variables['created'])
         );
 
