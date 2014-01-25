@@ -269,9 +269,6 @@ function archives_admin_form($form, &$form_state) {
 function archive_posts_form($form, &$form_state) {
   $form = array();
   $date = variable_get('archives_last_run', 'never');
-  if ($date != 'never') {
-    $date = format_date($date);
-  }
   $form['archive_date'] = array(
     '#markup' => '<div>' . t('Archives last run') . ': ' . $date . '</div>',
   );
@@ -305,15 +302,17 @@ function _archives_posts_archive() {
   // First get the date of the oldest comment posted on the site to chat or forum.
   $oldest = db_query('SELECT c.created FROM {comment} c ' .
     'LEFT JOIN {node} n ON c.nid = n.nid ' .
-    'WHERE n.type = \'rpg_chatroom\' OR n.type = \'forum\' ' .
-    'ORDER BY created ASC LIMIT 0, 1');
+    'WHERE n.type = \'rpg_chatroom\' OR n.type = \'forum\' ' . // Session posts are NOT touched. On purpose.
+    'ORDER BY c.created ASC LIMIT 0, 1');
   $begin = strtotime('now');
   foreach ($oldest as $date) {
     // Back up a date further just to make sure we got it all.
-    $begin = strtotime('+1 day', $date->created);
+    $begin = strtotime('-1 day', $date->created);
     // And make sure it's on a midnight.
     $begin = strtotime(date('m/d/Y 00:00:01', $begin));
   }
+  drupal_set_message('Archiving comments, started looking from: ' . date('m/d/Y 00:00:01', $begin) . '.');
+
   // And now we work our way forward day by day.
   $root = variable_get('archives_flat_file_path', '');
   // Back it to our selected timeframe for cutoff.
@@ -325,157 +324,124 @@ function _archives_posts_archive() {
     // SET GLOBAL innodb_lock_wait_timeout = 3000; SET GLOBAL wait_timeout = 3000;
     // Add 24 hours to the day and look again.
     $end = strtotime('+1 day', $begin);
+    drupal_set_message('Archiving comments from: ' . date('m/d/Y 00:00:01', $begin) . ' to: ' . date('m/d/Y 00:00:01', $end) . '.');
+
     // Grab our set of comments to work through by forum and id.
     $pages = _archives_get_comments('rpg_chatroom', 'room', $begin, $end);
-
-    // Write the comments.
-    if (isset($pages['pages']) && isset($pages['d'])) {
-      foreach ($pages['pages'] as $page_path => $page_content) {
-        $filepath = DRUPAL_ROOT . '/' . $root . $page_path;
-        if (!is_dir(dirname($filepath))) {
-          mkdir(dirname($filepath), 0755, TRUE);
-        }
-        $error_page = file_put_contents($filepath, $page_content);
-      }
-      // Add to the character index.
-      foreach ($pages['d']['character'] as $character => $search_data) {
-        if (!empty($character)) {
-          $filepath =  DRUPAL_ROOT . '/' . $root . 'd/character.' . $character . '.data';
-          if (!is_dir(dirname($filepath))) {
-            mkdir(dirname($filepath), 0755, TRUE);
-          }
-          $error_character = file_put_contents($filepath, $search_data, FILE_APPEND);
-        }
-      }
-      // Add to the location index.
-      foreach ($pages['d']['location'] as $location => $search_data) {
-        if (!empty($location)) {
-          $filepath =  DRUPAL_ROOT . '/' . $root . 'd/location.' . $location . '.data';
-          if (!is_dir(dirname($filepath))) {
-            mkdir(dirname($filepath), 0755, TRUE);
-          }
-          $error_location = file_put_contents($filepath, $search_data, FILE_APPEND);
-        }
-      }
-      // Add to the player archives.
-      foreach ($pages['d']['player'] as $player => $search_data) {
-        if (!empty($player)) {
-          $filepath =  DRUPAL_ROOT . '/' . $root . 'd/player.' . $player . '.data';
-          if (!is_dir(dirname($filepath))) {
-            mkdir(dirname($filepath), 0755, TRUE);
-          }
-          $error_player = file_put_contents($filepath, $search_data, FILE_APPEND);
-        }
-      }
-
-      // Cleanup, and check for errors. Will be FALSE if an error.
-      if (!$error_page || !$error_character || !$error_location || !$error_player) {
-        $errors = '';
-        if ($error_page) {
-          $errors[] = 'Page';
-        }
-        if ($error_character) {
-          $errors[] = 'Character';
-        }
-        if ($error_location) {
-          $errors[] = 'Location';
-        }
-        if ($error_player) {
-          $errors[] = 'Player';
-        }
-        $errors = implode(', ', $errors);
-        watchdog('archives', 'Error writing archive file for rooms. ' . $errors, array(), WATCHDOG_CRITICAL);
-      }
-      else {
-        foreach ($pages['delete_comments'] as $cid) {
-          comment_delete($cid); // comment_delete_multiple can time out on large sets.
-        }
-      }
-    }
+    $error_page = $error_character = $error_location = $error_page = FALSE;
+    _archives_write_files($pages);
 
     // Grab our set of comments to work through by forum and id.
-    $pages = _archives_get_comments('forum', 'forum', $begin, $end);
+    $pages = _archives_get_comments('forum', 'forum', $begin, $end, TRUE);
+    $error_page = $error_character = $error_location = $error_page = FALSE;
+    _archives_write_files($pages);
 
-    // Write the comments.
-    if (isset($pages['pages']) && isset($pages['d'])) {
-      foreach ($pages['pages'] as $page_path => $page_content) {
-        $filepath = DRUPAL_ROOT . '/' . $root . $page_path;
-        if (!is_dir(dirname($filepath))) {
-          mkdir(dirname($filepath), 0755, TRUE);
-        }
-        $error_page = file_put_contents($filepath, $page_content);
-      }
-      // Add to the character index.
-      foreach ($pages['d']['character'] as $character => $search_data) {
-        if (!empty($character)) {
-          $filepath =  DRUPAL_ROOT . '/' . $root . 'd/character.' . $character . '.data';
-          if (!is_dir(dirname($filepath))) {
-            mkdir(dirname($filepath), 0755, TRUE);
-          }
-          $error_character = file_put_contents($filepath, $search_data, FILE_APPEND);
-        }
-      }
-      // Add to the location index.
-      foreach ($pages['d']['location'] as $location => $search_data) {
-        if (!empty($location)) {
-          $filepath =  DRUPAL_ROOT . '/' . $root . 'd/location.' . $location . '.data';
-          if (!is_dir(dirname($filepath))) {
-            mkdir(dirname($filepath), 0755, TRUE);
-          }
-          $error_location = file_put_contents($filepath, $search_data, FILE_APPEND);
-        }
-      }
-      // Add to the player archives.
-      foreach ($pages['d']['player'] as $player => $search_data) {
-        if (!empty($player)) {
-          $filepath =  DRUPAL_ROOT . '/' . $root . 'd/player.' . $player . '.data';
-          if (!is_dir(dirname($filepath))) {
-            mkdir(dirname($filepath), 0755, TRUE);
-          }
-          $error_player = file_put_contents($filepath, $search_data, FILE_APPEND);
-        }
-      }
-
-      // Cleanup, and check for errors. Will be FALSE if an error.
-      if (!$error_page || !$error_character || !$error_location || !$error_player) {
-        $errors = '';
-        if ($error_page) {
-          $errors[] = 'Page';
-        }
-        if ($error_character) {
-          $errors[] = 'Character';
-        }
-        if ($error_location) {
-          $errors[] = 'Location';
-        }
-        if ($error_player) {
-          $errors[] = 'Player';
-        }
-        $errors = implode(', ', $errors);
-        watchdog('archives', 'Error writing archive file for forums. ' . $errors, array(), WATCHDOG_CRITICAL);
-      }
-      else {
-        foreach ($pages['delete_comments'] as $cid) {
-          comment_delete($cid); // comment_delete_multiple can time out on large sets.
-        }
-      }
-    }
     // Set the loop up for the next round.
     $begin = $end;
   }
+  drupal_set_message('Archive complete.');
   $date = variable_set('archives_last_run', date('m/d/Y H:i:s'));
+}
+
+/**
+ * Helper fuction, write results.
+ */
+function _archives_write_files($pages) {
+  // Write the comments.
+  if (isset($pages['pages']) && isset($pages['d'])) {
+    foreach ($pages['pages'] as $page_path => $page_content) {
+      $filepath = DRUPAL_ROOT . '/' . $root . $page_path;
+      if (!is_dir(dirname($filepath))) {
+        mkdir(dirname($filepath), 0755, TRUE);
+      }
+      $error_page = file_put_contents($filepath, $page_content);
+      chmod($filepath, 0755);
+      if (!$error_page && is_file($filepath)) {
+        $error_page = TRUE; // Not an error
+        // This is actually ok. The page doesn't get written without full
+        // Information on hand. If the comments only partially loaded before time out
+        // then this file would not get written.
+        watchdog('archives', 'Archive page for ' . $filepath . ' already exists.');
+        drupal_set_message('Archive page for ' . $filepath . ' already exists.');
+      }
+      else {
+        watchdog('archives', 'Archive page for ' . $filepath . ' had an unknown error.');
+        drupal_set_message('Archive page for ' . $filepath . ' had an unknown error.');
+      }
+      chmod($filepath, 0755);
+    }
+    // Add to the character index.
+    foreach ($pages['d']['character'] as $character => $search_data) {
+      if (!empty($character)) {
+        $filepath =  DRUPAL_ROOT . '/' . $root . 'd/character.' . $character . '.data';
+        if (!is_dir(dirname($filepath))) {
+          mkdir(dirname($filepath), 0755, TRUE);
+        }
+        $error_character = file_put_contents($filepath, $search_data, FILE_APPEND);
+        chmod($filepath, 0755);
+      }
+    }
+    // Add to the location index.
+    foreach ($pages['d']['location'] as $location => $search_data) {
+      if (!empty($location)) {
+        $filepath =  DRUPAL_ROOT . '/' . $root . 'd/location.' . $location . '.data';
+        if (!is_dir(dirname($filepath))) {
+          mkdir(dirname($filepath), 0755, TRUE);
+        }
+        $error_location = file_put_contents($filepath, $search_data, FILE_APPEND);
+        chmod($filepath, 0755);
+      }
+    }
+    // Add to the player archives.
+    foreach ($pages['d']['player'] as $player => $search_data) {
+      if (!empty($player)) {
+        $filepath =  DRUPAL_ROOT . '/' . $root . 'd/player.' . $player . '.data';
+        if (!is_dir(dirname($filepath))) {
+          mkdir(dirname($filepath), 0755, TRUE);
+        }
+        $error_player = file_put_contents($filepath, $search_data, FILE_APPEND);
+        chmod($filepath, 0755);
+      }
+    }
+
+    // Cleanup, and check for errors. Will be FALSE if an error.
+    if (!$error_page || !$error_character || !$error_location || !$error_player) {
+      $errors = '';
+      if (!$error_page) {
+        $errors[] = 'Page';
+      }
+      if (!$error_character) {
+        $errors[] = 'Character';
+      }
+      if (!$error_location) {
+        $errors[] = 'Location';
+      }
+      if (!$error_player) {
+        $errors[] = 'Player';
+      }
+      $errors = implode(', ', $errors);
+      watchdog('archives', 'Error writing archive file for forums. ' . $errors, array(), WATCHDOG_CRITICAL);
+      drupal_set_message('Error while archiving forum comments.');
+    }
+    else {
+      foreach ($pages['delete_comments'] as $cid) {
+        comment_delete($cid); // comment_delete_multiple can time out on large sets.
+      }
+      drupal_set_message('Archived ' . count($pages['delete_comments']) . ' forum comments.');
+    }
+  }
 }
 
 /**
  * Helper functions, grab the comments for day and type.
  */
-function _archives_get_comments($type, $category, $begin, $end) {
+function _archives_get_comments($type, $category, $begin, $end, $include_node = FALSE) {
   // Grab our set of comments to work through by room and id.
-  $found_comments =  db_query('SELECT c.cid, n.nid FROM {comment} c ' .
+  $found_comments =  db_query('SELECT c.cid, c.nid FROM {comment} c ' .
     'LEFT JOIN {node} n ON c.nid = n.nid ' .
     'WHERE n.type = \'' . $type . '\' ' .
     'AND c.created BETWEEN ' . $begin . ' AND ' . $end . ' ' .
-    'ORDER BY n.nid ASC, c.created ASC');
+    'ORDER BY c.nid ASC, c.created ASC');
 
   // Process all found for this day.
   $comments = array();
@@ -505,8 +471,17 @@ function _archives_get_comments($type, $category, $begin, $end) {
       $comment_display = drupal_render($view);
       $comment_displays[$node->nid][$comment->cid] = $comment_display;
     }
+    else {
+      if (empty($node)) {
+        drupal_set_message('Missing node #' . $found_comment->nid . ' for processing.');
+      }
+      if (empty($comment)) {
+        drupal_set_message('Missing comment #' . $found_comment->cid . ' for processing.');
+      }
+    }
   }
 
+  drupal_set_message('Found ' . count($comments) . ' ' . $type . ' comments.');
   // Process each room now.
   $pages = array();
   $path = date('Y', $begin) . '/' . date('m', $begin) . '/' . date ('d', $begin) . '/';
@@ -518,12 +493,12 @@ function _archives_get_comments($type, $category, $begin, $end) {
       if (!empty($node) && !empty($comment)) {
         // Figure out the extra info.
         $character = isset($characters[$cid]->title) ? trim($characters[$cid]->title) : '';
-        $location = trim(str_replace(':', '-', str_replace('/', '-', str_replace('_', '-', str_replace(' ', '-', trim($node->title))))));
+        $location = _archives_prepare_string($node->title);
         $player = trim($players[$cid]->name);
         // Get additional location info.
         $realm = '';
         if (!empty($node->field_realm[$node->language][0]['value'])) {
-          $realm = trim(str_replace('_', '-', str_replace(' ', '-', $node->field_realm[$node->language][0]['value'])));
+          $realm = trim($node->field_realm[$node->language][0]['value']);
           if (!empty($realm)) {
             $realm .= '-';
           }
@@ -531,7 +506,7 @@ function _archives_get_comments($type, $category, $begin, $end) {
         $parent = '';
         $parent = isset($node->field_parent[$node->language][0]['nid']) ? node_load($node->field_parent[$node->language][0]['nid']) : '';
         if (!empty($parent)) {
-          $parent = trim(str_replace('_', '-', str_replace(' ', '-', trim($parent->title))));
+          $parent = _archives_prepare_string($parent->title);
           if (!empty($parent)) {
             $parent .= '-';
           }
@@ -550,6 +525,13 @@ function _archives_get_comments($type, $category, $begin, $end) {
               'article.comment .field-name-comment-body{margin-left:155px;}'.
               'article.comment .dice_rolls{margin-left:155px;}'.
             '</style>';
+          // Include the node as needed.
+          if ($include_node) {
+            $node_view = node_view($node);
+            $pages['pages'][$page_title] .= "\n" . '<div class="post">' . "\n" .
+              $node_view . "\n" .
+              '</div>';
+          }
         }
         if ( empty($pages['d']['character'][$character]) ) {
           $pages['d']['character'][$character] = array();
@@ -563,7 +545,7 @@ function _archives_get_comments($type, $category, $begin, $end) {
         if ( empty($pages['delete_comments']) ) {
           $pages['delete_comments'] = array();
         }
-        // Add data.
+        // Add data to the arrays.
         $pages['pages'][$page_title] .= "\n" . '<div class="post">' . "\n" .
           $comment_display . "\n" .
           '</div>';
@@ -580,7 +562,7 @@ function _archives_get_comments($type, $category, $begin, $end) {
   // Add the end to all pages.
   if (isset($pages['pages'])) {
     foreach ($pages['pages'] as $page_path => $page) {
-      $pages['pages'][$page_path] = $page . "\n" . '</body></html>';
+      $pages['pages'][$page_path] .= "\n" . '</body></html>';
     }
   }
 
@@ -619,6 +601,23 @@ function _archives_read_data_file($path) {
     }
   }
   return $results;
+}
+
+/**
+ * Helper function, strip strings.
+ */
+function _archives_prepare_string($string) {
+  $string = trim($string);
+  $remove_chars = array('.', ',', ':', '/', '\\', '?', '"', ')', '(', '*', '&', '^', '%'. '$', '#', '@', '!', '~', '[', ']', '{', '}');
+  foreach ($remove_chars as $char) {
+    $string = str_replace($char, '', $string);
+  }
+  $replace_chars = array(' ', '_');
+  foreach ($replace_chars as $char) {
+    $string = str_replace($char, '-', $string);
+  }
+  $string = str_replace('..', '.', $string);
+  return trim($string);
 }
 
 /**
@@ -670,7 +669,7 @@ function _archives_search($month = 'any', $day = 'any', $year = 'any', $type = '
 
   // Check for location info.
   if (!empty($location) && $location != 'any') {
-    $this_found = _archives_read_data_file($root .'/d/location.' . str_replace(' ', '-', $location) . '.data');
+    $this_found = _archives_read_data_file($root .'/d/location.' . _archives_prepare_string($location) . '.data');
     // Only use the results that show under both.
     if (empty($this_found)) {
       $found = array();
@@ -680,7 +679,7 @@ function _archives_search($month = 'any', $day = 'any', $year = 'any', $type = '
 
   // Check character name in content
   if (!empty($character) && $character != 'any') {
-    $this_found = _archives_read_data_file($root .'/d/character.' . str_replace(' ', '-', $character) . '.data');
+    $this_found = _archives_read_data_file($root .'/d/character.' . _archives_prepare_string($character) . '.data');
     // Only use the results that show under both.
     if (empty($this_found)) {
       $found = array();
@@ -690,7 +689,7 @@ function _archives_search($month = 'any', $day = 'any', $year = 'any', $type = '
 
   // Check player name in content
   if (!empty($player) && $player != 'any') {
-    $this_found = _archives_read_data_file($root .'/d/player.' . str_replace(' ', '-', $player) . '.data');
+    $this_found = _archives_read_data_file($root .'/d/player.' . _archives_prepare_string($player) . '.data');
     // Only use the results that show under both.
     if (empty($this_found)) {
       $found = array();
