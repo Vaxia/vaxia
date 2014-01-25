@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * proposals.views_default.inc
+ * proposal.views_default.inc
  */
 
 /**
