@@ -40,6 +40,22 @@ function archives_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('archives_admin_form'),
   );
+  $items['admin/config/search/archives/settings'] = array(
+    'title' => 'Archive configurations',
+    'description' => 'Flat file archive configurations',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'access arguments' => array('administer old archives'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('archives_admin_form'),
+  );
+  $items['admin/config/search/archives/archive_posts'] = array(
+    'title' => 'Archive posts',
+    'description' => 'Archive posts currently in the system into the archive files',
+    'type' =>  MENU_LOCAL_TASK,
+    'access arguments' => array('administer old archives'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('archive_posts_form'),
+  );
   return $items;
 }
 
@@ -223,21 +239,371 @@ function archives_form($form, &$form_state) {
 /**
  * AJAX callback for search form.
  */
-function archives_form_ajax($form, $form_state) {
+function archives_form_ajax($form, &$form_state) {
   return $form['archives_results'];
 }
 
 /**
  * Menu callback for admin page.
  */
-function archives_admin_form() {
+function archives_admin_form($form, &$form_state) {
   $form = array();
   $form['archives_flat_file_path'] = array(
-    '#title' => t('Flat file archive location'),
+    '#title' => t('Location'),
+    '#description' => t('Flat file archive location, the directory the archives are stored in.'),
     '#type' => 'textfield',
     '#default_value' => variable_get('archives_flat_file_path', ''),
   );
+  $form['archives_date'] = array(
+    '#title' => t('Timeframe'),
+    '#description' => t('Timeframe to keep in the database before moving to archives. Use the same strings as date().'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('archives_date', '6 months'),
+  );
   return system_settings_form($form);
+}
+
+/**
+ * Menu callback for archive form.
+ */
+function archive_posts_form($form, &$form_state) {
+  $form = array();
+  $date = variable_get('archives_last_run', 'never');
+  if ($date != 'never') {
+    $date = format_date($date);
+  }
+  $form['archive_date'] = array(
+    '#markup' => t('Archives last run') . ': ' . $date,
+  );
+  $form['archive'] = array(
+    '#type' => 'submit',
+    '#value' => t('Archive All Posts'),
+  );
+  return $form;
+}
+
+/**
+ * Implements hook_cron().
+ */
+function archive_cron() {
+  return _archives_posts_archive();
+}
+
+/**
+ * Submit handler for archive form.
+ */
+function archive_posts_form_submit($form, &$form_state) {
+  return _archives_posts_archive();
+}
+
+/**
+ * Helper function, archive things.
+ */
+function _archives_posts_archive() {
+  // And now we get all complicated! It may take a bit to get through them all.
+  // But we archive for all the posts on the site into the file system.
+  // First get the date of the oldest comment posted on the site to chat or forum.
+  $oldest = db_query('SELECT c.created FROM {comment} c ' .
+    'LEFT JOIN {node} n ON c.nid = n.nid ' .
+    'WHERE n.type = \'rpg_chatroom\' OR n.type = \'forum\' ' .
+    'ORDER BY created ASC LIMIT 0, 1');
+  $begin = strtotime('now');
+  foreach ($oldest as $date) {
+    // Back up a date further just to make sure we got it all.
+    $begin = strtotime('+1 day', $date->created);
+    // And make sure it's on a midnight.
+    $begin = strtotime(date('m/d/Y 00:00:01', $begin));
+  }
+  // And now we work our way forward day by day.
+  $root = variable_get('archives_flat_file_path', '');
+  // Back it to our selected timeframe for cutoff.
+  $now = strtotime(variable_get('archives_date', '6 months') . ' ago');
+  while ($begin < $now) {
+    // Set our time out for each loop...
+    set_time_limit(600);
+    // Set the mysql timeout as well:
+    // SET GLOBAL innodb_lock_wait_timeout = 3000; SET GLOBAL wait_timeout = 3000;
+    // Add 24 hours to the day and look again.
+    $end = strtotime('+1 day', $begin);
+    // Grab our set of comments to work through by forum and id.
+    $pages = _archives_get_comments('rpg_chatroom', 'room', $begin, $end);
+
+    // Write the comments.
+    if (isset($pages['pages']) && isset($pages['d'])) {
+      foreach ($pages['pages'] as $page_path => $page_content) {
+        $filepath = DRUPAL_ROOT . '/' . $root . $page_path;
+        if (!is_dir(dirname($filepath))) {
+          mkdir(dirname($filepath), 0755, TRUE);
+        }
+        $error_page = file_put_contents($filepath, $page_content);
+      }
+      // Add to the character index.
+      foreach ($pages['d']['character'] as $character => $search_data) {
+        if (!empty($character)) {
+          $filepath =  DRUPAL_ROOT . '/' . $root . 'd/character.' . $character . '.data';
+          if (!is_dir(dirname($filepath))) {
+            mkdir(dirname($filepath), 0755, TRUE);
+          }
+          $error_character = file_put_contents($filepath, $search_data, FILE_APPEND);
+        }
+      }
+      // Add to the location index.
+      foreach ($pages['d']['location'] as $location => $search_data) {
+        if (!empty($location)) {
+          $filepath =  DRUPAL_ROOT . '/' . $root . 'd/location.' . $location . '.data';
+          if (!is_dir(dirname($filepath))) {
+            mkdir(dirname($filepath), 0755, TRUE);
+          }
+          $error_location = file_put_contents($filepath, $search_data, FILE_APPEND);
+        }
+      }
+      // Add to the player archives.
+      foreach ($pages['d']['player'] as $player => $search_data) {
+        if (!empty($player)) {
+          $filepath =  DRUPAL_ROOT . '/' . $root . 'd/player.' . $player . '.data';
+          if (!is_dir(dirname($filepath))) {
+            mkdir(dirname($filepath), 0755, TRUE);
+          }
+          $error_player = file_put_contents($filepath, $search_data, FILE_APPEND);
+        }
+      }
+
+      // Cleanup, and check for errors. Will be FALSE if an error.
+      if (!$error_page || !$error_character || !$error_location || !$error_player) {
+        $errors = '';
+        if ($error_page) {
+          $errors[] = 'Page';
+        }
+        if ($error_character) {
+          $errors[] = 'Character';
+        }
+        if ($error_location) {
+          $errors[] = 'Location';
+        }
+        if ($error_player) {
+          $errors[] = 'Player';
+        }
+        $errors = implode(', ', $errors);
+        watchdog('archives', 'Error writing archive file for rooms. ' . $errors, array(), WATCHDOG_CRITICAL);
+      }
+      else {
+        foreach ($pages['delete_comments'] as $cid) {
+          comment_delete($cid); // comment_delete_multiple can time out on large sets.
+        }
+      }
+    }
+
+    // Grab our set of comments to work through by forum and id.
+    $pages = _archives_get_comments('forum', 'forum', $begin, $end);
+
+    // Write the comments.
+    if (isset($pages['pages']) && isset($pages['d'])) {
+      foreach ($pages['pages'] as $page_path => $page_content) {
+        $filepath = DRUPAL_ROOT . '/' . $root . $page_path;
+        if (!is_dir(dirname($filepath))) {
+          mkdir(dirname($filepath), 0755, TRUE);
+        }
+        $error_page = file_put_contents($filepath, $page_content);
+      }
+      // Add to the character index.
+      foreach ($pages['d']['character'] as $character => $search_data) {
+        if (!empty($character)) {
+          $filepath =  DRUPAL_ROOT . '/' . $root . 'd/character.' . $character . '.data';
+          if (!is_dir(dirname($filepath))) {
+            mkdir(dirname($filepath), 0755, TRUE);
+          }
+          $error_character = file_put_contents($filepath, $search_data, FILE_APPEND);
+        }
+      }
+      // Add to the location index.
+      foreach ($pages['d']['location'] as $location => $search_data) {
+        if (!empty($location)) {
+          $filepath =  DRUPAL_ROOT . '/' . $root . 'd/location.' . $location . '.data';
+          if (!is_dir(dirname($filepath))) {
+            mkdir(dirname($filepath), 0755, TRUE);
+          }
+          $error_location = file_put_contents($filepath, $search_data, FILE_APPEND);
+        }
+      }
+      // Add to the player archives.
+      foreach ($pages['d']['player'] as $player => $search_data) {
+        if (!empty($player)) {
+          $filepath =  DRUPAL_ROOT . '/' . $root . 'd/player.' . $player . '.data';
+          if (!is_dir(dirname($filepath))) {
+            mkdir(dirname($filepath), 0755, TRUE);
+          }
+          $error_player = file_put_contents($filepath, $search_data, FILE_APPEND);
+        }
+      }
+
+      // Cleanup, and check for errors. Will be FALSE if an error.
+      if (!$error_page || !$error_character || !$error_location || !$error_player) {
+        $errors = '';
+        if ($error_page) {
+          $errors[] = 'Page';
+        }
+        if ($error_character) {
+          $errors[] = 'Character';
+        }
+        if ($error_location) {
+          $errors[] = 'Location';
+        }
+        if ($error_player) {
+          $errors[] = 'Player';
+        }
+        $errors = implode(', ', $errors);
+        watchdog('archives', 'Error writing archive file for forums. ' . $errors, array(), WATCHDOG_CRITICAL);
+      }
+      else {
+        foreach ($pages['delete_comments'] as $cid) {
+          comment_delete($cid); // comment_delete_multiple can time out on large sets.
+        }
+      }
+    }
+    // Set the loop up for the next round.
+    $begin = $end;
+  }
+  $date = variable_set('archives_last_run', date('m/d/Y H:i:s'));
+}
+
+/**
+ * Helper functions, grab the comments for day and type.
+ */
+function _archives_get_comments($type, $category, $begin, $end) {
+  // Grab our set of comments to work through by room and id.
+  $found_comments =  db_query('SELECT c.cid, n.nid FROM {comment} c ' .
+    'LEFT JOIN {node} n ON c.nid = n.nid ' .
+    'WHERE n.type = \'' . $type . '\' ' .
+    'AND c.created BETWEEN ' . $begin . ' AND ' . $end . ' ' .
+    'ORDER BY n.nid ASC, c.created ASC');
+
+  // Process all found for this day.
+  $comments = array();
+  $nodes = array();
+  $players = array();
+  $characters = array();
+  $comment_displays = array();
+  foreach ($found_comments as $found_comment) {
+    // Get the comment and node.
+    $comment = comment_load($found_comment->cid);
+    $node = node_load($found_comment->nid);
+    if (!empty($node) && !empty($comment)) {
+      // Save all the data we need for later.
+      $nodes[$node->nid] = $node;
+      $comments[$comment->cid] = $comment;
+      // Get derived info.
+      $char_id = isset($comment->field_comment_character[$comment->language][0]['nid']) ? $comment->field_comment_character[$comment->language][0]['nid'] : '';
+      if (!empty($char_id)) {
+        $characters[$comment->cid] = node_load($char_id);
+      }
+      $players[$comment->cid] = user_load($comment->uid);
+      // And generate the comment display.
+      $view = comment_view($comment, $node);
+      // Remove things from the display array before we render.
+      unset($view['links']);
+      // Render it.
+      $comment_display = drupal_render($view);
+      $comment_displays[$node->nid][$comment->cid] = $comment_display;
+    }
+  }
+
+  // Process each room now.
+  $pages = array();
+  $path = date('Y', $begin) . '/' . date('m', $begin) . '/' . date ('d', $begin) . '/';
+  foreach ($comment_displays as $nid => $comments) {
+     foreach ($comments as $cid => $comment_display) {
+      // Calculate the data.
+      $node = isset($nodes[$nid]) ? $nodes[$nid] : '';
+      $comment = isset($comment_displays[$nid][$cid]) ? $comment_displays[$nid][$cid] : '';
+      if (!empty($node) && !empty($comment)) {
+        // Figure out the extra info.
+        $character = isset($characters[$cid]->title) ? trim($characters[$cid]->title) : '';
+        $location = trim(str_replace(':', '-', str_replace('/', '-', str_replace('_', '-', str_replace(' ', '-', trim($node->title))))));
+        $player = trim($players[$cid]->name);
+        // Get additional location info.
+        $realm = '';
+        if (!empty($node->field_realm[$node->language][0]['value'])) {
+          $realm = trim(str_replace('_', '-', str_replace(' ', '-', $node->field_realm[$node->language][0]['value'])));
+          if (!empty($realm)) {
+            $realm .= '-';
+          }
+        }
+        $parent = '';
+        $parent = isset($node->field_parent[$node->language][0]['nid']) ? node_load($node->field_parent[$node->language][0]['nid']) : '';
+        if (!empty($parent)) {
+          $parent = trim(str_replace('_', '-', str_replace(' ', '-', trim($parent->title))));
+          if (!empty($parent)) {
+            $parent .= '-';
+          }
+        }
+        // And setup the display,
+        $page_title = $path . $category . '/' . strtolower($realm . $parent . $location) . '.html';
+        // Set the data if empty.
+        if ( empty($pages['pages'][$page_title]) ) {
+          $pages['pages'][$page_title] = "\n" . '<html>' .
+            '<body style="background:white;"> '.
+            '<style> ' .
+              '.post{border:solid 1px #000;margin:0.25em;padding:0.25em;}' .
+              'article.comment header{width:150px;float:left;}' .
+              'article.comment header img{display:none;}' .
+              'article.comment .comment-spacer{clear:both;}' .
+              'article.comment .field-name-comment-body{margin-left:155px;}'.
+              'article.comment .dice_rolls{margin-left:155px;}'.
+            '</style>';
+        }
+        if ( empty($pages['d']['character'][$character]) ) {
+          $pages['d']['character'][$character] = array();
+        }
+        if ( empty($pages['d']['location'][$location]) ) {
+          $pages['d']['location'][$location] = array();
+        }
+        if ( empty($pages['d']['player'][$player]) ) {
+          $pages['d']['player'][$player] = array();
+        }
+        if ( empty($pages['delete_comments']) ) {
+          $pages['delete_comments'] = array();
+        }
+        // Add data.
+        $pages['pages'][$page_title] .= "\n" . '<div class="post">' . "\n" .
+          $comment_display . "\n" .
+          '</div>';
+        if (!empty($character)) {
+          $pages['d']['character'][$character][] .= '"' . $page_title . '",';
+        }
+        $pages['d']['location'][$location][] .= '"' . $page_title . '",';
+        $pages['d']['player'][$player][] .= '"' . $page_title . '",';
+        $pages['delete_comments'][] = $cid;
+      }
+    }
+  }
+
+  // Add the end to all pages.
+  if (isset($pages['pages'])) {
+    foreach ($pages['pages'] as $page_path => $page) {
+      $pages['pages'][$page_path] = $page . "\n" . '</body></html>';
+    }
+  }
+
+  if (isset($pages['d'])) {
+    // Make sure all data returns are unique.
+    foreach ($pages['d']['character'] as $character => $search_data) {
+      $pages['d']['character'][$character] = array_unique($pages['d']['character'][$character]);
+      $pages['d']['character'][$character] = "\n" . implode("\n", $pages['d']['character'][$character]);
+    }
+    // Add to the location index.
+    foreach ($pages['d']['location'] as $location => $search_data) {
+      $pages['d']['location'][$location] = array_unique($pages['d']['location'][$location]);
+      $pages['d']['location'][$location] = "\n" . implode("\n", $pages['d']['location'][$location]);
+    }
+    // Add to the player archives.
+    foreach ($pages['d']['player'] as $player => $search_data) {
+      $pages['d']['player'][$player] = array_unique($pages['d']['player'][$player]);
+      $pages['d']['player'][$player] = "\n" . implode("\n", $pages['d']['player'][$player]);
+    }
+  }
+
+  // Now we have all the pages to return to the writing system.
+  return $pages;
 }
 
 /**
