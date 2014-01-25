@@ -26,14 +26,6 @@ function vaxia_accounts_views_api() {
  */
 function vaxia_accounts_node_info() {
   $items = array(
-    'proposal' => array(
-      'name' => t('Proposal'),
-      'base' => 'node_content',
-      'description' => t('A proposal is used by any voting member of the site to bring a new proposal to the site for a vote.'),
-      'has_title' => '1',
-      'title_label' => t('Title'),
-      'help' => '',
-    ),
     'strike' => array(
       'name' => t('Strike'),
       'base' => 'node_content',

@@ -28,7 +28,6 @@ features[field][] = node-strike-field_category
 features[field][] = node-strike-field_documentation
 features[field][] = node-strike-field_player
 features[field][] = node-strike-field_severity
-features[node][] = proposal
 features[node][] = strike
 features[rules_config][] = rules_add_character_and_become_a_player
 features[rules_config][] = rules_add_voting_player

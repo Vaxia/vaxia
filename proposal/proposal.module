@@ -1,8 +1,10 @@
 <?php
 /**
  * @file
- * Provide a search system into the old Vaxia archives.
+ * Code for the Proposals feature.
  */
+
+include_once 'proposals.features.inc';
 
 /**
  * Implements hook_menu_alter().

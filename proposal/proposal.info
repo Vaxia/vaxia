@@ -1,5 +1,11 @@
 name = Proposal
-description = Proposal system for Vaxia
+description = Proposal and election system for Vaxia
 core = 7.x
 package = Vaxia
-version = 7.x-1.1
+version = 7.x-1.0
+project = proposal
+dependencies[] = ctools
+dependencies[] = views
+features[ctools][] = views:views_default:3.0
+features[features_api][] = api:1
+features[views_view][] = proposals
