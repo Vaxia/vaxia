@@ -4,7 +4,7 @@
  * Code for the Proposals feature.
  */
 
-include_once 'proposals.features.inc';
+include_once 'proposal.features.inc';
 
 /**
  * Implements hook_menu_alter().
