@@ -473,6 +473,9 @@ function vaxia_process_comment(&$variables) {
       // Set the submitted variable with the updated character name.
       global $base_url;
       $char_desc = isset($character->field_description[$lang][0]['value']) ? $character->field_description[$lang][0]['value'] : '';
+      if (strlen($char_desc) > 595) {
+        $char_desc = drupal_substr($char_desc, 0, 600) . '...';
+      }
       $options = array('attributes' => array('title' => $char_desc));
       $variables['submitted'] = t('!username </br> !datetime',
         array(
