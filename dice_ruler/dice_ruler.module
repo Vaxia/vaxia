@@ -518,9 +518,14 @@ function dice_ruler_form($form, &$form_state) {
     '#title' => t('Target Resistance'),
 
   );
-  $form['magic']['target']['magic_target_stat'] = array(
+  $form['magic']['target']['magic_target_stat_int'] = array(
     '#type' => 'textfield',
-    '#title' => t('Stat'),
+    '#title' => t('Stat vs. Int'),
+    '#size' => 5,
+  );
+  $form['magic']['target']['magic_target_stat_spi'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Stat vs. Spi'),
     '#size' => 5,
   );
   $form['magic']['target']['magic_target_skill'] = array(
@@ -628,7 +633,8 @@ function dice_ruler_form($form, &$form_state) {
           $form_state['values']['magic_diff_b'],
           $form_state['values']['magic_add_diff_b'],
           $form_state['values']['magic_rolled_b'],
-          $form_state['values']['magic_target_stat'],
+          $form_state['values']['magic_target_stat_int'],
+          $form_state['values']['magic_target_stat_spi'],
           $form_state['values']['magic_target_skill']
         );
       break;
@@ -1187,7 +1193,8 @@ function _dice_ruler_magic(
   $magic_diff_b,
   $magic_add_diff_b,
   $magic_rolled_b,
-  $magic_target_stat,
+  $magic_target_stat_int,
+  $magic_target_stat_spi,
   $magic_target_skill
 ) {
   // How this normally works.
@@ -1230,15 +1237,19 @@ function _dice_ruler_magic(
   }
 
   // Set defaults for the target.
-  if (empty($magic_target_stat)) {
-    $magic_target_stat = 0;
+  if (empty($magic_target_stat_int)) {
+    $magic_target_stat_int = 0;
+  }
+  if (empty($magic_target_stat_spi)) {
+    $magic_target_stat_spi = 0;
   }
   if (empty($magic_target_skill)) {
     $magic_target_skill = 0;
   }
 
   // Check that all are numeric.
-  if (!empty($magic_target_stat) && !is_numeric($magic_target_stat)
+  if (!empty($magic_target_stat_int) && !is_numeric($magic_target_stat_int)
+    || !empty($magic_target_stat_spi) && !is_numeric($magic_target_stat_spi)
     || !empty($magic_target_skill) && !is_numeric($magic_target_skill)) {
     return t('Not all values given were numeric. We need numbers for math.');
   }
@@ -1275,12 +1286,12 @@ function _dice_ruler_magic(
     'rows' => $rows,
   ));
 
-  if ($magic_target_stat != 0 || $magic_target_skill != 0) {
+  if ($magic_target_stat_int != 0 || $magic_target_stat_spi != 0 || $magic_target_skill != 0) {
     $output .= '<div><b>' . t('Resisted roll results') . ':</b></div>';
   
     // Set the target diffs for resisted.
-    $magic_diff_a = $magic_diff_a + $magic_target_stat + $magic_target_skill;
-    $magic_diff_b = $magic_diff_b + $magic_target_stat + $magic_target_skill;
+    $magic_diff_a = $magic_diff_a + $magic_target_stat_int + $magic_target_skill;
+    $magic_diff_b = $magic_diff_b + $magic_target_stat_spi + $magic_target_skill;
     $output .= '<div>' . t('With target\'s resistance, the difficulty is') .': '. $magic_diff_a .  ' / ' . $magic_diff_b . '</div>';
 
     // Combine results.
