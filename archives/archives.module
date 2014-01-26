@@ -251,15 +251,21 @@ function _archives_write_files($pages, $begin, $end) {
         $errors[] = 'Player';
       }
       drupal_set_message('Archiving comments from: ' . date('m/d/Y 00:00:01', $begin) . ' to: ' . date('m/d/Y 00:00:01', $end) . '.');
-      watchdog('archives', 'Error writing archive file for forums. ' . implode(', ', $errors), array(), WATCHDOG_CRITICAL);
-      drupal_set_message('Error while archiving forum comments: ' . implode(', ', $errors));
+      watchdog('archives', 'Error writing archive file. ' . implode(', ', $errors), array(), WATCHDOG_CRITICAL);
+      drupal_set_message('Error while archiving comments: ' . implode(', ', $errors));
     }
     else {
+      // Delete comments.
       foreach ($pages['delete_comments'] as $cid) {
         comment_delete($cid); // comment_delete_multiple can time out on large sets.
       }
       drupal_set_message('Archiving comments from: ' . date('m/d/Y 00:00:01', $begin) . ' to: ' . date('m/d/Y 00:00:01', $end) . '.');
-      drupal_set_message('Archived ' . count($pages['delete_comments']) . ' forum comments.');
+      drupal_set_message('Archived ' . count($pages['delete_comments']) . ' comments.');
+      // Delete nodes.
+      foreach ($pages['delete_nodes'] as $nid) {
+        node_delete($nid);
+      }
+      drupal_set_message('Archived ' . count($pages['delete_nodes']) . ' nodes.');
     }
   }
 }
@@ -370,6 +376,8 @@ function _archives_get_comments($type, $category, $begin, $end, $include_node = 
             $pages['pages'][$page_title] .= "\n" . '<div class="post">' . "\n" .
               $node_display . "\n" .
               '</div>';
+            // Mark the node for deletion too.
+            $pages['delete_nodes'][] = $nid;
           }
         }
         if ( empty($pages['d']['character'][$character]) ) {
