@@ -324,19 +324,19 @@ function _archives_posts_archive() {
     // SET GLOBAL innodb_lock_wait_timeout = 3000; SET GLOBAL wait_timeout = 3000;
     // Add 24 hours to the day and look again.
     $end = strtotime('+1 day', $begin);
-    drupal_set_message('Archiving comments from: ' . date('m/d/Y 00:00:01', $begin) . ' to: ' . date('m/d/Y 00:00:01', $end) . '.');
 
     // Grab our set of comments to work through by forum and id.
     $pages = _archives_get_comments('rpg_chatroom', 'room', $begin, $end);
-    $error_page = $error_character = $error_location = $error_page = FALSE;
-    _archives_write_files($pages);
+    _archives_write_files($pages, $begin, $end);
 
     // Grab our set of comments to work through by forum and id.
     $pages = _archives_get_comments('forum', 'forum', $begin, $end, TRUE);
-    $error_page = $error_character = $error_location = $error_page = FALSE;
-    _archives_write_files($pages);
+    _archives_write_files($pages, $begin, $end);
 
     // Set the loop up for the next round.
+    //  PHP caches the information those functions return in order to provide faster performance.
+    // So got to reset this cache for each loop.
+    clearstatcache(); // See: http://us3.php.net/manual/en/function.clearstatcache.php
     $begin = $end;
   }
   drupal_set_message('Archive complete.');
@@ -346,7 +346,9 @@ function _archives_posts_archive() {
 /**
  * Helper fuction, write results.
  */
-function _archives_write_files($pages) {
+function _archives_write_files($pages, $begin, $end) {
+  // And now we work our way forward day by day.
+  $root = variable_get('archives_flat_file_path', '');
   // Write the comments.
   if (isset($pages['pages']) && isset($pages['d'])) {
     foreach ($pages['pages'] as $page_path => $page_content) {
@@ -354,79 +356,93 @@ function _archives_write_files($pages) {
       if (!is_dir(dirname($filepath))) {
         mkdir(dirname($filepath), 0755, TRUE);
       }
-      $error_page = file_put_contents($filepath, $page_content);
+      $error_free = file_put_contents($filepath, $page_content);
       chmod($filepath, 0755);
-      if (!$error_page && is_file($filepath)) {
-        $error_page = TRUE; // Not an error
+      // MUST be explicit about the === FALSE, in case 0 bytes were written.
+      // Which otherwise might register as a false negative.
+      if ($error_free === FALSE && is_readable($filepath)) {
+        $error_free = TRUE; // Not an error
         // This is actually ok. The page doesn't get written without full
         // Information on hand. If the comments only partially loaded before time out
         // then this file would not get written.
         watchdog('archives', 'Archive page for ' . $filepath . ' already exists.');
         drupal_set_message('Archive page for ' . $filepath . ' already exists.');
       }
-      else {
+      elseif($error_free === FALSE ) {
         watchdog('archives', 'Archive page for ' . $filepath . ' had an unknown error.');
         drupal_set_message('Archive page for ' . $filepath . ' had an unknown error.');
       }
-      chmod($filepath, 0755);
     }
     // Add to the character index.
     foreach ($pages['d']['character'] as $character => $search_data) {
-      if (!empty($character)) {
+      if (!empty($character) && !empty($search_data)) {
         $filepath =  DRUPAL_ROOT . '/' . $root . 'd/character.' . $character . '.data';
         if (!is_dir(dirname($filepath))) {
           mkdir(dirname($filepath), 0755, TRUE);
         }
-        $error_character = file_put_contents($filepath, $search_data, FILE_APPEND);
+        $error_free_c = file_put_contents($filepath, $search_data, FILE_APPEND);
         chmod($filepath, 0755);
+        if ($error_free_c === FALSE ) {
+          watchdog('archives', 'Archive write to chracter ' . $character . ' with ' . $search_data . ' had an unknown error.');
+          drupal_set_message('Archive write to chracter ' . $character . ' with ' . $search_data . ' had an unknown error.');
+        }
       }
     }
     // Add to the location index.
     foreach ($pages['d']['location'] as $location => $search_data) {
-      if (!empty($location)) {
+      if (!empty($location) && !empty($search_data)) {
         $filepath =  DRUPAL_ROOT . '/' . $root . 'd/location.' . $location . '.data';
         if (!is_dir(dirname($filepath))) {
           mkdir(dirname($filepath), 0755, TRUE);
         }
-        $error_location = file_put_contents($filepath, $search_data, FILE_APPEND);
+        $error_free_l = file_put_contents($filepath, $search_data, FILE_APPEND);
         chmod($filepath, 0755);
+        if ($error_free_l === FALSE ) {
+          watchdog('archives', 'Archive write to location ' . $location . ' with ' . $search_data . ' had an unknown error.');
+          drupal_set_message('Archive write to location ' . $location . ' with ' . $search_data . ' had an unknown error.');
+        }
       }
     }
     // Add to the player archives.
     foreach ($pages['d']['player'] as $player => $search_data) {
-      if (!empty($player)) {
+      if (!empty($player) && !empty($search_data)) {
         $filepath =  DRUPAL_ROOT . '/' . $root . 'd/player.' . $player . '.data';
         if (!is_dir(dirname($filepath))) {
           mkdir(dirname($filepath), 0755, TRUE);
         }
-        $error_player = file_put_contents($filepath, $search_data, FILE_APPEND);
+        $error_free_p = file_put_contents($filepath, $search_data, FILE_APPEND);
         chmod($filepath, 0755);
+        if ($error_free_p === FALSE ) {
+          watchdog('archives', 'Archive write to player ' . $player . ' with ' . $search_data . ' had an unknown error.');
+          drupal_set_message('Archive write to player ' . $player . ' with ' . $search_data . ' had an unknown error.');
+        }
       }
     }
 
     // Cleanup, and check for errors. Will be FALSE if an error.
-    if (!$error_page || !$error_character || !$error_location || !$error_player) {
-      $errors = '';
-      if (!$error_page) {
+    if ($error_free === FALSE || $error_free_c === FALSE || $error_free === FALSE_l || $error_free_p === FALSE) {
+      $errors = array();
+      if ($error_free === FALSE) {
         $errors[] = 'Page';
       }
-      if (!$error_character) {
+      if ($error_free_c === FALSE) {
         $errors[] = 'Character';
       }
-      if (!$error_location) {
+      if ($error_free_l === FALSE) {
         $errors[] = 'Location';
       }
-      if (!$error_player) {
+      if ($error_free_p === FALSE) {
         $errors[] = 'Player';
       }
-      $errors = implode(', ', $errors);
-      watchdog('archives', 'Error writing archive file for forums. ' . $errors, array(), WATCHDOG_CRITICAL);
-      drupal_set_message('Error while archiving forum comments.');
+      drupal_set_message('Archiving comments from: ' . date('m/d/Y 00:00:01', $begin) . ' to: ' . date('m/d/Y 00:00:01', $end) . '.');
+      watchdog('archives', 'Error writing archive file for forums. ' . implode(', ', $errors), array(), WATCHDOG_CRITICAL);
+      drupal_set_message('Error while archiving forum comments: ' . implode(', ', $errors));
     }
     else {
       foreach ($pages['delete_comments'] as $cid) {
         comment_delete($cid); // comment_delete_multiple can time out on large sets.
       }
+      drupal_set_message('Archiving comments from: ' . date('m/d/Y 00:00:01', $begin) . ' to: ' . date('m/d/Y 00:00:01', $end) . '.');
       drupal_set_message('Archived ' . count($pages['delete_comments']) . ' forum comments.');
     }
   }
@@ -458,7 +474,8 @@ function _archives_get_comments($type, $category, $begin, $end, $include_node = 
       $nodes[$node->nid] = $node;
       $comments[$comment->cid] = $comment;
       // Get derived info.
-      $char_id = isset($comment->field_comment_character[$comment->language][0]['nid']) ? $comment->field_comment_character[$comment->language][0]['nid'] : '';
+      $char_id = isset($comment->field_comment_character[$comment->language][0]['nid']) ?
+        $comment->field_comment_character[$comment->language][0]['nid'] : '';
       if (!empty($char_id)) {
         $characters[$comment->cid] = node_load($char_id);
       }
@@ -481,7 +498,11 @@ function _archives_get_comments($type, $category, $begin, $end, $include_node = 
     }
   }
 
-  drupal_set_message('Found ' . count($comments) . ' ' . $type . ' comments.');
+  // Record how many we found.
+  if (count($comments) > 0) {
+    drupal_set_message('Found ' . count($comments) . ' ' . $type . ' comments.');
+  }
+
   // Process each room now.
   $pages = array();
   $path = date('Y', $begin) . '/' . date('m', $begin) . '/' . date ('d', $begin) . '/';
@@ -608,14 +629,17 @@ function _archives_read_data_file($path) {
  */
 function _archives_prepare_string($string) {
   $string = trim($string);
-  $remove_chars = array('.', ',', ':', '/', '\\', '?', '"', ')', '(', '*', '&', '^', '%'. '$', '#', '@', '!', '~', '[', ']', '{', '}');
+  $remove_chars = array('.', ',', '_', ':', '/', '\\', '?', '"', ')',
+  	'(', '*', '&', '^', '%'. '$', '#', '@', '!', '~', '[', ']', '{', '}');
   foreach ($remove_chars as $char) {
     $string = str_replace($char, '', $string);
   }
-  $replace_chars = array(' ', '_');
+  $replace_chars = array(' ');
   foreach ($replace_chars as $char) {
     $string = str_replace($char, '-', $string);
   }
+  $string = str_replace('..', '.', $string);
+  $string = str_replace('..', '.', $string);
   $string = str_replace('..', '.', $string);
   return trim($string);
 }
