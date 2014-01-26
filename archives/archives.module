@@ -361,7 +361,7 @@ function _archives_get_comments($type, $category, $begin, $end, $include_node = 
               'article.comment .comment-spacer{clear:both;}' .
               'article.comment .field-name-comment-body{margin-left:155px;}'.
               'article.comment .dice_rolls{margin-left:155px;}'.
-              'article.comment .field-type-fivestar{display:none;}'
+              'article.comment .field-type-fivestar{display:none;}' .
             '</style>';
           // Include the node as needed.
           if ($include_node) {
