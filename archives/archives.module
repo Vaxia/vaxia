@@ -98,7 +98,7 @@ function archive_posts_form($form, &$form_state) {
 /**
  * Implements hook_cron().
  */
-function archive_cron() {
+function archives_cron() {
   return _archives_posts_archive();
 }
 
@@ -367,12 +367,13 @@ function _archives_get_comments($type, $category, $begin, $end, $include_node = 
               'article.comment .comment-spacer{clear:both;}' .
               'article.comment .field-name-comment-body{margin-left:155px;}'.
               'article.comment .dice_rolls{margin-left:155px;}'.
-              'article.comment .field-type-fivestar{display:none;}' .
+              '.post .field-type-fivestar{display:none;}' .
             '</style>';
           // Include the node as needed.
           if ($include_node) {
             $node_view = node_view($node);
             $node_display = drupal_render($node_view);
+            unset($node_display['links']);
             $pages['pages'][$page_title] .= "\n" . '<div class="post">' . "\n" .
               $node_display . "\n" .
               '</div>';
