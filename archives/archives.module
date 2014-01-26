@@ -618,7 +618,7 @@ function _archives_data_list($type) {
   $results = array();
   if (!empty($type) && is_dir($path)) {
     // Get all files in the root listed as: $type.$return_data.data.
-    $found = array()
+    $found = array();
     $files = scandir($path);
     foreach($files as $filename) {
       if (strpos($filename, $type) !== FALSE) {
