@@ -64,6 +64,7 @@ function dice_ruler_form($form, &$form_state) {
       '#dice-ruler-form #dice_ruler_dice_help_2{width:210px;}'.
       '#dice-ruler-form .form-item-combat-action-count-a, #dice-ruler-form .form-item-combat-action-count-b{float:left}' .
       '#dice-ruler-form .form-item-combat-weapon-a, #dice-ruler-form .form-item-combat-weapon-b{float:none; margin-left:65px;}' .
+      '#dice-ruler-form #edit-target{text-align:center;}'
       '</style>',
   );
 
