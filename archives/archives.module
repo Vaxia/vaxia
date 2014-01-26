@@ -362,12 +362,15 @@ function _archives_get_comments($type, $category, $begin, $end, $include_node = 
             '<body style="background:white;"> '.
             '<style> ' .
               '.post{border:solid 1px #000;margin:0.25em;padding:0.25em;}' .
-              'article.comment header{width:150px;float:left;}' .
-              'article.comment header img{display:none;}' .
-              'article.comment .comment-spacer{clear:both;}' .
-              'article.comment .field-name-comment-body{margin-left:155px;}'.
-              'article.comment .dice_rolls{margin-left:155px;}'.
+              '.post header{width:150px;float:left;}' .
+              '.post header img{display:none;}' .
+              '.post .comment-spacer{clear:both;}' .
+              '.post .field-name-comment-body{margin-left:155px;}'.
+              '.post .dice_rolls{margin-left:155px;}'.
               '.post .field-type-fivestar{display:none;}' .
+              '.post #forum-topic-header' .
+              '.post .forum-post-number' .
+              '.post .forum-post-footer' .
             '</style>';
           // Include the node as needed.
           if ($include_node) {
