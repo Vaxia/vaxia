@@ -626,7 +626,7 @@ function _archives_data_list($type) {
       }
     }
     // Grab the components of the names.
-    foreach ($results as $index => $name) {
+    foreach ($found as $index => $name) {
       $name = explode('.', $name);
       if (!empty($name[1])) {
         $results[trim($name[1])] = trim($name[1]);
