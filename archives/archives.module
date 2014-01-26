@@ -601,9 +601,9 @@ function archives_form($form, &$form_state) {
       '#title' => t('Raw files'),
       '#type' => 'item',
       '#markup' => '<br/>' .
-        '<b><i><a href="' . $root . '" target="_blank">Direct link to archives</a></i></b>' .
+        '<b><i><a href="/' . $root . '" target="_blank">Direct link to archives</a></i></b>' . // Use / here to start to make sure it gets from Drupal root.
         '<br/><br/>' .
-        '<iframe src="' . $root . '" width="100%" height="500px" style="background:#FFF;"></iframe>',
+        '<iframe src="/' . $root . '" width="100%" height="500px" style="background:#FFF;"></iframe>',
       '#prefix' => '<div id="archives_raw">',
       '#suffix' => '</div>',
     );
