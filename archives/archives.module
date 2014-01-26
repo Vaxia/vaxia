@@ -361,12 +361,14 @@ function _archives_get_comments($type, $category, $begin, $end, $include_node = 
               'article.comment .comment-spacer{clear:both;}' .
               'article.comment .field-name-comment-body{margin-left:155px;}'.
               'article.comment .dice_rolls{margin-left:155px;}'.
+              'article.comment .field-type-fivestar{display:none;}'
             '</style>';
           // Include the node as needed.
           if ($include_node) {
             $node_view = node_view($node);
+            $node_display = drupal_render($node_view);
             $pages['pages'][$page_title] .= "\n" . '<div class="post">' . "\n" .
-              $node_view . "\n" .
+              $node_display . "\n" .
               '</div>';
           }
         }
@@ -711,11 +713,11 @@ function _archives_search($month = 'any', $day = 'any', $year = 'any', $type = '
     $command = 'find -L ' . DRUPAL_ROOT . '/' . $root . $path . ' -name "*.html"';
     exec($command, $output);
     foreach ($output as $found_file) {
-	  $this_found[] = $found_file;
+      $this_found[] = $found_file;
     }
     foreach ($this_found as $index => $found_path) {
-	  $length = drupal_strlen(DRUPAL_ROOT) + drupal_strlen($root) + 2;
-	  $this_found[$index] = drupal_substr($found_path, $length);
+      $length = drupal_strlen(DRUPAL_ROOT) + drupal_strlen($root) + 2;
+      $this_found[$index] = drupal_substr($found_path, $length);
     }
     $found = empty($found) ? $this_found : array_intersect($found, $this_found);
   }
@@ -776,7 +778,7 @@ function _archives_search($month = 'any', $day = 'any', $year = 'any', $type = '
   // Clean up the found paths for proper links through
   global $base_url;
   foreach ($found as $index => $found_path) {
-    $found_path = $root . '/' . $found_path;
+    $found_path = $root . $found_path;
     $new_path = '<a href="' . $base_url . '/' . $found_path . '" target="_blank">' . $found_path . '</a>';
     $found[$index] = $new_path;
   }
