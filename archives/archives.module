@@ -250,7 +250,7 @@ function archives_admin_form($form, &$form_state) {
   $form = array();
   $form['archives_flat_file_path'] = array(
     '#title' => t('Location'),
-    '#description' => t('Flat file archive location, the directory the archives are stored in.'),
+    '#description' => t('Flat file archive location, the directory the archives are stored in. Be sure to end the path with a /.'),
     '#type' => 'textfield',
     '#default_value' => variable_get('archives_flat_file_path', ''),
   );
