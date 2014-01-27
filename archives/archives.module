@@ -165,6 +165,9 @@ function _archives_posts_archive() {
 function _archives_write_files($pages, $begin, $end) {
   // And now we work our way forward day by day.
   $root = variable_get('archives_flat_file_path', '');
+
+  // Set the defaults.
+  $error_free = $error_free_c = $error_free_l = $error_free_p = TRUE;
   // Write the comments.
   if (isset($pages['pages']) && isset($pages['d'])) {
     foreach ($pages['pages'] as $page_path => $page_content) {
@@ -236,7 +239,7 @@ function _archives_write_files($pages, $begin, $end) {
     }
 
     // Cleanup, and check for errors. Will be FALSE if an error.
-    if ($error_free === FALSE || $error_free_c === FALSE || $error_free === FALSE_l || $error_free_p === FALSE) {
+    if ($error_free === FALSE || $error_free_c === FALSE || $error_free_l === FALSE || $error_free_p === FALSE) {
       $errors = array();
       if ($error_free === FALSE) {
         $errors[] = 'Page';
@@ -262,18 +265,20 @@ function _archives_write_files($pages, $begin, $end) {
       drupal_set_message('Archiving comments from: ' . date('m/d/Y 00:00:01', $begin) . ' to: ' . date('m/d/Y 00:00:01', $end) . '.');
       drupal_set_message('Archived ' . count($pages['delete_comments']) . ' comments.');
       // Delete nodes.
-      foreach ($pages['delete_nodes'] as $nid) {
-      	// ONLY delete the node IFF there are no more comments to archive off of it.
-      	// Otherwise we leave it the heck Alone.
-      	$comment_count = db_query('SELECT COUNT(cid) FROM {comment} WHERE nid = :nid AND status = :status', array(
-      	  ':nid' => $nid,
-      	  ':status' => COMMENT_PUBLISHED,
-      	  ))->fetchField();
-      	if ($comment_count == 0) {
-          node_delete($nid);
-      	}
+      if (!empty($pages['delete_nodes'])) {
+        foreach ($pages['delete_nodes'] as $nid) {
+        	// ONLY delete the node IFF there are no more comments to archive off of it.
+        	// Otherwise we leave it the heck Alone.
+        	$comment_count = db_query('SELECT COUNT(cid) FROM {comment} WHERE nid = :nid AND status = :status', array(
+      	    ':nid' => $nid,
+      	    ':status' => COMMENT_PUBLISHED,
+      	    ))->fetchField();
+      	  if ($comment_count == 0) {
+            node_delete($nid);
+      	  }
+        }
+        drupal_set_message('Archived ' . count($pages['delete_nodes']) . ' nodes.');
       }
-      drupal_set_message('Archived ' . count($pages['delete_nodes']) . ' nodes.');
     }
   }
 }
