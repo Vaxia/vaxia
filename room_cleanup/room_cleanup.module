@@ -1,0 +1,189 @@
+<?php
+/**
+ * @file
+ * Provide a yearly cleanup routine to move rooms no longer in use, out of the system.
+ */
+
+/**
+ * Implements hook_permission().
+ */
+function room_cleanup_permission() {
+  return array(
+    'administer room cleanup'=> array(
+      'title' => t('administer room cleanup'),
+      'description' => t('Administer room cleanup.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_cron().
+ */
+function room_cleanup_cron() {
+  return _room_cleanup_rooms();
+}
+
+/**
+ * Implements hook_menu().
+ */
+function room_cleanup_menu() {
+  $items['admin/config/system/room_cleanup'] = array(
+    'title' => 'Room cleanup',
+    'description' => 'Cleanup rooms empty of comments.',
+    'type' => MENU_NORMAL_ITEM,
+    'access arguments' => array('administer room cleanup'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('room_cleanup_admin_form'),
+  );
+  $items['admin/config/system/room_cleanup/settings'] = array(
+    'title' => 'Do cleanup',
+    'description' => 'Cleanup rooms empty of comments.',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'access arguments' => array('administer room cleanup'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('room_cleanup_admin_form'),
+  );
+  $items['admin/config/system/room_cleanup/cleanup'] = array(
+    'title' => 'Cleanup rooms',
+    'description' => 'Cleanup rooms that are not currently being used.',
+    'type' => MENU_LOCAL_TASK,
+    'access arguments' => array('administer room cleanup'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('room_cleanup_form'),
+  );
+  return $items;
+}
+
+/**
+ * Menu callback for admin page.
+ */
+function room_cleanup_admin_form($form, &$form_state) {
+  $form = array();
+  $form['room_cleanup_date'] = array(
+    '#title' => t('Timeframe'),
+    '#description' => t('Timeframe to keep in the database before cleaning up rooms. Use the same strings as date().'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('room_cleanup_date', '12 months'),
+  );
+  return system_settings_form($form);
+}
+
+/**
+ * Menu callback for admin page.
+ */
+function room_cleanup_form($form, &$form_state) {
+  $form = array();
+  $date = variable_get('room_cleanup_last_run', 'never');
+  $form['room_cleanup_last_run'] = array(
+    '#markup' => '<div>' . t('Room cleanup last run') . ': ' . $date . '</div>',
+  );
+  $form['cleanup'] = array(
+    '#type' => 'submit',
+    '#value' => t('Cleanup Rooms'),
+  );
+  return $form;
+}
+
+/**
+ * Submit handler for form.
+ */
+function room_cleanup_form_submit($form, &$form_state) {
+  return _room_cleanup_rooms();
+}
+
+/**
+ * Helper function, cleanup rooms.
+ */
+function _room_cleanup_rooms() {
+  $cutoff = strtotime(variable_get('room_cleanup_date', '6 months') . ' ago');
+  drupal_set_message('Cleaning up rooms, started looking at rooms older than: ' . date('m/d/Y 00:00:01', $cutoff) . '.');
+
+  // Build a list of comments that are immune to this restriction.
+  // First rooms that directly have comments.
+  $nodes = db_query('SELECT DISTINCT c.nid FROM {comment} c ' .
+    'LEFT JOIN {node} n ON c.nid = n.nid ' .
+    'WHERE n.type = \'rpg_chatroom\'');
+  $rooms_not_cleanup = array();
+  foreach ($nodes as $node) {
+    $rooms_not_cleanup[] = $node->nid;
+  }
+  $rooms_with_comments = '\''. implode('\', \'', $rooms_not_cleanup) . '\'';
+
+  // Then build a list of potential rooms that we may have to cleanup.
+  // Get all the rooms that qualify first. Which is to say, rooms older than the cutoff - that do not have
+  // comments. Then once we have all those nids, we can start tracking parents and children to winnow it down
+  // from there. Cause we only want to grab leafs for each pass of the cleanup.
+  $nodes = db_query('SELECT n.nid FROM {node} n ' .
+    'WHERE n.type = \'rpg_chatroom\' ' .
+    'AND n.created  < ' . $cutoff . ' ' .
+    'AND n.nid NOT IN (' . $rooms_with_comments . ')');
+    // And not flagged as immune to cleanup. TODO
+  $rooms_for_cleanup = array();
+  foreach ($nodes as $node) {
+    $rooms_for_cleanup[] = $node->nid;
+  }
+  $rooms_without_comments = '\''. implode('\', \'', $rooms_for_cleanup) . '\'';
+  drupal_set_message('Identified ' . count($rooms_for_cleanup) . ' rooms that may be cleaned up.');
+  // TODO - filter this list by exempt rooms.
+
+  // And now the fun part. We need to walk down the collection of rooms.
+  // And find out which one have children rooms in the 'has comment' set.
+  // And add those rooms to the 'has comment' set, removing them from eligibility.
+  // And we repeat this until we have a pass where we don't move any more rooms over.
+  $last_number_of_rooms = 0;
+  $number_of_rooms = count($rooms_not_cleanup);
+  while ($last_number_of_rooms != $number_of_rooms) {
+    // Set our time out for each loop...
+    set_time_limit(600);
+    drupal_set_message('Loop start: #last number rooms ' .$last_number_of_rooms. ' #cleanups '.$number_of_rooms);
+    // Get the parents of all rooms that have comments.
+    // Since their children have comments we're going to add them to the set
+    // of rooms with comments so we don't destroy the tree.
+    // The relationship is marked on the child room to parent room as a M => 1.
+    // But since we have a table handling those relationships, we can do it the
+    // other way around in this query and get all children of a given set of parents.
+    // Entity_id => child. Field_parent_nid => parent.
+    $parents = db_query('SELECT DISTINCT p.field_parent_nid FROM {field_data_field_parent} p ' .
+      'WHERE p.bundle = \'rpg_chatroom\' ' .
+      'AND p.deleted = 0 ' .
+      'AND p.entity_id IN (' . $rooms_with_comments . ')');
+    $count = 0;
+    foreach ($parents as $node) {
+      // These are our newly minted parents. It is possible that they are already in the array.
+      $rooms_not_cleanup[] = $node->field_parent_nid;
+      $count++;
+    }
+    drupal_set_message('Found ' . $count . ' parents.');
+    // Cleanup the list.
+    $rooms_not_cleanup = array_unique($rooms_not_cleanup);
+    // Remove any newly found parents from the list of rooms we can cleanup.
+    $rooms_for_cleanup = array_diff($rooms_for_cleanup, $rooms_not_cleanup);
+    // Recalculate the strings for cleanup and non-cleanup rooms.
+    $rooms_with_comments = '\''. implode('\', \'', $rooms_not_cleanup) . '\'';
+    $rooms_without_comments = '\''. implode('\', \'', $rooms_for_cleanup) . '\'';
+    // Set the counter for the next loop.
+    $last_number_of_rooms = $number_of_rooms;
+    $number_of_rooms = count($rooms_not_cleanup); // If these are the same, we found no paretns and are at the top of the tree now.
+  }
+   
+  // Now we have a working list of the rooms we can and should clean up based on usage.
+  $cleaned_up_rooms = 0;
+  foreach ($rooms_for_cleanup as $nid) {
+  	// First do one last check for the node if it has comments.
+	$comment_count = db_query('SELECT COUNT(cid) FROM {comment} WHERE nid = :nid AND status = :status',
+	  array(
+	  ':nid' => $nid,
+	  ':status' => COMMENT_PUBLISHED,
+	  ))->fetchField();
+	// Still good? Delete it.
+	if ($comment_count == 0) {
+	  node_delete($nid);
+	  $cleaned_up_rooms++;
+	}
+  }
+  watchdog('room_cleanup', 'Cleaned up ' . $cleaned_up_rooms . ' rooms.');
+  drupal_set_message('Cleaned up ' . $cleaned_up_rooms . ' rooms.');
+
+  // Save the last time we ran this.
+  variable_set('room_cleanup_last_run', date('m/d/Y H:i:s'));
+}

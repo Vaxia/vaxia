@@ -56,7 +56,7 @@ function archives_menu() {
     'page arguments' => array('archives_admin_form'),
   );
   $items['admin/config/search/archives/archive_posts'] = array(
-    'title' => 'Archive posts',
+    'title' => 'Do archive',
     'description' => 'Archive posts currently in the system into the archive files',
     'type' =>  MENU_LOCAL_TASK,
     'access arguments' => array('administer old archives'),
@@ -81,7 +81,7 @@ function archives_admin_form($form, &$form_state) {
     '#title' => t('Timeframe'),
     '#description' => t('Timeframe to keep in the database before moving to archives. Use the same strings as date().'),
     '#type' => 'textfield',
-    '#default_value' => variable_get('archives_date', '6 months'),
+    '#default_value' => variable_get('archives_date', '12 months'),
   );
   return system_settings_form($form);
 }
