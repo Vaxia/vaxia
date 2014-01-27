@@ -100,14 +100,17 @@ function proposal_form_webform_components_form_alter(&$form, &$form_state, $form
     '#markup' => '<style>.form-item-add-name{margin-left:30px;}</style>' .
       '<div class="webform_component_help">' .
       'The proposal system allows you to build a form out of a collection of form pieces to put questions to site votes.</br></br> ' .
+      'We use proposals because while a forum thread and five-star voting may give you a rough feel for the mood of the site on a topic, ' .
+      'it doesn\'t account for players who - for one reason or another - do not speak out on a forum thread. Silence does not at all ' .
+      'indicate agreement, so we need to explicitly ask for a site vote when the topic is important.</br></br>' .
       'Proposals are meant to be a way to formally make a request for the input of site members, so there are a few restrictions here ' .
       'to keep in mind. The form will be open for two weeks, after which it will automatically close. If you edit it in that timespan ' .
       'the timer will re-set. This is to make sure everyone can get a chance to weigh in. Not all site members will be able to vote in ' .
-      'this proposal - only those currently active when you create it. This is to avoid ballot stuffing or swoop-ins from long absent players.' .
+      'this proposal - only those currently active when you create it. This is to avoid ballot stuffing or swoop-ins from long absent players. ' .
       'And lastly, you won\'t be able to see the names or IP addresses of the people who do vote. This is so we can make sure they feel safe ' .
       'and secure in making their wishes known. </br></br>' .
       'You should know that once the proposal closes, the results will be posted publicly for all to see (though still anonymous).</br></br>' .
-      'Once you add the piece to the form you can shuffle them around to display them in the order you want them to display in. ' .
+      'Once you add a form piece to the form you can shuffle them around to display them in the order you want them to display in. ' .
       'The pieces you can add are mostly self-explanatory but a few you may not be familiar with: </br></br>' .
       '* E-mail: Ensures that the value entered is an email, we don\'t recommend using this one for privacy reasons. </br>' .
       '* Fieldset: Just a display wrapper - a box - around the other form pieces. </br>' .
@@ -115,7 +118,7 @@ function proposal_form_webform_components_form_alter(&$form, &$form_state, $form
       '* Markup: Text to display - useful for help messages. </br>' .
       '* Page break: Used to break a form into multiple steps, we also don\'t recommend using this one. </br>' .
       '</br>' .
-      'Once you have all the form pieces you want, in the order you want them, click Save to get the proposal active.' .
+      'Once you have all the form pieces you want, in the order you want them, click Save to set the proposal active.' .
       '</div>',
     '#weight' => -40,
   );
