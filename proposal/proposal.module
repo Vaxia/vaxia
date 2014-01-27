@@ -118,7 +118,23 @@ function proposal_form_webform_components_form_alter(&$form, &$form_state, $form
       '* Markup: Text to display - useful for help messages. </br>' .
       '* Page break: Used to break a form into multiple steps, we also don\'t recommend using this one. </br>' .
       '</br>' .
-      'Once you have all the form pieces you want, in the order you want them, click Save to set the proposal active.' .
+      'Once you have all the form pieces you want, in the order you want them, click "Save" to set the proposal active.' .
+      '</div>',
+    '#weight' => -40,
+  );
+}
+
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function proposal_form_webform_components_edit_form_alter(&$form, &$form_state, $form_id) {
+  $form['help'] = array(
+    '#markup' => '<style>.form-item-add-name{margin-left:30px;}</style>' .
+      '<div class="webform_component_help">' .
+
+      '</br>' .
+      'Once you have all the form pieces you want, in the order you want them, click "Save" to set the proposal active.' .
       '</div>',
     '#weight' => -40,
   );
