@@ -134,6 +134,11 @@ function proposal_form_webform_components_form_alter(&$form, &$form_state, $form
       '</div>',
     '#weight' => -40,
   );
+  // Recreate the options array for the types of components we want to allow.
+  $options = webform_component_options();
+  unset($options['email']);
+  unset($options['pagebreak']);
+  $form['add']['type']['#options'] = $options;
 }
 
 /**
