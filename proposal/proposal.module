@@ -21,6 +21,8 @@ function proposal_menu_alter(&$items) {
   unset($items['node/%webform_menu/webform-table']['file']);
   // Remove all the paths people don't need.
   unset($items['node/%webform_menu/webform/emails']);
+  unset($items['node/%webform_menu/webform/emails/%webform_menu_email']);
+  
   // That goes for the owner as well.
   $items['node/%webform_menu/webform-results']['access callback'] = '_proposal_webform_results_access';
 }
@@ -128,16 +130,25 @@ function proposal_form_webform_components_form_alter(&$form, &$form_state, $form
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function proposal_form_webform_components_edit_form_alter(&$form, &$form_state, $form_id) {
+function proposal_form_webform_component_edit_form_alter(&$form, &$form_state, $form_id) {
   $form['help'] = array(
-    '#markup' => '<style>.form-item-add-name{margin-left:30px;}</style>' .
-      '<div class="webform_component_help">' .
-
-      '</br>' .
-      'Once you have all the form pieces you want, in the order you want them, click "Save" to set the proposal active.' .
+    '#markup' => '<div class="webform_component_help">' .
+      'Edit the individual pieces of your form here. A name is required, as is a form_key so that the form submission system can recognize the ' .
+      'value later. Where you see the form ask for "Key-value pairs", the format is key|value - where the Key is stored in the databse (no worries ' .
+      'almost anything you pick is ok), and the Value is what is shown to the person selecting options on your form.'
       '</div>',
     '#weight' => -40,
   );
+  // Remove private fields.
+  unset($form['display']['private']);
+}
+
+/**
+ * Implements process suggestion for node theme. This allows us to override parts of the node form.
+ */
+function proposal_process_webform_token_help(&$variables) {
+  // Remove token information from descriptions.
+  return '';
 }
 
 /**
