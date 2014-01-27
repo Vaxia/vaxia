@@ -151,7 +151,7 @@ function proposal_form_webform_component_edit_form_alter(&$form, &$form_state, $
   $form['help'] = array(
     '#markup' => '<div class="webform_component_help">' .
       'Edit the individual pieces of your form here. A name is required, as is a form_key so that the form submission system can recognize the ' .
-      'value later. Where you see the form ask for "Key-value pairs", the format is key|value - where the Key is stored in the databse (no worries ' .
+      'value later. Where you see the form ask for "Key-value pairs", the format is key|value - where the Key is stored in the database (no worries ' .
       'almost anything you pick is ok), and the Value is what is shown to the person selecting options on your form. </br></br>' .
       '</div>',
     '#weight' => -40,
