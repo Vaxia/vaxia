@@ -131,12 +131,15 @@ function proposal_form_webform_components_form_alter(&$form, &$form_state, $form
       'and secure in making their wishes known. </br></br>' .
       'You should know that once the proposal closes, the results will be posted publicly for all to see. Names will still anonymous.</br></br>' .
       'Once you add a form piece to the form you can shuffle them around to display them in the order you want them to display in. ' .
+      'Mandatory form components are questions that must be answered before a submission can be made. ' .
       'The pieces you can add are mostly self-explanatory but a few you may not be familiar with: </br></br>' .
       '* E-mail: Ensures that the value entered is an email, we don\'t recommend using this one for privacy reasons. </br>' .
       '* Fieldset: Just a display wrapper - a box - around the other form pieces. </br>' .
       '* Grid: A way to display a table of options beside a label. </br>' .
       '* Markup: Text to display - useful for help messages. </br>' .
       '* Page break: Used to break a form into multiple steps, we also don\'t recommend using this one. </br>' .
+      '* Text area: Multi-line area for entering text. </br>' .
+      '* Text field: Single-line area for entering text. </br>' .
       '</br>' .
       'Once you have all the form pieces you want, in the order you want them, click "Save" to set the proposal active.' .
       '</div>',
