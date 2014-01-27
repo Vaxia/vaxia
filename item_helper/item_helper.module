@@ -96,6 +96,13 @@ function item_helper_node_delete($node) {
 }
 
 /**
+ * Implements hook_comment_delete().
+ */
+function item_helper_comment_delete($comment) {
+  _item_helper_delete_comment($comment->cid);
+}
+
+/**
  * Implements hook_node_view().
  */
 function item_helper_node_view($node, $view_mode, $langcode) {
@@ -127,7 +134,7 @@ function item_helper_workflow($op, $old_state, $new_state, $node, $force = FALSE
         $new_state_info =  workflow_get_workflow_states_by_sid($new_state);
         if ($new_state_info->state == 'approved') {
           // If a table with states, grab and render the info as a table.
-          // And save it to our record fields to disconnect the item assist.
+          // And save it to our record fields to disconnect the item assist from comment.
           $set_comments = _item_helper_get_comments($node->nid);
           if (!empty($set_comments)) {
             _item_helper_view_table($headers, $rows, $node, $set_comments);
@@ -146,7 +153,6 @@ function item_helper_workflow($op, $old_state, $new_state, $node, $force = FALSE
  * Helper function, wraps node base for purposes of passing #node info from non node_base pg.
  */
 function item_helper_form_node_view_data($form, &$form_state, $node, $set_comments) {
-  $form = _item_helper_view_table($headers, $rows, $node, $set_comments);
   $form['item_helper'] = array(
     '#type' => 'fieldset',
      '#title' => t('Item Build Assistant'),
@@ -154,6 +160,7 @@ function item_helper_form_node_view_data($form, &$form_state, $node, $set_commen
     '#collapsed' => TRUE,
   );
   // Add to display.
+  _item_helper_view_table($headers, $rows, $node, $set_comments);
   $form['item_helper']['display'] = array(
     '#type' => 'item',
     '#markup' => theme('table', array('header' => $headers, 'rows' => $rows)),
@@ -173,8 +180,8 @@ function _item_helper_view_table(&$headers, &$rows, $node, $set_comments) {
     t('RP Bonus'),
     t('Result'),
   );
-  $rows = array();
 
+  $rows = array();
   // Create table data.
   $roll_types = array(
     'gen_pp' => t('PP for item'),
@@ -216,7 +223,6 @@ function _item_helper_view_table(&$headers, &$rows, $node, $set_comments) {
       $item_comment->results,
     );
   }
-  return $form;
 }
 
 /**
@@ -829,6 +835,14 @@ function _item_helper_delete_comments($nid) {
   db_query('DELETE FROM {item_helper_item_comments} ' .
     'WHERE nid = :nid',
     array(':nid' => $nid));
+}
+/**
+ * DB function, delete comment by comment cid.
+ */
+function _item_helper_delete_comment($cid) {
+  db_query('DELETE FROM {item_helper_item_comments} ' .
+    'WHERE cid = :cid',
+    array(':cid' => $cid));
 }
 
 /**
