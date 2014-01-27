@@ -99,7 +99,7 @@ function item_helper_node_delete($node) {
  * Implements hook_comment_delete().
  */
 function item_helper_comment_delete($comment) {
-  _item_helper_delete_comment($comment->cid);
+  _item_helper_delete_comment($comment->nid, $comment->cid);
 }
 
 /**
@@ -148,6 +148,7 @@ function item_helper_workflow($op, $old_state, $new_state, $node, $force = FALSE
     }
   }
 }
+
 
 /**
  * Helper function, wraps node base for purposes of passing #node info from non node_base pg.
@@ -835,14 +836,6 @@ function _item_helper_delete_comments($nid) {
   db_query('DELETE FROM {item_helper_item_comments} ' .
     'WHERE nid = :nid',
     array(':nid' => $nid));
-}
-/**
- * DB function, delete comment by comment cid.
- */
-function _item_helper_delete_comment($cid) {
-  db_query('DELETE FROM {item_helper_item_comments} ' .
-    'WHERE cid = :cid',
-    array(':cid' => $cid));
 }
 
 /**
