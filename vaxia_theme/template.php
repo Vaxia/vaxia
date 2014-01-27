@@ -220,3 +220,25 @@ function vaxia_theme_preprocess_block(&$variables, $hook) {
   //}
 }
 // */
+
+/**
+* Override node preview to remove trimmed teaser version.
+*/
+function vaxia_theme_node_preview($variables) {
+  $node = $variables['node'];
+  $output = '<div class="preview">';
+  $preview_trimmed_version = FALSE;
+  $elements = node_view(clone $node, 'teaser');
+  $trimmed = drupal_render($elements);
+  $elements = node_view($node, 'full');
+  $full = drupal_render($elements);
+  // Do we need to preview trimmed version of post as well as full version?
+  if ($trimmed != $full) {
+    $output .= $full;
+  }
+  else {
+    $output .= $full;
+  }
+  $output .= "</div>\n";
+  return $output;
+}
