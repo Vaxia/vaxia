@@ -139,16 +139,9 @@ function proposal_form_webform_component_edit_form_alter(&$form, &$form_state, $
       '</div>',
     '#weight' => -40,
   );
+  $form['extra']['description']['#description'] = t('A short description of the field used as help for the user when he/she uses the form.');
   // Remove private fields.
   unset($form['display']['private']);
-}
-
-/**
- * Implements theme webform_token_help. This allows us to override parts of the form.
- */
-function proposal_webform_token_help(&$variables) {
-  // Remove token information from descriptions.
-  return '';
 }
 
 /**
