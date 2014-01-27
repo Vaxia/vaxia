@@ -102,10 +102,42 @@ function item_helper_node_view($node, $view_mode, $langcode) {
   $item_type = variable_get('item_helper_item_type', '');
   if ($view_mode == 'full' && user_access('use item helper') && !empty($item_type) && !empty($node->type) && $item_type == $node->type) {
     $set_comments = _item_helper_get_comments($node->nid);
-    if (!empty($set_comments)) {
-      $form = drupal_get_form('item_helper_form_node_view_data', node_load($node->nid), $set_comments);
-      // Display on item.
-      $node->content['item_helper'] = $form;
+    if (!empty($set_comments) && !empty($node->content['field_creation_history'])) {
+      unset($node->content['field_creation_history']['#theme']);
+      // Convert this display into a markup, so we don't double render the content table.
+      foreach ($node->content['field_creation_history']['#items'] as $index => $value) {
+        $count = $index + 1;
+        $label = '<div class="field"><hr><div class="field-label">Creation history record #' . $count . ':&nbsp;</div><hr></div>';
+        $node->content['field_creation_history']['#markup'] .= $label . $value['value'];
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_workflow().
+ */
+function item_helper_workflow($op, $old_state, $new_state, $node, $force = FALSE) {
+  // If an item, and approved, then we take a copy of the assigned ruling comments.
+  // And move it and all settings into a table on the item.
+  $item_type = variable_get('item_helper_item_type', '');
+  if (!empty($item_type) && $item_type == $node->type) {
+    switch ($op) {
+      case 'transition post';
+        $new_state_info =  workflow_get_workflow_states_by_sid($new_state);
+        if ($new_state_info->state == 'approved') {
+          // If a table with states, grab and render the info as a table.
+          // And save it to our record fields to disconnect the item assist.
+          $set_comments = _item_helper_get_comments($node->nid);
+          if (!empty($set_comments)) {
+            _item_helper_view_table($headers, $rows, $node, $set_comments);
+            $table['value'] = theme('table', array('header' => $headers, 'rows' => $rows));
+            $table['format'] = 'full_html';
+            $node->field_creation_history[$node->language][] = $table;
+            node_save($node);
+          }
+        }
+      break;
     }
   }
 }
@@ -114,12 +146,25 @@ function item_helper_node_view($node, $view_mode, $langcode) {
  * Helper function, wraps node base for purposes of passing #node info from non node_base pg.
  */
 function item_helper_form_node_view_data($form, &$form_state, $node, $set_comments) {
+  $form = _item_helper_view_table($headers, $rows, $node, $set_comments);
   $form['item_helper'] = array(
     '#type' => 'fieldset',
      '#title' => t('Item Build Assistant'),
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
   );
+  // Add to display.
+  $form['item_helper']['display'] = array(
+    '#type' => 'item',
+    '#markup' => theme('table', array('header' => $headers, 'rows' => $rows)),
+  );
+  return $form;
+}
+
+/**
+ * Return a display of the info as a renderable form.
+ */
+function _item_helper_view_table(&$headers, &$rows, $node, $set_comments) {
   $headers = array(
     t('Item creation posts'),
     t('Roll type'),
@@ -171,12 +216,6 @@ function item_helper_form_node_view_data($form, &$form_state, $node, $set_commen
       $item_comment->results,
     );
   }
-
-  // Add to form.
-  $form['item_helper']['display'] = array(
-    '#type' => 'item',
-    '#markup' => theme('table', array('header' => $headers, 'rows' => $rows)),
-  );
   return $form;
 }
 
@@ -525,6 +564,8 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
       unset($form['item_helper']['add_comments']);
       $form['item_helper']['included_comments']['#disabled'] = TRUE;
     }
+    // Hide the field creation history elements. We don't want users meddling with those.
+    $form['field_creation_history']['#access'] = FALSE;
   }
 }
 
