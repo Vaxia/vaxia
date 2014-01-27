@@ -368,9 +368,9 @@ function _archives_get_comments($type, $category, $begin, $end, $include_node = 
               '.post .field-name-comment-body{margin-left:155px;}'.
               '.post .dice_rolls{margin-left:155px;}'.
               '.post .field-type-fivestar{display:none;}' .
-              '.post #forum-topic-header' .
-              '.post .forum-post-number' .
-              '.post .forum-post-footer' .
+              '.post #forum-topic-header{display:none;}' .
+              '.post .forum-post-number{display:none;}' .
+              '.post .forum-post-footer{display:none;}' .
             '</style>';
           // Include the node as needed.
           if ($include_node) {
