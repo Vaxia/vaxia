@@ -263,7 +263,15 @@ function _archives_write_files($pages, $begin, $end) {
       drupal_set_message('Archived ' . count($pages['delete_comments']) . ' comments.');
       // Delete nodes.
       foreach ($pages['delete_nodes'] as $nid) {
-        node_delete($nid);
+      	// ONLY delete the node IFF there are no more comments to archive off of it.
+      	// Otherwise we leave it the heck Alone.
+      	$comment_count = db_query('SELECT COUNT(cid) FROM {comment} WHERE nid = :nid AND status = :status', array(
+      	  ':nid' => $nid,
+      	  ':status' => COMMENT_PUBLISHED,
+      	  ))->fetchField();
+      	if ($comment_count == 0) {
+          node_delete($nid);
+      	}
       }
       drupal_set_message('Archived ' . count($pages['delete_nodes']) . ' nodes.');
     }
