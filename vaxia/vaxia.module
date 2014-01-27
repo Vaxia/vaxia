@@ -582,8 +582,8 @@ function theme_vaxia_dice_roller($element) {
 function vaxia_form_items_node_form_alter(&$form, &$form_state, $form_id) {
   $node = isset($form['#node']) ? $form['#node'] : '';
   if (empty($node->clone_from_original_nid) && isset($node->workflow) && ($node->workflow_state_name == t('approved') || $node->workflow == 4)) {
-    $allowed_edit = array('field_item_desc', 'field_item_history',
-      'field_character_owner', 'field_sh_notes', 'field_sh_private_notes', 'field_player_notes');
+    $allowed_edit = array('field_item_desc', 'field_item_history', 'field_character_owner',
+      'field_sh_notes', 'field_sh_private_notes', 'field_player_notes', 'field_creation_history');
     foreach (element_children($form) as $child) {
       if ((strpos($child, 'field_') === 0 || $child == 'title') && !in_array($child, $allowed_edit)) {
         $form[$child]['#disabled'] = TRUE;
