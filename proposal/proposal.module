@@ -22,6 +22,7 @@ function proposal_menu_alter(&$items) {
   // Remove all the paths people don't need.
   unset($items['node/%webform_menu/webform/emails']);
   unset($items['node/%webform_menu/webform/emails/%webform_menu_email']);
+  unset($items['node/%webform_menu/webform/emails/%webform_menu_email/delete']);
   
   // That goes for the owner as well.
   $items['node/%webform_menu/webform-results']['access callback'] = '_proposal_webform_results_access';
