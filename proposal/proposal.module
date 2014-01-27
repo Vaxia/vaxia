@@ -144,7 +144,7 @@ function proposal_form_webform_component_edit_form_alter(&$form, &$form_state, $
 }
 
 /**
- * Implements process suggestion for node theme. This allows us to override parts of the node form.
+ * Implements theme webform_token_help. This allows us to override parts of the form.
  */
 function proposal_webform_token_help(&$variables) {
   // Remove token information from descriptions.
