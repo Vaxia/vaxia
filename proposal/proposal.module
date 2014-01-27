@@ -16,8 +16,11 @@ function proposal_menu_alter(&$items) {
   $items['node/%webform_menu/webform-table']['page callback'] = '_proposal_webform_results_table';
   $items['node/%webform_menu/webform-table']['access callback'] = '_proposal_webform_results_table_access';
   $items['node/%webform_menu/webform-table']['access arguments'] = array(1);
-  unset($items['node/%webform_menu/webform-table']['file']);
   $items['node/%webform_menu/webform-table']['type'] = MENU_LOCAL_TASK;
+  // Remove file reference, since it's now in proposal.module.
+  unset($items['node/%webform_menu/webform-table']['file']);
+  // Remove all the paths people don't need.
+  unset($items['node/%webform_menu/webform/emails']);
   // That goes for the owner as well.
   $items['node/%webform_menu/webform-results']['access callback'] = '_proposal_webform_results_access';
 }
@@ -87,6 +90,28 @@ function proposal_node_view($node, $view_mode, $langcode) {
       'It is set to close on @date.',
       array('@date' => $date)));
   }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function proposal_form_webform_components_form_alter(&$form, &$form_state, $form_id) {
+  $form['help'] = array(
+    '#markup' => '<style>.form-item-add-name{margin-left:30px;}</style>' .
+      '<div class="webform_component_help">' .
+      t('The proposal system allows you to build a form out of a collection of form pieces. Once you add the piece to the form you can shuffle them '.
+      'around to display them in the order you want them to display in. The pieces you can add are mostly self-explanatory but a few you may not be ' .
+      'familar with: </br>' .
+      '* E-mail: Ensures that the value entered is an email, we don\'t recommend using this one for privacy reasons. </br>' .
+      '* Fieldset: Just a display wrapper - a box - around the other form pieces. </br>' .
+      '* Grid: A way to display a table of options beside a label. </br>' .
+      '* Markup: Text to display - useful for help messages. </br>' .
+      '* Page break: Used to break a form into multiple steps, we also don\'t recommend using this one. </br>' .
+      '</br>' .
+      'Once you have all the form pieces you want, in the order you want them, click Save to get the proposal active.' ) .
+      '</div>',
+    '#weight' => -40,
+  );
 }
 
 /**
