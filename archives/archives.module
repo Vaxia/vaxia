@@ -375,8 +375,8 @@ function _archives_get_comments($type, $category, $begin, $end, $include_node = 
           // Include the node as needed.
           if ($include_node) {
             $node_view = node_view($node);
-            $node_display = drupal_render($node_view);
             unset($node_display['links']);
+            $node_display = drupal_render($node_view);
             $pages['pages'][$page_title] .= "\n" . '<div class="post">' . "\n" .
               $node_display . "\n" .
               '</div>';
