@@ -87,7 +87,9 @@ function item_helper_node_update($node) {
     }
     // TMP
           $set_comments = _item_helper_get_comments($node->nid);
-          if (!empty($set_comments)) {
+          static $saving = FALSE;
+          if (!$saving && !empty($set_comments)) {
+          $saving = TRUE;
             _item_helper_view_table($headers, $rows, $node, $set_comments);
             $table['value'] = theme('table', array('header' => $headers, 'rows' => $rows));
             $table['format'] = 'full_html';
