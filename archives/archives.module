@@ -21,6 +21,13 @@ function archives_permission() {
 }
 
 /**
+ * Implements hook_cron().
+ */
+function archives_cron() {
+  return _archives_posts_archive();
+}
+
+/**
  * Implements hook_menu().
  */
 function archives_menu() {
@@ -96,13 +103,6 @@ function archive_posts_form($form, &$form_state) {
 }
 
 /**
- * Implements hook_cron().
- */
-function archives_cron() {
-  return _archives_posts_archive();
-}
-
-/**
  * Submit handler for archive form.
  */
 function archive_posts_form_submit($form, &$form_state) {
@@ -156,7 +156,7 @@ function _archives_posts_archive() {
     $begin = $end;
   }
   drupal_set_message('Archive complete.');
-  $date = variable_set('archives_last_run', date('m/d/Y H:i:s'));
+  variable_set('archives_last_run', date('m/d/Y H:i:s'));
 }
 
 /**
