@@ -109,7 +109,7 @@ function proposal_form_webform_components_form_alter(&$form, &$form_state, $form
       'this proposal - only those currently active when you create it. This is to avoid ballot stuffing or swoop-ins from long absent players. ' .
       'And lastly, you won\'t be able to see the names or IP addresses of the people who do vote. This is so we can make sure they feel safe ' .
       'and secure in making their wishes known. </br></br>' .
-      'You should know that once the proposal closes, the results will be posted publicly for all to see (though still anonymous).</br></br>' .
+      'You should know that once the proposal closes, the results will be posted publicly for all to see. Names will still anonymous.</br></br>' .
       'Once you add a form piece to the form you can shuffle them around to display them in the order you want them to display in. ' .
       'The pieces you can add are mostly self-explanatory but a few you may not be familiar with: </br></br>' .
       '* E-mail: Ensures that the value entered is an email, we don\'t recommend using this one for privacy reasons. </br>' .
