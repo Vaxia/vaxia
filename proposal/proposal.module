@@ -96,6 +96,23 @@ function proposal_node_view($node, $view_mode, $langcode) {
 }
 
 /**
+ * Implements hook_theme_registry_alter().
+ * Remove the exposure of sensitive material from the user facing interface.
+ */
+function mymodule__theme_registry_alter(&$theme_registry) {
+  $theme_registry['webform_token_help']['theme path'] = drupal_get_path('module', 'proposal');
+  $theme_registry['webform_token_help']['function'] = 'proposal_webform_token_help';
+}
+
+/**
+ * Implements theme_webform_token_help().
+ * Remove the exposure of sensitive material from the user facing interface.
+ */
+function proposal_webform_token_help() {
+  return '';
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  */
 function proposal_form_webform_components_form_alter(&$form, &$form_state, $form_id) {

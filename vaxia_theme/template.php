@@ -220,11 +220,3 @@ function vaxia_theme_preprocess_block(&$variables, $hook) {
   //}
 }
 // */
-
-/**
- * Implements theme_webform_token_help().
- * Remove the exposure of sensitive material from the user facing interface.
- */
-function vaxia_theme_webform_token_help() {
-  return '';
-}
