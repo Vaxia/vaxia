@@ -92,7 +92,7 @@ function item_helper_node_update($node) {
             $table['value'] = theme('table', array('header' => $headers, 'rows' => $rows));
             $table['format'] = 'full_html';
             $node->field_creation_history[$node->language][] = $table;
-            //node_save($node);
+            node_save($node);
           }
     // TMP
   }
