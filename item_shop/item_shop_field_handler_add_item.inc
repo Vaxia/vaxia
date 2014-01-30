@@ -167,9 +167,9 @@ class item_shop_field_handler_add_item extends views_handler_field {
             cache_clear_all('*', 'cache_entity_node', TRUE);
           }
           // Display message.
-          drupal_set_message(t(':title has been added to this character. :silver charged.',
+          drupal_set_message(t(':title has been added to this character. :silver silver charged.',
             array(':title' => $new_node->title, ':silver' => $this_value)));
-          drupal_set_message(t('It can take a few minuted for our cache systems to catch up with this change, ' .
+          drupal_set_message(t('It can take a few minutes for our cache systems to catch up with this change, ' .
           	'do NOT purchase a copy of the item if it doesn\'t immediately appear on the sheet. (In general, ' .
           	'you only need to purchase one of any item in the shop. You can always come back and pick up another one later.'));
           // Flush Entity Cache record.
