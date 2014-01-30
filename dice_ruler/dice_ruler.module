@@ -77,8 +77,12 @@ function dice_ruler_form($form, &$form_state) {
         '<li>20 to 30: Normal.</li>' . "\n" .
         '<li>40 to 50: Skilled.</li>' . "\n" .
         '<li>60 to 70: Mastery.</li>' . "\n" .
-       '<li>100 : Extremely Difficult.</li>' . "\n" .
-        '</ul>',
+        '<li>100 : Extremely Difficult.</li>' . "\n" .
+        '</ul>' . "\n" .
+        '<p>Difficulty isn't the only thing to consider. Some actions need more points produced instead. ' .
+        'To raise duration, area, or damage, where the effort is not more complex: use the same difficulty, ' .
+        'ask for more PP. </p>'
+        ,
     '#prefix' => '<div id="dice_ruler_dice_help">',
     '#suffix' => '</div>',
     '#states' => array(
