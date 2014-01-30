@@ -232,13 +232,7 @@ function vaxia_theme_node_preview($variables) {
   $trimmed = drupal_render($elements);
   $elements = node_view($node, 'full');
   $full = drupal_render($elements);
-  // Do we need to preview trimmed version of post as well as full version?
-  if ($trimmed != $full) {
-    $output .= $full;
-  }
-  else {
-    $output .= $full;
-  }
+  $output .= $full;
   $output .= "</div>\n";
   return $output;
 }
