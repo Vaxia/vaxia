@@ -153,7 +153,7 @@ class item_shop_field_handler_add_item extends views_handler_field {
           _add_silver_submit_form_remove_silver($char, -1 * $this_value);
           $message = t('@xp silver removed by System to purchase @title by @user.',
             array('@xp' => -1 * $this_value, '@title' => $node->title, '@user' => $user->name));
-          _character_sheet_update_log($nid, 'silver', $message, $variables = array());
+          _character_sheet_update_log($char, 'silver', $message, $variables = array());
           // Create new node for the player, and character.
           $new_node = clone $node;
           unset($new_node->nid);
