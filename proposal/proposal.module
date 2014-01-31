@@ -92,6 +92,18 @@ function proposal_node_view($node, $view_mode, $langcode) {
     drupal_set_message(t('This proposal will stay open for two weeks since it was last updated. ' .
       'It is set to close on @date.',
       array('@date' => $date)));
+    $node->content['proposal_help'] => array(
+      '#markup' => t('Proposals are meant to be a way to formally make a request for the input of site members. Forum threads and five-star ' .
+      'ratings are not accurate enough for the big things. So here\'s how this works:</br> ' .
+      '<ul> ' .
+      '<li>If you change your mind after you vote, you will be able to go back in and delete or change your vote up until the proposal closes.</li> ' .
+      '<li>The form will be open for two weeks, after which it will automatically close.</li> ' .
+      '<li>If the original poster edits it in that timespan the timer will re-set. This is to make sure everyone can get a chance to weigh in.</li> ' .
+      '<li>Only players active when the proposal was created can vote on it. This is to avoid ballot stuffing.</li> ' .
+      '<li>No one, not even the original poster will be able to see the names or IP addresses of the people do vote.</li> ' .
+      '<li>After the two week window has passed, the proposal will close and results will be publicly availble in a tab on this page.</li> ' .
+      '</ul>'),
+    );
   }
 }
 
