@@ -92,7 +92,7 @@ function proposal_node_view($node, $view_mode, $langcode) {
     drupal_set_message(t('This proposal will stay open for two weeks since it was last updated. ' .
       'It is set to close on @date.',
       array('@date' => $date)));
-    $node->content['proposal_help'] => array(
+    $node->content['proposal_help'] = array(
       '#markup' => t('Proposals are meant to be a way to formally make a request for the input of site members. Forum threads and five-star ' .
       'ratings are not accurate enough for the big things. So here\'s how this works:</br> ' .
       '<ul> ' .
