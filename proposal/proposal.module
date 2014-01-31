@@ -93,7 +93,7 @@ function proposal_node_view($node, $view_mode, $langcode) {
       'It is set to close on @date.',
       array('@date' => $date)));
     $node->content['proposal_help'] = array(
-      '#markup' => t('Proposals are meant to be a way to formally make a request for the input of site members. Forum threads and five-star ' .
+      '#markup' => '</br></br>' . t('<b>Proposal help:</b></br>Proposals are meant to be a way to formally make a request for the input of site members. Forum threads and five-star ' .
       'ratings are not accurate enough for the big things. So here\'s how this works:</br> ' .
       '<ul> ' .
       '<li>If you change your mind after you vote, you will be able to go back in and delete or change your vote up until the proposal closes.</li> ' .
