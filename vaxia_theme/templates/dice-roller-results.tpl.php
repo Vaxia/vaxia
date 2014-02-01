@@ -51,7 +51,7 @@
           }
         }
         else {
-          $str_rolls .= '<div class="dice">' . $note . ' => <b>' . t('Roll') . ':</b> ' . $roll . '</div>' . "\n";
+          $str_rolls .= '<div class="dice">' . $note . ' => <b>' . t('Roll') . ':</b> ' . $rolls . '</div>' . "\n";
         }
       } // End loop processing this roll.
     } // End if protecting the roll set.
