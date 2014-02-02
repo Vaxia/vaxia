@@ -95,8 +95,8 @@ function vacation_form_user_profile_form_alter(&$form, &$form_state) {
   $extra_roles = variable_get('vacation_roles', array());
   $default_message = variable_get('vacation_description', '');
   $has_extra = FALSE;
-  foreach ($extra_roles as $extra_role) {
-    if (in_array($extra_role, $form['#user']->roles)) {
+  foreach ($extra_roles as $extra_role => $value) {
+    if ($value && in_array($extra_role, $form['#user']->roles)) {
       $has_extra = TRUE;
     }
   }
