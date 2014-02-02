@@ -46,11 +46,13 @@ Drupal.behaviors.rpgChat = {
 
   // Prevent form submission while in an AJAX event.
   $('form.node-form, form.comment-form').ajaxStart(function(){
+    $('form.node-form #edit-1, form.comment-form #edit-1, form.node-form #edit-submit, form.comment-form #edit-submit').css('color', 'graytext');
     $(this).submit(function() {
       return false;
     });
   })
   .ajaxStop(function() {
+    $('form.node-form #edit-1, form.comment-form #edit-1, form.node-form #edit-submit, form.comment-form #edit-submit').css('color', 'black');
     $(this).unbind('submit');
     $(this).submit(function() {
       return true;
