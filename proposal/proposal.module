@@ -107,7 +107,7 @@ function proposal_node_view($node, $view_mode, $langcode) {
     );
 
     $roles = array('storyteller', 'evaluator', 'voting player');
-    $potential_voters = db_query('SELECT COUNT(u.uid) as potential_voters FROM {users} u ' .
+    $potential_voters = db_query('SELECT COUNT(DISTINCT u.uid) as potential_voters FROM {users} u ' .
       'LEFT JOIN {users_roles} ur ON u.uid = ur.uid ' .
       'LEFT JOIN {role} r ON ur.rid = r.rid ' .
       'LEFT JOIN {field_data_field_became_voter} v ON u.uid = v.entity_id ' .
