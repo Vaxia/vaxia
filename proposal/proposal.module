@@ -105,6 +105,24 @@ function proposal_node_view($node, $view_mode, $langcode) {
       '</ul>'),
       '#weight' => 1000,
     );
+
+    $roles = array('storyteller', 'evaluator', 'voting player');
+    $potential_voters = db_query('SELECT COUNT(u.uid) as potential_voters FROM {users} u ' .
+      'LEFT JOIN {users_roles} ur ON u.uid = ur.uid ' .
+      'LEFT JOIN {role} r ON ur.rid = r.rid ' .
+      'LEFT JOIN {field_data_field_became_voter} v ON u.uid = v.entity_id ' .
+      'WHERE r.name IN (:roles) ' .
+      'AND v.field_became_voter_value IS NOT NULL AND v.field_became_voter_value < :start',
+      array(':roles' => $roles, ':start' => date('Y-m-d 00:00:01', $node->created)))->fetchColumn();
+    if ($potential_voters != 0) {
+		$voted = webform_get_submission_count($node->nid);
+		$percent = number_format(($voted / $potential_voters) * 100);
+		$node->content['proposal_response'] = array(
+		  '#markup' => t('%voted out of %potential_voters potential voters (%percent %) responsed to this proposal.',
+		  array('%voted' => $voted, '%potential_voters' => $potential_voters, '%percent' => $percent)),
+		  '#weight' => 1001,
+		);
+    }
   }
 }
 
