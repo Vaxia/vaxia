@@ -7,6 +7,18 @@
 include_once 'proposal.features.inc';
 
 /**
+ * Implements hook_permission().
+ */
+function proposal_permission() {
+  return array(
+    'administrate proposal'=> array(
+      'title' => t('administrate proposal'),
+      'description' => t('Administrate proposal.'),
+    ),
+  );
+}
+
+/**
  * Implements hook_menu_alter().
  */
 function proposal_menu_alter(&$items) {
@@ -32,6 +44,10 @@ function proposal_menu_alter(&$items) {
  * Menu access call for _vaxia_webform_results_table().
  */
 function _proposal_webform_results_table_access($node) {
+  // Allow administrators at all times
+  if (user_access('administrate proposal')) {
+  	return user_access('administrate proposal');
+  }
   // Only show for a FINISHED contest. We do NOT need peopel vote stacking cause they know results.
   if ($node->webform['status'] == FALSE) {
     global $user;
@@ -44,7 +60,11 @@ function _proposal_webform_results_table_access($node) {
  * Menu access call for _vaxia_webform_results_table().
  */
 function _proposal_webform_results_access($node) {
-  // Only show for a FINISHED contest. We do NOT need peopel vote stacking cause they know results.
+  // Allow administrators at all times
+  if (user_access('administrate proposal')) {
+  	return user_access('administrate proposal');
+  }
+  // Only show for a FINISHED contest. We do NOT need people vote stacking cause they know results.
   if ($node->webform['status'] == FALSE) {
     return webform_results_access($node, $account = NULL);
   }
