@@ -11,31 +11,66 @@ include_once 'proposal.features.inc';
  */
 function proposal_permission() {
   return array(
-    'administrate proposal'=> array(
-      'title' => t('administrate proposal'),
-      'description' => t('Administrate proposal.'),
+    'administer proposal'=> array(
+      'title' => t('administer proposal'),
+      'description' => t('Administer proposal.'),
     ),
   );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function proposal_menu() {
+  $items['admin/config/people/proposal'] = array(
+    'title' => 'Proposal system',
+    'description' => 'Site voting and administrative proposals.',
+    'type' => MENU_NORMAL_ITEM,
+    'access arguments' => array('administer proposal'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('proposal_admin_form'),
+  );
+  return $items;
+}
+
+/**
+ * Menu callback, administration form.
+ */
+function proposal_admin_form($form, &$form_state) {
+  $form = array();
+  $form['proposal_open_timeframe'] = array(
+    '#title' => t('Open timeframe'),
+    '#description' => t('Timeframe to keep proposals open for. Use the same strings as date().'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('proposal_open_timeframe', '2 weeks'),
+  );
+  $form['proposal_voter_timeframe'] = array(
+    '#title' => t('Voter timeframe'),
+    '#description' => t('Timeframe for determining user activity as a voter. Use the same strings as date().'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('proposal_voter_timeframe', '6 months'),
+  );
+  foreach (user_roles() as $rid => $name) {
+    $roles[$name] = $name;
+  }
+  $form['proposal_roles'] = array(
+    '#title' => t('Proposal voting roles'),
+    '#type' => 'checkboxes',
+    '#options' =>  $roles,
+    '#default_value' => variable_get('proposal_roles', array()),
+  );
+  return system_settings_form($form);
 }
 
 /**
  * Implements hook_menu_alter().
  */
 function proposal_menu_alter(&$items) {
-  // Copy the regular table output for a user access one.
-  $items['node/%webform_menu/webform-table'] = $items['node/%webform_menu/webform-results'];
-  $items['node/%webform_menu/webform-table']['title'] = 'Submissions';
-  $items['node/%webform_menu/webform-table']['page callback'] = '_proposal_webform_results_table';
-  $items['node/%webform_menu/webform-table']['access callback'] = '_proposal_webform_results_table_access';
-  $items['node/%webform_menu/webform-table']['access arguments'] = array(1);
-  $items['node/%webform_menu/webform-table']['type'] = MENU_LOCAL_TASK;
-  // Remove file reference, since it's now in proposal.module.
-  unset($items['node/%webform_menu/webform-table']['file']);
   // Remove all the paths people don't need.
+  unset($items['node/%webform_menu/webform-results']);
   unset($items['node/%webform_menu/webform/emails']);
   unset($items['node/%webform_menu/webform/emails/%webform_menu_email']);
-  unset($items['node/%webform_menu/webform/emails/%webform_menu_email/delete']);
-  
+  unset($items['node/%webform_menu/webform/emails/%webform_menu_email/delete']); 
   // That goes for the owner as well.
   $items['node/%webform_menu/webform-results']['access callback'] = '_proposal_webform_results_access';
 }
@@ -43,26 +78,10 @@ function proposal_menu_alter(&$items) {
 /**
  * Menu access call for _vaxia_webform_results_table().
  */
-function _proposal_webform_results_table_access($node) {
-  // Allow administrators at all times
-  if (user_access('administrate proposal')) {
-  	return user_access('administrate proposal');
-  }
-  // Only show for a FINISHED contest. We do NOT need peopel vote stacking cause they know results.
-  if ($node->webform['status'] == FALSE) {
-    global $user;
-    return node_access('view', $node, $user);
-  }
-  return FALSE;
-}
-
-/**
- * Menu access call for _vaxia_webform_results_table().
- */
 function _proposal_webform_results_access($node) {
   // Allow administrators at all times
-  if (user_access('administrate proposal')) {
-  	return user_access('administrate proposal');
+  if (user_access('administer proposal')) {
+    return user_access('administer proposal');
   }
   // Only show for a FINISHED contest. We do NOT need people vote stacking cause they know results.
   if ($node->webform['status'] == FALSE) {
@@ -72,34 +91,136 @@ function _proposal_webform_results_access($node) {
 }
 
 /**
- * Override normal webform_results_table(),
+ * Implements hook_theme_registry_alter().
+ * Remove the exposure of sensitive material from the user facing interface.
  */
-function _proposal_webform_results_table($node, $pager_count = 0) {
-  if (isset($_GET['results']) && is_numeric($_GET['results'])) {
-    $pager_count = $_GET['results'];
+function proposal_theme_registry_alter(&$theme_registry) {
+  $theme_registry['webform_token_help']['theme path'] = drupal_get_path('module', 'proposal');
+  $theme_registry['webform_token_help']['function'] = 'proposal_webform_token_help';
+  $theme_registry['webform_results_table']['theme path'] = drupal_get_path('module', 'proposal');
+  $theme_registry['webform_results_table']['function'] = 'proposal_webform_results_table';
+  $theme_registry['webform_results_analysis']['theme path'] = drupal_get_path('module', 'proposal');
+  $theme_registry['webform_results_analysis']['function'] = 'proposal_webform_results_analysis';
+}
+
+/**
+ * Implements theme_webform_token_help().
+ * Remove the exposure of sensitive material from the user facing interface.
+ * It removes it for all webforms sadly, because there's no good way to tell it not to with the theme system.
+ */
+function proposal_webform_token_help() {
+  return '';
+}
+
+/**
+ * Implements theme_webform_results_table();
+ */
+function proposal_webform_results_table($variables) {
+  $node = $variables['node'];
+  // If we're not looking at a proposal, bail out with the normal view.
+  if ($node->type != 'proposal') {
+    return theme_webform_results_table($variables);
   }
-  // Get all the submissions for the node.
-  $header = theme('webform_results_table_header', array('node' => $node));
-  $submissions = webform_get_submissions($node->nid, $header, $pager_count);
-  global $user;
-  if (!webform_results_access($node, $user)) {
-    foreach ($submissions as $sid => $data) {
-      $submissions[$sid]->uid = '';
-      $submissions[$sid]->name = '*****';
-      $submissions[$sid]->remote_addr = '***.***.***.***';
+
+  $output = '';
+  // To sum up, get analysis of all submissions.
+  $output .= webform_results_analysis($node);
+
+  // Show the individual results.
+  // On a proposal, override the display so we only see the things we should see.
+  drupal_add_library('webform', 'admin');
+  $components = $variables['components'];
+  $submissions = $variables['submissions'];
+  $total_count = $variables['total_count'];
+  $pager_count = $variables['pager_count'];
+  $header = array();
+  $rows = array();
+  $cell = array();
+  // This header has to be generated seperately so we can add the SQL necessary.
+  // to sort the results.
+  $header = array(
+    array(
+      'data' => t('Submitted'),
+      'field' => 'submitted',
+    ),
+  );
+  // Generate a row for each submission.
+  foreach ($submissions as $sid => $submission) {
+    $cell[] = format_date($submission->submitted, 'short');
+    $component_headers = array();
+    // Generate a cell for each component.
+    foreach ($node->webform['components'] as $component) {
+      $data = isset($submission->data[$component['cid']]) ? $submission->data[$component['cid']] : NULL;
+      $submission_output = webform_component_invoke($component['type'], 'table', $component, $data['value']);
+      if ($submission_output !== NULL) {
+        $component_headers[] = check_plain($component['name']);
+        $cell[] = $submission_output;
+      }
+    }
+    $rows[] = $cell;
+    unset($cell);
+  }
+  if (!empty($component_headers)) {
+    $header = array_merge($header, $component_headers);
+  }
+  if (count($rows) == 0) {
+    $rows[] = array(array(
+        'data' => t('There are no submissions for this form.'),
+        'colspan' => count($header),
+      ));
+  }
+  $output .= theme('webform_results_per_page', array('total_count' => $total_count, 'pager_count' => $pager_count));
+  $output .= theme('table', array('caption' => '<h2>' . t('Detailed responses') . '</h2>', 'header' => $header, 'rows' => $rows,
+    'attributes' => array('class' => array('webform-detailed-responses'))));
+  return $output;
+}
+
+/**
+ * Implements theme_webform_results_analysis().
+ */
+function proposal_webform_results_analysis($variables) {
+  $node = $variables['node'];
+  // If we're not looking at a proposal, bail out with the normal view.
+  if ($node->type != 'proposal') {
+    return theme_webform_results_analysis($variables);
+  }
+  $data = $variables['data'];
+  $sids = $variables['sids'];
+  $analysis_component = $variables['component'];
+  $rows = array();
+  $question_number = 0;
+  $first = ' webform-results-question-first';
+  $single = isset($analysis_component);
+  foreach ($data as $cid => $row_data) {
+    $question_number++;
+    if (is_array($row_data)) {
+      $row = array();
+      if (!$single) {
+        $row['data'][] = array(
+          'data' => '',
+          'rowspan' => count($row_data) + 1,
+          'valign' => 'top',
+        );
+        $row['data'][] = array(
+          'data' => '<strong>' . check_plain($node->webform['components'][$cid]['name']) . '</strong>',
+          'colspan' => '10',
+        );
+        $row['class'][] = 'webform-results-question' . $first;
+         $first = '';
+      }
+      $rows = array_merge($rows, array_merge(array($row), $row_data));
     }
   }
-  $total_count = webform_get_submission_count($node->nid);
-  $output = theme('webform_results_table', array(
-    'node' => $node,
-    'components' => $node->webform['components'],
-    'submissions' => $submissions,
-    'total_count' => $total_count,
-    'pager_count' => $pager_count)
-  );
-  if ($pager_count) {
-    $output .= theme('pager');
+  if (count($rows) == 0) {
+    $rows[] = array(array(
+        'data' => t('There are no submissions for this form. <a href="!url">View this form</a>.', array('!url' => url('node/' . $node->nid))),
+        'colspan' => 20,
+      ));
   }
+  $output = '<div class="webform-results-analysis-help">' . t('Summary of responses reflects how many users selected a given value in the poll. In general, the larger the number the stronger ' .
+    'the overall preference for that result. Text responses are briefly summarized but should be read individually.') .'</div>';
+  $output .= theme('table', array('caption' => '<h2>' . t('Summary of responses') . '</h2>', 'header' => $header, 'rows' => $rows,
+    'attributes' => array('class' => array('webform-results-analysis'))));
   return $output;
 }
 
@@ -107,60 +228,72 @@ function _proposal_webform_results_table($node, $pager_count = 0) {
  * Implements hook_node_view().
  */
 function proposal_node_view($node, $view_mode, $langcode) {
+  // Only override the displays for proposals.
   if ($node->type == 'proposal') {
-    $date = date('m/d/Y', strtotime('+2 weeks', $node->changed));
-    drupal_set_message(t('This proposal will stay open for two weeks since it was last updated. ' .
-      'It is set to close on @date.',
-      array('@date' => $date)));
+    if ($node->webform['status'] == TRUE) {
+      $timeframe = variable_get('proposal_open_timeframe', '2 weeks');
+      $date = date('m/d/Y', strtotime($timeframe, $node->changed));
+      drupal_set_message(t('This proposal will stay open for two weeks since it was last updated. It is set to close on @date.',
+        array('@date' => $date)));
+    }
     $node->content['proposal_help'] = array(
-      '#markup' => '</br></br>' . t('<b>Proposal help:</b></br>Proposals are meant to be a way to formally make a request for the input of site members. Forum threads and five-star ' .
-      'ratings are not accurate enough for the big things. So here\'s how this works:</br> ' .
+      '#markup' => '<div class="proposal_help"></br></br>' . t('<b>Proposal help:</b></br>Proposals are meant to be a way to formally make a request for the input of site ' .
+      'members. Forum threads and five-star ratings are not accurate enough for the big things. So here\'s how this works:</br> ' .
       '<ul> ' .
       '<li>If you change your mind after you vote, you will be able to go back in and delete or change your vote up until the proposal closes.</li> ' .
-      '<li>The form will be open for two weeks, after which it will automatically close.</li> ' .
+      '<li>The form will be open for %timeframe, after which it will automatically close.</li> ' .
       '<li>If the original poster edits it in that timespan the timer will re-set. This is to make sure everyone can get a chance to weigh in.</li> ' .
-      '<li>Only players active when the proposal was created can vote on it. This is to avoid ballot stuffing.</li> ' .
+      '<li>Only users active when the proposal was created can vote on it. This is to avoid ballot stuffing.</li> ' .
       '<li>No one, not even the original poster will be able to see the names or IP addresses of the people do vote.</li> ' .
       '<li>After the two week window has passed, the proposal will close and results will be publicly availble in a tab on this page.</li> ' .
-      '</ul>'),
+      '</ul></div>', array('%timeframe' => $timeframe)),
       '#weight' => 1000,
     );
 
-    $roles = array('storyteller', 'evaluator', 'voting player');
-    $potential_voters = db_query('SELECT COUNT(DISTINCT u.uid) as potential_voters FROM {users} u ' .
-      'LEFT JOIN {users_roles} ur ON u.uid = ur.uid ' .
-      'LEFT JOIN {role} r ON ur.rid = r.rid ' .
-      'LEFT JOIN {field_data_field_became_voter} v ON u.uid = v.entity_id ' .
-      'WHERE r.name IN (:roles) ' .
-      'AND v.field_became_voter_value IS NOT NULL AND v.field_became_voter_value < :start',
-      array(':roles' => $roles, ':start' => date('Y-m-d 00:00:01', $node->created)))->fetchColumn();
+    // Check how many people have voted that are allowed to vote.
+    $set_roles = variable_get('proposal_roles', array());// If voter is in this then we'll include the time frame. Else.
+    $roles = array();
+    foreach($set_roles as $role) {
+      if ($role) {
+        $roles[] = $role;
+      }
+    }
+    if (!empty($roles) && in_array('voter', $roles)) {
+      $potential_voters = db_query('SELECT COUNT(DISTINCT u.uid) as potential_voters FROM {users} u ' .
+        'LEFT JOIN {users_roles} ur ON u.uid = ur.uid ' .
+        'LEFT JOIN {role} r ON ur.rid = r.rid ' .
+        'LEFT JOIN {field_data_field_became_voter} v ON u.uid = v.entity_id ' .
+        'WHERE r.name IN (:roles) ' .
+        'AND v.field_became_voter_value IS NOT NULL AND v.field_became_voter_value < :start',
+        array(':roles' => $roles, ':start' => date('Y-m-d 00:00:01', $node->created)))->fetchColumn();
+    } elseif (!empty($roles)) {
+      // We don't care about the voter limits here. Just that they have the roles.
+      $potential_voters = db_query('SELECT COUNT(DISTINCT u.uid) as potential_voters FROM {users} u ' .
+        'LEFT JOIN {users_roles} ur ON u.uid = ur.uid ' .
+        'LEFT JOIN {role} r ON ur.rid = r.rid ' .
+        'LEFT JOIN {field_data_field_became_voter} v ON u.uid = v.entity_id ' .
+        'WHERE r.name IN (:roles) ',
+        array(':roles' => $roles))->fetchColumn();      
+    }
+    // Add that information to the display.
     if ($potential_voters != 0) {
-		$voted = webform_get_submission_count($node->nid);
-		$percent = number_format(($voted / $potential_voters) * 100);
-		$node->content['proposal_response'] = array(
-		  '#markup' => t('%voted out of %potential_voters potential voters (%percent %) responsed to this proposal.',
-		  array('%voted' => $voted, '%potential_voters' => $potential_voters, '%percent' => $percent)),
-		  '#weight' => 1001,
-		);
+      $voted = webform_get_submission_count($node->nid);
+      $percent = number_format(($voted / $potential_voters) * 100);
+      $node->content['proposal_response'] = array(
+        '#markup' => '<div class="proposal_response">' . t('%voted out of %potential_voters potential voters (%percent %) responsed to this proposal.',
+        array('%voted' => $voted, '%potential_voters' => $potential_voters, '%percent' => $percent)) . '</div>',
+        '#weight' => 1001,
+      );
+    }
+    // And if the vote has been closed - add that.
+    if ($node->webform['status'] == FALSE || user_access('administer proposal')) {
+      module_load_include('inc', 'webform', 'includes/webform.report');
+      $node->content['proposal_results'] = array(
+        '#markup' => '<div class="proposal_result">' . webform_results_table($node) . '</div>',
+        '#weight' => 1002,
+      );
     }
   }
-}
-
-/**
- * Implements hook_theme_registry_alter().
- * Remove the exposure of sensitive material from the user facing interface.
- */
-function proposal_theme_registry_alter(&$theme_registry) {
-  $theme_registry['webform_token_help']['theme path'] = drupal_get_path('module', 'proposal');
-  $theme_registry['webform_token_help']['function'] = 'proposal_webform_token_help';
-}
-
-/**
- * Implements theme_webform_token_help().
- * Remove the exposure of sensitive material from the user facing interface.
- */
-function proposal_webform_token_help() {
-  return '';
 }
 
 /**
@@ -235,11 +368,10 @@ function _proposal_form_proposal_node_form_submit($form, &$form_state) {
     $node->webform['confirmation_format'] = 'plain_text';
     $node->webform['submit_limit'] = 1;
     // Set the per-role submission access control.
-    foreach (user_roles() as $rid => $role_name) {
-      if ($role_name == 'voting player') {
-        $node->webform['roles'] = array();
-        $node->webform['roles'] = array($rid);
-      }
+    // Automatically add voter since this system will add that role.
+    $role = user_role_load_by_name('voter');
+    if ($role) {
+      $node->webform['roles'] = array($role->rid);
     }
     // Save the node.
     node_save($node);
@@ -258,25 +390,45 @@ function proposal_form_alter(&$form, &$form_state, $form_id) {
   // Why hook_form_alter and not hook_form_FORM_ID_alter? Because webform's form id varies: webform_client_form_NID.
   if (strstr($form_id, 'webform_client_form') !== FALSE) {
     // Lockout.
-    global $user;
-    $this_user = user_load($user->uid);
-    $lang = !empty($this_user->language) ? $this_user->language : 'und';
-    $became_voter = isset($this_user->field_became_voter[$lang][0]['value']) ? $this_user->field_became_voter[$lang][0]['value'] : '1/1/3000 00:00:00';
-    $became_voter = strtotime($became_voter);
-    $webform_created = isset($form['#node']->created) ? $form['#node']->created : strtotime('now');
-    if ($webform_created < $became_voter) {
-      drupal_set_message('You gained voting privileges on this site after this webform was created. ' .
-        'You are not eligible to vote on this issue.', 'warning');
-      $form['#disabled'] = TRUE;
+    $set_roles = variable_get('proposal_roles', array());
+    $roles = array();
+    foreach($set_roles as $role) {
+      if ($role) {
+        $roles[] = $role;
+      }
+    }
+    if (!in_array('voter', $roles)) {
+      return; // Bail out if we aren't even considering voter roles.
+    }
+    // Find the voter role.
+    $role = user_role_load_by_name('voter');
+    // Only toss up the message if the form cares about the voter eligability.
+    if ($role && in_array($role->rid, $node->webform['roles'])) {
+      global $user;
+      $this_user = user_load($user->uid);
+      $lang = !empty($this_user->language) ? $this_user->language : 'und';
+      $voter_rid = '';
+      $became_voter = isset($this_user->field_became_voter[$lang][0]['value']) ? $this_user->field_became_voter[$lang][0]['value'] : '1/1/3000 00:00:00';
+      $became_voter = strtotime($became_voter);
+      $webform_created = isset($form['#node']->created) ? $form['#node']->created : strtotime('now');
+      if ($webform_created < $became_voter) {
+        drupal_set_message('You gained voting privileges on this site after this webform was created. ' .
+          'You are not eligible to vote on this issue.', 'warning');
+        $form['#disabled'] = TRUE;
+      }
     }
   } // End alter of webform.
 
   // Edit the webform form for creators to limit to the right roles.
   if ($form_id == 'webform_configure_form' && $form['#node']->type == 'proposal') {
+    $timeframe = variable_get('proposal_open_timeframe', '2 weeks');
     // Change the form around.
-    $form['submission']['status']['#disabled'] = TRUE;
-    $form['submission']['status']['#description'] .= ' ' .
-      t('This propsal will remain open for submission for two weeks from the last time it was updated.');
+    // Admins can close it if the proposal was opened in error.
+    if (!user_access('administer proposal')) {
+      $form['submission']['status']['#disabled'] = TRUE;
+      $form['submission']['status']['#description'] .= ' ' .
+        t('This propsal will remain open for submission for %timeframe from the last time it was updated.', array('%timeframe' => $timeframe));
+    }
     // Leave it to the machine to open and close the proposal. No early, no late.
     $form['submission']['redirection']['#access'] = FALSE;
     // Only one per customer.
@@ -288,22 +440,62 @@ function proposal_form_alter(&$form, &$form_state, $form_id) {
     $form['submission']['submit_limit']['submit_limit']['#default_value'] = 1;
     // And only particular users, tweak the descriptions.
     $form['role_control']['#description'] = t('These permissions affect which roles can submit this webform. ' .
-      'It does not prevent access to the webform page.');
-    $allowed_roles = array('storyteller', 'evaluator', 'voting player');
+      'It does not prevent access to the webform page to view results.');
+    $set_roles = variable_get('proposal_roles', array());
+    $allowed_roles = array();
+    foreach($set_roles as $role) {
+      if ($role) {
+        $allowed_roles[] = $role;
+      }
+    }
     foreach ($form['role_control']['roles']['#options'] as $rid => $role_name) {
       if (!in_array($role_name, $allowed_roles)) {
         unset($form['role_control']['roles']['#options'][$rid]);
       }
-      // And set voting players as default.
-      if ($role_name == 'voting player') {
+      // And set voters as default.
+      // Automatically add voter as a limiter.
+      if ($role_name == 'voter') {
         $form['role_control']['roles']['#default_value'] = isset($form['role_control']['roles']['#default_value']) ?
           $form['role_control']['roles']['#default_value'] : array($rid);
+        $voter_timeframe = variable_get('proposal_voter_timeframe', '6 months');
+        $form['role_control']['roles']['#description'] = t('Active users are users who have posted on the site in the last %voter_timeframe',
+          array('%voter_fimeframe' => $voter_fimeframe));
       }
     }
-    $form['role_control']['roles']['#description'] = t('Voting players are players who have posted on the site in the last six months.');
     // And no advanced formats.
     $form['advanced']['#access'] = FALSE;
-  }
+  } // End alter of webform form settings.
 
   return $form;
+}
+
+/**
+ * Rules helper functions.
+ * Provided to minimize SQL in Rules.
+ */
+function proposal_posted_in_last_timeframe($uid) {
+  $count = 0;
+  $time = variable_get('proposal_voter_timeframe', '6 months') . ' ago';
+
+  $results = db_query('SELECT COUNT(nid) AS count FROM {node} ' .
+    'WHERE uid = :uid ' .
+    'AND created > :time',
+    array(':uid' => $uid, ':time' => $time));
+  foreach ($results as $result) {
+    $count += $result->count;
+  }
+
+  $results = db_query('SELECT COUNT(cid) AS count FROM comment} ' .
+    'WHERE uid = :uid ' .
+    'AND created > :time',
+    array(':uid' => $uid, ':time' => $time));
+  foreach ($results as $result) {
+    $count += $result->count;
+  }
+
+  // User IS a voting user.
+  if ($count > 0) {
+    return TRUE;
+  }
+  return FALSE;
 }
