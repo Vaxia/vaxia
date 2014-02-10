@@ -452,13 +452,13 @@ function _vaxia_npcs_owner_is_sh($node) {
 }
 
 /**
- * Rules helper function, if the NPC is over limits.
+ * Helper for rules. Check if the NPC is over limits.
  */
-function vaxia_npcs_needs_oversight($node) {
+function npcs_check_needs_oversight($node) {
   $limit = 70;
   $return_value = FALSE;
   $fields = array('life', 'health', 'endurance', 'constitution', 'strength', 'agility', 'dexterity',
-  'reflexes', 'intelligence', 'awareness', 'spirituality', 'presence', 'charisma', 'appearance',
+    'reflexes', 'intelligence', 'awareness', 'spirituality', 'presence', 'charisma', 'appearance',
   );
   $lang = $node->language;
   foreach ($fields as $field_name) {
@@ -466,17 +466,31 @@ function vaxia_npcs_needs_oversight($node) {
     $stat = isset($node->{$field_name}[$lang][0]['value']) ?
     $node->{$field_name}[$lang][0]['value'] : 0;
     if ($stat >= $limit) {
-    $return_value = TRUE;
+      $return_value = TRUE;
     }
     foreach ($node->field_skill[$lang] as $delta => $skill) {
     $this_skill = field_collection_item_load($skill['value']);
     $skill_lang = isset($skill->language) ? $skill->language : $lang;
     $stat = isset($this_skill->field_skill_value[$skill_lang][0]['value']) ?
       $this_skill->field_skill_value[$skill_lang][0]['value'] : 0;
-    if ($stat >= $limit) {
-      $return_value = TRUE;
-    }
+      if ($stat >= $limit) {
+        $return_value = TRUE;
+      }
     }
   }
   return $return_value;
+}
+
+/**
+ * Helper for rules. Get NPC workflow settings in proper timing order.
+ */
+function npcs_mark_npc_pass($node) {
+  // Update the timestamp for the latest workflow to avoid a timestamp collision.
+  db_query('UPDATE {workflow_node_history} ' .
+    'SET stamp = stamp+10 ' .
+    'WHERE nid = :nid ' .
+    'ORDER BY hid DESC ' .
+    'LIMIT 1',
+    array(':nid' => $node->nid)
+  );
 }

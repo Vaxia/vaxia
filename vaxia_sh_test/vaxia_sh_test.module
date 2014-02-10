@@ -5,3 +5,149 @@
  */
 
 include_once 'vaxia_sh_test.features.inc';
+
+/**
+ * Helper for rules. Check how many sessions a given user has run so far.
+ */
+function sh_test_check_sessions_ran($uid, $ran) {
+  $count = 0;
+  $nodes = node_load_multiple(array(), array('type' => 'session_report', 'uid' => $uid ));
+  foreach ($nodes as $node) {
+    if ($node->status == 1) {
+      $count++;
+    }
+  }
+  if ($count >= $ran) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+/**
+ * Helper for rules. Check if an SH has run recently.
+ */
+function sh_test_check_last_run($uid, $time = '-6 months') {
+  $nodes = node_load_multiple(array(), array('type' => 'session_report', 'uid' => $uid ));
+  foreach ($nodes as $node) {
+    $timespan = strtotime($time);
+    if ($node->status == 1 && $node->created >= $timespan) {
+      return FALSE;
+    }
+  }
+  return TRUE;
+}
+
+/**
+ * Helper for rules. Check if we are so low on SH's that we just need to pass the user through.
+ */
+function sh_test_check_starvation_mode($limit = 4) {
+  $result = db_query('SELECT COUNT(ur.uid) FROM {users_roles} ur ' .
+    'LEFT JOIN {role} r ON ur.rid = r.rid ' .
+    'WHERE r.name = :name', array(':name' => 'storyteller') );
+  $count = 0;
+  foreach ($result as $value) {
+    $count = $value;
+  }
+  if ($count < $limit) {
+    return FALSE;
+  }
+  return TRUE;
+}
+
+/**
+ * Helper for rules. Setup the webform response for approving new candidates.
+ */
+function sh_test_setup_approval_form($user, $node, $entity_created) {
+  // Find the result ID for this test taken.
+  $uid = $user->uid;
+  $nid = $node->nid;
+  $vid = $node->vid;
+  $results = db_query("SELECT r.result_id FROM {quiz_node_results} r " .
+    "WHERE r.uid = :uid " .
+    "AND r.nid = :nid " .
+    "AND r.vid = :vid " .
+    "ORDER BY r.time_end DESC LIMIT 0,1 ",
+    array(
+    ':uid' => $uid,
+    ':nid' => $nid,
+    ':vid' => $vid,
+    ));
+  $rid = '';
+  foreach ($results as $result) {
+    $rid = $result->result_id;
+  }
+  if (empty($rid)) {
+    drupal_set_message(t('An error was encountered, no result ID able to be found.'));
+    return;
+  }
+
+  // Now get the printed out set of answers.
+  $questions = _quiz_get_answers($node, $rid);
+  ksort($questions);
+  $output = '';
+  foreach ($questions as $question_nid => $question) {
+    $q_title = $question->title;
+    $full_question = node_load($question_nid);
+    $q = $full_question->body[$full_question->language][0]['value'];
+    $a = $question->answers[0]['answer'];
+    $output .= '<h3><b>' . $q_title . '</b></h3><p><b>'. $q . '</b></p><p>' . $a . '</p><br/>';
+  }
+  if (empty($output)) {
+    drupal_set_message(t('An error was encountered, no output able to be created.'));
+    return;
+  }
+
+  // Set the webform body
+  $entity_created->body[$entity_created->language][0]['value'] = $output;
+  $entity_created->webform['confirmation'] = t('Thank you!');
+  $entity_created->webform['confirmation_format'] = 'plain_text';
+  $entity_created->webform['submit_limit'] = 1;
+
+  // Save the node
+  node_save($entity_created);
+
+  // Save roles, 9 = Storyteller
+  $record = db_query('DELETE FROM {webform_roles} WHERE nid = :nid', array(':nid' => $entity_created->nid));
+  db_insert('webform_roles')->fields(array('nid' => $entity_created->nid, 'rid' => 9))->execute();
+
+  // Create the standard webform field for approval.
+  $component = array();
+  $component['nid'] = $entity_created->nid;
+  $component['pid'] = 0;
+  $component['form_key'] = 'approval';
+  $component['name'] = t('Approve');
+  $component['type'] = 'select';
+  $component['mandatory'] = 1;
+  $component['extra'] = array(
+    'description' => '',
+    'items' => 'approve|' .  t('Yes. I approve this SH candidate to become a full SH.'),
+    'multiple' => '1',
+    'aslist' => '0',
+    );
+  $component['weight'] = 0;
+  // Include the webform module that allows components to be created.
+  module_load_include('inc', 'webform', 'includes/webform.components');
+  webform_component_insert($component);
+}
+
+/**
+ * Helper for rules. Check if enough storyhosts have approved this application.
+ */
+function sh_test_check_ash_3_approvals($nid) {
+  $results = db_query("SELECT wd.data FROM {webform_submitted_data} wd " .
+    "WHERE wd.nid = :nid " .
+    "AND wd.cid = 1", // There is only the one form element.
+    array(
+      ':nid' => $nid,
+    ));
+  $count = 0;
+  foreach ($results as $result) {
+    if ($result->data == 'approve') {
+      $count++;
+    }
+  }
+  if ($count > 3) {
+    return TRUE;
+  }
+  return FALSE;
+}

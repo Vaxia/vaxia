@@ -470,10 +470,9 @@ function proposal_form_alter(&$form, &$form_state, $form_id) {
 }
 
 /**
- * Rules helper functions.
- * Provided to minimize SQL in Rules.
+ * Helper for rules. Check if user was a voter before the proposal was made.
  */
-function proposal_posted_in_last_timeframe($uid) {
+function proposal_check_posted_in_last_timeframe($uid) {
   $count = 0;
   $time = variable_get('proposal_voter_timeframe', '6 months') . ' ago';
 
