@@ -1269,6 +1269,10 @@ function _vaxia_add_xp($nid, $xp, $type) {
         _character_sheet_update_xp($nid, $kxp_ratio * -1, 'kxp');
         _character_sheet_update_xp($nid, 1, 'rxp');
         _character_sheet_update_xp($nid, 1, 'xp');
+        if (function_exists('rules_invoke_event')) {
+          $player = user_load($node->uid);
+          rules_invoke_event('vaxia_gain_xp', $player, $node, 1, 'xp');
+        }
         // If we have banked xp, remove one from bxp and add spendable xp.
         $current_bxp = _character_sheet_get_xp($nid, 'bxp');
         if ($current_bxp > 0 ) {
