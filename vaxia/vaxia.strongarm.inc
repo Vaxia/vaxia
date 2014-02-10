@@ -666,7 +666,7 @@ function vaxia_strongarm() {
         ),
         'workflow' => array(
           'default' => array(
-            'weight' => '14',
+            'weight' => '15',
             'visible' => FALSE,
           ),
           'artwork' => array(

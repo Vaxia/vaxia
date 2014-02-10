@@ -12,7 +12,6 @@ function proposal_default_rules_configuration() {
   $items['rules_close_open_proposals'] = entity_import('rules_config', '{ "rules_close_open_proposals" : {
       "LABEL" : "Close Open Proposals",
       "PLUGIN" : "reaction rule",
-      "ACTIVE" : false,
       "OWNER" : "rules",
       "TAGS" : [ "Vaxia" ],
       "REQUIRES" : [ "rules", "views_bulk_operations", "webform_rules", "user_stats" ],

@@ -173,6 +173,33 @@ function vaxia_field_group_info() {
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
+  $field_group->identifier = 'group_creation_history|node|items|default';
+  $field_group->group_name = 'group_creation_history';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'items';
+  $field_group->mode = 'default';
+  $field_group->parent_name = 'group_notes';
+  $field_group->data = array(
+    'label' => 'Creation History',
+    'weight' => '52',
+    'children' => array(
+      0 => 'field_creation_history',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'label' => 'Creation History',
+      'instance_settings' => array(
+        'classes' => 'group-creation-history field-group-fieldset',
+        'description' => '',
+      ),
+      'formatter' => 'collapsed',
+    ),
+  );
+  $export['group_creation_history|node|items|default'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
   $field_group->identifier = 'group_details|node|artwork|form';
   $field_group->group_name = 'group_details';
   $field_group->entity_type = 'node';
@@ -600,6 +627,7 @@ function vaxia_field_group_info() {
       0 => 'field_player_notes',
       1 => 'field_sh_notes',
       2 => 'field_sh_private_notes',
+      3 => 'group_creation_history',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -629,6 +657,7 @@ function vaxia_field_group_info() {
       0 => 'field_player_notes',
       1 => 'field_sh_notes',
       2 => 'field_sh_private_notes',
+      3 => 'field_creation_history',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(

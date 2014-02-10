@@ -2922,6 +2922,13 @@ return \'Characters\';';
   $handler->display->display_options['relationships']['field_skill_value']['table'] = 'field_data_field_skill';
   $handler->display->display_options['relationships']['field_skill_value']['field'] = 'field_skill_value';
   $handler->display->display_options['relationships']['field_skill_value']['delta'] = '-1';
+  /* Field: Content: Nid */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'node';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['label'] = '';
+  $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -3260,7 +3267,6 @@ return \'Characters\';';
   $handler->display->display_options['filter_groups']['groups'] = array(
     1 => 'AND',
     2 => 'OR',
-    3 => 'OR',
   );
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
@@ -3302,13 +3308,6 @@ return \'Characters\';';
     4 => 0,
     11 => 0,
   );
-  /* Filter criterion: Field collection item: Value (field_skill_value) */
-  $handler->display->display_options['filters']['field_skill_value_value_1']['id'] = 'field_skill_value_value_1';
-  $handler->display->display_options['filters']['field_skill_value_value_1']['table'] = 'field_data_field_skill_value';
-  $handler->display->display_options['filters']['field_skill_value_value_1']['field'] = 'field_skill_value_value';
-  $handler->display->display_options['filters']['field_skill_value_value_1']['relationship'] = 'field_skill_value';
-  $handler->display->display_options['filters']['field_skill_value_value_1']['operator'] = 'not empty';
-  $handler->display->display_options['filters']['field_skill_value_value_1']['group'] = 1;
   /* Filter criterion: User: Active */
   $handler->display->display_options['filters']['status_1']['id'] = 'status_1';
   $handler->display->display_options['filters']['status_1']['table'] = 'users';
@@ -3331,112 +3330,6 @@ return \'Characters\';';
   );
   $handler->display->display_options['filters']['rid']['group'] = 1;
   $handler->display->display_options['filters']['rid']['reduce_duplicates'] = TRUE;
-  /* Filter criterion: Field collection item: Value (field_skill_value) */
-  $handler->display->display_options['filters']['field_skill_value_value']['id'] = 'field_skill_value_value';
-  $handler->display->display_options['filters']['field_skill_value_value']['table'] = 'field_data_field_skill_value';
-  $handler->display->display_options['filters']['field_skill_value_value']['field'] = 'field_skill_value_value';
-  $handler->display->display_options['filters']['field_skill_value_value']['relationship'] = 'field_skill_value';
-  $handler->display->display_options['filters']['field_skill_value_value']['operator'] = '>';
-  $handler->display->display_options['filters']['field_skill_value_value']['value']['value'] = '70';
-  $handler->display->display_options['filters']['field_skill_value_value']['group'] = 2;
-  /* Filter criterion: Content: Agility (field_agility) */
-  $handler->display->display_options['filters']['field_agility_value']['id'] = 'field_agility_value';
-  $handler->display->display_options['filters']['field_agility_value']['table'] = 'field_data_field_agility';
-  $handler->display->display_options['filters']['field_agility_value']['field'] = 'field_agility_value';
-  $handler->display->display_options['filters']['field_agility_value']['operator'] = '>';
-  $handler->display->display_options['filters']['field_agility_value']['value']['value'] = '70';
-  $handler->display->display_options['filters']['field_agility_value']['group'] = 2;
-  /* Filter criterion: Content: Appearance (field_appearance) */
-  $handler->display->display_options['filters']['field_appearance_value']['id'] = 'field_appearance_value';
-  $handler->display->display_options['filters']['field_appearance_value']['table'] = 'field_data_field_appearance';
-  $handler->display->display_options['filters']['field_appearance_value']['field'] = 'field_appearance_value';
-  $handler->display->display_options['filters']['field_appearance_value']['operator'] = '>';
-  $handler->display->display_options['filters']['field_appearance_value']['value']['value'] = '70';
-  $handler->display->display_options['filters']['field_appearance_value']['group'] = 2;
-  /* Filter criterion: Content: Awareness (field_awareness) */
-  $handler->display->display_options['filters']['field_awareness_value']['id'] = 'field_awareness_value';
-  $handler->display->display_options['filters']['field_awareness_value']['table'] = 'field_data_field_awareness';
-  $handler->display->display_options['filters']['field_awareness_value']['field'] = 'field_awareness_value';
-  $handler->display->display_options['filters']['field_awareness_value']['operator'] = '>';
-  $handler->display->display_options['filters']['field_awareness_value']['value']['value'] = '70';
-  $handler->display->display_options['filters']['field_awareness_value']['group'] = 2;
-  /* Filter criterion: Content: Charisma (field_charisma) */
-  $handler->display->display_options['filters']['field_charisma_value']['id'] = 'field_charisma_value';
-  $handler->display->display_options['filters']['field_charisma_value']['table'] = 'field_data_field_charisma';
-  $handler->display->display_options['filters']['field_charisma_value']['field'] = 'field_charisma_value';
-  $handler->display->display_options['filters']['field_charisma_value']['operator'] = '>';
-  $handler->display->display_options['filters']['field_charisma_value']['value']['value'] = '70';
-  $handler->display->display_options['filters']['field_charisma_value']['group'] = 2;
-  /* Filter criterion: Content: Constitution (field_constitution) */
-  $handler->display->display_options['filters']['field_constitution_value']['id'] = 'field_constitution_value';
-  $handler->display->display_options['filters']['field_constitution_value']['table'] = 'field_data_field_constitution';
-  $handler->display->display_options['filters']['field_constitution_value']['field'] = 'field_constitution_value';
-  $handler->display->display_options['filters']['field_constitution_value']['operator'] = '>';
-  $handler->display->display_options['filters']['field_constitution_value']['value']['value'] = '70';
-  $handler->display->display_options['filters']['field_constitution_value']['group'] = 2;
-  /* Filter criterion: Content: Dexterity (field_dexterity) */
-  $handler->display->display_options['filters']['field_dexterity_value']['id'] = 'field_dexterity_value';
-  $handler->display->display_options['filters']['field_dexterity_value']['table'] = 'field_data_field_dexterity';
-  $handler->display->display_options['filters']['field_dexterity_value']['field'] = 'field_dexterity_value';
-  $handler->display->display_options['filters']['field_dexterity_value']['operator'] = '>';
-  $handler->display->display_options['filters']['field_dexterity_value']['value']['value'] = '70';
-  $handler->display->display_options['filters']['field_dexterity_value']['group'] = 2;
-  /* Filter criterion: Content: Endurance (field_endurance) */
-  $handler->display->display_options['filters']['field_endurance_value']['id'] = 'field_endurance_value';
-  $handler->display->display_options['filters']['field_endurance_value']['table'] = 'field_data_field_endurance';
-  $handler->display->display_options['filters']['field_endurance_value']['field'] = 'field_endurance_value';
-  $handler->display->display_options['filters']['field_endurance_value']['operator'] = '>';
-  $handler->display->display_options['filters']['field_endurance_value']['value']['value'] = '70';
-  $handler->display->display_options['filters']['field_endurance_value']['group'] = 2;
-  /* Filter criterion: Content: Health (field_health) */
-  $handler->display->display_options['filters']['field_health_value']['id'] = 'field_health_value';
-  $handler->display->display_options['filters']['field_health_value']['table'] = 'field_data_field_health';
-  $handler->display->display_options['filters']['field_health_value']['field'] = 'field_health_value';
-  $handler->display->display_options['filters']['field_health_value']['operator'] = '>';
-  $handler->display->display_options['filters']['field_health_value']['value']['value'] = '70';
-  $handler->display->display_options['filters']['field_health_value']['group'] = 2;
-  /* Filter criterion: Content: Intelligence (field_intelligence) */
-  $handler->display->display_options['filters']['field_intelligence_value']['id'] = 'field_intelligence_value';
-  $handler->display->display_options['filters']['field_intelligence_value']['table'] = 'field_data_field_intelligence';
-  $handler->display->display_options['filters']['field_intelligence_value']['field'] = 'field_intelligence_value';
-  $handler->display->display_options['filters']['field_intelligence_value']['operator'] = '>';
-  $handler->display->display_options['filters']['field_intelligence_value']['value']['value'] = '70';
-  $handler->display->display_options['filters']['field_intelligence_value']['group'] = 2;
-  /* Filter criterion: Content: Life (field_life) */
-  $handler->display->display_options['filters']['field_life_value']['id'] = 'field_life_value';
-  $handler->display->display_options['filters']['field_life_value']['table'] = 'field_data_field_life';
-  $handler->display->display_options['filters']['field_life_value']['field'] = 'field_life_value';
-  $handler->display->display_options['filters']['field_life_value']['operator'] = '>';
-  $handler->display->display_options['filters']['field_life_value']['value']['value'] = '70';
-  $handler->display->display_options['filters']['field_life_value']['group'] = 2;
-  /* Filter criterion: Content: Presence (field_presence) */
-  $handler->display->display_options['filters']['field_presence_value']['id'] = 'field_presence_value';
-  $handler->display->display_options['filters']['field_presence_value']['table'] = 'field_data_field_presence';
-  $handler->display->display_options['filters']['field_presence_value']['field'] = 'field_presence_value';
-  $handler->display->display_options['filters']['field_presence_value']['operator'] = '>';
-  $handler->display->display_options['filters']['field_presence_value']['value']['value'] = '70';
-  $handler->display->display_options['filters']['field_presence_value']['group'] = 2;
-  /* Filter criterion: Content: Reflexes (field_reflexes) */
-  $handler->display->display_options['filters']['field_reflexes_value']['id'] = 'field_reflexes_value';
-  $handler->display->display_options['filters']['field_reflexes_value']['table'] = 'field_data_field_reflexes';
-  $handler->display->display_options['filters']['field_reflexes_value']['field'] = 'field_reflexes_value';
-  $handler->display->display_options['filters']['field_reflexes_value']['operator'] = '>';
-  $handler->display->display_options['filters']['field_reflexes_value']['value']['value'] = '70';
-  $handler->display->display_options['filters']['field_reflexes_value']['group'] = 2;
-  /* Filter criterion: Content: Spirituality (field_spirituality) */
-  $handler->display->display_options['filters']['field_spirituality_value']['id'] = 'field_spirituality_value';
-  $handler->display->display_options['filters']['field_spirituality_value']['table'] = 'field_data_field_spirituality';
-  $handler->display->display_options['filters']['field_spirituality_value']['field'] = 'field_spirituality_value';
-  $handler->display->display_options['filters']['field_spirituality_value']['operator'] = '>';
-  $handler->display->display_options['filters']['field_spirituality_value']['value']['value'] = '70';
-  $handler->display->display_options['filters']['field_spirituality_value']['group'] = 2;
-  /* Filter criterion: Content: Strength (field_strength) */
-  $handler->display->display_options['filters']['field_strength_value']['id'] = 'field_strength_value';
-  $handler->display->display_options['filters']['field_strength_value']['table'] = 'field_data_field_strength';
-  $handler->display->display_options['filters']['field_strength_value']['field'] = 'field_strength_value';
-  $handler->display->display_options['filters']['field_strength_value']['operator'] = '>';
-  $handler->display->display_options['filters']['field_strength_value']['value']['value'] = '70';
-  $handler->display->display_options['filters']['field_strength_value']['group'] = 2;
   /* Filter criterion: Content: Open NPC (field_is_open_npc) */
   $handler->display->display_options['filters']['field_is_open_npc_value']['id'] = 'field_is_open_npc_value';
   $handler->display->display_options['filters']['field_is_open_npc_value']['table'] = 'field_data_field_is_open_npc';
@@ -3444,7 +3337,7 @@ return \'Characters\';';
   $handler->display->display_options['filters']['field_is_open_npc_value']['value'] = array(
     1 => '1',
   );
-  $handler->display->display_options['filters']['field_is_open_npc_value']['group'] = 3;
+  $handler->display->display_options['filters']['field_is_open_npc_value']['group'] = 2;
   /* Filter criterion: Content: NPC (field_is_npc) */
   $handler->display->display_options['filters']['field_is_npc_value']['id'] = 'field_is_npc_value';
   $handler->display->display_options['filters']['field_is_npc_value']['table'] = 'field_data_field_is_npc';
@@ -3452,7 +3345,15 @@ return \'Characters\';';
   $handler->display->display_options['filters']['field_is_npc_value']['value'] = array(
     1 => '1',
   );
-  $handler->display->display_options['filters']['field_is_npc_value']['group'] = 3;
+  $handler->display->display_options['filters']['field_is_npc_value']['group'] = 2;
+  /* Filter criterion: Global: PHP */
+  $handler->display->display_options['filters']['php']['id'] = 'php';
+  $handler->display->display_options['filters']['php']['table'] = 'views';
+  $handler->display->display_options['filters']['php']['field'] = 'php';
+  $handler->display->display_options['filters']['php']['group'] = 1;
+  $handler->display->display_options['filters']['php']['use_php_setup'] = 0;
+  $handler->display->display_options['filters']['php']['php_filter'] = '// Return the negative, cause we want the ones that need oversight to show.
+return !npcs_check_needs_oversight(node_load($row->nid));';
   $handler->display->display_options['path'] = 'oversight/NPCs';
   $handler->display->display_options['menu']['type'] = 'default tab';
   $handler->display->display_options['menu']['title'] = 'Oversight NPCs';
@@ -3469,6 +3370,8 @@ return \'Characters\';';
 
   /* Display: Oversight Items */
   $handler = $view->new_display('page', 'Oversight Items', 'oversight_items');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Oversight Items';
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
@@ -3552,6 +3455,13 @@ return \'Characters\';';
   $handler->display->display_options['relationships']['field_character_owner_nid']['field'] = 'field_character_owner_nid';
   $handler->display->display_options['relationships']['field_character_owner_nid']['delta'] = '-1';
   $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Nid */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'node';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['label'] = '';
+  $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -3600,10 +3510,6 @@ return \'Characters\';';
   $handler->display->display_options['sorts']['title']['table'] = 'node';
   $handler->display->display_options['sorts']['title']['field'] = 'title';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
-  $handler->display->display_options['filter_groups']['groups'] = array(
-    1 => 'AND',
-    2 => 'OR',
-  );
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
@@ -3675,104 +3581,12 @@ return \'Characters\';';
     4 => 0,
     11 => 0,
   );
-  /* Filter criterion: Content: Skill (field_item_skill) */
-  $handler->display->display_options['filters']['field_item_skill_value']['id'] = 'field_item_skill_value';
-  $handler->display->display_options['filters']['field_item_skill_value']['table'] = 'field_data_field_item_skill';
-  $handler->display->display_options['filters']['field_item_skill_value']['field'] = 'field_item_skill_value';
-  $handler->display->display_options['filters']['field_item_skill_value']['operator'] = '>';
-  $handler->display->display_options['filters']['field_item_skill_value']['value']['value'] = '7';
-  $handler->display->display_options['filters']['field_item_skill_value']['group'] = 2;
-  /* Filter criterion: Content: Agility (field_item_agility) */
-  $handler->display->display_options['filters']['field_item_agility_value']['id'] = 'field_item_agility_value';
-  $handler->display->display_options['filters']['field_item_agility_value']['table'] = 'field_data_field_item_agility';
-  $handler->display->display_options['filters']['field_item_agility_value']['field'] = 'field_item_agility_value';
-  $handler->display->display_options['filters']['field_item_agility_value']['operator'] = '>';
-  $handler->display->display_options['filters']['field_item_agility_value']['value']['value'] = '7';
-  $handler->display->display_options['filters']['field_item_agility_value']['group'] = 2;
-  /* Filter criterion: Content: Appearance (field_item_appearance) */
-  $handler->display->display_options['filters']['field_item_appearance_value']['id'] = 'field_item_appearance_value';
-  $handler->display->display_options['filters']['field_item_appearance_value']['table'] = 'field_data_field_item_appearance';
-  $handler->display->display_options['filters']['field_item_appearance_value']['field'] = 'field_item_appearance_value';
-  $handler->display->display_options['filters']['field_item_appearance_value']['operator'] = '>';
-  $handler->display->display_options['filters']['field_item_appearance_value']['value']['value'] = '7';
-  $handler->display->display_options['filters']['field_item_appearance_value']['group'] = 2;
-  /* Filter criterion: Content: Awareness (field_item_awareness) */
-  $handler->display->display_options['filters']['field_item_awareness_value']['id'] = 'field_item_awareness_value';
-  $handler->display->display_options['filters']['field_item_awareness_value']['table'] = 'field_data_field_item_awareness';
-  $handler->display->display_options['filters']['field_item_awareness_value']['field'] = 'field_item_awareness_value';
-  $handler->display->display_options['filters']['field_item_awareness_value']['operator'] = '>';
-  $handler->display->display_options['filters']['field_item_awareness_value']['value']['value'] = '7';
-  $handler->display->display_options['filters']['field_item_awareness_value']['group'] = 2;
-  /* Filter criterion: Content: Charisma (field_item_charisma) */
-  $handler->display->display_options['filters']['field_item_charisma_value']['id'] = 'field_item_charisma_value';
-  $handler->display->display_options['filters']['field_item_charisma_value']['table'] = 'field_data_field_item_charisma';
-  $handler->display->display_options['filters']['field_item_charisma_value']['field'] = 'field_item_charisma_value';
-  $handler->display->display_options['filters']['field_item_charisma_value']['operator'] = '>';
-  $handler->display->display_options['filters']['field_item_charisma_value']['value']['value'] = '7';
-  $handler->display->display_options['filters']['field_item_charisma_value']['group'] = 2;
-  /* Filter criterion: Content: Constitution (field_item_constitution) */
-  $handler->display->display_options['filters']['field_item_constitution_value']['id'] = 'field_item_constitution_value';
-  $handler->display->display_options['filters']['field_item_constitution_value']['table'] = 'field_data_field_item_constitution';
-  $handler->display->display_options['filters']['field_item_constitution_value']['field'] = 'field_item_constitution_value';
-  $handler->display->display_options['filters']['field_item_constitution_value']['operator'] = '>';
-  $handler->display->display_options['filters']['field_item_constitution_value']['value']['value'] = '7';
-  $handler->display->display_options['filters']['field_item_constitution_value']['group'] = 2;
-  /* Filter criterion: Content: Dexterity (field_item_dexterity) */
-  $handler->display->display_options['filters']['field_item_dexterity_value']['id'] = 'field_item_dexterity_value';
-  $handler->display->display_options['filters']['field_item_dexterity_value']['table'] = 'field_data_field_item_dexterity';
-  $handler->display->display_options['filters']['field_item_dexterity_value']['field'] = 'field_item_dexterity_value';
-  $handler->display->display_options['filters']['field_item_dexterity_value']['operator'] = '>';
-  $handler->display->display_options['filters']['field_item_dexterity_value']['value']['value'] = '7';
-  $handler->display->display_options['filters']['field_item_dexterity_value']['group'] = 2;
-  /* Filter criterion: Content: Endurance (field_item_endurance) */
-  $handler->display->display_options['filters']['field_item_endurance_value']['id'] = 'field_item_endurance_value';
-  $handler->display->display_options['filters']['field_item_endurance_value']['table'] = 'field_data_field_item_endurance';
-  $handler->display->display_options['filters']['field_item_endurance_value']['field'] = 'field_item_endurance_value';
-  $handler->display->display_options['filters']['field_item_endurance_value']['operator'] = '>';
-  $handler->display->display_options['filters']['field_item_endurance_value']['value']['value'] = '7';
-  $handler->display->display_options['filters']['field_item_endurance_value']['group'] = 2;
-  /* Filter criterion: Content: Health (field_item_health) */
-  $handler->display->display_options['filters']['field_item_health_value']['id'] = 'field_item_health_value';
-  $handler->display->display_options['filters']['field_item_health_value']['table'] = 'field_data_field_item_health';
-  $handler->display->display_options['filters']['field_item_health_value']['field'] = 'field_item_health_value';
-  $handler->display->display_options['filters']['field_item_health_value']['operator'] = '>';
-  $handler->display->display_options['filters']['field_item_health_value']['value']['value'] = '7';
-  $handler->display->display_options['filters']['field_item_health_value']['group'] = 2;
-  /* Filter criterion: Content: Intelligence (field_item_intelligence) */
-  $handler->display->display_options['filters']['field_item_intelligence_value']['id'] = 'field_item_intelligence_value';
-  $handler->display->display_options['filters']['field_item_intelligence_value']['table'] = 'field_data_field_item_intelligence';
-  $handler->display->display_options['filters']['field_item_intelligence_value']['field'] = 'field_item_intelligence_value';
-  $handler->display->display_options['filters']['field_item_intelligence_value']['operator'] = '>';
-  $handler->display->display_options['filters']['field_item_intelligence_value']['value']['value'] = '7';
-  $handler->display->display_options['filters']['field_item_intelligence_value']['group'] = 2;
-  /* Filter criterion: Content: Life (field_item_life) */
-  $handler->display->display_options['filters']['field_item_life_value']['id'] = 'field_item_life_value';
-  $handler->display->display_options['filters']['field_item_life_value']['table'] = 'field_data_field_item_life';
-  $handler->display->display_options['filters']['field_item_life_value']['field'] = 'field_item_life_value';
-  $handler->display->display_options['filters']['field_item_life_value']['operator'] = '>';
-  $handler->display->display_options['filters']['field_item_life_value']['value']['value'] = '7';
-  $handler->display->display_options['filters']['field_item_life_value']['group'] = 2;
-  /* Filter criterion: Content: Presence (field_item_presence) */
-  $handler->display->display_options['filters']['field_item_presence_value']['id'] = 'field_item_presence_value';
-  $handler->display->display_options['filters']['field_item_presence_value']['table'] = 'field_data_field_item_presence';
-  $handler->display->display_options['filters']['field_item_presence_value']['field'] = 'field_item_presence_value';
-  $handler->display->display_options['filters']['field_item_presence_value']['operator'] = '>';
-  $handler->display->display_options['filters']['field_item_presence_value']['value']['value'] = '7';
-  $handler->display->display_options['filters']['field_item_presence_value']['group'] = 2;
-  /* Filter criterion: Content: Reflexes (field_item_reflexes) */
-  $handler->display->display_options['filters']['field_item_reflexes_value']['id'] = 'field_item_reflexes_value';
-  $handler->display->display_options['filters']['field_item_reflexes_value']['table'] = 'field_data_field_item_reflexes';
-  $handler->display->display_options['filters']['field_item_reflexes_value']['field'] = 'field_item_reflexes_value';
-  $handler->display->display_options['filters']['field_item_reflexes_value']['operator'] = '>';
-  $handler->display->display_options['filters']['field_item_reflexes_value']['value']['value'] = '7';
-  $handler->display->display_options['filters']['field_item_reflexes_value']['group'] = 2;
-  /* Filter criterion: Content: Spirituality (field_item_spirituality) */
-  $handler->display->display_options['filters']['field_item_spirituality_value']['id'] = 'field_item_spirituality_value';
-  $handler->display->display_options['filters']['field_item_spirituality_value']['table'] = 'field_data_field_item_spirituality';
-  $handler->display->display_options['filters']['field_item_spirituality_value']['field'] = 'field_item_spirituality_value';
-  $handler->display->display_options['filters']['field_item_spirituality_value']['operator'] = '>';
-  $handler->display->display_options['filters']['field_item_spirituality_value']['value']['value'] = '7';
-  $handler->display->display_options['filters']['field_item_spirituality_value']['group'] = 2;
+  /* Filter criterion: Global: PHP */
+  $handler->display->display_options['filters']['php']['id'] = 'php';
+  $handler->display->display_options['filters']['php']['table'] = 'views';
+  $handler->display->display_options['filters']['php']['field'] = 'php';
+  $handler->display->display_options['filters']['php']['use_php_setup'] = 0;
+  $handler->display->display_options['filters']['php']['php_filter'] = 'return !items_check_needs_oversight(node_load($row->nid));';
   $handler->display->display_options['path'] = 'oversight/items';
   $handler->display->display_options['menu']['type'] = 'tab';
   $handler->display->display_options['menu']['title'] = 'Oversight Items';

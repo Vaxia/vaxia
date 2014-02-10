@@ -56,7 +56,7 @@ function vaxia_sh_test_default_rules_configuration() {
             "roles" : { "value" : { "12" : "12", "8" : "8", "17" : "17" } }
           }
         },
-        { "php_eval" : { "code" : "$results = db_query(\\u0022SELECT wd.data FROM {webform_submitted_data} wd \\u0022 .\\r\\n  \\u0022WHERE wd.nid = :nid \\u0022 .\\r\\n  \\u0022AND wd.cid = 1\\u0022, \\/\\/ There is only the one form element.\\r\\n  array(\\r\\n    \\u0027:nid\\u0027 =\\u003E $node-\\u003Enid,\\r\\n  ));\\r\\n$count = 0;\\r\\nforeach ($results as $result) {\\r\\n  if ($result-\\u003Edata == \\u0027approve\\u0027) {\\r\\n    $count++;\\r\\n  }\\r\\n}\\r\\nif ($count \\u003E 3) {\\r\\n  return TRUE;\\r\\n}\\r\\nreturn FALSE;" } }
+        { "php_eval" : { "code" : "return sh_test_check_ash_3_approvals($node-\\u003Enid);" } }
       ],
       "DO" : [
         { "user_remove_role" : { "account" : [ "node:author" ], "roles" : { "value" : { "17" : "17" } } } },
@@ -311,7 +311,7 @@ function vaxia_sh_test_default_rules_configuration() {
             "operation" : "OR"
           }
         },
-        { "php_eval" : { "code" : "$count = 0;\\r\\n$nodes = node_load_multiple(array(), array(\\u0027type\\u0027 =\\u003E \\u0027session_report\\u0027, \\u0027uid\\u0027 =\\u003E $user-\\u003Euid ));\\r\\nforeach ($nodes as $node) {\\r\\n  if ($node-\\u003Estatus == 1) {\\r\\n    $count++;\\r\\n  }\\r\\n}\\r\\nif ($count \\u003E 2) {\\r\\n  return TRUE;\\r\\n}\\r\\nreturn FALSE;" } }
+        { "php_eval" : { "code" : "return sh_test_check_sessions_ran($user-\\u003Euid, 3);" } }
       ],
       "DO" : [
         { "user_remove_role" : { "account" : [ "user" ], "roles" : { "value" : { "13" : "13" } } } },
@@ -366,8 +366,7 @@ function vaxia_sh_test_default_rules_configuration() {
             "operation" : "OR"
           }
         },
-        { "php_eval" : { "code" : "$count = 0;\\r\\n$nodes = node_load_multiple(array(), array(\\u0027type\\u0027 =\\u003E \\u0027session_report\\u0027, \\u0027uid\\u0027 =\\u003E $user-\\u003Euid ));\\r\\nforeach ($nodes as $node) {\\r\\n  if ($node-\\u003Estatus == 1) {\\r\\n    $count++;\\r\\n  }\\r\\n}\\r\\nif ($count \\u003E 7) {\\r\\n  return TRUE;\\r\\n}\\r\\nreturn FALSE;" } },
-        { "php_eval" : { "code" : "$result = db_query(\\u0027SELECT COUNT(ur.uid) FROM {users_roles} ur \\u0027 .\\r\\n  \\u0027LEFT JOIN {role} r ON ur.rid = r.rid \\u0027 .\\r\\n  \\u0027WHERE r.name = :name\\u0027, array(\\u0027:name\\u0027 =\\u003E \\u0027storyteller\\u0027) );\\r\\n$count = 0;\\r\\nforeach ($result as $value) {\\r\\n  $count = $value;\\r\\n}\\r\\nif ($count \\u003C 4) {\\r\\n  return FALSE;\\r\\n}\\r\\nreturn TRUE;" } }
+        { "php_eval" : { "code" : "return sh_test_check_sessions_ran($user-\\u003Euid, 7);" } }
       ],
       "DO" : [
         { "user_remove_role" : { "account" : [ "user" ], "roles" : { "value" : { "10" : "10" } } } },
@@ -383,7 +382,7 @@ function vaxia_sh_test_default_rules_configuration() {
           }
         },
         { "entity_save" : { "data" : [ "entity-created" ], "immediate" : 1 } },
-        { "php_eval" : { "code" : "\\/\\/ Find the result ID for this test taken.\\r\\n$uid = $user-\\u003Euid;\\r\\n$nid = $node-\\u003Enid;\\r\\n$vid = $node-\\u003Evid;\\r\\n$results = db_query(\\u0022SELECT r.result_id FROM {quiz_node_results} r \\u0022 .\\r\\n  \\u0022WHERE r.uid = :uid \\u0022 .\\r\\n  \\u0022AND r.nid = :nid \\u0022 .\\r\\n  \\u0022AND r.vid = :vid \\u0022 .\\r\\n  \\u0022ORDER BY r.time_end DESC LIMIT 0,1 \\u0022,\\r\\n  array(\\r\\n    \\u0027:uid\\u0027 =\\u003E $uid,\\r\\n    \\u0027:nid\\u0027 =\\u003E $nid,\\r\\n    \\u0027:vid\\u0027 =\\u003E $vid,\\r\\n  ));\\r\\n$rid = \\u0027\\u0027;\\r\\nforeach ($results as $result) {\\r\\n  $rid = $result-\\u003Eresult_id;\\r\\n}\\r\\nif (empty($rid)) {\\r\\n  drupal_set_message(t(\\u0027An error was encountered, no result ID able to be found.\\u0027));\\r\\n  return;\\r\\n}\\r\\n\\r\\n\\/\\/ Now get the printed out set of answers.\\r\\n$questions = _quiz_get_answers($node, $rid);\\r\\nksort($questions);\\r\\n$output = \\u0027\\u0027;\\r\\nforeach ($questions as $question_nid =\\u003E $question) {\\r\\n  $q_title = $question-\\u003Etitle;\\r\\n  $full_question = node_load($question_nid);\\r\\n  $q = $full_question-\\u003Ebody[$full_question-\\u003Elanguage][0][\\u0027value\\u0027];\\r\\n  $a = $question-\\u003Eanswers[0][\\u0027answer\\u0027];\\r\\n  $output .= \\u0027\\u003Ch3\\u003E\\u003Cb\\u003E\\u0027 . $q_title . \\u0027\\u003C\\/b\\u003E\\u003C\\/h3\\u003E\\u003Cp\\u003E\\u003Cb\\u003E\\u0027. $q . \\u0027\\u003C\\/b\\u003E\\u003C\\/p\\u003E\\u003Cp\\u003E\\u0027 . $a . \\u0027\\u003C\\/p\\u003E\\u003Cbr\\/\\u003E\\u0027;\\r\\n}\\r\\nif (empty($output)) {\\r\\n  drupal_set_message(t(\\u0027An error was encountered, no output able to be created.\\u0027));\\r\\n  return;\\r\\n}\\r\\n\\r\\n\\/\\/ Set the webform body\\r\\n$entity_created-\\u003Ebody[$entity_created-\\u003Elanguage][0][\\u0027value\\u0027] = $output;\\r\\n$entity_created-\\u003Ewebform[\\u0027confirmation\\u0027] = t(\\u0027Thank you!\\u0027);\\r\\n$entity_created-\\u003Ewebform[\\u0027confirmation_format\\u0027] = \\u0027plain_text\\u0027;\\r\\n$entity_created-\\u003Ewebform[\\u0027submit_limit\\u0027] = 1;\\r\\n\\r\\n\\/\\/ Save the node\\r\\nnode_save($entity_created);\\r\\n\\r\\n\\/\\/ Save roles, 9 = Storyteller\\r\\n$record = db_query(\\u0027DELETE FROM {webform_roles} WHERE nid = :nid\\u0027, array(\\u0027:nid\\u0027 =\\u003E $entity_created-\\u003Enid));\\r\\ndb_insert(\\u0027webform_roles\\u0027)-\\u003Efields(array(\\u0027nid\\u0027 =\\u003E $entity_created-\\u003Enid, \\u0027rid\\u0027 =\\u003E 9))-\\u003Eexecute();\\r\\n\\r\\n\\/\\/ Create the standard webform field for approval.\\r\\n$component = array();\\r\\n$component[\\u0027nid\\u0027] = $entity_created-\\u003Enid;\\r\\n$component[\\u0027pid\\u0027] = 0;\\r\\n$component[\\u0027form_key\\u0027] = \\u0027approval\\u0027;\\r\\n$component[\\u0027name\\u0027] = t(\\u0027Approve\\u0027);\\r\\n$component[\\u0027type\\u0027] = \\u0027select\\u0027;\\r\\n$component[\\u0027mandatory\\u0027] = 1;\\r\\n$component[\\u0027extra\\u0027] = array(\\r\\n    \\u0027description\\u0027 =\\u003E \\u0027\\u0027,\\r\\n    \\u0027items\\u0027 =\\u003E \\u0027approve|\\u0027 .  t(\\u0027Yes. I approve this SH candidate to become a full SH.\\u0027),\\r\\n    \\u0027multiple\\u0027 =\\u003E \\u00271\\u0027,\\r\\n    \\u0027aslist\\u0027 =\\u003E \\u00270\\u0027,\\r\\n  );\\r\\n$component[\\u0027weight\\u0027] = 0;\\r\\n\\/\\/ Include the webform module that allows components to be created.\\r\\nmodule_load_include(\\u0027inc\\u0027, \\u0027webform\\u0027, \\u0027includes\\/webform.components\\u0027);\\r\\nwebform_component_insert($component);" } },
+        { "php_eval" : { "code" : "return sh_test_setup_approval_form($user, $node, $entity_created);" } },
         { "mail_to_users_of_role" : {
             "roles" : { "value" : { "9" : "9", "4" : "4", "3" : "3" } },
             "subject" : "[Vaxia] An ASH has passed ASH Test Three",
@@ -680,24 +679,16 @@ function vaxia_sh_test_default_rules_configuration() {
             "operation" : "OR"
           }
         },
-        { "php_eval" : { "code" : "$count = 0;\\r\\n$nodes = node_load_multiple(array(), array(\\u0027type\\u0027 =\\u003E \\u0027session_report\\u0027, \\u0027uid\\u0027 =\\u003E $user-\\u003Euid ));\\r\\nforeach ($nodes as $node) {\\r\\n  if ($node-\\u003Estatus == 1) {\\r\\n    $count++;\\r\\n  }\\r\\n}\\r\\nif ($count \\u003E 7) {\\r\\n  return TRUE;\\r\\n}\\r\\nreturn FALSE;" } },
-        { "NOT php_eval" : { "code" : "$result = db_query(\\u0027SELECT COUNT(ur.uid) FROM {users_roles} ur \\u0027 .\\r\\n  \\u0027LEFT JOIN {role} r ON ur\\/rid = r.rid \\u0027 .\\r\\n  \\u0027WHERE r.name = :name\\u0027, array(\\u0027:name\\u0027 =\\u003E \\u0027storyteller\\u0027) );\\r\\n$count = 0;\\r\\nforeach ($result as $value) {\\r\\n  $count = $value;\\r\\n}\\r\\nif ($count \\u003C 4) {\\r\\n  return FALSE;\\r\\n}\\r\\nreturn TRUE;" } }
+        { "php_eval" : { "code" : "return sh_test_check_sessions_ran($user-\\u003Euid, 7);" } },
+        { "NOT php_eval" : { "code" : "return sh_test_check_starvation_mode();" } }
       ],
       "DO" : [
-        { "user_remove_role" : { "account" : [ "user" ], "roles" : { "value" : { "10" : "10" } } } },
-        { "user_add_role" : { "account" : [ "user" ], "roles" : { "value" : { "9" : "9" } } } },
-        { "entity_create" : {
-            "USING" : {
-              "type" : "node",
-              "param_type" : "storyhost_application",
-              "param_title" : "Application: [user:name]",
-              "param_author" : [ "user" ]
-            },
-            "PROVIDE" : { "entity_created" : { "entity_created" : "Created application" } }
+        { "user_remove_role" : {
+            "account" : [ "user" ],
+            "roles" : { "value" : { "10" : "10", "17" : "17" } }
           }
         },
-        { "entity_save" : { "data" : [ "entity-created" ], "immediate" : 1 } },
-        { "php_eval" : { "code" : "\\/\\/ Find the result ID for this test taken.\\r\\n$uid = $user-\\u003Euid;\\r\\n$nid = $node-\\u003Enid;\\r\\n$vid = $node-\\u003Evid;\\r\\n$results = db_query(\\u0022SELECT r.result_id FROM {quiz_node_results} r \\u0022 .\\r\\n  \\u0022WHERE r.uid = :uid \\u0022 .\\r\\n  \\u0022AND r.nid = :nid \\u0022 .\\r\\n  \\u0022AND r.vid = :vid \\u0022 .\\r\\n  \\u0022ORDER BY r.time_end DESC LIMIT 0,1 \\u0022,\\r\\n  array(\\r\\n    \\u0027:uid\\u0027 =\\u003E $uid,\\r\\n    \\u0027:nid\\u0027 =\\u003E $nid,\\r\\n    \\u0027:vid\\u0027 =\\u003E $vid,\\r\\n  ));\\r\\n$rid = \\u0027\\u0027;\\r\\nforeach ($results as $result) {\\r\\n  $rid = $result-\\u003Eresult_id;\\r\\n}\\r\\nif (empty($rid)) {\\r\\n  drupal_set_message(t(\\u0027An error was encountered, no result ID able to be found.\\u0027));\\r\\n  return;\\r\\n}\\r\\n\\r\\n\\/\\/ Now get the printed out set of answers.\\r\\n$questions = _quiz_get_answers($node, $rid);\\r\\nksort($questions);\\r\\n$output = \\u0027\\u0027;\\r\\nforeach ($questions as $question_nid =\\u003E $question) {\\r\\n  $q_title = $question-\\u003Etitle;\\r\\n  $full_question = node_load($question_nid);\\r\\n  $q = $full_question-\\u003Ebody[$full_question-\\u003Elanguage][0][\\u0027value\\u0027];\\r\\n  $a = $question-\\u003Eanswers[0][\\u0027answer\\u0027];\\r\\n  $output .= \\u0027\\u003Ch3\\u003E\\u003Cb\\u003E\\u0027 . $q_title . \\u0027\\u003C\\/b\\u003E\\u003C\\/h3\\u003E\\u003Cp\\u003E\\u003Cb\\u003E\\u0027. $q . \\u0027\\u003C\\/b\\u003E\\u003C\\/p\\u003E\\u003Cp\\u003E\\u0027 . $a . \\u0027\\u003C\\/p\\u003E\\u003Cbr\\/\\u003E\\u0027;\\r\\n}\\r\\nif (empty($output)) {\\r\\n  drupal_set_message(t(\\u0027An error was encountered, no output able to be created.\\u0027));\\r\\n  return;\\r\\n}\\r\\n\\r\\n\\/\\/ Set the webform body\\r\\n$entity_created-\\u003Ebody[$entity_created-\\u003Elanguage][0][\\u0027value\\u0027] = $output;\\r\\n$entity_created-\\u003Ewebform = webform_node_defaults();\\r\\n$entity_created-\\u003Ewebform[\\u0027confirmation\\u0027] = t(\\u0027Thank you!\\u0027);\\r\\n$entity_created-\\u003Ewebform[\\u0027confirmation_format\\u0027] = \\u0027plain_text\\u0027;\\r\\n$entity_created-\\u003Ewebform[\\u0027submit_limit\\u0027] = 1;\\r\\n\\/\\/ Save roles, 9 = Storyteller\\r\\n$record = db_query(\\u0027DELETE FROM {webform_roles} WHERE nid = :nid\\u0027, array(\\u0027:nid\\u0027 =\\u003E $entity_created-\\u003Enid));\\r\\ndrupal_write_record(\\u0027webform_roles\\u0027, array(\\u0027nid\\u0027 =\\u003E $entity_created-\\u003Enid, \\u0027rid\\u0027 =\\u003E 9));\\r\\n\\/\\/ Save it.\\r\\nnode_save($entity_created);\\r\\n\\r\\n\\/\\/ Create the standard webform field for approval.\\r\\n$component = array();\\r\\n$component[\\u0027nid\\u0027] = $entity_created-\\u003Enid;\\r\\n$component[\\u0027pid\\u0027] = 0;\\r\\n$component[\\u0027form_key\\u0027] = \\u0027approval\\u0027;\\r\\n$component[\\u0027name\\u0027] = t(\\u0027Approve\\u0027);\\r\\n$component[\\u0027type\\u0027] = \\u0027select\\u0027;\\r\\n$component[\\u0027mandatory\\u0027] = 1;\\r\\n$component[\\u0027extra\\u0027] = array(\\r\\n    \\u0027description\\u0027 =\\u003E \\u0027\\u0027,\\r\\n    \\u0027items\\u0027 =\\u003E \\u0027approve|\\u0027 .  t(\\u0027Yes. I approve this SH candidate to become a full SH.\\u0027),\\r\\n    \\u0027multiple\\u0027 =\\u003E \\u00271\\u0027,\\r\\n    \\u0027aslist\\u0027 =\\u003E \\u00270\\u0027,\\r\\n  );\\r\\n$component[\\u0027weight\\u0027] = 0;\\r\\n\\/\\/ Include the webform module that allows components to be created.\\r\\nmodule_load_include(\\u0027inc\\u0027, \\u0027webform\\u0027, \\u0027includes\\/webform.components\\u0027);\\r\\nwebform_component_insert($component);" } },
+        { "user_add_role" : { "account" : [ "user" ], "roles" : { "value" : { "9" : "9" } } } },
         { "mail_to_users_of_role" : {
             "roles" : { "value" : { "9" : "9", "4" : "4", "3" : "3" } },
             "subject" : "[Vaxia] An ASH has been automatically advanced to SH",

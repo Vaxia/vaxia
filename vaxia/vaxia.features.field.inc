@@ -3457,9 +3457,43 @@ Posting does not have to occur all at once, so feel free to spread it out across
       ),
       'entity_type' => 'node',
       'field_name' => 'field_sex',
-      'label' => 'Sex',
+      'label' => 'Apparent Gender',
       'required' => 0,
       'settings' => array(
+        'better_formats' => array(
+          'allowed_formats' => array(
+            'filtered_html' => 'filtered_html',
+            'full_html' => 'full_html',
+            'php_code' => 'php_code',
+            'plain_text' => 'plain_text',
+            'whiteboard' => 'whiteboard',
+            'wiki' => 'wiki',
+          ),
+          'allowed_formats_toggle' => 0,
+          'default_order_toggle' => 0,
+          'default_order_wrapper' => array(
+            'formats' => array(
+              'filtered_html' => array(
+                'weight' => '0',
+              ),
+              'full_html' => array(
+                'weight' => '1',
+              ),
+              'php_code' => array(
+                'weight' => '11',
+              ),
+              'plain_text' => array(
+                'weight' => '10',
+              ),
+              'whiteboard' => array(
+                'weight' => '0',
+              ),
+              'wiki' => array(
+                'weight' => '0',
+              ),
+            ),
+          ),
+        ),
         'text_processing' => '0',
         'user_register_form' => FALSE,
       ),
@@ -4038,7 +4072,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '15',
+          'weight' => '16',
         ),
       ),
       'entity_type' => 'node',
@@ -4129,7 +4163,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'weight' => '9',
         ),
         'default' => array(
-          'label' => 'inline',
+          'label' => 'above',
           'module' => 'node_reference',
           'settings' => array(),
           'type' => 'node_reference_default',
@@ -4153,6 +4187,107 @@ Posting does not have to occur all at once, so feel free to spread it out across
         ),
         'type' => 'node_reference_autocomplete',
         'weight' => '1',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-items-field_creation_history'.
+  $fields['node-items-field_creation_history'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_creation_history',
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'text',
+      'settings' => array(),
+      'translatable' => '0',
+      'type' => 'text_long',
+    ),
+    'field_instance' => array(
+      'bundle' => 'items',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'A record of comment posts from when the item was created if comments were attached by item assistant on creation. The RP is recorded here to avoid dead links when the original comments are archived.',
+      'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'default' => array(
+          'label' => 'hidden',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '14',
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_creation_history',
+      'label' => 'Creation History',
+      'required' => 0,
+      'settings' => array(
+        'better_formats' => array(
+          'allowed_formats' => array(
+            'filtered_html' => 'filtered_html',
+            'full_html' => 'full_html',
+            'php_code' => 'php_code',
+            'plain_text' => 'plain_text',
+            'whiteboard' => 'whiteboard',
+            'wiki' => 'wiki',
+          ),
+          'allowed_formats_toggle' => 0,
+          'default_order_toggle' => 0,
+          'default_order_wrapper' => array(
+            'formats' => array(
+              'filtered_html' => array(
+                'weight' => '0',
+              ),
+              'full_html' => array(
+                'weight' => '1',
+              ),
+              'php_code' => array(
+                'weight' => '11',
+              ),
+              'plain_text' => array(
+                'weight' => '10',
+              ),
+              'whiteboard' => array(
+                'weight' => '0',
+              ),
+              'wiki' => array(
+                'weight' => '0',
+              ),
+            ),
+          ),
+        ),
+        'text_processing' => '0',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'rows' => '5',
+        ),
+        'type' => 'text_textarea',
+        'weight' => '51',
       ),
     ),
   );
@@ -4200,7 +4335,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'weight' => '13',
         ),
         'default' => array(
-          'label' => 'inline',
+          'label' => 'above',
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
@@ -10531,7 +10666,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'weight' => '10',
         ),
         'default' => array(
-          'label' => 'inline',
+          'label' => 'above',
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
@@ -10806,7 +10941,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'weight' => '12',
         ),
         'default' => array(
-          'label' => 'inline',
+          'label' => 'above',
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
@@ -13273,6 +13408,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('A record of comment posts from when the item was created if comments were attached by item assistant on creation. The RP is recorded here to avoid dead links when the original comments are archived.');
   t('Additional features');
   t('Additional property');
   t('Agility');
@@ -13286,6 +13422,7 @@ post worth 4XP - conversationally fluent, mastery of idiomatic phrases, but stil
 post worth 5XP - equivalent to native<br>
 Posting does not have to occur all at once, so feel free to spread it out across encounters.');
   t('Apparent Age');
+  t('Apparent Gender');
   t('Appearance');
   t('Artwork');
   t('As character');
@@ -13310,6 +13447,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
   t('Contributes to Health and Constitution.');
   t('Contributes to Presence and Appearance.');
   t('Contributes to Reflexes and Awareness.');
+  t('Creation History');
   t('Credit');
   t('Current character');
   t('Description');

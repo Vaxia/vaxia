@@ -239,57 +239,13 @@ print $output;
   $handler->display->display_options['filters']['php']['field'] = 'php';
   $handler->display->display_options['filters']['php']['group'] = 1;
   $handler->display->display_options['filters']['php']['use_php_setup'] = 0;
-  $handler->display->display_options['filters']['php']['php_filter'] = '// Get argument - character node.
-$character = node_load(arg(1));
-$lang = $character->language;
-// Get char from argument.
-$char = isset($character->nid) ? $character->nid : \'\';
-// Check values are ok.
-if (empty($char)) {
-  return TRUE;
-}
-
-// Get realm from argument.
-$realm = isset($character->field_realm[$lang][0][\'value\']) ? $character->field_realm[$lang][0][\'value\'] : \'Vaxia\';
-// Check values are ok.
-if (empty($realm)) {
-  return TRUE;
-}
-
-// Get available silver from character.
-$silver = _character_sheet_get_xp($character->nid, \'silver\');
-$silver_spent = _character_sheet_get_xp($character->nid, \'spent_silver\');
-$silver_invested = _character_sheet_get_xp($character->nid, \'invest_silver\');
-$available_silver = $silver - ($silver_spent + $silver_invested);
-// Available economy.
-$economy = isset($character->field_economy[$lang][0][\'value\']) ? $character->field_economy[$lang][0][\'value\'] : 0;
-$worth = _vaxia_calculate_worth($economy);
-// Grand total available.
-$total_worth = $available_silver + $worth;
-$silver = isset($total_worth) ? $total_worth : 0;
-// Check values are ok.
-if (empty($silver)) {
-  return TRUE;
-}
-
-$item = node_load($row->nid);
-// Check the silver value for this item.
-$lang = $item->language;
-$this_value = $item->field_value[$lang][0][\'value\'];
-$this_value = str_replace(\',\', \'\', $this_value);
-$this_value = str_replace(\'.\', \'\', $this_value);
-if (!is_numeric($this_value)) {
-  return TRUE;
-}
-if ($silver < $this_value) {
-  return TRUE;
-}
-$this_realm = isset($item->field_realm[$lang][0][\'value\']) ? $item->field_realm[$lang][0][\'value\'] : \'Vaxia\';
-if ($realm != $this_realm) {
-  return TRUE;
-}
-
-return FALSE;';
+  $handler->display->display_options['filters']['php']['php_filter'] = 'return item_shop_check_can_afford($row->nid);';
+  /* Filter criterion: Global: PHP */
+  $handler->display->display_options['filters']['php_1']['id'] = 'php_1';
+  $handler->display->display_options['filters']['php_1']['table'] = 'views';
+  $handler->display->display_options['filters']['php_1']['field'] = 'php';
+  $handler->display->display_options['filters']['php_1']['use_php_setup'] = 0;
+  $handler->display->display_options['filters']['php_1']['php_filter'] = 'return item_shop_check_already_has($row->nid);';
 
   /* Display: Item Shop */
   $handler = $view->new_display('page', 'Item Shop', 'item_shop');

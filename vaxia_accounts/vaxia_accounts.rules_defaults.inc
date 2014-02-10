@@ -25,30 +25,32 @@ function vaxia_accounts_default_rules_configuration() {
     }
   }');
   $items['rules_add_voting_player'] = entity_import('rules_config', '{ "rules_add_voting_player" : {
-      "LABEL" : "Add Voting Player",
+      "LABEL" : "Add Voting Player Comment",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
       "TAGS" : [ "Positions" ],
-      "REQUIRES" : [ "rules", "php", "user_stats" ],
-      "ON" : { "user_stats_day_older" : [] },
+      "REQUIRES" : [ "rules", "comment" ],
+      "ON" : { "comment_insert" : [] },
       "IF" : [
-        { "NOT user_is_blocked" : { "account" : [ "user" ] } },
-        { "user_has_role" : { "account" : [ "user" ], "roles" : { "value" : { "8" : "8" } } } },
-        { "NOT user_has_role" : { "account" : [ "user" ], "roles" : { "value" : { "19" : "19" } } } },
-        { "php_eval" : { "code" : "$count = 0;\\r\\n$uid = $user-\\u003Euid;\\r\\n$time = strtotime(\\u0027-6 months\\u0027);\\r\\n\\r\\n$results = db_query(\\u0027SELECT COUNT(nid) AS count FROM {node} \\u0027 .\\r\\n  \\u0027WHERE uid = :uid \\u0027 .\\r\\n  \\u0027AND created \\u003E :time\\u0027,\\r\\n  array(\\u0027:uid\\u0027 =\\u003E $uid, \\u0027:time\\u0027 =\\u003E $time));\\r\\nforeach ($results as $result) {\\r\\n  $count += $result-\\u003Ecount;\\r\\n}\\r\\n\\r\\n$results = db_query(\\u0027SELECT COUNT(cid) AS count FROM comment} \\u0027 .\\r\\n  \\u0027WHERE uid = :uid \\u0027 .\\r\\n  \\u0027AND created \\u003E :time\\u0027,\\r\\n  array(\\u0027:uid\\u0027 =\\u003E $uid, \\u0027:time\\u0027 =\\u003E $time));\\r\\nforeach ($results as $result) {\\r\\n  $count += $result-\\u003Ecount;\\r\\n}\\r\\n\\r\\n\\/\\/ User IS a voting user.\\r\\nif ($count \\u003E 0) {\\r\\n  return TRUE;\\r\\n}\\r\\nreturn FALSE;" } }
-      ],
-      "DO" : [
-        { "user_add_role" : { "account" : [ "user" ], "roles" : { "value" : { "19" : "19" } } } },
-        { "data_set" : {
-            "data" : [ "user:field-voting-record:value" ],
-            "value" : "[user:field-voting-record:value]\\r\\nUser has been active on the site within the last 6 months. Voting permissions added on \\u003C?php echo date(\\u0027m-d-Y\\u0027, strtotime(\\u0027now\\u0027)); ?\\u003E."
+        { "NOT user_is_blocked" : { "account" : [ "comment:author" ] } },
+        { "user_has_role" : {
+            "account" : [ "comment:author" ],
+            "roles" : { "value" : { "8" : "8" } }
           }
         },
-        { "data_set" : {
-            "data" : [ "user:field-became-voter" ],
-            "value" : [ "site:current-date" ]
+        { "NOT user_has_role" : {
+            "account" : [ "comment:author" ],
+            "roles" : { "value" : { "19" : "19" } }
           }
         }
+      ],
+      "DO" : [
+        { "user_add_role" : {
+            "account" : [ "comment:author" ],
+            "roles" : { "value" : { "19" : "19" } }
+          }
+        },
+        { "data_set" : { "data" : [ "comment:author:field-became-voter" ], "value" : "now" } }
       ]
     }
   }');
@@ -113,7 +115,7 @@ function vaxia_accounts_default_rules_configuration() {
             }
           }
         },
-        { "php_eval" : { "code" : "$nodes = node_load_multiple(array(), array(\\u0027type\\u0027 =\\u003E \\u0027session_report\\u0027, \\u0027uid\\u0027 =\\u003E $user-\\u003Euid ));\\r\\nforeach ($nodes as $node) {\\r\\n  $timespan = strtotime(\\u0027-6 months\\u0027);\\r\\n  if ($node-\\u003Estatus == 1 \\u0026\\u0026 $node-\\u003Ecreated \\u003E= $timespan) {\\r\\n    return FALSE;\\r\\n  }\\r\\n}\\r\\nreturn TRUE;" } }
+        { "php_eval" : { "code" : "return sh_test_check_last_run($user-\\u003Euid);" } }
       ],
       "DO" : [
         { "user_remove_role" : {
@@ -210,23 +212,11 @@ function vaxia_accounts_default_rules_configuration() {
       "ON" : { "user_stats_day_older" : [] },
       "IF" : [
         { "user_has_role" : { "account" : [ "user" ], "roles" : { "value" : { "19" : "19" } } } },
-        { "NOT php_eval" : { "code" : "$count = 0;\\r\\n$uid = $user-\\u003Euid;\\r\\n$time = strtotime(\\u0027-6 months\\u0027);\\r\\n\\r\\n$results = db_query(\\u0027SELECT COUNT(nid) AS count FROM {node} \\u0027 .\\r\\n  \\u0027WHERE uid = :uid \\u0027 .\\r\\n  \\u0027AND created \\u003E :time\\u0027,\\r\\n  array(\\u0027:uid\\u0027 =\\u003E $uid, \\u0027:time\\u0027 =\\u003E $time));\\r\\nforeach ($results as $result) {\\r\\n  $count += $result-\\u003Ecount;\\r\\n}\\r\\n\\r\\n$results = db_query(\\u0027SELECT COUNT(cid) AS count FROM comment} \\u0027 .\\r\\n  \\u0027WHERE uid = :uid \\u0027 .\\r\\n  \\u0027AND created \\u003E :time\\u0027,\\r\\n  array(\\u0027:uid\\u0027 =\\u003E $uid, \\u0027:time\\u0027 =\\u003E $time));\\r\\nforeach ($results as $result) {\\r\\n  $count += $result-\\u003Ecount;\\r\\n}\\r\\n\\r\\n\\/\\/ User IS a voting user.\\r\\nif ($count \\u003E 0) {\\r\\n  return TRUE;\\r\\n}\\r\\nreturn FALSE;" } }
+        { "NOT php_eval" : { "code" : "return proposal_check_posted_in_last_timeframe($uid);" } }
       ],
       "DO" : [
         { "user_remove_role" : { "account" : [ "user" ], "roles" : { "value" : { "19" : "19" } } } },
-        { "data_set" : {
-            "data" : [ "user:field-voting-record:value" ],
-            "value" : "[user:field-voting-record:value]\\r\\nUser has been inactive on the site for 6 months. Voting permissions removed on \\u003C?php echo date(\\u0027m-d-Y\\u0027, strtotime(\\u0027now\\u0027)); ?\\u003E."
-          }
-        },
-        { "data_set" : {
-            "data" : [ "user:field-became-voter" ],
-            "value" : {
-              "select" : "site:current-date",
-              "date_offset" : { "value" : 311040000 }
-            }
-          }
-        }
+        { "data_set" : { "data" : [ "user:field-became-voter" ], "value" : [ "" ] } }
       ]
     }
   }');
@@ -408,8 +398,8 @@ function vaxia_accounts_default_rules_configuration() {
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
       "TAGS" : [ "Positions" ],
-      "REQUIRES" : [ "rules" ],
-      "ON" : { "vaxia_vacation_end" : [] },
+      "REQUIRES" : [ "rules", "vacation" ],
+      "ON" : { "vacation_end" : [] },
       "DO" : [
         { "mail_to_users_of_role" : {
             "roles" : { "value" : { "9" : "9", "4" : "4" } },
@@ -427,8 +417,8 @@ function vaxia_accounts_default_rules_configuration() {
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
       "TAGS" : [ "Positions" ],
-      "REQUIRES" : [ "rules" ],
-      "ON" : { "vaxia_vacation_start" : [] },
+      "REQUIRES" : [ "rules", "vacation" ],
+      "ON" : { "vacation_start" : [] },
       "DO" : [
         { "mail_to_users_of_role" : {
             "roles" : { "value" : { "9" : "9", "4" : "4" } },
@@ -540,7 +530,7 @@ function vaxia_accounts_default_rules_configuration() {
             }
           }
         },
-        { "php_eval" : { "code" : "$nodes = node_load_multiple(array(), array(\\u0027type\\u0027 =\\u003E \\u0027session_report\\u0027, \\u0027uid\\u0027 =\\u003E $user-\\u003Euid ));\\r\\nforeach ($nodes as $node) {\\r\\n  $timespan = strtotime(\\u0027-5 months\\u0027);\\r\\n  if ($node-\\u003Estatus == 1 \\u0026\\u0026 $node-\\u003Ecreated \\u003E= $timespan) {\\r\\n    return FALSE;\\r\\n  }\\r\\n}\\r\\nreturn TRUE;" } }
+        { "php_eval" : { "code" : "return sh_test_check_last_run($user-\\u003Euid, \\u0027-5 months\\u0027);" } }
       ],
       "DO" : [
         { "mail" : {
@@ -562,7 +552,7 @@ function vaxia_accounts_default_rules_configuration() {
       "ON" : { "user_stats_day_older" : [] },
       "IF" : [
         { "data_is" : { "data" : [ "user:uid" ], "value" : "1" } },
-        { "php_eval" : { "code" : "$today = date(\\u0027m-d\\u0027, strtotime(\\u0027now\\u0027));\\r\\nwatchdog(\\u0027today\\u0027, $today);\\r\\nif ($today == \\u002705-01\\u0027) {\\r\\n  return TRUE;\\r\\n}\\r\\nreturn FALSE;" } }
+        { "php_eval" : { "code" : "return vaxia_check_election_day();" } }
       ],
       "DO" : [
         { "entity_create" : {
@@ -576,7 +566,7 @@ function vaxia_accounts_default_rules_configuration() {
           }
         },
         { "entity_save" : { "data" : [ "entity-created" ], "immediate" : 1 } },
-        { "php_eval" : { "code" : "$output = \\u0027\\u0027;\\r\\n$output .= \\u0027\\u003Ch3\\u003E\\u003Cb\\u003EVaxia Election\\u003C\\/b\\u003E\\u003C\\/h3\\u003E\\u0027;\\r\\n$output .= \\u0027\\u003Cp\\u003EEach year Vaxia has an election for the key positions on our site. \\u0027 .\\r\\n  \\u0027This is so that we can always be sure that the current leadership is connected to \\u0027 .\\r\\n  \\u0027and trusted by our players.\\u003C\\/p\\u003E\\u0027;\\r\\n$output .= \\u0027\\u003Cp\\u003EAvailable positions are:\\u003C\\/p\\u003E\\u0027;\\r\\n$output .= \\u0027\\u003Cul\\u003E\\u0027;\\r\\n$output .= \\u0027\\u003Cli\\u003ESystem Head A (aka World Head A)\\u003C\\/li\\u003E\\u0027;\\r\\n$output .= \\u0027\\u003Cli\\u003ESystem Head B (aka World Head B)\\u003C\\/li\\u003E\\u0027;\\r\\n$output .= \\u0027\\u003Cli\\u003ESetting Head A (aka Academy Head A)\\u003C\\/li\\u003E\\u0027;\\r\\n$output .= \\u0027\\u003Cli\\u003ESetting Head B (aka Academy Head B)\\u003C\\/li\\u003E\\u0027;\\r\\n$output .= \\u0027\\u003C\\/ul\\u003E\\u0027;\\r\\n$output .= \\u0027\\u003Cp\\u003EPlease take a moment to review the candidates for this \\u0027 .\\r\\n  \\u0027year and select those you feel to be the best choices for the available positions.\\u003C\\/p\\u003E\\u0027;\\r\\n\\r\\n\\/\\/ Set the webform body\\r\\n$entity_created-\\u003Ebody[$entity_created-\\u003Elanguage][0][\\u0027value\\u0027] = $output;\\r\\n$entity_created-\\u003Ewebform[\\u0027confirmation\\u0027] = t(\\u0027Thank you for participating!\\u0027);\\r\\n$entity_created-\\u003Ewebform[\\u0027confirmation_format\\u0027] = \\u0027plain_text\\u0027;\\r\\n$entity_created-\\u003Ewebform[\\u0027submit_limit\\u0027] = 1;\\r\\n\\r\\n\\/\\/ Save the node.\\r\\nnode_save($entity_created);\\r\\n\\r\\n\\/\\/ Save roles that can vote, 19 = Voting Player\\r\\n$record = db_query(\\u0027DELETE FROM {webform_roles} WHERE nid = :nid\\u0027, array(\\u0027:nid\\u0027 =\\u003E $entity_created-\\u003Enid));\\r\\ndb_insert(\\u0027webform_roles\\u0027)-\\u003Efields(array(\\u0027nid\\u0027 =\\u003E $entity_created-\\u003Enid, \\u0027rid\\u0027 =\\u003E 19))-\\u003Eexecute();\\r\\n\\r\\n\\/\\/ Gather the user info.\\r\\n$system_eligible_names = db_query(\\u0027SELECT u.name FROM {users} u \\u0027 . \\r\\n  \\u0027LEFT JOIN {users_roles} ur ON u.uid = ur.uid \\u0027 .\\r\\n  \\u0027LEFT JOIN {field_data_field_eligible_for_system_head} f ON u.uid = f.entity_id \\u0027 .\\r\\n  \\u0027WHERE ur.rid = 19 \\u0027 .\\r\\n  \\u0027AND f.field_eligible_for_system_head_value = 1\\u0027);\\r\\n$system_eligible = \\u0027\\u0027;\\r\\nforeach ($system_eligible_names as $system_eligible_name) {\\r\\n  $system_eligible .= $system_eligible_name-\\u003Ename . \\u0027|\\u0027 . $system_eligible_name-\\u003Ename . \\u0022\\\\n\\u0022;\\r\\n}\\r\\n$setting_eligible_names = db_query(\\u0027SELECT u.name FROM {users} u \\u0027 . \\r\\n  \\u0027LEFT JOIN {users_roles} ur ON u.uid = ur.uid \\u0027 .\\r\\n  \\u0027LEFT JOIN {field_data_field_eligible_for_setting_head} f ON u.uid = f.entity_id \\u0027 .\\r\\n  \\u0027WHERE ur.rid = 19 \\u0027 .\\r\\n  \\u0027AND f.field_eligible_for_setting_head_value = 1\\u0027);\\r\\n$setting_eligible = \\u0027\\u0027;\\r\\nforeach ($setting_eligible_names as $setting_eligible_name) {\\r\\n  $setting_eligible .= $setting_eligible_name-\\u003Ename . \\u0027|\\u0027 . $setting_eligible_name-\\u003Ename . \\u0022\\\\n\\u0022;\\r\\n}\\r\\n\\r\\n\\/\\/ Include the webform module that allows components to be created.\\r\\nmodule_load_include(\\u0027inc\\u0027, \\u0027webform\\u0027, \\u0027includes\\/webform.components\\u0027);\\r\\n\\r\\n\\/\\/ Create the webform fields for possible elected.\\r\\n$keys = array(\\r\\n  \\u0027system_a\\u0027 =\\u003E \\u0027System Head A\\u0027,\\r\\n  \\u0027system_b\\u0027 =\\u003E \\u0027System Head B\\u0027,\\r\\n  \\u0027setting_a\\u0027 =\\u003E \\u0027Setting Head A\\u0027,\\r\\n  \\u0027setting_b\\u0027 =\\u003E \\u0027Setting Head B\\u0027,\\r\\n);\\r\\nforeach ($keys as $key =\\u003E $title) {\\r\\n  $items = $setting_eligible;\\r\\n  if ($key == \\u0027system_a\\u0027 || $key == \\u0027system_b\\u0027) {\\r\\n    $items = $system_eligible;\\r\\n  }\\r\\n  $component = array();\\r\\n  $component[\\u0027nid\\u0027] = $entity_created-\\u003Enid;\\r\\n  $component[\\u0027pid\\u0027] = 0;\\r\\n  $component[\\u0027form_key\\u0027] = $key;\\r\\n  $component[\\u0027name\\u0027] = $title;\\r\\n  $component[\\u0027type\\u0027] = \\u0027select\\u0027;\\r\\n  $component[\\u0027mandatory\\u0027] = 1;\\r\\n  $component[\\u0027extra\\u0027] = array(\\r\\n      \\u0027description\\u0027 =\\u003E \\u0027\\u0027,\\r\\n      \\u0027items\\u0027 =\\u003E $items,\\r\\n      \\u0027multiple\\u0027 =\\u003E \\u00270\\u0027,\\r\\n      \\u0027aslist\\u0027 =\\u003E \\u00271\\u0027,\\r\\n    );\\r\\n  $component[\\u0027weight\\u0027] = 0;\\r\\n  webform_component_insert($component);\\r\\n}\\r\\n\\r\\n\\/\\/ Add additional fields or comments.\\r\\n$component = array();\\r\\n$component[\\u0027nid\\u0027] = $entity_created-\\u003Enid;\\r\\n$component[\\u0027pid\\u0027] = 0;\\r\\n$component[\\u0027form_key\\u0027] = \\u0027comments\\u0027;\\r\\n$component[\\u0027name\\u0027] = \\u0027Additional Comments  and Feedback\\u0027;\\r\\n$component[\\u0027type\\u0027] = \\u0027textarea\\u0027;\\r\\n$component[\\u0027mandatory\\u0027] = 0;\\r\\n$component[\\u0027extra\\u0027] = array(\\r\\n    \\u0027description\\u0027 =\\u003E \\u0027\\u0027,\\r\\n    \\u0027items\\u0027 =\\u003E \\u0027\\u0027,\\r\\n    \\u0027multiple\\u0027 =\\u003E \\u00270\\u0027,\\r\\n    \\u0027aslist\\u0027 =\\u003E \\u00270\\u0027,\\r\\n  );\\r\\n$component[\\u0027weight\\u0027] = 1;\\r\\nwebform_component_insert($component);" } }
+        { "php_eval" : { "code" : "return vaxia_setup_election_proposal($entity_created);" } }
       ]
     }
   }');
