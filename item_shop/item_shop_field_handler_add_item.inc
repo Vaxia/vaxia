@@ -163,7 +163,7 @@ class item_shop_field_handler_add_item extends views_handler_field {
           $new_node->field_character_owner[$lang][0]['nid'] = $char;
           node_save($new_node);
           // Update workflow on the new node.
-          $states = workflow_get_workflow_states_by_wid($workflow->wid);
+          $states = workflow_get_workflow_states_by_wid($new_node->workflow);
           foreach ($states as $state) {
             if ($state->state == 'approved') {
               workflow_execute_transition($new_node, $state->sid, t('This item has been added and approved from the Item Shop.'), TRUE);
