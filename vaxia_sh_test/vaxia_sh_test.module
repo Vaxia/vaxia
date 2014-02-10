@@ -59,7 +59,35 @@ function _sh_test_admin_settings($form, &$form_state) {
     '#type' => 'textfield',
     '#default_value' => variable_get('sh_test_approval_min', '3'),
   );
+  $form['sh_test_recalc_xp'] = array(
+    '#type' => 'submit',
+    '#value' => t('Recalculate Earned XP'),
+    '#submit' => array('_sh_test_recalc_xp_submit'),
+  );
   return system_settings_form($form);
+}
+
+/**
+ * Submit handler for recalculating all active user XP values.
+ * In case we've gotten something out of sync for any given users.
+ */
+function _sh_test_recalc_xp_submit($form, &$form_state) {
+  $result = db_query('REPLACE INTO field_data_field_xp_over_time ' .
+    'SELECT \'user\', \'user\', 0, u.uid, u.uid, \'und\', 0, SUM(xp.xp) as value FROM users u ' .
+    'LEFT JOIN node n ON u.uid = n.uid  ' .
+    'LEFT JOIN character_sheet_xp xp ON n.nid = xp.nid  ' .
+    'WHERE n.type = \'character_sheet\' ' .
+    'AND n.status = 1 ' .
+    'AND xp.type = \'xp\' ' .
+    'GROUP BY u.uid');
+  $result = db_query('REPLACE INTO field_revision_field_xp_over_time ' .
+    'SELECT \'user\', \'user\', 0, u.uid, u.uid, \'und\', 0, SUM(xp.xp) as value FROM users u ' .
+    'LEFT JOIN node n ON u.uid = n.uid  ' .
+    'LEFT JOIN character_sheet_xp xp ON n.nid = xp.nid  ' .
+    'WHERE n.type = \'character_sheet\' ' .
+    'AND n.status = 1 ' .
+    'AND xp.type = \'xp\' ' .
+    'GROUP BY u.uid');
 }
 
 /**
