@@ -403,7 +403,7 @@ function proposal_form_alter(&$form, &$form_state, $form_id) {
     // Find the voter role.
     $role = user_role_load_by_name('voter');
     // Only toss up the message if the form cares about the voter eligability.
-    if ($role && in_array($role->rid, $node->webform['roles'])) {
+    if ($role && in_array($role->rid, $form['#node']->webform['roles'])) {
       global $user;
       $this_user = user_load($user->uid);
       $lang = !empty($this_user->language) ? $this_user->language : 'und';
