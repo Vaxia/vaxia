@@ -88,6 +88,7 @@ function _sh_test_recalc_xp_submit($form, &$form_state) {
     'AND n.status = 1 ' .
     'AND xp.type = \'xp\' ' .
     'GROUP BY u.uid');
+  drupal_set_message(t('SH totals for all active players have been reset.'));
 }
 
 /**
