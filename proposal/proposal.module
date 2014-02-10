@@ -191,6 +191,12 @@ function proposal_webform_results_analysis($variables) {
   $question_number = 0;
   $first = ' webform-results-question-first';
   $single = isset($analysis_component);
+  $header = array(
+    array(
+      'data' => '&nbsp;',
+      'colspan' => '10',
+    ),
+  );
   foreach ($data as $cid => $row_data) {
     $question_number++;
     if (is_array($row_data)) {
