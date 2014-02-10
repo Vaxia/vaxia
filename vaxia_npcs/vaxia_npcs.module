@@ -471,7 +471,7 @@ function npcs_check_needs_oversight($node) {
     }
   }
   // Check each skill.
-  if (is_array($node->field_skill[$lang])) {
+  if (!empty($node->field_skill[$lang]) && is_array($node->field_skill[$lang])) {
     foreach ($node->field_skill[$lang] as $delta => $skill) {
       $this_skill = field_collection_item_load($skill['value']);
       $skill_lang = isset($skill->language) ? $skill->language : $lang;
