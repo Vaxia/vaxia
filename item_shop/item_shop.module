@@ -104,3 +104,80 @@ function item_shop_form_items_node_form_alter(&$form, &$form_state, $form_id) {
     $form['field_in_shop']['#value'] = isset($form['field_in_shop']['#default_value']) ? $form['field_in_shop']['#default_value'] : 0;
   }
 }
+
+/**
+ * Helper for views. Check if this character can afford this item.
+ */
+function item_shop_check_can_afford($nid) {
+  // Get argument - character node.
+  $character = node_load(arg(1));
+  $lang = $character->language;
+  // Get char from argument.
+  $char = isset($character->nid) ? $character->nid : '';
+  // Check values are ok.
+  if (empty($char)) {
+    return TRUE;
+  }
+  // Get realm from argument.
+  $realm = isset($character->field_realm[$lang][0]['value']) ? $character->field_realm[$lang][0]['value'] : 'Vaxia';
+  // Check values are ok.
+  if (empty($realm)) {
+    return TRUE;
+  }
+  // Get available silver from character.
+  $silver = _character_sheet_get_xp($character->nid, 'silver');
+  $silver_spent = _character_sheet_get_xp($character->nid, 'spent_silver');
+  $silver_invested = _character_sheet_get_xp($character->nid, 'invest_silver');
+  $available_silver = $silver - ($silver_spent + $silver_invested);
+  // Available economy.
+  $economy = isset($character->field_economy[$lang][0]['value']) ? $character->field_economy[$lang][0]['value'] : 0;
+  $worth = _vaxia_calculate_worth($economy);
+  // Grand total available.
+  $total_worth = $available_silver + $worth;
+  $silver = isset($total_worth) ? $total_worth : 0;
+  // Check values are ok.
+  if (empty($silver)) {
+    return TRUE;
+  }
+  // Check the silver value for this item.
+  $item = node_load($nid);
+  $lang = $item->language;
+  $this_value = $item->field_value[$lang][0]['value'];
+  $this_value = str_replace(',', '', $this_value);
+  $this_value = str_replace('.', '', $this_value);
+  // Execute the checks.
+  // If the code returns TRUE the current row is removed from the results.
+  if (!is_numeric($this_value)) {
+    return TRUE;
+  }
+  if ($silver < $this_value) {
+    return TRUE;
+  }
+  $this_realm = isset($item->field_realm[$lang][0]['value']) ? $item->field_realm[$lang][0]['value'] : 'Vaxia';
+  if ($realm != $this_realm) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+/**
+ * Helper for views. Check if this character can afford this item.
+ */
+function item_shop_check_already_has($nid) {
+  // Get argument - character node.
+  $character = node_load(arg(1));
+  $lang = $character->language;
+  // Get items from character.
+  $has_items = array();
+  foreach ($character->field_items[$lang] as $info) {
+    $this_item = node_load($info['nid']);
+    $has_items[] = $this_item->title;
+  }
+  // Execute the check.
+  // If the code returns TRUE the current row is removed from the results.
+  $item = node_load($nid);
+  if (in_array($item->title, $has_items)) {
+    return TRUE;
+  }
+  return FALSE;
+}
