@@ -169,9 +169,11 @@ function item_shop_check_already_has($nid) {
   $lang = $character->language;
   // Get items from character.
   $has_items = array();
-  foreach ($character->field_items[$lang] as $info) {
-    $this_item = node_load($info['nid']);
-    $has_items[] = $this_item->title;
+  if (!empty($character->field_items[$lang]) && is_array($character->field_items[$lang])) {
+    foreach ($character->field_items[$lang] as $info) {
+      $this_item = node_load($info['nid']);
+      $has_items[] = $this_item->title;
+    }
   }
   // Execute the check.
   // If the code returns TRUE the current row is removed from the results.
