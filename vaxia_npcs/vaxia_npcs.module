@@ -471,13 +471,15 @@ function npcs_check_needs_oversight($node) {
     }
   }
   // Check each skill.
-  foreach ($node->field_skill[$lang] as $delta => $skill) {
-    $this_skill = field_collection_item_load($skill['value']);
-    $skill_lang = isset($skill->language) ? $skill->language : $lang;
-    $stat = isset($this_skill->field_skill_value[$skill_lang][0]['value']) ?
-      $this_skill->field_skill_value[$skill_lang][0]['value'] : 0;
-    if ($stat >= $limit) {
-      $return_value = TRUE;
+  if (is_array($node->field_skill[$lang])) {
+    foreach ($node->field_skill[$lang] as $delta => $skill) {
+      $this_skill = field_collection_item_load($skill['value']);
+      $skill_lang = isset($skill->language) ? $skill->language : $lang;
+      $stat = isset($this_skill->field_skill_value[$skill_lang][0]['value']) ?
+        $this_skill->field_skill_value[$skill_lang][0]['value'] : 0;
+      if ($stat >= $limit) {
+        $return_value = TRUE;
+      }
     }
   }
   return $return_value;
