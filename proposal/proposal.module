@@ -194,7 +194,7 @@ function proposal_webform_results_analysis($variables) {
   $header = array(
     array(
       'data' => '&nbsp;',
-      'colspan' => '10',
+      'colspan' => '11',
     ),
   );
   foreach ($data as $cid => $row_data) {
