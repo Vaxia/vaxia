@@ -29,7 +29,6 @@ dependencies[] = spoiler
 dependencies[] = strongarm
 dependencies[] = taxonomy
 dependencies[] = text
-dependencies[] = vaxia
 dependencies[] = views
 dependencies[] = workflow_rules
 features[ctools][] = corresponding_node_references:default_corresponding_node_references_presets:1

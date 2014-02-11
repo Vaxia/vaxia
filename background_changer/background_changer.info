@@ -1,6 +1,5 @@
 name = Background Changer
 description = Provides additional javascript to dynamically change the background hourly
-package = Vaxia
+package = Other
 core = 7.x
-dependencies[] = vaxia
 version = 7.x-1.0
