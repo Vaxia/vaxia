@@ -21,14 +21,12 @@ function sh_test_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'A/SH Dates',
-    'weight' => '3',
+    'weight' => '5',
     'children' => array(
       0 => 'field_took_ash1',
       1 => 'field_took_ash2',
-      2 => 'field_became_sh',
-      3 => 'field_took_ash3',
-      4 => 'field_took_eval_test',
-      5 => 'field_became_evaluator',
+      2 => 'field_took_ash3',
+      3 => 'field_took_eval_test',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
