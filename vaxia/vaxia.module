@@ -433,17 +433,18 @@ function vaxia_form_alter(&$form, &$form_state, $form_id) {
       return;
     }
     // Set character controls.
-    //$character = node_load($this_player->field_current_character[$lang][0]['nid']);
-    //if (isset($character->title)) {
-      //$form['field_comment_character'][$lang]['#default_value'][0] = $character->nid;
-      //if (isset($character->field_artwork[$lang][0]['nid'])) {
-      //  $form['field_artwork'][$lang]['#default_value'][0] = $character->field_artwork[$lang][0]['nid'];
-      //}
-      //$kxp = _character_sheet_get_xp($character->nid, 'kxp');
-      //$xp = _character_sheet_get_xp($character->nid, 'xp');
-      //$spent_xp = _character_sheet_get_xp($character->nid, 'spent_xp');       
-      //$form['field_comment_character'][$lang]['#description'] = $kxp . ' / 70 KXP, ' . ($xp - $spent_xp) . ' XP';
-    //}
+    global $user;
+    $character = node_load(variable_get('vaxia_last_character_' . $user->uid, -1));
+    if (isset($character->title)) {
+      $form['field_comment_character'][$lang]['#default_value'][0] = $character->nid;
+      if (isset($character->field_artwork[$lang][0]['nid'])) {
+        $form['field_artwork'][$lang]['#default_value'][0] = $character->field_artwork[$lang][0]['nid'];
+      }
+      $kxp = _character_sheet_get_xp($character->nid, 'kxp');
+      $xp = _character_sheet_get_xp($character->nid, 'xp');
+      $spent_xp = _character_sheet_get_xp($character->nid, 'spent_xp');       
+      $form['field_comment_character'][$lang]['#description'] = $kxp . ' / 70 KXP, ' . ($xp - $spent_xp) . ' XP';
+    }
     // Set limits in limbo rooms.
     $limbo_room = variable_get('vaxia_limbo_room', array());
     // Set narrative checkbox access and no access in limbo rooms.
@@ -507,6 +508,8 @@ function _vaxia_comment_add_kxp_submit($form, $form_state) {
   $lang = $form_state['values']['language'];
   // If posted as a character and not as narrative.
   if (!empty($form_state['values']['field_comment_character'][$lang][0]['nid']) ) {
+    global $user;
+    variable_set('vaxia_last_character_' . $user->uid, $form_state['values']['field_comment_character'][$lang][0]['nid']);
     if (!empty($form['cid']['#value'])) {
       drupal_set_message('Editing an existing comment - no kxp will be awarded.');
       return;
