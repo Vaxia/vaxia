@@ -500,6 +500,9 @@ function _vaxia_character_pick($form, $form_state) {
  * Additional submit handler to add kxp for commenting as a character, not narrative.
  */
 function _vaxia_comment_add_kxp_submit($form, $form_state) {
+  // Set the last posted character or none as needed.
+  global $user;
+  variable_set('vaxia_last_character_' . $user->uid, $form_state['values']['field_comment_character'][$lang][0]['nid']);
   // Ignore kxp for limbo rooms.
   $limbo_room = variable_get('vaxia_limbo_room', array());
   if (in_array($form['#node']->nid, $limbo_room)) {
@@ -509,8 +512,6 @@ function _vaxia_comment_add_kxp_submit($form, $form_state) {
   $lang = $form_state['values']['language'];
   // If posted as a character and not as narrative.
   if (!empty($form_state['values']['field_comment_character'][$lang][0]['nid']) ) {
-    global $user;
-    variable_set('vaxia_last_character_' . $user->uid, $form_state['values']['field_comment_character'][$lang][0]['nid']);
     if (!empty($form['cid']['#value'])) {
       drupal_set_message('Editing an existing comment - no kxp will be awarded.');
       return;
