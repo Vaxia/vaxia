@@ -502,6 +502,7 @@ function _vaxia_character_pick($form, $form_state) {
 function _vaxia_comment_add_kxp_submit($form, $form_state) {
   // Set the last posted character or none as needed.
   global $user;
+  $lang = $form_state['values']['language'];
   variable_set('vaxia_last_character_' . $user->uid, $form_state['values']['field_comment_character'][$lang][0]['nid']);
   // Ignore kxp for limbo rooms.
   $limbo_room = variable_get('vaxia_limbo_room', array());
@@ -509,7 +510,6 @@ function _vaxia_comment_add_kxp_submit($form, $form_state) {
     return;
   }
   // Otherwise, figure out how much kxp we're giving.
-  $lang = $form_state['values']['language'];
   // If posted as a character and not as narrative.
   if (!empty($form_state['values']['field_comment_character'][$lang][0]['nid']) ) {
     if (!empty($form['cid']['#value'])) {
