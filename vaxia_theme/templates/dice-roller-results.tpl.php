@@ -25,7 +25,7 @@
           $note = substr($notes[$index + 1], 8);
           // We have a note, let's get the stat.
           $results = explode('+', $note);
-          if isset($results[1])) {
+          if (isset($results[1])) {
             $results = explode(' ', trim($results[1]));
           }
           $stat = trim($results[0]);
