@@ -1,0 +1,246 @@
+<?php
+/**
+ * @file
+ * Drupal needs this blank file.
+ */
+
+include_once 'sh_test.features.inc';
+
+/**
+ * Implements hook_permission().
+ */
+function sh_test_permission() {
+  return array(
+    'administrate sh test'=> array(
+      'title' => t('administrate sh test'),
+      'description' => t('Administrate the SH test.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function sh_test_menu() {
+  $items['admin/config/people/sh_test'] = array(
+    'title' => 'Vaxia Storyhost course settings',
+    'description' => 'Settings for the Vaxia Storyhost course.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('_sh_test_admin_settings'),
+    'access arguments' => array('administrate sh test'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  return $items;
+}
+
+function _sh_test_admin_settings($form, &$form_state) {
+  $form['sh_test_required_time'] = array(
+    '#title' => t('Required session time'),
+    '#description' => t('How much time can pass before a SH must run a session in order to retain permission.'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('sh_test_required_time', '6 months'),
+  );
+  $form['sh_test_starvation_mode'] = array(
+    '#title' => t('Minimum Storyhosts'),
+    '#description' => t('Below this number of storyhosts we are in starvation mode and will take anyone who applies to ASH 3.'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('sh_test_starvation_mode', '4'),
+  );
+  $form['sh_test_approving_roles'] = array(
+    '#title' => 'Approving roles',
+    '#description' => 'Roles that can approve a Storyhost application.',
+    '#type' => 'checkboxes',
+    '#options' => user_roles(),
+    '#default_value' => variable_get('sh_test_approving_roles', array()),
+  );
+  $form['sh_test_approval_min'] = array(
+    '#title' => t('Minimum approvals'),
+    '#description' => t('At least these many approvals are required to pass ASH 3.'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('sh_test_approval_min', '3'),
+  );
+  $form['sh_test_recalc_xp'] = array(
+    '#type' => 'submit',
+    '#value' => t('Recalculate Earned XP'),
+    '#submit' => array('_sh_test_recalc_xp_submit'),
+  );
+  return system_settings_form($form);
+}
+
+/**
+ * Submit handler for recalculating all active user XP values.
+ * In case we've gotten something out of sync for any given users.
+ */
+function _sh_test_recalc_xp_submit($form, &$form_state) {
+  $result = db_query('REPLACE INTO field_data_field_xp_over_time ' .
+    'SELECT \'user\', \'user\', 0, u.uid, u.uid, \'und\', 0, SUM(xp.xp) as value FROM users u ' .
+    'LEFT JOIN node n ON u.uid = n.uid  ' .
+    'LEFT JOIN character_sheet_xp xp ON n.nid = xp.nid  ' .
+    'WHERE n.type = \'character_sheet\' ' .
+    'AND n.status = 1 ' .
+    'AND xp.type = \'xp\' ' .
+    'GROUP BY u.uid');
+  $result = db_query('REPLACE INTO field_revision_field_xp_over_time ' .
+    'SELECT \'user\', \'user\', 0, u.uid, u.uid, \'und\', 0, SUM(xp.xp) as value FROM users u ' .
+    'LEFT JOIN node n ON u.uid = n.uid  ' .
+    'LEFT JOIN character_sheet_xp xp ON n.nid = xp.nid  ' .
+    'WHERE n.type = \'character_sheet\' ' .
+    'AND n.status = 1 ' .
+    'AND xp.type = \'xp\' ' .
+    'GROUP BY u.uid');
+  drupal_set_message(t('SH totals for all active players have been reset.'));
+}
+
+/**
+ * Helper for rules. Check how many sessions a given user has run so far.
+ */
+function sh_test_check_sessions_ran($uid, $ran) {
+  $count = 0;
+  $nodes = node_load_multiple(array(), array('type' => 'session_report', 'uid' => $uid ));
+  foreach ($nodes as $node) {
+    if ($node->status == 1) {
+      $count++;
+    }
+  }
+  if ($count >= $ran) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+/**
+ * Helper for rules. Check if an SH has run recently.
+ */
+function sh_test_check_last_run($uid, $time = '') {
+  if (empty($time)) {
+    $time = variable_get('sh_test_required_time', '6 months') . ' ago';
+  }
+  $nodes = node_load_multiple(array(), array('type' => 'session_report', 'uid' => $uid ));
+  foreach ($nodes as $node) {
+    $timespan = strtotime($time);
+    if ($node->status == 1 && $node->created >= $timespan) {
+      return FALSE;
+    }
+  }
+  return TRUE;
+}
+
+/**
+ * Helper for rules. Check if we are so low on SH's that we just need to pass the user through.
+ */
+function sh_test_check_starvation_mode() {
+  $result = db_query('SELECT COUNT(ur.uid) FROM {users_roles} ur ' .
+    'LEFT JOIN {role} r ON ur.rid = r.rid ' .
+    'WHERE r.name = :name', array(':name' => 'storyteller') );
+  $count = 0;
+  foreach ($result as $value) {
+    $count = $value;
+  }
+  if ($count < variable_get('sh_test_starvation_mode', '4')) {
+    return FALSE;
+  }
+  return TRUE;
+}
+
+/**
+ * Helper for rules. Setup the webform response for approving new candidates.
+ */
+function sh_test_setup_approval_form($user, $node, $entity_created) {
+  // Find the result ID for this test taken.
+  $uid = $user->uid;
+  $nid = $node->nid;
+  $vid = $node->vid;
+  $results = db_query("SELECT r.result_id FROM {quiz_node_results} r " .
+    "WHERE r.uid = :uid " .
+    "AND r.nid = :nid " .
+    "AND r.vid = :vid " .
+    "ORDER BY r.time_end DESC LIMIT 0,1 ",
+    array(
+    ':uid' => $uid,
+    ':nid' => $nid,
+    ':vid' => $vid,
+    ));
+  $rid = '';
+  foreach ($results as $result) {
+    $rid = $result->result_id;
+  }
+  if (empty($rid)) {
+    drupal_set_message(t('An error was encountered, no result ID able to be found.'));
+    return;
+  }
+
+  // Now get the printed out set of answers.
+  $questions = _quiz_get_answers($node, $rid);
+  ksort($questions);
+  $output = '';
+  foreach ($questions as $question_nid => $question) {
+    $q_title = $question->title;
+    $full_question = node_load($question_nid);
+    $q = $full_question->body[$full_question->language][0]['value'];
+    $a = $question->answers[0]['answer'];
+    $output .= '<h3><b>' . $q_title . '</b></h3><p><b>'. $q . '</b></p><p>' . $a . '</p><br/>';
+  }
+  if (empty($output)) {
+    drupal_set_message(t('An error was encountered, no output able to be created.'));
+    return;
+  }
+
+  // Set the webform body
+  $entity_created->body[$entity_created->language][0]['value'] = $output;
+  $entity_created->webform['confirmation'] = t('Thank you!');
+  $entity_created->webform['confirmation_format'] = 'plain_text';
+  $entity_created->webform['submit_limit'] = 1;
+
+  // Save the node
+  node_save($entity_created);
+
+  // Set approving roles for users.
+  $approving = variable_get('sh_test_approving_roles', array());
+  $record = db_query('DELETE FROM {webform_roles} WHERE nid = :nid', array(':nid' => $entity_created->nid));
+  foreach ($approving as $role) {
+    if ($role) {
+      db_insert('webform_roles')->fields(array('nid' => $entity_created->nid, 'rid' => $role))->execute();
+    }
+  }
+
+  // Create the standard webform field for approval.
+  $component = array();
+  $component['nid'] = $entity_created->nid;
+  $component['pid'] = 0;
+  $component['form_key'] = 'approval';
+  $component['name'] = t('Approve');
+  $component['type'] = 'select';
+  $component['mandatory'] = 1;
+  $component['extra'] = array(
+    'description' => '',
+    'items' => 'approve|' .  t('Yes. I approve this SH candidate to become a full SH.'),
+    'multiple' => '1',
+    'aslist' => '0',
+    );
+  $component['weight'] = 0;
+  // Include the webform module that allows components to be created.
+  module_load_include('inc', 'webform', 'includes/webform.components');
+  webform_component_insert($component);
+}
+
+/**
+ * Helper for rules. Check if enough storyhosts have approved this application.
+ */
+function sh_test_check_ash_3_approvals($nid) {
+  $results = db_query("SELECT wd.data FROM {webform_submitted_data} wd " .
+    "WHERE wd.nid = :nid " .
+    "AND wd.cid = 1", // There is only the one form element.
+    array(
+      ':nid' => $nid,
+    ));
+  $count = 0;
+  foreach ($results as $result) {
+    if ($result->data == 'approve') {
+      $count++;
+    }
+  }
+  if ($count > variable_get('sh_test_approval_min', '3')) {
+    return TRUE;
+  }
+  return FALSE;
+}

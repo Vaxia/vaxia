@@ -543,7 +543,7 @@ function vaxia_accounts_default_rules_configuration() {
       ]
     }
   }');
-  $items['vaxia_sh_test_yearly_election'] = entity_import('rules_config', '{ "vaxia_sh_test_yearly_election" : {
+  $items['sh_test_yearly_election'] = entity_import('rules_config', '{ "sh_test_yearly_election" : {
       "LABEL" : "Yearly Election",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
