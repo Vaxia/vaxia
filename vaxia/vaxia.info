@@ -31,7 +31,6 @@ dependencies[] = taxonomy
 dependencies[] = text
 dependencies[] = views
 dependencies[] = workflow_rules
-features[ctools][] = corresponding_node_references:default_corresponding_node_references_presets:1
 features[ctools][] = field_group:field_group:1
 features[ctools][] = strongarm:strongarm:1
 features[ctools][] = views:views_default:3.0
