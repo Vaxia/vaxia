@@ -470,7 +470,7 @@ function vaxia_form_alter(&$form, &$form_state, $form_id) {
     // Set player uid for pickup.
     $form['uid'] = array(
       '#type' => 'hidden',
-      '#value' => $this_player->uid,
+      '#value' => $user->uid,
     );
     // Set submissions.
     $form['actions']['submit']['#value'] = t('Post');
