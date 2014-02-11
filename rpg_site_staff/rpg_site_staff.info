@@ -39,7 +39,6 @@ features[field][] = user-user-field_became_voter
 features[field][] = user-user-field_eligible_for_setting_head
 features[field][] = user-user-field_eligible_for_system_head
 features[field][] = user-user-field_xp_over_time
-features[field_group][] = group_ash_dates|user|user|default
 features[field_group][] = group_election_settings|user|user|form
 features[field_group][] = group_voting|user|user|default
 features[node][] = session_report
