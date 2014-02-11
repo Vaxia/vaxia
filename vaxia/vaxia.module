@@ -436,6 +436,7 @@ function vaxia_form_alter(&$form, &$form_state, $form_id) {
     global $user;
     $character = node_load(variable_get('vaxia_last_character_' . $user->uid, -1));
     if (isset($character->title)) {
+      $lang = $character->language;
       $form['field_comment_character'][$lang]['#default_value'][0] = $character->nid;
       if (isset($character->field_artwork[$lang][0]['nid'])) {
         $form['field_artwork'][$lang]['#default_value'][0] = $character->field_artwork[$lang][0]['nid'];
@@ -495,7 +496,7 @@ function _vaxia_character_pick($form, $form_state) {
   return $roll_form;
 }
 
-/**
+/** 
  * Additional submit handler to add kxp for commenting as a character, not narrative.
  */
 function _vaxia_comment_add_kxp_submit($form, $form_state) {
