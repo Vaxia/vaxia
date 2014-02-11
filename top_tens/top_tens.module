@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Top Tens feature.
+ */
+
+include_once 'top_tens.features.inc';

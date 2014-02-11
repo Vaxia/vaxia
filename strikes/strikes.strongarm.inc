@@ -1,72 +1,72 @@
 <?php
 /**
  * @file
- * vaxia.strongarm.inc
+ * strikes.strongarm.inc
  */
 
 /**
  * Implements hook_strongarm().
  */
-function vaxia_strongarm() {
+function strikes_strongarm() {
   $export = array();
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'comment_anonymous_character_sheet';
+  $strongarm->name = 'comment_anonymous_strike';
   $strongarm->value = 0;
-  $export['comment_anonymous_character_sheet'] = $strongarm;
+  $export['comment_anonymous_strike'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'comment_character_sheet';
-  $strongarm->value = '1';
-  $export['comment_character_sheet'] = $strongarm;
+  $strongarm->name = 'comment_default_mode_strike';
+  $strongarm->value = 1;
+  $export['comment_default_mode_strike'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'comment_default_mode_character_sheet';
-  $strongarm->value = 0;
-  $export['comment_default_mode_character_sheet'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'comment_default_per_page_character_sheet';
+  $strongarm->name = 'comment_default_per_page_strike';
   $strongarm->value = '50';
-  $export['comment_default_per_page_character_sheet'] = $strongarm;
+  $export['comment_default_per_page_strike'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'comment_form_location_character_sheet';
+  $strongarm->name = 'comment_form_location_strike';
   $strongarm->value = 1;
-  $export['comment_form_location_character_sheet'] = $strongarm;
+  $export['comment_form_location_strike'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'comment_preview_character_sheet';
+  $strongarm->name = 'comment_preview_strike';
   $strongarm->value = '1';
-  $export['comment_preview_character_sheet'] = $strongarm;
+  $export['comment_preview_strike'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'comment_subject_field_character_sheet';
+  $strongarm->name = 'comment_strike';
+  $strongarm->value = '1';
+  $export['comment_strike'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'comment_subject_field_strike';
   $strongarm->value = 1;
-  $export['comment_subject_field_character_sheet'] = $strongarm;
+  $export['comment_subject_field_strike'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'field_bundle_settings_node__character_sheet';
+  $strongarm->name = 'field_bundle_settings_node__strike';
   $strongarm->value = array(
     'view_modes' => array(
       'teaser' => array(
-        'custom_settings' => FALSE,
+        'custom_settings' => TRUE,
       ),
       'full' => array(
         'custom_settings' => FALSE,
@@ -89,9 +89,6 @@ function vaxia_strongarm() {
       'token' => array(
         'custom_settings' => FALSE,
       ),
-      'artwork' => array(
-        'custom_settings' => FALSE,
-      ),
     ),
     'extra_fields' => array(
       'form' => array(
@@ -99,67 +96,50 @@ function vaxia_strongarm() {
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '12',
-        ),
-        'workflow' => array(
-          'weight' => '13',
+          'weight' => '6',
         ),
       ),
-      'display' => array(
-        'workflow_current_state' => array(
-          'default' => array(
-            'weight' => '8',
-            'visible' => TRUE,
-          ),
-        ),
-        'workflow' => array(
-          'default' => array(
-            'weight' => '9',
-            'visible' => FALSE,
-          ),
-        ),
-      ),
+      'display' => array(),
     ),
   );
-  $export['field_bundle_settings_node__character_sheet'] = $strongarm;
+  $export['field_bundle_settings_node__strike'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'menu_options_character_sheet';
+  $strongarm->name = 'menu_options_strike';
   $strongarm->value = array();
-  $export['menu_options_character_sheet'] = $strongarm;
+  $export['menu_options_strike'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'menu_parent_character_sheet';
+  $strongarm->name = 'menu_parent_strike';
   $strongarm->value = 'main-menu:0';
-  $export['menu_parent_character_sheet'] = $strongarm;
+  $export['menu_parent_strike'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'node_options_character_sheet';
+  $strongarm->name = 'node_options_strike';
   $strongarm->value = array(
     0 => 'status',
-    1 => 'revision',
   );
-  $export['node_options_character_sheet'] = $strongarm;
+  $export['node_options_strike'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'node_preview_character_sheet';
+  $strongarm->name = 'node_preview_strike';
   $strongarm->value = '1';
-  $export['node_preview_character_sheet'] = $strongarm;
+  $export['node_preview_strike'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'node_submitted_character_sheet';
+  $strongarm->name = 'node_submitted_strike';
   $strongarm->value = 1;
-  $export['node_submitted_character_sheet'] = $strongarm;
+  $export['node_submitted_strike'] = $strongarm;
 
   return $export;
 }

@@ -1,0 +1,12 @@
+name = Top Tens
+description = Show the top tens for character XP types
+core = 7.x
+package = Vaxia
+version = 7.x-1.0
+project = top_tens
+dependencies[] = ctools
+dependencies[] = views
+features[ctools][] = views:views_default:3.0
+features[features_api][] = api:1
+features[views_view][] = top_tens
+features[views_view][] = total_top_ten

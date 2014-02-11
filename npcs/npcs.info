@@ -1,5 +1,5 @@
 name = NPCs
-description = Adds NPC easy management
+description = NPC (a subset of character sheets) management
 core = 7.x
 package = Vaxia
 php = 5.2.4
@@ -12,7 +12,6 @@ dependencies[] = views
 dependencies[] = workflow_rules
 features[ctools][] = views:views_default:3.0
 features[features_api][] = api:1
-features[rules_config][] = rules_notify_char_eval_re_oversight_npc
-features[rules_config][] = rules_request_npc
-features[rules_config][] = vaxia_notify_char_eval_re_oversight_npc_pass_npc
+features[views_view][] = character_npcs
+features[views_view][] = oversight
 features[views_view][] = wiki_npcs_list

@@ -1,0 +1,29 @@
+<?php
+/**
+ * @file
+ * Code for the Vaxia NPCs feature.
+ */
+
+include_once 'items.features.inc';
+
+/**
+ * Helper for rules. Check if the item is over limits.
+ */
+function items_check_needs_oversight($node) {
+  $limit = 7;
+  $return_value = FALSE;
+  $lang = $node->language;
+  // Check each stat.
+  $fields = array('life', 'health', 'endurance', 'constitution', 'strength', 'agility', 'dexterity',
+    'reflexes', 'intelligence', 'awareness', 'spirituality', 'presence', 'charisma', 'appearance', 'skill',
+  );
+  foreach ($fields as $field_name) {
+    $field_name = 'field_item' . $field_name;
+    $stat = isset($node->{$field_name}[$lang][0]['value']) ?
+    $node->{$field_name}[$lang][0]['value'] : 0;
+    if ($stat >= $limit) {
+      $return_value = TRUE;
+    }
+  }
+  return $return_value;
+}

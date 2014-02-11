@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the RPG Site Staff feature.
+ */
+
+include_once 'rpg_site_staff.features.inc';
