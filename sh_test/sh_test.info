@@ -1,4 +1,4 @@
-name = Vaxia SH Test
+name = SH Test
 description = SH and Evaluator tests
 core = 7.x
 package = Vaxia
