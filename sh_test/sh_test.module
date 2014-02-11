@@ -19,6 +19,16 @@ function sh_test_permission() {
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function sh_test_form_user_profile_form_alter(&$form, &$form_state, $form_id) {
+  $form['field_took_ash1']['#access'] = FALSE;
+  $form['field_took_ash2']['#access'] = FALSE;
+  $form['field_took_ash3']['#access'] = FALSE;
+  $form['field_took_eval_test']['#access'] = FALSE;
+}
+
+/**
  * Implements hook_menu().
  */
 function sh_test_menu() {
@@ -33,6 +43,9 @@ function sh_test_menu() {
   return $items;
 }
 
+/**
+ * Menu callback, admin form.
+ */
 function _sh_test_admin_settings($form, &$form_state) {
   $form['sh_test_required_time'] = array(
     '#title' => t('Required session time'),

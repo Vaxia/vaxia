@@ -5,3 +5,111 @@
  */
 
 include_once 'artwork.features.inc';
+
+/**
+ * Implements hook_permission().
+ */
+function artwork_permission() {
+  return array(
+    'change art owner'=> array(
+      'title' => t('change art owner'),
+      'description' => t('Change the owner of art.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function artwork_menu() {
+  $items['node/%node/transfer_artwork'] = array(
+    'title' => 'Ownership',
+    'type' => MENU_LOCAL_TASK,
+    'access callback' => '_artwork_menu_ownership_access_callback',
+    'access arguments' => array(1),
+    'page callback' => '_artwork_ownership',
+    'page arguments' => array(1),
+    'weight' => 3,
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function artwork_form_user_profile_form_alter(&$form, &$form_state, $form_id) {
+  $form['picture']['picture_delete']['#access'] = FALSE;
+  $form['picture']['picture_upload']['#access'] = FALSE;
+  $form['picture']['field_artwork'] = $form['field_artwork'];
+  unset($form['field_artwork']);
+}
+
+/**
+ * Menu access callback.
+ */
+function _artwork_menu_ownership_access_callback($node) {
+  if ($node->type == 'artwork') {
+    global $user;
+    if (user_access('change art owner') || ($user->uid == $node->uid && 
+        (user_access('edit any artwork content')
+          || user_access('edit own artwork content')))) {
+      return TRUE;
+    }
+    return FALSE;
+  }
+}
+
+/**
+ * Menu callback, transfer ownership pages for items and artwork.
+ */
+function _artwork_ownership($node) {
+  return drupal_get_form('_artwork_change_ownership_form', $node);
+}
+
+/*
+ * Form callback function from nodeapi view, adds moderation form to node display.
+ */
+function _artwork_change_ownership_form($form, &$form_state, $node) {
+  $context['owner_uid'] = $node->uid;
+  $form = node_assign_owner_action_form($context);
+  // From node.module, generate an ownership form.
+  $form['owner_name']['#title'] = t('Owner');
+  $form['nid'] = array(
+    '#type' => 'hidden',
+    '#value' => $node->nid,
+  );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Update ownership'),
+  );
+  return $form;
+}
+
+/*
+ * Form callback validation for _vaxia_change_ownership_form.
+ */
+function _artwork_change_ownership_form_validate($form, $form_state) {
+  $count = db_query('SELECT COUNT(*) FROM {users} WHERE name = :name',
+    array(':name' => $form_state['values']['owner_name']))->fetchField();
+  if (intval($count) != 1) {
+    form_set_error('owner_name', t('Please enter a valid username.'));
+  }
+}
+
+/*
+ * Form callback submission for _vaxia_change_ownership_form.
+ */
+function _artwork_change_ownership_form_submit($form, $form_state) {
+  $values = $form_state['values'];
+  $node = node_load($values['nid']);
+  global $user;
+  if (!empty($node) && user_access('change art owner') || ($user->uid == $node->uid && 
+      (user_access('edit any artwork content') || user_access('edit own artwork content'))
+    )) {
+    $uid = db_query("SELECT uid from {users} WHERE name = :name", array(':name' => $values['owner_name']))->fetchField();
+    if (!empty($uid)) {
+      $node->uid = $uid;
+    }
+    node_save($node);
+  }
+}

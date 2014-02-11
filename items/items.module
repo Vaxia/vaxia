@@ -7,6 +7,223 @@
 include_once 'items.features.inc';
 
 /**
+ * Implements hook_permission().
+ */
+function items_permission() {
+  return array(
+    'change item owner'=> array(
+      'title' => t('change item owner'),
+      'description' => t('Change the owner of an item.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function items_menu() {
+  $items['node/%node/transfer_items'] = array(
+    'title' => 'Ownership',
+    'type' => MENU_LOCAL_TASK,
+    'access callback' => '_items_menu_ownership_access_callback',
+    'access arguments' => array(1),
+    'page callback' => '_items_ownership',
+    'page arguments' => array(1),
+    'weight' => 3,
+  );
+  return $items;
+}
+
+/**
+ * Menu access callback.
+ */
+function _items_menu_ownership_access_callback($node) {
+  if ($node->type == 'items') {
+    global $user;
+    if (user_access('change item owner') || ($user->uid == $node->uid && 
+        (user_access('edit any items content')
+          || user_access('edit own items content')))) {
+      return TRUE;
+    }
+    return FALSE;
+  }
+}
+
+/**
+ * Menu callback, transfer ownership pages for items and artwork.
+ */
+function _items_ownership($node) {
+  return drupal_get_form('_items_change_ownership_form', $node);
+}
+
+/*
+ * Form callback function from nodeapi view, adds moderation form to node display.
+ */
+function _items_change_ownership_form($form, &$form_state, $node) {
+  $context['owner_uid'] = $node->uid;
+  $form = node_assign_owner_action_form($context);
+  // From node.module, generate an ownership form.
+  $form['owner_name']['#title'] = t('Owner');
+  $form['nid'] = array(
+    '#type' => 'hidden',
+    '#value' => $node->nid,
+  );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Update ownership'),
+  );
+  return $form;
+}
+
+/*
+ * Form callback validation for _vaxia_change_ownership_form.
+ */
+function _items_change_ownership_form_validate($form, $form_state) {
+  $count = db_query('SELECT COUNT(*) FROM {users} WHERE name = :name',
+    array(':name' => $form_state['values']['owner_name']))->fetchField();
+  if (intval($count) != 1) {
+    form_set_error('owner_name', t('Please enter a valid username.'));
+  }
+}
+
+/*
+ * Form callback submission for _vaxia_change_ownership_form.
+ */
+function _items_change_ownership_form_submit($form, $form_state) {
+  $values = $form_state['values'];
+  $node = node_load($values['nid']);
+  global $user;
+  if (!empty($node) && user_access('change item owner') || ($user->uid == $node->uid && 
+      (user_access('edit any items content') || user_access('edit own items content'))
+    )) {
+    $uid = db_query("SELECT uid from {users} WHERE name = :name", array(':name' => $values['owner_name']))->fetchField();
+    if (!empty($uid)) {
+      $node->uid = $uid;
+    }
+    node_save($node);
+  }
+}
+
+/*
+ * Implements hook_node_view().
+ */
+function items_node_view($node, $view_mode, $langcode) {
+  // If node is a character sheet.
+  if (_character_sheet_is_enabled($node)) {
+    // Hide items that aren't approved yet.
+    $lang = $node->language;
+    if (!empty($node->field_items[$lang])) {
+      foreach ($node->field_items[$lang] as $index => $this_item) {
+        $this_item = $this_item['node'];
+        if (!isset($this_item->workflow_state_name) || $this_item->workflow_state_name != t('approved')) {
+          // Remove this item from display.
+          unset($node->content['field_items']['#items'][$index]);
+        }
+      }
+    }
+  } // End character sheet view.
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function items_form_items_node_form_alter(&$form, &$form_state, $form_id) {
+  $node = isset($form['#node']) ? $form['#node'] : '';
+  if (empty($node->clone_from_original_nid) && isset($node->workflow) && $node->workflow == 4) {
+    $allowed_edit = array('field_item_desc', 'field_item_history', 'field_character_owner',
+      'field_sh_notes', 'field_sh_private_notes', 'field_player_notes', 'field_creation_history');
+    foreach (element_children($form) as $child) {
+      if ((strpos($child, 'field_') === 0 || $child == 'title') && !in_array($child, $allowed_edit)) {
+        $form[$child]['#disabled'] = TRUE;
+      }
+    }
+    drupal_set_message('You are attempting to edit an Item that has already been approved for play. Item numbers cannot be further edited ' .
+      'after approval. Please revert this Item to draft, and take it through the approval process again if you need to update numbers.');
+  }
+  $form['#after_build'][] = '_items_node_form_workflow_after_build';
+}
+
+/**
+ * Implements form after build.
+ */
+function _items_node_form_workflow_after_build($form, $form_state) {
+  global $user;
+  $node = isset($form['#node']) ? $form['#node'] : '';
+  // You own the item.
+  if (!empty($form['#wf']->name) && !empty($node) && $user->uid == $node->uid && $node->type == 'items') {
+    $workflow_name = $form['#wf']->name;
+    $options = $form['workflow'][$workflow_name]['#options'];
+    $index = array_search('approved', $options);
+    if ($index !== FALSE && $index != $node->workflow) {
+      drupal_set_message(t('You own this item, you cannot set it to approved. Currently: ' . $node->workflow_state_name));
+      unset($options[$index]);
+      unset($form['workflow'][$workflow_name][$index]);
+      $form['workflow'][$workflow_name]['#options'] = $options;
+      $form['workflow'][$workflow_name]['#default_value'] = $node->workflow;
+    }
+  }
+  // You own the character that owns the item.
+  if ($node->type == 'items') {
+    $lang = $node->language;
+    $character_owner = isset($node->field_character_owner[$lang][0]['nid'])
+      ? node_load($node->field_character_owner[$lang][0]['nid']) : FALSE;
+    if ($character_owner && !empty($form['#wf']->name) && !empty($node) && $user->uid == $character_owner->uid) {
+      $workflow_name = $form['#wf']->name;
+      $options = $form['workflow'][$workflow_name]['#options'];
+      $index = array_search('approved', $options);
+      if ($index !== FALSE && $index != $node->workflow) {
+        drupal_set_message(t('You own the character that owns this item, you cannot set it to approved. ' .
+          'Currently: ' . $node->workflow_state_name));
+        unset($options[$index]);
+        unset($form['workflow'][$workflow_name][$index]);
+        $form['workflow'][$workflow_name]['#options'] = $options;
+        $form['workflow'][$workflow_name]['#default_value'] = $node->workflow;
+      }
+    }
+  }
+  return $form;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function items_form_workflow_tab_form_alter(&$form, &$form_state, $form_id) {
+  global $user;
+  $node = isset($form['node']['#value']) ? $form['node']['#value'] : '';
+  if (!empty($node) && $user->uid == $node->uid) {
+    if ($node->type == 'items') {
+      $workflow_name = $form['#wf']->name;
+      $options = $form['workflow'][$workflow_name]['#options'];
+      $index = array_search('approved', $options);
+      if ($index !== FALSE && $index != $node->workflow) {
+        drupal_set_message(t('You own this item, you cannot set it to approved. Currently: ' . $node->workflow_state_name));
+        unset($options[$index]);
+        $form['workflow'][$workflow_name]['#options'] = $options;
+        $form['workflow'][$workflow_name]['#default_value'] = $node->workflow;
+      }
+    }
+  }
+  if (!empty($node) && !empty($node->type) && $node->type == 'items') {
+    $lang = $node->language;
+    $character_owner = isset($node->field_character_owner[$lang][0]['nid'])
+      ? node_load($node->field_character_owner[$lang][0]['nid']) : FALSE;
+    if ($character_owner && !empty($form['#wf']->name) && !empty($node) && $user->uid == $character_owner->uid) {
+      $workflow_name = $form['#wf']->name;
+      $options = $form['workflow'][$workflow_name]['#options'];
+      $index = array_search('approved', $options);
+      if ($index !== FALSE && $index != $node->workflow) {
+        drupal_set_message(t('You own the character that owns this item, you cannot set it to approved. ' .
+          'Currently: ' . $node->workflow_state_name));
+        unset($options[$index]);
+        unset($form['workflow'][$workflow_name][$index]);
+        $form['workflow'][$workflow_name]['#options'] = $options;
+        $form['workflow'][$workflow_name]['#default_value'] = $node->workflow;
+      }
+    }
+  }
+}
+
+/**
  * Helper for rules. Check if the item is over limits.
  */
 function items_check_needs_oversight($node) {
@@ -18,7 +235,7 @@ function items_check_needs_oversight($node) {
     'reflexes', 'intelligence', 'awareness', 'spirituality', 'presence', 'charisma', 'appearance', 'skill',
   );
   foreach ($fields as $field_name) {
-    $field_name = 'field_item' . $field_name;
+    $field_name = 'field_item_' . $field_name;
     $stat = isset($node->{$field_name}[$lang][0]['value']) ?
     $node->{$field_name}[$lang][0]['value'] : 0;
     if ($stat >= $limit) {

@@ -15,14 +15,6 @@ include_once('vaxia.character_sheet.inc');
  */
 function vaxia_permission() {
   return array(
-    'change art owner'=> array(
-      'title' => t('change art owner'),
-      'description' => t('Change the owner of art.'),
-    ),
-    'change item owner'=> array(
-      'title' => t('change item owner'),
-      'description' => t('Change the owner of an item.'),
-    ),
     'post in narrative format' => array(
       'title' => t('post in narrative format'),
       'description' => t('Post in narrative format.'),
@@ -47,18 +39,10 @@ function vaxia_permission() {
       'title' => t('edit SH notes'),
       'description' => t('Edit SH notes.'),
     ),
-//    'edit own SH notes' => array(
-//      'title' => t('edit own SH notes'),
-//      'description' => t('Edit own SH notes.'),
-//    ),
     'edit private SH notes' => array(
       'title' => t('edit private SH notes'),
       'description' => t('Edit private SH notes.'),
     ),
-//    'edit own private SH notes' => array(
-//      'title' => t('edit own private SH notes'),
-//      'description' => t('Edit own private SH notes.'),
-//    ),
   );
 }
 
@@ -66,25 +50,11 @@ function vaxia_permission() {
  * Implements hook_menu().
  */
 function vaxia_menu() {
-  $items['node/%node/v_ownership'] = array(
-    'title' => 'Ownership',
-    'type' => MENU_LOCAL_TASK,
-    'access callback' => '_vaxia_menu_ownership_access_callback',
-    'access arguments' => array(1),
-    'page callback' => '_vaxia_ownership',
-    'page arguments' => array(1),
-    'weight' => 3,
-  );
   $items['vaxia/transfer_xp'] = array(
     'title' => 'Transfer XP autocomplete',
     'type' => MENU_CALLBACK,
     'access arguments' => array('access content'),
     'page callback' => '_vaxia_transfer_xp_autocomplete',
-  );
-  $items['vaxia/dice_proof'] = array(
-    'title' => 'Vaxia diceroller',
-    'access arguments' => array('view dice rolls'),
-    'page callback' => '_vaxia_dice_proof',
   );
   return $items;
 }
@@ -143,22 +113,9 @@ function vaxia_rules_event_info() {
 }
 
 /**
-* Implements hook_cron_queue_info().
-*/
-function vaxia_cron_queue_info() {
-  $queues = array();
-  $queues['vaxiaSilverQueue'] = array(
-    'worker callback' => '_vaxia_character_daily_silver',
-    'time' => 60,
-  );
-  return $queues;
-}
-
-/**
  * Implements hook_cron().
  */
 function vaxia_cron() {
-  _vaxia_cron_silver();
   _vaxia_cron_dblog_cleanup();
 }
 
@@ -185,89 +142,6 @@ function _vaxia_cron_dblog_cleanup() {
         ->execute();
     }
   }
-}
-
-/**
- * Cron job for silver handling.
- */
-function _vaxia_cron_silver() {
-  $last_run = variable_get('vaxia_character_sheet_cron', 0);
-  $yesterday = strtotime('-1 day');
-  if ($last_run < $yesterday) {
-    $queue = DrupalQueue::get('vaxiaSilverQueue');
-    $last_run = variable_set('vaxia_character_sheet_cron', strtotime('now'));
-    // On cron. Go through ALL character sheets.
-    // Using this query to make swure we don't load anything we really don't need to.
-    // So only nodes that have an economy and exist.
-    $sheets = db_query('SELECT n.nid FROM {field_data_field_economy} e ' . // With an economy value
-      'LEFT JOIN {node} n ON e.entity_id = n.nid AND e.revision_id = n.vid ' .
-      'WHERE n.status = 1 ' . // Active character sheet
-      'AND n.nid NOT IN (' .
-      'SELECT npc.entity_id FROM {field_data_field_is_npc} npc WHERE npc.field_is_npc_value = 1' . // Not an NPC
-      ')'.
-      'AND n.nid NOT IN (' .
-      'SELECT onpc.entity_id FROM {field_data_field_is_open_npc} onpc WHERE onpc.field_is_open_npc_value = 1' . // Not an open NPC
-      ')');
-    foreach ($sheets as $node_data) {
-      $item = array(
-        'nid' => $node_data->nid
-      );
-      $queue->createItem($item);
-    }
-  }
-}
-
-/**
- * Helper function, calculate money for economy on cron.
- */
-function _vaxia_character_daily_silver($node_data) {
-  // For each sheet, calculate money to add based on the economy level.
-  $node = node_load($node_data['nid']);
-  if (_character_sheet_is_enabled($node) && _character_sheet_is_playable($node)) {
-    $level = isset($node->field_economy[$node->language][0]['value']) ?
-      $node->field_economy[$node->language][0]['value'] : 0;
-    $silver = _character_sheet_get_xp($node->nid, 'silver');
-    $silver_spent = _character_sheet_get_xp($node->nid, 'spent_silver');
-    $silver_invested = _character_sheet_get_xp($node->nid, 'invest_silver');
-    $available_silver = $silver - ($silver_spent + $silver_invested);
-    $income = _vaxia_get_month_income($level);
-    $daily = _vaxia_get_daily_pay($level);
-    // If silver on hand > income reduce it by daily pay, else add it.
-    if ($available_silver > $income) {
-      // Reduce silver.
-      _character_sheet_update_xp($node->nid, $daily * -1, 'silver');
-      watchdog('vaxia_slv', 'Removed ' . $daily .' to # '. $node->nid . ' ' . $node->title);
-    }
-    else {
-      // Add silver.
-      _character_sheet_update_xp($node->nid, $daily, 'silver');
-      watchdog('vaxia_slv', 'Added ' . $daily .' to # '. $node->nid . ' ' . $node->title);
-    }
-  }
-}
-
-/**
- * Menu access callback.
- */
-function _vaxia_menu_ownership_access_callback($node) {
-  $vaxia_ownership_managed = array('artwork', 'item');
-  if (in_array($node->type, $vaxia_ownership_managed)) {
-    global $user;
-    if ((user_access('change art owner') || user_access('change item owner'))
-      || ($user->uid == $node->uid && 
-        (user_access('edit any ' . $node->type . ' content')
-          || user_access('edit own ' . $node->type . ' content')))) {
-      return TRUE;
-    }
-    return FALSE;
-  }
-}
-
-/**
- * Menu callback, transfer ownership pages for items and artwork.
- */
-function _vaxia_ownership($node) {
-  return drupal_get_form('_vaxia_change_ownership_form', $node);
 }
 
 /**
@@ -311,20 +185,9 @@ function vaxia_node_view($node, $view_mode, $langcode) {
     if (!($user->uid == $node->uid || user_access('edit SH notes'))) {
       unset($node->content['field_player_notes']);
     }
-    // Hide items that aren't approved yet.
-    $lang = $node->language;
-    if (!empty($node->field_items[$lang])) {
-      foreach ($node->field_items[$lang] as $index => $this_item) {
-        $this_item = $this_item['node'];
-        if (!isset($this_item->workflow_state_name) || $this_item->workflow_state_name != t('approved')) {
-          // Remove this item from display.
-          unset($node->content['field_items']['#items'][$index]);
-        }
-      }
-    }
   }
 
-  // If node is an RPG chatroom, add the js for additional behaviors.
+  // If node is an RPG chatroom, add the js for additional behaviors for Vaxia specifically.
   if ($node->type == 'rpg_chatroom') {
     drupal_add_js( drupal_get_path('module', 'vaxia') . '/js/vaxia.js' );
   }
@@ -356,56 +219,9 @@ function vaxia_workflow($op, $old_state, $new_state, $node, $force = FALSE) {
   }
 }
 
-/*
- * Form callback function from nodeapi view, adds moderation form to node display.
- */
-function _vaxia_change_ownership_form($form, &$form_state, $node) {
-  $context['owner_uid'] = $node->uid;
-  $form = node_assign_owner_action_form($context);
-  // From node.module, generate an ownership form.
-  $form['owner_name']['#title'] = t('Owner');
-  $form['nid'] = array(
-    '#type' => 'hidden',
-    '#value' => $node->nid,
-  );
-  $form['submit'] = array(
-    '#type' => 'submit',
-    '#value' => t('Update ownership'),
-  );
-  return $form;
-}
-
-/*
- * Form callback validation for _vaxia_change_ownership_form.
- */
-function _vaxia_change_ownership_form_validate($form, $form_state) {
-  $count = db_query('SELECT COUNT(*) FROM {users} WHERE name = :name',
-    array(':name' => $form_state['values']['owner_name']))->fetchField();
-  if (intval($count) != 1) {
-    form_set_error('owner_name', t('Please enter a valid username.'));
-  }
-}
-
-/*
- * Form callback submission for _vaxia_change_ownership_form.
- */
-function _vaxia_change_ownership_form_submit($form, $form_state) {
-  $values = $form_state['values'];
-  $node = node_load($values['nid']);
-  global $user;
-  if (!empty($node) && user_access('change art owner') || ($user->uid == $node->uid && 
-      (user_access('edit any ' . $node->type . ' content') || user_access('edit own ' . $node->type . ' content'))
-    )) {
-    $uid = db_query("SELECT uid from {users} WHERE name = :name", array(':name' => $values['owner_name']))->fetchField();
-    if (!empty($uid)) {
-      $node->uid = $uid;
-    }
-    node_save($node);
-  }
-}
-
 /**
  * Implements process suggestion for comment theme. This allows us to override parts of the comment form.
+ * This code is executed on display of the comment.
  */
 function vaxia_process_comment(&$variables) {
 
@@ -451,7 +267,6 @@ function vaxia_process_comment(&$variables) {
       $variables['content']['comment_body']['#suffix'] = '</span>';
     }
   }
-
   // Apply picture rules to All node types.
   // Redo the submitted field for RPG chatrooms only.
   $variables['submitted'] = t('!username </br> !datetime',
@@ -483,7 +298,6 @@ function vaxia_process_comment(&$variables) {
           '!username' => l($character_name, 'node/' . $character->nid, $options),
           '!datetime' => $variables['created'])
         );
-
       // Set the character picture.
       $alt = t('Presence: @pre, Charisma: @char, Appearance: @app',
         array('@pre' => $character->field_presence[$lang][0]['value'],
@@ -579,83 +393,10 @@ function theme_vaxia_dice_roller($element) {
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function vaxia_form_items_node_form_alter(&$form, &$form_state, $form_id) {
-  $node = isset($form['#node']) ? $form['#node'] : '';
-  if (empty($node->clone_from_original_nid) && isset($node->workflow) && $node->workflow == 4) {
-    $allowed_edit = array('field_item_desc', 'field_item_history', 'field_character_owner',
-      'field_sh_notes', 'field_sh_private_notes', 'field_player_notes', 'field_creation_history');
-    foreach (element_children($form) as $child) {
-      if ((strpos($child, 'field_') === 0 || $child == 'title') && !in_array($child, $allowed_edit)) {
-        $form[$child]['#disabled'] = TRUE;
-      }
-    }
-    drupal_set_message('You are attempting to edit an Item that has already been approved for play. Item numbers cannot be further edited ' .
-      'after approval. Please revert this Item to draft, and take it through the approval process again if you need to update numbers.');
-  }
-  $form['#after_build'][] = '_vaxia_node_form_workflow_after_build';
-}
-
-/**
- * Implements form after build.
- */
-function _vaxia_node_form_workflow_after_build($form, $form_state) {
-  global $user;
-  $node = isset($form['#node']) ? $form['#node'] : '';
-  // You own the item.
-  if (!empty($form['#wf']->name) && !empty($node) && $user->uid == $node->uid && $node->type == 'items') {
-    $workflow_name = $form['#wf']->name;
-    $options = $form['workflow'][$workflow_name]['#options'];
-    $index = array_search('approved', $options);
-    if ($index !== FALSE && $index != $node->workflow) {
-      drupal_set_message(t('You own this node, you cannot set it to approved. Currently: ' . $node->workflow_state_name));
-      unset($options[$index]);
-      unset($form['workflow'][$workflow_name][$index]);
-      $form['workflow'][$workflow_name]['#options'] = $options;
-      $form['workflow'][$workflow_name]['#default_value'] = $node->workflow;
-    }
-  }
-  // You own the character that owns the item.
-  if ($node->type == 'items') {
-    $lang = $node->language;
-    $character_owner = isset($node->field_character_owner[$lang][0]['nid'])
-      ? node_load($node->field_character_owner[$lang][0]['nid']) : FALSE;
-    if ($character_owner && !empty($form['#wf']->name) && !empty($node) && $user->uid == $character_owner->uid) {
-      $workflow_name = $form['#wf']->name;
-      $options = $form['workflow'][$workflow_name]['#options'];
-      $index = array_search('approved', $options);
-      if ($index !== FALSE && $index != $node->workflow) {
-        drupal_set_message(t('You own the character that owns this item, you cannot set it to approved. ' .
-          'Currently: ' . $node->workflow_state_name));
-        unset($options[$index]);
-        unset($form['workflow'][$workflow_name][$index]);
-        $form['workflow'][$workflow_name]['#options'] = $options;
-        $form['workflow'][$workflow_name]['#default_value'] = $node->workflow;
-      }
-    }
-  }
-  return $form;
-}
-
-/**
- * Implements hook_form_FORM_ID_alter().
- */
 function vaxia_form_user_profile_form_alter(&$form, &$form_state, $form_id) {
-  $form['picture']['picture_delete']['#access'] = FALSE;
-  $form['picture']['picture_upload']['#access'] = FALSE;
-  $form['picture']['field_artwork'] = $form['field_artwork'];
-  unset($form['field_artwork']);
   $form['field_comment_color']['#access'] = FALSE;
   $form['field_current_character']['#access'] = FALSE;
   $form['field_refresh_rate']['#access'] = FALSE;
-  $form['field_xp_over_time']['#access'] = FALSE;
-  $form['field_took_ash1']['#access'] = FALSE;
-  $form['field_took_ash2']['#access'] = FALSE;
-  $form['field_took_ash3']['#access'] = FALSE;
-  $form['field_became_sh']['#access'] = FALSE;
-  $form['field_took_eval_test']['#access'] = FALSE;
-  $form['field_became_evaluator']['#access'] = FALSE;
-  $form['field_voting_record']['#access'] = FALSE;
-  $form['field_became_voter']['#access'] = FALSE;
 }
 
 /**
@@ -665,31 +406,13 @@ function vaxia_form_workflow_tab_form_alter(&$form, &$form_state, $form_id) {
   global $user;
   $node = isset($form['node']['#value']) ? $form['node']['#value'] : '';
   if (!empty($node) && $user->uid == $node->uid) {
-    if ($node->type == 'character_sheet' || $node->type == 'items') {
+    if ($node->type == 'character_sheet') {
       $workflow_name = $form['#wf']->name;
       $options = $form['workflow'][$workflow_name]['#options'];
       $index = array_search('approved', $options);
       if ($index !== FALSE && $index != $node->workflow) {
-        drupal_set_message(t('You own this node, you cannot set it to approved. Currently: ' . $node->workflow_state_name));
+        drupal_set_message(t('You own this character, you cannot set it to approved. Currently: ' . $node->workflow_state_name));
         unset($options[$index]);
-        $form['workflow'][$workflow_name]['#options'] = $options;
-        $form['workflow'][$workflow_name]['#default_value'] = $node->workflow;
-      }
-    }
-  }
-  if (!empty($node) && !empty($node->type) && $node->type == 'items') {
-    $lang = $node->language;
-    $character_owner = isset($node->field_character_owner[$lang][0]['nid'])
-      ? node_load($node->field_character_owner[$lang][0]['nid']) : FALSE;
-    if ($character_owner && !empty($form['#wf']->name) && !empty($node) && $user->uid == $character_owner->uid) {
-      $workflow_name = $form['#wf']->name;
-      $options = $form['workflow'][$workflow_name]['#options'];
-      $index = array_search('approved', $options);
-      if ($index !== FALSE && $index != $node->workflow) {
-        drupal_set_message(t('You own the character that owns this item, you cannot set it to approved. ' .
-          'Currently: ' . $node->workflow_state_name));
-        unset($options[$index]);
-        unset($form['workflow'][$workflow_name][$index]);
         $form['workflow'][$workflow_name]['#options'] = $options;
         $form['workflow'][$workflow_name]['#default_value'] = $node->workflow;
       }
@@ -704,73 +427,54 @@ function vaxia_form_alter(&$form, &$form_state, $form_id) {
 
   // If we're viewing a comment form, allow for user profile to set RPG chat additional fields.
   if (substr($form_id, 0, 7) == 'comment' && isset($form['#node'])) {
+    // Eject if this is not a chat room type.
     $type = $form['#node']->type;
     if (!_rpg_chat_is_enabled($type)) {
       return;
     }
-    global $user;
-    $this_player = user_load($user->uid);
-    $lang = $form['language']['#value'];
     // Set character controls.
-    if (isset($this_player->field_current_character[$lang][0]['nid'])) {
-      $character = node_load($this_player->field_current_character[$lang][0]['nid']);
-      if (isset($character->title)) {
-        $form['field_comment_character'][$lang]['#default_value'][0] = $character->nid;
-        if (isset($character->field_artwork[$lang][0]['nid'])) {
-          $form['field_artwork'][$lang]['#default_value'][0] = $character->field_artwork[$lang][0]['nid'];
-        }
-        $kxp = _character_sheet_get_xp($character->nid, 'kxp');
-        $xp = _character_sheet_get_xp($character->nid, 'xp');
-        $spent_xp = _character_sheet_get_xp($character->nid, 'spent_xp');
-        
-        $form['field_comment_character'][$lang]['#description'] = $kxp . ' / 70 KXP, ' . ($xp - $spent_xp) . ' XP';
-      }
-    }
-    else {
-      if (isset($this_player->field_artwork[$lang][0]['nid'])) {
-        $form['field_artwork'][$lang]['#default_value'][0] = $this_player->field_artwork[$lang][0]['nid'];
-      }
-    }
+    //$character = node_load($this_player->field_current_character[$lang][0]['nid']);
+    //if (isset($character->title)) {
+      //$form['field_comment_character'][$lang]['#default_value'][0] = $character->nid;
+      //if (isset($character->field_artwork[$lang][0]['nid'])) {
+      //  $form['field_artwork'][$lang]['#default_value'][0] = $character->field_artwork[$lang][0]['nid'];
+      //}
+      //$kxp = _character_sheet_get_xp($character->nid, 'kxp');
+      //$xp = _character_sheet_get_xp($character->nid, 'xp');
+      //$spent_xp = _character_sheet_get_xp($character->nid, 'spent_xp');       
+      //$form['field_comment_character'][$lang]['#description'] = $kxp . ' / 70 KXP, ' . ($xp - $spent_xp) . ' XP';
+    //}
+    // Set limits in limbo rooms.
     $limbo_room = variable_get('vaxia_limbo_room', array());
+    // Set narrative checkbox access and no access in limbo rooms.
+    if (!user_access('post in narrative format') || in_array($form['#node']->nid, $limbo_room)) {
+      $form['field_comment_narrative'][$lang]['#value'] = 0;
+      $form['field_comment_narrative'][$lang]['#access'] = FALSE;
+      $form['field_comment_narrative'][$lang]['#type'] = 'hidden';
+    }
+    // Remove the no character setting for non-Limbo rooms.
     if (!in_array($form['#node']->nid, $limbo_room)) {
       $options = $form['field_comment_character'][$lang]['#options'];
       $options = array_diff($options, array('_none' => '- None -'));
       $form['field_comment_character'][$lang]['#options'] = $options;
     }
+    // Set up diceroller callbacks on character selection.
     $form['field_comment_character'][$lang]['#ajax'] = array(
       'callback' => '_vaxia_character_pick',
       'wrapper' => 'vaxia-dice-roller',
       'method' => 'replace',
       'effect' => 'fade',
     );
-    // Set comment color controls.
-    if (isset($this_player->field_comment_color[$lang][0]['safe_value'])) {
-      $form['field_comment_color'][$lang][0]['value']['#default_value'] =
-        $this_player->field_comment_color[$lang][0]['safe_value'];
-    }
-    // Set narrative checkbox access.
-    if (!user_access('post in narrative format')) {
-      $form['field_comment_narrative'][$lang]['#value'] = 0;
-      $form['field_comment_narrative'][$lang]['#access'] = FALSE;
-      $form['field_comment_narrative'][$lang]['#type'] = 'hidden';
-    }
-    // Add new fields.
-    $form['field_refresh_rate'] = array(
-      '#type' => 'hidden',
-      '#default_value' => isset($this_player->field_refresh_rate[$lang][0]['value']) ?
-        $this_player->field_refresh_rate[$lang][0]['value'] : 30,
-      '#size' => 6,
-      '#title' => t('Refresh rate'),
-      '#weight' => 6,
-    );
+    // Set player uid for pickup.
     $form['uid'] = array(
       '#type' => 'hidden',
       '#value' => $this_player->uid,
     );
+    // Set submissions.
     $form['actions']['submit']['#value'] = t('Post');
-    $form['#submit'][] = '_vaxia_comment_set_profile_values_submit';
     $form['#submit'][] = '_vaxia_comment_add_kxp_submit';
     $form['#submit'][] = '_vaxia_comment_redirect_submit';
+    // Move things around to duplicate submit buttons.
     $new_post = $form['actions']['submit'];
     $new_post['#weight'] = -10;
     array_unshift($form, $new_post);
@@ -791,40 +495,20 @@ function _vaxia_character_pick($form, $form_state) {
 }
 
 /**
- * Additional submit handler for comment forms to set profile values for default.
- */
-function _vaxia_comment_set_profile_values_submit($form, $form_state) {
-  // Get the values from the comment submit handler.
-  $lang = $form_state['values']['language'];
-  $character = $form_state['values']['field_comment_character'][$lang][0]['nid'];
-  $artwork = $form_state['values']['field_artwork'][$lang][0]['nid'];
-  $color = $form_state['values']['field_comment_color'][$lang][0]['value'];
-  $refresh_rate = $form_state['values']['field_refresh_rate'];
-  $uid = $form_state['values']['uid'];
-  // Save them to the profile sheet.
-  $this_player = user_load($uid);
-  $this_player->field_current_character[$lang][0]['nid'] = $character;
-  $this_player->field_comment_color[$lang][0]['value'] = $color;
-  $this_player->field_artwork[$lang][0]['nid'] = $artwork;
-  if (is_numeric($refresh_rate) && $refresh_rate > 4) {
-    $this_player->field_refresh_rate[$lang][0]['value'] = $refresh_rate;
-  }
-  user_save($this_player);
-}
-
-/**
  * Additional submit handler to add kxp for commenting as a character, not narrative.
  */
 function _vaxia_comment_add_kxp_submit($form, $form_state) {
+  // Ignore kxp for limbo rooms.
   $limbo_room = variable_get('vaxia_limbo_room', array());
   if (in_array($form['#node']->nid, $limbo_room)) {
     return;
   }
+  // Otherwise, figure out how much kxp we're giving.
   $lang = $form_state['values']['language'];
   // If posted as a character and not as narrative.
   if (!empty($form_state['values']['field_comment_character'][$lang][0]['nid']) ) {
     if (!empty($form['cid']['#value'])) {
-      drupal_set_message('Editting an existing comment - no kxp will be awarded.');
+      drupal_set_message('Editing an existing comment - no kxp will be awarded.');
       return;
     }
     // The character gains XP per wordcount.
@@ -860,21 +544,10 @@ function _vaxia_comment_add_kxp_submit($form, $form_state) {
 
 /**
  * Redirection submit handler to clip the anchor.
+ * This avoids wierd scroll down issues in the display.
  */
 function _vaxia_comment_redirect_submit($form, &$form_state) {
   $form_state['redirect'] = 'node/' . $form_state['values']['nid'];
-}
-
-/**
- * Implements hook_rpg_chat_user_refresh().
- */
-function vaxia_rpg_chat_user_refresh($refresh) {
-  global $user;
-  $this_player = user_load($user->uid);
-  $lang = $this_player->language;
-  $refresh = isset($this_player->field_refresh_rate[$lang][0]['value']) ?
-    $this_player->field_refresh_rate[$lang][0]['value'] : 60;
-  return $refresh;
 }
 
 /**
@@ -883,59 +556,6 @@ function vaxia_rpg_chat_user_refresh($refresh) {
 function vaxia_form_comment_form_alter(array &$form, array &$form_state) {
   // Disable the extra box on comment forms.
   $form['author']['subscriptions_notify']['#access'] = FALSE;
-}
-
-/**
- * Menu callback.
- */
-function _vaxia_dice_proof() {
-  // Given dice patterns in the past, provide a page to analyze the dice rolled to date and calculate results as proof.
-  $dice_rolls = db_query('SELECT roll_result FROM {dice_roller} WHERE roll_command LIKE :rolls', array(':rolls' => '1d100%'));
-  $roll_set = array();
-  $count = 0;
-  $average = 0;
-  foreach ($dice_rolls as $dice_roll) {
-    $result = explode('=', $dice_roll->roll_result);
-    $rolls = explode(',', $result[0]);
-    $roll = trim($rolls[0]);
-    if (is_numeric($roll)) {
-      $count++;
-      $average += $roll;
-      if (!isset($roll_set[$roll])) {
-        $roll_set[$roll] = 0;
-      }
-      $roll_set[$roll]++;
-    }
-  }
-  $average = $average / $count;
-  // Display.
-  $output = '<style>';
-  $output .= '.dice_proof_row{}';
-  $output .= '.dice_proof_label{padding-left:0.5em;}';
-  $output .= '.dice_proof_average{border-right:solid 1px #111;display:block;}';
-  $output .= '.dice_proof_value{background:green;display:block;}';
-  $output .= '</style>';
-  $output .= '<div class="dice_proof_title">Across ' . $count . ' Rolls:</div>';
-  $counts = array_sum($roll_set) / 100;
-  $cut = $counts > 100 ? $counts / 2 : 0;
-  $mark = $counts - $cut;
-  for ($n = 1; $n < 101; $n++) {
-    if (!isset($roll_set[$n])) {
-      $roll_set[$n] = 0;
-    }
-    $width = $roll_set[$n] - $cut;
-    $output .= '<div>' .
-      '<span class="dice_proof_value" style="width:' . $width . 'em;">' .
-      '  <span class="dice_proof_average" style="width:' . $mark . 'em;">&nbsp;' .
-      '    <span class="dice_proof_label">' . $n .
-      '    </span>' .
-      '  </span>' .
-      '</span>' .
-      '</div>';
-  }
-  $output .= '<div class="dice_proof_title">Expected mathematical average of all rolls: 50 / 51</div>';
-  $output .= '<div class="dice_proof_title">Actual mathematical average of all rolls: ' . $average . '</div>';
-  return $output;
 }
 
 /**
@@ -950,117 +570,4 @@ function _vaxia_get_SH_characters($uid) {
     }
   }
   return $character_nids;
-}
-
-/**
- * Helper for rules. Check if today is election day.
- */
-function vaxia_check_election_day($day = '05-01') {
-  $today = date('m-d', strtotime('now'));
-  if ($today == $day) {
-    return TRUE;
-  }
-  return FALSE;
-}
-
-/**
- * Helper for rules. Check if today is election day.
- */
-function vaxia_setup_election_proposal($entity_created) {
-  $output = '';
-  $output .= '<h3><b>Vaxia Election</b></h3>';
-  $output .= '<p>Each year Vaxia has an election for the key positions on our site. ' .
-    'This is so that we can always be sure that the current leadership is connected to ' .
-    'and trusted by our players.</p>';
-  $output .= '<p>Available positions are:</p>';
-  $output .= '<ul>';
-  $output .= '<li>System Head A (aka World Head A)</li>';
-  $output .= '<li>System Head B (aka World Head B)</li>';
-  $output .= '<li>Setting Head A (aka Academy Head A)</li>';
-  $output .= '<li>Setting Head B (aka Academy Head B)</li>';
-  $output .= '</ul>';
-  $output .= '<p>Please take a moment to review the candidates for this ' .
-    'year and select those you feel to be the best choices for the available positions.</p>';
-
-  // Set the webform body
-  $entity_created->body[$entity_created->language][0]['value'] = $output;
-  $entity_created->webform['confirmation'] = t('Thank you for participating!');
-  $entity_created->webform['confirmation_format'] = 'plain_text';
-  $entity_created->webform['submit_limit'] = 1;
-
-  // Save the node.
-  node_save($entity_created);
-
-  // Save roles that can vote, 19 = Voting Player
-  $record = db_query('DELETE FROM {webform_roles} WHERE nid = :nid', array(':nid' => $entity_created->nid));
-  db_insert('webform_roles')->fields(array('nid' => $entity_created->nid, 'rid' => 19))->execute();
-
-  // Gather the user info.
-  $system_eligible_names = db_query('SELECT u.name FROM {users} u ' . 
-    'LEFT JOIN {users_roles} ur ON u.uid = ur.uid ' .
-    'LEFT JOIN {field_data_field_eligible_for_system_head} f ON u.uid = f.entity_id ' .
-    'WHERE ur.rid = 19 ' .
-    'AND f.field_eligible_for_system_head_value = 1');
-  $system_eligible = '';
-  foreach ($system_eligible_names as $system_eligible_name) {
-    $system_eligible .= $system_eligible_name->name . '|' . $system_eligible_name->name . "\n";
-  }
-  $setting_eligible_names = db_query('SELECT u.name FROM {users} u ' . 
-    'LEFT JOIN {users_roles} ur ON u.uid = ur.uid ' .
-    'LEFT JOIN {field_data_field_eligible_for_setting_head} f ON u.uid = f.entity_id ' .
-    'WHERE ur.rid = 19 ' .
-    'AND f.field_eligible_for_setting_head_value = 1');
-  $setting_eligible = '';
-  foreach ($setting_eligible_names as $setting_eligible_name) {
-    $setting_eligible .= $setting_eligible_name->name . '|' . $setting_eligible_name->name . "\n";
-  }
-
-  // Include the webform module that allows components to be created.
-  module_load_include('inc', 'webform', 'includes/webform.components');
-
-  // Create the webform fields for possible elected.
-  $keys = array(
-    'system_a' => 'System Head A',
-    'system_b' => 'System Head B',
-    'setting_a' => 'Setting Head A',
-    'setting_b' => 'Setting Head B',
-  );
-  foreach ($keys as $key => $title) {
-    $items = $setting_eligible;
-    if ($key == 'system_a' || $key == 'system_b') {
-    $items = $system_eligible;
-    }
-    $component = array();
-    $component['nid'] = $entity_created->nid;
-    $component['pid'] = 0;
-    $component['form_key'] = $key;
-    $component['name'] = $title;
-    $component['type'] = 'select';
-    $component['mandatory'] = 1;
-    $component['extra'] = array(
-      'description' => '',
-      'items' => $items,
-      'multiple' => '0',
-      'aslist' => '1',
-    );
-    $component['weight'] = 0;
-    webform_component_insert($component);
-  }
-
-  // Add additional fields or comments.
-  $component = array();
-  $component['nid'] = $entity_created->nid;
-  $component['pid'] = 0;
-  $component['form_key'] = 'comments';
-  $component['name'] = 'Additional Comments  and Feedback';
-  $component['type'] = 'textarea';
-  $component['mandatory'] = 0;
-  $component['extra'] = array(
-    'description' => '',
-    'items' => '',
-    'multiple' => '0',
-    'aslist' => '0',
-    );
-  $component['weight'] = 1;
-  webform_component_insert($component);
 }
