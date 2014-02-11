@@ -125,7 +125,7 @@ function rpg_chat_node_view($node, $view_mode = 'full', $langcode) {
     // Allow other modules to provide custom refresh rates for users.
     // Such as from a specific implementation of a character sheet.
     $refresh = module_invoke_all('rpg_chat_user_refresh', $refresh);
-    $refresh = $refresh[0];
+    $refresh = isset($refresh[0]) ? $refresh[0] : 60;
     if ($refresh < $min_refresh) {
       $refresh = $min_refresh;
     }
