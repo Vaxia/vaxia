@@ -6,6 +6,7 @@ php = 5.2.4
 version = 7.x-1.2
 project = npcs
 dependencies[] = ctools
+dependencies[] = entity
 dependencies[] = php
 dependencies[] = rules
 dependencies[] = views
