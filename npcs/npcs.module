@@ -386,7 +386,7 @@ function _npcs_admin_settings($form, &$form_state) {
   $form['npcs_storyteller_role'] = array(
     '#type' => 'select',
     '#options' => $roles,
-    '#title' => t('storyteller role'),
+    '#title' => t('Storyteller role'),
     '#default_value' => variable_get('npcs_storyteller_role', ''),
     '#description' => t('NPC owners who have a storyteller role cannot have NPCs sniped from their ownership.'),
   );
