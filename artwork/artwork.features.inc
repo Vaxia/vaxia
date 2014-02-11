@@ -61,24 +61,28 @@ function artwork_workflow_default_workflows() {
         'weight' => '-50',
         'sysid' => '1',
         'status' => '1',
+        'name' => 'Art evaluation workflow',
       ),
       1 => array(
         'state' => 'draft',
         'weight' => '0',
         'sysid' => '0',
         'status' => '1',
+        'name' => 'Art evaluation workflow',
       ),
       2 => array(
         'state' => 'approved',
         'weight' => '0',
         'sysid' => '0',
         'status' => '1',
+        'name' => 'Art evaluation workflow',
       ),
       3 => array(
         'state' => 'removed from site',
         'weight' => '0',
         'sysid' => '0',
         'status' => '1',
+        'name' => 'Art evaluation workflow',
       ),
     ),
     'transitions' => array(
