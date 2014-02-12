@@ -10,18 +10,6 @@ Drupal was selected as the basis for this as it came with many critical features
 already supported: User accounts, login, MySQL database storage, file handling,
 display configuration and access control, and ability to be modified.
 
-Adding Vaxia specific features was simply a matter of adding modules to handle
-Vaxia specific features. Using the Character Sheet, Dice Roller, and the Zen
-base theme Vaxia can be replicated in Drupal while gaining all the benefits.
-
-The three major components of this effort are included in this repo.
-
-Vaxia - the game engine, handles character sheets, dice rolls. This handles the 
-math of character creation and coordinates the game mechanics on rolls.
-
-RPG Chat - Contained within the Vaxia module, adds JS behaviors to Drupal 
-comments to create a chat-room interface. (Optional)
-
 INSTALLATION
 ------------
 1) Place vaxia folders in YOUR_SITE/sites/all/modules.
