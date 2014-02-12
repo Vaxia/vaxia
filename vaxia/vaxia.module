@@ -438,6 +438,7 @@ function vaxia_form_alter(&$form, &$form_state, $form_id) {
       $form['field_comment_character'][$lang]['#description'] = $kxp . ' / 70 KXP, ' . ($xp - $spent_xp) . ' XP';
     }
     // Set limits in limbo rooms.
+    $lang = isset($form_state['values']['language']) ? $form_state['values']['language'] : 'und';
     $limbo_room = variable_get('vaxia_limbo_room', array());
     // Set narrative checkbox access and no access in limbo rooms.
     if (!user_access('post in narrative format') || in_array($form['#node']->nid, $limbo_room)) {
