@@ -150,7 +150,7 @@ function _convert_room_to_wiki($new_title, $child_location, $child_wiki) {
       $child_wiki->body[$child_wiki->language][0]['value'] = $child_location->body[$child_location->language][0]['value'] . "\n\n" .
         'This location file was recently updated from room data on ' . date('m-d-Y') . '. It has not been checked for accuracy yet. ' .
         'Please ask World (make a forum post) to confirm information shown on this page before relying on it.';
-      $child_wiki->body[$child_wiki->language][0]['format'] = 'plain_text';
+      $child_wiki->body[$child_wiki->language][0]['format'] = 'wiki';
     }
     node_save($child_wiki);
     // And now save that wiki link into the child location information.
