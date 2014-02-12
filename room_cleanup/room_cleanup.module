@@ -97,7 +97,6 @@ function room_cleanup_form_submit($form, &$form_state) {
 function _room_cleanup_rooms() {
   $cutoff = strtotime(variable_get('room_cleanup_date', '6 months') . ' ago');
   drupal_set_message('Cleaning up rooms, started looking at rooms older than: ' . date('m/d/Y 00:00:01', $cutoff) . '.');
-
   // Build a list of comments that are immune to this restriction.
   // First rooms that directly have comments.
   $nodes = db_query('SELECT DISTINCT c.nid FROM {comment} c ' .
@@ -108,7 +107,6 @@ function _room_cleanup_rooms() {
     $rooms_not_cleanup[] = $node->nid;
   }
   $rooms_with_comments = '\''. implode('\', \'', $rooms_not_cleanup) . '\'';
-
   // Then build a list of potential rooms that we may have to cleanup.
   // Get all the rooms that qualify first. Which is to say, rooms older than the cutoff - that do not have
   // comments. Then once we have all those nids, we can start tracking parents and children to winnow it down
@@ -125,7 +123,6 @@ function _room_cleanup_rooms() {
   $rooms_without_comments = '\''. implode('\', \'', $rooms_for_cleanup) . '\'';
   drupal_set_message('Identified ' . count($rooms_for_cleanup) . ' rooms that may be cleaned up.');
   // TODO - filter this list by exempt rooms.
-
   // And now the fun part. We need to walk down the collection of rooms.
   // And find out which one have children rooms in the 'has comment' set.
   // And add those rooms to the 'has comment' set, removing them from eligibility.
@@ -165,7 +162,6 @@ function _room_cleanup_rooms() {
     $last_number_of_rooms = $number_of_rooms;
     $number_of_rooms = count($rooms_not_cleanup); // If these are the same, we found no paretns and are at the top of the tree now.
   }
-   
   // Now we have a working list of the rooms we can and should clean up based on usage.
   $cleaned_up_rooms = 0;
   foreach ($rooms_for_cleanup as $nid) {
@@ -183,7 +179,6 @@ function _room_cleanup_rooms() {
   }
   watchdog('room_cleanup', 'Cleaned up ' . $cleaned_up_rooms . ' rooms.');
   drupal_set_message('Cleaned up ' . $cleaned_up_rooms . ' rooms.');
-
   // Save the last time we ran this.
   variable_set('room_cleanup_last_run', date('m/d/Y H:i:s'));
 }
