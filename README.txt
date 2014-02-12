@@ -3,14 +3,9 @@ CONTENTS
 Introduction
 Installation
 Configuration
-Conversion of old Vaxia
 
 INTRODUCTION
 ------------
-Vaxia has operated for ages on old software with critical security flaws
-and non-standard file structures. It has become difficult to maintain, and 
-extremely difficult to modify. Thankfully, we have other options.
-
 Drupal was selected as the basis for this as it came with many critical features
 already supported: User accounts, login, MySQL database storage, file handling,
 display configuration and access control, and ability to be modified.
@@ -27,12 +22,9 @@ math of character creation and coordinates the game mechanics on rolls.
 RPG Chat - Contained within the Vaxia module, adds JS behaviors to Drupal 
 comments to create a chat-room interface. (Optional)
 
-Vaxia Conversion - Creates XML files out of the old Vaxia file system, and 
-handles the import of that information into Drupal, including image files.
-
 INSTALLATION
 ------------
-1) Place vaxia and vaxia_convert folders in YOUR_SITE/sites/all/modules.
+1) Place vaxia folders in YOUR_SITE/sites/all/modules.
 1) Place vaxia_theme folders in YOUR_SITE/sites/all/themes.
 2) Go to YOUR_SITE/admin/modules and enable the Vaxia module.
 3) Approve enabling all pre-requisites. There are a lot of these so depending
@@ -60,3 +52,16 @@ Workflow matching the name of the content type.
 
 4) RPG Chatrooms should have Dice enables, and use the Vaxia dice form.
 
+CARE AND FEEDING
+----------------
+This is Drupal 7 code, and is for the most part completely compatible with Drupal 7
+modules. There are two patched modules in the repo - both of which have patches put
+into the associated module issue queues:
+
+a) Corresponding Node References - used to keep characters and items matched up with
+each other. It needed a cache_refresh patch. Patch at: https://drupal.org/node/1399906
+
+* This patch has been committed, we should schedule the removal of CNR and replacement.
+
+b) Freelinking - used to modify the wiki links for nodetitle plugin to add additional 
+ways to lcoate the intended wiki page. Patch at: https://drupal.org/node/2168243
