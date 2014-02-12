@@ -164,10 +164,26 @@ function wiki_feature_freelinking_nodetitle_nid_from_title(&$target) {
   foreach ($result as $record) {
     $set[] = $record;
   }
-  // WIKI FEARTURE: This is where the big change is. Allow partial match on title IFF not found on full match.
+  // WIKI FEATURE: This is where the big change is. Allow partial match on title IFF not found on full match.
   if (empty($set)) {
     $sql = "SELECT title, nid, language FROM {node} WHERE title LIKE :title"; 
     $params = array(':title' => '%' . $title);
+    if ($type != 'none') {
+      $sql .= " AND type = :type";
+      $params[':type'] = $type;
+    }
+    $result = db_query($sql, $params);
+    $set = array();
+    foreach ($result as $record) {
+      $set[] = $record;
+    }
+  }
+  // Still nothing? Ok. One last try.
+  if (empty($set)) {
+    $title_end = explode('/', $title);
+    $title_end = array_pop($title_end);
+    $sql = "SELECT title, nid, language FROM {node} WHERE title LIKE :title"; 
+    $params = array(':title' => '%' . $title_end);
     if ($type != 'none') {
       $sql .= " AND type = :type";
       $params[':type'] = $type;
