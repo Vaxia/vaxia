@@ -7,6 +7,68 @@
 include_once 'rpg_site_staff.features.inc';
 
 /**
+ * Implements hook_permission().
+ */
+function rpg_site_staff_permission() {
+  return array(
+    'administrate staff settings'=> array(
+      'title' => t('administrate staff settings'),
+      'description' => t('Administrate staff settings.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function rpg_site_staff_menu() {
+  $items['admin/config/people/rpg_site_staff'] = array(
+    'title' => 'RPG Staff settings',
+    'description' => 'Settings for staff and player administration.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('_rpg_site_staff_admin_settings'),
+    'access arguments' => array('administrate staff settings'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  return $items;
+}
+
+/**
+ * Menu callback, admin form.
+ */
+function _rpg_site_staff_admin_settings($form, &$form_state) {
+  $form['rpg_site_staff_election_day'] = array(
+    '#title' => t('Election day'),
+    '#description' => t('Set the election day for automatic elections.'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('rpg_site_staff_election_day', 'May 1st'),
+  );
+  $available = implode("\n", array('Setting Head A (aka World Head A)', 'Setting Head B (aka World Head B)', 
+    'System Head A (aka Academy Head A)', 'System Head A (aka Academy Head A)') );
+  $form['rpg_site_staff_positions'] = array(
+    '#title' => t('Available positions'),
+    '#description' => t('List postitions avaiblae on the site, one per row.'),
+    '#type' => 'textarea',
+    '#default_value' => variable_get('rpg_site_staff_positions', $available),
+  );
+  $form['rpg_site_staff_voting_roles'] = array(
+    '#title' => t('Election voting roles'),
+    '#description' => t('These roles are allowed to vote.'),
+    '#type' => 'checkboxes',
+    '#options' =>  user_roles(),
+    '#default_value' => variable_get('rpg_site_staff_voting_roles', array()),
+  );
+  $form['rpg_site_staff_run_role'] = array(
+    '#title' => t('Election run role'),
+    '#description' => t('This roles is allowed to run.'),
+    '#type' => 'select',
+    '#options' =>  user_roles(),
+    '#default_value' => variable_get('rpg_site_staff_run_role', ''),
+  );
+  return system_settings_form($form);
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  */
 function rpg_site_staff_form_user_profile_form_alter(&$form, &$form_state, $form_id) {
@@ -20,7 +82,9 @@ function rpg_site_staff_form_user_profile_form_alter(&$form, &$form_state, $form
 /**
  * Helper for rules. Check if today is election day.
  */
-function vaxia_check_election_day($day = '05-01') {
+function vaxia_check_election_day() {
+  $day = variable_get('rpg_site_staff_election_day', 'May 1st');
+  $day = date('m-d', strtotime($day . ' 1980'));
   $today = date('m-d', strtotime('now'));
   if ($today == $day) {
     return TRUE;
@@ -32,6 +96,10 @@ function vaxia_check_election_day($day = '05-01') {
  * Helper for rules. Check if today is election day.
  */
 function vaxia_setup_election_proposal($entity_created) {
+  $available = implode("\n", array('Setting Head A (aka World Head A)', 'Setting Head B (aka World Head B)', 
+    'System Head A (aka Academy Head A)', 'System Head A (aka Academy Head A)') );
+  $available = variable_get('rpg_site_staff_positions', $available);
+  $available = explode("\n", $available);
   $output = '';
   $output .= '<h3><b>Vaxia Election</b></h3>';
   $output .= '<p>Each year Vaxia has an election for the key positions on our site. ' .
@@ -39,33 +107,36 @@ function vaxia_setup_election_proposal($entity_created) {
     'and trusted by our players.</p>';
   $output .= '<p>Available positions are:</p>';
   $output .= '<ul>';
-  $output .= '<li>System Head A (aka World Head A)</li>';
-  $output .= '<li>System Head B (aka World Head B)</li>';
-  $output .= '<li>Setting Head A (aka Academy Head A)</li>';
-  $output .= '<li>Setting Head B (aka Academy Head B)</li>';
+  $keys = array();
+  foreach ($available as $position) {
+    $keys[$position] = $position;
+    $output .= '<li>' . check_plain(trim($position)) . '</li>';
+  }
   $output .= '</ul>';
   $output .= '<p>Please take a moment to review the candidates for this ' .
     'year and select those you feel to be the best choices for the available positions.</p>';
-
   // Set the webform body
   $entity_created->body[$entity_created->language][0]['value'] = $output;
   $entity_created->webform['confirmation'] = t('Thank you for participating!');
   $entity_created->webform['confirmation_format'] = 'plain_text';
   $entity_created->webform['submit_limit'] = 1;
-
   // Save the node.
   node_save($entity_created);
-
   // Save roles that can vote, 19 = Voting Player
+  // Set approving roles for users.
+  $rpg_site_staff_voting_roles = variable_get('rpg_site_staff_voting_roles', array());
   $record = db_query('DELETE FROM {webform_roles} WHERE nid = :nid', array(':nid' => $entity_created->nid));
-  db_insert('webform_roles')->fields(array('nid' => $entity_created->nid, 'rid' => 19))->execute();
-
+  foreach ($rpg_site_staff_voting_roles as $role) {
+    if ($role) {
+      db_insert('webform_roles')->fields(array('nid' => $entity_created->nid, 'rid' => $role))->execute();
+    }
+  }
   // Gather the user info.
   $system_eligible_names = db_query('SELECT u.name FROM {users} u ' . 
     'LEFT JOIN {users_roles} ur ON u.uid = ur.uid ' .
     'LEFT JOIN {field_data_field_eligible_for_system_head} f ON u.uid = f.entity_id ' .
-    'WHERE ur.rid = 19 ' .
-    'AND f.field_eligible_for_system_head_value = 1');
+    'WHERE ur.rid = :voting_role ' .
+    'AND f.field_eligible_for_system_head_value = 1', array(':voting_role' => variable_get('rpg_site_staff_run_role', '') ));
   $system_eligible = '';
   foreach ($system_eligible_names as $system_eligible_name) {
     $system_eligible .= $system_eligible_name->name . '|' . $system_eligible_name->name . "\n";
@@ -73,27 +144,19 @@ function vaxia_setup_election_proposal($entity_created) {
   $setting_eligible_names = db_query('SELECT u.name FROM {users} u ' . 
     'LEFT JOIN {users_roles} ur ON u.uid = ur.uid ' .
     'LEFT JOIN {field_data_field_eligible_for_setting_head} f ON u.uid = f.entity_id ' .
-    'WHERE ur.rid = 19 ' .
-    'AND f.field_eligible_for_setting_head_value = 1');
+    'WHERE ur.rid = :voting_role ' .
+    'AND f.field_eligible_for_setting_head_value = 1', array(':voting_role' => variable_get('rpg_site_staff_run_role', '') ));
   $setting_eligible = '';
   foreach ($setting_eligible_names as $setting_eligible_name) {
     $setting_eligible .= $setting_eligible_name->name . '|' . $setting_eligible_name->name . "\n";
   }
-
   // Include the webform module that allows components to be created.
   module_load_include('inc', 'webform', 'includes/webform.components');
-
   // Create the webform fields for possible elected.
-  $keys = array(
-    'system_a' => 'System Head A',
-    'system_b' => 'System Head B',
-    'setting_a' => 'Setting Head A',
-    'setting_b' => 'Setting Head B',
-  );
   foreach ($keys as $key => $title) {
     $items = $setting_eligible;
-    if ($key == 'system_a' || $key == 'system_b') {
-    $items = $system_eligible;
+    if ($key == 'System Head A (aka Academy Head A)' || $key == 'System Head B (aka Academy Head B)') {
+      $items = $system_eligible;
     }
     $component = array();
     $component['nid'] = $entity_created->nid;
@@ -111,7 +174,6 @@ function vaxia_setup_election_proposal($entity_created) {
     $component['weight'] = 0;
     webform_component_insert($component);
   }
-
   // Add additional fields or comments.
   $component = array();
   $component['nid'] = $entity_created->nid;

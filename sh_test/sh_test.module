@@ -181,7 +181,6 @@ function sh_test_setup_approval_form($user, $node, $entity_created) {
     drupal_set_message(t('An error was encountered, no result ID able to be found.'));
     return;
   }
-
   // Now get the printed out set of answers.
   $questions = _quiz_get_answers($node, $rid);
   ksort($questions);
@@ -197,16 +196,13 @@ function sh_test_setup_approval_form($user, $node, $entity_created) {
     drupal_set_message(t('An error was encountered, no output able to be created.'));
     return;
   }
-
   // Set the webform body
   $entity_created->body[$entity_created->language][0]['value'] = $output;
   $entity_created->webform['confirmation'] = t('Thank you!');
   $entity_created->webform['confirmation_format'] = 'plain_text';
   $entity_created->webform['submit_limit'] = 1;
-
   // Save the node
   node_save($entity_created);
-
   // Set approving roles for users.
   $approving = variable_get('sh_test_approving_roles', array());
   $record = db_query('DELETE FROM {webform_roles} WHERE nid = :nid', array(':nid' => $entity_created->nid));
@@ -215,7 +211,6 @@ function sh_test_setup_approval_form($user, $node, $entity_created) {
       db_insert('webform_roles')->fields(array('nid' => $entity_created->nid, 'rid' => $role))->execute();
     }
   }
-
   // Create the standard webform field for approval.
   $component = array();
   $component['nid'] = $entity_created->nid;

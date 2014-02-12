@@ -181,7 +181,6 @@ function _item_helper_view_table(&$headers, &$rows, $node, $set_comments) {
     t('RP Bonus'),
     t('Result'),
   );
-
   $rows = array();
   // Create table data.
   $roll_types = array(
@@ -478,7 +477,6 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
           ),
         ),
       );
-
       $roll_type = array(
         '#type' => 'radios',
         '#options' => array(
@@ -672,7 +670,6 @@ function _item_helper_calculate_results($found_comments) {
       $ongoing_prep_bonus += $item_comment->set_bonus;
       $set_bonus_txt = t('Add @set_bonus flat circumstance bonus.', array('@set_bonus' => $item_comment->set_bonus));
     }
-
     $roll_txt = t('No roll on this post.');
     if (!empty($dice_rolls)) {
       $mights = array();
