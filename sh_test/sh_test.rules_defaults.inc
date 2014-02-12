@@ -59,7 +59,7 @@ function sh_test_default_rules_configuration() {
       "PLUGIN" : "reaction rule",
       "WEIGHT" : "1",
       "OWNER" : "rules",
-      "TAGS" : [ "Positions" ],
+      "TAGS" : [ "SH Test" ],
       "REQUIRES" : [ "rules", "quiz_rules" ],
       "ON" : { "quiz_rules_quiz_passed" : [] },
       "IF" : [
@@ -437,7 +437,7 @@ function sh_test_default_rules_configuration() {
       "WEIGHT" : "1",
       "ACTIVE" : false,
       "OWNER" : "rules",
-      "TAGS" : [ "Positions" ],
+      "TAGS" : [ "SH Test" ],
       "REQUIRES" : [ "rules", "quiz_rules" ],
       "ON" : { "quiz_rules_quiz_passed" : [] },
       "IF" : [
@@ -606,7 +606,7 @@ function sh_test_default_rules_configuration() {
       "PLUGIN" : "reaction rule",
       "ACTIVE" : false,
       "OWNER" : "rules",
-      "TAGS" : [ "Positions" ],
+      "TAGS" : [ "SH Test" ],
       "REQUIRES" : [ "rules", "user_stats" ],
       "ON" : { "user_stats_day_older" : [] },
       "IF" : [
@@ -645,7 +645,7 @@ function sh_test_default_rules_configuration() {
       "PLUGIN" : "reaction rule",
       "ACTIVE" : false,
       "OWNER" : "rules",
-      "TAGS" : [ "Positions" ],
+      "TAGS" : [ "SH Test" ],
       "REQUIRES" : [ "rules", "php", "user_stats" ],
       "ON" : { "user_stats_day_older" : [] },
       "IF" : [

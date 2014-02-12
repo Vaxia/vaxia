@@ -13,7 +13,7 @@ function artwork_views_default_views() {
   $view = new view();
   $view->name = 'artwork';
   $view->description = 'View user uploaded artwork';
-  $view->tag = 'Vaxia';
+  $view->tag = 'Artwork';
   $view->base_table = 'node';
   $view->human_name = 'Artwork';
   $view->core = 7;

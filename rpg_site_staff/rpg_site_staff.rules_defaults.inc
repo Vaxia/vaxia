@@ -13,7 +13,7 @@ function rpg_site_staff_default_rules_configuration() {
       "LABEL" : "Add character and become a player",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "TAGS" : [ "Vaxia" ],
+      "TAGS" : [ "Staff" ],
       "REQUIRES" : [ "rules" ],
       "ON" : { "node_insert--character_sheet" : { "bundle" : "character_sheet" } },
       "IF" : [
@@ -28,7 +28,7 @@ function rpg_site_staff_default_rules_configuration() {
       "LABEL" : "Add Voting Player Comment",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "TAGS" : [ "Positions" ],
+      "TAGS" : [ "Staff" ],
       "REQUIRES" : [ "rules", "comment" ],
       "ON" : { "comment_insert" : [] },
       "IF" : [
@@ -58,7 +58,7 @@ function rpg_site_staff_default_rules_configuration() {
       "LABEL" : "Make user eligible for SH on XP gain",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "TAGS" : [ "SH Test" ],
+      "TAGS" : [ "Staff" ],
       "REQUIRES" : [ "rules", "user_stats" ],
       "ON" : { "user_stats_day_older" : [] },
       "IF" : [
@@ -86,7 +86,7 @@ function rpg_site_staff_default_rules_configuration() {
       "LABEL" : "Rem priv roles if no-run 6mo",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "TAGS" : [ "Positions" ],
+      "TAGS" : [ "Staff" ],
       "REQUIRES" : [ "rules", "php", "user_stats" ],
       "ON" : { "user_stats_day_older" : [] },
       "IF" : [
@@ -133,7 +133,7 @@ function rpg_site_staff_default_rules_configuration() {
       "LABEL" : "Rem priv roles if absentee 6mo",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "TAGS" : [ "Positions" ],
+      "TAGS" : [ "Staff" ],
       "REQUIRES" : [ "rules", "user_stats" ],
       "ON" : { "user_stats_day_older" : [] },
       "IF" : [
@@ -197,7 +197,7 @@ function rpg_site_staff_default_rules_configuration() {
       "LABEL" : "Remove Non-Voting Player",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "TAGS" : [ "Positions" ],
+      "TAGS" : [ "Staff" ],
       "REQUIRES" : [ "rules", "php", "user_stats" ],
       "ON" : { "user_stats_day_older" : [] },
       "IF" : [
@@ -214,7 +214,7 @@ function rpg_site_staff_default_rules_configuration() {
       "LABEL" : "Retire inactive user account",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "TAGS" : [ "Retire" ],
+      "TAGS" : [ "Staff" ],
       "REQUIRES" : [ "rules", "user_stats" ],
       "ON" : { "user_stats_day_older" : [] },
       "IF" : [
@@ -256,7 +256,7 @@ function rpg_site_staff_default_rules_configuration() {
       "PLUGIN" : "reaction rule",
       "WEIGHT" : "1",
       "OWNER" : "rules",
-      "TAGS" : [ "Retire" ],
+      "TAGS" : [ "Staff" ],
       "REQUIRES" : [ "rules", "user_stats" ],
       "ON" : { "user_stats_day_older" : [] },
       "IF" : [
@@ -291,7 +291,7 @@ function rpg_site_staff_default_rules_configuration() {
       "LABEL" : "SH General Expire",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "TAGS" : [ "Positions" ],
+      "TAGS" : [ "Staff" ],
       "REQUIRES" : [ "rules", "user_stats" ],
       "ON" : { "user_stats_day_older" : [] },
       "IF" : [
@@ -341,7 +341,7 @@ function rpg_site_staff_default_rules_configuration() {
       "LABEL" : "SH General Expire Warning",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "TAGS" : [ "Positions" ],
+      "TAGS" : [ "Staff" ],
       "REQUIRES" : [ "rules", "php", "user_stats" ],
       "ON" : { "user_stats_day_older" : [] },
       "IF" : [
@@ -387,7 +387,7 @@ function rpg_site_staff_default_rules_configuration() {
       "LABEL" : "Vacation end",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "TAGS" : [ "Positions" ],
+      "TAGS" : [ "Staff" ],
       "REQUIRES" : [ "rules", "vacation" ],
       "ON" : { "vacation_end" : [] },
       "DO" : [
@@ -406,7 +406,7 @@ function rpg_site_staff_default_rules_configuration() {
       "LABEL" : "Vacation start",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "TAGS" : [ "Positions" ],
+      "TAGS" : [ "Staff" ],
       "REQUIRES" : [ "rules", "vacation" ],
       "ON" : { "vacation_start" : [] },
       "DO" : [
@@ -425,7 +425,7 @@ function rpg_site_staff_default_rules_configuration() {
       "LABEL" : "Add Voting Player Node",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "TAGS" : [ "Positions" ],
+      "TAGS" : [ "Staff" ],
       "REQUIRES" : [ "rules" ],
       "ON" : { "node_insert" : [] },
       "IF" : [
@@ -444,7 +444,7 @@ function rpg_site_staff_default_rules_configuration() {
       "PLUGIN" : "reaction rule",
       "WEIGHT" : "1",
       "OWNER" : "rules",
-      "TAGS" : [ "Retire" ],
+      "TAGS" : [ "Staff" ],
       "REQUIRES" : [ "rules", "user_stats" ],
       "ON" : { "user_stats_day_older" : [] },
       "IF" : [
@@ -484,7 +484,7 @@ function rpg_site_staff_default_rules_configuration() {
       "LABEL" : "Rem priv roles if no-run 6mo warning",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "TAGS" : [ "Positions" ],
+      "TAGS" : [ "Staff" ],
       "REQUIRES" : [ "rules", "php", "user_stats" ],
       "ON" : { "user_stats_day_older" : [] },
       "IF" : [
@@ -518,7 +518,7 @@ function rpg_site_staff_default_rules_configuration() {
       "LABEL" : "Yearly Election",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "TAGS" : [ "Positions" ],
+      "TAGS" : [ "Staff" ],
       "REQUIRES" : [ "rules", "php", "user_stats" ],
       "ON" : { "user_stats_day_older" : [] },
       "IF" : [

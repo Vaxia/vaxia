@@ -13,7 +13,7 @@ function top_tens_views_default_views() {
   $view = new view();
   $view->name = 'top_tens';
   $view->description = 'View the top tens';
-  $view->tag = 'Vaxia';
+  $view->tag = 'Top Tens';
   $view->base_table = 'vaxia_xp_type_totals';
   $view->human_name = 'Top Tens';
   $view->core = 7;
@@ -302,7 +302,7 @@ return TRUE;';
   $view = new view();
   $view->name = 'total_top_ten';
   $view->description = 'A view of the total top tens';
-  $view->tag = 'Vaxia';
+  $view->tag = 'Top Tens';
   $view->base_table = 'character_sheet_xp';
   $view->human_name = 'Total top ten';
   $view->core = 7;

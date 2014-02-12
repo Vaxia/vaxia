@@ -13,7 +13,7 @@ function proposal_default_rules_configuration() {
       "LABEL" : "Close Open Proposals",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "TAGS" : [ "Vaxia" ],
+      "TAGS" : [ "Proposals" ],
       "REQUIRES" : [ "rules", "views_bulk_operations", "webform_rules", "user_stats" ],
       "ON" : { "user_stats_day_older" : [] },
       "IF" : [ { "data_is" : { "data" : [ "user:uid" ], "value" : "1" } } ],

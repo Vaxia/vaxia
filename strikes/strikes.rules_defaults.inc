@@ -13,7 +13,7 @@ function strikes_default_rules_configuration() {
       "LABEL" : "Red strike",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "TAGS" : [ "Vaxia Reputation" ],
+      "TAGS" : [ "Strikes" ],
       "REQUIRES" : [ "rules", "php" ],
       "ON" : { "node_insert" : [] },
       "IF" : [
@@ -51,7 +51,7 @@ function strikes_default_rules_configuration() {
       "LABEL" : "Yellow strike",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "TAGS" : [ "Vaxia Reputation" ],
+      "TAGS" : [ "Strikes" ],
       "REQUIRES" : [ "rules" ],
       "ON" : { "node_insert" : [] },
       "IF" : [

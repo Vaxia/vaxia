@@ -13,7 +13,7 @@ function proposal_views_default_views() {
   $view = new view();
   $view->name = 'proposals';
   $view->description = 'Proposals in the system, live and completed';
-  $view->tag = 'Vaxia';
+  $view->tag = 'Proposals';
   $view->base_table = 'node';
   $view->human_name = 'Proposals';
   $view->core = 7;

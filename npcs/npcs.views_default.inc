@@ -13,7 +13,7 @@ function npcs_views_default_views() {
   $view = new view();
   $view->name = 'character_npcs';
   $view->description = 'Storyteller NPCs';
-  $view->tag = 'Vaxia';
+  $view->tag = 'NPCs';
   $view->base_table = 'node';
   $view->human_name = 'Storyteller NPCs';
   $view->core = 7;
@@ -531,7 +531,7 @@ function npcs_views_default_views() {
   $view = new view();
   $view->name = 'oversight';
   $view->description = 'These objects need additional oversight';
-  $view->tag = 'Vaxia';
+  $view->tag = 'NPCs';
   $view->base_table = 'node';
   $view->human_name = 'Oversight NPCs';
   $view->core = 7;
@@ -1088,7 +1088,7 @@ return !npcs_check_needs_oversight(node_load($row->nid));';
   $view = new view();
   $view->name = 'wiki_npcs_list';
   $view->description = 'NPC master list for wiki display';
-  $view->tag = 'Vaxia';
+  $view->tag = 'NPCs';
   $view->base_table = 'node';
   $view->human_name = 'Wiki NPCs List';
   $view->core = 7;

@@ -13,7 +13,7 @@ function rpg_chat_views_default_views() {
   $view = new view();
   $view->name = 'chat_archives';
   $view->description = 'View the archives of posts in a specific chatroom';
-  $view->tag = 'Vaxia';
+  $view->tag = 'Chat';
   $view->base_table = 'comment';
   $view->human_name = 'Chat Archives';
   $view->core = 7;
@@ -124,7 +124,7 @@ function rpg_chat_views_default_views() {
   $view = new view();
   $view->name = 'rpg_chats';
   $view->description = 'Display a list of RPG chats';
-  $view->tag = 'Vaxia';
+  $view->tag = 'Chat';
   $view->base_table = 'node';
   $view->human_name = 'RPG Chats';
   $view->core = 7;

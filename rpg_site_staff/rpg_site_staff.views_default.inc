@@ -13,7 +13,7 @@ function rpg_site_staff_views_default_views() {
   $view = new view();
   $view->name = 'sessions';
   $view->description = 'A list of your sessions';
-  $view->tag = 'Vaxia';
+  $view->tag = 'Staff';
   $view->base_table = 'node';
   $view->human_name = 'Sessions';
   $view->core = 7;
@@ -331,7 +331,7 @@ function rpg_site_staff_views_default_views() {
   $view = new view();
   $view->name = 'storytellers_and_assistants';
   $view->description = 'Show a list of SHs and ASHs';
-  $view->tag = 'Vaxia';
+  $view->tag = 'Staff';
   $view->base_table = 'users';
   $view->human_name = 'Storytellers and Assistants';
   $view->core = 7;

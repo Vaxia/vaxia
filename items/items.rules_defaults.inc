@@ -13,7 +13,7 @@ function items_default_rules_configuration() {
       "LABEL" : "Notify item eval re: new item",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "TAGS" : [ "Vaxia" ],
+      "TAGS" : [ "Items" ],
       "REQUIRES" : [ "rules", "workflow_rules", "php" ],
       "ON" : { "workflow_state_changed" : [] },
       "IF" : [
@@ -40,7 +40,7 @@ function items_default_rules_configuration() {
       "LABEL" : "Notify player when item approved",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "TAGS" : [ "Vaxia" ],
+      "TAGS" : [ "Items" ],
       "REQUIRES" : [ "rules", "workflow_rules" ],
       "ON" : { "workflow_state_changed" : [] },
       "IF" : [
@@ -67,7 +67,7 @@ function items_default_rules_configuration() {
       "LABEL" : "Notify player when item disapproved",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "TAGS" : [ "Vaxia" ],
+      "TAGS" : [ "Items" ],
       "REQUIRES" : [ "rules", "workflow_rules" ],
       "ON" : { "workflow_state_changed" : [] },
       "IF" : [

@@ -13,7 +13,7 @@ function items_views_default_views() {
   $view = new view();
   $view->name = 'character_items';
   $view->description = 'Show character items in the system';
-  $view->tag = 'Vaxia';
+  $view->tag = 'Items';
   $view->base_table = 'node';
   $view->human_name = 'Character Items';
   $view->core = 7;
@@ -472,7 +472,7 @@ return $uid;';
   $view = new view();
   $view->name = 'oversight_items';
   $view->description = 'These objects need additional oversight';
-  $view->tag = 'Vaxia';
+  $view->tag = 'Items';
   $view->base_table = 'node';
   $view->human_name = 'Oversight Items';
   $view->core = 7;

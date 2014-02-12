@@ -13,7 +13,7 @@ function npcs_default_rules_configuration() {
       "LABEL" : "Notify char eval re: OVERSIGHT NPC",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "TAGS" : [ "Vaxia" ],
+      "TAGS" : [ "NPCs" ],
       "REQUIRES" : [ "rules", "workflow_rules", "php" ],
       "ON" : { "workflow_state_changed" : [] },
       "IF" : [
@@ -55,7 +55,7 @@ function npcs_default_rules_configuration() {
       "LABEL" : "Notify char eval re: OVERSIGHT NPC - pass_npc",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "TAGS" : [ "Vaxia" ],
+      "TAGS" : [ "NPCs" ],
       "REQUIRES" : [ "rules", "workflow_rules", "php" ],
       "ON" : { "workflow_state_changed" : [] },
       "IF" : [
@@ -98,7 +98,7 @@ function npcs_default_rules_configuration() {
       "LABEL" : "Request NPC",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "TAGS" : [ "Vaxia NPCs" ],
+      "TAGS" : [ "NPCs" ],
       "REQUIRES" : [ "rules", "npcs" ],
       "ON" : { "npcs_request" : [] },
       "DO" : [

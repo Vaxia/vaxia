@@ -13,7 +13,7 @@ function strikes_views_default_views() {
   $view = new view();
   $view->name = 'strikes';
   $view->description = 'Player\'s earned strikes';
-  $view->tag = 'Vaxia';
+  $view->tag = 'Strikes';
   $view->base_table = 'node';
   $view->human_name = 'Strikes';
   $view->core = 7;
