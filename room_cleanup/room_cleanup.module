@@ -20,7 +20,10 @@ function room_cleanup_permission() {
  * Implements hook_cron().
  */
 function room_cleanup_cron() {
-  return _room_cleanup_rooms();
+  if (variable_get('room_cleanup_cron',  FALSE)) {
+    _room_cleanup_rooms();
+  }
+  return;
 }
 
 /**
@@ -65,8 +68,96 @@ function room_cleanup_admin_form($form, &$form_state) {
     '#type' => 'textfield',
     '#default_value' => variable_get('room_cleanup_date', '12 months'),
   );
+  $form['room_cleanup_cron'] = array(
+    '#title' => t('Enable cron cleanup'),
+    '#type' => 'checkbox',
+    '#default_value' => variable_get('room_cleanup_cron',  FALSE),
+  );
+  $form['move_to_wiki'] = array(
+    '#type' => 'submit',
+    '#value' => 'MOVE ROOMS TO WIKI',
+    '#submit' => array('_room_cleanup_move_to_wiki'),
+  );
   return system_settings_form($form);
 }
+
+//*** This code will be removed at some point.
+function _room_cleanup_move_to_wiki() {
+  $batch = array(
+	  'title' => t('Converting rooms to wiki.'),
+	  'operations' => array(),
+	  'finished' => 'my_finished_callback',
+	  'file' => 'path_to_file_containing_myfunctions',
+  );
+  // HARD CODED.
+  // WE WILL NOT BE DOING THIS MORE THAN ONCE EVER.
+  $vaxia_wiki_root_nid = node_load('6270'); // The vaxia Locations page.
+  $vaxia_location_root_nid = '6069'; // The vaxian setting room.
+  $batch = _room_cleanup_move_to_wiki_recusion($batch, $vaxia_wiki_root_nid->title, $vaxia_location_root_nid);
+  $sirian_wiki_root_nid = node_load('6861'); // The sirian Locations page.
+  $sirian_location_root_nid = '6070'; // The sirian setting room.
+  $batch = _room_cleanup_move_to_wiki_recusion($batch, $sirian_wiki_root_nid->title, $sirian_location_root_nid);
+  batch_set($batch);
+}
+
+function _room_cleanup_move_to_wiki_recusion($batch, $title_root, $location_root) {
+  set_time_limit(60); // Set for each loop.
+  // Get all location children.
+  $children = db_query('SELECT p.entity_id FROM {field_data_field_parent} p ' .
+    'LEFT JOIN {node} n ON p.entity_id = n.nid ' .
+    'WHERE n.status = 1 AND p.field_parent_nid = :nid', array(':nid' => $location_root));
+  foreach ($children as $child) {
+    $child_location = $child->entity_id;
+    // Get the info we need.
+    $title = db_query('SELECT title FROM {node} WHERE nid = :nid', array(':nid' => $child_location))->fetchColumn();
+    // Check if the target wiki name already exists, if so - AMEND don't create the room.
+    $found_targets = db_query('SELECT nid FROM {node} WHERE type = \'wiki_page\' AND title LIKE \'%Locations%' . str_replace("'", "\'", $title) . '\'');
+    $child_wiki = '';
+    foreach ($found_targets as $found_target) {
+      $child_wiki = $found_target->nid;
+    }
+    $new_title = trim($title_root . '/' . $title);
+    $batch['operations'][] = array('_convert_room_to_wiki', array($new_title, $child_location, $child_wiki));
+    // AND HERE WE DO RECUSION FOR CHILDREN OF THIS ROOM.
+    $batch = _room_cleanup_move_to_wiki_recusion($batch, $new_title, $child_location);
+  }
+  return $batch;
+  // And return to the call above this one.
+}
+
+function _convert_room_to_wiki($new_title, $child_location, $child_wiki) {
+  set_time_limit(60); // Set for each loop.
+  global $user;
+  $child_location = node_load($child_location);
+    if (!empty($child_wiki)) {
+      $child_wiki = node_load($child_wiki);
+      if (strpos($child_wiki->body[$child_wiki->language][0]['value'], 'This location file was updated from room data') === FALSE) {
+        // We found a wiki page to target. AMEND the text.
+        $child_wiki->title = $new_title; // Move to the new location.
+        $child_wiki->body[$child_wiki->language][0]['value'] = $child_wiki->body[$child_wiki->language][0]['value'] . "\n\n" .
+          $child_location->body[$child_location->language][0]['value'] . "\n\n" .
+          'This location file was recently updated from room data on ' . date('m-d-Y') . '. It has not been checked for accuracy yet. ' .
+          'Please ask World (make a forum post) to confirm information shown on this page before relying on it.';
+      }
+    }
+    else {
+      // No target, this is a new node to save.
+      $child_wiki->title = $new_title;
+      $child_wiki->type = 'wiki_page';
+      $child_wiki->created = strtotime('now');
+      $child_wiki->uid = $user->uid;
+      $child_wiki->language = 'und';
+      $child_wiki->body[$child_wiki->language][0]['value'] = $child_location->body[$child_location->language][0]['value'] . "\n\n" .
+        'This location file was recently updated from room data on ' . date('m-d-Y') . '. It has not been checked for accuracy yet. ' .
+        'Please ask World (make a forum post) to confirm information shown on this page before relying on it.';
+      $child_wiki->body[$child_wiki->language][0]['format'] = 'plain_text';
+    }
+    node_save($child_wiki);
+    // And now save that wiki link into the child location information.
+    $child_location->field_wiki_source[$child_location->language][0]['nid'] = $child_wiki->nid;
+    node_save($child_location);
+}
+//*** This code will be removed at some point.
 
 /**
  * Menu callback for admin page.
