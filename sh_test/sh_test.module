@@ -160,39 +160,7 @@ function sh_test_check_starvation_mode() {
  * Helper for rules. Setup the webform response for approving new candidates.
  */
 function sh_test_setup_approval_form($user, $node, $entity_created) {
-  // Find the result ID for this test taken.
-  $uid = $user->uid;
-  $nid = $node->nid;
-  $vid = $node->vid;
-  $results = db_query("SELECT r.result_id FROM {quiz_node_results} r " .
-    "WHERE r.uid = :uid " .
-    "AND r.nid = :nid " .
-    "AND r.vid = :vid " .
-    "ORDER BY r.time_end DESC LIMIT 0,1 ",
-    array(
-    ':uid' => $uid,
-    ':nid' => $nid,
-    ':vid' => $vid,
-    ));
-  $rid = '';
-  foreach ($results as $result) {
-    $rid = $result->result_id;
-  }
-  if (empty($rid)) {
-    drupal_set_message(t('An error was encountered, no result ID able to be found.'));
-    return;
-  }
-  // Now get the printed out set of answers.
-  $questions = _quiz_get_answers($node, $rid);
-  ksort($questions);
-  $output = '';
-  foreach ($questions as $question_nid => $question) {
-    $q_title = $question->title;
-    $full_question = node_load($question_nid);
-    $q = $full_question->body[$full_question->language][0]['value'];
-    $a = $question->answers[0]['answer'];
-    $output .= '<h3><b>' . $q_title . '</b></h3><p><b>'. $q . '</b></p><p>' . $a . '</p><br/>';
-  }
+  $output = sh_test_ash_3_store_answers($user, $node, $entity_created);
   if (empty($output)) {
     drupal_set_message(t('An error was encountered, no output able to be created.'));
     return;
@@ -230,6 +198,61 @@ function sh_test_setup_approval_form($user, $node, $entity_created) {
   // Include the webform module that allows components to be created.
   module_load_include('inc', 'webform', 'includes/webform.components');
   webform_component_insert($component);
+}
+
+/**
+ * Helper for rules. Save the webform response for users answering ASH 3.
+ */
+function sh_test_setup_ash_3_answers($user, $node, $entity_created) {
+  $output = sh_test_ash_3_store_answers($user, $node, $entity_created);
+  if (empty($output)) {
+    drupal_set_message(t('An error was encountered, no output able to be created.'));
+    return;
+  }
+  // Save the output to the user field.
+  $user->field_ash_3_answers‎[$user->language][0]['value'] = $output;
+  $user->field_ash_3_answers‎[$user->language][0]['format'] = 'wiki';
+  user_save($user);
+}
+
+/**
+ * Helper for rules. Given data, gather the quiz output.
+ */
+function sh_test_ash_3_store_answers($user, $node, $entity_created) {
+  // Find the result ID for this test taken.
+  $uid = $user->uid;
+  $nid = $node->nid;
+  $vid = $node->vid;
+  $results = db_query("SELECT r.result_id FROM {quiz_node_results} r " .
+    "WHERE r.uid = :uid " .
+    "AND r.nid = :nid " .
+    "AND r.vid = :vid " .
+    "ORDER BY r.time_end DESC LIMIT 0,1 ",
+    array(
+    ':uid' => $uid,
+    ':nid' => $nid,
+    ':vid' => $vid,
+    ));
+  $rid = '';
+  foreach ($results as $result) {
+    $rid = $result->result_id;
+  }
+  if (empty($rid)) {
+    drupal_set_message(t('An error was encountered, no result ID able to be found.'));
+    return '';
+  }
+  // Now get the printed out set of answers.
+  $questions = _quiz_get_answers($node, $rid);
+  ksort($questions);
+  $output = '';
+  foreach ($questions as $question_nid => $question) {
+    $q_title = $question->title;
+    $full_question = node_load($question_nid);
+    $q = $full_question->body[$full_question->language][0]['value'];
+    $a = $question->answers[0]['answer'];
+    $output .= '<h3><b>' . $q_title . '</b></h3><p><b>'. $q . '</b></p><p>' . $a . '</p><br/>';
+  }
+  return $output;
 }
 
 /**
