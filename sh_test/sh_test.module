@@ -211,8 +211,9 @@ function sh_test_setup_ash_3_save_answers($user, $node) {
     return;
   }
   // Save the output to the user field.
-  $user->field_ash_3_answers[$user->language][0]['value'] = $output;
-  $user->field_ash_3_answers[$user->language][0]['format'] = 'wiki';
+  $lang = !empty($user->language) ? $user->language : 'und';
+  $user->field_ash_3_answers[$lang][0]['value'] = $output;
+  $user->field_ash_3_answers[$lang][0]['format'] = 'wiki';
   user_save($user);
 }
 
