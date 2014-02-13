@@ -27,6 +27,7 @@ function sh_test_form_user_profile_form_alter(&$form, &$form_state, $form_id) {
   $form['field_took_ash3']['#access'] = FALSE;
   $form['field_took_eval_test']['#access'] = FALSE;
   $form['field_ash_3_answers‎']['#access'] = FALSE;
+  $form['field_ash_3_application‎']['#access'] = FALSE;
 }
 
 /**
