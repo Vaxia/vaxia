@@ -61,9 +61,9 @@ function _proposal_cron_proposal() {
   $last_run = variable_get('proposal_cron', 0);
   $yesterday = strtotime('-1 day');
   if ($last_run < $yesterday) {
-    $today = date('m/d/Y', strtotime('now'));
-    $today = strtotime($today . ' 00:00:01'); // We always want to plan to run just after midnight.
- //   variable_set('proposal_cron', $today);
+    $today = date('m/d/Y');
+    $today = strtotime($today . ' 00:00:01 am'); // We always want to plan to run just after midnight.
+    variable_set('proposal_cron', $today);
     // Close the proposals.
     proposal_close_in_timeframe();
   }
@@ -289,9 +289,11 @@ function proposal_node_view($node, $view_mode, $langcode) {
   if ($node->type == 'proposal') {
     if ($node->webform['status'] == TRUE) {
       $timeframe = variable_get('proposal_open_timeframe', '2 weeks');
-      $date = strtotime(date('m/d/Y 00:00:01 am', strtotime($timeframe, $node->changed)));
+      $date = strtotime($timeframe, $node->changed); // Add two weeks from last changed.
+      $date = strtotime(date('m/d/Y 00:00:01', $date)); // Convert to at midnight timeframe.
+      $date = format_date($date, 'long');
       drupal_set_message(t('This proposal will stay open for two weeks since it was last updated. It is set to close on @date.',
-        array('@date' => format_date($date))));
+        array('@date' => $date)));
     }
     $node->content['proposal_help'] = array(
       '#markup' => '<div class="proposal_help"></br></br>' . t('<b>Proposal help:</b></br>Proposals are meant to be a way to formally make a request for the input of site ' .
@@ -561,7 +563,7 @@ function proposal_check_posted_in_last_timeframe($uid) {
  * Helper for rules. Close proposals that are due to be closed.
  */
 function proposal_close_in_timeframe() {
-  $timeframe = strtotime(date('m/d/Y 11:59:59', strtotime('now'))); // Capture everything from the day.
+  $timeframe = strtotime(date('m/d/Y 11:59:59')); // Capture everything from the day.
   $timeframe = strtotime(variable_get('proposal_open_timeframe', '2 weeks') . ' ago', $timeframe); // Minus two weeks.
   $proposals = db_query('SELECT n.nid from {node} n ' .
     'LEFT JOIN webform w ON n.nid = w.nid ' .
