@@ -91,7 +91,7 @@ function _rpg_site_staff_positions_submit($form, &$form_state) {
     // Get the name.
     $position = trim($position);
     $field_key_name = 'field_eligible_for_' . str_replace(' ', '_', strtolower($position));
-    $existing_field = field_info_field($field_name);
+    $existing_field = field_info_field($field_key_name);
     if (empty($existing_field)) {
       // Set up the data arrays.
       $field = array(
