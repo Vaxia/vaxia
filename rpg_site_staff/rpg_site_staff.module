@@ -90,7 +90,7 @@ function _rpg_site_staff_positions_submit($form, &$form_state) {
   foreach ($available as $position) {
     // Get the name.
     $position = trim($position);
-    $field_key_name = 'field_staff_' . str_replace(' ', '_', strtolower($position));
+    $field_key_name = str_replace(' ', '_', strtolower($position));
     $existing_field = field_info_field($field_key_name);
     if (empty($existing_field)) {
       // Set up the data arrays.
@@ -99,7 +99,7 @@ function _rpg_site_staff_positions_submit($form, &$form_state) {
         'cardinality' => '1',
         'deleted' => '0',
         'entity_types' => array(),
-        'field_name' => $field_key_name,
+        'field_name' => 'field_staff_' . $field_key_name,
         'foreign keys' => array(),
         'indexes' => array(
           'value' => array(
@@ -136,7 +136,7 @@ function _rpg_site_staff_positions_submit($form, &$form_state) {
           ),
         ),
         'entity_type' => 'user',
-        'field_name' => $field_key_name,
+        'field_name' => 'field_staff_' . $field_key_name,
         'label' => t('Eligible for ' . $position . ''),
         'required' => 0,
         'settings' => array(
