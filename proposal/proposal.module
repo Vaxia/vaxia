@@ -21,7 +21,7 @@ function proposal_permission() {
 /**
  * Implements hook_rules_event_info().
  */
-function proposal_event_info() {
+function proposal_rules_event_info() {
   $items = array(
     'open_proposal' => array(
       'label' => t('Proposal open'),
