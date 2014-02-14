@@ -165,6 +165,10 @@ function _rpg_site_staff_positions_submit($form, &$form_state) {
       $group = $group['group_voting'];
       $group->children[] = $field_key_name;
       field_group_group_save($group);
+      // Update all existing users to have this field automatically turned on.
+      db_query('REPLACE INTO {field_data_field_eligible_for_' . $field_key_name . '} ' .
+        '(entity_type, bundle, deleted, entity_id, revision_id, language, delta, field_eligible_for_' . $field_key_name . ') ' .
+        'SELECT \'user\', \'user\', 0, u.uid, u.uid, \'und\', 0, 1 FROM {users} u WHERE u.status = 1');
       // Output message.
       drupal_set_message('Created user field ' . $field_key_name);
     }
