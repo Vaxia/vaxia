@@ -166,7 +166,7 @@ function _rpg_site_staff_positions_submit($form, &$form_state) {
       $group->children[] = $field_key_name;
       field_group_group_save($group);
       // Output message.
-      drupal_set_message('Created user field ' . $field_key_name)
+      drupal_set_message('Created user field ' . $field_key_name);
     }
   }
 }
