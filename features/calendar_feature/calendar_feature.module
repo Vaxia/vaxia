@@ -92,8 +92,7 @@ drupal_set_message('found event:' . $node->title);
     $comments = db_query('SELECT c.cid from {comment} c ' .
       'WHERE c.status = 1 ' .
       'AND c.nid = :nid',
-      array(':nid', $event->entity_id)
-    );
+      array(':nid' => $event->entity_id));
     $found_comments = array();
     foreach ($comments as $comment) {
       $comment = comment_load($comment->cid);
