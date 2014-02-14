@@ -176,6 +176,10 @@ function _rpg_site_staff_positions_submit($form, &$form_state) {
       drupal_set_message('Created user field ' . $field_key_name);
     }
   }
+  // Flush Entity Cache record.
+  if (module_exists('entitycache')) {
+    cache_clear_all('*', 'cache_entity_node', TRUE);
+  }
 }
 
 /**
