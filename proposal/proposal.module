@@ -311,7 +311,7 @@ function proposal_node_view($node, $view_mode, $langcode) {
         array('@date' => $date)));
     }
     else {
-      drupal_set_message(t('This proposal closed on @date.', array('@date' => $date)));
+      drupal_set_message(t('This proposal is now closed.'));
     }
     $node->content['proposal_help'] = array(
       '#markup' => '<div class="proposal_help"></br></br>' . t('<b>Proposal help:</b></br>Proposals are meant to be a way to formally make a request for the input of site ' .
