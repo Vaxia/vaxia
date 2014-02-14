@@ -73,6 +73,7 @@ function _calendar_feature_cron_calendar_feature() {
  * Check for events in the next 24 hours and send reminders.
  */
 function calendar_feature_send_reminders() {
+drupal_set_message('calendar_feature_send_reminders');
   if (!function_exists('rules_invoke_event')) {
     return; // Bail if we don't have rules.
   }
@@ -84,6 +85,7 @@ function calendar_feature_send_reminders() {
     array(':now' => date('Y-m-d H:i:s'), ':tomorrow' => date('Y-m-d H:i:s', strtotime('+1 day'))));
   foreach ($events as $event) {
     $node = node_load($event->entity_id);
+drupal_set_message('found event:' . $node->title);
     $organizer = user_load($node->uid);
     rules_invoke_event('calendar_feature_remind_organizer', $organizer, $node);
     // And check for attendees.
@@ -100,6 +102,7 @@ function calendar_feature_send_reminders() {
     // Send reminders.
     foreach ($found_comments as $comment) {
       $attendee = user_load($comment->uid);
+drupal_set_message('found attendee:' . $attendee->user);
       rules_invoke_event('calendar_feature_remind_attendee', $attendee, $node, $comment);
     }
   }
