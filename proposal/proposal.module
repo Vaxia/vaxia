@@ -62,7 +62,7 @@ function _proposal_cron_proposal() {
   $yesterday = strtotime('-1 day');
   if ($last_run < $yesterday) {
     $today = date('m/d/Y');
-    $today = strtotime($today . ' 00:00:01 am'); // We always want to plan to run just after midnight.
+    $today = strtotime($today . ' 00:00:01'); // We always want to plan to run just after midnight.
     variable_set('proposal_cron', $today);
     // Close the proposals.
     proposal_close_in_timeframe();
