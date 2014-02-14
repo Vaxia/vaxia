@@ -19,6 +19,57 @@ function proposal_permission() {
 }
 
 /**
+ * Implements hook_rules_event_info().
+ */
+function proposal_event_info() {
+  $items = array(
+    'open_proposal' => array(
+      'label' => t('Proposal open'),
+      'group' => t('Proposal'),
+      'variables' => array(
+        'node' => array(
+            'type' => 'node',
+            'label' => t('Proposal'),
+        ),
+      ),
+    ),
+    'close_proposal' => array(
+      'label' => t('Proposal clse'),
+      'group' => t('Proposal'),
+      'variables' => array(
+        'node' => array(
+            'type' => 'node',
+            'label' => t('Proposal'),
+        ),
+      ),
+    ),
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_cron().
+ */
+function proposal_cron() {
+  _proposal_cron_proposal();
+}
+
+/**
+ * Cron worker.
+ */
+function _proposal_cron_proposal() {
+  $last_run = variable_get('proposal_cron', 0);
+  $yesterday = strtotime('-1 day');
+  if ($last_run < $yesterday) {
+    $today = date('m/d/Y', strtotime('now'));
+    $today = strtotime($today . ' 00:00:01'); // We always want to plan to run just after midnight.
+ //   variable_set('proposal_cron', $today);
+    // Close the proposals.
+    proposal_close_in_timeframe();
+  }
+}
+
+/**
  * Implements hook_menu().
  */
 function proposal_menu() {
@@ -238,9 +289,9 @@ function proposal_node_view($node, $view_mode, $langcode) {
   if ($node->type == 'proposal') {
     if ($node->webform['status'] == TRUE) {
       $timeframe = variable_get('proposal_open_timeframe', '2 weeks');
-      $date = date('m/d/Y', strtotime($timeframe, $node->changed));
+      $date = strtotime(date('m/d/Y 00:00:01 am', strtotime($timeframe, $node->changed)));
       drupal_set_message(t('This proposal will stay open for two weeks since it was last updated. It is set to close on @date.',
-        array('@date' => $date)));
+        array('@date' => format_date($date))));
     }
     $node->content['proposal_help'] = array(
       '#markup' => '<div class="proposal_help"></br></br>' . t('<b>Proposal help:</b></br>Proposals are meant to be a way to formally make a request for the input of site ' .
@@ -381,6 +432,10 @@ function _proposal_form_proposal_node_form_submit($form, &$form_state) {
     }
     // Save the node.
     node_save($node);
+    if (function_exists('rules_invoke_event')) {
+      $node = node_load($proposal->nid);
+      rules_invoke_event('open_proposal', $node);
+    }
   }
   drupal_set_message(t('The webform %title has been updated. Add new fields to your webform with the form below.',
     array('%title' => $form_state['values']['title'])));
@@ -481,7 +536,6 @@ function proposal_form_alter(&$form, &$form_state, $form_id) {
 function proposal_check_posted_in_last_timeframe($uid) {
   $count = 0;
   $time = variable_get('proposal_voter_timeframe', '6 months') . ' ago';
-
   $results = db_query('SELECT COUNT(nid) AS count FROM {node} ' .
     'WHERE uid = :uid ' .
     'AND created > :time',
@@ -489,7 +543,6 @@ function proposal_check_posted_in_last_timeframe($uid) {
   foreach ($results as $result) {
     $count += $result->count;
   }
-
   $results = db_query('SELECT COUNT(cid) AS count FROM comment} ' .
     'WHERE uid = :uid ' .
     'AND created > :time',
@@ -497,10 +550,30 @@ function proposal_check_posted_in_last_timeframe($uid) {
   foreach ($results as $result) {
     $count += $result->count;
   }
-
   // User IS a voting user.
   if ($count > 0) {
     return TRUE;
   }
   return FALSE;
+}
+
+/**
+ * Helper for rules. Close proposals that are due to be closed.
+ */
+function proposal_close_in_timeframe() {
+  $timeframe = strtotime(date('m/d/Y 11:59:59', strtotime('now'))); // Capture everything from the day.
+  $timeframe = strtotime(variable_get('proposal_open_timeframe', '2 weeks') . ' ago', $timeframe); // Minus two weeks.
+  $proposals = db_query('SELECT n.nid from {node} n ' .
+    'LEFT JOIN webform w ON n.nid = w.nid ' .
+    'WHERE n.type = \'proposal\' ' .
+    'AND n.changed <= :timeframe ' .
+    'AND n.status = 1 ' .
+    'AND w.status = 1 ',
+    array(':timeframe' => $timeframe));
+  foreach ($proposals as $proposal) {
+    if (function_exists('rules_invoke_event')) {
+      $node = node_load($proposal->nid);
+      rules_invoke_event('close_proposal', $node);
+    }	  
+  }
 }

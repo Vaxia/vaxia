@@ -31,7 +31,7 @@ function _silver_cron_silver() {
   $yesterday = strtotime('-1 day');
   if ($last_run < $yesterday) {
     $queue = DrupalQueue::get('vaxiaSilverQueue');
-    $last_run = variable_set('vaxia_character_sheet_cron', strtotime('now'));
+    variable_set('vaxia_character_sheet_cron', strtotime('now'));
     // On cron. Go through ALL character sheets.
     // Using this query to make sure we don't load anything we really don't need to.
     // So only nodes that have an economy and exist.
