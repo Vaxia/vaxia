@@ -81,8 +81,8 @@ drupal_set_message('calendar_feature_send_reminders');
   $events = db_query('SELECT w.entity_id from {field_data_field_when} w ' .
     'LEFT JOIN {node} n ON w.entity_id = n.nid ' .
     'WHERE n.status = 1 ' .
-    'AND w.field_when_value BETWEEN :now AND :tomorrow',
-    array(':now' => date('Y-m-d H:i:s'), ':tomorrow' => date('Y-m-d H:i:s', strtotime('+1 day'))));
+    'AND w.field_when_value BETWEEN \':now\' AND \':tomorrow\'',
+    array(':now' => date('Y-m-d H:i:s', strtotime('+1 day')), ':tomorrow' => date('Y-m-d H:i:s', strtotime('+2 day'))));
   foreach ($events as $event) {
     $node = node_load($event->entity_id);
 drupal_set_message('found event:' . $node->title);
