@@ -132,13 +132,13 @@ function proposal_menu_alter(&$items) {
 function proposal_webform_submission_access($node, $submission, $op = 'view', $account = NULL) {
   // If we're not looking at a proposal, bail out with the normal view.
   if ($node->type != 'proposal') {
-    return webform_submission_access($node, $submission, $op, $account);
+    return FALSE; // Use defaults.
   }
   // If the submission is open:
   if (isset($node->webform['status']) && $node->webform['status'] == 1 && $submission->uid == $account->uid) {
     return TRUE;
   }
-  return webform_submission_access($node, $submission, $op, $account);
+  return FALSE; // Use defaults.
 }
 
 /**
