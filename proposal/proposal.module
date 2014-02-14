@@ -34,7 +34,7 @@ function proposal_rules_event_info() {
       ),
     ),
     'close_proposal' => array(
-      'label' => t('Proposal clse'),
+      'label' => t('Proposal close'),
       'group' => t('Proposal'),
       'variables' => array(
         'node' => array(
@@ -287,13 +287,16 @@ function proposal_webform_results_analysis($variables) {
 function proposal_node_view($node, $view_mode, $langcode) {
   // Only override the displays for proposals.
   if ($node->type == 'proposal') {
+    $timeframe = variable_get('proposal_open_timeframe', '2 weeks');
+    $date = strtotime($timeframe, $node->changed); // Add two weeks from last changed.
+    $date = strtotime(date('m/d/Y 00:00:01', $date)); // Convert to at midnight timeframe.
+    $date = format_date($date, 'long');
     if ($node->webform['status'] == TRUE) {
-      $timeframe = variable_get('proposal_open_timeframe', '2 weeks');
-      $date = strtotime($timeframe, $node->changed); // Add two weeks from last changed.
-      $date = strtotime(date('m/d/Y 00:00:01', $date)); // Convert to at midnight timeframe.
-      $date = format_date($date, 'long');
       drupal_set_message(t('This proposal will stay open for two weeks since it was last updated. It is set to close on @date.',
         array('@date' => $date)));
+    }
+    else {
+      drupal_set_message(t('This proposal closed on @date.', array('@date' => $date)));
     }
     $node->content['proposal_help'] = array(
       '#markup' => '<div class="proposal_help"></br></br>' . t('<b>Proposal help:</b></br>Proposals are meant to be a way to formally make a request for the input of site ' .
