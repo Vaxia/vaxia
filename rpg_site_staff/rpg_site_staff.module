@@ -91,80 +91,83 @@ function _rpg_site_staff_positions_submit($form, &$form_state) {
     // Get the name.
     $position = trim($position);
     $field_key_name = 'field_eligible_for_' . str_replace(' ', '_', strtolower($position));
-    // Set up the data arrays.
-    $field = array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => $field_key_name,
-      'foreign keys' => array(),
-      'indexes' => array(
-        'value' => array(
-          0 => 'value',
+    $existing_field = field_info_field($field_name);
+    if (empty($existing_field)) {
+      // Set up the data arrays.
+      $field = array(
+        'active' => '1',
+        'cardinality' => '1',
+        'deleted' => '0',
+        'entity_types' => array(),
+        'field_name' => $field_key_name,
+        'foreign keys' => array(),
+        'indexes' => array(
+          'value' => array(
+            0 => 'value',
+          ),
         ),
-      ),
-      'locked' => '0',
-      'module' => 'list',
-      'settings' => array(
-        'allowed_values' => array(
-          0 => 'No',
-          1 => 'Yes',
-        ),
-        'allowed_values_function' => '',
-      ),
-      'translatable' => '0',
-      'type' => 'list_boolean',
-    );
-    $instance = array(
-      'bundle' => 'user',
-      'default_value' => array(
-        0 => array(
-          'value' => 1,
-        ),
-      ),
-      'deleted' => '0',
-      'description' => t('I would like to be considered eligible for ' . $position . ' positions during elections.'),
-      'display' => array(
-        'default' => array(
-          'label' => 'inline',
-          'settings' => array(),
-          'type' => 'list_boolean',
-          'weight' => '6',
-        ),
-      ),
-      'entity_type' => 'user',
-      'field_name' => $field_key_name,
-      'label' => t('Eligible for ' . $position . ''),
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => 0,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'options',
+        'locked' => '0',
+        'module' => 'list',
         'settings' => array(
-          'display_label' => 1,
+          'allowed_values' => array(
+            0 => 'No',
+            1 => 'Yes',
+          ),
+          'allowed_values_function' => '',
         ),
-        'type' => 'options_onoff',
-      ),
-    );
-    // Create the field.
-    field_create_field($field);
-    // Create the instance.
-    field_create_instance($instance);
-    // Add the field to the election group form.
-    $group = field_group_info_groups('user', 'user', 'form', TRUE);
-    $group = $group['group_election_settings'];
-    $group->children[] = $field_key_name;
-    field_group_group_save($group);
-    // Add the field to the election group display.
-    $group = field_group_info_groups('user', 'user', 'default', TRUE);
-    $group = $group['group_voting'];
-    $group->children[] = $field_key_name;
-    field_group_group_save($group);
-    // Output message.
-    drupal_set_message('Created user field ' . $field_key_name);
+        'translatable' => '0',
+        'type' => 'list_boolean',
+      );
+      $instance = array(
+        'bundle' => 'user',
+        'default_value' => array(
+          0 => array(
+            'value' => 1,
+          ),
+        ),
+        'deleted' => '0',
+        'description' => t('I would like to be considered eligible for ' . $position . ' positions during elections.'),
+        'display' => array(
+          'default' => array(
+            'label' => 'inline',
+            'settings' => array(),
+            'type' => 'list_boolean',
+            'weight' => '6',
+          ),
+        ),
+        'entity_type' => 'user',
+        'field_name' => $field_key_name,
+        'label' => t('Eligible for ' . $position . ''),
+        'required' => 0,
+        'settings' => array(
+          'user_register_form' => 0,
+        ),
+        'widget' => array(
+          'active' => 1,
+          'module' => 'options',
+          'settings' => array(
+            'display_label' => 1,
+          ),
+          'type' => 'options_onoff',
+        ),
+      );
+      // Create the field.
+      field_create_field($field);
+      // Create the instance.
+      field_create_instance($instance);
+      // Add the field to the election group form.
+      $group = field_group_info_groups('user', 'user', 'form', TRUE);
+      $group = $group['group_election_settings'];
+      $group->children[] = $field_key_name;
+      field_group_group_save($group);
+      // Add the field to the election group display.
+      $group = field_group_info_groups('user', 'user', 'default', TRUE);
+      $group = $group['group_voting'];
+      $group->children[] = $field_key_name;
+      field_group_group_save($group);
+      // Output message.
+      drupal_set_message('Created user field ' . $field_key_name)
+    }
   }
 }
 
