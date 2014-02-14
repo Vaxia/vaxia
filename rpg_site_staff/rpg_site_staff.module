@@ -120,7 +120,7 @@ function _rpg_site_staff_positions_submit($form, &$form_state) {
       'bundle' => 'user',
       'default_value' => array(
         0 => array(
-          'value' => 'Yes',
+          'value' => 1,
         ),
       ),
       'deleted' => '0',
