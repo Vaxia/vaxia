@@ -135,7 +135,7 @@ function proposal_webform_submission_access($node, $submission, $op = 'view', $a
     return webform_submission_access($node, $submission, $op, $account);
   }
   // If the submission is open:
-  if ($node->webform['status'] == 1 && $submission->uid == $account->uid) {
+  if (isset($node->webform['status']) && $node->webform['status'] == 1 && $submission->uid == $account->uid) {
     return TRUE;
   }
   return webform_submission_access($node, $submission, $op, $account);
