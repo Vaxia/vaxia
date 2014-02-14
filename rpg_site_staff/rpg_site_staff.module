@@ -90,7 +90,7 @@ function _rpg_site_staff_positions_submit($form, &$form_state) {
   foreach ($available as $position) {
     // Get the name.
     $position = trim($position);
-    $field_key_name = 'field_eligible_for_' . str_replace(' ', '_', strtolower($position));
+    $field_key_name = 'field_staff_' . str_replace(' ', '_', strtolower($position));
     $existing_field = field_info_field($field_key_name);
     if (empty($existing_field)) {
       // Set up the data arrays.
@@ -166,8 +166,8 @@ function _rpg_site_staff_positions_submit($form, &$form_state) {
       $group->children[] = $field_key_name;
       field_group_group_save($group);
       // Update all existing users to have this field automatically turned on.
-      db_query('REPLACE INTO {field_data_field_eligible_for_' . $field_key_name . '} ' .
-        '(entity_type, bundle, deleted, entity_id, revision_id, language, delta, field_eligible_for_' . $field_key_name . ') ' .
+      db_query('REPLACE INTO {field_data_field_staff_' . $field_key_name . '} ' .
+        '(entity_type, bundle, deleted, entity_id, revision_id, language, delta, field_staff_' . $field_key_name . ') ' .
         'SELECT \'user\', \'user\', 0, u.uid, u.uid, \'und\', 0, 1 FROM {users} u WHERE u.status = 1');
       // Output message.
       drupal_set_message('Created user field ' . $field_key_name);
@@ -249,9 +249,9 @@ function vaxia_setup_election_proposal($entity_created) {
     // Gather the user info.
     $system_eligible_names = db_query('SELECT u.name FROM {users} u ' . 
       'LEFT JOIN {users_roles} ur ON u.uid = ur.uid ' .
-      'LEFT JOIN {field_data_field_eligible_for_' . $field_key_name . '} f ON u.uid = f.entity_id ' .
+      'LEFT JOIN {field_data_field_staff_' . $field_key_name . '} f ON u.uid = f.entity_id ' .
       'WHERE ur.rid = :voting_role ' .
-      'AND f.field_eligible_for_' . $field_key_name . '_value = 1',
+      'AND f.field_staff_' . $field_key_name . '_value = 1',
       array(':voting_role' => variable_get('rpg_site_staff_run_role', '') ));
     $system_eligible = '';
     foreach ($system_eligible_names as $system_eligible_name) {
