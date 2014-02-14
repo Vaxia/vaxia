@@ -465,7 +465,7 @@ function proposal_form_alter(&$form, &$form_state, $form_id) {
           $form['role_control']['roles']['#default_value'] : array($rid);
         $voter_timeframe = variable_get('proposal_voter_timeframe', '6 months');
         $form['role_control']['roles']['#description'] = t('Active users are users who have posted on the site in the last %voter_timeframe',
-          array('%voter_fimeframe' => $voter_fimeframe));
+          array('%voter_fimeframe' => $voter_timeframe));
       }
     }
     // And no advanced formats.
