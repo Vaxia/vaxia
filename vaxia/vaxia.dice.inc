@@ -27,8 +27,8 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
       $character = $parent_form_state['values']['field_comment_character'][$lang][0]['nid'];
     }
   }
-  elseif(!empty($this_player->field_current_character[$lang][0]['nid'])) {
-    $character = $this_player->field_current_character[$lang][0]['nid'];
+  elseif(!empty(variable_get('vaxia_last_character_' . $user->uid, ''))) {
+    $character = node_load(variable_get('vaxia_last_character_' . $user->uid, -1));
   }
   elseif(!empty($form['field_comment_character'][$lang]['#default_value'])) {
     $character = $form['field_comment_character'][$lang]['#default_value'];
