@@ -202,7 +202,7 @@ function rpg_site_staff_node_view($node, $view_mode, $langcode) {
   if ($node->type == 'session_report') {
     global $user;
     // Check if the user has the 'editor' role.
-    if (in_array('storyteller', $user->roles)) {
+    if (in_array('storyteller', $user->roles) && !empty($node->content['field_session_notes'])) {
       unset($node->content['field_session_notes']);
     }
   }
