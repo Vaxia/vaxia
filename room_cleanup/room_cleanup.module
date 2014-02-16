@@ -119,8 +119,10 @@ function room_cleanup_make_room_from_wiki_submit($form, &$form_state) {
   }
   $wiki = node_load($form_state['values']['wiki_nid']);
   // Create new room automatically, then go to edit it.
-  global $user;
-  $room->title = $wiki->title;
+  global $user;  
+  $title = explode('/', $wiki->title);
+  $title = array_pop($title);
+  $room->title = $title;
   $room->type = 'rpg_chatroom';
   $room->language = 'und';
   $room->uid = $user->uid;
