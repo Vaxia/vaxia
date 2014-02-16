@@ -136,6 +136,7 @@ function room_cleanup_make_room_from_wiki_submit($form, &$form_state) {
     array(':title' => $parent_title))->fetchColumn();
   $parent_room = node_load($parent_nid);
   if (!empty($parent_room)) {
+    drupal_set_message(t('Found suggested parent room :title.', array(':title' => $parent_room->title)));
     $room->field_parent[$room->language][0]['nid'] = $parent_room->nid;
   }
   $room->field_wiki_source[$room->language][0]['nid'] = $wiki->nid;
