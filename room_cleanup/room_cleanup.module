@@ -110,9 +110,11 @@ function room_cleanup_make_room_from_wiki($form, &$form_state, $node) {
  */
 function room_cleanup_make_room_from_wiki_submit($form, &$form_state, $wiki) {
   // Create new room automatically, then go to edit it.
+  global $user;
   $room->title = $wiki->title;
   $room->type = 'rpg_chatroom';
   $room->language = 'und';
+  $room->uid = $user->uid;
   $realm = 'Vaxia';
   if (strpos($wiki->title, 'Sirian') !== FALSE) {
     $realm = 'Sirian';
