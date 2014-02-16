@@ -131,9 +131,9 @@ function room_cleanup_make_room_from_wiki_submit($form, &$form_state) {
   }
   $room->field_realm[$room->language][0]['value'] = $realm;
   $parent_title = array_pop($title);
-  if () {
-    $room->field_wiki_source[$room->language][0]['nid'] = $wiki->nid;
-  }
+ // if (!empty($parent_room)) {
+ //   $room->field_wiki_source[$room->language][0]['nid'] = $parent_room->nid;
+ // }
   $room->field_wiki_source[$room->language][0]['nid'] = $wiki->nid;
   node_save($room);
   drupal_goto('node/'. $room->nid .'/edit');
