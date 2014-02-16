@@ -99,7 +99,7 @@ function room_cleanup_make_room_from_wiki($form, &$form_state, $wiki) {
   if ($node->type == 'wiki_page') {
     $form['wiki_nid'] = array(
       '#type' => 'hidden',
-      '#value' => $wikki->nid,
+      '#value' => $wiki->nid,
     );
     $form['room_cleanup_make_room_submit'] = array(
       '#type' => 'submit',
