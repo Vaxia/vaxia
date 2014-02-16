@@ -29,7 +29,7 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
     }
   }
   elseif ($stored_character != -1) {
-    $character = node_load($stored_character);
+    $character = $stored_character;
   }
   elseif(!empty($form['field_comment_character'][$lang]['#default_value'])) {
     $character = $form['field_comment_character'][$lang]['#default_value'];
