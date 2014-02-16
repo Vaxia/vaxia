@@ -129,12 +129,10 @@ function room_cleanup_make_room_from_wiki_submit($form, &$form_state) {
     $realm = 'Sirian';
   }
   $room->field_realm[$room->language][0]['value'] = $realm;
-  $parent_title = '%' . trim(array_pop($title_breadcrumb));
-  $parent_nid = db_query('SELECT n.nid FROM {node} n ' .
-    'WHERE n.type = \'rpg_chatroom\' ' .
-    'AND n.title LIKE :title',
-    array(':title' => $parent_title))->fetchColumn();
-  $parent_room = node_load($parent_nid);
+  $parent_nodes = node_load_multiple(array(), array('title' => trim(array_pop($title_breadcrumb))));
+  foreach ($parent_nodes as $nid => $this_node) {
+    $parent_room = $this_node;
+  }
   if (!empty($parent_room)) {
     drupal_set_message(t('Found suggested parent room :title.', array(':title' => $parent_room->title)));
     $room->field_parent[$room->language][0]['nid'] = $parent_room->nid;
