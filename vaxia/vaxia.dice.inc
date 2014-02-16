@@ -20,6 +20,7 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
   global $user;
   $this_player = user_load($user->uid);
   $character = '_none';
+  $stored_character = variable_get('vaxia_last_character_' . $user->uid, -1);
   $lang = $parent_form['language']['#value'];
 
   if (isset($parent_form_state['values'])) {
@@ -27,9 +28,9 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
       $character = $parent_form_state['values']['field_comment_character'][$lang][0]['nid'];
     }
   }
- // elseif (!empty(variable_get('vaxia_last_character_' . $user->uid, ''))) {
- //   $character = node_load(variable_get('vaxia_last_character_' . $user->uid, -1));
- // }
+  elseif ($stored_character != -1) {
+    $character = node_load($stored_character);
+  }
   elseif(!empty($form['field_comment_character'][$lang]['#default_value'])) {
     $character = $form['field_comment_character'][$lang]['#default_value'];
   }
