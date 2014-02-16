@@ -119,9 +119,8 @@ function room_cleanup_make_room_from_wiki_submit($form, &$form_state) {
   $wiki = node_load($form_state['values']['wiki_nid']);
   // Create new room automatically, then go to edit it.
   global $user;  
-  $title = explode('/', $wiki->title);
-  $title = array_pop($title);
-  $room->title = $title;
+  $title_breadcrumb = explode('/', $wiki->title);
+  $room->title = trim(array_pop($title_breadcrumb));
   $room->type = 'rpg_chatroom';
   $room->language = 'und';
   $room->uid = $user->uid;
@@ -130,10 +129,12 @@ function room_cleanup_make_room_from_wiki_submit($form, &$form_state) {
     $realm = 'Sirian';
   }
   $room->field_realm[$room->language][0]['value'] = $realm;
-  $parent_title = array_pop($title);
- // if (!empty($parent_room)) {
- //   $room->field_wiki_source[$room->language][0]['nid'] = $parent_room->nid;
- // }
+  $parent_title = trim(array_pop($title_breadcrumb));
+  $parent_nid = db_select('SELECT n.nid FROM {node} n WHERE n.title LIKE :title', array(':title' => $parent_title))->fetchColumn();
+  $parent_room = node_load($parent_nid);
+  if (!empty($parent_room)) {
+    $room->field_wiki_source[$room->language][0]['nid'] = $parent_room->nid;
+  }
   $room->field_wiki_source[$room->language][0]['nid'] = $wiki->nid;
   node_save($room);
   drupal_goto('node/'. $room->nid .'/edit');
