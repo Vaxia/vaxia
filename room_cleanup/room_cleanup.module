@@ -73,15 +73,17 @@ function room_cleanup_admin_form($form, &$form_state) {
     '#type' => 'checkbox',
     '#default_value' => variable_get('room_cleanup_cron',  FALSE),
   );
+  /*
   $form['move_to_wiki'] = array(
     '#type' => 'submit',
     '#value' => 'MOVE ROOMS TO WIKI',
     '#submit' => array('_room_cleanup_move_to_wiki'),
   );
+  */
   return system_settings_form($form);
 }
 
-//*** This code will be removed at some point.
+/*** This code will be removed at some point.
 function _room_cleanup_move_to_wiki() {
   $batch = array(
 	  'title' => t('Converting rooms to wiki.'),
