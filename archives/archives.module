@@ -87,7 +87,7 @@ function archives_admin_form($form, &$form_state) {
   $form['archive'] = array(
     '#type' => 'submit',
     '#value' => t('Archive All Posts'),
-    '#submit' => '_archives_posts_archive',
+    '#submit' => array('_archives_posts_archive'),
   );
   return system_settings_form($form);
 }

@@ -136,7 +136,7 @@ function room_cleanup_admin_form($form, &$form_state) {
   $form['cleanup'] = array(
     '#type' => 'submit',
     '#value' => t('Cleanup Rooms'),
-    '#submit' => '_room_cleanup_rooms',
+    '#submit' => array('_room_cleanup_rooms'),
   );
   return system_settings_form($form);
 }
