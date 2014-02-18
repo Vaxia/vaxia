@@ -95,7 +95,7 @@ function archives_admin_form($form, &$form_state) {
 /**
  * Helper function, archive things.
  */
-function _archives_posts_archive() {
+function _archives_posts_archive($form, &$form_state) {
   // And now we get all complicated! It may take a bit to get through them all.
   // But we archive for all the posts on the site into the file system.
   // First get the date of the oldest comment posted on the site to chat or forum.

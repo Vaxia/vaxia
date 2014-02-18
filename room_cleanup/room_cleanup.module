@@ -144,7 +144,7 @@ function room_cleanup_admin_form($form, &$form_state) {
 /**
  * Helper function, cleanup rooms.
  */
-function _room_cleanup_rooms() {
+function _room_cleanup_rooms($form, &$form_state) {
   $cutoff = strtotime(variable_get('room_cleanup_date', '6 months') . ' ago');
   drupal_set_message('Cleaning up rooms, started looking at rooms older than: ' . date('m/d/Y 00:00:01', $cutoff) . '.');
   // Build a list of comments that are immune to this restriction.
