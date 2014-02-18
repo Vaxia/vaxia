@@ -35,12 +35,37 @@ function dice_ruler_menu() {
 }
 
 function _dice_ruler_admin_settings($form, &$form_state) {
-
+  // Toggle for turning DD on/off
   $form['dice_ruler_magic_dd'] = array(
     '#title' => t('Dynamic difficulty'),
     '#description' => t('Use dynamic diffulty on magic rolls.'),
     '#type' => 'checkbox',
     '#default_value' => variable_get('dice_ruler_magic_dd', TRUE),
+  );
+  // Toggle for addressing weapons as classes, with pre-set values.
+  $form['dice_ruler_weapon_weapon_class'] = array(
+    '#title' => t('Weapon damage classes'),
+    '#description' => t('Use light/heavy weapon classes instead of direct weapon percentages.'),
+    '#type' => 'checkbox',
+    '#default_value' => variable_get('dice_ruler_weapon_weapon_class', FALSE),
+  );
+  $form['dice_ruler_weapon_weapon_class_none'] = array(
+    '#title' => t('No bonus'),
+    '#description' => t('The percent bonus used for no weapons.'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('dice_ruler_weapon_weapon_class_none', 0),
+  );
+  $form['dice_ruler_weapon_weapon_class_light'] = array(
+    '#title' => t('Light bonus'),
+    '#description' => t('The percent bonus used for light weapons.'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('dice_ruler_weapon_weapon_class_light', 0),
+  );
+  $form['dice_ruler_weapon_weapon_class_heavy'] = array(
+    '#title' => t('Heavy bonus'),
+    '#description' => t('The percent bonus used for heavy weapons.'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('dice_ruler_weapon_weapon_class_heavy', 0),
   );
   return system_settings_form($form);
 }
@@ -92,6 +117,8 @@ function dice_ruler_form($form, &$form_state) {
       '#dice-ruler-form #dice_ruler_dice_help_2{width:210px;}'.
       '#dice-ruler-form .form-item-combat-action-count-a, #dice-ruler-form .form-item-combat-action-count-b{float:left}' .
       '#dice-ruler-form .form-item-combat-weapon-a, #dice-ruler-form .form-item-combat-weapon-b{float:none; margin-left:65px;}' .
+      '#dice-ruler-form .form-item-combat-weapon-a .form-type-radio, '.
+      '  #dice-ruler-form .form-item-combat-weapon-b .form-type-radio{margin-left:10px;}' .
       '#dice-ruler-form #edit-target{text-align:center;}' .
       '</style>',
   );
@@ -308,11 +335,30 @@ function dice_ruler_form($form, &$form_state) {
       '60' => '4',
     ),
   );
-  $form['combat']['a']['combat_weapon_a'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Weapon %'),
-    '#size' => 5,
-  );
+  // Toggle between weapon percents and weapon categories.
+  if (variable_get('dice_ruler_weapon_weapon_class', FALSE)) {
+    $none = variable_get('dice_ruler_weapon_weapon_class_none', 0);
+    $light = variable_get('dice_ruler_weapon_weapon_class_light', 0);
+    $heavy = variable_get('dice_ruler_weapon_weapon_class_heavy', 0);
+    $weapon_class_options = array(
+      $none => t('No weapon'),
+      $light => t('Light'),
+      $heavy => t('Heavy'),
+    );
+    $form['combat']['a']['combat_weapon_a'] = array(
+      '#type' => 'radios',
+      '#title' => t('Weapon %'),
+      '#options' => $weapon_class_options,
+      '#default_value' => $none,
+    );
+  }
+  else {
+    $form['combat']['a']['combat_weapon_a'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Weapon %'),
+      '#size' => 5,
+    );
+  }
   $values = array();
   for ($i = 1; $i < 5; $i++) {
     $values[] = array('value' => ($i - 1) * 20);
@@ -400,11 +446,30 @@ function dice_ruler_form($form, &$form_state) {
       '60' => '4',
     ),
   );
-  $form['combat']['b']['combat_weapon_b'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Weapon %'),
-    '#size' => 5,
-  );
+  // Toggle between weapon percents and weapon categories.
+  if (variable_get('dice_ruler_weapon_weapon_class', FALSE)) {
+    $none = variable_get('dice_ruler_weapon_weapon_class_none', 0);
+    $light = variable_get('dice_ruler_weapon_weapon_class_light', 0);
+    $heavy = variable_get('dice_ruler_weapon_weapon_class_heavy', 0);
+    $weapon_class_options = array(
+      $none => t('No weapon'),
+      $light => t('Light'),
+      $heavy => t('Heavy'),
+    );
+    $form['combat']['b']['combat_weapon_b'] = array(
+      '#type' => 'radios',
+      '#title' => t('Weapon %'),
+      '#options' => $weapon_class_options,
+      '#default_value' => $none,
+    );
+  }
+  else {
+    $form['combat']['b']['combat_weapon_b'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Weapon %'),
+      '#size' => 5,
+    );
+  }
   $values = array();
   for ($i = 1; $i < 5; $i++) {
     $values[] = array('value' => ($i - 1) * 20);
