@@ -21,7 +21,12 @@ function room_cleanup_permission() {
  */
 function room_cleanup_cron() {
   if (variable_get('room_cleanup_cron',  FALSE)) {
-    _room_cleanup_rooms();
+    $last_run = variable_get('room_cleanup_crontime', 0);
+    $yesterday = strtotime('-1 day');
+    if ($last_run < $yesterday) {
+      variable_set('room_cleanup_crontime', strtotime('now'));
+      return _room_cleanup_rooms();
+    }
   }
   return;
 }

@@ -24,7 +24,12 @@ function archives_permission() {
  * Implements hook_cron().
  */
 function archives_cron() {
-  return _archives_posts_archive();
+  $last_run = variable_get('archives_cron', 0);
+  $yesterday = strtotime('-1 day');
+  if ($last_run < $yesterday) {
+    variable_set('archives_cron', strtotime('now'));
+    return _archives_posts_archive();
+  }
 }
 
 /**
