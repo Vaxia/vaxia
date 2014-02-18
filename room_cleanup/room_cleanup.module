@@ -199,7 +199,7 @@ function _room_cleanup_rooms($form, &$form_state) {
       $rooms_not_cleanup[] = $node->field_parent_nid;
       $count++;
     }
-    drupal_set_message('Found ' . $count . ' parents.');
+    drupal_set_message('Found ' . count($rooms_for_cleanup) . ' rooms that might be cleaned up. Found ' . $count . ' parents.');
     // Cleanup the list.
     $rooms_not_cleanup = array_unique($rooms_not_cleanup);
     // Remove any newly found parents from the list of rooms we can cleanup.
