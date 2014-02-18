@@ -226,7 +226,6 @@ function _room_cleanup_rooms($form, &$form_state) {
 	  $cleaned_up_rooms++;
 	}
   }
-  watchdog('room_cleanup', 'Cleaned up ' . $cleaned_up_rooms . ' rooms.');
   drupal_set_message('Cleaned up ' . $cleaned_up_rooms . ' rooms.');
   // Save the last time we ran this.
   variable_set('room_cleanup_last_run', date('m/d/Y H:i:s'));
