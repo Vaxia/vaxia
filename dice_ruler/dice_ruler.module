@@ -31,6 +31,7 @@ function dice_ruler_menu() {
     'page arguments' => array('_dice_ruler_admin_settings'),
     'access arguments' => array('administer dice ruler'),
   );
+  return $items;
 }
 
 function _dice_ruler_admin_settings($form, &$form_state) {
