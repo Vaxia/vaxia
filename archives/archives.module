@@ -24,11 +24,14 @@ function archives_permission() {
  * Implements hook_cron().
  */
 function archives_cron() {
-  $last_run = variable_get('archives_cron', 0);
-  $yesterday = strtotime('-1 day');
-  if ($last_run < $yesterday) {
-    variable_set('archives_cron', strtotime('now'));
-    return _archives_posts_archive();
+  if (variable_get('archives_cron',  FALSE)) {
+    $last_run = variable_get('archives_crontime', 0);
+    $yesterday = strtotime('-1 day');
+    if ($last_run < $yesterday) {
+      variable_set('archives_crontime', strtotime('now'));
+      watchdog('archives', t('Ran archives cron.'));
+      return _archives_posts_archive();
+    }
   }
 }
 
@@ -87,6 +90,11 @@ function archives_admin_form($form, &$form_state) {
     '#description' => t('Timeframe to keep in the database before moving to archives. Use the same strings as date().'),
     '#type' => 'textfield',
     '#default_value' => variable_get('archives_date', '12 months'),
+  );
+  $form['archives_cron'] = array(
+    '#title' => t('Enable archive cron'),
+    '#type' => 'checkbox',
+    '#default_value' => variable_get('archives_cron',  FALSE),
   );
   return system_settings_form($form);
 }
