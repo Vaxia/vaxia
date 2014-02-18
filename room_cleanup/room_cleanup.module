@@ -179,10 +179,9 @@ function _room_cleanup_rooms($form, &$form_state) {
   // And we repeat this until we have a pass where we don't move any more rooms over.
   $last_number_of_rooms = 0;
   $number_of_rooms = count($rooms_not_cleanup);
-  while ($last_number_of_rooms != $number_of_rooms) {
+  while ($last_number_of_rooms != $number_of_rooms || !empty($rooms_for_cleanup)) {
     // Set our time out for each loop...
     set_time_limit(600);
-    drupal_set_message('Loop start: #last number rooms ' .$last_number_of_rooms. ' #cleanups '.$number_of_rooms);
     // Get the parents of all rooms that have comments.
     // Since their children have comments we're going to add them to the set
     // of rooms with comments so we don't destroy the tree.
