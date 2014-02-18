@@ -13,7 +13,35 @@ function dice_ruler_permission() {
       'title' => t('use dice ruler'),
       'description' => t('Use dice ruler.'),
     ),
+    'administer dice ruler'=> array(
+      'title' => t('administer dice ruler'),
+      'description' => t('Administer dice ruler.'),
+    ),
   );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function dice_ruler_menu() {
+  $items['admin/config/system/dice_ruler'] = array(
+    'title' => 'Dice ruler configuration',
+    'description' => 'Configure the options for the dice ruler',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('_dice_ruler_admin_settings'),
+    'access arguments' => array('administer dice ruler'),
+  );
+}
+
+function _dice_ruler_admin_settings($form, &$form_state) {
+
+  $form['dice_ruler_magic_dd'] = array(
+    '#title' => t('Dynamic difficulty'),
+    '#description' => t('Use dynamic diffulty on magic rolls.'),
+    '#type' => 'checkbox',
+    '#default_value' => variable_get('dice_ruler_magic_dd', TRUE),
+  );
+  return system_settings_form($form);
 }
 
 /**
@@ -1214,10 +1242,15 @@ function _dice_ruler_magic(
     || !empty($magic_target_skill) && !is_numeric($magic_target_skill)) {
     return t('Not all values given were numeric. We need numbers for math.');
   }
-  // Now put all these into a table to display.
+  // Set header.
+  $diff_header = t('Diff');
+  // Modify the title for diffs if DD is in place.
+  if (variable_get('dice_ruler_magic_dd', TRUE)) {
+    $diff_header = t('Diff w/ DD');
+  }
   $header = array(
     t('Might'),
-    t('Diff'),
+    $diff_header,
     t('Add diff.'),
     t('Rolled'),
     t('Roll needed'),
@@ -1227,7 +1260,7 @@ function _dice_ruler_magic(
     t('% of diff'),
     t('Failed might'),
   );
-  // Combine results.
+  // Calculate the rulings to succeed at the spell at all.
   $rows = array();
   $results = _dice_ruler_make_magic_ruling(
     $magic_might_a,
@@ -1243,12 +1276,13 @@ function _dice_ruler_magic(
     'header' => $header,
     'rows' => $rows,
   ));
+  // If we have a resisting target calculate the ruling for resisted.
   if ($magic_target_stat_int != 0 || $magic_target_stat_spi != 0 || $magic_target_skill != 0) {
     $output .= '<div><b>' . t('Resisted roll results') . ':</b></div>';
-    // Set the target diffs for resisted.
+    // Set the target diffs for resisted rolls.
     $magic_diff_a = $magic_diff_a + $magic_target_stat_int + $magic_target_skill;
     $magic_diff_b = $magic_diff_b + $magic_target_stat_spi + $magic_target_skill;
-    $output .= '<div>' . t('With target\'s resistance, the difficulty is') .': '. $magic_diff_a .  ' / ' . $magic_diff_b . '</div>';
+    $output .= '<div>' . t('With target\'s resistance, the base difficulty is') .': '. $magic_diff_a .  ' / ' . $magic_diff_b . '</div>';
     // Combine results.
     $rows = array();
     $results = _dice_ruler_make_magic_ruling(
@@ -1279,25 +1313,29 @@ function _dice_ruler_make_magic_ruling(
   $magic_add_diff_b,
   $magic_rolled_b) {
   // Change difficulty for dynamic difs.
-  $magic_diff_a = 2 * ($magic_diff_a + $magic_add_diff_a) - ($magic_might_a);
-  if ($magic_diff_a < 1) {
-    $magic_diff_a = 1;
+  // Toggle added here as this may be a section of system to be removed.
+  if ( variable_get('dice_ruler_magic_dd', TRUE)) {
+    $magic_diff_a = 2 * ($magic_diff_a + $magic_add_diff_a) - ($magic_might_a);
+    if ($magic_diff_a < 1) {
+      $magic_diff_a = 1;
+    }
+    $magic_diff_b = 2 * ($magic_diff_b + $magic_add_diff_b) - ($magic_might_b);
+    if ($magic_diff_b < 1) {
+      $magic_diff_b = 1;
+    }
   }
-  $magic_diff_b = 2 * ($magic_diff_b + $magic_add_diff_b) - ($magic_might_b);
-  if ($magic_diff_b < 1) {
-    $magic_diff_b = 1;
-  }
-  // Get results from our master function.
+  // Get results from our ruling function.
   $magic_a = _dice_ruler_make_ruling(
-  $magic_might_a,
-  $magic_diff_a,
-  0,
-  $magic_rolled_a);
+    $magic_might_a,
+    $magic_diff_a,
+    0,
+    $magic_rolled_a);
   $magic_b = _dice_ruler_make_ruling(
-  $magic_might_b,
-  $magic_diff_b,
-  0,
-  $magic_rolled_b);
+    $magic_might_b,
+    $magic_diff_b,
+    0,
+    $magic_rolled_b);
+  // Figure out as per a two-trait.
   $versus_one = (($magic_rolled_a - $magic_a[4]) >= 0) ? $magic_add_diff_a : 0; // 4 => Roll needed
   $versus_two = (($magic_rolled_b - $magic_b[4]) >= 0) ? $magic_add_diff_b : 0; // 4 => Roll needed
   $winsby_one = $magic_a[3] - $magic_a[4];
