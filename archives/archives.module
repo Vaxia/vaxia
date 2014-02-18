@@ -55,22 +55,6 @@ function archives_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('archives_admin_form'),
   );
-  $items['admin/config/search/archives/settings'] = array(
-    'title' => 'Archive configurations',
-    'description' => 'Flat file archive configurations',
-    'type' => MENU_DEFAULT_LOCAL_TASK,
-    'access arguments' => array('administer old archives'),
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('archives_admin_form'),
-  );
-  $items['admin/config/search/archives/archive_posts'] = array(
-    'title' => 'Do archive',
-    'description' => 'Archive posts currently in the system into the archive files',
-    'type' =>  MENU_LOCAL_TASK,
-    'access arguments' => array('administer old archives'),
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('archive_posts_form'),
-  );
   return $items;
 }
 
@@ -96,14 +80,6 @@ function archives_admin_form($form, &$form_state) {
     '#type' => 'checkbox',
     '#default_value' => variable_get('archives_cron',  FALSE),
   );
-  return system_settings_form($form);
-}
-
-/**
- * Menu callback for archive form.
- */
-function archive_posts_form($form, &$form_state) {
-  $form = array();
   $date = variable_get('archives_last_run', 'never');
   $form['archive_date'] = array(
     '#markup' => '<div>' . t('Archives last run') . ': ' . $date . '</div>',
@@ -111,15 +87,9 @@ function archive_posts_form($form, &$form_state) {
   $form['archive'] = array(
     '#type' => 'submit',
     '#value' => t('Archive All Posts'),
+    '#submit' => '_archives_posts_archive',
   );
-  return $form;
-}
-
-/**
- * Submit handler for archive form.
- */
-function archive_posts_form_submit($form, &$form_state) {
-  return _archives_posts_archive();
+  return system_settings_form($form);
 }
 
 /**
