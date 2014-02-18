@@ -42,30 +42,62 @@ function _dice_ruler_admin_settings($form, &$form_state) {
     '#type' => 'checkbox',
     '#default_value' => variable_get('dice_ruler_magic_dd', TRUE),
   );
+  // Set percentage for extra action.
+  $form['dice_ruler_extra_action_penalty'] = array(
+    '#title' => t('Extra action penalty'),
+    '#description' => t('The default modifier per extra action taken applied to all actions.'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('dice_ruler_extra_action_penalty', 20),
+  );
   // Toggle for addressing weapons as classes, with pre-set values.
-  $form['dice_ruler_weapon_weapon_class'] = array(
+  $form['dice_ruler_weapon_class'] = array(
     '#title' => t('Weapon damage classes'),
     '#description' => t('Use light/heavy weapon classes instead of direct weapon percentages.'),
     '#type' => 'checkbox',
-    '#default_value' => variable_get('dice_ruler_weapon_weapon_class', FALSE),
+    '#default_value' => variable_get('dice_ruler_weapon_class', FALSE),
   );
-  $form['dice_ruler_weapon_weapon_class_none'] = array(
+  $form['dice_ruler_weapon_class_none'] = array(
     '#title' => t('No bonus'),
     '#description' => t('The percent bonus used for no weapons.'),
     '#type' => 'textfield',
-    '#default_value' => variable_get('dice_ruler_weapon_weapon_class_none', 0),
+    '#default_value' => variable_get('dice_ruler_weapon_class_none', 0),
   );
-  $form['dice_ruler_weapon_weapon_class_light'] = array(
+  $form['dice_ruler_weapon_class_light'] = array(
     '#title' => t('Light bonus'),
     '#description' => t('The percent bonus used for light weapons.'),
     '#type' => 'textfield',
-    '#default_value' => variable_get('dice_ruler_weapon_weapon_class_light', 0),
+    '#default_value' => variable_get('dice_ruler_weapon_class_light', 10),
   );
-  $form['dice_ruler_weapon_weapon_class_heavy'] = array(
+  $form['dice_ruler_weapon_class_heavy'] = array(
     '#title' => t('Heavy bonus'),
     '#description' => t('The percent bonus used for heavy weapons.'),
     '#type' => 'textfield',
-    '#default_value' => variable_get('dice_ruler_weapon_weapon_class_heavy', 0),
+    '#default_value' => variable_get('dice_ruler_weapon_class_heavy', 40),
+  );
+  // Toggle reducing multi-action penalty by class.
+  $form['dice_ruler_weapon_class_multi'] = array(
+    '#title' => t('Weapon action classes'),
+    '#description' => t('Use light/heavy weapon classes to modify multi-action values.'),
+    '#type' => 'checkbox',
+    '#default_value' => variable_get('dice_ruler_weapon_class_multi', FALSE),
+  );
+  $form['dice_ruler_weapon_class_multi_none'] = array(
+    '#title' => t('No bonus'),
+    '#description' => t('The amount to reduce multi-action penalties for no weapons.'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('dice_ruler_weapon_class_multi_none', 10),
+  );
+  $form['dice_ruler_weapon_class_multi_light'] = array(
+    '#title' => t('Light bonus'),
+    '#description' => t('The amount to reduce multi-action penalties for light weapons.'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('dice_ruler_weapon_class_multi_light', 10),
+  );
+  $form['dice_ruler_weapon_class_multi_heavy'] = array(
+    '#title' => t('Heavy bonus'),
+    '#description' => t('The amount to reduce multi-action penalties for heavy weapons.'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('dice_ruler_weapon_class_multi_heavy', 0),
   );
   return system_settings_form($form);
 }
@@ -329,21 +361,18 @@ function dice_ruler_form($form, &$form_state) {
     '#type' => 'select',
     '#title' => t('Actions'),
     '#options' => array(
-      '0' => '1',
-      '20' => '2',
-      '40' => '3',
-      '60' => '4',
+      '1' => '1',
+      '2' => '2',
+      '3' => '3',
+      '4' => '4',
     ),
   );
   // Toggle between weapon percents and weapon categories.
-  if (variable_get('dice_ruler_weapon_weapon_class', FALSE)) {
-    $none = variable_get('dice_ruler_weapon_weapon_class_none', 0);
-    $light = variable_get('dice_ruler_weapon_weapon_class_light', 0);
-    $heavy = variable_get('dice_ruler_weapon_weapon_class_heavy', 0);
+  if (variable_get('dice_ruler_weapon_class', FALSE)) {
     $weapon_class_options = array(
-      $none => t('No weapon'),
-      $light => t('Light'),
-      $heavy => t('Heavy'),
+      'none' => t('No weapon'),
+      'light' => t('Light'),
+      'heavy' => t('Heavy'),
     );
     $form['combat']['a']['combat_weapon_a'] = array(
       '#type' => 'radios',
@@ -361,7 +390,7 @@ function dice_ruler_form($form, &$form_state) {
   }
   $values = array();
   for ($i = 1; $i < 5; $i++) {
-    $values[] = array('value' => ($i - 1) * 20);
+    $values[] = array('value' => $i);
   }
   for ($i = 1; $i < 5; $i++) {
     $form['combat']['a']['attack_a_'.$i] = array(
@@ -440,21 +469,18 @@ function dice_ruler_form($form, &$form_state) {
     '#type' => 'select',
     '#title' => t('Actions'),
     '#options' => array(
-      '0' => '1',
-      '20' => '2',
-      '40' => '3',
-      '60' => '4',
+      '1' => '1',
+      '2' => '2',
+      '3' => '3',
+      '4' => '4',
     ),
   );
   // Toggle between weapon percents and weapon categories.
-  if (variable_get('dice_ruler_weapon_weapon_class', FALSE)) {
-    $none = variable_get('dice_ruler_weapon_weapon_class_none', 0);
-    $light = variable_get('dice_ruler_weapon_weapon_class_light', 0);
-    $heavy = variable_get('dice_ruler_weapon_weapon_class_heavy', 0);
+  if (variable_get('dice_ruler_weapon_class', FALSE)) {
     $weapon_class_options = array(
-      $none => t('No weapon'),
-      $light => t('Light'),
-      $heavy => t('Heavy'),
+      'none' => t('No weapon'),
+      'light' => t('Light'),
+      'heavy' => t('Heavy'),
     );
     $form['combat']['b']['combat_weapon_b'] = array(
       '#type' => 'radios',
@@ -472,7 +498,7 @@ function dice_ruler_form($form, &$form_state) {
   }
   $values = array();
   for ($i = 1; $i < 5; $i++) {
-    $values[] = array('value' => ($i - 1) * 20);
+    $values[] = array('value' => $i);
   }
   for ($i = 1; $i < 5; $i++) {
     $form['combat']['b']['attack_'.$i] = array(
@@ -657,32 +683,52 @@ function dice_ruler_form($form, &$form_state) {
       break;
       case 'combat':
         $results = '';
-        $attacks = ($form_state['values']['combat_action_count_a'] / 20) +1;
+        $base_a = $base_b = variable_get('dice_ruler_extra_action_penalty', 20);
+        $reduce_base_a = $reduce_base_b = 0;
+        if (variable_get('dice_ruler_weapon_class_multi', FALSE)) {
+          // Based on the weapon, figure out the modifier for a and b.
+          $reduce_base_a = variable_get('dice_ruler_weapon_class_multi_' . $form_state['values']['combat_weapon_a'], 0);
+          $reduce_base_b = variable_get('dice_ruler_weapon_class_multi_' . $form_state['values']['combat_weapon_b'], 0);
+        }
+        $attacks_a = $form_state['values']['combat_action_count_a']; // 1, 2, 3, 4.
+        $base_a = $base_a * ($attacks_a - 1) - $reduce_base_a;
+        $attacks_b = $form_state['values']['combat_action_count_b']; // 1, 2, 3, 4.
+        $base_b = $base_b * ($attacks_b - 1) - $reduce_base_b;
+        // Process for each attack.
+        $attacks = $attacks_a > $attacks_b ? $attacks_a : $attacks_b;
         for ($i = 1; $i < $attacks + 1; $i++) {
-          // Remove from mights based on action counts.
-          $form_state['values']['combat_might_a_dex_' . $i] -= $form_state['values']['combat_action_count_a'];
-          if ($form_state['values']['combat_might_a_dex_' . $i] < 0) {
-            $form_state['values']['combat_might_a_dex_' . $i] = 0;
+          // Reduce mights for A. Cannot go lower than zero.
+          $form_state['values']['combat_might_a_dex_' . $i] -= $base_a;
+          if ($form_state['values']['combat_might_a_dex_' . $i] <= 0) {
+            $form_state['values']['combat_might_a_dex_' . $i] = 1;
           }
-          $form_state['values']['combat_might_a_str_' . $i] -= $form_state['values']['combat_action_count_a']; 
-          if ($form_state['values']['combat_might_a_str_' . $i] < 0) {
-            $form_state['values']['combat_might_a_str_' . $i] = 0;
+          $form_state['values']['combat_might_a_str_' . $i] -= $base_a; 
+          if ($form_state['values']['combat_might_a_str_' . $i] <= 0) {
+            $form_state['values']['combat_might_a_str_' . $i] = 1;
           }
-          $form_state['values']['combat_might_a_end_' . $i] -= $form_state['values']['combat_action_count_a']; 
-          if ($form_state['values']['combat_might_a_end_' . $i] < 0) {
-            $form_state['values']['combat_might_a_end_' . $i] = 0;
+          $form_state['values']['combat_might_a_end_' . $i] -= $base_a; 
+          if ($form_state['values']['combat_might_a_end_' . $i] <= 0) {
+            $form_state['values']['combat_might_a_end_' . $i] = 1;
           }
-          $form_state['values']['combat_might_b_dex_' . $i] -= $form_state['values']['combat_action_count_b'];
-          if ($form_state['values']['combat_might_b_dex_' . $i] < 0) {
-            $form_state['values']['combat_might_b_dex_' . $i] = 0;
+          // Reduce for B. Cannot go lower than zero.
+          $form_state['values']['combat_might_b_dex_' . $i] -= $base_b;
+          if ($form_state['values']['combat_might_b_dex_' . $i] <= 0) {
+            $form_state['values']['combat_might_b_dex_' . $i] = 1;
           }
-          $form_state['values']['combat_might_b_str_' . $i] -= $form_state['values']['combat_action_count_b']; 
-          if ($form_state['values']['combat_might_b_str_' . $i] < 0) {
-            $form_state['values']['combat_might_b_str_' . $i] = 0;
+          $form_state['values']['combat_might_b_str_' . $i] -= $base_b; 
+          if ($form_state['values']['combat_might_b_str_' . $i] <= 0) {
+            $form_state['values']['combat_might_b_str_' . $i] = 1;
           }
-          $form_state['values']['combat_might_b_end_' . $i] -= $form_state['values']['combat_action_count_b']; 
-          if ($form_state['values']['combat_might_b_end_' . $i] < 0) {
-            $form_state['values']['combat_might_b_end_' . $i] = 0;
+          $form_state['values']['combat_might_b_end_' . $i] -= $base_b; 
+          if ($form_state['values']['combat_might_b_end_' . $i] <= 0) {
+            $form_state['values']['combat_might_b_end_' . $i] = 1;
+          }
+          // If we use classes, look up the correct class value.
+          if (variable_get('dice_ruler_weapon_class', FALSE)) {
+            $form_state['values']['combat_weapon_a'] =
+              variable_get('dice_ruler_weapon_class_' . $form_state['values']['combat_weapon_a'], 0);
+            $form_state['values']['combat_weapon_b'] =
+              variable_get('dice_ruler_weapon_class_' . $form_state['values']['combat_weapon_b'], 0);
           }
           // Get results.
           $results .= _dice_ruler_combat(

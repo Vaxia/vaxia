@@ -46,8 +46,7 @@ Drupal.behaviors.diceRuler = {
         $('#edit-roll-type').val('combat').trigger('change');
         rolls.find('.dice_set').each( function() {
           var index = ($(this).find('.roll_set').html() * 1) + 1; // Convert to number.
-          var attacks = (index - 1) * 20;
-          $('#edit-combat-action-count-a').val(attacks).trigger('change');
+          $('#edit-combat-action-count-a').val(index).trigger('change');
           $('#edit-combat-might-a-dex-' + index).val( $(this).find('.dice_roll_dex .might').html() );
           $('#edit-combat-rolled-a-dex-' + index).val( $(this).find('.dice_roll_dex .roll').html() );
           $('#edit-combat-might-a-str-' + index).val( $(this).find('.dice_roll_str .might').html() );
