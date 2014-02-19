@@ -456,6 +456,20 @@ function vaxia_character_sheet_validate_sheet($node, $old_node, $form, $form_sta
 }
 
 /**
+ * Implements hook_character_sheet_update_sheet().
+ */
+function vaxia_character_sheet_update_sheet($node, $old_node) {
+  $cost = _character_sheet_total_xp($node);
+  $old_cost = _character_sheet_total_xp($old_node);
+  if ($cost != $old_cost) {
+    global $user;
+    $message = t('@xp @ype spent on @title by @user.',
+      array('@xp' => $cost - $old_cost, '@type' => 'XP', '@title' => $node->title, '@user' => $user->name));
+    _character_sheet_update_log($node->nid, 'xp', $message, $variables = array());
+  }
+}
+
+/**
  * Callback for admin settings page for character sheets.
  */
 function _vaxia_admin_settings() {
@@ -492,7 +506,7 @@ function _vaxia_admin_settings() {
     '#description' => 'The maximum amount of kxp to be awarded per post.',
     '#type' => 'textfield',
     '#default_value' => variable_get('vaxia_max_kxp_post', 10),
-  );  
+  );
   $form['settings']['vaxia_xp_types'] = array(
     '#title' => 'XP types',
     '#description' => t('Available XP sub-types. The following types used by the system and will ' .
