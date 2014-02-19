@@ -60,7 +60,13 @@ function _dice_ruler_admin_settings($form, &$form_state) {
   }
 
   // Toggle for turning DD on/off
-  $form['dice_ruler_magic_dd'] = array(
+  $form['dynamic_difficulty'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Dynamic difficulty'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  $form['dynamic_difficulty']['dice_ruler_magic_dd'] = array(
     '#title' => t('Dynamic difficulty'),
     '#description' => t('Use dynamic diffulty on magic rolls.'),
     '#type' => 'checkbox',
@@ -68,7 +74,13 @@ function _dice_ruler_admin_settings($form, &$form_state) {
   );
 
   // Set percentage for extra action.
-  $form['dice_ruler_extra_action_penalty'] = array(
+  $form['extra_actions'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Extra actions'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  $form['extra_actions']['dice_ruler_extra_action_penalty'] = array(
     '#title' => t('Extra action penalty'),
     '#description' => t('The default modifier per extra action taken applied to all actions.'),
     '#type' => 'textfield',
