@@ -11,6 +11,10 @@ include_once 'rpg_site_staff.features.inc';
  */
 function rpg_site_staff_permission() {
   return array(
+    'view session notes'=> array(
+      'title' => t('view session notes'),
+      'description' => t('View session notes.'),
+    ),
     'administrate staff settings'=> array(
       'title' => t('administrate staff settings'),
       'description' => t('Administrate staff settings.'),
@@ -37,6 +41,10 @@ function rpg_site_staff_menu() {
  * Menu callback, admin form.
  */
 function _rpg_site_staff_admin_settings($form, &$form_state) {
+  $form['elections'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Election settings'),
+  );
   $form['rpg_site_staff_election_day'] = array(
     '#title' => t('Election day'),
     '#description' => t('Set the election day for automatic elections.'),
@@ -201,9 +209,9 @@ function rpg_site_staff_node_view($node, $view_mode, $langcode) {
   // If node session report.
   if ($node->type == 'session_report') {
     global $user;
-    // Check if the user has the 'editor' role.
-    if (in_array('storyteller', $user->roles) && !empty($node->content['field_session_notes'])) {
-      unset($node->content['field_session_notes']);
+    // Check if the user has the 'view session notes' permission.
+    if (!user_access('view session notes') && !empty($node->content['field_additional_notes'])) {
+      unset($node->content['field_additional_notes']);
     }
   }
 
