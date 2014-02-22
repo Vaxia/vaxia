@@ -302,6 +302,7 @@ function proposal_webform_results_analysis($variables) {
 function proposal_node_view($node, $view_mode, $langcode) {
   // Only override the displays for proposals.
   if ($node->type == 'proposal') {
+    module_load_include('inc', 'webform', 'includes/webform.report');
     $timeframe = variable_get('proposal_open_timeframe', '2 weeks');
     $date = strtotime($timeframe, $node->changed); // Add two weeks from last changed.
     $date = strtotime(date('m/d/Y 00:00:01', $date)); // Convert to at midnight timeframe.
@@ -364,7 +365,6 @@ function proposal_node_view($node, $view_mode, $langcode) {
     }
     // And if the vote has been closed - add that.
     if ($node->webform['status'] == FALSE || user_access('administer proposal')) {
-      module_load_include('inc', 'webform', 'includes/webform.report');
       $node->content['proposal_results'] = array(
         '#markup' => '<div class="proposal_result">' . webform_results_table($node) . '</div>',
         '#weight' => 1002,
