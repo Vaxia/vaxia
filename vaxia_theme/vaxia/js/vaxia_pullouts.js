@@ -6,10 +6,14 @@
   // Add toggle buttons.
   $('.logged-in article.node-rpg-chatroom').once(function() {
 
-    // Setup. Hide all the non-essentials.
+    // Hide and adjust widths on the sidebar vs content.
     $('.sidebar-first #content').css('margin-left', '0%');
     $('.sidebar-first #content').css('width', '100%');
     $('.sidebar-first .region-sidebar-first').css('width', '100%');
+    // Set up sidebar fieldsets that are collapsible and collapsed to be uncollapsed.
+    // Because that piece of code doesn't work on this pullout.
+    $('.sidebar-first .region-sidebar-first fieldset.collapsed').removeClass('collapsed');
+    // And hide the header.
     $('#header').hide();
 
     // Pullout for Header.
