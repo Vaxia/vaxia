@@ -14,7 +14,7 @@
 
     // Pullout for Header.
     $('.logged-in #navigation').wrap('<div id="extruderBarHead" class="{title:\'View Header\'}"></div>');
-    $('.logged-in #extruderBarHead').buildMbExtruder({
+    $('#extruderBarHead').buildMbExtruder({
       position:"left",
       width:"100%",
       positionFixed:false,
@@ -23,21 +23,21 @@
       onExtOpen:function(){
         $('#extruderBarHead').toggleClass('isOpen');
         $('#header').show();
-        $('.logged-in .sidebar-first #content').css('margin-left', '20%');
-        $('.logged-in .sidebar-first #content').css('width', '80%');
+        $('sidebar-first #content').css('margin-left', '20%');
+        $('.sidebar-first #content').css('width', '80%');
       },
       onExtContentLoad:function(){},
       onExtClose:function(){
         $('#extruderBarHead').toggleClass('isOpen');
         $('#header').hide();
-        $('.logged-in .sidebar-first #content').css('margin-left', '0%');
-        $('.logged-in .sidebar-first #content').css('width', '100%');
+        $('.sidebar-first #content').css('margin-left', '0%');
+        $('.sidebar-first #content').css('width', '100%');
       }
     });
 
     // Pullout for Sidebar.
     $('.logged-in .sidebar-first .region-sidebar-first').wrap('<div id="extruderBarFirst" class="{title:\'View Sidebar\'}"></div>');
-    $('.logged-in #extruderBarFirst').buildMbExtruder({
+    $('#extruderBarFirst').buildMbExtruder({
       position:"left",
       width:"100%",
       positionFixed:false,
@@ -45,19 +45,19 @@
       extruderOpacity:0.8,
       onExtOpen:function(){
         $('#extruderBarFirst').toggleClass('isOpen');
-        $('.logged-in .sidebar-first #content').css('margin-left', '20%');
-        $('.logged-in .sidebar-first #content').css('width', '80%');
+        $('sidebar-first #content').css('margin-left', '20%');
+        $('.sidebar-first #content').css('width', '80%');
       },
       onExtContentLoad:function(){},
       onExtClose:function(){
         $('#extruderBarFirst').toggleClass('isOpen');
-        $('.logged-in .sidebar-first #content').css('margin-left', '0%');
-        $('.logged-in .sidebar-first #content').css('width', '100%');
+        $('.sidebar-first #content').css('margin-left', '0%');
+        $('.sidebar-first #content').css('width', '100%');
       }
     });
 
     // Pullout for Description.
-    $('article.node-rpg-chatroom .field-name-field-wiki-source').wrap('<div id="extruderBarDesc" class="{title:\'View Description\'}"></div>');
+    $('.logged-in article.node-rpg-chatroom .field-name-field-wiki-source').wrap('<div id="extruderBarDesc" class="{title:\'View Description\'}"></div>');
     $('#extruderBarDesc').buildMbExtruder({
       position:"left",
       width:"100%",
@@ -74,7 +74,7 @@
     });
 
     // Pullout for Room Navigation.
-    $('article.node-rpg-chatroom #node_rpg_chatroom_full_group_navigation').wrap('<div id="extruderBarNav" class="{title:\'View Navigation\'}"></div>');
+    $('.logged-in article.node-rpg-chatroom #node_rpg_chatroom_full_group_navigation').wrap('<div id="extruderBarNav" class="{title:\'View Navigation\'}"></div>');
     $('#extruderBarNav').buildMbExtruder({
       position:"left",
       width:"100%",
@@ -83,14 +83,14 @@
       extruderOpacity:0.8,
       onExtOpen:function(){
         $('#extruderBarNav').toggleClass('isOpen');
-        $('.logged-in .sidebar-first #content').css('margin-left', '20%');
-        $('.logged-in .sidebar-first #content').css('width', '80%');
+        $('sidebar-first #content').css('margin-left', '20%');
+        $('.sidebar-first #content').css('width', '80%');
       },
       onExtContentLoad:function(){},
       onExtClose:function(){
         $('#extruderBarNav').toggleClass('isOpen');
-        $('.logged-in .sidebar-first #content').css('margin-left', '0%');
-        $('.logged-in .sidebar-first #content').css('width', '100%');
+        $('.sidebar-first #content').css('margin-left', '0%');
+        $('.sidebar-first #content').css('width', '100%');
       }
     });
 
