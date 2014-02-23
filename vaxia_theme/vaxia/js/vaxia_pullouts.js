@@ -13,7 +13,7 @@
     $('#header').hide();
 
     // Pullout for Header.
-    $('#navigation').wrap('<div id="extruderBarHead" class="{title:\'View Header\'} isClosed jsPullout"></div>');
+    $('#navigation').wrap('<div id="extruderBarHead" class="{title:\'View Site Nav\'} isClosed jsPullout"></div>');
     $('#extruderBarHead').buildMbExtruder({
       position:"left",
       positionFixed:false,
