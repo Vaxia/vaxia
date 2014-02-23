@@ -47,7 +47,7 @@
     margin:0;
     width:100%;
 }
-#extruderBarNav .field-name-field-parent{
+#extruderBarNav .field-name-field-parent .field-items{
     margin-left:20px;
     margin-bottom:0.5em;
 }
