@@ -62,7 +62,7 @@
       position:"left",
       width:"100%",
       positionFixed:false,
-      top:280,
+      top:283,
       extruderOpacity:0.8,
       onExtOpen:function(){
         $('#extruderBarDesc').toggleClass('isOpen');
@@ -79,7 +79,7 @@
       position:"left",
       width:"100%",
       positionFixed:false,
-      top:402,
+      top:417px,
       extruderOpacity:0.8,
       onExtOpen:function(){
         $('#extruderBarNav').toggleClass('isOpen');
