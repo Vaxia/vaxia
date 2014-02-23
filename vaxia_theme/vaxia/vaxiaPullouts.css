@@ -16,13 +16,18 @@
     background: #555;
 }
 
-#extruderBarDesc.isOpen .ext_wrapper{
+.isOpen .ext_wrapper{
     width: 600px;
 }
 
-#extruderBarDesc.isOpen .ext_wrapper .extruder-content{
+.isOpen .ext_wrapper .extruder-content{
     background: #555;
     border:#EEE 1px solid;
     position:relative;
     left:1em;
+    top:2em;
+    padding:0.5em;
+    border-radius:10px;
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
 }
