@@ -31,3 +31,43 @@
     -moz-border-radius:10px;
     -webkit-border-radius:10px;
 }
+
+#extruderBarNav fieldset{
+    border: 0px;
+    padding:0px;
+    margin:0px;
+}
+#extruderBarNav fieldset legend{
+    display:none;
+}
+#extruderBarNav .field-name-field-children{
+    float:none;
+    clear:none;
+    padding:0;
+    margin:0;
+    width:100%;
+}
+
+#extruderBarHead #navigation{
+    height:auto;
+    text-align:left;
+    overflow:hidden;
+}
+#extruderBarHead #navigation #main-menu{
+    float:none;
+    top:0;
+}
+#extruderBarHead #navigation ul.links li, #extruderBarHead #navigation ul.menu li {
+    float:none;
+    list-style-type:disc;
+}
+#extruderBarHead ul.inline{
+    display:block;
+}
+#extruderBarHead li{
+    float:none;
+    display:block;
+}
+#extruderBarHead #navigation a{
+    text-align:left;
+}
