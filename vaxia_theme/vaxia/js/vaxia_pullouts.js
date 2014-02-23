@@ -9,8 +9,8 @@
     // Setup.
     $('.logged-in .sidebar-first #content').css('margin-left', '0%');
     $('.logged-in .sidebar-first #content').css('width', '100%');
-    $('.sidebar-first .region-sidebar-first').css('width', '100%');
-    $('#header').hide();
+    $('.logged-in.sidebar-first .region-sidebar-first').css('width', '100%');
+    $('.logged-in #header').hide();
 
     // Pullout for Header.
     $('.logged-in #navigation').wrap('<div id="extruderBarHead" class="{title:\'View Header\'}"></div>');
