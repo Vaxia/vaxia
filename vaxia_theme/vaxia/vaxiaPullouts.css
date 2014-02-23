@@ -47,6 +47,10 @@
     margin:0;
     width:100%;
 }
+#extruderBarNav .field-name-field-parent{
+    margin-left:20px;
+    margin-bottom:0.5em;
+}
 
 #extruderBarHead #navigation{
     height:auto;
