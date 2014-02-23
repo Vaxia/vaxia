@@ -9,7 +9,7 @@
     // Setup.
     $('.sidebar-first #content').css('margin-left', '0%');
     $('.sidebar-first #content').css('width', '100%');
-    $('.logged-in.sidebar-first .region-sidebar-first').css('width', '100%');
+    $('.sidebar-first .region-sidebar-first').css('width', '100%');
     $('#header').hide();
 
     // Pullout for Header.
@@ -23,7 +23,7 @@
       onExtOpen:function(){
         $('#extruderBarHead').toggleClass('isOpen');
         $('#header').show();
-        $('sidebar-first #content').css('margin-left', '20%');
+        $('.sidebar-first #content').css('margin-left', '20%');
         $('.sidebar-first #content').css('width', '80%');
       },
       onExtContentLoad:function(){},
@@ -45,7 +45,7 @@
       extruderOpacity:0.8,
       onExtOpen:function(){
         $('#extruderBarFirst').toggleClass('isOpen');
-        $('sidebar-first #content').css('margin-left', '20%');
+        $('.sidebar-first #content').css('margin-left', '20%');
         $('.sidebar-first #content').css('width', '80%');
       },
       onExtContentLoad:function(){},
@@ -83,7 +83,7 @@
       extruderOpacity:0.8,
       onExtOpen:function(){
         $('#extruderBarNav').toggleClass('isOpen');
-        $('sidebar-first #content').css('margin-left', '20%');
+        $('.sidebar-first #content').css('margin-left', '20%');
         $('.sidebar-first #content').css('width', '80%');
       },
       onExtContentLoad:function(){},
