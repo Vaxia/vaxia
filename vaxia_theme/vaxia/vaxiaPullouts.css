@@ -12,6 +12,9 @@
     border:#EEE solid 1px;
     border-left:0px;
 }
+.flap .flapLabel{
+    background: #555;
+}
 
 #extruderBarDesc.isOpen .ext_wrapper{
     width: 600px;
