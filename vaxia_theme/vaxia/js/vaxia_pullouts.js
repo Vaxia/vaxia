@@ -30,8 +30,8 @@
       onExtClose:function(){
         $('#extruderBarHead').toggleClass('isOpen');
         $('#header').hide();
-        $('.sidebar-first #content').css('margin-left', '20%');
-        $('.sidebar-first #content').css('width', '80%');
+        $('.sidebar-first #content').css('margin-left', '0%');
+        $('.sidebar-first #content').css('width', '100%');
       }
     });
 
