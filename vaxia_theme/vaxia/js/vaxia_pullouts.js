@@ -7,14 +7,14 @@
   // Add toggle buttons.
   $('.tabs').once(function() {
     // Setup.
-    $('.sidebar-first #content').css('margin-left', '0%');
-    $('.sidebar-first #content').css('width', '100%');
+    $('.logged-in .sidebar-first #content').css('margin-left', '0%');
+    $('.logged-in .sidebar-first #content').css('width', '100%');
     $('.sidebar-first .region-sidebar-first').css('width', '100%');
     $('#header').hide();
 
     // Pullout for Header.
-    $('#navigation').wrap('<div id="extruderBarHead" class="{title:\'View Header\'}"></div>');
-    $('#extruderBarHead').buildMbExtruder({
+    $('.logged-in #navigation').wrap('<div id="extruderBarHead" class="{title:\'View Header\'}"></div>');
+    $('.logged-in #extruderBarHead').buildMbExtruder({
       position:"left",
       width:"100%",
       positionFixed:false,
@@ -23,21 +23,21 @@
       onExtOpen:function(){
         $('#extruderBarHead').toggleClass('isOpen');
         $('#header').show();
-        $('.sidebar-first #content').css('margin-left', '20%');
-        $('.sidebar-first #content').css('width', '80%');
+        $('.logged-in .sidebar-first #content').css('margin-left', '20%');
+        $('.logged-in .sidebar-first #content').css('width', '80%');
       },
       onExtContentLoad:function(){},
       onExtClose:function(){
         $('#extruderBarHead').toggleClass('isOpen');
         $('#header').hide();
-        $('.sidebar-first #content').css('margin-left', '0%');
-        $('.sidebar-first #content').css('width', '100%');
+        $('.logged-in .sidebar-first #content').css('margin-left', '0%');
+        $('.logged-in .sidebar-first #content').css('width', '100%');
       }
     });
 
     // Pullout for Sidebar.
-    $('.sidebar-first .region-sidebar-first').wrap('<div id="extruderBarFirst" class="{title:\'View Sidebar\'}"></div>');
-    $('#extruderBarFirst').buildMbExtruder({
+    $('.logged-in .sidebar-first .region-sidebar-first').wrap('<div id="extruderBarFirst" class="{title:\'View Sidebar\'}"></div>');
+    $('.logged-in #extruderBarFirst').buildMbExtruder({
       position:"left",
       width:"100%",
       positionFixed:false,
@@ -45,14 +45,14 @@
       extruderOpacity:0.8,
       onExtOpen:function(){
         $('#extruderBarFirst').toggleClass('isOpen');
-        $('.sidebar-first #content').css('margin-left', '20%');
-        $('.sidebar-first #content').css('width', '80%');
+        $('.logged-in .sidebar-first #content').css('margin-left', '20%');
+        $('.logged-in .sidebar-first #content').css('width', '80%');
       },
       onExtContentLoad:function(){},
       onExtClose:function(){
         $('#extruderBarFirst').toggleClass('isOpen');
-        $('.sidebar-first #content').css('margin-left', '0%');
-        $('.sidebar-first #content').css('width', '100%');
+        $('.logged-in .sidebar-first #content').css('margin-left', '0%');
+        $('.logged-in .sidebar-first #content').css('width', '100%');
       }
     });
 
@@ -73,7 +73,7 @@
       }
     });
 
-    // Pullout for Navigation.
+    // Pullout for Room Navigation.
     $('article.node-rpg-chatroom #node_rpg_chatroom_full_group_navigation').wrap('<div id="extruderBarNav" class="{title:\'View Navigation\'}"></div>');
     $('#extruderBarNav').buildMbExtruder({
       position:"left",
@@ -83,14 +83,14 @@
       extruderOpacity:0.8,
       onExtOpen:function(){
         $('#extruderBarNav').toggleClass('isOpen');
-        $('.sidebar-first #content').css('margin-left', '20%');
-        $('.sidebar-first #content').css('width', '80%');
+        $('.logged-in .sidebar-first #content').css('margin-left', '20%');
+        $('.logged-in .sidebar-first #content').css('width', '80%');
       },
       onExtContentLoad:function(){},
       onExtClose:function(){
         $('#extruderBarNav').toggleClass('isOpen');
-        $('.sidebar-first #content').css('margin-left', '0%');
-        $('.sidebar-first #content').css('width', '100%');
+        $('.logged-in .sidebar-first #content').css('margin-left', '0%');
+        $('.logged-in .sidebar-first #content').css('width', '100%');
       }
     });
 
