@@ -40,7 +40,7 @@
 #extruderBarNav fieldset legend{
     display:none;
 }
-#extruderBarNav .field-name-field-children{
+#extruderBarNav .field-name-field-parent, #extruderBarNav .field-name-field-children{
     float:none;
     clear:none;
     padding:0;
