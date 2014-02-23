@@ -7,13 +7,13 @@
   // Add toggle buttons.
   $('.tabs').once(function() {
     // Setup.
-    $('.logged-in .sidebar-first #content').css('margin-left', '0%');
-    $('.logged-in .sidebar-first #content').css('width', '100%');
+    $('.sidebar-first #content').css('margin-left', '0%');
+    $('.sidebar-first #content').css('width', '100%');
     $('.logged-in.sidebar-first .region-sidebar-first').css('width', '100%');
-    $('.logged-in #header').hide();
+    $('#header').hide();
 
     // Pullout for Header.
-    $('.logged-in #navigation').wrap('<div id="extruderBarHead" class="{title:\'View Header\'}"></div>');
+    $('#navigation').wrap('<div id="extruderBarHead" class="{title:\'View Header\'}"></div>');
     $('#extruderBarHead').buildMbExtruder({
       position:"left",
       width:"100%",
@@ -36,7 +36,7 @@
     });
 
     // Pullout for Sidebar.
-    $('.logged-in .sidebar-first .region-sidebar-first').wrap('<div id="extruderBarFirst" class="{title:\'View Sidebar\'}"></div>');
+    $('.sidebar-first .region-sidebar-first').wrap('<div id="extruderBarFirst" class="{title:\'View Sidebar\'}"></div>');
     $('#extruderBarFirst').buildMbExtruder({
       position:"left",
       width:"100%",
@@ -57,7 +57,7 @@
     });
 
     // Pullout for Description.
-    $('.logged-in article.node-rpg-chatroom .field-name-field-wiki-source').wrap('<div id="extruderBarDesc" class="{title:\'View Description\'}"></div>');
+    $('article.node-rpg-chatroom .field-name-field-wiki-source').wrap('<div id="extruderBarDesc" class="{title:\'View Description\'}"></div>');
     $('#extruderBarDesc').buildMbExtruder({
       position:"left",
       width:"100%",
@@ -74,7 +74,7 @@
     });
 
     // Pullout for Room Navigation.
-    $('.logged-in article.node-rpg-chatroom #node_rpg_chatroom_full_group_navigation').wrap('<div id="extruderBarNav" class="{title:\'View Navigation\'}"></div>');
+    $('article.node-rpg-chatroom #node_rpg_chatroom_full_group_navigation').wrap('<div id="extruderBarNav" class="{title:\'View Navigation\'}"></div>');
     $('#extruderBarNav').buildMbExtruder({
       position:"left",
       width:"100%",
