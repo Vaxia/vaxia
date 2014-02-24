@@ -23,8 +23,8 @@ Drupal.behaviors.rpgChat = {
   $('document').ready(function() {
     if (!$('.rpg-chat-node #edit-pause').length) {
       // On page load, inject the buttons into place in the DOM.
-      $('.rpg-chat-node #edit-actions').prepend('<input type="submit" id="edit-pause" class="toggle-rpg-chat-pause form-submit" value="Pause">');
-      $('.rpg-chat-node #edit-0').before('<input type="submit" id="edit-2" class="toggle-rpg-chat-pause form-submit" value="Pause">');
+      $('.rpg-chat-node #edit-actions').prepend('<input type="button" id="edit-pause" class="toggle-rpg-chat-pause form-submit" value="Pause">');
+      $('.rpg-chat-node #edit-0').before('<input type="button" id="edit-2" class="toggle-rpg-chat-pause form-submit" value="Pause">');
       $('.toggle-rpg-chat-pause').css('font-weight', '').css('color', 'graytext');
     }
   });
