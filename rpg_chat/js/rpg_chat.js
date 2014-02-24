@@ -27,21 +27,22 @@ Drupal.behaviors.rpgChat = {
       $('.rpg-chat-node #edit-0').before('<input type="button" id="edit-2" class="toggle-rpg-chat-pause form-submit" value="Pause">');
       $('.toggle-rpg-chat-pause').css('font-weight', '').css('color', 'graytext');
     }
-  });
 
-  // When clicking the comment post, empty the post out.
-  $('.toggle-rpg-chat-pause').click(function() {
-    if (paused == false) {
-      paused = true;
-      $('.toggle-rpg-chat-pause').css('font-weight', 'bold').css('color', 'red');
-    }
-    else {
-      paused = false;
-      $('.toggle-rpg-chat-pause').css('font-weight', '').css('color', 'graytext');
-      $("#edit-refresh-chat").triggerHandler("click");
-    }
-    // Otherwise do nothing.
-    return false;
+    // And the listener only after we have the button in place.
+    // When clicking the comment post, empty the post out.
+    $('.toggle-rpg-chat-pause').click(function() {
+      if (paused == false) {
+        paused = true;
+        $('.toggle-rpg-chat-pause').css('font-weight', 'bold').css('color', 'red');
+      }
+      else {
+        paused = false;
+        $('.toggle-rpg-chat-pause').css('font-weight', '').css('color', 'graytext');
+        $("#edit-refresh-chat").triggerHandler("click");
+      }
+      // Otherwise do nothing.
+      return false;
+    });
   });
 
   // Prevent form submission while in an AJAX event.
