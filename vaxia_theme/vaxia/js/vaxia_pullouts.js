@@ -23,7 +23,7 @@
       $('#extruderBarHead').buildMbExtruder({
         position:"left",
         positionFixed:false,
-        top:60,
+        top:160,
         extruderOpacity:0.8,
         onExtOpen:function(){
           $('#extruderBarHead').addClass('isOpen');
@@ -41,7 +41,7 @@
       $('#extruderBarFirst').buildMbExtruder({
         position:"left",
         positionFixed:false,
-        top:170,
+        top:279,
         extruderOpacity:0.8,
         onExtOpen:function(){
           $('#extruderBarFirst').addClass('isOpen');
@@ -59,7 +59,7 @@
       $('#extruderBarDesc').buildMbExtruder({
         position:"left",
         positionFixed:false,
-        top:283,
+        top:393,
         extruderOpacity:0.8,
         onExtOpen:function(){
           $('#extruderBarDesc').addClass('isOpen');
@@ -77,7 +77,7 @@
       $('#extruderBarNav').buildMbExtruder({
         position:"left",
         positionFixed:false,
-        top:417,
+        top:527,
         extruderOpacity:0.8,
         onExtOpen:function(){
           $('#extruderBarNav').addClass('isOpen');
