@@ -118,13 +118,48 @@ function proposal_admin_form($form, &$form_state) {
  */
 function proposal_menu_alter(&$items) {
   // Remove all the paths people don't need.
-  unset($items['node/%webform_menu/webform-results']);
-  unset($items['node/%webform_menu/webform/emails']);
-  unset($items['node/%webform_menu/webform/emails/%webform_menu_email']);
-  unset($items['node/%webform_menu/webform/emails/%webform_menu_email/delete']); 
+  $items['node/%webform_menu/webform-results']['access callback'] = '_proposal_webform_results_access';
+  $items['node/%webform_menu/webform/emails']['access callback'] = '_proposal_webform_email_access';
+  $items['node/%webform_menu/webform/emails/%webform_menu_email']['access callback'] = '_proposal_webform_email_access';
+  $items['node/%webform_menu/webform/emails/%webform_menu_email/delete']['access callback'] = '_proposal_webform_email_access'; 
   // That goes for the owner as well.
   $items['node/%webform_menu/webform-results']['access callback'] = '_proposal_webform_results_access';
 }
+
+/**
+ * Menu access call for result paths().
+ */
+function _proposal_webform_results_access($node) {
+  // If we're not looking at a proposal, bail out with the normal view.
+  if ($node->type != 'proposal') {
+    return webform_results_access($node); // Use defaults.
+  }
+  // Allow administrators at all times
+  if (user_access('administer proposal')) {
+    return user_access('administer proposal');
+  }
+  // Only show for a FINISHED contest. We do NOT need people vote stacking cause they know results.
+  if ($node->webform['status'] == FALSE) {
+    return webform_results_access($node, $account = NULL);
+  }
+  return FALSE;
+}
+
+/**
+ * Menu access call for email paths().
+ */
+function _proposal_webform_email_access($node) {
+  // If we're not looking at a proposal, bail out with the normal view.
+  if ($node->type != 'proposal') {
+    return node_access('update', $node); // Use defaults.
+  }
+  // Allow administrators at all times
+  if (user_access('administer proposal')) {
+    return user_access('administer proposal');
+  }
+  return FALSE;
+}
+
 
 /**
  * Implements hook_webform_submission_access().
@@ -139,21 +174,6 @@ function proposal_webform_submission_access($node, $submission, $op = 'view', $a
     return TRUE;
   }
   return FALSE; // Use defaults.
-}
-
-/**
- * Menu access call for _vaxia_webform_results_table().
- */
-function _proposal_webform_results_access($node) {
-  // Allow administrators at all times
-  if (user_access('administer proposal')) {
-    return user_access('administer proposal');
-  }
-  // Only show for a FINISHED contest. We do NOT need people vote stacking cause they know results.
-  if ($node->webform['status'] == FALSE) {
-    return webform_results_access($node, $account = NULL);
-  }
-  return FALSE;
 }
 
 /**
