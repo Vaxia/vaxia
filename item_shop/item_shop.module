@@ -15,6 +15,10 @@ function item_shop_permission() {
       'title' => t('use item shop'),
       'description' => t('Use item shop.'),
     ),
+    'sellback item shop' => array(
+      'title' => t('sellback item shop'),
+      'description' => t('Sell items back to item shop.'),
+    ),
     'set item for shop' => array(
       'title' => t('set item for shop'),
       'description' => t('Set item for shop.'),
@@ -32,6 +36,125 @@ function item_shop_permission() {
 function item_shop_menu_alter(&$items) {
   // Set a custom access callback function for our view page display path.
   $items['node/%/item_shop']['access callback'] = '_item_shop_access_callback';
+}
+
+/**
+ * Implements hook_menu().
+ */
+function item_shop_menu() {
+  $items['admin/config/system/item_helper'] = array(
+    'title' => 'Vaxia item shop configuration',
+    'description' => 'Configure value percents for item handling',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('_item_shop_admin_settings'),
+    'access arguments' => array('administer item shop'),
+  );
+  return $items;
+}
+
+/**
+ * Implementation of admin settings form.
+ */
+function _item_shop_admin_settings($form, &$form_state) {
+  $form['item_shop_sellback'] = array(
+    '#title' => t('Allow item shop sellback'),
+    '#type' => 'checkbox',
+    '#default_value' => variable_get('item_shop_sellback', TRUE),
+  );
+  $form['item_shop_sellback_percentage'] = array(
+    '#title' => t('Percent'),
+    '#description' => t('Sellback percentage value'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('item_shop_sellback_percentage', 75),
+  );
+  return system_settings_form($form);
+}
+
+/**
+ * Implements hook_node_view().
+ */
+function item_shop_node_view($node, $view_mode, $langcode) {
+  if (variable_get('item_shop_sellback', TRUE) == FALSE) {
+    return;
+  }
+  if ($node->type == 'items' && user_access('sellback item shop')) {
+    $character = node_load($node->field_character_owner[$node->language][0]['nid']);
+    global $user;
+    // Check if player's character owns the item, and other values are set.
+    if ($character->uid == $user->uid &&
+      !empty($node->field_value[$node->language][0]['value']) && is_numeric($node->field_value[$node->language][0]['value'])) {
+      $node->content['my_additional_field'] = array(
+        '#markup' => '<div class="sellback_shop">' . drupal_render(drupal_get_form('_item_shop_sellback_form', $node)) . '</div>',
+        '#weight' => 1000,
+      );
+    }
+  }
+}
+
+/**
+ * Form to sellback items.
+ */
+function _item_shop_sellback_form($form, &$form_state, $node) {
+  if (variable_get('item_shop_sellback', TRUE) == FALSE) {
+    return $form;
+  }
+  $percentage = variable_get('item_shop_sellback_percentage', 75);
+  $value = $node->field_value[$node->language][0]['value'];
+  $value = $value * ($percentage / 100);
+  $form['item_shop_sellback_help'] = array(
+    '#markup' => '<div class="sellback_shop_help">' .
+      t('%title may be automatically sold for %amount silver at %percent% of it\'s value.' .
+      '</div>',
+      array('%title' => $node->title, '%amount' => $value, '%percent' => $percentage)),
+  );
+  $form['item_shop_sellback_nid'] = array(
+    '#type' => 'hidden',
+    '#default_value' => $node->nid,
+  );
+  $form['item_shop_sellback'] = array(
+    '#type' => 'submit',
+    '#default_value' => t('Sell back @title', array('@title' => $node->title)),
+  );
+  return $form;
+}
+
+/**
+ * Submit handler for form.
+ */
+function _item_shop_sellback_form_submit($form, &$form_state) {
+  if (variable_get('item_shop_sellback', TRUE) == FALSE) {
+    return $form;
+  }
+  global $user;
+  $item = node_load($form_state['values']['item_shop_sellback_nid']);
+  $value = isset($item->field_value[$item->language][0]['value']) ? $item->field_value[$item->language][0]['value'] : 0;
+  if ($value > 0) {
+    $percentage = variable_get('item_shop_sellback_percentage', 75);
+    $value = $value * ($percentage / 100);
+    $character = node_load($item->field_character_owner[$item->language][0]['nid']);
+    if (isset($character->nid)) {
+      // Remove the item from the sheet.
+      $items = $character->field_items[$character->language];
+      foreach ($items as $index => $item_nid) {
+      	$item_nid = $item_nid['nid'];
+        if ($item_nid == $item->nid) {
+          drupal_set_message('Selling back item.');
+		  // Add silver to the owning character.
+		  _character_sheet_update_xp($character->nid, $value, 'silver');
+		  $message = t('@xp silver added by System on selling back @title by @user.',
+		    array('@xp' => $value, '@title' => $item->title, '@user' => $user->name));
+		  _character_sheet_update_log($character->nid, 'silver', $message, $variables = array());
+		  drupal_set_message(t('%value silver added to %title.', array('%value' => $value, '%title' => $character->title)));
+          unset($character->field_items[$character->language][$index]);
+		  node_save($character);
+		  // Remove the sheet from the item.
+		  $item->uid = 1; // Revert to admin ownership of the item.
+		  unset($item->field_character_owner[$item->language][0]);
+		  node_save($item);
+        }
+      }
+    }
+  }
 }
 
 /**
