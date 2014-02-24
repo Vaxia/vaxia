@@ -979,12 +979,17 @@ function add_silver_validation_form(&$form, &$form_state) {
  * Form submit handler for silver.
  */
 function add_silver_submit_form(&$form, &$form_state) {
+  global $user;
   $nid = $form_state['values']['nid'];
+  $character = node_load($nid);
   $add_silver = $form_state['values']['add_silver'];
   // If positive, add silver as per standard XP.
   if ($add_silver > 0) {
     _character_sheet_update_xp($nid, $add_silver, 'silver');
     drupal_set_message(t('%add_silver silver has been added to this sheet.', array('%add_silver' => $add_silver)));
+	$message = t('@xp silver added to @title by @user.',
+		array('@xp' => $add_silver, '@title' => $character->title, '@user' => $user->name));
+	_character_sheet_update_log($character, 'silver', $message, $variables = array());
     return;
   }
   // If negative. First check if we can just subtract off of given XP.
@@ -992,6 +997,9 @@ function add_silver_submit_form(&$form, &$form_state) {
     _add_silver_submit_form_remove_silver($nid, $add_silver);
     drupal_set_message(t('%add_silver silver has been removed from this sheet.',
       array('%add_silver' => $add_silver)));
+	$message = t('@xp silver removed from @title by @user.',
+		array('@xp' => $add_silver, '@title' => $character->title, '@user' => $user->name));
+	_character_sheet_update_log($character, 'silver', $message, $variables = array());
   }
 }
 
