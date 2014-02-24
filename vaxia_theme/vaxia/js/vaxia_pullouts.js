@@ -3,8 +3,8 @@
   Drupal.behaviors.themePullouts = {
     attach: function (context, settings) {
 
-  // Only run this if the screen is over 480.
-  if ($( window ).width() > 480) {
+  // Only run this if the screen is over 600.
+  if ($( window ).width() > 600) {
     // Add toggle buttons.
     $('.logged-in article.node-rpg-chatroom').once(function() {
 
