@@ -101,7 +101,8 @@ function _rpg_site_staff_admin_settings($form, &$form_state) {
 function rpg_site_staff_token_info_alter(&$data) {
   $data['tokens']['site']['rpg_site_staff_head_emails'] = array(
     'name' => t('RPG Staff Head Emails'),
-    'description' => t('The emails of the current heads of the site.'),
+    'description' => t('The emails of the current heads of the site. Separate each email ' .
+    'with a comma.'),
   );
 }
 
