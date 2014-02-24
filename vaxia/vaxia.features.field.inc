@@ -1712,8 +1712,10 @@ function vaxia_field_default_fields() {
       'bundle' => 'character_sheet',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => 'All characters get three languages at native proficiency by default on starting. List the three you\'re selecting here.<br>
-<br>
+      'description' => 'All characters get three languages at native proficiency by default on starting. List the three you\'re selecting here.<ul>
+<li><a href="http://vaxia.org/wiki/vaxia/popular-culture/language/world-languages">Languages of Vaxia</a></li>
+<li><a href="http://vaxia.org/wiki/sirian/popular-culture/languages">Languages of Sirian</a></li>
+</ul>
 Additional languages may be added through RP at the following # of posts indicating practice:<br>
 post worth 1XP - learner, you can recognize the language written or heard<br>
 post worth 2XP - basic understanding, not fluent<br>
@@ -2540,7 +2542,11 @@ Posting does not have to occur all at once, so feel free to spread it out across
         ),
       ),
       'deleted' => '0',
-      'description' => 'If the race you want to play is not listed here, select \'Other\'. Other races *do* require oversight and approval from the World department. It is strongly recommended that new players start play as one of the pre-approved races instead to get familiar with the setting and community first.',
+      'description' => 'If the race you want to play is not listed here, select \'Other\'. Other races *do* require oversight and approval from the World department. It is strongly recommended that new players start play as one of the pre-approved races instead to get familiar with the setting and community first.
+<ul>
+<li><a href="http://vaxia.org/wiki/vaxia/races">Races of Vaxia</a></li>
+<li><a href="http://vaxia.org/wiki/sirian/races">Races of Sirian</a></li>
+</ul>',
       'display' => array(
         'default' => array(
           'label' => 'inline',
@@ -3298,8 +3304,10 @@ Posting does not have to occur all at once, so feel free to spread it out across
   // Included for use with string extractors like potx.
   t('Additional property');
   t('Agility');
-  t('All characters get three languages at native proficiency by default on starting. List the three you\'re selecting here.<br>
-<br>
+  t('All characters get three languages at native proficiency by default on starting. List the three you\'re selecting here.<ul>
+<li><a href="http://vaxia.org/wiki/vaxia/popular-culture/language/world-languages">Languages of Vaxia</a></li>
+<li><a href="http://vaxia.org/wiki/sirian/popular-culture/languages">Languages of Sirian</a></li>
+</ul>
 Additional languages may be added through RP at the following # of posts indicating practice:<br>
 post worth 1XP - learner, you can recognize the language written or heard<br>
 post worth 2XP - basic understanding, not fluent<br>
@@ -3330,7 +3338,11 @@ Posting does not have to occur all at once, so feel free to spread it out across
   t('Economy');
   t('Endurance');
   t('Health');
-  t('If the race you want to play is not listed here, select \'Other\'. Other races *do* require oversight and approval from the World department. It is strongly recommended that new players start play as one of the pre-approved races instead to get familiar with the setting and community first.');
+  t('If the race you want to play is not listed here, select \'Other\'. Other races *do* require oversight and approval from the World department. It is strongly recommended that new players start play as one of the pre-approved races instead to get familiar with the setting and community first.
+<ul>
+<li><a href="http://vaxia.org/wiki/vaxia/races">Races of Vaxia</a></li>
+<li><a href="http://vaxia.org/wiki/sirian/races">Races of Sirian</a></li>
+</ul>');
   t('Intelligence');
   t('Items');
   t('Items are added to characters from the Item form, not the Character Sheet form. If you need to add an item to this character, go to the item to set the IC owner.');

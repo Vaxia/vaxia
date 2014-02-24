@@ -20,21 +20,23 @@ function sh_test_field_group_info() {
   $field_group->mode = 'default';
   $field_group->parent_name = '';
   $field_group->data = array(
-    'label' => 'A/SH Dates',
-    'weight' => '5',
+    'label' => 'A/SH Test and Renewal Dates',
+    'weight' => '3',
     'children' => array(
       0 => 'field_took_ash1',
       1 => 'field_took_ash2',
       2 => 'field_took_ash3',
       3 => 'field_took_eval_test',
+      4 => 'field_ash_3_application',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
-      'formatter' => 'collapsible',
+      'label' => 'A/SH Test and Renewal Dates',
       'instance_settings' => array(
-        'description' => '',
         'classes' => 'group-ash-dates field-group-fieldset',
+        'description' => '',
       ),
+      'formatter' => 'collapsed',
     ),
   );
   $export['group_ash_dates|user|user|default'] = $field_group;

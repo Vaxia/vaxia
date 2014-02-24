@@ -108,7 +108,74 @@ function rpg_site_staff_field_default_fields() {
           'summary_rows' => 5,
         ),
         'type' => 'text_textarea_with_summary',
-        'weight' => '4',
+        'weight' => '3',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-session_report-field_additional_notes'.
+  $fields['node-session_report-field_additional_notes'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_additional_notes',
+      'foreign keys' => array(
+        'fid' => array(
+          'columns' => array(
+            'fid' => 'fid',
+          ),
+          'table' => 'file_managed',
+        ),
+      ),
+      'indexes' => array(
+        'fid' => array(
+          0 => 'fid',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'file',
+      'settings' => array(
+        'display_default' => 0,
+        'display_field' => 0,
+        'uri_scheme' => 'public',
+      ),
+      'translatable' => '0',
+      'type' => 'file',
+    ),
+    'field_instance' => array(
+      'bundle' => 'session_report',
+      'deleted' => '0',
+      'description' => 'Additional notes and information for this session. ASH who are in training should feel free to use this to upload their session notes in case Academy needs to review them.',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'file',
+          'settings' => array(),
+          'type' => 'file_default',
+          'weight' => '4',
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_additional_notes',
+      'label' => 'Additional notes',
+      'required' => 0,
+      'settings' => array(
+        'description_field' => 1,
+        'file_directory' => 'session_notes',
+        'file_extensions' => 'txt gif jpg bmp png pdf',
+        'max_filesize' => '',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'file',
+        'settings' => array(
+          'progress_indicator' => 'throbber',
+        ),
+        'type' => 'file_generic',
+        'weight' => '5',
       ),
     ),
   );
@@ -243,7 +310,7 @@ function rpg_site_staff_field_default_fields() {
             ),
           ),
           'type' => 'fivestar_formatter_default',
-          'weight' => '4',
+          'weight' => '5',
         ),
       ),
       'entity_type' => 'node',
@@ -261,7 +328,7 @@ function rpg_site_staff_field_default_fields() {
         'module' => 'fivestar',
         'settings' => array(),
         'type' => 'exposed',
-        'weight' => '5',
+        'weight' => '6',
       ),
     ),
   );
@@ -344,7 +411,7 @@ function rpg_site_staff_field_default_fields() {
           'year_range' => '-0:+3',
         ),
         'type' => 'date_popup',
-        'weight' => '3',
+        'weight' => '4',
       ),
     ),
   );
@@ -465,7 +532,7 @@ function rpg_site_staff_field_default_fields() {
             'show_repeat_rule' => 'show',
           ),
           'type' => 'date_default',
-          'weight' => '8',
+          'weight' => '5',
         ),
       ),
       'entity_type' => 'user',
@@ -545,7 +612,7 @@ function rpg_site_staff_field_default_fields() {
             'show_repeat_rule' => 'show',
           ),
           'type' => 'date_default',
-          'weight' => '6',
+          'weight' => '4',
         ),
       ),
       'entity_type' => 'user',
@@ -614,15 +681,15 @@ function rpg_site_staff_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '7',
+          'weight' => '9',
         ),
       ),
       'entity_type' => 'user',
       'field_name' => 'field_became_voter',
-      'label' => 'Became Voter',
+      'label' => 'Eligible for Proposals',
       'required' => 0,
       'settings' => array(
         'default_value' => 'blank',
@@ -644,131 +711,7 @@ function rpg_site_staff_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_text',
-        'weight' => '19',
-      ),
-    ),
-  );
-
-  // Exported field: 'user-user-field_eligible_for_setting_head'.
-  $fields['user-user-field_eligible_for_setting_head'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_eligible_for_setting_head',
-      'foreign keys' => array(),
-      'indexes' => array(
-        'value' => array(
-          0 => 'value',
-        ),
-      ),
-      'locked' => '0',
-      'module' => 'list',
-      'settings' => array(
-        'allowed_values' => array(
-          0 => '',
-          1 => '',
-        ),
-        'allowed_values_function' => '',
-      ),
-      'translatable' => '0',
-      'type' => 'list_boolean',
-    ),
-    'field_instance' => array(
-      'bundle' => 'user',
-      'default_value' => array(
-        0 => array(
-          'value' => 1,
-        ),
-      ),
-      'deleted' => '0',
-      'description' => 'I would like to be considered eligible for Setting Head positions during elections.',
-      'display' => array(
-        'default' => array(
-          'label' => 'inline',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '6',
-        ),
-      ),
-      'entity_type' => 'user',
-      'field_name' => 'field_eligible_for_setting_head',
-      'label' => 'Eligible for Setting Head',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => 0,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'options',
-        'settings' => array(
-          'display_label' => 1,
-        ),
-        'type' => 'options_onoff',
-        'weight' => '18',
-      ),
-    ),
-  );
-
-  // Exported field: 'user-user-field_eligible_for_system_head'.
-  $fields['user-user-field_eligible_for_system_head'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_eligible_for_system_head',
-      'foreign keys' => array(),
-      'indexes' => array(
-        'value' => array(
-          0 => 'value',
-        ),
-      ),
-      'locked' => '0',
-      'module' => 'list',
-      'settings' => array(
-        'allowed_values' => array(
-          0 => '',
-          1 => '',
-        ),
-        'allowed_values_function' => '',
-      ),
-      'translatable' => '0',
-      'type' => 'list_boolean',
-    ),
-    'field_instance' => array(
-      'bundle' => 'user',
-      'default_value' => array(
-        0 => array(
-          'value' => 1,
-        ),
-      ),
-      'deleted' => '0',
-      'description' => 'I would like to be considered eligible for System Head positions during elections.',
-      'display' => array(
-        'default' => array(
-          'label' => 'inline',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '5',
-        ),
-      ),
-      'entity_type' => 'user',
-      'field_name' => 'field_eligible_for_system_head',
-      'label' => 'Eligible for System Head',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => 0,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'options',
-        'settings' => array(
-          'display_label' => 1,
-        ),
-        'type' => 'options_onoff',
-        'weight' => '17',
+        'weight' => '15',
       ),
     ),
   );
@@ -809,12 +752,12 @@ function rpg_site_staff_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_integer',
-          'weight' => '1',
+          'weight' => '2',
         ),
       ),
       'entity_type' => 'user',
       'field_name' => 'field_xp_over_time',
-      'label' => 'XP Over Time',
+      'label' => 'Total XP Over Time',
       'required' => 0,
       'settings' => array(
         'max' => '',
@@ -828,27 +771,25 @@ function rpg_site_staff_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '8',
+        'weight' => '6',
       ),
     ),
   );
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('Additional notes');
+  t('Additional notes and information for this session. ASH who are in training should feel free to use this to upload their session notes in case Academy needs to review them.');
   t('Became Evaluator');
   t('Became SH');
-  t('Became Voter');
   t('Body');
   t('Characters involved');
-  t('Eligible for Setting Head');
-  t('Eligible for System Head');
+  t('Eligible for Proposals');
   t('Forums');
   t('How good was this session?');
-  t('I would like to be considered eligible for Setting Head positions during elections.');
-  t('I would like to be considered eligible for System Head positions during elections.');
   t('List all characters involved in this session.');
   t('Session held');
-  t('XP Over Time');
+  t('Total XP Over Time');
 
   return $fields;
 }

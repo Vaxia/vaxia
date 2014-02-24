@@ -48,6 +48,13 @@ function wiki_feature_field_default_fields() {
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'hidden',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '0',
+        ),
         'default' => array(
           'label' => 'hidden',
           'module' => 'text',
@@ -156,6 +163,12 @@ function wiki_feature_field_default_fields() {
       'deleted' => '0',
       'description' => '',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '2',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'taxonomy',
@@ -208,8 +221,8 @@ function wiki_feature_field_default_fields() {
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
-          0 => 'keep',
-          1 => 'delete',
+          0 => 'Keep',
+          1 => 'Flagged for deletion',
         ),
         'allowed_values_function' => '',
       ),
@@ -226,11 +239,17 @@ function wiki_feature_field_default_fields() {
       'deleted' => '0',
       'description' => '',
       'display' => array(
-        'default' => array(
+        'artwork' => array(
           'label' => 'hidden',
           'settings' => array(),
           'type' => 'hidden',
           'weight' => '7',
+        ),
+        'default' => array(
+          'label' => 'hidden',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '8',
         ),
       ),
       'entity_type' => 'node',
@@ -248,6 +267,103 @@ function wiki_feature_field_default_fields() {
         ),
         'type' => 'options_onoff',
         'weight' => '1',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-wiki_page-field_referencing_chat_rooms'.
+  $fields['node-wiki_page-field_referencing_chat_rooms'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_referencing_chat_rooms',
+      'foreign keys' => array(),
+      'indexes' => array(),
+      'locked' => '0',
+      'module' => 'nodereferrer',
+      'settings' => array(
+        'multiple' => 0,
+        'referrer_fields' => array(
+          'field_artwork' => 0,
+          'field_character_owner' => 0,
+          'field_characters_involved' => 0,
+          'field_comment_character' => 0,
+          'field_items' => 0,
+          'field_npcs' => 0,
+          'field_parent' => 0,
+          'field_wiki_source' => 'field_wiki_source',
+        ),
+        'referrer_nodes_per_page' => '0',
+        'referrer_order' => 'TITLE_ASC',
+        'referrer_pager_element' => '0',
+        'referrer_translations' => 0,
+        'referrer_types' => array(
+          'article' => 0,
+          'artwork' => 0,
+          'character_sheet' => 0,
+          'event' => 0,
+          'feature_request' => 0,
+          'forum' => 0,
+          'items' => 0,
+          'long_answer' => 0,
+          'matching' => 0,
+          'multichoice' => 0,
+          'npc' => 0,
+          'page' => 0,
+          'proposal' => 0,
+          'quiz' => 0,
+          'quiz_directions' => 0,
+          'quiz_evaluation' => 0,
+          'rpg_chatroom' => 'rpg_chatroom',
+          'session_report' => 0,
+          'short_answer' => 0,
+          'storyhost_application' => 0,
+          'strike' => 0,
+          'truefalse' => 0,
+          'webform' => 0,
+          'wiki_page' => 0,
+        ),
+        'required' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'nodereferrer',
+    ),
+    'field_instance' => array(
+      'bundle' => 'wiki_page',
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'default' => array(
+          'label' => 'above',
+          'module' => 'nodereferrer',
+          'settings' => array(),
+          'type' => 'nodereferrer_default',
+          'weight' => '5',
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_referencing_chat_rooms',
+      'label' => 'Referencing Chat Rooms',
+      'required' => 0,
+      'settings' => array(
+        'prefix' => '',
+        'suffix' => '',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'nodereferrer',
+        'settings' => array(),
+        'type' => 'nodereferrer_list',
+        'weight' => '9',
       ),
     ),
   );
@@ -295,6 +411,12 @@ function wiki_feature_field_default_fields() {
       'deleted' => '0',
       'description' => 'Check the relevant category for this article, this will help us sort out areas of the wiki by over-arching segment of the site.',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '3',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'taxonomy',
@@ -365,6 +487,12 @@ function wiki_feature_field_default_fields() {
       'deleted' => '0',
       'description' => 'Upload any files to go with this article.',
       'display' => array(
+        'artwork' => array(
+          'label' => 'inline',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '4',
+        ),
         'default' => array(
           'label' => 'inline',
           'module' => 'file',
@@ -440,6 +568,16 @@ function wiki_feature_field_default_fields() {
       'deleted' => '0',
       'description' => 'Upload any images to go with this article.',
       'display' => array(
+        'artwork' => array(
+          'label' => 'hidden',
+          'module' => 'image',
+          'settings' => array(
+            'image_link' => 'file',
+            'image_style' => 'medium',
+          ),
+          'type' => 'image',
+          'weight' => '1',
+        ),
         'default' => array(
           'label' => 'hidden',
           'module' => 'image',
@@ -493,6 +631,7 @@ function wiki_feature_field_default_fields() {
   t('Files');
   t('Flag for deletion');
   t('Images');
+  t('Referencing Chat Rooms');
   t('Tags');
   t('Upload any files to go with this article.');
   t('Upload any images to go with this article.');

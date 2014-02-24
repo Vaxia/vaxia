@@ -661,8 +661,11 @@ function npcs_views_default_views() {
   $handler->display->display_options['fields']['field_is_npc']['id'] = 'field_is_npc';
   $handler->display->display_options['fields']['field_is_npc']['table'] = 'field_data_field_is_npc';
   $handler->display->display_options['fields']['field_is_npc']['field'] = 'field_is_npc';
+  $handler->display->display_options['fields']['field_is_npc']['label'] = '';
+  $handler->display->display_options['fields']['field_is_npc']['exclude'] = TRUE;
   $handler->display->display_options['fields']['field_is_npc']['alter']['alter_text'] = TRUE;
   $handler->display->display_options['fields']['field_is_npc']['alter']['text'] = 'NPC';
+  $handler->display->display_options['fields']['field_is_npc']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_is_npc']['empty'] = 'Not an NPC';
   $handler->display->display_options['fields']['field_is_npc']['type'] = 'list_key';
   /* Field: Content: Open NPC */
@@ -1097,7 +1100,7 @@ return !npcs_check_needs_oversight(node_load($row->nid));';
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Wiki NPCs List';
+  $handler->display->display_options['title'] = 'NPCs List';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['cache']['type'] = 'none';
@@ -1383,9 +1386,10 @@ return !npcs_check_needs_oversight(node_load($row->nid));';
     11 => 0,
   );
 
-  /* Display: Wiki NPCs List */
-  $handler = $view->new_display('page', 'Wiki NPCs List', 'wiki_npcs_list');
-  $handler->display->display_options['path'] = 'wiki/wiki-npcs-list';
+  /* Display: NPCs List */
+  $handler = $view->new_display('page', 'NPCs List', 'npcs_list');
+  $handler->display->display_options['display_description'] = 'List out available NPCs';
+  $handler->display->display_options['path'] = 'wiki/npcs-list';
   $export['wiki_npcs_list'] = $view;
 
   return $export;

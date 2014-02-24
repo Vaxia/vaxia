@@ -188,7 +188,7 @@ function items_field_default_fields() {
           'weight' => '9',
         ),
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'node_reference',
           'settings' => array(),
           'type' => 'node_reference_default',
@@ -335,8 +335,8 @@ function items_field_default_fields() {
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
-          0 => '',
-          1 => '',
+          0 => 'No',
+          1 => 'Yes',
         ),
         'allowed_values_function' => '',
       ),
@@ -360,7 +360,7 @@ function items_field_default_fields() {
           'weight' => '13',
         ),
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
@@ -6691,7 +6691,7 @@ function items_field_default_fields() {
           'weight' => '10',
         ),
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
@@ -6966,7 +6966,7 @@ function items_field_default_fields() {
           'weight' => '12',
         ),
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',

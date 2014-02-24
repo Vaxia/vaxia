@@ -90,7 +90,7 @@ function wiki_feature_strongarm() {
         'custom_settings' => FALSE,
       ),
       'artwork' => array(
-        'custom_settings' => FALSE,
+        'custom_settings' => TRUE,
       ),
     ),
     'extra_fields' => array(
@@ -108,12 +108,20 @@ function wiki_feature_strongarm() {
       'display' => array(
         'workflow_current_state' => array(
           'default' => array(
-            'weight' => '5',
+            'weight' => '6',
             'visible' => TRUE,
+          ),
+          'artwork' => array(
+            'weight' => '5',
+            'visible' => FALSE,
           ),
         ),
         'workflow' => array(
           'default' => array(
+            'weight' => '7',
+            'visible' => FALSE,
+          ),
+          'artwork' => array(
             'weight' => '6',
             'visible' => FALSE,
           ),

@@ -25,6 +25,7 @@ features[field][] = node-artwork-field_website
 features[field][] = user-user-field_artwork
 features[field_group][] = group_artwork|node|artwork|form
 features[field_group][] = group_details|node|artwork|form
+features[field_group][] = group_details|user|user|default
 features[node][] = artwork
 features[variable][] = comment_anonymous_artwork
 features[variable][] = comment_artwork
