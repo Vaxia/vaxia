@@ -93,16 +93,18 @@ function _wiki_feature_admin_settings($form, &$form_state) {
   $rows = array();
   $templates = variable_get('wiki_feature_templates', array());
   foreach ($templates as $index => $template_data) {
-    $form['wiki_feature_templates'][$index]['template_name'] = array(
-      '#title' => t('Template_name'),
-      '#type' => 'textfield',
-      '#default_value' => $template_data['template_name'],
-    );
-    $form['wiki_feature_templates'][$index]['template'] = array(
-      '#title' => t('Template'),
-      '#type' => 'textarea',
-      '#default_value' => $template_data['template'],
-    );
+    if (!empty($template_data['template_name'])) {
+      $form['wiki_feature_templates'][$index]['template_name'] = array(
+        '#title' => t('Template_name'),
+        '#type' => 'textfield',
+        '#default_value' => $template_data['template_name'],
+      );
+      $form['wiki_feature_templates'][$index]['template'] = array(
+        '#title' => t('Template'),
+        '#type' => 'textarea',
+        '#default_value' => $template_data['template'],
+      );
+    }
   }
   $new_index = count($templates);
   $form['wiki_feature_templates'][$new_index]['template_name'] = array(
@@ -415,10 +417,12 @@ function wiki_feature_block_view($delta = '') {
       if (!empty($templates)) {
         $items = array();
         foreach ($templates as $index => $template_data) {
-          $items[] = '<span class="wiki_feature_templates wiki_feature_templates_' . $index . '">' .
-            '<span class="wiki_feature_template_name"><a href="#">' . check_plain($template_data['template_name']) . '</a></span>' .
-            '<span class="wiki_feature_template" style="display:none;">' . check_plain($template_data['template_name']) . '</span>' .
-          '</span>';
+          if (!empty($template_data['template_name'])) {
+            $items[] = '<span class="wiki_feature_templates wiki_feature_templates_' . $index . '">' .
+              '<span class="wiki_feature_template_name"><a href="#">' . check_plain($template_data['template_name']) . '</a></span>' .
+              '<span class="wiki_feature_template" style="display:none;">' . check_plain($template_data['template_name']) . '</span>' .
+            '</span>';
+          }
         }
         // Include the JS for this feature.
         drupal_add_js(drupal_get_path('module', 'wiki_feature').'/js/wiki_feature.js');
