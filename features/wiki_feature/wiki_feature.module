@@ -90,6 +90,18 @@ function wiki_feature_menu_alter($node, $op, $account) {
  * Implements hook_node_view().
  */
 function wiki_feature_node_view($node, $view_mode, $langcode) {
+
+  // If node is a wiki page, give a link to make a new page.
+  if ($node->type == 'wiki_page' && $view_mode == 'full' && node_access('create', $node)) {
+    $node->content['wiki_feature_new_child'] = array(
+      '#markup' => '<div class="wiki_feature_subpage_link" style="font-weight:bold;float:right;">'.
+         l(t('Make a subpage of this page'), 'node/add/wiki-page',
+           array('query' => array('edit[title]' => $node->title . '/New Page'))) .
+        '</div>',
+      '#weight' => -1000,
+    );
+  }
+
   // If node is a wiki page, give a button to convert to a room.
   if ($node->type == 'wiki_page' && $view_mode == 'full' && user_access('consolidate wiki rooms')) {
     $node->content['wiki_feature_consolidate_child_rooms'] = array(
