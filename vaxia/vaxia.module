@@ -43,6 +43,10 @@ function vaxia_permission() {
       'title' => t('edit private SH notes'),
       'description' => t('Edit private SH notes.'),
     ),
+    'admin vaxia settings' => array(
+      'title' => t('admin vaxia settings'),
+      'description' => t('Administrate Vaxia settings.'),
+    ),
   );
 }
 
@@ -55,6 +59,16 @@ function vaxia_menu() {
     'type' => MENU_CALLBACK,
     'access arguments' => array('access content'),
     'page callback' => '_vaxia_transfer_xp_autocomplete',
+  );
+  // Menu items that are basically just menu blocks.
+  $items['admin/vaxia'] = array(
+    'title' => 'Vaxia',
+    'description' => 'Administer Vaxia settings',
+    'position' => 'right',
+    'page callback' => 'system_admin_menu_block_page',
+    'access arguments' => array('admin vaxia settings'),
+    'file' => 'system.admin.inc',
+    'file path' => drupal_get_path('module', 'system'),
   );
   return $items;
 }

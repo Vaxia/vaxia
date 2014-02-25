@@ -15,6 +15,10 @@ function rpg_site_staff_permission() {
       'title' => t('view session notes'),
       'description' => t('View session notes.'),
     ),
+    'can vote on elections'=> array(
+      'title' => t('view session notes'),
+      'description' => t('View session notes.'),
+    ),
     'administrate staff settings'=> array(
       'title' => t('administrate staff settings'),
       'description' => t('Administrate staff settings.'),
@@ -26,7 +30,7 @@ function rpg_site_staff_permission() {
  * Implements hook_menu().
  */
 function rpg_site_staff_menu() {
-  $items['admin/config/people/rpg_site_staff'] = array(
+  $items['admin/vaxia/rpg_site_staff'] = array(
     'title' => 'RPG Staff settings',
     'description' => 'Settings for staff and player administration.',
     'page callback' => 'drupal_get_form',
@@ -50,13 +54,6 @@ function _rpg_site_staff_admin_settings($form, &$form_state) {
     '#description' => t('Set the election day for automatic elections.'),
     '#type' => 'textfield',
     '#default_value' => variable_get('rpg_site_staff_election_day', 'May 1st'),
-  );
-  $form['rpg_site_staff_voting_roles'] = array(
-    '#title' => t('Election voting roles'),
-    '#description' => t('These roles are allowed to vote.'),
-    '#type' => 'checkboxes',
-    '#options' =>  user_roles(),
-    '#default_value' => variable_get('rpg_site_staff_voting_roles', array()),
   );
   $form['rpg_site_staff_run_role'] = array(
     '#title' => t('Election run role'),
@@ -265,11 +262,11 @@ function vaxia_setup_election_proposal($entity_created) {
   node_save($entity_created);
   // Save roles that can vote, 19 = Voting Player
   // Set approving roles for users.
-  $rpg_site_staff_voting_roles = variable_get('rpg_site_staff_voting_roles', array());
+  $rpg_site_staff_voting_roles = user_roles(FALSE, 'can vote on elections');
   $record = db_query('DELETE FROM {webform_roles} WHERE nid = :nid', array(':nid' => $entity_created->nid));
-  foreach ($rpg_site_staff_voting_roles as $role) {
+  foreach ($rpg_site_staff_voting_roles as $rid => $role) {
     if ($role) {
-      db_insert('webform_roles')->fields(array('nid' => $entity_created->nid, 'rid' => $role))->execute();
+      db_insert('webform_roles')->fields(array('nid' => $entity_created->nid, 'rid' => $rid))->execute();
     }
   }
   // Include the webform module that allows components to be created.

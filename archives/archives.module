@@ -47,9 +47,9 @@ function archives_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('archives_form'),
   );
-  $items['admin/config/search/archives'] = array(
-    'title' => 'Archive configurations',
-    'description' => 'Flat file archive configurations',
+  $items['admin/vaxia/archives'] = array(
+    'title' => 'Archive settings',
+    'description' => 'Flat file archive settings',
     'type' => MENU_NORMAL_ITEM,
     'access arguments' => array('administer old archives'),
     'page callback' => 'drupal_get_form',

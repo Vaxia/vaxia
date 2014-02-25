@@ -102,7 +102,7 @@ function room_cleanup_make_room_from_wiki_submit($form, &$form_state) {
  * Implements hook_menu().
  */
 function room_cleanup_menu() {
-  $items['admin/config/system/room_cleanup'] = array(
+  $items['admin/vaxia/room_cleanup'] = array(
     'title' => 'Room cleanup',
     'description' => 'Cleanup rooms empty of comments.',
     'type' => MENU_NORMAL_ITEM,

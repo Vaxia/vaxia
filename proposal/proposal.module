@@ -11,6 +11,10 @@ include_once 'proposal.features.inc';
  */
 function proposal_permission() {
   return array(
+    'vote on proposal'=> array(
+      'title' => t('vote on proposal'),
+      'description' => t('Votes on proposals.'),
+    ),
     'administer proposal'=> array(
       'title' => t('administer proposal'),
       'description' => t('Administer proposal.'),
@@ -73,7 +77,7 @@ function _proposal_cron_proposal() {
  * Implements hook_menu().
  */
 function proposal_menu() {
-  $items['admin/config/people/proposal'] = array(
+  $items['admin/vaxia/proposal'] = array(
     'title' => 'Proposal system',
     'description' => 'Site voting and administrative proposals.',
     'type' => MENU_NORMAL_ITEM,
@@ -100,15 +104,6 @@ function proposal_admin_form($form, &$form_state) {
     '#description' => t('Timeframe for determining user activity as a voter. Use the same strings as date().'),
     '#type' => 'textfield',
     '#default_value' => variable_get('proposal_voter_timeframe', '6 months'),
-  );
-  foreach (user_roles() as $rid => $name) {
-    $roles[$name] = $name;
-  }
-  $form['proposal_roles'] = array(
-    '#title' => t('Proposal voting roles'),
-    '#type' => 'checkboxes',
-    '#options' =>  $roles,
-    '#default_value' => variable_get('proposal_roles', array()),
   );
   return system_settings_form($form);
 }
@@ -329,13 +324,7 @@ function proposal_node_view($node, $view_mode, $langcode) {
     );
 
     // Check how many people have voted that are allowed to vote.
-    $set_roles = variable_get('proposal_roles', array());// If voter is in this then we'll include the time frame. Else.
-    $roles = array();
-    foreach($set_roles as $role) {
-      if ($role) {
-        $roles[] = $role;
-      }
-    }
+    $roles = user_roles(FALSE, 'vote on proposal');
     if (!empty($roles) && in_array('voter', $roles)) {
       $potential_voters = db_query('SELECT COUNT(DISTINCT u.uid) as potential_voters FROM {users} u ' .
         'LEFT JOIN {users_roles} ur ON u.uid = ur.uid ' .
@@ -471,13 +460,7 @@ function proposal_form_alter(&$form, &$form_state, $form_id) {
   // Why hook_form_alter and not hook_form_FORM_ID_alter? Because webform's form id varies: webform_client_form_NID.
   if (strstr($form_id, 'webform_client_form') !== FALSE) {
     // Lockout.
-    $set_roles = variable_get('proposal_roles', array());
-    $roles = array();
-    foreach($set_roles as $role) {
-      if ($role) {
-        $roles[] = $role;
-      }
-    }
+    $roles = user_roles(FALSE, 'vote on proposal');
     if (!in_array('voter', $roles)) {
       return; // Bail out if we aren't even considering voter roles.
     }
@@ -522,13 +505,7 @@ function proposal_form_alter(&$form, &$form_state, $form_id) {
     // And only particular users, tweak the descriptions.
     $form['role_control']['#description'] = t('These permissions affect which roles can submit this webform. ' .
       'It does not prevent access to the webform page to view results.');
-    $set_roles = variable_get('proposal_roles', array());
-    $allowed_roles = array();
-    foreach($set_roles as $role) {
-      if ($role) {
-        $allowed_roles[] = $role;
-      }
-    }
+    $allowed_roles = user_roles(FALSE, 'vote on proposal');
     foreach ($form['role_control']['roles']['#options'] as $rid => $role_name) {
       if (!in_array($role_name, $allowed_roles)) {
         unset($form['role_control']['roles']['#options'][$rid]);

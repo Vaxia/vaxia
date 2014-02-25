@@ -28,18 +28,18 @@ function item_helper_permission() {
  * Implements hook_menu().
  */
 function item_helper_menu() {
-  $items['admin/config/system/item_helper'] = array(
-    'title' => 'Vaxia item assist configuration',
-    'description' => 'Configure content type association settings for item handling',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('_item_helper_admin_settings'),
-    'access arguments' => array('administer item helper'),
-  );
   $items['vaxia/item_helper/autocomplete/room'] = array(
     'title' => 'Item assist room lookup',
     'type' => MENU_CALLBACK,
     'page callback' => '_item_helper_autocomplete_room',
     'access arguments' => array('use item helper'),
+  );
+  $items['admin/vaxia/item_helper'] = array(
+    'title' => 'Item assist settings',
+    'description' => 'Configure content type association settings for item handling',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('_item_helper_admin_settings'),
+    'access arguments' => array('administer item helper'),
   );
   return $items;
 }
@@ -148,7 +148,6 @@ function item_helper_workflow($op, $old_state, $new_state, $node, $force = FALSE
     }
   }
 }
-
 
 /**
  * Helper function, wraps node base for purposes of passing #node info from non node_base pg.
@@ -289,7 +288,8 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
             'OOC: ' . check_plain($ooc_text) . '">' .
             check_plain($comment->subject) .
             '</a>';
-          $character = isset($comment->field_comment_character[$comment->language][0]['nid']) ? $comment->field_comment_character[$comment->language][0]['nid'] : '';
+          $character = isset($comment->field_comment_character[$comment->language][0]['nid']) ?
+            $comment->field_comment_character[$comment->language][0]['nid'] : '';
           $character = node_load($character);
           $character_name = isset($character->title) ? $character->title : '';
           $dice_rolls = _dice_roller_get_roll($found_comment->cid, 'c');

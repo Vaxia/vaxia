@@ -24,8 +24,8 @@ function dice_ruler_permission() {
  * Implements hook_menu().
  */
 function dice_ruler_menu() {
-  $items['admin/config/system/dice_ruler'] = array(
-    'title' => 'Dice ruler configuration',
+  $items['admin/vaxia/dice_ruler'] = array(
+    'title' => 'Dice ruler settings',
     'description' => 'Configure the options for the dice ruler',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('_dice_ruler_admin_settings'),

@@ -31,6 +31,10 @@ function npcs_permission() {
       'title' => t('use NPCs'),
       'description' => t('Use NPCs for posting.'),
     ),
+    'keep NPCs' => array(
+      'title' => t('keep NPCs'),
+      'description' => t('Keep NPCs from being picked up by others.'),
+    ),
   );
 }
 
@@ -38,8 +42,8 @@ function npcs_permission() {
  * Implements hook_menu().
  */
 function npcs_menu() {
-  $items['admin/config/system/npcs'] = array(
-    'title' => 'Vaxia NPC handling',
+  $items['admin/vaxia/npcs'] = array(
+    'title' => 'NPC handling',
     'description' => 'Configure NPC handling',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('_npcs_admin_settings'),
@@ -284,7 +288,7 @@ function _npcs_claim_form_submit($form, $form_state) {
 }
 
 /**
- * Implementation of admin settings form.
+ * Implementation of request form.
  */
 function _npcs_request_form($form, &$form_state, $node) {
   $form = array();
@@ -315,7 +319,7 @@ function _npcs_request_form_submit($form, $form_state) {
 }
 
 /**
- * Implementation of admin settings form.
+ * Implementation of return form.
  */
 function _npcs_return_form($form, &$form_state, $node) {
   $form = array();
@@ -381,15 +385,6 @@ function _npcs_admin_settings($form, &$form_state) {
       '<a href="http://www.php.net/manual/en/datetime.formats.relative.php">' .
       'http://www.php.net/manual/en/datetime.formats.relative.php</a>.'),
   );
-  // storyteller role
-  $roles = user_roles(TRUE);
-  $form['npcs_storyteller_role'] = array(
-    '#type' => 'select',
-    '#options' => $roles,
-    '#title' => t('Storyteller role'),
-    '#default_value' => variable_get('npcs_storyteller_role', ''),
-    '#description' => t('NPC owners who have a storyteller role cannot have NPCs sniped from their ownership.'),
-  );
   return system_settings_form($form);
 }
 
@@ -442,9 +437,8 @@ function _npcs_recently_approved($node) {
  * Helper function, check for if the owner is a current SH.
  */
 function _npcs_owner_is_sh($node) {
-  $storyteller_role = variable_get('npcs_storyteller_role', '');
   $user = user_load($node->uid);
-  if (in_array($storyteller_role, array_keys($user->roles))) {
+  if (user_access('keep NPCs', $user)) {
     return TRUE;
   }
   return FALSE;
