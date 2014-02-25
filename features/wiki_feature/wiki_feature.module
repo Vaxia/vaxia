@@ -377,10 +377,12 @@ function wiki_feature_freelink_alter(&$link, $target, $plugin_name, $plugin) {
  * Implements hook_block_view().
  */
 function wiki_feature_block_view($delta = '') {
-  // If we're not on a wiki page, skip it.
-  $node = menu_get_object();
-  if (!isset($node->type) || $node->type != 'wiki_page') {
-    return array();
+  if ($delta != 'wiki_feature_templates') {
+    // If we're not on a wiki page, skip it.
+    $node = menu_get_object();
+    if (!isset($node->type) || $node->type != 'wiki_page') {
+      return array();
+    }
   }
   $block = array();
   $path = drupal_get_path_alias();
@@ -417,6 +419,7 @@ function wiki_feature_block_view($delta = '') {
       if (!empty($templates)) {
         $items = array();
         foreach ($templates as $index => $template_data) {
+        echo 's';
           if (!empty($template_data['template_name'])) {
             $items[] = '<span class="wiki_feature_templates wiki_feature_templates_' . $index . '">' .
               '<span class="wiki_feature_template_name"><a href="#">' . check_plain($template_data['template_name']) . '</a></span>' .
