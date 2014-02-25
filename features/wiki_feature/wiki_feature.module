@@ -362,17 +362,57 @@ function wiki_feature_block_view($delta = '') {
  * Implements hook_form_FORM_ID_alter().
  */
 function wiki_feature_form_wiki_page_node_form_alter(&$form, &$form_state) {
+
+  // Save the old title so if it changes, we can update other wiki articles w/title.
+  $form['wiki_feature_old_title'] = array(
+    '#type' => 'hidden',
+    '#value' => $form['#node']->title,
+  );
+
   // Allow permissioned user to edit the wiki.
   if (user_access('edit locked wiki')) {
-  	return;
+    return;
   }
   // Else check for workflow state.
   if (!empty($form['#node']->type) && $form['#node']->type == 'wiki_page' && _wiki_feature_locked($form['#node'])) {
     drupal_set_message(t('This wiki article is locked. You are not allowed to edit it.'));
     foreach (element_children($form) as $child) {
-	    unset($form[$child]);
+      unset($form[$child]);
     }
   }
+}
+
+/**
+ * Implements hook_node_update().
+ */
+function wiki_feature_node_update($node) {
+
+  // If the title has changed, make sure we get all parents as well.
+  $old_title = $node->wiki_feature_old_title;
+  if ($old_title != $node->title) {
+    $search = $old_title;
+    $replace = $node->title;
+    // Grab each node to update it.
+    // We could do this in the MySQL directly, but then the path alias wouldn't update to match.
+    $nids = db_query('SELECT n.nid FROM {node} n WHERE n.title LIKE :title',
+      array(':title' => $search . '/%'));
+    // Search and replace in MYSQL directly.
+    foreach ($nids as $nid) {
+      if ($nid->nid != $node->nid) {
+  	    $child_wiki = node_load($nid->nid);
+        $child_wiki->title = str_replace($search, $replace, $child_wiki->title);
+        node_save($child_wiki);
+      }
+    }
+    // Flush Entity Cache record.
+    if (module_exists('entitycache')) {
+      cache_clear_all('*', 'cache_entity_node', TRUE);
+    }
+  }
+}
+
+function _wiki_feature_update_tree_of_titles($form, &$form_state) {
+  $old_title = $form_state['values'][''];
 }
 
 /**
