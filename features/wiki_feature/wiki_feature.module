@@ -241,7 +241,7 @@ function wiki_feature_block_info() {
   );
   $blocks['wiki_feature_templates'] = array(
     'info' => t('Wiki Templates'),
-    'cache' => DRUPAL_CACHE_GLOBAL,
+    'cache' => DRUPAL_CACHE_PER_ROLE,
   );
   return $blocks;
 }
@@ -426,7 +426,7 @@ function wiki_feature_block_view($delta = '') {
         }
         // Include the JS for this feature.
         drupal_add_js(drupal_get_path('module', 'wiki_feature').'/js/wiki_feature.js');
-        $block['subject'] = t('Templates');
+        $block['subject'] = t('Wiki templates');
         $block['content'] = theme('item_list', array('items' => $items));
         $block['content'] .= '<div>' . t('These templates are provided to make it easier to quickly load a basic template for ' .
           'wiki articles. If you already have information in the page, or are not using a template feel free to ignore these links.') .
