@@ -423,7 +423,7 @@ function wiki_feature_block_view($delta = '') {
           if (!empty($template_data['template_name'])) {
             $items[] = '<span class="wiki_feature_templates wiki_feature_templates_' . $index . '">' .
               '<span class="wiki_feature_template_name"><a href="#">' . check_plain($template_data['template_name']) . '</a></span>' .
-              '<span class="wiki_feature_template" style="display:none;">' . check_plain($template_data['template_name']) . '</span>' .
+              '<span class="wiki_feature_template" style="display:none;">' . check_plain($template_data['template']) . '</span>' .
             '</span>';
           }
         }
