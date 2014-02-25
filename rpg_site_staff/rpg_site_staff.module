@@ -48,6 +48,8 @@ function _rpg_site_staff_admin_settings($form, &$form_state) {
   $form['elections'] = array(
     '#type' => 'fieldset',
     '#title' => t('Election settings'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
   );
   $form['elections']['rpg_site_staff_election_day'] = array(
     '#title' => t('Election day'),
@@ -81,6 +83,8 @@ function _rpg_site_staff_admin_settings($form, &$form_state) {
   $form['post_elections'] = array(
     '#type' => 'fieldset',
     '#title' => t('After an election, update this setting'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
   );
   $form['post_elections']['post_elections']['rpg_site_staff_head_emails'] = array(
     '#title' => t('Head emails'),

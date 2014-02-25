@@ -32,7 +32,7 @@ function wiki_feature_permission() {
 function wiki_feature_menu() {
   $items['admin/config/system/wiki_feature'] = array(
     'title' => 'Wiki Feature',
-    'description' => 'Configure the root page of your wiki feature',
+    'description' => 'Configure settings for the wiki feature',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('_wiki_feature_admin_settings'),
     'access arguments' => array('administer wiki feature'),
@@ -77,6 +77,43 @@ function _wiki_feature_admin_settings($form, &$form_state) {
     '#title' => t('Wiki subpage link text'),
     '#type' => 'textfield',
     '#default_value' => variable_get('wiki_feature_subpage_label', t('Make a subpage of this page')),
+  );
+  $form['wiki_feature_templates'] = array(
+    '#title' => t('Wiki templates'),
+    '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+    '#tree' => TRUE,
+  );
+  // X templates, with Name and value.
+  // And one blank set of fields to add more to it.
+  $headers = array(
+    t('Template name'),
+    t('Template'),
+  );
+  $rows = array();
+  $templates = variable_get('wiki_feature_templates', array());
+  foreach ($templates as $index => $template_data) {
+    $form['wiki_feature_templates'][$index]['template_name'] = array(
+      '#title' => t('Template_name'),
+      '#type' => 'textfield',
+      '#default_value' => $template_data['template_name'],
+    );
+    $form['wiki_feature_templates'][$index]['template'] = array(
+      '#title' => t('Template'),
+      '#type' => 'textarea',
+      '#default_value' => $template_data['template'],
+    );
+  }
+  $new_index = count($templates);
+  $form['wiki_feature_templates'][$new_index]['template_name'] = array(
+    '#title' => t('Template name'),
+    '#description' => t('The name the template will be listed under for the display.'),
+    '#type' => 'textfield',
+  );
+  $form['wiki_feature_templates'][$new_index]['template'] = array(
+    '#title' => t('Template'),
+    '#description' => t('The text of the template.'),
+    '#type' => 'textarea',
   );
   return system_settings_form($form);
 }
@@ -199,6 +236,10 @@ function wiki_feature_block_info() {
   $blocks['wiki_feature_children_links'] = array(
     'info' => t('Wiki Child Links'),
     'cache' => DRUPAL_CACHE_PER_PAGE,
+  );
+  $blocks['wiki_feature_templates'] = array(
+    'info' => t('Wiki Templates'),
+    'cache' => DRUPAL_CACHE_GLOBAL,
   );
   return $blocks;
 }
@@ -367,6 +408,25 @@ function wiki_feature_block_view($delta = '') {
       $block['subject'] = t('Wiki Child Links');
       if (!empty($links)) {
         $block['content'] = theme('wiki_feature_links', array('links' => $links));
+      }
+    break;
+    case 'wiki_feature_templates':
+      $templates = variable_get('wiki_feature_templates', array());
+      if (!empty($templates)) {
+        $items = array();
+        foreach ($templates as $index => $template_data) {
+          $items[] = '<span class="wiki_feature_templates wiki_feature_templates_' . $index . '">' .
+            '<span class="wiki_feature_template_name"><a href="#">' . check_plain($template_data['template_name']) . '</a></span>' .
+            '<span class="wiki_feature_template" style="display:none;">' . check_plain($template_data['template_name']) . '</span>' .
+          '</span>';
+        }
+        // Include the JS for this feature.
+        drupal_add_js(drupal_get_path('module', 'wiki_feature').'/js/wiki_feature.js');
+        $block['subject'] = t('Templates');
+        $block['content'] = theme('item_list', array('items' => $items));
+        $block['content'] .= '<div>' . t('These templates are provided to make it easier to quickly load a basic template for ' .
+          'wiki articles. If you already have information in the page, or are not using a template feel free to ignore these links.') .
+          '</div>';
       }
     break;
     default:
