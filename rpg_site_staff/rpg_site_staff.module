@@ -16,8 +16,8 @@ function rpg_site_staff_permission() {
       'description' => t('View session notes.'),
     ),
     'can vote on elections'=> array(
-      'title' => t('view session notes'),
-      'description' => t('View session notes.'),
+      'title' => t('can vote on elections'),
+      'description' => t('Vote on elections.'),
     ),
     'administrate staff settings'=> array(
       'title' => t('administrate staff settings'),
