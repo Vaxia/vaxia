@@ -49,13 +49,13 @@ function _rpg_site_staff_admin_settings($form, &$form_state) {
     '#type' => 'fieldset',
     '#title' => t('Election settings'),
   );
-  $form['rpg_site_staff_election_day'] = array(
+  $form['elections']['rpg_site_staff_election_day'] = array(
     '#title' => t('Election day'),
     '#description' => t('Set the election day for automatic elections.'),
     '#type' => 'textfield',
     '#default_value' => variable_get('rpg_site_staff_election_day', 'May 1st'),
   );
-  $form['rpg_site_staff_run_role'] = array(
+  $form['elections']['rpg_site_staff_run_role'] = array(
     '#title' => t('Election run role'),
     '#description' => t('This roles is allowed to run.'),
     '#type' => 'select',
@@ -65,21 +65,51 @@ function _rpg_site_staff_admin_settings($form, &$form_state) {
   $intro_text = t('Each year Vaxia has an election for the key positions on our site. ' .
     'This is so that we can always be sure that the current leadership is connected to ' .
     'and trusted by our players.');
-  $form['rpg_site_staff_election_intro'] = array(
+  $form['elections']['rpg_site_staff_election_intro'] = array(
     '#title' => t('Election intro'),
     '#description' => t('Election introduction text.'),
     '#type' => 'textarea',
     '#default_value' => variable_get('rpg_site_staff_election_intro', $intro_text),
   );
   $available = implode("\n", array('Setting Head', 'System Head') );
-  $form['rpg_site_staff_positions'] = array(
+  $form['elections']['rpg_site_staff_positions'] = array(
     '#title' => t('Available positions'),
     '#description' => t('List postitions avaiblae on the site, one per row.'),
     '#type' => 'textarea',
     '#default_value' => variable_get('rpg_site_staff_positions', $available),
   );
+  $form['post_elections'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('After an election, update this setting'),
+  );
+  $form['post_elections']['post_elections']['rpg_site_staff_head_emails'] = array(
+    '#title' => t('Head emails'),
+    '#description' => t('The emails of all elected heads'),
+    '#type' => 'textarea',
+    '#default_value' => variable_get('rpg_site_staff_head_emails', ''),
+  );
   $form['#submit'][] = '_rpg_site_staff_positions_submit';
   return system_settings_form($form);
+}
+
+/**
+ * Implements hook_token_info_alter().
+ */
+function rpg_site_staff_token_info_alter(&$data) {
+  $data['tokens']['site']['rpg_site_staff_head_emails'] = array(
+    'name' => t('RPG Staff Head Emails'),
+    'description' => t('The emails of the current heads of the site. Separate each email ' .
+    'with a comma.'),
+  );
+}
+
+/**
+ * Implements hook_tokens_alter().
+ */
+function rpg_site_staff_tokens_alter(array &$replacements, array $context) {
+  if (isset($context['tokens']['rpg_site_staff_head_emails'])) {
+    $replacements[ $context['tokens']['rpg_site_staff_head_emails'] ] = variable_get('rpg_site_staff_head_emails', '');
+  }
 }
 
 /**
