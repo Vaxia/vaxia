@@ -387,28 +387,32 @@ function wiki_feature_form_wiki_page_node_form_alter(&$form, &$form_state) {
  */
 function wiki_feature_node_update($node) {
 
-  // If the title has changed, make sure we get all parents as well.
-  $old_title = $node->wiki_feature_old_title;
-  if ($old_title != $node->title) {
-    $search = $old_title;
-    $replace = $node->title;
-    // Grab each node to update it.
-    // We could do this in the MySQL directly, but then the path alias wouldn't update to match.
-    $nids = db_query('SELECT n.nid FROM {node} n WHERE n.title LIKE :title',
-      array(':title' => $search . '/%'));
-    // Search and replace in MYSQL directly.
-    foreach ($nids as $nid) {
-      if ($nid->nid != $node->nid) {
-  	    $child_wiki = node_load($nid->nid);
-        $child_wiki->title = str_replace($search, $replace, $child_wiki->title);
-        node_save($child_wiki);
+  // Tweak things only if wiki page.
+  if ($node->title == 'wiki_page') {
+    // If the title has changed, make sure we get all parents as well.
+    $old_title = $node->wiki_feature_old_title;
+    if ($old_title != $node->title) {
+      $search = $old_title;
+      $replace = $node->title;
+      // Grab each node to update it.
+      // We could do this in the MySQL directly, but then the path alias wouldn't update to match.
+      $nids = db_query('SELECT n.nid FROM {node} n WHERE n.title LIKE :title',
+        array(':title' => $search . '/%'));
+      // Search and replace in MYSQL directly.
+      foreach ($nids as $nid) {
+        if ($nid->nid != $node->nid) {
+  	      $child_wiki = node_load($nid->nid);
+          $child_wiki->title = str_replace($search, $replace, $child_wiki->title);
+          node_save($child_wiki);
+        }
+      }
+      // Flush Entity Cache record.
+      if (module_exists('entitycache')) {
+        cache_clear_all('*', 'cache_entity_node', TRUE);
       }
     }
-    // Flush Entity Cache record.
-    if (module_exists('entitycache')) {
-      cache_clear_all('*', 'cache_entity_node', TRUE);
-    }
   }
+
 }
 
 function _wiki_feature_update_tree_of_titles($form, &$form_state) {
