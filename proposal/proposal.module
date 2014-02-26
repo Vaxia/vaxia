@@ -135,7 +135,7 @@ function _proposal_webform_results_access($node) {
   }
   // Only show for a FINISHED contest. We do NOT need people vote stacking cause they know results.
   if ($node->webform['status'] == FALSE) {
-    return webform_results_access($node, $account = NULL);
+    return webform_results_access($node);
   }
   return FALSE;
 }
