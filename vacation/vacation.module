@@ -144,8 +144,15 @@ function _vacation_go_on_vacation(&$form, &$form_state) {
   $account = user_load($uid);
   $vacation_modes[$uid] = $account->roles;
   variable_set('vacation', $vacation_modes);
-  $role = user_role_load_by_name('player');
+  // Here, this should be configurable.
+  // ONLY remove roles in the vacation mode.
+  // TODO later.
   $account->roles = array();
+  $role = user_role_load_by_name('player');
+  $account->roles[$role->rid] = $role->name;
+  $role = user_role_load_by_name('voter');
+  $account->roles[$role->rid] = $role->name;
+  $role = user_role_load_by_name('eligible for SH');
   $account->roles[$role->rid] = $role->name;
   _vacation_update_roles($account);
   if (function_exists('rules_invoke_event')) {
