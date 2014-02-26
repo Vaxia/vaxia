@@ -224,5 +224,5 @@ tr.webform-results-question-first td{padding-top:0;}
 
 /* Rate CSS for Vaxia */
 .forum-post-content .form-type-item label{display:none;}
-.rate-thumbs-up-btn-up{background:url('images/plus_one_gry.jpg') no-repeat scroll 0 0 rgba(0, 0, 0, 0)}
+.rate-thumbs-up-btn-up{background:url('images/plus_one_gry.png') no-repeat scroll 0 0 rgba(0, 0, 0, 0)}
 .rate-info, .rate-description{color:#EEE;}
