@@ -6,7 +6,7 @@
   // Only run this if the screen is over 600.
   if ($( window ).width() > 600) {
     // Add toggle buttons.
-    $('.logged-in article.node-rpg-chatroom').once(function() {
+    $('.node-type-rpg-chatroom article.node-rpg-chatroom').once(function() {
 
       // Hide and adjust widths on the sidebar vs content.
       $('.sidebar-first #content').css('margin-left', '0%');
