@@ -347,7 +347,7 @@ function proposal_node_view($node, $view_mode, $langcode) {
     $date = strtotime($timeframe, $node->changed); // Add two weeks from last changed.
     $date = strtotime(date('m/d/Y 00:00:01', $date)); // Convert to at midnight timeframe.
     $date = format_date($date, 'long');
-    if ($node->webform['status'] == TRUE) {
+    if ($node->webform['status'] == TRUE && $view_mode == 'full') {
       drupal_set_message(t('This proposal will stay open for two weeks since it was last updated. It is set to close on @date.',
         array('@date' => $date)));
     }
