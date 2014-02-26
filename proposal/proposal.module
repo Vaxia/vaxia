@@ -146,7 +146,7 @@ function _proposal_webform_results_access($node) {
 function _proposal_webform_email_access($node) {
   // If we're not looking at a proposal, bail out with the normal view.
   if ($node->type != 'proposal') {
-    return node_access('update', $node); // Use defaults.
+    return node_access($op, $node); // Use defaults.
   }
   return FALSE;
 }
