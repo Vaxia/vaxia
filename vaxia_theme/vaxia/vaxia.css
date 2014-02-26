@@ -198,3 +198,31 @@ div.quiz-report .dt{background:transparent;}
 .rpg-chat-node article.rpg-chat-narrative .field-name-comment-body{min-height:10px !important;}
 #edit-subscriptions-notify .description{display:none;}
 .wiki-category-tag{display:inline;padding-right:1em;}
+
+/* Collected fixes. 02/26/14 */
+
+#block-privatemsg-privatemsg-new #privatemsg-new-link{background-color:#f8fff0;color:#234600;border:1px solid;border-color:#be7;padding:0.5em;display:block;}
+#block-privatemsg-privatemsg-new #privatemsg-new-link a{color:#111 !important;}
+.rpg-chat-node article.rpg-chat-narrative header .submitted img{display:none;}
+a.freelink-createnode{color:#F55;}
+article.node-wiki-page{background:transparent;}
+.field-name-field-items article.node-items h2{line-height: 1.25em; font-size: 100%;}
+article .field-name-body img[class*="embed_grid_img"]{max-width:100% !important;}
+.forum-node-create-links{width:100%;padding-top:0.25em;padding-bottom:0.25em;float:none;}
+.views-ui-display-tab-bucket .even{background:transparent;}
+.ctools-button-processed{background:transparent;}
+.views-display-top{background:transparent;}
+table.sticky-header{background:white;color:#222;}
+.proposal_help, .proposal_response, .proposal_result {margin-right:10px;}
+.webform-results-analysis, .webform-detailed-responses{width:100%;}
+tr.webform-results-question td{padding-top:3em;}
+tr.webform-results-question-first td{padding-top:0;}
+.webform-component{margin-top:2em;}
+.webform-grid{width:100%;}
+.field-name-field-wiki-source header{display:none;}
+.field-name-field-artwork .node-artwork header{display:none;}
+
+/* Rate CSS for Vaxia */
+.forum-post-content .form-type-item label{display:none;}
+.rate-thumbs-up-btn-up{background:url('images/plus_one.jpg') no-repeat scroll 0 0 rgba(0, 0, 0, 0)}
+.rate-info, .rate-description{color:#EEE;}
