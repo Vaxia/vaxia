@@ -415,8 +415,12 @@ function proposal_node_view($node, $view_mode, $langcode) {
           '#weight' => -1000,
         );
       }
+      else {
+        drupal_set_message(t('This proposal has not yet been opened. Please give them time to finish creating the proposal.'));
+      }
     }
 
+    // Show results if any.
     if ($node->webform['status'] == FALSE || user_access('administer proposal')) {
       $node->content['proposal_results'] = array(
         '#markup' => '<div class="proposal_result">' . webform_results_table($node) . '</div>',
