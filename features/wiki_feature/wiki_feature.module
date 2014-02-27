@@ -73,6 +73,17 @@ function _wiki_feature_admin_settings($form, &$form_state) {
     '#default_value' => variable_get('wiki_feature_root', ''),
     '#autocomplete_path' => 'wiki_feature/autocomplete/room',
   );
+  $form['wiki_feature_link_depth'] = array(
+    '#title' => t('Wiki children depth'),
+    '#description' => t('Set how many levels down should children links follow, at minimum 1.'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('wiki_feature_link_depth', 1),
+  );
+  $form['wiki_feature_subpage_block_label'] = array(
+    '#title' => t('Wiki subpage block text'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('wiki_feature_subpage_block_label', t('Subpages')),
+  );
   $form['wiki_feature_subpage_label'] = array(
     '#title' => t('Wiki subpage link text'),
     '#type' => 'textfield',
@@ -190,7 +201,7 @@ function _wiki_feature_merge_children($node) {
   }
   $output = $node->body[ $node->language ][0]['value'];
   $path = drupal_get_path_alias('node/' . $node->nid);
-  $children = _wiki_feature_get_child_links($path);
+  $children = _wiki_feature_get_child_paths($path);
   foreach ($children as $child) {
     $child = drupal_get_normal_path($child);
     if (strpos($child, 'node/')  !== FALSE) {
@@ -391,27 +402,40 @@ function wiki_feature_block_view($delta = '') {
     case 'wiki_feature_parent_breadcrumb':
       $links = _wiki_feature_get_parent_links($path);
       $block['subject'] = t('Wiki Parent Breadcrumb');
-      $block['content'] = theme('wiki_feature_breadcrumb', array('links' => $links));
+      $content = theme('wiki_feature_breadcrumb', array('links' => $links));
+      $block['content'] = $content;
     break;
     case 'wiki_feature_parent_links':
       $links = _wiki_feature_get_parent_links($path);
       $block['subject'] = t('Wiki Parent Links');
       if (!empty($links)) {
         $block['content'] = theme('wiki_feature_links', array('links' => $links));
+        $block['content'] = $content;
       }
     break;
     case 'wiki_feature_sibling_links':
       $links = _wiki_feature_get_sibling_links($path);
       $block['subject'] = t('Wiki Sibling Links');
       if (!empty($links)) {
-        $block['content'] = theme('wiki_feature_links', array('links' => $links));
+        $content = theme('wiki_feature_links', array('links' => $links));
+        $block['content'] = $content;
       }
     break;
     case 'wiki_feature_children_links':
-      $links = _wiki_feature_get_child_links($path);
-      $block['subject'] = t('Wiki Child Links');
+      $depth_limit = variable_get('wiki_feature_link_depth', 1);
+      $links = _wiki_feature_get_children_tree($path, $depth_limit);
+      $block['subject'] = t('Children links');
       if (!empty($links)) {
-        $block['content'] = theme('wiki_feature_links', array('links' => $links));
+        $content['sub_pages'] = array(
+        	'#type' => 'fieldset',
+        	'#title' => variable_get('wiki_feature_subpage_block_label', t('Subpages')),
+        	'#attributes' => array('class' => array('collapsible')), // For use outside a form.
+        );
+        $content['sub_pages']['links'] = array(
+        	'#theme' => 'wiki_feature_links',
+        	'#links' => $links,
+        );
+        $block['content'] = $content;
       }
     break;
     case 'wiki_feature_templates':
@@ -419,7 +443,6 @@ function wiki_feature_block_view($delta = '') {
       if (!empty($templates)) {
         $items = array();
         foreach ($templates as $index => $template_data) {
-        echo 's';
           if (!empty($template_data['template_name'])) {
             $items[] = '<span class="wiki_feature_templates wiki_feature_templates_' . $index . '">' .
               '<span class="wiki_feature_template_name"><a href="#">' . check_plain($template_data['template_name']) . '</a></span>' .
@@ -428,7 +451,7 @@ function wiki_feature_block_view($delta = '') {
           }
         }
         // Include the JS for this feature.
-        drupal_add_js(drupal_get_path('module', 'wiki_feature').'/js/wiki_feature.js');
+        drupal_add_js(drupal_get_path('module', 'wiki_feature') . '/js/wiki_feature.js');
         $block['subject'] = t('Wiki templates');
         $block['content'] = theme('item_list', array('items' => $items));
         $block['content'] .= '<div>' . t('These templates are provided to make it easier to quickly load a basic template for ' .
@@ -440,6 +463,8 @@ function wiki_feature_block_view($delta = '') {
       /// Do nothing.
     break;
   }
+  // Include the css overall for addressing blocks as needed.
+  drupal_add_css(drupal_get_path('module', 'wiki_feature') . '/css/wiki_feature.css');
   return $block;
 }
 
@@ -525,34 +550,17 @@ function wiki_feature_theme($existing, $type, $theme, $path) {
  * Default theme function.
  */
 function theme_wiki_feature_breadcrumb($vars) {
-  // Get wiki root.
-  $root = variable_get('wiki_feature_root', '');
-  if (!empty($root)) {
-    $root = _wiki_feature_autocomplete_get_nid($root);
-    if ($vars['links'][0] != $root) {
-      // Add root at front of stack.
-      array_unshift($vars['links'], 'node/' . $root);
-    }
-  }
   // Process all links.
-  $themed_links = array();
-  foreach ($vars['links'] as $i => $link) {
-    $link = menu_get_item(drupal_get_normal_path($link));
-    if (!empty($link['title'])) {
-      $short_title = explode('/', $link['title']);
-      if (is_array($short_title)) {
-        $short_title = array_pop($short_title);
-      }
-      $themed_links[] = l($short_title, $link['href']);
-    }
+  $links = $vars['links'];
+  foreach ($links as $index => $link) {
+    $links[$index] = $link .' / ';
   }
-  if (empty($themed_links)) {
+  if (empty($links)) {
     return '<div class="wiki-feature wiki-feature-links breadcrumb"></div>';
   }
+  $themed_links = theme('item_list', array('items' => $links));
   return '<div class="wiki-feature wiki-feature-links breadcrumb">' .
-    '<ol class="wiki-feature-links breadcrumb">' . 
-    '<li>' . implode(' › </li><li>', $themed_links) . '</li>' . 
-    '</ol>' .
+    $themed_links .
     '</div>';
 }
 
@@ -561,34 +569,12 @@ function theme_wiki_feature_breadcrumb($vars) {
  */
 function theme_wiki_feature_links($vars) {
   $links = $vars['links'];
-  $themed_links = array();
-  foreach ($links as $i => $link) {
-    $link = drupal_get_normal_path($link);
-    $node = array();
-    if (strpos($link, 'node/')  !== FALSE) {
-      $node_id = substr($link, 5);
-      if (is_numeric($node_id)) {
-        $node = node_load($node_id);
-      }
-    }
-    if (strpos($link, 'node/') === FALSE || (!empty($node) && node_access('view', $node))) { // Not a node (view link), or if a published node.
-      $link = menu_get_item($link);
-      if (!empty($link['title'])) {
-        $short_title = explode('/', $link['title']);
-        if (is_array($short_title)) {
-          $short_title = array_pop($short_title);
-        }
-        $themed_links[] = l($short_title, $link['href']);
-      }
-    }
-  }
-  if (empty($themed_links)) {
+  if (empty($links)) {
     return '<div class="wiki-feature wiki-feature-links menu"></div>';
   }
-  return '<div class="wiki-feature wiki-feature-links menu">' .
-    '<ul class="wiki-feature-links menu">' . 
-    '<li class="menu__item is-leaf leaf">' . implode('</li><li class="menu__item is-leaf leaf">', $themed_links) . '</li>' . 
-    '</ul>' .
+  $themed_links = theme('item_list', array('items' => $links));
+  return '<div class="wiki-feature wiki-feature-links">' .
+    $themed_links .
     '</div>';
 }
 
@@ -628,6 +614,58 @@ function _wiki_feature_autocomplete_get_nid($room_selected) {
 }
 
 /**
+ * Helper, convert a path into a link.
+ */
+function _wiki_feature_translate_path_to_link($path) {
+  $link = drupal_get_normal_path($path);
+  // Findout if there's a node for this path.
+  $node = array();
+  if (strpos($link, 'node/')  !== FALSE) {
+    $node_id = substr($link, 5);
+    if (is_numeric($node_id)) {
+      $node = node_load($node_id);
+    }
+  }
+  // Get the short title.
+  $short_title = check_plain($link);
+  $link = menu_get_item(drupal_get_normal_path($link));
+  if (!empty($link['title'])) {
+    $short_title = explode('/', $link['title']);
+    if (is_array($short_title)) {
+      $short_title = check_plain(array_pop($short_title));
+    }
+  }
+  // If there is, check access so know to display link or plain text.
+  if (strpos($link, 'node/') === FALSE || (!empty($node) && node_access('view', $node))) { // Not a node (view link), or if a published node.
+    $link = l($short_title, $link['href']);
+  }
+  else {
+    $link = check_plain($short_title);
+  }
+  return $link;
+}
+
+/**
+ * Helper function, RECURSIVE, call for children gathering for display to given depth.
+ */
+function _wiki_feature_get_children_tree($path, $depth_limit = 1, $depth = 0) {
+  $found_links = _wiki_feature_get_child_paths($path);
+  $links = array();
+  $depth++;
+  // Check recursive values.
+  foreach ($found_links as $index => $link) {
+    if ($depth < $depth_limit) {
+      $links[$index]['data'] = _wiki_feature_translate_path_to_link($link);
+      $links[$index]['children'] = _wiki_feature_get_children_tree($link, $depth_limit, $depth);
+    }
+    else {
+      $links[$index] = _wiki_feature_translate_path_to_link($link);
+    }
+  }
+  return $links;
+}
+
+/**
  * DB function, pull the links from the DB.
  */
 function _wiki_feature_get_parent_links($path) {
@@ -639,24 +677,25 @@ function _wiki_feature_get_parent_links($path) {
   foreach ($components as $component) {
     $parent_path .= $slash . $component;
     $slash = '/';
-    $parent_links[] = $parent_path;
+    // Don't include the 'wiki' path, we wanna use the set root instead.
+    if ($parent_path != 'wiki') {
+      $parent_links[] = $parent_path;
+    }
+  }
+  $parent_links;
+  // Get wiki root.
+  $root = variable_get('wiki_feature_root', '');
+  if (!empty($root)) {
+    $root = _wiki_feature_autocomplete_get_nid($root);
+    if ($vars['links'][0] != $root) {
+      // Add root at front of stack.
+      array_unshift($parent_links, 'node/' . $root);
+    }
+  }
+  foreach ($parent_links as $index => $parent_link) {
+  	$parent_links[$index] = _wiki_feature_translate_path_to_link($parent_link);
   }
   return $parent_links;
-}
-
-/**
- * DB function, pull the links from the DB.
- */
-function _wiki_feature_get_child_links($path) {
-  // Given a string path, find the router parents above it.
-  $parent_path = '';
-  $regexp = '^' . $path . '/[a-zA-Z0-9-]+$';
-  $links = db_query('SELECT alias FROM {url_alias} WHERE alias REGEXP :regexp', array(':regexp' => $regexp));
-  $child_links = array();
-  foreach ($links as $link) {
-    $child_links[] = $link->alias;
-  }
-  return $child_links;
 }
 
 /**
@@ -667,6 +706,25 @@ function _wiki_feature_get_sibling_links($path) {
   $components = explode('/', $path);
   $self = array_pop($components);
   $parent_path = implode('/', $components);
-  $links = _wiki_feature_get_child_links($parent_path);
-  return array_diff($links, array($path));
+  $links = _wiki_feature_get_child_paths($parent_path);
+  $links = array_diff($links, array($path));
+  foreach ($links as $index => $link) {
+  	$links[$index] = _wiki_feature_translate_path_to_link($link);
+  }
+  return $links;
+}
+
+/**
+ * DB function, pull the links from the DB.
+ */
+function _wiki_feature_get_child_paths($path) {
+  // Given a string path, find the router parents above it.
+  $parent_path = '';
+  $regexp = '^' . $path . '/[a-zA-Z0-9-]+$';
+  $links = db_query('SELECT alias FROM {url_alias} WHERE alias REGEXP :regexp', array(':regexp' => $regexp));
+  $child_links = array();
+  foreach ($links as $link) {
+    $child_links[] = $link->alias;
+  }
+  return $child_links;
 }
