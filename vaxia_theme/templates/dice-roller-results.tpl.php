@@ -20,6 +20,7 @@
       // An array of each note, in the format: array('0' => "1 : roll(1d100) + agi (26)");
       foreach ($dice_rolls as $index => $dice_roll) {
         $note = '';
+        $stat = '';
         // Trim "1 : roll" off the note. New format: roll(1d100) + agi (26)
         if (isset($notes[$index + 1])) {
           $note = substr($notes[$index + 1], 8);
@@ -39,8 +40,11 @@
         // New format "66, 25, 22, 99". Where 99 is the might.
         $results =  explode(',', $results);
         // The the first rolls are the rolls. The very last one is the might.
-        // If there is no might, leave it empty. For 1-dice rolls.
-        $might = count($results) > 1 ? trim(array_pop($results)) : '';
+        // If there is no stat or only 1 roll, leave it empty. For 1-dice rolls.
+        $might = '';
+        if (!empty($stat) && count($results) > 1) {
+          $might = trim(array_pop($results));
+        }
         $rolls = trim(implode(', ', $results));
         if (!empty($might)) {
           $str_rolls .= '<div class="dice">' . $note . ' => ' .
