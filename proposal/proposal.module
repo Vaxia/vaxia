@@ -340,6 +340,7 @@ function proposal_webform_results_analysis($variables) {
  * Implements hook_node_view().
  */
 function proposal_node_view($node, $view_mode, $langcode) {
+
   // Only override the displays for proposals.
   if ($node->type == 'proposal') {
     module_load_include('inc', 'webform', 'includes/webform.report');
@@ -347,13 +348,18 @@ function proposal_node_view($node, $view_mode, $langcode) {
     $date = strtotime($timeframe, $node->changed); // Add two weeks from last changed.
     $date = strtotime(date('m/d/Y 00:00:01', $date)); // Convert to at midnight timeframe.
     $date = format_date($date, 'long');
-    if ($node->webform['status'] == TRUE && $view_mode == 'full') {
-      drupal_set_message(t('This proposal will stay open for two weeks since it was last updated. It is set to close on @date.',
-        array('@date' => $date)));
+    // Show messages.
+    if ($view_mode == 'full') {
+      if ($node->webform['status'] == TRUE) {
+        drupal_set_message(t('This proposal will stay open for two weeks since it was last updated. It is set to close on @date.',
+          array('@date' => $date)));
+      }
+      else {
+        drupal_set_message(t('This proposal is closed.'));
+      }
     }
-    else {
-      drupal_set_message(t('This proposal is now closed.'));
-    }
+
+    // Update content.
     $node->content['proposal_help'] = array(
       '#markup' => '<div class="proposal_help"></br></br>' . t('<b>Proposal help:</b></br>Proposals are meant to be a way to formally make a request for the input of site ' .
       'members. Forum threads and five-star ratings are not accurate enough for the big things. So here\'s how this works:</br> ' .
@@ -387,9 +393,10 @@ function proposal_node_view($node, $view_mode, $langcode) {
         'WHERE r.name IN (:roles) ',
         array(':roles' => $roles))->fetchColumn();      
     }
+
     // Add that information to the display.
+    $voted = webform_get_submission_count($node->nid);
     if ($potential_voters != 0) {
-      $voted = webform_get_submission_count($node->nid);
       $percent = number_format(($voted / $potential_voters) * 100);
       $node->content['proposal_response'] = array(
         '#markup' => '<div class="proposal_response">' . t('%voted out of %potential_voters potential voters (%percent %) responsed to this proposal.',
@@ -397,14 +404,56 @@ function proposal_node_view($node, $view_mode, $langcode) {
         '#weight' => 1001,
       );
     }
+
     // And if the vote has been closed - add that.
+    if ($node->webform['status'] == FALSE && $voted == 0 ) {
+      // If no one has voted yet, we can launch the proposal.
+      global $user;
+      if ( $node->uid == $user->uid || user_access('administer proposal')) {
+        $node->content['proposal_launch'] = array(
+          '#markup' => drupal_render(drupal_get_form('_proposal_launch_form', $node)),
+          '#weight' => -1000,
+        );
+      }
+    }
+
     if ($node->webform['status'] == FALSE || user_access('administer proposal')) {
       $node->content['proposal_results'] = array(
         '#markup' => '<div class="proposal_result">' . webform_results_table($node) . '</div>',
-        '#weight' => 1002,
+        '#weight' => 1003,
       );
     }
   }
+
+}
+
+/**
+ * Form callback to launch a proposal when ready.
+ */
+function _proposal_launch_form($form, &$form_state, $node) {
+  $form['launch_help'] = array(
+    '#markup' => '<div class="proposal_launch_help">' .
+      t('When you are ready to make this proposal live so that others may vote on it, click this button.') . '</div>',
+  );
+  $form['nid'] = array(
+    '#type' => 'hidden',
+    '#value' => $node->nid,
+  );
+  $form['launch'] = array(
+    '#type' => 'submit',
+    '#value' => t('Click here to launch the proposal'),
+  );
+  return $form;
+}
+
+/**
+ * Form callback to launch a proposal when ready.
+ */
+function _proposal_launch_form_submit($form, &$form_state) {
+  $node = node_load($form_state['values']['nid']);
+  $node->webform['status'] = TRUE;
+  node_save($node);
+  drupal_set_message(t('This proposal has been opened for voting.'));
 }
 
 /**
@@ -499,6 +548,8 @@ function _proposal_form_proposal_node_form_submit($form, &$form_state) {
     if ($role) {
       $node->webform['roles'] = array($role->rid);
     }
+    // Set the status to OFF on new nodes.
+    $node->webform['status'] = FALSE;
     // Save the node.
     node_save($node);
     if (function_exists('rules_invoke_event')) {
@@ -506,7 +557,8 @@ function _proposal_form_proposal_node_form_submit($form, &$form_state) {
       rules_invoke_event('open_proposal', $node);
     }
   }
-  drupal_set_message(t('The webform %title has been updated. Add new fields to your webform with the form below.',
+  drupal_set_message(t('The webform %title has been updated. Add new fields to your webform with the form below. ' .
+    'When you are ready to open the proposal to voters go to the View tab and click the button to launch it.',
     array('%title' => $form_state['values']['title'])));
   $form_state['redirect'] = 'node/' . $form_state['nid'] . '/webform/components';
 }
