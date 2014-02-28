@@ -16,7 +16,14 @@
     $stats_rolled = '';
     if (isset($dice_rolls[0]['roll_notes'])) {
       // Notes starts as a list of all rolls and results, separated by "<br>".
-      $notes = explode('<br>', $dice_rolls[0]['roll_notes']);
+      $found_notes = explode('<br>', $dice_rolls[0]['roll_notes']);
+      $notes = array();
+      foreach ($found_notes as $index => $note) {
+        $note = trim($note);
+        if (!empty($note)) {
+          $notes[] = $note;
+        }
+      }
       // An array of each note, in the format: array('0' => "1 : roll(1d100) + agi (26)");
       foreach ($dice_rolls as $index => $dice_roll) {
         $note = '';
