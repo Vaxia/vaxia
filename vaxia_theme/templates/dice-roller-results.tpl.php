@@ -16,20 +16,14 @@
     $stats_rolled = '';
     if (isset($dice_rolls[0]['roll_notes'])) {
       // Notes starts as a list of all rolls and results, separated by "<br>".
-      $found_notes = explode('<br>', $dice_rolls[0]['roll_notes']);
-      $notes = array();
-      foreach ($found_notes as $index => $note) {
-        $note = trim($note);
-        if (!empty($note)) {
-          $notes[] = $note;
-        }
-      }
+      $notes = explode('<br>', $dice_rolls[0]['roll_notes']);
       // An array of each note, in the format: array('0' => "1 : roll(1d100) + agi (26)");
       foreach ($dice_rolls as $index => $dice_roll) {
         $note = '';
         $stat = '';
         // Trim "1 : roll" off the note. New format: roll(1d100) + agi (26)
-        if (isset($notes[$index + 1])) {
+        $notes[$index + 1] = trim($notes[$index + 1]);
+        if (!empty($notes[$index+1]) && strpos($notes[$index+1], '+') !== FALSE) {
           $note = substr($notes[$index + 1], 8);
           // We have a note, let's get the stat.
           $results = explode('+', $note);
@@ -47,13 +41,10 @@
         // New format "66, 25, 22, 99". Where 99 is the might.
         $results =  explode(',', $results);
         // The the first rolls are the rolls. The very last one is the might.
-        // If there is no stat or only 1 roll, leave it empty. For 1-dice rolls.
-        $might = '';
-        if (!empty($stat) && count($results) > 1) {
-          $might = trim(array_pop($results));
-        }
-        $rolls = trim(implode(', ', $results));
-        if (!empty($might)) {
+        // If there is no might, leave it empty. For 1-dice rolls.
+        if (!empty($stat)) {
+          $might = count($results) > 1 ? trim(array_pop($results)) : '';
+          $rolls = trim(implode(', ', $results));
           $str_rolls .= '<div class="dice">' . $note . ' => ' .
             '<b>' . t('Roll') . ':</b> ' . $rolls . ' <b>' . t('Might') . ':</b> ' . $might . '</div>' . "\n";
             // Add the hidden div for jQuery to tie into for the ruler.
@@ -64,6 +55,7 @@
           }
         }
         else {
+          $rolls = trim(implode(', ', $results));
           $str_rolls .= '<div class="dice">' . $note . ' => <b>' . t('Roll') . ':</b> ' . $rolls . '</div>' . "\n";
         }
       } // End loop processing this roll.
