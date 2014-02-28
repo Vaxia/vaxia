@@ -636,7 +636,7 @@ function _wiki_feature_translate_path_to_link($path) {
     }
   }
   // If there is, check access so know to display link or plain text.
-  if (strpos($link, 'node/') === FALSE || (!empty($node) && node_access('view', $node))) { // Not a node (view link), or if a published node.
+  if (strpos($link['href'], 'node/') === FALSE || (!empty($node) && node_access('view', $node))) { // Not a node (view link), or if a published node.
     $link = l($short_title, $link['href']);
   }
   else {
