@@ -687,7 +687,7 @@ function _wiki_feature_get_parent_links($path) {
   $root = variable_get('wiki_feature_root', '');
   if (!empty($root)) {
     $root = _wiki_feature_autocomplete_get_nid($root);
-    if ($vars['links'][0] != $root) {
+    if ($path != $root) {
       // Add root at front of stack.
       array_unshift($parent_links, 'node/' . $root);
     }
