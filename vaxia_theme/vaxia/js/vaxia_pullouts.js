@@ -90,11 +90,17 @@
     
         });
         // And lastly, rebind Drupal Behaviors to all their components after they've been moved around.
-        jQuery.once(function() {
-          Drupal.attachBehaviors('#extruderBarHead');
-          Drupal.attachBehaviors('#extruderBarFirst');
-          Drupal.attachBehaviors('#extruderBarDesc');
-          Drupal.attachBehaviors('#extruderBarNav');
+        $('#extruderBarHead').once(function() {
+          Drupal.attachBehaviors($('#extruderBarHead'));
+        });
+        $('#extruderBarFirst').once(function() {
+          Drupal.attachBehaviors($('#extruderBarFirst'));
+        });
+        $('#extruderBarDesc').once(function() {
+          Drupal.attachBehaviors($('#extruderBarDesc'));
+        });
+        $('#extruderBarNav').once(function() {
+          Drupal.attachBehaviors($('#extruderBarNav'));
         });
       }
       else {
