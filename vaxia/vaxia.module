@@ -201,9 +201,10 @@ function vaxia_node_view($node, $view_mode, $langcode) {
     }
   }
 
-  // If node is an RPG chatroom, add the js for additional behaviors for Vaxia specifically.
+  // If node is an RPG chatroom, add the js, css for additional behaviors for Vaxia specifically.
   if ($node->type == 'rpg_chatroom') {
-    drupal_add_js( drupal_get_path('module', 'vaxia') . '/js/vaxia.js' );
+    drupal_add_js(drupal_get_path('module', 'vaxia') . '/js/vaxiaPullouts.js');
+    drupal_add_css(drupal_get_path('module', 'vaxia') . '/css/vaxiaPullouts.css');
   }
 }
 
