@@ -12,9 +12,6 @@
       $('.sidebar-first #content').css('margin-left', '0%');
       $('.sidebar-first #content').css('width', '100%');
       $('.sidebar-first .region-sidebar-first').css('width', '100%');
-      // Set up sidebar fieldsets that are collapsible and collapsed to be uncollapsed.
-      // Because that piece of code doesn't work on this pullout.
-      $('.sidebar-first .region-sidebar-first fieldset.collapsed').removeClass('collapsed');
       // And hide the header.
       $('#header').hide();
 
@@ -35,6 +32,7 @@
           $('#extruderBarHead').addClass('isClosed');
         }
       });
+      Drupal.attachBehaviors($('#extruderBarHead'));
 
       // Pullout for Sidebar.
       $('.sidebar-first .region-sidebar-first').wrap('<div id="extruderBarFirst" class="{title:\'View Sidebar\'} isClosed jsPullout"></div>');
@@ -45,14 +43,15 @@
         extruderOpacity:0.8,
         onExtOpen:function(){
           $('#extruderBarFirst').addClass('isOpen');
-          $('#extruderBarHead').removeClass('isClosed');
+          $('#extruderBarFirst').removeClass('isClosed');
         },
         onExtContentLoad:function(){},
         onExtClose:function(){
           $('#extruderBarFirst').removeClass('isOpen');
-          $('#extruderBarHead').addClass('isClosed');
+          $('#extruderBarFirst').addClass('isClosed');
         }
       });
+      Drupal.attachBehaviors($('#extruderBarFirst'));
 
       // Pullout for Description.
       $('article.node-rpg-chatroom #node_rpg_chatroom_full_group_description').wrap('<div id="extruderBarDesc" class="{title:\'View Description\'} isClosed jsPullout"></div>');
@@ -71,6 +70,7 @@
           $('#extruderBarDesc').addClass('isClosed');
         }
       });
+      Drupal.attachBehaviors($('#extruderBarDesc'));
 
       // Pullout for Room Navigation.
       $('article.node-rpg-chatroom #node_rpg_chatroom_full_group_navigation').wrap('<div id="extruderBarNav" class="{title:\'View Room Nav\'} isClosed jsPullout"></div>');
@@ -81,16 +81,18 @@
         extruderOpacity:0.8,
         onExtOpen:function(){
           $('#extruderBarNav').addClass('isOpen');
-          $('#extruderBarDesc').removeClass('isClosed');
+          $('#extruderBarNav').removeClass('isClosed');
         },
         onExtContentLoad:function(){},
         onExtClose:function(){
           $('#extruderBarNav').removeClass('isOpen');
-          $('#extruderBarHead').addClass('isClosed');
+          $('#extruderBarNav').addClass('isClosed');
         }
       });
+      Drupal.attachBehaviors($('#extruderBarNav'));
 
     });
+    // And lastly, rebind Drupal Behaviors to all their components after they've been moved around.
   }
   else {
     // Only run this if the screen is equal or under 480.
