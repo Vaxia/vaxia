@@ -8,7 +8,7 @@
       if ($( window ).width() > 600) {
         // Add toggle buttons.
         $('.node-type-rpg-chatroom article.node-rpg-chatroom').once(function() {
-    
+
           // Hide and adjust widths on the sidebar vs content.
           $('.sidebar-first #content').css('margin-left', '0%');
           $('.sidebar-first #content').css('width', '100%');
@@ -87,20 +87,7 @@
               $('#extruderBarNav').addClass('isClosed');
             }
           });
-    
-        });
-        // And lastly, rebind Drupal Behaviors to all their components after they've been moved around.
-        $('#extruderBarHead').once(function() {
-          Drupal.attachBehaviors($('#extruderBarHead'));
-        });
-        $('#extruderBarFirst').once(function() {
-          Drupal.attachBehaviors($('#extruderBarFirst'));
-        });
-        $('#extruderBarDesc').once(function() {
-          Drupal.attachBehaviors($('#extruderBarDesc'));
-        });
-        $('#extruderBarNav').once(function() {
-          Drupal.attachBehaviors($('#extruderBarNav'));
+
         });
       }
       else {
@@ -112,6 +99,12 @@
     }
   };
 
-
+  // And lastly, rebind Drupal Behaviors to all their components after they've been moved around.;
+  $(document).ready(function() {
+    Drupal.attachBehaviors($('#extruderBarHead'));
+    Drupal.attachBehaviors($('#extruderBarFirst'));
+    Drupal.attachBehaviors($('#extruderBarDesc'));
+    Drupal.attachBehaviors($('#extruderBarNav'));
+  });
 
 })(jQuery);
