@@ -101,10 +101,10 @@
 
   // And lastly, rebind Drupal Behaviors to all their components after they've been moved around.;
   $(document).ready(function() {
-    Drupal.attachBehaviors($('#extruderBarHead'));
-    Drupal.attachBehaviors($('#extruderBarFirst'));
-    Drupal.attachBehaviors($('#extruderBarDesc'));
-    Drupal.attachBehaviors($('#extruderBarNav'));
+    Drupal.attachBehaviors('#extruderBarHead');
+    Drupal.attachBehaviors('#extruderBarFirst');
+    Drupal.attachBehaviors('#extruderBarDesc');
+    Drupal.attachBehaviors('#extruderBarNav');
   });
 
 })(jQuery);
