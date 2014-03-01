@@ -67,7 +67,7 @@ Drupal.behaviors.doPullouts = {
       $('document').ready(function() {
 
         // Make pullouts for the sidebars.
-        if (!$('#extruderBarHead').length) {
+        if (!$('#target_extruderBarHead').length) {
           make_flap('View Site Nav', 'extruderBarHead', '#navigation', '150px');
           make_flap('View Sidebar', 'extruderBarFirst', '.sidebar-first .region-sidebar-first', '300px');
           make_flap('View Description', 'extruderBarDesc',
