@@ -100,14 +100,10 @@
     }
   };
 
-  Drupal.behaviors.themePulloutsAttach = {
-    attach: function (context, settings) {
-      Drupal.attachBehaviors('#extruderBarHead');
-      Drupal.attachBehaviors('#extruderBarFirst');
-      Drupal.attachBehaviors('#extruderBarDesc');
-      Drupal.attachBehaviors('#extruderBarNav');
+     // Drupal.attachBehaviors('#extruderBarHead');
+     // Drupal.attachBehaviors('#extruderBarFirst');
+     // Drupal.attachBehaviors('#extruderBarDesc');
+     // Drupal.attachBehaviors('#extruderBarNav');
 
-    }
-  };
 
 })(jQuery);
