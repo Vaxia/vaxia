@@ -102,7 +102,6 @@
 
   Drupal.behaviors.themePulloutsAttach = {
     attach: function (context, settings) {
-      sleep(5); // Wait five seconds, then do it.
       Drupal.attachBehaviors('#extruderBarHead');
       Drupal.attachBehaviors('#extruderBarFirst');
       Drupal.attachBehaviors('#extruderBarDesc');
