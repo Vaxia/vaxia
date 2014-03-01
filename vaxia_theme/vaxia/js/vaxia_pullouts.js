@@ -43,6 +43,7 @@
         onExtOpen:function(){
           $('#extruderBarFirst').addClass('isOpen');
           $('#extruderBarFirst').removeClass('isClosed');
+Drupal.attachBehaviors( $('#extruderBarFirst'), Drupal.settings);
         },
         onExtContentLoad:function(){},
         onExtClose:function(){
@@ -50,7 +51,6 @@
           $('#extruderBarFirst').addClass('isClosed');
         }
       });
-Drupal.attachBehaviors( $('#extruderBarFirst'), Drupal.settings);
 
       // Pullout for Description.
       $('article.node-rpg-chatroom #node_rpg_chatroom_full_group_description').wrap('<div id="extruderBarDesc" class="{title:\'View Description\'} isClosed jsPullout"></div>');
