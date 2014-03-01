@@ -1,0 +1,13 @@
+name = Node Referrer
+description = provides a counter part to CCK's nodereference field.
+package = Fields
+core = 7.x
+dependencies[] = field
+dependencies[] = node_reference
+
+; Information added by drupal.org packaging script on 2012-11-07
+version = "7.x-1.0-beta1"
+core = "7.x"
+project = "nodereferrer"
+datestamp = "1352305939"
+
