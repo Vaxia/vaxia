@@ -90,12 +90,12 @@
     
         });
         // And lastly, rebind Drupal Behaviors to all their components after they've been moved around.
-        jQuery.once() {
+        jQuery.once(function() {
           Drupal.attachBehaviors('#extruderBarHead');
           Drupal.attachBehaviors('#extruderBarFirst');
           Drupal.attachBehaviors('#extruderBarDesc');
           Drupal.attachBehaviors('#extruderBarNav');
-        }
+        });
       }
       else {
         // Only run this if the screen is equal or under 480.
