@@ -32,7 +32,6 @@
           $('#extruderBarHead').addClass('isClosed');
         }
       });
-      Drupal.attachBehaviors($('#extruderBarHead'));
 
       // Pullout for Sidebar.
       $('.sidebar-first .region-sidebar-first').wrap('<div id="extruderBarFirst" class="{title:\'View Sidebar\'} isClosed jsPullout"></div>');
@@ -44,7 +43,6 @@
         onExtOpen:function(){
           $('#extruderBarFirst').addClass('isOpen');
           $('#extruderBarFirst').removeClass('isClosed');
-      Drupal.attachBehaviors($('#extruderBarFirst'));
         },
         onExtContentLoad:function(){},
         onExtClose:function(){
@@ -52,6 +50,7 @@
           $('#extruderBarFirst').addClass('isClosed');
         }
       });
+Drupal.attachBehaviors( $('#extruderBarFirst'), Drupal.settings);
 
       // Pullout for Description.
       $('article.node-rpg-chatroom #node_rpg_chatroom_full_group_description').wrap('<div id="extruderBarDesc" class="{title:\'View Description\'} isClosed jsPullout"></div>');
@@ -70,7 +69,6 @@
           $('#extruderBarDesc').addClass('isClosed');
         }
       });
-      Drupal.attachBehaviors($('#extruderBarDesc'));
 
       // Pullout for Room Navigation.
       $('article.node-rpg-chatroom #node_rpg_chatroom_full_group_navigation').wrap('<div id="extruderBarNav" class="{title:\'View Room Nav\'} isClosed jsPullout"></div>');
@@ -89,7 +87,6 @@
           $('#extruderBarNav').addClass('isClosed');
         }
       });
-      Drupal.attachBehaviors($('#extruderBarNav'));
 
     });
     // And lastly, rebind Drupal Behaviors to all their components after they've been moved around.
