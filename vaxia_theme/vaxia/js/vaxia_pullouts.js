@@ -105,6 +105,6 @@
     Drupal.attachBehaviors($('#extruderBarFirst'));
     Drupal.attachBehaviors($('#extruderBarDesc'));
     Drupal.attachBehaviors($('#extruderBarNav'));
-  });
+  };
 
 })(jQuery);
