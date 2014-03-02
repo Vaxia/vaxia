@@ -989,7 +989,7 @@ function add_silver_submit_form(&$form, &$form_state) {
     drupal_set_message(t('%add_silver silver has been added to this sheet.', array('%add_silver' => $add_silver)));
 	$message = t('@xp silver added to @title by @user.',
 		array('@xp' => $add_silver, '@title' => $character->title, '@user' => $user->name));
-	_character_sheet_update_log($character, 'silver', $message, $variables = array());
+	_character_sheet_update_log($nid, 'silver', $message, $variables = array());
     return;
   }
   // If negative. First check if we can just subtract off of given XP.
