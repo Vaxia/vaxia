@@ -112,6 +112,8 @@ function item_helper_node_view($node, $view_mode, $langcode) {
     if (!empty($set_comments) && !empty($node->content['field_creation_history'])) {
       unset($node->content['field_creation_history']['#theme']);
       // Convert this display into a markup, so we don't double render the content table.
+      $node->content['field_creation_history']['#markup'] = isset($node->content['field_creation_history']['#markup']) ?
+        $node->content['field_creation_history']['#markup'] : '';
       foreach ($node->content['field_creation_history']['#items'] as $index => $value) {
         $count = $index + 1;
         $label = '<div class="field"><hr><div class="field-label">Creation history record #' . $count . ':&nbsp;</div><hr></div>';

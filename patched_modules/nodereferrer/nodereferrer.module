@@ -480,7 +480,7 @@ function nodereferrer_field_formatter_view($entity_type, $entity, $field, $insta
     case 'nodereferrer_plain':
       foreach ($items as $delta => $item) {
         $nodes = array();
-        if (is_array($item['items'])) {
+        if (!empty($item['items']) && is_array($item['items'])) {
           $nodes = node_load_multiple(array_keys($item['items']));
         }
         $rendered_nodes = array();
