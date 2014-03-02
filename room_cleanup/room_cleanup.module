@@ -9,6 +9,10 @@
  */
 function room_cleanup_permission() {
   return array(
+    'make room from wiki' => array(
+      'title' => t('make room from wiki'),
+      'description' => t('Make room from wiki.'),
+    ),
     'administer room cleanup' => array(
       'title' => t('administer room cleanup'),
       'description' => t('Administer room cleanup.'),
@@ -37,7 +41,7 @@ function room_cleanup_cron() {
  */
 function room_cleanup_node_view($node, $view_mode, $langcode) {
   // If node is a wiki page, give a button to convert to a room.
-  if ($node->type == 'wiki_page' && $view_mode == 'full' && node_access('create', $node)) {
+  if ($node->type == 'wiki_page' && $view_mode == 'full' && node_access('create', $node) && user_access('make room from wiki')) {
     $node->content['room_cleanup_make_room_from_wiki'] = array(
       '#markup' => drupal_render(drupal_get_form('room_cleanup_make_room_from_wiki', $node)),
       '#weight' => 1000,
