@@ -225,3 +225,16 @@ tr.webform-results-question-first td{padding-top:0;}
 .forum-post-content .form-type-item label{display:none;}
 .rate-thumbs-up-btn-up{background:url('images/plus_one_gry.png') no-repeat scroll 0 0 rgba(0, 0, 0, 0)}
 .rate-info, .rate-description{color:#EEE;}
+
+/* Block widths from views. */
+#block-views-rpg-chats-search-rpg-chats .view-header p{margin:0;}
+#block-views-rpg-chats-search-rpg-chats input.form-text{width:170px;}
+#block-views-rpg-chats-search-rpg-chats .form-item .error{border:1px solid #ccc;}
+#block-views-rpg-chats-search-rpg-chats .views-exposed-widget{float:none;}
+#block-views-rpg-chats-search-rpg-chats .views-exposed-form .views-exposed-widget .form-submit{margin-top:0px;}
+#block-views-rpg-chats-inroom-rpg-chats{float:right;width:210px;margin:0;margin-left:0.5em;}
+#block-views-rpg-chats-inroom-rpg-chats p{margin:0;} {margin:0;}
+#block-views-rpg-chats-inroom-rpg-chats .view-empty{display:none;}
+#block-views-rpg-chats-inroom-rpg-chats .form-item .error{border:1px solid #ccc;}
+.view-display-id-character_sheets_mine_block select{width:170px;}
+.view-display-id-character_sheets_mine_block input.form-submit{display:block;}
