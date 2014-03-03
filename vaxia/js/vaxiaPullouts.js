@@ -68,11 +68,11 @@ Drupal.behaviors.doPullouts = {
 
         // Make pullouts for the sidebars.
         if (!$('#target_extruderBarHead').length) {
-          make_flap('View Site Nav', 'extruderBarHead', '#navigation', '150px');
-          make_flap('View Sidebar', 'extruderBarFirst', '.sidebar-first .region-sidebar-first', '300px');
-          make_flap('View Description', 'extruderBarDesc',
+          make_flap('Site Nav', 'extruderBarHead', '#navigation', '150px');
+          make_flap('Sidebar', 'extruderBarFirst', '.sidebar-first .region-sidebar-first', '300px');
+          make_flap('Description', 'extruderBarDesc',
             'article.node-rpg-chatroom #node_rpg_chatroom_full_group_description', '450px');
-          make_flap('View Room Nav', 'extruderBarNav',
+          make_flap('Room Nav', 'extruderBarNav',
             'article.node-rpg-chatroom #node_rpg_chatroom_full_group_navigation', '600px');
 
           // Set listener for all flaps now that they've been created.
