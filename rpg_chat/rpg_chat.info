@@ -22,6 +22,7 @@ features[field][] = node-rpg_chatroom-field_parent
 features[field][] = node-rpg_chatroom-field_realm
 features[field][] = node-rpg_chatroom-field_rl_weather
 features[field][] = node-rpg_chatroom-field_wiki_source
+features[field_group][] = group_description|node|rpg_chatroom|default
 features[field_group][] = group_navigation|node|rpg_chatroom|default
 features[node][] = rpg_chatroom
 features[variable][] = comment_anonymous_rpg_chatroom

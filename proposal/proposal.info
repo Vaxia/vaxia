@@ -20,6 +20,7 @@ features[field][] = node-proposal-field_associated_forum_threads
 features[field][] = node-proposal-taxonomy_forums
 features[node][] = proposal
 features[rules_config][] = rules_close_proposal
+features[rules_config][] = rules_proposal_reciept
 features[user_role][] = voter
 features[variable][] = comment_anonymous_proposal
 features[variable][] = comment_default_mode_proposal
