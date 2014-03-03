@@ -60,6 +60,8 @@ article .links a{padding:5px;}
 .sidebars .block.odd{float:right;clear:right;}
 .sidebars .block .block-title{text-align:center;}
 #main #content{width:100% !important;margin:0 !important;}
+.view-display-id-character_sheets_mine_block select{width:auto;}
+#block-views-rpg-chats-search-rpg-chats input.form-text{width:auto;}
 
 /* Chat display shrink. */
 .node-rpg-chatroom #rpg-chat-wrapper .comment header .submitted{font-size:0.7em;width:60px;}
