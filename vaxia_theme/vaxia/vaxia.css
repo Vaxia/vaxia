@@ -221,11 +221,6 @@ tr.webform-results-question-first td{padding-top:0;}
 .field-name-field-wiki-source header{display:none;}
 .field-name-field-artwork .node-artwork header{display:none;}
 
-/* Rate CSS for Vaxia */
-.forum-post-content .form-type-item label{display:none;}
-.rate-thumbs-up-btn-up{background:url('images/plus_one_gry.png') no-repeat scroll 0 0 rgba(0, 0, 0, 0)}
-.rate-info, .rate-description{color:#EEE;}
-
 /* Block widths from views. */
 #block-views-rpg-chats-search-rpg-chats .view-header p{margin:0;}
 #block-views-rpg-chats-search-rpg-chats input.form-text{width:170px;}
@@ -238,3 +233,12 @@ tr.webform-results-question-first td{padding-top:0;}
 #block-views-rpg-chats-inroom-rpg-chats .form-item .error{border:1px solid #ccc;}
 .view-display-id-character_sheets_mine_block select{width:170px;}
 .view-display-id-character_sheets_mine_block input.form-submit{display:block;}
+
+/* Rate CSS for Vaxia */
+.section-forums .form-item label{display:none;}
+.rate-widget .rate-info{display:none;}
+.rate-info, .rate-description{color:#EEE;}
+.rate-widget .rate-button li{text-align:right;}
+.rate-widget .rate-button li a{text-decoration:none;color:#CCC !important;font-weight:bold;
+  line-height:17px;font-size:20px;height:20px;width:33px;
+  background:url('images/plus_one_gry.png') no-repeat scroll 0 0 rgba(0, 0, 0, 0)}
