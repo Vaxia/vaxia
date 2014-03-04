@@ -654,7 +654,7 @@ function proposal_form_alter(&$form, &$form_state, $form_id) {
 function proposal_get_close_time($timestamp) {
   $timeframe = variable_get('proposal_open_timeframe', '2 weeks') . ' ago';
   $close = strtotime($timeframe, $timestamp);
-  $close = strtotime(date('m/d/Y 00:00:01', $close);
+  $close = strtotime(date('m/d/Y 00:00:01', $close));
   return $close;
 }
 
