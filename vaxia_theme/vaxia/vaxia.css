@@ -238,7 +238,8 @@ tr.webform-results-question-first td{padding-top:0;}
 .section-forums .form-item label{display:none;}
 .rate-widget .rate-info{display:none;}
 .rate-info, .rate-description{color:#EEE;}
-.rate-widget .rate-button li{text-align:right;}
-.rate-widget .rate-button li a{text-decoration:none;color:#CCC !important;font-weight:bold;
+.rate-widget ul{padding:0;}
+.rate-widget li{text-align:right;}
+.rate-widget li a{text-decoration:none;color:#CCC !important;font-weight:bold;
   line-height:17px;font-size:20px;height:20px;width:33px;
   background:url('images/plus_one_gry.png') no-repeat scroll 0 0 rgba(0, 0, 0, 0)}
