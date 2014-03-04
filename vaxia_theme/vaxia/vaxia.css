@@ -242,3 +242,4 @@ tr.webform-results-question-first td{padding-top:0;}
   background:url("/sites/all/modules/rate/templates/number-up-down/add.png") repeat scroll 2px 2px #CCC;}
 .rate-number-up-down-rating{font-weight:bold;font-size:16px;line-height:26px;}
 .rate-widget .rate-number-up-down-btn-down{display:none;}
+.post-edited{clear:left;}
