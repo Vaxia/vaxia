@@ -238,4 +238,7 @@ tr.webform-results-question-first td{padding-top:0;}
 .section-forums .form-item label{display:none;}
 .section-forums .form-item label{display:none;}
 .rate-info, .rate-description{color:#EEE;}
+.rate-widget .rate-number-up-down-btn-up{margin:0;padding:2px;border:1px solid;margin-left:10px;
+  background:url("/sites/all/modules/rate/templates/number-up-down/add.png") repeat scroll 2px 2px #CCC;}
+.rate-number-up-down-rating{font-weight:bold;font-size:16px;line-height:26px;}
 .rate-widget .rate-number-up-down-btn-down{display:none;}
