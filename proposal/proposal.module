@@ -680,7 +680,7 @@ function proposal_check_posted_in_last_timeframe($uid) {
  * Helper for rules. Close proposals that are due to be closed.
  */
 function proposal_close_in_timeframe() {
-  $timeframe = strtotime(date('m/d/Y 11:59:59')); // Capture everything from the day.
+  $timeframe = strtotime(date('m/d/Y 00:00:01')); // Capture everything from the day.
   $timeframe = strtotime(variable_get('proposal_open_timeframe', '2 weeks') . ' ago', $timeframe); // Minus two weeks.
   $proposals = db_query('SELECT n.nid from {node} n ' .
     'LEFT JOIN webform w ON n.nid = w.nid ' .
