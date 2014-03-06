@@ -728,9 +728,9 @@ function _wiki_feature_get_child_paths($path) {
   // Views don't place links in the url_alias table.
   // So views don't show up as childnre.
   // Nor as siblings if there's a % in the path for the view.
-  $links = db_query('SELECT link_path FROM {menu_links} WHERE link_path REGEXP :regexp', array(':regexp' => $regexp));
+  $links = db_query('SELECT path FROM {menu_router} WHERE path REGEXP :regexp', array(':regexp' => $regexp));
   foreach ($links as $link) {
-    $child_links[] = $link->link_path;
+    $child_links[] = $link->path;
   }
   // And filter to just unique results.
   return array_unique($child_links);
