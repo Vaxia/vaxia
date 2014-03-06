@@ -626,7 +626,7 @@ function _wiki_feature_translate_path_to_link($path) {
   }
   // Set short title default.
   $short_title = explode('/', $path);
-  $short_title = check_plain(ucwords(array_pop($short_title)));
+  $short_title = check_plain(ucwords(str_replace('-', ' ', array_pop($short_title))));
 
   // Check if a link exists.
   $link = menu_get_item(drupal_get_normal_path($link));
