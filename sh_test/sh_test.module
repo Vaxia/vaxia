@@ -15,11 +15,36 @@ function sh_test_permission() {
       'title' => t('approve sh test'),
       'description' => t('Approve the SH test.'),
     ),
+    'view sh test results'=> array(
+      'title' => t('view sh test results'),
+      'description' => t('View SH test results.'),
+    ),
     'administrate sh test'=> array(
       'title' => t('administrate sh test'),
       'description' => t('Administrate the SH test.'),
     ),
   );
+}
+
+
+/**
+ * Implements hook_node_view().
+ */
+function sh_test_node_view($node, $view_mode, $langcode) {
+
+  // Only override the displays for proposals.
+  if ($node->type == 'storyhost_application') {
+    module_load_include('inc', 'webform', 'includes/webform.report');
+    // Show results if any.
+    global $user;
+    if ($node->uid == $user->uid || user_access('view sh test results') || user_access('administrate sh test')) {
+      $node->content['application_results'] = array(
+        '#markup' => '<div class="application_result">' . webform_results_table($node) . '</div>',
+        '#weight' => 1003,
+      );
+    }
+  }
+
 }
 
 /**
@@ -178,7 +203,11 @@ function sh_test_setup_approval_form($user, $node, $entity_created) {
       db_insert('webform_roles')->fields(array('nid' => $entity_created->nid, 'rid' => $role))->execute();
     }
   }
+  // Include the webform module that allows components to be created.
+  module_load_include('inc', 'webform', 'includes/webform.components');
   // Create the standard webform field for approval.
+  $items = 'approve|' .  t('Yes. I approve this SH candidate to become a full SH.') . "\n" .
+    'disapprove|' . t('No. I would like to see some improvements, and have included the details below.');
   $component = array();
   $component['nid'] = $entity_created->nid;
   $component['pid'] = 0;
@@ -188,13 +217,22 @@ function sh_test_setup_approval_form($user, $node, $entity_created) {
   $component['mandatory'] = 1;
   $component['extra'] = array(
     'description' => '',
-    'items' => 'approve|' .  t('Yes. I approve this SH candidate to become a full SH.'),
+    'items' => $items,
     'multiple' => '1',
     'aslist' => '0',
     );
   $component['weight'] = 0;
-  // Include the webform module that allows components to be created.
-  module_load_include('inc', 'webform', 'includes/webform.components');
+  webform_component_insert($component);
+  $component = array();
+  $component['nid'] = $entity_created->nid;
+  $component['pid'] = 0;
+  $component['form_key'] = 'comments';
+  $component['name'] = t('Comments');
+  $component['type'] = 'textarea';
+  $component['mandatory'] = 1;
+  $component['extra'] = array(
+    );
+  $component['weight'] = 1;
   webform_component_insert($component);
 }
 
