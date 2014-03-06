@@ -717,11 +717,11 @@ function _wiki_feature_get_sibling_links($path) {
  * DB function, pull the links from the DB.
  */
 function _wiki_feature_get_child_paths($path) {
+  $child_links = array();
   // Given a string path, find the router parents above it.
   $parent_path = '';
   $regexp = '^' . $path . '/[a-zA-Z0-9-]+$';
   $links = db_query('SELECT alias FROM {url_alias} WHERE alias REGEXP :regexp', array(':regexp' => $regexp));
-  $child_links = array();
   foreach ($links as $link) {
     $child_links[] = $link->alias;
   }
@@ -729,10 +729,9 @@ function _wiki_feature_get_child_paths($path) {
   // So views don't show up as childnre.
   // Nor as siblings if there's a % in the path for the view.
   $links = db_query('SELECT link_path FROM {menu_links} WHERE link_path REGEXP :regexp', array(':regexp' => $regexp));
-  $child_links = array();
   foreach ($links as $link) {
-    $child_links[] = $link->alias;
+    $child_links[] = $link->link_path;
   }
   // And filter to just unique results.
-  return array_unique ($child_links);
+  return array_unique($child_links);
 }
