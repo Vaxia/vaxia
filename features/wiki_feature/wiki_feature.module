@@ -165,6 +165,7 @@ function wiki_feature_node_view($node, $view_mode, $langcode) {
       '#weight' => 1000,
     );
   }
+
 }
 
 /**
@@ -388,15 +389,12 @@ function wiki_feature_freelink_alter(&$link, $target, $plugin_name, $plugin) {
  * Implements hook_block_view().
  */
 function wiki_feature_block_view($delta = '') {
-  if ($delta != 'wiki_feature_templates') {
-    // If we're not on a wiki page, skip it.
-    $node = menu_get_object();
-    if (!isset($node->type) || $node->type != 'wiki_page') {
-      return array();
-    }
-  }
   $block = array();
   $path = drupal_get_path_alias();
+  $position = strpos($path, 'wiki/');
+  if ($position === FALSE || $position !== 0) {
+    return array();
+  }
   // Per delta, select an output.
   switch ($delta) {
     case 'wiki_feature_parent_breadcrumb':
