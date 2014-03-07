@@ -235,8 +235,7 @@ tr.webform-results-question-first td{padding-top:0;}
 .view-display-id-character_sheets_mine_block input.form-submit{display:block;}
 
 /* Rate CSS for Vaxia */
-.section-forums .form-item label{display:none;}
-.section-forums .form-item label{display:none;}
+.forum-post-content .form-item label{display:none;}
 .rate-info, .rate-description{color:#EEE;}
 .rate-widget .rate-number-up-down-btn-up{border:1px solid;margin-left:10px;background-color:#CCC;}
 .rate-number-up-down-rating{font-weight:bold;font-size:16px;line-height:26px;}
@@ -249,3 +248,12 @@ tr.webform-results-question-first td{padding-top:0;}
 div.imagefield-crop-widget img {
   max-width:none;
 }
+
+/* Collected fixes. 03/07/14 */
+.node-type-rpg-chatroom #main #content .messages--status{display:none;}
+.node-type-rpg-chatroom #main{padding-top:0.5em;}
+.not-logged-in .rpg-chat-node #rpg-chat-wrapper{margin-left:0;}
+.node-type-rpg-chatroom #main #content .tabs-primary{clear:both;}
+.node-type-rpg-chatroom #main #content .breadcrumb{float:right;clear:right;}
+.node-type-rpg-chatroom #main #content #page-title{float:right;clear:right;}
+table td{padding-right:15px;}
