@@ -536,8 +536,8 @@ function _vaxia_comment_add_kxp_submit($form, $form_state) {
       if ($character->field_is_npc[$character->language][0]['value'] == 1 
         || $character->field_is_open_npc[$character->language][0]['value'] == 1) {
         global $user;
-        $sh_characters = _vaxia_get_SH_characters($user->uid);
-        foreach ($sh_characters as $nid => $sh_character) {
+        $sh_character = _vaxia_get_SH_characters($user->uid);
+        if (!empty($sh_character)) {
           $character = $sh_character;
         }
       }
@@ -574,13 +574,31 @@ function vaxia_form_comment_form_alter(array &$form, array &$form_state) {
  * Helper function, retrieve SH information from player.
  */
 function _vaxia_get_SH_characters($uid) {
-  $character_nids = array();
-  $nodes = node_load_multiple(array(), array('type' => 'character_sheet', 'uid' => $uid));
-  foreach ($nodes as $nid => $node) {
-    if (isset($node->field_is_storyteller[$node->language][0]['value']) &&
-      $node->field_is_storyteller[$node->language][0]['value'] == 1) {
-      $character_nids[$nid] = $node;
-    }
+  static $SH_characters;
+  if (!empty($SH_characters[$uid])) {
+    return $SH_characters[$uid];
   }
-  return $character_nids;
+  // Not in the cache? Look it up from the user.
+  $user = user_load($uid);
+  if (!empty($user->field_storyhost_character[$user->language][0]['value'])) {
+    $SH_characters[$uid] = node_load( $user->field_storyhost_character[$user->language][0]['value'] );
+    return $SH_characters[$uid];
+  }
+  // Not on the user either? Check nodes - and worse comes to worse, add it to the user.
+  if (empty($user->field_storyhost_character[$user->language][0]['value'])) {
+    $nodes = node_load_multiple(array(), array('type' => 'character_sheet', 'uid' => $uid));
+    foreach ($nodes as $nid => $node) {
+	  if (isset($node->field_is_storyteller[$node->language][0]['value']) &&
+	    $node->field_is_storyteller[$node->language][0]['value'] == 1) {
+	    $SH_characters[$uid] = $node;
+	  }
+    }
+    // Save this value so we don't have to dig this deep again.
+    $user->field_storyhost_character[$user->language][0]['value'] = $SH_characters[$uid];
+    user_save($user);
+    return $SH_characters[$uid];
+  }
+  // Still nothing? Ok - maybe there's actually nothing there. Set and return;
+  $SH_characters[$uid] = array();
+  return $SH_characters[$uid];
 }
