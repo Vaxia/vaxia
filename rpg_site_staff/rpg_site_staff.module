@@ -230,6 +230,7 @@ function rpg_site_staff_form_user_profile_form_alter(&$form, &$form_state, $form
   $form['field_became_evaluator']['#access'] = FALSE;
   $form['field_voting_record']['#access'] = FALSE;
   $form['field_became_voter']['#access'] = FALSE;
+  $form['field_became_voter']['#access'] = FALSE;
 }
 
 /*
