@@ -53,7 +53,7 @@ function rpg_site_staff_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '2',
+          'weight' => '3',
         ),
         'teaser' => array(
           'label' => 'hidden',
@@ -108,7 +108,7 @@ function rpg_site_staff_field_default_fields() {
           'summary_rows' => 5,
         ),
         'type' => 'text_textarea_with_summary',
-        'weight' => '3',
+        'weight' => '5',
       ),
     ),
   );
@@ -154,7 +154,7 @@ function rpg_site_staff_field_default_fields() {
           'module' => 'file',
           'settings' => array(),
           'type' => 'file_default',
-          'weight' => '4',
+          'weight' => '5',
         ),
       ),
       'entity_type' => 'node',
@@ -175,7 +175,7 @@ function rpg_site_staff_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '5',
+        'weight' => '7',
       ),
     ),
   );
@@ -247,7 +247,7 @@ function rpg_site_staff_field_default_fields() {
           'module' => 'node_reference',
           'settings' => array(),
           'type' => 'node_reference_default',
-          'weight' => '1',
+          'weight' => '2',
         ),
       ),
       'entity_type' => 'node',
@@ -266,7 +266,7 @@ function rpg_site_staff_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'node_reference_autocomplete',
-        'weight' => '2',
+        'weight' => '4',
       ),
     ),
   );
@@ -310,7 +310,7 @@ function rpg_site_staff_field_default_fields() {
             ),
           ),
           'type' => 'fivestar_formatter_default',
-          'weight' => '5',
+          'weight' => '6',
         ),
       ),
       'entity_type' => 'node',
@@ -319,6 +319,8 @@ function rpg_site_staff_field_default_fields() {
       'required' => 0,
       'settings' => array(
         'allow_clear' => 1,
+        'allow_ownvote' => TRUE,
+        'allow_revote' => TRUE,
         'stars' => '5',
         'target' => 'none',
         'user_register_form' => FALSE,
@@ -328,7 +330,138 @@ function rpg_site_staff_field_default_fields() {
         'module' => 'fivestar',
         'settings' => array(),
         'type' => 'exposed',
-        'weight' => '6',
+        'weight' => '8',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-session_report-field_realm'.
+  $fields['node-session_report-field_realm'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_realm',
+      'field_permissions' => array(
+        'type' => '0',
+      ),
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          'Vaxia' => 'Vaxia',
+          'Sirian' => 'Sirian',
+        ),
+        'allowed_values_function' => '',
+      ),
+      'translatable' => '0',
+      'type' => 'list_text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'session_report',
+      'default_value' => array(
+        0 => array(
+          'value' => 'Vaxia',
+        ),
+      ),
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '7',
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_realm',
+      'label' => 'Realm',
+      'required' => 1,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '2',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-session_report-field_saga'.
+  $fields['node-session_report-field_saga'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_saga',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'sagas',
+            'parent' => '0',
+          ),
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'session_report',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'If this session was part of a series, enter the saga name. If it is a standalone session, leave this blank.',
+      'display' => array(
+        'default' => array(
+          'label' => 'inline',
+          'module' => 'taxonomy',
+          'settings' => array(),
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => '1',
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_saga',
+      'label' => 'Saga',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'taxonomy',
+        'settings' => array(
+          'autocomplete_path' => 'taxonomy/autocomplete',
+          'size' => 60,
+        ),
+        'type' => 'taxonomy_autocomplete',
+        'weight' => '1',
       ),
     ),
   );
@@ -384,7 +517,7 @@ function rpg_site_staff_field_default_fields() {
             'show_repeat_rule' => 'show',
           ),
           'type' => 'date_default',
-          'weight' => '3',
+          'weight' => '4',
         ),
       ),
       'entity_type' => 'node',
@@ -411,7 +544,7 @@ function rpg_site_staff_field_default_fields() {
           'year_range' => '-0:+3',
         ),
         'type' => 'date_popup',
-        'weight' => '4',
+        'weight' => '6',
       ),
     ),
   );
@@ -479,7 +612,7 @@ function rpg_site_staff_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '1',
+        'weight' => '3',
       ),
     ),
   );
@@ -559,7 +692,7 @@ function rpg_site_staff_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_text',
-        'weight' => '14',
+        'weight' => '15',
       ),
     ),
   );
@@ -639,7 +772,7 @@ function rpg_site_staff_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_text',
-        'weight' => '12',
+        'weight' => '13',
       ),
     ),
   );
@@ -711,7 +844,7 @@ function rpg_site_staff_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_text',
-        'weight' => '15',
+        'weight' => '16',
       ),
     ),
   );
@@ -787,7 +920,10 @@ function rpg_site_staff_field_default_fields() {
   t('Eligible for Proposals');
   t('Forums');
   t('How good was this session?');
+  t('If this session was part of a series, enter the saga name. If it is a standalone session, leave this blank.');
   t('List all characters involved in this session.');
+  t('Realm');
+  t('Saga');
   t('Session held');
   t('Total XP Over Time');
 

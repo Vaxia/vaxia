@@ -359,6 +359,7 @@ function sh_test_default_rules_configuration() {
             "value" : [ "entity-created" ]
           }
         },
+        { "data_set" : { "data" : [ "entity-created:comment" ], "value" : "2" } },
         { "php_eval" : { "code" : "return sh_test_setup_approval_form($user, $node, $entity_created);" } },
         { "mail_to_users_of_role" : {
             "roles" : { "value" : { "9" : "9", "4" : "4", "3" : "3" } },

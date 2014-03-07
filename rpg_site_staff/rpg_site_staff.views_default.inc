@@ -38,8 +38,9 @@ function rpg_site_staff_views_default_views() {
   $handler->display->display_options['pager']['options']['quantity'] = '9';
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
-    'taxonomy_forums' => 'taxonomy_forums',
     'title' => 'title',
+    'field_saga' => 'title',
+    'field_realm' => 'field_realm',
     'field_session_held' => 'field_session_held',
     'field_characters_involved' => 'field_characters_involved',
     'body' => 'body',
@@ -47,15 +48,22 @@ function rpg_site_staff_views_default_views() {
   );
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
-    'taxonomy_forums' => array(
+    'title' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
-    'title' => array(
-      'sortable' => 1,
+    'field_saga' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_realm' => array(
+      'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
@@ -81,7 +89,7 @@ function rpg_site_staff_views_default_views() {
       'empty_column' => 0,
     ),
     'field_rate_session' => array(
-      'sortable' => 1,
+      'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
@@ -99,6 +107,16 @@ function rpg_site_staff_views_default_views() {
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  /* Field: Content: Saga */
+  $handler->display->display_options['fields']['field_saga']['id'] = 'field_saga';
+  $handler->display->display_options['fields']['field_saga']['table'] = 'field_data_field_saga';
+  $handler->display->display_options['fields']['field_saga']['field'] = 'field_saga';
+  $handler->display->display_options['fields']['field_saga']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_saga']['alter']['text'] = ' ([field_saga])';
+  /* Field: Content: Realm */
+  $handler->display->display_options['fields']['field_realm']['id'] = 'field_realm';
+  $handler->display->display_options['fields']['field_realm']['table'] = 'field_data_field_realm';
+  $handler->display->display_options['fields']['field_realm']['field'] = 'field_realm';
   /* Field: Content: Session held */
   $handler->display->display_options['fields']['field_session_held']['id'] = 'field_session_held';
   $handler->display->display_options['fields']['field_session_held']['table'] = 'field_data_field_session_held';
@@ -156,6 +174,98 @@ function rpg_site_staff_views_default_views() {
   $handler->display->display_options['filters']['type']['field'] = 'type';
   $handler->display->display_options['filters']['type']['value'] = array(
     'session_report' => 'session_report',
+  );
+  /* Filter criterion: Content: Realm (field_realm) */
+  $handler->display->display_options['filters']['field_realm_value']['id'] = 'field_realm_value';
+  $handler->display->display_options['filters']['field_realm_value']['table'] = 'field_data_field_realm';
+  $handler->display->display_options['filters']['field_realm_value']['field'] = 'field_realm_value';
+  $handler->display->display_options['filters']['field_realm_value']['value'] = array(
+    'all' => 'all',
+    'Vaxia' => 'Vaxia',
+    'Sirian' => 'Sirian',
+  );
+  $handler->display->display_options['filters']['field_realm_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_realm_value']['expose']['operator_id'] = 'field_realm_value_op';
+  $handler->display->display_options['filters']['field_realm_value']['expose']['label'] = 'Realm';
+  $handler->display->display_options['filters']['field_realm_value']['expose']['operator'] = 'field_realm_value_op';
+  $handler->display->display_options['filters']['field_realm_value']['expose']['identifier'] = 'field_realm_value';
+  $handler->display->display_options['filters']['field_realm_value']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_realm_value']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['field_realm_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    8 => 0,
+    19 => 0,
+    12 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    9 => 0,
+    20 => 0,
+    14 => 0,
+    4 => 0,
+    3 => 0,
+    11 => 0,
+  );
+  /* Filter criterion: Content: Saga (field_saga) */
+  $handler->display->display_options['filters']['field_saga_tid']['id'] = 'field_saga_tid';
+  $handler->display->display_options['filters']['field_saga_tid']['table'] = 'field_data_field_saga';
+  $handler->display->display_options['filters']['field_saga_tid']['field'] = 'field_saga_tid';
+  $handler->display->display_options['filters']['field_saga_tid']['value'] = '';
+  $handler->display->display_options['filters']['field_saga_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_saga_tid']['expose']['operator_id'] = 'field_saga_tid_op';
+  $handler->display->display_options['filters']['field_saga_tid']['expose']['label'] = 'Saga';
+  $handler->display->display_options['filters']['field_saga_tid']['expose']['operator'] = 'field_saga_tid_op';
+  $handler->display->display_options['filters']['field_saga_tid']['expose']['identifier'] = 'field_saga_tid';
+  $handler->display->display_options['filters']['field_saga_tid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_saga_tid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['field_saga_tid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    8 => 0,
+    19 => 0,
+    12 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    9 => 0,
+    20 => 0,
+    14 => 0,
+    4 => 0,
+    3 => 0,
+    11 => 0,
+  );
+  $handler->display->display_options['filters']['field_saga_tid']['vocabulary'] = 'sagas';
+  /* Filter criterion: User: Name */
+  $handler->display->display_options['filters']['uid']['id'] = 'uid';
+  $handler->display->display_options['filters']['uid']['table'] = 'users';
+  $handler->display->display_options['filters']['uid']['field'] = 'uid';
+  $handler->display->display_options['filters']['uid']['relationship'] = 'uid';
+  $handler->display->display_options['filters']['uid']['value'] = '';
+  $handler->display->display_options['filters']['uid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['uid']['expose']['operator_id'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['label'] = 'A/SH';
+  $handler->display->display_options['filters']['uid']['expose']['operator'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['identifier'] = 'uid';
+  $handler->display->display_options['filters']['uid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['uid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    8 => 0,
+    19 => 0,
+    12 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    9 => 0,
+    20 => 0,
+    14 => 0,
+    4 => 0,
+    3 => 0,
+    11 => 0,
   );
 
   /* Display: Sessions */
@@ -330,10 +440,10 @@ function rpg_site_staff_views_default_views() {
 
   $view = new view();
   $view->name = 'storytellers_and_assistants';
-  $view->description = 'Show a list of SHs and ASHs';
+  $view->description = 'Wiki A/SH List';
   $view->tag = 'Staff';
   $view->base_table = 'users';
-  $view->human_name = 'Storytellers and Assistants';
+  $view->human_name = 'Wiki A/SH List';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
@@ -496,6 +606,7 @@ return $output;';
   $handler->display->display_options['filters']['rid']['value'] = array(
     13 => '13',
     10 => '10',
+    17 => '17',
     15 => '15',
     9 => '9',
   );
@@ -729,6 +840,204 @@ foreach ($value as $type => $count) {
   $handler = $view->new_display('page', 'Page', 'page');
   $handler->display->display_options['path'] = 'admin/user-activity-totals';
   $export['user_activity_totals'] = $view;
+
+  $view = new view();
+  $view->name = 'wiki_display_sessions';
+  $view->description = 'A list of your sessions';
+  $view->tag = 'Staff';
+  $view->base_table = 'node';
+  $view->human_name = 'Wiki sessions';
+  $view->core = 7;
+  $view->api_version = '3.0';
+  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Master */
+  $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['title'] = 'Sirian Sessions';
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'role';
+  $handler->display->display_options['access']['role'] = array(
+    8 => '8',
+  );
+  $handler->display->display_options['cache']['type'] = 'time';
+  $handler->display->display_options['cache']['results_lifespan'] = '3600';
+  $handler->display->display_options['cache']['results_lifespan_custom'] = '0';
+  $handler->display->display_options['cache']['output_lifespan'] = '3600';
+  $handler->display->display_options['cache']['output_lifespan_custom'] = '0';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '100';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['quantity'] = '9';
+  $handler->display->display_options['style_plugin'] = 'list';
+  $handler->display->display_options['style_options']['grouping'] = array(
+    0 => array(
+      'field' => 'field_saga',
+      'rendered' => 1,
+      'rendered_strip' => 1,
+    ),
+  );
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['row_options']['separator'] = ' ';
+  $handler->display->display_options['row_options']['hide_empty'] = TRUE;
+  /* Relationship: Content: Author */
+  $handler->display->display_options['relationships']['uid']['id'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['table'] = 'node';
+  $handler->display->display_options['relationships']['uid']['field'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['required'] = TRUE;
+  /* Relationship: User: Storyhost Character (field_storyhost_character) */
+  $handler->display->display_options['relationships']['field_storyhost_character_nid']['id'] = 'field_storyhost_character_nid';
+  $handler->display->display_options['relationships']['field_storyhost_character_nid']['table'] = 'field_data_field_storyhost_character';
+  $handler->display->display_options['relationships']['field_storyhost_character_nid']['field'] = 'field_storyhost_character_nid';
+  $handler->display->display_options['relationships']['field_storyhost_character_nid']['relationship'] = 'uid';
+  $handler->display->display_options['relationships']['field_storyhost_character_nid']['delta'] = '-1';
+  /* Field: User: Name */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'users';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['relationship'] = 'uid';
+  $handler->display->display_options['fields']['name']['label'] = '';
+  $handler->display->display_options['fields']['name']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['name']['alter']['text'] = '<h2>[name]</h2>';
+  $handler->display->display_options['fields']['name']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['name']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['name']['hide_alter_empty'] = FALSE;
+  $handler->display->display_options['fields']['name']['link_to_user'] = FALSE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
+  $handler->display->display_options['fields']['title_1']['table'] = 'node';
+  $handler->display->display_options['fields']['title_1']['field'] = 'title';
+  $handler->display->display_options['fields']['title_1']['relationship'] = 'field_storyhost_character_nid';
+  $handler->display->display_options['fields']['title_1']['label'] = '';
+  $handler->display->display_options['fields']['title_1']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['title_1']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['title_1']['link_to_node'] = FALSE;
+  /* Field: Content: Titles */
+  $handler->display->display_options['fields']['field_titles']['id'] = 'field_titles';
+  $handler->display->display_options['fields']['field_titles']['table'] = 'field_data_field_titles';
+  $handler->display->display_options['fields']['field_titles']['field'] = 'field_titles';
+  $handler->display->display_options['fields']['field_titles']['relationship'] = 'field_storyhost_character_nid';
+  $handler->display->display_options['fields']['field_titles']['label'] = '';
+  $handler->display->display_options['fields']['field_titles']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_titles']['element_label_colon'] = FALSE;
+  /* Field: Content: Saga */
+  $handler->display->display_options['fields']['field_saga']['id'] = 'field_saga';
+  $handler->display->display_options['fields']['field_saga']['table'] = 'field_data_field_saga';
+  $handler->display->display_options['fields']['field_saga']['field'] = 'field_saga';
+  $handler->display->display_options['fields']['field_saga']['label'] = '';
+  $handler->display->display_options['fields']['field_saga']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_saga']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_saga']['alter']['text'] = '<h2>[field_titles] [title_1] : [field_saga]</h2>';
+  $handler->display->display_options['fields']['field_saga']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_saga']['empty'] = '<h2>[field_titles] [title_1] : Standalone Sessions</h2>';
+  /* Field: Content: Session held */
+  $handler->display->display_options['fields']['field_session_held']['id'] = 'field_session_held';
+  $handler->display->display_options['fields']['field_session_held']['table'] = 'field_data_field_session_held';
+  $handler->display->display_options['fields']['field_session_held']['field'] = 'field_session_held';
+  $handler->display->display_options['fields']['field_session_held']['label'] = '';
+  $handler->display->display_options['fields']['field_session_held']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_session_held']['alter']['text'] = '([field_session_held])';
+  $handler->display->display_options['fields']['field_session_held']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_session_held']['settings'] = array(
+    'format_type' => 'privatemsg_current_day',
+    'fromto' => 'both',
+    'multiple_number' => '',
+    'multiple_from' => '',
+    'multiple_to' => '',
+    'show_repeat_rule' => 'show',
+  );
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['title']['alter']['text'] = '[title] <em>([field_session_held])</em>';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  /* Sort criterion: User: Name */
+  $handler->display->display_options['sorts']['name']['id'] = 'name';
+  $handler->display->display_options['sorts']['name']['table'] = 'users';
+  $handler->display->display_options['sorts']['name']['field'] = 'name';
+  $handler->display->display_options['sorts']['name']['relationship'] = 'uid';
+  /* Sort criterion: Content: Saga (field_saga) */
+  $handler->display->display_options['sorts']['field_saga_tid']['id'] = 'field_saga_tid';
+  $handler->display->display_options['sorts']['field_saga_tid']['table'] = 'field_data_field_saga';
+  $handler->display->display_options['sorts']['field_saga_tid']['field'] = 'field_saga_tid';
+  $handler->display->display_options['sorts']['field_saga_tid']['order'] = 'DESC';
+  /* Sort criterion: Content: Post date */
+  $handler->display->display_options['sorts']['created']['id'] = 'created';
+  $handler->display->display_options['sorts']['created']['table'] = 'node';
+  $handler->display->display_options['sorts']['created']['field'] = 'created';
+  /* Contextual filter: Content: Realm (field_realm) */
+  $handler->display->display_options['arguments']['field_realm_value']['id'] = 'field_realm_value';
+  $handler->display->display_options['arguments']['field_realm_value']['table'] = 'field_data_field_realm';
+  $handler->display->display_options['arguments']['field_realm_value']['field'] = 'field_realm_value';
+  $handler->display->display_options['arguments']['field_realm_value']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['field_realm_value']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_realm_value']['default_argument_options']['argument'] = 'Vaxia';
+  $handler->display->display_options['arguments']['field_realm_value']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_realm_value']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_realm_value']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_realm_value']['validate']['fail'] = 'ignore';
+  $handler->display->display_options['arguments']['field_realm_value']['limit'] = '0';
+  $handler->display->display_options['arguments']['field_realm_value']['case'] = 'ucfirst';
+  $handler->display->display_options['arguments']['field_realm_value']['transform_dash'] = TRUE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'session_report' => 'session_report',
+  );
+
+  /* Display: Vaxia Sessions */
+  $handler = $view->new_display('page', 'Vaxia Sessions', 'wiki_vaxia_sessions');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Vaxia Sessions';
+  $handler->display->display_options['display_description'] = 'A list of all sessions';
+  $handler->display->display_options['path'] = 'wiki/vaxia/session-list';
+  $handler->display->display_options['menu']['title'] = 'Sessions';
+  $handler->display->display_options['menu']['weight'] = '0';
+  $handler->display->display_options['menu']['name'] = 'menu-vaxia';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
+
+  /* Display: Sirian Sessions */
+  $handler = $view->new_display('page', 'Sirian Sessions', 'wiki_sirian_sessions');
+  $handler->display->display_options['display_description'] = 'A list of all Sirian sessions';
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Content: Realm (field_realm) */
+  $handler->display->display_options['arguments']['field_realm_value']['id'] = 'field_realm_value';
+  $handler->display->display_options['arguments']['field_realm_value']['table'] = 'field_data_field_realm';
+  $handler->display->display_options['arguments']['field_realm_value']['field'] = 'field_realm_value';
+  $handler->display->display_options['arguments']['field_realm_value']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['field_realm_value']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_realm_value']['default_argument_options']['argument'] = 'Sirian';
+  $handler->display->display_options['arguments']['field_realm_value']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_realm_value']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_realm_value']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_realm_value']['validate']['fail'] = 'ignore';
+  $handler->display->display_options['arguments']['field_realm_value']['limit'] = '0';
+  $handler->display->display_options['arguments']['field_realm_value']['case'] = 'ucfirst';
+  $handler->display->display_options['arguments']['field_realm_value']['transform_dash'] = TRUE;
+  $handler->display->display_options['path'] = 'wiki/sirian/session-list';
+  $handler->display->display_options['menu']['title'] = 'Sessions';
+  $handler->display->display_options['menu']['weight'] = '0';
+  $handler->display->display_options['menu']['name'] = 'menu-vaxia';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
+  $export['wiki_display_sessions'] = $view;
 
   return $export;
 }

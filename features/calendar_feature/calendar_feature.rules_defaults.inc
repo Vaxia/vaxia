@@ -12,6 +12,7 @@ function calendar_feature_default_rules_configuration() {
   $items['rules_notify_event_attendees'] = entity_import('rules_config', '{ "rules_notify_event_attendees" : {
       "LABEL" : "Notify event attendees",
       "PLUGIN" : "reaction rule",
+      "ACTIVE" : false,
       "OWNER" : "rules",
       "TAGS" : [ "Calendar" ],
       "REQUIRES" : [ "rules", "calendar_feature" ],
@@ -40,6 +41,7 @@ function calendar_feature_default_rules_configuration() {
   $items['rules_notify_event_organizers'] = entity_import('rules_config', '{ "rules_notify_event_organizers" : {
       "LABEL" : "Notify event organizers",
       "PLUGIN" : "reaction rule",
+      "ACTIVE" : false,
       "OWNER" : "rules",
       "TAGS" : [ "Calendar" ],
       "REQUIRES" : [ "rules", "calendar_feature" ],

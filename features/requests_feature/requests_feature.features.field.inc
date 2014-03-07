@@ -263,6 +263,8 @@ function requests_feature_field_default_fields() {
       'required' => 0,
       'settings' => array(
         'allow_clear' => 1,
+        'allow_ownvote' => TRUE,
+        'allow_revote' => TRUE,
         'stars' => '5',
         'target' => 'none',
         'user_register_form' => FALSE,

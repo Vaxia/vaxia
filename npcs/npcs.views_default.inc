@@ -951,6 +951,16 @@ function npcs_views_default_views() {
   $handler->display->display_options['filters']['php']['use_php_setup'] = 0;
   $handler->display->display_options['filters']['php']['php_filter'] = '// Return the negative, cause we want the ones that need oversight to show.
 return !npcs_check_needs_oversight(node_load($row->nid));';
+  /* Filter criterion: Workflow: Current state */
+  $handler->display->display_options['filters']['sid']['id'] = 'sid';
+  $handler->display->display_options['filters']['sid']['table'] = 'workflow_node';
+  $handler->display->display_options['filters']['sid']['field'] = 'sid';
+  $handler->display->display_options['filters']['sid']['value'] = array(
+    2 => '2',
+    3 => '3',
+    4 => '4',
+    6 => '6',
+  );
   $handler->display->display_options['path'] = 'oversight/NPCs';
   $handler->display->display_options['menu']['type'] = 'default tab';
   $handler->display->display_options['menu']['title'] = 'Oversight NPCs';
@@ -1119,7 +1129,7 @@ return !npcs_check_needs_oversight(node_load($row->nid));';
   $handler->display->display_options['filters']['field_realm_value']['group'] = 1;
   $handler->display->display_options['filters']['field_realm_value']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_realm_value']['expose']['operator_id'] = 'field_realm_value_op';
-  $handler->display->display_options['filters']['field_realm_value']['expose']['label'] = 'Realm (field_realm)';
+  $handler->display->display_options['filters']['field_realm_value']['expose']['label'] = 'Realm';
   $handler->display->display_options['filters']['field_realm_value']['expose']['operator'] = 'field_realm_value_op';
   $handler->display->display_options['filters']['field_realm_value']['expose']['identifier'] = 'field_realm_value';
   $handler->display->display_options['filters']['field_realm_value']['expose']['remember'] = TRUE;
@@ -1127,13 +1137,15 @@ return !npcs_check_needs_oversight(node_load($row->nid));';
   $handler->display->display_options['filters']['field_realm_value']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
-    12 => 0,
     8 => 0,
+    19 => 0,
+    12 => 0,
     13 => 0,
     10 => 0,
     17 => 0,
     15 => 0,
     9 => 0,
+    20 => 0,
     14 => 0,
     4 => 0,
     3 => 0,
@@ -1172,7 +1184,7 @@ return !npcs_check_needs_oversight(node_load($row->nid));';
   $handler->display->display_options['filters']['field_race_value']['group'] = 1;
   $handler->display->display_options['filters']['field_race_value']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_race_value']['expose']['operator_id'] = 'field_race_value_op';
-  $handler->display->display_options['filters']['field_race_value']['expose']['label'] = 'Race (field_race)';
+  $handler->display->display_options['filters']['field_race_value']['expose']['label'] = 'Race';
   $handler->display->display_options['filters']['field_race_value']['expose']['operator'] = 'field_race_value_op';
   $handler->display->display_options['filters']['field_race_value']['expose']['identifier'] = 'field_race_value';
   $handler->display->display_options['filters']['field_race_value']['expose']['remember'] = TRUE;
@@ -1180,18 +1192,19 @@ return !npcs_check_needs_oversight(node_load($row->nid));';
   $handler->display->display_options['filters']['field_race_value']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
-    12 => 0,
     8 => 0,
+    19 => 0,
+    12 => 0,
     13 => 0,
     10 => 0,
     17 => 0,
     15 => 0,
     9 => 0,
+    20 => 0,
     14 => 0,
     4 => 0,
     3 => 0,
     11 => 0,
-    18 => 0,
   );
   /* Filter criterion: User: Name */
   $handler->display->display_options['filters']['uid']['id'] = 'uid';
@@ -1241,6 +1254,7 @@ return !npcs_check_needs_oversight(node_load($row->nid));';
   $handler->display->display_options['filters']['title']['table'] = 'node';
   $handler->display->display_options['filters']['title']['field'] = 'title';
   $handler->display->display_options['filters']['title']['operator'] = 'contains';
+  $handler->display->display_options['filters']['title']['group'] = 1;
   $handler->display->display_options['filters']['title']['exposed'] = TRUE;
   $handler->display->display_options['filters']['title']['expose']['operator_id'] = 'title_op';
   $handler->display->display_options['filters']['title']['expose']['label'] = 'NPC Name';
@@ -1263,6 +1277,39 @@ return !npcs_check_needs_oversight(node_load($row->nid));';
     3 => 0,
     11 => 0,
   );
+  /* Filter criterion: Content: Open NPC (field_is_open_npc) */
+  $handler->display->display_options['filters']['field_is_open_npc_value_1']['id'] = 'field_is_open_npc_value_1';
+  $handler->display->display_options['filters']['field_is_open_npc_value_1']['table'] = 'field_data_field_is_open_npc';
+  $handler->display->display_options['filters']['field_is_open_npc_value_1']['field'] = 'field_is_open_npc_value';
+  $handler->display->display_options['filters']['field_is_open_npc_value_1']['value'] = array(
+    0 => '0',
+    1 => '1',
+  );
+  $handler->display->display_options['filters']['field_is_open_npc_value_1']['group'] = 1;
+  $handler->display->display_options['filters']['field_is_open_npc_value_1']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_is_open_npc_value_1']['expose']['operator_id'] = 'field_is_open_npc_value_1_op';
+  $handler->display->display_options['filters']['field_is_open_npc_value_1']['expose']['label'] = 'Open NPC';
+  $handler->display->display_options['filters']['field_is_open_npc_value_1']['expose']['operator'] = 'field_is_open_npc_value_1_op';
+  $handler->display->display_options['filters']['field_is_open_npc_value_1']['expose']['identifier'] = 'field_is_open_npc_value_1';
+  $handler->display->display_options['filters']['field_is_open_npc_value_1']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_is_open_npc_value_1']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    8 => 0,
+    19 => 0,
+    12 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    9 => 0,
+    20 => 0,
+    14 => 0,
+    4 => 0,
+    3 => 0,
+    11 => 0,
+  );
+  $handler->display->display_options['filters']['field_is_open_npc_value_1']['reduce_duplicates'] = TRUE;
 
   /* Display: NPCs List */
   $handler = $view->new_display('page', 'NPCs List', 'npcs_list');

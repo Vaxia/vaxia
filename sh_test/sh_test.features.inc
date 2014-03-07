@@ -19,6 +19,13 @@ function sh_test_ctools_plugin_api() {
 }
 
 /**
+ * Implements hook_views_api().
+ */
+function sh_test_views_api() {
+  return array("version" => "3.0");
+}
+
+/**
  * Implements hook_node_info().
  */
 function sh_test_node_info() {
