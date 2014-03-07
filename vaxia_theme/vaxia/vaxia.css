@@ -242,3 +242,10 @@ tr.webform-results-question-first td{padding-top:0;}
 .rate-number-up-down-rating{font-weight:bold;font-size:16px;line-height:26px;}
 .rate-widget .rate-number-up-down-btn-down{display:none;}
 .post-edited{clear:left;}
+
+/* Zen - max-width: 100% for img tags in normalize.css messes up ImageField Crop's preview and cropbox -
+     we have to set max-width to none to fix it per: https://drupal.org/node/1779494 */
+/* inner wrappers: div.imagefield-crop-preview, div.imagefield-crop-cropbox */
+div.imagefield-crop-widget img {
+  max-width:none;
+}
