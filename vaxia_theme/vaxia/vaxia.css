@@ -235,7 +235,7 @@ tr.webform-results-question-first td{padding-top:0;}
 .view-display-id-character_sheets_mine_block input.form-submit{display:block;}
 
 /* Rate CSS for Vaxia */
-.forum-post-content .form-item label{display:none;}
+.node-type-forum .forum-post-content .form-item label{display:none;}
 .rate-info, .rate-description{color:#EEE;}
 .rate-widget .rate-number-up-down-btn-up{border:1px solid;margin-left:10px;background-color:#CCC;}
 .rate-number-up-down-rating{font-weight:bold;font-size:16px;line-height:26px;}
