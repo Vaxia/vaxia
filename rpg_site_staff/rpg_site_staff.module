@@ -353,3 +353,16 @@ function vaxia_setup_election_proposal($entity_created) {
   $component['weight'] = 1;
   webform_component_insert($component);
 }
+
+/**
+ * Helper function for views.
+ */
+function _rpg_site_staff_return_title($uid) {
+  $output = 'Storyhost';
+  $this_user = user_load($uid);
+  $this_role = isset($this_user->roles) ? $this_user->roles : array();
+  if (!isset($this_role[9])) {
+    $output = 'Assistant Storyhost';
+  }
+  return $output;
+}
