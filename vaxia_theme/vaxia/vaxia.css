@@ -104,6 +104,7 @@ article.node-rpg-chatroom.clearfix:after, article.node-rpg-chatroom .field-type-
 .rpg-chat-node #vaxia-dice-roller #edit-vaxia-rolls-items{width:380px;}
 .rpg-chat-node #comment-form{float:left;clear:left;width:400px;}
 .rpg-chat-node #rpg-chat-wrapper{float:none;margin-left:410px;position:relative;top:-25px;}
+#rpg-chat{height:900px;overflow-y:scroll;}
 
 /* Forum Thread*/
 .forum-table td{padding: 0.5em 0;}
