@@ -257,3 +257,16 @@ div.imagefield-crop-widget img {
 .node-type-rpg-chatroom #main #content .breadcrumb{float:right;clear:right;}
 .node-type-rpg-chatroom #main #content #page-title{float:right;clear:right;}
 table td{padding-right:15px;}
+
+/* Pinterest styles. */
+span.pinterest_embed_grid{margin:0 !important;padding:0 0 10px 0 !important;}
+span.pinterest_embed_grid span.pinterest_embed_grid_bh{display:none !important;}
+span.pinterest_embed_grid span.pinterest_embed_grid_bd{margin:0 !important;}
+span.pinterest_embed_grid span.pinterest_embed_grid_bd span{height:auto !important;}
+span.pinterest_embed_grid span.pinterest_embed_grid_bd a.pin_link:before {position:relative !important;}
+span.pinterest_embed_grid span.pinterest_embed_grid_bd a.pin_link {position:relative !important;}
+span.pinterest_embed_grid span.pinterest_embed_grid_bd a.pin_link img.pin_image {position:relative !important;}
+span.pinterest_embed_grid img.pin_image{width:100% !important;height:auto !important;margin-top: 0 !important;
+    top: 0 !important;position: relative !important;}
+span.pinterest_embed_grid a.pin_link{width:100% !important;height:auto !important;margin-top: 0 !important;
+    top: 0 !important;position: relative !important;float:left;clear:left;}

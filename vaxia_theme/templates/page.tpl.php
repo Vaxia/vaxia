@@ -178,5 +178,5 @@
   <?php print render($page['footer']); ?>
 
 </div><!-- /#page -->
-
+<script type="text/javascript" async src="http://assets.pinterest.com/js/pinit.js"></script>
 <?php print render($page['bottom']); ?>
