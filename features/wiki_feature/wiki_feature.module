@@ -739,9 +739,9 @@ function _wiki_feature_get_child_paths($path) {
 /**
  * Helper function for views.
  */
-function _wiki_feature_limit_categories_by_nodecount($tid) {
+function _wiki_feature_limit_categories_by_nodecount($tid, $limit = 5) {
   $count = count( taxonomy_select_nodes($tid, FALSE) );
-  if ($count < 5) {
+  if ($count < $limit) {
     return TRUE;
   }
   return FALSE;
