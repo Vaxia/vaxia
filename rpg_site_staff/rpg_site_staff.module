@@ -366,3 +366,32 @@ function _rpg_site_staff_return_title($uid) {
   }
   return $output;
 }
+
+/**
+ * Helper function for views.
+ */
+function _rpg_site_staff_create_content_count_value($uid) {
+  $results = db_query('SELECT COUNT(n.nid) AS count, n.type ' .
+    'FROM {node} n ' .
+    'WHERE n.uid = :uid GROUP BY n.type',
+    array(':uid' => $uid));
+  $value = array();
+  foreach ($results as $result) {
+    $value[$result->type] = $result->count;
+  }
+  return $value;
+}
+
+/**
+ * Helper function for views.
+ */
+function _rpg_site_staff_create_content_count_display($value) {
+  $output = '<ul>';
+  foreach ($value as $type => $count) {
+    if (in_array($type, array('wiki_page', 'session_report', ) )) {
+        $output .= '<li>'. $type . ' : ' . $count . '</li>';
+    }
+  }
+  $output .= '</ul>';
+  return $output;
+}
