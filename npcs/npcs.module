@@ -58,6 +58,59 @@ function npcs_menu() {
 }
 
 /**
+ * Implementation of admin settings form.
+ */
+function _npcs_admin_settings($form, &$form_state) {
+  // Setting for workflow to drop the NPCs into on being claimed.
+  $workflow_options = array();
+  $workflows = workflow_get_workflows();
+  foreach ($workflows as $workflow) {
+    $states = workflow_get_workflow_states_by_wid($workflow->wid);
+    foreach ($states as $state) {
+      $workflow_options[$state->sid] = $workflow->name . ':' . $state->state;
+    }
+  }
+  $form['npcs_pullback_workflow'] = array(
+    '#title' => 'Pullback workflow',
+    '#description' => 'Workflow state for NPCs to check if need to be returned to the wiki.',
+    '#type' => 'select',
+    '#options' => $workflow_options,
+    '#default_value' => variable_get('npcs_pullback_workflow', ''),
+  );
+  $form['npcs_claim_workflow'] = array(
+    '#title' => 'Claim workflow',
+    '#description' => 'Workflow state for NPCs after being claimed.',
+    '#type' => 'select',
+    '#options' => $workflow_options,
+    '#default_value' => variable_get('npcs_claim_workflow', ''),
+  );
+  $form['npcs_return_workflow'] = array(
+    '#title' => 'Return workflow',
+    '#description' => 'Workflow state for NPCs after being returned to the wiki.',
+    '#type' => 'select',
+    '#options' => $workflow_options,
+    '#default_value' => variable_get('npcs_return_workflow', ''),
+  );
+  $form['npcs_convert_wiki_workflow'] = array(
+    '#title' => 'Wiki workflow',
+    '#description' => 'Workflow state for NPCs after being converted to wiki articles.',
+    '#type' => 'select',
+    '#options' => $workflow_options,
+    '#default_value' => variable_get('npcs_convert_wiki_workflow', ''),
+  );
+  // Posting timeout for how long before they post to clean them up.
+  $form['npcs_claim_timeout'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Length of time an NPC may be claimed without being put to use posting'),
+    '#default_value' => variable_get('npcs_claim_timeout', '6 months'),
+    '#description' => t('Use relative time frames as per spec at ' .
+      '<a href="http://www.php.net/manual/en/datetime.formats.relative.php">' .
+      'http://www.php.net/manual/en/datetime.formats.relative.php</a>.'),
+  );
+  return system_settings_form($form);
+}
+
+/**
 * Implements hook_cron_queue_info().
 */
 function npcs_cron_queue_info() {
@@ -73,22 +126,72 @@ function npcs_cron_queue_info() {
  * Implements hook_cron().
  */
 function npcs_cron() {
+  _vaxia_cron_pullback_npcs();
+  _vaxia_cron_delete_inactive_no_post_npcs();
+}
+
+/**
+ * Cron handler.
+ */
+function _vaxia_cron_delete_inactive_no_post_npcs() {
+  $workflow = variable_get('npcs_convert_wiki_workflow', '');
+  // Using this query to make sure we don't load anything we really don't need to.
+  $npcs = db_query('SELECT npc.entity_id FROM {field_data_field_is_npc} npc ' . // Where an NPC
+    'LEFT JOIN {node} n ON n.nid = npc.entity_id  AND n.vid = npc.revision_id ' .
+    'LEFT JOIN {workflow_node} w ON n.nid = w.nid ' .
+    'WHERE n.status = 1 ' . // Active node
+    'AND w.sid = :state ' . // Is in the right state.
+    'AND npc.field_is_npc_value = 1 ' . // Is an NPC
+    'UNION ' . // Merge two sets
+    'SELECT onpc.entity_id FROM {field_data_field_is_open_npc} onpc ' . // Where an open NPC
+    'LEFT JOIN {node} n2 ON n2.nid = onpc.entity_id AND n2.vid = onpc.revision_id ' .
+    'LEFT JOIN {workflow_node} w2 ON n2.nid = w2.nid ' .
+    'WHERE n2.status = 1 ' . // Active node
+    'AND w2.sid = :state2 ' . // Is in the right state.
+    'AND onpc.field_is_open_npc_value = 1 ', // Is an open NPC
+    array(':state' => $workflow, ':state2' => $workflow)
+  );
+  foreach ($npcs as $npc) {
+    $remove = TRUE;
+    // Determine what the latest post (if there was one) with this character was.
+    $count_comments = db_query('SELECT COUNT(cid) AS count_comments FROM {comment} c ' .
+      'LEFT JOIN {field_data_field_comment_character} npc ON c.cid = npc.entity_id ' .
+      'WHERE npc.field_comment_character_nid = :nid ',
+      array(':nid' => $npc->entity_id)
+    )->fetchColumn();
+    // If there haven't been any posts (they've been archived or never used), remove it.
+    if ($count_comments == 0) {
+      node_delete($npc->entity_id);
+    }
+  }
+}
+
+/**
+ * Cron handler.
+ */
+function _vaxia_cron_pullback_npcs() {
   $last_run = variable_get('npcs_cron', 0);
   $yesterday = strtotime('-1 day');
   if ($last_run < $yesterday) {
+    $workflow = variable_get('npcs_pullback_workflow', '');
     $queue = DrupalQueue::get('vaxiaNPCReturnQueue');
     $last_run = variable_set('npcs_cron', strtotime('now'));
     // On cron. Go through ALL NPC sheets.
     // Using this query to make sure we don't load anything we really don't need to.
     $npcs = db_query('SELECT npc.entity_id FROM {field_data_field_is_npc} npc ' . // Where an NPC
-      'LEFT JOIN {node} n ON npc.entity_id = n.nid AND npc.revision_id = n.vid ' .
+      'LEFT JOIN {node} n ON n.nid = npc.entity_id  AND n.vid = npc.revision_id ' .
+      'LEFT JOIN {workflow_node} w ON n.nid = w.nid ' .
       'WHERE n.status = 1 ' . // Active node
+      'AND w.sid = :state ' . // Is in the right state.
       'AND npc.field_is_npc_value = 1 ' . // Is an NPC
       'UNION ' . // Merge two sets
       'SELECT onpc.entity_id FROM {field_data_field_is_open_npc} onpc ' . // Where an open NPC
-      'LEFT JOIN {node} n2 ON onpc.entity_id = n2.nid AND onpc.revision_id = n2.vid ' .
+      'LEFT JOIN {node} n2 ON n2.nid = onpc.entity_id AND n2.vid = onpc.revision_id ' .
+      'LEFT JOIN {workflow_node} w2 ON n2.nid = w2.nid ' .
       'WHERE n2.status = 1 ' . // Active node
-      'AND onpc.field_is_open_npc_value = 1 ' // Is an open NPC
+      'AND w2.sid = :state2 ' . // Is in the right state.
+      'AND onpc.field_is_open_npc_value = 1 ', // Is an open NPC
+      array(':state' => $workflow, ':state2' => $workflow)
     );
     foreach ($npcs as $npc) {
       $remove = TRUE;
@@ -280,7 +383,6 @@ function _npcs_wiki_form($form, &$form_state, $node) {
  * Form callback submission for _npcs_claim_form.
  */
 function _npcs_wiki_form_submit($form, $form_state) {
-  $workflow = variable_get('npcs_convert_wiki_workflow', '');
   $node = node_load($form_state['values']['nid']);
   // If the current owner is no longer an SH, then the logged in user gets to claim ownership.
   if (!_npcs_owner_is_sh($node)) {
@@ -369,6 +471,7 @@ function _npcs_wiki_form_submit($form, $form_state) {
   $wiki->body[$lang][0]['format'] = 'wiki';
   node_save($wiki);
   // Make the transition.
+  $workflow = variable_get('npcs_convert_wiki_workflow', '');
   workflow_execute_transition($node, $workflow, t('NPC has been converted to wiki article.'), TRUE);
   drupal_set_message(t('This NPC has been converted into a wiki article, please edit the article further as needed.'));
   // And go edit the new wiki article.
@@ -475,52 +578,6 @@ function _npcs_return_form_submit($form, $form_state) {
     global $user;
     rules_invoke_event('npcs_return', $user, $node);
   }
-}
-
-/**
- * Implementation of admin settings form.
- */
-function _npcs_admin_settings($form, &$form_state) {
-  // Setting for workflow to drop the NPCs into on being claimed.
-  $workflow_options = array();
-  $workflows = workflow_get_workflows();
-  foreach ($workflows as $workflow) {
-    $states = workflow_get_workflow_states_by_wid($workflow->wid);
-    foreach ($states as $state) {
-      $workflow_options[$state->sid] = $workflow->name . ':' . $state->state;
-    }
-  }
-  $form['npcs_claim_workflow'] = array(
-    '#title' => 'Claim workflow',
-    '#description' => 'Workflow state for NPCs who are being claimed.',
-    '#type' => 'select',
-    '#options' => $workflow_options,
-    '#default_value' => variable_get('npcs_claim_workflow', ''),
-  );
-  $form['npcs_return_workflow'] = array(
-    '#title' => 'Return workflow',
-    '#description' => 'Workflow state for NPCs who are being returned to the wiki.',
-    '#type' => 'select',
-    '#options' => $workflow_options,
-    '#default_value' => variable_get('npcs_return_workflow', ''),
-  );
-  $form['npcs_convert_wiki_workflow'] = array(
-    '#title' => 'Wiki workflow',
-    '#description' => 'Workflow state for NPCs who are being converted to wiki articles.',
-    '#type' => 'select',
-    '#options' => $workflow_options,
-    '#default_value' => variable_get('npcs_convert_wiki_workflow', ''),
-  );
-  // Posting timeout for how long before they post to clean them up.
-  $form['npcs_claim_timeout'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Length of time an NPC may be claimed without being put to use posting'),
-    '#default_value' => variable_get('npcs_claim_timeout', '6 months'),
-    '#description' => t('Use relative time frames as per spec at ' .
-      '<a href="http://www.php.net/manual/en/datetime.formats.relative.php">' .
-      'http://www.php.net/manual/en/datetime.formats.relative.php</a>.'),
-  );
-  return system_settings_form($form);
 }
 
 /**
