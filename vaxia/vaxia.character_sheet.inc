@@ -463,6 +463,12 @@ function _vaxia_admin_settings() {
     '#title' => 'Settings',
     '#type' => 'fieldset',
   );
+  $form['settings']['vaxia_clean_dblog'] = array(
+    '#title' => 'Clear watchdog',
+    '#description' => 'Clear non-essential watchdog logs (notice and below) on every cron run.',
+    '#type' => 'checkbox',
+    '#default_value' => variable_get('vaxia_clean_dblog', TRUE),
+  );
   $form['settings']['vaxia_starting_points'] = array(
     '#title' => 'Starting points',
     '#description' => 'The starting points for a new character.',

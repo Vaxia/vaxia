@@ -137,7 +137,7 @@ function vaxia_cron() {
  * Cron job for cleaning up useless dblog entries.
  */
 function _vaxia_cron_dblog_cleanup() {
-  if (module_exists('dblog')) {
+  if (module_exists('dblog') && variable_get('vaxia_clean_dblog', TRUE)) {
     // Severity levels to remove.
     $severity_levels = array(
 //    WATCHDOG_EMERGENCY,
