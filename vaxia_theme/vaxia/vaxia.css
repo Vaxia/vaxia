@@ -257,6 +257,7 @@ div.imagefield-crop-widget img {
 .node-type-rpg-chatroom #main #content .breadcrumb{float:right;clear:right;}
 .node-type-rpg-chatroom #main #content #page-title{float:right;clear:right;}
 table td{padding-right:15px;}
+.node-type-storyhost-application #content .messages--error{display:none;}
 
 /* Pinterest styles. */
 span.pinterest_embed_grid{margin:0 !important;padding:0 0 10px 0 !important;}
