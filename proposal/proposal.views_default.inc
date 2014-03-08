@@ -27,7 +27,7 @@ function proposal_views_default_views() {
   $handler->display->display_options['link_display'] = 'active_proposals';
   $handler->display->display_options['access']['type'] = 'role';
   $handler->display->display_options['access']['role'] = array(
-    8 => '8',
+    3 => '3',
   );
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
@@ -117,6 +117,10 @@ function proposal_views_default_views() {
   $handler->display->display_options['sorts']['created']['table'] = 'node';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  $handler->display->display_options['filter_groups']['groups'] = array(
+    1 => 'AND',
+    2 => 'OR',
+  );
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
@@ -132,6 +136,20 @@ function proposal_views_default_views() {
     'proposal' => 'proposal',
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
+  /* Filter criterion: Webform: Status */
+  $handler->display->display_options['filters']['status_1']['id'] = 'status_1';
+  $handler->display->display_options['filters']['status_1']['table'] = 'webform';
+  $handler->display->display_options['filters']['status_1']['field'] = 'status';
+  $handler->display->display_options['filters']['status_1']['value'] = '1';
+  $handler->display->display_options['filters']['status_1']['group'] = 2;
+  /* Filter criterion: Content: Updated date */
+  $handler->display->display_options['filters']['changed']['id'] = 'changed';
+  $handler->display->display_options['filters']['changed']['table'] = 'node';
+  $handler->display->display_options['filters']['changed']['field'] = 'changed';
+  $handler->display->display_options['filters']['changed']['operator'] = '>';
+  $handler->display->display_options['filters']['changed']['value']['value'] = '-1 month';
+  $handler->display->display_options['filters']['changed']['value']['type'] = 'offset';
+  $handler->display->display_options['filters']['changed']['group'] = 2;
 
   /* Display: Proposals */
   $handler = $view->new_display('page', 'Proposals', 'proposals');
@@ -162,10 +180,7 @@ function proposal_views_default_views() {
   $handler->display->display_options['fields']['php']['field'] = 'php';
   $handler->display->display_options['fields']['php']['label'] = 'Closes On';
   $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
-  $handler->display->display_options['fields']['php']['php_value'] = '$timeframe = variable_get(\'proposal_open_timeframe\', \'2 weeks\');
-$date = strtotime($timeframe, $row->created); // Two weeks from now.
-$date = date(\'l, F j, Y\', $date);
-return $date;';
+  $handler->display->display_options['fields']['php']['php_value'] = 'return _proposal_closes_on_value($row->created);';
   $handler->display->display_options['fields']['php']['php_output'] = '<?php
   echo $value;
 ?>';
@@ -194,6 +209,10 @@ return $date;';
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['row_options']['inline'] = array(
+    'title' => 'title',
+    'status' => 'status',
+  );
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['footer'] = FALSE;
   /* Footer: Global: Text area */
@@ -211,7 +230,20 @@ return $date;';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  /* Field: Webform: Status */
+  $handler->display->display_options['fields']['status']['id'] = 'status';
+  $handler->display->display_options['fields']['status']['table'] = 'webform';
+  $handler->display->display_options['fields']['status']['field'] = 'status';
+  $handler->display->display_options['fields']['status']['label'] = '';
+  $handler->display->display_options['fields']['status']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['status']['alter']['text'] = '([status])';
+  $handler->display->display_options['fields']['status']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['status']['not'] = 0;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['filter_groups']['groups'] = array(
+    1 => 'AND',
+    2 => 'OR',
+  );
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
@@ -233,11 +265,15 @@ return $date;';
   $handler->display->display_options['filters']['status_1']['table'] = 'webform';
   $handler->display->display_options['filters']['status_1']['field'] = 'status';
   $handler->display->display_options['filters']['status_1']['value'] = '1';
-  /* Filter criterion: Webform: Status */
-  $handler->display->display_options['filters']['status_2']['id'] = 'status_2';
-  $handler->display->display_options['filters']['status_2']['table'] = 'webform';
-  $handler->display->display_options['filters']['status_2']['field'] = 'status';
-  $handler->display->display_options['filters']['status_2']['value'] = '0';
+  $handler->display->display_options['filters']['status_1']['group'] = 2;
+  /* Filter criterion: Content: Updated date */
+  $handler->display->display_options['filters']['changed']['id'] = 'changed';
+  $handler->display->display_options['filters']['changed']['table'] = 'node';
+  $handler->display->display_options['filters']['changed']['field'] = 'changed';
+  $handler->display->display_options['filters']['changed']['operator'] = '>';
+  $handler->display->display_options['filters']['changed']['value']['value'] = '-1 month';
+  $handler->display->display_options['filters']['changed']['value']['type'] = 'offset';
+  $handler->display->display_options['filters']['changed']['group'] = 2;
   $export['proposals'] = $view;
 
   return $export;

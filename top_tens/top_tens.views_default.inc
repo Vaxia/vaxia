@@ -279,13 +279,7 @@ function top_tens_views_default_views() {
   $handler->display->display_options['filters']['php']['field'] = 'php';
   $handler->display->display_options['filters']['php']['group'] = 1;
   $handler->display->display_options['filters']['php']['use_php_setup'] = 0;
-  $handler->display->display_options['filters']['php']['php_filter'] = '$displayed = isset($static[\'displayed\'][$row->type]) ? $static[\'displayed\'][$row->type] : 1;
-if ($displayed < 11) {
-  $displayed++;
-  $static[\'displayed\'][$row->type] = $displayed;
-  return FALSE;
-}
-return TRUE;';
+  $handler->display->display_options['filters']['php']['php_filter'] = 'return _top_tens_filter_type_already_displayed($row->type, &$static);';
 
   /* Display: Top Tens */
   $handler = $view->new_display('page', 'Top Tens', 'top_ten_page');
@@ -424,10 +418,7 @@ return TRUE;';
   $handler->display->display_options['fields']['php_1']['alter']['text'] = '<h2>[php_1]</h2>';
   $handler->display->display_options['fields']['php_1']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['php_1']['use_php_setup'] = 0;
-  $handler->display->display_options['fields']['php_1']['php_value'] = 'if ($row->type == \'spent_xp\') {
-  return \'hxp\';
-}
-return $row->type;';
+  $handler->display->display_options['fields']['php_1']['php_value'] = 'return _top_tens_rename_type($row->type);';
   $handler->display->display_options['fields']['php_1']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php_1']['php_click_sortable'] = '';
   /* Field: Character sheet xp: Character sheet xp amount */
@@ -556,13 +547,7 @@ return $row->type;';
   $handler->display->display_options['filters']['php']['field'] = 'php';
   $handler->display->display_options['filters']['php']['group'] = 1;
   $handler->display->display_options['filters']['php']['use_php_setup'] = 0;
-  $handler->display->display_options['filters']['php']['php_filter'] = '$displayed = isset($static[\'displayed\'][$row->type]) ? $static[\'displayed\'][$row->type] : 1;
-if ($displayed < 11) {
-  $displayed++;
-  $static[\'displayed\'][$row->type] = $displayed;
-  return FALSE;
-}
-return TRUE;';
+  $handler->display->display_options['filters']['php']['php_filter'] = 'return _top_tens_filter_type_already_displayed($row->type, &$static);';
 
   /* Display: Total Top Ten */
   $handler = $view->new_display('page', 'Total Top Ten', 'top_ten_page_two');

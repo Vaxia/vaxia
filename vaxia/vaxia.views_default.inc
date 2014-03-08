@@ -655,23 +655,7 @@ function vaxia_views_default_views() {
   $handler->display->display_options['fields']['php']['exclude'] = TRUE;
   $handler->display->display_options['fields']['php']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
-  $handler->display->display_options['fields']['php']['php_value'] = 'global $user;
-$node = node_load($data->nid);
-$lang = $node->language;
-$field_is_open_npc = isset($node->field_is_open_npc[$lang][0][\'value\']) ?
-  $node->field_is_open_npc[$lang][0][\'value\'] : 0;
-$field_is_npc = isset($node->field_is_npc[$lang][0][\'value\']) ?
-  $node->field_is_npc[$lang][0][\'value\'] : 0;
-
-if (!empty($field_is_open_npc) && $field_is_open_npc == 1) {
-  return \'Open NPCs\';
-}
-
-if (!empty($field_is_npc) && $field_is_npc == 1) {
-  return \'Personal NPCs\';
-}
-
-return \'Characters\';';
+  $handler->display->display_options['fields']['php']['php_value'] = 'return _vaxia_get_character_ref_types($data->nid);';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
   $handler->display->display_options['defaults']['sorts'] = FALSE;
@@ -830,23 +814,7 @@ return !( user_access(\'use NPCs\') || $row->uid == $user->uid );';
   $handler->display->display_options['fields']['php']['exclude'] = TRUE;
   $handler->display->display_options['fields']['php']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
-  $handler->display->display_options['fields']['php']['php_value'] = 'global $user;
-$node = node_load($data->nid);
-$lang = $node->language;
-$field_is_open_npc = isset($node->field_is_open_npc[$lang][0][\'value\']) ?
-  $node->field_is_open_npc[$lang][0][\'value\'] : 0;
-$field_is_npc = isset($node->field_is_npc[$lang][0][\'value\']) ?
-  $node->field_is_npc[$lang][0][\'value\'] : 0;
-
-if (!empty($field_is_open_npc) && $field_is_open_npc == 1) {
-  return \'Open NPCs\';
-}
-
-if (!empty($field_is_npc) && $field_is_npc == 1) {
-  return \'Personal NPCs\';
-}
-
-return \'Characters\';';
+  $handler->display->display_options['fields']['php']['php_value'] = 'return _vaxia_get_character_ref_types($data->nid);';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
   $handler->display->display_options['defaults']['sorts'] = FALSE;

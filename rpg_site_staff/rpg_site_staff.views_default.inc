@@ -460,6 +460,8 @@ function rpg_site_staff_views_default_views() {
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
     'name' => 'name',
+    'field_titles' => 'name',
+    'title' => 'name',
     'is_online' => 'is_online',
     'access' => 'access',
     'contact' => 'contact',
@@ -472,6 +474,20 @@ function rpg_site_staff_views_default_views() {
   $handler->display->display_options['style_options']['info'] = array(
     'name' => array(
       'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '</br>',
+      'empty_column' => 0,
+    ),
+    'field_titles' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'title' => array(
+      'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
@@ -523,12 +539,34 @@ function rpg_site_staff_views_default_views() {
       'empty_column' => 0,
     ),
   );
+  /* Relationship: User: Storyhost Character (field_storyhost_character) */
+  $handler->display->display_options['relationships']['field_storyhost_character_nid']['id'] = 'field_storyhost_character_nid';
+  $handler->display->display_options['relationships']['field_storyhost_character_nid']['table'] = 'field_data_field_storyhost_character';
+  $handler->display->display_options['relationships']['field_storyhost_character_nid']['field'] = 'field_storyhost_character_nid';
+  $handler->display->display_options['relationships']['field_storyhost_character_nid']['delta'] = '-1';
   /* Field: User: Name */
   $handler->display->display_options['fields']['name']['id'] = 'name';
   $handler->display->display_options['fields']['name']['table'] = 'users';
   $handler->display->display_options['fields']['name']['field'] = 'name';
   $handler->display->display_options['fields']['name']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['name']['alter']['ellipsis'] = FALSE;
+  /* Field: Content: Titles */
+  $handler->display->display_options['fields']['field_titles']['id'] = 'field_titles';
+  $handler->display->display_options['fields']['field_titles']['table'] = 'field_data_field_titles';
+  $handler->display->display_options['fields']['field_titles']['field'] = 'field_titles';
+  $handler->display->display_options['fields']['field_titles']['relationship'] = 'field_storyhost_character_nid';
+  $handler->display->display_options['fields']['field_titles']['label'] = '';
+  $handler->display->display_options['fields']['field_titles']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_titles']['element_label_colon'] = FALSE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['relationship'] = 'field_storyhost_character_nid';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['title']['alter']['text'] = '[field_titles] [title]';
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   /* Field: User: Is online */
   $handler->display->display_options['fields']['is_online']['id'] = 'is_online';
   $handler->display->display_options['fields']['is_online']['table'] = 'users';
@@ -558,13 +596,7 @@ function rpg_site_staff_views_default_views() {
   $handler->display->display_options['fields']['php']['field'] = 'php';
   $handler->display->display_options['fields']['php']['label'] = 'Roles';
   $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
-  $handler->display->display_options['fields']['php']['php_value'] = '$output = \'Storyhost\';
-$this_user = user_load($data->uid);
-$this_role = isset($this_user->roles) ? $this_user->roles : array();
-if (!isset($this_role[9])) {
-  $output = \'Assistant Storyhost\';
-}
-return $output;';
+  $handler->display->display_options['fields']['php']['php_value'] = 'return _rpg_site_staff_return_title($data->uid);';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '2';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
   /* Field: User: Took ASH Test One */
@@ -620,8 +652,8 @@ return $output;';
 
   $view = new view();
   $view->name = 'user_activity_totals';
-  $view->description = '';
-  $view->tag = 'default';
+  $view->description = 'Display roughly how active a player has been on the site';
+  $view->tag = 'Staff';
   $view->base_table = 'users';
   $view->human_name = 'User Activity Totals';
   $view->core = 7;
@@ -715,21 +747,10 @@ return $output;';
   $handler->display->display_options['fields']['php']['label'] = 'Content Created';
   $handler->display->display_options['fields']['php']['hide_alter_empty'] = FALSE;
   $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
-  $handler->display->display_options['fields']['php']['php_value'] = '$results = db_query("SELECT COUNT(n.nid) AS count, n.type FROM {node} n WHERE n.uid = :uid GROUP BY n.type", array(\':uid\' => $row->uid));
-$value = array();
-foreach ($results as $result) {
-  $value[$result->type] = $result->count;
-}
-return $value;';
-  $handler->display->display_options['fields']['php']['php_output'] = '<ul>
-<?php
-foreach ($value as $type => $count) {
-  if (in_array($type, array(\'wiki_page\', \'session_report\', ) )) {
-      echo \'<li>\'. $type . \' : \' . $count . \'</li>\';
-  }
-}
-?>
-</ul>';
+  $handler->display->display_options['fields']['php']['php_value'] = 'return _rpg_site_staff_create_content_count_value($row->uid);';
+  $handler->display->display_options['fields']['php']['php_output'] = '<?php
+echo _rpg_site_staff_content_count_display($value);
+?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
   /* Field: Global: PHP */
@@ -738,21 +759,10 @@ foreach ($value as $type => $count) {
   $handler->display->display_options['fields']['php_1']['field'] = 'php';
   $handler->display->display_options['fields']['php_1']['label'] = 'Content Revised';
   $handler->display->display_options['fields']['php_1']['use_php_setup'] = 0;
-  $handler->display->display_options['fields']['php_1']['php_value'] = '$results = db_query("SELECT COUNT(r.nid) AS count, n.type FROM {node_revision} r LEFT JOIN {node} n ON n.nid = r.nid WHERE r.uid = :uid GROUP BY n.type", array(\':uid\' => $row->uid));
-$value = array();
-foreach ($results as $result) {
-  $value[$result->type] = $result->count;
-}
-return $value;';
-  $handler->display->display_options['fields']['php_1']['php_output'] = '<ul>
-<?php
-foreach ($value as $type => $count) {
-  if (in_array($type, array(\'wiki_page\', \'session_report\', ) )) {
-      echo \'<li>\'. $type . \' : \' . $count . \'</li>\';
-  }
-}
-?>
-</ul>';
+  $handler->display->display_options['fields']['php_1']['php_value'] = 'return _rpg_site_staff_revise_content_count_value($row->uid);';
+  $handler->display->display_options['fields']['php_1']['php_output'] = '<?php
+echo _rpg_site_staff_content_count_display($value);
+?>';
   $handler->display->display_options['fields']['php_1']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php_1']['php_click_sortable'] = '';
   /* Sort criterion: User: Created date */
@@ -836,8 +846,9 @@ foreach ($value as $type => $count) {
   $handler->display->display_options['filters']['rid']['expose']['reduce'] = TRUE;
   $handler->display->display_options['filters']['rid']['reduce_duplicates'] = TRUE;
 
-  /* Display: Page */
-  $handler = $view->new_display('page', 'Page', 'page');
+  /* Display: User Activity Totals */
+  $handler = $view->new_display('page', 'User Activity Totals', 'user_activity_totals');
+  $handler->display->display_options['display_description'] = 'User Activity Totals';
   $handler->display->display_options['path'] = 'admin/user-activity-totals';
   $export['user_activity_totals'] = $view;
 
@@ -913,6 +924,7 @@ foreach ($value as $type => $count) {
   $handler->display->display_options['fields']['title_1']['label'] = '';
   $handler->display->display_options['fields']['title_1']['exclude'] = TRUE;
   $handler->display->display_options['fields']['title_1']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['title_1']['empty'] = '[name]';
   $handler->display->display_options['fields']['title_1']['link_to_node'] = FALSE;
   /* Field: Content: Titles */
   $handler->display->display_options['fields']['field_titles']['id'] = 'field_titles';

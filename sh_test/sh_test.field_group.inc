@@ -21,7 +21,7 @@ function sh_test_field_group_info() {
   $field_group->parent_name = 'group_storyhosting';
   $field_group->data = array(
     'label' => 'A/SH Test and Renewal Dates',
-    'weight' => '5',
+    'weight' => '6',
     'children' => array(
       0 => 'field_took_ash1',
       1 => 'field_took_ash2',
@@ -54,9 +54,9 @@ function sh_test_field_group_info() {
     'label' => 'Storyhosting',
     'weight' => '3',
     'children' => array(
-      0 => 'field_storyhost_character',
-      1 => 'group_ash_dates',
-      2 => 'group_latest_ash_3',
+      0 => 'group_ash_dates',
+      1 => 'group_latest_ash_3',
+      2 => 'group_storyhost',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
