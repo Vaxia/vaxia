@@ -626,43 +626,34 @@ function _vaxia_get_character_ref_types($nid) {
 /**
  * Blocks helper function.
  */
-function _vaxia_piggybank() {
-// Update these values with latest info from Paypal.
-$average_cost = 30;
-$start_date = '12/11/2013';
-$in_account = 185;
-
-// Change nothing below this.
-$end_date = 'now';
-$diff = abs(strtotime($end_date) - strtotime($start_date));
-$years = floor($diff / (365*60*60*24));
-$months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
-
-$estimated_left = $in_account - ($months * $average_cost);
-
-$output = '';
-$output .= '<div style="text-align:center;">Account info last updated: ' . $start_date . '</div>';
-if ($estimated_left >= $average_cost) {
-  $output .= '<div style="text-align:center;">Estimated in account: $' . $estimated_left . '</div>';
-  $estimated_months_left = floor($estimated_left / $average_cost);
-  $output .= '<div style="text-align:center;">Estimated months left: ' . $estimated_months_left . '</div>';
-}
-else {
-  $output .= '<div style="text-align:center;">Vaxia\'s donation account needs topping off. We have less than a month of funding left.</div>';
-}
-$output .= '<div style="text-align:center;"><br />
-<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-<input type="hidden" name="cmd" value="_donations">
-<input type="hidden" name="business" value="tia@tia-marie.com">
-<input type="hidden" name="lc" value="US">
-<input type="hidden" name="item_name" value="Vaxia Donation">
-<input type="hidden" name="no_note" value="0">
-<input type="hidden" name="currency_code" value="USD">
-<input type="hidden" name="bn" value="PP-DonationsBF:btn_donateCC_LG.gif:NonHostedGuest">
-<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
-</form>
-</div>';
-
-return $output;
+function _vaxia_piggybank($average_cost, $in_account, $start_date) {
+  $end_date = 'now';
+  $diff = abs(strtotime($end_date) - strtotime($start_date));
+  $years = floor($diff / (365*60*60*24));
+  $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
+  $estimated_left = $in_account - ($months * $average_cost);
+  $output = '';
+  $output .= '<div style="text-align:center;">Account info last updated: ' . $start_date . '</div>';
+  if ($estimated_left >= $average_cost) {
+    $output .= '<div style="text-align:center;">Estimated in account: $' . $estimated_left . '</div>';
+    $estimated_months_left = floor($estimated_left / $average_cost);
+    $output .= '<div style="text-align:center;">Estimated months left: ' . $estimated_months_left . '</div>';
+  }
+  else {
+    $output .= '<div style="text-align:center;">Vaxia\'s donation account needs topping off. We have less than a month of funding left.</div>';
+  }
+  $output .= '<div style="text-align:center;"><br />' .
+    '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">' .
+    '<input type="hidden" name="cmd" value="_donations">' .
+    '<input type="hidden" name="business" value="tia@tia-marie.com">' .
+    '<input type="hidden" name="lc" value="US">' .
+    '<input type="hidden" name="item_name" value="Vaxia Donation">' .
+    '<input type="hidden" name="no_note" value="0">' .
+    '<input type="hidden" name="currency_code" value="USD">' .
+    '<input type="hidden" name="bn" value="PP-DonationsBF:btn_donateCC_LG.gif:NonHostedGuest">' .
+    '<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">' .
+    '<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">' .
+    '</form>' .
+    '</div>';
+  return $output;
 }
