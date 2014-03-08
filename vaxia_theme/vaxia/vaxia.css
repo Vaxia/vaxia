@@ -271,3 +271,14 @@ span.pinterest_embed_grid img.pin_image{width:100% !important;height:auto !impor
     top: 0 !important;position: relative !important;}
 span.pinterest_embed_grid a.pin_link{width:100% !important;height:auto !important;margin-top: 0 !important;
     top: 0 !important;position: relative !important;float:left;clear:left;}
+
+/* Adding advanced forums style back. */
+.af-button-large{background: none repeat scroll 0 0 #AABBCC;
+  border-color: #EEEEEE #EEEEEE -moz-use-text-color;
+  border-radius: 8px;
+  border-style: solid solid none;
+  border-width: 1px 1px 0;
+  margin: 0.5em 0 0 3px;
+  padding: 0.25em;
+  text-shadow: 1px 1px 0 #FFFFFF;
+}
