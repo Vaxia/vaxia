@@ -699,3 +699,13 @@ function proposal_close_in_timeframe() {
     }	  
   }
 }
+
+/**
+ * Helper function for views.
+ */
+function _proposal_closes_on_value($created) {
+  $timeframe = variable_get('proposal_open_timeframe', '2 weeks');
+  $date = strtotime($timeframe, $created); // Two weeks from now.
+  $date = date('l, F j, Y', $date);
+  return $date;
+}
