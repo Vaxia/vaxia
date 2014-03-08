@@ -438,7 +438,7 @@ function sh_test_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_text',
-        'weight' => '13',
+        'weight' => '14',
       ),
     ),
   );

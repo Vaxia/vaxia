@@ -99,7 +99,7 @@ function rpg_site_staff_strongarm() {
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '7',
+          'weight' => '9',
         ),
       ),
       'display' => array(),

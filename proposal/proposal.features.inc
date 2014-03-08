@@ -32,13 +32,16 @@ function proposal_node_info() {
       'description' => t('The proposal system allows you to build a form out of a collection of form pieces to put questions to site votes.'),
       'has_title' => '1',
       'title_label' => t('Title'),
-      'help' => t('The proposal system allows you to build a form out of a collection of form pieces to put questions to site votes.
+      'help' => t('<blockquote><i>"It is wrong to assume that Vaxia is the product of one person, or even one group of people. In different degrees, every single Vaxian is responsible for Vaxia; its creator and owner at once."</i><a href="http://vaxia.org/wiki/about-vaxia"><b> - SH Moon</b></a></blockquote>
+We use proposals because while a forum thread may give you a rough feel for the mood of the site on a topic, it doesn\'t account for players who - for one reason or another - do not speak out on a forum thread. Silence does not at all indicate agreement, so we need to explicitly ask for a site vote when the topic is important, otherwise we risk leaving people out of getting a chance to contribute their opinions.
 </br></br>
-We use proposals because while a forum thread and five-star voting may give you a rough feel for the mood of the site on a topic, it doesn\'t account for players who - for one reason or another - do not speak out on a forum thread. Silence does not at all indicate agreement, so we need to explicitly ask for a site vote when the topic is important.
+The form will be open for two weeks, then it will automatically close. If you edit it in that timespan the timer will re-set. This is to make sure everyone can get a chance to weigh in.
 </br></br>
-Proposals are meant to be a way to formally make a request for the input of site members, so there are a few restrictions here to keep in mind. The form will be open for two weeks, after which it will automatically close. If you edit it in that timespan the timer will re-set. This is to make sure everyone can get a chance to weigh in. Not all site members will be able to vote in this proposal - only those currently active when you create it. This is to avoid ballot stuffing or swoop-ins from long absent players. And lastly, you won\'t be able to see the names or IP addresses of the people who do vote. This is so we can make sure they feel safe and secure in making their wishes known. 
+Not all site members will be able to vote in this proposal - only those currently active when it was created. This is to avoid ballot stuffing or swoop-ins from long absent players.
 </br></br>
-You should know that once the proposal closes, the results will be posted publicly for all to see. Names will still anonymous.'),
+And lastly, no one can see the names or IP addresses of the people who do vote. This is so they feel safe in making their wishes known. 
+</br></br>
+Once the proposal closes, the results will be posted publicly for all to see. Names will still anonymous.'),
     ),
   );
   return $items;

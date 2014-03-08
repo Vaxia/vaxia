@@ -122,74 +122,6 @@ function calendar_feature_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-event-field_good_idea'.
-  $fields['node-event-field_good_idea'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_good_idea',
-      'field_permissions' => array(
-        'type' => '0',
-      ),
-      'foreign keys' => array(),
-      'indexes' => array(),
-      'locked' => '0',
-      'module' => 'fivestar',
-      'settings' => array(
-        'axis' => 'good_idea',
-      ),
-      'translatable' => '0',
-      'type' => 'fivestar',
-    ),
-    'field_instance' => array(
-      'bundle' => 'event',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'hidden',
-          'module' => 'fivestar',
-          'settings' => array(
-            'expose' => 1,
-            'style' => 'user',
-            'text' => 'average',
-            'widget' => array(
-              'fivestar_widget' => 'sites/all/modules/fivestar/widgets/outline/outline.css',
-            ),
-          ),
-          'type' => 'fivestar_formatter_default',
-          'weight' => '3',
-        ),
-        'ical' => array(
-          'label' => 'hidden',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '3',
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_good_idea',
-      'label' => 'Is this a good idea?',
-      'required' => 0,
-      'settings' => array(
-        'allow_clear' => 1,
-        'stars' => '5',
-        'target' => 'none',
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'fivestar',
-        'settings' => array(),
-        'type' => 'exposed',
-        'weight' => '4',
-      ),
-    ),
-  );
-
   // Exported field: 'node-event-field_when'.
   $fields['node-event-field_when'] = array(
     'field_config' => array(
@@ -357,7 +289,6 @@ function calendar_feature_field_default_fields() {
   // Included for use with string extractors like potx.
   t('Body');
   t('Forums');
-  t('Is this a good idea?');
   t('This field can handle your timezone shift for you. Make sure you configure your preferred time-zone under <a href="/user">your account information</a>. After you set that, dates and times throughout this site will be displayed using your time zone. This allows you to enter times in your preferred time zone. They will display for other site members in their preferred time zone and on the calendar in default EST.');
   t('When');
 

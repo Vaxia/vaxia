@@ -109,7 +109,7 @@ If you have a request, we will gladly consider it, but we do need to know *exact
   $handler->display->display_options['fields']['field_scheduled']['id'] = 'field_scheduled';
   $handler->display->display_options['fields']['field_scheduled']['table'] = 'field_data_field_scheduled';
   $handler->display->display_options['fields']['field_scheduled']['field'] = 'field_scheduled';
-  /* Field: Field: Is this a good idea? */
+  /* Field: Content: Is this a good idea? */
   $handler->display->display_options['fields']['field_good_idea']['id'] = 'field_good_idea';
   $handler->display->display_options['fields']['field_good_idea']['table'] = 'field_data_field_good_idea';
   $handler->display->display_options['fields']['field_good_idea']['field'] = 'field_good_idea';

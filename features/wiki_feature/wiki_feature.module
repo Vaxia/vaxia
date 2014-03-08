@@ -165,6 +165,7 @@ function wiki_feature_node_view($node, $view_mode, $langcode) {
       '#weight' => 1000,
     );
   }
+
 }
 
 /**
@@ -388,15 +389,12 @@ function wiki_feature_freelink_alter(&$link, $target, $plugin_name, $plugin) {
  * Implements hook_block_view().
  */
 function wiki_feature_block_view($delta = '') {
-  if ($delta != 'wiki_feature_templates') {
-    // If we're not on a wiki page, skip it.
-    $node = menu_get_object();
-    if (!isset($node->type) || $node->type != 'wiki_page') {
-      return array();
-    }
-  }
   $block = array();
   $path = drupal_get_path_alias();
+  $position = strpos($path, 'wiki/');
+  if ($position === FALSE || $position !== 0) {
+    return array();
+  }
   // Per delta, select an output.
   switch ($delta) {
     case 'wiki_feature_parent_breadcrumb':
@@ -626,21 +624,22 @@ function _wiki_feature_translate_path_to_link($path) {
       $node = node_load($node_id);
     }
   }
-  // Get the short title.
-  $short_title = check_plain($link);
+  // Set short title default.
+  $short_title = explode('/', $path);
+  $short_title = check_plain(ucwords(str_replace('-', ' ', array_pop($short_title))));
+
+  // Check if a link exists.
   $link = menu_get_item(drupal_get_normal_path($link));
   if (!empty($link['title'])) {
-    $short_title = explode('/', $link['title']);
-    if (is_array($short_title)) {
-      $short_title = check_plain(array_pop($short_title));
+    $link_title = explode('/', $link['title']);
+    if (is_array($link_title)) {
+      $short_title = check_plain(ucwords(array_pop($link_title)));
     }
   }
   // If there is, check access so know to display link or plain text.
-  if (strpos($link['href'], 'node/') === FALSE || (!empty($node) && node_access('view', $node))) { // Not a node (view link), or if a published node.
-    $link = l($short_title, $link['href']);
-  }
-  else {
-    $link = check_plain($short_title);
+  $link = l($short_title, $link['href']);
+  if (!empty($node) && !node_access('view', $node)) { // If a node and not allowed to view.
+    $link = $short_title;
   }
   return $link;
 }
@@ -718,13 +717,21 @@ function _wiki_feature_get_sibling_links($path) {
  * DB function, pull the links from the DB.
  */
 function _wiki_feature_get_child_paths($path) {
+  $child_links = array();
   // Given a string path, find the router parents above it.
   $parent_path = '';
   $regexp = '^' . $path . '/[a-zA-Z0-9-]+$';
   $links = db_query('SELECT alias FROM {url_alias} WHERE alias REGEXP :regexp', array(':regexp' => $regexp));
-  $child_links = array();
   foreach ($links as $link) {
     $child_links[] = $link->alias;
   }
-  return $child_links;
+  // Views don't place links in the url_alias table.
+  // So views don't show up as childnre.
+  // Nor as siblings if there's a % in the path for the view.
+  $links = db_query('SELECT path FROM {menu_router} WHERE path REGEXP :regexp', array(':regexp' => $regexp));
+  foreach ($links as $link) {
+    $child_links[] = $link->path;
+  }
+  // And filter to just unique results.
+  return array_unique($child_links);
 }

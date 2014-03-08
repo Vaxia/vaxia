@@ -221,11 +221,6 @@ tr.webform-results-question-first td{padding-top:0;}
 .field-name-field-wiki-source header{display:none;}
 .field-name-field-artwork .node-artwork header{display:none;}
 
-/* Rate CSS for Vaxia */
-.forum-post-content .form-type-item label{display:none;}
-.rate-thumbs-up-btn-up{background:url('images/plus_one_gry.png') no-repeat scroll 0 0 rgba(0, 0, 0, 0)}
-.rate-info, .rate-description{color:#EEE;}
-
 /* Block widths from views. */
 #block-views-rpg-chats-search-rpg-chats .view-header p{margin:0;}
 #block-views-rpg-chats-search-rpg-chats input.form-text{width:170px;}
@@ -238,3 +233,27 @@ tr.webform-results-question-first td{padding-top:0;}
 #block-views-rpg-chats-inroom-rpg-chats .form-item .error{border:1px solid #ccc;}
 .view-display-id-character_sheets_mine_block select{width:170px;}
 .view-display-id-character_sheets_mine_block input.form-submit{display:block;}
+
+/* Rate CSS for Vaxia */
+.forum-post-content .form-item label{display:none;}
+.rate-info, .rate-description{color:#EEE;}
+.rate-widget .rate-number-up-down-btn-up{border:1px solid;margin-left:10px;background-color:#CCC;}
+.rate-number-up-down-rating{font-weight:bold;font-size:16px;line-height:26px;}
+.rate-widget .rate-number-up-down-btn-down{display:none;}
+.post-edited{clear:left;}
+
+/* Zen - max-width: 100% for img tags in normalize.css messes up ImageField Crop's preview and cropbox -
+     we have to set max-width to none to fix it per: https://drupal.org/node/1779494 */
+/* inner wrappers: div.imagefield-crop-preview, div.imagefield-crop-cropbox */
+div.imagefield-crop-widget img {
+  max-width:none;
+}
+
+/* Collected fixes. 03/07/14 */
+.node-type-rpg-chatroom #main #content .messages--status{display:none;}
+.node-type-rpg-chatroom #main{padding-top:0.5em;}
+.not-logged-in .rpg-chat-node #rpg-chat-wrapper{margin-left:0;}
+.node-type-rpg-chatroom #main #content .tabs-primary{clear:both;}
+.node-type-rpg-chatroom #main #content .breadcrumb{float:right;clear:right;}
+.node-type-rpg-chatroom #main #content #page-title{float:right;clear:right;}
+table td{padding-right:15px;}
