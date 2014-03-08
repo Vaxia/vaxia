@@ -75,9 +75,6 @@ function _sh_test_cron_check_overdue() {
       $node = node_load($application->nid);
       // Execute the rule.
       rules_invoke_event('overdue_application', $node);
-      // Update the last changed value so we don't repeat till next week.
-      $node->changed = $today;
-      node_save($node);
     }
   }
 }
@@ -354,16 +351,45 @@ function sh_test_check_ash_3_approvals($nid) {
   $results = db_query("SELECT wd.data FROM {webform_submitted_data} wd " .
     "WHERE wd.nid = :nid " .
     "AND wd.cid = 1", // There is only the one form element.
-    array(
-      ':nid' => $nid,
-    ));
+    array(':nid' => $nid,));
   $count = 0;
   foreach ($results as $result) {
     if ($result->data == 'approve') {
       $count++;
     }
   }
+  // Have at least three people voted?
   if ($count > variable_get('sh_test_approval_min', '3')) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+/**
+ * Helper for rules. Check if all possible users have weighed in.
+ */
+function sh_test_check_ash_3_responses($nid) {
+  $results = db_query("SELECT wd.data FROM {webform_submitted_data} wd " .
+    "WHERE wd.nid = :nid " .
+    "AND wd.cid = 1", // There is only the one form element.
+    array(':nid' => $nid,));
+  $count = 0;
+  foreach ($results as $result) {
+    $count++;
+  }
+  // Total eligable SH evals.
+  $approving = user_roles(FALSE, 'approve sh test');
+  $approvers = array();
+  foreach ($approving as $role) {
+    if ($role) {
+      $users = db_query('SELECT uid FROM {user_roles} WHERE rid = :rid', array('rid' => $role));
+      foreach ($users as $user) {
+        $approvers[$user->uid] = $user->uid;
+      }
+    }
+  }
+  // Has everyone that could vote, voted?
+  if ($count == count($approvers)) {
     return TRUE;
   }
   return FALSE;
