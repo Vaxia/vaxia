@@ -602,3 +602,23 @@ function _vaxia_get_SH_characters($uid) {
   $SH_characters[$uid] = array();
   return $SH_characters[$uid];
 }
+
+/**
+ * Views helper function.
+ */
+function _vaxia_get_character_ref_types($nid) {
+  global $user;
+  $node = node_load($nid);
+  $lang = $node->language;
+  $field_is_open_npc = isset($node->field_is_open_npc[$lang][0]['value']) ?
+    $node->field_is_open_npc[$lang][0]['value'] : 0;
+  $field_is_npc = isset($node->field_is_npc[$lang][0]['value']) ?
+    $node->field_is_npc[$lang][0]['value'] : 0;
+  if (!empty($field_is_open_npc) && $field_is_open_npc == 1) {
+    return 'Open NPCs';
+  }
+  if (!empty($field_is_npc) && $field_is_npc == 1) {
+    return 'Personal NPCs';
+  }
+  return 'Characters';
+}
