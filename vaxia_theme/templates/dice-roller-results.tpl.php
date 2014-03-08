@@ -20,8 +20,10 @@
       // An array of each note, in the format: array('0' => "1 : roll(1d100) + agi (26)");
       foreach ($dice_rolls as $index => $dice_roll) {
         $note = '';
+        $stat = '';
         // Trim "1 : roll" off the note. New format: roll(1d100) + agi (26)
-        if (isset($notes[$index + 1])) {
+        $notes[$index + 1] = trim($notes[$index + 1]);
+        if (!empty($notes[$index+1]) && strpos($notes[$index+1], '+') !== FALSE) {
           $note = substr($notes[$index + 1], 8);
           // We have a note, let's get the stat.
           $results = explode('+', $note);
@@ -40,9 +42,9 @@
         $results =  explode(',', $results);
         // The the first rolls are the rolls. The very last one is the might.
         // If there is no might, leave it empty. For 1-dice rolls.
-        $might = count($results) > 1 ? trim(array_pop($results)) : '';
-        $rolls = trim(implode(', ', $results));
-        if (!empty($might)) {
+        if (!empty($stat)) {
+          $might = count($results) > 1 ? trim(array_pop($results)) : '';
+          $rolls = trim(implode(', ', $results));
           $str_rolls .= '<div class="dice">' . $note . ' => ' .
             '<b>' . t('Roll') . ':</b> ' . $rolls . ' <b>' . t('Might') . ':</b> ' . $might . '</div>' . "\n";
             // Add the hidden div for jQuery to tie into for the ruler.
@@ -53,6 +55,7 @@
           }
         }
         else {
+          $rolls = trim(implode(', ', $results));
           $str_rolls .= '<div class="dice">' . $note . ' => <b>' . t('Roll') . ':</b> ' . $rolls . '</div>' . "\n";
         }
       } // End loop processing this roll.

@@ -9,6 +9,10 @@
  */
 function vacation_permission() {
   return array(
+    'can go on vacation'=> array(
+      'title' => t('can go on vacation'),
+      'description' => t('Can go on vacation.'),
+    ),
     'administer vacation'=> array(
       'title' => t('administer vacation'),
       'description' => t('Administer vacation.'),
@@ -20,7 +24,7 @@ function vacation_permission() {
  * Implements hook_menu().
  */
 function vacation_menu() {
-  $items['admin/config/people/vacation'] = array(
+  $items['admin/vaxia/vacation'] = array(
     'title' => 'Vacation configurations',
     'description' => 'Vacation configurations',
     'type' => MENU_NORMAL_ITEM,
@@ -36,15 +40,6 @@ function vacation_menu() {
  */
 function vacation_admin_form() {
   $form = array();
-  foreach (user_roles() as $rid => $name) {
-    $roles[$name] = $name;
-  }
-  $form['vacation_roles'] = array(
-    '#title' => t('Vacation roles'),
-    '#type' => 'checkboxes',
-    '#options' =>  $roles,
-    '#default_value' => variable_get('vacation_roles', array()),
-  );
   $default_message = t('<b>If you know you will be absent for some time: Please let us know! '.
     'We need to know if you\'ll be around or not.</b> <br/> When you go on vacation mode all of ' .
     'your additional permissions are removed. During this time you will not receive emails, ' .
@@ -92,11 +87,11 @@ function vacation_rules_event_info() {
  */
 function vacation_form_user_profile_form_alter(&$form, &$form_state) {
   // If user account has any of the roles to watch for.
-  $extra_roles = variable_get('vacation_roles', array());
+  $extra_roles = user_roles(FALSE, 'can go on vacation');
   $default_message = variable_get('vacation_description', '');
   $has_extra = FALSE;
-  foreach ($extra_roles as $extra_role => $value) {
-    if ($value && in_array($extra_role, $form['#user']->roles)) {
+  foreach ($extra_roles as $extra_role) {
+    if (in_array($extra_role, $form['#user']->roles)) {
       $has_extra = TRUE;
     }
   }
@@ -149,8 +144,15 @@ function _vacation_go_on_vacation(&$form, &$form_state) {
   $account = user_load($uid);
   $vacation_modes[$uid] = $account->roles;
   variable_set('vacation', $vacation_modes);
-  $role = user_role_load_by_name('player');
+  // Here, this should be configurable.
+  // ONLY remove roles in the vacation mode.
+  // TODO later.
   $account->roles = array();
+  $role = user_role_load_by_name('player');
+  $account->roles[$role->rid] = $role->name;
+  $role = user_role_load_by_name('voter');
+  $account->roles[$role->rid] = $role->name;
+  $role = user_role_load_by_name('eligible for SH');
   $account->roles[$role->rid] = $role->name;
   _vacation_update_roles($account);
   if (function_exists('rules_invoke_event')) {

@@ -364,8 +364,8 @@ function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
 
   // Do this for all forms.
   // Remove the NPC / ONPC buttons if the user is not permissioned.
-  $sh_chars = _vaxia_get_SH_characters($node->uid);
-  if (!user_access('create SHs') || !empty($sh_chars)) {
+  $sh_char = _vaxia_get_SH_characters($node->uid);
+  if (!user_access('create SHs') || !empty($sh_char)) {
     $form['field_is_storyteller'][$lang]['#disabled'] = TRUE;
   }
   if (!user_access('create NPCs')) {
@@ -463,6 +463,12 @@ function _vaxia_admin_settings() {
     '#title' => 'Settings',
     '#type' => 'fieldset',
   );
+  $form['settings']['vaxia_clean_dblog'] = array(
+    '#title' => 'Clear watchdog',
+    '#description' => 'Clear non-essential watchdog logs (notice and below) on every cron run.',
+    '#type' => 'checkbox',
+    '#default_value' => variable_get('vaxia_clean_dblog', TRUE),
+  );
   $form['settings']['vaxia_starting_points'] = array(
     '#title' => 'Starting points',
     '#description' => 'The starting points for a new character.',
@@ -492,7 +498,7 @@ function _vaxia_admin_settings() {
     '#description' => 'The maximum amount of kxp to be awarded per post.',
     '#type' => 'textfield',
     '#default_value' => variable_get('vaxia_max_kxp_post', 10),
-  );  
+  );
   $form['settings']['vaxia_xp_types'] = array(
     '#title' => 'XP types',
     '#description' => t('Available XP sub-types. The following types used by the system and will ' .
@@ -979,12 +985,17 @@ function add_silver_validation_form(&$form, &$form_state) {
  * Form submit handler for silver.
  */
 function add_silver_submit_form(&$form, &$form_state) {
+  global $user;
   $nid = $form_state['values']['nid'];
+  $character = node_load($nid);
   $add_silver = $form_state['values']['add_silver'];
   // If positive, add silver as per standard XP.
   if ($add_silver > 0) {
     _character_sheet_update_xp($nid, $add_silver, 'silver');
     drupal_set_message(t('%add_silver silver has been added to this sheet.', array('%add_silver' => $add_silver)));
+	$message = t('@xp silver added to @title by @user.',
+		array('@xp' => $add_silver, '@title' => $character->title, '@user' => $user->name));
+	_character_sheet_update_log($nid, 'silver', $message, $variables = array());
     return;
   }
   // If negative. First check if we can just subtract off of given XP.
@@ -992,6 +1003,9 @@ function add_silver_submit_form(&$form, &$form_state) {
     _add_silver_submit_form_remove_silver($nid, $add_silver);
     drupal_set_message(t('%add_silver silver has been removed from this sheet.',
       array('%add_silver' => $add_silver)));
+	$message = t('@xp silver removed from @title by @user.',
+		array('@xp' => $add_silver, '@title' => $character->title, '@user' => $user->name));
+	_character_sheet_update_log($character, 'silver', $message, $variables = array());
   }
 }
 

@@ -11,6 +11,10 @@ include_once 'proposal.features.inc';
  */
 function proposal_permission() {
   return array(
+    'vote on proposal'=> array(
+      'title' => t('vote on proposal'),
+      'description' => t('Votes on proposals.'),
+    ),
     'administer proposal'=> array(
       'title' => t('administer proposal'),
       'description' => t('Administer proposal.'),
@@ -19,10 +23,61 @@ function proposal_permission() {
 }
 
 /**
+ * Implements hook_rules_event_info().
+ */
+function proposal_rules_event_info() {
+  $items = array(
+    'open_proposal' => array(
+      'label' => t('Proposal open'),
+      'group' => t('Proposal'),
+      'variables' => array(
+        'node' => array(
+            'type' => 'node',
+            'label' => t('Proposal'),
+        ),
+      ),
+    ),
+    'close_proposal' => array(
+      'label' => t('Proposal close'),
+      'group' => t('Proposal'),
+      'variables' => array(
+        'node' => array(
+            'type' => 'node',
+            'label' => t('Proposal'),
+        ),
+      ),
+    ),
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_cron().
+ */
+function proposal_cron() {
+  _proposal_cron_proposal();
+}
+
+/**
+ * Cron worker.
+ */
+function _proposal_cron_proposal() {
+  $last_run = variable_get('proposal_cron', 0);
+  $yesterday = strtotime('-1 day');
+  if ($last_run < $yesterday) {
+    $today = date('m/d/Y');
+    $today = strtotime($today . ' 00:00:01'); // We always want to plan to run just after midnight.
+    variable_set('proposal_cron', $today);
+    // Close the proposals.
+    proposal_close_in_timeframe();
+  }
+}
+
+/**
  * Implements hook_menu().
  */
 function proposal_menu() {
-  $items['admin/config/people/proposal'] = array(
+  $items['admin/vaxia/proposal'] = array(
     'title' => 'Proposal system',
     'description' => 'Site voting and administrative proposals.',
     'type' => MENU_NORMAL_ITEM,
@@ -50,15 +105,6 @@ function proposal_admin_form($form, &$form_state) {
     '#type' => 'textfield',
     '#default_value' => variable_get('proposal_voter_timeframe', '6 months'),
   );
-  foreach (user_roles() as $rid => $name) {
-    $roles[$name] = $name;
-  }
-  $form['proposal_roles'] = array(
-    '#title' => t('Proposal voting roles'),
-    '#type' => 'checkboxes',
-    '#options' =>  $roles,
-    '#default_value' => variable_get('proposal_roles', array()),
-  );
   return system_settings_form($form);
 }
 
@@ -67,27 +113,60 @@ function proposal_admin_form($form, &$form_state) {
  */
 function proposal_menu_alter(&$items) {
   // Remove all the paths people don't need.
-  unset($items['node/%webform_menu/webform-results']);
-  unset($items['node/%webform_menu/webform/emails']);
-  unset($items['node/%webform_menu/webform/emails/%webform_menu_email']);
-  unset($items['node/%webform_menu/webform/emails/%webform_menu_email/delete']); 
+  $items['node/%webform_menu/webform-results']['access callback'] = '_proposal_webform_results_access';
+  $items['node/%webform_menu/webform/emails']['access callback'] = '_proposal_webform_email_access';
+  $items['node/%webform_menu/webform/emails/%webform_menu_email']['access callback'] = '_proposal_webform_email_access';
+  $items['node/%webform_menu/webform/emails/%webform_menu_email/delete']['access callback'] = '_proposal_webform_email_access'; 
   // That goes for the owner as well.
   $items['node/%webform_menu/webform-results']['access callback'] = '_proposal_webform_results_access';
 }
 
 /**
- * Menu access call for _vaxia_webform_results_table().
+ * Menu access call for result paths().
  */
 function _proposal_webform_results_access($node) {
+  // If we're not looking at a proposal, bail out with the normal view.
+  if ($node->type != 'proposal') {
+    return webform_results_access($node); // Use defaults.
+  }
   // Allow administrators at all times
   if (user_access('administer proposal')) {
     return user_access('administer proposal');
   }
   // Only show for a FINISHED contest. We do NOT need people vote stacking cause they know results.
   if ($node->webform['status'] == FALSE) {
-    return webform_results_access($node, $account = NULL);
+    return webform_results_access($node);
   }
   return FALSE;
+}
+
+/**
+ * Menu access call for email paths().
+ */
+function _proposal_webform_email_access($op, $node) {
+  // If we're not looking at a proposal, bail out with the normal view.
+  if ($node->type != 'proposal') {
+    return node_access($op, $node); // Use defaults.
+  }
+  return FALSE;
+}
+
+/**
+ * Implements hook_webform_submission_access().
+ */
+function proposal_webform_submission_access($node, $submission, $op = 'view', $account = NULL) {
+  // If we're not looking at a proposal, bail out with the normal view.
+  if ($node->type != 'proposal') {
+    return FALSE; // Use defaults.
+  }
+  // If the submission is open:
+  if (isset($node->webform['status']) && $node->webform['status'] == TRUE && $op == 'list') {
+    return TRUE;
+  }
+  if (isset($node->webform['status']) && $node->webform['status'] == TRUE && $submission->uid == $account->uid) {
+    return TRUE;
+  }
+  return FALSE; // Use defaults.
 }
 
 /**
@@ -108,8 +187,36 @@ function proposal_theme_registry_alter(&$theme_registry) {
  * Remove the exposure of sensitive material from the user facing interface.
  * It removes it for all webforms sadly, because there's no good way to tell it not to with the theme system.
  */
-function proposal_webform_token_help() {
-  return '';
+function proposal_webform_token_help($variables) {
+  // Ok, let's try this another way.
+  $current_path = current_path();
+  if (strpos($current_path, 'webform/components') !== FALSE) {
+    $node = node_load(arg(1));
+    if ($node->type == 'proposal') {
+      return ''; // Hide the tokens from view.
+    }
+  }
+  // Otherwise we show as expected.
+  $groups = $variables['groups'];
+  $fieldset = array(
+    '#title' => t('Token values'), 
+    '#type' => 'fieldset', 
+    '#collapsible' => TRUE, 
+    '#collapsed' => TRUE, 
+    '#attributes' => array('class' => array('collapsible', 'collapsed')),
+  );
+  $help = '<p>' . t('This field supports dynamic token values. Common values might be [current-user:mail] or [node:title].') . '</p>';
+  if (!module_exists('token')) {
+    $help .= '<p>' . t('A full listing of tokens may be listed here by installing the <a href="http://drupal.org/project/token">Token module</a>.') . '</p>';
+  }
+  $fieldset['help'] = array(
+    '#markup' => $help,
+  );
+  $fieldset['token_tree'] = array(
+    '#theme' => 'token_tree', 
+    '#token_types' => array(), // No groups.
+  );
+  return render($fieldset);
 }
 
 /**
@@ -125,7 +232,6 @@ function proposal_webform_results_table($variables) {
   $output = '';
   // To sum up, get analysis of all submissions.
   $output .= webform_results_analysis($node);
-
   // Show the individual results.
   // On a proposal, override the display so we only see the things we should see.
   drupal_add_library('webform', 'admin');
@@ -234,14 +340,26 @@ function proposal_webform_results_analysis($variables) {
  * Implements hook_node_view().
  */
 function proposal_node_view($node, $view_mode, $langcode) {
+
   // Only override the displays for proposals.
   if ($node->type == 'proposal') {
-    if ($node->webform['status'] == TRUE) {
-      $timeframe = variable_get('proposal_open_timeframe', '2 weeks');
-      $date = date('m/d/Y', strtotime($timeframe, $node->changed));
-      drupal_set_message(t('This proposal will stay open for two weeks since it was last updated. It is set to close on @date.',
-        array('@date' => $date)));
+    module_load_include('inc', 'webform', 'includes/webform.report');
+    // Get 2 weeks in the future timestamp.
+    $timeframe = variable_get('proposal_open_timeframe', '2 weeks');
+    $date = strtotime($timeframe, $node->changed); // Two weeks from now.
+    $date = date('l, F j, Y', $date);
+    // Show messages.
+    if ($view_mode == 'full') {
+      if ($node->webform['status'] == TRUE) {
+        drupal_set_message(t('This proposal will stay open for two weeks since it was last updated. It is set to close on @date.',
+          array('@date' => $date)));
+      }
+      else {
+        drupal_set_message(t('This proposal is closed.'));
+      }
     }
+
+    // Update content.
     $node->content['proposal_help'] = array(
       '#markup' => '<div class="proposal_help"></br></br>' . t('<b>Proposal help:</b></br>Proposals are meant to be a way to formally make a request for the input of site ' .
       'members. Forum threads and five-star ratings are not accurate enough for the big things. So here\'s how this works:</br> ' .
@@ -257,13 +375,7 @@ function proposal_node_view($node, $view_mode, $langcode) {
     );
 
     // Check how many people have voted that are allowed to vote.
-    $set_roles = variable_get('proposal_roles', array());// If voter is in this then we'll include the time frame. Else.
-    $roles = array();
-    foreach($set_roles as $role) {
-      if ($role) {
-        $roles[] = $role;
-      }
-    }
+    $roles = user_roles(FALSE, 'vote on proposal');
     if (!empty($roles) && in_array('voter', $roles)) {
       $potential_voters = db_query('SELECT COUNT(DISTINCT u.uid) as potential_voters FROM {users} u ' .
         'LEFT JOIN {users_roles} ur ON u.uid = ur.uid ' .
@@ -281,9 +393,10 @@ function proposal_node_view($node, $view_mode, $langcode) {
         'WHERE r.name IN (:roles) ',
         array(':roles' => $roles))->fetchColumn();      
     }
+
     // Add that information to the display.
+    $voted = webform_get_submission_count($node->nid);
     if ($potential_voters != 0) {
-      $voted = webform_get_submission_count($node->nid);
       $percent = number_format(($voted / $potential_voters) * 100);
       $node->content['proposal_response'] = array(
         '#markup' => '<div class="proposal_response">' . t('%voted out of %potential_voters potential voters (%percent %) responsed to this proposal.',
@@ -291,21 +404,71 @@ function proposal_node_view($node, $view_mode, $langcode) {
         '#weight' => 1001,
       );
     }
+
     // And if the vote has been closed - add that.
+    if ($node->webform['status'] == FALSE && $voted == 0 ) {
+      // If no one has voted yet, we can launch the proposal.
+      global $user;
+      if ( $node->uid == $user->uid || user_access('administer proposal')) {
+        $node->content['proposal_launch'] = array(
+          '#markup' => drupal_render(drupal_get_form('_proposal_launch_form', $node)),
+          '#weight' => -1000,
+        );
+      }
+      else {
+        drupal_set_message(t('This proposal has not yet been opened. Please give them time to finish creating the proposal.'));
+      }
+    }
+
+    // Show results if any.
     if ($node->webform['status'] == FALSE || user_access('administer proposal')) {
-      module_load_include('inc', 'webform', 'includes/webform.report');
       $node->content['proposal_results'] = array(
         '#markup' => '<div class="proposal_result">' . webform_results_table($node) . '</div>',
-        '#weight' => 1002,
+        '#weight' => 1003,
       );
     }
   }
+
+}
+
+/**
+ * Form callback to launch a proposal when ready.
+ */
+function _proposal_launch_form($form, &$form_state, $node) {
+  $form['launch_help'] = array(
+    '#markup' => '<div class="proposal_launch_help">' .
+      t('When you are ready to make this proposal live so that others may vote on it, click this button.') . '</div>',
+  );
+  $form['nid'] = array(
+    '#type' => 'hidden',
+    '#value' => $node->nid,
+  );
+  $form['launch'] = array(
+    '#type' => 'submit',
+    '#value' => t('Click here to launch the proposal'),
+  );
+  return $form;
+}
+
+/**
+ * Form callback to launch a proposal when ready.
+ */
+function _proposal_launch_form_submit($form, &$form_state) {
+  $node = node_load($form_state['values']['nid']);
+  $node->webform['status'] = TRUE;
+  node_save($node);
+  drupal_set_message(t('This proposal has been opened for voting.'));
 }
 
 /**
  * Implements hook_form_FORM_ID_alter().
  */
 function proposal_form_webform_components_form_alter(&$form, &$form_state, $form_id) {
+  $node = $form['#node'];
+  // If we're not looking at a proposal, bail out with the normal view.
+  if ($node->type != 'proposal') {
+    return; // Use defaults.
+  }
   $form['help'] = array(
     '#markup' => '<style>.form-item-add-name{margin-left:30px;}</style>' .
       '<div class="webform_component_help">' .
@@ -333,6 +496,11 @@ function proposal_form_webform_components_form_alter(&$form, &$form_state, $form
  * Implements hook_form_FORM_ID_alter().
  */
 function proposal_form_webform_component_edit_form_alter(&$form, &$form_state, $form_id) {
+  $node = $form['#node'];
+  // If we're not looking at a proposal, bail out with the normal view.
+  if ($node->type != 'proposal') {
+    return; // Use defaults.
+  }
   $form['help'] = array(
     '#markup' => '<div class="webform_component_help">' .
       'Edit the individual pieces of your form here. A name is required, as is a form_key so that the form submission system can recognize the ' .
@@ -349,6 +517,7 @@ function proposal_form_webform_component_edit_form_alter(&$form, &$form_state, $
  * Implements hook_form_FORM_ID_alter().
  */
 function proposal_form_proposal_node_form_alter(&$form, &$form_state, $form_id) {
+  // Since this is specifically on the proposal node form, no need to bail out.
   // Insert our submit call before webforms call to make sure we complete properly.
   // Since webform doesn't allow us to mark the content type as a primary.
   $form['actions']['submit']['#submit'][] = '_proposal_form_proposal_node_form_submit';
@@ -360,6 +529,10 @@ function proposal_form_proposal_node_form_alter(&$form, &$form_state, $form_id) 
 function _proposal_form_proposal_node_form_submit($form, &$form_state) {
   // Get the node.
   $node = node_load($form_state['nid']);
+  // If we're not looking at a proposal, bail out with the normal view.
+  if ($node->type != 'proposal') {
+    return; // Use defaults.
+  }
   // Set up the webform defaults if node hasn't yet.
   if (!isset($node->webform)) {
     $node->webform = webform_node_defaults();
@@ -379,10 +552,17 @@ function _proposal_form_proposal_node_form_submit($form, &$form_state) {
     if ($role) {
       $node->webform['roles'] = array($role->rid);
     }
+    // Set the status to OFF on new nodes.
+    $node->webform['status'] = FALSE;
     // Save the node.
     node_save($node);
+    if (function_exists('rules_invoke_event')) {
+      $node = node_load($proposal->nid);
+      rules_invoke_event('open_proposal', $node);
+    }
   }
-  drupal_set_message(t('The webform %title has been updated. Add new fields to your webform with the form below.',
+  drupal_set_message(t('The webform %title has been updated. Add new fields to your webform with the form below. ' .
+    'When you are ready to open the proposal to voters go to the View tab and click the button to launch it.',
     array('%title' => $form_state['values']['title'])));
   $form_state['redirect'] = 'node/' . $form_state['nid'] . '/webform/components';
 }
@@ -391,25 +571,24 @@ function _proposal_form_proposal_node_form_submit($form, &$form_state) {
  * Implements hook_form_alter().
  */
 function proposal_form_alter(&$form, &$form_state, $form_id) {
-  
+
   // If we're viewing a webform.
   // Why hook_form_alter and not hook_form_FORM_ID_alter? Because webform's form id varies: webform_client_form_NID.
   if (strstr($form_id, 'webform_client_form') !== FALSE) {
-    // Lockout.
-    $set_roles = variable_get('proposal_roles', array());
-    $roles = array();
-    foreach($set_roles as $role) {
-      if ($role) {
-        $roles[] = $role;
-      }
+    $node = $form['#node'];
+    // If we're not looking at a proposal, bail out with the normal view.
+    if ($node->type != 'proposal') {
+      return; // Use defaults.
     }
+    // Lockout.
+    $roles = user_roles(FALSE, 'vote on proposal');
     if (!in_array('voter', $roles)) {
       return; // Bail out if we aren't even considering voter roles.
     }
     // Find the voter role.
     $role = user_role_load_by_name('voter');
-    // Only toss up the message if the form cares about the voter eligability.
-    if ($role && in_array($role->rid, $form['#node']->webform['roles'])) {
+    // Only toss up the message if the form cares about the voter eligability AND it is open.
+    if ($node->webform['status'] == TRUE && $role && in_array($role->rid, $form['#node']->webform['roles'])) {
       global $user;
       $this_user = user_load($user->uid);
       $lang = !empty($this_user->language) ? $this_user->language : 'und';
@@ -437,6 +616,7 @@ function proposal_form_alter(&$form, &$form_state, $form_id) {
     }
     // Leave it to the machine to open and close the proposal. No early, no late.
     $form['submission']['redirection']['#access'] = FALSE;
+    // This also removes the tokens from display to end user.
     // Only one per customer.
     $form['submission']['total_submit_limit']['#access'] = FALSE;
     $form['submission']['submit_limit']['#access'] = FALSE;
@@ -447,13 +627,7 @@ function proposal_form_alter(&$form, &$form_state, $form_id) {
     // And only particular users, tweak the descriptions.
     $form['role_control']['#description'] = t('These permissions affect which roles can submit this webform. ' .
       'It does not prevent access to the webform page to view results.');
-    $set_roles = variable_get('proposal_roles', array());
-    $allowed_roles = array();
-    foreach($set_roles as $role) {
-      if ($role) {
-        $allowed_roles[] = $role;
-      }
-    }
+    $allowed_roles = user_roles(FALSE, 'vote on proposal');
     foreach ($form['role_control']['roles']['#options'] as $rid => $role_name) {
       if (!in_array($role_name, $allowed_roles)) {
         unset($form['role_control']['roles']['#options'][$rid]);
@@ -465,7 +639,7 @@ function proposal_form_alter(&$form, &$form_state, $form_id) {
           $form['role_control']['roles']['#default_value'] : array($rid);
         $voter_timeframe = variable_get('proposal_voter_timeframe', '6 months');
         $form['role_control']['roles']['#description'] = t('Active users are users who have posted on the site in the last %voter_timeframe',
-          array('%voter_fimeframe' => $voter_fimeframe));
+          array('%voter_fimeframe' => $voter_timeframe));
       }
     }
     // And no advanced formats.
@@ -481,7 +655,6 @@ function proposal_form_alter(&$form, &$form_state, $form_id) {
 function proposal_check_posted_in_last_timeframe($uid) {
   $count = 0;
   $time = variable_get('proposal_voter_timeframe', '6 months') . ' ago';
-
   $results = db_query('SELECT COUNT(nid) AS count FROM {node} ' .
     'WHERE uid = :uid ' .
     'AND created > :time',
@@ -489,7 +662,6 @@ function proposal_check_posted_in_last_timeframe($uid) {
   foreach ($results as $result) {
     $count += $result->count;
   }
-
   $results = db_query('SELECT COUNT(cid) AS count FROM comment} ' .
     'WHERE uid = :uid ' .
     'AND created > :time',
@@ -497,10 +669,43 @@ function proposal_check_posted_in_last_timeframe($uid) {
   foreach ($results as $result) {
     $count += $result->count;
   }
-
   // User IS a voting user.
   if ($count > 0) {
     return TRUE;
   }
   return FALSE;
+}
+
+/**
+ * Helper for rules. Close proposals that are due to be closed.
+ */
+function proposal_close_in_timeframe() {
+  $timeframe = variable_get('proposal_open_timeframe', '2 weeks') . ' ago';
+  $timeframe = strtotime($timeframe); // 2 weeks ago based on now.
+  $timeframe = strtotime('+1 day', $timeframe); // Add a day so we pick up the correct 'midnight'.
+  $timeframe = strtotime('midnight', $timeframe); // 2 weeks ago just before midnight.
+  // And get the correct timeframe assuming a start time of 2 weeks ago.
+  $proposals = db_query('SELECT n.nid FROM {node} n ' .
+    'LEFT JOIN webform w ON n.nid = w.nid ' .
+    'WHERE n.type = \'proposal\' ' .
+    'AND n.changed <= :timeframe ' .
+    'AND n.status = 1 ' .
+    'AND w.status = 1 ',
+    array(':timeframe' => $timeframe));
+  foreach ($proposals as $proposal) {
+    if (function_exists('rules_invoke_event')) {
+      $node = node_load($proposal->nid);
+      rules_invoke_event('close_proposal', $node);
+    }	  
+  }
+}
+
+/**
+ * Helper function for views.
+ */
+function _proposal_closes_on_value($created) {
+  $timeframe = variable_get('proposal_open_timeframe', '2 weeks');
+  $date = strtotime($timeframe, $created); // Two weeks from now.
+  $date = date('l, F j, Y', $date);
+  return $date;
 }

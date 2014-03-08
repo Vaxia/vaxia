@@ -20,6 +20,7 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
   global $user;
   $this_player = user_load($user->uid);
   $character = '_none';
+  $stored_character = variable_get('vaxia_last_character_' . $user->uid, -1);
   $lang = $parent_form['language']['#value'];
 
   if (isset($parent_form_state['values'])) {
@@ -27,8 +28,8 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
       $character = $parent_form_state['values']['field_comment_character'][$lang][0]['nid'];
     }
   }
-  elseif(!empty($this_player->field_current_character[$lang][0]['nid'])) {
-    $character = $this_player->field_current_character[$lang][0]['nid'];
+  elseif ($stored_character != -1) {
+    $character = $stored_character;
   }
   elseif(!empty($form['field_comment_character'][$lang]['#default_value'])) {
     $character = $form['field_comment_character'][$lang]['#default_value'];
@@ -77,7 +78,8 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
       );
       // Add SH stats for listing. 25 to 70 as NPC max.
       $SH_character = _vaxia_get_SH_characters($user->uid);
-      if (user_access('use SH dice options') && in_array($character->nid, array_keys($SH_character))) {
+      if (user_access('use SH dice options')
+        && !empty($SH_character) && $character->nid == $SH_character->nid) {
         for ($i = 25; $i < 71; $i = $i + 5) {
           $stat['field_npc_stat_' . $i] = 'NPC: Stat @ ' . $i;
         }
@@ -90,7 +92,8 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
         }
       }
       // Add SH stats for listing. 25 to 70 as NPC max.
-      if (user_access('use SH dice options') && in_array($character->nid, array_keys($SH_character))) {
+      if (user_access('use SH dice options')
+        && !empty($SH_character) && $character->nid == $SH_character->nid) {
         for ($i = 25; $i < 71; $i = $i + 5) {
           $skills['field_npc_skill_' . $i] = 'NPC: Skill @ ' . $i;
         }

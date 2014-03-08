@@ -11,6 +11,14 @@ include_once 'rpg_site_staff.features.inc';
  */
 function rpg_site_staff_permission() {
   return array(
+    'view session notes'=> array(
+      'title' => t('view session notes'),
+      'description' => t('View session notes.'),
+    ),
+    'can vote on elections'=> array(
+      'title' => t('can vote on elections'),
+      'description' => t('Vote on elections.'),
+    ),
     'administrate staff settings'=> array(
       'title' => t('administrate staff settings'),
       'description' => t('Administrate staff settings.'),
@@ -22,7 +30,7 @@ function rpg_site_staff_permission() {
  * Implements hook_menu().
  */
 function rpg_site_staff_menu() {
-  $items['admin/config/people/rpg_site_staff'] = array(
+  $items['admin/vaxia/rpg_site_staff'] = array(
     'title' => 'RPG Staff settings',
     'description' => 'Settings for staff and player administration.',
     'page callback' => 'drupal_get_form',
@@ -37,35 +45,180 @@ function rpg_site_staff_menu() {
  * Menu callback, admin form.
  */
 function _rpg_site_staff_admin_settings($form, &$form_state) {
-  $form['rpg_site_staff_election_day'] = array(
+  $form['elections'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Election settings'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  $form['elections']['rpg_site_staff_election_day'] = array(
     '#title' => t('Election day'),
     '#description' => t('Set the election day for automatic elections.'),
     '#type' => 'textfield',
     '#default_value' => variable_get('rpg_site_staff_election_day', 'May 1st'),
   );
-  $available = implode("\n", array('Setting Head A (aka World Head A)', 'Setting Head B (aka World Head B)', 
-    'System Head A (aka Academy Head A)', 'System Head A (aka Academy Head A)') );
-  $form['rpg_site_staff_positions'] = array(
-    '#title' => t('Available positions'),
-    '#description' => t('List postitions avaiblae on the site, one per row.'),
-    '#type' => 'textarea',
-    '#default_value' => variable_get('rpg_site_staff_positions', $available),
-  );
-  $form['rpg_site_staff_voting_roles'] = array(
-    '#title' => t('Election voting roles'),
-    '#description' => t('These roles are allowed to vote.'),
-    '#type' => 'checkboxes',
-    '#options' =>  user_roles(),
-    '#default_value' => variable_get('rpg_site_staff_voting_roles', array()),
-  );
-  $form['rpg_site_staff_run_role'] = array(
+  $form['elections']['rpg_site_staff_run_role'] = array(
     '#title' => t('Election run role'),
     '#description' => t('This roles is allowed to run.'),
     '#type' => 'select',
     '#options' =>  user_roles(),
     '#default_value' => variable_get('rpg_site_staff_run_role', ''),
   );
+  $intro_text = t('Each year Vaxia has an election for the key positions on our site. ' .
+    'This is so that we can always be sure that the current leadership is connected to ' .
+    'and trusted by our players.');
+  $form['elections']['rpg_site_staff_election_intro'] = array(
+    '#title' => t('Election intro'),
+    '#description' => t('Election introduction text.'),
+    '#type' => 'textarea',
+    '#default_value' => variable_get('rpg_site_staff_election_intro', $intro_text),
+  );
+  $available = implode("\n", array('Setting Head', 'System Head') );
+  $form['elections']['rpg_site_staff_positions'] = array(
+    '#title' => t('Available positions'),
+    '#description' => t('List postitions avaiblae on the site, one per row.'),
+    '#type' => 'textarea',
+    '#default_value' => variable_get('rpg_site_staff_positions', $available),
+  );
+  $form['post_elections'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('After an election, update this setting'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  $form['post_elections']['post_elections']['rpg_site_staff_head_emails'] = array(
+    '#title' => t('Head emails'),
+    '#description' => t('The emails of all elected heads'),
+    '#type' => 'textarea',
+    '#default_value' => variable_get('rpg_site_staff_head_emails', ''),
+  );
+  $form['#submit'][] = '_rpg_site_staff_positions_submit';
   return system_settings_form($form);
+}
+
+/**
+ * Implements hook_token_info_alter().
+ */
+function rpg_site_staff_token_info_alter(&$data) {
+  $data['tokens']['site']['rpg_site_staff_head_emails'] = array(
+    'name' => t('RPG Staff Head Emails'),
+    'description' => t('The emails of the current heads of the site. Separate each email ' .
+    'with a comma.'),
+  );
+}
+
+/**
+ * Implements hook_tokens_alter().
+ */
+function rpg_site_staff_tokens_alter(array &$replacements, array $context) {
+  if (isset($context['tokens']['rpg_site_staff_head_emails'])) {
+    $replacements[ $context['tokens']['rpg_site_staff_head_emails'] ] = variable_get('rpg_site_staff_head_emails', '');
+  }
+}
+
+/**
+ * Submit callback, add user fields for each defined position.
+ */
+function _rpg_site_staff_positions_submit($form, &$form_state) {
+  // Grab the old positions.
+  // Delete the old fields. TODO: For now, leave this to the admin to delete the old ones.
+  // Grab the new positions from the settings.
+  $available = $form_state['values']['rpg_site_staff_positions'];
+  $available = explode("\n", $available);
+  // Add the new position.
+  foreach ($available as $position) {
+    // Get the name.
+    $position = trim($position);
+    $field_key_name = str_replace(' ', '_', strtolower($position));
+    $existing_field = field_info_field('field_staff_' . $field_key_name);
+    if (empty($existing_field)) {
+      // Set up the data arrays.
+      $field = array(
+        'active' => '1',
+        'cardinality' => '1',
+        'deleted' => '0',
+        'entity_types' => array(),
+        'field_name' => 'field_staff_' . $field_key_name,
+        'foreign keys' => array(),
+        'indexes' => array(
+          'value' => array(
+            0 => 'value',
+          ),
+        ),
+        'locked' => '0',
+        'module' => 'list',
+        'settings' => array(
+          'allowed_values' => array(
+            0 => 'No',
+            1 => 'Yes',
+          ),
+          'allowed_values_function' => '',
+        ),
+        'translatable' => '0',
+        'type' => 'list_boolean',
+      );
+      $instance = array(
+        'bundle' => 'user',
+        'default_value' => array(
+          0 => array(
+            'value' => 1,
+          ),
+        ),
+        'deleted' => '0',
+        'description' => t('I would like to be considered eligible for ' . $position . ' positions during elections.'),
+        'display' => array(
+          'default' => array(
+            'label' => 'inline',
+            'settings' => array(),
+            'type' => 'list_boolean',
+            'weight' => '6',
+          ),
+        ),
+        'entity_type' => 'user',
+        'field_name' => 'field_staff_' . $field_key_name,
+        'label' => t('Eligible for ' . $position . ''),
+        'required' => 0,
+        'settings' => array(
+          'user_register_form' => 0,
+        ),
+        'widget' => array(
+          'active' => 1,
+          'module' => 'options',
+          'settings' => array(
+            'display_label' => 1,
+          ),
+          'type' => 'options_onoff',
+        ),
+      );
+      // Create the field.
+      field_create_field($field);
+      // Create the instance.
+      field_create_instance($instance);
+      // Add the field to the election group form.
+      $group = field_group_info_groups('user', 'user', 'form', TRUE);
+      $group = $group['group_election_settings'];
+      $group->children[] = $field_key_name;
+      field_group_group_save($group);
+      // Add the field to the election group display.
+      $group = field_group_info_groups('user', 'user', 'default', TRUE);
+      $group = $group['group_voting'];
+      $group->children[] = $field_key_name;
+      field_group_group_save($group);
+      // Update all existing users to have this field automatically turned on.
+      db_query('REPLACE INTO {field_data_field_staff_' . $field_key_name . '} ' .
+        '(entity_type, bundle, deleted, entity_id, revision_id, language, delta, field_staff_' . $field_key_name . '_value) ' .
+        'SELECT \'user\', \'user\', 0, u.uid, u.uid, \'und\', 0, 1 FROM {users} u WHERE u.status = 1');
+      db_query('REPLACE INTO {field_revision_field_staff_' . $field_key_name . '} ' .
+        '(entity_type, bundle, deleted, entity_id, revision_id, language, delta, field_staff_' . $field_key_name . '_value) ' .
+        'SELECT \'user\', \'user\', 0, u.uid, u.uid, \'und\', 0, 1 FROM {users} u WHERE u.status = 1');
+      // Output message.
+      drupal_set_message('Created user field ' . $field_key_name);
+    }
+  }
+  // Flush Entity Cache record.
+  if (module_exists('entitycache')) {
+    cache_clear_all('*', 'cache_entity_node', TRUE);
+  }
 }
 
 /**
@@ -77,6 +230,23 @@ function rpg_site_staff_form_user_profile_form_alter(&$form, &$form_state, $form
   $form['field_became_evaluator']['#access'] = FALSE;
   $form['field_voting_record']['#access'] = FALSE;
   $form['field_became_voter']['#access'] = FALSE;
+  $form['field_storyhost_character']['#access'] = FALSE;
+}
+
+/*
+ * Implements hook_node_view().
+ */
+function rpg_site_staff_node_view($node, $view_mode, $langcode) {
+
+  // If node session report.
+  if ($node->type == 'session_report') {
+    global $user;
+    // Check if the user has the 'view session notes' permission.
+    if (!user_access('view session notes') && !empty($node->content['field_additional_notes'])) {
+      unset($node->content['field_additional_notes']);
+    }
+  }
+
 }
 
 /**
@@ -96,21 +266,24 @@ function vaxia_check_election_day() {
  * Helper for rules. Check if today is election day.
  */
 function vaxia_setup_election_proposal($entity_created) {
-  $available = implode("\n", array('Setting Head A (aka World Head A)', 'Setting Head B (aka World Head B)', 
-    'System Head A (aka Academy Head A)', 'System Head A (aka Academy Head A)') );
+  $available = implode("\n", array('Setting Head', 'System Head') );
   $available = variable_get('rpg_site_staff_positions', $available);
   $available = explode("\n", $available);
   $output = '';
-  $output .= '<h3><b>Vaxia Election</b></h3>';
-  $output .= '<p>Each year Vaxia has an election for the key positions on our site. ' .
+  $output .= '<h3><b>Election</b></h3>';
+  $intro_text = t('Each year Vaxia has an election for the key positions on our site. ' .
     'This is so that we can always be sure that the current leadership is connected to ' .
-    'and trusted by our players.</p>';
+    'and trusted by our players.');
+  $output .= '<p>' . variable_get('rpg_site_staff_election_intro', $intro_text) . '</p>';
   $output .= '<p>Available positions are:</p>';
   $output .= '<ul>';
   $keys = array();
   foreach ($available as $position) {
-    $keys[$position] = $position;
-    $output .= '<li>' . check_plain(trim($position)) . '</li>';
+    $position = trim($position);
+    $keys[$position . ' A'] = $position . ' A';
+    $keys[$position . ' B'] = $position . ' B';
+    $output .= '<li>' . check_plain($position) . ' A</li>';
+    $output .= '<li>' . check_plain($position) . ' B</li>';
   }
   $output .= '</ul>';
   $output .= '<p>Please take a moment to review the candidates for this ' .
@@ -124,39 +297,28 @@ function vaxia_setup_election_proposal($entity_created) {
   node_save($entity_created);
   // Save roles that can vote, 19 = Voting Player
   // Set approving roles for users.
-  $rpg_site_staff_voting_roles = variable_get('rpg_site_staff_voting_roles', array());
+  $rpg_site_staff_voting_roles = user_roles(FALSE, 'can vote on elections');
   $record = db_query('DELETE FROM {webform_roles} WHERE nid = :nid', array(':nid' => $entity_created->nid));
-  foreach ($rpg_site_staff_voting_roles as $role) {
+  foreach ($rpg_site_staff_voting_roles as $rid => $role) {
     if ($role) {
-      db_insert('webform_roles')->fields(array('nid' => $entity_created->nid, 'rid' => $role))->execute();
+      db_insert('webform_roles')->fields(array('nid' => $entity_created->nid, 'rid' => $rid))->execute();
     }
-  }
-  // Gather the user info.
-  $system_eligible_names = db_query('SELECT u.name FROM {users} u ' . 
-    'LEFT JOIN {users_roles} ur ON u.uid = ur.uid ' .
-    'LEFT JOIN {field_data_field_eligible_for_system_head} f ON u.uid = f.entity_id ' .
-    'WHERE ur.rid = :voting_role ' .
-    'AND f.field_eligible_for_system_head_value = 1', array(':voting_role' => variable_get('rpg_site_staff_run_role', '') ));
-  $system_eligible = '';
-  foreach ($system_eligible_names as $system_eligible_name) {
-    $system_eligible .= $system_eligible_name->name . '|' . $system_eligible_name->name . "\n";
-  }
-  $setting_eligible_names = db_query('SELECT u.name FROM {users} u ' . 
-    'LEFT JOIN {users_roles} ur ON u.uid = ur.uid ' .
-    'LEFT JOIN {field_data_field_eligible_for_setting_head} f ON u.uid = f.entity_id ' .
-    'WHERE ur.rid = :voting_role ' .
-    'AND f.field_eligible_for_setting_head_value = 1', array(':voting_role' => variable_get('rpg_site_staff_run_role', '') ));
-  $setting_eligible = '';
-  foreach ($setting_eligible_names as $setting_eligible_name) {
-    $setting_eligible .= $setting_eligible_name->name . '|' . $setting_eligible_name->name . "\n";
   }
   // Include the webform module that allows components to be created.
   module_load_include('inc', 'webform', 'includes/webform.components');
   // Create the webform fields for possible elected.
   foreach ($keys as $key => $title) {
-    $items = $setting_eligible;
-    if ($key == 'System Head A (aka Academy Head A)' || $key == 'System Head B (aka Academy Head B)') {
-      $items = $system_eligible;
+    $field_key_name = str_replace(' ', '_', strtolower(substr($key, 0, -2)));
+    // Gather the user info.
+    $system_eligible_names = db_query('SELECT u.name FROM {users} u ' . 
+      'LEFT JOIN {users_roles} ur ON u.uid = ur.uid ' .
+      'LEFT JOIN {field_data_field_staff_' . $field_key_name . '} f ON u.uid = f.entity_id ' .
+      'WHERE ur.rid = :voting_role ' .
+      'AND f.field_staff_' . $field_key_name . '_value = 1',
+      array(':voting_role' => variable_get('rpg_site_staff_run_role', '') ));
+    $system_eligible = '';
+    foreach ($system_eligible_names as $system_eligible_name) {
+      $system_eligible .= $system_eligible_name->name . '|' . $system_eligible_name->name . "\n";
     }
     $component = array();
     $component['nid'] = $entity_created->nid;
@@ -190,4 +352,63 @@ function vaxia_setup_election_proposal($entity_created) {
     );
   $component['weight'] = 1;
   webform_component_insert($component);
+}
+
+/**
+ * Helper function for views.
+ */
+function _rpg_site_staff_return_title($uid) {
+  $output = 'Storyhost';
+  $this_user = user_load($uid);
+  $this_role = isset($this_user->roles) ? $this_user->roles : array();
+  if (!isset($this_role[9])) {
+    $output = 'Assistant Storyhost';
+  }
+  return $output;
+}
+
+/**
+ * Helper function for views.
+ */
+function _rpg_site_staff_create_content_count_value($uid) {
+  $results = db_query('SELECT COUNT(n.nid) AS count, n.type ' .
+    'FROM {node} n ' .
+    'WHERE n.uid = :uid GROUP BY n.type',
+    array(':uid' => $uid));
+  $value = array();
+  foreach ($results as $result) {
+    $value[$result->type] = $result->count;
+  }
+  return $value;
+}
+
+
+/**
+ * Helper function for views.
+ */
+function _rpg_site_staff_revise_content_count_value($uid) {
+  $results = db_query('SELECT COUNT(r.nid) AS count, n.type ' .
+    'FROM {node_revision} r ' .
+    'LEFT JOIN {node} n ON n.nid = r.nid ' .
+    'WHERE r.uid = :uid GROUP BY n.type',
+    array(':uid' => $uid));
+  $value = array();
+  foreach ($results as $result) {
+    $value[$result->type] = $result->count;
+  }
+  return $value;
+}
+
+/**
+ * Helper function for views.
+ */
+function _rpg_site_staff_content_count_display($value) {
+  $output = '<ul>';
+  foreach ($value as $type => $count) {
+    if (in_array($type, array('wiki_page', 'session_report', ) )) {
+        $output .= '<li>'. $type . ' : ' . $count . '</li>';
+    }
+  }
+  $output .= '</ul>';
+  return $output;
 }

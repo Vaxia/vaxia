@@ -17,6 +17,8 @@ function vaxia_user_default_permissions() {
       0 => 'administrator',
       1 => 'administrator-vaxia',
       2 => 'storyteller',
+      3 => 'storyteller-assistant',
+      4 => 'storyteller-candidate',
     ),
     'module' => 'node',
   );

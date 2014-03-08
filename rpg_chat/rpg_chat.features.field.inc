@@ -10,224 +10,6 @@
 function rpg_chat_field_default_fields() {
   $fields = array();
 
-  // Exported field: 'node-rpg_chatroom-body'.
-  $fields['node-rpg_chatroom-body'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(
-        0 => 'node',
-      ),
-      'field_name' => 'body',
-      'field_permissions' => array(
-        'type' => '0',
-      ),
-      'foreign keys' => array(
-        'format' => array(
-          'columns' => array(
-            'format' => 'format',
-          ),
-          'table' => 'filter_format',
-        ),
-      ),
-      'indexes' => array(
-        'format' => array(
-          0 => 'format',
-        ),
-      ),
-      'locked' => '0',
-      'module' => 'text',
-      'settings' => array(),
-      'translatable' => '0',
-      'type' => 'text_with_summary',
-    ),
-    'field_instance' => array(
-      'bundle' => 'rpg_chatroom',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'hidden',
-          'module' => 'text',
-          'settings' => array(),
-          'type' => 'text_default',
-          'weight' => '3',
-        ),
-        'print' => array(
-          'label' => 'hidden',
-          'module' => 'text',
-          'settings' => array(),
-          'type' => 'text_default',
-          'weight' => '0',
-        ),
-        'rss' => array(
-          'label' => 'hidden',
-          'module' => 'text',
-          'settings' => array(),
-          'type' => 'text_default',
-          'weight' => '0',
-        ),
-        'search_index' => array(
-          'label' => 'hidden',
-          'module' => 'text',
-          'settings' => array(),
-          'type' => 'text_default',
-          'weight' => '0',
-        ),
-        'search_result' => array(
-          'label' => 'hidden',
-          'module' => 'text',
-          'settings' => array(),
-          'type' => 'text_default',
-          'weight' => '0',
-        ),
-        'teaser' => array(
-          'label' => 'hidden',
-          'module' => 'text',
-          'settings' => array(),
-          'type' => 'text_default',
-          'weight' => '2',
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'body',
-      'label' => 'Body',
-      'required' => 0,
-      'settings' => array(
-        'better_formats' => array(
-          'allowed_formats' => array(
-            'full_html' => 0,
-            'php_code' => 0,
-            'plain_text' => 'plain_text',
-            'whiteboard' => 0,
-            'wiki' => 0,
-          ),
-          'allowed_formats_toggle' => 1,
-          'default_order_toggle' => 0,
-          'default_order_wrapper' => array(
-            'formats' => array(
-              'full_html' => array(
-                'weight' => '1',
-              ),
-              'php_code' => array(
-                'weight' => '11',
-              ),
-              'plain_text' => array(
-                'weight' => '10',
-              ),
-              'whiteboard' => array(
-                'weight' => '0',
-              ),
-              'wiki' => array(
-                'weight' => '0',
-              ),
-            ),
-          ),
-        ),
-        'display_summary' => 1,
-        'text_processing' => '1',
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'text',
-        'settings' => array(
-          'rows' => '20',
-          'summary_rows' => 5,
-        ),
-        'type' => 'text_textarea_with_summary',
-        'weight' => '4',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-rpg_chatroom-field_artwork'.
-  $fields['node-rpg_chatroom-field_artwork'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_artwork',
-      'field_permissions' => array(
-        'type' => '0',
-      ),
-      'foreign keys' => array(
-        'nid' => array(
-          'columns' => array(
-            'nid' => 'nid',
-          ),
-          'table' => 'node',
-        ),
-      ),
-      'indexes' => array(
-        'nid' => array(
-          0 => 'nid',
-        ),
-      ),
-      'locked' => '0',
-      'module' => 'node_reference',
-      'settings' => array(
-        'referenceable_types' => array(
-          'article' => 0,
-          'artwork' => 'artwork',
-          'character_sheet' => 0,
-          'forum' => 0,
-          'items' => 0,
-          'npc' => 0,
-          'page' => 0,
-          'rpg_chatroom' => 0,
-        ),
-        'view' => array(
-          'args' => array(),
-          'display_name' => 'artwork_mine_refs',
-          'view_name' => 'artwork',
-        ),
-      ),
-      'translatable' => '0',
-      'type' => 'node_reference',
-    ),
-    'field_instance' => array(
-      'bundle' => 'rpg_chatroom',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'hidden',
-          'module' => 'node_reference',
-          'settings' => array(
-            'node_reference_view_mode' => 'artwork',
-          ),
-          'type' => 'node_reference_node',
-          'weight' => '4',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_artwork',
-      'label' => 'Artwork',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 0,
-        'module' => 'select_image',
-        'settings' => array(),
-        'type' => 'select_image_select',
-        'weight' => '5',
-      ),
-    ),
-  );
-
   // Exported field: 'node-rpg_chatroom-field_children'.
   $fields['node-rpg_chatroom-field_children'] = array(
     'field_config' => array(
@@ -299,7 +81,7 @@ function rpg_chat_field_default_fields() {
         'module' => 'nodereferrer',
         'settings' => array(),
         'type' => 'nodereferrer_list',
-        'weight' => '3',
+        'weight' => '5',
       ),
     ),
   );
@@ -411,7 +193,7 @@ function rpg_chat_field_default_fields() {
           'size' => 60,
         ),
         'type' => 'node_reference_autocomplete',
-        'weight' => '2',
+        'weight' => '3',
       ),
     ),
   );
@@ -678,7 +460,7 @@ function rpg_chat_field_default_fields() {
           'label' => 'hidden',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '5',
+          'weight' => '4',
         ),
       ),
       'entity_type' => 'node',
@@ -693,19 +475,114 @@ function rpg_chat_field_default_fields() {
         'module' => 'location_cck',
         'settings' => array(),
         'type' => 'location',
-        'weight' => '6',
+        'weight' => '4',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-rpg_chatroom-field_wiki_source'.
+  $fields['node-rpg_chatroom-field_wiki_source'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_wiki_source',
+      'foreign keys' => array(
+        'nid' => array(
+          'columns' => array(
+            'nid' => 'nid',
+          ),
+          'table' => 'node',
+        ),
+      ),
+      'indexes' => array(
+        'nid' => array(
+          0 => 'nid',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'node_reference',
+      'settings' => array(
+        'referenceable_types' => array(
+          'article' => 0,
+          'artwork' => 0,
+          'character_sheet' => 0,
+          'event' => 0,
+          'feature_request' => 0,
+          'forum' => 0,
+          'items' => 0,
+          'long_answer' => 0,
+          'matching' => 0,
+          'multichoice' => 0,
+          'npc' => 0,
+          'page' => 0,
+          'proposal' => 0,
+          'quiz' => 0,
+          'quiz_directions' => 0,
+          'quiz_evaluation' => 0,
+          'rpg_chatroom' => 0,
+          'session_report' => 0,
+          'short_answer' => 0,
+          'storyhost_application' => 0,
+          'strike' => 0,
+          'truefalse' => 0,
+          'webform' => 0,
+          'wiki_page' => 'wiki_page',
+        ),
+        'view' => array(
+          'args' => array(),
+          'display_name' => '',
+          'view_name' => '',
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'node_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'rpg_chatroom',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'module' => 'node_reference',
+          'settings' => array(
+            'node_reference_view_mode' => 'artwork',
+          ),
+          'type' => 'node_reference_node',
+          'weight' => '3',
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_wiki_source',
+      'label' => 'Wiki source',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'node_reference',
+        'settings' => array(
+          'autocomplete_match' => 'contains',
+          'autocomplete_path' => 'node_reference/autocomplete',
+          'size' => '60',
+        ),
+        'type' => 'node_reference_autocomplete',
+        'weight' => '2',
       ),
     ),
   );
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('Artwork');
-  t('Body');
   t('Parent-locations');
   t('RL weather');
   t('Realm');
   t('Sub-locations');
+  t('Wiki source');
 
   return $fields;
 }

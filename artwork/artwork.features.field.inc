@@ -341,7 +341,7 @@ function artwork_field_default_fields() {
             'node_reference_view_mode' => 'artwork',
           ),
           'type' => 'node_reference_node',
-          'weight' => '0',
+          'weight' => '3',
         ),
       ),
       'entity_type' => 'user',
@@ -356,7 +356,7 @@ function artwork_field_default_fields() {
         'module' => 'select_image',
         'settings' => array(),
         'type' => 'select_image_select',
-        'weight' => '1',
+        'weight' => '2',
       ),
     ),
   );

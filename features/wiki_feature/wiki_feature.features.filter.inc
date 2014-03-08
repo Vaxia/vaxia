@@ -22,7 +22,7 @@ function wiki_feature_filter_default_formats() {
         'weight' => '-48',
         'status' => '1',
         'settings' => array(
-          'allowed_html' => '<p> <br /> <br> <a> <em> <strong> <cite> <blockquote> <code> <ul> <ol> <li> <dl> <dt> <dd>',
+          'allowed_html' => '<p> <br /> <br> <a> <em> <strong> <cite> <blockquote> <code> <ul> <ol> <li> <dl> <dt> <dd> <b> <i> <h1> <h2> <h3>',
           'filter_html_help' => 1,
           'filter_html_nofollow' => 0,
         ),

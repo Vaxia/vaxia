@@ -55,18 +55,21 @@ function wiki_feature_workflow_default_workflows() {
         'weight' => '-50',
         'sysid' => '1',
         'status' => '1',
+        'name' => 'Wiki workflow',
       ),
       1 => array(
         'state' => 'open',
         'weight' => '0',
         'sysid' => '0',
         'status' => '1',
+        'name' => 'Wiki workflow',
       ),
       2 => array(
         'state' => 'locked',
         'weight' => '0',
         'sysid' => '0',
         'status' => '1',
+        'name' => 'Wiki workflow',
       ),
     ),
     'transitions' => array(

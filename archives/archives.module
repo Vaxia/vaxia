@@ -24,7 +24,15 @@ function archives_permission() {
  * Implements hook_cron().
  */
 function archives_cron() {
-  return _archives_posts_archive();
+  if (variable_get('archives_cron',  FALSE)) {
+    $last_run = variable_get('archives_crontime', 0);
+    $yesterday = strtotime('-1 day');
+    if ($last_run < $yesterday) {
+      variable_set('archives_crontime', strtotime('now'));
+      watchdog('archives', t('Ran archives cron.'));
+      return _archives_posts_archive();
+    }
+  }
 }
 
 /**
@@ -39,29 +47,13 @@ function archives_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('archives_form'),
   );
-  $items['admin/config/search/archives'] = array(
-    'title' => 'Archive configurations',
-    'description' => 'Flat file archive configurations',
+  $items['admin/vaxia/archives'] = array(
+    'title' => 'Archive settings',
+    'description' => 'Flat file archive settings',
     'type' => MENU_NORMAL_ITEM,
     'access arguments' => array('administer old archives'),
     'page callback' => 'drupal_get_form',
     'page arguments' => array('archives_admin_form'),
-  );
-  $items['admin/config/search/archives/settings'] = array(
-    'title' => 'Archive configurations',
-    'description' => 'Flat file archive configurations',
-    'type' => MENU_DEFAULT_LOCAL_TASK,
-    'access arguments' => array('administer old archives'),
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('archives_admin_form'),
-  );
-  $items['admin/config/search/archives/archive_posts'] = array(
-    'title' => 'Do archive',
-    'description' => 'Archive posts currently in the system into the archive files',
-    'type' =>  MENU_LOCAL_TASK,
-    'access arguments' => array('administer old archives'),
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('archive_posts_form'),
   );
   return $items;
 }
@@ -83,14 +75,11 @@ function archives_admin_form($form, &$form_state) {
     '#type' => 'textfield',
     '#default_value' => variable_get('archives_date', '12 months'),
   );
-  return system_settings_form($form);
-}
-
-/**
- * Menu callback for archive form.
- */
-function archive_posts_form($form, &$form_state) {
-  $form = array();
+  $form['archives_cron'] = array(
+    '#title' => t('Enable archive cron'),
+    '#type' => 'checkbox',
+    '#default_value' => variable_get('archives_cron',  FALSE),
+  );
   $date = variable_get('archives_last_run', 'never');
   $form['archive_date'] = array(
     '#markup' => '<div>' . t('Archives last run') . ': ' . $date . '</div>',
@@ -98,21 +87,15 @@ function archive_posts_form($form, &$form_state) {
   $form['archive'] = array(
     '#type' => 'submit',
     '#value' => t('Archive All Posts'),
+    '#submit' => array('_archives_posts_archive'),
   );
-  return $form;
-}
-
-/**
- * Submit handler for archive form.
- */
-function archive_posts_form_submit($form, &$form_state) {
-  return _archives_posts_archive();
+  return system_settings_form($form);
 }
 
 /**
  * Helper function, archive things.
  */
-function _archives_posts_archive() {
+function _archives_posts_archive($form, &$form_state) {
   // And now we get all complicated! It may take a bit to get through them all.
   // But we archive for all the posts on the site into the file system.
   // First get the date of the oldest comment posted on the site to chat or forum.

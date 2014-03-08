@@ -11,11 +11,92 @@ include_once 'sh_test.features.inc';
  */
 function sh_test_permission() {
   return array(
+    'approve sh test'=> array(
+      'title' => t('approve sh test'),
+      'description' => t('Approve the SH test.'),
+    ),
+    'view sh test results'=> array(
+      'title' => t('view sh test results'),
+      'description' => t('View SH test results.'),
+    ),
     'administrate sh test'=> array(
       'title' => t('administrate sh test'),
       'description' => t('Administrate the SH test.'),
     ),
   );
+}
+
+/**
+ * Implements hook_rules_event_info().
+ */
+function sh_test_rules_event_info() {
+  $items = array(
+    'overdue_application' => array(
+      'label' => t('Application overdue'),
+      'group' => t('SH test'),
+      'variables' => array(
+        'node' => array(
+            'type' => 'node',
+            'label' => t('Application'),
+        ),
+      ),
+    ),
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_cron().
+ */
+function sh_test_cron() {
+  _sh_test_cron_check_overdue();
+}
+
+/**
+ * Cron handler for overdue applications.
+ */
+function _sh_test_cron_check_overdue() {
+  if (!function_exists('rules_invoke_event')) {
+    return; // Bail out if no rules.
+  }
+  $last_run = variable_get('sh_test_cron', 0);
+  $yesterday = strtotime('-1 day');
+  if ($last_run < $yesterday) {
+    $timeframe = strtotime('-1 week');
+    $applications = db_query('SELECT nid FROM {node} n ' .
+      'LEFT JOIN {webform} w ON w.nid = n.nid' .
+      'WHERE w.status = 1 '. // Where the webform is still open.
+      'AND n.type = "storyhost_application" ' . // And it's a storyhost application type.
+      'AND n.changed < :timeframe', // And it's been open for more than a week.
+      array(':timeframe' => $timeframe));
+    // Now that we have a list of applications that might qualify.
+    $today = strtotime('now');
+    foreach ($applications as $application) {
+      $node = node_load($application->nid);
+      // Execute the rule.
+      rules_invoke_event('overdue_application', $node);
+    }
+  }
+}
+
+/**
+ * Implements hook_node_view().
+ */
+function sh_test_node_view($node, $view_mode, $langcode) {
+
+  // Only override the displays for proposals.
+  if ($node->type == 'storyhost_application') {
+    module_load_include('inc', 'webform', 'includes/webform.report');
+    // Show results if any.
+    global $user;
+    if ($node->uid == $user->uid || user_access('view sh test results') || user_access('administrate sh test')) {
+      $node->content['application_results'] = array(
+        '#markup' => '<div class="application_result">' . webform_results_table($node) . '</div>',
+        '#weight' => 1003,
+      );
+    }
+  }
+
 }
 
 /**
@@ -26,14 +107,16 @@ function sh_test_form_user_profile_form_alter(&$form, &$form_state, $form_id) {
   $form['field_took_ash2']['#access'] = FALSE;
   $form['field_took_ash3']['#access'] = FALSE;
   $form['field_took_eval_test']['#access'] = FALSE;
+  $form['field_ash_3_answers']['#access'] = FALSE;
+  $form['field_ash_3_application']['#access'] = FALSE;
 }
 
 /**
  * Implements hook_menu().
  */
 function sh_test_menu() {
-  $items['admin/config/people/sh_test'] = array(
-    'title' => 'Vaxia Storyhost course settings',
+  $items['admin/vaxia/sh_test'] = array(
+    'title' => 'Storyhost course settings',
     'description' => 'Settings for the Vaxia Storyhost course.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('_sh_test_admin_settings'),
@@ -58,13 +141,6 @@ function _sh_test_admin_settings($form, &$form_state) {
     '#description' => t('Below this number of storyhosts we are in starvation mode and will take anyone who applies to ASH 3.'),
     '#type' => 'textfield',
     '#default_value' => variable_get('sh_test_starvation_mode', '4'),
-  );
-  $form['sh_test_approving_roles'] = array(
-    '#title' => 'Approving roles',
-    '#description' => 'Roles that can approve a Storyhost application.',
-    '#type' => 'checkboxes',
-    '#options' => user_roles(),
-    '#default_value' => variable_get('sh_test_approving_roles', array()),
   );
   $form['sh_test_approval_min'] = array(
     '#title' => t('Minimum approvals'),
@@ -159,6 +235,79 @@ function sh_test_check_starvation_mode() {
  * Helper for rules. Setup the webform response for approving new candidates.
  */
 function sh_test_setup_approval_form($user, $node, $entity_created) {
+  $output = sh_test_ash_3_get_answers($user, $node);
+  if (empty($output)) {
+    drupal_set_message(t('An error was encountered, no output able to be created.'));
+    return;
+  }
+  // Set the webform body
+  $entity_created->body[$entity_created->language][0]['value'] = $output;
+  $entity_created->webform['confirmation'] = t('Thank you!');
+  $entity_created->webform['confirmation_format'] = 'plain_text';
+  $entity_created->webform['submit_limit'] = 1;
+  // Save the node
+  node_save($entity_created);
+  // Set approving roles for users.
+  $approving = user_roles(FALSE, 'approve sh test');
+  $record = db_query('DELETE FROM {webform_roles} WHERE nid = :nid', array(':nid' => $entity_created->nid));
+  foreach ($approving as $role) {
+    if ($role) {
+      db_insert('webform_roles')->fields(array('nid' => $entity_created->nid, 'rid' => $role))->execute();
+    }
+  }
+  // Include the webform module that allows components to be created.
+  module_load_include('inc', 'webform', 'includes/webform.components');
+  // Create the standard webform field for approval.
+  $items = 'approve|' .  t('Yes. I approve this SH candidate to become a full SH.') . "\n" .
+    'disapprove|' . t('No. I would like to see some improvements, and have included the details below.');
+  $component = array();
+  $component['nid'] = $entity_created->nid;
+  $component['pid'] = 0;
+  $component['form_key'] = 'approval';
+  $component['name'] = t('Approve');
+  $component['type'] = 'select';
+  $component['mandatory'] = 1;
+  $component['extra'] = array(
+    'description' => '',
+    'items' => $items,
+    'multiple' => '1',
+    'aslist' => '0',
+    );
+  $component['weight'] = 0;
+  webform_component_insert($component);
+  $component = array();
+  $component['nid'] = $entity_created->nid;
+  $component['pid'] = 0;
+  $component['form_key'] = 'comments';
+  $component['name'] = t('Comments');
+  $component['type'] = 'textarea';
+  $component['mandatory'] = 1;
+  $component['extra'] = array(
+    );
+  $component['weight'] = 1;
+  webform_component_insert($component);
+}
+
+/**
+ * Helper for rules. Save the webform response for users answering ASH 3.
+ */
+function sh_test_setup_ash_3_save_answers($user, $node) {
+  $output = sh_test_ash_3_get_answers($user, $node);
+  if (empty($output)) {
+    drupal_set_message(t('An error was encountered, no output able to be created.'));
+    return;
+  }
+  // Save the output to the user field.
+  $lang = !empty($user->language) ? $user->language : 'und';
+  $user->field_ash_3_answers[$lang][0]['value'] = $output;
+  $user->field_ash_3_answers[$lang][0]['format'] = 'wiki';
+  user_save($user);
+}
+
+/**
+ * Helper for rules. Given data, gather the quiz output.
+ */
+function sh_test_ash_3_get_answers($user, $node) {
   // Find the result ID for this test taken.
   $uid = $user->uid;
   $nid = $node->nid;
@@ -179,7 +328,7 @@ function sh_test_setup_approval_form($user, $node, $entity_created) {
   }
   if (empty($rid)) {
     drupal_set_message(t('An error was encountered, no result ID able to be found.'));
-    return;
+    return '';
   }
   // Now get the printed out set of answers.
   $questions = _quiz_get_answers($node, $rid);
@@ -192,43 +341,7 @@ function sh_test_setup_approval_form($user, $node, $entity_created) {
     $a = $question->answers[0]['answer'];
     $output .= '<h3><b>' . $q_title . '</b></h3><p><b>'. $q . '</b></p><p>' . $a . '</p><br/>';
   }
-  if (empty($output)) {
-    drupal_set_message(t('An error was encountered, no output able to be created.'));
-    return;
-  }
-  // Set the webform body
-  $entity_created->body[$entity_created->language][0]['value'] = $output;
-  $entity_created->webform['confirmation'] = t('Thank you!');
-  $entity_created->webform['confirmation_format'] = 'plain_text';
-  $entity_created->webform['submit_limit'] = 1;
-  // Save the node
-  node_save($entity_created);
-  // Set approving roles for users.
-  $approving = variable_get('sh_test_approving_roles', array());
-  $record = db_query('DELETE FROM {webform_roles} WHERE nid = :nid', array(':nid' => $entity_created->nid));
-  foreach ($approving as $role) {
-    if ($role) {
-      db_insert('webform_roles')->fields(array('nid' => $entity_created->nid, 'rid' => $role))->execute();
-    }
-  }
-  // Create the standard webform field for approval.
-  $component = array();
-  $component['nid'] = $entity_created->nid;
-  $component['pid'] = 0;
-  $component['form_key'] = 'approval';
-  $component['name'] = t('Approve');
-  $component['type'] = 'select';
-  $component['mandatory'] = 1;
-  $component['extra'] = array(
-    'description' => '',
-    'items' => 'approve|' .  t('Yes. I approve this SH candidate to become a full SH.'),
-    'multiple' => '1',
-    'aslist' => '0',
-    );
-  $component['weight'] = 0;
-  // Include the webform module that allows components to be created.
-  module_load_include('inc', 'webform', 'includes/webform.components');
-  webform_component_insert($component);
+  return $output;
 }
 
 /**
@@ -238,16 +351,45 @@ function sh_test_check_ash_3_approvals($nid) {
   $results = db_query("SELECT wd.data FROM {webform_submitted_data} wd " .
     "WHERE wd.nid = :nid " .
     "AND wd.cid = 1", // There is only the one form element.
-    array(
-      ':nid' => $nid,
-    ));
+    array(':nid' => $nid,));
   $count = 0;
   foreach ($results as $result) {
     if ($result->data == 'approve') {
       $count++;
     }
   }
+  // Have at least three people voted?
   if ($count > variable_get('sh_test_approval_min', '3')) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+/**
+ * Helper for rules. Check if all possible users have weighed in.
+ */
+function sh_test_check_ash_3_responses($nid) {
+  $results = db_query("SELECT wd.data FROM {webform_submitted_data} wd " .
+    "WHERE wd.nid = :nid " .
+    "AND wd.cid = 1", // There is only the one form element.
+    array(':nid' => $nid,));
+  $count = 0;
+  foreach ($results as $result) {
+    $count++;
+  }
+  // Total eligable SH evals.
+  $approving = user_roles(FALSE, 'approve sh test');
+  $approvers = array();
+  foreach ($approving as $role) {
+    if ($role) {
+      $users = db_query('SELECT uid FROM {user_roles} WHERE rid = :rid', array('rid' => $role));
+      foreach ($users as $user) {
+        $approvers[$user->uid] = $user->uid;
+      }
+    }
+  }
+  // Has everyone that could vote, voted?
+  if ($count == count($approvers)) {
     return TRUE;
   }
   return FALSE;

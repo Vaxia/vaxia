@@ -1,0 +1,108 @@
+/* Flap CSS. */
+.jsPulloutFlap{
+  height: 30px;
+  position: fixed;
+  background: #555;
+  left:0em;
+  padding:2px 10px;
+  padding-top:5px;
+  border:#EEE solid 1px;
+  border-top:0px;
+  width:80px;
+  text-align:center;
+  opacity:0.8;
+}
+.jsPulloutFlap a {
+  text-decoration:none;
+  font-weight:bold;
+  white-space:nowrap;
+  display:block;
+  width:100%;
+  height:100%;
+}
+.isActive{
+}
+.rotate {
+  /* Safari */
+  -webkit-transform:rotate(-90deg);
+  -webkit-transform-origin-x: 0px;
+  -webkit-transform-origin-y: 0px;
+  /* Firefox */
+  -moz-transform:rotate(-90deg);
+  -moz-transform-origin:0px 0;
+  /* IE */
+  -ms-transform: rotate(-90deg);
+  /* Opera */
+  -o-transform: rotate(-90deg);
+  -o-transform-origin:0px 0px; 
+  /* Internet Explorer */
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+  float:left;
+}
+
+/* Panel CSS. */
+.jsPulloutContent{
+  width: 300px;
+  background: #555;
+  background: #555;
+  border:#EEE 1px solid;
+  position:absolute;
+  left:1em;
+  top:160px;
+  padding:0.5em;
+  border-radius:10px;
+  -moz-border-radius:10px;
+  -webkit-border-radius:10px;
+  display:block;
+  z-index:10;
+}
+.isClosed{
+  display:none;
+}
+
+/* Specific CSS. */
+#target_extruderBarNav fieldset, #target_extruderBarDesc fieldset{
+  border: 0px;
+  padding:0px;
+  margin:0px;
+}
+#target_extruderBarNav fieldset legend, #target_extruderBarDesc fieldset legend{
+  display:none;
+}
+#target_extruderBarNav .field-name-field-parent, #target_extruderBarNav .field-name-field-children{
+  float:none;
+  clear:none;
+  padding:0;
+  margin:0;
+  width:100%;
+}
+#target_extruderBarNav .field-name-field-parent .field-items{
+  margin-left:20px;
+  margin-bottom:0.5em;
+}
+#target_extruderBarDesc{
+  width: 600px;
+}
+#target_extruderBarHead #navigation{
+  height:auto;
+  text-align:left;
+  overflow:hidden;
+}
+#target_extruderBarHead #navigation #main-menu{
+  float:none;
+  top:0;
+}
+#target_extruderBarHead #navigation ul.links li, #target_extruderBarHead #navigation ul.menu li {
+  float:none;
+  list-style-type:disc;
+}
+#target_extruderBarHead ul.inline{
+  display:block;
+}
+#target_extruderBarHead li{
+  float:none;
+  display:block;
+}
+#target_extruderBarHead #navigation a{
+  text-align:left;
+}

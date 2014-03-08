@@ -43,6 +43,10 @@ function vaxia_permission() {
       'title' => t('edit private SH notes'),
       'description' => t('Edit private SH notes.'),
     ),
+    'admin vaxia settings' => array(
+      'title' => t('admin vaxia settings'),
+      'description' => t('Administrate Vaxia settings.'),
+    ),
   );
 }
 
@@ -55,6 +59,16 @@ function vaxia_menu() {
     'type' => MENU_CALLBACK,
     'access arguments' => array('access content'),
     'page callback' => '_vaxia_transfer_xp_autocomplete',
+  );
+  // Menu items that are basically just menu blocks.
+  $items['admin/vaxia'] = array(
+    'title' => 'Vaxia',
+    'description' => 'Administer Vaxia settings',
+    'position' => 'right',
+    'page callback' => 'system_admin_menu_block_page',
+    'access arguments' => array('admin vaxia settings'),
+    'file' => 'system.admin.inc',
+    'file path' => drupal_get_path('module', 'system'),
   );
   return $items;
 }
@@ -123,7 +137,7 @@ function vaxia_cron() {
  * Cron job for cleaning up useless dblog entries.
  */
 function _vaxia_cron_dblog_cleanup() {
-  if (module_exists('dblog')) {
+  if (module_exists('dblog') && variable_get('vaxia_clean_dblog', TRUE)) {
     // Severity levels to remove.
     $severity_levels = array(
 //    WATCHDOG_EMERGENCY,
@@ -187,9 +201,10 @@ function vaxia_node_view($node, $view_mode, $langcode) {
     }
   }
 
-  // If node is an RPG chatroom, add the js for additional behaviors for Vaxia specifically.
+  // If node is an RPG chatroom, add the js, css for additional behaviors for Vaxia specifically.
   if ($node->type == 'rpg_chatroom') {
-    drupal_add_js( drupal_get_path('module', 'vaxia') . '/js/vaxia.js' );
+    drupal_add_js(drupal_get_path('module', 'vaxia') . '/js/vaxiaPullouts.js');
+    drupal_add_css(drupal_get_path('module', 'vaxia') . '/css/vaxiaPullouts.css');
   }
 }
 
@@ -521,8 +536,8 @@ function _vaxia_comment_add_kxp_submit($form, $form_state) {
       if ($character->field_is_npc[$character->language][0]['value'] == 1 
         || $character->field_is_open_npc[$character->language][0]['value'] == 1) {
         global $user;
-        $sh_characters = _vaxia_get_SH_characters($user->uid);
-        foreach ($sh_characters as $nid => $sh_character) {
+        $sh_character = _vaxia_get_SH_characters($user->uid);
+        if (!empty($sh_character)) {
           $character = $sh_character;
         }
       }
@@ -559,13 +574,86 @@ function vaxia_form_comment_form_alter(array &$form, array &$form_state) {
  * Helper function, retrieve SH information from player.
  */
 function _vaxia_get_SH_characters($uid) {
-  $character_nids = array();
-  $nodes = node_load_multiple(array(), array('type' => 'character_sheet', 'uid' => $uid));
-  foreach ($nodes as $nid => $node) {
-    if (isset($node->field_is_storyteller[$node->language][0]['value']) &&
-      $node->field_is_storyteller[$node->language][0]['value'] == 1) {
-      $character_nids[$nid] = $node;
-    }
+  static $SH_characters;
+  if (!empty($SH_characters[$uid])) {
+    return $SH_characters[$uid];
   }
-  return $character_nids;
+  // Not in the cache? Look it up from the user.
+  $user = user_load($uid);
+  if (!empty($user->field_storyhost_character[$user->language][0]['value'])) {
+    $SH_characters[$uid] = node_load( $user->field_storyhost_character[$user->language][0]['value'] );
+    return $SH_characters[$uid];
+  }
+  // Not on the user either? Check nodes - and worse comes to worse, add it to the user.
+  if (empty($user->field_storyhost_character[$user->language][0]['value'])) {
+    $nodes = node_load_multiple(array(), array('type' => 'character_sheet', 'uid' => $uid));
+    foreach ($nodes as $nid => $node) {
+	  if (isset($node->field_is_storyteller[$node->language][0]['value']) &&
+	    $node->field_is_storyteller[$node->language][0]['value'] == 1) {
+	    $SH_characters[$uid] = $node;
+	  }
+    }
+    // Save this value so we don't have to dig this deep again.
+    $user->field_storyhost_character[$user->language][0]['value'] = $SH_characters[$uid];
+    user_save($user);
+    return $SH_characters[$uid];
+  }
+  // Still nothing? Ok - maybe there's actually nothing there. Set and return;
+  $SH_characters[$uid] = array();
+  return $SH_characters[$uid];
+}
+
+/**
+ * Views helper function.
+ */
+function _vaxia_get_character_ref_types($nid) {
+  global $user;
+  $node = node_load($nid);
+  $lang = $node->language;
+  $field_is_open_npc = isset($node->field_is_open_npc[$lang][0]['value']) ?
+    $node->field_is_open_npc[$lang][0]['value'] : 0;
+  $field_is_npc = isset($node->field_is_npc[$lang][0]['value']) ?
+    $node->field_is_npc[$lang][0]['value'] : 0;
+  if (!empty($field_is_open_npc) && $field_is_open_npc == 1) {
+    return 'Open NPCs';
+  }
+  if (!empty($field_is_npc) && $field_is_npc == 1) {
+    return 'Personal NPCs';
+  }
+  return 'Characters';
+}
+
+/**
+ * Blocks helper function.
+ */
+function _vaxia_piggybank($average_cost, $in_account, $start_date) {
+  $end_date = 'now';
+  $diff = abs(strtotime($end_date) - strtotime($start_date));
+  $years = floor($diff / (365*60*60*24));
+  $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
+  $estimated_left = $in_account - ($months * $average_cost);
+  $output = '';
+  $output .= '<div style="text-align:center;">Account info last updated: ' . $start_date . '</div>';
+  if ($estimated_left >= $average_cost) {
+    $output .= '<div style="text-align:center;">Estimated in account: $' . $estimated_left . '</div>';
+    $estimated_months_left = floor($estimated_left / $average_cost);
+    $output .= '<div style="text-align:center;">Estimated months left: ' . $estimated_months_left . '</div>';
+  }
+  else {
+    $output .= '<div style="text-align:center;">Vaxia\'s donation account needs topping off. We have less than a month of funding left.</div>';
+  }
+  $output .= '<div style="text-align:center;"><br />' .
+    '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">' .
+    '<input type="hidden" name="cmd" value="_donations">' .
+    '<input type="hidden" name="business" value="tia@tia-marie.com">' .
+    '<input type="hidden" name="lc" value="US">' .
+    '<input type="hidden" name="item_name" value="Vaxia Donation">' .
+    '<input type="hidden" name="no_note" value="0">' .
+    '<input type="hidden" name="currency_code" value="USD">' .
+    '<input type="hidden" name="bn" value="PP-DonationsBF:btn_donateCC_LG.gif:NonHostedGuest">' .
+    '<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">' .
+    '<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">' .
+    '</form>' .
+    '</div>';
+  return $output;
 }

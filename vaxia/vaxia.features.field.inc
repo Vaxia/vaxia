@@ -1712,8 +1712,10 @@ function vaxia_field_default_fields() {
       'bundle' => 'character_sheet',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => 'All characters get three languages at native proficiency by default on starting. List the three you\'re selecting here.<br>
-<br>
+      'description' => 'All characters get three languages at native proficiency by default on starting. List the three you\'re selecting here.<ul>
+<li><a href="http://vaxia.org/wiki/vaxia/popular-culture/language/world-languages">Languages of Vaxia</a></li>
+<li><a href="http://vaxia.org/wiki/sirian/popular-culture/languages">Languages of Sirian</a></li>
+</ul>
 Additional languages may be added through RP at the following # of posts indicating practice:<br>
 post worth 1XP - learner, you can recognize the language written or heard<br>
 post worth 2XP - basic understanding, not fluent<br>
@@ -1921,93 +1923,6 @@ Posting does not have to occur all at once, so feel free to spread it out across
         'settings' => array(),
         'type' => 'number',
         'weight' => '15',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-character_sheet-field_npcs'.
-  $fields['node-character_sheet-field_npcs'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '-1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_npcs',
-      'field_permissions' => array(
-        'type' => '1',
-      ),
-      'foreign keys' => array(
-        'nid' => array(
-          'columns' => array(
-            'nid' => 'nid',
-          ),
-          'table' => 'node',
-        ),
-      ),
-      'indexes' => array(
-        'nid' => array(
-          0 => 'nid',
-        ),
-      ),
-      'locked' => '0',
-      'module' => 'node_reference',
-      'settings' => array(
-        'referenceable_types' => array(
-          'article' => 0,
-          'artwork' => 0,
-          'character_sheet' => 0,
-          'forum' => 0,
-          'items' => 0,
-          'npc' => 'npc',
-          'page' => 0,
-          'rpg_chatroom' => 0,
-        ),
-        'view' => array(
-          'args' => array(),
-          'display_name' => 'character_npcs_ref',
-          'view_name' => 'character_npcs',
-        ),
-      ),
-      'translatable' => '0',
-      'type' => 'node_reference',
-    ),
-    'field_instance' => array(
-      'bundle' => 'character_sheet',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'hidden',
-          'module' => 'node_reference',
-          'settings' => array(),
-          'type' => 'node_reference_default',
-          'weight' => '28',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_npcs',
-      'label' => 'NPC',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'node_reference',
-        'settings' => array(
-          'autocomplete_match' => 'contains',
-          'autocomplete_path' => 'node_reference/autocomplete',
-          'size' => '60',
-        ),
-        'type' => 'node_reference_autocomplete',
-        'weight' => '25',
       ),
     ),
   );
@@ -2540,7 +2455,11 @@ Posting does not have to occur all at once, so feel free to spread it out across
         ),
       ),
       'deleted' => '0',
-      'description' => 'If the race you want to play is not listed here, select \'Other\'. Other races *do* require oversight and approval from the World department. It is strongly recommended that new players start play as one of the pre-approved races instead to get familiar with the setting and community first.',
+      'description' => 'If the race you want to play is not listed here, select \'Other\'. Other races *do* require oversight and approval from the World department. It is strongly recommended that new players start play as one of the pre-approved races instead to get familiar with the setting and community first.
+<ul>
+<li><a href="http://vaxia.org/wiki/vaxia/races">Races of Vaxia</a></li>
+<li><a href="http://vaxia.org/wiki/sirian/races">Races of Sirian</a></li>
+</ul>',
       'display' => array(
         'default' => array(
           'label' => 'inline',
@@ -3298,8 +3217,10 @@ Posting does not have to occur all at once, so feel free to spread it out across
   // Included for use with string extractors like potx.
   t('Additional property');
   t('Agility');
-  t('All characters get three languages at native proficiency by default on starting. List the three you\'re selecting here.<br>
-<br>
+  t('All characters get three languages at native proficiency by default on starting. List the three you\'re selecting here.<ul>
+<li><a href="http://vaxia.org/wiki/vaxia/popular-culture/language/world-languages">Languages of Vaxia</a></li>
+<li><a href="http://vaxia.org/wiki/sirian/popular-culture/languages">Languages of Sirian</a></li>
+</ul>
 Additional languages may be added through RP at the following # of posts indicating practice:<br>
 post worth 1XP - learner, you can recognize the language written or heard<br>
 post worth 2XP - basic understanding, not fluent<br>
@@ -3330,7 +3251,11 @@ Posting does not have to occur all at once, so feel free to spread it out across
   t('Economy');
   t('Endurance');
   t('Health');
-  t('If the race you want to play is not listed here, select \'Other\'. Other races *do* require oversight and approval from the World department. It is strongly recommended that new players start play as one of the pre-approved races instead to get familiar with the setting and community first.');
+  t('If the race you want to play is not listed here, select \'Other\'. Other races *do* require oversight and approval from the World department. It is strongly recommended that new players start play as one of the pre-approved races instead to get familiar with the setting and community first.
+<ul>
+<li><a href="http://vaxia.org/wiki/vaxia/races">Races of Vaxia</a></li>
+<li><a href="http://vaxia.org/wiki/sirian/races">Races of Sirian</a></li>
+</ul>');
   t('Intelligence');
   t('Items');
   t('Items are added to characters from the Item form, not the Character Sheet form. If you need to add an item to this character, go to the item to set the IC owner.');

@@ -98,6 +98,9 @@ function rpg_site_staff_strongarm() {
         'title' => array(
           'weight' => '0',
         ),
+        'path' => array(
+          'weight' => '9',
+        ),
       ),
       'display' => array(),
     ),

@@ -9,7 +9,11 @@
  */
 function room_cleanup_permission() {
   return array(
-    'administer room cleanup'=> array(
+    'make room from wiki' => array(
+      'title' => t('make room from wiki'),
+      'description' => t('Make room from wiki.'),
+    ),
+    'administer room cleanup' => array(
       'title' => t('administer room cleanup'),
       'description' => t('Administer room cleanup.'),
     ),
@@ -21,38 +25,94 @@ function room_cleanup_permission() {
  */
 function room_cleanup_cron() {
   if (variable_get('room_cleanup_cron',  FALSE)) {
-    _room_cleanup_rooms();
+    $last_run = variable_get('room_cleanup_crontime', 0);
+    $yesterday = strtotime('-1 day');
+    if ($last_run < $yesterday) {
+      variable_set('room_cleanup_crontime', strtotime('now'));
+      watchdog('room_cleanup', t('Ran room cleanup cron.'));
+      return _room_cleanup_rooms();
+    }
   }
   return;
+}
+
+/**
+ * Implements hook_node_view().
+ */
+function room_cleanup_node_view($node, $view_mode, $langcode) {
+  // If node is a wiki page, give a button to convert to a room.
+  if ($node->type == 'wiki_page' && $view_mode == 'full' && node_access('create', $node) && user_access('make room from wiki')) {
+    $node->content['room_cleanup_make_room_from_wiki'] = array(
+      '#markup' => drupal_render(drupal_get_form('room_cleanup_make_room_from_wiki', $node)),
+      '#weight' => 1000,
+    );
+  }
+
+}
+
+/**
+ * Form handler.
+ */
+function room_cleanup_make_room_from_wiki($form, &$form_state, $node) {
+  $form = array();
+  if ($node->type == 'wiki_page') {
+    $form['wiki_nid'] = array(
+      '#type' => 'hidden',
+      '#value' => $node->nid,
+    );
+    $form['room_cleanup_make_room_submit'] = array(
+      '#type' => 'submit',
+      '#value' => t('Make a Room from this article'),
+    );
+  }
+  return $form;
+}
+
+/**
+ * Form submit handler.
+ */
+function room_cleanup_make_room_from_wiki_submit($form, &$form_state) {
+  if (empty($form_state['values']['wiki_nid'])) {
+    drupal_set_message(t('Unable to identify wiki article to create this chatroom.'));
+    return; // Bail out if wiki isn't given.
+  }
+  $wiki = node_load($form_state['values']['wiki_nid']);
+  // Create new room automatically, then go to edit it.
+  global $user;  
+  $title_breadcrumb = explode('/', $wiki->title);
+  $room->title = trim(array_pop($title_breadcrumb));
+  $room->type = 'rpg_chatroom';
+  $room->language = 'und';
+  $room->uid = $user->uid;
+  $realm = 'Vaxia';
+  if (strpos($wiki->title, 'Sirian') !== FALSE) {
+    $realm = 'Sirian';
+  }
+  $room->field_realm[$room->language][0]['value'] = $realm;
+  $parent_nodes = node_load_multiple(array(), array('title' => trim(array_pop($title_breadcrumb))));
+  foreach ($parent_nodes as $nid => $this_node) {
+    $parent_room = $this_node;
+  }
+  if (!empty($parent_room)) {
+    drupal_set_message(t('Found suggested parent room :title.', array(':title' => $parent_room->title)));
+    $room->field_parent[$room->language][0]['nid'] = $parent_room->nid;
+  }
+  $room->field_wiki_source[$room->language][0]['nid'] = $wiki->nid;
+  node_save($room);
+  drupal_goto('node/'. $room->nid .'/edit');
 }
 
 /**
  * Implements hook_menu().
  */
 function room_cleanup_menu() {
-  $items['admin/config/system/room_cleanup'] = array(
+  $items['admin/vaxia/room_cleanup'] = array(
     'title' => 'Room cleanup',
     'description' => 'Cleanup rooms empty of comments.',
     'type' => MENU_NORMAL_ITEM,
     'access arguments' => array('administer room cleanup'),
     'page callback' => 'drupal_get_form',
     'page arguments' => array('room_cleanup_admin_form'),
-  );
-  $items['admin/config/system/room_cleanup/settings'] = array(
-    'title' => 'Do cleanup',
-    'description' => 'Cleanup rooms empty of comments.',
-    'type' => MENU_DEFAULT_LOCAL_TASK,
-    'access arguments' => array('administer room cleanup'),
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('room_cleanup_admin_form'),
-  );
-  $items['admin/config/system/room_cleanup/cleanup'] = array(
-    'title' => 'Cleanup rooms',
-    'description' => 'Cleanup rooms that are not currently being used.',
-    'type' => MENU_LOCAL_TASK,
-    'access arguments' => array('administer room cleanup'),
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('room_cleanup_form'),
   );
   return $items;
 }
@@ -69,117 +129,27 @@ function room_cleanup_admin_form($form, &$form_state) {
     '#default_value' => variable_get('room_cleanup_date', '12 months'),
   );
   $form['room_cleanup_cron'] = array(
-    '#title' => t('Enable cron cleanup'),
+    '#title' => t('Enable room cleanup cron'),
     '#type' => 'checkbox',
     '#default_value' => variable_get('room_cleanup_cron',  FALSE),
   );
-  $form['move_to_wiki'] = array(
-    '#type' => 'submit',
-    '#value' => 'MOVE ROOMS TO WIKI',
-    '#submit' => array('_room_cleanup_move_to_wiki'),
-  );
-  return system_settings_form($form);
-}
-
-//*** This code will be removed at some point.
-function _room_cleanup_move_to_wiki() {
-  $batch = array(
-	  'title' => t('Converting rooms to wiki.'),
-	  'operations' => array(),
-	  'finished' => 'my_finished_callback',
-	  'file' => 'path_to_file_containing_myfunctions',
-  );
-  // HARD CODED.
-  // WE WILL NOT BE DOING THIS MORE THAN ONCE EVER.
-  $vaxia_wiki_root_nid = node_load('6270'); // The vaxia Locations page.
-  $vaxia_location_root_nid = '6069'; // The vaxian setting room.
-  $batch = _room_cleanup_move_to_wiki_recusion($batch, $vaxia_wiki_root_nid->title, $vaxia_location_root_nid);
-  $sirian_wiki_root_nid = node_load('6861'); // The sirian Locations page.
-  $sirian_location_root_nid = '6070'; // The sirian setting room.
-  $batch = _room_cleanup_move_to_wiki_recusion($batch, $sirian_wiki_root_nid->title, $sirian_location_root_nid);
-  batch_set($batch);
-}
-
-function _room_cleanup_move_to_wiki_recusion($batch, $title_root, $location_root) {
-  set_time_limit(60); // Set for each loop.
-  // Get all location children.
-  $children = db_query('SELECT p.entity_id FROM {field_data_field_parent} p ' .
-    'LEFT JOIN {node} n ON p.entity_id = n.nid ' .
-    'WHERE n.status = 1 AND p.field_parent_nid = :nid', array(':nid' => $location_root));
-  foreach ($children as $child) {
-    $child_location = $child->entity_id;
-    // Get the info we need.
-    $title = db_query('SELECT title FROM {node} WHERE nid = :nid', array(':nid' => $child_location))->fetchColumn();
-    // Check if the target wiki name already exists, if so - AMEND don't create the room.
-    $found_targets = db_query('SELECT nid FROM {node} WHERE type = \'wiki_page\' AND title LIKE \'%Locations%' . str_replace("'", "\'", $title) . '\'');
-    $child_wiki = '';
-    foreach ($found_targets as $found_target) {
-      $child_wiki = $found_target->nid;
-    }
-    $new_title = trim($title_root . '/' . $title);
-    $batch['operations'][] = array('_convert_room_to_wiki', array($new_title, $child_location, $child_wiki));
-    // AND HERE WE DO RECUSION FOR CHILDREN OF THIS ROOM.
-    $batch = _room_cleanup_move_to_wiki_recusion($batch, $new_title, $child_location);
-  }
-  return $batch;
-  // And return to the call above this one.
-}
-
-function _convert_room_to_wiki($new_title, $child_location, $child_wiki) {
-  set_time_limit(60); // Set for each loop.
-  global $user;
-  $child_location = node_load($child_location);
-    if (!empty($child_wiki)) {
-      $child_wiki = node_load($child_wiki);
-      if (strpos($child_wiki->body[$child_wiki->language][0]['value'], 'This location file was updated from room data') === FALSE) {
-        // We found a wiki page to target. AMEND the text.
-        $child_wiki->title = $new_title; // Move to the new location.
-        $child_wiki->body[$child_wiki->language][0]['value'] = $child_wiki->body[$child_wiki->language][0]['value'] . "\n\n" .
-          $child_location->body[$child_location->language][0]['value'] . "\n\n" .
-          'This location file was recently updated from room data on ' . date('m-d-Y') . '. It has not been checked for accuracy yet. ' .
-          'Please ask World (make a forum post) to confirm information shown on this page before relying on it.';
-      }
-    }
-    else {
-      // No target, this is a new node to save.
-      $child_wiki->title = $new_title;
-      $child_wiki->type = 'wiki_page';
-      $child_wiki->created = strtotime('now');
-      $child_wiki->uid = $user->uid;
-      $child_wiki->language = 'und';
-      $child_wiki->body[$child_wiki->language][0]['value'] = $child_location->body[$child_location->language][0]['value'] . "\n\n" .
-        'This location file was recently updated from room data on ' . date('m-d-Y') . '. It has not been checked for accuracy yet. ' .
-        'Please ask World (make a forum post) to confirm information shown on this page before relying on it.';
-      $child_wiki->body[$child_wiki->language][0]['format'] = 'wiki';
-    }
-    node_save($child_wiki);
-    // And now save that wiki link into the child location information.
-    $child_location->field_wiki_source[$child_location->language][0]['nid'] = $child_wiki->nid;
-    node_save($child_location);
-}
-//*** This code will be removed at some point.
-
-/**
- * Menu callback for admin page.
- */
-function room_cleanup_form($form, &$form_state) {
-  $form = array();
-  $date = variable_get('room_cleanup_last_run', 'never');
+  $date = variable_get('room_cleanup_cron', '');
   $form['room_cleanup_last_run'] = array(
-    '#markup' => '<div>' . t('Room cleanup last run') . ': ' . $date . '</div>',
+    '#markup' => '<div>' . t('Room cleanup last run') . ': ' . format_date($date) . '</div>',
   );
   $form['cleanup'] = array(
     '#type' => 'submit',
     '#value' => t('Cleanup Rooms'),
+    '#submit' => array('_room_cleanup_admin_form_submit'),
   );
-  return $form;
+  return system_settings_form($form);
 }
 
 /**
- * Submit handler for form.
+ * Submit handler.
  */
-function room_cleanup_form_submit($form, &$form_state) {
-  return _room_cleanup_rooms();
+function _room_cleanup_admin_form_submit($form, &$form_state) {
+  _room_cleanup_rooms();
 }
 
 /**
@@ -220,10 +190,9 @@ function _room_cleanup_rooms() {
   // And we repeat this until we have a pass where we don't move any more rooms over.
   $last_number_of_rooms = 0;
   $number_of_rooms = count($rooms_not_cleanup);
-  while ($last_number_of_rooms != $number_of_rooms) {
+  while ($last_number_of_rooms != $number_of_rooms || !empty($rooms_for_cleanup)) {
     // Set our time out for each loop...
     set_time_limit(600);
-    drupal_set_message('Loop start: #last number rooms ' .$last_number_of_rooms. ' #cleanups '.$number_of_rooms);
     // Get the parents of all rooms that have comments.
     // Since their children have comments we're going to add them to the set
     // of rooms with comments so we don't destroy the tree.
@@ -241,7 +210,7 @@ function _room_cleanup_rooms() {
       $rooms_not_cleanup[] = $node->field_parent_nid;
       $count++;
     }
-    drupal_set_message('Found ' . $count . ' parents.');
+    drupal_set_message('Found ' . count($rooms_for_cleanup) . ' rooms that might be cleaned up. Found ' . $count . ' parents.');
     // Cleanup the list.
     $rooms_not_cleanup = array_unique($rooms_not_cleanup);
     // Remove any newly found parents from the list of rooms we can cleanup.
@@ -268,7 +237,6 @@ function _room_cleanup_rooms() {
 	  $cleaned_up_rooms++;
 	}
   }
-  watchdog('room_cleanup', 'Cleaned up ' . $cleaned_up_rooms . ' rooms.');
   drupal_set_message('Cleaned up ' . $cleaned_up_rooms . ' rooms.');
   // Save the last time we ran this.
   variable_set('room_cleanup_last_run', date('m/d/Y H:i:s'));
