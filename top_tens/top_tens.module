@@ -5,3 +5,26 @@
  */
 
 include_once 'top_tens.features.inc';
+
+/**
+ * Helper function for views.
+ */
+function _top_tens_rename_type($type) {
+  if ($type == 'spent_xp') {
+    return 'hxp';
+  }
+  return $type;
+}
+
+/**
+ * Helper function for views.
+ */
+function _top_tens_filter_type_already_displayed($type, &$static) {
+  $displayed = isset($static['displayed'][$type]) ? $static['displayed'][$type] : 1;
+  if ($displayed < 11) {
+    $displayed++;
+    $static['displayed'][$type] = $displayed;
+    return FALSE;
+  }
+  return TRUE;
+}
