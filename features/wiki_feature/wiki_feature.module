@@ -735,3 +735,14 @@ function _wiki_feature_get_child_paths($path) {
   // And filter to just unique results.
   return array_unique($child_links);
 }
+
+/**
+ * Helper function for views.
+ */
+function _wiki_feature_limit_categories_by_nodecount($tid) {
+  $count = count( taxonomy_select_nodes($tid, FALSE) );
+  if ($count < 5) {
+    return TRUE;
+  }
+  return FALSE;
+}
