@@ -382,10 +382,27 @@ function _rpg_site_staff_create_content_count_value($uid) {
   return $value;
 }
 
+
 /**
  * Helper function for views.
  */
-function _rpg_site_staff_create_content_count_display($value) {
+function _rpg_site_staff_revise_content_count_value($uid) {
+  $results = db_query('SELECT COUNT(r.nid) AS count, n.type ' .
+    'FROM {node_revision} r ' .
+    'LEFT JOIN {node} n ON n.nid = r.nid ' .
+    'WHERE r.uid = :uid GROUP BY n.type',
+    array(':uid' => $uid));
+  $value = array();
+  foreach ($results as $result) {
+    $value[$result->type] = $result->count;
+  }
+  return $value;
+}
+
+/**
+ * Helper function for views.
+ */
+function _rpg_site_staff_content_count_display($value) {
   $output = '<ul>';
   foreach ($value as $type => $count) {
     if (in_array($type, array('wiki_page', 'session_report', ) )) {
