@@ -21,6 +21,7 @@
            t = setTimeout(addCssToPins, 3000);
         });
       });
-
+    };
   };
+
 })(jQuery);
