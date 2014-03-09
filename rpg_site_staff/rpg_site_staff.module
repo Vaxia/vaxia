@@ -52,10 +52,17 @@ function _rpg_site_staff_admin_settings($form, &$form_state) {
     '#collapsed' => TRUE,
   );
   $form['elections']['rpg_site_staff_election_day'] = array(
-    '#title' => t('Election day'),
-    '#description' => t('Set the election day for automatic elections.'),
+    '#title' => t('Last election day'),
+    '#description' => t('The last-held election day for calculating further elections.'),
     '#type' => 'textfield',
-    '#default_value' => variable_get('rpg_site_staff_election_day', 'May 1st'),
+    '#disabled' => TRUE,
+    '#default_value' => variable_get('rpg_site_staff_election_day', '5/1/2013'),
+  );
+  $form['elections']['rpg_site_staff_rate'] = array(
+    '#title' => t('Election rate'),
+    '#description' => t('How often to hold elections. Use timeframe formats strtotime will recognize.'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('rpg_site_staff_rate', '1 year'),
   );
   $form['elections']['rpg_site_staff_run_role'] = array(
     '#title' => t('Election run role'),
@@ -253,10 +260,17 @@ function rpg_site_staff_node_view($node, $view_mode, $langcode) {
  * Helper for rules. Check if today is election day.
  */
 function vaxia_check_election_day() {
-  $day = variable_get('rpg_site_staff_election_day', 'May 1st');
-  $day = date('m-d', strtotime($day . ' 1980'));
-  $today = date('m-d', strtotime('now'));
-  if ($today == $day) {
+  // Grab the info about the last election and when / how to run it.
+  $last_held = variable_get('rpg_site_staff_election_day', '5/1/2013');
+  $rate = variable_get('rpg_site_staff_rate', '1 year');
+  // Based on the last election, get the next election in a standard format.
+  $last_election = strtotime($last_held);
+  $next_election = date('m/d/Y', strtotime($rate, $last_election));
+  // Calculate today, see if it's the same values in a standard format.
+  $today = date('m/d/Y', strtotime('now'));
+  // Do they match? Mark today in the variables.
+  if ($today == $next_election) {
+    variable_set('rpg_site_staff_election_day', date('m/d/Y'));
     return TRUE;
   }
   return FALSE;
