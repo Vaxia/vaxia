@@ -28,19 +28,26 @@ function vaxia_filter_default_formats() {
         ),
       ),
       'spoiler' => array(
-        'weight' => '-47',
+        'weight' => '-48',
         'status' => '1',
         'settings' => array(),
       ),
       'bbcode' => array(
-        'weight' => '-46',
+        'weight' => '-47',
         'status' => '1',
         'settings' => array(
-          'bbcode_make_links' => '1',
+          'bbcode_make_links' => '0',
           'bbcode_filter_nofollow' => '1',
           'bbcode_encode_mailto' => '1',
           'bbcode_paragraph_breaks' => '2',
           'bbcode_debug' => '0',
+        ),
+      ),
+      'filter_url' => array(
+        'weight' => '-46',
+        'status' => '1',
+        'settings' => array(
+          'filter_url_length' => '72',
         ),
       ),
       'filter_htmlcorrector' => array(
