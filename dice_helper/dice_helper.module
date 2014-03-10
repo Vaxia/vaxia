@@ -45,7 +45,7 @@ function dice_helper_menu() {
  */
 function _dice_helper_dice_proof() {
   // Given dice patterns in the past, provide a page to analyze the dice rolled to date and calculate results as proof.
-  $dice_rolls = db_query('SELECT roll_result FROM {dice_roller} WHERE roll_command LIKE :rolls', array(':rolls' => '1d100%'));
+  $dice_rolls = db_query('SELECT roll_result FROM {dice_roller} WHERE roll_command LIKE :rolls LIMIT 0, 1000', array(':rolls' => '1d100%'));
   $roll_set = array();
   $count = 0;
   $average = 0;
