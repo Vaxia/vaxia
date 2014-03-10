@@ -35,6 +35,10 @@ function npcs_permission() {
       'title' => t('keep NPCs'),
       'description' => t('Keep NPCs from being picked up by others.'),
     ),
+    'permanent NPCs' => array(
+      'title' => t('permanent NPCs'),
+      'description' => t('NPCs held by these roles will not be auto-taken back.'),
+    ),
     'convert NPC to wiki page' => array(
       'title' => t('convert NPC to wiki page'),
       'description' => t('Convert NPC to wiki page.'),
@@ -223,6 +227,10 @@ function _vaxia_cron_pullback_npcs() {
  */
 function _npcs_return_npcs($node_data) {
   $node = node_load($node_data['nid']);
+  $owner = user_load($node->uid);
+  if (user_access('permanent NPCs', $owner)) {
+    return; // Do nothign if the owner is a permanent owner.
+  }
   if (_character_sheet_is_enabled($node)  && _character_sheet_is_playable($node) && _npcs_is_an_npc($node)) {
     if (!_npcs_can_be_claimed($node) && !_npcs_recently_approved($node)) {
       $workflow = variable_get('npcs_return_workflow', '');
