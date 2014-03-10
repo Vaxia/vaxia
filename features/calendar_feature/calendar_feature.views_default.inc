@@ -28,6 +28,10 @@ function calendar_feature_views_default_views() {
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '100';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['quantity'] = '9';
   $handler->display->display_options['style_plugin'] = 'default';
   $handler->display->display_options['row_plugin'] = 'fields';
   /* Field: Content: Title */
@@ -263,6 +267,63 @@ function calendar_feature_views_default_views() {
   $handler->display->display_options['filters']['field_when_value']['default_to_date'] = 'now';
   $handler->display->display_options['filters']['field_when_value']['year_range'] = '-0:+1';
   $handler->display->display_options['path'] = 'calendar/event_list';
+
+  /* Display: Calendar */
+  $handler = $view->new_display('page', 'Calendar', 'calendar');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Calendar';
+  $handler->display->display_options['display_description'] = 'Calendar';
+  $handler->display->display_options['defaults']['cache'] = FALSE;
+  $handler->display->display_options['cache']['type'] = 'php';
+  $handler->display->display_options['cache']['php_cache_results'] = 'return FALSE;';
+  $handler->display->display_options['cache']['php_cache_output'] = 'return FALSE;';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'fullcalendar';
+  $handler->display->display_options['style_options']['timeformat'] = '';
+  $handler->display->display_options['style_options']['editable'] = TRUE;
+  $handler->display->display_options['style_options']['fields']['date_field'] = array(
+    'field_when' => 'field_when',
+  );
+  $handler->display->display_options['style_options']['fields']['title'] = TRUE;
+  $handler->display->display_options['style_options']['fields']['date'] = TRUE;
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: When */
+  $handler->display->display_options['fields']['field_when']['id'] = 'field_when';
+  $handler->display->display_options['fields']['field_when']['table'] = 'field_data_field_when';
+  $handler->display->display_options['fields']['field_when']['field'] = 'field_when';
+  $handler->display->display_options['fields']['field_when']['label'] = '';
+  $handler->display->display_options['fields']['field_when']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_when']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_when']['settings'] = array(
+    'format_type' => 'just_the_time_per_zone',
+    'fromto' => 'both',
+    'multiple_number' => '',
+    'multiple_from' => '',
+    'multiple_to' => '',
+    'show_repeat_rule' => 'show',
+  );
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['title']['alter']['text'] = '[title] ([field_when])';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
+  $handler->display->display_options['path'] = 'calendar';
+  $handler->display->display_options['menu']['type'] = 'normal';
+  $handler->display->display_options['menu']['title'] = 'Calendar';
+  $handler->display->display_options['menu']['description'] = 'Calendar';
+  $handler->display->display_options['menu']['weight'] = '0';
+  $handler->display->display_options['menu']['name'] = 'main-menu';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
   $export['calendar_feed'] = $view;
 
   return $export;

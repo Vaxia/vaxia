@@ -33,7 +33,7 @@ function wiki_feature_filter_default_formats() {
         'settings' => array(
           'bbcode_make_links' => '1',
           'bbcode_filter_nofollow' => '1',
-          'bbcode_encode_mailto' => '1',
+          'bbcode_encode_mailto' => '0',
           'bbcode_paragraph_breaks' => '2',
           'bbcode_debug' => '0',
         ),
