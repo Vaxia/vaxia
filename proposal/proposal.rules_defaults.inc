@@ -39,6 +39,7 @@ function proposal_default_rules_configuration() {
   $items['rules_proposal_reciept'] = entity_import('rules_config', '{ "rules_proposal_reciept" : {
       "LABEL" : "Proposal receipt",
       "PLUGIN" : "reaction rule",
+      "ACTIVE" : false,
       "OWNER" : "rules",
       "TAGS" : [ "Proposals" ],
       "REQUIRES" : [ "rules", "php", "webform_rules" ],
