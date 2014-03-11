@@ -56,7 +56,6 @@ function _rpg_site_staff_admin_election_settings(&$form, &$form_state) {
     '#type' => 'fieldset',
     '#title' => t('Election settings'),
     '#collapsible' => TRUE,
-    '#collapsed' => TRUE,
   );
   $form['elections']['rpg_site_staff_election_day'] = array(
     '#title' => t('Last election day'),
@@ -127,12 +126,6 @@ function _rpg_site_staff_admin_election_settings(&$form, &$form_state) {
     '#description' => t('List postitions avaiblae on the site, one per row.'),
     '#type' => 'textarea',
     '#default_value' => variable_get('rpg_site_staff_positions', $available),
-  );
-  $form['post_elections'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('After an election, update this setting if there was a tie.'),
-    '#collapsible' => TRUE,
-    '#collapsed' => TRUE,
   );
   $form['rpg_site_staff_emergency_election'] = array(
     '#type' => 'submit',
