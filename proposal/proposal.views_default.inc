@@ -155,6 +155,11 @@ function proposal_views_default_views() {
 
   /* Display: Proposals */
   $handler = $view->new_display('page', 'Proposals', 'proposals');
+  $handler->display->display_options['defaults']['access'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'role';
+  $handler->display->display_options['access']['role'] = array(
+    8 => '8',
+  );
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
@@ -206,6 +211,11 @@ function proposal_views_default_views() {
   /* Display: Proposal block */
   $handler = $view->new_display('block', 'Proposal block', 'proposal_block');
   $handler->display->display_options['display_description'] = 'A block display of currently active proposals';
+  $handler->display->display_options['defaults']['access'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'role';
+  $handler->display->display_options['access']['role'] = array(
+    3 => '3',
+  );
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'list';
   $handler->display->display_options['defaults']['style_options'] = FALSE;
