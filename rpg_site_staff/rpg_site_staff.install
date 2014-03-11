@@ -1,0 +1,177 @@
+<?php
+/**
+ * @file
+ * Installation code for the RPG Site Staff feature.
+ */
+
+
+/**
+ * Implements hook_schema().
+ */
+function rpg_site_staff_schema() {
+  $schema['rpg_site_staff_election_nodes'] = array(
+    'description' => 'Election information for each election.',
+    'fields' => array(
+      'eid' => array(
+        'description' => 'The primary identifier for an election.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'nid' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The election webform used for this election.',
+      ),
+      'cycle' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The election cycle count.',
+      ),
+      'opened' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Unix timestamp of election opened.',
+      ),
+      'closed' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Unix timestamp of election closed.',
+      ),
+      'positions' => array(
+        'type' => 'text',
+        'not null' => TRUE,
+        'size' => 'big',
+        'description' => 'Serialized array of positions for election.',
+      ),
+      'winners' => array(
+        'type' => 'text',
+        'not null' => TRUE,
+        'size' => 'big',
+        'description' => 'Serialized array of winning users - or ties as determined.',
+      ),
+    ),
+    'primary key' => array('eid'),
+  );
+  $schema['rpg_site_staff_election_winners'] = array(
+    'description' => 'Election information for each election.',
+    'fields' => array(
+      'uid' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The election winner for this election.',
+      ),
+      'cycle' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The election cycle count.',
+      ),
+      'position' => array(
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'The position the winner held.',
+      ),
+    ),
+    'primary key' => array('uid, cycle, postion'),
+  );
+  return $schema;
+}
+
+/**
+ * Implements hook_install().
+ */
+function rpg_site_staff_install() {}
+
+/**
+ * Implements hook_uninstall().
+ */
+function rpg_site_staff_uninstall() {}
+
+/**
+ * Implements hook_update_N().
+ */
+function rpg_site_staff_update_7009() {
+  $schema['rpg_site_staff_election_nodes'] = array(
+    'description' => 'Election information for each election.',
+    'fields' => array(
+      'eid' => array(
+        'description' => 'The primary identifier for an election.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'nid' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The election webform used for this election.',
+      ),
+      'cycle' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The election cycle count.',
+      ),
+      'opened' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Unix timestamp of election opened.',
+      ),
+      'closed' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Unix timestamp of election closed.',
+      ),
+      'positions' => array(
+        'type' => 'text',
+        'not null' => TRUE,
+        'size' => 'big',
+        'description' => 'Serialized array of positions for election.',
+      ),
+      'winners' => array(
+        'type' => 'text',
+        'not null' => TRUE,
+        'size' => 'big',
+        'description' => 'Serialized array of winning users - or ties as determined.',
+      ),
+    ),
+    'primary key' => array('eid'),
+  );
+  $schema['rpg_site_staff_election_winners'] = array(
+    'description' => 'Election winners for each election.',
+    'fields' => array(
+      'uid' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The election winner for this election.',
+      ),
+      'cycle' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The election cycle count.',
+      ),
+      'position' => array(
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'The position the winner held.',
+      ),
+    ),
+    'primary key' => array('uid', 'cycle', 'position'),
+  );
+  db_create_table('rpg_site_staff_election_nodes', $schema['rpg_site_staff_election_nodes']);
+  db_create_table('rpg_site_staff_election_winners', $schema['rpg_site_staff_election_winners']);
+}
