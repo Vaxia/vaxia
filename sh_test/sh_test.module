@@ -66,7 +66,7 @@ function _sh_test_cron_check_overdue() {
     $applications = db_query('SELECT n.nid FROM {node} n ' .
       'LEFT JOIN {webform} w ON w.nid = n.nid ' .
       'WHERE w.status = 1 '. // Where the webform is still open.
-      'AND n.type = "storyhost_application" ' . // And it's a storyhost application type.
+      'AND n.type = \'storyhost_application\' ' . // And it's a storyhost application type.
       'AND n.changed < :timeframe', // And it's been open for more than a week.
       array(':timeframe' => $timeframe));
     // Now that we have a list of applications that might qualify.
