@@ -532,32 +532,5 @@ function rpg_site_staff_default_rules_configuration() {
       ]
     }
   }');
-  $items['vaxia_sh_test_yearly_election'] = entity_import('rules_config', '{ "vaxia_sh_test_yearly_election" : {
-      "LABEL" : "Yearly Election",
-      "PLUGIN" : "reaction rule",
-      "OWNER" : "rules",
-      "TAGS" : [ "Staff" ],
-      "REQUIRES" : [ "rules", "php", "user_stats" ],
-      "ON" : { "user_stats_day_older" : [] },
-      "IF" : [
-        { "data_is" : { "data" : [ "user:uid" ], "value" : "1" } },
-        { "php_eval" : { "code" : "return vaxia_check_election_day();" } }
-      ],
-      "DO" : [
-        { "entity_create" : {
-            "USING" : {
-              "type" : "node",
-              "param_type" : "proposal",
-              "param_title" : "\\u003C?php print date(\\u0027Y\\u0027); ?\\u003E Vaxia Site Election",
-              "param_author" : "1"
-            },
-            "PROVIDE" : { "entity_created" : { "entity_created" : "Created election poll" } }
-          }
-        },
-        { "entity_save" : { "data" : [ "entity-created" ], "immediate" : 1 } },
-        { "php_eval" : { "code" : "return vaxia_setup_election_proposal($entity_created);" } }
-      ]
-    }
-  }');
   return $items;
 }

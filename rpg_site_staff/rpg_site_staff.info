@@ -63,7 +63,6 @@ features[rules_config][] = rules_vacation_start
 features[rules_config][] = vaxia_accounts_add_voting_player_node
 features[rules_config][] = vaxia_accounts_delete_non_player_user_account
 features[rules_config][] = vaxia_accounts_rem_priv_roles_if_no_run_6mo_warning
-features[rules_config][] = vaxia_sh_test_yearly_election
 features[taxonomy][] = sagas
 features[user_role][] = eligible for SH
 features[user_role][] = evaluator
