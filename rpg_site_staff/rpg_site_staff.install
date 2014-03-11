@@ -98,7 +98,7 @@ function rpg_site_staff_uninstall() {}
 /**
  * Implements hook_update_N().
  */
-function rpg_site_staff_update_7009() {
+function rpg_site_staff_update_7001() {
   $schema['rpg_site_staff_election_nodes'] = array(
     'description' => 'Election information for each election.',
     'fields' => array(
