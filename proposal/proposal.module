@@ -159,10 +159,11 @@ function proposal_webform_submission_access($node, $submission, $op = 'view', $a
   if ($node->type != 'proposal') {
     return FALSE; // Use defaults.
   }
-  // If the submission is open:
+  // If the submission is open and we're just listing it.
   if (isset($node->webform['status']) && $node->webform['status'] == TRUE && $op == 'list') {
     return TRUE;
   }
+  // If the user looking is the owner, allow him to list, edit, delete, and view his submission.
   if (isset($node->webform['status']) && $node->webform['status'] == TRUE && $submission->uid == $account->uid) {
     return TRUE;
   }
@@ -329,11 +330,28 @@ function proposal_webform_results_analysis($variables) {
         'colspan' => 20,
       ));
   }
-  $output = '<div class="webform-results-analysis-help">' . t('Summary of responses reflects how many users selected a given value in the poll. In general, the larger the number the stronger ' .
-    'the overall preference for that result. Text responses are briefly summarized but should be read individually.') .'</div>';
+  $output = '<div class="webform-results-analysis-help">' . t('Summary of responses reflects how many users selected a given value in the poll. ' .
+    'In general, the larger the number the stronger the overall preference for that result. Text responses are briefly summarized but should be ' .
+    'read individually.') .'</div>';
   $output .= theme('table', array('caption' => '<h2>' . t('Summary of responses') . '</h2>', 'header' => $header, 'rows' => $rows,
     'attributes' => array('class' => array('webform-results-analysis'))));
   return $output;
+}
+
+/**
+ * Implements hook_node_delete().
+ */
+function proposal_node_delete($node) {
+  // Delete an election associated with a proposal if we delete the node.
+  if ($node->type == 'proposal') {
+    proposal_clear_eligable($node->nid);
+    // Clear out the disallowed roles option for this proposal
+    $disallowed = variable_get('proposal_disallowed_roles', array());
+    if (isset($disallowed[ $node->nid ])) {
+      unset($disallowed[ $node->nid ]);
+    }
+    variable_set('proposal_disallowed_roles', $disallowed);
+  }
 }
 
 /**
@@ -361,8 +379,8 @@ function proposal_node_view($node, $view_mode, $langcode) {
 
     // Update content.
     $node->content['proposal_help'] = array(
-      '#markup' => '<div class="proposal_help"></br></br>' . t('<b>Proposal help:</b></br>Proposals are meant to be a way to formally make a request for the input of site ' .
-      'members. Forum threads and five-star ratings are not accurate enough for the big things. So here\'s how this works:</br> ' .
+      '#markup' => '<div class="proposal_help"></br></br>' . t('<b>Proposal help:</b></br>Proposals are meant to be a way to formally make a request ' .
+      'for the input of site members. Forum threads and five-star ratings are not accurate enough for the big things. So here\'s how this works:</br> ' .
       '<ul> ' .
       '<li>If you change your mind after you vote, you will be able to go back in and delete or change your vote up until the proposal closes.</li> ' .
       '<li>The form will be open for %timeframe, after which it will automatically close.</li> ' .
@@ -375,32 +393,21 @@ function proposal_node_view($node, $view_mode, $langcode) {
     );
 
     // Check how many people have voted that are allowed to vote.
-    $roles = user_roles(FALSE, 'vote on proposal');
-    if (!empty($roles) && in_array('voter', $roles)) {
-      $potential_voters = db_query('SELECT COUNT(DISTINCT u.uid) as potential_voters FROM {users} u ' .
-        'LEFT JOIN {users_roles} ur ON u.uid = ur.uid ' .
-        'LEFT JOIN {role} r ON ur.rid = r.rid ' .
-        'LEFT JOIN {field_data_field_became_voter} v ON u.uid = v.entity_id ' .
-        'WHERE r.name IN (:roles) ' .
-        'AND v.field_became_voter_value IS NOT NULL AND v.field_became_voter_value < :start',
-        array(':roles' => $roles, ':start' => date('Y-m-d 00:00:01', $node->created)))->fetchColumn();
-    } elseif (!empty($roles)) {
-      // We don't care about the voter limits here. Just that they have the roles.
-      $potential_voters = db_query('SELECT COUNT(DISTINCT u.uid) as potential_voters FROM {users} u ' .
-        'LEFT JOIN {users_roles} ur ON u.uid = ur.uid ' .
-        'LEFT JOIN {role} r ON ur.rid = r.rid ' .
-        'LEFT JOIN {field_data_field_became_voter} v ON u.uid = v.entity_id ' .
-        'WHERE r.name IN (:roles) ',
-        array(':roles' => $roles))->fetchColumn();      
-    }
-
     // Add that information to the display.
+    $potential_voters = proposal_eligable_count($node->nid);
     $voted = webform_get_submission_count($node->nid);
     if ($potential_voters != 0) {
       $percent = number_format(($voted / $potential_voters) * 100);
       $node->content['proposal_response'] = array(
-        '#markup' => '<div class="proposal_response">' . t('%voted out of %potential_voters potential voters (%percent %) responsed to this proposal.',
+        '#markup' => '<div class="proposal_response" style="margin:1em 0;">' . t('%voted out of %potential_voters potential voters (%percent %) responsed ' .
+        'to this proposal.',
         array('%voted' => $voted, '%potential_voters' => $potential_voters, '%percent' => $percent)) . '</div>',
+        '#weight' => 1001,
+      );
+    }
+    else {
+      $node->content['proposal_response'] = array(
+        '#markup' => '<div class="proposal_response" style="margin:1em 0;">' . t('There are no potential voters for this proposal at this time.') . '</div>',
         '#weight' => 1001,
       );
     }
@@ -437,7 +444,7 @@ function proposal_node_view($node, $view_mode, $langcode) {
 function _proposal_launch_form($form, &$form_state, $node) {
   $form['launch_help'] = array(
     '#markup' => '<div class="proposal_launch_help">' .
-      t('When you are ready to make this proposal live so that others may vote on it, click this button.') . '</div>',
+    t('When you are ready to make this proposal live so that others may vote on it, click this button.') . '</div>',
   );
   $form['nid'] = array(
     '#type' => 'hidden',
@@ -580,25 +587,15 @@ function proposal_form_alter(&$form, &$form_state, $form_id) {
     if ($node->type != 'proposal') {
       return; // Use defaults.
     }
-    // Lockout.
-    $roles = user_roles(FALSE, 'vote on proposal');
-    if (!in_array('voter', $roles)) {
-      return; // Bail out if we aren't even considering voter roles.
-    }
-    // Find the voter role.
-    $role = user_role_load_by_name('voter');
     // Only toss up the message if the form cares about the voter eligability AND it is open.
-    if ($node->webform['status'] == TRUE && $role && in_array($role->rid, $form['#node']->webform['roles'])) {
+    if ($node->webform['status'] == TRUE) {
       global $user;
-      $this_user = user_load($user->uid);
-      $lang = !empty($this_user->language) ? $this_user->language : 'und';
-      $voter_rid = '';
-      $became_voter = isset($this_user->field_became_voter[$lang][0]['value']) ? $this_user->field_became_voter[$lang][0]['value'] : '1/1/3000 00:00:00';
-      $became_voter = strtotime($became_voter);
-      $webform_created = isset($form['#node']->created) ? $form['#node']->created : strtotime('now');
-      if ($webform_created < $became_voter) {
-        drupal_set_message('You gained voting privileges on this site after this webform was created. ' .
-          'You are not eligible to vote on this issue.', 'warning');
+      // Voter eligability was determined when the proposal was created / last updated.
+      // This list marked voters AT THE TIME - allowing us to use that master list for voting eligibilty.
+      $eligable = proposal_is_eligable($node->nid, $user->uid);
+      if (!$eligable) {
+        drupal_set_message('You are not eligible to vote on this issue. Either you do not have the correct site permissions to vote, ' .
+          'or you gained them after the proposal was opened for voting.', 'warning');
         $form['#disabled'] = TRUE;
       }
     }
@@ -627,26 +624,133 @@ function proposal_form_alter(&$form, &$form_state, $form_id) {
     // And only particular users, tweak the descriptions.
     $form['role_control']['#description'] = t('These permissions affect which roles can submit this webform. ' .
       'It does not prevent access to the webform page to view results.');
+    // Voters role was automatically set during node creation.
+    $voter_timeframe = variable_get('proposal_voter_timeframe', '6 months');
+    $form['role_control']['roles']['#description'] = t('Voters are users who have posted on the site in the last %voter_timeframe.',
+	  array('%voter_timeframe' => $voter_timeframe));
+	// Clear out roles not marked for voting purposes to reduse UI confusion.
     $allowed_roles = user_roles(FALSE, 'vote on proposal');
     foreach ($form['role_control']['roles']['#options'] as $rid => $role_name) {
       if (!in_array($role_name, $allowed_roles)) {
         unset($form['role_control']['roles']['#options'][$rid]);
       }
-      // And set voters as default.
-      // Automatically add voter as a limiter.
-      if ($role_name == 'voter') {
-        $form['role_control']['roles']['#default_value'] = isset($form['role_control']['roles']['#default_value']) ?
-          $form['role_control']['roles']['#default_value'] : array($rid);
-        $voter_timeframe = variable_get('proposal_voter_timeframe', '6 months');
-        $form['role_control']['roles']['#description'] = t('Active users are users who have posted on the site in the last %voter_timeframe',
-          array('%voter_fimeframe' => $voter_timeframe));
-      }
+    }
+    // Now, add a role_disallowed setup.
+    $form['role_control']['disallowed_fieldset'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Disallowed roles'),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+    );
+    $form['role_control']['disallowed_fieldset']['disallowed_roles'] = $form['role_control']['roles'];
+    $form['role_control']['disallowed_fieldset']['disallowed_roles']['#title'] = t('Roles that CANNOT submit this webform');
+    $form['role_control']['disallowed_fieldset']['disallowed_roles']['#description'] = t('Sometimes a proposal needs to disallow a specific set of users from ' .
+      'voting due to conflict of interest. Even if a user is in a role that can vote normally, if they have one of these roles they are ' .
+      'barred from voting. Leave the roles listed here unchecked if you do not want to bar voters.');
+    unset($form['role_control']['disallowed_fieldset']['disallowed_roles']['#default_value']);
+    $disallowed = variable_get('proposal_disallowed_roles', array());
+    if (!empty($disallowed[$form['#node']->nid])) {
+      $form['role_control']['disallowed_fieldset']['disallowed_roles']['#default_value'] = $disallowed[$form['#node']->nid];
     }
     // And no advanced formats.
     $form['advanced']['#access'] = FALSE;
+    // Add submit handler.
+    $form['#submit'][] = '_proposal_webform_configure_form_submit';
   } // End alter of webform form settings.
 
   return $form;
+}
+
+/**
+ * Submit handler for voters for this proposal.
+ */
+function _proposal_webform_configure_form_submit($form, &$form_state) {
+  $eligable = array_values($form_state['values']['roles']);
+  $not_eligable = array_values($form_state['values']['disallowed_roles']);
+  // Save disallowed roles for this node.
+  $disallowed = variable_get('proposal_disallowed_roles', array());
+  $disallowed[ $form_state['values']['nid'] ] = $not_eligable;
+  variable_set('proposal_disallowed_roles', $disallowed);
+  $users = array();
+  // Load all users in eligable roles.
+  foreach ($eligable as $rid) {
+    $role_users = db_query('SELECT uid FROM {users_roles} WHERE rid = :rid', array(':rid' => $rid));
+    foreach ($role_users as $role_user) {
+      $users[$role_user->uid] = $role_user->uid;
+    }
+  }
+  // Then filter them by in-eligable roles.
+  foreach ($not_eligable as $rid) {
+    $role_users = db_query('SELECT uid FROM {users_roles} WHERE rid = :rid', array(':rid' => $rid));
+    foreach ($role_users as $role_user) {
+      unset($users[$role_user->uid]);
+    }
+  }
+  // Clear the old voters.
+  proposal_clear_eligable($form_state['values']['nid']);
+  // And add them to the master list for this node.
+  foreach ($users as $user) {
+    $data['uid'] = $user;
+    $data['nid'] = $form_state['values']['nid'];
+    proposal_mark_eligable($data);
+  }
+}
+
+/**
+ * CRUD function. Set eligable voters for a node.
+ */
+function proposal_mark_eligable($data) {
+  $data = (array) $data;
+  if (empty($data['nid']) || empty($data['uid'])) {
+    return FALSE;
+  }
+  // Mark the eligable voter for this node.
+  drupal_write_record('proposal_eligable_users', $data);
+  return (object) $data;
+}
+
+/**
+ * DB function. Delete eligable voters for the node.
+ */
+function proposal_clear_eligable($nid) {
+  if (empty($nid)) {
+    return FALSE;
+  }
+  db_query('DELETE FROM {proposal_eligable_users} WHERE nid = :nid',
+    array(':nid' => $nid));
+}
+
+/**
+ * DB function. Count eligable voters.
+ */
+function proposal_eligable_count($nid) {
+  if (empty($nid)) {
+    return FALSE; // Bail if error.
+  }
+  $eligable = db_query('SELECT COUNT(uid) AS eligable FROM {proposal_eligable_users} ' .
+    'WHERE nid = :nid ',
+    array(':nid' => $nid))->fetchField();
+  if (empty($eligable)) {
+    return 0; // Bail if error.
+  }
+  return $eligable;
+}
+
+/**
+ * DB function. Get voter eligability.
+ */
+function proposal_is_eligable($nid, $uid) {
+  if (empty($nid) || empty($uid)) {
+    return FALSE; // Bail if error.
+  }
+  $eligable = db_query('SELECT COUNT(uid) AS count_uid FROM {proposal_eligable_users} ' .
+    'WHERE uid = :uid ' .
+    'AND nid = :nid ',
+    array(':uid' => $uid, ':nid' => $nid))->fetchField();
+  if (empty($eligable)) {
+    return FALSE; // Bail if error.
+  }
+  return TRUE;
 }
 
 /**
@@ -692,11 +796,19 @@ function proposal_close_in_timeframe() {
     'AND n.status = 1 ' .
     'AND w.status = 1 ',
     array(':timeframe' => $timeframe));
+  // Trigger event.
   foreach ($proposals as $proposal) {
     if (function_exists('rules_invoke_event')) {
       $node = node_load($proposal->nid);
+      // Clear out the disallowed roles option for this proposal
+      $disallowed = variable_get('proposal_disallowed_roles', array());
+      if (isset($disallowed[ $node->nid ])) {
+        unset($disallowed[ $node->nid ]);
+      }
+      variable_set('proposal_disallowed_roles', $disallowed);
+      // Call the rules.
       rules_invoke_event('close_proposal', $node);
-    }	  
+    }
   }
 }
 

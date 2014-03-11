@@ -1,0 +1,92 @@
+<?php
+/**
+ * @file
+ * Installation code for the Proposal feature.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function proposal_schema() {
+  $schema['proposal_eligable_users'] = array(
+    'description' => 'Eligable voters for each proposal.',
+    'fields' => array(
+      'nid' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The election webform used for this election.',
+      ),
+      'uid' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The election webform used for this election.',
+      ),
+    ),
+    'primary key' => array('eid'),
+  );
+  return $schema;
+}
+
+/**
+ * Implements hook_install().
+ */
+function proposal_install() {}
+
+/**
+ * Implements hook_uninstall().
+ */
+function proposal_uninstall() {}
+
+/**
+ * Implements hook_update_N().
+ */
+function proposal_update_7001() {
+  $schema['proposal_eligable_users'] = array(
+    'description' => 'Eligable voters for each proposal.',
+    'fields' => array(
+      'nid' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The proposal webform.',
+      ),
+      'uid' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The eligable user.',
+      ),
+    ),
+    'primary key' => array('nid', 'uid'),
+  );
+  db_create_table('proposal_eligable_users', $schema['proposal_eligable_users']);
+}
+
+/**
+ * Implements hook_update_N().
+ */
+function proposal_update_7002() {
+  // Convert any currently active proposals to use the eligable users approach.
+  $proposals = db_query('SELECT n.nid FROM {node} n ' .
+    'LEFT JOIN {webform} w ON w.nid = n.nid ' .
+    'WHERE n.type = \'proposal\' AND w.status = 1');
+  foreach ($proposals as $proposal) {
+    // Load the eligable roles.
+    $roles = db_query('SELECT rid FROM {webform_roles} WHERE nid = :nid', array(':nid' => $proposal->nid));
+    $users = array();
+    foreach ($roles as $role) {
+      $role_users = db_query('SELECT uid FROM {users_roles} WHERE rid = :rid', array(':rid' => $role->rid));
+      foreach ($role_users as $role_user) {
+        $users[$role_user->uid] = $role_user->uid;
+      }
+    }
+    // Load the users for this proposal.
+    foreach ($users as $user) {
+      $data['uid'] = $user;
+      $data['nid'] = $proposal->nid;
+      proposal_mark_eligable($data);
+    }
+  }
+}
