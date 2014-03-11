@@ -72,6 +72,7 @@ stylesheets[screen and (max-width: 480px)][] = vaxia/vaxia-480.css
 
 ; Adding vaxia.js for specific universal jquery driven behaviors.
 scripts[] = vaxia/js/vaxia.js
+scripts[] = vaxia/js/vaxia_pins.js
 
 ; This section lists the regions defined in Zen's default page.tpl.php and
 ; maintenance-page.tpl.php files. The name in brackets is the machine name of
