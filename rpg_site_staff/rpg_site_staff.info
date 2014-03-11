@@ -68,6 +68,7 @@ features[taxonomy][] = sagas
 features[user_role][] = eligible for SH
 features[user_role][] = evaluator
 features[user_role][] = evaluator-expired
+features[user_role][] = heads
 features[user_role][] = storyteller
 features[user_role][] = storyteller-expired
 features[variable][] = comment_anonymous_session_report
