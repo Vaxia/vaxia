@@ -275,7 +275,7 @@ function vaxia_views_default_views() {
   $handler->display->display_options['filters']['field_realm_value']['group'] = 1;
   $handler->display->display_options['filters']['field_realm_value']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_realm_value']['expose']['operator_id'] = 'field_realm_value_op';
-  $handler->display->display_options['filters']['field_realm_value']['expose']['label'] = 'Realm (field_realm)';
+  $handler->display->display_options['filters']['field_realm_value']['expose']['label'] = 'Realm';
   $handler->display->display_options['filters']['field_realm_value']['expose']['use_operator'] = TRUE;
   $handler->display->display_options['filters']['field_realm_value']['expose']['operator'] = 'field_realm_value_op';
   $handler->display->display_options['filters']['field_realm_value']['expose']['identifier'] = 'field_realm_value';
@@ -283,18 +283,21 @@ function vaxia_views_default_views() {
   $handler->display->display_options['filters']['field_realm_value']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
-    12 => 0,
     8 => 0,
+    19 => 0,
+    12 => 0,
     13 => 0,
     10 => 0,
     17 => 0,
     15 => 0,
     9 => 0,
+    20 => 0,
     14 => 0,
+    21 => 0,
+    22 => 0,
     4 => 0,
     3 => 0,
     11 => 0,
-    18 => 0,
   );
   $handler->display->display_options['path'] = 'character-sheets/all';
   $handler->display->display_options['menu']['type'] = 'default tab';
@@ -672,6 +675,22 @@ function vaxia_views_default_views() {
   $handler->display->display_options['sorts']['title']['table'] = 'node';
   $handler->display->display_options['sorts']['title']['field'] = 'title';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Content: Realm (field_realm) */
+  $handler->display->display_options['arguments']['field_realm_value']['id'] = 'field_realm_value';
+  $handler->display->display_options['arguments']['field_realm_value']['table'] = 'field_data_field_realm';
+  $handler->display->display_options['arguments']['field_realm_value']['field'] = 'field_realm_value';
+  $handler->display->display_options['arguments']['field_realm_value']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['field_realm_value']['default_argument_type'] = 'php';
+  $handler->display->display_options['arguments']['field_realm_value']['default_argument_options']['code'] = '$room = node_load(arg(1));
+if ($room) {
+  return $room->field_realm[$room->language][0][\'value\'] . \'+storyhost\';
+}
+return \'all\';';
+  $handler->display->display_options['arguments']['field_realm_value']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_realm_value']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_realm_value']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_realm_value']['limit'] = '0';
+  $handler->display->display_options['arguments']['field_realm_value']['break_phrase'] = TRUE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['filter_groups']['operator'] = 'OR';
   $handler->display->display_options['filter_groups']['groups'] = array(
