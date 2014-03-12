@@ -559,6 +559,8 @@ function _proposal_form_proposal_node_form_submit($form, &$form_state) {
     if ($role) {
       $node->webform['roles'] = array($role->rid);
     }
+    // Set the default users.
+    _proposal_webform_set_users(array($role->rid), array(), $node->nid);
     // Set the status to OFF on new nodes.
     $node->webform['status'] = FALSE;
     // Save the node.
@@ -671,6 +673,14 @@ function _proposal_webform_configure_form_submit($form, &$form_state) {
   $disallowed = variable_get('proposal_disallowed_roles', array());
   $disallowed[ $form_state['values']['nid'] ] = $not_eligable;
   variable_set('proposal_disallowed_roles', $disallowed);
+  _proposal_webform_set_users($eligable, $not_eligable, $form_state['values']['nid']);
+}
+
+/**
+ * Helper function, set allowed / disallowed users for a proposal.
+ */
+function _proposal_webform_set_users($eligable, $not_eligable, $nid) {
+  // Gather users to set.
   $users = array();
   // Load all users in eligable roles.
   foreach ($eligable as $rid) {
@@ -687,11 +697,11 @@ function _proposal_webform_configure_form_submit($form, &$form_state) {
     }
   }
   // Clear the old voters.
-  proposal_clear_eligable($form_state['values']['nid']);
+  proposal_clear_eligable($nid);
   // And add them to the master list for this node.
   foreach ($users as $user) {
     $data['uid'] = $user;
-    $data['nid'] = $form_state['values']['nid'];
+    $data['nid'] = $nid;
     proposal_mark_eligable($data);
   }
 }
