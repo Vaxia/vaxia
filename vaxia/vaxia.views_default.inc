@@ -681,11 +681,7 @@ function vaxia_views_default_views() {
   $handler->display->display_options['arguments']['field_realm_value']['field'] = 'field_realm_value';
   $handler->display->display_options['arguments']['field_realm_value']['default_action'] = 'default';
   $handler->display->display_options['arguments']['field_realm_value']['default_argument_type'] = 'php';
-  $handler->display->display_options['arguments']['field_realm_value']['default_argument_options']['code'] = '$room = node_load(arg(1));
-if ($room) {
-  return $room->field_realm[$room->language][0][\'value\'] . \'+storyhost\';
-}
-return \'all\';';
+  $handler->display->display_options['arguments']['field_realm_value']['default_argument_options']['code'] = 'return _vaxia_filter_characters_by_room(arg(1));';
   $handler->display->display_options['arguments']['field_realm_value']['summary']['number_of_records'] = '0';
   $handler->display->display_options['arguments']['field_realm_value']['summary']['format'] = 'default_summary';
   $handler->display->display_options['arguments']['field_realm_value']['summary_options']['items_per_page'] = '25';
