@@ -28,9 +28,9 @@ function rpg_site_staff_user_default_roles() {
     'weight' => '10',
   );
 
-  // Exported role: heads.
-  $roles['heads'] = array(
-    'name' => 'heads',
+  // Exported role: head.
+  $roles['head'] = array(
+    'name' => 'head',
     'weight' => '12',
   );
 

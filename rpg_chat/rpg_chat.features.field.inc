@@ -221,6 +221,7 @@ function rpg_chat_field_default_fields() {
         'allowed_values' => array(
           'Vaxia' => 'Vaxia',
           'Sirian' => 'Sirian',
+          'storyhost' => 'Storyhost',
         ),
         'allowed_values_function' => '',
       ),

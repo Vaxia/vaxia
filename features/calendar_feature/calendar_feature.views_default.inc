@@ -279,6 +279,7 @@ function calendar_feature_views_default_views() {
   $handler->display->display_options['cache']['php_cache_output'] = 'return FALSE;';
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'fullcalendar';
+  $handler->display->display_options['style_options']['right'] = '';
   $handler->display->display_options['style_options']['timeformat'] = '';
   $handler->display->display_options['style_options']['editable'] = TRUE;
   $handler->display->display_options['style_options']['fields']['date_field'] = array(
