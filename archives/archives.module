@@ -87,15 +87,22 @@ function archives_admin_form($form, &$form_state) {
   $form['archive'] = array(
     '#type' => 'submit',
     '#value' => t('Archive All Posts'),
-    '#submit' => array('_archives_posts_archive'),
+    '#submit' => array('_archives_posts_archive_submit'),
   );
   return system_settings_form($form);
 }
 
 /**
+ * Submit callback for form.
+ */
+function _archives_posts_archive_submit() {
+  _archives_posts_archive();
+}
+
+/**
  * Helper function, archive things.
  */
-function _archives_posts_archive($form, &$form_state) {
+function _archives_posts_archive() {
   // And now we get all complicated! It may take a bit to get through them all.
   // But we archive for all the posts on the site into the file system.
   // First get the date of the oldest comment posted on the site to chat or forum.
