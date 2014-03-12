@@ -928,7 +928,7 @@ function vaxia_field_default_fields() {
   $fields['node-character_sheet-field_description'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '1',
+      'cardinality' => '-1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_description',
@@ -956,7 +956,12 @@ function vaxia_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'character_sheet',
-      'default_value' => NULL,
+      'default_value' => array(
+        0 => array(
+          'value' => '',
+          'format' => 'plain_text',
+        ),
+      ),
       'deleted' => '0',
       'description' => '',
       'display' => array(
@@ -981,6 +986,7 @@ function vaxia_field_default_fields() {
       'settings' => array(
         'better_formats' => array(
           'allowed_formats' => array(
+            'filtered_html' => 0,
             'full_html' => 0,
             'php_code' => 0,
             'plain_text' => 'plain_text',
@@ -991,6 +997,9 @@ function vaxia_field_default_fields() {
           'default_order_toggle' => 0,
           'default_order_wrapper' => array(
             'formats' => array(
+              'filtered_html' => array(
+                'weight' => '0',
+              ),
               'full_html' => array(
                 'weight' => '1',
               ),
@@ -2515,6 +2524,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
         'allowed_values' => array(
           'Vaxia' => 'Vaxia',
           'Sirian' => 'Sirian',
+          'storyhost' => 'Storyhost',
         ),
         'allowed_values_function' => '',
       ),
