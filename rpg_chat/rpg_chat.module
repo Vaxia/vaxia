@@ -70,6 +70,9 @@ function rpg_chat_node_access($node, $op, $account) {
   }
   else {
     $node = node_load($node->nid);
+    if (empty($node->nid)) {
+      return NODE_ACCESS_IGNORE;
+    }
   }
   if (!_rpg_chat_is_enabled($node->type) ) {
     return NODE_ACCESS_IGNORE;
@@ -416,11 +419,11 @@ function _rpg_chat_node_access($node, $account) {
     return FALSE;
   }
   // If this is flagged as a mature room and you're not mature. (Let's face it. No one is.)
-  if (!user_access('view rpg mature chat', $account) && $node->rpg_chat_mature) {
+  if (!user_access('view rpg mature chat', $account) && isset($node->rpg_chat_mature) && $node->rpg_chat_mature) {
     return FALSE;
   }  
   // If this is flagged as a locked room and you're not an admin.
-  if (!user_access('administer rpg chat', $account) && $node->rpg_chat_locked) {
+  if (!user_access('administer rpg chat', $account) && isset($node->rpg_chat_locked) && $node->rpg_chat_locked) {
     return FALSE;
   }
   // Check user specific settings.

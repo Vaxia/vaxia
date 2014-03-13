@@ -36,7 +36,7 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
   }
   // Last ditch chance to grab the character.
   $limbo_room = variable_get('vaxia_limbo_room', array());
-  if (!in_array($parent_form['#node']->nid, $limbo_room) && $character == '_none') {
+  if (!empty($parent_form['#node']->nid) && !in_array($parent_form['#node']->nid, $limbo_room) && $character == '_none') {
     $lang = $parent_form['language']['#value'];
     // If none was the default, set it to the first available.
     if ((isset($parent_form['field_comment_character'][$lang]['#default_value']) && $parent_form['field_comment_character'][$lang]['#default_value'] == '_none')
