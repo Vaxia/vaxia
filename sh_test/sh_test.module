@@ -382,7 +382,7 @@ function sh_test_check_ash_3_responses($nid) {
   $approvers = array();
   foreach ($approving as $role) {
     if ($role) {
-      $users = db_query('SELECT uid FROM {user_roles} WHERE rid = :rid', array('rid' => $role));
+      $users = db_query('SELECT uid FROM {users_roles} WHERE rid = :rid', array('rid' => $role));
       foreach ($users as $user) {
         $approvers[$user->uid] = $user->uid;
       }
