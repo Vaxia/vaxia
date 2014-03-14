@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the Requests feature feature.
- */
-
-include_once 'requests_feature.features.inc';

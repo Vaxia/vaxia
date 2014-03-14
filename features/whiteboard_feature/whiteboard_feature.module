@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the Whiteboard feature feature.
- */
-
-include_once 'whiteboard_feature.features.inc';
