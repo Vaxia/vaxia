@@ -43,7 +43,7 @@ function item_shop_menu_alter(&$items) {
  */
 function item_shop_menu() {
   $items['admin/vaxia/item_shop'] = array(
-    'title' => 'Vaxia item shop configuration',
+    'title' => 'Item shop configuration',
     'description' => 'Configure value percents for item handling',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('_item_shop_admin_settings'),
