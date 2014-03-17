@@ -1398,6 +1398,7 @@ function _dice_ruler_magic(
     t('% of diff'),
     t('Failed might'),
   );
+  $output = '';
   // Calculate the rulings to succeed at the spell at all.
   $rows = array();
   $results = _dice_ruler_make_magic_ruling(
