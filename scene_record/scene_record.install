@@ -1,0 +1,42 @@
+<?php
+// $Id$
+
+/**
+ * @file
+ * Install, update and uninstall functions for the scene_record module.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function scene_record_schema() {
+  $schema['scene_record_item_comments'] = array(
+    'description' => 'Table that maps comments to scene records for history.',
+    'fields' => array(
+      'nid' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Nid of the node.',
+      ),
+      'cid' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Cid of the comment.',
+      ),
+    ),
+    'primary key' => array('nid', 'cid'),
+  );
+  return $schema;
+}
+
+/**
+ * Implements hook_install().
+ */
+function scene_record_install() {}
+
+/**
+ * Implements hook_uninstall().
+ */
+function scene_record_uninstall() {}

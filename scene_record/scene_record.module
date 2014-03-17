@@ -1,0 +1,596 @@
+<?php
+/**
+ * @file
+ * Provide a clean UI for item creation from a player crafter PoV.
+ */
+
+/**
+ * Implements hook_permission().
+ */
+function scene_record_permission() {
+  return array(
+    'use scene helper' => array(
+      'title' => t('use scene helper'),
+      'description' => t('Use scene helper.'),
+    ),
+    'administer scene helper' => array(
+      'title' => t('administer scene helper'),
+      'description' => t('Administer scene helper.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function scene_record_menu() {
+  $items['vaxia/scene_record/autocomplete/room'] = array(
+    'title' => 'Scene record assist room lookup',
+    'type' => MENU_CALLBACK,
+    'page callback' => '_scene_record_autocomplete_room',
+    'access arguments' => array('use scene helper'),
+  );
+  $items['admin/vaxia/scene_record'] = array(
+    'title' => 'Scene record settings',
+    'description' => 'Configure content type association settings for item handling',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('_scene_record_admin_settings'),
+    'access arguments' => array('administer scene helper'),
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_node_insert().
+ */
+function scene_record_node_insert($node) {
+  scene_record_node_update($node);
+}
+
+/**
+ * Implements hook_node_update().
+ */
+function scene_record_node_update($node) {
+  $scene_type = variable_get('scene_record_scene_type', '');
+  if (!empty($scene_type) && $scene_type == $node->type) {  
+    $nid = $node->nid;
+    // Collect content info.
+    $save_comments = !empty($node->included_comments_table)
+      ? $node->included_comments_table : array();
+    // Save each one to the nid.
+    if (empty($save_comments)) {
+      return;
+    }
+    foreach ($save_comments as $cid => $comment) {
+      // If marked, and not already in the list, add it.
+      $this_comment = (object) $comment;
+      $this_comment->nid = $nid;
+      $this_comment->cid = $cid;
+      $save_comments[$cid] = $this_comment;
+    }
+    foreach ($save_comments as $cid => $scene_comment) {
+      // Don't save what's marked for removal.
+      if ($scene_comment->remove == 0) {
+        _scene_record_update_comment($scene_comment);
+      }
+    }
+    // Done? Save an internal record.
+/*
+	  // If a table with states, grab and render the info as a table.
+	  // And save it to our record fields to disconnect the item assist from comment.
+	  $set_comments = _scene_record_get_comments($node->nid);
+	  if (!empty($set_comments)) {
+		_scene_record_view_table($headers, $rows, $node, $set_comments);
+		$table['value'] = theme('table', array('header' => $headers, 'rows' => $rows));
+		$table['format'] = 'full_html';
+		$node->field_creation_history[$node->language][] = $table;
+		node_save($node);
+	  }
+*/
+  }
+}
+
+/**
+ * Implements hook_node_delete().
+ */
+function scene_record_node_delete($node) {
+  _scene_record_delete_comments($node->nid);
+}
+
+/**
+ * Implements hook_comment_delete().
+ */
+function scene_record_comment_delete($comment) {
+  _scene_record_delete_comment($comment->nid, $comment->cid);
+}
+
+/**
+ * Implements hook_node_view().
+ */
+function scene_record_node_view($node, $view_mode, $langcode) {
+  $scene_type = variable_get('scene_record_scene_type', '');
+  if ($view_mode == 'full' && user_access('use scene helper') && !empty($scene_type) && !empty($node->type) && $scene_type == $node->type) {
+    $set_comments = _scene_record_get_comments($node->nid);
+    if (!empty($set_comments) && !empty($node->content['field_creation_history'])) {
+      unset($node->content['field_creation_history']['#theme']);
+      // Convert this display into a markup, so we don't double render the content table.
+      $node->content['field_creation_history']['#markup'] = isset($node->content['field_creation_history']['#markup']) ?
+        $node->content['field_creation_history']['#markup'] : '';
+      foreach ($node->content['field_creation_history']['#items'] as $index => $value) {
+        $count = $index + 1;
+        $label = '<div class="field"><hr><div class="field-label">Scene history record #' . $count . ':&nbsp;</div><hr></div>';
+        $node->content['field_creation_history']['#markup'] .= $label . $value['value'];
+      }
+    }
+  }
+}
+
+/**
+ * Helper function, wraps node base for purposes of passing #node info from non node_base pg.
+ */
+function scene_record_form_node_view_data($form, &$form_state, $node, $set_comments) {
+  $form['scene_record'] = array(
+    '#type' => 'fieldset',
+     '#title' => t('Scene Assistant'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  // Add to display.
+  _scene_record_view_table($headers, $rows, $node, $set_comments);
+  $form['scene_record']['display'] = array(
+    '#type' => 'item',
+    '#markup' => theme('table', array('header' => $headers, 'rows' => $rows)),
+  );
+  return $form;
+}
+
+/**
+ * Return a display of the info as a renderable form.
+ */
+function _scene_record_view_table(&$headers, &$rows, $node, $set_comments) {
+  $headers = array(
+    t('Scene posts'),
+    t('Results'),
+  );
+  $rows = array();
+  // Create table data.
+  $found_comments = array();
+  foreach ($set_comments as $set_comment) {
+    $found_comments[$set_comment->cid] = $set_comment;
+  }
+  // One last organization of all of these by cid.
+  ksort($found_comments);
+  // Get values.
+  $found_comments = _scene_record_calculate_results($found_comments);
+  // Loop for display.
+  foreach ($found_comments as $cid => $scene_comment) {
+    // Get comment display.
+    $comment = comment_load($cid);
+    $comment_uri = comment_uri($comment);
+    $comment_display = '<a href="/' . $comment_uri['path'] . '#' . $comment_uri['options']['fragment'] . '" title="' .
+      check_plain($comment->comment_body[$comment->language][0]['value']) . "\n" .
+      'OOC: ' . check_plain($ooc) . '">' .
+      check_plain($comment->subject) .
+      '</a>';
+    // Get dice display.
+    $dice_rolls = _dice_roller_get_roll($cid, 'c');
+    $comment_display .= !empty($dice_rolls)
+      ? theme('dice_roller_results', array('dice_rolls' => $dice_rolls))
+      : '</br>' . t('No rolls found');
+    // Add to rows.
+    $rows[] = array(
+      $comment_display,
+      $scene_comment->results,
+    );
+  }
+}
+
+/**
+ * Helper function, wraps node base for purposes of passing #node info from non node_base pg.
+ */
+function scene_record_form_node_form_alter_wrapper($form, &$form_state, $node) {
+  $form['#node'] = node_load($node->nid); // New node object.
+  $form['type']['#value'] = $node->type;
+  scene_record_form_node_form_alter($form, $form_state, 'scene_record_form_node_form_alter');
+  $form['#weight'] = -40;
+  return $form;
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function scene_record_form_node_form_alter(&$form, &$form_state, $form_id) {
+  $scene_type = variable_get('scene_record_scene_type', '');
+  if (!empty($scene_type) && !empty($form['#node']->type) && $scene_type == $form['#node']->type) {
+    // Collapsible interface.
+    $form['scene_record'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Scene Assistant'),
+      '#description' => t('Use this assistant to attach scene posts.'),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      '#weight' => -40,
+    );
+    // Part one, add more comments.
+    $form['scene_record']['add_comments'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Add new posts'),
+      '#description' => t('Search for posts by room. Select the posts to save for this scene.'),
+      '#collapsible' => TRUE,
+    );
+    $form['scene_record']['add_comments']['search_room'] = array(
+      '#title' => t('Posts from room'),
+      '#type' => 'textfield',
+      '#autocomplete_path' => 'vaxia/scene_record/autocomplete/room',
+      '#ajax' => array(
+        'callback' => '_scene_record_ajax_load_room_comments',
+        'wrapper' => 'item-helper-add-comments-table',
+        'method' => 'replace',
+        'effect' => 'fade',
+      ),
+    );
+    $room = !empty($form_state['values']['search_room']) ? $form_state['values']['search_room'] : '';
+    $options = array();
+    if (!empty($room)) {
+      $room_nid = _scene_record_autocomplete_get_nid($room);
+      if ($room_nid != FALSE) {
+        $found_comments = _scene_record_get_comments_by_room($room_nid);
+        foreach ($found_comments as $found_comment) {
+          $comment = comment_load($found_comment->cid);
+          $comment_uri = comment_uri($comment);
+          $comment_text = isset($comment->comment_body[$comment->language][0]['value']) ? $comment->comment_body[$comment->language][0]['value'] : '';
+          $ooc_text = isset($comment->field_ooc[$comment->language][0]['value']) ? $comment->field_ooc[$comment->language][0]['value'] : '';
+          $comment_display = '<a href="/' . $comment_uri['path'] . '#' . $comment_uri['options']['fragment'] . '" title="' .
+            check_plain($comment_text) . "\n" .
+            'OOC: ' . check_plain($ooc_text) . '">' .
+            check_plain($comment->subject) .
+            '</a>';
+          $character = isset($comment->field_comment_character[$comment->language][0]['nid']) ?
+            $comment->field_comment_character[$comment->language][0]['nid'] : '';
+          $character = node_load($character);
+          $character_name = isset($character->title) ? $character->title : '';
+          $dice_rolls = _dice_roller_get_roll($found_comment->cid, 'c');
+          $dice_rolls = !empty($dice_rolls)
+            ? theme('dice_roller_results', array('dice_rolls' => $dice_rolls))
+            : t('No rolls found');
+          $options[$found_comment->cid] = array(
+            $comment_display,
+            check_plain($character_name),
+            check_plain($comment->name),
+            $dice_rolls,
+            date('m/d/Y H:i:s', $comment->changed),
+          );
+        }
+      }
+    }
+    $form['scene_record']['add_comments']['add_comments_table'] = array(
+      '#prefix' => '<div id="item-helper-add-comments-table">',
+      '#suffix' => '</div>',
+      '#type' => 'tableselect',
+      '#header' => array(
+        t('Posts'),
+        t('Character'),
+        t('Player'),
+        t('Rolls'),
+        t('Date'),
+      ),
+      '#options' => $options,
+      '#js_select' => FALSE,
+      '#multiple' => TRUE,
+      '#empty' => t('No posts found.'),
+    );
+    $form['scene_record']['add_comments']['add'] = array(
+      '#type' => 'button',
+      '#value' => t('Add Posts'),
+      '#limit_validation_errors' => array(array('add_comments_table'), array('included_comments_table')),
+      // DOUBLE ARRAY. Because drupal docs suck.
+      '#ajax' => array(
+        'callback' => '_scene_record_ajax_add_comments',
+        'wrapper' => 'item-helper-included-comments-table',
+        'method' => 'replace',
+        'effect' => 'fade',
+      ),
+    );
+    // Part two, included comment.
+    $form['scene_record']['included_comments'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Included posts'),
+      '#collapsible' => TRUE,
+    );
+    // Setup table format.
+    $form['scene_record']['included_comments']['included_comments_table'] = array(
+      '#prefix' => '<div id="item-helper-included-comments-table">',
+      '#suffix' => '</div>',
+      '#theme' => 'table',
+      '#header' => array(
+        t('Scene posts'),
+        t('Results'),
+        t('(X)'),
+      ),
+      '#rows' => array(),
+      '#attributes' => array('id' => 'scene_record_included_comments_table'),
+      '#empty' => t('No posts found.'),
+      '#tree' => TRUE, // So can be picked up later.
+    );
+    // Gather comments for display from various sources.
+    $found_comments = array();
+    // Check for comments still saved on the node.
+    if (isset($form['#node']->nid)) {
+      $set_comments = _scene_record_get_comments($form['#node']->nid);
+      foreach ($set_comments as $set_comment) {
+        $found_comments[$set_comment->cid] = $set_comment;
+      }
+    }
+    // Gather comments existing under AJAX.
+    $exist_comments_table = !empty($form_state['values']['included_comments_table'])
+      ? $form_state['values']['included_comments_table'] : array();
+    foreach ($exist_comments_table as $existing_cid => $existing_comment) { 
+      // If marked add it.
+      if ($existing_comment['remove'] == 0) {
+        $this_comment = (object) $existing_comment;
+        $this_comment->cid = $existing_cid;
+        $found_comments[$existing_cid] = $this_comment;
+      }
+      if ($existing_comment['remove'] == 1) {
+        // Delete it as much as possible from the system.
+        unset($form_state['values']['included_comments_table'][$existing_cid]);
+        unset($found_comments[$existing_cid]);
+        if (isset($form['#node']->nid)) {
+          _scene_record_delete_comment($form['#node']->nid, $existing_cid);
+        }
+      }
+    }
+    // Gather comments added via AJAX.
+    $add_comments_table = !empty($form_state['values']['add_comments_table']) ? $form_state['values']['add_comments_table'] : array();
+    // Reverse the order to match posting order.
+    $add_comments_table = array_reverse($add_comments_table, TRUE);
+    foreach ($add_comments_table as $add_comment => $added) {
+      // If marked, and not already in the list, add it.
+      if ($added && !in_array($add_comment, array_keys($found_comments))) {
+        $this_comment->cid = $add_comment;
+        $found_comments[$add_comment] = $this_comment;
+      }
+    }
+    // One last organization of all of these by cid.
+    ksort($found_comments);
+    // Calculate the results for the set
+    $found_comments = _scene_record_calculate_results($found_comments);
+    // Add the comments.
+    foreach ($found_comments as $cid => $item_comment) {
+      $comment = comment_load($cid);
+      $comment_uri = comment_uri($comment);
+      $ooc = isset($comment->field_ooc[$comment->language][0]['value']) ? $comment->field_ooc[$comment->language][0]['value'] : '';
+      $comment_display = '<a href="/' . $comment_uri['path'] . '#' . $comment_uri['options']['fragment'] . '" title="' .
+        check_plain($comment->comment_body[$comment->language][0]['value']) . "\n" .
+        'OOC: ' . check_plain($ooc) . '">' .
+        check_plain($comment->subject) .
+        '</a>';
+      $comment_display = array(
+        '#type' => 'item',
+        '#markup' => $comment_display,
+      );
+      $dice_rolls = _dice_roller_get_roll($cid, 'c');
+      $comment_display['#markup'] .= !empty($dice_rolls)
+        ? theme('dice_roller_results', array('dice_rolls' => $dice_rolls))
+        : '</br>' . t('No rolls found');
+      $mights['comment_text'] = $comment_display;
+      $results = array(
+        '#type' => 'item',
+        '#markup' => $comment->results,
+      );
+      $remove = array(
+        '#type' => 'checkbox',
+        '#return_value' => 1,
+        '#default_value' => 0,
+      );
+      $form['scene_record']['included_comments']['included_comments_table'][$cid] = array(
+        'mights' => &$mights,
+        'remove' => &$remove,
+      );
+      $form['scene_record']['included_comments']['included_comments_table']['#rows'][] = array(
+        'class' => array('draggable'),
+        'data' => array(
+          array('data' => &$mights),
+          array('data' => &$results),
+          array('data' => &$remove),
+        )
+      );
+      unset($mights);
+      unset($results);
+      unset($remove);
+    }
+    // Add calculate button.
+    $form['scene_record']['included_comments']['recalculate'] = array(
+      '#type' => 'button',
+      '#value' => t('Calculate KXP'),
+      '#limit_validation_errors' => array(array('included_comments_table')),
+      // DOUBLE ARRAY. Because drupal docs suck.
+      '#ajax' => array(
+        'callback' => '_scene_record_ajax_add_comments',
+        'wrapper' => 'item-helper-included-comments-table',
+        'method' => 'replace',
+        'effect' => 'fade',
+      ),
+    );
+    // Hide the field creation history elements. We don't want users meddling with those.
+    $form['field_creation_history']['#access'] = FALSE;
+  }
+}
+
+/**
+ * AJAX function, callback for load comments after room selected.
+ */
+function _scene_record_ajax_load_room_comments($form, $form_state) {
+  return $form['scene_record']['add_comments']['add_comments_table'];
+}
+
+/**
+ * AJAX function, callback for load comments after room selected.
+ */
+function _scene_record_ajax_add_comments($form, $form_state) {
+  return isset($form['scene_record']['included_comments']['included_comments_table']) ?
+    $form['scene_record']['included_comments']['included_comments_table'] : '';
+}
+
+/**
+ * Autocomplete function, callback for room look up.
+ */
+function _scene_record_autocomplete_room($string = '') {
+  $matches = array();
+  $room_type = variable_get('scene_record_room_type', '');
+  if (!empty($string) && !empty($room_type)) {
+    $results = db_query('SELECT n.nid, n.title FROM {node} n ' .
+      'WHERE n.type LIKE :type ' .
+      'AND n.title LIKE :title',
+      array(':type' => $room_type, ':title' => '%' . $string . '%'));
+    foreach ($results as $result) {
+      $label = $result->title . ' [nid:' . $result->nid . ']';
+      $matches[ check_plain($label) ] = check_plain($label);
+    }
+  }
+  drupal_json_output($matches);
+}
+
+/**
+ * Implementation of admin settings form.
+ */
+function _scene_record_admin_settings($form, &$form_state) {
+  // Setting for workflow to drop the NPCs into on being claimed.
+  $content_types = node_type_get_types();
+  $types = array();
+  foreach ($content_types as $type_id => $content_type) {
+    $types[$type_id] = $content_type->name;
+  }
+  $form['scene_record_scene_type'] = array(
+    '#title' => t('Scene content type'),
+    '#description' => t('Content type for scenes.'),
+    '#type' => 'select',
+    '#options' => $types,
+    '#default_value' => variable_get('scene_record_scene_type', ''),
+  );
+  $form['scene_record_room_type'] = array(
+    '#title' => t('Room content type'),
+    '#description' => t('Content type for rooms.'),
+    '#type' => 'select',
+    '#options' => $types,
+    '#default_value' => variable_get('scene_record_room_type', ''),
+  );
+  $form['scene_record_num_posts'] = array(
+    '#title' => t('Number of posts'),
+    '#description' => t('Number of posts to display in interface.'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('scene_record_num_posts', 50),
+  );
+  return system_settings_form($form);
+}
+
+/**
+ * Helper function, given a set of partial or full comments, calculate results.
+ */
+function _scene_record_calculate_results($found_comments) {
+  foreach ($found_comments as $cid => $scene_comment) {
+    // Set defaults if not already set.
+    $kxp = 0; // TODO calculate KXP for this post.
+    $scene_comment->results = t('KXP: :kxp',
+      array(':kxp' => $kxp));
+  }
+  return $scene_comment;
+}
+
+/**
+ * Helper function, given a string retrieve any nid in the format [nid:XXX].
+ * Or look for the node by title.
+ */
+function _scene_record_autocomplete_get_nid($room_selected) {
+  $result = preg_match('/\[nid:([0-9]+)\]$/', $room_selected, $matches);
+  if ($result > 0) {
+    $nid = $matches[$result];
+    $node = node_load($nid);
+    if (empty($node)) {
+      $nodes = node_load_multiple(array(), array('title' => $room_selected));
+      foreach ($nodes as $nid => $this_node) {
+        $node = $this_node;
+      }
+    }
+    $room_type = variable_get('scene_record_room_type', '');
+    if (!empty($node) && $node->type == $room_type && $node->status == 1) {
+      return $node->nid;
+    }
+  }
+  return FALSE;
+}
+
+/**
+ * DB function, get comments per room.
+ */
+function _scene_record_get_comments_by_room($nid) {
+  $post_limit = variable_get('scene_record_num_posts', 50);
+  $results = db_query('SELECT * FROM {comment} ' .
+    'WHERE nid = :nid ' .
+    'ORDER BY created DESC LIMIT 0, ' . $post_limit,
+    array(':nid' => $nid))->fetchAll();
+  return $results;
+}
+
+/**
+ * DB function, get comments by item nid.
+ */
+function _scene_record_get_comments($nid) {
+  $results = db_query('SELECT * FROM {scene_record_item_comments} ' .
+    'WHERE nid = :nid ' .
+    'ORDER BY cid ASC',
+    array(':nid' => $nid))->fetchAll();
+  return $results;
+}
+
+/**
+ * DB function, delete comment by item nid.
+ */
+function _scene_record_delete_comments($nid) {
+  db_query('DELETE FROM {scene_record_item_comments} ' .
+    'WHERE nid = :nid',
+    array(':nid' => $nid));
+}
+
+/**
+ * CRUD function, get comment by item nid, cid.
+ */
+function _scene_record_get_comment($nid, $cid) {
+  $results = db_query('SELECT * FROM {scene_record_item_comments} ' .
+    'WHERE nid = :nid AND cid = :cid',
+    array(':nid' => $nid, ':cid' => $cid))->fetchAll();
+  return $results;
+}
+
+/**
+ * CRUD function, get comments by item nid.
+ */
+function _scene_record_insert_comment($data) {
+  $data = (array) $data;
+  $result = _scene_record_get_comment($data['nid'], $data['cid']);
+  if (!empty($result)) {
+    _scene_record_update_comment($data);
+  }
+  drupal_write_record('scene_record_item_comments', $data);
+}
+
+/**
+ * CRUD function, get comments by item nid.
+ */
+function _scene_record_update_comment($data) {
+  $data = (array) $data;
+  $result = _scene_record_get_comment($data['nid'], $data['cid']);
+  if (empty($result)) {
+    _scene_record_insert_comment($data);
+  }
+  drupal_write_record('scene_record_item_comments', $data, array('nid', 'cid'));
+}
+
+/**
+ * CRUD function, get comment by item nid, cid.
+ */
+function _scene_record_delete_comment($nid, $cid) {
+  db_query('DELETE FROM {scene_record_item_comments} ' .
+    'WHERE nid = :nid AND cid = :cid',
+    array(':nid' => $nid, ':cid' => $cid));
+}

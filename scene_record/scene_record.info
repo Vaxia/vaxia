@@ -1,0 +1,6 @@
+name = SCene record
+description = Inline assist for recording scenes for long term storage or doc
+package = Vaxia
+core = 7.x
+dependencies[] = dice_ruler
+version = 7.x-1.0
