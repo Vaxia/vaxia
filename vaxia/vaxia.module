@@ -524,13 +524,8 @@ function _vaxia_comment_add_kxp_submit($form, $form_state) {
       return;
     }
     // The character gains XP per wordcount.
-    $wordcount = strlen($form_state['values']['comment_body'][$lang][0]['value']);
-    if (is_numeric($wordcount)) {
-      //$kxp = floor( $wordcount / variable_get('vaxia_kxp_per_words', 20) );
-      $kxp = (81.6) * ( exp( (0.00008) * ($wordcount)) - 1 );
-      $kxp = substr($kxp, 0, 4);
-      $max_kxp = variable_get('vaxia_max_kxp_post', 10);
-      $kxp = $kxp <= $max_kxp ? $kxp : $max_kxp;
+    if (!empty($form_state['values']['comment_body'][$lang][0]['value'])) {
+      $kxp = _vaxia_figure_kxp($form_state['values']['comment_body'][$lang][0]['value']);
       $character = node_load($form_state['values']['field_comment_character'][$lang][0]['nid']);
       // Posting with an NPC? Mark the XP to the SH character.
       if ($character->field_is_npc[$character->language][0]['value'] == 1 
@@ -552,6 +547,21 @@ function _vaxia_comment_add_kxp_submit($form, $form_state) {
       }
     }  
   }
+}
+
+/** 
+ * Helper function, calculate kxp to give based on text.
+ */
+function _vaxia_figure_kxp($text) {
+  $wordcount = strlen($text);
+  if (is_numeric($wordcount)) {
+    //$kxp = floor( $wordcount / variable_get('vaxia_kxp_per_words', 20) );
+    $kxp = (81.6) * ( exp( (0.00008) * ($wordcount)) - 1 );
+    $kxp = substr($kxp, 0, 4);
+    $max_kxp = variable_get('vaxia_max_kxp_post', 10);
+    return $kxp <= $max_kxp ? $kxp : $max_kxp;
+  }
+  return 0;
 }
 
 /**
