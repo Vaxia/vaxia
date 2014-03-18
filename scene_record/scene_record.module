@@ -4,6 +4,8 @@
  * Provide a clean UI for scene records from a player crafter PoV.
  */
 
+include_once 'scene_record.features.inc';
+
 /**
  * Implements hook_permission().
  */
