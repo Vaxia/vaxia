@@ -398,7 +398,9 @@ function proposal_node_view($node, $view_mode, $langcode) {
     $voted = webform_get_submission_count($node->nid);
     if ($potential_voters != 0) {
       $percent = number_format(($voted / $potential_voters) * 100);
-      $active_voters = proposal_eligable_active_count($node->nid, $node->changed); // Within a window of two weeks active.
+      // If closed, use the time of closing. Else now.
+      $timeframe = ($node->webform['status'] == FALSE) ? $node->changed : strtotime('now');
+      $active_voters = proposal_eligable_active_count($node->nid, $timeframe); // Within a window of two weeks active.
       $percent_active = number_format(($voted / $active_voters) * 100);
       $node->content['proposal_response'] = array(
         '#markup' => '<div class="proposal_response" style="margin:1em 0;">' . t('%voted out of %potential_voters potential voters (%percent %) responsed ' .
@@ -756,7 +758,8 @@ function proposal_eligable_active_count($nid, $from_time) {
   if (empty($nid)) {
     return FALSE; // Bail if error.
   }
-  $time = strtotime('-1 weeks', $from_time);
+  $end = $from_time;
+  $start = strtotime('-1 weeks', $from_time);
   // Check if they created a comment in the timeframe.
   // Why comments? Cause creating a character and vanishing from the site
   // happens, and we want to see gut-check-level active people. That means
@@ -764,9 +767,9 @@ function proposal_eligable_active_count($nid, $from_time) {
   $eligable = db_query('SELECT COUNT(u.uid) AS eligable FROM {proposal_eligable_users} u ' .
     'WHERE u.nid = :nid ' .
     'AND u.uid IN ( ' .
-      'SELECT uid FROM comment WHERE changed > :time ' .
+      'SELECT uid FROM comment WHERE changed > :start AND changed < :end' .
     ')',
-    array(':nid' => $nid, ':time' => $time))->fetchField();
+    array(':nid' => $nid, ':start' => $start, ':end' => $end))->fetchField();
   if (empty($eligable)) {
     return 0; // Bail if error.
   }
