@@ -171,7 +171,6 @@ function scene_record_form_node_form_alter(&$form, &$form_state, $form_id) {
       '#title' => t('Scene Assistant'),
       '#description' => t('Use this assistant to attach scene posts.'),
       '#collapsible' => TRUE,
-      '#weight' => -40,
     );
     // Part one, add more comments.
     $form['scene_record']['add_comments'] = array(
