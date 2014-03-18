@@ -184,17 +184,22 @@ function _item_helper_view_table(&$headers, &$rows, $node, $set_comments) {
     // Get comment display.
     $comment = comment_load($cid);
     $comment_uri = comment_uri($comment);
-    $ooc = isset($comment->field_ooc[$comment->language][0]['value']) ? $comment->field_ooc[$comment->language][0]['value'] : '';
-    $comment_display = '<a href="/' . $comment_uri['path'] . '#' . $comment_uri['options']['fragment'] . '" title="' .
-      check_plain($comment->comment_body[$comment->language][0]['value']) . "\n" .
-      'OOC: ' . check_plain($ooc) . '">' .
-      check_plain($comment->subject) .
-      '</a>';
-    // Get dice display.
+    // Get the full text.
+    $comment_text = check_markup($comment->comment_body[$comment->language][0]['value'], $comment->comment_body[$comment->language][0]['format']);
+    $comment_ooc = check_markup($comment->field_ooc[$comment->language][0]['value'], $comment->field_ooc[$comment->language][0]['format']);
+    // Strip HTML - we can't use it in title overheads.
+    $comment_text = strip_tags($comment_text);
+    $comment_ooc = strip_tags($comment_ooc);
+    $comment_title = check_plain($comment_text);
+    if (!empty($comment_ooc)) {
+      $comment_title .= "\n" . 'OOC: ' . check_plain($comment_ooc);
+    }
+    // Put together.
+    $comment_display = '<a href="/' . $comment_uri['path'] . '#' . $comment_uri['options']['fragment'] . '" title="' . $comment_title . '">' .
+      check_plain($comment->subject) . '</a>';
+    // Add dice rolls if there are any.
     $dice_rolls = _dice_roller_get_roll($cid, 'c');
-    $comment_display .= !empty($dice_rolls)
-      ? theme('dice_roller_results', array('dice_rolls' => $dice_rolls))
-      : '</br>' . t('No rolls found');
+    $comment_display .= !empty($dice_rolls) ? theme('dice_roller_results', array('dice_rolls' => $dice_rolls)) : '';
     // Add to rows.
     $rows[] = array(
       $comment_display,
@@ -202,7 +207,10 @@ function _item_helper_view_table(&$headers, &$rows, $node, $set_comments) {
       $item_comment->set_bonus,
       $item_comment->difficulty,
       $item_comment->rp_bonus,
-      $item_comment->results,
+      array(
+        'data' => $item_comment->results,
+        'nowrap' => array('nowrap'),
+      ),
     );
   }
 }
@@ -253,13 +261,20 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
         foreach ($found_comments as $found_comment) {
           $comment = comment_load($found_comment->cid);
           $comment_uri = comment_uri($comment);
-          $comment_text = isset($comment->comment_body[$comment->language][0]['value']) ? $comment->comment_body[$comment->language][0]['value'] : '';
-          $ooc_text = isset($comment->field_ooc[$comment->language][0]['value']) ? $comment->field_ooc[$comment->language][0]['value'] : '';
-          $comment_display = '<a href="/' . $comment_uri['path'] . '#' . $comment_uri['options']['fragment'] . '" title="' .
-            check_plain($comment_text) . "\n" .
-            'OOC: ' . check_plain($ooc_text) . '">' .
-            check_plain($comment->subject) .
-            '</a>';
+          // Get the full text.
+          $comment_text = check_markup($comment->comment_body[$comment->language][0]['value'], $comment->comment_body[$comment->language][0]['format']);
+          $comment_ooc = check_markup($comment->field_ooc[$comment->language][0]['value'], $comment->field_ooc[$comment->language][0]['format']);
+          // Strip HTML - we can't use it in title overheads.
+          $comment_text = strip_tags($comment_text);
+          $comment_ooc = strip_tags($comment_ooc);
+          $comment_title = check_plain($comment_text);
+          if (!empty($comment_ooc)) {
+            $comment_title .= "\n" . 'OOC: ' . check_plain($comment_ooc);
+          }
+          // Put together.
+          $comment_display = '<a href="/' . $comment_uri['path'] . '#' . $comment_uri['options']['fragment'] . '" title="' . $comment_title . '">' .
+            check_plain($comment->subject) . '</a>';
+          // Get the rest of the display info.
           $character = isset($comment->field_comment_character[$comment->language][0]['nid']) ?
             $comment->field_comment_character[$comment->language][0]['nid'] : '';
           $character = node_load($character);
@@ -401,12 +416,19 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
     foreach ($found_comments as $cid => $item_comment) {
       $comment = comment_load($cid);
       $comment_uri = comment_uri($comment);
-      $ooc = isset($comment->field_ooc[$comment->language][0]['value']) ? $comment->field_ooc[$comment->language][0]['value'] : '';
-      $comment_display = '<a href="/' . $comment_uri['path'] . '#' . $comment_uri['options']['fragment'] . '" title="' .
-        check_plain($comment->comment_body[$comment->language][0]['value']) . "\n" .
-        'OOC: ' . check_plain($ooc) . '">' .
-        check_plain($comment->subject) .
-        '</a>';
+      // Get the full text.
+      $comment_text = check_markup($comment->comment_body[$comment->language][0]['value'], $comment->comment_body[$comment->language][0]['format']);
+      $comment_ooc = check_markup($comment->field_ooc[$comment->language][0]['value'], $comment->field_ooc[$comment->language][0]['format']);
+      // Strip HTML - we can't use it in title overheads.
+      $comment_text = strip_tags($comment_text);
+      $comment_ooc = strip_tags($comment_ooc);
+      $comment_title = check_plain($comment_text);
+      if (!empty($comment_ooc)) {
+        $comment_title .= "\n" . 'OOC: ' . check_plain($comment_ooc);
+      }
+      // Put together.
+      $comment_display = '<a href="/' . $comment_uri['path'] . '#' . $comment_uri['options']['fragment'] . '" title="' . $comment_title . '">' .
+        check_plain($comment->subject) . '</a>';
       $comment_display = array(
         '#type' => 'item',
         '#markup' => $comment_display,
