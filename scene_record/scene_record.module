@@ -74,20 +74,16 @@ function scene_record_node_update($node) {
         _scene_record_update_comment($scene_comment);
       }
     }
-    // Done? Save an internal record. But only one.
-    if (empty($node->scene_saved)) {
-      // If a table with states, grab and render the info as a table.
-      // And save it to our record fields to disconnect the record from comment.
-      $set_comments = _scene_record_get_comments($node->nid);
-      if (!empty($set_comments)) {
-        // This function sets the value of headers and rows.
-        _scene_record_view_table($headers, $rows, $node, $set_comments, TRUE);
-        $table['value'] = theme('table', array('header' => $headers, 'rows' => $rows));
-        $table['format'] = 'full_html';
-        $node->field_scene[$node->language][0] = $table;
-        $node->scene_saved = TRUE;
-        node_save($node);
-      }
+    // If a table with states, grab and render the info as a table.
+    // And save it to our record fields to disconnect the record from comment.
+    $set_comments = _scene_record_get_comments($node->nid);
+    if (!empty($set_comments)) {
+      // This function sets the value of headers and rows.
+      _scene_record_view_table($headers, $rows, $node, $set_comments, TRUE);
+      $table['value'] = theme('table', array('header' => $headers, 'rows' => $rows));
+      $table['format'] = 'full_html';
+      $node->field_scene[$node->language][0] = $table;
+      field_attach_update('node', $node);
     }
   }
 }
