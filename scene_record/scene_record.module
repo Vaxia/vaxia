@@ -124,13 +124,20 @@ function _scene_record_view_table(&$headers, &$rows, $node, $set_comments, $full
   foreach ($found_comments as $cid => $scene_comment) {
     // Get comment display.
     $comment = comment_load($cid);
-    $character = isset($comment->field_comment_character[$comment->language][0]['nid']) ?
-      $comment->field_comment_character[$comment->language][0]['nid'] : '';
     $comment_uri = comment_uri($comment);
     if ($full_text) {
+      $character = isset($comment->field_comment_character[$comment->language][0]['nid']) ?
+        node_load($comment->field_comment_character[$comment->language][0]['nid']) : '';
+      if (empty($character)) {
+        $user = user_load($comment->uid);
+        $comment_by = $user->name;
+      }
+      else {
+        $comment_by = $character->title;
+      }
       $comment_text = check_markup($comment->comment_body[$comment->language][0]['value'], $comment->comment_body[$comment->language][0]['format']);
       $comment_ooc = check_markup($comment->field_ooc[$comment->language][0]['value'], $comment->field_ooc[$comment->language][0]['format']);
-      $comment_display = '<b>' . check_plain($character->title) . '</b>:<br/>' . $comment_text . 'OOC: ' . $comment_ooc;
+      $comment_display = '<b>' . check_plain($comment_by) . '</b>:<br/>' . $comment_text . 'OOC: ' . $comment_ooc;
     }
     else {
       $comment_display = '<a href="/' . $comment_uri['path'] . '#' . $comment_uri['options']['fragment'] . '" title="' .
