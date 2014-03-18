@@ -180,7 +180,6 @@ function rpg_site_staff_views_default_views() {
   $handler->display->display_options['filters']['field_realm_value']['table'] = 'field_data_field_realm';
   $handler->display->display_options['filters']['field_realm_value']['field'] = 'field_realm_value';
   $handler->display->display_options['filters']['field_realm_value']['value'] = array(
-    'all' => 'all',
     'Vaxia' => 'Vaxia',
     'Sirian' => 'Sirian',
   );
@@ -204,10 +203,12 @@ function rpg_site_staff_views_default_views() {
     9 => 0,
     20 => 0,
     14 => 0,
+    21 => 0,
     4 => 0,
     3 => 0,
     11 => 0,
   );
+  $handler->display->display_options['filters']['field_realm_value']['expose']['reduce'] = TRUE;
   /* Filter criterion: Content: Saga (field_saga) */
   $handler->display->display_options['filters']['field_saga_tid']['id'] = 'field_saga_tid';
   $handler->display->display_options['filters']['field_saga_tid']['table'] = 'field_data_field_saga';
