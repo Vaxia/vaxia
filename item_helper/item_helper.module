@@ -152,25 +152,6 @@ function item_helper_workflow($op, $old_state, $new_state, $node, $force = FALSE
 }
 
 /**
- * Helper function, wraps node base for purposes of passing #node info from non node_base pg.
- */
-function item_helper_form_node_view_data($form, &$form_state, $node, $set_comments) {
-  $form['item_helper'] = array(
-    '#type' => 'fieldset',
-     '#title' => t('Item Build Assistant'),
-    '#collapsible' => TRUE,
-    '#collapsed' => TRUE,
-  );
-  // Add to display.
-  _item_helper_view_table($headers, $rows, $node, $set_comments);
-  $form['item_helper']['display'] = array(
-    '#type' => 'item',
-    '#markup' => theme('table', array('header' => $headers, 'rows' => $rows)),
-  );
-  return $form;
-}
-
-/**
  * Return a display of the info as a renderable form.
  */
 function _item_helper_view_table(&$headers, &$rows, $node, $set_comments) {
@@ -224,17 +205,6 @@ function _item_helper_view_table(&$headers, &$rows, $node, $set_comments) {
       $item_comment->results,
     );
   }
-}
-
-/**
- * Helper function, wraps node base for purposes of passing #node info from non node_base pg.
- */
-function item_helper_form_node_form_alter_wrapper($form, &$form_state, $node) {
-  $form['#node'] = node_load($node->nid); // New node object.
-  $form['type']['#value'] = $node->type;
-  item_helper_form_node_form_alter($form, $form_state, 'item_helper_form_node_form_alter');
-  $form['#weight'] = -40;
-  return $form;
 }
 
 /**
