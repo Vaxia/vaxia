@@ -327,6 +327,9 @@ function scene_record_form_node_form_alter(&$form, &$form_state, $form_id) {
       $comment_text = '';
       if (!empty($comment->comment_body[$comment->language][0]['value'])) {
         $comment_text = check_markup($comment->comment_body[$comment->language][0]['value'], $comment->comment_body[$comment->language][0]['format']);
+      }
+      $comment_ooc = '';
+      if (!empty($comment->field_ooc[$comment->language][0]['value'])) {
         $comment_ooc = check_markup($comment->field_ooc[$comment->language][0]['value'], $comment->field_ooc[$comment->language][0]['format']);
       }
       // Strip HTML - we can't use it in title overheads.
