@@ -128,7 +128,7 @@ function _scene_record_view_table(&$headers, &$rows, $node, $set_comments, $full
     $comment = comment_load($cid);
     $comment_uri = comment_uri($comment);
     if ($full_text) {
-      $character = isset($comment->field_comment_character[$comment->language][0]['nid']) ?
+      $character = !empty($comment->field_comment_character[$comment->language][0]['nid']) ?
         node_load($comment->field_comment_character[$comment->language][0]['nid']) : '';
       if (empty($character)) {
         $user = user_load($comment->uid);
@@ -156,7 +156,10 @@ function _scene_record_view_table(&$headers, &$rows, $node, $set_comments, $full
     // Add to rows.
     $rows[] = array(
       $comment_display,
-      $scene_comment->results,
+      array(
+        'data' => $scene_comment->results,
+        'nowrap' => array('nowrap'),
+      ),
     );
   }
 }
@@ -201,17 +204,17 @@ function scene_record_form_node_form_alter(&$form, &$form_state, $form_id) {
         foreach ($found_comments as $found_comment) {
           $comment = comment_load($found_comment->cid);
           $comment_uri = comment_uri($comment);
-          $comment_text = isset($comment->comment_body[$comment->language][0]['value']) ? $comment->comment_body[$comment->language][0]['value'] : '';
-          $ooc_text = isset($comment->field_ooc[$comment->language][0]['value']) ? $comment->field_ooc[$comment->language][0]['value'] : '';
+          $comment_text = !empty($comment->comment_body[$comment->language][0]['value']) ? $comment->comment_body[$comment->language][0]['value'] : '';
+          $ooc_text = !empty($comment->field_ooc[$comment->language][0]['value']) ? $comment->field_ooc[$comment->language][0]['value'] : '';
           $comment_display = '<a href="/' . $comment_uri['path'] . '#' . $comment_uri['options']['fragment'] . '" title="' .
             check_plain($comment_text) . "\n" .
             'OOC: ' . check_plain($ooc_text) . '">' .
             check_plain($comment->subject) .
             '</a>';
-          $character = isset($comment->field_comment_character[$comment->language][0]['nid']) ?
+          $character = !empty($comment->field_comment_character[$comment->language][0]['nid']) ?
             $comment->field_comment_character[$comment->language][0]['nid'] : '';
           $character = node_load($character);
-          $character_name = isset($character->title) ? $character->title : '';
+          $character_name = !empty($character->title) ? $character->title : '';
           $dice_rolls = _dice_roller_get_roll($found_comment->cid, 'c');
           $dice_rolls = !empty($dice_rolls)
             ? theme('dice_roller_results', array('dice_rolls' => $dice_rolls))
@@ -276,7 +279,7 @@ function scene_record_form_node_form_alter(&$form, &$form_state, $form_id) {
     // Gather comments for display from various sources.
     $found_comments = array();
     // Check for comments still saved on the node.
-    if (isset($form['#node']->nid)) {
+    if (!empty($form['#node']->nid)) {
       $set_comments = _scene_record_get_comments($form['#node']->nid);
       foreach ($set_comments as $set_comment) {
         $found_comments[$set_comment->cid] = $set_comment;
@@ -296,7 +299,7 @@ function scene_record_form_node_form_alter(&$form, &$form_state, $form_id) {
         // Delete it as much as possible from the system.
         unset($form_state['values']['included_comments_table'][$existing_cid]);
         unset($found_comments[$existing_cid]);
-        if (isset($form['#node']->nid)) {
+        if (!empty($form['#node']->nid)) {
           _scene_record_delete_comment($form['#node']->nid, $existing_cid);
         }
       }
@@ -320,7 +323,7 @@ function scene_record_form_node_form_alter(&$form, &$form_state, $form_id) {
     foreach ($found_comments as $cid => $scene_comment) {
       $comment = comment_load($cid);
       $comment_uri = comment_uri($comment);
-      $ooc = isset($comment->field_ooc[$comment->language][0]['value']) ? $comment->field_ooc[$comment->language][0]['value'] : '';
+      $ooc = !empty($comment->field_ooc[$comment->language][0]['value']) ? $comment->field_ooc[$comment->language][0]['value'] : '';
       $comment_display = '<a href="/' . $comment_uri['path'] . '#' . $comment_uri['options']['fragment'] . '" title="' .
         check_plain($comment->comment_body[$comment->language][0]['value']) . "\n" .
         'OOC: ' . check_plain($ooc) . '">' .
@@ -389,7 +392,7 @@ function _scene_record_ajax_load_room_comments($form, $form_state) {
  * AJAX function, callback for load comments after room selected.
  */
 function _scene_record_ajax_add_comments($form, $form_state) {
-  return isset($form['scene_record']['included_comments']['included_comments_table']) ?
+  return !empty($form['scene_record']['included_comments']['included_comments_table']) ?
     $form['scene_record']['included_comments']['included_comments_table'] : '';
 }
 
@@ -450,19 +453,41 @@ function _scene_record_admin_settings($form, &$form_state) {
  */
 function _scene_record_calculate_results($found_comments) {
   $total_kxp = 0;
-  $total_xp = 0;
+  $character_kxp = array();
   $kxp_ratio = variable_get('vaxia_kxp_ratio', 70);
   foreach ($found_comments as $cid => $scene_comment) {
+    $message_items = array();
     // Set defaults if not already set.
     $comment = comment_load($cid);
     $kxp = _vaxia_figure_kxp($comment->comment_body[$comment->language][0]['value']);
     $total_kxp = $total_kxp + $kxp;
+    // Figure out how much overall XP for this scene.
     $total_xp = 0;
     if ($total_kxp >= $kxp_ratio) {
       $total_xp = floor($total_kxp / $kxp_ratio);
     }
-    $scene_comment->results = t('KXP: :kxp <br/> Total KXP: :total_kxp <br/> Total XP: :total_xp',
-      array(':kxp' => $kxp, ':total_kxp' => $total_kxp, ':total_xp' => $total_xp));
+    $character = !empty($comment->field_comment_character[$comment->language][0]['nid']) ?
+      node_load($comment->field_comment_character[$comment->language][0]['nid']) : '';
+    if (!empty($character)) {
+      $character_kxp[$character->title] = isset($character_kxp[$character->title])
+        ? $character_kxp[$character->title] + $kxp : $kxp;
+    }
+    // Set the overall post results.
+    $message_items[] = t('KXP: :kxp', array(':kxp' => $kxp));
+    $message_items[] = t('Total KXP: :total_kxp', array(':total_kxp' => $total_kxp));
+    $message_items[] = t('Total XP: :total_xp', array(':total_xp' => $total_xp));
+    // Set the results per character.
+    foreach ($character_kxp as $name => $total_char_kxp) {
+      // Figure out how much overall XP for this scene.
+      $total_xp = 0;
+      if ($total_char_kxp >= $kxp_ratio) {
+        $total_xp = floor($total_char_kxp / $kxp_ratio);
+      }
+      $message_items[] = t('Total :name KXP: :total_char_kxp', array(':name' => $name, ':total_char_kxp' => $total_char_kxp));
+      $message_items[] = t('Total :name XP: :total_xp', array(':name' => $name, ':total_xp' => $total_xp));
+    }
+    $message = theme('item_list', array('items' => $message_items));
+    $scene_comment->results = $message;
   }
   return $found_comments;
 }
