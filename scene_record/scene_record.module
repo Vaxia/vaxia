@@ -124,11 +124,13 @@ function _scene_record_view_table(&$headers, &$rows, $node, $set_comments, $full
   foreach ($found_comments as $cid => $scene_comment) {
     // Get comment display.
     $comment = comment_load($cid);
+    $character = isset($comment->field_comment_character[$comment->language][0]['nid']) ?
+      $comment->field_comment_character[$comment->language][0]['nid'] : '';
     $comment_uri = comment_uri($comment);
     if ($full_text) {
       $comment_text = check_markup($comment->comment_body[$comment->language][0]['value'], $comment->comment_body[$comment->language][0]['format']);
       $comment_ooc = check_markup($comment->field_ooc[$comment->language][0]['value'], $comment->field_ooc[$comment->language][0]['format']);
-      $comment_display = $comment_text . 'OOC: ' . $comment_ooc;
+      $comment_display = '<b>' . check_plain($character->title) . '</b>:<br/>' . $comment_text . 'OOC: ' . $comment_ooc;
     }
     else {
       $comment_display = '<a href="/' . $comment_uri['path'] . '#' . $comment_uri['options']['fragment'] . '" title="' .
@@ -162,7 +164,6 @@ function scene_record_form_node_form_alter(&$form, &$form_state, $form_id) {
       '#title' => t('Scene Assistant'),
       '#description' => t('Use this assistant to attach scene posts.'),
       '#collapsible' => TRUE,
-      '#collapsed' => TRUE,
       '#weight' => -40,
     );
     // Part one, add more comments.
