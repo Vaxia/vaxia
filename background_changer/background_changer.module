@@ -18,16 +18,32 @@ function background_changer_permission() {
 }
 
 /**
- * Implements hook_init().
+ * Implements hook_block_info().
  */
-function background_changer_init() {
+function background_changer_block_info() {
+  $blocks = array();
+  $blocks['background_changer'] = array(
+    'info' => t('Change backgound image based on time'),
+  );
+  return $blocks;
+}
+
+
+/**
+ * Implements hook_block_view().
+ */
+function background_changer_block_view($delta = '') {
+  $block = array();
   if (user_access('use background changer')) {
     global $base_url;
     $my_settings = array (
       // Base path for background images
       'path' => $base_url . '/' . drupal_get_path('module', 'background_changer') . '/images/',
-      );
+    );
     drupal_add_js(array('background_changer' => $my_settings), 'setting');
     drupal_add_js(drupal_get_path('module', 'background_changer').'/js/background_changer.js');
   }
+  $block['subject'] = '';
+  $block['content'] = '&nbsp;';
+  return $block;
 }
