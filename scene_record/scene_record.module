@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Provide a clean UI for item creation from a player crafter PoV.
+ * Provide a clean UI for scene records from a player crafter PoV.
  */
 
 /**
@@ -32,7 +32,7 @@ function scene_record_menu() {
   );
   $items['admin/vaxia/scene_record'] = array(
     'title' => 'Scene record settings',
-    'description' => 'Configure content type association settings for item handling',
+    'description' => 'Configure content type association settings for scene records.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('_scene_record_admin_settings'),
     'access arguments' => array('administer scene helper'),
@@ -74,19 +74,21 @@ function scene_record_node_update($node) {
         _scene_record_update_comment($scene_comment);
       }
     }
-    // Done? Save an internal record.
-/*
-	  // If a table with states, grab and render the info as a table.
-	  // And save it to our record fields to disconnect the item assist from comment.
-	  $set_comments = _scene_record_get_comments($node->nid);
-	  if (!empty($set_comments)) {
-		_scene_record_view_table($headers, $rows, $node, $set_comments);
-		$table['value'] = theme('table', array('header' => $headers, 'rows' => $rows));
-		$table['format'] = 'full_html';
-		$node->field_creation_history[$node->language][] = $table;
-		node_save($node);
-	  }
-*/
+    // Done? Save an internal record. But only one.
+    if (empty($node->scene_saved)) {
+      // If a table with states, grab and render the info as a table.
+      // And save it to our record fields to disconnect the record from comment.
+      $set_comments = _scene_record_get_comments($node->nid);
+      if (!empty($set_comments)) {
+        // This function sets the value of headers and rows.
+        _scene_record_view_table($headers, $rows, $node, $set_comments, TRUE);
+        $table['value'] = theme('table', array('header' => $headers, 'rows' => $rows));
+        $table['format'] = 'full_html';
+        $node->field_scene[$node->language][0] = $table;
+        $node->scene_saved = TRUE;
+        node_save($node);
+      }
+    }
   }
 }
 
@@ -105,49 +107,9 @@ function scene_record_comment_delete($comment) {
 }
 
 /**
- * Implements hook_node_view().
- */
-function scene_record_node_view($node, $view_mode, $langcode) {
-  $scene_type = variable_get('scene_record_scene_type', '');
-  if ($view_mode == 'full' && user_access('use scene helper') && !empty($scene_type) && !empty($node->type) && $scene_type == $node->type) {
-    $set_comments = _scene_record_get_comments($node->nid);
-    if (!empty($set_comments) && !empty($node->content['field_creation_history'])) {
-      unset($node->content['field_creation_history']['#theme']);
-      // Convert this display into a markup, so we don't double render the content table.
-      $node->content['field_creation_history']['#markup'] = isset($node->content['field_creation_history']['#markup']) ?
-        $node->content['field_creation_history']['#markup'] : '';
-      foreach ($node->content['field_creation_history']['#items'] as $index => $value) {
-        $count = $index + 1;
-        $label = '<div class="field"><hr><div class="field-label">Scene history record #' . $count . ':&nbsp;</div><hr></div>';
-        $node->content['field_creation_history']['#markup'] .= $label . $value['value'];
-      }
-    }
-  }
-}
-
-/**
- * Helper function, wraps node base for purposes of passing #node info from non node_base pg.
- */
-function scene_record_form_node_view_data($form, &$form_state, $node, $set_comments) {
-  $form['scene_record'] = array(
-    '#type' => 'fieldset',
-     '#title' => t('Scene Assistant'),
-    '#collapsible' => TRUE,
-    '#collapsed' => TRUE,
-  );
-  // Add to display.
-  _scene_record_view_table($headers, $rows, $node, $set_comments);
-  $form['scene_record']['display'] = array(
-    '#type' => 'item',
-    '#markup' => theme('table', array('header' => $headers, 'rows' => $rows)),
-  );
-  return $form;
-}
-
-/**
  * Return a display of the info as a renderable form.
  */
-function _scene_record_view_table(&$headers, &$rows, $node, $set_comments) {
+function _scene_record_view_table(&$headers, &$rows, $node, $set_comments, $full_text = FALSE) {
   $headers = array(
     t('Scene posts'),
     t('Results'),
@@ -167,11 +129,18 @@ function _scene_record_view_table(&$headers, &$rows, $node, $set_comments) {
     // Get comment display.
     $comment = comment_load($cid);
     $comment_uri = comment_uri($comment);
-    $comment_display = '<a href="/' . $comment_uri['path'] . '#' . $comment_uri['options']['fragment'] . '" title="' .
-      check_plain($comment->comment_body[$comment->language][0]['value']) . "\n" .
-      'OOC: ' . check_plain($ooc) . '">' .
-      check_plain($comment->subject) .
-      '</a>';
+    if ($full_text) {
+      $comment_text = check_markup($comment->comment_body[$comment->language][0]['value'], $comment->comment_body[$comment->language][0]['format']);
+      $comment_ooc = check_markup($comment->field_ooc[$comment->language][0]['value'], $comment->field_ooc[$comment->language][0]['format']);
+      $comment_display = $comment_text . 'OOC: ' . $comment_ooc;
+    }
+    else {
+      $comment_display = '<a href="/' . $comment_uri['path'] . '#' . $comment_uri['options']['fragment'] . '" title="' .
+        check_plain($comment->comment_body[$comment->language][0]['value']) . "\n" .
+        'OOC: ' . check_plain($ooc) . '">' .
+        check_plain($comment->subject) .
+        '</a>';
+    }
     // Get dice display.
     $dice_rolls = _dice_roller_get_roll($cid, 'c');
     $comment_display .= !empty($dice_rolls)
@@ -183,17 +152,6 @@ function _scene_record_view_table(&$headers, &$rows, $node, $set_comments) {
       $scene_comment->results,
     );
   }
-}
-
-/**
- * Helper function, wraps node base for purposes of passing #node info from non node_base pg.
- */
-function scene_record_form_node_form_alter_wrapper($form, &$form_state, $node) {
-  $form['#node'] = node_load($node->nid); // New node object.
-  $form['type']['#value'] = $node->type;
-  scene_record_form_node_form_alter($form, $form_state, 'scene_record_form_node_form_alter');
-  $form['#weight'] = -40;
-  return $form;
 }
 
 /**
@@ -224,7 +182,7 @@ function scene_record_form_node_form_alter(&$form, &$form_state, $form_id) {
       '#autocomplete_path' => 'vaxia/scene_record/autocomplete/room',
       '#ajax' => array(
         'callback' => '_scene_record_ajax_load_room_comments',
-        'wrapper' => 'item-helper-add-comments-table',
+        'wrapper' => 'scene-record-add-comments-table',
         'method' => 'replace',
         'effect' => 'fade',
       ),
@@ -257,21 +215,19 @@ function scene_record_form_node_form_alter(&$form, &$form_state, $form_id) {
             $comment_display,
             check_plain($character_name),
             check_plain($comment->name),
-            $dice_rolls,
             date('m/d/Y H:i:s', $comment->changed),
           );
         }
       }
     }
     $form['scene_record']['add_comments']['add_comments_table'] = array(
-      '#prefix' => '<div id="item-helper-add-comments-table">',
+      '#prefix' => '<div id="scene-record-add-comments-table">',
       '#suffix' => '</div>',
       '#type' => 'tableselect',
       '#header' => array(
         t('Posts'),
         t('Character'),
         t('Player'),
-        t('Rolls'),
         t('Date'),
       ),
       '#options' => $options,
@@ -286,7 +242,7 @@ function scene_record_form_node_form_alter(&$form, &$form_state, $form_id) {
       // DOUBLE ARRAY. Because drupal docs suck.
       '#ajax' => array(
         'callback' => '_scene_record_ajax_add_comments',
-        'wrapper' => 'item-helper-included-comments-table',
+        'wrapper' => 'scene-record-included-comments-table',
         'method' => 'replace',
         'effect' => 'fade',
       ),
@@ -299,7 +255,7 @@ function scene_record_form_node_form_alter(&$form, &$form_state, $form_id) {
     );
     // Setup table format.
     $form['scene_record']['included_comments']['included_comments_table'] = array(
-      '#prefix' => '<div id="item-helper-included-comments-table">',
+      '#prefix' => '<div id="scene-record-included-comments-table">',
       '#suffix' => '</div>',
       '#theme' => 'table',
       '#header' => array(
@@ -356,7 +312,7 @@ function scene_record_form_node_form_alter(&$form, &$form_state, $form_id) {
     // Calculate the results for the set
     $found_comments = _scene_record_calculate_results($found_comments);
     // Add the comments.
-    foreach ($found_comments as $cid => $item_comment) {
+    foreach ($found_comments as $cid => $scene_comment) {
       $comment = comment_load($cid);
       $comment_uri = comment_uri($comment);
       $ooc = isset($comment->field_ooc[$comment->language][0]['value']) ? $comment->field_ooc[$comment->language][0]['value'] : '';
@@ -376,7 +332,7 @@ function scene_record_form_node_form_alter(&$form, &$form_state, $form_id) {
       $mights['comment_text'] = $comment_display;
       $results = array(
         '#type' => 'item',
-        '#markup' => $comment->results,
+        '#markup' => $scene_comment->results,
       );
       $remove = array(
         '#type' => 'checkbox',
@@ -407,13 +363,13 @@ function scene_record_form_node_form_alter(&$form, &$form_state, $form_id) {
       // DOUBLE ARRAY. Because drupal docs suck.
       '#ajax' => array(
         'callback' => '_scene_record_ajax_add_comments',
-        'wrapper' => 'item-helper-included-comments-table',
+        'wrapper' => 'scene-record-included-comments-table',
         'method' => 'replace',
         'effect' => 'fade',
       ),
     );
     // Hide the field creation history elements. We don't want users meddling with those.
-    $form['field_creation_history']['#access'] = FALSE;
+    $form['field_scene']['#access'] = FALSE;
   }
 }
 
@@ -488,13 +444,22 @@ function _scene_record_admin_settings($form, &$form_state) {
  * Helper function, given a set of partial or full comments, calculate results.
  */
 function _scene_record_calculate_results($found_comments) {
+  $total_kxp = 0;
+  $total_xp = 0;
+  $kxp_ratio = variable_get('vaxia_kxp_ratio', 70);
   foreach ($found_comments as $cid => $scene_comment) {
     // Set defaults if not already set.
-    $kxp = 0; // TODO calculate KXP for this post.
-    $scene_comment->results = t('KXP: :kxp',
-      array(':kxp' => $kxp));
+    $comment = comment_load($cid);
+    $kxp = _vaxia_figure_kxp($comment->comment_body[$comment->language][0]['value']);
+    $total_kxp = $total_kxp + $kxp;
+    $total_xp = 0;
+    if ($total_kxp >= $kxp_ratio) {
+      $total_xp = floor($total_kxp / $kxp_ratio);
+    }
+    $scene_comment->results = t('KXP: :kxp <br/> Total KXP: :total_kxp <br/> Total XP: :total_xp',
+      array(':kxp' => $kxp, ':total_kxp' => $total_kxp, ':total_xp' => $total_xp));
   }
-  return $scene_comment;
+  return $found_comments;
 }
 
 /**
@@ -533,10 +498,10 @@ function _scene_record_get_comments_by_room($nid) {
 }
 
 /**
- * DB function, get comments by item nid.
+ * DB function, get comments by nid.
  */
 function _scene_record_get_comments($nid) {
-  $results = db_query('SELECT * FROM {scene_record_item_comments} ' .
+  $results = db_query('SELECT * FROM {scene_record_comments} ' .
     'WHERE nid = :nid ' .
     'ORDER BY cid ASC',
     array(':nid' => $nid))->fetchAll();
@@ -544,26 +509,26 @@ function _scene_record_get_comments($nid) {
 }
 
 /**
- * DB function, delete comment by item nid.
+ * DB function, delete comment by nid.
  */
 function _scene_record_delete_comments($nid) {
-  db_query('DELETE FROM {scene_record_item_comments} ' .
+  db_query('DELETE FROM {scene_record_comments} ' .
     'WHERE nid = :nid',
     array(':nid' => $nid));
 }
 
 /**
- * CRUD function, get comment by item nid, cid.
+ * CRUD function, get comment by nid, cid.
  */
 function _scene_record_get_comment($nid, $cid) {
-  $results = db_query('SELECT * FROM {scene_record_item_comments} ' .
+  $results = db_query('SELECT * FROM {scene_record_comments} ' .
     'WHERE nid = :nid AND cid = :cid',
     array(':nid' => $nid, ':cid' => $cid))->fetchAll();
   return $results;
 }
 
 /**
- * CRUD function, get comments by item nid.
+ * CRUD function, get comments by nid.
  */
 function _scene_record_insert_comment($data) {
   $data = (array) $data;
@@ -571,11 +536,11 @@ function _scene_record_insert_comment($data) {
   if (!empty($result)) {
     _scene_record_update_comment($data);
   }
-  drupal_write_record('scene_record_item_comments', $data);
+  drupal_write_record('scene_record_comments', $data);
 }
 
 /**
- * CRUD function, get comments by item nid.
+ * CRUD function, get comments by nid.
  */
 function _scene_record_update_comment($data) {
   $data = (array) $data;
@@ -583,14 +548,14 @@ function _scene_record_update_comment($data) {
   if (empty($result)) {
     _scene_record_insert_comment($data);
   }
-  drupal_write_record('scene_record_item_comments', $data, array('nid', 'cid'));
+  drupal_write_record('scene_record_comments', $data, array('nid', 'cid'));
 }
 
 /**
- * CRUD function, get comment by item nid, cid.
+ * CRUD function, get comment by nid, cid.
  */
 function _scene_record_delete_comment($nid, $cid) {
-  db_query('DELETE FROM {scene_record_item_comments} ' .
+  db_query('DELETE FROM {scene_record_comments} ' .
     'WHERE nid = :nid AND cid = :cid',
     array(':nid' => $nid, ':cid' => $cid));
 }

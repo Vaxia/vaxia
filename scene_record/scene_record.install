@@ -10,7 +10,7 @@
  * Implements hook_schema().
  */
 function scene_record_schema() {
-  $schema['scene_record_item_comments'] = array(
+  $schema['scene_record_comments'] = array(
     'description' => 'Table that maps comments to scene records for history.',
     'fields' => array(
       'nid' => array(
