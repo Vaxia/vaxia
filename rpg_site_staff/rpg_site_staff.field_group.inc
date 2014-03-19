@@ -56,12 +56,13 @@ function rpg_site_staff_field_group_info() {
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
-      'formatter' => 'collapsible',
+      'label' => 'Election Settings',
       'instance_settings' => array(
-        'description' => '',
-        'classes' => 'group-election-settings field-group-fieldset',
         'required_fields' => 1,
+        'classes' => 'group-election-settings field-group-fieldset',
+        'description' => '(TMP placeholder - testing code atm. Please ignore.)',
       ),
+      'formatter' => 'collapsed',
     ),
   );
   $export['group_election_settings|user|user|form'] = $field_group;

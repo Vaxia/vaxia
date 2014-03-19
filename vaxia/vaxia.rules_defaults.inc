@@ -27,7 +27,8 @@ function vaxia_default_rules_configuration() {
             "PROVIDE" : { "result" : { "new_user_xp" : "New User XP" } }
           }
         },
-        { "data_set" : { "data" : [ "user:field-xp-over-time" ], "value" : [ "new-user-xp" ] } }
+        { "data_set" : { "data" : [ "user:field-xp-over-time" ], "value" : [ "new-user-xp" ] } },
+        { "entity_save" : { "data" : [ "user" ] } }
       ]
     }
   }');

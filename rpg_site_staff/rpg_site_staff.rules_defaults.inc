@@ -77,19 +77,19 @@ function rpg_site_staff_default_rules_configuration() {
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
       "TAGS" : [ "Staff" ],
-      "REQUIRES" : [ "rules", "user_stats" ],
-      "ON" : { "user_stats_day_older" : [] },
+      "REQUIRES" : [ "rules" ],
+      "ON" : { "user_update" : [] },
       "IF" : [
-        { "NOT user_has_role" : { "account" : [ "user" ], "roles" : { "value" : { "12" : "12" } } } },
+        { "NOT user_has_role" : { "account" : [ "account" ], "roles" : { "value" : { "12" : "12" } } } },
         { "data_is" : {
-            "data" : [ "user:field-xp-over-time" ],
+            "data" : [ "account:field-xp-over-time" ],
             "op" : "\\u003E",
             "value" : "39"
           }
         }
       ],
       "DO" : [
-        { "user_add_role" : { "account" : [ "user" ], "roles" : { "value" : { "12" : "12" } } } },
+        { "user_add_role" : { "account" : [ "account" ], "roles" : { "value" : { "12" : "12" } } } },
         { "mail" : {
             "to" : "[user:mail]",
             "subject" : "[Vaxia] You are eligible to become a Storyhost",
