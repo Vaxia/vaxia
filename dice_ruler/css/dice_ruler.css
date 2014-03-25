@@ -8,10 +8,14 @@
 #dice-ruler-form #edit-b--3{float:left;margin-left:1em;margin-top:0;margin-bottom:0;}
 #dice-ruler-form #dice_ruler_dice_help{float:right;clear:right;margin-top:1em;margin-left:1em;}
 #dice-ruler-form #dice_ruler_dice_help{width:210px;}
-#dice-ruler-form .secondary-help{float:right;clear:right;margin-top:1em;margin-left:1em;}
+#dice-ruler-form .secondary-help{float:right;clear:right;}
 #dice-ruler-form .secondary-help{width:210px;}
+#dice-ruler-form .secondary-help fieldset{padding:0px;}
 #dice-ruler-form .form-item-combat-action-count-a, #dice-ruler-form .form-item-combat-action-count-b{float:left}
-#dice-ruler-form .form-item-combat-weapon-a, #dice-ruler-form .form-item-combat-weapon-b{float:none; margin-left:65px;}
+#dice-ruler-form .form-item-combat-weapon-a, #dice-ruler-form .form-item-combat-weapon-b{float:left; margin-left:5px;}
+#dice-ruler-form .form-item-combat-weapon-a div, #dice-ruler-form .form-item-combat-weapon-b div{float:none;}
+#dice-ruler-form .form-item-combat-weapon-a-add, #dice-ruler-form .form-item-combat-weapon-b-add{float:none; margin-left:165px;}
+#dice-ruler-form #edit-combat .fieldset-wrapper fieldset .fieldset-wrapper fieldset{clear:both;}
 #dice-ruler-form .form-item-combat-weapon-a .form-type-radio,
   #dice-ruler-form .form-item-combat-weapon-b .form-type-radio{margin-left:10px;}
 #dice-ruler-form #edit-target{text-align:center;}
