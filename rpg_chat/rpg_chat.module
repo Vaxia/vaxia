@@ -9,6 +9,25 @@
 include_once('rpg_chat.features.inc');
 
 /**
+ * Implements hook_menu().
+ */
+function rpg_chat_menu() {
+  // We use our own path, not normal AJAX because
+  // we don't need to process the form to refresh
+  // the comments placed on it since the user last
+  // viewed it. So no need to do all that crunching.
+  $items['system/rpg_chat'] = array(
+    'title' => 'RPG Chat Refresh',
+    'page callback' => '_rpg_chat_refresh_js',
+    'delivery callback' => 'ajax_deliver',
+    'access callback' => TRUE,
+    'theme callback' => 'ajax_base_page_theme',
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+/**
  * Implements hook_cron().
  */
 function rpg_chat_cron() {
@@ -198,7 +217,9 @@ function rpg_chat_form_comment_form_alter(&$form, &$form_state, $form_id) {
     );
     // When clicked refresh the comment display.
     $form['actions']['refresh_chat']['#ajax'] = array(
-      'callback' => '_rpg_chat_refresh_js',
+       // Using a path instead of normal callback allows us to avoid processing the form
+       // Since all we really want to do is reload the display of comments.
+      'path' => 'system/rpg_chat/' . $form['#node']->nid,
       'wrapper' => 'rpg-chat-wrapper',
       'method' => 'replace',
       'effect' => 'fade',
@@ -213,24 +234,17 @@ function rpg_chat_form_comment_form_alter(&$form, &$form_state, $form_id) {
 /**
  * AJAX callback, refreshes the comments displayed for this chatroom.
  */
-function _rpg_chat_refresh_js($form, &$form_state) {
+function _rpg_chat_refresh_js($nid) {
   // This is to remove the "Your comment has been posted" status message.
-  unset($_SESSION['messages']['status']);
-  $node = node_load($form['#node']->nid);
-  // COPIED from comment_node_page_additions();
-  // Only attempt to render comments if the node has visible comments.
-  // Unpublished comments are not included in $node->comment_count, so show
-  // comments unconditionally if the user is an administrator.
-  if (($node->comment_count && user_access('access comments'))
-    || user_access('administer comments')) {
-    $mode = variable_get('comment_default_mode_' . $node->type, COMMENT_MODE_THREADED);
-    $comments_per_page = variable_get('comment_default_per_page_' . $node->type, 50);
-    if ($cids = comment_get_thread($node, $mode, $comments_per_page)) {
-      $found_comments = comment_load_multiple($cids);
-      comment_prepare_thread($found_comments);
-      $comments = comment_view_multiple($found_comments, $node);
-    }
+  if (!empty($_SESSION['messages']['status'])) {
+    unset($_SESSION['messages']['status']);
   }
+  $node = node_load($nid);
+  // Bail if we didn't find a node.
+  if (empty($node)) {
+    return '';
+  }
+  // Get users in the room.
   $user_names = array();
   $users = _rpg_chat_get_room_users($node->nid);
   foreach ($users as $found_user) {
@@ -241,7 +255,20 @@ function _rpg_chat_refresh_js($form, &$form_state) {
     theme('item_list', array('title' => t('Users in this room'), 'items' => $user_names)) .
     '</div>';
   $return_string .= '<div id="rpg-chat">';
-
+  // COPIED from comment_node_page_additions();
+  // Only attempt to render comments if the node has visible comments.
+  // Unpublished comments are not included in $node->comment_count, so show
+  // comments unconditionally if the user is an administrator.
+  if (($node->comment_count && user_access('access comments')) || user_access('administer comments')) {
+    $mode = variable_get('comment_default_mode_' . $node->type, COMMENT_MODE_THREADED);
+    $comments_per_page = variable_get('comment_default_per_page_' . $node->type, 50);
+    if ($cids = comment_get_thread($node, $mode, $comments_per_page)) {
+      $found_comments = comment_load_multiple($cids);
+      comment_prepare_thread($found_comments);
+      $comments = comment_view_multiple($found_comments, $node);
+    }
+  }
+  // Render results.
   if (!empty($comments) && is_array($comments)) {
     foreach ($comments as $cid => $comment) {
       if (is_numeric($cid)) {
@@ -253,7 +280,14 @@ function _rpg_chat_refresh_js($form, &$form_state) {
   // Refresh this user's last login to this room.
   global $user;
   _rpg_chat_set_room_users($node->nid, $user->uid);
+  // Echo the string, to avoid bootstrapping entire theme.
   return $return_string;
+}
+
+/**
+ * Implements hook_js(). From the js callback module.
+ */
+function rpg_chat_js() {
 }
 
 /**
