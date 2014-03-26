@@ -22,15 +22,6 @@ function rpg_chat_menu() {
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   );
-  // If we are using js to make for reduced bootstrapping.
-  if (module_exists('js')) {
-    $items['js/rpg_chat/refresh'] = array(
-      'title' => 'RPG Chat Refresh',
-      'page callback' => 'rpg_chat_refresh',
-      'access callback' => TRUE,
-      'type' => MENU_CALLBACK,
-    );
-  }
   return $items;
 }
 
@@ -195,10 +186,8 @@ function rpg_chat_node_view_alter(&$build) {
   if (_rpg_chat_is_enabled($build['#node']->type) ) {
     // Get users for display in addition to the wrapper.
     $user_names = array();
-    $users = _rpg_chat_get_room_users($build['#node']->nid);
-    foreach ($users as $found_user) {
-      $this_user = user_load($found_user->uid);
-      $user_names[] = $this_user->name;
+    foreach ($build['#node']->rpg_chat_current_users as $found_user) {
+      $user_names[] = $found_user->name;
     }
     $user_string = '<div id="rpg-chat-userlist">' .
       theme('item_list', array('title' => t('Users in this room'), 'items' => $user_names)) .
@@ -232,10 +221,6 @@ function rpg_chat_form_comment_form_alter(&$form, &$form_state, $form_id) {
       'effect' => 'fade',
       'event' => 'click', // To allow our refresh script to hit it.
     );
-    // Set the path to the alternate menu hook if we have JS bootstrap available.
-    if (module_exists('js')) {
-      $form['actions']['refresh_chat']['#ajax']['path'] = 'js/rpg_chat/refresh/' . $form['#node']->nid;
-    }
     // Refresh this user's last login to this room.
     global $user;
     _rpg_chat_set_room_users($form['#node']->nid, $user->uid);
@@ -257,15 +242,12 @@ function rpg_chat_refresh($nid) {
   }
   // Get users in the room.
   $user_names = array();
-  $users = _rpg_chat_get_room_users($node->nid);
-  foreach ($users as $found_user) {
-    $this_user = user_load($found_user->uid);
-    $user_names[] = $this_user->name;
+  foreach ($node->rpg_chat_current_users as $found_user) {
+    $user_names[] = $found_user->name;
   }
-  $return_string = '<div id="rpg-chat-wrapper"><div id="rpg-chat-userlist">' .
-    '<div class="item-list"><h3>' . t('Users in this room') . '</h3>'.
-    '<ul><li class="first">' . implode('</li><li>', $user_names) . '</li></ul>' .
-    '</div></div>';
+  $return_string = '<div id="rpg-chat-userlist">' .
+    theme('item_list', array('title' => t('Users in this room'), 'items' => $user_names)) .
+    '</div>';
   // Refresh this user's last login to this room.
   global $user;
   _rpg_chat_set_room_users($node->nid, $user->uid);
@@ -283,7 +265,7 @@ function rpg_chat_refresh($nid) {
       $comments = comment_view_multiple($found_comments, $node);
     }
   }
-  // Render results.
+  // Render results. At this point we have render arrays.
   if (!empty($comments) && is_array($comments)) {
     foreach ($comments as $cid => $comment) {
       if (is_numeric($cid)) {
@@ -304,21 +286,6 @@ function rpg_chat_refresh($nid) {
   echo drupal_json_encode($return_array);
   // And shortcircuit any other processing. We're done.
   exit;
-}
-
-/**
- * Implements hook_js(). From the js callback module.
- */
-function rpg_chat_js() {
-  return array(
-    'refresh' => array(
-      'callback'     => 'rpg_chat_refresh',
-      'includes'     => array('common', 'path', 'ajax', 'theme'),
-      'dependencies' => array('node', 'field', 'comment', 'user'),
-      'bootstrap'    => DRUPAL_BOOTSTRAP_SESSION,
-      'skip_hook_init' => FALSE,
-    ),
-  );
 }
 
 /**
@@ -564,7 +531,9 @@ function _rpg_chat_get_room_users($nid) {
   db_query('DELETE FROM {rpg_chat_room_users} WHERE timestamp < :timestamp',
     array(':timestamp' => strtotime('-15 minutes') ));
   $users = array();
-  $results = db_query('SELECT * FROM {rpg_chat_room_users} WHERE nid = :nid', array(':nid' => $nid));
+  $results = db_query('SELECT r.*, u.name FROM {rpg_chat_room_users} r ' .
+    'LEFT JOIN {users} u ON u.uid = r.uid ' .
+    'WHERE nid = :nid', array(':nid' => $nid));
   foreach ($results as $result) {
     $users[] = $result;
   }
