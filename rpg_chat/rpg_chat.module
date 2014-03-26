@@ -18,12 +18,19 @@ function rpg_chat_menu() {
   // viewed it. So no need to do all that crunching.
   $items['system/rpg_chat'] = array(
     'title' => 'RPG Chat Refresh',
-    'page callback' => '_rpg_chat_refresh_js',
-    'delivery callback' => 'ajax_deliver',
+    'page callback' => 'rpg_chat_refresh',
     'access callback' => TRUE,
-    'theme callback' => 'ajax_base_page_theme',
     'type' => MENU_CALLBACK,
   );
+  // If we are using js to make for reduced bootstrapping.
+  if (module_exists('js')) {
+    $items['js/rpg_chat/refresh'] = array(
+      'title' => 'RPG Chat Refresh',
+      'page callback' => 'rpg_chat_refresh',
+      'access callback' => TRUE,
+      'type' => MENU_CALLBACK,
+    );
+  }
   return $items;
 }
 
@@ -225,6 +232,10 @@ function rpg_chat_form_comment_form_alter(&$form, &$form_state, $form_id) {
       'effect' => 'fade',
       'event' => 'click', // To allow our refresh script to hit it.
     );
+    // Set the path to the alternate menu hook if we have JS bootstrap available.
+    if (module_exists('js')) {
+      $form['actions']['refresh_chat']['#ajax']['path'] = 'js/rpg_chat/refresh/' . $form['#node']->nid;
+    }
     // Refresh this user's last login to this room.
     global $user;
     _rpg_chat_set_room_users($form['#node']->nid, $user->uid);
@@ -234,7 +245,7 @@ function rpg_chat_form_comment_form_alter(&$form, &$form_state, $form_id) {
 /**
  * AJAX callback, refreshes the comments displayed for this chatroom.
  */
-function _rpg_chat_refresh_js($nid) {
+function rpg_chat_refresh($nid) {
   // This is to remove the "Your comment has been posted" status message.
   if (!empty($_SESSION['messages']['status'])) {
     unset($_SESSION['messages']['status']);
@@ -252,8 +263,12 @@ function _rpg_chat_refresh_js($nid) {
     $user_names[] = $this_user->name;
   }
   $return_string = '<div id="rpg-chat-wrapper"><div id="rpg-chat-userlist">' .
-    theme('item_list', array('title' => t('Users in this room'), 'items' => $user_names)) .
-    '</div>';
+    '<div class="item-list"><h3>' . t('Users in this room') . '</h3>'.
+    '<ul><li class="first">' . implode('</li><li>', $user_names) . '</li></ul>' .
+    '</div></div>';
+  // Refresh this user's last login to this room.
+  global $user;
+  _rpg_chat_set_room_users($node->nid, $user->uid);
   $return_string .= '<div id="rpg-chat">';
   // COPIED from comment_node_page_additions();
   // Only attempt to render comments if the node has visible comments.
@@ -277,17 +292,33 @@ function _rpg_chat_refresh_js($nid) {
     }
   }
   $return_string .= '</div></div>';
-  // Refresh this user's last login to this room.
-  global $user;
-  _rpg_chat_set_room_users($node->nid, $user->uid);
-  // Echo the string, to avoid bootstrapping entire theme.
-  return $return_string;
+  // Set up the return array.
+  $return_array[] = array(
+    'command' => 'insert',
+    'method' => NULL,
+    'selector' => NULL,
+    'data' => $return_string,
+    'settings' => NULL,
+  );
+  // Echo the string, to avoid bootstrapping entire delivery system.
+  echo drupal_json_encode($return_array);
+  // And shortcircuit any other processing. We're done.
+  exit;
 }
 
 /**
  * Implements hook_js(). From the js callback module.
  */
 function rpg_chat_js() {
+  return array(
+    'refresh' => array(
+      'callback'     => 'rpg_chat_refresh',
+      'includes'     => array('common', 'path', 'ajax', 'theme'),
+      'dependencies' => array('node', 'field', 'comment', 'user'),
+      'bootstrap'    => DRUPAL_BOOTSTRAP_SESSION,
+      'skip_hook_init' => FALSE,
+    ),
+  );
 }
 
 /**
