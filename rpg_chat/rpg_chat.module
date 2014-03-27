@@ -279,7 +279,7 @@ function rpg_chat_refresh($nid) {
     'command' => 'insert',
     'method' => NULL,
     'selector' => NULL,
-    'data' => $return_string,
+    'data' => '<div id="rpg-chat-wrapper">' . $return_string . '</div>',
     'settings' => NULL,
   );
   // Echo the string, to avoid bootstrapping entire delivery system.
