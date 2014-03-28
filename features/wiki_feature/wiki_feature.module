@@ -275,7 +275,9 @@ function wiki_feature_freelinking_alter(&$freelinking) {
  * Replacement callback for nodetitle plugin
  */
 function wiki_feature_freelinking_nodetitle_callback($target, $plugin) {
-  $node = wiki_feature_freelinking_nodetitle_nid_from_title($target); // WIKI FEARTURE: This is where the big change is. Call diff function.
+  $this_node = node_load(arg(1));
+  $this_nid = !empty($this_node->nid) ? $this_node->nid : 0;
+  $node = wiki_feature_freelinking_nodetitle_nid_from_title($target, $this_nid); // WIKI FEARTURE: This is where the big change is. Call diff function.
   // If no node was found, identify proceed with configured failover
   if (!$node) {
     return _freelinking_nodetitle_failure($target);
@@ -296,7 +298,7 @@ function wiki_feature_freelinking_nodetitle_callback($target, $plugin) {
  * Grab the nid associated with the title.
  * Attempt some degree of language sensibility
  */
-function wiki_feature_freelinking_nodetitle_nid_from_title(&$target) {
+function wiki_feature_freelinking_nodetitle_nid_from_title(&$target, $this_nid) {
   $title = $target['dest'];
   // Get any content type restriction.
   if (isset($target['type'])) {
@@ -305,10 +307,12 @@ function wiki_feature_freelinking_nodetitle_nid_from_title(&$target) {
   else {
     $type = variable_get('freelinking_nodetitle_searchcontenttype', 'none');
   }
-  $sql = "SELECT title, nid, language FROM {node} WHERE title = :title"; 
-  $params = array(':title' => $title);
+  $sql = 'SELECT n.title, n.nid, n.language FROM {node} n ' .
+    'WHERE n.title = :title ' .
+    'AND n.nid != :nid'; 
+  $params = array(':title' => $title, ':nid' => $this_nid);
   if ($type != 'none') {
-    $sql .= " AND type = :type";
+    $sql .= ' AND n.type = :type';
     $params[':type'] = $type;
   }
   $result = db_query($sql, $params);
@@ -318,10 +322,12 @@ function wiki_feature_freelinking_nodetitle_nid_from_title(&$target) {
   }
   // WIKI FEATURE: This is where the big change is. Allow partial match on title IFF not found on full match.
   if (empty($set)) {
-    $sql = "SELECT title, nid, language FROM {node} WHERE title LIKE :title"; 
-    $params = array(':title' => '%' . $title);
+    $sql = 'SELECT n.title, n.nid, n.language FROM {node} n ' .
+      'WHERE n.title LIKE :title ' .
+      'AND n.nid != :nid'; 
+    $params = array(':title' => '%/' . $title, ':nid' => $this_nid);
     if ($type != 'none') {
-      $sql .= " AND type = :type";
+      $sql .= ' AND n.type = :type';
       $params[':type'] = $type;
     }
     $result = db_query($sql, $params);
@@ -334,10 +340,12 @@ function wiki_feature_freelinking_nodetitle_nid_from_title(&$target) {
   if (empty($set)) {
     $title_end = explode('/', $title);
     $title_end = array_pop($title_end);
-    $sql = "SELECT title, nid, language FROM {node} WHERE title LIKE :title"; 
-    $params = array(':title' => '%' . $title_end);
+    $sql = 'SELECT n.title, n.nid, n.language FROM {node} n ' .
+      'WHERE n.title LIKE :title ' .
+      'AND n.nid != :nid'; 
+    $params = array(':title' => '%/' . $title, ':nid' => $this_nid);
     if ($type != 'none') {
-      $sql .= " AND type = :type";
+      $sql .= ' AND n.type = :type';
       $params[':type'] = $type;
     }
     $result = db_query($sql, $params);
