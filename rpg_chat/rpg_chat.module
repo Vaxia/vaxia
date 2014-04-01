@@ -552,9 +552,9 @@ function _rpg_chat_set_room_users($nid, $uid) {
     array(':nid' => $nid, ':uid' => $uid));
   // Mark the timestamp for the nid/uid combination.
   $record = array(
-    'uid' => $uid,
-    'nid' => $nid,
-    'timestamp' => strtotime('now'),
+    ':uid' => $uid,
+    ':nid' => $nid,
+    ':timestamp' => strtotime('now'),
   );
   // Because this is an async interaction, we're going to move to using REPLACE INTO.
   // Instead of the more expected write_record.
