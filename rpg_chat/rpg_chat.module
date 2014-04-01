@@ -235,6 +235,10 @@ function rpg_chat_refresh($nid) {
   if (!empty($_SESSION['messages']['status'])) {
     unset($_SESSION['messages']['status']);
   }
+  // Refresh this user's last login to this room.
+  global $user;
+  _rpg_chat_set_room_users($nid, $user->uid);
+  // And pull the room info with the updated room list.
   $node = node_load($nid);
   // Bail if we didn't find a node.
   if (empty($node)) {
@@ -248,9 +252,6 @@ function rpg_chat_refresh($nid) {
   $return_string = '<div id="rpg-chat-userlist">' .
     theme('item_list', array('title' => t('Users in this room'), 'items' => $user_names)) .
     '</div>';
-  // Refresh this user's last login to this room.
-  global $user;
-  _rpg_chat_set_room_users($node->nid, $user->uid);
   $return_string .= '<div id="rpg-chat">';
   // COPIED from comment_node_page_additions();
   // Only attempt to render comments if the node has visible comments.
