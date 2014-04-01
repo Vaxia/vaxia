@@ -560,7 +560,7 @@ function _rpg_chat_set_room_users($nid, $uid) {
   // Instead of the more expected write_record.
   // drupal_write_record('rpg_chat_room_users', $record);
   db_query('REPLACE INTO {rpg_chat_room_users} (nid, uid, timestamp) ' .
-    'VALUES (:nid, :uid, :timestamp)', array($record));
+    'VALUES (:nid, :uid, :timestamp)', $record);
 }
 
 /**
