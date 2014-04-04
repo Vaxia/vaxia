@@ -55,7 +55,7 @@ function _dice_ruler_admin_settings($form, &$form_state) {
     '#type' => 'textarea',
     '#default_value' => variable_get('dice_ruler_help_general', $general_help),
   );
-  $types = array('one_trait', 'two_trait', 'trait_vs', 'combat', 'magic');
+  $types = array('one_trait', 'two_trait', 'trait_vs', 'two_trait_vs', 'combat', 'magic');
   foreach ($types as $type) {
     $form['help_texts']['dice_ruler_help_' . $type] = array(
       '#title' => ucwords(str_replace('_', ' ', $type)) . ' ' . t('Help'),
@@ -209,7 +209,7 @@ function dice_ruler_form($form, &$form_state) {
       ),
     );
   }
-  $types = array('one_trait', 'two_trait', 'trait_vs', 'combat', 'magic');
+  $types = array('one_trait', 'two_trait', 'trait_vs', 'two_trait_vs', 'combat', 'magic');
   foreach ($types as $type) {
     $help = variable_get('dice_ruler_help_' . $type, '');
     if (!empty($help)) {
@@ -290,6 +290,7 @@ function dice_ruler_form($form, &$form_state) {
       'one_trait' => t('One trait'),
       'two_trait' => t('Two trait'),
       'trait_vs' => t('Trait vs. trait'),
+      'two_trait_vs' => t('Two trait vs. two trait'),
       'combat' => t('Combat'),
       'magic' => t('Magic'),
     ),
@@ -383,10 +384,10 @@ function dice_ruler_form($form, &$form_state) {
     '#title' => t('Rolled'),
     '#size' => 5,
   );
-  // Subforms for each type of roll. One trait.
+  // Subforms for each type of roll. One trait vs trait
   $form['trait_vs'] = array(
     '#type' => 'fieldset',
-    '#title' => t('One trait'),
+    '#title' => t('Trait vs. trait'),
     '#states' => array(
       'visible' => array(
         ':input[name="roll_type"]' => array('value' => 'trait_vs'),
@@ -427,6 +428,100 @@ function dice_ruler_form($form, &$form_state) {
     '#size' => 5,
   );
   $form['trait_vs']['b']['trait_vs_rolled_b'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Rolled'),
+    '#size' => 5,
+  );
+  // Subforms for each type of roll. Two trait vs.
+  $form['two_trait_vs'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Two trait vs trait'),
+    '#states' => array(
+      'visible' => array(
+        ':input[name="roll_type"]' => array('value' => 'two_trait_vs'),
+      ),
+    ),
+  );
+  $form['two_trait_vs']['a'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Character A'),
+  );
+  $form['two_trait_vs']['a']['a'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Trait A'),
+  );
+  $form['two_trait_vs']['a']['a']['two_trait_vs_might_aa'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Might'),
+    '#size' => 5,
+  );
+  $form['two_trait_vs']['a']['a']['two_trait_vs_add_diff_aa'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Add diff.'),
+    '#size' => 5,
+  );
+  $form['two_trait_vs']['a']['a']['two_trait_vs_rolled_aa'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Rolled'),
+    '#size' => 5,
+  );
+  $form['two_trait_vs']['a']['b'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Trait B'),
+  );
+  $form['two_trait_vs']['a']['b']['two_trait_vs_might_ab'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Might'),
+    '#size' => 5,
+  );
+  $form['two_trait_vs']['a']['b']['two_trait_vs_add_diff_ab'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Add diff.'),
+    '#size' => 5,
+  );
+  $form['two_trait_vs']['a']['b']['two_trait_vs_rolled_ab'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Rolled'),
+    '#size' => 5,
+  );
+  $form['two_trait_vs']['b'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Character B'),
+  );
+  $form['two_trait_vs']['b']['a'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Trait A'),
+  );
+  $form['two_trait_vs']['b']['a']['two_trait_vs_might_ba'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Might'),
+    '#size' => 5,
+  );
+  $form['two_trait_vs']['b']['a']['two_trait_vs_add_diff_ba'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Add diff.'),
+    '#size' => 5,
+  );
+  $form['two_trait_vs']['b']['a']['two_trait_vs_rolled_ba'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Rolled'),
+    '#size' => 5,
+  );
+  $form['two_trait_vs']['b']['b'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Trait B'),
+  );
+  $form['two_trait_vs']['b']['b']['two_trait_vs_might_bb'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Might'),
+    '#size' => 5,
+  );
+  $form['two_trait_vs']['b']['b']['two_trait_vs_add_diff_bb'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Add diff.'),
+    '#size' => 5,
+  );
+  $form['two_trait_vs']['b']['b']['two_trait_vs_rolled_bb'] = array(
     '#type' => 'textfield',
     '#title' => t('Rolled'),
     '#size' => 5,
@@ -781,6 +876,22 @@ function dice_ruler_form($form, &$form_state) {
           $form_state['values']['trait_vs_rolled_b']
         );
       break;
+      case 'two_trait_vs':
+        $results = _dice_ruler_two_trait_vs(
+          $form_state['values']['two_trait_vs_might_aa'],
+          $form_state['values']['trait_vs_add_diff_aa'],
+          $form_state['values']['trait_vs_rolled_aa'],
+          $form_state['values']['two_trait_vs_might_ab'],
+          $form_state['values']['trait_vs_add_diff_ab'],
+          $form_state['values']['trait_vs_rolled_ab'],
+          $form_state['values']['trait_vs_might_ba'],
+          $form_state['values']['trait_vs_add_diff_ba'],
+          $form_state['values']['trait_vs_rolled_ba'],
+          $form_state['values']['trait_vs_might_bb'],
+          $form_state['values']['trait_vs_add_diff_bb'],
+          $form_state['values']['trait_vs_rolled_bb']
+        );
+      break;
       case 'combat':
         $results = '';
         $base_a = $base_b = variable_get('dice_ruler_extra_action_penalty', 20);
@@ -1049,7 +1160,7 @@ function _dice_ruler_two_trait(
 }
 
 /**
- * Handle ruling for trait vs.
+ * Handle ruling for trait vs. trait.
  */
 function _dice_ruler_trait_vs(
   $trait_vs_might_a,
@@ -1102,6 +1213,109 @@ function _dice_ruler_trait_vs(
   $trait_vs_might_a,
   $trait_vs_add_diff_b,
   $trait_vs_rolled_b);
+  $rows[] = $results;
+  // Now put all these into a table to display.
+  $header = array(
+    t('Might'),
+    t('Diff'),
+    t('Add diff.'),
+    t('Rolled'),
+    t('Roll needed'),
+    t('Success'),
+    t('Winsby'),
+    t('Points'),
+    t('% of diff'),
+    t('Failed might'),
+  );  $output = theme('table', array(
+    'header' => $header,
+    'rows' => $rows,
+  ));
+  return $output;
+}
+
+/**
+ * Handle ruling for two trait vs. trait.
+ */
+function _dice_ruler_two_trait_vs(
+  $two_trait_vs_might_a_a, // value_characterID_traitID
+  $two_trait_vs_add_diff_a_a,
+  $two_trait_vs_rolled_a_a,
+  $two_trait_vs_might_a_b,
+  $two_trait_vs_add_diff_a_b,
+  $two_trait_vs_rolled_a_b,
+  $two_trait_vs_might_b_a,
+  $two_trait_vs_add_diff_b_a,
+  $two_trait_vs_rolled_b_a,
+  $two_trait_vs_might_b_b,
+  $two_trait_vs_add_diff_b_b,
+  $two_trait_vs_rolled_b_b
+) {
+  // Check that all are numeric.
+  if (!empty($two_trait_vs_might_a_a) && !is_numeric($two_trait_vs_might_a_a)
+    || !empty($two_trait_vs_add_diff_a_a) && !is_numeric($two_trait_vs_add_diff_a_a)
+    || !empty($two_trait_vs_rolled_a_a) && !is_numeric($two_trait_vs_rolled_a_a)
+  	|| !empty($two_trait_vs_might_a_b) && !is_numeric($two_trait_vs_might_a_b)
+    || !empty($two_trait_vs_add_diff_a_b) && !is_numeric($two_trait_vs_add_diff_a_b)
+    || !empty($two_trait_vs_rolled_a_b) && !is_numeric($two_trait_vs_rolled_a_b)
+    ) {
+    return t('Not all values given were numeric. We need numbers for math.');
+  }
+  // Check our required values are set.
+  if (empty($two_trait_vs_might_a_a)
+    || empty($two_trait_vs_rolled_a_a)
+    || empty($two_trait_vs_might_a_b)
+    || empty($two_trait_vs_rolled_a_b)) {
+    return t('Not all required values given, or values are zero.');
+  }
+  // Set default if empty.
+  if (empty($two_trait_vs_add_diff_a_a) || empty($two_trait_vs_add_diff_a_b)) {
+    $two_trait_vs_add_diff_a_a = 0;
+    $two_trait_vs_add_diff_a_b = 0;
+  }
+  // Check that all are numeric.
+  if (!empty($two_trait_vs_might_b_a) && !is_numeric($two_trait_vs_might_b_a)
+    || !empty($two_trait_vs_add_diff_b_a) && !is_numeric($two_trait_vs_add_diff_b_a)
+    || !empty($two_trait_vs_rolled_b_a) && !is_numeric($two_trait_vs_rolled_b_a)
+    || !empty($two_trait_vs_might_b_b) && !is_numeric($two_trait_vs_might_b_b)
+    || !empty($two_trait_vs_add_diff_b_b) && !is_numeric($two_trait_vs_add_diff_b_b)
+    || !empty($two_trait_vs_rolled_b_b) && !is_numeric($two_trait_vs_rolled_b_b)) {
+    return t('Not all values given were numeric. We need numbers for math.');
+  }
+  // Check our required values are set.
+  if (empty($two_trait_vs_might_b_a)
+    || empty($two_trait_vs_rolled_b_a)
+    || empty($two_trait_vs_might_b_b)
+    || empty($two_trait_vs_rolled_b_b)) {
+    return t('Not all required values given, or values are zero.');
+  }
+  // Set default if empty.
+  if (empty($two_trait_vs_add_diff_b_a) || empty($two_trait_vs_add_diff_b_b)) {
+    $two_trait_vs_add_diff_b_a = 0;
+    $two_trait_vs_add_diff_b_b = 0;
+  }
+  // Get results from our master function.
+  $results = _dice_ruler_make_two_trait_ruling(
+  $two_trait_vs_might_a_a,
+  $two_trait_vs_might_b_a, // DIFF
+  $two_trait_vs_add_diff_a_a,
+  $two_trait_vs_rolled_a_a,
+  $two_trait_vs_might_a_b,
+  $two_trait_vs_might_b_b, // DIFF
+  $two_trait_vs_add_diff_a_b,
+  $two_trait_vs_rolled_a_b
+  );
+  $rows[] = $results;
+  // Second roll.
+  $results = _dice_ruler_make_two_trait_ruling(
+  $two_trait_vs_might_b_a,
+  $two_trait_vs_might_a_a, // DIFF
+  $two_trait_vs_add_diff_b_a,
+  $two_trait_vs_rolled_b_a,
+  $two_trait_vs_might_b_b,
+  $two_trait_vs_might_a_b, // DIFF
+  $two_trait_vs_add_diff_b_b,
+  $two_trait_vs_rolled_b_b
+  );
   $rows[] = $results;
   // Now put all these into a table to display.
   $header = array(
