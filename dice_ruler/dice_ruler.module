@@ -879,17 +879,17 @@ function dice_ruler_form($form, &$form_state) {
       case 'two_trait_vs':
         $results = _dice_ruler_two_trait_vs(
           $form_state['values']['two_trait_vs_might_aa'],
-          $form_state['values']['trait_vs_add_diff_aa'],
-          $form_state['values']['trait_vs_rolled_aa'],
+          $form_state['values']['two_trait_vs_add_diff_aa'],
+          $form_state['values']['two_trait_vs_rolled_aa'],
           $form_state['values']['two_trait_vs_might_ab'],
-          $form_state['values']['trait_vs_add_diff_ab'],
-          $form_state['values']['trait_vs_rolled_ab'],
-          $form_state['values']['trait_vs_might_ba'],
-          $form_state['values']['trait_vs_add_diff_ba'],
-          $form_state['values']['trait_vs_rolled_ba'],
-          $form_state['values']['trait_vs_might_bb'],
-          $form_state['values']['trait_vs_add_diff_bb'],
-          $form_state['values']['trait_vs_rolled_bb']
+          $form_state['values']['two_trait_vs_add_diff_ab'],
+          $form_state['values']['two_trait_vs_rolled_ab'],
+          $form_state['values']['two_trait_vs_might_ba'],
+          $form_state['values']['two_trait_vs_add_diff_ba'],
+          $form_state['values']['two_trait_vs_rolled_ba'],
+          $form_state['values']['two_trait_vs_might_bb'],
+          $form_state['values']['two_trait_vs_add_diff_bb'],
+          $form_state['values']['two_trait_vs_rolled_bb']
         );
       break;
       case 'combat':
@@ -1059,7 +1059,8 @@ function _dice_ruler_one_trait(
   $one_trait_might,
   $one_trait_diff,
   $one_trait_add_diff,
-  $one_trait_rolled);
+  $one_trait_rolled,
+  TRUE);
   // Now put all these into a table to display.
   $header = array(
     t('Might'),
@@ -1200,21 +1201,7 @@ function _dice_ruler_trait_vs(
   if (empty($trait_vs_add_diff_b)) {
     $trait_vs_add_diff_b = 0;
   }
-  // Get results from our master function.
-  $results = _dice_ruler_make_ruling(
-  $trait_vs_might_a,
-  $trait_vs_might_b,
-  $trait_vs_add_diff_a,
-  $trait_vs_rolled_a);
-  $rows[] = $results;
-  // Second roll.
-  $results = _dice_ruler_make_ruling(
-  $trait_vs_might_b,
-  $trait_vs_might_a,
-  $trait_vs_add_diff_b,
-  $trait_vs_rolled_b);
-  $rows[] = $results;
-  // Now put all these into a table to display.
+  // Setup for the tables.
   $header = array(
     t('Might'),
     t('Diff'),
@@ -1226,7 +1213,35 @@ function _dice_ruler_trait_vs(
     t('Points'),
     t('% of diff'),
     t('Failed might'),
-  );  $output = theme('table', array(
+  );
+  $output = '';
+  $output .= '<div><b>' . t('First character\'s results.') . '</b></div>';
+  // Get results from our master function.
+  $rows[] = array();
+  $results = _dice_ruler_make_ruling(
+  $trait_vs_might_a,
+  $trait_vs_might_b,
+  $trait_vs_add_diff_a,
+  $trait_vs_rolled_a,
+  TRUE);
+  $rows[] = $results;
+  // Now put all these into a table to display.
+  $output .= theme('table', array(
+    'header' => $header,
+    'rows' => $rows,
+  ));
+  $rows = array();
+  // Second roll.
+  $output .= '<div><b>' . t('Second character\'s results.') . '</b></div>';
+  $results = _dice_ruler_make_ruling(
+  $trait_vs_might_b,
+  $trait_vs_might_a,
+  $trait_vs_add_diff_b,
+  $trait_vs_rolled_b,
+  TRUE);
+  $rows[] = $results;
+  // Now put all these into a table to display.
+  $output .= theme('table', array(
     'header' => $header,
     'rows' => $rows,
   ));
@@ -1293,6 +1308,21 @@ function _dice_ruler_two_trait_vs(
     $two_trait_vs_add_diff_b_a = 0;
     $two_trait_vs_add_diff_b_b = 0;
   }
+  // Setup for the tables.
+  $header = array(
+    t('Might'),
+    t('Diff'),
+    t('Add diff.'),
+    t('Rolled'),
+    t('Roll needed'),
+    t('Success'),
+    t('Winsby'),
+    t('Points'),
+    t('% of diff'),
+    t('Failed might'),
+  );
+  $output = '';
+  $output .= '<div><b>' . t('First character\'s results.') . '</b></div>';
   // Get results from our master function.
   $results = _dice_ruler_make_two_trait_ruling(
   $two_trait_vs_might_a_a,
@@ -1305,7 +1335,14 @@ function _dice_ruler_two_trait_vs(
   $two_trait_vs_rolled_a_b
   );
   $rows[] = $results;
+  // Now put all these into a table to display.
+  $output .= theme('table', array(
+    'header' => $header,
+    'rows' => $rows,
+  ));
+  $rows = array();
   // Second roll.
+  $output .= '<div><b>' . t('Second character\'s results.') . '</b></div>';
   $results = _dice_ruler_make_two_trait_ruling(
   $two_trait_vs_might_b_a,
   $two_trait_vs_might_a_a, // DIFF
@@ -1318,18 +1355,7 @@ function _dice_ruler_two_trait_vs(
   );
   $rows[] = $results;
   // Now put all these into a table to display.
-  $header = array(
-    t('Might'),
-    t('Diff'),
-    t('Add diff.'),
-    t('Rolled'),
-    t('Roll needed'),
-    t('Success'),
-    t('Winsby'),
-    t('Points'),
-    t('% of diff'),
-    t('Failed might'),
-  );  $output = theme('table', array(
+  $output .= theme('table', array(
     'header' => $header,
     'rows' => $rows,
   ));
@@ -1808,7 +1834,8 @@ function _dice_ruler_make_ruling(
   $one_trait_might,
   $one_trait_diff,
   $one_trait_add_diff,
-  $one_trait_rolled
+  $one_trait_rolled,
+  $format_results = FALSE
 ) {
   // The ladder is an eyeball. This is a gemoetric solution. I hope you like trig.
   $roll_needed = 50.5 + atan(0.06 * (100 * ($one_trait_diff + $one_trait_add_diff) / ($one_trait_diff + $one_trait_add_diff + $one_trait_might) - 50)) * 49.5 / atan(0.06 * 50);
@@ -1837,10 +1864,10 @@ function _dice_ruler_make_ruling(
     $one_trait_diff,
     $one_trait_add_diff,
     $one_trait_rolled,
-    $roll_needed,
+    ($format_results) ? number_format($roll_needed, 2) : $roll_needed,
     $success,
-    $winsby,
-    $points,
+    ($format_results) ? number_format($winsby, 2) : $winsby,
+    ($format_results) ? number_format($points, 2) : $points,
     is_numeric($perc_diff) ? number_format($perc_diff, 2) : $perc_diff,
     $failed_might,
   );
