@@ -284,9 +284,9 @@ function dice_ruler_form($form, &$form_state) {
   // Select a type.
   $form['roll_type'] = array(
     '#type' => 'select',
-    '#title' => t('Roll type'),
+    '#title' => t('Dice ruling assistant'),
     '#options' => array(
-      'hidden' => t('Hide roller'),
+      'hidden' => t('-- Select a type of roll to rule --'),
       'one_trait' => t('One trait'),
       'two_trait' => t('Two trait'),
       'trait_vs' => t('Trait vs. trait'),
