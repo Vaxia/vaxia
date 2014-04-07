@@ -239,7 +239,8 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
       '#collapsed' => TRUE,
       '#weight' => -40,
     );
-    // Part one, add more comments.
+
+    // Part one, add more comments to this item!
     $form['item_helper']['add_comments'] = array(
       '#type' => 'fieldset',
       '#title' => t('Add new posts'),
@@ -333,54 +334,21 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
         'effect' => 'fade',
       ),
     );
-    // Part two, included comment.
+
+    // Part two, given an included comment display the options for it!
     $form['item_helper']['included_comments'] = array(
       '#type' => 'fieldset',
       '#title' => t('Included posts'),
       '#collapsible' => TRUE,
     );
-    // Setup table format.
-    $form['item_helper']['included_comments']['included_comments_table'] = array(
-      '#prefix' => '<div id="item-helper-included-comments-table">',
-      '#suffix' => '</div>',
-      '#theme' => 'table',
-      '#header' => array(
-        t('Item creation posts'),
-        t('Roll type'),
-        t('Flat bonus'),
-        t('Difficulty'),
-        t('RP Bonus'),
-        t('Result'),
-        t('(X)'),
-      ),
-      '#rows' => array(),
-      '#attributes' => array('id' => 'item_helper_included_comments_table'),
-      '#empty' => t('No posts found.'),
-      '#tree' => TRUE, // So can be picked up later.
-    );
-    // Create baseline diff display (if user vs SH).
-    $diffs = array(
-      '#type' => 'select',
-      '#options' => array(
-        '5' => t('Ridiculously easy (5)'),
-        '15' => t('Easy (15)'),
-        '25' => t('Normal (25)'),
-        '45' => t('Skilled (45)'),
-        '65' => t('Mastery (65)'),
-        '100' => t('Extremely Difficult (100)'),
-      ),
-    );
-    // Create baseline diff display (if user vs SH).
-    $rp_bons = array(
-      '#type' => 'select',
-      '#options' => array(
-        '0' => t('None (0)'),
-        '5' => t('Average (5)'),
-        '10' => t('Good (10)'),
-        '15' => t('Excellent (15)'),
-        '20' => t('Superior (20)'),
-      ),
-    );
+    // Set the user permissions that change the UI.
+    global $user;
+    $user_can_set_diffs = FALSE;
+    // If this isn't a new node AND this is not the users own node.
+    if (!empty($form['#node']->nid) && $form['#node']->uid != $user->uid) {
+    	$user_can_set_diffs = user_access('set numerical diff');
+    }
+
     // Gather comments for display from various sources.
     $found_comments = array();
     // Check for comments still saved on the node.
@@ -422,6 +390,112 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
     }
     // One last organization of all of these by cid.
     ksort($found_comments);
+
+    // Collect the default difficulty from the last comment in the loop.
+    // If you can't set the defaults in the form, then we wil need to pull from the dropdown.
+    // But we should initially set the dropdown to be the value of the first comment.
+    $default_diff_value = !empty($set_comment) ? $set_comment->difficulty : 45;
+    $default_diff_value = !empty($form_state['input']['general_difficulty']) ? $form_state['input']['general_difficulty'] : $default_diff_value;
+    $default_diff_value = !empty($form_state['values']['general_difficulty']) ? $form_state['values']['general_difficulty'] : $default_diff_value;
+    // Collect the default RP bonus from the last comment in the loop.
+    $default_rb_bon_value = !empty($set_comment) ? $set_comment->rp_bonus : 5;
+    $default_rb_bon_value = !empty($form_state['input']['general_rp_bonus']) ? $form_state['input']['general_rp_bonus'] : $default_rb_bon_value;
+    $default_rb_bon_value = !empty($form_state['values']['general_rp_bonus']) ? $form_state['values']['general_rp_bonus'] : $default_rb_bon_value;
+    // Set the diff generic field.
+    $diffs = array(
+      '#title' => t('Difficulty for the item'),
+      '#type' => 'select',
+      '#options' => array(
+        '5' => t('Ridiculously easy (5)'),
+        '15' => t('Easy (15)'),
+        '25' => t('Normal (25)'),
+        '45' => t('Skilled (45)'),
+        '65' => t('Mastery (65)'),
+        '100' => t('Extremely Difficult (100)'),
+      ),
+      '#default_value' => $default_diff_value,
+      '#access' => !$user_can_set_diffs, // If you have no permissions, you ALWAYS see this dropdown.
+      '#limit_validation_errors' => array(array('included_comments_table')),
+      // DOUBLE ARRAY. Because drupal docs suck.
+      '#ajax' => array(
+        'callback' => '_item_helper_ajax_add_comments',
+        'wrapper' => 'item-helper-included-comments-table',
+        'method' => 'replace',
+        'effect' => 'fade',
+      ),
+    );
+    $form['item_helper']['included_comments']['general_difficulty'] = $diffs;
+    // Can't set the difficulties on a roll directly?
+    // Set the Diff as a general value, and set RP bonus that way too.
+    // There is no 'in-between' where you can set by row but only use drop-downs.
+    $form['item_helper']['included_comments']['general_rp_bonus'] =  array(
+      '#title' => t('RP Bonus for the scene'),
+      '#type' => 'select',
+      '#options' => array(
+        '0' => t('None (0)'),
+        '5' => t('Average (5)'),
+        '10' => t('Good (10)'),
+        '15' => t('Excellent (15)'),
+        '20' => t('Superior (20)'),
+      ),
+      '#default_value' => $default_rb_bon_value,
+      '#limit_validation_errors' => array(array('included_comments_table')),
+      // DOUBLE ARRAY. Because drupal docs suck.
+      '#ajax' => array(
+        'callback' => '_item_helper_ajax_add_comments',
+        'wrapper' => 'item-helper-included-comments-table',
+        'method' => 'replace',
+        'effect' => 'fade',
+      ),
+    );
+    // Figure out the heads next.
+    $headers =  array(
+      t('Item creation posts'),
+      t('Roll type'),
+      '', // Empty row for bonuses.
+      '', // Empty row for diffs.
+      '', // Empty row for RP bonuses.
+      t('Result'),
+      t('(X)'),
+    );
+    if ($user_can_set_diffs) {
+      $headers =  array(
+        t('Item creation posts'),
+        t('Roll type'),
+        t('Flat bonus'),
+        t('Difficulty'),
+        '', // Empty row for RP bonuses.
+        t('Result'),
+        t('(X)'),
+      );
+    }
+    // Setup table format.
+    $form['item_helper']['included_comments']['included_comments_table'] = array(
+      '#prefix' => '<div id="item-helper-included-comments-table">',
+      '#suffix' => '</div>',
+      '#theme' => 'table',
+      '#header' => $headers,
+      '#rows' => array(),
+      '#attributes' => array('id' => 'item_helper_included_comments_table'),
+      '#empty' => t('No posts found.'),
+      '#tree' => TRUE, // So can be picked up later.
+    );
+
+    // Update the set values for the comments for RP bonuses.
+    // This loop ensures all gathered values on display have the correct RP and Diff bonuses for
+    // Their available settings.
+    foreach ($found_comments as $index => $comment) {
+      // Make sure the default is set correctly for the RP bonus.
+      $found_comments[$index]->rp_bonus = $default_rb_bon_value;
+      // If you can't set the defaults in the form, then we need to pull from the dropdown.
+      if (!$user_can_set_diffs) {
+        // But before we can pull from
+        $found_comments[$index]->difficulty = $default_diff_value;
+      }
+      // Set the defaults if needed.
+      $found_comments[$index]->might_1 = !empty($found_comments[$index]->might_1) ? $found_comments[$index]->might_1 : 0;
+      $found_comments[$index]->might_2 = !empty($found_comments[$index]->might_2) ? $found_comments[$index]->might_2 : $found_comments[$index]->might_1;
+    }
     // Calculate the results for the set
     $found_comments = _item_helper_calculate_results($found_comments);
     // Add the comments.
@@ -461,6 +535,15 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
         '#title' => t('Override mights'),
         '#default_value' => isset($item_comment->override_might) ? $item_comment->override_might : FALSE,
         '#return_value' => TRUE,
+        '#access' => $user_can_set_diffs,
+        '#limit_validation_errors' => array(array('included_comments_table')),
+        // DOUBLE ARRAY. Because drupal docs suck.
+        '#ajax' => array(
+          'callback' => '_item_helper_ajax_add_comments',
+          'wrapper' => 'item-helper-included-comments-table',
+          'method' => 'replace',
+          'effect' => 'fade',
+        ),
       );
       $mights['might_1'] = array(
         '#prefix' => '<table class="item_helper_mights" style="margin:0;padding:0;">' .
@@ -468,12 +551,21 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
         '#suffix' => '</td>',
         '#type' => 'textfield',
         '#title' => t('First might'),
-        '#default_value' => isset($item_comment->might_1) ? $item_comment->might_1 : 0,
+        '#default_value' => $item_comment->might_1,
         '#size' => 4,
         '#states' => array(
           'visible' => array(
             ':input[name="included_comments_table[' . $item_comment->cid . '][mights][override_might]"]' => array('checked' => TRUE),
           ),
+        ),
+        '#access' => $user_can_set_diffs,
+        '#limit_validation_errors' => array(array('included_comments_table')),
+        // DOUBLE ARRAY. Because drupal docs suck.
+        '#ajax' => array(
+          'callback' => '_item_helper_ajax_add_comments',
+          'wrapper' => 'item-helper-included-comments-table',
+          'method' => 'replace',
+          'effect' => 'fade',
         ),
       );
       $mights['might_2'] = array(
@@ -481,12 +573,21 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
         '#suffix' => '</td></tr></tbody></table>',
         '#type' => 'textfield',
         '#title' => t('Second might'),
-        '#default_value' => isset($item_comment->might_2) ? $item_comment->might_2 : 0,
+        '#default_value' => $item_comment->might_2,
         '#size' => 4,
         '#states' => array(
           'visible' => array(
             ':input[name="included_comments_table[' . $item_comment->cid . '][mights][override_might]"]' => array('checked' => TRUE),
           ),
+        ),
+        '#access' => $user_can_set_diffs,
+        '#limit_validation_errors' => array(array('included_comments_table')),
+        // DOUBLE ARRAY. Because drupal docs suck.
+        '#ajax' => array(
+          'callback' => '_item_helper_ajax_add_comments',
+          'wrapper' => 'item-helper-included-comments-table',
+          'method' => 'replace',
+          'effect' => 'fade',
         ),
       );
       $roll_type = array(
@@ -498,32 +599,61 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
           'no_calcs' => t('No roll'),
         ),
         '#default_value' => isset($item_comment->roll_type) ? $item_comment->roll_type : 'gen_pp',
+        '#limit_validation_errors' => array(array('included_comments_table')),
+        // DOUBLE ARRAY. Because drupal docs suck.
+        '#ajax' => array(
+          'callback' => '_item_helper_ajax_add_comments',
+          'wrapper' => 'item-helper-included-comments-table',
+          'method' => 'replace',
+          'effect' => 'fade',
+        ),
       );
+      // Configure the set a flat bonus field.
       $set_bonus = array(
         '#type' => 'textfield',
         '#default_value' => isset($item_comment->set_bonus) ? $item_comment->set_bonus : 0,
         '#size' => 4,
+        '#access' => $user_can_set_diffs,
+        '#limit_validation_errors' => array(array('included_comments_table')),
+        // DOUBLE ARRAY. Because drupal docs suck.
+        '#ajax' => array(
+          'callback' => '_item_helper_ajax_add_comments',
+          'wrapper' => 'item-helper-included-comments-table',
+          'method' => 'replace',
+          'effect' => 'fade',
+        ),
       );
-      $item_difficulty = isset($item_comment->difficulty) ? $item_comment->difficulty : 45;
-      $this_diff = $diffs;
-      if (user_access('set numerical diff') || !in_array($item_difficulty, array_keys($diffs['#options']))) {
-        $this_diff = array(
-        '#type' => 'textfield',
-        '#size' => 4,
+      // Get the difficulty so we can check if it's a standard one.
+      $item_difficulty = isset($item_comment->difficulty) ? $item_comment->difficulty : $default_diff_value;
+      // Set the value for the priv field, user a hidden unless user is priv.
+      if ($user_can_set_diffs || !in_array($item_difficulty, array_keys($form['item_helper']['included_comments']['general_difficulty']['#options']))) {
+        $difficulty = array(
+          '#type' => 'textfield',
+          '#size' => 4,
+          '#default_value' => $item_difficulty,
+          '#limit_validation_errors' => array(array('included_comments_table')),
+          // DOUBLE ARRAY. Because drupal docs suck.
+          '#ajax' => array(
+            'callback' => '_item_helper_ajax_add_comments',
+            'wrapper' => 'item-helper-included-comments-table',
+            'method' => 'replace',
+            'effect' => 'fade',
+          ),
         );
       }
-      $difficulty = $this_diff;
-      $difficulty['#default_value'] = $item_difficulty;
-      $item_rp_bonus = isset($item_comment->rp_bonus) ? $item_comment->rp_bonus : 5;
-      $this_rp_bons = $rp_bons;
-      if (user_access('set numerical diff') || !in_array($item_rp_bonus, array_keys($rp_bons['#options']))) {
-        $this_rp_bons = array(
-        '#type' => 'textfield',
-        '#size' => 4,
+      else {
+        $difficulty =  array(
+          '#type' => 'hidden',
+          '#value' => $item_difficulty,
         );
       }
-      $rp_bonus = $this_rp_bons;
-      $rp_bonus['#default_value'] = $item_rp_bonus;
+      // Add the default bonus to the table as a hidden value field.
+      // That way the submission system still knows where to look for this in the end.
+      $rp_bonus = array(
+        '#type' => 'hidden',
+        '#value' => isset($item_comment->rp_bonus) ? $item_comment->rp_bonus : $default_rb_bon_value,
+      );
+      // Display results.
       $results = array(
         '#type' => 'item',
         '#markup' => isset($item_comment->results) ? $item_comment->results : t('Not calculated'),
@@ -576,12 +706,12 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
         'effect' => 'fade',
       ),
     );
-    // Check workflow state and disable from changing IFF workflow approved.
+    // Check workflow state and disable from changing IFF workflow approved. We don't want meddling after the fact.
     if (isset($form['#node']->workflow) && (isset($form['#node']->workflow_state_name) && $form['#node']->workflow_state_name == t('approved'))) {
       unset($form['item_helper']['add_comments']);
       $form['item_helper']['included_comments']['#disabled'] = TRUE;
     }
-    // Hide the field creation history elements. We don't want users meddling with those.
+    // Hide the field creation history elements. We don't want users meddling with those records.
     $form['field_creation_history']['#access'] = FALSE;
   }
 }
@@ -668,10 +798,11 @@ function _item_helper_calculate_results($found_comments) {
     if (isset($item_comment->mights)) {
       $item_comment->override_might = isset($item_comment->mights['override_might']) ? $item_comment->mights['override_might'] : 0;
       $item_comment->might_1 = isset($item_comment->mights['might_1']) ? $item_comment->mights['might_1'] : 0;
-      $item_comment->might_2 = isset($item_comment->mights['might_2']) ? $item_comment->mights['might_2'] : 0;
+      $item_comment->might_2 = isset($item_comment->mights['might_2']) ? $item_comment->mights['might_2'] : $item_comment->mights['might_1'];
     }
     $item_comment->set_bonus = isset($item_comment->set_bonus) ? $item_comment->set_bonus : 0;
     $item_comment->difficulty = isset($item_comment->difficulty) ? $item_comment->difficulty : 45;
+    $diff_txt = t('Difficulty @difficulty.', array('@difficulty' => $item_comment->difficulty));
     $item_comment->rp_bonus = isset($item_comment->rp_bonus) ? $item_comment->rp_bonus : 5;
     $rp_bonus = isset($item_comment->rp_bonus) ? $item_comment->rp_bonus : 5;
     // Grab rolls and start calculations.
@@ -752,13 +883,21 @@ function _item_helper_calculate_results($found_comments) {
           $roll_txt = t('Roll generated ' . $PP_generated . ' PP, ' . $winsby_generated . ' winsby.');
           $ongoing_PP += $PP_generated;
         }
-        if ($item_comment->roll_type == 'prep_diff') { // If prep_bonus, divide, add.
-          $roll_txt = t('Roll reduces diff for future rolls.');
-          $ongoing_prep_diff += floor($PP_generated / 7);
+        if ($item_comment->roll_type == 'prep_diff') { // If prep_diff, divide, add.
+          $roll_txt = t('Roll did not change diff for future rolls.');
+          $new_prep_diff += floor($PP_generated / 7);
+          if ($new_prep_diff > $ongoing_prep_diff) {
+            $roll_txt = t('Roll reduces diff for future rolls.');
+            $ongoing_prep_diff = $new_prep_diff; // Only apply if the bonus is greater.
+          }
         }
         if ($item_comment->roll_type == 'prep_bon') { // If prep_bonus, divide, add.
-          $roll_txt = t('Roll added bonus for future rolls.');
-          $ongoing_prep_bonus += floor($PP_generated / 7);
+          $roll_txt = t('Roll did not add bonus for future rolls.');
+          $new_prep_bonus += floor($PP_generated / 7);
+          if ($new_prep_bonus > $ongoing_prep_bonus) {
+            $roll_txt = t('Roll added bonus for future rolls.');
+            $ongoing_prep_bonus = $new_prep_bonus; // Only apply if the bonus is greater.
+          }
         }
         if ($item_comment->roll_type == 'no_calcs') { // If just set_bonus, then add.
           $roll_txt = t('No roll on this post.');
@@ -776,17 +915,18 @@ function _item_helper_calculate_results($found_comments) {
       $ongoing_1 = 'no';
     }
     $item_comment->results = t(
-      ':set_bonus_txt' . $break_1 .
-      ':roll_txt' . $break_2 .
-      'Mights :might1 :might2 </br> ' .
-      ':rp RP bonus </br> ' .
-      ':prep Prep bonus / :diff Diff mod </br> ' .
-      '<span style="font-weight:bold;">:PP PP / <span style="color:green;">:100 100s</span> / <span style="color:red;">:1 1s</span></span>' .
+      '%roll_txt' . $break_2 .
+      '@diff_text </br>' .
+      'Mights @might1 @might2 </br> ' .
+      '@set_bonus_txt' . $break_1 .
+      '@rp RP bonus </br> ' .
+      '@prep Prep bonus / @diff Diff mod </br> ' .
+      '<span style="font-weight:bold;">@PP PP / <span style="color:green;">@100 100s</span> / <span style="color:red;">@1 1s</span></span>' .
       '',
-      array(':set_bonus_txt' => $set_bonus_txt, ':roll_txt' => $roll_txt,
-        ':might1' => $might_1, ':might2' => $might_2,
-        ':PP' => number_format($ongoing_PP), ':100' => $ongoing_100, ':1' => $ongoing_1,
-        ':rp' => $rp_bonus, ':prep' => $ongoing_prep_bonus, ':diff' => $ongoing_prep_diff * -1 ));
+      array('@diff_text' => $diff_txt, '@set_bonus_txt' => $set_bonus_txt, '%roll_txt' => $roll_txt,
+        '@might1' => !empty($might_1) ? $might_1 : 0, '@might2' => !empty($might_2) ? $might_2 : 0,
+        '@PP' => number_format($ongoing_PP), '@100' => $ongoing_100, '@1' => $ongoing_1,
+        '@rp' => $rp_bonus, '@prep' => $ongoing_prep_bonus, '@diff' => $ongoing_prep_diff * -1 ));
   }
   return $found_comments;
 }
