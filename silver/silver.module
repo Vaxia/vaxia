@@ -72,12 +72,14 @@ function _silver_character_daily_silver($node_data) {
     if ($available_silver > $income) {
       // Reduce silver.
       _character_sheet_update_xp($node->nid, $daily * -1, 'silver');
-      watchdog('vaxia_slv', 'Removed ' . $daily .' to # '. $node->nid . ' ' . $node->title);
+      $message = 'Removed ' . $daily .' to # '. $node->nid . ' ' . $node->title;
+      _character_sheet_update_log($node->nid, 'silver', $message);
     }
     else {
       // Add silver.
       _character_sheet_update_xp($node->nid, $daily, 'silver');
-      watchdog('vaxia_slv', 'Added ' . $daily .' to # '. $node->nid . ' ' . $node->title);
+      $message = 'Added ' . $daily .' to # '. $node->nid . ' ' . $node->title;
+      _character_sheet_update_log($node->nid, 'silver', $message);
     }
   }
 }
