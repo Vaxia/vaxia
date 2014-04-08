@@ -995,7 +995,7 @@ function add_silver_submit_form(&$form, &$form_state) {
     drupal_set_message(t('%add_silver silver has been added to this sheet.', array('%add_silver' => $add_silver)));
 	$message = t('@xp silver added to @title by @user.',
 		array('@xp' => $add_silver, '@title' => $character->title, '@user' => $user->name));
-	_character_sheet_update_log($nid, 'silver', $message, $variables = array());
+	_character_sheet_update_log($nid, 'silver', $message);
     return;
   }
   // If negative. First check if we can just subtract off of given XP.
@@ -1005,7 +1005,7 @@ function add_silver_submit_form(&$form, &$form_state) {
       array('%add_silver' => $add_silver)));
 	$message = t('@xp silver removed from @title by @user.',
 		array('@xp' => $add_silver, '@title' => $character->title, '@user' => $user->name));
-	_character_sheet_update_log($character, 'silver', $message, $variables = array());
+	_character_sheet_update_log($character, 'silver', $message);
   }
 }
 
@@ -1035,8 +1035,11 @@ function _add_silver_submit_form_remove_silver($nid, $add_silver) {
         $node->field_economy[$node->language][0]['value'] : 0;
       $converted_silver = _vaxia_invest_calculate_cost_to_remove($economy);
       _character_sheet_update_xp($nid, $converted_silver, 'silver');
-      drupal_set_message(t('Converted economy from level %economy to %less_economy, for %converted silver.',
-        array('%economy' => $economy, '%less_economy' => $economy - 1, '%converted' => number_format($converted_silver, 2))));
+      $message = t('Converted economy from level %economy to %less_economy, for %converted silver.',
+        array('%economy' => $economy, '%less_economy' => $economy - 1,
+        '%converted' => number_format($converted_silver, 2)));
+      _character_sheet_update_log($node->nid, 'silver', $message);
+      drupal_set_message($message);
       // Remove econmy.
       $economy--;
       $node->field_economy[$node->language][0]['value'] = $economy;
@@ -1144,7 +1147,7 @@ function _vaxia_transfer_rxp_submit(&$form, &$form_state) {
       global $user;
       $message = t('@xp @type xp added to @title by @user.',
         array('@xp' => $amount, '@type' => 'SH-RXP', '@title' => $new_character->title, '@user' => $user->name));
-      _character_sheet_update_log($new_character->nid, 'SH-RXP', $message, $variables = array());
+      _character_sheet_update_log($new_character->nid, 'SH-RXP', $message);
     }
   }
   else {
@@ -1318,7 +1321,7 @@ function _vaxia_add_xp($nid, $xp, $type) {
     case 'silver':
       $message = t('@xp @ype added to @title by @user.',
         array('@xp' => $xp, '@type' => $type, '@title' => $node->title, '@user' => $user->name));
-      _character_sheet_update_log($nid, 'silver', $message, $variables = array());
+      _character_sheet_update_log($nid, 'silver', $message);
       // Silver is just added directly.
       _character_sheet_update_xp($nid, $xp, 'silver');
       // Echo log message to user.
@@ -1326,7 +1329,7 @@ function _vaxia_add_xp($nid, $xp, $type) {
     break;
     case 'xp':
     default:
-      _character_sheet_update_log($nid, 'xp', $message, $variables = array());
+      _character_sheet_update_log($nid, 'xp', $message);
       // Add per, b/c of the way the calculations work for adding.
       $current_rxp = _character_sheet_get_xp($nid, 'rxp');
       $bxp_to_add = 0;
