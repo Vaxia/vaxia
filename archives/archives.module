@@ -254,6 +254,7 @@ function _archives_write_files($pages, $begin, $end) {
       }
       drupal_set_message('Archiving comments from: ' . date('m/d/Y 00:00:01', $begin) . ' to: ' . date('m/d/Y 00:00:01', $end) . '.');
       drupal_set_message('Archived ' . count($pages['delete_comments']) . ' comments.');
+      watchdog('archives', 'Archived ' . count($pages['delete_comments']) . ' comments.');
       // Delete nodes.
       if (!empty($pages['delete_nodes'])) {
         foreach ($pages['delete_nodes'] as $nid) {
@@ -268,6 +269,7 @@ function _archives_write_files($pages, $begin, $end) {
       	  }
         }
         drupal_set_message('Archived ' . count($pages['delete_nodes']) . ' nodes.');
+        watchdog('archives', 'Archived ' . count($pages['delete_nodes']) . ' nodes.');
       }
     }
   }
