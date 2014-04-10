@@ -1559,7 +1559,7 @@ function _dice_ruler_combat(
     ($attack_a_points - $block_b_vs_a[8] + (($attack_a_points - $block_b_vs_a[8]) * $combat_weapon_a)) . t(' to B, w/ weapon') : 0 . t(' to B');
   $rows[] = $block_b_vs_a;
   $parry_a_vs_b = _dice_ruler_make_two_trait_ruling(
-    $combat_might_a_dex - $mod_might_ax,
+    $combat_might_a_dex - $mod_might_a,
     $combat_might_b_dex + $mod_diff_a - $mod_might_b, // Defender.
     $combat_add_diff_a_dex,
     $combat_rolled_a_dex,
