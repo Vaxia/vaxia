@@ -244,7 +244,7 @@ function dice_ruler_form($form, &$form_state) {
     $multi_penalty = variable_get('dice_ruler_extra_action_penalty', 20);
     $settings[] = t('Extra actions is -%penalty.', array('%penalty' => $multi_penalty));
     $apply = variable_get('dice_ruler_extra_action_penalty_apply', 'diff');
-    $settings[] = ($apply == 'diff') ? t('Adds to difficulty.') : t('Reduces character might.');
+    $settings[] = ($apply == 'diff') ? t('Applies to difficulty.') : t('Applies to might.');
     // Are weapon classes in use?
     $toggle = variable_get('dice_ruler_weapon_class', TRUE) ? t('ON') : t('OFF');
     $settings[] = t('Weapon classes are %toggle.', array('%toggle' => $toggle));
@@ -1495,12 +1495,12 @@ function _dice_ruler_combat(
 
   // And make the rolls. The second value in a set (labeled defender) is always the difficulty.
   $attack_a_vs_b = _dice_ruler_make_two_trait_ruling(
-    $combat_might_a_dex + $mod_might_a,
-    $combat_might_b_dex + $mod_diff_a, // Defender.
+    $combat_might_a_dex - $mod_might_a,
+    $combat_might_b_dex + $mod_diff_a - $mod_might_b, // Defender.
     $combat_add_diff_a_dex,
     $combat_rolled_a_dex,
-    $combat_might_a_str + $mod_might_a,
-    $combat_might_b_end + $mod_diff_a, // Defender.
+    $combat_might_a_str - $mod_might_a,
+    $combat_might_b_end + $mod_diff_a - $mod_might_b, // Defender.
     $combat_add_diff_a_str,
     $combat_rolled_a_str
   );
@@ -1510,12 +1510,12 @@ function _dice_ruler_combat(
   $attack_a_vs_b[] = ($attack_a_vs_b[8] + ($attack_a_vs_b[8] * $combat_weapon_a)) . t(' to B, w/ weapon');
   $rows[] = $attack_a_vs_b;
   $attack_b_vs_a = _dice_ruler_make_two_trait_ruling(
-    $combat_might_b_dex + $mod_might_b,
-    $combat_might_a_dex + $mod_diff_b, // Defender.
+    $combat_might_b_dex - $mod_might_b,
+    $combat_might_a_dex + $mod_diff_b - $mod_might_a, // Defender.
     $combat_add_diff_b_dex,
     $combat_rolled_b_dex,
-    $combat_might_b_str + $mod_might_b,
-    $combat_might_a_end + $mod_diff_b, // Defender.
+    $combat_might_b_str - $mod_might_b,
+    $combat_might_a_end + $mod_diff_b - $mod_might_a, // Defender.
     $combat_add_diff_b_str,
     $combat_rolled_b_str
   );
@@ -1527,12 +1527,12 @@ function _dice_ruler_combat(
   $attack_a_points = $attack_a_vs_b[8]; // PP produced by a
   $attack_b_points = $attack_b_vs_a[8]; // PP produced by b
   $block_a_vs_b = _dice_ruler_make_two_trait_ruling(
-    $combat_might_a_str + $mod_might_a,
-    $combat_might_b_dex + $mod_diff_a, // Defender.
+    $combat_might_a_str - $mod_might_a,
+    $combat_might_b_dex + $mod_diff_a - $mod_might_b, // Defender.
     $combat_add_diff_a_str,
     $combat_rolled_a_str,
-    $combat_might_a_end + $mod_might_a,
-    $combat_might_b_str + $mod_diff_a, // Defender.
+    $combat_might_a_end - $mod_might_a,
+    $combat_might_b_str + $mod_diff_a - $mod_might_b, // Defender.
     $combat_add_diff_a_end,
     $combat_rolled_a_end
   );
@@ -1543,12 +1543,12 @@ function _dice_ruler_combat(
     ($attack_b_points - $block_a_vs_b[8] + (($attack_b_points - $block_a_vs_b[8]) * $combat_weapon_b)) . t(' to A, w/ weapon') : 0 . t(' to A');
   $rows[] = $block_a_vs_b;
   $block_b_vs_a = _dice_ruler_make_two_trait_ruling(
-    $combat_might_b_str + $mod_might_b,
-    $combat_might_a_dex + $mod_diff_b, // Defender.
+    $combat_might_b_str - $mod_might_b,
+    $combat_might_a_dex + $mod_diff_b - $mod_might_a, // Defender.
     $combat_add_diff_b_str,
     $combat_rolled_b_str,
-    $combat_might_b_end + $mod_might_b,
-    $combat_might_a_str + $mod_diff_b, // Defender.
+    $combat_might_b_end - $mod_might_b,
+    $combat_might_a_str + $mod_diff_b - $mod_might_a, // Defender.
     $combat_add_diff_b_end,
     $combat_rolled_b_end
   );
@@ -1559,12 +1559,12 @@ function _dice_ruler_combat(
     ($attack_a_points - $block_b_vs_a[8] + (($attack_a_points - $block_b_vs_a[8]) * $combat_weapon_a)) . t(' to B, w/ weapon') : 0 . t(' to B');
   $rows[] = $block_b_vs_a;
   $parry_a_vs_b = _dice_ruler_make_two_trait_ruling(
-    $combat_might_a_de + $mod_might_ax,
-    $combat_might_b_dex + $mod_diff_a, // Defender.
+    $combat_might_a_dex - $mod_might_ax,
+    $combat_might_b_dex + $mod_diff_a - $mod_might_b, // Defender.
     $combat_add_diff_a_dex,
     $combat_rolled_a_dex,
-    $combat_might_a_str + $mod_might_a,
-    $combat_might_b_str + $mod_diff_a, // Defender.
+    $combat_might_a_str - $mod_might_a,
+    $combat_might_b_str + $mod_diff_a - $mod_might_b, // Defender.
     $combat_add_diff_a_str,
     $combat_rolled_a_str
   );
@@ -1575,12 +1575,12 @@ function _dice_ruler_combat(
     ($attack_b_points - $parry_a_vs_b[8] + (($attack_b_points - $parry_a_vs_b[8]) * $combat_weapon_b)) . t(' to A, w/ weapon') : 0 . t(' to A');
   $rows[] = $parry_a_vs_b;
   $parry_b_vs_a = _dice_ruler_make_two_trait_ruling(
-    $combat_might_b_dex + $mod_might_b,
-    $combat_might_a_dex + $mod_diff_b, // Defender.
+    $combat_might_b_dex - $mod_might_b,
+    $combat_might_a_dex + $mod_diff_b - $mod_might_a, // Defender.
     $combat_add_diff_b_dex,
     $combat_rolled_b_dex,
-    $combat_might_b_str + $mod_might_b,
-    $combat_might_a_str + $mod_diff_b, // Defender.
+    $combat_might_b_str - $mod_might_b,
+    $combat_might_a_str + $mod_diff_b - $mod_might_a, // Defender.
     $combat_add_diff_b_str,
     $combat_rolled_b_str
   );
@@ -1591,12 +1591,12 @@ function _dice_ruler_combat(
     ($attack_a_points - $parry_b_vs_a[8] + (($attack_a_points - $parry_b_vs_a[8]) * $combat_weapon_a)) . t(' to B, w/ weapon') : 0 . t(' to B');
   $rows[] = $parry_b_vs_a;
   $dodge_a_vs_b = _dice_ruler_make_two_trait_ruling(
-    $combat_might_a_dex + $mod_might_a,
-    $combat_might_b_dex + $mod_diff_a, // Defender.
+    $combat_might_a_dex - $mod_might_a,
+    $combat_might_b_dex + $mod_diff_a - $mod_might_b, // Defender.
     $combat_add_diff_a_dex,
     $combat_rolled_a_dex,
-    $combat_might_a_end + $mod_might_a,
-    $combat_might_b_str + $mod_diff_a, // Defender.
+    $combat_might_a_end - $mod_might_a,
+    $combat_might_b_str + $mod_diff_a - $mod_might_b, // Defender.
     $combat_add_diff_a_end,
     $combat_rolled_a_end
   );
@@ -1607,12 +1607,12 @@ function _dice_ruler_combat(
     ($attack_b_points - $dodge_a_vs_b[8] + (($attack_b_points - $dodge_a_vs_b[8]) * $combat_weapon_b)) . t(' to A, w/ weapon') : 0 . t(' to A');
   $rows[] = $dodge_a_vs_b;
   $dodge_b_vs_a = _dice_ruler_make_two_trait_ruling(
-    $combat_might_b_dex + $mod_might_b,
-    $combat_might_a_dex + $mod_diff_b, // Defender.
+    $combat_might_b_dex - $mod_might_b,
+    $combat_might_a_dex + $mod_diff_b - $mod_might_a, // Defender.
     $combat_add_diff_b_dex,
     $combat_rolled_b_dex,
-    $combat_might_b_end + $mod_might_b,
-    $combat_might_a_str + $mod_diff_b, // Defender.
+    $combat_might_b_end - $mod_might_b,
+    $combat_might_a_str + $mod_diff_b - $mod_might_a, // Defender.
     $combat_add_diff_b_end,
     $combat_rolled_b_end
   );
