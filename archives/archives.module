@@ -791,6 +791,15 @@ function _archives_search($month = 'any', $day = 'any', $year = 'any', $type = '
     }
     $found = empty($found) ? $this_found : array_intersect($found, $this_found);
   }
+  // Filter found paths for type
+  if (!empty($type) && $type != 'any') {
+    foreach ($found as $index => $found_path) {
+      // If the type isn't in the path, drop the result.
+      if (strpos($found_path, $type) === FALSE) {
+        unset($found[ $index ]);
+      }
+    }
+  }
 
   // Clean up the found paths for proper links through
   global $base_url;
