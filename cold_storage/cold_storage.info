@@ -1,0 +1,12 @@
+name = Cold storage
+description = A way to store inactive player accounts and characters out of the way
+core = 7.x
+package = RPG
+version = 7.x-1.0
+project = cold_storage
+dependencies[] = entity
+dependencies[] = rules
+dependencies[] = views_bulk_operations
+dependencies[] = workflow_rules
+features[features_api][] = api:1
+features[rules_config][] = rules_set_characters_inactive_if_moved_to_cold_storage

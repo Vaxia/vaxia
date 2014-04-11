@@ -630,6 +630,7 @@ function sh_test_default_rules_configuration() {
   $items['sh_test_sh_test_3_response_low_no_sh_population'] = entity_import('rules_config', '{ "sh_test_sh_test_3_response_low_no_sh_population" : {
       "LABEL" : "SH Test 3 Response - low\\/no SH population",
       "PLUGIN" : "reaction rule",
+      "ACTIVE" : false,
       "OWNER" : "rules",
       "TAGS" : [ "SH Test" ],
       "REQUIRES" : [ "rules", "php", "quiz_rules" ],

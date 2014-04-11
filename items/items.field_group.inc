@@ -54,6 +54,7 @@ function items_field_group_info() {
       1 => 'field_realm',
       2 => 'field_in_shop',
       3 => 'field_base_item_template',
+      4 => 'field_type',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(

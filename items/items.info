@@ -112,6 +112,7 @@ features[field][] = node-items-field_player_notes
 features[field][] = node-items-field_realm
 features[field][] = node-items-field_sh_notes
 features[field][] = node-items-field_sh_private_notes
+features[field][] = node-items-field_type
 features[field][] = node-items-field_value
 features[field_group][] = group_creation_history|node|items|default
 features[field_group][] = group_details|node|items|form

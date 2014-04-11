@@ -118,7 +118,7 @@ function items_strongarm() {
         ),
         'workflow' => array(
           'default' => array(
-            'weight' => '15',
+            'weight' => '14',
             'visible' => FALSE,
           ),
           'artwork' => array(

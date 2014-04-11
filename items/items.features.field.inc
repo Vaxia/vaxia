@@ -97,7 +97,7 @@ function items_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '16',
+          'weight' => '15',
         ),
       ),
       'entity_type' => 'node',
@@ -381,7 +381,7 @@ function items_field_default_fields() {
           'display_label' => 1,
         ),
         'type' => 'options_onoff',
-        'weight' => '5',
+        'weight' => '6',
       ),
     ),
   );
@@ -6922,6 +6922,79 @@ function items_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-items-field_type'.
+  $fields['node-items-field_type'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_type',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          'utility' => 'Utility Item',
+          'one_use' => 'One Use Item',
+          'armor' => 'Armor',
+          'shield' => 'Shield',
+          'weapon_light' => 'Weapon - Light',
+          'weapon_medium' => 'Weapon - Medium',
+          'weapon_heavy' => 'Weapon - Heavy',
+          'program' => 'Program',
+          'misc' => 'Misc',
+        ),
+        'allowed_values_function' => '',
+      ),
+      'translatable' => '0',
+      'type' => 'list_text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'items',
+      'default_value' => array(
+        0 => array(
+          'value' => 'misc',
+        ),
+      ),
+      'deleted' => '0',
+      'description' => 'The type of the item is a required field, as this allows the Vaxian system to correctly handle using the item in dice rulings. If the item doesn\'t fit any other category, use "Misc"',
+      'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'default' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '16',
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_type',
+      'label' => 'Type',
+      'required' => 1,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '4',
+      ),
+    ),
+  );
+
   // Exported field: 'node-items-field_value'.
   $fields['node-items-field_value'] = array(
     'field_config' => array(
@@ -6995,7 +7068,7 @@ function items_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '4',
+        'weight' => '5',
       ),
     ),
   );
@@ -7033,6 +7106,8 @@ function items_field_default_fields() {
   t('Skill');
   t('Spirituality');
   t('Strength');
+  t('The type of the item is a required field, as this allows the Vaxian system to correctly handle using the item in dice rulings. If the item doesn\'t fit any other category, use "Misc"');
+  t('Type');
   t('Value');
 
   return $fields;

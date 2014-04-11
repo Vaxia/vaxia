@@ -203,74 +203,6 @@ function wiki_feature_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-wiki_page-field_flag_for_deletion'.
-  $fields['node-wiki_page-field_flag_for_deletion'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_flag_for_deletion',
-      'foreign keys' => array(),
-      'indexes' => array(
-        'value' => array(
-          0 => 'value',
-        ),
-      ),
-      'locked' => '0',
-      'module' => 'list',
-      'settings' => array(
-        'allowed_values' => array(
-          0 => 'Keep',
-          1 => 'Flagged for deletion',
-        ),
-        'allowed_values_function' => '',
-      ),
-      'translatable' => '0',
-      'type' => 'list_boolean',
-    ),
-    'field_instance' => array(
-      'bundle' => 'wiki_page',
-      'default_value' => array(
-        0 => array(
-          'value' => 0,
-        ),
-      ),
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'artwork' => array(
-          'label' => 'hidden',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '7',
-        ),
-        'default' => array(
-          'label' => 'hidden',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '8',
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_flag_for_deletion',
-      'label' => 'Flag for deletion',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'options',
-        'settings' => array(
-          'display_label' => 1,
-        ),
-        'type' => 'options_onoff',
-        'weight' => '1',
-      ),
-    ),
-  );
-
   // Exported field: 'node-wiki_page-field_referencing_chat_rooms'.
   $fields['node-wiki_page-field_referencing_chat_rooms'] = array(
     'field_config' => array(
@@ -629,7 +561,6 @@ function wiki_feature_field_default_fields() {
   t('Categories');
   t('Check the relevant category for this article, this will help us sort out areas of the wiki by over-arching segment of the site.');
   t('Files');
-  t('Flag for deletion');
   t('Images');
   t('Referencing Chat Rooms');
   t('Tags');

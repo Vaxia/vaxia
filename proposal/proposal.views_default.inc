@@ -81,11 +81,21 @@ function proposal_views_default_views() {
       'empty_column' => 0,
     ),
   );
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['content'] = '"It is wrong to assume that Vaxia is the product of one person, or even one group of people. In different degrees, every single Vaxian is responsible for Vaxia; its creator and owner at once." - <a href="http://vaxia.org/wiki/about-vaxia">SH Moon</a>
+
+We use proposals because while a forum thread may give you a rough feel for the mood of the site on a topic, it doesn\'t account for players who - for one reason or another - do not speak out on a forum thread. Silence does not at all indicate agreement, so we need to explicitly ask for a site vote when the topic is important, otherwise we risk leaving people out of getting a chance to contribute their opinions. 
+
+For more information about proposals and how to make one yourself, <a href="http://vaxia.org/wiki/help/i-have-seen-site-proposals-how-can-i-make-one-my-own">see the wiki article</a>.';
+  $handler->display->display_options['header']['area']['format'] = 'wiki';
   /* Footer: Global: Text area */
   $handler->display->display_options['footer']['area']['id'] = 'area';
   $handler->display->display_options['footer']['area']['table'] = 'views';
   $handler->display->display_options['footer']['area']['field'] = 'area';
-  $handler->display->display_options['footer']['area']['content'] = 'These proposals are currently under site consideration or have recently been resolved. Please take a moment to review them.';
+  $handler->display->display_options['footer']['area']['content'] = 'These proposals are currently under site consideration or have recently come to a final vote within the last month. See the <a href="http://vaxia.org/node/add/proposal">proposals</a> page for all proposals.';
   $handler->display->display_options['footer']['area']['format'] = 'wiki';
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
@@ -160,6 +170,18 @@ function proposal_views_default_views() {
   $handler->display->display_options['access']['role'] = array(
     8 => '8',
   );
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['content'] = '<blockquote><i>"It is wrong to assume that Vaxia is the product of one person, or even one group of people. In different degrees, every single Vaxian is responsible for Vaxia; its creator and owner at once."</i> - <a href="http://vaxia.org/wiki/about-vaxia"><b>SH Moon</b></a></blockquote>
+
+We use proposals because while a forum thread may give you a rough feel for the mood of the site on a topic, it doesn\'t account for players who - for one reason or another - do not speak out on a forum thread. Silence does not at all indicate agreement, so we need to explicitly ask for a site vote when the topic is important, otherwise we risk leaving people out of getting a chance to contribute their opinions. 
+
+For more information about proposals and how to make one yourself, <a href="http://vaxia.org/wiki/help/i-have-seen-site-proposals-how-can-i-make-one-my-own">see the wiki article</a>.';
+  $handler->display->display_options['header']['area']['format'] = 'wiki';
+  $handler->display->display_options['defaults']['footer'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
@@ -199,6 +221,27 @@ function proposal_views_default_views() {
   $handler->display->display_options['fields']['status']['field'] = 'status';
   $handler->display->display_options['fields']['status']['label'] = 'Proposal status';
   $handler->display->display_options['fields']['status']['not'] = 0;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['filter_groups']['groups'] = array(
+    1 => 'AND',
+    2 => 'OR',
+  );
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'proposal' => 'proposal',
+  );
+  $handler->display->display_options['filters']['type']['group'] = 1;
   $handler->display->display_options['path'] = 'proposals';
   $handler->display->display_options['menu']['type'] = 'normal';
   $handler->display->display_options['menu']['title'] = 'Proposals';
@@ -214,7 +257,7 @@ function proposal_views_default_views() {
   $handler->display->display_options['defaults']['access'] = FALSE;
   $handler->display->display_options['access']['type'] = 'role';
   $handler->display->display_options['access']['role'] = array(
-    3 => '3',
+    8 => '8',
   );
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'list';
@@ -226,6 +269,14 @@ function proposal_views_default_views() {
     'status' => 'status',
   );
   $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  $handler->display->display_options['defaults']['footer'] = FALSE;
+  /* Footer: Global: Text area */
+  $handler->display->display_options['footer']['area']['id'] = 'area';
+  $handler->display->display_options['footer']['area']['table'] = 'views';
+  $handler->display->display_options['footer']['area']['field'] = 'area';
+  $handler->display->display_options['footer']['area']['content'] = 'These proposals are currently under site consideration or have recently come to a final vote within the last month. See the <a href="/proposals">proposals</a> page for all proposals.';
+  $handler->display->display_options['footer']['area']['format'] = 'wiki';
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';

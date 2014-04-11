@@ -84,6 +84,4 @@ features[variable][] = node_options_session_report
 features[variable][] = node_preview_session_report
 features[variable][] = node_submitted_session_report
 features[views_view][] = sessions
-features[views_view][] = storytellers_and_assistants
 features[views_view][] = user_activity_totals
-features[views_view][] = wiki_display_sessions

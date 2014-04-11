@@ -110,7 +110,7 @@ function rpg_site_staff_default_rules_configuration() {
       "IF" : [
         { "user_has_role" : {
             "account" : [ "user" ],
-            "roles" : { "value" : { "9" : "9", "14" : "14" } },
+            "roles" : { "value" : { "9" : "9", "14" : "14", "21" : "21" } },
             "operation" : "OR"
           }
         },
@@ -128,7 +128,18 @@ function rpg_site_staff_default_rules_configuration() {
       "DO" : [
         { "user_remove_role" : {
             "account" : [ "user" ],
-            "roles" : { "value" : { "9" : "9", "14" : "14" } }
+            "roles" : { "value" : {
+                "13" : "13",
+                "10" : "10",
+                "17" : "17",
+                "15" : "15",
+                "9" : "9",
+                "20" : "20",
+                "14" : "14",
+                "21" : "21",
+                "11" : "11"
+              }
+            }
           }
         },
         { "mail_to_users_of_role" : {
@@ -164,7 +175,8 @@ function rpg_site_staff_default_rules_configuration() {
                 "15" : "15",
                 "9" : "9",
                 "20" : "20",
-                "14" : "14"
+                "14" : "14",
+                "21" : "21"
               }
             },
             "operation" : "OR"
@@ -190,7 +202,8 @@ function rpg_site_staff_default_rules_configuration() {
                 "15" : "15",
                 "9" : "9",
                 "20" : "20",
-                "14" : "14"
+                "14" : "14",
+                "21" : "21"
               }
             }
           }
@@ -224,7 +237,13 @@ function rpg_site_staff_default_rules_configuration() {
       ],
       "DO" : [
         { "user_remove_role" : { "account" : [ "user" ], "roles" : { "value" : { "19" : "19" } } } },
-        { "data_set" : { "data" : [ "user:field-became-voter" ], "value" : [ "" ] } }
+        { "data_set" : { "data" : [ "user:field-became-voter" ], "value" : [ "" ] } },
+        { "mail_to_users_of_role" : {
+            "roles" : { "value" : { "4" : "4", "3" : "3" } },
+            "subject" : "[Vaxia] User removed from voting roles",
+            "message" : "The following user has been removed from voting roles due to inactivity.\\r\\n\\r\\n[user:name]\\r\\n\\r\\nThe user has been absent from the site for a long time. They will regain voting privileges when they return (and post) to the site."
+          }
+        }
       ]
     }
   }');
@@ -232,7 +251,7 @@ function rpg_site_staff_default_rules_configuration() {
       "LABEL" : "Retire inactive user account",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "TAGS" : [ "Staff" ],
+      "TAGS" : [ "Cold storage" ],
       "REQUIRES" : [ "rules", "user_stats" ],
       "ON" : { "user_stats_day_older" : [] },
       "IF" : [
@@ -259,11 +278,30 @@ function rpg_site_staff_default_rules_configuration() {
       ],
       "DO" : [
         { "user_block" : { "account" : [ "user" ] } },
-        { "mail" : {
-            "to" : "bastlynn@gmail.com",
-            "subject" : "[Vaxia] User blocked for inactivity [user:name]",
-            "message" : "User blocked for inactivity for 1 yr on: [user:name]  - last access: [user:last-access]",
-            "language" : [ "" ]
+        { "user_remove_role" : {
+            "account" : [ "user" ],
+            "roles" : { "value" : {
+                "19" : "19",
+                "13" : "13",
+                "10" : "10",
+                "17" : "17",
+                "15" : "15",
+                "9" : "9",
+                "20" : "20",
+                "14" : "14",
+                "21" : "21",
+                "4" : "4",
+                "3" : "3",
+                "11" : "11"
+              }
+            }
+          }
+        },
+        { "user_add_role" : { "account" : [ "user" ], "roles" : { "value" : { "22" : "22" } } } },
+        { "mail_to_users_of_role" : {
+            "roles" : { "value" : { "4" : "4", "3" : "3" } },
+            "subject" : "[Vaxia] User has been set inactive",
+            "message" : "The following user account has been set inactive.\\r\\n\\r\\n[user:name]\\r\\n\\r\\nThe user created the account and a character, but the player has not logged in since. The account has been moved to cold storage."
           }
         }
       ]
@@ -300,6 +338,12 @@ function rpg_site_staff_default_rules_configuration() {
             "subject" : "[Vaxia] User deleted [user:name]",
             "message" : "[Vaxia] User deleted [user:name]",
             "language" : [ "" ]
+          }
+        },
+        { "mail_to_users_of_role" : {
+            "roles" : { "value" : { "4" : "4", "3" : "3" } },
+            "subject" : "[Vaxia] User account deleted",
+            "message" : "The following user account has been deleted.\\r\\n\\r\\n[user:name]\\r\\n\\r\\nThe user created the account, but did not create a character within the expected timeframe and has not logged in since. The account has been deleted as a likely spambot."
           }
         }
       ]
@@ -494,6 +538,12 @@ function rpg_site_staff_default_rules_configuration() {
             "message" : "[Vaxia] User deleted [user:name]",
             "language" : [ "" ]
           }
+        },
+        { "mail_to_users_of_role" : {
+            "roles" : { "value" : { "4" : "4", "3" : "3" } },
+            "subject" : "[Vaxia] User has been deleted",
+            "message" : "The following user account has been deleted.\\r\\n\\r\\n[user:name]\\r\\n\\r\\nThe user created the account but did not create a character, and has not logged in since. The account has been deleted as a spambot."
+          }
         }
       ]
     }
@@ -508,7 +558,7 @@ function rpg_site_staff_default_rules_configuration() {
       "IF" : [
         { "user_has_role" : {
             "account" : [ "user" ],
-            "roles" : { "value" : { "9" : "9", "14" : "14" } }
+            "roles" : { "value" : { "9" : "9", "14" : "14", "21" : "21" } }
           }
         },
         { "data_is" : {
