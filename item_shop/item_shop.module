@@ -312,6 +312,7 @@ function _item_shop_show_footer() {
   // Get arguments.
   global $user;
   $node = node_load(arg(1));
+  $output  = '';
   if ($user->uid == $node->uid) {
     // Grab the view, and load it with correct arguments.
     $lang = $node->language;
@@ -327,7 +328,6 @@ function _item_shop_show_footer() {
     // Grand total available.
     $total_worth = $available_silver + $worth;
     // Display.
-    $output  = '';
     $output .= '</br>'. t('You have :silver available to spend.', array(':silver' => number_format($available_silver,2)));
     $output .= '</br>'. t('If you cash in your economy levels, you have an additional :worth silver available to spend.',
       array(':worth' => number_format($worth,2)));
