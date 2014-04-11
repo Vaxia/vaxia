@@ -1,4 +1,4 @@
-name = RPG Site Staff
+name = RPG site staff
 description = Management views and rules for site administration staff
 core = 7.x
 package = RPG
@@ -46,6 +46,7 @@ features[field_group][] = group_details|user|user|default
 features[field_group][] = group_election_settings|user|user|form
 features[field_group][] = group_sh_dates|user|user|default
 features[field_group][] = group_voting|user|user|default
+features[menu_custom][] = menu-vaxia-sh
 features[node][] = session_report
 features[rules_config][] = rules_add_character_and_become_a_player
 features[rules_config][] = rules_add_voting_player
