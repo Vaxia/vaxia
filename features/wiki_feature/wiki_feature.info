@@ -1,4 +1,4 @@
-name = Bastlynn
+name = Wiki feature
 description = Wiki features packaged up in a Features module
 core = 7.x
 package = Other
