@@ -73,13 +73,13 @@ function _silver_character_daily_silver($node_data) {
       // Reduce silver.
       _character_sheet_update_xp($node->nid, $daily * -1, 'silver');
       $message = 'Removed ' . $daily .' to # '. $node->nid . ' ' . $node->title;
-      _character_sheet_update_log($node->nid, 'silver', $message);
+      _character_sheet_update_log($node->nid, 'daily_silver', $message);
     }
     else {
       // Add silver.
       _character_sheet_update_xp($node->nid, $daily, 'silver');
       $message = 'Added ' . $daily .' to # '. $node->nid . ' ' . $node->title;
-      _character_sheet_update_log($node->nid, 'silver', $message);
+      _character_sheet_update_log($node->nid, 'daily_silver', $message);
     }
   }
 }
