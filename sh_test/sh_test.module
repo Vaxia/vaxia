@@ -19,6 +19,10 @@ function sh_test_permission() {
       'title' => t('view sh test results'),
       'description' => t('View SH test results.'),
     ),
+    'view session qualify'=> array(
+      'title' => t('view session qualify'),
+      'description' => t('View if a session qualifies for system.'),
+    ),
     'administrate sh test'=> array(
       'title' => t('administrate sh test'),
       'description' => t('Administrate the SH test.'),
@@ -96,6 +100,18 @@ function sh_test_node_view($node, $view_mode, $langcode) {
       );
     }
   }
+  
+  // Display if this session report counts towards SH requirements.
+  if ($node->type == 'session_report' && user_access('view session qualify')) {
+    $counts = sh_test_session_counts($node);
+    $message = $counts ? 'does' : 'does NOT';
+    $message = t('This session report %display count towards session requirements on site.',
+      array('%display' => $message));
+    $node->content['session_report_state'] = array(
+      '#markup' => '<div class="session_report_state">' . $message . '</div>',
+      '#weight' => 1003,
+    );
+  }
 
 }
 
@@ -148,6 +164,54 @@ function _sh_test_admin_settings($form, &$form_state) {
     '#type' => 'textfield',
     '#default_value' => variable_get('sh_test_approval_min', '3'),
   );
+  $form['session_requires'] = array(
+  	'#type' => 'fieldset',
+  	'#title' => t('Session requirements'),
+  	'#collapsible' => TRUE,
+  	'#collpased' => TRUE,
+  );
+  $form['session_requires']['sh_test_session_party_size'] = array(
+  	'#type' => 'checkbox',
+  	'#title' => t('Check participants'),
+    '#description' => t('Use participants to check if session counts towards system.'),
+  	'#default_value' => variable_get('sh_test_session_party_size', TRUE),
+  );
+  $form['session_requires']['sh_test_session_party_size_min'] = array(
+  	'#type' => 'textfield',
+  	'#title' => t('Participant requirements'),
+    '#description' => t('At least these many participants are required for this session to count in the system.'),
+    '#default_value' => variable_get('sh_test_session_party_size_min', 2),
+  );
+  $form['session_requires']['sh_test_session_party_size_npcs'] = array(
+  	'#type' => 'checkbox',
+  	'#title' => t('Count NPCs'),
+    '#description' => t('Count NPCs as participants.'),
+  	'#default_value' => variable_get('sh_test_session_party_size_npcs', FALSE),
+  );
+  $form['session_requires']['sh_test_session_party_size_ashs'] = array(
+  	'#type' => 'checkbox',
+  	'#title' => t('Count A/SHs'),
+    '#description' => t('Count A/SHs as participants.'),
+  	'#default_value' => variable_get('sh_test_session_party_size_ashs', FALSE),
+  );
+  $form['session_requires']['sh_test_session_party_size_own_pcs'] = array(
+  	'#type' => 'checkbox',
+  	'#title' => t('Count own PCs'),
+    '#description' => t('Count your own PCs as participants.'),
+  	'#default_value' => variable_get('sh_test_session_party_size_own_pcs', FALSE),
+  );
+  $form['session_requires']['sh_test_session_expires'] = array(
+  	'#type' => 'checkbox',
+  	'#title' => t('Check dates held'),
+    '#description' => t('Use the date held to check if session counts towards system.'),
+  	'#default_value' => variable_get('sh_test_session_expires', TRUE),
+  );
+  $form['session_requires']['sh_test_session_expires_timeframe'] = array(
+  	'#type' => 'textfield',
+  	'#title' => t('Expiration timeframe'),
+    '#description' => t('The session must have been held with this timeframe for it to count in the system.'),
+    '#default_value' => variable_get('sh_test_session_expires_timeframe', '3 years'),
+  );
   $form['sh_test_recalc_xp'] = array(
     '#type' => 'submit',
     '#value' => t('Recalculate Earned XP'),
@@ -166,7 +230,7 @@ function _sh_test_recalc_xp_submit($form, &$form_state) {
     'LEFT JOIN node n ON u.uid = n.uid  ' .
     'LEFT JOIN character_sheet_xp xp ON n.nid = xp.nid  ' .
     'WHERE n.type = \'character_sheet\' ' .
-    'AND n.status = 1 ' .
+    //'AND n.status = 1 ' .
     'AND xp.type = \'xp\' ' .
     'GROUP BY u.uid');
   $result = db_query('REPLACE INTO field_revision_field_xp_over_time ' .
@@ -174,7 +238,7 @@ function _sh_test_recalc_xp_submit($form, &$form_state) {
     'LEFT JOIN node n ON u.uid = n.uid  ' .
     'LEFT JOIN character_sheet_xp xp ON n.nid = xp.nid  ' .
     'WHERE n.type = \'character_sheet\' ' .
-    'AND n.status = 1 ' .
+    //'AND n.status = 1 ' .
     'AND xp.type = \'xp\' ' .
     'GROUP BY u.uid');
   drupal_set_message(t('SH totals for all active players have been reset.'));
@@ -187,7 +251,7 @@ function sh_test_check_sessions_ran($uid, $ran) {
   $count = 0;
   $nodes = node_load_multiple(array(), array('type' => 'session_report', 'uid' => $uid ));
   foreach ($nodes as $node) {
-    if ($node->status == 1) {
+    if (sh_test_session_counts($node)) {
       $count++;
     }
   }
@@ -207,11 +271,71 @@ function sh_test_check_last_run($uid, $time = '') {
   $nodes = node_load_multiple(array(), array('type' => 'session_report', 'uid' => $uid ));
   foreach ($nodes as $node) {
     $timespan = strtotime($time);
-    if ($node->status == 1 && $node->created >= $timespan) {
+    if (sh_test_session_counts($node) && $node->created >= $timespan) {
       return FALSE;
     }
   }
   return TRUE;
+}
+
+/**
+ * Helper function, determine if a session counts towards the system.
+ */
+function sh_test_session_counts($session) {
+	$session_counts = TRUE;
+	// Check if the session is published.
+	if ($session->status == 0) {
+		$session_counts = FALSE;
+	}
+	// Check if the session meets participant requirements.
+	if (variable_get('sh_test_session_party_size', TRUE)) {
+		$npcs = variable_get('sh_test_session_party_size_npcs', FALSE);
+		$ashs = variable_get('sh_test_session_party_size_ashs', FALSE);
+		$own_pcs = variable_get('sh_test_session_party_size_own_pcs', FALSE);
+		$count_part = 0;
+		foreach ($session->field_characters_involved[$session->language] as $delta => $character) {
+			if (is_numeric($character)) {
+			  $character = node_load($character);
+			}
+			$counts = TRUE;
+			// Check if NPCs.
+			if ($npcs && $character->field_is_npc[$character->language][0]['value']) {
+				$counts = FALSE;
+			}
+			if ($npcs && $character->field_is_open_npc[$character->language][0]['value']) {
+				$counts = FALSE;
+			}
+			// Check if A/SHs.
+			if ($ashs && $character->field_is_storyteller[$character->language][0]['value']) {
+				$counts = FALSE;
+			}
+			// Check if own PCs.
+			if ($own_pcs && $character->uid == $session->uid) {
+				$counts = FALSE;
+			}
+			// Set the count if it does.
+			if ($counts) {
+				$count_part++;
+			}
+		}
+		// Check the requirement. Do we have enough people?
+		$requires = variable_get('sh_test_session_party_size_min', 2);
+		if ($count_part < $requires) {
+			$session_counts = FALSE;
+		}
+	}
+	// Check if the session meets timeframe requirements.
+	// If the user is returning from the past, then the past sessions shouldn't count.
+	// Or if the user has taken a crazy long time to get through the ASH course, ditto.
+	if (variable_get('sh_test_session_expires', TRUE)) {
+	  $timeframe = variable_get('sh_test_session_expires_timeframe', '3 years');
+	  $cutoff_date = strtotime($timeframe . ' ago'); // 3 years ago.
+	  if ($session->created < $cutoff_date) {
+	    $session_counts = FALSE;
+	  }
+	}
+	// Return.
+	return $session_counts;
 }
 
 /**
