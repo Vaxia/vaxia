@@ -103,10 +103,12 @@ function sh_test_node_view($node, $view_mode, $langcode) {
   
   // Display if this session report counts towards SH requirements.
   if ($node->type == 'session_report' && user_access('view session qualify')) {
-    $counts = sh_test_session_counts($node);
-    $message = $counts ? 'does' : 'does NOT';
     $message = t('This session report %display count towards session requirements on site.',
-      array('%display' => $message));
+      array('%display' => 'does NOT'));
+    if (sh_test_session_counts($node)) {
+      $message = t('This session report %display count towards session requirements on site.',
+        array('%display' => 'does'));
+    }
     $node->content['session_report_state'] = array(
       '#markup' => '<div class="session_report_state">' . $message . '</div>',
       '#weight' => 1003,
@@ -294,23 +296,26 @@ function sh_test_session_counts($session) {
 		$own_pcs = variable_get('sh_test_session_party_size_own_pcs', FALSE);
 		$count_part = 0;
 		foreach ($session->field_characters_involved[$session->language] as $delta => $character) {
-			if (is_numeric($character)) {
+			if (!empty($character['node'])) {
+			  $character = $character['node'];
+			}
+			else {
 			  $character = node_load($character);
 			}
 			$counts = TRUE;
 			// Check if NPCs.
-			if ($npcs && $character->field_is_npc[$character->language][0]['value']) {
+			if (!$npcs && $character->field_is_npc[$character->language][0]['value'] == 1) {
 				$counts = FALSE;
 			}
-			if ($npcs && $character->field_is_open_npc[$character->language][0]['value']) {
+			if (!$npcs && $character->field_is_open_npc[$character->language][0]['value'] == 1) {
 				$counts = FALSE;
 			}
 			// Check if A/SHs.
-			if ($ashs && $character->field_is_storyteller[$character->language][0]['value']) {
+			if (!$ashs && $character->field_is_storyteller[$character->language][0]['value'] == 1) {
 				$counts = FALSE;
 			}
 			// Check if own PCs.
-			if ($own_pcs && $character->uid == $session->uid) {
+			if (!$own_pcs && $character->uid == $session->uid) {
 				$counts = FALSE;
 			}
 			// Set the count if it does.
