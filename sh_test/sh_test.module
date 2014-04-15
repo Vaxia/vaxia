@@ -303,7 +303,7 @@ function sh_test_session_counts($session) {
       elseif (!empty($character['nid'])) {
         $character = node_load($character['nid']);
       }
-      else (is_numeric($character)) {
+      else {
         $character = node_load($character);
       }
       $counts = TRUE;
