@@ -167,50 +167,50 @@ function _sh_test_admin_settings($form, &$form_state) {
     '#default_value' => variable_get('sh_test_approval_min', '3'),
   );
   $form['session_requires'] = array(
-  	'#type' => 'fieldset',
-  	'#title' => t('Session requirements'),
-  	'#collapsible' => TRUE,
-  	'#collpased' => TRUE,
+    '#type' => 'fieldset',
+    '#title' => t('Session requirements'),
+    '#collapsible' => TRUE,
+    '#collpased' => TRUE,
   );
   $form['session_requires']['sh_test_session_party_size'] = array(
-  	'#type' => 'checkbox',
-  	'#title' => t('Check participants'),
+    '#type' => 'checkbox',
+    '#title' => t('Check participants'),
     '#description' => t('Use participants to check if session counts towards system.'),
-  	'#default_value' => variable_get('sh_test_session_party_size', TRUE),
+    '#default_value' => variable_get('sh_test_session_party_size', TRUE),
   );
   $form['session_requires']['sh_test_session_party_size_min'] = array(
-  	'#type' => 'textfield',
-  	'#title' => t('Participant requirements'),
+    '#type' => 'textfield',
+    '#title' => t('Participant requirements'),
     '#description' => t('At least these many participants are required for this session to count in the system.'),
     '#default_value' => variable_get('sh_test_session_party_size_min', 2),
   );
   $form['session_requires']['sh_test_session_party_size_npcs'] = array(
-  	'#type' => 'checkbox',
-  	'#title' => t('Count NPCs'),
+    '#type' => 'checkbox',
+    '#title' => t('Count NPCs'),
     '#description' => t('Count NPCs as participants.'),
-  	'#default_value' => variable_get('sh_test_session_party_size_npcs', FALSE),
+    '#default_value' => variable_get('sh_test_session_party_size_npcs', FALSE),
   );
   $form['session_requires']['sh_test_session_party_size_ashs'] = array(
-  	'#type' => 'checkbox',
-  	'#title' => t('Count A/SHs'),
+    '#type' => 'checkbox',
+    '#title' => t('Count A/SHs'),
     '#description' => t('Count A/SHs as participants.'),
-  	'#default_value' => variable_get('sh_test_session_party_size_ashs', FALSE),
+    '#default_value' => variable_get('sh_test_session_party_size_ashs', FALSE),
   );
   $form['session_requires']['sh_test_session_party_size_own_pcs'] = array(
-  	'#type' => 'checkbox',
-  	'#title' => t('Count own PCs'),
+    '#type' => 'checkbox',
+    '#title' => t('Count own PCs'),
     '#description' => t('Count your own PCs as participants.'),
-  	'#default_value' => variable_get('sh_test_session_party_size_own_pcs', FALSE),
+    '#default_value' => variable_get('sh_test_session_party_size_own_pcs', FALSE),
   );
   $form['session_requires']['sh_test_session_expires'] = array(
-  	'#type' => 'checkbox',
-  	'#title' => t('Check dates held'),
+    '#type' => 'checkbox',
+    '#title' => t('Check dates held'),
     '#description' => t('Use the date held to check if session counts towards system.'),
-  	'#default_value' => variable_get('sh_test_session_expires', TRUE),
+    '#default_value' => variable_get('sh_test_session_expires', TRUE),
   );
   $form['session_requires']['sh_test_session_expires_timeframe'] = array(
-  	'#type' => 'textfield',
-  	'#title' => t('Expiration timeframe'),
+    '#type' => 'textfield',
+    '#title' => t('Expiration timeframe'),
     '#description' => t('The session must have been held with this timeframe for it to count in the system.'),
     '#default_value' => variable_get('sh_test_session_expires_timeframe', '3 years'),
   );
@@ -284,63 +284,67 @@ function sh_test_check_last_run($uid, $time = '') {
  * Helper function, determine if a session counts towards the system.
  */
 function sh_test_session_counts($session) {
-	$session_counts = TRUE;
-	// Check if the session is published.
-	if ($session->status == 0) {
-		$session_counts = FALSE;
-	}
-	// Check if the session meets participant requirements.
-	if (variable_get('sh_test_session_party_size', TRUE)) {
-		$npcs = variable_get('sh_test_session_party_size_npcs', FALSE);
-		$ashs = variable_get('sh_test_session_party_size_ashs', FALSE);
-		$own_pcs = variable_get('sh_test_session_party_size_own_pcs', FALSE);
-		$count_part = 0;
-		foreach ($session->field_characters_involved[$session->language] as $delta => $character) {
-			if (!empty($character['node'])) {
-			  $character = $character['node'];
-			}
-			else {
-			  $character = node_load($character);
-			}
-			$counts = TRUE;
-			// Check if NPCs.
-			if (!$npcs && $character->field_is_npc[$character->language][0]['value'] == 1) {
-				$counts = FALSE;
-			}
-			if (!$npcs && $character->field_is_open_npc[$character->language][0]['value'] == 1) {
-				$counts = FALSE;
-			}
-			// Check if A/SHs.
-			if (!$ashs && $character->field_is_storyteller[$character->language][0]['value'] == 1) {
-				$counts = FALSE;
-			}
-			// Check if own PCs.
-			if (!$own_pcs && $character->uid == $session->uid) {
-				$counts = FALSE;
-			}
-			// Set the count if it does.
-			if ($counts) {
-				$count_part++;
-			}
-		}
-		// Check the requirement. Do we have enough people?
-		$requires = variable_get('sh_test_session_party_size_min', 2);
-		if ($count_part < $requires) {
-			$session_counts = FALSE;
-		}
-	}
-	// Check if the session meets timeframe requirements.
-	// If the user is returning from the past, then the past sessions shouldn't count.
-	// Or if the user has taken a crazy long time to get through the ASH course, ditto.
-	if (variable_get('sh_test_session_expires', TRUE)) {
-	  $timeframe = variable_get('sh_test_session_expires_timeframe', '3 years');
-	  $cutoff_date = strtotime($timeframe . ' ago'); // 3 years ago.
-	  if ($session->created < $cutoff_date) {
-	    $session_counts = FALSE;
-	  }
-	}
-	// Return.
-	return $session_counts;
+  $session_counts = TRUE;
+  // Check if the session is published.
+  if ($session->status == 0) {
+    $session_counts = FALSE;
+  }
+  // Check if the session meets participant requirements.
+  if (variable_get('sh_test_session_party_size', TRUE)) {
+    $npcs = variable_get('sh_test_session_party_size_npcs', FALSE);
+    $ashs = variable_get('sh_test_session_party_size_ashs', FALSE);
+    $own_pcs = variable_get('sh_test_session_party_size_own_pcs', FALSE);
+    $count_part = 0;
+    foreach ($session->field_characters_involved[$session->language] as $delta => $character) {
+      // Find character.
+      if (!empty($character['node'])) {
+        $character = $character['node'];
+      }
+      elseif (!empty($character['nid'])) {
+        $character = node_load($character['nid']);
+      }
+      else (is_numeric($character)) {
+        $character = node_load($character);
+      }
+      $counts = TRUE;
+      // Check if NPCs.
+      if (!$npcs && $character->field_is_npc[$character->language][0]['value'] == 1) {
+        $counts = FALSE;
+      }
+      if (!$npcs && $character->field_is_open_npc[$character->language][0]['value'] == 1) {
+        $counts = FALSE;
+      }
+      // Check if A/SHs.
+      if (!$ashs && $character->field_is_storyteller[$character->language][0]['value'] == 1) {
+        $counts = FALSE;
+      }
+      // Check if own PCs.
+      if (!$own_pcs && $character->uid == $session->uid) {
+        $counts = FALSE;
+      }
+      // Set the count if it does.
+      if ($counts) {
+        $count_part++;
+      }
+    }
+    // Check the requirement. Do we have enough people?
+    $requires = variable_get('sh_test_session_party_size_min', 2);
+    if ($count_part < $requires) {
+      $session_counts = FALSE;
+    }
+  }
+  // Check if the session meets timeframe requirements.
+  // If the user is returning from the past, then the past sessions shouldn't count.
+  // Or if the user has taken a crazy long time to get through the ASH course, ditto.
+  if (variable_get('sh_test_session_expires', TRUE)) {
+    $timeframe = variable_get('sh_test_session_expires_timeframe', '3 years');
+    $cutoff_date = strtotime($timeframe . ' ago'); // 3 years ago.
+    if ($session->created < $cutoff_date) {
+      $session_counts = FALSE;
+    }
+  }
+  // Return.
+  return $session_counts;
 }
 
 /**
