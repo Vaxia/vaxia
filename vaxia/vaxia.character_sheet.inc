@@ -690,6 +690,7 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
     }
     $form['add_xp']['type']['#options'] = array_merge($xp_types, $form['add_xp']['type']['#options']);
     $form['add_xp']['type']['#options'] = array_diff($form['add_xp']['type']['#options'], array('silver'));
+    $form['add_xp']['type']['#default_value'] = 'xp';
     // Add silver as it's own thing.
     $form['add_xp']['add_silver'] = array(
       '#type' => 'textfield',
