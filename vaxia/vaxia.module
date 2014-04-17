@@ -282,6 +282,7 @@ function vaxia_process_comment(&$variables) {
       $variables['content']['comment_body']['#suffix'] = '</span>';
     }
   }
+
   // Apply picture rules to All node types.
   // Redo the submitted field for RPG chatrooms only.
   $variables['submitted'] = t('!username </br> !datetime',
@@ -300,39 +301,48 @@ function vaxia_process_comment(&$variables) {
       if (isset($character->field_last_name[$lang][0]['value'])) {
         $character_name .= ' ' . $character->field_last_name[$lang][0]['value'];
       }
-      // Set the submitted variable with the updated character name.
-      global $base_url;
+      // Set character description.
       $char_desc = isset($character->field_description[$lang][0]['value']) ? $character->field_description[$lang][0]['value'] : '';
       $char_desc = check_plain($char_desc);
       if (strlen($char_desc) > 595) {
         $char_desc = drupal_substr($char_desc, 0, 600) . '...';
       }
       $options = array('attributes' => array('title' => $char_desc));
+      // Update the submission variables with name, description information.
       $variables['submitted'] = t('!username </br> !datetime',
         array(
           '!username' => l($character_name, 'node/' . $character->nid, $options),
           '!datetime' => $variables['created'])
         );
-      // Set the character picture.
+      // Now work on the character art display. Setup the link options for the character pic.
       $alt = t('Presence: @pre, Charisma: @char, Appearance: @app',
         array('@pre' => $character->field_presence[$lang][0]['value'],
           '@char' => $character->field_charisma[$lang][0]['value'],
           '@app' => $character->field_appearance[$lang][0]['value']));
-      $link_options = array('html' => TRUE, 'attributes' => array('target' => '_blank'));
+      $link_options = array('html' => TRUE, 'attributes' => array('target' => '_blank'));    
+      // Set picture to the default value (vaxia logo) as the fallback if no other resource found.
       $variables['picture'] = l( _vaxia_create_avatar_image_link(-1, $character_name, $alt),
         'node/' . $character->nid, $link_options);
-      // Check first against the selected comment, it should by default be the character selected on load.
-      // If not, fall back to the character itself.
-      if (isset($comment->field_artwork[$lang][0]['nid'])) {
+      // Check first against the selected comment for an artwork node.
+      if (!empty($comment->field_artwork[$lang][0]['nid'])) {
+        // Set picture to the attached art node for the comment.
         $artwork = node_load($comment->field_artwork[$lang][0]['nid']);
-        if (isset($artwork->field_artwork_image[$lang][0]['fid'])) {
+        if (!empty($artwork->field_artwork_image[$lang][0]['fid'])) {
           $variables['picture'] = l( _vaxia_create_avatar_image_link(
             $artwork->field_artwork_image[$lang][0]['fid'], $character->title, $alt),
               'node/' . $character->nid, $link_options);
         }
       }
-    }
-  }
+      // Else, if the character has it's own artwork file, use that.
+      elseif (!empty($character->field_artwork_image[$lang][0]['fid'])) {
+        // Set picture to the attached file for the character node.
+        $variables['picture'] = l( _vaxia_create_avatar_image_link(
+          $character->field_artwork_image[$lang][0]['fid'], $character->title, $alt),
+            'node/' . $character->nid, $link_options);
+      }
+      // And done, the art is set for the comment.
+    } // End character exists.
+  } // End character on comment.
 }
 
 /**
@@ -340,7 +350,7 @@ function vaxia_process_comment(&$variables) {
  */
 function _vaxia_create_avatar_image_link($fid, $name, $alt = '') {
   $artwork_image = file_load($fid);
-  $default_filepath = drupal_get_path('module', 'vaxia').'/images/vaxialogo.gif';
+  $default_filepath = drupal_get_path('module', 'vaxia') . '/images/vaxialogo.gif';
   $filepath = isset($artwork_image->uri) ? $artwork_image->uri : $default_filepath;
   if (isset($filepath)) {
     if (empty($alt)) {
