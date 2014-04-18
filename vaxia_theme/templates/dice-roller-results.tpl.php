@@ -45,8 +45,10 @@
         if (!empty($stat)) {
           $might = count($results) > 1 ? trim(array_pop($results)) : '';
           $rolls = trim(implode(', ', $results));
-          $str_rolls .= '<div class="dice">' . $note . ' => ' .
-            '<b>' . t('Roll') . ':</b> ' . $rolls . ' <b>' . t('Might') . ':</b> ' . $might . '</div>' . "\n";
+          $str_rolls .= '<div class="dice">' . $note . ' =>' .
+            ' <b>' . t('Might') . ':</b> ' . $might .
+            ' <b>' . t('Roll') . ':</b> ' . $rolls .
+            '</div>' . "\n";
             // Add the hidden div for jQuery to tie into for the ruler.
             // All hidden, so no need for text translation here.
           $rolls = explode(',', $rolls);
