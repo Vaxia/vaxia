@@ -46,6 +46,21 @@ function items_menu() {
 }
 
 function _items_admin_settings($form, &$form_state) {
+  $listed_item_types = array(
+    'Utility Item',
+    'One Use Item',
+    'Armor',
+    'Shield',
+    'Program',
+    'Misc',
+  );
+  $item_types = variable_get('items_types', implode("\n", $listed_item_types));
+  $form['items_types'] = array(
+    '#title' => t('Item types'),
+    '#description' => t('Available item types - non-weapon percentage types.'),
+    '#type' => 'textarea',
+    '#default_value' => $item_types,
+  );
   $listed_weapon_types = array(
     'Dagger' => 45,
     'Knife' => 40,
@@ -120,6 +135,28 @@ function _items_admin_settings($form, &$form_state) {
   }
   
   return system_settings_form($form);
+}
+
+/**
+ * Helper function, get all item types. Provides values to the field_type field.
+ */
+function items_get_item_types() {
+  $new_allowed = array();
+  // Item types.
+  $types = variable_get('items_types', '');
+  $types = explode("\n", $types);
+  foreach ($types as $type) {
+    $id = str_replace(' ', '_', strtolower(trim($type)));
+    $new_allowed[$id] = t('@type', array('@type' => $type));
+  }
+  // Weapon types.
+  $types = variable_get('items_weapon_types', '');
+  $types = explode("\n", $types);
+  foreach ($types as $type) {
+    $id = 'weapon_' . str_replace(' ', '_', strtolower(trim($type)));
+    $new_allowed[$id] = t('Weapon - @type', array('@type' => $type));
+  }
+  return $new_allowed;
 }
 
 /**
@@ -216,6 +253,7 @@ function items_node_view($node, $view_mode, $langcode) {
  * Implements hook_form_FORM_ID_alter().
  */
 function items_form_items_node_form_alter(&$form, &$form_state, $form_id) {
+  // Display message and disable form if item already approved.
   $node = isset($form['#node']) ? $form['#node'] : '';
   if (empty($node->clone_from_original_nid) && isset($node->workflow) && $node->workflow == 4) {
     $allowed_edit = array('field_item_desc', 'field_item_history', 'field_character_owner',
@@ -228,6 +266,8 @@ function items_form_items_node_form_alter(&$form, &$form_state, $form_id) {
     drupal_set_message('You are attempting to edit an Item that has already been approved for play. Item numbers cannot be further edited ' .
       'after approval. Please revert this Item to draft, and take it through the approval process again if you need to update numbers.');
   }
+
+  // Disable workflow form in afterbuild if item is owned by player.
   $form['#after_build'][] = '_items_node_form_workflow_after_build';
 }
 
