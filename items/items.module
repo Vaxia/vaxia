@@ -15,6 +15,10 @@ function items_permission() {
       'title' => t('change item owner'),
       'description' => t('Change the owner of an item.'),
     ),
+    'administer item settings' => array(
+      'title' => t('administer item settings'),
+      'description' => t('Administer item settings.'),
+    ),
   );
 }
 
@@ -31,7 +35,91 @@ function items_menu() {
     'page arguments' => array(1),
     'weight' => 3,
   );
+  $items['admin/vaxia/items'] = array(
+    'title' => 'Item configuration',
+    'description' => 'Configure item types',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('_items_admin_settings'),
+    'access arguments' => array('administer item settings'),
+  );
   return $items;
+}
+
+function _items_admin_settings($form, &$form_state) {
+  $listed_weapon_types = array(
+    'Dagger' => 45,
+    'Knife' => 40,
+    'Tanto' => 45,
+    'Main Gauche' => 45,
+    'Sickle' => 45,
+    'Brass Knuckles' => 15,
+    'Finger Blades' => 25,
+    'Garrote' => 35,
+    'Punching Gloves' => 15,
+    'Steel Toed Boots' => 20,
+    'Wrist Claws' => 45,
+    'Battle Axe' => 75,
+    'Club' => 55,
+    'Flail' => 65,
+    'Hand Axe' => 65,
+    'Mace' => 65,
+    'Maul' => 85,
+    'Nunchucks' => 50,
+    'War Hammer' => 65,
+    'Polearm' => 85,
+    'Quarterstaff' => 55,
+    'Scythe' => 85,
+    'Spear' => 55,
+    'Trident' => 60,
+    'Bastard Sword' => 80,
+    'Broad Sword' => 75,
+    'Claymore' => 80,
+    'Flachion' => 70,
+    'Great Sword' => 85,
+    'Katana' => 75,
+    'Long Sword' => 75,
+    'Machete' => 55,
+    'Rapier' => 55,
+    'Saber' => 65,
+    'Scimitar' => 65,
+    'Short Sword' => 65,
+    'Chain' => 45,
+    'Whip' => 45,
+    'Blowgun' => 35,
+    'Bola' => 20,
+    'Compound Bow' => 75,
+    'Long Bow' => 75,
+    'Recurve Bow' => 80,
+    'Short Bow' => 65,
+    'Sling' => 35,
+    'Throwing Dart' => 30,
+    'Throwing Knife' => 40,
+    'Throwing Star' => 35,
+  );
+  $weapon_types = variable_get('items_weapon_types', implode("\n", array_keys($listed_weapon_types)));
+  $form['items_weapon_types'] = array(
+    '#title' => t('Weapon types'),
+    '#description' => t('Available weapon types. Each type will have it\'s own set percentage - see below.'),
+    '#type' => 'textarea',
+    '#default_value' => $weapon_types,
+  );
+  $form['items_weapon_types_percentages'] = array(
+    '#title' => t('Weapon percentage settings'),
+    '#type' => 'fieldset',
+    '#collpasible' => TRUE,
+  );
+  $weapon_types = explode("\n", $weapon_types);
+  foreach ($weapon_types as $weapon_type) {
+    $weapon_id = str_replace(' ', '_', strtolower(trim($weapon_type)));
+    $weapon_perc = isset($listed_weapon_types[$weapon_type]) ? $listed_weapon_types[$weapon_type] : 0; 
+    $form['items_weapon_types_percentages']['items_weapon_' . $weapon_id] = array(
+      '#title' => t('@type', array('@type' => $weapon_type)),
+      '#type' => 'textfield',
+      '#default_value' => variable_get('items_weapon_' . $weapon_id, $weapon_perc),
+    );
+  }
+  
+  return system_settings_form($form);
 }
 
 /**
