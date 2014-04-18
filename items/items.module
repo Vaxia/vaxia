@@ -147,14 +147,18 @@ function items_get_item_types() {
   $types = explode("\n", $types);
   foreach ($types as $type) {
     $id = str_replace(' ', '_', strtolower(trim($type)));
-    $new_allowed[$id] = t('@type', array('@type' => $type));
+    if (!empty($id)) {
+      $new_allowed[$id] = t('@type', array('@type' => $type));
+    }
   }
   // Weapon types.
   $types = variable_get('items_weapon_types', '');
   $types = explode("\n", $types);
   foreach ($types as $type) {
     $id = 'weapon_' . str_replace(' ', '_', strtolower(trim($type)));
-    $new_allowed[$id] = t('Weapon - @type', array('@type' => $type));
+    if (!empty($id)) {
+      $new_allowed[$id] = t('Weapon - @type', array('@type' => $type));
+    }
   }
   return $new_allowed;
 }
