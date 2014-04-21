@@ -326,6 +326,7 @@ function dice_ruler_form($form, &$form_state) {
     '#type' => 'textfield',
     '#title' => t('Diff.'),
     '#size' => 5,
+    '#default_value' => 25,
   );
   $form['one_trait']['one_trait_add_diff'] = array(
     '#type' => 'textfield',
@@ -360,6 +361,7 @@ function dice_ruler_form($form, &$form_state) {
     '#type' => 'textfield',
     '#title' => t('Diff.'),
     '#size' => 5,
+    '#default_value' => 25,
   );
   $form['two_trait']['a']['two_trait_add_diff_a'] = array(
     '#type' => 'textfield',
@@ -384,6 +386,7 @@ function dice_ruler_form($form, &$form_state) {
     '#type' => 'textfield',
     '#title' => t('Diff.'),
     '#size' => 5,
+    '#default_value' => 25,
   );
   $form['two_trait']['b']['two_trait_add_diff_b'] = array(
     '#type' => 'textfield',
@@ -798,6 +801,7 @@ function dice_ruler_form($form, &$form_state) {
     '#type' => 'textfield',
     '#title' => t('Diff.'),
     '#size' => 5,
+    '#default_value' => 40,
   );
   $form['magic']['a']['magic_add_diff_a'] = array(
     '#type' => 'textfield',
@@ -822,6 +826,7 @@ function dice_ruler_form($form, &$form_state) {
     '#type' => 'textfield',
     '#title' => t('Diff.'),
     '#size' => 5,
+    '#default_value' => 40,
   );
   $form['magic']['b']['magic_add_diff_b'] = array(
     '#type' => 'textfield',
