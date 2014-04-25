@@ -148,12 +148,6 @@ function sh_test_menu() {
  * Menu callback, admin form.
  */
 function _sh_test_admin_settings($form, &$form_state) {
-  $form['sh_test_required_time'] = array(
-    '#title' => t('Required session time'),
-    '#description' => t('How much time can pass before a SH must run a session in order to retain permission.'),
-    '#type' => 'textfield',
-    '#default_value' => variable_get('sh_test_required_time', '6 months'),
-  );
   $form['sh_test_starvation_mode'] = array(
     '#title' => t('Minimum Storyhosts'),
     '#description' => t('Below this number of storyhosts we are in starvation mode and will take anyone who applies to ASH 3.'),
@@ -266,10 +260,49 @@ function sh_test_check_sessions_ran($uid, $ran) {
 /**
  * Helper for rules. Check if an SH has run recently.
  */
-function sh_test_check_last_run($uid, $time = '') {
-  if (empty($time)) {
-    $time = variable_get('sh_test_required_time', '6 months') . ' ago';
+function sh_test_check_last_run($uid, $time) {
+  $time .= ' ago';
+  // Get the last SH ran, and check for if created matches date.
+  $results = db_query('SELECT nid FROM {nodes} ' .
+    'WHERE uid = :uid AND type = :type AND created >= :created' .
+    'ORDER BY created DESC',
+    array(':uid' => $uid, ':type' => 'session_report', ':created' => strtotime($time)));
+  foreach ($results as $nid) {
+    $node = node_load($nid);
+    $timespan = strtotime($time);
+    if (sh_test_session_counts($node) && $node->created >= $timespan) {
+      return FALSE;
+    }
   }
+  return TRUE;
+}
+
+/**
+ * Helper for rules. Check if an SH has run recently.
+ */
+function sh_test_check_date_last_run($uid, $time) {
+  // 6 months for evaluators, else lose it all.
+  // 3 months for story hosts who are NOT evaluators.
+  $time .= ' ago';
+  // Get the last SH ran, and check for if created matches date.
+  $results = db_query('SELECT nid FROM {nodes} ' .
+    'WHERE uid = :uid AND type = :type ' .
+    'ORDER BY created DESC LIMIT 0,1 ',
+    array(':uid' => $uid, ':type' => 'session_report'));
+  foreach ($results as $nid) {
+    $node = node_load($nid);
+    $timespan = strtotime($time);
+    if (sh_test_session_counts($node) && $node->created >= $timespan) {
+      return FALSE;
+    }
+  }
+  return TRUE;
+}
+
+/**
+ * Helper for rules. Check if an SH has run recently.
+
+function sh_test_check_last_eval($uid, $time = '', $mode = 'bool') {
   $nodes = node_load_multiple(array(), array('type' => 'session_report', 'uid' => $uid ));
   foreach ($nodes as $node) {
     $timespan = strtotime($time);
@@ -279,6 +312,7 @@ function sh_test_check_last_run($uid, $time = '') {
   }
   return TRUE;
 }
+ */
 
 /**
  * Helper function, determine if a session counts towards the system.
