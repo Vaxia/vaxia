@@ -46,15 +46,13 @@ function rpg_site_staff_menu() {
  * Implements hook_form_FORM_ID_alter().
  */
 function rpg_site_staff_form_user_profile_form_alter(&$form, &$form_state, $form_id) {
-  $form['field_xp_over_time']['#access'] = FALSE;
-  $form['field_became_sh']['#access'] = FALSE;
-  $form['field_became_evaluator']['#access'] = FALSE;
-  $form['field_voting_record']['#access'] = FALSE;
-  $form['field_became_voter']['#access'] = FALSE;
-  $form['field_storyhost_character']['#access'] = FALSE;
-  $form['field_took_system_walkthrough']['#access'] = FALSE;
-  $form['field_took_setting_walkthrough']['#access'] = FALSE;
-  $form['field_took_social_walkthrough']['#access'] = FALSE;
+  // Hide anything in the hidden fieldgroup.
+  $form['#fieldgroups']['group_hidden']->format_type='hidden';
+  foreach ($form['#group_children'] as $field => $group) {
+    if ($group == 'group_hidden') {
+      $form[$field]['#access'] = FALSE;
+    }
+  }
 }
 
 /*
