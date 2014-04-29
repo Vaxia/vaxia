@@ -240,28 +240,6 @@ function vaxia_workflow($op, $old_state, $new_state, $node, $force = FALSE) {
  */
 function vaxia_process_comment(&$variables) {
 
-  // Update the user image for submission to no image.
-  $comment = $variables['comment'];
-  $lang = $comment->language;
-  // Check for user profile settings.
-  $user = user_load($comment->uid);
-  $variables['picture'] = _vaxia_create_avatar_image_link(-1, $user->name);
-  if (isset($user->field_artwork[$lang][0]['nid'])) {
-    $artwork = node_load($user->field_artwork[$lang][0]['nid']);
-    if (isset($artwork->field_artwork_image[$lang][0]['fid'])) {
-      $variables['picture'] = _vaxia_create_avatar_image_link(
-        $artwork->field_artwork_image[$lang][0]['fid'], $user->name);
-    }
-  }
-  // If not, fall back to the commment itself.
-  if (isset($comment->field_artwork[$lang][0]['nid'])) {
-    $artwork = node_load($comment->field_artwork[$lang][0]['nid']);
-    if (isset($artwork->field_artwork_image[$lang][0]['fid'])) {
-      $variables['picture'] = _vaxia_create_avatar_image_link(
-        $artwork->field_artwork_image[$lang][0]['fid'], $user->name);
-    }
-  }
-
   // Check for character type only on RPG type nodes. (and do some other work as well on RPG chat nodes)
   if (_rpg_chat_is_enabled($variables['node']->type)) {
     // Add the variables for our narrative and colors.
@@ -280,6 +258,25 @@ function vaxia_process_comment(&$variables) {
       }
       $variables['content']['comment_body']['#prefix'] = '<span style="color:' . $color . '">';
       $variables['content']['comment_body']['#suffix'] = '</span>';
+    }
+  }
+
+  // Update the user image for submission to no image.
+  $comment = $variables['comment'];
+  $lang = $comment->language;
+  // Check for user profile settings.
+  $user = user_load($comment->uid);
+  $variables['picture'] = _vaxia_create_avatar_image_link(-1, $user->name);
+  if (isset($user->field_image[$lang][0]['fid'])) {
+    $variables['picture'] = _vaxia_create_avatar_image_link(
+      $user->field_image[$lang][0]['fid'], $user->name);
+  }
+  // If not, fall back to the commment itself.
+  if (isset($comment->field_artwork[$lang][0]['nid'])) {
+    $artwork = node_load($comment->field_artwork[$lang][0]['nid']);
+    if (isset($artwork->field_artwork_image[$lang][0]['fid'])) {
+      $variables['picture'] = _vaxia_create_avatar_image_link(
+        $artwork->field_artwork_image[$lang][0]['fid'], $user->name);
     }
   }
 
