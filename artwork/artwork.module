@@ -35,16 +35,6 @@ function artwork_menu() {
 }
 
 /**
- * Implements hook_form_FORM_ID_alter().
- */
-function artwork_form_user_profile_form_alter(&$form, &$form_state, $form_id) {
-  $form['picture']['picture_delete']['#access'] = FALSE;
-  $form['picture']['picture_upload']['#access'] = FALSE;
-  $form['picture']['field_artwork'] = $form['field_artwork'];
-  unset($form['field_artwork']);
-}
-
-/**
  * Menu access callback.
  */
 function _artwork_menu_ownership_access_callback($node) {
