@@ -366,7 +366,15 @@ function items_check_needs_oversight($node) {
     'reflexes', 'intelligence', 'awareness', 'spirituality', 'presence', 'charisma', 'appearance', 'skill',
   );
   foreach ($fields as $field_name) {
+    // Check mod.
     $field_name = 'field_item_' . $field_name;
+    $stat = isset($node->{$field_name}[$lang][0]['value']) ?
+    $node->{$field_name}[$lang][0]['value'] : 0;
+    if ($stat >= $limit) {
+      $return_value = TRUE;
+    }
+    // Check percentage.
+    $field_name = 'field_item_perc_' . $field_name;
     $stat = isset($node->{$field_name}[$lang][0]['value']) ?
     $node->{$field_name}[$lang][0]['value'] : 0;
     if ($stat >= $limit) {
