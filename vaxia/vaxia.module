@@ -239,6 +239,9 @@ function vaxia_workflow($op, $old_state, $new_state, $node, $force = FALSE) {
  * This code is executed on display of the comment.
  */
 function vaxia_process_comment(&$variables) {
+  // Set the defaults
+  $comment = $variables['comment'];
+  $lang = $comment->language;
 
   // Check for character type only on RPG type nodes. (and do some other work as well on RPG chat nodes)
   if (_rpg_chat_is_enabled($variables['node']->type)) {
@@ -262,8 +265,6 @@ function vaxia_process_comment(&$variables) {
   }
 
   // Update the user image for submission to no image.
-  $comment = $variables['comment'];
-  $lang = $comment->language;
   // Check for user profile settings.
   $user = user_load($comment->uid);
   $variables['picture'] = _vaxia_create_avatar_image_link(-1, $user->name);
