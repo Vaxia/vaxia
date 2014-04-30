@@ -36,7 +36,7 @@ function items_menu() {
     'weight' => 3,
   );
   $items['admin/vaxia/items'] = array(
-    'title' => 'Item configuration',
+    'title' => 'Item settings',
     'description' => 'Configure item types',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('_items_admin_settings'),
@@ -47,90 +47,85 @@ function items_menu() {
 
 function _items_admin_settings($form, &$form_state) {
   $listed_item_types = array(
-    'Utility Item',
-    'One Use Item',
-    'Armor',
-    'Shield',
-    'Program',
-    'Misc',
+    'Utility Item' => 0,
+    'One Use Item' => 0,
+    'Armor' => 0,
+    'Shield' => 0,
+    'Program' => 0,
+    'Misc' => 0,
+    'Weapon - Light Crossbow' => 0,
+    'Weapon - Heavy Crossbow' => 0,
+    'Weapon - Iskranian Musket' => 0,
+    'Weapon - Other Firearms' => 0,
+    'Weapon - Dagger' => 45,
+    'Weapon - Knife' => 40,
+    'Weapon - Tanto' => 45,
+    'Weapon - Main Gauche' => 45,
+    'Weapon - Sickle' => 45,
+    'Weapon - Brass Knuckles' => 15,
+    'Weapon - Finger Blades' => 25,
+    'Weapon - Garrote' => 35,
+    'Weapon - Punching Gloves' => 15,
+    'Weapon - Steel Toed Boots' => 20,
+    'Weapon - Wrist Claws' => 45,
+    'Weapon - Battle Axe' => 75,
+    'Weapon - Club' => 55,
+    'Weapon - Flail' => 65,
+    'Weapon - Hand Axe' => 65,
+    'Weapon - Mace' => 65,
+    'Weapon - Maul' => 85,
+    'Weapon - Nunchucks' => 50,
+    'Weapon - War Hammer' => 65,
+    'Weapon - Polearm' => 85,
+    'Weapon - Quarterstaff' => 55,
+    'Weapon - Scythe' => 85,
+    'Weapon - Spear' => 55,
+    'Weapon - Trident' => 60,
+    'Weapon - Bastard Sword' => 80,
+    'Weapon - Broad Sword' => 75,
+    'Weapon - Claymore' => 80,
+    'Weapon - Flachion' => 70,
+    'Weapon - Great Sword' => 85,
+    'Weapon - Katana' => 75,
+    'Weapon - Long Sword' => 75,
+    'Weapon - Machete' => 55,
+    'Weapon - Rapier' => 55,
+    'Weapon - Saber' => 65,
+    'Weapon - Scimitar' => 65,
+    'Weapon - Short Sword' => 65,
+    'Weapon - Chain' => 45,
+    'Weapon - Whip' => 45,
+    'Weapon - Blowgun' => 35,
+    'Weapon - Bola' => 20,
+    'Weapon - Compound Bow' => 75,
+    'Weapon - Long Bow' => 75,
+    'Weapon - Recurve Bow' => 80,
+    'Weapon - Short Bow' => 65,
+    'Weapon - Sling' => 35,
+    'Weapon - Throwing Dart' => 30,
+    'Weapon - Throwing Knife' => 40,
+    'Weapon - Throwing Star' => 35,
   );
-  $item_types = variable_get('items_types', implode("\n", $listed_item_types));
-  $form['items_types'] = array(
-    '#title' => t('Item types'),
-    '#description' => t('Available item types - non-weapon percentage types.'),
+  $types = variable_get('items_named_types', implode("\n", array_keys($listed_item_types)));
+  $form['items_named_types'] = array(
+    '#title' => t('Types'),
+    '#description' => t('Available types. Each type will have it\'s own set percentage base bonus - see below.'),
     '#type' => 'textarea',
-    '#default_value' => $item_types,
+    '#default_value' => $types,
   );
-  $listed_weapon_types = array(
-    'Dagger' => 45,
-    'Knife' => 40,
-    'Tanto' => 45,
-    'Main Gauche' => 45,
-    'Sickle' => 45,
-    'Brass Knuckles' => 15,
-    'Finger Blades' => 25,
-    'Garrote' => 35,
-    'Punching Gloves' => 15,
-    'Steel Toed Boots' => 20,
-    'Wrist Claws' => 45,
-    'Battle Axe' => 75,
-    'Club' => 55,
-    'Flail' => 65,
-    'Hand Axe' => 65,
-    'Mace' => 65,
-    'Maul' => 85,
-    'Nunchucks' => 50,
-    'War Hammer' => 65,
-    'Polearm' => 85,
-    'Quarterstaff' => 55,
-    'Scythe' => 85,
-    'Spear' => 55,
-    'Trident' => 60,
-    'Bastard Sword' => 80,
-    'Broad Sword' => 75,
-    'Claymore' => 80,
-    'Flachion' => 70,
-    'Great Sword' => 85,
-    'Katana' => 75,
-    'Long Sword' => 75,
-    'Machete' => 55,
-    'Rapier' => 55,
-    'Saber' => 65,
-    'Scimitar' => 65,
-    'Short Sword' => 65,
-    'Chain' => 45,
-    'Whip' => 45,
-    'Blowgun' => 35,
-    'Bola' => 20,
-    'Compound Bow' => 75,
-    'Long Bow' => 75,
-    'Recurve Bow' => 80,
-    'Short Bow' => 65,
-    'Sling' => 35,
-    'Throwing Dart' => 30,
-    'Throwing Knife' => 40,
-    'Throwing Star' => 35,
-  );
-  $weapon_types = variable_get('items_weapon_types', implode("\n", array_keys($listed_weapon_types)));
-  $form['items_weapon_types'] = array(
-    '#title' => t('Weapon types'),
-    '#description' => t('Available weapon types. Each type will have it\'s own set percentage - see below.'),
-    '#type' => 'textarea',
-    '#default_value' => $weapon_types,
-  );
-  $form['items_weapon_types_percentages'] = array(
-    '#title' => t('Weapon percentage settings'),
+  $form['items_named_types_percentages'] = array(
+    '#title' => t('Percentage settings'),
     '#type' => 'fieldset',
     '#collpasible' => TRUE,
   );
-  $weapon_types = explode("\n", $weapon_types);
-  foreach ($weapon_types as $weapon_type) {
-    $weapon_id = str_replace(' ', '_', strtolower(trim($weapon_type)));
-    $weapon_perc = isset($listed_weapon_types[$weapon_type]) ? $listed_weapon_types[$weapon_type] : 0; 
-    $form['items_weapon_types_percentages']['items_weapon_' . $weapon_id] = array(
-      '#title' => t('@type', array('@type' => $weapon_type)),
+  $types = explode("\n", $types);
+  foreach ($types as $type) {
+    $id = _items_get_type_id($type);
+    $perc = isset($listed_item_types[$type]) ? $listed_item_types[$type] : 0; 
+    $form['items_named_types_percentages']['items_perc_' . $id] = array(
+      '#title' => t('@type (@id)', array('@type' => $type, '@id' => $id)),
       '#type' => 'textfield',
-      '#default_value' => variable_get('items_weapon_' . $weapon_id, $weapon_perc),
+      '#default_value' => variable_get('items_perc_' . $id, $perc),
     );
   }
   
@@ -143,24 +138,27 @@ function _items_admin_settings($form, &$form_state) {
 function items_get_item_types() {
   $new_allowed = array();
   // Item types.
-  $types = variable_get('items_types', '');
+  $types = variable_get('items_named_types', '');
   $types = explode("\n", $types);
   foreach ($types as $type) {
-    $id = str_replace(' ', '_', strtolower(trim($type)));
+    $id = _items_get_type_id($type);
     if (!empty($id)) {
       $new_allowed[$id] = t('@type', array('@type' => $type));
     }
   }
-  // Weapon types.
-  $types = variable_get('items_weapon_types', '');
-  $types = explode("\n", $types);
-  foreach ($types as $type) {
-    $id = 'weapon_' . str_replace(' ', '_', strtolower(trim($type)));
-    if (!empty($id)) {
-      $new_allowed[$id] = t('Weapon - @type', array('@type' => $type));
-    }
-  }
   return $new_allowed;
+}
+
+/**
+ * Helper function, make sure all weapon types are tied to id name.
+ */
+function _items_get_type_id($type) {
+  $type = strtolower(trim($type));
+  $type = str_replace('-', '', $type);
+  $type = preg_replace('/  +/Uis', ' ', $type); // Remove +2 spaces, as one space.
+  $type = preg_replace('/  +/Uis', ' ', $type); // Remove +2 spaces, as one space.
+  $type = str_replace(' ', '_', $type);
+  return $type;
 }
 
 /**

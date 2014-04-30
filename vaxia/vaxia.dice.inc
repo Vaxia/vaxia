@@ -172,12 +172,16 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
               $modifies_label[] = $small_label . ':' . $value;
             }
             // And set the labels for percentage mods.
+            $type = $this_item->field_type[$this_item->language][0]['value'];
+            $type_percentage = variable_get('items_perc_' . $type, 0);
             foreach ($percentages as $label => $value) {
+              $value = $value + $type_percentage;
+              $percentages[$label] = $value;
               $small_label = substr($label, 0, 3);
               if ($small_label == 'ref') {
                 $small_label = 'fin';
               }
-              $modifies_label[] = 'PP: +' . number_format($value) . '% based on ' . $small_label;
+              $modifies_label[] = 'PP: ' . number_format($value) . '%';
             }
             // And set the labels for overlap mods.
             foreach ($overlaps as $label => $value) {
@@ -516,19 +520,22 @@ function _vaxia_dice_roller_form_submit_item_mods($character, $items) {
         // Set percentages into return array. Use the largest one.
         $item_mods[$stat_name]['percentage'] = isset($item_mods[$stat_name]['percentage']) ? $item_mods[$stat_name]['percentage'] : '';
         if ($percentage != 0) {
+          $type = $item->field_type[$item->language][0]['value'];
+          $type_percentage = variable_get('items_perc_' . $type, 0);
+          $percentage = $percentage + $type_percentage;
           if (!empty($item_mods[$stat_name]['percentage'])) {
             if ($percentage > $item_mods[$stat_name]['percentage']) {
               $item_mods[$stat_name]['percentage'] = $percentage;
               $stat_bonus = ($percentage/100) * $stat;
               $stat_bonus = number_format($stat_bonus, 2);
-              $item_mods[$stat_name]['notes']  = ' + ' . $item->title . ' (add ' . $percentage . '% PP based on ' . $small_label .')';
+              $item_mods[$stat_name]['notes']  = ' + ' . $item->title . ' (' . $percentage . '% PP)';
             }
           }
           else {
             $item_mods[$stat_name]['percentage'] = $percentage;
             $stat_bonus = ($percentage/100) * $stat;
             $stat_bonus = number_format($stat_bonus, 2);
-            $item_mods[$stat_name]['notes']  = ' + ' . $item->title . ' (add ' . $percentage . '% PP based on ' . $small_label .')';
+            $item_mods[$stat_name]['notes']  = ' + ' . $item->title . ' (' . $percentage . '% PP)';
           }
         }
 
