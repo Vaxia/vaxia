@@ -577,13 +577,6 @@ function _vaxia_dice_roller_form_submit_item_mods($character, $items) {
         }
       }
 
-      // Add percentage descriptions to mod_note. TXT percentages that need to be removed over time.
-      if (isset($item->field_percents[$item_lang][0]['value'])
-        && !empty($item->field_percents[$item_lang][0]['value'])) {
-        $item_notes .= ' + ' . $item->title . ' (' .
-        $item->field_percents[$item_lang][0]['value'] . ')';
-      }
-
     } // End if item exists.
   } // End loop per item.
   return $item_mods;
