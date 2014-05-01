@@ -221,6 +221,7 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
         '#multiple' => TRUE,
       );
       $form['vaxia_rolls']['selected_character'] = array(
+        '#type' => 'item',
         '#markup' => $link_to_character,
       );
       $form['vaxia_rolls']['notes'] = array(
