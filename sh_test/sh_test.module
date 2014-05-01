@@ -118,18 +118,6 @@ function sh_test_node_view($node, $view_mode, $langcode) {
 }
 
 /**
- * Implements hook_form_FORM_ID_alter().
- */
-function sh_test_form_user_profile_form_alter(&$form, &$form_state, $form_id) {
-  $form['field_took_ash1']['#access'] = FALSE;
-  $form['field_took_ash2']['#access'] = FALSE;
-  $form['field_took_ash3']['#access'] = FALSE;
-  $form['field_took_eval_test']['#access'] = FALSE;
-  $form['field_ash_3_answers']['#access'] = FALSE;
-  $form['field_ash_3_application']['#access'] = FALSE;
-}
-
-/**
  * Implements hook_menu().
  */
 function sh_test_menu() {
@@ -402,6 +390,10 @@ function sh_test_check_starvation_mode() {
  * Helper for rules. Setup the webform response for approving new candidates.
  */
 function sh_test_setup_approval_form($user, $node, $entity_created) {
+  $user->field_ash_3_answers[$lang][0]['value'] = $output;
+  $user->field_ash_3_answers[$lang][0]['format'] = 'wiki';
+  user_save($user);
+
   $output = sh_test_ash_3_get_answers($user, $node);
   if (empty($output)) {
     drupal_set_message(t('An error was encountered, no output able to be created.'));
