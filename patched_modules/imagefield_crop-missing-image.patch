@@ -1,0 +1,26 @@
+diff --git a/imagefield_crop.module b/imagefield_crop.module
+index bc574af..086c0d4 100644
+--- a/imagefield_crop.module
++++ b/imagefield_crop.module
+@@ -417,12 +417,15 @@ function _imagefield_crop_entity_presave($entity, $fields) {
+       continue;
+     }
+ 
+-    foreach ($entity->{$field_name}[$lang] as $delta => $imagefield) {
+-      $file = file_load($imagefield['fid']);
+-      $info = image_get_info($file->uri);
+-      if (is_array($info)) {
+-        $entity->{$field_name}[$lang][$delta]['width'] = $info['width'];
+-        $entity->{$field_name}[$lang][$delta]['height'] = $info['height'];
++    // Set width and height if there's an image. Else ignore.
++    if (!empty($entity->{$field_name}[$lang])) {
++      foreach ($entity->{$field_name}[$lang] as $delta => $imagefield) {
++        $file = file_load($imagefield['fid']);
++        $info = image_get_info($file->uri);
++        if (is_array($info)) {
++          $entity->{$field_name}[$lang][$delta]['width'] = $info['width'];
++          $entity->{$field_name}[$lang][$delta]['height'] = $info['height'];
++        }
+       }
+     }
+   }
