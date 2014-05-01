@@ -484,10 +484,14 @@ function _vaxia_dice_roller_form_submit_item_mods($character, $items) {
         $modify = isset($item->{$field_name}[$item_lang][0]['value']) ? $item->{$field_name}[$item_lang][0]['value'] : 0;
         $field_name = 'field_item_perc_' . $stat_name;
         $percentage = isset($item->{$field_name}[$item_lang][0]['value']) ? $item->{$field_name}[$item_lang][0]['value'] : 0;
-        $field_name = 'field_item_over_' . $stat_name;
         $overlap = isset($item->{$field_name}[$item_lang][0]['value']) ? $item->{$field_name}[$item_lang][0]['value'] : 0;
         $field_name = 'field_item_required_' . $stat_name;
         $required = isset($item->{$field_name}[$item_lang][0]['value']) ? $item->{$field_name}[$item_lang][0]['value'] : 0;
+
+        // Add type percentage
+        $type = $item->field_type[$item->language][0]['value'];
+        $type_percentage = variable_get('items_perc_' . $type, 0);
+        $percentage = $percentage + $type_percentage;        $field_name = 'field_item_over_' . $stat_name;
 
         // Set modify value into return array. Use the largest one IFF set to not allow stacking.
         $item_mods[$stat_name]['modify'] = isset($item_mods[$stat_name]['modify']) ? $item_mods[$stat_name]['modify'] : '';
@@ -520,9 +524,6 @@ function _vaxia_dice_roller_form_submit_item_mods($character, $items) {
         // Set percentages into return array. Use the largest one.
         $item_mods[$stat_name]['percentage'] = isset($item_mods[$stat_name]['percentage']) ? $item_mods[$stat_name]['percentage'] : '';
         if ($percentage != 0) {
-          $type = $item->field_type[$item->language][0]['value'];
-          $type_percentage = variable_get('items_perc_' . $type, 0);
-          $percentage = $percentage + $type_percentage;
           if (!empty($item_mods[$stat_name]['percentage'])) {
             if ($percentage > $item_mods[$stat_name]['percentage']) {
               $item_mods[$stat_name]['percentage'] = $percentage;
