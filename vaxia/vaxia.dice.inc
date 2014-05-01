@@ -112,6 +112,8 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
             $item_label = $this_item->title;
             $modifies = $percentages = $overlaps = $penalties = array();
             $qualifies = TRUE;
+            $type = $this_item->field_type[$this_item->language][0]['value'];
+            $type_percentage = variable_get('items_perc_' . $type, 0);
             foreach ($stat_set as $stat_name) {
               // Grab the stat.
               $field_name = 'field_' . $stat_name;
@@ -125,6 +127,7 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
               $field_name = 'field_item_perc_' . $stat_name;
               $stat_perc = isset($this_item->{$field_name}[$this_item->language][0]['value']) ?
                 $this_item->{$field_name}[$this_item->language][0]['value'] : 0;
+              $stat_perc = $stat_perc + $type_percentage;
               // Get item overlap.
               $field_name = 'field_item_over_' . $stat_name;
               $stat_over = isset($this_item->{$field_name}[$this_item->language][0]['value']) ?
@@ -172,8 +175,6 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
               $modifies_label[] = $small_label . ':' . $value;
             }
             // And set the labels for percentage mods.
-            $type = $this_item->field_type[$this_item->language][0]['value'];
-            $type_percentage = variable_get('items_perc_' . $type, 0);
             foreach ($percentages as $label => $value) {
               $value = $value + $type_percentage;
               $percentages[$label] = $value;
