@@ -220,6 +220,10 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
         '#size' => count($items),
         '#multiple' => TRUE,
       );
+      $form['vaxia_rolls']['character'] = array(
+        '#type' => 'markup',
+        '#item' => $link_to_character,
+      );
       $form['vaxia_rolls']['notes'] = array(
         '#type' => 'hidden',
       );
@@ -231,7 +235,7 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
     '#theme' => 'vaxia_dice_roller',
     '#markup' => '',
     '#prefix' => '<div id="vaxia-dice-roller">',
-    '#suffix' => $link_to_character . '</div>',
+    '#suffix' => '</div>',
   );
   return $form;
 }
