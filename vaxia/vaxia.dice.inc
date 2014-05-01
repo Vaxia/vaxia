@@ -127,7 +127,9 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
               $field_name = 'field_item_perc_' . $stat_name;
               $stat_perc = isset($this_item->{$field_name}[$this_item->language][0]['value']) ?
                 $this_item->{$field_name}[$this_item->language][0]['value'] : 0;
-              $stat_perc = $stat_perc + $type_percentage;
+              if ($stat_name == 'strength') {
+                $stat_perc = $stat_perc + $type_percentage;
+              }
               // Get item overlap.
               $field_name = 'field_item_over_' . $stat_name;
               $stat_over = isset($this_item->{$field_name}[$this_item->language][0]['value']) ?
@@ -176,7 +178,6 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
             }
             // And set the labels for percentage mods.
             foreach ($percentages as $label => $value) {
-              $value = $value + $type_percentage;
               $percentages[$label] = $value;
               $small_label = substr($label, 0, 3);
               if ($small_label == 'ref') {
