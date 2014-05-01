@@ -8,14 +8,6 @@
  * Implementation of hook_dice_roller_form(), which returns a form for handling basic style rolls.
  */
 function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_id) {
-  $form['vaxia_rolls'] = array(
-    '#type' => 'fieldset',
-    '#theme' => 'vaxia_dice_roller',
-    '#prefix' => '<div id="vaxia-dice-roller">',
-    '#suffix' => '</div>',
-    '#weight' => 10,
-    '#tree' => TRUE, // This is important, this allows the deltas below to function.
-  );
   // Pass additional data from user profile configuration.
   global $user;
   $this_player = user_load($user->uid);
@@ -57,11 +49,18 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
     }
   }
 
-  $link_to_character = '';
+  $form['vaxia_rolls'] = array(
+    '#type' => 'fieldset',
+    '#theme' => 'vaxia_dice_roller',
+    '#prefix' => '<div id="vaxia-dice-roller">',
+    '#suffix' => '</div>',
+    '#weight' => 10,
+    '#tree' => TRUE, // This is important, this allows the deltas below to function.
+  );
+
   if ($character && $character != '_none' ) {
     $character = node_load($character);
     if (isset($character->title) && ($character->type == 'character_sheet')) {
-      $link_to_character = '<div class="vaxia-dice-roller-character">' . l('node/' . $character->nid, $character->title) . '</div>';
       $dice_size = array(100,77,50,30,20,16,12,10,8,6,4,2);
       $stat = array(
         '-1' => '<none>', 
@@ -220,13 +219,11 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
         '#size' => count($items),
         '#multiple' => TRUE,
       );
-      $form['vaxia_rolls']['selected_character'] = array(
-        '#type' => 'item',
-        '#markup' => $link_to_character,
-      );
       $form['vaxia_rolls']['notes'] = array(
         '#type' => 'hidden',
       );
+      $form['vaxia_rolls']['#description'] = '<div class="vaxia-dice-roller-character">On character ' .
+        l($character->title, 'node/' . $character->nid) . '</div>';
       return $form;
     }
   }
