@@ -419,7 +419,8 @@ function sh_test_setup_approval_form($user, $node, $entity_created) {
   $record = db_query('DELETE FROM {webform_roles} WHERE nid = :nid', array(':nid' => $entity_created->nid));
   foreach ($approving as $role) {
     if ($role) {
-      db_insert('webform_roles')->fields(array('nid' => $entity_created->nid, 'rid' => $role))->execute();
+      $this_role = user_role_load_by_name($role_name);
+      db_insert('webform_roles')->fields(array('nid' => $entity_created->nid, 'rid' => $this_role->rid))->execute();
     }
   }
   // Include the webform module that allows components to be created.
