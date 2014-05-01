@@ -34,6 +34,7 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
   elseif(!empty($form['field_comment_character'][$lang]['#default_value'])) {
     $character = $form['field_comment_character'][$lang]['#default_value'];
   }
+
   // Last ditch chance to grab the character.
   $limbo_room = variable_get('vaxia_limbo_room', array());
   if (!empty($parent_form['#node']->nid) && !in_array($parent_form['#node']->nid, $limbo_room) && $character == '_none') {
@@ -55,11 +56,12 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
       $character = $parent_form['field_comment_character'][$lang]['#default_value'];
     }
   }
+
   $link_to_character = '';
   if ($character && $character != '_none' ) {
     $character = node_load($character);
     if (isset($character->title) && ($character->type == 'character_sheet')) {
-    $link_to_character = '<div class="vaxia-dice-roller-character">' . url('node/' . $character->nid ) . '</div>';
+      $link_to_character = '<div class="vaxia-dice-roller-character">' . l('node/' . $character->nid, $character->title) . '</div>';
       $dice_size = array(100,77,50,30,20,16,12,10,8,6,4,2);
       $stat = array(
         '-1' => '<none>', 
