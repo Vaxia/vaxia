@@ -84,6 +84,8 @@ function room_cleanup_make_room_from_wiki_submit($form, &$form_state) {
   $room->type = 'rpg_chatroom';
   $room->language = 'und';
   $room->uid = $user->uid;
+  $room->status = 1;
+  $room->comment = 2;
   $realm = 'Vaxia';
   if (strpos($wiki->title, 'Sirian') !== FALSE) {
     $realm = 'Sirian';
