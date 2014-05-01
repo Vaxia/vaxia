@@ -507,7 +507,7 @@ function sh_test_ash_3_get_answers($user, $node) {
     $full_question = node_load($question_nid);
     $q = $full_question->body[$full_question->language][0]['value'];
     $a = $question->answers[0]['answer'];
-    $output .= '<h3><b>' . $q_title . '</b></h3><p><b>'. $q . '</b></p><p>' . $a . '</p><br/>';
+    $output .= '<h3><b>' . $q_title . '</b></h3><p><b>'. $q . '</b></p><p>' . $a . '</p><hr><br/>';
   }
   return $output;
 }
