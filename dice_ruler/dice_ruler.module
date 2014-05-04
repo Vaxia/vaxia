@@ -178,6 +178,10 @@ function dice_ruler_block_info() {
  * Implements hook_block_view($delta = '').
  */
 function dice_ruler_block_view($delta = '') {
+  $block = array(
+      'subject' => '',
+      'content' => '',
+  );
   if ($delta == 'dice_ruler' && user_access('use dice ruler')) {
     $block = array(
       'subject' => t('Dice ruler'),
