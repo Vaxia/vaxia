@@ -1059,12 +1059,16 @@ function _dice_ruler_form_get_results_for_action($form, $form_state, $i, $number
         );
       break;
       case 'magic':
+        $new_might_a = $form_state['values']['magic_might_a_' . $i] - $action_penalty;
+        $new_might_a = ($new_might_a > 0) ? $new_might_a : 1;
+        $new_might_b = $form_state['values']['magic_might_b_' . $i] - $action_penalty;
+        $new_might_b = ($new_might_b > 0) ? $new_might_b : 1;
         $results .= _dice_ruler_magic(
-          $form_state['values']['magic_might_a_' . $i] - $action_penalty,
+          $new_might_a,
           $form_state['values']['magic_diff_a_' . $i],
           $form_state['values']['magic_add_diff_a_' . $i],
           $form_state['values']['magic_rolled_a_' . $i],
-          $form_state['values']['magic_might_b_' . $i] - $action_penalty,
+          $new_might_b,
           $form_state['values']['magic_diff_b_' . $i],
           $form_state['values']['magic_add_diff_b_' . $i],
           $form_state['values']['magic_rolled_b_' . $i],
