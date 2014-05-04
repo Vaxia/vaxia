@@ -3,18 +3,19 @@
 #dice-ruler-form .form-type-textfield{float:left;margin-left:1em;margin-top:0;margin-bottom:0;}
 #dice-ruler-form .fieldset{margin-right:220px;}
 /* Format trait vs displays. */
-#dice-ruler-form #edit-trait-vs fieldset.form-wrapper{float:left;margin-left:1em;margin-top:0;margin-bottom:0;}
+#dice-ruler-form .trait-vs-form fieldset.form-wrapper{float:left;margin-left:1em;margin-top:0;margin-bottom:0;}
 /* Format two trait vs displays. */
-#dice-ruler-form #edit-two-trait-vs fieldset.form-wrapper{float:left;margin-left:1em;margin-top:0;margin-bottom:0;}
+#dice-ruler-form .two-trait-vs-form fieldset.form-wrapper{float:left;margin-left:1em;margin-top:0;margin-bottom:0;}
 /* Format combat displays. */
-#dice-ruler-form #edit-combat fieldset.form-wrapper{float:left;margin-left:1em;margin-top:0;margin-bottom:0;}
-#dice-ruler-form #edit-combat .form-item-combat-action-count-a, #dice-ruler-form .form-item-combat-action-count-b{float:left}
-#dice-ruler-form #edit-combat .form-item-combat-weapon-a, #dice-ruler-form .form-item-combat-weapon-b{float:left; margin-left:5px;}
-#dice-ruler-form #edit-combat .form-item-combat-weapon-a div, #dice-ruler-form .form-item-combat-weapon-b div{float:none;}
-#dice-ruler-form #edit-combat .form-item-combat-weapon-a-add, #dice-ruler-form .form-item-combat-weapon-b-add{float:none; margin-left:165px;}
-#dice-ruler-form #edit-combat .fieldset-wrapper fieldset .fieldset-wrapper fieldset{clear:both;}
-#dice-ruler-form #edit-combat .form-item-combat-weapon-a .form-type-radio,
-  #dice-ruler-form #edit-combat .form-item-combat-weapon-b .form-type-radio{margin-left:10px;}
+#dice-ruler-form .combat-form fieldset.form-wrapper{float:left;margin-left:1em;margin-top:0;margin-bottom:0;}
+#dice-ruler-form .combat-form .form-item-combat-action-count-a, #dice-ruler-form .form-item-combat-action-count-b{float:left}
+#dice-ruler-form .combat-form .form-item-combat-weapon-a, #dice-ruler-form .form-item-combat-weapon-b{float:left; margin-left:5px;}
+#dice-ruler-form .combat-form .form-item-combat-weapon-a div, #dice-ruler-form .form-item-combat-weapon-b div{float:none;}
+#dice-ruler-form .combat-form .form-item-combat-weapon-a-add, #dice-ruler-form .form-item-combat-weapon-b-add{float:none; margin-left:165px;}
+#dice-ruler-form .combat-form .fieldset-wrapper fieldset .fieldset-wrapper fieldset{clear:both;}
+#dice-ruler-form .combat-form .form-item-combat-weapon-a .form-type-radio,
+  #dice-ruler-form .combat-form .form-item-combat-weapon-b .form-type-radio{margin-left:10px;}
+#dice-ruler-form #edit-target{text-align:center;}
 /* Format result displays. */
 #dice-ruler-form #dice_ruler_dice_results{margin-right:220px;}
 #dice-ruler-form #dice_ruler_dice_results th{padding-left:0.5em;text-align:center;}
@@ -25,5 +26,16 @@
 #dice-ruler-form .secondary-help{float:right;clear:right;}
 #dice-ruler-form .secondary-help{width:210px;}
 #dice-ruler-form .secondary-help fieldset{padding:0px;}
-
-#dice-ruler-form #edit-target{text-align:center;}
+/* Format the rpg-chat button display. */
+.dice-ruler-buttons{padding:0px;margin:0px;height:20px;}
+.dice-ruler-button{float:left;height:20px;width:20px;background:#111;border:solid 1px #eee;list-style-type:none;}
+.dice-ruler-button{font-weight:bold;text-align:center;margin-right:5px;}
+.dice-ruler-button a{text-decoration:none;}
+.dice-ruler-trait-vs, .dice-ruler-two-trait-vs{font-size:9px;}
+.dice_rolls .dice{margin-top:10px;}
+.dice-ruler-row-buttons{float:left;}
+.dice-ruler-set-buttons{clear:left;margin-top:10px;}
+.dice_rolls .last .dice-ruler-one-trait{margin-right:32px;}
+.dice_rolls .last .dice-ruler-two-trait{display:none;}
+.dice_rolls .last .dice-ruler-trait-vs{margin-right:32px;}
+.dice_rolls .last .dice-ruler-two-trait-vs{display:none;}

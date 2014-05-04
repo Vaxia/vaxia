@@ -188,7 +188,7 @@ function dice_ruler_block_info() {
  * Implements hook_block_view($delta = '').
  */
 function dice_ruler_block_view($delta = '') {
-  if ($delta == 'dice_ruler') {
+  if ($delta == 'dice_ruler' && user_access('use dice ruler')) {
     $block = array(
       'subject' => t('Dice ruler'),
       'content' => drupal_get_form('dice_ruler_form'),
@@ -197,12 +197,609 @@ function dice_ruler_block_view($delta = '') {
   return $block;
 }
 
+function _dice_ruler_form_settings() {
+  $settings = array();
+  // Is Dynamic difficult on or off.
+  $toggle = variable_get('dice_ruler_magic_dd', TRUE) ? t('ON') : t('OFF');
+  $settings[] = t('Dynamic difficulty is %toggle.', array('%toggle' => $toggle));
+  $multi_penalty = variable_get('dice_ruler_extra_action_penalty', 20);
+  $settings[] = t('Extra actions is -%penalty.', array('%penalty' => $multi_penalty));
+  $apply = variable_get('dice_ruler_extra_action_penalty_apply', 'diff');
+  $settings[] = ($apply == 'diff') ? t('Applies to difficulty.') : t('Applies to might.');
+  // Are weapon classes in use?
+  $toggle = variable_get('dice_ruler_weapon_class', TRUE) ? t('ON') : t('OFF');
+  $settings[] = t('Weapon classes are %toggle.', array('%toggle' => $toggle));
+  if ($toggle == t('ON')) {
+    // Are weapon class damages in use?  
+    $toggle = variable_get('dice_ruler_weapon_class_damage', TRUE) ? t('ON') : t('OFF');
+    $settings[] = t('Class damage is %toggle.', array('%toggle' => $toggle));
+    if ($toggle == t('ON')) {
+	  $classes = explode("\n", variable_get('dice_ruler_weapon_class_classes', "Unarmed\nLight\nMedium\nHeavy"));
+	  foreach ($classes as $class) {
+	    $classname = str_replace(' ', '_', strtolower(trim($class)));
+	    $settings[] = t('%class weapons is %damage%.',
+		  array('%class' => $class, '%damage' => variable_get('dice_ruler_weapon_class_damage_' . $classname, 0)));
+	  }
+    }
+    // Are weapon class multi-actions in use?
+    $toggle = variable_get('dice_ruler_weapon_class_multi', TRUE) ? t('ON') : t('OFF');
+    $settings[] = t('Class multi-action is %toggle.', array('%toggle' => $toggle));
+    if ($toggle == t('ON')) {
+      foreach ($classes as $class) {
+        $classname = str_replace(' ', '_', strtolower(trim($class)));
+        $settings[] = t('%class weapons is -%penalty.',
+          array('%class' => $class, '%penalty' => $multi_penalty + variable_get('dice_ruler_weapon_class_multi_' . $classname, 0)));
+      }
+    }
+  }
+  $settings = theme('item_list', array('items' => $settings));
+  // And now display the rest of the form.
+  $form = array(
+    '#title' => t('Ruler settings'),
+    '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#prefix' => '<div id="dice_ruler_dice_help_settings" class="secondary-help">',
+    '#suffix' => '</div>',
+    '#states' => array(
+      'invisible' => array(
+        ':input[name="actions"]' => array('value' => 'hidden'),
+      ),
+    ),
+  );
+  $form['help'] = array(
+    '#type' => 'item',
+    '#markup' => $settings,
+  );
+  return $form;
+}
+
+function _dice_ruler_form_one_trait($i) {
+  $form = array(
+    '#type' => 'fieldset',
+    '#title' => t('One trait'),
+    '#states' => array(
+      'visible' => array(
+        ':input[name="roll_type_' . $i .'"]' => array('value' => 'one_trait'),
+      ),
+    ),
+    '#attributes' => array(
+      'class' => array('one-trait-form'),
+    ),
+  );
+  $form['one_trait_might_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Might'),
+    '#size' => 5,
+  );
+  $form['one_trait_diff_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Diff.'),
+    '#size' => 5,
+    '#default_value' => 25,
+  );
+  $form['one_trait_add_diff_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Add diff.'),
+    '#size' => 5,
+  );
+  $form['one_trait_rolled_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Rolled'),
+    '#size' => 5,
+  );
+  return $form;
+}
+
+function _dice_ruler_form_two_trait($i) {
+  $form = array(
+    '#type' => 'fieldset',
+    '#title' => t('Two trait'),
+    '#states' => array(
+      'visible' => array(
+        ':input[name="roll_type_' . $i .'"]' => array('value' => 'two_trait'),
+      ),
+    ),
+    '#attributes' => array(
+      'class' => array('two-trait-form'),
+    ),
+  );
+  $form['a'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Trait A'),
+  );
+  $form['a']['two_trait_might_a_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Might'),
+    '#size' => 5,
+  );
+  $form['a']['two_trait_diff_a_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Diff.'),
+    '#size' => 5,
+    '#default_value' => 25,
+  );
+  $form['a']['two_trait_add_diff_a_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Add diff.'),
+    '#size' => 5,
+  );
+  $form['a']['two_trait_rolled_a_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Rolled'),
+    '#size' => 5,
+  );
+  $form['b'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Trait B'),
+  );
+  $form['b']['two_trait_might_b_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Might'),
+    '#size' => 5,
+  );
+  $form['b']['two_trait_diff_b_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Diff.'),
+    '#size' => 5,
+    '#default_value' => 25,
+  );
+  $form['b']['two_trait_add_diff_b_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Add diff.'),
+    '#size' => 5,
+  );
+  $form['b']['two_trait_rolled_b_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Rolled'),
+    '#size' => 5,
+  );
+  return $form;
+}
+
+function _dice_ruler_form_trait_vs($i) {
+  $form = array(
+    '#type' => 'fieldset',
+    '#title' => t('Trait vs. trait'),
+    '#states' => array(
+      'visible' => array(
+        ':input[name="roll_type_' . $i .'"]' => array('value' => 'trait_vs'),
+      ),
+    ),
+    '#attributes' => array(
+      'class' => array('trait-vs-form'),
+    ),
+  );
+  $form['a'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Character A'),
+  );
+  $form['a']['trait_vs_might_a_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Might'),
+    '#size' => 5,
+  );
+  $form['a']['trait_vs_add_diff_a_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Add diff.'),
+    '#size' => 5,
+  );
+  $form['a']['trait_vs_rolled_a_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Rolled'),
+    '#size' => 5,
+  );
+  $form['b'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Character B'),
+  );
+  $form['b']['trait_vs_might_b_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Might'),
+    '#size' => 5,
+  );
+  $form['b']['trait_vs_add_diff_b_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Add diff.'),
+    '#size' => 5,
+  );
+  $form['b']['trait_vs_rolled_b_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Rolled'),
+    '#size' => 5,
+  );
+  return $form;
+}
+
+function _dice_ruler_form_two_trait_vs($i) {
+  $form = array(
+    '#type' => 'fieldset',
+    '#title' => t('Two trait vs trait'),
+    '#states' => array(
+      'visible' => array(
+        ':input[name="roll_type_' . $i .'"]' => array('value' => 'two_trait_vs'),
+      ),
+    ),
+    '#attributes' => array(
+      'class' => array('two-trait-vs-form'),
+    ),
+  );
+  $form['a'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Character A'),
+  );
+  $form['a']['a'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Trait A'),
+  );
+  $form['a']['a']['two_trait_vs_might_aa_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Might'),
+    '#size' => 5,
+  );
+  $form['a']['a']['two_trait_vs_add_diff_aa_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Add diff.'),
+    '#size' => 5,
+  );
+  $form['a']['a']['two_trait_vs_rolled_aa_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Rolled'),
+    '#size' => 5,
+  );
+  $form['a']['b'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Trait B'),
+  );
+  $form['a']['b']['two_trait_vs_might_ab_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Might'),
+    '#size' => 5,
+  );
+  $form['a']['b']['two_trait_vs_add_diff_ab_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Add diff.'),
+    '#size' => 5,
+  );
+  $form['a']['b']['two_trait_vs_rolled_ab_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Rolled'),
+    '#size' => 5,
+  );
+  $form['b'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Character B'),
+  );
+  $form['b']['a'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Trait A'),
+  );
+  $form['b']['a']['two_trait_vs_might_ba_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Might'),
+    '#size' => 5,
+  );
+  $form['b']['a']['two_trait_vs_add_diff_ba_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Add diff.'),
+    '#size' => 5,
+  );
+  $form['b']['a']['two_trait_vs_rolled_ba_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Rolled'),
+    '#size' => 5,
+  );
+  $form['b']['b'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Trait B'),
+  );
+  $form['b']['b']['two_trait_vs_might_bb_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Might'),
+    '#size' => 5,
+  );
+  $form['b']['b']['two_trait_vs_add_diff_bb_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Add diff.'),
+    '#size' => 5,
+  );
+  $form['b']['b']['two_trait_vs_rolled_bb_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Rolled'),
+    '#size' => 5,
+  );
+  return $form;
+}
+
+function _dice_ruler_form_combat($i) {
+  $form = array(
+    '#type' => 'fieldset',
+    '#title' => t('Combat'),
+    '#states' => array(
+      'visible' => array(
+        ':input[name="roll_type_' . $i .'"]' => array('value' => 'combat'),
+      ),
+    ),
+    '#attributes' => array(
+      'class' => array('combat-form'),
+    ),
+  );
+
+  // Combatant A's attack.
+  $form['a'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Character A'),
+  );
+  // Toggle between weapon percents and weapon categories.
+  if (variable_get('dice_ruler_weapon_class_damage', FALSE)) {
+    $weapon_class_options = array();
+    foreach ($classes as $class) {
+      $classname = str_replace(' ', '_', strtolower(trim($class)));
+      $first = empty($first) ? $classname : $first;
+      $weapon_class_options[$classname] = t('@class', array('@class' => $class));
+    }
+    $form['a']['combat_weapon_a_' . $i] = array(
+      '#type' => 'radios',
+      '#title' => t('Weapon Class'),
+      '#options' => $weapon_class_options,
+      '#default_value' => $first,
+    );
+    $form['a']['combat_weapon_a_add_' . $i] = array(
+      '#type' => 'textfield',
+      '#title' => t('Added %'),
+      '#size' => 5,
+    );
+  }
+  else {
+    $form['a']['combat_weapon_a_' . $i] = array(
+      '#type' => 'textfield',
+      '#title' => t('Weapon %'),
+      '#size' => 5,
+    );
+  }
+  $form['a']['attack_a_'.$i]['dex'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Dexterity'),
+  );
+  $form['a']['attack_a_'.$i]['dex']['combat_might_a_dex_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Might'),
+    '#size' => 5,
+  );
+  $form['a']['attack_a_'.$i]['dex']['combat_add_diff_a_dex_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Add diff.'),
+    '#size' => 5,
+  );
+  $form['a']['attack_a_'.$i]['dex']['combat_rolled_a_dex_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Rolled'),
+    '#size' => 5,
+  );
+  $form['a']['attack_a_'.$i]['str'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Strength'),
+  );
+  $form['a']['attack_a_'.$i]['str']['combat_might_a_str_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Might'),
+    '#size' => 5,
+  );
+  $form['a']['attack_a_'.$i]['str']['combat_add_diff_a_str_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Add diff.'),
+    '#size' => 5,
+  );
+  $form['a']['attack_a_'.$i]['str']['combat_rolled_a_str_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Rolled'),
+    '#size' => 5,
+  );
+  $form['a']['attack_a_'.$i]['end'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Endurance'),
+  );
+  $form['a']['attack_a_'.$i]['end']['combat_might_a_end_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Might'),
+    '#size' => 5,
+  );
+  $form['a']['attack_a_'.$i]['end']['combat_add_diff_a_end_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Add diff.'),
+    '#size' => 5,
+  );
+  $form['a']['attack_a_'.$i]['end']['combat_rolled_a_end_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Rolled'),
+    '#size' => 5,
+  );
+
+  // Combatant B's attack.
+  $form['b'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Character B'),
+  );
+  // Toggle between weapon percents and weapon categories.
+  if (variable_get('dice_ruler_weapon_class_damage', FALSE)) {
+    $weapon_class_options = array();
+    foreach ($classes as $class) {
+      $classname = str_replace(' ', '_', strtolower(trim($class)));
+      $first = empty($first) ? $classname : $first;
+      $weapon_class_options[$classname] = t('@class', array('@class' => $class));
+    }
+    $form['b']['combat_weapon_b_' . $i] = array(
+      '#type' => 'radios',
+      '#title' => t('Weapon Class'),
+      '#options' => $weapon_class_options,
+      '#default_value' => $first,
+    );
+    $form['b']['combat_weapon_b_add_' . $i] = array(
+      '#type' => 'textfield',
+      '#title' => t('Added %'),
+      '#size' => 5,
+    );
+  }
+  else {
+    $form['b']['combat_weapon_b_' . $i] = array(
+      '#type' => 'textfield',
+      '#title' => t('Weapon %'),
+      '#size' => 5,
+    );
+  }
+  $form['b']['attack_'.$i]['dex'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Dexterity'),
+  );
+  $form['b']['attack_'.$i]['dex']['combat_might_b_dex_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Might'),
+    '#size' => 5,
+  );
+  $form['b']['attack_'.$i]['dex']['combat_add_diff_b_dex_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Add diff.'),
+    '#size' => 5,
+  );
+  $form['b']['attack_'.$i]['dex']['combat_rolled_b_dex_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Rolled'),
+    '#size' => 5,
+  );
+  $form['b']['attack_'.$i]['str'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Strength'),
+  );
+  $form['b']['attack_'.$i]['str']['combat_might_b_str_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Might'),
+    '#size' => 5,
+  );
+  $form['b']['attack_'.$i]['str']['combat_add_diff_b_str_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Add diff.'),
+    '#size' => 5,
+  );
+  $form['b']['attack_'.$i]['str']['combat_rolled_b_str_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Rolled'),
+    '#size' => 5,
+  );
+  $form['b']['attack_'.$i]['end'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Endurance'),
+  );
+  $form['b']['attack_'.$i]['end']['combat_might_b_end_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Might'),
+    '#size' => 5,
+  );
+  $form['b']['attack_'.$i]['end']['combat_add_diff_b_end_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Add diff.'),
+    '#size' => 5,
+  );
+  $form['b']['attack_'.$i]['end']['combat_rolled_b_end_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Rolled'),
+    '#size' => 5,
+  );
+  return $form;
+}
+
+function _dice_ruler_form_magic($i) {
+  $form = array(
+    '#type' => 'fieldset',
+    '#title' => t('Magic'),
+    '#states' => array(
+      'visible' => array(
+        ':input[name="roll_type_' . $i .'"]' => array('value' => 'magic'),
+      ),
+    ),
+    '#attributes' => array(
+      'class' => array('magic-form'),
+    ),
+  );
+  $form['a'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Intelligence'),
+  );
+  $form['a']['magic_might_a_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Might'),
+    '#size' => 5,
+  );
+  $form['a']['magic_diff_a_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Diff.'),
+    '#size' => 5,
+    '#default_value' => 40,
+  );
+  $form['a']['magic_add_diff_a_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Add diff.'),
+    '#size' => 5,
+  );
+  $form['a']['magic_rolled_a_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Rolled'),
+    '#size' => 5,
+  );
+  $form['b'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Spirituality'),
+  );
+  $form['b']['magic_might_b_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Might'),
+    '#size' => 5,
+  );
+  $form['b']['magic_diff_b_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Diff.'),
+    '#size' => 5,
+    '#default_value' => 40,
+  );
+  $form['b']['magic_add_diff_b_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Add diff.'),
+    '#size' => 5,
+  );
+  $form['b']['magic_rolled_b_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Rolled'),
+    '#size' => 5,
+  );
+  $form['target'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Target Resistance'),
+
+  );
+  $form['target']['magic_target_stat_int_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Int -OR- Dex'),
+    '#size' => 5,
+  );
+  $form['target']['magic_target_stat_spi_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Spi -OR- End'),
+    '#size' => 5,
+  );
+  $form['target']['magic_target_skill_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Skill*'),
+    '#size' => 5,
+  );
+  return $form;
+}
+
 /**
  * Form callback for the dice ruler form.
  * Mostly ajax driven results.
  */
 function dice_ruler_form($form, &$form_state) {
   $form = array();
+  // Show help if we have it.
   $general_help = variable_get('dice_ruler_help_general', '');
   if (!empty($general_help)) {
     $form['dice_ruler_dice_help'] = array(
@@ -213,7 +810,7 @@ function dice_ruler_form($form, &$form_state) {
     '#suffix' => '</div>',
     '#states' => array(
       'invisible' => array(
-        ':input[name="roll_type"]' => array('value' => 'hidden'),
+        ':input[name="actions"]' => array('value' => 'hidden'),
         ),
       ),
     );
@@ -229,771 +826,83 @@ function dice_ruler_form($form, &$form_state) {
         '#prefix' => '<div id="dice_ruler_dice_help_' . $type . '" class="secondary-help">',
         '#suffix' => '</div>',
         '#states' => array(
-          'visible' => array(
-            ':input[name="roll_type"]' => array('value' => $type),
+          'invisible' => array(
+            ':input[name="actions"]' => array('value' => 'hidden'),
+            ),
           ),
-        ),
-      );
+        );
     }
   }
+  // Show settings if we have them.
   if (variable_get('dice_ruler_show_settings', TRUE)) {
-    $settings = array();
-    // Is Dynamic difficult on or off.
-    $toggle = variable_get('dice_ruler_magic_dd', TRUE) ? t('ON') : t('OFF');
-    $settings[] = t('Dynamic difficulty is %toggle.', array('%toggle' => $toggle));
-    $multi_penalty = variable_get('dice_ruler_extra_action_penalty', 20);
-    $settings[] = t('Extra actions is -%penalty.', array('%penalty' => $multi_penalty));
-    $apply = variable_get('dice_ruler_extra_action_penalty_apply', 'diff');
-    $settings[] = ($apply == 'diff') ? t('Applies to difficulty.') : t('Applies to might.');
-    // Are weapon classes in use?
-    $toggle = variable_get('dice_ruler_weapon_class', TRUE) ? t('ON') : t('OFF');
-    $settings[] = t('Weapon classes are %toggle.', array('%toggle' => $toggle));
-    if ($toggle == t('ON')) {
-      // Are weapon class damages in use?  
-      $toggle = variable_get('dice_ruler_weapon_class_damage', TRUE) ? t('ON') : t('OFF');
-      $settings[] = t('Class damage is %toggle.', array('%toggle' => $toggle));
-      if ($toggle == t('ON')) {
-        $classes = explode("\n", variable_get('dice_ruler_weapon_class_classes', "Unarmed\nLight\nMedium\nHeavy"));
-        foreach ($classes as $class) {
-          $classname = str_replace(' ', '_', strtolower(trim($class)));
-          $settings[] = t('%class weapons is %damage%.',
-            array('%class' => $class, '%damage' => variable_get('dice_ruler_weapon_class_damage_' . $classname, 0)));
-        }
-      }
-      // Are weapon class multi-actions in use?
-      $toggle = variable_get('dice_ruler_weapon_class_multi', TRUE) ? t('ON') : t('OFF');
-      $settings[] = t('Class multi-action is %toggle.', array('%toggle' => $toggle));
-      if ($toggle == t('ON')) {
-        foreach ($classes as $class) {
-          $classname = str_replace(' ', '_', strtolower(trim($class)));
-          $settings[] = t('%class weapons is -%penalty.',
-            array('%class' => $class, '%penalty' => $multi_penalty + variable_get('dice_ruler_weapon_class_multi_' . $classname, 0)));
-        }
-      }
-    }
-    $settings = theme('item_list', array('items' => $settings));
-    // And now display the rest of the form.
-    $form['dice_ruler_settings_help'] = array(
-      '#title' => t('Ruler settings'),
-      '#type' => 'fieldset',
-      '#collapsible' => TRUE,
-      '#collapsed' => TRUE,
-      '#prefix' => '<div id="dice_ruler_dice_help_settings" class="secondary-help">',
-      '#suffix' => '</div>',
-      '#states' => array(
-        'invisible' => array(
-          ':input[name="roll_type"]' => array('value' => 'hidden'),
-        ),
-      ),
-    );
-    $form['dice_ruler_settings_help']['help'] = array(
-      '#type' => 'item',
-      '#markup' => $settings,
-    );
+    $form['dice_ruler_settings_help'] = _dice_ruler_form_settings();
   }
-
-  // Select a type.
-  $form['roll_type'] = array(
+  // Find out how many actions we may have selected.
+  $number_actions = !empty($form_state['values']['actions']) ? $form_state['values']['actions'] : 0;
+  // Display request for # of actions.
+  $form['actions'] = array(
     '#type' => 'select',
-    '#title' => t('Dice ruling assistant'),
     '#options' => array(
-      'hidden' => t('-- Select a type of roll to rule --'),
-      'one_trait' => t('One trait'),
-      'two_trait' => t('Two trait'),
-      'trait_vs' => t('Trait vs. trait'),
-      'two_trait_vs' => t('Two trait vs. two trait'),
-      'combat' => t('Combat'),
-      'magic' => t('Magic'),
+      'hidden' => t('-- Select number of actions to rule --'),
+      '1' => '1',
+      '2' => '2',
+      '3' => '3',
+      '4' => '4',
     ),
     '#default_value' => 'hidden',
   );
-  // Subforms for each type of roll. One trait.
-  $form['one_trait'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('One trait'),
-    '#states' => array(
-      'visible' => array(
-        ':input[name="roll_type"]' => array('value' => 'one_trait'),
-      ),
-    ),
-  );
-  $form['one_trait']['one_trait_might'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Might'),
-    '#size' => 5,
-  );
-  $form['one_trait']['one_trait_diff'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Diff.'),
-    '#size' => 5,
-    '#default_value' => 25,
-  );
-  $form['one_trait']['one_trait_add_diff'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Add diff.'),
-    '#size' => 5,
-  );
-  $form['one_trait']['one_trait_rolled'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Rolled'),
-    '#size' => 5,
-  );
-  // Two trait.
-  $form['two_trait'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Two trait'),
-    '#states' => array(
-      'visible' => array(
-        ':input[name="roll_type"]' => array('value' => 'two_trait'),
-      ),
-    ),
-  );
-  $form['two_trait']['a'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Trait A'),
-  );
-  $form['two_trait']['a']['two_trait_might_a'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Might'),
-    '#size' => 5,
-  );
-  $form['two_trait']['a']['two_trait_diff_a'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Diff.'),
-    '#size' => 5,
-    '#default_value' => 25,
-  );
-  $form['two_trait']['a']['two_trait_add_diff_a'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Add diff.'),
-    '#size' => 5,
-  );
-  $form['two_trait']['a']['two_trait_rolled_a'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Rolled'),
-    '#size' => 5,
-  );
-  $form['two_trait']['b'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Trait B'),
-  );
-  $form['two_trait']['b']['two_trait_might_b'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Might'),
-    '#size' => 5,
-  );
-  $form['two_trait']['b']['two_trait_diff_b'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Diff.'),
-    '#size' => 5,
-    '#default_value' => 25,
-  );
-  $form['two_trait']['b']['two_trait_add_diff_b'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Add diff.'),
-    '#size' => 5,
-  );
-  $form['two_trait']['b']['two_trait_rolled_b'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Rolled'),
-    '#size' => 5,
-  );
-  // Subforms for each type of roll. One trait vs trait
-  $form['trait_vs'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Trait vs. trait'),
-    '#states' => array(
-      'visible' => array(
-        ':input[name="roll_type"]' => array('value' => 'trait_vs'),
-      ),
-    ),
-  );
-  $form['trait_vs']['a'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Character A'),
-  );
-  $form['trait_vs']['a']['trait_vs_might_a'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Might'),
-    '#size' => 5,
-  );
-  $form['trait_vs']['a']['trait_vs_add_diff_a'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Add diff.'),
-    '#size' => 5,
-  );
-  $form['trait_vs']['a']['trait_vs_rolled_a'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Rolled'),
-    '#size' => 5,
-  );
-  $form['trait_vs']['b'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Character B'),
-  );
-  $form['trait_vs']['b']['trait_vs_might_b'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Might'),
-    '#size' => 5,
-  );
-  $form['trait_vs']['b']['trait_vs_add_diff_b'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Add diff.'),
-    '#size' => 5,
-  );
-  $form['trait_vs']['b']['trait_vs_rolled_b'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Rolled'),
-    '#size' => 5,
-  );
-  // Subforms for each type of roll. Two trait vs.
-  $form['two_trait_vs'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Two trait vs trait'),
-    '#states' => array(
-      'visible' => array(
-        ':input[name="roll_type"]' => array('value' => 'two_trait_vs'),
-      ),
-    ),
-  );
-  $form['two_trait_vs']['a'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Character A'),
-  );
-  $form['two_trait_vs']['a']['a'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Trait A'),
-  );
-  $form['two_trait_vs']['a']['a']['two_trait_vs_might_aa'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Might'),
-    '#size' => 5,
-  );
-  $form['two_trait_vs']['a']['a']['two_trait_vs_add_diff_aa'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Add diff.'),
-    '#size' => 5,
-  );
-  $form['two_trait_vs']['a']['a']['two_trait_vs_rolled_aa'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Rolled'),
-    '#size' => 5,
-  );
-  $form['two_trait_vs']['a']['b'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Trait B'),
-  );
-  $form['two_trait_vs']['a']['b']['two_trait_vs_might_ab'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Might'),
-    '#size' => 5,
-  );
-  $form['two_trait_vs']['a']['b']['two_trait_vs_add_diff_ab'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Add diff.'),
-    '#size' => 5,
-  );
-  $form['two_trait_vs']['a']['b']['two_trait_vs_rolled_ab'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Rolled'),
-    '#size' => 5,
-  );
-  $form['two_trait_vs']['b'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Character B'),
-  );
-  $form['two_trait_vs']['b']['a'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Trait A'),
-  );
-  $form['two_trait_vs']['b']['a']['two_trait_vs_might_ba'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Might'),
-    '#size' => 5,
-  );
-  $form['two_trait_vs']['b']['a']['two_trait_vs_add_diff_ba'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Add diff.'),
-    '#size' => 5,
-  );
-  $form['two_trait_vs']['b']['a']['two_trait_vs_rolled_ba'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Rolled'),
-    '#size' => 5,
-  );
-  $form['two_trait_vs']['b']['b'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Trait B'),
-  );
-  $form['two_trait_vs']['b']['b']['two_trait_vs_might_bb'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Might'),
-    '#size' => 5,
-  );
-  $form['two_trait_vs']['b']['b']['two_trait_vs_add_diff_bb'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Add diff.'),
-    '#size' => 5,
-  );
-  $form['two_trait_vs']['b']['b']['two_trait_vs_rolled_bb'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Rolled'),
-    '#size' => 5,
-  );
-  // Combat
-  $form['combat'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Combat'),
-    '#states' => array(
-      'visible' => array(
-        ':input[name="roll_type"]' => array('value' => 'combat'),
-      ),
-    ),
-  );
-  $form['combat']['a'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Character A'),
-  );
-  $form['combat']['a']['combat_action_count_a'] = array(
-    '#type' => 'select',
-    '#title' => t('Actions'),
-    '#options' => array(
-      '1' => '1',
-      '2' => '2',
-      '3' => '3',
-      '4' => '4',
-    ),
-  );
-  // Toggle between weapon percents and weapon categories.
-  if (variable_get('dice_ruler_weapon_class_damage', FALSE)) {
-    $weapon_class_options = array();
-    foreach ($classes as $class) {
-      $classname = str_replace(' ', '_', strtolower(trim($class)));
-      $first = empty($first) ? $classname : $first;
-      $weapon_class_options[$classname] = t('@class', array('@class' => $class));
-    }
-    $form['combat']['a']['combat_weapon_a'] = array(
-      '#type' => 'radios',
-      '#title' => t('Weapon Class'),
-      '#options' => $weapon_class_options,
-      '#default_value' => $first,
-    );
-    $form['combat']['a']['combat_weapon_a_add'] = array(
-      '#type' => 'textfield',
-      '#title' => t('Added %'),
-      '#size' => 5,
-    );
-  }
-  else {
-    $form['combat']['a']['combat_weapon_a'] = array(
-      '#type' => 'textfield',
-      '#title' => t('Weapon %'),
-      '#size' => 5,
-    );
-  }
   $values = array();
   for ($i = 1; $i < 5; $i++) {
     $values[] = array('value' => $i);
   }
+  // Display a form for each action.
   for ($i = 1; $i < 5; $i++) {
-    $form['combat']['a']['attack_a_'.$i] = array(
+    $form['action_' . $i] = array(
       '#type' => 'fieldset',
-      '#title' => t('Attack #' . $i),
+      '#title' => t('Action #' . $i),
       '#states' => array(
         'visible' => array(
-          ':input[name="combat_action_count_a"]' => $values,
+          ':input[name="actions"]' => $values,
         ),
       ),
     );
-    array_shift($values);
-    $form['combat']['a']['attack_a_'.$i]['dex'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Dexterity'),
-    );
-    $form['combat']['a']['attack_a_'.$i]['dex']['combat_might_a_dex_' . $i] = array(
-      '#type' => 'textfield',
-      '#title' => t('Might'),
-      '#size' => 5,
-    );
-    $form['combat']['a']['attack_a_'.$i]['dex']['combat_add_diff_a_dex_' . $i] = array(
-      '#type' => 'textfield',
-      '#title' => t('Add diff.'),
-      '#size' => 5,
-    );
-    $form['combat']['a']['attack_a_'.$i]['dex']['combat_rolled_a_dex_' . $i] = array(
-      '#type' => 'textfield',
-      '#title' => t('Rolled'),
-      '#size' => 5,
-    );
-    $form['combat']['a']['attack_a_'.$i]['str'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Strength'),
-    );
-    $form['combat']['a']['attack_a_'.$i]['str']['combat_might_a_str_' . $i] = array(
-      '#type' => 'textfield',
-      '#title' => t('Might'),
-      '#size' => 5,
-    );
-    $form['combat']['a']['attack_a_'.$i]['str']['combat_add_diff_a_str_' . $i] = array(
-      '#type' => 'textfield',
-      '#title' => t('Add diff.'),
-      '#size' => 5,
-    );
-    $form['combat']['a']['attack_a_'.$i]['str']['combat_rolled_a_str_' . $i] = array(
-      '#type' => 'textfield',
-      '#title' => t('Rolled'),
-      '#size' => 5,
-    );
-    $form['combat']['a']['attack_a_'.$i]['end'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Endurance'),
-    );
-    $form['combat']['a']['attack_a_'.$i]['end']['combat_might_a_end_' . $i] = array(
-      '#type' => 'textfield',
-      '#title' => t('Might'),
-      '#size' => 5,
-    );
-    $form['combat']['a']['attack_a_'.$i]['end']['combat_add_diff_a_end_' . $i] = array(
-      '#type' => 'textfield',
-      '#title' => t('Add diff.'),
-      '#size' => 5,
-    );
-    $form['combat']['a']['attack_a_'.$i]['end']['combat_rolled_a_end_' . $i] = array(
-      '#type' => 'textfield',
-      '#title' => t('Rolled'),
-      '#size' => 5,
-    );
-  }
-  $form['combat']['b'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Character B'),
-  );
-  $form['combat']['b']['combat_action_count_b'] = array(
-    '#type' => 'select',
-    '#title' => t('Actions'),
-    '#options' => array(
-      '1' => '1',
-      '2' => '2',
-      '3' => '3',
-      '4' => '4',
-    ),
-  );
-  // Toggle between weapon percents and weapon categories.
-  if (variable_get('dice_ruler_weapon_class_damage', FALSE)) {
-    $weapon_class_options = array();
-    foreach ($classes as $class) {
-      $classname = str_replace(' ', '_', strtolower(trim($class)));
-      $first = empty($first) ? $classname : $first;
-      $weapon_class_options[$classname] = t('@class', array('@class' => $class));
-    }
-    $form['combat']['b']['combat_weapon_b'] = array(
-      '#type' => 'radios',
-      '#title' => t('Weapon Class'),
-      '#options' => $weapon_class_options,
-      '#default_value' => $first,
-    );
-    $form['combat']['b']['combat_weapon_b_add'] = array(
-      '#type' => 'textfield',
-      '#title' => t('Added %'),
-      '#size' => 5,
-    );
-  }
-  else {
-    $form['combat']['b']['combat_weapon_b'] = array(
-      '#type' => 'textfield',
-      '#title' => t('Weapon %'),
-      '#size' => 5,
-    );
-  }
-  $values = array();
-  for ($i = 1; $i < 5; $i++) {
-    $values[] = array('value' => $i);
-  }
-  for ($i = 1; $i < 5; $i++) {
-    $form['combat']['b']['attack_'.$i] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Attack #' . $i),
-      '#states' => array(
-        'visible' => array(
-          ':input[name="combat_action_count_b"]' => $values,
-        ),
+    array_shift($values); // Clip an action off the array of visible.
+    // Select a type for this action.
+    $form['action_' . $i]['roll_type_' . $i] = array(
+      '#type' => 'select',
+      '#options' => array(
+        'one_trait' => t('One trait'),
+        'two_trait' => t('Two trait'),
+        'trait_vs' => t('Trait vs. trait'),
+        'two_trait_vs' => t('Two trait vs. two trait'),
+        'combat' => t('Combat'),
+        'magic' => t('Magic'),
       ),
     );
-    array_shift($values);
-    $form['combat']['b']['attack_'.$i]['dex'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Dexterity'),
-    );
-    $form['combat']['b']['attack_'.$i]['dex']['combat_might_b_dex_' . $i] = array(
-      '#type' => 'textfield',
-      '#title' => t('Might'),
-      '#size' => 5,
-    );
-    $form['combat']['b']['attack_'.$i]['dex']['combat_add_diff_b_dex_' . $i] = array(
-      '#type' => 'textfield',
-      '#title' => t('Add diff.'),
-      '#size' => 5,
-    );
-    $form['combat']['b']['attack_'.$i]['dex']['combat_rolled_b_dex_' . $i] = array(
-      '#type' => 'textfield',
-      '#title' => t('Rolled'),
-      '#size' => 5,
-    );
-    $form['combat']['b']['attack_'.$i]['str'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Strength'),
-    );
-    $form['combat']['b']['attack_'.$i]['str']['combat_might_b_str_' . $i] = array(
-      '#type' => 'textfield',
-      '#title' => t('Might'),
-      '#size' => 5,
-    );
-    $form['combat']['b']['attack_'.$i]['str']['combat_add_diff_b_str_' . $i] = array(
-      '#type' => 'textfield',
-      '#title' => t('Add diff.'),
-      '#size' => 5,
-    );
-    $form['combat']['b']['attack_'.$i]['str']['combat_rolled_b_str_' . $i] = array(
-      '#type' => 'textfield',
-      '#title' => t('Rolled'),
-      '#size' => 5,
-    );
-    $form['combat']['b']['attack_'.$i]['end'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Endurance'),
-    );
-    $form['combat']['b']['attack_'.$i]['end']['combat_might_b_end_' . $i] = array(
-      '#type' => 'textfield',
-      '#title' => t('Might'),
-      '#size' => 5,
-    );
-    $form['combat']['b']['attack_'.$i]['end']['combat_add_diff_b_end_' . $i] = array(
-      '#type' => 'textfield',
-      '#title' => t('Add diff.'),
-      '#size' => 5,
-    );
-    $form['combat']['b']['attack_'.$i]['end']['combat_rolled_b_end_' . $i] = array(
-      '#type' => 'textfield',
-      '#title' => t('Rolled'),
-      '#size' => 5,
-    );
+    // Subforms for each type of roll
+    $form['action_' . $i]['one_trait_' . $i] = _dice_ruler_form_one_trait($i);
+    $form['action_' . $i]['two_trait_' . $i] = _dice_ruler_form_two_trait($i);
+    $form['action_' . $i]['trait_vs_' . $i] = _dice_ruler_form_trait_vs($i);
+    $form['action_' . $i]['two_trait_vs_' . $i] = _dice_ruler_form_two_trait_vs($i);
+    $form['action_' . $i]['combat_' . $i] = _dice_ruler_form_combat($i);
+    $form['action_' . $i]['magic_' . $i] = _dice_ruler_form_magic($i);
   }
-  // Magic
-  $form['magic'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Magic'),
-    '#states' => array(
-      'visible' => array(
-        ':input[name="roll_type"]' => array('value' => 'magic'),
-      ),
-    ),
-  );
-  $form['magic']['a'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Intelligence'),
-  );
-  $form['magic']['a']['magic_might_a'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Might'),
-    '#size' => 5,
-  );
-  $form['magic']['a']['magic_diff_a'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Diff.'),
-    '#size' => 5,
-    '#default_value' => 40,
-  );
-  $form['magic']['a']['magic_add_diff_a'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Add diff.'),
-    '#size' => 5,
-  );
-  $form['magic']['a']['magic_rolled_a'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Rolled'),
-    '#size' => 5,
-  );
-  $form['magic']['b'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Spirituality'),
-  );
-  $form['magic']['b']['magic_might_b'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Might'),
-    '#size' => 5,
-  );
-  $form['magic']['b']['magic_diff_b'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Diff.'),
-    '#size' => 5,
-    '#default_value' => 40,
-  );
-  $form['magic']['b']['magic_add_diff_b'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Add diff.'),
-    '#size' => 5,
-  );
-  $form['magic']['b']['magic_rolled_b'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Rolled'),
-    '#size' => 5,
-  );
-  $form['magic']['target'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Target Resistance'),
-
-  );
-  $form['magic']['target']['magic_target_stat_int'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Stat vs. Int'),
-    '#size' => 5,
-  );
-  $form['magic']['target']['magic_target_stat_spi'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Stat vs. Spi'),
-    '#size' => 5,
-  );
-  $form['magic']['target']['magic_target_skill'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Skill*'),
-    '#size' => 5,
-  );
-  // Show results.
-  $results = t('No roll performed.');
-  if (!empty($form_state['values']['roll_type'])) {
-    switch ($form_state['values']['roll_type']) {
-      case 'one_trait':
-        $results = _dice_ruler_one_trait(
-          $form_state['values']['one_trait_might'],
-          $form_state['values']['one_trait_diff'],
-          $form_state['values']['one_trait_add_diff'],
-          $form_state['values']['one_trait_rolled']
-        );
-      break;
-      case 'two_trait':
-        $results = _dice_ruler_two_trait(
-          $form_state['values']['two_trait_might_a'],
-          $form_state['values']['two_trait_diff_a'],
-          $form_state['values']['two_trait_add_diff_a'],
-          $form_state['values']['two_trait_rolled_a'],
-          $form_state['values']['two_trait_might_b'],
-          $form_state['values']['two_trait_diff_b'],
-          $form_state['values']['two_trait_add_diff_b'],
-          $form_state['values']['two_trait_rolled_b']
-        );
-      break;
-      case 'trait_vs':
-        $results = _dice_ruler_trait_vs(
-          $form_state['values']['trait_vs_might_a'],
-          $form_state['values']['trait_vs_add_diff_a'],
-          $form_state['values']['trait_vs_rolled_a'],
-          $form_state['values']['trait_vs_might_b'],
-          $form_state['values']['trait_vs_add_diff_b'],
-          $form_state['values']['trait_vs_rolled_b']
-        );
-      break;
-      case 'two_trait_vs':
-        $results = _dice_ruler_two_trait_vs(
-          $form_state['values']['two_trait_vs_might_aa'],
-          $form_state['values']['two_trait_vs_add_diff_aa'],
-          $form_state['values']['two_trait_vs_rolled_aa'],
-          $form_state['values']['two_trait_vs_might_ab'],
-          $form_state['values']['two_trait_vs_add_diff_ab'],
-          $form_state['values']['two_trait_vs_rolled_ab'],
-          $form_state['values']['two_trait_vs_might_ba'],
-          $form_state['values']['two_trait_vs_add_diff_ba'],
-          $form_state['values']['two_trait_vs_rolled_ba'],
-          $form_state['values']['two_trait_vs_might_bb'],
-          $form_state['values']['two_trait_vs_add_diff_bb'],
-          $form_state['values']['two_trait_vs_rolled_bb']
-        );
-      break;
-      case 'combat':
-        $results = '';
-        // If we use classes, look up and set the correct class based weapon value.
-        if (variable_get('dice_ruler_weapon_class_damage', FALSE)) {
-          $add_a = !empty($form_state['values']['combat_weapon_a_add']) ? $form_state['values']['combat_weapon_a_add'] : 0;
-          $add_b = !empty($form_state['values']['combat_weapon_b_add']) ? $form_state['values']['combat_weapon_b_add'] : 0;
-          $form_state['values']['combat_weapon_a'] = $add_a +
-            variable_get('dice_ruler_weapon_class_damage_' . $form_state['values']['combat_weapon_a'], 0);
-          $form_state['values']['combat_weapon_b'] = $add_b + 
-            variable_get('dice_ruler_weapon_class_damage_' . $form_state['values']['combat_weapon_b'], 0);
-        }
-        // Figure out the base penalty.
-        $base_a = $base_b = variable_get('dice_ruler_extra_action_penalty', 20);
-        // If we modify the penalty based on weapon class, add that.
-        $mod_base_a = $mod_base_b = 0;
-        if (variable_get('dice_ruler_weapon_class_multi', FALSE)) {
-          // Based on the weapon, figure out the modifier for a and b.
-          $mod_base_a = variable_get('dice_ruler_weapon_class_multi_' . $form_state['values']['combat_weapon_a'], 0);
-          $mod_base_b = variable_get('dice_ruler_weapon_class_multi_' . $form_state['values']['combat_weapon_b'], 0);
-        }
-        // Count number of actions.
-        $attacks_a = $form_state['values']['combat_action_count_a']; // 1, 2, 3, 4.
-        $attacks_b = $form_state['values']['combat_action_count_b']; // 1, 2, 3, 4.
-        // And recalculate the correct modifier to apply.
-        $base_a = $base_a * ($attacks_a - 1) + $mod_base_a;
-        $base_b = $base_b * ($attacks_b - 1) + $mod_base_b;
-        // Process for each attack.
-        $attacks = $attacks_a > $attacks_b ? $attacks_a : $attacks_b;
-        for ($i = 1; $i < $attacks + 1; $i++) {
-          $modify_mights_a = $modify_diff_a = 0;
-          $modify_mights_b = $modify_diff_b = 0;
-          // Get results.
-          $results .= _dice_ruler_combat(
-            $form_state['values']['combat_might_a_dex_' . $i],
-            $form_state['values']['combat_add_diff_a_dex_' . $i],
-            $form_state['values']['combat_rolled_a_dex_' . $i],
-            $form_state['values']['combat_might_a_str_' . $i],
-            $form_state['values']['combat_add_diff_a_str_' . $i],
-            $form_state['values']['combat_rolled_a_str_' . $i],
-            $form_state['values']['combat_might_a_end_' . $i],
-            $form_state['values']['combat_add_diff_a_end_' . $i],
-            $form_state['values']['combat_rolled_a_end_' . $i],
-            $form_state['values']['combat_weapon_a'],
-
-            $form_state['values']['combat_might_b_dex_' . $i],
-            $form_state['values']['combat_add_diff_b_dex_' . $i],
-            $form_state['values']['combat_rolled_b_dex_' . $i],
-            $form_state['values']['combat_might_b_str_' . $i],
-            $form_state['values']['combat_add_diff_b_str_' . $i],
-            $form_state['values']['combat_rolled_b_str_' . $i],
-            $form_state['values']['combat_might_b_end_' . $i],
-            $form_state['values']['combat_add_diff_b_end_' . $i],
-            $form_state['values']['combat_rolled_b_end_' . $i],
-            $form_state['values']['combat_weapon_b'],
-
-            $base_a,
-            $base_b
-          ) . '</br>';
-        }
-      break;
-      case 'magic':
-        $results = _dice_ruler_magic(
-          $form_state['values']['magic_might_a'],
-          $form_state['values']['magic_diff_a'],
-          $form_state['values']['magic_add_diff_a'],
-          $form_state['values']['magic_rolled_a'],
-          $form_state['values']['magic_might_b'],
-          $form_state['values']['magic_diff_b'],
-          $form_state['values']['magic_add_diff_b'],
-          $form_state['values']['magic_rolled_b'],
-          $form_state['values']['magic_target_stat_int'],
-          $form_state['values']['magic_target_stat_spi'],
-          $form_state['values']['magic_target_skill']
-        );
-      break;
-    }
+  // Show results!
+  $results = array();
+  for ($i=1; $i < $number_actions + 1; $i++) {
+    $results[] = '<label for="dice-ruler-dice-result">' . t('Action #') . $i . '</label>' .
+      '<div class="dice-ruler-dice-result">' .
+      _dice_ruler_form_get_results_for_action($form, $form_state, $i, $number_actions) .
+      '</div>';
   }
   $form['dice_ruler_dice_results'] = array(
-    '#title' => t('Roll results'),
     '#type' => 'item',
-    '#markup' => $results,
+    '#markup' => implode('</br>', $results),
     '#prefix' => '<div id="dice_ruler_dice_results">',
     '#suffix' => '</div>',
     '#states' => array(
       'invisible' => array(
-        ':input[name="roll_type"]' => array('value' => 'hidden'),
+        ':input[name="actions"]' => array('value' => 'hidden'),
       ),
     ),
   );
@@ -1009,7 +918,7 @@ function dice_ruler_form($form, &$form_state) {
     ),
     '#states' => array(
       'invisible' => array(
-        ':input[name="roll_type"]' => array('value' => 'hidden'),
+        ':input[name="actions"]' => array('value' => 'hidden'),
       ),
     ),
   );
@@ -1018,6 +927,135 @@ function dice_ruler_form($form, &$form_state) {
   // Attach the CSS for this ruler styling.
   drupal_add_css(drupal_get_path('module', 'dice_ruler') . '/css/dice_ruler.css');
   return $form;
+}
+
+/**
+ * Helper function, given a form state, figure out results for selection to echo.
+ */
+function _dice_ruler_form_get_results_for_action($form, $form_state, $i, $number_actions) {
+  $penalty_base = variable_get('dice_ruler_extra_action_penalty', 20);
+  $action_penalty = $penalty_base * ($number_actions - 1);
+
+  // Gather the results by action number.
+  $results = t('No roll performed.');
+  if (!empty($form_state['values']['roll_type_' . $i])) {
+    switch ($form_state['values']['roll_type_' . $i]) {
+      case 'one_trait':
+        $results = _dice_ruler_one_trait(
+          $form_state['values']['one_trait_might_' . $i] - $action_penalty,
+          $form_state['values']['one_trait_diff_' . $i],
+          $form_state['values']['one_trait_add_diff_' . $i],
+          $form_state['values']['one_trait_rolled_' . $i]
+        );
+      break;
+      case 'two_trait':
+        $results = _dice_ruler_two_trait(
+          $form_state['values']['two_trait_might_a_' . $i] - $action_penalty,
+          $form_state['values']['two_trait_diff_a_' . $i],
+          $form_state['values']['two_trait_add_diff_a_' . $i],
+          $form_state['values']['two_trait_rolled_a_' . $i],
+          $form_state['values']['two_trait_might_b_' . $i] - $action_penalty,
+          $form_state['values']['two_trait_diff_b_' . $i],
+          $form_state['values']['two_trait_add_diff_b_' . $i],
+          $form_state['values']['two_trait_rolled_b_' . $i]
+        );
+      break;
+      case 'trait_vs':
+        $results = _dice_ruler_trait_vs(
+          $form_state['values']['trait_vs_might_a_' . $i] - $action_penalty,
+          $form_state['values']['trait_vs_add_diff_a_' . $i],
+          $form_state['values']['trait_vs_rolled_a_' . $i],
+          $form_state['values']['trait_vs_might_b_' . $i] - $action_penalty,
+          $form_state['values']['trait_vs_add_diff_b_' . $i],
+          $form_state['values']['trait_vs_rolled_b_' . $i]
+        );
+      break;
+      case 'two_trait_vs':
+        $results = _dice_ruler_two_trait_vs(
+          $form_state['values']['two_trait_vs_might_aa_' . $i] - $action_penalty,
+          $form_state['values']['two_trait_vs_add_diff_aa_' . $i],
+          $form_state['values']['two_trait_vs_rolled_aa_' . $i],
+          $form_state['values']['two_trait_vs_might_ab_' . $i] - $action_penalty,
+          $form_state['values']['two_trait_vs_add_diff_ab_' . $i],
+          $form_state['values']['two_trait_vs_rolled_ab_' . $i],
+          $form_state['values']['two_trait_vs_might_ba_' . $i] - $action_penalty,
+          $form_state['values']['two_trait_vs_add_diff_ba_' . $i],
+          $form_state['values']['two_trait_vs_rolled_ba_' . $i],
+          $form_state['values']['two_trait_vs_might_bb_' . $i] - $action_penalty,
+          $form_state['values']['two_trait_vs_add_diff_bb_' . $i],
+          $form_state['values']['two_trait_vs_rolled_bb_' . $i]
+        );
+      break;
+      case 'combat':
+
+        // If we use classes, look up and set the correct class based weapon value.
+        if (variable_get('dice_ruler_weapon_class_damage', FALSE)) {
+          $add_a = !empty($form_state['values']['combat_weapon_a_add_' . $i]) ? $form_state['values']['combat_weapon_a_add_' . $i] : 0;
+          $add_b = !empty($form_state['values']['combat_weapon_b_add_' . $i]) ? $form_state['values']['combat_weapon_b_add_' . $i] : 0;
+          $form_state['values']['combat_weapon_a_' . $i] = $add_a +
+            variable_get('dice_ruler_weapon_class_damage_' . $form_state['values']['combat_weapon_a_' . $i], 0);
+          $form_state['values']['combat_weapon_b_' . $i] = $add_b + 
+            variable_get('dice_ruler_weapon_class_damage_' . $form_state['values']['combat_weapon_b_' . $i], 0);
+        }
+
+        // If we modify the penalty based on weapon class, add that.
+        $mod_base_a = $mod_base_b = 0;
+        if (variable_get('dice_ruler_weapon_class_multi', FALSE)) {
+          // Based on the weapon, figure out the modifier for a and b.
+          $mod_base_a = variable_get('dice_ruler_weapon_class_multi_' . $form_state['values']['combat_weapon_a_' . $i], 0);
+          $mod_base_b = variable_get('dice_ruler_weapon_class_multi_' . $form_state['values']['combat_weapon_b_' . $i], 0);
+        }
+
+        // And recalculate the correct modifier to apply.
+        $action_penalty_a = $penalty_base * ($number_actions - 1) + $mod_base_a;
+        $action_penalty_b = $penalty_base * ($number_actions - 1) + $mod_base_b;
+
+        // Get results.
+        $results = _dice_ruler_combat(
+          $form_state['values']['combat_might_a_dex_' . $i],
+          $form_state['values']['combat_add_diff_a_dex_' . $i],
+          $form_state['values']['combat_rolled_a_dex_' . $i],
+          $form_state['values']['combat_might_a_str_' . $i],
+          $form_state['values']['combat_add_diff_a_str_' . $i],
+          $form_state['values']['combat_rolled_a_str_' . $i],
+          $form_state['values']['combat_might_a_end_' . $i],
+          $form_state['values']['combat_add_diff_a_end_' . $i],
+          $form_state['values']['combat_rolled_a_end_' . $i],
+          $form_state['values']['combat_weapon_a_' . $i],
+
+          $form_state['values']['combat_might_b_dex_' . $i],
+          $form_state['values']['combat_add_diff_b_dex_' . $i],
+          $form_state['values']['combat_rolled_b_dex_' . $i],
+          $form_state['values']['combat_might_b_str_' . $i],
+          $form_state['values']['combat_add_diff_b_str_' . $i],
+          $form_state['values']['combat_rolled_b_str_' . $i],
+          $form_state['values']['combat_might_b_end_' . $i],
+          $form_state['values']['combat_add_diff_b_end_' . $i],
+          $form_state['values']['combat_rolled_b_end_' . $i],
+          $form_state['values']['combat_weapon_b_' . $i],
+
+          $action_penalty_a,
+          $action_penalty_b
+        );
+      break;
+      case 'magic':
+        $results = _dice_ruler_magic(
+          $form_state['values']['magic_might_a_' . $i] - $action_penalty,
+          $form_state['values']['magic_diff_a_' . $i],
+          $form_state['values']['magic_add_diff_a_' . $i],
+          $form_state['values']['magic_rolled_a_' . $i],
+          $form_state['values']['magic_might_b_' . $i] - $action_penalty,
+          $form_state['values']['magic_diff_b_' . $i],
+          $form_state['values']['magic_add_diff_b_' . $i],
+          $form_state['values']['magic_rolled_b_' . $i],
+          $form_state['values']['magic_target_stat_int_' . $i],
+          $form_state['values']['magic_target_stat_spi_' . $i],
+          $form_state['values']['magic_target_skill_' . $i]
+        );
+      break;
+    }
+  }
+  return $results;
 }
 
 /**
