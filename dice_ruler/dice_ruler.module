@@ -940,10 +940,10 @@ function _dice_ruler_form_get_results_for_action($form, $form_state, $i, $number
         $new_might = $form_state['values']['one_trait_might_' . $i] - $action_penalty;
         $new_might = ($new_might > 0) ? $new_might : 1;
         $results .= _dice_ruler_one_trait(
-          $new_might,
-          $form_state['values']['one_trait_diff_' . $i],
-          $form_state['values']['one_trait_add_diff_' . $i],
-          $form_state['values']['one_trait_rolled_' . $i]
+          trim($new_might),
+          trim($form_state['values']['one_trait_diff_' . $i]),
+          trim($form_state['values']['one_trait_add_diff_' . $i]),
+          trim($form_state['values']['one_trait_rolled_' . $i])
         );
       break;
       case 'two_trait':
@@ -952,26 +952,26 @@ function _dice_ruler_form_get_results_for_action($form, $form_state, $i, $number
         $new_might_b = $form_state['values']['two_trait_might_b_' . $i] - $action_penalty;
         $new_might_b = ($new_might_b > 0) ? $new_might_b : 1;
         $results .= _dice_ruler_two_trait(
-          $new_might_a,
-          $form_state['values']['two_trait_diff_a_' . $i],
-          $form_state['values']['two_trait_add_diff_a_' . $i],
-          $form_state['values']['two_trait_rolled_a_' . $i],
-          $new_might_b,
-          $form_state['values']['two_trait_diff_b_' . $i],
-          $form_state['values']['two_trait_add_diff_b_' . $i],
-          $form_state['values']['two_trait_rolled_b_' . $i]
+          trim($new_might_a),
+          trim($form_state['values']['two_trait_diff_a_' . $i]),
+          trim($form_state['values']['two_trait_add_diff_a_' . $i]),
+          trim($form_state['values']['two_trait_rolled_a_' . $i]),
+          trim($new_might_b),
+          trim($form_state['values']['two_trait_diff_b_' . $i]),
+          trim($form_state['values']['two_trait_add_diff_b_' . $i]),
+          trim($form_state['values']['two_trait_rolled_b_' . $i])
         );
       break;
       case 'trait_vs':
         $new_might_a = $form_state['values']['trait_vs_might_a_' . $i] - $action_penalty;
         $new_might_a = ($new_might_a > 0) ? $new_might_a : 1;
         $results .= _dice_ruler_trait_vs(
-          $new_might_a,
-          $form_state['values']['trait_vs_add_diff_a_' . $i],
-          $form_state['values']['trait_vs_rolled_a_' . $i],
-          $form_state['values']['trait_vs_might_b_' . $i],
-          $form_state['values']['trait_vs_add_diff_b_' . $i],
-          $form_state['values']['trait_vs_rolled_b_' . $i]
+          trim($new_might_a),
+          trim($form_state['values']['trait_vs_add_diff_a_' . $i]),
+          trim($form_state['values']['trait_vs_rolled_a_' . $i]),
+          trim($form_state['values']['trait_vs_might_b_' . $i]),
+          trim($form_state['values']['trait_vs_add_diff_b_' . $i]),
+          trim($form_state['values']['trait_vs_rolled_b_' . $i])
         );
       break;
       case 'two_trait_vs':
@@ -984,18 +984,18 @@ function _dice_ruler_form_get_results_for_action($form, $form_state, $i, $number
         $new_might_bb = $form_state['values']['two_trait_vs_might_bb_' . $i] - $action_penalty;
         $new_might_bb = ($new_might_bb > 0) ? $new_might_bb : 1;
         $results .= _dice_ruler_two_trait_vs(
-          $new_might_aa,
-          $form_state['values']['two_trait_vs_add_diff_aa_' . $i],
-          $form_state['values']['two_trait_vs_rolled_aa_' . $i],
-          $new_might_ab,
-          $form_state['values']['two_trait_vs_add_diff_ab_' . $i],
-          $form_state['values']['two_trait_vs_rolled_ab_' . $i],
-          $new_might_ba,
-          $form_state['values']['two_trait_vs_add_diff_ba_' . $i],
-          $form_state['values']['two_trait_vs_rolled_ba_' . $i],
-          $new_might_bb,
-          $form_state['values']['two_trait_vs_add_diff_bb_' . $i],
-          $form_state['values']['two_trait_vs_rolled_bb_' . $i]
+          trim($new_might_aa),
+          trim($form_state['values']['two_trait_vs_add_diff_aa_' . $i]),
+          trim($form_state['values']['two_trait_vs_rolled_aa_' . $i]),
+          trim($new_might_ab),
+          trim($form_state['values']['two_trait_vs_add_diff_ab_' . $i]),
+          trim($form_state['values']['two_trait_vs_rolled_ab_' . $i]),
+          trim($new_might_ba),
+          trim($form_state['values']['two_trait_vs_add_diff_ba_' . $i]),
+          trim($form_state['values']['two_trait_vs_rolled_ba_' . $i]),
+          trim($new_might_bb),
+          trim($form_state['values']['two_trait_vs_add_diff_bb_' . $i]),
+          trim($form_state['values']['two_trait_vs_rolled_bb_' . $i])
         );
       break;
       case 'combat':
@@ -1036,27 +1036,27 @@ function _dice_ruler_form_get_results_for_action($form, $form_state, $i, $number
         // Get results.
         $results .= _dice_ruler_combat(
           // Character A.
-          $new_might_dex,
-          $form_state['values']['combat_add_diff_a_dex_' . $i],
-          $form_state['values']['combat_rolled_a_dex_' . $i],
-          $new_might_str,
-          $form_state['values']['combat_add_diff_a_str_' . $i],
-          $form_state['values']['combat_rolled_a_str_' . $i],
-          $new_might_end,
-          $form_state['values']['combat_add_diff_a_end_' . $i],
-          $form_state['values']['combat_rolled_a_end_' . $i],
-          $form_state['values']['combat_weapon_a_' . $i],
+          trim($new_might_dex),
+          trim($form_state['values']['combat_add_diff_a_dex_' . $i]),
+          trim($form_state['values']['combat_rolled_a_dex_' . $i]),
+          trim($new_might_str),
+          trim($form_state['values']['combat_add_diff_a_str_' . $i]),
+          trim($form_state['values']['combat_rolled_a_str_' . $i]),
+          trim($new_might_end),
+          trim($form_state['values']['combat_add_diff_a_end_' . $i]),
+          trim($form_state['values']['combat_rolled_a_end_' . $i]),
+          trim($form_state['values']['combat_weapon_a_' . $i]),
           // And the opposition.
-          $new_might_dex_b,
-          $form_state['values']['combat_add_diff_b_dex_' . $i],
-          $form_state['values']['combat_rolled_b_dex_' . $i],
-          $new_might_str_b,
-          $form_state['values']['combat_add_diff_b_str_' . $i],
-          $form_state['values']['combat_rolled_b_str_' . $i],
-          $new_might_end_b,
-          $form_state['values']['combat_add_diff_b_end_' . $i],
-          $form_state['values']['combat_rolled_b_end_' . $i],
-          $form_state['values']['combat_weapon_b_' . $i]
+          trim($new_might_dex_b),
+          trim($form_state['values']['combat_add_diff_b_dex_' . $i]),
+          trim($form_state['values']['combat_rolled_b_dex_' . $i]),
+          trim($new_might_str_b),
+          trim($form_state['values']['combat_add_diff_b_str_' . $i]),
+          trim($form_state['values']['combat_rolled_b_str_' . $i]),
+          trim($new_might_end_b),
+          trim($form_state['values']['combat_add_diff_b_end_' . $i]),
+          trim($form_state['values']['combat_rolled_b_end_' . $i]),
+          trim($form_state['values']['combat_weapon_b_' . $i])
         );
       break;
       case 'magic':
@@ -1065,17 +1065,17 @@ function _dice_ruler_form_get_results_for_action($form, $form_state, $i, $number
         $new_might_b = $form_state['values']['magic_might_b_' . $i] - $action_penalty;
         $new_might_b = ($new_might_b > 0) ? $new_might_b : 1;
         $results .= _dice_ruler_magic(
-          $new_might_a,
-          $form_state['values']['magic_diff_a_' . $i],
-          $form_state['values']['magic_add_diff_a_' . $i],
-          $form_state['values']['magic_rolled_a_' . $i],
-          $new_might_b,
-          $form_state['values']['magic_diff_b_' . $i],
-          $form_state['values']['magic_add_diff_b_' . $i],
-          $form_state['values']['magic_rolled_b_' . $i],
-          $form_state['values']['magic_target_stat_int_' . $i],
-          $form_state['values']['magic_target_stat_spi_' . $i],
-          $form_state['values']['magic_target_skill_' . $i]
+          trim($new_might_a),
+          trim($form_state['values']['magic_diff_a_' . $i]),
+          trim($form_state['values']['magic_add_diff_a_' . $i]),
+          trim($form_state['values']['magic_rolled_a_' . $i]),
+          trim($new_might_b),
+          trim($form_state['values']['magic_diff_b_' . $i]),
+          trim($form_state['values']['magic_add_diff_b_' . $i]),
+          trim($form_state['values']['magic_rolled_b_' . $i]),
+          trim($form_state['values']['magic_target_stat_int_' . $i]),
+          trim($form_state['values']['magic_target_stat_spi_' . $i]),
+          trim($form_state['values']['magic_target_skill_' . $i])
         );
       break;
     }
