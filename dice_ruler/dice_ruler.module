@@ -836,9 +836,9 @@ function dice_ruler_form($form, &$form_state) {
     '#options' => array(
       'hidden' => t('-- Select number of actions to rule --'),
       '1' => '1 action - no multi action penalty',
-      '2' => '2 action - ' . $penalty_base * (-1) . ' multi action penalty',
-      '3' => '3 action - ' . $penalty_base * (-2) . ' multi action penalty',
-      '4' => '4 action - ' . $penalty_base * (-3) . ' multi action penalty',
+      '2' => '2 action - ' . ($penalty_base * -1) . ' multi action penalty',
+      '3' => '3 action - ' . ($penalty_base * -2) . ' multi action penalty',
+      '4' => '4 action - ' . ($penalty_base * -3) . ' multi action penalty',
     ),
     '#default_value' => 'hidden',
   );
