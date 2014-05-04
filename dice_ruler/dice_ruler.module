@@ -829,14 +829,16 @@ function dice_ruler_form($form, &$form_state) {
   // Find out how many actions we may have selected.
   $number_actions = !empty($form_state['values']['actions']) ? $form_state['values']['actions'] : 0;
   // Display request for # of actions.
+  $penalty_base = variable_get('dice_ruler_extra_action_penalty', 20);
+  $action_penalty = ;
   $form['actions'] = array(
     '#type' => 'select',
     '#options' => array(
       'hidden' => t('-- Select number of actions to rule --'),
-      '1' => '1',
-      '2' => '2',
-      '3' => '3',
-      '4' => '4',
+      '1' => '1 action - no multi action penalty',
+      '2' => '2 action - ' . $penalty_base * (-1) . ' multi action penalty',
+      '3' => '3 action - ' . $penalty_base * (-2) . ' multi action penalty',
+      '4' => '4 action - ' . $penalty_base * (-3) . ' multi action penalty',
     ),
     '#default_value' => 'hidden',
   );
