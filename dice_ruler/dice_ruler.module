@@ -830,7 +830,6 @@ function dice_ruler_form($form, &$form_state) {
   $number_actions = !empty($form_state['values']['actions']) ? $form_state['values']['actions'] : 0;
   // Display request for # of actions.
   $penalty_base = variable_get('dice_ruler_extra_action_penalty', 20);
-  $action_penalty = ;
   $form['actions'] = array(
     '#type' => 'select',
     '#options' => array(
