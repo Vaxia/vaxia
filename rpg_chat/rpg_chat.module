@@ -109,6 +109,9 @@ function rpg_chat_node_load($nodes) {
   foreach ($nodes as $node) {
     // Load all the chat related bits for this node.
     if (isset($node->type) && _rpg_chat_is_enabled($node->type)) {
+      // Cleanup user lists.
+      rpg_chat_cron();
+      // Load the rooom.
       $room = _rpg_chat_get_room($node->nid);
       if ($room) {
         $nodes[$node->nid]->rpg_chat_min_refresh = $room->min_refresh;
