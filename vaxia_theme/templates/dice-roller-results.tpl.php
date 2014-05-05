@@ -79,7 +79,6 @@
           $dice_roll++;
       }
       $str_rolls .= '  </span>'. "\n";
-      $count++;
     }
     if (!empty($rolls_found)) {
       $str_rolls .= '</span>'. "\n";
