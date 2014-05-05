@@ -28,9 +28,9 @@
       <?php /* User picture / avatar (has div in variable) */ ?>
         <?php
           $artwork_image = file_load($account->field_artwork_image[$lang][0]['fid']);
-          $default_filepath = drupal_get_path('module', 'vaxia') . '/images/vaxialogo.gif';
+          $default_filepath = $base_url . drupal_get_path('module', 'vaxia') . '/images/vaxialogo.gif';
           $filepath = isset($artwork_image->uri) ? $artwork_image->uri : $default_filepath;
-          $alt = t("@user's picture.", array('@user' => $account_name));
+          $alt = t("@user's picture.", array('@user' => $account->name));
           $picture = theme('image_style',
             array('style_name' => 'thumbnail', 'path' => $filepath, 'alt' => $alt, 'title' => $alt));
           if (!empty($picture)) {
@@ -48,7 +48,7 @@
       <?php /* Last active */ ?>
       <?php if (!empty($last_active)): ?>
         <div class="author-pane-line">
-           <span class="author-pane-label"><?php print t('Last online'); ?>:</span> <?php print t('!time ago', array('!time' => $last_active)); ?>
+           <span class="author-pane-label"><?php print t('Last online'); ?></br></span> <?php print t('!time ago', array('!time' => $last_active)); ?>
         </div>
       <?php endif; ?>
 
@@ -70,7 +70,7 @@
       <?php /* IP */ ?>
       <?php if (!empty($user_stats_ip)): ?>
         <div class="author-pane-line author-ip">
-          <span class="author-pane-label"><?php print t('IP'); ?>:</span> <?php print $user_stats_ip; ?>
+          <span class="author-pane-label"><?php print t('IP'); ?></br></span> <?php print $user_stats_ip; ?>
         </div>
       <?php endif; ?>
 
