@@ -53,7 +53,8 @@
       <?php /* Last active */ ?>
       <?php if (!empty($last_active)): ?>
         <div class="author-pane-line">
-           <span class="author-pane-label"><?php print t('Last online'); ?></br></span> <?php print t('!time ago', array('!time' => $last_active)); ?>
+           <div class="author-pane-label"><b><?php print t('Last online'); ?></b></div>
+           <?php print t('!time ago', array('!time' => $last_active)); ?>
         </div>
       <?php endif; ?>
 
