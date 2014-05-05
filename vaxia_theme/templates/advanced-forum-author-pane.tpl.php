@@ -28,7 +28,7 @@
       <?php /* User picture / avatar (has div in variable) */ ?>
         <?php
           $artwork_image = file_load($account->field_artwork_image['und'][0]['fid']);
-          $default_filepath = $base_url . drupal_get_path('module', 'vaxia') . '/images/vaxialogo.gif';
+          $default_filepath = drupal_get_path('module', 'vaxia') . '/images/vaxialogo.gif';
           $filepath = isset($artwork_image->uri) ? $artwork_image->uri : $default_filepath;
           $alt = t("@user's picture.", array('@user' => $account->name));
           // If the image does not have a valid Drupal scheme (for eg. HTTP) don't load image styles.
