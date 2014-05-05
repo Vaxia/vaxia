@@ -56,12 +56,6 @@
 
     <?php /* Contact section */ ?>
     <div class="author-pane-section author-pane-contact">
-      <?php /* Contact / Email */ ?>
-      <?php if (!empty($contact)): ?>
-        <div class="author-pane-line author-pane-link-line author-contact">
-          <?php print $contact; ?>
-        </div>
-      <?php endif; ?>
 
       <?php /* Private message */ ?>
       <?php if (!empty($privatemsg)): ?>
