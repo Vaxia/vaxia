@@ -26,9 +26,17 @@
       </div>
 
       <?php /* User picture / avatar (has div in variable) */ ?>
-      <?php if (!empty($picture)): ?>
-        <?php print $picture; ?>
-      <?php endif; ?>
+        <?php
+          $artwork_image = file_load($user->field_artwork_image[$lang][0]['fid']);
+          $default_filepath = drupal_get_path('module', 'vaxia') . '/images/vaxialogo.gif';
+          $filepath = isset($artwork_image->uri) ? $artwork_image->uri : $default_filepath;
+          $alt = t("@user's picture.", array('@user' => $account_name));
+          $picture = theme('image_style',
+            array('style_name' => 'thumbnail', 'path' => $filepath, 'alt' => $alt, 'title' => $alt));
+          if (!empty($picture)) {
+            echo $picture;
+          }
+        ?>
 
       <?php /* User badges */ ?>
       <?php if (!empty($user_badges)): ?>
