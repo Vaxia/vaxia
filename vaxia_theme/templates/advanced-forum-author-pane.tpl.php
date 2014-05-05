@@ -31,8 +31,13 @@
           $default_filepath = $base_url . drupal_get_path('module', 'vaxia') . '/images/vaxialogo.gif';
           $filepath = isset($artwork_image->uri) ? $artwork_image->uri : $default_filepath;
           $alt = t("@user's picture.", array('@user' => $account->name));
-          $picture = theme('image_style',
-            array('style_name' => 'thumbnail', 'path' => $filepath, 'alt' => $alt, 'title' => $alt));
+          // If the image does not have a valid Drupal scheme (for eg. HTTP) don't load image styles.
+          if (module_exists('image') && file_valid_uri($filepath) && $style = variable_get('user_picture_style', '')) {
+            $picture = theme('image_style', array('style_name' => $style, 'path' => $filepath, 'alt' => $alt, 'title' => $alt));
+          }
+          else {
+            $picture = theme('image', array('path' => $filepath, 'alt' => $alt, 'title' => $alt));
+          }
           if (!empty($picture)) {
             echo $picture;
           }
