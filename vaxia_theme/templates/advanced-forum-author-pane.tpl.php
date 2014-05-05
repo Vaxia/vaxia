@@ -21,7 +21,7 @@
     <?php /* General section */ ?>
     <div class="author-pane-section author-pane-general">
       <?php /* Account name */ ?>
-      <div class="author-pane-line author-name">
+      <div class="author-pane-line author-name" style="font-weight:bold;font-size:110%;">
         <?php print $account_name; ?>
       </div>
 
