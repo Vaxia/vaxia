@@ -1,4 +1,4 @@
-name = Artwork
+name = Custom Artwork
 description = Artwork handling for all art.
 core = 7.x
 package = Vaxia

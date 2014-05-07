@@ -1,0 +1,11 @@
+name = Vaxia Players
+description = Views and rules for Vaxia players
+core = 7.x
+package = Vaxia
+version = 7.x-1.0
+project = vaxia_players
+dependencies[] = ctools
+dependencies[] = views
+features[ctools][] = views:views_default:3.0
+features[features_api][] = api:1
+features[views_view][] = tolex_power_search

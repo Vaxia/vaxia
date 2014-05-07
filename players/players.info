@@ -1,7 +1,15 @@
 name = Players
-description = Player handling configuration
+description = Management views and rules for site players
 core = 7.x
-package = Vaxia
+package = RPG
+php = 5.2.4
 version = 7.x-1.0
 project = players
+dependencies[] = features
+dependencies[] = rules
+dependencies[] = views
+features[ctools][] = views:views_default:3.0
 features[features_api][] = api:1
+features[rules_config][] = rules_add_character_and_become_a_player
+features[user_role][] = player
+features[views_view][] = players

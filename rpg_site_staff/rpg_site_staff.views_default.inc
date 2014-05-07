@@ -111,6 +111,325 @@ return $submission->data[1][\'value\'][0];';
   $export['anonymous_mailing_posts'] = $view;
 
   $view = new view();
+  $view->name = 'dblog';
+  $view->description = 'Search log messages';
+  $view->tag = 'Watchdog';
+  $view->base_table = 'watchdog';
+  $view->human_name = 'Search log messages';
+  $view->core = 7;
+  $view->api_version = '3.0';
+  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Master */
+  $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['title'] = 'Search log messages';
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['access']['perm'] = 'access site reports';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '35';
+  $handler->display->display_options['style_plugin'] = 'table';
+  $handler->display->display_options['style_options']['columns'] = array(
+    'severity' => 'severity',
+    'type' => 'severity',
+    'hostname' => 'hostname',
+    'message' => 'message',
+    'timestamp' => 'timestamp',
+    'link' => 'link',
+  );
+  $handler->display->display_options['style_options']['default'] = '-1';
+  $handler->display->display_options['style_options']['info'] = array(
+    'severity' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'type' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'hostname' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'message' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'timestamp' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'link' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+  );
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['empty'] = TRUE;
+  $handler->display->display_options['empty']['area']['content'] = 'There are no logs available at this time.';
+  $handler->display->display_options['empty']['area']['format'] = 'wiki';
+  /* Relationship: Watchdog: User */
+  $handler->display->display_options['relationships']['uid']['id'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['table'] = 'watchdog';
+  $handler->display->display_options['relationships']['uid']['field'] = 'uid';
+  /* Field: Watchdog: Severity */
+  $handler->display->display_options['fields']['severity']['id'] = 'severity';
+  $handler->display->display_options['fields']['severity']['table'] = 'watchdog';
+  $handler->display->display_options['fields']['severity']['field'] = 'severity';
+  $handler->display->display_options['fields']['severity']['watchdog_severity_icon'] = 1;
+  /* Field: Watchdog: Type */
+  $handler->display->display_options['fields']['type']['id'] = 'type';
+  $handler->display->display_options['fields']['type']['table'] = 'watchdog';
+  $handler->display->display_options['fields']['type']['field'] = 'type';
+  /* Field: Watchdog: Hostname */
+  $handler->display->display_options['fields']['hostname']['id'] = 'hostname';
+  $handler->display->display_options['fields']['hostname']['table'] = 'watchdog';
+  $handler->display->display_options['fields']['hostname']['field'] = 'hostname';
+  /* Field: Watchdog: Message */
+  $handler->display->display_options['fields']['message']['id'] = 'message';
+  $handler->display->display_options['fields']['message']['table'] = 'watchdog';
+  $handler->display->display_options['fields']['message']['field'] = 'message';
+  $handler->display->display_options['fields']['message']['watchdog_message_format'] = 1;
+  $handler->display->display_options['fields']['message']['watchdog_message_link'] = 1;
+  /* Field: Watchdog: Timestamp */
+  $handler->display->display_options['fields']['timestamp']['id'] = 'timestamp';
+  $handler->display->display_options['fields']['timestamp']['table'] = 'watchdog';
+  $handler->display->display_options['fields']['timestamp']['field'] = 'timestamp';
+  $handler->display->display_options['fields']['timestamp']['date_format'] = 'privatemsg_current_day';
+  /* Field: User: Name */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'users';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['relationship'] = 'uid';
+  /* Sort criterion: Watchdog: Timestamp */
+  $handler->display->display_options['sorts']['timestamp']['id'] = 'timestamp';
+  $handler->display->display_options['sorts']['timestamp']['table'] = 'watchdog';
+  $handler->display->display_options['sorts']['timestamp']['field'] = 'timestamp';
+  $handler->display->display_options['sorts']['timestamp']['order'] = 'DESC';
+  /* Filter criterion: Watchdog: Hostname */
+  $handler->display->display_options['filters']['hostname']['id'] = 'hostname';
+  $handler->display->display_options['filters']['hostname']['table'] = 'watchdog';
+  $handler->display->display_options['filters']['hostname']['field'] = 'hostname';
+  $handler->display->display_options['filters']['hostname']['group'] = 1;
+  $handler->display->display_options['filters']['hostname']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['hostname']['expose']['operator_id'] = 'hostname_op';
+  $handler->display->display_options['filters']['hostname']['expose']['label'] = 'Hostname';
+  $handler->display->display_options['filters']['hostname']['expose']['use_operator'] = TRUE;
+  $handler->display->display_options['filters']['hostname']['expose']['operator'] = 'hostname_op';
+  $handler->display->display_options['filters']['hostname']['expose']['identifier'] = 'hostname';
+  $handler->display->display_options['filters']['hostname']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['hostname']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    8 => 0,
+    19 => 0,
+    12 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    9 => 0,
+    20 => 0,
+    14 => 0,
+    21 => 0,
+    4 => 0,
+    3 => 0,
+    11 => 0,
+  );
+  /* Filter criterion: Watchdog: Message */
+  $handler->display->display_options['filters']['message']['id'] = 'message';
+  $handler->display->display_options['filters']['message']['table'] = 'watchdog';
+  $handler->display->display_options['filters']['message']['field'] = 'message';
+  $handler->display->display_options['filters']['message']['group'] = 1;
+  $handler->display->display_options['filters']['message']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['message']['expose']['operator_id'] = 'message_op';
+  $handler->display->display_options['filters']['message']['expose']['label'] = 'Message';
+  $handler->display->display_options['filters']['message']['expose']['use_operator'] = TRUE;
+  $handler->display->display_options['filters']['message']['expose']['operator'] = 'message_op';
+  $handler->display->display_options['filters']['message']['expose']['identifier'] = 'message';
+  $handler->display->display_options['filters']['message']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['message']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    8 => 0,
+    19 => 0,
+    12 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    9 => 0,
+    20 => 0,
+    14 => 0,
+    21 => 0,
+    4 => 0,
+    3 => 0,
+    11 => 0,
+  );
+  /* Filter criterion: Watchdog: Timestamp */
+  $handler->display->display_options['filters']['timestamp']['id'] = 'timestamp';
+  $handler->display->display_options['filters']['timestamp']['table'] = 'watchdog';
+  $handler->display->display_options['filters']['timestamp']['field'] = 'timestamp';
+  $handler->display->display_options['filters']['timestamp']['group'] = 1;
+  $handler->display->display_options['filters']['timestamp']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['timestamp']['expose']['operator_id'] = 'timestamp_op';
+  $handler->display->display_options['filters']['timestamp']['expose']['label'] = 'Timestamp';
+  $handler->display->display_options['filters']['timestamp']['expose']['use_operator'] = TRUE;
+  $handler->display->display_options['filters']['timestamp']['expose']['operator'] = 'timestamp_op';
+  $handler->display->display_options['filters']['timestamp']['expose']['identifier'] = 'timestamp';
+  $handler->display->display_options['filters']['timestamp']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['timestamp']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    8 => 0,
+    19 => 0,
+    12 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    9 => 0,
+    20 => 0,
+    14 => 0,
+    21 => 0,
+    4 => 0,
+    3 => 0,
+    11 => 0,
+  );
+  /* Filter criterion: Watchdog: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'watchdog';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['group'] = 1;
+  $handler->display->display_options['filters']['type']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['type']['expose']['operator_id'] = 'type_op';
+  $handler->display->display_options['filters']['type']['expose']['label'] = 'Type';
+  $handler->display->display_options['filters']['type']['expose']['use_operator'] = TRUE;
+  $handler->display->display_options['filters']['type']['expose']['operator'] = 'type_op';
+  $handler->display->display_options['filters']['type']['expose']['identifier'] = 'type';
+  $handler->display->display_options['filters']['type']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['type']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['type']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    8 => 0,
+    19 => 0,
+    12 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    9 => 0,
+    20 => 0,
+    14 => 0,
+    21 => 0,
+    4 => 0,
+    3 => 0,
+    11 => 0,
+  );
+  /* Filter criterion: Watchdog: Severity */
+  $handler->display->display_options['filters']['severity']['id'] = 'severity';
+  $handler->display->display_options['filters']['severity']['table'] = 'watchdog';
+  $handler->display->display_options['filters']['severity']['field'] = 'severity';
+  $handler->display->display_options['filters']['severity']['group'] = 1;
+  $handler->display->display_options['filters']['severity']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['severity']['expose']['operator_id'] = 'severity_op';
+  $handler->display->display_options['filters']['severity']['expose']['label'] = 'Severity';
+  $handler->display->display_options['filters']['severity']['expose']['use_operator'] = TRUE;
+  $handler->display->display_options['filters']['severity']['expose']['operator'] = 'severity_op';
+  $handler->display->display_options['filters']['severity']['expose']['identifier'] = 'severity';
+  $handler->display->display_options['filters']['severity']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['severity']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['severity']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    8 => 0,
+    19 => 0,
+    12 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    9 => 0,
+    20 => 0,
+    14 => 0,
+    21 => 0,
+    4 => 0,
+    3 => 0,
+    11 => 0,
+  );
+  /* Filter criterion: User: Name */
+  $handler->display->display_options['filters']['uid']['id'] = 'uid';
+  $handler->display->display_options['filters']['uid']['table'] = 'users';
+  $handler->display->display_options['filters']['uid']['field'] = 'uid';
+  $handler->display->display_options['filters']['uid']['relationship'] = 'uid';
+  $handler->display->display_options['filters']['uid']['value'] = '';
+  $handler->display->display_options['filters']['uid']['group'] = 1;
+  $handler->display->display_options['filters']['uid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['uid']['expose']['operator_id'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['label'] = 'User';
+  $handler->display->display_options['filters']['uid']['expose']['use_operator'] = TRUE;
+  $handler->display->display_options['filters']['uid']['expose']['operator'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['identifier'] = 'uid';
+  $handler->display->display_options['filters']['uid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['uid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    8 => 0,
+    19 => 0,
+    12 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    9 => 0,
+    20 => 0,
+    14 => 0,
+    21 => 0,
+    4 => 0,
+    3 => 0,
+    11 => 0,
+  );
+
+  /* Display: Search log messages */
+  $handler = $view->new_display('page', 'Search log messages', 'dblog');
+  $handler->display->display_options['display_description'] = 'Search log messages';
+  $handler->display->display_options['path'] = 'admin/reports/dblog_search';
+  $handler->display->display_options['menu']['type'] = 'normal';
+  $handler->display->display_options['menu']['title'] = 'Search log messages';
+  $handler->display->display_options['menu']['description'] = 'View events that have recently been logged.';
+  $handler->display->display_options['menu']['weight'] = '0';
+  $handler->display->display_options['menu']['name'] = 'management';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
+  $handler->display->display_options['tab_options']['weight'] = '0';
+  $export['dblog'] = $view;
+
+  $view = new view();
   $view->name = 'user_activity_totals';
   $view->description = 'Display roughly how active a player has been on the site';
   $view->tag = 'Staff';

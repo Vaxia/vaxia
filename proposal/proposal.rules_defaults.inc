@@ -13,7 +13,7 @@ function proposal_default_rules_configuration() {
       "LABEL" : "Update voter on create comment",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "TAGS" : [ "Staff" ],
+      "TAGS" : [ "Proposals" ],
       "REQUIRES" : [ "rules", "comment" ],
       "ON" : { "comment_insert" : [] },
       "IF" : [
@@ -36,7 +36,7 @@ function proposal_default_rules_configuration() {
       "LABEL" : "Update voter on create node",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "TAGS" : [ "Staff" ],
+      "TAGS" : [ "Proposals" ],
       "REQUIRES" : [ "rules" ],
       "ON" : { "node_insert" : [] },
       "IF" : [
@@ -138,7 +138,7 @@ function proposal_default_rules_configuration() {
       "LABEL" : "Remove voter on expire",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "TAGS" : [ "Staff" ],
+      "TAGS" : [ "Proposals" ],
       "REQUIRES" : [ "rules", "user_stats" ],
       "ON" : { "user_stats_day_older" : [] },
       "IF" : [
@@ -165,7 +165,7 @@ function proposal_default_rules_configuration() {
       "LABEL" : "Add voter on create node",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "TAGS" : [ "Staff" ],
+      "TAGS" : [ "Proposals" ],
       "REQUIRES" : [ "rules" ],
       "ON" : { "node_insert" : [] },
       "IF" : [

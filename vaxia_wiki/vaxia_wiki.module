@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Vaxia Wiki feature.
+ */
+
+include_once 'vaxia_wiki.features.inc';

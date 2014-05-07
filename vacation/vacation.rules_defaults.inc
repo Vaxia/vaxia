@@ -13,7 +13,7 @@ function vacation_default_rules_configuration() {
       "LABEL" : "Vacation end",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "TAGS" : [ "Staff" ],
+      "TAGS" : [ "Vacation" ],
       "REQUIRES" : [ "rules", "vacation" ],
       "ON" : { "vacation_end" : [] },
       "DO" : [
@@ -33,7 +33,7 @@ function vacation_default_rules_configuration() {
       "LABEL" : "Vacation start",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "TAGS" : [ "Staff" ],
+      "TAGS" : [ "Vacation" ],
       "REQUIRES" : [ "rules", "vacation" ],
       "ON" : { "vacation_start" : [] },
       "DO" : [

@@ -87,7 +87,7 @@ function sh_test_default_rules_configuration() {
       "LABEL" : "Send feedback to SH from webform",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "TAGS" : [ "Staff" ],
+      "TAGS" : [ "Storyhosts" ],
       "REQUIRES" : [ "rules", "webform_rules", "php" ],
       "ON" : { "webform_rules_submit" : [] },
       "IF" : [
@@ -654,7 +654,7 @@ function sh_test_default_rules_configuration() {
       "LABEL" : "Update expire on eval",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "TAGS" : [ "Staff" ],
+      "TAGS" : [ "Storyhosts" ],
       "REQUIRES" : [ "rules", "workflow_rules" ],
       "ON" : { "workflow_state_changed" : [] },
       "IF" : [
@@ -686,7 +686,7 @@ function sh_test_default_rules_configuration() {
       "LABEL" : "Update expire on session creation",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "TAGS" : [ "Staff" ],
+      "TAGS" : [ "Storyhosts" ],
       "REQUIRES" : [ "rules", "php" ],
       "ON" : {
         "node_update--session_report" : { "bundle" : "session_report" },
@@ -712,7 +712,7 @@ function sh_test_default_rules_configuration() {
       "LABEL" : "Update expire on session update",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "TAGS" : [ "Staff" ],
+      "TAGS" : [ "Storyhosts" ],
       "REQUIRES" : [ "rules", "php" ],
       "ON" : { "node_update--session_report" : { "bundle" : "session_report" } },
       "IF" : [

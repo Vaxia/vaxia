@@ -1,7 +1,7 @@
 name = Scene record
 description = Inline assist for recording scenes for long term storage or doc
 core = 7.x
-package = Vaxia
+package = RPG
 php = 5.2.4
 version = 7.x-1.0
 project = scene_record

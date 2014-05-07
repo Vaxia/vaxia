@@ -1,7 +1,7 @@
 name = Proposal
-description = Proposal and election system for Vaxia
+description = Proposal and election system
 core = 7.x
-package = Vaxia
+package = RPG
 php = 5.2.4
 version = 7.x-1.0
 project = proposal

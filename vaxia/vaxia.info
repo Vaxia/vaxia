@@ -21,7 +21,6 @@ dependencies[] = node_reference
 dependencies[] = number
 dependencies[] = options
 dependencies[] = php
-dependencies[] = rules
 dependencies[] = select_image
 dependencies[] = spoiler
 dependencies[] = strongarm
