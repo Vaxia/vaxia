@@ -766,7 +766,7 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
     $xp_amount = _character_sheet_get_xp($node->nid, 'spent_xp');
     // Amount to transfer.
     $new_xp = floor($xp_amount * variable_get('vaxia_transfer_percentage', 0.75));
-    $max = ' ';
+    $max = '';
     // Calc amounts.
     if (variable_get('vaxia_transfer_cap_on', TRUE)) {
       $cap = variable_get('vaxia_transfer_cap', 300);
@@ -1099,7 +1099,7 @@ function _vaxia_transfer_xp_submit(&$form, &$form_state) {
       }
       // Amount to transfer.
       $new_xp = floor($xp * variable_get('vaxia_transfer_percentage', 0.75));
-      $max = ' ';
+      $max = '';
       // Now add XP to the new character.
       if (variable_get('vaxia_transfer_cap_on', TRUE)) {
         $cap = variable_get('vaxia_transfer_cap', 300);
