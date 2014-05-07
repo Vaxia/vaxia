@@ -48,13 +48,14 @@ function items_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Details',
-    'weight' => '6',
+    'weight' => '5',
     'children' => array(
       0 => 'field_value',
       1 => 'field_realm',
       2 => 'field_in_shop',
       3 => 'field_base_item_template',
       4 => 'field_type',
+      5 => 'group_percentages',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -120,7 +121,7 @@ function items_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Modifies',
-    'weight' => '7',
+    'weight' => '6',
     'children' => array(
       0 => 'field_item_agility',
       1 => 'field_item_appearance',
@@ -162,7 +163,7 @@ function items_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Notes',
-    'weight' => '8',
+    'weight' => '7',
     'children' => array(
       0 => 'field_player_notes',
       1 => 'field_sh_notes',
@@ -221,7 +222,7 @@ function items_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Notes',
-    'weight' => '12',
+    'weight' => '10',
     'children' => array(
       0 => 'field_player_notes',
       1 => 'field_sh_notes',
@@ -251,7 +252,7 @@ function items_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Overlaps',
-    'weight' => '5',
+    'weight' => '4',
     'children' => array(
       0 => 'field_item_over_agility',
       1 => 'field_item_over_appearance',
@@ -333,7 +334,7 @@ function items_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Overlaps',
-    'weight' => '9',
+    'weight' => '7',
     'children' => array(
       0 => 'field_item_over_agility',
       1 => 'field_item_over_appearance',
@@ -375,7 +376,7 @@ function items_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Penalties',
-    'weight' => '7',
+    'weight' => '6',
     'children' => array(
       0 => 'field_item_pen_agility',
       1 => 'field_item_pen_appearance',
@@ -457,7 +458,7 @@ function items_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Penalties',
-    'weight' => '11',
+    'weight' => '9',
     'children' => array(
       0 => 'field_item_pen_agility',
       1 => 'field_item_pen_appearance',
@@ -499,23 +500,10 @@ function items_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Percentages',
-    'weight' => '4',
+    'weight' => '2',
     'children' => array(
-      0 => 'field_item_perc_agility',
-      1 => 'field_item_perc_appearance',
-      2 => 'field_item_perc_awareness',
-      3 => 'field_item_perc_charisma',
-      4 => 'field_item_perc_constitution',
-      5 => 'field_item_perc_dexterity',
-      6 => 'field_item_perc_endurance',
-      7 => 'field_item_perc_health',
-      8 => 'field_item_perc_intellegence',
-      9 => 'field_item_perc_life',
-      10 => 'field_item_perc_presence',
-      11 => 'field_item_perc_reflexes',
-      12 => 'field_item_perc_skill',
-      13 => 'field_item_perc_spirituality',
-      14 => 'field_item_perc_strength',
+      0 => 'field_item_perc_strength',
+      1 => 'field_type',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -540,23 +528,10 @@ function items_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Percentages',
-    'weight' => '8',
+    'weight' => '7',
     'children' => array(
-      0 => 'field_item_perc_agility',
-      1 => 'field_item_perc_appearance',
-      2 => 'field_item_perc_awareness',
-      3 => 'field_item_perc_charisma',
-      4 => 'field_item_perc_constitution',
-      5 => 'field_item_perc_dexterity',
-      6 => 'field_item_perc_endurance',
-      7 => 'field_item_perc_health',
-      8 => 'field_item_perc_intellegence',
-      9 => 'field_item_perc_life',
-      10 => 'field_item_perc_presence',
-      11 => 'field_item_perc_reflexes',
-      12 => 'field_item_perc_skill',
-      13 => 'field_item_perc_spirituality',
-      14 => 'field_item_perc_strength',
+      0 => 'field_item_perc_strength',
+      1 => 'field_type',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -578,34 +553,20 @@ function items_field_group_info() {
   $field_group->entity_type = 'node';
   $field_group->bundle = 'items';
   $field_group->mode = 'form';
-  $field_group->parent_name = '';
+  $field_group->parent_name = 'group_details';
   $field_group->data = array(
-    'label' => 'Percentages',
-    'weight' => '8',
+    'label' => 'Additional percent',
+    'weight' => '5',
     'children' => array(
-      0 => 'field_item_perc_agility',
-      1 => 'field_item_perc_appearance',
-      2 => 'field_item_perc_awareness',
-      3 => 'field_item_perc_charisma',
-      4 => 'field_item_perc_constitution',
-      5 => 'field_item_perc_dexterity',
-      6 => 'field_item_perc_endurance',
-      7 => 'field_item_perc_health',
-      8 => 'field_item_perc_intellegence',
-      9 => 'field_item_perc_life',
-      10 => 'field_item_perc_presence',
-      11 => 'field_item_perc_reflexes',
-      12 => 'field_item_perc_skill',
-      13 => 'field_item_perc_spirituality',
-      14 => 'field_item_perc_strength',
+      0 => 'field_item_perc_strength',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
-      'label' => 'Percentages',
+      'label' => 'Additional percent',
       'instance_settings' => array(
         'required_fields' => 1,
         'classes' => ' group-percentages field-group-fieldset',
-        'description' => 'Add a percentage of the character (or item if overlapping) stat.',
+        'description' => '',
       ),
       'formatter' => 'collapsed',
     ),
@@ -623,7 +584,7 @@ function items_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Requires',
-    'weight' => '6',
+    'weight' => '5',
     'children' => array(
       0 => 'field_item_required_agility',
       1 => 'field_item_required_appearance',
@@ -705,7 +666,7 @@ function items_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Requires',
-    'weight' => '10',
+    'weight' => '8',
     'children' => array(
       0 => 'field_item_required_agility',
       1 => 'field_item_required_appearance',
@@ -747,7 +708,7 @@ function items_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Modifies',
-    'weight' => '7',
+    'weight' => '8',
     'children' => array(
       0 => 'field_item_agility',
       1 => 'field_item_appearance',

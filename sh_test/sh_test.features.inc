@@ -30,6 +30,14 @@ function sh_test_views_api() {
  */
 function sh_test_node_info() {
   $items = array(
+    'session_report' => array(
+      'name' => t('Session report'),
+      'base' => 'node_content',
+      'description' => t('For SHs after a session, to include a list of users, characters and provide a record of events.'),
+      'has_title' => '1',
+      'title_label' => t('Session name'),
+      'help' => '',
+    ),
     'storyhost_application' => array(
       'name' => t('Storyhost Application'),
       'base' => 'node_content',

@@ -123,7 +123,7 @@ function top_tens_views_default_views() {
 
 <p>The Top Ten shows appreciation for those players who have consistently portrayed  their characters through their actions over time.</p>';
   $handler->display->display_options['footer']['area']['format'] = 'full_html';
-  /* Relationship: Vaxia type xp: Vaxia sheet xp node */
+  /* Relationship: Broken/missing handler */
   $handler->display->display_options['relationships']['nid']['id'] = 'nid';
   $handler->display->display_options['relationships']['nid']['table'] = 'vaxia_xp_type_totals';
   $handler->display->display_options['relationships']['nid']['field'] = 'nid';
@@ -136,7 +136,7 @@ function top_tens_views_default_views() {
   $handler->display->display_options['fields']['nid']['label'] = '';
   $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
   $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
-  /* Field: Vaxia type xp: Vaxia sheet xp type */
+  /* Field: Broken/missing handler */
   $handler->display->display_options['fields']['type']['id'] = 'type';
   $handler->display->display_options['fields']['type']['table'] = 'vaxia_xp_type_totals';
   $handler->display->display_options['fields']['type']['field'] = 'type';
@@ -146,7 +146,7 @@ function top_tens_views_default_views() {
   $handler->display->display_options['fields']['type']['alter']['text'] = '<h2>[type]</h2>';
   $handler->display->display_options['fields']['type']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['type']['element_wrapper_type'] = 'h2';
-  /* Field: Vaxia type xp: Vaxia sheet xp node */
+  /* Field: Broken/missing handler */
   $handler->display->display_options['fields']['xp']['id'] = 'xp';
   $handler->display->display_options['fields']['xp']['table'] = 'vaxia_xp_type_totals';
   $handler->display->display_options['fields']['xp']['field'] = 'xp';
@@ -155,19 +155,33 @@ function top_tens_views_default_views() {
   $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
   $handler->display->display_options['fields']['nothing']['table'] = 'views';
   $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
-  $handler->display->display_options['fields']['nothing']['label'] = 'Default Art';
+  $handler->display->display_options['fields']['nothing']['label'] = '';
+  $handler->display->display_options['fields']['nothing']['exclude'] = TRUE;
   $handler->display->display_options['fields']['nothing']['alter']['text'] = '<img width="40" height="40" src="http://vaxia.org/sites/all/themes/vaxia_theme/logo.png">';
+  $handler->display->display_options['fields']['nothing']['element_label_colon'] = FALSE;
+  /* Field: Field: Image */
+  $handler->display->display_options['fields']['field_artwork_image']['id'] = 'field_artwork_image';
+  $handler->display->display_options['fields']['field_artwork_image']['table'] = 'field_data_field_artwork_image';
+  $handler->display->display_options['fields']['field_artwork_image']['field'] = 'field_artwork_image';
+  $handler->display->display_options['fields']['field_artwork_image']['relationship'] = 'nid';
+  $handler->display->display_options['fields']['field_artwork_image']['label'] = '';
+  $handler->display->display_options['fields']['field_artwork_image']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_artwork_image']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_artwork_image']['settings'] = array(
+    'image_style' => 'tiny-thumbnail',
+    'image_link' => '',
+  );
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['relationship'] = 'nid';
   $handler->display->display_options['fields']['title']['label'] = 'Character';
-  /* Sort criterion: Vaxia type xp: Vaxia sheet xp type */
+  /* Sort criterion: Broken/missing handler */
   $handler->display->display_options['sorts']['type']['id'] = 'type';
   $handler->display->display_options['sorts']['type']['table'] = 'vaxia_xp_type_totals';
   $handler->display->display_options['sorts']['type']['field'] = 'type';
-  /* Sort criterion: Vaxia type xp: Vaxia sheet xp node */
+  /* Sort criterion: Broken/missing handler */
   $handler->display->display_options['sorts']['xp']['id'] = 'xp';
   $handler->display->display_options['sorts']['xp']['table'] = 'vaxia_xp_type_totals';
   $handler->display->display_options['sorts']['xp']['field'] = 'xp';
@@ -181,7 +195,7 @@ function top_tens_views_default_views() {
     'character_sheet' => 'character_sheet',
   );
   $handler->display->display_options['filters']['type_1']['group'] = 1;
-  /* Filter criterion: Vaxia type xp: Vaxia sheet xp type */
+  /* Filter criterion: Broken/missing handler */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'vaxia_xp_type_totals';
   $handler->display->display_options['filters']['type']['field'] = 'type';
@@ -417,8 +431,22 @@ function top_tens_views_default_views() {
   $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
   $handler->display->display_options['fields']['nothing']['table'] = 'views';
   $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
-  $handler->display->display_options['fields']['nothing']['label'] = 'Default artwork';
+  $handler->display->display_options['fields']['nothing']['label'] = '';
+  $handler->display->display_options['fields']['nothing']['exclude'] = TRUE;
   $handler->display->display_options['fields']['nothing']['alter']['text'] = '<img width="40" height="40" src="http://vaxia.org/sites/all/themes/vaxia_theme/logo.png">';
+  $handler->display->display_options['fields']['nothing']['element_label_colon'] = FALSE;
+  /* Field: Field: Image */
+  $handler->display->display_options['fields']['field_artwork_image']['id'] = 'field_artwork_image';
+  $handler->display->display_options['fields']['field_artwork_image']['table'] = 'field_data_field_artwork_image';
+  $handler->display->display_options['fields']['field_artwork_image']['field'] = 'field_artwork_image';
+  $handler->display->display_options['fields']['field_artwork_image']['relationship'] = 'nid';
+  $handler->display->display_options['fields']['field_artwork_image']['label'] = '';
+  $handler->display->display_options['fields']['field_artwork_image']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_artwork_image']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_artwork_image']['settings'] = array(
+    'image_style' => 'tiny-thumbnail',
+    'image_link' => '',
+  );
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';

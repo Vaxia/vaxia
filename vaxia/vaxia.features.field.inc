@@ -152,7 +152,11 @@ function vaxia_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'field_skill',
-      'default_value' => NULL,
+      'default_value' => array(
+        0 => array(
+          'value' => '25',
+        ),
+      ),
       'deleted' => '0',
       'description' => '',
       'display' => array(
@@ -472,87 +476,81 @@ function vaxia_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-character_sheet-field_artwork'.
-  $fields['node-character_sheet-field_artwork'] = array(
+  // Exported field: 'node-character_sheet-field_artwork_image'.
+  $fields['node-character_sheet-field_artwork_image'] = array(
     'field_config' => array(
       'active' => '1',
       'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
-      'field_name' => 'field_artwork',
-      'field_permissions' => array(
-        'type' => '0',
-      ),
+      'field_name' => 'field_artwork_image',
       'foreign keys' => array(
-        'nid' => array(
+        'fid' => array(
           'columns' => array(
-            'nid' => 'nid',
+            'fid' => 'fid',
           ),
-          'table' => 'node',
+          'table' => 'file_managed',
         ),
       ),
       'indexes' => array(
-        'nid' => array(
-          0 => 'nid',
+        'fid' => array(
+          0 => 'fid',
         ),
       ),
       'locked' => '0',
-      'module' => 'node_reference',
+      'module' => 'image',
       'settings' => array(
-        'referenceable_types' => array(
-          'article' => 0,
-          'artwork' => 'artwork',
-          'character_sheet' => 0,
-          'forum' => 0,
-          'items' => 0,
-          'npc' => 0,
-          'page' => 0,
-          'rpg_chatroom' => 0,
-        ),
-        'view' => array(
-          'args' => array(),
-          'display_name' => 'artwork_mine_refs',
-          'view_name' => 'artwork',
-        ),
+        'default_image' => '4125',
+        'uri_scheme' => 'public',
       ),
       'translatable' => '0',
-      'type' => 'node_reference',
+      'type' => 'image',
     ),
     'field_instance' => array(
       'bundle' => 'character_sheet',
-      'default_value' => NULL,
       'deleted' => '0',
       'description' => '',
       'display' => array(
         'default' => array(
           'label' => 'hidden',
-          'module' => 'node_reference',
+          'module' => 'image',
           'settings' => array(
-            'node_reference_view_mode' => 'artwork',
+            'image_link' => '',
+            'image_style' => 'medium',
           ),
-          'type' => 'node_reference_node',
-          'weight' => '3',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
+          'type' => 'image',
+          'weight' => '37',
         ),
       ),
       'entity_type' => 'node',
-      'field_name' => 'field_artwork',
-      'label' => 'Artwork',
+      'field_name' => 'field_artwork_image',
+      'label' => 'Image',
       'required' => 0,
       'settings' => array(
+        'alt_field' => 0,
+        'default_image' => 0,
+        'file_directory' => '',
+        'file_extensions' => 'png gif jpg jpeg',
+        'max_filesize' => '',
+        'max_resolution' => '',
+        'min_resolution' => '',
+        'title_field' => 0,
         'user_register_form' => FALSE,
       ),
       'widget' => array(
-        'active' => 0,
-        'module' => 'select_image',
-        'settings' => array(),
-        'type' => 'select_image_select',
-        'weight' => '4',
+        'active' => 1,
+        'module' => 'imagefield_crop',
+        'settings' => array(
+          'collapsible' => '2',
+          'croparea' => '500x500',
+          'enforce_minimum' => 1,
+          'enforce_ratio' => 1,
+          'preview_image_style' => 'thumbnail',
+          'progress_indicator' => 'throbber',
+          'resolution' => '200x200',
+        ),
+        'type' => 'imagefield_crop_widget',
+        'weight' => '37',
       ),
     ),
   );
@@ -1060,7 +1058,7 @@ function vaxia_field_default_fields() {
         ),
       ),
       'deleted' => '0',
-      'description' => 'Contributes to Agility and Reflexes.',
+      'description' => 'Contributes to Agility and Finesse.',
       'display' => array(
         'default' => array(
           'label' => 'inline',
@@ -1337,7 +1335,7 @@ function vaxia_field_default_fields() {
         ),
       ),
       'deleted' => '0',
-      'description' => 'Contributes to Reflexes and Awareness.',
+      'description' => 'Contributes to Finesse and Awareness.',
       'display' => array(
         'default' => array(
           'label' => 'inline',
@@ -1932,6 +1930,68 @@ Posting does not have to occur all at once, so feel free to spread it out across
         'settings' => array(),
         'type' => 'number',
         'weight' => '15',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-character_sheet-field_needs_review'.
+  $fields['node-character_sheet-field_needs_review'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_needs_review',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => 'Does not need review',
+          1 => 'Needs review',
+        ),
+        'allowed_values_function' => '',
+      ),
+      'translatable' => '0',
+      'type' => 'list_boolean',
+    ),
+    'field_instance' => array(
+      'bundle' => 'character_sheet',
+      'default_value' => array(
+        0 => array(
+          'value' => 0,
+        ),
+      ),
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '9',
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_needs_review',
+      'label' => 'Needs review',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(
+          'display_label' => 0,
+        ),
+        'type' => 'options_onoff',
+        'weight' => '39',
       ),
     ),
   );
@@ -2626,7 +2686,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
       ),
       'entity_type' => 'node',
       'field_name' => 'field_reflexes',
-      'label' => 'Reflexes',
+      'label' => 'Finesse',
       'required' => 1,
       'settings' => array(
         'user_register_form' => FALSE,
@@ -3241,7 +3301,6 @@ Posting does not have to occur all at once, so feel free to spread it out across
   t('Apparent Age');
   t('Apparent Gender');
   t('Appearance');
-  t('Artwork');
   t('Awareness');
   t('Background');
   t('Charisma');
@@ -3249,23 +3308,25 @@ Posting does not have to occur all at once, so feel free to spread it out across
   t('Check this box if the character is intended to be an openly available NPC.');
   t('Conditions');
   t('Constitution');
-  t('Contributes to Agility and Reflexes.');
+  t('Contributes to Agility and Finesse.');
   t('Contributes to Appearance and Health.');
   t('Contributes to Awareness and Presence.');
   t('Contributes to Constitution and Agility.');
+  t('Contributes to Finesse and Awareness.');
   t('Contributes to Health and Constitution.');
   t('Contributes to Presence and Appearance.');
-  t('Contributes to Reflexes and Awareness.');
   t('Description');
   t('Dexterity');
   t('Economy');
   t('Endurance');
+  t('Finesse');
   t('Health');
   t('If the race you want to play is not listed here, select \'Other\'. Other races *do* require oversight and approval from the World department. It is strongly recommended that new players start play as one of the pre-approved races instead to get familiar with the setting and community first.
 <ul>
 <li><a href="http://vaxia.org/wiki/vaxia/races">Races of Vaxia</a></li>
 <li><a href="http://vaxia.org/wiki/sirian/races">Races of Sirian</a></li>
 </ul>');
+  t('Image');
   t('Intelligence');
   t('Items');
   t('Items are added to characters from the Item form, not the Character Sheet form. If you need to add an item to this character, go to the item to set the IC owner.');
@@ -3276,6 +3337,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
   t('Most characters should start play with no conditions. Starting play with a condition requires oversight and approval from the World department. It is strongly recommended that new players start play as one of the pre-approved races instead to get familiar with the setting and community first.');
   t('NPC');
   t('Name');
+  t('Needs review');
   t('Occupation');
   t('Open NPC');
   t('Personality');
@@ -3285,7 +3347,6 @@ Posting does not have to occur all at once, so feel free to spread it out across
   t('Race');
   t('Real Age');
   t('Realm');
-  t('Reflexes');
   t('SH Notes');
   t('Skill');
   t('Spirituality');

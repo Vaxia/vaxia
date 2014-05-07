@@ -9,6 +9,79 @@
  */
 function proposal_default_rules_configuration() {
   $items = array();
+  $items['rpg_site_staff_update_voter_on_create_comment'] = entity_import('rules_config', '{ "rpg_site_staff_update_voter_on_create_comment" : {
+      "LABEL" : "Update voter on create comment",
+      "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
+      "TAGS" : [ "Staff" ],
+      "REQUIRES" : [ "rules", "comment" ],
+      "ON" : { "comment_insert" : [] },
+      "IF" : [
+        { "user_has_role" : {
+            "account" : [ "comment:author" ],
+            "roles" : { "value" : { "19" : "19" } }
+          }
+        }
+      ],
+      "DO" : [
+        { "data_set" : {
+            "data" : [ "comment:author:field-voting-expire" ],
+            "value" : "+6 months"
+          }
+        }
+      ]
+    }
+  }');
+  $items['rpg_site_staff_update_voter_on_create_node'] = entity_import('rules_config', '{ "rpg_site_staff_update_voter_on_create_node" : {
+      "LABEL" : "Update voter on create node",
+      "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
+      "TAGS" : [ "Staff" ],
+      "REQUIRES" : [ "rules" ],
+      "ON" : { "node_insert" : [] },
+      "IF" : [
+        { "user_has_role" : { "account" : [ "node:author" ], "roles" : { "value" : { "19" : "19" } } } }
+      ],
+      "DO" : [
+        { "data_set" : { "data" : [ "node:author:field-voting-expire" ], "value" : "+6 months" } }
+      ]
+    }
+  }');
+  $items['rules_add_voting_player'] = entity_import('rules_config', '{ "rules_add_voting_player" : {
+      "LABEL" : "Add voter on create comment",
+      "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
+      "TAGS" : [ "Staff" ],
+      "REQUIRES" : [ "rules", "comment" ],
+      "ON" : { "comment_insert" : [] },
+      "IF" : [
+        { "NOT user_is_blocked" : { "account" : [ "comment:author" ] } },
+        { "user_has_role" : {
+            "account" : [ "comment:author" ],
+            "roles" : { "value" : { "8" : "8" } }
+          }
+        },
+        { "NOT user_has_role" : {
+            "account" : [ "comment:author" ],
+            "roles" : { "value" : { "19" : "19" } }
+          }
+        }
+      ],
+      "DO" : [
+        { "user_add_role" : {
+            "account" : [ "comment:author" ],
+            "roles" : { "value" : { "19" : "19" } }
+          }
+        },
+        { "data_set" : { "data" : [ "comment:author:field-became-voter" ], "value" : "now" } },
+        { "data_set" : {
+            "data" : [ "comment:author:field-voting-expire" ],
+            "value" : "+6 months"
+          }
+        }
+      ]
+    }
+  }');
   $items['rules_close_proposal'] = entity_import('rules_config', '{ "rules_close_proposal" : {
       "LABEL" : "Close Proposal",
       "PLUGIN" : "reaction rule",
@@ -39,7 +112,6 @@ function proposal_default_rules_configuration() {
   $items['rules_proposal_reciept'] = entity_import('rules_config', '{ "rules_proposal_reciept" : {
       "LABEL" : "Proposal receipt",
       "PLUGIN" : "reaction rule",
-      "ACTIVE" : false,
       "OWNER" : "rules",
       "TAGS" : [ "Proposals" ],
       "REQUIRES" : [ "rules", "php", "webform_rules" ],
@@ -59,6 +131,52 @@ function proposal_default_rules_configuration() {
             "language" : [ "" ]
           }
         }
+      ]
+    }
+  }');
+  $items['rules_remove_non_voting_player'] = entity_import('rules_config', '{ "rules_remove_non_voting_player" : {
+      "LABEL" : "Remove voter on expire",
+      "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
+      "TAGS" : [ "Staff" ],
+      "REQUIRES" : [ "rules", "user_stats" ],
+      "ON" : { "user_stats_day_older" : [] },
+      "IF" : [
+        { "user_has_role" : { "account" : [ "user" ], "roles" : { "value" : { "19" : "19" } } } },
+        { "data_is" : {
+            "data" : [ "user:field-voting-expire" ],
+            "op" : "\\u003C",
+            "value" : "now"
+          }
+        }
+      ],
+      "DO" : [
+        { "user_remove_role" : { "account" : [ "user" ], "roles" : { "value" : { "19" : "19" } } } },
+        { "mail_to_users_of_role" : {
+            "roles" : { "value" : { "4" : "4", "3" : "3" } },
+            "subject" : "[Vaxia] User removed from voting roles",
+            "message" : "The following user has been removed from voting roles due to inactivity.\\r\\n\\r\\n[user:name]\\r\\n\\r\\nThe user has been absent from the site for a long time. They will regain voting privileges when they return (and post) to the site."
+          }
+        }
+      ]
+    }
+  }');
+  $items['vaxia_accounts_add_voting_player_node'] = entity_import('rules_config', '{ "vaxia_accounts_add_voting_player_node" : {
+      "LABEL" : "Add voter on create node",
+      "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
+      "TAGS" : [ "Staff" ],
+      "REQUIRES" : [ "rules" ],
+      "ON" : { "node_insert" : [] },
+      "IF" : [
+        { "NOT user_is_blocked" : { "account" : [ "node:author" ] } },
+        { "user_has_role" : { "account" : [ "node:author" ], "roles" : { "value" : { "8" : "8" } } } },
+        { "NOT user_has_role" : { "account" : [ "node:author" ], "roles" : { "value" : { "19" : "19" } } } }
+      ],
+      "DO" : [
+        { "user_add_role" : { "account" : [ "node:author" ], "roles" : { "value" : { "19" : "19" } } } },
+        { "data_set" : { "data" : [ "node:author:field-became-voter" ], "value" : "now" } },
+        { "data_set" : { "data" : [ "node:author:field-voting-expire" ], "value" : "+6 months" } }
       ]
     }
   }');

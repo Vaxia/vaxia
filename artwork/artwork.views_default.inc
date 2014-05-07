@@ -53,7 +53,7 @@ function artwork_views_default_views() {
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['label'] = '';
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
-  /* Field: Field: Artwork */
+  /* Field: Comment: Artwork */
   $handler->display->display_options['fields']['field_artwork']['id'] = 'field_artwork';
   $handler->display->display_options['fields']['field_artwork']['table'] = 'field_data_field_artwork';
   $handler->display->display_options['fields']['field_artwork']['field'] = 'field_artwork';
@@ -146,7 +146,7 @@ function artwork_views_default_views() {
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['label'] = '';
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
-  /* Field: Content: Image */
+  /* Field: Field: Image */
   $handler->display->display_options['fields']['field_artwork_image']['id'] = 'field_artwork_image';
   $handler->display->display_options['fields']['field_artwork_image']['table'] = 'field_data_field_artwork_image';
   $handler->display->display_options['fields']['field_artwork_image']['field'] = 'field_artwork_image';
@@ -180,7 +180,7 @@ function artwork_views_default_views() {
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['label'] = '';
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
-  /* Field: Content: Image */
+  /* Field: Field: Image */
   $handler->display->display_options['fields']['field_artwork_image']['id'] = 'field_artwork_image';
   $handler->display->display_options['fields']['field_artwork_image']['table'] = 'field_data_field_artwork_image';
   $handler->display->display_options['fields']['field_artwork_image']['field'] = 'field_artwork_image';
@@ -266,7 +266,7 @@ function artwork_views_default_views() {
   $handler->display->display_options['fields']['title']['label'] = '';
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
-  /* Field: Content: Image */
+  /* Field: Field: Image */
   $handler->display->display_options['fields']['field_artwork_image']['id'] = 'field_artwork_image';
   $handler->display->display_options['fields']['field_artwork_image']['table'] = 'field_data_field_artwork_image';
   $handler->display->display_options['fields']['field_artwork_image']['field'] = 'field_artwork_image';

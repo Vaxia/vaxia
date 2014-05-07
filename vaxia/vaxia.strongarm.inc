@@ -114,7 +114,7 @@ function vaxia_strongarm() {
         ),
         'workflow' => array(
           'default' => array(
-            'weight' => '9',
+            'weight' => '10',
             'visible' => FALSE,
           ),
         ),
@@ -146,6 +146,15 @@ function vaxia_strongarm() {
     1 => 'revision',
   );
   $export['node_options_character_sheet'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'node_options_multichoice';
+  $strongarm->value = array(
+    0 => 'status',
+  );
+  $export['node_options_multichoice'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */

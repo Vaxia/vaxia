@@ -136,7 +136,7 @@ function artwork_field_default_fields() {
       'locked' => '0',
       'module' => 'image',
       'settings' => array(
-        'default_image' => 0,
+        'default_image' => '4125',
         'uri_scheme' => 'public',
       ),
       'translatable' => '0',
@@ -282,90 +282,10 @@ function artwork_field_default_fields() {
     ),
   );
 
-  // Exported field: 'user-user-field_artwork'.
-  $fields['user-user-field_artwork'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_artwork',
-      'field_permissions' => array(
-        'type' => '0',
-      ),
-      'foreign keys' => array(
-        'nid' => array(
-          'columns' => array(
-            'nid' => 'nid',
-          ),
-          'table' => 'node',
-        ),
-      ),
-      'indexes' => array(
-        'nid' => array(
-          0 => 'nid',
-        ),
-      ),
-      'locked' => '0',
-      'module' => 'node_reference',
-      'settings' => array(
-        'referenceable_types' => array(
-          'article' => 0,
-          'artwork' => 'artwork',
-          'character_sheet' => 0,
-          'forum' => 0,
-          'items' => 0,
-          'npc' => 0,
-          'page' => 0,
-          'rpg_chatroom' => 0,
-        ),
-        'view' => array(
-          'args' => array(),
-          'display_name' => 'artwork_mine_refs',
-          'view_name' => 'artwork',
-        ),
-      ),
-      'translatable' => '0',
-      'type' => 'node_reference',
-    ),
-    'field_instance' => array(
-      'bundle' => 'user',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'hidden',
-          'module' => 'node_reference',
-          'settings' => array(
-            'node_reference_view_mode' => 'artwork',
-          ),
-          'type' => 'node_reference_node',
-          'weight' => '3',
-        ),
-      ),
-      'entity_type' => 'user',
-      'field_name' => 'field_artwork',
-      'label' => 'Picture',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => 0,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'select_image',
-        'settings' => array(),
-        'type' => 'select_image_select',
-        'weight' => '2',
-      ),
-    ),
-  );
-
   // Translatables
   // Included for use with string extractors like potx.
   t('Credit');
   t('Image');
-  t('Picture');
   t('Website');
 
   return $fields;

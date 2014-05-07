@@ -1,0 +1,7 @@
+name = Players
+description = Player handling configuration
+core = 7.x
+package = Vaxia
+version = 7.x-1.0
+project = players
+features[features_api][] = api:1

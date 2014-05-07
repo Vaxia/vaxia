@@ -26,7 +26,9 @@ function items_views_default_views() {
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'role';
   $handler->display->display_options['access']['role'] = array(
+    3 => '3',
     4 => '4',
+    14 => '14',
     9 => '9',
   );
   $handler->display->display_options['cache']['type'] = 'none';
@@ -467,6 +469,24 @@ return $uid;';
     15 => '15',
   );
   $handler->display->display_options['filters']['sid_1']['group'] = 1;
+
+  /* Display: Evaluate items */
+  $handler = $view->new_display('page', 'Evaluate items', 'evaluate_items');
+  $handler->display->display_options['display_description'] = 'Evaluate items';
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['path'] = 'character-items/evaluate';
+  $handler->display->display_options['menu']['type'] = 'normal';
+  $handler->display->display_options['menu']['title'] = 'Character items';
+  $handler->display->display_options['menu']['description'] = 'Character items';
+  $handler->display->display_options['menu']['weight'] = '0';
+  $handler->display->display_options['menu']['name'] = 'menu-vaxia';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
+  $handler->display->display_options['tab_options']['type'] = 'normal';
+  $handler->display->display_options['tab_options']['title'] = 'Items';
+  $handler->display->display_options['tab_options']['description'] = 'Items';
+  $handler->display->display_options['tab_options']['weight'] = '0';
+  $handler->display->display_options['tab_options']['name'] = 'menu-vaxia';
   $export['character_items'] = $view;
 
   $view = new view();

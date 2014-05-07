@@ -91,7 +91,7 @@ function items_field_default_fields() {
           'label' => 'inline',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '11',
+          'weight' => '12',
         ),
         'default' => array(
           'label' => 'above',
@@ -185,7 +185,7 @@ function items_field_default_fields() {
           'label' => 'hidden',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '9',
+          'weight' => '10',
         ),
         'default' => array(
           'label' => 'inline',
@@ -253,7 +253,7 @@ function items_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => 0,
+          'weight' => '8',
         ),
         'default' => array(
           'label' => 'hidden',
@@ -357,7 +357,7 @@ function items_field_default_fields() {
           'label' => 'inline',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '13',
+          'weight' => '14',
         ),
         'default' => array(
           'label' => 'inline',
@@ -381,7 +381,7 @@ function items_field_default_fields() {
           'display_label' => 1,
         ),
         'type' => 'options_onoff',
-        'weight' => '6',
+        'weight' => '7',
       ),
     ),
   );
@@ -3707,1070 +3707,6 @@ function items_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-items-field_item_perc_agility'.
-  $fields['node-items-field_item_perc_agility'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_item_perc_agility',
-      'foreign keys' => array(),
-      'indexes' => array(),
-      'locked' => '0',
-      'module' => 'number',
-      'settings' => array(
-        'decimal_separator' => '.',
-      ),
-      'translatable' => '0',
-      'type' => 'number_float',
-    ),
-    'field_instance' => array(
-      'bundle' => 'items',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'artwork' => array(
-          'label' => 'inline',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 2,
-            'thousand_separator' => ' ',
-          ),
-          'type' => 'number_decimal',
-          'weight' => '20',
-        ),
-        'default' => array(
-          'label' => 'inline',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 2,
-            'thousand_separator' => ' ',
-          ),
-          'type' => 'number_decimal',
-          'weight' => '15',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_item_perc_agility',
-      'label' => 'Agility',
-      'required' => 0,
-      'settings' => array(
-        'max' => '',
-        'min' => '',
-        'prefix' => '',
-        'suffix' => '%',
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 0,
-        'module' => 'number',
-        'settings' => array(),
-        'type' => 'number',
-        'weight' => '31',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-items-field_item_perc_appearance'.
-  $fields['node-items-field_item_perc_appearance'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_item_perc_appearance',
-      'foreign keys' => array(),
-      'indexes' => array(),
-      'locked' => '0',
-      'module' => 'number',
-      'settings' => array(
-        'decimal_separator' => '.',
-      ),
-      'translatable' => '0',
-      'type' => 'number_float',
-    ),
-    'field_instance' => array(
-      'bundle' => 'items',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'artwork' => array(
-          'label' => 'inline',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 2,
-            'thousand_separator' => ' ',
-          ),
-          'type' => 'number_decimal',
-          'weight' => '28',
-        ),
-        'default' => array(
-          'label' => 'inline',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 2,
-            'thousand_separator' => ' ',
-          ),
-          'type' => 'number_decimal',
-          'weight' => '19',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_item_perc_appearance',
-      'label' => 'Appearance',
-      'required' => 0,
-      'settings' => array(
-        'max' => '',
-        'min' => '',
-        'prefix' => '',
-        'suffix' => '%',
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 0,
-        'module' => 'number',
-        'settings' => array(),
-        'type' => 'number',
-        'weight' => '35',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-items-field_item_perc_awareness'.
-  $fields['node-items-field_item_perc_awareness'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_item_perc_awareness',
-      'foreign keys' => array(),
-      'indexes' => array(),
-      'locked' => '0',
-      'module' => 'number',
-      'settings' => array(
-        'decimal_separator' => '.',
-      ),
-      'translatable' => '0',
-      'type' => 'number_float',
-    ),
-    'field_instance' => array(
-      'bundle' => 'items',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'artwork' => array(
-          'label' => 'inline',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 2,
-            'thousand_separator' => ' ',
-          ),
-          'type' => 'number_decimal',
-          'weight' => '24',
-        ),
-        'default' => array(
-          'label' => 'inline',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 2,
-            'thousand_separator' => ' ',
-          ),
-          'type' => 'number_decimal',
-          'weight' => '17',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_item_perc_awareness',
-      'label' => 'Awareness',
-      'required' => 0,
-      'settings' => array(
-        'max' => '',
-        'min' => '',
-        'prefix' => '',
-        'suffix' => '%',
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 0,
-        'module' => 'number',
-        'settings' => array(),
-        'type' => 'number',
-        'weight' => '33',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-items-field_item_perc_charisma'.
-  $fields['node-items-field_item_perc_charisma'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_item_perc_charisma',
-      'foreign keys' => array(),
-      'indexes' => array(),
-      'locked' => '0',
-      'module' => 'number',
-      'settings' => array(
-        'decimal_separator' => '.',
-      ),
-      'translatable' => '0',
-      'type' => 'number_float',
-    ),
-    'field_instance' => array(
-      'bundle' => 'items',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'artwork' => array(
-          'label' => 'inline',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 2,
-            'thousand_separator' => ' ',
-          ),
-          'type' => 'number_decimal',
-          'weight' => '27',
-        ),
-        'default' => array(
-          'label' => 'inline',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 2,
-            'thousand_separator' => ' ',
-          ),
-          'type' => 'number_decimal',
-          'weight' => '12',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_item_perc_charisma',
-      'label' => 'Charisma',
-      'required' => 0,
-      'settings' => array(
-        'max' => '',
-        'min' => '',
-        'prefix' => '',
-        'suffix' => '%',
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 0,
-        'module' => 'number',
-        'settings' => array(),
-        'type' => 'number',
-        'weight' => '28',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-items-field_item_perc_constitution'.
-  $fields['node-items-field_item_perc_constitution'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_item_perc_constitution',
-      'foreign keys' => array(),
-      'indexes' => array(),
-      'locked' => '0',
-      'module' => 'number',
-      'settings' => array(
-        'decimal_separator' => '.',
-      ),
-      'translatable' => '0',
-      'type' => 'number_float',
-    ),
-    'field_instance' => array(
-      'bundle' => 'items',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'artwork' => array(
-          'label' => 'inline',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 2,
-            'thousand_separator' => ' ',
-          ),
-          'type' => 'number_decimal',
-          'weight' => '18',
-        ),
-        'default' => array(
-          'label' => 'inline',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 2,
-            'thousand_separator' => ' ',
-          ),
-          'type' => 'number_decimal',
-          'weight' => '14',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_item_perc_constitution',
-      'label' => 'Constitution',
-      'required' => 0,
-      'settings' => array(
-        'max' => '',
-        'min' => '',
-        'prefix' => '',
-        'suffix' => '%',
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 0,
-        'module' => 'number',
-        'settings' => array(),
-        'type' => 'number',
-        'weight' => '30',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-items-field_item_perc_dexterity'.
-  $fields['node-items-field_item_perc_dexterity'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_item_perc_dexterity',
-      'foreign keys' => array(),
-      'indexes' => array(),
-      'locked' => '0',
-      'module' => 'number',
-      'settings' => array(
-        'decimal_separator' => '.',
-      ),
-      'translatable' => '0',
-      'type' => 'number_float',
-    ),
-    'field_instance' => array(
-      'bundle' => 'items',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'artwork' => array(
-          'label' => 'inline',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 2,
-            'thousand_separator' => ' ',
-          ),
-          'type' => 'number_decimal',
-          'weight' => '21',
-        ),
-        'default' => array(
-          'label' => 'inline',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 2,
-            'thousand_separator' => ' ',
-          ),
-          'type' => 'number_decimal',
-          'weight' => '9',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_item_perc_dexterity',
-      'label' => 'Dexterity',
-      'required' => 0,
-      'settings' => array(
-        'max' => '',
-        'min' => '',
-        'prefix' => '',
-        'suffix' => '%',
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 0,
-        'module' => 'number',
-        'settings' => array(),
-        'type' => 'number',
-        'weight' => '25',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-items-field_item_perc_endurance'.
-  $fields['node-items-field_item_perc_endurance'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_item_perc_endurance',
-      'foreign keys' => array(),
-      'indexes' => array(),
-      'locked' => '0',
-      'module' => 'number',
-      'settings' => array(
-        'decimal_separator' => '.',
-      ),
-      'translatable' => '0',
-      'type' => 'number_float',
-    ),
-    'field_instance' => array(
-      'bundle' => 'items',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'artwork' => array(
-          'label' => 'inline',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 2,
-            'thousand_separator' => ' ',
-          ),
-          'type' => 'number_decimal',
-          'weight' => '17',
-        ),
-        'default' => array(
-          'label' => 'inline',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 2,
-            'thousand_separator' => ' ',
-          ),
-          'type' => 'number_decimal',
-          'weight' => '7',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_item_perc_endurance',
-      'label' => 'Endurance',
-      'required' => 0,
-      'settings' => array(
-        'max' => '',
-        'min' => '',
-        'prefix' => '',
-        'suffix' => '%',
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 0,
-        'module' => 'number',
-        'settings' => array(),
-        'type' => 'number',
-        'weight' => '23',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-items-field_item_perc_health'.
-  $fields['node-items-field_item_perc_health'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_item_perc_health',
-      'foreign keys' => array(),
-      'indexes' => array(),
-      'locked' => '0',
-      'module' => 'number',
-      'settings' => array(
-        'decimal_separator' => '.',
-      ),
-      'translatable' => '0',
-      'type' => 'number_float',
-    ),
-    'field_instance' => array(
-      'bundle' => 'items',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'artwork' => array(
-          'label' => 'inline',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 2,
-            'thousand_separator' => ' ',
-          ),
-          'type' => 'number_decimal',
-          'weight' => '16',
-        ),
-        'default' => array(
-          'label' => 'inline',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 2,
-            'thousand_separator' => ' ',
-          ),
-          'type' => 'number_decimal',
-          'weight' => '13',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_item_perc_health',
-      'label' => 'Health',
-      'required' => 0,
-      'settings' => array(
-        'max' => '',
-        'min' => '',
-        'prefix' => '',
-        'suffix' => '%',
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 0,
-        'module' => 'number',
-        'settings' => array(),
-        'type' => 'number',
-        'weight' => '29',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-items-field_item_perc_intellegence'.
-  $fields['node-items-field_item_perc_intellegence'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_item_perc_intellegence',
-      'foreign keys' => array(),
-      'indexes' => array(),
-      'locked' => '0',
-      'module' => 'number',
-      'settings' => array(
-        'decimal_separator' => '.',
-      ),
-      'translatable' => '0',
-      'type' => 'number_float',
-    ),
-    'field_instance' => array(
-      'bundle' => 'items',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'artwork' => array(
-          'label' => 'inline',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 2,
-            'thousand_separator' => ' ',
-          ),
-          'type' => 'number_decimal',
-          'weight' => '23',
-        ),
-        'default' => array(
-          'label' => 'inline',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 2,
-            'thousand_separator' => ' ',
-          ),
-          'type' => 'number_decimal',
-          'weight' => '10',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_item_perc_intellegence',
-      'label' => 'Intelligence',
-      'required' => 0,
-      'settings' => array(
-        'max' => '',
-        'min' => '',
-        'prefix' => '',
-        'suffix' => '%',
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 0,
-        'module' => 'number',
-        'settings' => array(),
-        'type' => 'number',
-        'weight' => '26',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-items-field_item_perc_life'.
-  $fields['node-items-field_item_perc_life'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_item_perc_life',
-      'foreign keys' => array(),
-      'indexes' => array(),
-      'locked' => '0',
-      'module' => 'number',
-      'settings' => array(
-        'decimal_separator' => '.',
-      ),
-      'translatable' => '0',
-      'type' => 'number_float',
-    ),
-    'field_instance' => array(
-      'bundle' => 'items',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'artwork' => array(
-          'label' => 'inline',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 2,
-            'thousand_separator' => ' ',
-          ),
-          'type' => 'number_decimal',
-          'weight' => '15',
-        ),
-        'default' => array(
-          'label' => 'inline',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 2,
-            'thousand_separator' => ' ',
-          ),
-          'type' => 'number_decimal',
-          'weight' => '6',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_item_perc_life',
-      'label' => 'Life',
-      'required' => 0,
-      'settings' => array(
-        'max' => '',
-        'min' => '',
-        'prefix' => '',
-        'suffix' => '%',
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 0,
-        'module' => 'number',
-        'settings' => array(),
-        'type' => 'number',
-        'weight' => '22',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-items-field_item_perc_presence'.
-  $fields['node-items-field_item_perc_presence'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_item_perc_presence',
-      'foreign keys' => array(),
-      'indexes' => array(),
-      'locked' => '0',
-      'module' => 'number',
-      'settings' => array(
-        'decimal_separator' => '.',
-      ),
-      'translatable' => '0',
-      'type' => 'number_float',
-    ),
-    'field_instance' => array(
-      'bundle' => 'items',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'artwork' => array(
-          'label' => 'inline',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 2,
-            'thousand_separator' => ' ',
-          ),
-          'type' => 'number_decimal',
-          'weight' => '26',
-        ),
-        'default' => array(
-          'label' => 'inline',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 2,
-            'thousand_separator' => ' ',
-          ),
-          'type' => 'number_decimal',
-          'weight' => '18',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_item_perc_presence',
-      'label' => 'Presence',
-      'required' => 0,
-      'settings' => array(
-        'max' => '',
-        'min' => '',
-        'prefix' => '',
-        'suffix' => '%',
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 0,
-        'module' => 'number',
-        'settings' => array(),
-        'type' => 'number',
-        'weight' => '34',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-items-field_item_perc_reflexes'.
-  $fields['node-items-field_item_perc_reflexes'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_item_perc_reflexes',
-      'foreign keys' => array(),
-      'indexes' => array(),
-      'locked' => '0',
-      'module' => 'number',
-      'settings' => array(
-        'decimal_separator' => '.',
-      ),
-      'translatable' => '0',
-      'type' => 'number_float',
-    ),
-    'field_instance' => array(
-      'bundle' => 'items',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'artwork' => array(
-          'label' => 'inline',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 2,
-            'thousand_separator' => ' ',
-          ),
-          'type' => 'number_decimal',
-          'weight' => '22',
-        ),
-        'default' => array(
-          'label' => 'inline',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 2,
-            'thousand_separator' => ' ',
-          ),
-          'type' => 'number_decimal',
-          'weight' => '16',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_item_perc_reflexes',
-      'label' => 'Reflexes',
-      'required' => 0,
-      'settings' => array(
-        'max' => '',
-        'min' => '',
-        'prefix' => '',
-        'suffix' => '%',
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 0,
-        'module' => 'number',
-        'settings' => array(),
-        'type' => 'number',
-        'weight' => '32',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-items-field_item_perc_skill'.
-  $fields['node-items-field_item_perc_skill'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_item_perc_skill',
-      'foreign keys' => array(),
-      'indexes' => array(),
-      'locked' => '0',
-      'module' => 'number',
-      'settings' => array(
-        'decimal_separator' => '.',
-      ),
-      'translatable' => '0',
-      'type' => 'number_float',
-    ),
-    'field_instance' => array(
-      'bundle' => 'items',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'artwork' => array(
-          'label' => 'inline',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 2,
-            'thousand_separator' => ' ',
-          ),
-          'type' => 'number_decimal',
-          'weight' => '29',
-        ),
-        'default' => array(
-          'label' => 'inline',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 2,
-            'thousand_separator' => ' ',
-          ),
-          'type' => 'number_decimal',
-          'weight' => '20',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_item_perc_skill',
-      'label' => 'Skill',
-      'required' => 0,
-      'settings' => array(
-        'max' => '',
-        'min' => '',
-        'prefix' => '',
-        'suffix' => '%',
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 0,
-        'module' => 'number',
-        'settings' => array(),
-        'type' => 'number',
-        'weight' => '36',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-items-field_item_perc_spirituality'.
-  $fields['node-items-field_item_perc_spirituality'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_item_perc_spirituality',
-      'foreign keys' => array(),
-      'indexes' => array(),
-      'locked' => '0',
-      'module' => 'number',
-      'settings' => array(
-        'decimal_separator' => '.',
-      ),
-      'translatable' => '0',
-      'type' => 'number_float',
-    ),
-    'field_instance' => array(
-      'bundle' => 'items',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'artwork' => array(
-          'label' => 'inline',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 2,
-            'thousand_separator' => ' ',
-          ),
-          'type' => 'number_decimal',
-          'weight' => '25',
-        ),
-        'default' => array(
-          'label' => 'inline',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 2,
-            'thousand_separator' => ' ',
-          ),
-          'type' => 'number_decimal',
-          'weight' => '11',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_item_perc_spirituality',
-      'label' => 'Spirituality',
-      'required' => 0,
-      'settings' => array(
-        'max' => '',
-        'min' => '',
-        'prefix' => '',
-        'suffix' => '%',
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 0,
-        'module' => 'number',
-        'settings' => array(),
-        'type' => 'number',
-        'weight' => '27',
-      ),
-    ),
-  );
-
   // Exported field: 'node-items-field_item_perc_strength'.
   $fields['node-items-field_item_perc_strength'] = array(
     'field_config' => array(
@@ -4791,9 +3727,13 @@ function items_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'items',
-      'default_value' => NULL,
+      'default_value' => array(
+        0 => array(
+          'value' => '0',
+        ),
+      ),
       'deleted' => '0',
-      'description' => '',
+      'description' => 'The percentage this weapon adds to damage, in addition to the amount added by weapon type.',
       'display' => array(
         'artwork' => array(
           'label' => 'inline',
@@ -4805,7 +3745,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '19',
+          'weight' => '1',
         ),
         'default' => array(
           'label' => 'inline',
@@ -4817,7 +3757,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '8',
+          'weight' => '17',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -4828,7 +3768,7 @@ function items_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_item_perc_strength',
-      'label' => 'Strength',
+      'label' => 'Additional percent',
       'required' => 0,
       'settings' => array(
         'max' => '',
@@ -6427,117 +5367,70 @@ function items_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-items-field_percents'.
-  $fields['node-items-field_percents'] = array(
+  // Exported field: 'node-items-field_needs_review'.
+  $fields['node-items-field_needs_review'] = array(
     'field_config' => array(
       'active' => '1',
       'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
-      'field_name' => 'field_percents',
-      'field_permissions' => array(
-        'type' => '1',
-      ),
-      'foreign keys' => array(
-        'format' => array(
-          'columns' => array(
-            'format' => 'format',
-          ),
-          'table' => 'filter_format',
-        ),
-      ),
+      'field_name' => 'field_needs_review',
+      'foreign keys' => array(),
       'indexes' => array(
-        'format' => array(
-          0 => 'format',
+        'value' => array(
+          0 => 'value',
         ),
       ),
       'locked' => '0',
-      'module' => 'text',
-      'settings' => array(),
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => 'Does not need review',
+          1 => 'Needs review',
+        ),
+        'allowed_values_function' => '',
+      ),
       'translatable' => '0',
-      'type' => 'text_long',
+      'type' => 'list_boolean',
     ),
     'field_instance' => array(
       'bundle' => 'items',
       'default_value' => array(
         0 => array(
-          'value' => '',
+          'value' => 0,
         ),
       ),
       'deleted' => '0',
-      'description' => 'Not any additional features or etherial qualities this item has.',
+      'description' => '',
       'display' => array(
         'artwork' => array(
           'label' => 'above',
-          'module' => 'text',
           'settings' => array(),
-          'type' => 'text_default',
-          'weight' => '2',
+          'type' => 'hidden',
+          'weight' => '9',
         ),
         'default' => array(
-          'label' => 'hidden',
-          'module' => 'text',
-          'settings' => array(),
-          'type' => 'text_default',
-          'weight' => '6',
-        ),
-        'teaser' => array(
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => 0,
+          'weight' => '52',
         ),
       ),
       'entity_type' => 'node',
-      'field_name' => 'field_percents',
-      'label' => 'Additional features',
+      'field_name' => 'field_needs_review',
+      'label' => 'Needs review',
       'required' => 0,
       'settings' => array(
-        'better_formats' => array(
-          'allowed_formats' => array(
-            'filtered_html' => 0,
-            'full_html' => 0,
-            'php_code' => 0,
-            'plain_text' => 'plain_text',
-            'whiteboard' => 0,
-            'wiki' => 0,
-          ),
-          'allowed_formats_toggle' => 1,
-          'default_order_toggle' => 0,
-          'default_order_wrapper' => array(
-            'formats' => array(
-              'filtered_html' => array(
-                'weight' => '0',
-              ),
-              'full_html' => array(
-                'weight' => '1',
-              ),
-              'php_code' => array(
-                'weight' => '11',
-              ),
-              'plain_text' => array(
-                'weight' => '10',
-              ),
-              'whiteboard' => array(
-                'weight' => '0',
-              ),
-              'wiki' => array(
-                'weight' => '0',
-              ),
-            ),
-          ),
-        ),
-        'text_processing' => '1',
         'user_register_form' => FALSE,
       ),
       'widget' => array(
         'active' => 1,
-        'module' => 'text',
+        'module' => 'options',
         'settings' => array(
-          'rows' => '2',
+          'display_label' => 0,
         ),
-        'type' => 'text_textarea',
-        'weight' => '4',
+        'type' => 'options_onoff',
+        'weight' => '13',
       ),
     ),
   );
@@ -6689,7 +5582,7 @@ function items_field_default_fields() {
           'label' => 'inline',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '10',
+          'weight' => '11',
         ),
         'default' => array(
           'label' => 'inline',
@@ -6944,13 +5837,11 @@ function items_field_default_fields() {
           'one_use' => 'One Use Item',
           'armor' => 'Armor',
           'shield' => 'Shield',
-          'weapon_light' => 'Weapon - Light',
-          'weapon_medium' => 'Weapon - Medium',
-          'weapon_heavy' => 'Weapon - Heavy',
           'program' => 'Program',
           'misc' => 'Misc',
         ),
-        'allowed_values_function' => '',
+        'allowed_values_function' => 'items_get_item_types',
+        'allowed_values_php' => '',
       ),
       'translatable' => '0',
       'type' => 'list_text',
@@ -6962,19 +5853,23 @@ function items_field_default_fields() {
           'value' => 'misc',
         ),
       ),
+      'default_value_function' => '',
+      'default_value_php' => '',
       'deleted' => '0',
       'description' => 'The type of the item is a required field, as this allows the Vaxian system to correctly handle using the item in dice rulings. If the item doesn\'t fit any other category, use "Misc"',
       'display' => array(
         'artwork' => array(
-          'label' => 'above',
+          'label' => 'inline',
+          'module' => 'list',
           'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
+          'type' => 'list_default',
+          'weight' => '0',
         ),
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
+          'module' => 'list',
           'settings' => array(),
-          'type' => 'hidden',
+          'type' => 'list_default',
           'weight' => '16',
         ),
       ),
@@ -7037,7 +5932,7 @@ function items_field_default_fields() {
           'label' => 'inline',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '12',
+          'weight' => '13',
         ),
         'default' => array(
           'label' => 'inline',
@@ -7068,7 +5963,7 @@ function items_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '5',
+        'weight' => '6',
       ),
     ),
   );
@@ -7076,7 +5971,7 @@ function items_field_default_fields() {
   // Translatables
   // Included for use with string extractors like potx.
   t('A record of comment posts from when the item was created if comments were attached by item assistant on creation. The RP is recorded here to avoid dead links when the original comments are archived.');
-  t('Additional features');
+  t('Additional percent');
   t('Agility');
   t('Appearance');
   t('Awareness');
@@ -7095,7 +5990,7 @@ function items_field_default_fields() {
   t('Intellegence');
   t('Intelligence');
   t('Life');
-  t('Not any additional features or etherial qualities this item has.');
+  t('Needs review');
   t('Player Notes');
   t('Presence');
   t('Private SH Notes');
@@ -7106,6 +6001,7 @@ function items_field_default_fields() {
   t('Skill');
   t('Spirituality');
   t('Strength');
+  t('The percentage this weapon adds to damage, in addition to the amount added by weapon type.');
   t('The type of the item is a required field, as this allows the Vaxian system to correctly handle using the item in dice rulings. If the item doesn\'t fit any other category, use "Misc"');
   t('Type');
   t('Value');

@@ -211,26 +211,31 @@ function rpg_site_staff_field_default_fields() {
           'article' => 0,
           'artwork' => 0,
           'character_sheet' => 'character_sheet',
-          'faq_article' => 0,
+          'event' => 0,
           'forum' => 0,
           'items' => 0,
           'long_answer' => 0,
           'matching' => 0,
           'multichoice' => 0,
-          'npc' => 0,
           'page' => 0,
+          'proposal' => 0,
           'quiz' => 0,
           'quiz_directions' => 0,
           'quiz_evaluation' => 0,
           'rpg_chatroom' => 0,
+          'scene' => 0,
           'session_report' => 0,
           'short_answer' => 0,
+          'storyhost_application' => 0,
+          'strike' => 0,
           'truefalse' => 0,
+          'webform' => 0,
+          'wiki_page' => 0,
         ),
         'view' => array(
           'args' => array(),
-          'display_name' => '',
-          'view_name' => '',
+          'display_name' => 'active_characters_ref',
+          'view_name' => 'character_sheet_moderation',
         ),
       ),
       'translatable' => '0',
@@ -693,7 +698,7 @@ function rpg_site_staff_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_text',
-        'weight' => '15',
+        'weight' => '34',
       ),
     ),
   );
@@ -773,7 +778,7 @@ function rpg_site_staff_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_text',
-        'weight' => '13',
+        'weight' => '32',
       ),
     ),
   );
@@ -816,14 +821,22 @@ function rpg_site_staff_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'inline',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '9',
+          'module' => 'date',
+          'settings' => array(
+            'format_type' => 'long',
+            'fromto' => 'both',
+            'multiple_from' => '',
+            'multiple_number' => '',
+            'multiple_to' => '',
+            'show_repeat_rule' => 'show',
+          ),
+          'type' => 'date_default',
+          'weight' => '18',
         ),
       ),
       'entity_type' => 'user',
       'field_name' => 'field_became_voter',
-      'label' => 'Eligible for Proposals',
+      'label' => 'Became Proposal Voter',
       'required' => 0,
       'settings' => array(
         'default_value' => 'blank',
@@ -845,7 +858,7 @@ function rpg_site_staff_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_text',
-        'weight' => '16',
+        'weight' => '25',
       ),
     ),
   );
@@ -886,7 +899,7 @@ function rpg_site_staff_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_integer',
-          'weight' => '2',
+          'weight' => '4',
         ),
       ),
       'entity_type' => 'user',
@@ -905,7 +918,7 @@ function rpg_site_staff_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '6',
+        'weight' => '21',
       ),
     ),
   );
@@ -915,10 +928,10 @@ function rpg_site_staff_field_default_fields() {
   t('Additional notes');
   t('Additional notes and information for this session. ASH who are in training should feel free to use this to upload their session notes in case Academy needs to review them.');
   t('Became Evaluator');
+  t('Became Proposal Voter');
   t('Became SH');
   t('Body');
   t('Characters involved');
-  t('Eligible for Proposals');
   t('Forums');
   t('How good was this session?');
   t('If this session was part of a series, enter the saga name. If it is a standalone session, leave this blank.');

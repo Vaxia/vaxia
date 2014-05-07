@@ -539,11 +539,9 @@ function npcs_views_default_views() {
   $handler->display->display_options['fields']['field_is_npc']['id'] = 'field_is_npc';
   $handler->display->display_options['fields']['field_is_npc']['table'] = 'field_data_field_is_npc';
   $handler->display->display_options['fields']['field_is_npc']['field'] = 'field_is_npc';
-  $handler->display->display_options['fields']['field_is_npc']['label'] = '';
-  $handler->display->display_options['fields']['field_is_npc']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_is_npc']['label'] = 'NPC status';
   $handler->display->display_options['fields']['field_is_npc']['alter']['alter_text'] = TRUE;
   $handler->display->display_options['fields']['field_is_npc']['alter']['text'] = 'NPC';
-  $handler->display->display_options['fields']['field_is_npc']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_is_npc']['empty'] = 'Not an NPC';
   $handler->display->display_options['fields']['field_is_npc']['type'] = 'list_key';
   /* Field: Content: Open NPC */

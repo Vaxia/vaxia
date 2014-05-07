@@ -23,7 +23,7 @@ function vaxia_field_group_info() {
     'label' => 'Art',
     'weight' => '2',
     'children' => array(
-      0 => 'field_artwork',
+      0 => 'field_artwork_image',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -49,7 +49,7 @@ function vaxia_field_group_info() {
     'label' => 'Art',
     'weight' => '6',
     'children' => array(
-      0 => 'field_artwork',
+      0 => 'field_artwork_image',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -75,9 +75,7 @@ function vaxia_field_group_info() {
   $field_group->data = array(
     'label' => 'Associates',
     'weight' => '6',
-    'children' => array(
-      0 => 'field_npcs',
-    ),
+    'children' => array(),
     'format_type' => 'fieldset',
     'format_settings' => array(
       'formatter' => 'collapsible',

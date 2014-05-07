@@ -99,10 +99,10 @@ function items_strongarm() {
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '13',
+          'weight' => '11',
         ),
         'workflow' => array(
-          'weight' => '14',
+          'weight' => '12',
         ),
       ),
       'display' => array(
@@ -112,7 +112,7 @@ function items_strongarm() {
             'visible' => TRUE,
           ),
           'artwork' => array(
-            'weight' => '14',
+            'weight' => '15',
             'visible' => FALSE,
           ),
         ),
@@ -122,7 +122,7 @@ function items_strongarm() {
             'visible' => FALSE,
           ),
           'artwork' => array(
-            'weight' => '15',
+            'weight' => '16',
             'visible' => FALSE,
           ),
         ),

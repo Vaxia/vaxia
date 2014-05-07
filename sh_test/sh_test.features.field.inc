@@ -176,7 +176,7 @@ function sh_test_field_default_fields() {
       ),
       'entity_type' => 'user',
       'field_name' => 'field_took_ash1',
-      'label' => 'Took ASH Test One',
+      'label' => 'Last Took ASH Test One',
       'required' => 0,
       'settings' => array(
         'default_value' => 'blank',
@@ -198,7 +198,7 @@ function sh_test_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_text',
-        'weight' => '7',
+        'weight' => '27',
       ),
     ),
   );
@@ -256,7 +256,7 @@ function sh_test_field_default_fields() {
       ),
       'entity_type' => 'user',
       'field_name' => 'field_took_ash2',
-      'label' => 'Took ASH Test Two',
+      'label' => 'Last Took ASH Test Two',
       'required' => 0,
       'settings' => array(
         'default_value' => 'blank',
@@ -278,7 +278,7 @@ function sh_test_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_text',
-        'weight' => '8',
+        'weight' => '28',
       ),
     ),
   );
@@ -336,7 +336,7 @@ function sh_test_field_default_fields() {
       ),
       'entity_type' => 'user',
       'field_name' => 'field_took_ash3',
-      'label' => 'Took ASH Test Three',
+      'label' => 'Last Took ASH Test Three',
       'required' => 0,
       'settings' => array(
         'default_value' => 'blank',
@@ -358,7 +358,7 @@ function sh_test_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_text',
-        'weight' => '9',
+        'weight' => '29',
       ),
     ),
   );
@@ -411,7 +411,7 @@ function sh_test_field_default_fields() {
             'show_repeat_rule' => 'show',
           ),
           'type' => 'date_default',
-          'weight' => '9',
+          'weight' => '7',
         ),
       ),
       'entity_type' => 'user',
@@ -438,7 +438,7 @@ function sh_test_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_text',
-        'weight' => '14',
+        'weight' => '33',
       ),
     ),
   );
@@ -446,9 +446,9 @@ function sh_test_field_default_fields() {
   // Translatables
   // Included for use with string extractors like potx.
   t('Answers');
-  t('Took ASH Test One');
-  t('Took ASH Test Three');
-  t('Took ASH Test Two');
+  t('Last Took ASH Test One');
+  t('Last Took ASH Test Three');
+  t('Last Took ASH Test Two');
   t('Took Eval Test');
 
   return $fields;
