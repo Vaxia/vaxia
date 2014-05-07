@@ -557,7 +557,7 @@ function _vaxia_admin_settings() {
   );
   $form['point_cost']['vaxia_transfer_percentage'] = array(
     '#title' => 'Percent of XP',
-    '#description' => 'Percent of XP when transferred that goes to XP, the rest is banked.',
+    '#description' => 'Percent of XP when transferred that goes to XP.',
     '#type' => 'textfield',
     '#default_value' => variable_get('vaxia_transfer_percentage', 0.75),
   );
