@@ -763,7 +763,7 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
       '#markup' => t('IF YOU TRANSFER YOUR CHARACTER XP: <br/> YOUR CHARACTER WILL NOT BE PLAYABLE AFTERWARDS.'),
     );
     $percent = variable_get('vaxia_transfer_percentage', 0.75);
-    $xp_amount = _character_sheet_get_xp($node->nid, 'spent_xp') * $percent;
+    $xp_amount = _character_sheet_get_xp($node->nid, 'spent_xp');
     // Amount to transfer.
     $new_xp = floor($xp_amount * variable_get('vaxia_transfer_percentage', 0.75));
     $max = ' ';
@@ -781,7 +781,7 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
       '#markup' => t('When transferred, %percent of the XP (%new_xp out of %xp%max) will be placed on the selected character sheet immediately and the rest will be '.
         'added to the character bank. Banked and other XP for this sheet will not be transferred. At that time, the character will be flagged '.
          'as inactive and will no longer be available to post. This cannot be undone without intervention by an administrator so be sure you '.
-         'mean to do this.', array('%percent' => $percent . '%', '%new_xp' => floor($new_xp), '%xp' => floor($xp), '%max' => $max)),
+         'mean to do this.', array('%percent' => $percent . '%', '%new_xp' => floor($new_xp), '%xp' => floor($xp_amount), '%max' => $max)),
     );
     $form['transfer']['confirm']['character'] = array(
       '#type' => 'hidden',
