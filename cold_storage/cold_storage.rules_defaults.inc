@@ -22,7 +22,7 @@ function cold_storage_default_rules_configuration() {
       "DO" : [
         { "views_bulk_operations_action_load_list" : {
             "USING" : {
-              "view" : "character_sheet_moderation|character_sheets_mine",
+              "view" : "vaxia_character_sheets|character_sheets_mine",
               "args" : "[account:uid]"
             },
             "PROVIDE" : { "entity_list" : { "entity_list" : "A list of entities" } }
@@ -58,7 +58,7 @@ function cold_storage_default_rules_configuration() {
       "DO" : [
         { "views_bulk_operations_action_load_list" : {
             "USING" : {
-              "view" : "character_sheet_moderation|character_sheets_mine",
+              "view" : "vaxia_character_sheets|character_sheets_mine",
               "args" : "[account:uid]"
             },
             "PROVIDE" : { "entity_list" : { "entity_list" : "A list of entities" } }

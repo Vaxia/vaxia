@@ -15,10 +15,9 @@ function vaxia_user_default_permissions() {
     'name' => 'edit any rpg_chatroom content',
     'roles' => array(
       0 => 'administrator',
-      1 => 'administrator-vaxia',
-      2 => 'storyteller',
-      3 => 'storyteller-assistant',
-      4 => 'storyteller-candidate',
+      1 => 'storyteller',
+      2 => 'storyteller-assistant',
+      3 => 'storyteller-candidate',
     ),
     'module' => 'node',
   );

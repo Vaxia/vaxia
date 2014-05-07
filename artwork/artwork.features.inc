@@ -92,32 +92,32 @@ function artwork_workflow_default_workflows() {
         'target_state' => 'approved',
       ),
       1 => array(
-        'roles' => 'workflow_features_author_name,administrator-vaxia,administrator',
+        'roles' => 'workflow_features_author_name,administrator',
         'state' => 'draft',
         'target_state' => 'approved',
       ),
       2 => array(
-        'roles' => 'workflow_features_author_name,administrator-vaxia,administrator',
+        'roles' => 'workflow_features_author_name,administrator',
         'state' => 'draft',
         'target_state' => 'removed from site',
       ),
       3 => array(
-        'roles' => 'workflow_features_author_name,administrator-vaxia,administrator',
+        'roles' => 'workflow_features_author_name,administrator',
         'state' => 'approved',
         'target_state' => 'draft',
       ),
       4 => array(
-        'roles' => 'workflow_features_author_name,administrator-vaxia,administrator',
+        'roles' => 'workflow_features_author_name,administrator',
         'state' => 'approved',
         'target_state' => 'removed from site',
       ),
       5 => array(
-        'roles' => 'administrator-vaxia,administrator',
+        'roles' => 'administrator',
         'state' => 'removed from site',
         'target_state' => 'draft',
       ),
       6 => array(
-        'roles' => 'administrator-vaxia,administrator',
+        'roles' => 'administrator',
         'state' => 'removed from site',
         'target_state' => 'approved',
       ),

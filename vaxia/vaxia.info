@@ -109,3 +109,4 @@ features[variable][] = node_options_character_sheet
 features[variable][] = node_options_multichoice
 features[variable][] = node_preview_character_sheet
 features[variable][] = node_submitted_character_sheet
+features[views_view][] = vaxia_character_sheets
