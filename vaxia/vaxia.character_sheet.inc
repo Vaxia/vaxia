@@ -778,10 +778,11 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
     $percent = $percent * 100;
     $form['transfer']['alert']['details'] = array(
       '#type' => 'item',
-      '#markup' => t('When transferred, %percent of the XP (%new_xp out of %xp%max) will be placed on the selected character sheet immediately and the rest will be '.
-        'added to the character bank. Banked and other XP for this sheet will not be transferred. At that time, the character will be flagged '.
-         'as inactive and will no longer be available to post. This cannot be undone without intervention by an administrator so be sure you '.
-         'mean to do this.', array('%percent' => $percent . '%', '%new_xp' => floor($new_xp), '%xp' => floor($xp_amount), '%max' => $max)),
+      '#markup' => t('When transferred, %percent of the XP (%new_xp out of %xp%max) will be placed on the selected character sheet. If the character is new, ' .
+        'the XP will be immediately spendable, otherwise it will be added to the character bank. Banked and other XP for this sheet will not be transferred. ' .
+        'Once transferred, this character will be flagged as inactive and will no longer be available to post. This cannot be undone without intervention by an ' .
+        'administrator so be sure you mean to do this.',
+        array('%percent' => $percent . '%', '%new_xp' => floor($new_xp), '%xp' => floor($xp_amount), '%max' => $max)),
     );
     $form['transfer']['confirm']['character'] = array(
       '#type' => 'hidden',
@@ -1115,7 +1116,7 @@ function _vaxia_transfer_xp_submit(&$form, &$form_state) {
       drupal_set_message(t('Transfering %new_xp XP out of %xp%max from #@nid @title to #@nid2 @title2',
         array('%new_xp' => $new_xp, '%xp' => $xp, '%max' => $max, '@nid' => $old_character->nid,
         '@title' => $old_character->title, '@nid2' => $new_character->nid, '@title2' => $new_character->title)));
-
+      // New character?
       $new_spent = _character_sheet_get_xp($new_character->nid, 'spent_xp');
       if ($new_spent > 5) { // 5 or under for spent xp limits for transfer.
         _character_sheet_update_xp($new_character->nid, $new_xp, 'bxp');
