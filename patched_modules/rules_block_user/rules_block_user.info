@@ -1,0 +1,13 @@
+name = Rules Block/Unblock User
+description = Adds an rule event for when a user is blocked or unblocked.
+core = 7.x
+version = 7.x-1.0
+package = Rules
+dependencies[] = rules
+
+; Information added by drupal.org packaging script on 2013-07-27
+version = "7.x-1.0"
+core = "7.x"
+project = "rules_block_user"
+datestamp = "1374917188"
+
