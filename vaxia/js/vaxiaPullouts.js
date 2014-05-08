@@ -77,7 +77,7 @@ Drupal.behaviors.doPullouts = {
 
           // Set listener for all flaps now that they've been created.
           $('.jsPulloutFlap a.jsPulloutFlapLabel').click(function() {
-            toggle_flap( $(this).parent().prop('id') );
+            toggle_flap( $(this).parent().attr('id') );
             return false;
           });
         };
