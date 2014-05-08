@@ -1,0 +1,68 @@
+<?php
+// $Id$
+
+/**
+ * @file
+ * Install, update and uninstall functions for the vacation module.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function vacation_schema() {
+  $schema['vacation'] = array(
+    'description' => 'Table that records vacations and settings for the vacation.',
+    'fields' => array(
+      'vid' => array(
+        'type' => 'serial',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Vacation ID.',
+      ),
+      'uid' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Uid.',
+      ),
+      'start' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Unix timestamp of vacation start.',
+      ),
+      'end' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Unix timestamp of vacation end.',
+      ),
+      'positions' => array(
+        'type' => 'text',
+        'not null' => TRUE,
+        'size' => 'big',
+        'description' => 'Serialized array of roles preserved for return.',
+      ),
+    ),
+    'primary key' => array('vid'),
+  );
+  return $schema;
+}
+
+/**
+ * Implements hook_install().
+ */
+function vacation_install() {}
+
+/**
+ * Implements hook_uninstall().
+ */
+function vacation_uninstall() {}
+
+/**
+ * Implements hook_update_N().
+ */
+function vacation_update_7001(&$sandbox) {
+  // Add the schema.
+  drupal_install_schema('vacation');
+}
