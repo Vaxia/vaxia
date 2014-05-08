@@ -818,6 +818,8 @@ function dice_ruler_form($form, &$form_state) {
         '#markup' => $help,
         '#prefix' => '<div id="dice_ruler_dice_help_' . $type . '" class="secondary-help">',
         '#suffix' => '</div>',
+        '#collapsible' => TRUE,
+        '#collapsed' => TRUE,
         '#states' => array(
           'invisible' => array(
             ':input[name="actions"]' => array('value' => 'hidden'),
