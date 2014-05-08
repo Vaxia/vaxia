@@ -15,8 +15,8 @@ function vacation_schema() {
     'fields' => array(
       'vid' => array(
         'type' => 'serial',
+        'unsigned' => TRUE,
         'not null' => TRUE,
-        'default' => 0,
         'description' => 'Vacation ID.',
       ),
       'uid' => array(
