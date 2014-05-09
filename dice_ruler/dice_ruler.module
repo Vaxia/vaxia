@@ -814,8 +814,7 @@ function dice_ruler_form($form, &$form_state) {
     if (!empty($help)) {
       $form['dice_ruler_dice_help_' . $type] = array(
         '#title' => ucwords(str_replace('_', ' ', $type)) . ' ' . t('Help'),
-        '#type' => 'item',
-        '#markup' => $help,
+        '#type' => 'fieldset',
         '#prefix' => '<div id="dice_ruler_dice_help_' . $type . '" class="secondary-help">',
         '#suffix' => '</div>',
         '#collapsible' => TRUE,
@@ -825,6 +824,10 @@ function dice_ruler_form($form, &$form_state) {
             ':input[name="actions"]' => array('value' => 'hidden'),
             ),
           ),
+        );
+      $form['dice_ruler_dice_help_' . $type]['help'] = array(
+        '#type' => 'item',
+        '#markup' => $help,
         );
     }
   }
