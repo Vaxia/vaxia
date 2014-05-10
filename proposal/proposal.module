@@ -508,8 +508,11 @@ function proposal_form_webform_components_form_alter(&$form, &$form_state, $form
  * Implements hook_form_FORM_ID_alter().
  */
 function proposal_form_webform_component_edit_form_alter(&$form, &$form_state, $form_id) {
-  $node = $form['#node'];
+  $node = isset($form['#node']) ? $form['#node'] : '';
   // If we're not looking at a proposal, bail out with the normal view.
+  if (!isset($node->type)) {
+    return; // Use defaults.
+  }
   if ($node->type != 'proposal') {
     return; // Use defaults.
   }
