@@ -63,7 +63,7 @@ function _item_uses_admin_settings($form, &$form_state) {
 /**
  * Implementation of hook_dice_roller_form_submit(), which returns a form for handling basic style rolls.
  */
-function vaxia_dice_roller_form_submit($content, $origin = 'node') {
+function item_uses_dice_roller_form_submit($content, $origin = 'node') {
   // Use it as much as you want.
   if (user_access('use items indefinately')) {
     return;
