@@ -1,0 +1,116 @@
+<?php
+/**
+ * @file
+ * Code for the Item usesƒ feature.
+ */
+
+/**
+ * Implements hook_permission().
+ */
+function item_uses_permission() {
+  return array(
+    'use items indefinately' => array(
+      'title' => t('use items indefinately'),
+      'description' => t('Use items indefinately.'),
+    ),
+    'administer item uses' => array(
+      'title' => t('administer item uses'),
+      'description' => t('Administer item uses.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function item_uses_menu() {
+  $items['admin/vaxia/item_uses'] = array(
+    'title' => 'Item uses configuration',
+    'description' => 'Configure item uses',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('_item_uses_admin_settings'),
+    'access arguments' => array('administer item uses'),
+  );
+  return $items;
+}
+/**
+ * Implementation of admin settings form.
+ */
+function _item_uses_admin_settings($form, &$form_state) {
+  $form['item_uses_active'] = array(
+    '#title' => t('Track item uses'),
+    '#type' => 'checkbox',
+    '#default_value' => variable_get('item_uses_active', TRUE),
+  );
+  $workflow_options = array();
+  $workflows = workflow_get_workflows();
+  foreach ($workflows as $workflow) {
+    $states = workflow_get_workflow_states_by_wid($workflow->wid);
+    foreach ($states as $state) {
+      $workflow_options[$state->sid] = $workflow->name . ': ' . $state->state;
+    }
+  }
+  $form['item_uses_workflow'] = array(
+    '#title' => 'Item used up workflow',
+    '#description' => 'Workflow state items that have been used up end up in.',
+    '#type' => 'select',
+    '#options' => $workflow_options,
+    '#default_value' => variable_get('item_uses_workflow', ''),
+  );
+  return system_settings_form($form);
+}
+
+/**
+ * Implementation of hook_dice_roller_form_submit(), which returns a form for handling basic style rolls.
+ */
+function vaxia_dice_roller_form_submit($content, $origin = 'node') {
+  // Use it as much as you want.
+  if (user_access('use items indefinately')) {
+    return;
+  }
+  // Allow for turning it all off.
+  if (variable_get('item_uses_active', TRUE) == FALSE) {
+    return;
+  }
+  // Uses matter, so keep looping.
+  switch ($origin) {
+    case 'comment':
+      if (!empty($content->vaxia_rolls)) {
+        $lang = $content->language;
+        // Gather the character information if it's set.
+        $character = '';
+        if (isset($content->field_comment_character[$lang][0]['nid'])) {
+          $character = node_load($content->field_comment_character[$lang][0]['nid']);
+        }
+        // Check items against stats.
+        if (isset($content->vaxia_rolls['items'])) {
+          // If character set, get the stats and items.
+          if (!empty($character)) {
+            // Loop for each item.
+            foreach ($content->vaxia_rolls['items'] as $item) {
+              $item = node_load($item);
+              $uses = isset($item->field_item_uses[$lang][0]['value']) ? $item->field_item_uses[$lang][0]['value'] : -1;
+              if ($uses > -1) {
+                $uses--;
+                if ($uses == 0) {
+                  // If we're out of uses, unpublish and remove from character.
+                  $item->field_character_owner[$lang][0]['nid'] = '';
+                  $item->status = 0;
+                  // Update item to removed from game.
+                  $workflow = variable_get('item_uses_workflow', '');
+                  workflow_execute_transition($item, $workflow, t('Item uses ran out, removed from game'), TRUE);
+                }
+                else {
+                  // Reduce uses.
+                  $item->field_item_uses[$lang][0]['value'] = $uses;
+                }
+                // Save changes.
+                node_save($item);
+              }
+            }
+          }
+        }
+      } // End check for empty rolls.
+      break;
+  }
+}
