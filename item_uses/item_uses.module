@@ -94,42 +94,38 @@ function _item_uses_content_update($content) {
     return;
   }
   // Uses matter, so keep looping.
-  switch ($origin) {
-    case 'comment':
-      $lang = $content->language;
-      // Gather the character information if it's set.
-      $character = '';
-      if (isset($content->field_comment_character[$lang][0]['nid'])) {
-        $character = node_load($content->field_comment_character[$lang][0]['nid']);
-      }
-      // Check items against stats.
-      if (isset($content->vaxia_rolls['items'])) {
-        // If character set, get the stats and items.
-        if (!empty($character)) {
-          // Loop for each item.
-          foreach ($content->vaxia_rolls['items'] as $item) {
-            $item = node_load($item);
-            $uses = isset($item->field_item_uses[$lang][0]['value']) ? $item->field_item_uses[$lang][0]['value'] : -1;
-            if ($uses > -1) {
-              $uses--;
-              if ($uses == 0) {
-                // If we're out of uses, unpublish and remove from character.
-                $item->field_character_owner[$lang][0]['nid'] = '';
-                $item->status = 0;
-                // Update item to removed from game.
-                $workflow = variable_get('item_uses_workflow', '');
-                workflow_execute_transition($item, $workflow, t('Item uses ran out, removed from game'), TRUE);
-              }
-              else {
-                // Reduce uses.
-                $item->field_item_uses[$lang][0]['value'] = $uses;
-              }
-              // Save changes.
-              node_save($item);
-            }
-          }
-        }
-      } // End check for empty rolls.
-      break;
+  $lang = $content->language;
+  // Gather the character information if it's set.
+  $character = '';
+  if (isset($content->field_comment_character[$lang][0]['nid'])) {
+    $character = node_load($content->field_comment_character[$lang][0]['nid']);
   }
+  // Check items against stats.
+  if (isset($content->vaxia_rolls['items'])) {
+    // If character set, get the stats and items.
+    if (!empty($character)) {
+      // Loop for each item.
+      foreach ($content->vaxia_rolls['items'] as $item) {
+        $item = node_load($item);
+        $uses = isset($item->field_item_uses[$lang][0]['value']) ? $item->field_item_uses[$lang][0]['value'] : -1;
+        if ($uses > -1) {
+          $uses--;
+          if ($uses == 0) {
+            // If we're out of uses, unpublish and remove from character.
+            $item->field_character_owner[$lang][0]['nid'] = '';
+            $item->status = 0;
+            // Update item to removed from game.
+            $workflow = variable_get('item_uses_workflow', '');
+            workflow_execute_transition($item, $workflow, t('Item uses ran out, removed from game'), TRUE);
+          }
+          else {
+            // Reduce uses.
+            $item->field_item_uses[$lang][0]['value'] = $uses;
+          }
+          // Save changes.
+          node_save($item);
+        } // end if uses > -1
+      } // End forloop
+    } // end check for character existing.
+  } // End check for items existing.
 }
