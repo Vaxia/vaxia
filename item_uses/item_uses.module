@@ -112,7 +112,7 @@ function _item_uses_content_update($content) {
           $uses--;
           if ($uses == 0) {
             // If we're out of uses, unpublish and remove from character.
-            $item->field_character_owner[$lang][0]['nid'] = 1;
+            $item->field_character_owner[$lang][0]['nid'] = 0;
             $item->status = 0;
             // Update item to removed from game.
             $workflow = variable_get('item_uses_workflow', '');
