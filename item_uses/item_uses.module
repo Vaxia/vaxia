@@ -60,27 +60,10 @@ function _item_uses_admin_settings($form, &$form_state) {
   return system_settings_form($form);
 }
 
-
 /**
- * Implements hook_node_update().
+ * Implements hook_comment_insert().
  */
-function item_uses_node_update($node) {
-  // If user has no dice roller, bail.
-  if (!user_access('use dice roller')) {
-    return;
-  }
-  // If not a dice roller type, bail.
-  $enabled = variable_get('dice_roller_' . $node->type, FALSE);
-  if (!$enabled) {
-    return;
-  }
-  _item_uses_content_update($node);
-}
-
-/**
- * Implements hook_comment_update().
- */
-function item_uses_comment_update($comment) {
+function item_uses_comment_insert($comment) {
   // If user has no dice roller, bail.
   if (!user_access('use dice roller')) {
     return;
