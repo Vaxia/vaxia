@@ -472,7 +472,12 @@ function vaxia_form_alter(&$form, &$form_state, $form_id) {
     // Remove the no character setting for non-Limbo rooms.
     if (!in_array($form['#node']->nid, $limbo_room)) {
       $options = $form['field_comment_character'][$lang]['#options'];
-      $options = array_diff($options, array('_none' => '- None -'));
+      if (is_array($options)) {
+        $options = array_diff($options, array('_none' => '- None -'));
+      }
+      else {
+        $options = array('_none' => '- None -');
+      }
       $form['field_comment_character'][$lang]['#options'] = $options;
     }
     // Set up diceroller callbacks on character selection.
