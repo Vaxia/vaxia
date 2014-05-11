@@ -473,7 +473,7 @@ function vaxia_form_alter(&$form, &$form_state, $form_id) {
     if (!in_array($form['#node']->nid, $limbo_room)) {
       $options = $form['field_comment_character'][$lang]['#options'];
       if (is_array($options)) {
-        $options = array_diff($options, array('_none' => '- None -'));
+        $options = array_diff_key($options, array('_none' => '- None -'));
       }
       else {
         $options = array('_none' => '- None -');
