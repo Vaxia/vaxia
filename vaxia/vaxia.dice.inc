@@ -499,7 +499,14 @@ function _vaxia_dice_roller_form_submit_item_mods($character, $items) {
         $modify = isset($item->{$field_name}[$item_lang][0]['value']) ? $item->{$field_name}[$item_lang][0]['value'] : 0;
         $field_name = 'field_item_perc_' . $stat_name;
 
-        $percentage = isset($item->{$field_name}[$item_lang][0]['value']) ? $item->{$field_name}[$item_lang][0]['value'] : 0;
+        // Set percentages into return array. Use the largest one.
+        if (variable_get('dice_ruler_weapon_class_damage', FALSE)) {
+          $classname = isset($item->field_type[$item_lang][0]['value']) ? $item->field_type[$item_lang][0]['value'] : '';
+          $classname = str_replace(' ', '_', strtolower(trim($classname)));
+          $percentage = variable_get('dice_ruler_weapon_class_damage_' . $classname, 0);
+        else {
+          $percentage = isset($item->{$field_name}[$item_lang][0]['value']) ? $item->{$field_name}[$item_lang][0]['value'] : 0;
+        }
         $type = $item->field_type[$item->language][0]['value'];
         $type_percentage = variable_get('items_perc_' . $type, 0);
         $percentage = $percentage + $type_percentage;
@@ -536,8 +543,6 @@ function _vaxia_dice_roller_form_submit_item_mods($character, $items) {
             }
           }
         }
-
-        // Set percentages into return array. Use the largest one.
         $item_mods[$stat_name]['percentage'] = isset($item_mods[$stat_name]['percentage']) ? $item_mods[$stat_name]['percentage'] : '';
         if ($percentage != 0) {
           if (!empty($item_mods[$stat_name]['percentage'])) {
