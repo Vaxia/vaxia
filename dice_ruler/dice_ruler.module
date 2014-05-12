@@ -526,6 +526,7 @@ function _dice_ruler_form_combat($i) {
   // Toggle between weapon percents and weapon categories.
   if (variable_get('dice_ruler_weapon_class_damage', FALSE)) {
     $weapon_class_options = array();
+    $classes = variable_get('dice_ruler_weapon_class_classes', "Unarmed\nLight\nMedium\nHeavy");
     foreach ($classes as $class) {
       $classname = str_replace(' ', '_', strtolower(trim($class)));
       $first = empty($first) ? $classname : $first;
