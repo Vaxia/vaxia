@@ -125,6 +125,10 @@ function _items_admin_settings($form, &$form_state) {
     $form['items_named_types_percentages']['items_fieldset_' . $id] = array(
       '#title' => t('@type (@id)', array('@type' => $type, '@id' => $id)),
       '#type' => 'fieldset',
+      '#prefix' => '<style>' .
+        '#edit-items-named-types-percentages .fieldset-wrapper label{float:left;margin-right:0.25em;}' . "\n" .
+        '#edit-items-named-types-percentages .fieldset-wrapper .form-text{float:left;margin-right:0.25em;}' . "\n" .
+        '</style>',
     );
     $form['items_named_types_percentages']['items_fieldset_' . $id]['items_perc_' . $id] = array(
       '#title' => '%',
@@ -145,8 +149,7 @@ function _items_admin_settings($form, &$form_state) {
         '#default_value' => variable_get('items_class_' . $id, ''),
       );
     }
-  }
-  
+  }  
   return system_settings_form($form);
 }
 
