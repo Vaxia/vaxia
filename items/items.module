@@ -122,33 +122,12 @@ function _items_admin_settings($form, &$form_state) {
   foreach ($types as $type) {
     $id = _items_get_type_id($type);
     $perc = isset($listed_item_types[$type]) ? $listed_item_types[$type] : 0;
-    $form['items_named_types_specific']['items_fieldset_' . $id] = array(
+    $form['items_named_types_specific']['items_perc_' . $id] = array(
       '#title' => t('@type (@id)', array('@type' => $type, '@id' => $id)),
-      '#type' => 'fieldset',
-      '#prefix' => '<style>' .
-        '#edit-items-named-types-specific .fieldset-wrapper label{float:left;margin-right:0.25em;margin-left:2em;}' . "\n" .
-        '#edit-items-named-types-specific .fieldset-wrapper .form-text{float:left;margin-right:0.25em;}' . "\n" .
-        '</style>',
-    );
-    $form['items_named_types_specific']['items_fieldset_' . $id]['items_perc_' . $id] = array(
-      '#title' => '%',
       '#type' => 'textfield',
       '#size' => 5,
       '#default_value' => variable_get('items_perc_' . $id, $perc),
     );
-    if (module_exists('dice_ruler') && variable_get('dice_ruler_weapon_class', FALSE)) {
-      $classes = explode("\n", variable_get('dice_ruler_weapon_class_classes', "Unarmed\nLight\nMedium\nHeavy"));
-      $options = array();
-      foreach ($classes as $class) {
-        $options[$class] = $class;
-      }
-      $form['items_named_types_specific']['items_fieldset_' . $id]['items_class_' . $id] = array(
-        '#title' => t('class'),
-        '#type' => 'select',
-        '#options' => $options,
-        '#default_value' => variable_get('items_class_' . $id, ''),
-      );
-    }
   }  
   return system_settings_form($form);
 }
