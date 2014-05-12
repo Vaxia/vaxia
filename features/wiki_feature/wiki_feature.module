@@ -160,8 +160,9 @@ function wiki_feature_node_view($node, $view_mode, $langcode) {
 
   // If node is a wiki page, give a button to convert to a room.
   if ($node->type == 'wiki_page' && $view_mode == 'full' && user_access('consolidate wiki rooms')) {
+    $this_form = drupal_get_form('_wiki_feature_consolidate_child_rooms', $node);
     $node->content['wiki_feature_consolidate_child_rooms'] = array(
-      '#markup' => drupal_render(drupal_get_form('_wiki_feature_consolidate_child_rooms', $node)),
+      '#markup' => drupal_render($this_form),
       '#weight' => 1000,
     );
   }
