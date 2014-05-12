@@ -533,7 +533,7 @@ function _dice_ruler_form_combat($i) {
       $weapon_class_options[$classname] = t('@class', array('@class' => $class));
     }
     $form['a']['combat_weapon_a_' . $i] = array(
-      '#type' => 'select',
+      '#type' => 'radios',
       '#title' => t('Weapon Class'),
       '#options' => $weapon_class_options,
       '#default_value' => $first,
