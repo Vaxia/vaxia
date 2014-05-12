@@ -13,8 +13,8 @@
 #dice-ruler-form .combat-form .form-item-combat-weapon-a div, #dice-ruler-form .form-item-combat-weapon-b div{float:none;}
 #dice-ruler-form .combat-form .form-item-combat-weapon-a-add, #dice-ruler-form .form-item-combat-weapon-b-add{float:none; margin-left:165px;}
 #dice-ruler-form .combat-form .fieldset-wrapper fieldset .fieldset-wrapper fieldset{clear:both;}
+#dice-ruler-form .combat-form .form-type-radios{float:left;}
 #dice-ruler-form .combat-form .form-type-radios .form-type-radio{margin-left:10px;}
-#dice-ruler-form .combat-form .form-type-radios div{float:none;}
 #dice-ruler-form #edit-target{text-align:center;}
 /* Format result displays. */
 #dice-ruler-form #dice_ruler_dice_results{margin-right:220px;}
