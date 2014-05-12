@@ -504,6 +504,7 @@ function _vaxia_dice_roller_form_submit_item_mods($character, $items) {
           $classname = isset($item->field_type[$item_lang][0]['value']) ? $item->field_type[$item_lang][0]['value'] : '';
           $classname = str_replace(' ', '_', strtolower(trim($classname)));
           $percentage = variable_get('dice_ruler_weapon_class_damage_' . $classname, 0);
+        }
         else {
           $percentage = isset($item->{$field_name}[$item_lang][0]['value']) ? $item->{$field_name}[$item_lang][0]['value'] : 0;
         }
