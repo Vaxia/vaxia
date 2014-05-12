@@ -943,7 +943,7 @@ function _dice_ruler_form_get_results_for_action($form, $form_state, $i, $number
     $results = '';
     if ($action_penalty > 0) {
       $results .= '<div class="dice-ruler-dice-multi-action-alert">' .
-        t('Character A, and Charact B where applicable are subject to multiaction penalties at: - %pen to might.',
+        t('Character A, and Charaacter B where applicable are subject to multiaction penalties at: - %pen to might.',
           array('%pen' => $action_penalty)) . '</div>';
     }
     switch ($form_state['values']['roll_type_' . $i]) {
