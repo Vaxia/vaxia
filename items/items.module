@@ -124,9 +124,7 @@ function _items_admin_settings($form, &$form_state) {
     $perc = isset($listed_item_types[$type]) ? $listed_item_types[$type] : 0;
     $form['items_named_types_class']['items_fieldset_' . $id] = array(
       '#title' => t('@type (@id)', array('@type' => $type, '@id' => $id)),
-      '#type' => 'textfield',
-      '#size' => 5,
-      '#default_value' => variable_get('items_perc_' . $id, $perc),
+      '#type' => 'fieldset',
     );
     $form['items_named_types_percentages']['items_fieldset_' . $id]['items_perc_' . $id] = array(
       '#type' => 'textfield',
