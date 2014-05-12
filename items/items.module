@@ -121,12 +121,30 @@ function _items_admin_settings($form, &$form_state) {
   $types = explode("\n", $types);
   foreach ($types as $type) {
     $id = _items_get_type_id($type);
-    $perc = isset($listed_item_types[$type]) ? $listed_item_types[$type] : 0; 
-    $form['items_named_types_percentages']['items_perc_' . $id] = array(
+    $perc = isset($listed_item_types[$type]) ? $listed_item_types[$type] : 0;
+    $form['items_named_types_class']['items_fieldset_' . $id] = array(
       '#title' => t('@type (@id)', array('@type' => $type, '@id' => $id)),
       '#type' => 'textfield',
+      '#size' => 5,
       '#default_value' => variable_get('items_perc_' . $id, $perc),
     );
+    $form['items_named_types_percentages']['items_fieldset_' . $id]['items_perc_' . $id] = array(
+      '#type' => 'textfield',
+      '#size' => 5,
+      '#default_value' => variable_get('items_perc_' . $id, $perc),
+    );
+    if (module_exists('dice_ruler') && variable_get('dice_ruler_weapon_class', FALSE)) {
+      $classes = explode("\n", variable_get('dice_ruler_weapon_class_classes', "Unarmed\nLight\nMedium\nHeavy"));
+      $options = array();
+      foreach ($classes as $class) {
+        $options[$class] = $class;
+      }
+      $form['items_named_types_class']['items_fieldset_' . $id]['items_class_' . $id] = array(
+        '#type' => 'select',
+        '#options' => $options,
+        '#default_value' => variable_get('items_class_' . $id, ''),
+      );
+    }
   }
   
   return system_settings_form($form);
