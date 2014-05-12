@@ -208,11 +208,11 @@ function _dice_ruler_form_settings() {
     $settings[] = t('Class damage is %toggle.', array('%toggle' => $toggle));
     if ($toggle == t('ON')) {
 	  $classes = explode("\n", variable_get('dice_ruler_weapon_class_classes', "Unarmed\nLight\nMedium\nHeavy"));
-	  foreach ($classes as $class) {
-	    $classname = str_replace(' ', '_', strtolower(trim($class)));
-	    $settings[] = t('%class weapons is %damage%.',
-		  array('%class' => $class, '%damage' => variable_get('dice_ruler_weapon_class_damage_' . $classname, 0)));
-	  }
+      foreach ($classes as $class) {
+        $classname = str_replace(' ', '_', strtolower(trim($class)));
+        $settings[] = t('%class weapons is %damage%.',
+        array('%class' => $class, '%damage' => variable_get('dice_ruler_weapon_class_damage_' . $classname, 0)));
+      }
     }
     // Are weapon class multi-actions in use?
     $toggle = variable_get('dice_ruler_weapon_class_multi', TRUE) ? t('ON') : t('OFF');
@@ -527,6 +527,7 @@ function _dice_ruler_form_combat($i) {
   if (variable_get('dice_ruler_weapon_class_damage', FALSE)) {
     $weapon_class_options = array();
     $classes = variable_get('dice_ruler_weapon_class_classes', "Unarmed\nLight\nMedium\nHeavy");
+    $classes = explode("\n", $classes);
     foreach ($classes as $class) {
       $classname = str_replace(' ', '_', strtolower(trim($class)));
       $first = empty($first) ? $classname : $first;
