@@ -1017,7 +1017,7 @@ function _dice_ruler_form_get_results_for_action($form, $form_state, $i, $number
         if (variable_get('dice_ruler_weapon_class_damage', FALSE)) {
           $add_a = !empty($form_state['values']['combat_weapon_a_add_' . $i]) ? $form_state['values']['combat_weapon_a_add_' . $i] : 0;
           $add_b = !empty($form_state['values']['combat_weapon_b_add_' . $i]) ? $form_state['values']['combat_weapon_b_add_' . $i] : 0;
-          $form_state['values']['combat_weapon_a_' . $i] = $add_a +variable_get('dice_ruler_weapon_class_damage_' . $a_type, 0);
+          $form_state['values']['combat_weapon_a_' . $i] = $add_a + variable_get('dice_ruler_weapon_class_damage_' . $a_type, 0);
           $form_state['values']['combat_weapon_b_' . $i] = $add_b + variable_get('dice_ruler_weapon_class_damage_' . $b_type, 0);
           $results = '<div class="dice-ruler-dice-multi-action-alert">' . t('Character A, damage percent: %pen.',
               array('%pen' => $form_state['values']['combat_weapon_a_' . $i])) . '</div>';
@@ -1030,7 +1030,7 @@ function _dice_ruler_form_get_results_for_action($form, $form_state, $i, $number
         if (variable_get('dice_ruler_weapon_class_multi', FALSE)) {
           // Based on the weapon, figure out the modifier for a and b.
           $mod_base_a = variable_get('dice_ruler_weapon_class_multi_' . $a_type], 0);
-          $mod_base_b = variable_get('dice_ruler_weapon_class_multi_' . $b_type, 0);
+          $mod_base_b = variable_get('dice_ruler_weapon_class_multi_' . $b_type], 0);
           $results = '<div class="dice-ruler-dice-multi-action-alert">' . t('Character A, modified multi action penalties: %pen.',
               array('%pen' => $mod_base_a)) . '</div>';
           $results = '<div class="dice-ruler-dice-multi-action-alert">' . t('Character A, modified multi action penalties: %pen.',
