@@ -180,13 +180,17 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
               $modifies_label[] = $small_label . ':' . $value;
             }
             // And set the labels for percentage mods.
+            $extra = '';
+            if (variable_get('dice_ruler_weapon_class_damage', FALSE)) {
+              $extra = ' ' . t('with adjusted multi-action');
+            }
             foreach ($percentages as $label => $value) {
               $percentages[$label] = $value;
               $small_label = substr($label, 0, 3);
               if ($small_label == 'ref') {
                 $small_label = 'fin';
               }
-              $modifies_label[] = 'PP: ' . number_format($value) . '%';
+              $modifies_label[] = 'PP: ' . number_format($value) . '%' . $extra;
             }
             // And set the labels for overlap mods.
             foreach ($overlaps as $label => $value) {
