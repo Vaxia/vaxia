@@ -122,7 +122,7 @@ function _items_admin_settings($form, &$form_state) {
   foreach ($types as $type) {
     $id = _items_get_type_id($type);
     $perc = isset($listed_item_types[$type]) ? $listed_item_types[$type] : 0;
-    $form['items_named_types_class']['items_fieldset_' . $id] = array(
+    $form['items_named_types_percentages']['items_fieldset_' . $id] = array(
       '#title' => t('@type (@id)', array('@type' => $type, '@id' => $id)),
       '#type' => 'fieldset',
     );
