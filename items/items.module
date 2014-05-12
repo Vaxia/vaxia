@@ -126,8 +126,8 @@ function _items_admin_settings($form, &$form_state) {
       '#title' => t('@type (@id)', array('@type' => $type, '@id' => $id)),
       '#type' => 'fieldset',
       '#prefix' => '<style>' .
-        '#edit-items-named-types-percentages .fieldset-wrapper label{float:left;margin-right:0.25em;}' . "\n" .
-        '#edit-items-named-types-percentages .fieldset-wrapper .form-text{float:left;margin-right:0.25em;}' . "\n" .
+        '#edit-items-named-types-specific .fieldset-wrapper label{float:left;margin-right:0.25em;}' . "\n" .
+        '#edit-items-named-types-specific .fieldset-wrapper .form-text{float:left;margin-right:0.25em;}' . "\n" .
         '</style>',
     );
     $form['items_named_types_specific']['items_fieldset_' . $id]['items_perc_' . $id] = array(
