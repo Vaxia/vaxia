@@ -196,6 +196,14 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
               }
               $modifies_label[] = $small_label . ':' . number_format($value) . ' flat';
             }
+            // Check for uses.
+            if (module_exists('item_uses')) {
+              $uses = isset($this_item->field_item_uses[$this_item->language][0]['value']) ?
+                $this_item->field_item_uses[$this_item->language][0]['value'] : -1;
+              if ($uses != -1) {
+                $modifies_label[] = t('@uses uses', array('@uses' => $uses));
+              }
+            }
             // And consolidate into one label.
             if (!empty($modifies_label)) {
               $item_label .= ' (' . implode(', ', $modifies_label) . ')';
