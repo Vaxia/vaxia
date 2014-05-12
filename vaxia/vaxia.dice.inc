@@ -116,7 +116,14 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
             $modifies = $percentages = $overlaps = $penalties = array();
             $qualifies = TRUE;
             $type = $this_item->field_type[$this_item->language][0]['value'];
-            $type_percentage = variable_get('items_perc_' . $type, 0);
+            if (variable_get('dice_ruler_weapon_class_damage', FALSE)) {
+              $classname = isset($this_item->field_type[$this_item->language][0]['value']) ? $this_item->field_type[$this_item->language][0]['value'] : '';
+              $classname = str_replace(' ', '_', strtolower(trim($classname)));
+              $type_percentage = variable_get('dice_ruler_weapon_class_damage_' . $classname, 0);
+            }
+            else {
+              $type_percentage = variable_get('items_perc_' . $type, 0);
+            }
             foreach ($stat_set as $stat_name) {
               // Grab the stat.
               $field_name = 'field_' . $stat_name;
@@ -127,12 +134,13 @@ function vaxia_dice_roller_form($parent_form, $parent_form_state, $parent_form_i
               $stat_mod = isset($this_item->{$field_name}[$this_item->language][0]['value']) ?
                 $this_item->{$field_name}[$this_item->language][0]['value'] : 0;
               // Get item percentage.
+              // Set percentages into return array. Use the largest one.
               $field_name = 'field_item_perc_' . $stat_name;
               $stat_perc = isset($this_item->{$field_name}[$this_item->language][0]['value']) ?
                 $this_item->{$field_name}[$this_item->language][0]['value'] : 0;
               if ($stat_name == 'strength') {
                 $stat_perc = $stat_perc + $type_percentage;
-              }
+              }            
               // Get item overlap.
               $field_name = 'field_item_over_' . $stat_name;
               $stat_over = isset($this_item->{$field_name}[$this_item->language][0]['value']) ?
@@ -500,6 +508,7 @@ function _vaxia_dice_roller_form_submit_item_mods($character, $items) {
         $field_name = 'field_item_perc_' . $stat_name;
 
         // Set percentages into return array. Use the largest one.
+        $percentage = 0;
         if (variable_get('dice_ruler_weapon_class_damage', FALSE)) {
           $classname = isset($item->field_type[$item_lang][0]['value']) ? $item->field_type[$item_lang][0]['value'] : '';
           $classname = str_replace(' ', '_', strtolower(trim($classname)));
