@@ -1031,9 +1031,9 @@ function _dice_ruler_form_get_results_for_action($form, $form_state, $i, $number
           // Based on the weapon, figure out the modifier for a and b.
           $mod_base_a = variable_get('dice_ruler_weapon_class_multi_' . $a_type, 0);
           $mod_base_b = variable_get('dice_ruler_weapon_class_multi_' . $b_type, 0);
-          $results .= '<div class="dice-ruler-dice-multi-action-alert">' . t('Character A, modified multi action penalties: %pen.',
+          $results .= '<div class="dice-ruler-dice-multi-action-alert">' . t('Character A, modified multi action penalties: %pen %.',
               array('%pen' => $mod_base_a)) . '</div>';
-          $results .= '<div class="dice-ruler-dice-multi-action-alert">' . t('Character B, modified multi action penalties: %pen.',
+          $results .= '<div class="dice-ruler-dice-multi-action-alert">' . t('Character B, modified multi action penalties: %pen %.',
               array('%pen' => $mod_base_b)) . '</div>';
         }
 
