@@ -507,10 +507,10 @@ function _vaxia_dice_roller_form_submit_item_mods($character, $items) {
         }
         else {
           $percentage = isset($item->{$field_name}[$item_lang][0]['value']) ? $item->{$field_name}[$item_lang][0]['value'] : 0;
+          $type = $item->field_type[$item->language][0]['value'];
+          $type_percentage = variable_get('items_perc_' . $type, 0);
+          $percentage = $percentage + $type_percentage;
         }
-        $type = $item->field_type[$item->language][0]['value'];
-        $type_percentage = variable_get('items_perc_' . $type, 0);
-        $percentage = $percentage + $type_percentage;
 
         $field_name = 'field_item_over_' . $stat_name;
         $overlap = isset($item->{$field_name}[$item_lang][0]['value']) ? $item->{$field_name}[$item_lang][0]['value'] : 0;
