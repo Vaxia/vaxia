@@ -397,20 +397,27 @@ function _vacation_end_vacation($vacation) {
  */
 function _vacation_end_todays_vacations($today) {
   // Today is passed as a timestamp.
-  $tommorrow = strtotime('+1 day', strtotime($today));
+  $tomorrow = strtotime('+1 day', $today);
   // Get everything between today and tomorrow.
   $vacations = db_query('SELECT * FROM {vacation} ' .
-    'WHERE end BETWEEN :today AND :tommorrow',
-    array(':today' => $today, ':tommorrow' => $tommorrow))->fetchObject();
+    'WHERE end BETWEEN :today AND :tomorrow',
+    array(':today' => $today, ':tomorrow' => $tomorrow));
+  watchdog('vacation', 'Checking for vacations ending between ' .
+     date('m/d/y H:i:s', $today) . 'and '
+    . date('m/d/y H:i:s', $tomorrow) .' .');
   $count = 0;
   if (!$vacations) {
     return $count;
   }
   foreach ($vacations as $vacation) {
-    if (!empty($vacation->positions)) {
-      $vacation->positions = unserialize($vacation->positions);
+    if (!empty($vacation->vid)) {
+      if (!empty($vacation->positions)) {
+        $vacation->positions = unserialize($vacation->positions);
+      }
+      watchdog('vacation', 'Ending vacation ID #' . $vacation->vid .
+        ' for user #' . $vacation->uid); 
+      _vacation_end_vacation($vacation);
     }
-    _vacation_end_vacation($vacation);
   }
   return $count;
 }
