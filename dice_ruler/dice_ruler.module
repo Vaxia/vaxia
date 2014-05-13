@@ -355,7 +355,7 @@ function _dice_ruler_dice_assist_multi_attack_results($form, $form_state) {
     $average_might = $multi_attack_dex + $multi_attack_skill + $multi_attack_str + $multi_attack_skill;
     $average_might = $average_might / 2;
     $advice = t('With your average might of @average_might, and an opponent of might @multi_attack_target_might you can probably ' .
-      'hit him @number_attacks time(s) for a total of @total_damage. This calculation assumes everyone rolls 50s.',
+      'hit him @number_attacks time(s) for a total of @total_damage.',
       array('@average_might' => number_format($average_might, 2), '@multi_attack_target_might' => $multi_attack_target_might,
       '@number_attacks' => $number_attacks, '@total_damage' => $this_damage * $number_attacks));
     $less_attacks = $number_attacks - 1;
