@@ -226,21 +226,25 @@ function _dice_ruler_player_assist_form($form, &$form_state) {
     '#type' => 'fieldset',
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
+    '#sise' => 5,
   );
   $form['multi_attack']['multi_attack_str'] = array(
-    '#title' => t('My strength is'),
+    '#title' => t('My strength is:'),
     '#type' => 'textfield',
     '#required' => TRUE,
+    '#sise' => 5,
   );
   $form['multi_attack']['multi_attack_dex'] = array(
-    '#title' => t('My dexterity is'),
+    '#title' => t('My dexterity is:'),
     '#type' => 'textfield',
     '#required' => TRUE,
+    '#sise' => 5,
   );
   $form['multi_attack']['multi_attack_skill'] = array(
-    '#title' => t('My skill is'),
+    '#title' => t('My skill is:'),
     '#type' => 'textfield',
     '#required' => TRUE,
+    '#sise' => 5,
   );
   $classes = variable_get('dice_ruler_weapon_class', TRUE);
   if ($classes) {
@@ -253,31 +257,34 @@ function _dice_ruler_player_assist_form($form, &$form_state) {
       $options[$classname] = $class;
     }
     $form['multi_attack']['multi_attack_type'] = array(
-      '#title' => t('My weapon class is'),
+      '#title' => t('My weapon class is:'),
       '#type' => 'select',
       '#options' => $options,
       '#required' => TRUE,
       '#default_value' => $first,
     );
     $form['multi_attack']['multi_attack_perc'] = array(
-      '#title' => t('My added weapon percentage is'),
+      '#title' => t('My added weapon percentage is:'),
       '#type' => 'textfield',
       '#default_value' => 0,
+      '#sise' => 5,
     );
   }
   else {
     $form['multi_attack']['multi_attack_perc'] = array(
-      '#title' => t('My weapon percentage is'),
+      '#title' => t('My weapon percentage is:'),
       '#type' => 'select',
       '#options' => $options,
       '#default_value' => 0,
+      '#sise' => 5,
     );
   }
   $form['multi_attack']['multi_attack_target_might'] = array(
-    '#title' => t('My target\'s might is around'),
+    '#title' => t('My target\'s might is around:'),
     '#type' => 'textfield',
     '#required' => TRUE,
     '#default_value' => 50,
+    '#sise' => 5,
   );
   $form['multi_attack']['multi_attack_rule'] = array(
     '#type' => 'button',
