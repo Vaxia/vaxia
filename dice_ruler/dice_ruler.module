@@ -34,6 +34,9 @@ function dice_ruler_menu() {
   return $items;
 }
 
+/**
+ * Admin form callback.
+ */
 function _dice_ruler_admin_settings($form, &$form_state) {
   // Default diffs.
   $form['dice_ruler_default_diff'] = array(
@@ -184,6 +187,10 @@ function dice_ruler_block_info() {
     'info' => t('Dice ruler'),
     'cache' => DRUPAL_NO_CACHE, // DRUPAL_CACHE_PER_ROLE
   );
+  $blocks['dice_ruler_player_assist'] = array(
+    'info' => t('Dice ruler player assistant'),
+    'cache' => DRUPAL_CACHE_GLOBAL,
+  );
   return $blocks;
 }
 
@@ -201,9 +208,176 @@ function dice_ruler_block_view($delta = '') {
       'content' => drupal_get_form('dice_ruler_form'),
     );
   }
+  if ($delta == 'dice_ruler_player_assist') {
+    $block = array(
+      'subject' => t('Dice ruler player advisor'),
+      'content' => drupal_get_form('_dice_ruler_player_assist_form'),
+    );
+  }
   return $block;
 }
 
+/**
+ * Form callback for block.
+ */
+function _dice_ruler_player_assist_form($form, &$form_state) {
+  $form['multi_attack'] = array(
+    '#title' => t('Should I try a multi-attack?'),
+    '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  $form['multi_attack']['multi_attack_str'] = array(
+    '#title' => t('My strength is'),
+    '#type' => 'textfield',
+    '#required' => TRUE,
+  );
+  $form['multi_attack']['multi_attack_dex'] = array(
+    '#title' => t('My dexterity is'),
+    '#type' => 'textfield',
+    '#required' => TRUE,
+  );
+  $form['multi_attack']['multi_attack_skill'] = array(
+    '#title' => t('My skill is'),
+    '#type' => 'textfield',
+    '#required' => TRUE,
+  );
+  $classes = variable_get('dice_ruler_weapon_class', TRUE);
+  if ($classes) {
+    $classes = explode("\n", variable_get('dice_ruler_weapon_class_classes', "Unarmed\nLight\nMedium\nHeavy"));
+    $options = array();
+    $first = '';
+    foreach ($classes as $class) {
+      $classname = str_replace(' ', '_', strtolower(trim($class)));
+      $first = empty($classname) ? : $first;
+      $options[$classname] = $class;
+    }
+    $form['multi_attack']['multi_attack_type'] = array(
+      '#title' => t('My weapon class is'),
+      '#type' => 'select',
+      '#options' => $options,
+      '#required' => TRUE,
+      '#default_value' => $first,
+    );
+    $form['multi_attack']['multi_attack_perc'] = array(
+      '#title' => t('My added weapon percentage is'),
+      '#type' => 'textfield',
+      '#default_value' => 0,
+    );
+  }
+  else {
+    $form['multi_attack']['multi_attack_perc'] = array(
+      '#title' => t('My weapon percentage is'),
+      '#type' => 'select',
+      '#options' => $options,
+      '#default_value' => 0,
+    );
+  }
+  $form['multi_attack']['multi_attack_target_might'] = array(
+    '#title' => t('My target\'s might is around'),
+    '#type' => 'textfield',
+    '#required' => TRUE,
+    '#default_value' => 50,
+  );
+  $form['multi_attack']['multi_attack_rule'] = array(
+    '#type' => 'button',
+    '#value' => t('Should I?'),
+    '#ajax' => array(
+      'callback' => '_dice_ruler_player_assist_multi_attack_form_ajax',
+      'wrapper' => 'dice_ruler_dice_assist_multi_attack_results',
+      'method' => 'replace',
+      'effect' => 'fade',
+    ),
+  );
+  $form['multi_attack']['multi_attack_results'] = array(
+    '#type' => 'item',
+    '#markup' => _dice_ruler_dice_assist_multi_attack_results($form, $form_state),
+    '#prefix' => '<div id="dice_ruler_dice_assist_multi_attack_results" style="padding-top:0.5em;">',
+    '#suffix' => '</div>',
+  );
+  return $form;
+}
+
+/**
+ * Figure out the results to display when form submitted.
+ */
+function _dice_ruler_dice_assist_multi_attack_results($form, $form_state) {
+  $advice = '';
+  if (!empty($form_state['values']['multi_attack_str'])) {
+    // Ok, lets figure this out.
+    $multi_attack_str = trim($form_state['values']['multi_attack_str']);
+    $multi_attack_dex = trim($form_state['values']['multi_attack_dex']);
+    $multi_attack_skill = trim($form_state['values']['multi_attack_skill']);
+    $multi_attack_perc = !empty($form_state['values']['multi_attack_perc']) ? trim($form_state['values']['multi_attack_perc']) : 0;
+    $penalty_base = variable_get('dice_ruler_extra_action_penalty', 20);
+    $classes = variable_get('dice_ruler_weapon_class', TRUE);
+    if ($classes) {
+      $multi_attack_type = trim($form_state['values']['multi_attack_type']);
+      if (variable_get('dice_ruler_weapon_class_damage', FALSE)) {
+        $multi_attack_perc = $multi_attack_perc + variable_get('dice_ruler_weapon_class_damage_' . $multi_attack_type, 0);
+      }
+      $multi_attack_map_mod = 0;
+      if (variable_get('dice_ruler_weapon_class_multi', FALSE)) {
+        $multi_attack_map_mod = variable_get('dice_ruler_weapon_class_multi_' . $multi_attack_type, 0);
+      }
+    }
+    $multi_attack_target_might = trim($form_state['values']['multi_attack_target_might']);
+    $number_attacks = 0;
+    $this_damage = 0;
+    $success = TRUE;
+    while ($success) {
+      $success = FALSE; // Assume no success.
+      $number_attacks++; // Set number of attacks;
+      $this_adjust = 0;
+      if ($number_attacks > 1) {
+        $this_adjust = (($number_attacks - 1) * $penalty_base) + $multi_attack_map_mod; // Adjust might.
+      }
+      // Now figure out if we can hit this guy more than once based on rolls of 50.
+      $this_result = _dice_ruler_make_two_trait_ruling(
+        $multi_attack_dex + $multi_attack_skill - $this_adjust,
+        $multi_attack_target_might, // Defender.
+        0,
+        50,
+        $multi_attack_str + $multi_attack_skill - $this_adjust,
+        $multi_attack_target_might, // Defender.
+        0,
+        50
+      );
+      // Check if success.
+      if ($this_result[5] == 'yes') {
+        $success = TRUE;
+        $last_damage = $this_damage;
+        $this_damage = $this_result[7] + ($this_result[7] * $multi_attack_perc);
+      }
+    }
+    // Number of successful attacks.
+    $number_attacks--;
+    $average_might = $multi_attack_dex + $multi_attack_skill + $multi_attack_str + $multi_attack_skill;
+    $average_might = $average_might / 2;
+    $advice = t('With your average might of @average_might, and an opponent of might @multi_attack_target_might you can probably ' .
+      'hit him @number_attacks time(s) for a total of @total_damage. This calculation assumes everyone rolls 50s.',
+      array('@average_might' => number_format($average_might, 2), '@multi_attack_target_might' => $multi_attack_target_might,
+      '@number_attacks' => $number_attacks, '@total_damage' => $this_damage * $number_attacks));
+    $less_attacks = $number_attacks - 1;
+    if (($last_damage * $less_attacks) > ($this_damage * $number_attacks)) {
+      $advice .= ' ' . t('But you would do more damage if you attacked @number_attacks time(s) for @total_damage.',
+        array('@number_attacks' => $less_attacks, '@total_damage' => $last_damage * $less_attacks));
+    }
+    $advice .= ' ' . t('This calculation assumes everyone rolls 50s - your individual results may vary.');
+  }
+  return $advice;
+}
+
+/**
+ * AJAX form callback.
+ */
+function _dice_ruler_player_assist_multi_attack_form_ajax($form, $form_state) {
+  return $form['multi_attack']['multi_attack_results'];
+}
+
+/**
+ * Settings form generator.
+ */
 function _dice_ruler_form_settings() {
   $settings = array();
   // Is Dynamic difficult on or off.
@@ -1719,7 +1893,8 @@ function _dice_ruler_combat(
     t('Winsby'),
     t('Points'),
     t('After defense'),
-  );  $output = theme('table', array(
+  );
+  $output = theme('table', array(
     'header' => $header,
     'rows' => $rows,
   ));
