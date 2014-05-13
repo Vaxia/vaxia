@@ -1103,6 +1103,22 @@ function dice_ruler_form($form, &$form_state) {
     $form['action_' . $i]['combat_' . $i] = _dice_ruler_form_combat($i);
     $form['action_' . $i]['magic_' . $i] = _dice_ruler_form_magic($i);
   }
+  // Provide button.
+  $form['rule_dice'] = array(
+    '#type' => 'button',
+    '#value' => t('Rule roll'),
+    '#ajax' => array(
+      'callback' => 'dice_ruler_form_ajax',
+      'wrapper' => 'dice_ruler_dice_results',
+      'method' => 'replace',
+      'effect' => 'fade',
+    ),
+    '#states' => array(
+      'invisible' => array(
+        ':input[name="actions"]' => array('value' => 'hidden'),
+      ),
+    ),
+  );
   // Show results!
   $results = array();
   for ($i=1; $i < $number_actions + 1; $i++) {
@@ -1116,22 +1132,6 @@ function dice_ruler_form($form, &$form_state) {
     '#markup' => implode('</br>', $results),
     '#prefix' => '<div id="dice_ruler_dice_results">',
     '#suffix' => '</div>',
-    '#states' => array(
-      'invisible' => array(
-        ':input[name="actions"]' => array('value' => 'hidden'),
-      ),
-    ),
-  );
-  // Provide button.
-  $form['rule_dice'] = array(
-    '#type' => 'button',
-    '#value' => t('Rule roll'),
-    '#ajax' => array(
-      'callback' => 'dice_ruler_form_ajax',
-      'wrapper' => 'dice_ruler_dice_results',
-      'method' => 'replace',
-      'effect' => 'fade',
-    ),
     '#states' => array(
       'invisible' => array(
         ':input[name="actions"]' => array('value' => 'hidden'),
