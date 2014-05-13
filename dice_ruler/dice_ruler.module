@@ -363,7 +363,8 @@ function _dice_ruler_dice_assist_multi_attack_results($form, $form_state) {
       $advice .= ' ' . t('But you would do more damage if you attacked @number_attacks time(s) for @total_damage.',
         array('@number_attacks' => $less_attacks, '@total_damage' => $last_damage * $less_attacks));
     }
-    $advice .= ' ' . t('This calculation assumes everyone rolls 50s - your individual results may vary.');
+    $advice .= ' ' . t('This calculation assumes everyone rolls 50s. This is an estimate only: your individual results may vary, ' .
+      'and A/SHs may apply circumstance modifiers.');
   }
   return $advice;
 }
