@@ -35,6 +35,19 @@ function dice_ruler_menu() {
 }
 
 function _dice_ruler_admin_settings($form, &$form_state) {
+  // Default diffs.
+  $form['dice_ruler_default_diff'] = array(
+    '#title' => t('Default difficulty'),
+    '#description' => t('Use dynamic diffulty on most rolls.'),
+    '#type' => 'checkbox',
+    '#default_value' => variable_get('dice_ruler_default_diff', 25),
+  );
+  $form['dice_ruler_magic_default_diff'] = array(
+    '#title' => t('Default magic difficulty'),
+    '#description' => t('Default difficulty for magic rolls.'),
+    '#type' => 'checkbox',
+    '#default_value' => variable_get('dice_ruler_magic_default_diff', 25),
+  );
 
   // Set help texts.
   $form['help_texts'] = array(
@@ -269,7 +282,7 @@ function _dice_ruler_form_one_trait($i) {
     '#type' => 'textfield',
     '#title' => t('Diff.'),
     '#size' => 5,
-    '#default_value' => 25,
+    '#default_value' => variable_get('dice_ruler_default_diff', 25),
   );
   $form['one_trait_add_diff_' . $i] = array(
     '#type' => 'textfield',
@@ -310,7 +323,7 @@ function _dice_ruler_form_two_trait($i) {
     '#type' => 'textfield',
     '#title' => t('Diff.'),
     '#size' => 5,
-    '#default_value' => 25,
+    '#default_value' => variable_get('dice_ruler_default_diff', 25),
   );
   $form['a']['two_trait_add_diff_a_' . $i] = array(
     '#type' => 'textfield',
@@ -335,7 +348,7 @@ function _dice_ruler_form_two_trait($i) {
     '#type' => 'textfield',
     '#title' => t('Diff.'),
     '#size' => 5,
-    '#default_value' => 25,
+    '#default_value' => variable_get('dice_ruler_default_diff', 25),
   );
   $form['b']['two_trait_add_diff_b_' . $i] = array(
     '#type' => 'textfield',
@@ -728,7 +741,7 @@ function _dice_ruler_form_magic($i) {
     '#type' => 'textfield',
     '#title' => t('Diff.'),
     '#size' => 5,
-    '#default_value' => 40,
+    '#default_value' => variable_get('dice_ruler_magic_default_diff', 25),
   );
   $form['a']['magic_add_diff_a_' . $i] = array(
     '#type' => 'textfield',
@@ -753,7 +766,7 @@ function _dice_ruler_form_magic($i) {
     '#type' => 'textfield',
     '#title' => t('Diff.'),
     '#size' => 5,
-    '#default_value' => 40,
+    '#default_value' => variable_get('dice_ruler_magic_default_diff', 25),
   );
   $form['b']['magic_add_diff_b_' . $i] = array(
     '#type' => 'textfield',
