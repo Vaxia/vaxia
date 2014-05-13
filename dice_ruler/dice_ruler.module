@@ -1249,14 +1249,14 @@ function _dice_ruler_form_get_results_for_action($form, $form_state, $i, $number
           $mod_base_a = variable_get('dice_ruler_weapon_class_multi_' . $a_type, 0);
           // Display mod.
           $penalty_base_str = array();
-          for ($this_attack = 0; $this_attack < $number_actions; $this_attack++) {
-            $penalty_base_str[] = $penalty_base * ($this_attack + 1) + $mod_base_a;
+          for ($this_attack = 1; $this_attack < $number_actions; $this_attack++) {
+            $penalty_base_str[] = $penalty_base * ($this_attack) + $mod_base_a;
           }
           $penalty_base_str = implode(' / ', $penalty_base_str);
           $results .= '<div class="dice-ruler-dice-multi-action-alert">' . t('Character A at multi action penalties: %penalty_base_str',
               array('%penalty_base_str' => $penalty_base_str)) . '</div>';
           // And recalculate the correct modifier to apply.
-          $action_penalty = $penalty_base * ($number_actions) + $mod_base_a;
+          $action_penalty = $penalty_base * ($number_actions - 1) + $mod_base_a;
         }
 
         // If we modify the penalty based on weapon class, add that.
@@ -1265,14 +1265,14 @@ function _dice_ruler_form_get_results_for_action($form, $form_state, $i, $number
           $mod_base_b = variable_get('dice_ruler_weapon_class_multi_' . $b_type, 0);
           // Display mod.
           $penalty_base_str = array();
-          for ($this_attack = 0; $this_attack < $number_actions_b; $this_attack++) {
-            $penalty_base_str[] = $penalty_base * ($this_attack + 1) + $mod_base_b;
+          for ($this_attack = 1; $this_attack < $number_actions_b; $this_attack++) {
+            $penalty_base_str[] = $penalty_base * ($this_attack) + $mod_base_b;
           }
           $penalty_base_str = implode(' / ', $penalty_base_str);
           $results .= '<div class="dice-ruler-dice-multi-action-alert">' . t('Character B at modified multi action penalties: %penalty_base_str',
               array('%penalty_base_str' => $penalty_base_str)) . '</div>';
           // And recalculate the correct modifier to apply.
-          $action_penalty_b = $penalty_base * ($number_actions_b) + $mod_base_b;
+          $action_penalty_b = $penalty_base * ($number_actions_b - 1) + $mod_base_b;
         }
 
         // Character A.
