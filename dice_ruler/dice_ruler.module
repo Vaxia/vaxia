@@ -1156,11 +1156,6 @@ function _dice_ruler_form_get_results_for_action($form, $form_state, $i, $number
   $results = t('No roll performed.');
   if (!empty($form_state['values']['roll_type_' . $i])) {
     $results = '';
-    if ($action_penalty > 0) {
-      $results .= '<div class="dice-ruler-dice-multi-action-alert">' .
-        t('Character A, and Charaacter B where applicable are subject to multiaction penalties at: - %pen to might.',
-          array('%pen' => $action_penalty)) . '</div>';
-    }
     switch ($form_state['values']['roll_type_' . $i]) {
       case 'one_trait':
         $new_might = $form_state['values']['one_trait_might_' . $i] - $action_penalty;
@@ -1225,10 +1220,6 @@ function _dice_ruler_form_get_results_for_action($form, $form_state, $i, $number
         );
       break;
       case 'combat':
-		// Figure out the penalties for character b.
-        $number_actions_b = !empty($form_state['values']['number_actions_b_' . $i]) ? $form_state['values']['number_actions_b_' . $i] : 1;
-		$action_penalty_b = $penalty_base * ($number_actions_b - 1);
-
         // If we use classes, look up and set the correct class based weapon value.
         $a_type = $form_state['values']['combat_weapon_a_' . $i];
         $b_type = $form_state['values']['combat_weapon_b_' . $i];
@@ -1237,30 +1228,52 @@ function _dice_ruler_form_get_results_for_action($form, $form_state, $i, $number
           $add_b = !empty($form_state['values']['combat_weapon_b_add_' . $i]) ? $form_state['values']['combat_weapon_b_add_' . $i] : 0;
           $form_state['values']['combat_weapon_a_' . $i] = $add_a + variable_get('dice_ruler_weapon_class_damage_' . $a_type, 0);
           $form_state['values']['combat_weapon_b_' . $i] = $add_b + variable_get('dice_ruler_weapon_class_damage_' . $b_type, 0);
-          $results .= '<div class="dice-ruler-dice-multi-action-alert">' . t('Character A, damage percent: %pen%',
-              array('%pen' => $form_state['values']['combat_weapon_a_' . $i])) . '</div>';
-          $results .= '<div class="dice-ruler-dice-multi-action-alert">' . t('Character B, damage percent: %pen%',
-              array('%pen' => $form_state['values']['combat_weapon_b_' . $i])) . '</div>';
+          if ($form_state['values']['combat_weapon_a_' . $i] != 0) {
+            $results .= '<div class="dice-ruler-dice-multi-action-alert">' . t('Character A, additional damage percent: %pen%',
+                array('%pen' => $form_state['values']['combat_weapon_a_' . $i])) . '</div>';
+          }
+          if ($form_state['values']['combat_weapon_b_' . $i] != 0) {
+            $results .= '<div class="dice-ruler-dice-multi-action-alert">' . t('Character B, additional damage percent: %pen%',
+                array('%pen' => $form_state['values']['combat_weapon_b_' . $i])) . '</div>';
+          }
         }
 
+		// Figure out the penalties for character b.
+        $number_actions_b = !empty($form_state['values']['number_actions_b_' . $i]) ? trim($form_state['values']['number_actions_b_' . $i]) : 1;
+		$action_penalty_b = $penalty_base * ($number_actions_b - 1);
+		// Default mod is zero.
+		$mod_base_a = $mod_base_b = 0;
         // If we modify the penalty based on weapon class, add that.
         if ($number_actions > 1 && variable_get('dice_ruler_weapon_class_multi', FALSE)) {
           // Based on the weapon, figure out the modifier for a and b.
           $mod_base_a = variable_get('dice_ruler_weapon_class_multi_' . $a_type, 0);
-          $results .= '<div class="dice-ruler-dice-multi-action-alert">' . t('Character A, modified multi action penalties: %pen %.',
-              array('%pen' => $mod_base_a)) . '</div>';
-          // And recalculate the correct modifier to apply.
-          $action_penalty = $penalty_base * ($number_actions - 1) + $mod_base_a;
+          // Display mod.
+          $penalty_base_str = array();
+          for ($this_attack = 0; $this_attack < $number_actions; $this_attack++) {
+            $penalty_base_str[] = $penalty_base * ($this_attack + 1) + $mod_base_a;
+          }
+          $penalty_base_str = implode(' / ', $penalty_base_str);
+          $results .= '<div class="dice-ruler-dice-multi-action-alert">' . t('Character A at multi action penalties: %penalty_base_str',
+              array('%penalty_base_str' => $penalty_base_str)) . '</div>';
         }
+        // And recalculate the correct modifier to apply.
+        $action_penalty = $penalty_base * ($number_actions - 1) + $mod_base_a;
+
         // If we modify the penalty based on weapon class, add that.
         if ($number_actions_b > 1 && variable_get('dice_ruler_weapon_class_multi', FALSE)) {
           // Based on the weapon, figure out the modifier for a and b.
           $mod_base_b = variable_get('dice_ruler_weapon_class_multi_' . $b_type, 0);
-          $results .= '<div class="dice-ruler-dice-multi-action-alert">' . t('Character B, modified multi action penalties: %pen %.',
-              array('%pen' => $mod_base_b)) . '</div>';
-          // And recalculate the correct modifier to apply.
-          $action_penalty_b = $penalty_base * ($number_actions_b - 1) + $mod_base_b;
+          // Display mod.
+          $penalty_base_str = array();
+          for ($this_attack = 0; $this_attack < $number_actions_b; $this_attack++) {
+            $penalty_base_str[] = $penalty_base * ($this_attack + 1) + $mod_base_b;
+          }
+          $penalty_base_str = implode(' / ', $penalty_base_str);
+          $results .= '<div class="dice-ruler-dice-multi-action-alert">' . t('Character B  at modified multi action penalties: %penalty_base_str',
+              array('%penalty_base_str' => $penalty_base_str)) . '</div>';
         }
+        // And recalculate the correct modifier to apply.
+        $action_penalty_b = $penalty_base * ($number_actions_b - 1) + $mod_base_b;
 
         // Character A.
         $new_might_dex = $form_state['values']['combat_might_a_dex_' . $i] - $action_penalty;
