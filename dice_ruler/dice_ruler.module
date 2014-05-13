@@ -1254,7 +1254,7 @@ function _dice_ruler_form_get_results_for_action($form, $form_state, $i, $number
           }
           $penalty_base_str = implode(' / ', $penalty_base_str);
           $results .= '<div class="dice-ruler-dice-multi-action-alert">' .
-            t('Character A taking %num_actions is at multi action penalties for all actions: %penalty_base_str',
+            t('Character A taking %num_actions actions is at multi action penalties for all actions: %penalty_base_str',
               array('%num_actions' => $number_actions, '%penalty_base_str' => $penalty_base_str)) . '</div>';
           // And recalculate the correct modifier to apply.
           $action_penalty = $penalty_base * ($number_actions - 1) + $mod_base_a;
@@ -1271,7 +1271,7 @@ function _dice_ruler_form_get_results_for_action($form, $form_state, $i, $number
           }
           $penalty_base_str = implode(' / ', $penalty_base_str);
           $results .= '<div class="dice-ruler-dice-multi-action-alert">' .
-            t('Character B taking %num_actions is at multi action penalties for all actions: %penalty_base_str',
+            t('Character B taking %num_actions actions is at multi action penalties for all actions: %penalty_base_str',
               array('%num_actions' => $number_actions_b, '%penalty_base_str' => $penalty_base_str)) . '</div>';
           // And recalculate the correct modifier to apply.
           $action_penalty_b = $penalty_base * ($number_actions_b - 1) + $mod_base_b;
