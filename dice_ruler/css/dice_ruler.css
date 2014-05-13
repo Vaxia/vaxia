@@ -23,7 +23,7 @@
 #dice-ruler-form .combat-form .form-type-select .description{width:120px;}
 #dice-ruler-form #edit-target{text-align:center;}
 /* Format result displays. */
-#dice-ruler-form #dice_ruler_dice_results{margin-right:220px;}
+#dice-ruler-form #dice_ruler_dice_results{margin-right:220px;margin-top:0.5em;}
 #dice-ruler-form #dice_ruler_dice_results th{padding-left:0.5em;text-align:center;}
 #dice-ruler-form #dice_ruler_dice_results td{padding-left:0.5em;text-align:center;}
 /* Format help displays. */
