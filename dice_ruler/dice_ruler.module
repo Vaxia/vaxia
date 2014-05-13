@@ -39,13 +39,13 @@ function _dice_ruler_admin_settings($form, &$form_state) {
   $form['dice_ruler_default_diff'] = array(
     '#title' => t('Default difficulty'),
     '#description' => t('Use dynamic diffulty on most rolls.'),
-    '#type' => 'checkbox',
+    '#type' => 'textfield',
     '#default_value' => variable_get('dice_ruler_default_diff', 25),
   );
   $form['dice_ruler_magic_default_diff'] = array(
     '#title' => t('Default magic difficulty'),
     '#description' => t('Default difficulty for magic rolls.'),
-    '#type' => 'checkbox',
+    '#type' => 'textfield',
     '#default_value' => variable_get('dice_ruler_magic_default_diff', 25),
   );
 
