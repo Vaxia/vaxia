@@ -226,25 +226,25 @@ function _dice_ruler_player_assist_form($form, &$form_state) {
     '#type' => 'fieldset',
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
-    '#sise' => 5,
+    '#size' => 5,
   );
   $form['multi_attack']['multi_attack_str'] = array(
     '#title' => t('My strength is:'),
     '#type' => 'textfield',
     '#required' => TRUE,
-    '#sise' => 5,
+    '#size' => 5,
   );
   $form['multi_attack']['multi_attack_dex'] = array(
     '#title' => t('My dexterity is:'),
     '#type' => 'textfield',
     '#required' => TRUE,
-    '#sise' => 5,
+    '#size' => 5,
   );
   $form['multi_attack']['multi_attack_skill'] = array(
     '#title' => t('My skill is:'),
     '#type' => 'textfield',
     '#required' => TRUE,
-    '#sise' => 5,
+    '#size' => 5,
   );
   $classes = variable_get('dice_ruler_weapon_class', TRUE);
   if ($classes) {
@@ -267,7 +267,7 @@ function _dice_ruler_player_assist_form($form, &$form_state) {
       '#title' => t('My added weapon percentage is:'),
       '#type' => 'textfield',
       '#default_value' => 0,
-      '#sise' => 5,
+      '#size' => 5,
     );
   }
   else {
@@ -276,7 +276,7 @@ function _dice_ruler_player_assist_form($form, &$form_state) {
       '#type' => 'select',
       '#options' => $options,
       '#default_value' => 0,
-      '#sise' => 5,
+      '#size' => 5,
     );
   }
   $form['multi_attack']['multi_attack_target_might'] = array(
@@ -284,7 +284,7 @@ function _dice_ruler_player_assist_form($form, &$form_state) {
     '#type' => 'textfield',
     '#required' => TRUE,
     '#default_value' => 50,
-    '#sise' => 5,
+    '#size' => 5,
   );
   $form['multi_attack']['multi_attack_rule'] = array(
     '#type' => 'button',
