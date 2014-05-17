@@ -38,6 +38,10 @@ function filedepot_rules_rules_action_info() {
           'type' => 'boolean',
           'label' => t('Inherit parent permission'),
         ),
+        'set_owner' => array(
+          'type' => 'boolean',
+          'label' => t('Set owner (view, upload direct) permissions'),
+        ),
       ),
       'provides' => array(
         'folder_node' => array(
@@ -65,7 +69,7 @@ function filedepot_rules_parent_folder_options() {
 /**
  * The action function for filedepot_rules_actions_create_folder().
  */
-function filedepot_rules_actions_create_folder($owner, $name, $parent, $description, $inherit_permission) {
+function filedepot_rules_actions_create_folder($owner, $name, $parent, $description, $inherit_perm, $set_owner) {
   // Clean data.
   $name = check_plain($name);
   $description = check_plain($description);
@@ -80,17 +84,19 @@ function filedepot_rules_actions_create_folder($owner, $name, $parent, $descript
   $node->description = check_plain($name);
   $node->filedepot_folder_desc[$node->language][0]['value'] = $description;
   $node->parentfolder = $parent;
-  $node->inherit = $inherit_permission;
+  $node->inherit = $inherit_perm;
   // Save.
   node_save($node);
-  // Grab the right include file form filedepot.
-  module_load_include('php', 'filedepot', 'permissions.class');
-  module_load_include('php', 'filedepot', 'filedepot.class');
-  $filedepot = filedepot::getInstance();
-  // Create default permissions record for the user that created the category
-  $cid = db_query('SELECT cid FROM {filedepot_categories} WHERE nid=:nid',
-    array('nid' => $node->nid))->fetchField();
-  $filedepot->updatePerms($cid, array('view', 'upload_dir', 'upload_ver'), $owner->uid);
+  if ($set_owner) {
+    // Grab the right include file form filedepot.
+    module_load_include('php', 'filedepot', 'permissions.class');
+    module_load_include('php', 'filedepot', 'filedepot.class');
+    $filedepot = filedepot::getInstance();
+    // Create default permissions record for the user that created the category
+    $cid = db_query('SELECT cid FROM {filedepot_categories} WHERE nid=:nid',
+      array('nid' => $node->nid))->fetchField();
+    $filedepot->updatePerms($cid, array('view', 'upload_dir', 'upload_ver'), $owner->uid);
+  }
   // Return the folder node.
   return array('folder_node' => $node);
 }
