@@ -39,6 +39,12 @@ function filedepot_rules_rules_action_info() {
           'label' => t('Inherit parent permission'),
         ),
       ),
+      'provides' => array(
+        'folder_node' => array(
+          'type' => 'node',
+          'label' => t('Created folder'),
+        ),
+      ),
     ),
   );
   return $actions;
