@@ -83,4 +83,6 @@ function filedepot_rules_actions_create_folder($owner, $name, $parent, $descript
   $node->inherit = $inherit_permission;
   // Save.
   node_save($node);
+  // Return the folder node.
+  return array('folder_node' => $node);
 }
