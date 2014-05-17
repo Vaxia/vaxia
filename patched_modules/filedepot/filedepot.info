@@ -1,0 +1,18 @@
+name = Filedepot
+description = Filedepot File Management System
+dependencies[] = libraries
+dependencies[] = ctools
+dependencies[] = file
+configure = admin/config/media/filedepot
+core = 7.x
+php = 5.x;
+package = File management
+
+
+
+; Information added by drupal.org packaging script on 2013-10-17
+version = "7.x-1.2"
+core = "7.x"
+project = "filedepot"
+datestamp = "1382020683"
+

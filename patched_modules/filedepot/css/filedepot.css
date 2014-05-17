@@ -1,0 +1,728 @@
+
+body.layout-left-main .outer { margin-left:0px !important; }
+
+/* Filedepot CSS */
+
+#filedepot {
+  border:1px solid #DADADA;
+  margin:0px 0px 5px 0px;
+  padding:0px;
+  visibility:hidden;
+  padding-bottom:43px;
+  height:450px;   /* This controls the height of the main display */
+  width:100%;
+}
+
+#filedepot_sidecol {
+  float:left;
+  width:210px;
+  padding-top:10px;
+  padding-left:3px;
+  margin-right:4px;
+  overflow:hidden;
+}
+
+#filedepotNavTreeDiv table tr {
+  background-color: transparent;
+}
+
+#filedepot_centercol {
+  float:left;
+  width:100%;
+  margin-top:0px;
+  margin-right:0px;
+  padding:0px;
+  background-color: #FFFFFF;
+}
+
+#filedepotmodule table { margin: 0px !important; border: 0px !important}
+#filedepotmodule tbody { border-top: 0px; }
+#filedepotmodule form  { margin:0px !important }
+
+/* general alignment classes **************************************************/
+.alignleft {
+  text-align:left;
+}
+.alignright {
+  text-align:right;
+}
+.aligncenter {
+  text-align:center;
+}
+.aligntop {
+  vertical-align:top;
+}
+.floatright {
+  float:right;
+}
+.floatleft {
+  float:left;
+}
+.clearboth {
+  clear:both;
+}
+/* clear floats by applying the clearfix class to float-encasing block !*******/
+.clearfix:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+.clearfix {
+  display: inline-block;
+}
+
+/* Hides from IE-mac \*/
+* html .clearfix {height: 1%;}
+.clearfix {display: block;}
+
+
+
+.plugin {
+  color:#000000;
+  background-color:#EFEFEF;
+  font-weight:normal;
+  border:1px solid #CCCCCC;
+}
+.plugin th {
+  color:#000000;
+  background-color:#B7C1DC;
+  padding:5px;
+  text-align:left;
+}
+.plugin tr {
+  vertical-align:top;
+}
+.plugin td {
+  padding:2px 5px 2px 5px;
+}
+.pluginBG {
+  color:#FEFEFE;
+  background-color:#7398BA;
+}
+.pluginAltBG {
+  background-color:#7398BA;
+}
+.pluginAltBG td {
+  color:#FFFFFF
+}
+.pluginCellTitle {
+  color:#666666;
+  font-weight:bold;
+  background-color:#E6E6E6;
+  padding:5px;
+}
+.pluginCellFill {
+  background-color:#F8FAFD;
+}
+.pluginCellText {
+  color:#636363;
+  font-weight:normal;
+}
+.pluginHeader {
+  color:#204275;
+  font-weight:bolder;
+  padding-top:3px;
+  padding-bottom:3px;
+}
+.pluginFooter, .pluginFooter td {
+  background-color:#507AA1;
+  color:#FFFFFF;
+  }
+.pluginAlert {
+  padding:5px 15px 5px 15px;
+  color:#D8010E;
+  background-color:#FEF1B4;
+  font-weight:bold;
+}
+.pluginInfo {
+  padding:5px 15px 5px 15px;
+  color:#707070;
+  background-color:#FEF1B4;
+  font-weight:normal;
+}
+.pluginAjaxStatus {
+    background-color:#F6FEE7;
+    color:#E6002E;
+    padding:5px;
+}
+
+.pluginSubTable {
+  color:#000000;
+  background-color:#CCCCCC;
+  font-weight:normal;
+  border:1px solid #CCCCCC;
+}
+.pluginSubTable th {
+  color:#000000;
+  background-color:#C9D1E4;
+  padding:5px;
+  text-align:left;
+}
+.pluginSubTable tr {
+  vertical-align:top;
+}
+.pluginSolidOutline {
+  background-color:#CCCCCC;
+}
+.pluginSolidFill {
+  background-color:#1A3955;
+}
+.pluginTitle {
+  background-color:#507AA1;
+  color:#F5F9FF;
+  padding:4px;
+  padding-left:6px;
+  padding-right:6px;
+}
+.pluginCellSubTitle {
+  background-color:#F7F7F7;
+  color:#000000;
+  padding:4px;
+  padding-left:6px;
+  padding-right:6px;
+}
+.pluginReportTitle {
+  font-size:1.2em;
+  background-color:#F2F2F2;
+  color:#0066A7;
+  text-align:center;
+  padding:5px;
+}
+.pluginTinyText {
+  font-size:0.70em;
+}
+.pluginSmallText {
+  font-size:0.8em;
+}
+.pluginMediumText {
+  font-size:1em;
+}
+.pluginLargeText {
+  font-size:1.25em;
+}
+.pluginAltText {
+  color:#FFFFFF;
+}
+.pluginRow1, .pluginRow1 td {
+  color:#000000;
+  background-color:#F7F7F7;
+  line-height:120%;
+}
+.pluginRow2, .pluginRow2 td {
+  color:#000000;
+  background-color:#E7E7E7;
+  line-height: 120%;
+}
+.pluginRow1 .pluginRollOver,
+.pluginRow2 .pluginRollOver,
+.pluginRollOver {
+  color:#000000;
+  background-color:#FFFFFF;
+  line-height:120%;
+}
+.pluginRow1 .pluginRollOut,
+.pluginRow2 .pluginRollOut,
+.pluginRollOut {
+  color:#000000;
+  background-color:#F7F7F7;
+  line-height:120%;
+}
+
+
+
+/* YUI Uploader styles that were not working for IE when I had them inline on page.thtml
+   Also needed to add the !important as there must be some other YUI styles that had an effect
+*/
+#fileProgress {
+    border:1px solid #CCC;
+    width:220px;
+    height:20px;
+    float:left;
+}
+#fileName {
+    text-align:center;
+    padding:0px !important;
+    margin:0px !important;
+    width:220px;
+    height:15px;
+}
+.uploaderprogress {
+    padding:0px !important;
+    margin:0px !important;
+    height:5px;
+    width:220px;
+    background-color:#CCC;
+}
+
+.formtable td {
+    padding-top:3px;
+    padding-bottom:2px;
+    vertical-align:top;
+}
+#filedetails td {
+    padding:5px;
+    text-align:left;
+}
+
+#filedetails table.plugin {
+  width: 670px;
+}
+
+#filedetails td.alignright {
+  margin-right: 30px;
+}
+
+.required {
+  padding-left:5px;
+  color:red;
+}
+
+#filelisting {
+    width:100%
+}
+
+#reportlisting_container .filedepotheading {
+    font-size:10pt;
+    color:#333;
+    clear:both;
+    display:inline-block;
+    width:100%;
+}
+
+#reportheadercontainer {
+  background-color:#F2F2F2;
+  float:left;
+  width:100%;
+  height:26px;
+  padding-bottom:5px;
+  padding-top:5px;
+  margin:0px;
+}
+
+#filelistingheader .filedepotheading {
+    font-size:12pt;
+    background-color: #DAE0ED;
+    color:#333;
+    clear:both;
+    display:inline-block;
+    width:100%;
+    padding:0px;
+}
+
+#filelistingheader .filedepotheading a {
+    font-size:9pt !important;
+    position:relative;bottom:2px;
+    text-decoration:none;
+}
+
+#filelisting_container {
+    padding-bottom:20px;
+}
+#filelisting_container .listing_record {
+    clear:both;
+    display:inline-block;
+    width:100%;
+    padding-top:5px;
+    padding-left:0px;
+}
+
+#filelisting_container .oddrow {
+    background-color:#FFFFFF;
+}
+
+#filelisting_container .evenrow {
+    background-color:#EBEBEB;
+}
+
+#filelisting_container .listing_record .filedesc {
+    clear:both;
+    padding-top:5px;
+    padding-left:75px;
+    padding-bottom:5px !important;
+    font-size:9pt;
+    color:#666;
+}
+
+#filelisting_container div.twoactions {
+  padding-right:40px;
+  white-space:nowrap
+}
+
+#filelisting_container div.oneaction {
+  padding-right:50px;
+  white-space:nowrap
+}
+
+#filelisting_container div.noactions {
+  padding-right:65px;
+  white-space:nowrap
+}
+
+#filelisting_container .loading {
+    background-color:#FFEFAD;
+    color: #FA0032;
+    font-size:85%;
+    font-weight:bold;
+    padding:5px;
+}
+
+a.morefolderdata {
+    color: #666;
+    text-decoration:none;
+}
+a.morefolderdata:hover {
+    color: #000;
+    text-decoration:underline;
+}
+
+.listing_record div.tags {
+    padding-bottom:2px;
+    float:left;
+}
+
+.filedesc div.tags span {
+    padding-left:5px;
+}
+
+#filelisting_container .subfolder_container {
+    width:100%;
+}
+
+#filelisting_container .subfolder_container listing_record {
+    clear:both;
+    display:inline-block;
+    width:100%;
+}
+
+.yui-panel {
+  background-color: #FFFFFF;
+}
+
+.yui-skin-sam .yui-ac-container {
+    position:relative;
+    top:1.5em;
+    width:100%;
+}
+
+.filedepot_alert {
+  padding-left:15px;
+  color:#D8010E;
+  background-color:#FEF1B4;
+  font-weight:bold;
+  height:30px;
+}
+.filedepot_alert div {
+   padding:5px;
+}
+
+.removetag a {
+    font-size:14px;
+    padding:4px 3px 4px 3px;
+    text-decoration:none;
+    color:black;
+    line-height: 28px;
+}
+.removetag a:hover {
+    font-size:20px;
+    padding:2px 1px 4px 2px;
+    text-decoration: underline;
+    line-height: 22px;
+}
+
+
+#autocomplete {
+    width:285px; /* set width for widget here */
+    padding-bottom:0em;
+}
+
+/* Over-ride CSS in YUI container.css */
+.button-group button:active,
+.button-group button:hover,
+.button-group button.hover {
+    background-color:#FF8822;
+    border-top-color:#FFF;
+    border-left-color:#FFF;
+}
+
+.inlineblock {
+  display: inline-block;
+}
+
+.filedepottoolbar {
+  background-color: #013763;
+  height:25px;
+  padding-top:0px;
+}
+
+.filedepottoolbar_searchbox {
+  width:300px;
+  position:relative;
+  float:right;
+  top:5px;
+}
+
+.filedepottoolbar_searchform {
+  float:right;
+  width:80%;
+  position:relative;
+  top:-2px;
+}
+
+
+.tagsearchboxcontainer {
+    float:right;
+    padding-top:9px;
+}
+
+.filedepottoolbar_searchbox form {
+  background-color: #013763;
+  margin:5px 0px 0px 10px;
+}
+
+.filedepottoolbar_searchbox table {
+  background-color: #013763;
+  line-height:0px;
+}
+.filedepottoolbar_searchbox table td {
+  padding:0px;
+  border:0px;
+}
+
+.filedepottoolbar .toolbaricons {
+  background-image: url(images/icons_6.png);
+  background-repeat: no-repeat;
+  display:inline-block;
+  float:left;
+}
+
+.filedepottoolbar .newfoldercmd {
+  background-position: 0px 50%;
+  width:16px;
+  position:relative;
+  left:10px;
+}
+
+.filedepottoolbar .uploadcmd {
+  background-position: -16px 50%;
+  width:16px;
+  position:relative;
+  left:50px;
+}
+
+
+.icon-folderclosed { width:18px; background: transparent url(images/icons_6.png) -384px 0px no-repeat; cursor:pointer !important;}
+.icon-folderopen { width:18px; background: transparent url(images/icons_6.png) -400px 0px no-repeat; cursor:pointer !important;}
+.icon-starnotselected { width:18px; background: transparent url(images/icons_6.png) -288px 0px no-repeat !important; }
+.icon-files { display:block; padding-left:25px; background: transparent url(images/homefolder-16x16.png) no-repeat !important; }
+.icon-fileowned { display:block;  padding-left:25px; background: transparent url(images/member-16x16.png) no-repeat !important; }
+.icon-filelocked { display:block;  padding-left:25px; background: transparent url(images/lock-16x16.png) no-repeat !important; }
+.icon-fileflagged { display:block;  padding-left:25px; background: transparent url(images/staron-16x16.gif) no-repeat !important; }
+.icon-allfolders { display:block;  padding-left:25px; background: transparent url(images/allfolders-16x16.png) no-repeat !important; }
+.icon-filelisting { display:block;  padding-left:25px; background: transparent url(images/filelisting-16x16.png) no-repeat !important; }
+
+.cancelbutton {
+    display: block;
+    height: 14px;
+    width: 14px;
+    background-image: url(images/cancelbutton.gif) !important;
+    background-repeat: no-repeat;
+    background-position: -14px 0px;
+    float: right;
+}
+
+a.cancelbutton:hover {
+    background-position: 0px 0px;
+}
+
+.htmlnodelabel { margin-left: 20px; }
+
+
+.downloadlink a {
+    text-decoration: none;
+    color: #000;
+}
+
+.folderlink a  {
+    text-decoration: underline;
+    color: #013763;
+}
+.folderlink a:hover  {
+    text-decoration: underline;
+    color: #000;
+}
+
+
+#tagsearchbox {
+    min-width:120px;
+    height:20px;
+    text-align:left;
+    margin-top:0px;
+    padding-bottom:5px;
+    padding-top:0px;
+    padding-left:5px;
+}
+#showsearchtags { color:#CCC;text-decoration: underline; }
+#showsearchtags:hover { color:#FFF; text-decoration:underline; }
+
+.tagcloud span { padding-left:2px;padding-right:2px; white-space:nowrap;}
+.tagcloud span a { color:#003DF5; text-decoration:underline; }
+.tagcloud span a:hover { color:#248F00; }
+.tagsearchbox span { }
+
+
+.searchtag {
+    font-size:90%;
+    text-decoration:underline;
+}
+
+#navbardialogs {
+    position:relative;
+    top:50px;
+    left:50px;
+}
+
+#newfolderdialog .bd div,
+#newfiledialog .bd div {
+    margin-top:7px;
+}
+
+#activefolder_area {
+  float:left;
+  padding:0px;
+}
+
+#activefolder_container, #folder_options_container {
+  background-color:#F2F2F2;
+}
+
+#activefolder {
+  padding:3px;
+}
+
+#activefolder a {
+    color: #006677;
+    background-color:#F2F2F2;
+    font-weight:bold;
+    padding:5px 10px 5px 2px;
+    text-decoration:none;
+}
+#activefolder a:hover {
+    color: #333;
+    background-color:#FFF2CC;
+    font-weight:bold;
+    padding:4px 10px 5px 1px;
+    border-top: 1px solid #666;
+    border-left: 1px solid #666;
+}
+
+#edit_activefolder {
+  display:none;
+  background-color:#F7F7F7;
+  padding:5px;
+  margin-bottom:10px;
+}
+
+#edit_activefolder td { padding:3px; }
+#folderperms td { padding:2px; }
+
+.filedepot_perms_leftoption {
+  margin-right:5px;
+  width:130px;
+  float:left;
+}
+
+.filedepot_perms_rightoption {
+  width:165px;
+  float:left;
+}
+
+#frmFileDetails input { font-size:9pt; }
+#frmFileDetails label { font-weight:normal; font-size:9pt; }
+
+.disabled_element { color: #ABABAB; }
+.enabled_element { color: #000000; }
+
+.listing_activetag { float:left; margin: 0px 2px; padding:2px 5px; font-weight:bold; }
+.listing_searchtag { float:left; margin: 0px 2px; padding:2px 5px; background-color: #CCE3FF; }
+.listing_searchtag a { color: #006AEB; }
+.listing_searchtag a:hover { color: #000000; }
+
+.deletebuttonborder {
+    margin:0px;
+    padding:5px 0px 5px 3px;
+    border:0px solid red;
+}
+
+.yui-skin-sam .yui-layout .yui-layout-unit div.yui-layout-bd {
+    border: 1px solid #DADADA;
+    border-bottom: none;
+    border-top: none;
+    *border-bottom-width: 0;
+    *border-top-width: 0;
+    background-color: #f2f2f2;
+    text-align: left;
+    padding-left:5px;
+    padding-top:10px;
+}
+
+
+/* Style the resize handle */
+.yui-skin-sam .yui-layout-unit .yui-resize-handle-r {
+    left: 5;
+    top: 0;
+    background-image: none;
+    background-color: #E1E7F2;
+    width:10px;
+    height:99% !important;  /* Looks better in FF this way */
+}
+
+ .yui-layout-unit .yui-resize-handle-r .yui-layout-resize-knob {
+    left:3px;
+}
+
+/* styles for results container */
+.yui-skin-sam .yui-ac-container {
+    position:relative;
+    top:1.5em;
+    margin:0px;
+    padding:0px;
+    width:100%;
+}
+
+/* YUI File details panel - close button was appearing as a un-styled link
+   after force loading the container and menu.css at the top of this file
+*/
+.yui-skin-sam .container-close {
+  background:url("images/sprite.png") no-repeat scroll 0 -300px transparent !important;
+  cursor:pointer;
+  height:18px !important;
+  position:absolute;
+  right:5px;
+  top:5px;
+  width:25px !important;
+}
+
+.yui-skin-sam .yuimenubaritemlabel { border: 0px !important; font-size:85%;}
+
+#yui-gen3 .yui-layout-bd { background-color:#FFF  }
+
+.yuimenubar li { background-image: none; }
+
+.yui-skin-sam .yui-button button { min-height:1.7em !important; }
+
+
+
+
+#filedepot_newfolder_link {
+  padding-right:10px;
+}
+
+#filedepot_newfile_link a {
+  color: #FFF;
+}
+#filedepot_newfolder_link a {
+  color: #FFF;
+}
+
