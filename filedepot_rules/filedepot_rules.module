@@ -83,6 +83,14 @@ function filedepot_rules_actions_create_folder($owner, $name, $parent, $descript
   $node->inherit = $inherit_permission;
   // Save.
   node_save($node);
+  // Grab the right include file form filedepot.
+  module_load_include('php', 'filedepot', 'permissions.class');
+  module_load_include('php', 'filedepot', 'filedepot.class');
+  $filedepot = filedepot::getInstance();
+  // Create default permissions record for the user that created the category
+  $cid = db_query('SELECT cid FROM {filedepot_categories} WHERE nid=:nid',
+    array('nid' => $node->nid))->fetchField();
+  $filedepot->updatePerms($cid, $filedepot->defOwnerRights, $owner->uid);
   // Return the folder node.
   return array('folder_node' => $node);
 }
