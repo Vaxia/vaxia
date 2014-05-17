@@ -90,7 +90,7 @@ function filedepot_rules_actions_create_folder($owner, $name, $parent, $descript
   // Create default permissions record for the user that created the category
   $cid = db_query('SELECT cid FROM {filedepot_categories} WHERE nid=:nid',
     array('nid' => $node->nid))->fetchField();
-  $filedepot->updatePerms($cid, array('view', 'upload_direct', 'upload_ver'), $owner->uid);
+  $filedepot->updatePerms($cid, array('view', 'upload_dir', 'upload_ver'), $owner->uid);
   // Return the folder node.
   return array('folder_node' => $node);
 }
