@@ -1,0 +1,346 @@
+<?php
+
+/**
+ * @file
+ * The favorites module allows users to bookmark any path within a site.
+ */
+
+/**
+ * Implements hook_permission().
+ */
+function favorites_permission() {
+  return array(
+    'manage own favorites' => array(
+      'title' => t('Manage own favorites'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function favorites_menu() {
+  $items['favorites/remove/%favorite'] = array(
+    'page callback' => 'favorites_remove_favorite',
+    'page arguments' => array(2),
+    'access arguments' => array('manage own favorites'),
+    'title' => 'Remove Favorite',
+    'type' => MENU_CALLBACK,
+  );
+  $items['favorites/js/add'] = array(
+    'page callback' => 'favorites_add_favorite_js',
+    'access arguments' => array('manage own favorites'),
+    'title' => 'Add favorite via js',
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+/**
+ * Helper function to load a favorite.
+ *
+ * @param int $fid
+ *   The DB ID of the favorite
+ *
+ * @return object
+ *   The DB row from the favorites table.
+ */
+function favorite_load($fid) {
+  return db_select('favorites', 'f')
+    ->fields('f')
+    ->condition('fid', $fid, '=')
+    ->execute()
+    ->fetchObject()
+  ;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function favorites_theme() {
+  return array(
+    'favorites' => array(
+      'variables' => array(
+        'favorites' => array(),
+      ),
+    ),
+  );
+}
+
+/**
+ * Deletes a favorite.
+ */
+function favorites_remove_favorite($favorite) {
+  global $user;
+  $access = (user_access('manage own favorites') && $user->uid == $favorite->uid); // no admin page implemented yet! || user_access('manage all favorites');
+  if (
+    $access
+    &&
+    drupal_valid_token($_GET['token'], $favorite->timestamp . $favorite->uid . $favorite->path)
+  ) {
+    db_delete('favorites')
+      ->condition('fid', $favorite->fid, '=')
+      ->execute()
+    ;
+    if ($_GET['js'] == 1) {
+      drupal_json_output(
+        array(
+          'list' => favorites_list(),
+        )
+      );
+      return;
+    }
+  }
+  else {
+    drupal_set_message(
+      t('You do not have permission to remove this favorite.'),
+      'error'
+    );
+  }
+  // Unless this is an AJAX request, the query string contains the redirection page.
+  if (!$_GET['js']) {
+    drupal_goto();
+  }
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function favorites_block_info() {
+  $blocks[0]['info'] = t('User Favorites block');
+  $blocks[0]['cache'] = DRUPAL_NO_CACHE;
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function favorites_block_view($delta = 0) {
+  if ($delta == 0 && user_access('manage own favorites')) {
+
+    // Add Ajax support.
+    drupal_add_js(drupal_get_path('module', 'favorites') . '/favorites.js');
+
+    // Create the block content.
+    // @todo: Return a render array instead.
+    $form_id = drupal_get_form('favorites_add_favorite_form');
+    $output = '<div id="favorites-list">' . favorites_list() . '</div>'
+      . drupal_render($form_id)
+    ;
+    return array(
+      'subject' => t('My Favorites'),
+      'content' => $output,
+    );
+  }
+}
+
+/**
+ * Generate the "My Favorites" list.
+ */
+function favorites_list() {
+  global $user;
+  $favorites = favorites_load_favorites($user->uid);
+  return theme('favorites', array('favorites' => $favorites));
+}
+
+/**
+ * Theme callback.
+ *
+ * Return a themed item list of favorites with title, link and link to delete.
+ */
+function theme_favorites($favorites = array()) {
+  $items = array();
+  $destination = drupal_get_destination();
+  $destination = explode('=', $destination['destination'], 2);
+  foreach ($favorites['favorites'] as $favorite) {
+    $items[] = l(
+      $favorite->title,
+      $favorite->path,
+      array('query' => unserialize($favorite->query))
+    ) . ' ' . l(
+      'x',
+      'favorites/remove/' . $favorite->fid,
+      array(
+        'query' => array(
+          'token' => $favorite->token,
+          'destination' => $destination[0],
+        ),
+        'attributes' => array(
+          'class' => 'favorites-remove',
+          'title' => t('delete this item'),
+        ),
+      )
+    );
+  }
+  return theme('item_list', array('items' => $items, 'type' => 'ul'));
+}
+
+/**
+ * Add a favorite.
+ */
+function favorites_add_favorite($values) {
+  global $user;
+  if (empty($user->uid)) {
+    return;
+  }
+  // Normalize the path to the drupal internal path.
+  // This helps in case the path alias changes or will be removed.
+  $values['path'] = drupal_get_normal_path($values['path']);
+
+  // Prepare the query values
+  $values['query'] = drupal_get_query_array($values['query']);
+  // Remove useless q value
+  unset($values['query']['q']);
+  $values['query'] = serialize($values['query']);
+
+  // Delete an existing entry with the same link to avoid duplicates.
+  db_delete('favorites')
+    ->condition('uid', $user->uid, '=')
+    ->condition('path', $values['path'], '=')
+    ->condition('query', $values['query'])
+    ->execute()
+  ;
+
+  db_insert('favorites')
+    ->fields(array(
+      'uid' => $user->uid,
+      'path' => $values['path'],
+      'query' => $values['query'],
+      'title' => $values['title'],
+      'timestamp' => REQUEST_TIME,
+    ))
+    ->execute()
+  ;
+}
+
+/**
+ * Form callback for the "add favorite form"
+ *
+ * @see favorites_user_block()
+ */
+function favorites_add_favorite_form($form, &$form_state) {
+  global $user;
+
+  // Try to get a default value for the title field.
+  // drupal_get_title() has run through check_plain. This is useless for us
+  // and needs to be fixed, which only works easily with PHP >= 5.1.
+  if (
+    function_exists('version_compare')
+    &&
+    version_compare(PHP_VERSION, '5.1.0', '>=')
+  ) {
+    $title = htmlspecialchars_decode(drupal_get_title());
+  }
+  if (!isset($title)) {
+    $title = menu_get_active_title();
+  }
+  if ($title == '') {
+    $title = variable_get('site_name', 'Home');
+  }
+  $title = strip_tags($title);
+
+  $path = strip_tags($_GET['q']);
+  $query = drupal_http_build_query($_GET);
+
+  // Add a collapsible container.
+  $form = array(
+    'add' => array(
+      '#type' => 'fieldset',
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      '#title' => t('add this page'),
+      'title' => array(
+        '#type' => 'textfield',
+        '#size' => 20,
+        '#maxlength' => 255,
+        '#default_value' => $title,
+        '#attributes' => array(
+          'style' => 'width: 90%',
+          'class' => array('favorites-add-textfield'),
+        ),
+      ),
+      'submit' => array(
+        '#type' => 'submit',
+        '#value' => t("Add"),
+        '#submit' => array('favorites_add_favorite_form_submit'),
+      ),
+      'path' => array(
+        '#type' => 'value',
+        '#value' => $path,
+      ),
+      'query' => array(
+        '#type' => 'value',
+        '#value' => $query,
+      ),
+    ),
+  );
+  //Preserve the current path with query string.
+  $form_state['redirect'] = array(
+    $_GET['q'],
+    array(
+      'query' => drupal_http_build_query($_GET),
+    )
+  );
+  // Additionally add path and query to the JS settings.
+  drupal_add_js(
+    array(
+      'favorites' => array(
+        'path' => $path,
+        'query' => $query,
+        'addCallbackPath' => url('favorites/js/add'),
+      ),
+    ),
+    'setting'
+  );
+
+  return $form;
+}
+
+/**
+ * Submit callback for "add favorite" form.
+ */
+function favorites_add_favorite_form_submit($form, &$form_state) {
+  favorites_add_favorite($form_state['values']);
+}
+
+/**
+ * Load the favorites for a particular user.
+ */
+function favorites_load_favorites($uid = 0) {
+  $favorites = array();
+  if ($uid) {
+    $result = db_select('favorites', 'f')
+      ->fields('f')
+      ->condition('uid', $uid, '=')
+      ->orderBy('timestamp', 'DESC')
+      ->execute()
+    ;
+    foreach ($result as $favorite) {
+      $favorite->token = favorite_token($favorite);
+      $favorite->path = drupal_get_path_alias($favorite->path);
+      $favorites[] = $favorite;
+    }
+  }
+  return $favorites;
+}
+
+/**
+ * Generate a token for a particular favorite.
+ */
+function favorite_token($favorite = NULL) {
+  return drupal_get_token($favorite->timestamp . $favorite->uid . $favorite->path);
+}
+
+/**
+ * AHAH callback for add favorites form.
+ *
+ * @see favorites_add_favorite_form()
+ */
+function favorites_add_favorite_js() {
+  favorites_add_favorite($_POST);
+  drupal_json_output(
+    array(
+      'list' => favorites_list(),
+    )
+  );
+}
