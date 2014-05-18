@@ -282,7 +282,9 @@ class filedepot
         }
       }
 
-      self::$_permission_objects[$uid][$cid] = $po;
+      if (!empty($uid) && !empty($cid) && !empty($po)) {
+        self::$_permission_objects[$uid][$cid] = $po;
+      }
       return $po;
     }
   }
