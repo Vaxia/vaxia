@@ -224,6 +224,14 @@ function rpg_chat_form_comment_form_alter(&$form, &$form_state, $form_id) {
       'effect' => 'fade',
       'event' => 'click', // To allow our refresh script to hit it.
     );
+    // If comment revisions is included prevent users stealth-edits.
+    if (module_exists('comment_revisions')) {
+      if (!empty($form['revision_information']['revision'])) {
+        $form['revision_information']['revision']['#access'] = FALSE;
+        $form['revision_information']['revision']['#default_value'] = TRUE;
+        $form['revision_information']['revision']['#value'] = TRUE;
+      }
+    }
     // Refresh this user's last login to this room.
     global $user;
     _rpg_chat_set_room_users($form['#node']->nid, $user->uid);

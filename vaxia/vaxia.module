@@ -591,6 +591,14 @@ function _vaxia_comment_redirect_submit($form, &$form_state) {
 function vaxia_form_comment_form_alter(array &$form, array &$form_state) {
   // Disable the extra box on comment forms.
   $form['author']['subscriptions_notify']['#access'] = FALSE;
+  // If comment revisions is included prevent users stealth-edits.
+  if (module_exists('comment_revisions')) {
+    if (!empty($form['revision_information']['revision'])) {
+      $form['revision_information']['revision']['#access'] = FALSE;
+      $form['revision_information']['revision']['#default_value'] = TRUE;
+      $form['revision_information']['revision']['#value'] = TRUE;
+    }
+  }
 }
 
 /**
