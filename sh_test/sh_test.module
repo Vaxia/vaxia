@@ -109,6 +109,26 @@ function sh_test_node_view($node, $view_mode, $langcode) {
       $message = t('This session report %display count towards session requirements on site.',
         array('%display' => 'does'));
     }
+	$requirements = ''
+	if (variable_get('sh_test_session_party_size', TRUE)) {
+	  $size_min = variable_get('sh_test_session_party_size_min', 2);
+	  $requirements[] = t('At least %size_min in the party.', array('%size_min' => $size_min));
+	  $npcs = variable_get('sh_test_session_party_size_npcs', FALSE);
+	  $npcs = $npcs 'DO' : 'DO NOT';
+	  $requirements[] = t('NPCs %npcs count.', array('%npcs' => $npcs));
+	  $ashs = variable_get('sh_test_session_party_size_ashs', FALSE);
+	  $ashs = $ashs ? 'DO' : 'DO NOT';
+	  $requirements[] = t('A/SH accounts %ashs count.', array('%ashs' => $ashs));
+	  $own_pcs = variable_get('sh_test_session_party_size_own_pcs', FALSE);
+	  $own_pcs = $own_pcs ? 'DO' : 'DO NOT';
+	  $requirements[] = t('The A/SH\'s own PCs %own_pcs count.', array('%own_pcs' => $own_pcs));
+	}
+	if (variable_get('sh_test_session_expires', TRUE)) {
+	  $timeframe = variable_get('sh_test_session_expires_timeframe', '3 years');
+	  $requirements[] = t('The session was run within the last %timeframe.', array('%timeframe' => $timeframe));
+	}
+    // Add settings.
+    $message .= implode(' ', $requirements);
     $node->content['session_report_state'] = array(
       '#markup' => '<div class="session_report_state">' . $message . '</div>',
       '#weight' => 1003,
