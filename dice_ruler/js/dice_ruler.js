@@ -25,9 +25,37 @@ Drupal.behaviors.diceRuler = {
       var rule_link = '<ul class="dice_rule dice-ruler-buttons dice-ruler-set-buttons"> ' +
         '<li class="dice-ruler-button dice-ruler-combat" type="combat" title="Make a Combat ruling with all available Str, Dex and End rolls."><a href="#">C</a></li>' +
         '<li class="dice-ruler-button dice-ruler-magic" type="magic" title="Make a Magic ruling with all available Int and Spi rolls."><a href="#">M</a></li>' +
-        '<li class="dice-ruler-button dice-ruler-two-tech" type="tech" title="Make a Tech ruling with all available Itn and Dex rolls."><a href="#">T</a></li>' +
+        '<li class="dice-ruler-button dice-ruler-tech" type="tech" title="Make a Tech ruling with all available Itn and Dex rolls."><a href="#">T</a></li>' +
         '</ul>';
       $('.dice_sets').after(rule_link);
+      // Add a reset button.
+      var reset = $('#dice-ruler-reset').length;
+      if (reset == 0) {
+        var reset_button = '<input type="button" class="form-submit" value="Reset" name="dice-ruler-reset" id="dice-ruler-reset" style="display: none;">';
+      }
+      $('#edit-rule-dice').after(reset_button);
+      // Load up just this row when clicked on.
+      $('#dice-ruler-reset').click(function() {
+        var this_form = $('#dice-ruler-form');
+        $(this_form).find(':input[name*="rolled"]').val('');
+        $(this_form).find(':input[name*="might"]').val('');
+        $(this_form).find(':input[name*="add_diff"]').val('');
+        $(this_form).find(':input[name*="combat_weapon"]').val('unarmed');
+        $(this_form).find(':input[name*="combat_weapon_a_add"]').val('');
+        $(this_form).find(':input[name*="combat_weapon_b_add"]').val('');
+        $(this_form).find(':input[name*="number_actions_b"]').val(1);
+        $(this_form).find(':input[name*="magic_target"]').val('');
+        $('#dice-ruler-form select[name="actions"]').val('hidden').trigger('change');
+      });
+      // Show or hide the reset button based on the actions selected.
+      $('#dice-ruler-form select[name="actions"]').change(function() {
+        if ($(this).val() == 'hidden') {
+          $('#dice-ruler-reset').hide();
+        }
+        else {
+          $('#dice-ruler-reset').show();
+        }
+      });
     }
 
     // Load up just this row when clicked on.
@@ -144,10 +172,9 @@ Drupal.behaviors.diceRuler = {
           });
         break;
         case 'tech':
-          button_type = 'two_trait';
           // Get all int, dex combinations.
           $(rolls).find('.dice_set').each(function() {
-            if ($(this).find('.dice_roll_int').length > 0 && $(this).find('.dice_roll_spi').length > 0) {
+            if ($(this).find('.dice_roll_int').length > 0 && $(this).find('.dice_roll_dex').length > 0) {
               new_slot = new_slot + 1;
               var new_form = $('#dice-ruler-form #edit-action-' + new_slot);
               $(new_form).find(':input[name^="two_trait_might_a"]').val( $(this).find('.dice_roll_int').attr('might') );
@@ -156,6 +183,7 @@ Drupal.behaviors.diceRuler = {
               $(new_form).find(':input[name^="two_trait_rolled_b"]').val( $(this).find('.dice_roll_dex').attr('roll') );
             }
           });
+          button_type = 'two_trait';
         break;
       }
       // Now set the new count.
