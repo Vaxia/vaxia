@@ -13,7 +13,11 @@ function sh_test_permission() {
   return array(
     'approve sh test'=> array(
       'title' => t('approve sh test'),
-      'description' => t('Approve the SH test.'),
+      'description' => t('Approve the ASH 3 test.'),
+    ),
+    'approve sh starvation'=> array(
+      'title' => t('approve sh starvation'),
+      'description' => t('Approve the ASH 3 test in starvation mode.'),
     ),
     'view sh test results'=> array(
       'title' => t('view sh test results'),
@@ -427,7 +431,13 @@ function sh_test_setup_approval_form($user, $node, $entity_created) {
   // Save the node
   node_save($entity_created);
   // Set approving roles for users.
-  $approving = user_roles(FALSE, 'approve sh test');
+  $approving = array();
+  if (sh_test_check_starvation_mode()) {
+    $approving = user_roles(FALSE, 'approve sh test');
+  }
+  else {
+    $approving = user_roles(FALSE, 'approve sh starvation');
+  }
   $record = db_query('DELETE FROM {webform_roles} WHERE nid = :nid', array(':nid' => $entity_created->nid));
   foreach ($approving as $role) {
     if ($role) {
@@ -558,7 +568,13 @@ function sh_test_check_ash_3_responses($nid) {
     $count++;
   }
   // Total eligable SH evals.
-  $approving = user_roles(FALSE, 'approve sh test');
+  $approving = array();
+  if (sh_test_check_starvation_mode()) {
+    $approving = user_roles(FALSE, 'approve sh test');
+  }
+  else {
+    $approving = user_roles(FALSE, 'approve sh starvation');
+  }
   $approvers = array();
   foreach ($approving as $role) {
     if ($role) {

@@ -60,7 +60,6 @@ features[rules_config][] = sh_test_response_sh_application_all_reviewers_in
 features[rules_config][] = sh_test_rules_sh_test_4_mark_pass
 features[rules_config][] = sh_test_sh_test_1_expire_warning
 features[rules_config][] = sh_test_sh_test_2_expire_warning
-features[rules_config][] = sh_test_sh_test_3_response_low_no_sh_population
 features[rules_config][] = vaxia_accounts_sh_eval_expire
 features[rules_config][] = vaxia_accounts_sh_eval_expire_warning
 features[taxonomy][] = ash_test
