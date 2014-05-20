@@ -1,0 +1,398 @@
+<?php
+/**
+ * @file
+ * Enables comment revision features.
+ */
+
+/**
+ * Implements hook_views_api().
+ */
+function comment_revisions_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'comment_revisions') . '/views',
+  );
+}
+
+/**
+ * Implements hook_schema_alter().
+ */
+function comment_revisions_schema_alter(&$schema) {
+  $schema['comment']['fields']['vid'] = array(
+    'description' => 'The current {comment_revision}.vid version identifier.',
+    'type' => 'int',
+    'unsigned' => TRUE,
+    'not null' => TRUE,
+    'default' => 0,
+  );
+}
+
+/**
+ * Implements hook_permission().
+ */
+function comment_revisions_permission() {
+  return array(
+    'view comment revisions' => array(
+      'title' => t('View revisions'),
+      'restrict access' => TRUE,
+    ),
+    'revert comment revisions' => array(
+      'title' => t('Revert revisions'),
+      'restrict access' => TRUE,
+    ),
+    'delete comment revisions' => array(
+      'title' => t('Delete revisions'),
+    ),
+    'create comment revisions' => array(
+      'title' => t('Create comment revisions'),
+      'description' => t('Allow users to create comment revisions')
+    ),
+    'view own comments revisions' => array(
+      'title' => t('View own comment\'s revisions'),
+      'description' => t('Allow users to view their own comment\'s revisions'),
+    ),
+    'revert own comments revisions' => array(
+      'title' => t('Revert own comment\'s revisions'),
+      'description' => t('Allow users to revert their own comment\'s revisions'),
+    ),
+    'delete own comments revisions' => array(
+      'title' => t('Delete own comment\'s revisions'),
+      'description' => t('Allow users to delete their own comment\'s revisions'),
+    ),
+  );
+}
+
+/**
+ * Access callback.
+ */
+function _comment_revisions_access($comment, $perm) {
+  global $user;
+  if (!_comment_revisions_check_comment_has_revisions($comment)) {
+    return FALSE;
+  }
+  if (!is_array($perm)) {
+    $perm = array($perm);
+  }
+  foreach ($perm as $permission) {
+    switch ($permission) {
+      case 'view comment revisions':
+      case 'revert comment revisions':
+      case 'delete comment revisions':
+        if (user_access($permission)) {
+          return TRUE;
+        }
+        break;
+      case 'view own comments revisions':
+      case 'revert own comments revisions':
+      case 'delete own comments revisions':
+        if ($comment->uid == $user->uid && user_access($permission)) {
+          return TRUE;
+        }
+        break;
+    }
+  }
+  return FALSE;
+}
+
+/**
+ * Check if given comment has any revision.
+ *
+ * @param $comment  Comment object.
+ * @return bool If comment has revisions, return TRUE, else return FALSE.
+ */
+function _comment_revisions_check_comment_has_revisions($comment) {
+  if (db_query("SELECT count(*) FROM {comment_revision} WHERE cid = :cid", array(':cid' => $comment->cid))->fetchField() <= 1) {
+    return FALSE;
+  }
+  return TRUE;
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function comment_revisions_form_comment_form_alter(&$form, &$form_state, $form_id) {
+  // On comment create form.
+  if (!isset($form['cid']['#value'])) {
+    $form['vid'] = array(
+      '#type' => 'value',
+      '#value' => NULL,
+    );
+    $form['revision'] = array(
+      '#type' => 'value',
+      '#value' => TRUE,
+    );
+  }
+  // On comment edit form.
+  else {
+    $comment = $form_state['comment'];
+    $form['revision_information'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Revision information'),
+      '#collapsible' => TRUE,
+      '#attributes' => array(
+        'class' => array('comment-form-revision-information'),
+      ),
+      '#weight' => 20,
+      '#access' => user_access('create comment revisions'),
+    );
+    $form['revision_information']['revision'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Create new revision'),
+      '#default_value' => TRUE,
+    );
+    $form['revision_information']['log'] = array(
+      '#type' => 'textarea',
+      '#title' => t('Revision log message'),
+      '#rows' => 4,
+      '#description' => t('Provide an explanation of the changes you are making. This will help other authors understand your motivations.'),
+      '#states' => array(
+        'invisible' => array(
+          'input[name="revision"]' => array('checked' => FALSE),
+        ),
+      ),
+    );
+    $form['vid'] = array(
+      '#type' => 'value',
+      '#value' => isset($comment->vid) ? $comment->vid : NULL,
+    );
+    $form['#submit'][] = 'comment_revisions_comment_form_submit';
+  }
+}
+
+/**
+ * Custom submit handler.
+ */
+function comment_revisions_comment_form_submit($form, &$form_state) {
+  $form_state['comment']->revision = $form_state['values']['revision'];
+  $form_state['comment']->revision_by_default = $form_state['values']['log'];
+}
+
+/**
+ * Implements hook_comment_presave().
+ */
+function comment_revisions_comment_presave($comment) {
+  global $user;
+  $revision = array();
+  $revision['thread'] = ''; // Deserve SQL integrity.
+  $revision = array_merge((array) $comment, $revision);
+  $revision['log'] = empty($revision['log']) ? '' : $revision['log'];
+  $revision['timestamp'] = REQUEST_TIME;
+  $revision['authorid'] = $user->uid;
+  // Check if user required revision support.
+  if ((isset($revision['revision']) && $revision['revision'] == 1)) {
+    // On comment update remove the current vid.
+    if (isset($revision['vid'])) {
+      $revision['old_vid'] = $revision['vid'];
+      unset($revision['vid']);
+    }
+    _comment_revisions_save_revision($revision);
+  }
+  else {
+    _comment_revisions_save_revision($revision, array('vid'));
+  }
+  // Pass through the revision vid.
+  $comment->vid = $revision['vid'];
+}
+
+/**
+ * Save revision records to the database.
+ */
+function _comment_revisions_save_revision(&$revision, $update = NULL) {
+  // Add timestamp and author.
+  if (isset($update)) {
+    return drupal_write_record('comment_revision', $revision, $update);
+  }
+  else {
+    return drupal_write_record('comment_revision', $revision);
+  }
+}
+
+/**
+ * Implements hook_comment_insert().
+ */
+function comment_revisions_comment_insert($comment) {
+  // Correcting comment id and thread in revision table.
+  db_update('comment_revision')
+    ->fields(array('cid' => $comment->cid, 'thread' => $comment->thread))
+    ->condition('vid', $comment->vid)
+    ->execute();
+}
+
+/**
+ * Implements hook_comment_update().
+ */
+function comment_revisions_comment_update($comment) {
+  // Correcting thread in revision table.
+  $original = $comment->original;
+  db_update('comment_revision')
+    ->fields(array('thread' => $original->thread))
+    ->condition('vid', $comment->vid)
+    ->execute();
+}
+
+/**
+ * Implements hook_entity_info_alter().
+ */
+function comment_revisions_entity_info_alter(&$entity_info) {
+  $entity_info['comment']['revision table'] = 'comment_revision';
+  $entity_info['comment']['entity keys']['revision'] = 'vid';
+  $entity_info['comment']['controller class'] = 'CommentRevisionController';
+  module_load_include('install', 'comment_revisions');
+  $schema = comment_revisions_schema();
+  foreach ($schema['comment_revision']['fields'] as $field => $data) {
+    $entity_info['comment']['schema_fields_sql']['revision table'][] = $field;
+  }
+}
+
+/**
+ * Implements hook_entity_property_info_alter().
+ */
+function comment_revisions_entity_property_info_alter(&$info) {
+  $info['comment']['properties']['vid'] = array(
+    'label' => t('Revision ID'),
+    'type' => 'integer',
+    'description' => t('The unique ID of the comment\'s revision.'),
+    'schema field' => 'vid',
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function comment_revisions_menu() {
+  $items['comment/%comment/revisions'] = array(
+    'title' => 'Revisions',
+    'page callback' => 'comment_revisions_overview',
+    'page arguments' => array(1),
+    'access callback' => '_comment_revisions_access',
+    'access arguments' => array(1,
+      array('view comment revisions', 'view own comments revisions'),
+    ),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 2,
+    'file' => 'comment_revisions.pages.inc',
+  );
+  $items['comment/%comment/revisions/list'] = array(
+    'title' => 'Revisions',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+  );
+  $items['comment/%comment/revisions/%/view'] = array(
+    'title' => 'Revisions',
+    'page callback' => 'comment_revisions_show',
+    'page arguments' => array(1, 3),
+    'access callback' => '_comment_revisions_access',
+    'access arguments' => array(1,
+      array('view comment revisions', 'view own comments revisions'),
+    ),
+  );
+  $items['comment/%comment_revision/revisions/%/revert'] = array(
+    'title' => 'Revert to earlier revision',
+    'load arguments' => array(3),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('comment_revisions_revert_confirm', 1),
+    'access callback' => '_comment_revisions_access',
+    'access arguments' => array(1,
+      array('revert comment revisions', 'revert own comments revisions'),
+    ),
+    'file' => 'comment_revisions.pages.inc',
+  );
+  $items['comment/%comment_revision/revisions/%/delete'] = array(
+    'title' => 'Delete earlier revision',
+    'load arguments' => array(3),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('comment_revisions_delete_confirm', 1),
+    'access callback' => '_comment_revisions_access',
+    'access arguments' => array(1,
+      array('delete comment revisions', 'delete own comments revisions'),
+    ),
+    'file' => 'comment_revisions.pages.inc',
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_admin_paths().
+ */
+function comment_revisions_admin_paths() {
+  if (variable_get('node_admin_theme')) {
+    $paths = array(
+      'comment/*/revisions' => TRUE,
+      'comment/*/revisions/*/revert' => TRUE,
+      'comment/*/revisions/*/delete' => TRUE,
+    );
+    return $paths;
+  }
+}
+
+/**
+ * Implements hook_comment_view_alter().
+ *
+ * Register revision link in comment links.
+ */
+function comment_revisions_comment_view_alter(&$build) {
+  $perm = array('view comment revisions', 'view own comments revisions');
+  // If user has access, display revisions links.
+  if (_comment_revisions_access($build['#comment'], $perm)) {
+    $build['links']['comment']['#links']['comment-revisions'] = array(
+      'title' => t('revisions'),
+      'href' => 'comment/' . $build['#comment']->cid . '/revisions',
+      'html' => TRUE,
+    );
+  }
+}
+
+/**
+ * Return a list of all the existing revision of comment.
+ */
+function comment_revisions_list($comment) {
+  $revisions = array();
+  $result = db_query('SELECT r.vid, r.uid, r.subject, r.log, r.timestamp, r.authorid, c.vid AS current_vid, r.uid, r.subject, r.log, r.timestamp, a.name FROM {comment_revision} r LEFT JOIN {comment} c ON c.vid = r.vid LEFT JOIN {comment} a ON r.authorid = a.uid WHERE r.cid = :cid ORDER BY r.vid DESC', array(':cid' => $comment->cid));
+  foreach ($result as $revision) {
+    $revisions[$revision->vid] = $revision;
+  }
+  return $revisions;
+}
+
+/**
+ * Show a revision of comment.
+ */
+function comment_revisions_show($comment, $vid) {
+  $comment = comment_revisions_load($comment->cid, $vid);
+  drupal_set_title(t('Revision of %title from %date', array(
+    '%title' => $comment->subject,
+    '%date' => format_date($comment->revision_timestamp)
+  )), PASS_THROUGH);
+  return comment_revisions_show_comment($comment);
+}
+
+/**
+ * Display the selected version of comment.
+ */
+function comment_revisions_show_comment($comment) {
+  // TODO Display node_view and replies too.
+  return comment_view($comment, node_load($comment->nid));
+}
+
+/**
+ * Loads a revision of comment.
+ */
+function comment_revisions_load($cid, $vid = NULL, $reset = FALSE) {
+  if (isset($vid)) {
+    $conditions = (isset($vid) ? array('vid' => $vid) : array());
+    $comments = comment_load_multiple(array($cid), $conditions, $reset);
+    return reset($comments);
+  }
+}
+
+/**
+ * Delete a comment revision.
+ */
+function comment_revisions_delete($revision) {
+  db_delete('comment_revision')
+    ->condition('cid', $revision->cid)
+    ->condition('vid', $revision->vid)
+    ->execute();
+  module_invoke_all('comment_revisions_delete', $revision);
+  field_attach_delete_revision('comment', $revision);
+  return TRUE;
+}
