@@ -162,7 +162,7 @@ function sh_test_menu() {
 function _sh_test_admin_settings($form, &$form_state) {
   $form['sh_test_starvation_mode'] = array(
     '#title' => t('Minimum Storyhosts'),
-    '#description' => t('Below this number of storyhosts we are in starvation mode and will take anyone who applies to ASH 3.'),
+    '#description' => t('Below this number of storyhosts we are in starvation mode for ASH 3.'),
     '#type' => 'textfield',
     '#default_value' => variable_get('sh_test_starvation_mode', '4'),
   );
