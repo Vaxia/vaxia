@@ -167,10 +167,16 @@ function _sh_test_admin_settings($form, &$form_state) {
     '#default_value' => variable_get('sh_test_starvation_mode', '4'),
   );
   $form['sh_test_approval_min'] = array(
-    '#title' => t('Minimum approvals'),
+    '#title' => t('Minimum approval percent'),
     '#description' => t('At least these many approvals are required to pass ASH 3.'),
     '#type' => 'textfield',
-    '#default_value' => variable_get('sh_test_approval_min', '3'),
+    '#default_value' => variable_get('sh_test_approval_min', '75'),
+  );
+  $form['sh_test_approval_min_starvation'] = array(
+    '#title' => t('Minimum starvation approval percent'),
+    '#description' => t('At least these many approvals are required to pass ASH 3 in starvation mode.'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('sh_test_approval_min_starvation', '50'),
   );
   $form['session_requires'] = array(
     '#type' => 'fieldset',
@@ -548,26 +554,28 @@ function sh_test_check_ash_3_approvals($nid) {
       $count++;
     }
   }
-  // Have at least three people voted?
-  if ($count > variable_get('sh_test_approval_min', '3')) {
-    return TRUE;
+  // Total eligable SH evals.
+  $approvers = get_possible_approvers();
+  $approvers = count($approvers);
+  $percentage = $count / $approvers; // Leave with decimals, cause that's valid. Math is like that.
+  // Do we have quorum?
+  if (sh_test_check_starvation_mode()) {
+    if ($percentage >= variable_get('sh_test_approval_min', '75')) {
+      return TRUE;
+    }
+  }
+  else {
+    if ($percentage > variable_get('sh_test_approval_min_starvation', '50')) {
+      return TRUE;
+    }
   }
   return FALSE;
 }
 
 /**
- * Helper for rules. Check if all possible users have weighed in.
+ * Helper function, get possible approvers.
  */
-function sh_test_check_ash_3_responses($nid) {
-  $results = db_query("SELECT wd.data FROM {webform_submitted_data} wd " .
-    "WHERE wd.nid = :nid " .
-    "AND wd.cid = 1", // There is only the one form element.
-    array(':nid' => $nid,));
-  $count = 0;
-  foreach ($results as $result) {
-    $count++;
-  }
-  // Total eligable SH evals.
+function get_possible_approvers() {
   $approving = array();
   if (sh_test_check_starvation_mode()) {
     $approving = user_roles(FALSE, 'approve sh test');
@@ -584,8 +592,25 @@ function sh_test_check_ash_3_responses($nid) {
       }
     }
   }
+  return $approvers;
+}
+
+/**
+ * Helper for rules. Check if all possible users have weighed in.
+ */
+function sh_test_check_ash_3_responses($nid) {
+  $results = db_query("SELECT wd.data FROM {webform_submitted_data} wd " .
+    "WHERE wd.nid = :nid " .
+    "AND wd.cid = 1", // There is only the one form element.
+    array(':nid' => $nid,));
+  $count = 0;
+  foreach ($results as $result) {
+    $count++;
+  }
+  // Total eligable SH evals.
+  $approvers = get_possible_approvers();
   // Has everyone that could vote, voted?
-  if ($count == count($approvers)) {
+  if ($count >= count($approvers)) {
     return TRUE;
   }
   return FALSE;
