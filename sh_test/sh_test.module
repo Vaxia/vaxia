@@ -156,7 +156,7 @@ function proposal_form_alter(&$form, &$form_state, $form_id) {
     // Check for ownership. If the owner made this application, they can't vote on it.
     global $user;
     if ($user->uid == $node->uid) {
-      $form['#access'] = FALSE:
+      $form['#access'] = FALSE;
     }
   }
 }
