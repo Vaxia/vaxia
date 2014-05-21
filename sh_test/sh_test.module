@@ -144,7 +144,7 @@ function sh_test_node_view($node, $view_mode, $langcode) {
 /**
  * Implements hook_form_alter().
  */
-function proposal_form_alter(&$form, &$form_state, $form_id) {
+function sh_test_form_alter(&$form, &$form_state, $form_id) {
   // If we're viewing a webform.
   // Why hook_form_alter and not hook_form_FORM_ID_alter? Because webform's form id varies: webform_client_form_NID.
   if (strstr($form_id, 'webform_client_form') !== FALSE) {
