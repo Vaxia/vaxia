@@ -575,7 +575,8 @@ function sh_test_check_ash_3_approvals($nid) {
     }
   }
   // Total eligable SH evals.
-  $approvers = get_possible_approvers();
+  $node = node_load($nid);
+  $approvers = get_possible_approvers($node->uid);
   $approvers = count($approvers);
   $percentage = $count / $approvers; // Leave with decimals, cause that's valid. Math is like that.
   // Do we have quorum?
@@ -595,7 +596,7 @@ function sh_test_check_ash_3_approvals($nid) {
 /**
  * Helper function, get possible approvers.
  */
-function get_possible_approvers() {
+function get_possible_approvers($applicant) {
   $approving = array();
   if (sh_test_check_starvation_mode()) {
     $approving = user_roles(FALSE, 'approve sh test');
@@ -608,7 +609,9 @@ function get_possible_approvers() {
     if ($role) {
       $users = db_query('SELECT uid FROM {users_roles} WHERE rid = :rid', array('rid' => $role));
       foreach ($users as $user) {
-        $approvers[$user->uid] = $user->uid;
+        if ($users->uid != $applicant) { // Don't count the self.
+          $approvers[$user->uid] = $user->uid;
+        }
       }
     }
   }
@@ -628,7 +631,8 @@ function sh_test_check_ash_3_responses($nid) {
     $count++;
   }
   // Total eligable SH evals.
-  $approvers = get_possible_approvers();
+  $node = node_load($nid);
+  $approvers = get_possible_approvers($node->uid);
   // Has everyone that could vote, voted?
   if ($count >= count($approvers)) {
     return TRUE;
