@@ -160,12 +160,7 @@
           $.ajax({
             type: 'GET',
             url: Drupal.settings.basePath + 'favorites/js/order/' + fav_id + '/' + fav_weight,
-          });
-          // Re-number the weights afterwards.          
-          $("#favorites-list ul").children().each(function(i) {
-            var handlemarkup = '<a class="tabledrag-handle" href="#" title="Drag to re-order"><span class="handle" ' +
-              'style="padding-left: 10px; opacity: 0; cursor: move;">' + i + '</span></a>';
-          });    
+          });  
         });
         }
       });
