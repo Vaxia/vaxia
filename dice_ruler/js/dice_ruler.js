@@ -149,11 +149,11 @@ Drupal.behaviors.diceRuler = {
             if ($(this).find('.dice_roll_str').length > 0 && $(this).find('.dice_roll_dex').length > 0) {
               new_slot = new_slot + 1;
               var new_form = $('#dice-ruler-form #edit-action-' + new_slot);
-              $(new_form).find(':input[name^="combat_might_a_dex"]').val( $(this).find('.dice_roll_str').attr('might') );
-              $(new_form).find(':input[name^="combat_might_a_str"]').val( $(this).find('.dice_roll_dex').attr('might') );
+              $(new_form).find(':input[name^="combat_might_a_dex"]').val( $(this).find('.dice_roll_dex').attr('might') );
+              $(new_form).find(':input[name^="combat_might_a_str"]').val( $(this).find('.dice_roll_str').attr('might') );
               $(new_form).find(':input[name^="combat_might_a_end"]').val( $(this).find('.dice_roll_end').attr('might') );
-              $(new_form).find(':input[name^="combat_rolled_a_dex"]').val( $(this).find('.dice_roll_str').attr('roll') );
-              $(new_form).find(':input[name^="combat_rolled_a_str"]').val( $(this).find('.dice_roll_dex').attr('roll') );
+              $(new_form).find(':input[name^="combat_rolled_a_dex"]').val( $(this).find('.dice_roll_dex').attr('roll') );
+              $(new_form).find(':input[name^="combat_rolled_a_str"]').val( $(this).find('.dice_roll_str').attr('roll') );
               $(new_form).find(':input[name^="combat_rolled_a_end"]').val( $(this).find('.dice_roll_end').attr('roll') );
             }
           });
