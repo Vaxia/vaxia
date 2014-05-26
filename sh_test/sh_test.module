@@ -586,7 +586,7 @@ function sh_test_check_ash_3_approvals($nid) {
     }
   }
   else {
-    if ($percentage > variable_get('sh_test_approval_min_starvation', '50')) {
+    if ($percentage >= variable_get('sh_test_approval_min_starvation', '50')) {
       return TRUE;
     }
   }
