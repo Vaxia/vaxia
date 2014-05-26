@@ -85,8 +85,11 @@
     // Add draggable handle.
     applyDragHandler: function() {
       $('.collapse-block').remove();
-      $('.block-favorites h2').prepend('<span class="collapse-block collapse-true" style="color: rgb(204, 204, 204); ' +
-        'font-size: 15px; cursor: pointer; margin-left: -17px; margin-right: 5px;">-</span>');
+      var found_toggle = $('.block-favorites .collapse-block').length;
+      if (found_toggle == 0) {
+        $('.block-favorites h2').prepend('<span class="collapse-block collapse-true" style="color: rgb(204, 204, 204); ' +
+          'font-size: 15px; cursor: pointer; margin-left: -17px; margin-right: 5px;">-</span>');
+      }
       $(".block-favorites h2 .collapse-block").toggle(
         function() {
           $(".block-favorites #favorites-list").toggle();
@@ -101,22 +104,25 @@
           $('.collapse-block').css({'font-size': '15px'}).html('-');
         }
       );
-      $("#favorites-list ul").children().each(function(i) {
-        var handlemarkup = '<a class="tabledrag-handle" href="#" title="Drag to re-order"><span class="handle" ' +
-          'style="padding-left: 10px; opacity: 0; cursor: move;">&nbsp;</span></a>';
-        $(this).prepend(handlemarkup);
-        $('.hidden-fid').hide();
-        console.log($(this).parent('ul'));
-        $(this).parent('ul').css({
-          'padding': "0px",
-        });        
-        $(this).css({
-          'list-style': "disc",
-          'list-style-position': "inside",
-          'text-indent': '-13px',
-          'padding-left': '13px',
+      var found_handles = $('#favorites-list .handle').length;
+      if (found_handles == 0) {
+        $("#favorites-list ul").children().each(function(i) {
+          var handlemarkup = '<a class="tabledrag-handle" href="#" title="Drag to re-order"><span class="handle" ' +
+            'style="padding-left: 10px; opacity: 0; cursor: move;">&nbsp;</span></a>';
+          $(this).prepend(handlemarkup);
+          $('.hidden-fid').hide();
+          console.log($(this).parent('ul'));
+          $(this).parent('ul').css({
+            'padding': "0px",
+          });        
+          $(this).css({
+            'list-style': "disc",
+            'list-style-position': "inside",
+            'text-indent': '-13px',
+            'padding-left': '13px',
+          });
         });
-      });
+      }
     },
     // Add dragable feature.
     applyDraggable: function() {
