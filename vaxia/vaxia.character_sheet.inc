@@ -357,7 +357,7 @@ function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
     if (!($user->uid != $node->uid && user_access('edit private SH notes'))) {
       $form['field_sh_private_notes'][$lang][0]['#access'] = FALSE;
       if (isset($form['field_sh_private_notes'][$lang][0]['#default_value'])) {
-        $form['field_sh_private_notes'][$lang][0]['#value'] = $form['field_sh_notes'][$lang][0]['#default_value'];
+        $form['field_sh_private_notes'][$lang][0]['#value'] = $form['field_sh_private_notes'][$lang][0]['#default_value'];
       }
     }
   }
