@@ -583,13 +583,13 @@ function sh_test_check_ash_3_approvals($nid) {
   // Do we have quorum?
   if (sh_test_check_starvation_mode()) {
     watchdog('sh_test', 'We are not in starvation mode.');
-    if ($percentage >= variable_get('sh_test_approval_min', '75')) {
+    if ($percentage > variable_get('sh_test_approval_min', '75')) {
       return TRUE;
     }
   }
   else {
     watchdog('sh_test', 'We are in starvation mode.');
-    if ($percentage >= variable_get('sh_test_approval_min_starvation', '50')) {
+    if ($percentage > variable_get('sh_test_approval_min_starvation', '50')) {
       return TRUE;
     }
   }
