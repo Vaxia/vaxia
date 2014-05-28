@@ -24,8 +24,8 @@
         // Trim "1 : roll" off the note. New format: roll(1d100) + agi (26)
         if (!empty( $notes[$index + 1] )) {
           $notes[$index + 1] = trim($notes[$index + 1]);
+          $note = substr($notes[$index + 1], 8);
         }
-        $note = substr($notes[$index + 1], 8);
         if (!empty($notes[$index+1]) && strpos($notes[$index+1], '+') !== FALSE) {
           // We have a note, let's get the stat.
           $results = explode('+', $note);
