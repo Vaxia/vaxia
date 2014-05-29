@@ -1,0 +1,14 @@
+diff --git a/forum_access.module b/forum_access.module
+index 68b7c1f..dfee3d2 100644
+--- a/forum_access.module
++++ b/forum_access.module
+@@ -111,6 +111,9 @@ function _forum_access_comment_access_callback($comment, $op) {
+ 
+   if (is_numeric($comment)) {
+     $comment = comment_load($comment);
++    if (empty($comment)) {
++      return FALSE;
++    }
+   }
+   $node = node_load($comment->nid);
+ 
