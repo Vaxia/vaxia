@@ -451,10 +451,6 @@ function sh_test_check_starvation_mode() {
  * Helper for rules. Setup the webform response for approving new candidates.
  */
 function sh_test_setup_approval_form($user, $node, $entity_created) {
-  $user->field_ash_3_answers[$lang][0]['value'] = $output;
-  $user->field_ash_3_answers[$lang][0]['format'] = 'wiki';
-  user_save($user);
-
   $output = sh_test_ash_3_get_answers($user, $node);
   if (empty($output)) {
     drupal_set_message(t('An error was encountered, no output able to be created.'));
@@ -462,6 +458,7 @@ function sh_test_setup_approval_form($user, $node, $entity_created) {
   }
   // Set the webform body
   $entity_created->body[$entity_created->language][0]['value'] = $output;
+  $entity_created->body[$entity_created->language][0]['format'] = 'wiki';
   $entity_created->webform['confirmation'] = t('Thank you!');
   $entity_created->webform['confirmation_format'] = 'plain_text';
   $entity_created->webform['submit_limit'] = 1;
