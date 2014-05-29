@@ -423,13 +423,24 @@ function sh_test_session_counts($session) {
  * Helper for rules. Check if we are so low on SH's that we just need to pass the user through.
  */
 function sh_test_check_starvation_mode() {
-  $result = db_query('SELECT COUNT(ur.uid) FROM {users_roles} ur ' .
-    'LEFT JOIN {role} r ON ur.rid = r.rid ' .
-    'WHERE r.name = :name', array(':name' => 'storyteller') );
+  $approving = user_roles(FALSE, 'approve sh test');
+  $roles = array();
+  foreach ($approving as $role_name) {
+    if ($role_name) {
+      $this_role = user_role_load_by_name($role_name);
+      if (!empty($this_role->rid)) {
+        $roles[] = $this_role->rid;
+      }
+    }
+  }
+  watchdog('sh_test', 'Found roles: ' . print_r($roles,1));
+  $result = db_query('SELECT COUNT(ur.uid) AS count FROM {users_roles} ur ' .
+      'WHERE ur.rid IN (:roles)', array(':roles' => $roles) );
   $count = 0;
   foreach ($result as $value) {
-    $count = $value;
+    $count = $value->count;
   }
+  watchdog('sh_test', 'Count members of standard approving roles: ' . $count);
   if ($count < variable_get('sh_test_starvation_mode', '4')) {
     return FALSE;
   }
@@ -465,9 +476,9 @@ function sh_test_setup_approval_form($user, $node, $entity_created) {
     $approving = user_roles(FALSE, 'approve sh starvation');
   }
   $record = db_query('DELETE FROM {webform_roles} WHERE nid = :nid', array(':nid' => $entity_created->nid));
-  foreach ($approving as $role) {
-    if ($role) {
-      $this_role = user_role_load_by_name($role_name);
+  foreach ($approving as $role_name) {
+    $this_role = user_role_load_by_name($role_name);
+    if (!empty($this_role->rid)) {
       db_insert('webform_roles')->fields(array('nid' => $entity_created->nid, 'rid' => $this_role->rid))->execute();
     }
   }
@@ -578,8 +589,8 @@ function sh_test_check_ash_3_approvals($nid) {
   $node = node_load($nid);
   $approvers = get_possible_approvers($node->uid);
   $approvers = count($approvers);
-  $percentage = $count / $approvers; // Leave with decimals, cause that's valid. Math is like that.
-  watchdog('sh_test', 'Checking review count for #' . $nid . ', ' . $count . ' in out of possible ' . $approvers . ' reviewers.');
+  $percentage = ($count / $approvers) * 100 ; // Leave with decimals, cause that's valid. Math is like that.
+  watchdog('sh_test', 'Checking approve count for #' . $nid . ', ' . $count . ' in out of possible ' . $approvers . ' reviewers.');
   // Do we have quorum?
   if (sh_test_check_starvation_mode()) {
     watchdog('sh_test', 'We are not in starvation mode.');
@@ -607,17 +618,20 @@ function get_possible_approvers($applicant) {
   else {
     $approving = user_roles(FALSE, 'approve sh starvation');
   }
+  watchdog('sh_test', 'Found ' . count($approving) . ' approving roles.');
   $approvers = array();
-  foreach ($approving as $role) {
-    if ($role) {
-      $users = db_query('SELECT uid FROM {users_roles} WHERE rid = :rid', array('rid' => $role));
+  foreach ($approving as $role_name) {
+    $this_role = user_role_load_by_name($role_name);
+    if (!empty($this_role->rid)) {
+      $users = db_query('SELECT uid FROM {users_roles} WHERE rid = :rid', array('rid' => $this_role->rid));
       foreach ($users as $user) {
-        if ($users->uid != $applicant) { // Don't count the self.
+        if ($user->uid != $applicant) { // Don't count the self.
           $approvers[$user->uid] = $user->uid;
         }
       }
     }
   }
+  watchdog('sh_test', 'Found ' . count($approvers) . ' approvers.');
   return $approvers;
 }
 
@@ -638,7 +652,7 @@ function sh_test_check_ash_3_responses($nid) {
   $approvers = get_possible_approvers($node->uid);
   $approvers = count($approvers);
   // Has everyone that could vote, voted?
-  watchdog('sh_test', 'Checking review count for #' . $nid . ', ' . $count . ' in out of possible ' . $approvers . ' reviewers.');
+  watchdog('sh_test', 'Checking response count for #' . $nid . ', ' . $count . ' in out of possible ' . $approvers . ' reviewers.');
   if ($count >= $approvers) {
     return TRUE;
   }
