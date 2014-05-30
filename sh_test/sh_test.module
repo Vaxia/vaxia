@@ -494,8 +494,8 @@ function sh_test_setup_approval_form($user, $node, $entity_created) {
   $component['extra'] = array(
     'description' => '',
     'items' => $items,
-    'multiple' => '1',
-    'aslist' => '0',
+    'multiple' => '0',
+    'aslist' => '1',
     );
   $component['weight'] = 0;
   webform_component_insert($component);
