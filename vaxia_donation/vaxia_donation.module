@@ -61,6 +61,13 @@ function vaxia_donation_form_payment_donation_form_alter(&$form, &$form_state) {
   // Hide the payment method info - there's only one.
   $form['payment_method']['#access'] = FALSE;
   $form['amount']['#title'] = '';
+  $form['pay']['#value'] = t('Donate');
+  $form['submit']['#theme'] = 'button';
+  $form['submit']['#button_type'] = 'image';
+  $form['submit']['#attributes'] = array(
+    'src' => 'https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif',
+    'alt' => t('"PayPal - The safer, easier way to pay online!'),
+  );
   // Bail out if the user can't make a vaxia character donation.
   // Aka: Not a player with a character.
   if (!user_access('make vaxia donation')) {
