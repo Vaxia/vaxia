@@ -1178,8 +1178,8 @@ function _vaxia_transfer_rxp_submit(&$form, &$form_state) {
       // Transfer any lingering XP that's not already spent...
       $current_xp = _character_sheet_get_xp($old_character->nid, 'xp');
       $spent_xp = _character_sheet_get_xp($old_character->nid, 'spent_xp');
-      if (($current_xp > $spent_xp) > 0) {
-        $one_time = $current_xp > $spent_xp;
+      if (($current_xp - $spent_xp) > 0) {
+        $one_time = $current_xp - $spent_xp;
         // One time transfer of the current XP as well.
         watchdog('vaxia', 'One time transfering XP (@amount) from #@nid @title to #@nid2 @title2',
           array('@amount' => $one_time, '@nid' => $old_character->nid, '@title' => $old_character->title,
