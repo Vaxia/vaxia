@@ -617,7 +617,7 @@ function vaxia_form_character_sheet_node_form_alter(&$form, &$form_state, $form_
           $form[$child]['#disabled'] = TRUE;
           $form[$child]['#access'] = FALSE;
         }
-        if ($child == 'title')) {
+        if ($child == 'title') {
           $form[$child]['#disabled'] = TRUE;
         }
       }
