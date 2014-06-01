@@ -205,7 +205,7 @@ function _vaxia_donation_save_donation_xp($pid, $amount) {
   global $user;
   // Record the update.
   watchdog('vaxia', 'Donation site-award XP (@amount) for #@nid @title',
-    array('@amount' => $amount, '@nid' => $node->nid, '@title' => $node->title);
+    array('@amount' => $amount, '@nid' => $node->nid, '@title' => $node->title));
   drupal_set_message(t('Donation site-award XP (@amount) for #@nid @title',
     array('@amount' => $amount, '@nid' => $node->nid, '@title' => $node->title)));
   // Mark the XP.
