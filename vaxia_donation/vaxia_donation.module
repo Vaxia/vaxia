@@ -101,13 +101,13 @@ function vaxia_donation_form_payment_donation_form_alter(&$form, &$form_state) {
     );
   }
   // Add our submit handler to save the selected character.
-  $form['#submit'][] = '_vaxia_transfer_xp_submit';
+  $form['#submit'][] = '_vaxia_donation_submit';
 }
 
 /**
  * Submit callback for transfering XP().
  */
-function _vaxia_transfer_xp_submit(&$form, &$form_state) {
+function _vaxia_donation_submit(&$form, &$form_state) {
   $nid = $form_state['values']['donation_target'];
   $payment = $form_state['payment'];
   // Save the character id for the payment id.
