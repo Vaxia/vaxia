@@ -60,7 +60,8 @@ function vaxia_donation_node_delete($node) {
 function vaxia_donation_form_payment_donation_form_alter(&$form, &$form_state) {
   // Hide the payment method info - there's only one.
   $form['payment_method']['#access'] = FALSE;
-  $form['amount']['#title'] = '';
+  $form['amount']['#title'] = t('Donation amount');
+  $form['amount']['#prefix'] = '';
   $form['pay']['#value'] = t('Donate');
   $form['pay']['#type'] = 'image_button';
   $form['pay']['#src'] = 'https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif';
