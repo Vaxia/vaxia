@@ -43,6 +43,9 @@ function _silver_cron_silver() {
       ')'.
       'AND n.nid NOT IN (' .
       'SELECT onpc.entity_id FROM {field_data_field_is_open_npc} onpc WHERE onpc.field_is_open_npc_value = 1' . // Not an open NPC
+      ')'.
+      'AND n.nid NOT IN (' .
+      'SELECT st.entity_id FROM {field_data_field_is_storyteller} st WHERE st.field_is_storyteller_value = 1' . // Not a storyteller.
       ')');
     foreach ($sheets as $node_data) {
       $item = array(
