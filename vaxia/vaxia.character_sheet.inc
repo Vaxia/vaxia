@@ -1157,6 +1157,7 @@ function _vaxia_transfer_rxp_submit(&$form, &$form_state) {
     $new_character = node_load($target_nid);
     if (!empty($old_character) && !empty($new_character) && $old_character->nid != $new_character->nid) {
       $amount = $form_state['values']['rxp_amount'];
+      // Transfer RXP.
       watchdog('vaxia', 'Transfering RXP (@amount) from #@nid @title to #@nid2 @title2',
         array('@amount' => $amount, '@nid' => $old_character->nid, '@title' => $old_character->title,
         '@nid2' => $new_character->nid, '@title2' => $new_character->title));
@@ -1164,10 +1165,37 @@ function _vaxia_transfer_rxp_submit(&$form, &$form_state) {
         array('@amount' => $amount, '@nid' => $old_character->nid, '@title' => $old_character->title,
         '@nid2' => $new_character->nid, '@title2' => $new_character->title)));
       _character_sheet_update_xp($old_character->nid, $amount * -1, 'rxp');
-      _character_sheet_update_xp($new_character->nid, $amount, 'bxp'); // Transfer as BXP to be unlocked.
+      _character_sheet_update_xp($new_character->nid, $amount, 'rxp'); // Transfer as RXP to be unlocked.
+      // Transfer normal XP.
+      watchdog('vaxia', 'Transfering XP (@amount) from #@nid @title to #@nid2 @title2',
+        array('@amount' => $amount, '@nid' => $old_character->nid, '@title' => $old_character->title,
+        '@nid2' => $new_character->nid, '@title2' => $new_character->title));
+      drupal_set_message(t('Transfering XP (@amount) from #@nid @title to #@nid2 @title2',
+        array('@amount' => $amount, '@nid' => $old_character->nid, '@title' => $old_character->title,
+        '@nid2' => $new_character->nid, '@title2' => $new_character->title)));
+      _character_sheet_update_xp($old_character->nid, $amount * -1, 'xp');
+      _character_sheet_update_xp($new_character->nid, $amount, 'xp'); // Transfer as regular XP to be unlocked.
+      // Transfer any lingering XP that's not already spent...
+      $current_xp = _character_sheet_get_xp($old_character->nid, 'xp');
+      $spent_xp = _character_sheet_get_xp($old_character->nid, 'spent_xp');
+      if (($current_xp > $spent_xp) > 0) {
+        // One time transfer of the current XP as well.
+        watchdog('vaxia', 'One time transfering XP (@amount) from #@nid @title to #@nid2 @title2',
+          array('@amount' => $amount, '@nid' => $old_character->nid, '@title' => $old_character->title,
+          '@nid2' => $new_character->nid, '@title2' => $new_character->title));
+        drupal_set_message(t('One time transfering XP (@amount) from #@nid @title to #@nid2 @title2',
+          array('@amount' => $amount, '@nid' => $old_character->nid, '@title' => $old_character->title,
+          '@nid2' => $new_character->nid, '@title2' => $new_character->title)));
+        _character_sheet_update_xp($old_character->nid, $amount * -1, 'xp');
+        _character_sheet_update_xp($new_character->nid, $amount, 'xp'); // Transfer as regular XP to be unlocked.
+      }
+      // Save log.
       global $user;
       $message = t('@xp @type xp added to @title by @user.',
         array('@xp' => $amount, '@type' => 'SH-RXP', '@title' => $new_character->title, '@user' => $user->name));
+      _character_sheet_update_log($new_character->nid, 'SH-RXP', $message);
+      $message = t('@xp @type xp added to @title by @user.',
+        array('@xp' => $amount, '@type' => 'SH-XP', '@title' => $new_character->title, '@user' => $user->name));
       _character_sheet_update_log($new_character->nid, 'SH-RXP', $message);
     }
   }
