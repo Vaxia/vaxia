@@ -615,6 +615,10 @@ function vaxia_form_character_sheet_node_form_alter(&$form, &$form_state, $form_
       foreach (element_children($form) as $child) {
         if ((strpos($child, 'field_') === 0 || $child == 'title') && !in_array($child, $allowed_edit)) {
           $form[$child]['#disabled'] = TRUE;
+          $form[$child]['#access'] = FALSE;
+        }
+        if ($child == 'title')) {
+          $form[$child]['#disabled'] = TRUE;
         }
       }
       drupal_set_message('You are attempting to edit a Storyhost character sheet. Storyhosts are not playable characters - your options are limited for this sheet.');
