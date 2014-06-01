@@ -1,0 +1,225 @@
+<?php
+/**
+ * @file
+ * Code for the Vaxia Donations module.
+ */
+
+/**
+ * Implements hook_permission().
+ */
+function vaxia_donation_permission() {
+  return array(
+    'make vaxia donation' => array(
+      'title' => t('make vaxia donation'),
+      'description' => t('Make donation with Character selected'),
+    ),
+    'administer vaxia donation' => array(
+      'title' => t('administer vaxia donation'),
+      'description' => t('Administer vaxia donation.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function vaxia_donation_menu() {
+  $items['admin/vaxia/vaxia_donation'] = array(
+    'title' => 'Donations configuration',
+    'description' => 'Confifure Vaxia donations',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('_vaxia_donation_admin_settings'),
+    'access arguments' => array('administer vaxia donation'),
+  );
+  return $items;
+}
+
+/**
+ * Form callback for admin settings form.
+ */
+function _vaxia_donation_admin_settings($form, &$form_state) {
+  $form['vaxia_donation_yearly_cap'] = array(
+    '#title' => 'Donation yearly cap',
+    '#description' => 'The amount of donation XP a player may recieve for donations over a year.',
+    '#type' => 'textfields',
+    '#default_value' => variable_get('vaxia_donation_yearly_cap', 100),
+  );
+  return system_settings_form($form);
+}
+
+/**
+ * Implements hook_node_delete().
+ */
+function vaxia_donation_node_delete($node) {
+  _vaxia_donation_delete_donations($node->nid);
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function vaxia_donation_form_payment_donation_form_alter(&$form, &$form_state) {
+  // Hide the payment method info - there's only one.
+  $form['payment_method']['#access'] = FALSE;
+  // Bail out if the user can't make a vaxia character donation.
+  // Aka: Not a player with a character.
+  if (!user_access('make vaxia donation')) {
+    return $form;
+  }
+  global $user;
+  // Add the XP IIF user's yearly donation isn't over the cap.
+  $cap = variable_get('vaxia_donation_yearly_cap', 100);
+  $user_so_far = isset($user->field_donated[$user->language][0]['value']) ? $user->field_donated[$user->language][0]['value'] : 0;
+  $donate_left = $cap - $user_so_far;
+  if ($donate_left <= 0) {
+    return $form;
+  }
+  // Add the character select IIF characters eligable for it.
+  $results = db_query('SELECT n.nid, n.title, u.name FROM {node} n ' .
+    'LEFT JOIN {users} u ON n.uid = u.uid ' .
+    'WHERE n.type LIKE \'character_sheet\' AND n.status = 1 ' .
+    'AND n.uid = :uid ' .
+    'AND n.nid NOT IN (' .
+    'SELECT npc.entity_id FROM {field_data_field_is_npc} npc WHERE npc.field_is_npc_value = 1' . // Not an NPC
+    ')'.
+    'AND n.nid NOT IN (' .
+    'SELECT onpc.entity_id FROM {field_data_field_is_open_npc} onpc WHERE onpc.field_is_open_npc_value = 1' . // Not an open NPC
+    ')'.
+    'AND n.nid NOT IN (' .
+    'SELECT st.entity_id FROM {field_data_field_is_storyteller} st WHERE st.field_is_storyteller_value = 1' . // Not a storyteller.
+    ')',
+    array(':uid' => $user->uid));
+  $characters = array();
+  foreach ($results as $result) {
+    $characters[$character->nid] = $character->title;
+  }
+  if (!empty($characters)) {
+    $form['donation_target'] = array(
+      '#type' => 'select',
+      '#title' => t('Character'),
+      '#description' => t('Award XP from donations to this character.'),
+      '#options' => $characters,
+    );
+  }
+  // Add our submit handler to save the selected character.
+  $form['#submit'][] = '_vaxia_transfer_xp_submit';
+}
+
+/**
+ * Submit callback for transfering XP().
+ */
+function _vaxia_transfer_xp_submit(&$form, &$form_state) {
+  $nid = $form_state['values']['donation_target'];
+  $payment = $form_state['payment'];
+  // Save the character id for the payment id.
+  $data = array('pid' =>$payment->pid, 'nid' => $nid);
+  _vaxia_donation_insert_donation($data);
+}
+
+/**
+ * DB Functions.
+ */
+
+/**
+ * DB function, delete comment by item nid.
+ */
+function _vaxia_donation_delete_donations($nid) {
+  db_query('DELETE FROM {vaxia_donation} ' .
+    'WHERE nid = :nid',
+    array(':nid' => $nid));
+}
+
+/**
+ * CRUD function, get comment by item nid, pid.
+ */
+function _vaxia_donation_get_donation_by_pid($pid) {
+  $results = db_query('SELECT * FROM {vaxia_donation} ' .
+    'WHERE pid = :pid',
+    array(':pid' => $pid))->fetchAll();
+  return $results;
+}
+
+/**
+ * CRUD function, get comment by item nid, pid.
+ */
+function _vaxia_donation_get_donation($nid, $pid) {
+  $results = db_query('SELECT * FROM {vaxia_donation} ' .
+    'WHERE nid = :nid AND pid = :pid',
+    array(':nid' => $nid, ':pid' => $pid))->fetchAll();
+  return $results;
+}
+
+/**
+ * CRUD function, get comments by item nid.
+ */
+function _vaxia_donation_insert_donation($data) {
+  $data = (array) $data;
+  $result = _vaxia_donation_get_donation($data['nid'], $data['pid']);
+  if (!empty($result)) {
+    _vaxia_donation_update_donation($data);
+  }
+  drupal_write_record('vaxia_donation', $data);
+}
+
+/**
+ * CRUD function, get comments by item nid.
+ */
+function _vaxia_donation_update_donation($data) {
+  $data = (array) $data;
+  $result = _vaxia_donation_get_donation($data['nid'], $data['pid']);
+  if (empty($result)) {
+    _vaxia_donation_insert_donation($data);
+  }
+  drupal_write_record('vaxia_donation', $data, array('nid', 'pid'));
+}
+
+/**
+ * CRUD function, get comment by item nid, pid.
+ */
+function _vaxia_donation_delete_comment($nid, $pid) {
+  db_query('DELETE FROM {vaxia_donation} ' .
+    'WHERE nid = :nid AND pid = :pid',
+    array(':nid' => $nid, ':pid' => $pid));
+}
+
+/**
+ * Rules function.
+ */
+
+/**
+ * Rules helper function.
+ */
+function _vaxia_donation_save_donation_xp($pid, $amount) {
+  // Add the XP IIF user's yearly donation isn't over the cap.
+  global $user;
+  $cap = variable_get('vaxia_donation_yearly_cap', 100);
+  $user_so_far = isset($user->field_donated[$user->language][0]['value']) ? $user->field_donated[$user->language][0]['value'] : 0;
+  $donate_left = $cap - $user_so_far;
+  if ($donate_left <= 0) {
+    return $form;
+  }
+  // Set the amount you can donate left.
+  $amount = ($donate_left >= $amount) ? $amount : $donate_left;
+  // Proceed with the donation.
+  $donation = _vaxia_donation_get_donation_by_pid($pid);
+  $node = node_load($donation->nid);
+  global $user;
+  // Record the update.
+  watchdog('vaxia', 'Donation site-award XP (@amount) for #@nid @title',
+    array('@amount' => $amount, '@nid' => $node->nid, '@title' => $node->title);
+  drupal_set_message(t('Donation site-award XP (@amount) for #@nid @title',
+    array('@amount' => $amount, '@nid' => $node->nid, '@title' => $node->title)));
+  // Mark the XP.
+  $new_spent = _character_sheet_get_xp($node->nid, 'spent_xp');
+  if ($new_spent > 5) { // 5 or under for spent xp limits for transfer.
+    // Put XP to banked.
+    _character_sheet_update_xp($node->nid, $amount, 'bxp');
+  }
+  else {
+    // If the character has no XP on it - go to xp.
+    _character_sheet_update_xp($node->nid, $amount, 'xp');
+  }
+  // Add to the character log.
+  $message = t('@xp @type xp added to @title by @user.',
+    array('@xp' => $amount, '@type' => 'site-award', '@title' => $node->title, '@user' => $user->name));
+  _character_sheet_update_log($node->nid, 'site-award', $message);
+}

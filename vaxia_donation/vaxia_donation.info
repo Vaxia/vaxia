@@ -1,0 +1,6 @@
+name = Vaxia donation
+description = Expand on Payment Donation Form to ask for character if the character exists
+core = 7.x
+package = Vaxia
+dependencies[] = vaxia
+dependencies[] = payment_donation
