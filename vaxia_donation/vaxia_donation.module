@@ -60,6 +60,7 @@ function vaxia_donation_node_delete($node) {
 function vaxia_donation_form_payment_donation_form_alter(&$form, &$form_state) {
   // Hide the payment method info - there's only one.
   $form['payment_method']['#access'] = FALSE;
+  $form['amount']['#title'] = '';
   // Bail out if the user can't make a vaxia character donation.
   // Aka: Not a player with a character.
   if (!user_access('make vaxia donation')) {
