@@ -1176,6 +1176,7 @@ function _vaxia_transfer_rxp_submit(&$form, &$form_state) {
       _character_sheet_update_xp($old_character->nid, $amount * -1, 'xp');
       _character_sheet_update_xp($new_character->nid, $amount, 'xp'); // Transfer as regular XP to be unlocked.
       // Transfer any lingering XP that's not already spent...
+      global $user;
       $current_xp = _character_sheet_get_xp($old_character->nid, 'xp');
       $spent_xp = _character_sheet_get_xp($old_character->nid, 'spent_xp');
       if (($current_xp - $spent_xp) > 0) {
@@ -1189,15 +1190,17 @@ function _vaxia_transfer_rxp_submit(&$form, &$form_state) {
           '@nid2' => $new_character->nid, '@title2' => $new_character->title)));
         _character_sheet_update_xp($old_character->nid, $one_time * -1, 'xp');
         _character_sheet_update_xp($new_character->nid, $one_time, 'xp'); // Transfer as regular XP to be unlocked.
+        $message = t('@xp @type xp added to @title by @user.',
+          array('@xp' => $amount, '@type' => 'one time SH-XP', '@title' => $new_character->title, '@user' => $user->name));
+        _character_sheet_update_log($new_character->nid, 'SH-XP', $message);
       }
       // Save log.
-      global $user;
       $message = t('@xp @type xp added to @title by @user.',
         array('@xp' => $amount, '@type' => 'SH-RXP', '@title' => $new_character->title, '@user' => $user->name));
       _character_sheet_update_log($new_character->nid, 'SH-RXP', $message);
       $message = t('@xp @type xp added to @title by @user.',
         array('@xp' => $amount, '@type' => 'SH-XP', '@title' => $new_character->title, '@user' => $user->name));
-      _character_sheet_update_log($new_character->nid, 'SH-RXP', $message);
+      _character_sheet_update_log($new_character->nid, 'SH-XP', $message);
     }
   }
   else {
