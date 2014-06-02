@@ -263,7 +263,8 @@ function _vaxia_donation_save_donation_xp($pid, $amount) {
   $user_so_far = isset($user->field_donated['und'][0]['value']) ? $user->field_donated['und'][0]['value'] : 0;
   $donate_left = $cap - $user_so_far;
   if ($donate_left <= 0) {
-    return $form;
+    watchdog('vax_don', 'Unable to process donation for character - user already over limits.');
+    return;
   }
   // Set the amount you can donate left.
   $amount = ($donate_left >= $amount) ? $amount : $donate_left;
