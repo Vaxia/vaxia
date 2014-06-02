@@ -303,10 +303,10 @@ function _vaxia_donation_save_donation_xp($pid, $amount) {
   }
   // Add to the character log.
   global $user;
-  $message = t('@xp @type xp added to @title by @user.',
-    array('@xp' => $amount, '@type' => 'site-award', '@title' => $node->title, '@user' => $user->name));
+  $message = t('@xp @type xp added to @title by system.',
+    array('@xp' => $amount, '@type' => 'site-award', '@title' => $node->title));
   _character_sheet_update_log($node->nid, 'site-award', $message);
   // Set the user value.
-  $user->field_donated['und'][0]['value'] = $user_so_far + $amount;
-  user_save($user);
+  $this_user->field_donated['und'][0]['value'] = $user_so_far + $amount;
+  user_save($this_user);
 }
