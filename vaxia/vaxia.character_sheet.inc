@@ -850,13 +850,6 @@ function vaxia_form__character_sheet_owner_form_alter(&$form, &$form_state) {
     unset($form['submit']);
   }
   if (isset($form['character_sheet_log'])) {
-    $form['moderation_log'] = array(
-      '#type' => 'fieldset',
-      '#title' => 'Moderation Log',
-      '#collapsible' => TRUE,
-      '#collapsed' => TRUE,
-    );
-    $form['moderation_log']['character_sheet_log'] = $form['character_sheet_log'];
     unset($form['character_sheet_log']);
   }
 }
