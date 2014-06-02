@@ -271,6 +271,10 @@ function _vaxia_donation_save_donation_xp($pid, $amount) {
   $amount = ($donate_left >= $amount) ? $amount : $donate_left;
   // Proceed with the donation.
   $donation = _vaxia_donation_get_donation_by_pid($pid);
+  if (!node) {
+    watchdog('vax_don', 'Unable to find node information from donation.');
+    return;
+  }
   $node = node_load($donation->nid);
   global $user;
   // Record the update.
