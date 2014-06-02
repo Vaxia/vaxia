@@ -166,7 +166,7 @@ function vaxia_donation_form_payment_donation_form_alter(&$form, &$form_state) {
   // But we have to make sure it happens after payment_donation,
   // but before payment, so that we can avoid getting caught in the
   // redirect to paypal. So timing matters.
-  array_unshift('_vaxia_donation_submit', $form['pay']['#submit']);
+  //array_unshift('_vaxia_donation_submit', $form['pay']['#submit']);
   $form['donation_target'] = array(
     '#title' => t('Character'),
     '#description' => t('Award XP from donations to this character.'),
