@@ -44,6 +44,12 @@ function _vaxia_donation_admin_settings($form, &$form_state) {
     '#type' => 'textfields',
     '#default_value' => variable_get('vaxia_donation_yearly_cap', 100),
   );
+  $form['vaxia_donation_paypal'] = array(
+    '#title' => 'Donation yearly cap',
+    '#description' => 'The amount of donation XP a player may recieve for donations over a year.',
+    '#type' => 'textfields',
+    '#default_value' => variable_get('vaxia_donation_paypal', 'vaxiauserone@gmail.com'),
+  );
   return system_settings_form($form);
 }
 
@@ -90,9 +96,9 @@ function vaxia_donation_form_payment_donation_form_alter(&$form, &$form_state) {
   $non_donate_form = '<div style="text-align:center;"><br />' .
     '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">' .
     '<input type="hidden" name="cmd" value="_donations">' .
-    '<input type="hidden" name="business" value="vaxiauserone@gmail.com">' .
+    '<input type="hidden" name="business" value="' . variable_get('vaxia_donation_paypal', 'vaxiauserone@gmail.com') . '">' .
     '<input type="hidden" name="lc" value="US">' .
-    '<input type="hidden" name="item_name" value="Vaxia Donation">' .
+    '<input type="hidden" name="item_name" value="Vaxia Server Fund Donation">' .
     '<input type="hidden" name="no_note" value="0">' .
     '<input type="hidden" name="currency_code" value="USD">' .
     '<input type="hidden" name="bn" value="PP-DonationsBF:btn_donateCC_LG.gif:NonHostedGuest">' .
