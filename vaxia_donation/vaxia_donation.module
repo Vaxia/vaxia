@@ -288,4 +288,7 @@ function _vaxia_donation_save_donation_xp($pid, $amount) {
   $message = t('@xp @type xp added to @title by @user.',
     array('@xp' => $amount, '@type' => 'site-award', '@title' => $node->title, '@user' => $user->name));
   _character_sheet_update_log($node->nid, 'site-award', $message);
+  // Set the user value.
+  $user->field_donated[$user->language][0]['value'] = $user->field_donated[$user->language][0]['value'] + $amount;
+  user_save($user);
 }
