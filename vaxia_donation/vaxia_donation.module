@@ -85,9 +85,9 @@ function _vaxia_donation_piggybank($average_cost, $in_account, $start_date) {
 }
 
 /**
- * Implements hook_form_FORM_ID_alter().
+ * Helper function, given a form, return the form as plain.
  */
-function vaxia_donation_form_payment_donation_form_alter(&$form, &$form_state) {
+function vaxia_donation_form_plain(&$form) {
   // Figure out what the default form is in case we have to bail.
   $non_donate_form = '<div style="text-align:center;">' .
     '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">' .
@@ -103,14 +103,24 @@ function vaxia_donation_form_payment_donation_form_alter(&$form, &$form_state) {
     '<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">' .
     '</form>' .
     '</div>';
+  // Remove elements from form.
+  foreach (element_children($form) as $element_name) {
+    $form[$element_name]['#access'] = FALSE;
+  }
+  $form['non_donate_form'] = array(
+    '#markup' => $non_donate_form,
+  );
+  return $form;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function vaxia_donation_form_payment_donation_form_alter(&$form, &$form_state) {
   // Bail out if the user can't make a vaxia character donation.
   // Aka: Not a player with a character.
   if (!user_access('make vaxia donation')) {
-    $form['#access'] = FALSE;
-    $form['non_donate_form'] = array(
-      '#markup' => $non_donate_form,
-    );
-    return $form;
+    return vaxia_donation_form_plain($form);
   }
   global $user;
   // Add the XP IIF user's yearly donation isn't over the cap.
@@ -118,11 +128,7 @@ function vaxia_donation_form_payment_donation_form_alter(&$form, &$form_state) {
   $user_so_far = !empty($user->field_donated[$user->language][0]['value']) ? $user->field_donated[$user->language][0]['value'] : 0;
   $donate_left = $cap - $user_so_far;
   if ($donate_left <= 0) {
-    $form['#access'] = FALSE;
-    $form['non_donate_form'] = array(
-      '#markup' => $non_donate_form,
-    );
-    return $form;
+    return vaxia_donation_form_plain($form);
   }
   // Add the character select IIF characters eligable for it.
   $results = db_query('SELECT n.nid, n.title, u.name FROM {node} n ' .
@@ -144,11 +150,7 @@ function vaxia_donation_form_payment_donation_form_alter(&$form, &$form_state) {
     $characters[$result->nid] = $result->title;
   }
   if (empty($characters)) {
-    $form['#access'] = FALSE;
-    $form['non_donate_form'] = array(
-      '#markup' => $non_donate_form,
-    );
-    return $form;
+    return vaxia_donation_form_plain($form);
   }
   // Only add the character form and process as a donate form IFF there's a valid character.
   // And the user isn't over the limits already.
