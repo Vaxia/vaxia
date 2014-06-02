@@ -157,6 +157,7 @@ function vaxia_donation_form_payment_donation_form_alter(&$form, &$form_state) {
   // Hide the payment method info - there's only one.
   $form['payment_method']['#access'] = FALSE;
   $form['amount']['#title'] = t('Donation amount');
+  $form['amount']['#prefix'] = '';
   $form['pay']['#value'] = t('Donate');
   $form['pay']['#type'] = 'image_button';
   $form['pay']['#src'] = 'https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif';
@@ -259,7 +260,7 @@ function _vaxia_donation_save_donation_xp($pid, $amount) {
   // Add the XP IIF user's yearly donation isn't over the cap.
   global $user;
   $cap = variable_get('vaxia_donation_yearly_cap', 100);
-  $user_so_far = isset($user->field_donated[$user->language][0]['value']) ? $user->field_donated[$user->language][0]['value'] : 0;
+  $user_so_far = isset($user->field_donated['und'][0]['value']) ? $user->field_donated['und'][0]['value'] : 0;
   $donate_left = $cap - $user_so_far;
   if ($donate_left <= 0) {
     return $form;
@@ -290,6 +291,6 @@ function _vaxia_donation_save_donation_xp($pid, $amount) {
     array('@xp' => $amount, '@type' => 'site-award', '@title' => $node->title, '@user' => $user->name));
   _character_sheet_update_log($node->nid, 'site-award', $message);
   // Set the user value.
-  $user->field_donated[$user->language][0]['value'] = $user->field_donated[$user->language][0]['value'] + $amount;
+  $user->field_donated['und'][0]['value'] = $user_so_far + $amount;
   user_save($user);
 }
