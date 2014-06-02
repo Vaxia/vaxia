@@ -360,6 +360,6 @@ function _vaxia_donation_save_donation_xp($pid, $amount) {
   user_save($this_user);
   // Set the amount for the site.
   $site_fund = variable_get('vaxia_donation_site_fund', 0);
-  $site_fund = $suite_fund + $amount;
+  $site_fund = $site_fund + $amount;
   variable_set('vaxia_donation_site_fund', $site_fund);
 }
