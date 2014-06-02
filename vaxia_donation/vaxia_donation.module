@@ -160,6 +160,7 @@ function vaxia_donation_form_payment_donation_form_alter(&$form, &$form_state) {
   $form['pay']['#value'] = t('Donate');
   $form['pay']['#type'] = 'image_button';
   $form['pay']['#src'] = 'https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif';
+  $form['pay']['#weight'] = 100;
   $form['donation_target'] = array(
     '#title' => t('Character'),
     '#description' => t('Award XP from donations to this character.'),
