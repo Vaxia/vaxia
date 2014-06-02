@@ -141,14 +141,21 @@ function vaxia_donation_form_payment_donation_form_alter(&$form, &$form_state) {
   foreach ($results as $result) {
     $characters[$character->nid] = $character->title;
   }
-  if (!empty($characters)) {
-    $form['donation_target'] = array(
-      '#type' => 'select',
-      '#title' => t('Character'),
-      '#description' => t('Award XP from donations to this character.'),
-      '#options' => $characters,
+  if (empty($characters)) {
+    $form = array();
+    $form['non_donate_form'] = array(
+      '#markup' => $non_donate_form,
     );
+    return $form;
   }
+  // Only add the character form and process as a donate form IFF there's a valid character.
+  // And the user isn't over the limits already.
+  $form['donation_target'] = array(
+    '#type' => 'select',
+    '#title' => t('Character'),
+    '#description' => t('Award XP from donations to this character.'),
+    '#options' => $characters,
+  );
   // Add our submit handler to save the selected character.
   $form['#submit'][] = '_vaxia_donation_submit';
 }
