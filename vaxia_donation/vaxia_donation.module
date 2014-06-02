@@ -156,7 +156,10 @@ function vaxia_donation_form_payment_donation_form_alter(&$form, &$form_state) {
     array(':uid' => $user->uid));
   $characters = array();
   foreach ($results as $result) {
-    $characters[$result->nid] = $result->title;
+    $character_node = node_load($result->nid);
+    if (_character_sheet_is_enabled($character_node) && _character_sheet_is_playable($character_node)) {
+      $characters[$result->nid] = $result->title;
+    }
   }
   if (empty($characters)) {
     return vaxia_donation_form_plain($form);
