@@ -269,6 +269,7 @@ function _vaxia_donation_save_donation_xp($pid, $amount) {
     watchdog('vax_don', 'Unable to find node information from donation.');
     return;
   }
+  $donation = $donation[0];
   $node = node_load($donation->nid);
   if (!$node) {
     watchdog('vax_don', 'Unable to find node information from donation.');
