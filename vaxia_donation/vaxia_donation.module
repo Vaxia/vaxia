@@ -55,6 +55,29 @@ function vaxia_donation_node_delete($node) {
 }
 
 /**
+ * Blocks helper function.
+ * print _vaxia_piggybank(30, 185, '12/11/2013'); // Average cost, $ in account, date last checked.
+ */
+function _vaxia_donation_piggybank($average_cost, $in_account, $start_date) {
+  $end_date = 'now';
+  $diff = abs(strtotime($end_date) - strtotime($start_date));
+  $years = floor($diff / (365*60*60*24));
+  $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
+  $estimated_left = $in_account - ($months * $average_cost);
+  $output = '';
+  $output .= '<div style="text-align:center;">Account info last updated: ' . $start_date . '</div>';
+  if ($estimated_left >= $average_cost) {
+    $output .= '<div style="text-align:center;">Estimated in account: $' . $estimated_left . '</div>';
+    $estimated_months_left = floor($estimated_left / $average_cost);
+    $output .= '<div style="text-align:center;">Estimated months left: ' . $estimated_months_left . '</div>';
+  }
+  else {
+    $output .= '<div style="text-align:center;">Vaxia\'s donation account needs topping off. We have less than a month of funding left.</div>';
+  }
+  return $output;
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  */
 function vaxia_donation_form_payment_donation_form_alter(&$form, &$form_state) {
@@ -64,9 +87,27 @@ function vaxia_donation_form_payment_donation_form_alter(&$form, &$form_state) {
   $form['pay']['#value'] = t('Donate');
   $form['pay']['#type'] = 'image_button';
   $form['pay']['#src'] = 'https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif';
+  $non_donate_form = '<div style="text-align:center;"><br />' .
+    '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">' .
+    '<input type="hidden" name="cmd" value="_donations">' .
+    '<input type="hidden" name="business" value="vaxiauserone@gmail.com">' .
+    '<input type="hidden" name="lc" value="US">' .
+    '<input type="hidden" name="item_name" value="Vaxia Donation">' .
+    '<input type="hidden" name="no_note" value="0">' .
+    '<input type="hidden" name="currency_code" value="USD">' .
+    '<input type="hidden" name="bn" value="PP-DonationsBF:btn_donateCC_LG.gif:NonHostedGuest">' .
+    '<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" ' .
+    'alt="PayPal - The safer, easier way to pay online!">' .
+    '<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">' .
+    '</form>' .
+    '</div>';
   // Bail out if the user can't make a vaxia character donation.
   // Aka: Not a player with a character.
   if (!user_access('make vaxia donation')) {
+    $form = array();
+    $form['non_donate_form'] = array(
+      '#markup' => $non_donate_form,
+    );
     return $form;
   }
   global $user;
@@ -75,6 +116,10 @@ function vaxia_donation_form_payment_donation_form_alter(&$form, &$form_state) {
   $user_so_far = isset($user->field_donated[$user->language][0]['value']) ? $user->field_donated[$user->language][0]['value'] : 0;
   $donate_left = $cap - $user_so_far;
   if ($donate_left <= 0) {
+    $form = array();
+    $form['non_donate_form'] = array(
+      '#markup' => $non_donate_form,
+    );
     return $form;
   }
   // Add the character select IIF characters eligable for it.
