@@ -106,7 +106,7 @@ function vaxia_donation_form_payment_donation_form_alter(&$form, &$form_state) {
   // Bail out if the user can't make a vaxia character donation.
   // Aka: Not a player with a character.
   if (!user_access('make vaxia donation')) {
-    $form = array();
+    $form['#access'] = FALSE;
     $form['non_donate_form'] = array(
       '#markup' => $non_donate_form,
     );
@@ -118,7 +118,7 @@ function vaxia_donation_form_payment_donation_form_alter(&$form, &$form_state) {
   $user_so_far = !empty($user->field_donated[$user->language][0]['value']) ? $user->field_donated[$user->language][0]['value'] : 0;
   $donate_left = $cap - $user_so_far;
   if ($donate_left <= 0) {
-    $form = array();
+    $form['#access'] = FALSE;
     $form['non_donate_form'] = array(
       '#markup' => $non_donate_form,
     );
@@ -144,7 +144,7 @@ function vaxia_donation_form_payment_donation_form_alter(&$form, &$form_state) {
     $characters[$result->nid] = $result->title;
   }
   if (empty($characters)) {
-    $form = array();
+    $form['#access'] = FALSE;
     $form['non_donate_form'] = array(
       '#markup' => $non_donate_form,
     );
