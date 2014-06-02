@@ -162,6 +162,7 @@ function vaxia_donation_form_payment_donation_form_alter(&$form, &$form_state) {
   $form['pay']['#type'] = 'image_button';
   $form['pay']['#src'] = 'https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif';
   $form['pay']['#weight'] = 100;
+  // Add our submit handler to save the selected character.
   $form['pay']['#submit'][] = '_vaxia_donation_submit';
   $form['donation_target'] = array(
     '#title' => t('Character'),
@@ -169,8 +170,6 @@ function vaxia_donation_form_payment_donation_form_alter(&$form, &$form_state) {
     '#type' => 'select',
     '#options' => $characters,
   );
-  // Add our submit handler to save the selected character.
-  $form['#submit'][] = '_vaxia_donation_submit';
 }
 
 /**
