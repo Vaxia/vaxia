@@ -88,12 +88,7 @@ function _vaxia_donation_piggybank($average_cost, $in_account, $start_date) {
  * Implements hook_form_FORM_ID_alter().
  */
 function vaxia_donation_form_payment_donation_form_alter(&$form, &$form_state) {
-  // Hide the payment method info - there's only one.
-  $form['payment_method']['#access'] = FALSE;
-  $form['amount']['#title'] = t('Donation amount');
-  $form['pay']['#value'] = t('Donate');
-  $form['pay']['#type'] = 'image_button';
-  $form['pay']['#src'] = 'https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif';
+  // Figure out what the default form is in case we have to bail.
   $non_donate_form = '<div style="text-align:center;">' .
     '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">' .
     '<input type="hidden" name="cmd" value="_donations">' .
@@ -120,7 +115,7 @@ function vaxia_donation_form_payment_donation_form_alter(&$form, &$form_state) {
   global $user;
   // Add the XP IIF user's yearly donation isn't over the cap.
   $cap = variable_get('vaxia_donation_yearly_cap', 100);
-  $user_so_far = isset($user->field_donated[$user->language][0]['value']) ? $user->field_donated[$user->language][0]['value'] : 0;
+  $user_so_far = !empty($user->field_donated[$user->language][0]['value']) ? $user->field_donated[$user->language][0]['value'] : 0;
   $donate_left = $cap - $user_so_far;
   if ($donate_left <= 0) {
     $form = array();
@@ -157,6 +152,12 @@ function vaxia_donation_form_payment_donation_form_alter(&$form, &$form_state) {
   }
   // Only add the character form and process as a donate form IFF there's a valid character.
   // And the user isn't over the limits already.
+  // Hide the payment method info - there's only one.
+  $form['payment_method']['#access'] = FALSE;
+  $form['amount']['#title'] = t('Donation amount');
+  $form['pay']['#value'] = t('Donate');
+  $form['pay']['#type'] = 'image_button';
+  $form['pay']['#src'] = 'https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif';
   $form['donation_target'] = array(
     '#type' => 'select',
     '#title' => t('Character'),
