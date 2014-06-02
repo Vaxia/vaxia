@@ -30,6 +30,7 @@ function vaxia_donation_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('_vaxia_donation_admin_settings'),
     'access arguments' => array('administer vaxia donation'),
+    'type' => MENU_NORMAL_ITEM,
   );
   return $items;
 }
@@ -37,7 +38,7 @@ function vaxia_donation_menu() {
 /**
  * Form callback for admin settings form.
  */
-function _vaxia_donation_admin_settings() {
+function _vaxia_donation_admin_settings($form, &$form_state) {
   $form['vaxia_donation_yearly_cap'] = array(
     '#title' => 'Donation yearly cap',
     '#description' => 'The amount of donation XP a player may recieve for donations over a year.',
