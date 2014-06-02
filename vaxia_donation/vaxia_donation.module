@@ -65,17 +65,14 @@ function vaxia_donation_node_delete($node) {
  * Blocks helper function.
  * print _vaxia_piggybank(30, 185, '12/11/2013'); // Average cost, $ in account, date last checked.
  */
-function _vaxia_donation_piggybank($average_cost, $in_account, $start_date) {
-  $end_date = 'now';
-  $diff = abs(strtotime($end_date) - strtotime($start_date));
-  $years = floor($diff / (365*60*60*24));
-  $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
-  $estimated_left = $in_account - ($months * $average_cost);
+function _vaxia_donation_piggybank() {
+  $in_account = variable_get('vaxia_donation_site_fund', 0);
+  $average_cost = variable_get('vaxia_donation_site_cost', 40);
   $output = '';
   $output .= '<div style="text-align:center;">Account info last updated: ' . $start_date . '</div>';
-  if ($estimated_left >= $average_cost) {
-    $output .= '<div style="text-align:center;">Estimated in account: $' . $estimated_left . '</div>';
-    $estimated_months_left = floor($estimated_left / $average_cost);
+  if ($in_account >= $average_cost) {
+    $output .= '<div style="text-align:center;">Estimated in account: $' . $in_account . '</div>';
+    $estimated_months_left = floor($in_account / $average_cost);
     $output .= '<div style="text-align:center;">Estimated months left: ' . $estimated_months_left . '</div>';
   }
   else {
@@ -309,4 +306,8 @@ function _vaxia_donation_save_donation_xp($pid, $amount) {
   // Set the user value.
   $this_user->field_donated['und'][0]['value'] = $user_so_far + $amount;
   user_save($this_user);
+  // Set the amount for the site.
+  $site_fund = variable_get('vaxia_donation_site_fund', 0);
+  $site_fund = $suite_fund + $amount;
+  variable_set('vaxia_donation_site_fund', $site_fund);
 }
