@@ -262,17 +262,7 @@ function _vaxia_donation_delete_comment($nid, $pid) {
  * Rules helper function.
  */
 function _vaxia_donation_save_donation_xp($pid, $amount) {
-  // Add the XP IIF user's yearly donation isn't over the cap.
-  global $user;
-  $cap = variable_get('vaxia_donation_yearly_cap', 100);
-  $user_so_far = isset($user->field_donated['und'][0]['value']) ? $user->field_donated['und'][0]['value'] : 0;
-  $donate_left = $cap - $user_so_far;
-  if ($donate_left <= 0) {
-    watchdog('vax_don', 'Unable to process donation for character - user already over limits.');
-    return;
-  }
-  // Set the amount you can donate left.
-  $amount = ($donate_left >= $amount) ? $amount : $donate_left;
+  // This function is called by anon.
   // Proceed with the donation.
   $donation = _vaxia_donation_get_donation_by_pid($pid);
   if (!$donation) {
@@ -284,7 +274,17 @@ function _vaxia_donation_save_donation_xp($pid, $amount) {
     watchdog('vax_don', 'Unable to find node information from donation.');
     return;
   }
-  global $user;
+  // Add the XP IIF user's yearly donation isn't over the cap.
+  $this_user = user_load($node->uid);
+  $cap = variable_get('vaxia_donation_yearly_cap', 100);
+  $user_so_far = isset($this_user->field_donated['und'][0]['value']) ? $this_user->field_donated['und'][0]['value'] : 0;
+  $donate_left = $cap - $user_so_far;
+  if ($donate_left <= 0) {
+    watchdog('vax_don', 'Unable to process donation for character - user already over limits.');
+    return;
+  }
+  // Set the amount you can donate left.
+  $amount = ($donate_left >= $amount) ? $amount : $donate_left;
   // Record the update.
   watchdog('vaxia', 'Donation site-award XP (@amount) for #@nid @title',
     array('@amount' => $amount, '@nid' => $node->nid, '@title' => $node->title));
@@ -301,6 +301,7 @@ function _vaxia_donation_save_donation_xp($pid, $amount) {
     _character_sheet_update_xp($node->nid, $amount, 'xp');
   }
   // Add to the character log.
+  global $user;
   $message = t('@xp @type xp added to @title by @user.',
     array('@xp' => $amount, '@type' => 'site-award', '@title' => $node->title, '@user' => $user->name));
   _character_sheet_update_log($node->nid, 'site-award', $message);
