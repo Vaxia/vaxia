@@ -119,7 +119,6 @@ function _vaxia_donation_piggybank() {
   $in_account = variable_get('vaxia_donation_site_fund', 0);
   $average_cost = variable_get('vaxia_donation_site_cost', 40);
   $output = '';
-  $output .= '<div style="text-align:center;">Account info last updated: ' . $start_date . '</div>';
   if ($in_account >= $average_cost) {
     $output .= '<div style="text-align:center;">Estimated in account: $' . $in_account . '</div>';
     $estimated_months_left = floor($in_account / $average_cost);
