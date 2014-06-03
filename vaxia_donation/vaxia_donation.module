@@ -310,7 +310,7 @@ function _vaxia_donation_delete_comment($nid, $pid) {
 /**
  * Rules helper function.
  */
-function _vaxia_donation_save_donation_xp($pid, $amount) {
+function _vaxia_donation_save_donation_xp($pid, $donated_amount) {
   // This function is called by anon.
   // Proceed with the donation.
   $donation = _vaxia_donation_get_donation_by_pid($pid);
@@ -334,7 +334,7 @@ function _vaxia_donation_save_donation_xp($pid, $amount) {
     return;
   }
   // Set the amount you can donate left.
-  $amount = ($donate_left >= $amount) ? $amount : $donate_left;
+  $amount = ($donate_left >= $donated_amount) ? $donated_amount : $donate_left;
   // Record the update.
   watchdog('vaxia', 'Donation site-award XP (@amount) for #@nid @title',
     array('@amount' => $amount, '@nid' => $node->nid, '@title' => $node->title));
@@ -360,6 +360,6 @@ function _vaxia_donation_save_donation_xp($pid, $amount) {
   user_save($this_user);
   // Set the amount for the site.
   $site_fund = variable_get('vaxia_donation_site_fund', 0);
-  $site_fund = $site_fund + $amount;
+  $site_fund = $site_fund + $donated_amount;
   variable_set('vaxia_donation_site_fund', $site_fund);
 }
