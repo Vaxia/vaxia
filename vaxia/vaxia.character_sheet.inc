@@ -330,6 +330,10 @@ function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
     if ($user->uid == $node->uid && isset($node->workflow_state_name) && $node->workflow_state_name == 'submitted') {
       $form['#disabled'] = TRUE;
     }
+    // If has xp, and in draft - then disable.
+    if ($user->uid == $node->uid && isset($node->workflow_state_name) && $node->workflow_state_name == 'draft' && character_sheet_get_xp($node->nid, 'xp') != 0) {
+      $form['#disabled'] = TRUE;
+    }
   }
 
   // Only do this if this is a character sheet in play.
