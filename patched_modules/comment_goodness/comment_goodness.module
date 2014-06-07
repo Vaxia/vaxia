@@ -146,7 +146,8 @@ function comment_goodness_query_comment_filter_alter(QueryAlterableInterface $qu
         if (isset($orderby['c.cid'])) {
           unset($orderby['c.cid']);
         }
-        $orderby['c.created'] = $direction;
+// Commented out properly order by cid for creation order.
+//        $orderby['c.created'] = $direction;
         $orderby['c.cid'] = $direction;
       }
     }
