@@ -269,7 +269,7 @@ function rpg_chat_refresh($nid) {
   // Unpublished comments are not included in $node->comment_count, so show
   // comments unconditionally if the user is an administrator.
   if (($node->comment_count && user_access('access comments')) || user_access('administer comments')) {
-    $mode = variable_get('comment_default_mode_' . $node->type, COMMENT_MODE_FLAT);
+    $mode = COMMENT_MODE_FLAT;
     $comments_per_page = variable_get('comment_default_per_page_' . $node->type, 50);
     if ($cids = comment_get_thread($node, $mode, $comments_per_page)) {
       $found_comments = comment_load_multiple($cids);
