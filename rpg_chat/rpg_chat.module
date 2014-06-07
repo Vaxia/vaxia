@@ -273,7 +273,6 @@ function rpg_chat_refresh($nid) {
     $comments_per_page = variable_get('comment_default_per_page_' . $node->type, 50);
     if ($cids = comment_get_thread($node, $mode, $comments_per_page)) {
       $found_comments = comment_load_multiple($cids);
- //     ksort($found_comments);
       comment_prepare_thread($found_comments);
       $comments = comment_view_multiple($found_comments, $node);
     }
