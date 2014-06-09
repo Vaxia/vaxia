@@ -330,10 +330,12 @@ function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
     if ($user->uid == $node->uid && isset($node->workflow_state_name) && $node->workflow_state_name == 'submitted') {
       $form['#disabled'] = TRUE;
     }
-    // If has xp, and in draft - then disable.
-    $has_xp = _character_sheet_get_xp($node->nid, 'xp');
-    if ($user->uid == $node->uid && isset($node->workflow_state_name) && $node->workflow_state_name == 'draft' && $has_xp != 0) {
-      $form['#disabled'] = TRUE;
+    // If has xp, and in draft - then disable. We only want to see you submit this character, it's been pulled back from cold storage.
+    if (!empty($node->nid)) {
+      $has_xp = _character_sheet_get_xp($node->nid, 'xp');
+      if ($user->uid == $node->uid && isset($node->workflow_state_name) && $node->workflow_state_name == 'draft' && $has_xp != 0) {
+        $form['#disabled'] = TRUE;
+      }
     }
   }
 
