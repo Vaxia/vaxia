@@ -8,7 +8,7 @@
  * Implements hook_schema().
  */
 function election_schema() {
-  $schema['election_election_nodes'] = array(
+  $schema['election_nodes'] = array(
     'description' => 'Election information for each election.',
     'fields' => array(
       'eid' => array(
@@ -56,8 +56,8 @@ function election_schema() {
     ),
     'primary key' => array('eid'),
   );
-  $schema['election_election_winners'] = array(
-    'description' => 'Election information for each election.',
+  $schema['election_winners'] = array(
+    'description' => 'Election winner information for each election.',
     'fields' => array(
       'uid' => array(
         'type' => 'int',
@@ -79,7 +79,7 @@ function election_schema() {
         'description' => 'The position the winner held.',
       ),
     ),
-    'primary key' => array('uid, cycle, postion'),
+    'primary key' => array('uid', 'cycle', 'position'),
   );
   return $schema;
 }

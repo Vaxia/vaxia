@@ -631,7 +631,7 @@ function _election_get_election($eid) {
   if (empty($eid)) {
     return FALSE; // Bail if error.
   }
-  $election = db_query('SELECT * FROM {election_election_nodes} WHERE eid = :eid',
+  $election = db_query('SELECT * FROM {election_nodes} WHERE eid = :eid',
     array(':eid' => $eid))->fetchObject();
   if (empty($election->eid)) {
     return FALSE; // Bail if error.
@@ -648,7 +648,7 @@ function __election_get_election_by_nid($nid) {
   if (empty($nid)) {
     return FALSE; // Bail if error.
   }
-  $election = db_query('SELECT * FROM {election_election_nodes} WHERE nid = :nid',
+  $election = db_query('SELECT * FROM {election_nodes} WHERE nid = :nid',
     array(':nid' => $nid))->fetchObject();
   if (empty($election->eid)) {
     return FALSE; // Bail if error.
@@ -669,7 +669,7 @@ function _election_delete_election($eid) {
   if (empty($eid)) {
     return FALSE; // Bail if error.
   }
-  $election = db_query('DELETE FROM {election_election_nodes} WHERE eid = :eid',
+  $election = db_query('DELETE FROM {election_nodes} WHERE eid = :eid',
     array(':eid' => $eid))->fetchObject();
 }
 
@@ -680,7 +680,7 @@ function __election_delete_election_by_nid($nid) {
   if (empty($nid)) {
     return FALSE; // Bail if error.
   }
-  db_query('DELETE FROM {election_election_nodes} WHERE nid = :nid',
+  db_query('DELETE FROM {election_nodes} WHERE nid = :nid',
     array(':nid' => $nid));
 }
 
@@ -688,7 +688,7 @@ function __election_delete_election_by_nid($nid) {
  * DB function. Get the current max cycle.
  */
 function _election_get_last_cycle() {
-  $cycle = db_query('SELECT MAX(cycle) FROM {election_election_nodes}')->fetchField();
+  $cycle = db_query('SELECT MAX(cycle) FROM {election_nodes}')->fetchField();
   return !empty($cycle) ? $cycle : 1;
 }
 
@@ -713,7 +713,7 @@ function __election_get_election_winner($uid, $cycle, $postion) {
   if (empty($eid)) {
     return FALSE; // Bail if error.
   }
-  $election = db_query('SELECT * FROM {election_election_winners} ' .
+  $election = db_query('SELECT * FROM {election_winners} ' .
     'WHERE uid = :uid ' .
     'AND cycle = :cycle ' .
     'AND position = :position',
@@ -731,7 +731,7 @@ function _election_delete_winners_by_uid($uid) {
   if (empty($uid)) {
     return FALSE; // Bail if error.
   }
-  db_query('DELETE FROM {election_election_winners} WHERE uid = :uid',
+  db_query('DELETE FROM {election_winners} WHERE uid = :uid',
     array(':uid' => $uid));
 }
 
@@ -741,7 +741,7 @@ function _election_delete_winners_by_uid($uid) {
 function _election_is_at_term_limit($uid, $term_limit, $position) {
   $current_cycle = _election_get_last_cycle();
   $cycle_limit = $current_cycle - $term_limit;
-  $times_held = db_query('SELECT COUNT(uid) AS held FROM {election_election_winners} ' .
+  $times_held = db_query('SELECT COUNT(uid) AS held FROM {election_winners} ' .
     'WHERE uid = :uid ' . 
     'AND position = :position ' .
     'AND cycle > :cycle',
