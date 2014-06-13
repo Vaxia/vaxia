@@ -828,10 +828,11 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
  */
 function _vaxia_transfer_xp_autocomplete($character_name = '') {
   $matches = array();
+  global $user;
   $results = db_query('SELECT n.nid, n.title, u.name FROM {node} n ' .
     'LEFT JOIN {users} u ON n.uid = u.uid ' .
     'WHERE n.type LIKE \'character_sheet\' AND n.status = 1 ' .
-    'AND n.title LIKE :name', array(':name' => $character_name . '%'));
+    'AND n.uid = :uid AND n.title LIKE :name', array(':uid' => $user->uid, ':name' => $character_name . '%'));
   foreach ($results as $character) {
     $character_label = $character->title . ' (' . $character->name. ') [nid:' . $character->nid . ']';
     $matches[ check_plain($character_label) ] = check_plain($character_label);
