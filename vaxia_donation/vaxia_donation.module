@@ -196,7 +196,7 @@ function vaxia_donation_form_payment_donation_form_alter(&$form, &$form_state) {
     return vaxia_donation_form_plain($form);
   }
   global $user;
-  $user = user_load($user);
+  $user = user_load($user->uid);
   // Add the XP IIF user's yearly donation isn't over the cap.
   $cap = variable_get('vaxia_donation_yearly_cap', 100);
   $user_so_far = !empty($user->field_donated['und'][0]['value']) ? $user->field_donated['und'][0]['value'] : 0;
