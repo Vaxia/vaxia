@@ -139,7 +139,7 @@ function vaxia_cron() {
 function vaxia_cronapi($op, $job = NULL) {
   $items['_vaxia_cron_dblog_cleanup'] = array(
   	'description' => 'Vaxia: DBlog cleanup',
-  	'rule' => '1 1 * * *', // Once a day at 1:01 AM.
+  	'rule' => '0 4 * * *', // Once a day at 4 AM.
   );
   return $items;
 }

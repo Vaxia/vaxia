@@ -40,7 +40,7 @@ function room_cleanup_cron() {
 function room_cleanup_cronapi($op, $job = NULL) {
   $items['_room_cleanup_cron'] = array(
   	'description' => 'Room cleanup: Remove spare rooms',
-  	'rule' => '1 1 * * *', // Once a day at 1:01 AM.
+  	'rule' => '5 0 * * *', // Once a day at 5 AM.
   );
   return $items;
 }

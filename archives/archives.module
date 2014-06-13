@@ -40,7 +40,7 @@ function archives_cron() {
 function archives_cronapi($op, $job = NULL) {
   $items['_archives_cron'] = array(
   	'description' => 'Archives: Move posts to archive',
-  	'rule' => '1 1 * * *', // Once a day at 1:01 AM.
+  	'rule' => '4 0 * * *', // Once a day at 4 AM.
   );
   return $items;
 }

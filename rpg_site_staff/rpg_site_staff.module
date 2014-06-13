@@ -109,7 +109,7 @@ function rpg_site_staff_cron() {
 function rpg_site_staff_cronapi($op, $job = NULL) {
   $items['_rpg_site_staff_cron_election'] = array(
   	'description' => 'Election: Check election day',
-  	'rule' => '1 1 * * *', // Once every day at 1:01 AM.
+  	'rule' => '1 0 * * *', // Once every day at 12:01 AM.
   );
   return $items;
 }

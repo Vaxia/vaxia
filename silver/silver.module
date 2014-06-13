@@ -34,7 +34,7 @@ function silver_cron() {
 function silver_cronapi($op, $job = NULL) {
   $items['_silver_cron_silver'] = array(
   	'description' => 'Silver: Set up silver cronqueue',
-  	'rule' => '1 1 * * *', // Once a day at 1:01 AM.
+  	'rule' => '1 2 * * *', // Once a day at 1:01 AM.
   );
   return $items;
 }

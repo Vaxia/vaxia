@@ -73,7 +73,7 @@ function vacation_cron() {
 function vacation_cronapi($op, $job = NULL) {
   $items['_vacation_end_todays_vacations'] = array(
   	'description' => 'Vacation: Return users from vacation',
-  	'rule' => '1 1 * * *', // Once a day at 1:01 AM.
+  	'rule' => '1 0 * * *', // Once a day at 12:01 AM.
   );
   return $items;
 }
