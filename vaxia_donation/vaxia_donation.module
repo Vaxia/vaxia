@@ -352,6 +352,15 @@ function _vaxia_donation_save_donation_xp($pid, $donated_amount) {
     watchdog('vax_don', 'Unable to find node information from donation.');
     return;
   }
+
+  // Add the amount to the user and site.
+  $this_user->field_donated['und'][0]['value'] = $user_so_far + $amount;
+  user_save($this_user);
+  // Set the amount for the site.
+  $site_fund = variable_get('vaxia_donation_site_fund', 0);
+  $site_fund = $site_fund + $donated_amount;
+  variable_set('vaxia_donation_site_fund', $site_fund);
+
   // Add the XP IIF user's yearly donation isn't over the cap.
   $this_user = user_load($node->uid);
   $cap = variable_get('vaxia_donation_yearly_cap', 100);
@@ -383,11 +392,4 @@ function _vaxia_donation_save_donation_xp($pid, $donated_amount) {
   $message = t('@xp @type xp added to @title by system.',
     array('@xp' => $amount, '@type' => 'site-award', '@title' => $node->title));
   _character_sheet_update_log($node->nid, 'site-award', $message);
-  // Set the user value.
-  $this_user->field_donated['und'][0]['value'] = $user_so_far + $amount;
-  user_save($this_user);
-  // Set the amount for the site.
-  $site_fund = variable_get('vaxia_donation_site_fund', 0);
-  $site_fund = $site_fund + $donated_amount;
-  variable_set('vaxia_donation_site_fund', $site_fund);
 }
