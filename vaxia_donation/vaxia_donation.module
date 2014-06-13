@@ -196,10 +196,10 @@ function vaxia_donation_form_payment_donation_form_alter(&$form, &$form_state) {
     return vaxia_donation_form_plain($form);
   }
   global $user;
-  $user = user_load($user->uid);
+  $this_user = user_load($user->uid);
   // Add the XP IIF user's yearly donation isn't over the cap.
   $cap = variable_get('vaxia_donation_yearly_cap', 100);
-  $user_so_far = !empty($user->field_donated['und'][0]['value']) ? $user->field_donated['und'][0]['value'] : 0;
+  $user_so_far = !empty($this_user->field_donated['und'][0]['value']) ? $this_user->field_donated['und'][0]['value'] : 0;
   $donate_left = $cap - $user_so_far;
   if ($donate_left <= 0) {
     return vaxia_donation_form_plain($form);
@@ -218,7 +218,7 @@ function vaxia_donation_form_payment_donation_form_alter(&$form, &$form_state) {
     'AND n.nid NOT IN (' .
     'SELECT st.entity_id FROM {field_data_field_is_storyteller} st WHERE st.field_is_storyteller_value = 1' . // Not a storyteller.
     ')',
-    array(':uid' => $user->uid));
+    array(':uid' => $this_user->uid));
   $characters = array();
   foreach ($results as $result) {
     $character_node = node_load($result->nid);
