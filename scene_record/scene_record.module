@@ -330,29 +330,32 @@ function scene_record_form_node_form_alter(&$form, &$form_state, $form_id) {
     // Add the comments.
     foreach ($found_comments as $cid => $scene_comment) {
       $comment = comment_load($cid);
-      $comment_uri = comment_uri($comment);
-      // Get the full text.
-      $comment_text = '';
-      if (!empty($comment->comment_body[$comment->language][0]['value'])) {
-        $comment_text = check_markup($comment->comment_body[$comment->language][0]['value'], $comment->comment_body[$comment->language][0]['format']);
+      $comment_display = '';
+      if (is_object($comment) && !empty($comment->cid)) {
+        $comment_uri = comment_uri($comment);
+        // Get the full text.
+        $comment_text = '';
+        if (!empty($comment->comment_body[$comment->language][0]['value'])) {
+          $comment_text = check_markup($comment->comment_body[$comment->language][0]['value'], $comment->comment_body[$comment->language][0]['format']);
+        }
+        $comment_ooc = '';
+        if (!empty($comment->field_ooc[$comment->language][0]['value'])) {
+          $comment_ooc = check_markup($comment->field_ooc[$comment->language][0]['value'], $comment->field_ooc[$comment->language][0]['format']);
+        }
+          // Strip HTML - we can't use it in title overheads.
+          $comment_text = strip_tags($comment_text);
+          $comment_ooc = strip_tags($comment_ooc);
+          $comment_title = check_plain($comment_text);
+          if (!empty($comment_ooc)) {
+          $comment_title .= "\n" . 'OOC: ' . check_plain($comment_ooc);
+          }
+          // Put together.
+          $comment_display = '<a href="/' . $comment_uri['path'] . '#' . $comment_uri['options']['fragment'] . '" title="' . $comment_title . '">' .
+          check_plain($comment->subject) . '</a>';
+          // Add dice rolls if there are any.
+          $dice_rolls = _dice_roller_get_roll($cid, 'c');
+          $comment_display .= !empty($dice_rolls) ? theme('dice_roller_results', array('dice_rolls' => $dice_rolls)) : '';
       }
-      $comment_ooc = '';
-      if (!empty($comment->field_ooc[$comment->language][0]['value'])) {
-        $comment_ooc = check_markup($comment->field_ooc[$comment->language][0]['value'], $comment->field_ooc[$comment->language][0]['format']);
-      }
-      // Strip HTML - we can't use it in title overheads.
-      $comment_text = strip_tags($comment_text);
-      $comment_ooc = strip_tags($comment_ooc);
-      $comment_title = check_plain($comment_text);
-      if (!empty($comment_ooc)) {
-        $comment_title .= "\n" . 'OOC: ' . check_plain($comment_ooc);
-      }
-      // Put together.
-      $comment_display = '<a href="/' . $comment_uri['path'] . '#' . $comment_uri['options']['fragment'] . '" title="' . $comment_title . '">' .
-        check_plain($comment->subject) . '</a>';
-      // Add dice rolls if there are any.
-      $dice_rolls = _dice_roller_get_roll($cid, 'c');
-      $comment_display .= !empty($dice_rolls) ? theme('dice_roller_results', array('dice_rolls' => $dice_rolls)) : '';
       // Set in form.
       $comment_display = array(
         '#type' => 'item',
@@ -479,32 +482,34 @@ function _scene_record_calculate_results($found_comments) {
     $message_items = array();
     // Set defaults if not already set.
     $comment = comment_load($cid);
-    $kxp = _vaxia_figure_kxp($comment->comment_body[$comment->language][0]['value']);
-    $total_kxp = $total_kxp + $kxp;
-    // Figure out how much overall XP for this scene.
-    $total_xp = 0;
-    if ($total_kxp >= $kxp_ratio) {
-      $total_xp = floor($total_kxp / $kxp_ratio);
-    }
-    $character = !empty($comment->field_comment_character[$comment->language][0]['nid']) ?
-      node_load($comment->field_comment_character[$comment->language][0]['nid']) : '';
-    if (!empty($character)) {
-      $character_kxp[$character->title] = isset($character_kxp[$character->title])
-        ? $character_kxp[$character->title] + $kxp : $kxp;
-    }
-    // Set the overall post results.
-    $message_items[] = t('KXP: :kxp', array(':kxp' => $kxp));
-    $message_items[] = t('Total KXP: :total_kxp', array(':total_kxp' => $total_kxp));
-    $message_items[] = t('Total XP: :total_xp', array(':total_xp' => $total_xp));
-    // Set the results per character.
-    foreach ($character_kxp as $name => $total_char_kxp) {
+    if (is_object($comment) && !empty($comment->cid)) {
+      $kxp = _vaxia_figure_kxp($comment->comment_body[$comment->language][0]['value']);
+      $total_kxp = $total_kxp + $kxp;
       // Figure out how much overall XP for this scene.
       $total_xp = 0;
-      if ($total_char_kxp >= $kxp_ratio) {
-        $total_xp = floor($total_char_kxp / $kxp_ratio);
+      if ($total_kxp >= $kxp_ratio) {
+        $total_xp = floor($total_kxp / $kxp_ratio);
       }
-      $message_items[] = t('Total :name KXP: :total_char_kxp', array(':name' => $name, ':total_char_kxp' => $total_char_kxp));
-      $message_items[] = t('Total :name XP: :total_xp', array(':name' => $name, ':total_xp' => $total_xp));
+      $character = !empty($comment->field_comment_character[$comment->language][0]['nid']) ?
+        node_load($comment->field_comment_character[$comment->language][0]['nid']) : '';
+      if (!empty($character)) {
+        $character_kxp[$character->title] = isset($character_kxp[$character->title])
+        ? $character_kxp[$character->title] + $kxp : $kxp;
+      }
+      // Set the overall post results.
+      $message_items[] = t('KXP: :kxp', array(':kxp' => $kxp));
+      $message_items[] = t('Total KXP: :total_kxp', array(':total_kxp' => $total_kxp));
+      $message_items[] = t('Total XP: :total_xp', array(':total_xp' => $total_xp));
+      // Set the results per character.
+      foreach ($character_kxp as $name => $total_char_kxp) {
+        // Figure out how much overall XP for this scene.
+        $total_xp = 0;
+        if ($total_char_kxp >= $kxp_ratio) {
+        $total_xp = floor($total_char_kxp / $kxp_ratio);
+        }
+        $message_items[] = t('Total :name KXP: :total_char_kxp', array(':name' => $name, ':total_char_kxp' => $total_char_kxp));
+        $message_items[] = t('Total :name XP: :total_xp', array(':name' => $name, ':total_xp' => $total_xp));
+      }
     }
     $message = theme('item_list', array('items' => $message_items));
     $scene_comment->results = $message;
