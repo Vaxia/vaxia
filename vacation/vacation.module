@@ -63,7 +63,7 @@ function vacation_cron() {
     $today = strtotime(date('m/d/Y') . ' 00:00:01'); // We always want to plan to run just after midnight.
     variable_set('vacation_cron', $today);
     // End all vacations.
-    _vacation_end_todays_vacations($today);
+    _vacation_end_todays_vacations();
   }
 }
 
@@ -400,8 +400,9 @@ function _vacation_end_vacation($vacation) {
  * Cron handler.
  * DB function, remove all vacations ending today.
  */
-function _vacation_end_todays_vacations($today) {
+function _vacation_end_todays_vacations() {
   // Today is passed as a timestamp.
+  $today = strtotime(date('m/d/Y') . ' 00:00:01');
   $tomorrow = strtotime('+1 day', $today);
   // Get everything between today and tomorrow.
   $vacations = db_query('SELECT * FROM {vacation} ' .
