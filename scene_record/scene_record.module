@@ -126,6 +126,7 @@ function _scene_record_view_table(&$headers, &$rows, $node, $set_comments, $full
   foreach ($found_comments as $cid => $scene_comment) {
     // Get comment display.
     $comment = comment_load($cid);
+    $comment_display = t('Unable to load comment - it has been deleted and may be in archive.');
     if (is_object($comment) && !empty($comment->cid)) {
       $comment_uri = comment_uri($comment);
       if ($full_text) {
@@ -147,15 +148,15 @@ function _scene_record_view_table(&$headers, &$rows, $node, $set_comments, $full
       // Get dice display.
       $dice_rolls = _dice_roller_get_roll($cid, 'c');
       $comment_display .= !empty($dice_rolls) ? theme('dice_roller_results', array('dice_rolls' => $dice_rolls)) : '';
-      // Add to rows.
-      $rows[] = array(
-        $comment_display,
-        array(
-        'data' => $scene_comment->results,
-        'nowrap' => array('nowrap'),
-        ),
-      );
     }
+    // Add to rows.
+    $rows[] = array(
+      $comment_display,
+      array(
+      'data' => $scene_comment->results,
+      'nowrap' => array('nowrap'),
+      ),
+    );
   }
 }
 
@@ -330,7 +331,7 @@ function scene_record_form_node_form_alter(&$form, &$form_state, $form_id) {
     // Add the comments.
     foreach ($found_comments as $cid => $scene_comment) {
       $comment = comment_load($cid);
-      $comment_display = '';
+      $comment_display = t('Unable to load comment - it has been deleted and may be in archive.');
       if (is_object($comment) && !empty($comment->cid)) {
         $comment_uri = comment_uri($comment);
         // Get the full text.
