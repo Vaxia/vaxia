@@ -5,7 +5,6 @@
  */
 
 include_once 'rpg_site_staff.features.inc';
-include_once 'rpg_site_staff.election.inc';
 
 /**
  * Implements hook_permission().
@@ -16,30 +15,7 @@ function rpg_site_staff_permission() {
       'title' => t('view session notes'),
       'description' => t('View session notes.'),
     ),
-    'can vote on elections'=> array(
-      'title' => t('can vote on elections'),
-      'description' => t('Vote on elections.'),
-    ),
-    'administrate staff settings'=> array(
-      'title' => t('administrate staff settings'),
-      'description' => t('Administrate staff settings.'),
-    ),
   );
-}
-
-/**
- * Implements hook_menu().
- */
-function rpg_site_staff_menu() {
-  $items['admin/vaxia/rpg_site_staff'] = array(
-    'title' => 'RPG Staff settings',
-    'description' => 'Settings for staff and player administration.',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('_rpg_site_staff_admin_settings'),
-    'access arguments' => array('administrate staff settings'),
-    'type' => MENU_NORMAL_ITEM,
-  );
-  return $items;
 }
 
 /**
@@ -67,60 +43,6 @@ function rpg_site_staff_node_view($node, $view_mode, $langcode) {
       unset($node->content['field_additional_notes']);
     }
   }
-}
-
-/**
- * Implements hook_node_delete().
- */
-function rpg_site_staff_node_delete($node) {
-  // Delete an election associated with a proposal if we delete the node.
-  if ($node->type == 'proposal') {
-    _rpg_site_staff_delete_election_by_nid($node->nid);
-  }
-}
-
-/**
- * Implements hook_node_update().
- */
-function rpg_site_staff_node_update($node) {
-  // Check a proposal for an election value.
-  if ($node->type == 'proposal') {
-    _rpg_site_staff_election_check_close($node);
-  }
-}
-
-/**
- * Implements hook_cron().
- */
-function rpg_site_staff_cron() {
-  $last_run = variable_get('election_cron', 0);
-  $yesterday = strtotime('-1 day');
-  if ($last_run < $yesterday) {
-    $today = date('m/d/Y');
-    $today = strtotime($today . ' 00:00:01'); // We always want to plan to run just after midnight.
-    variable_set('election_cron', $today);
-    _rpg_site_staff_cron_election();
-  }
-}
-
-/**
- * Implements hook_cronapi().
- */
-function rpg_site_staff_cronapi($op, $job = NULL) {
-  $items['_rpg_site_staff_cron_election'] = array(
-  	'description' => 'Election: Check election day',
-  	'rule' => '1 0 * * *', // Once every day at 12:01 AM.
-  );
-  return $items;
-}
-
-/**
- * Menu callback, admin form.
- */
-function _rpg_site_staff_admin_settings($form, &$form_state) {
-  _rpg_site_staff_admin_election_settings($form, $form_state);
-  // Add any other site staff settings here.
-  return system_settings_form($form);
 }
 
 /**
