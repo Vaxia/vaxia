@@ -233,7 +233,7 @@ function _election_positions_submit($form, &$form_state) {
   // Add the new position.
   foreach ($available as $position) {
     // Get the name.
-    preg_replace("/[^A-Za-z0-9 ]/", '', $position); // Remove all but space and alphanumeric.
+    $position = preg_replace("/[^A-Za-z0-9 ]/", '', $position); // Remove all but space and alphanumeric.
     $position = trim($position); // Trim.
     $field_key_name = str_replace(' ', '_', strtolower($position)); // Replace space with underscore.
     $existing_field = field_info_field('field_staff_' . $field_key_name);
