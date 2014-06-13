@@ -126,34 +126,36 @@ function _scene_record_view_table(&$headers, &$rows, $node, $set_comments, $full
   foreach ($found_comments as $cid => $scene_comment) {
     // Get comment display.
     $comment = comment_load($cid);
-    $comment_uri = comment_uri($comment);
-    if ($full_text) {
-      $character = !empty($comment->field_comment_character[$comment->language][0]['nid']) ?
-        node_load($comment->field_comment_character[$comment->language][0]['nid']) : '';
-      if (empty($character)) {
-        $user = user_load($comment->uid);
-        $comment_by = $user->name;
+    if (is_object($comment) && !empty($comment->cid)) {
+      $comment_uri = comment_uri($comment);
+      if ($full_text) {
+        $character = !empty($comment->field_comment_character[$comment->language][0]['nid']) ?
+          node_load($comment->field_comment_character[$comment->language][0]['nid']) : '';
+        if (empty($character)) {
+          $user = user_load($comment->uid);
+          $comment_by = $user->name;
+        }
+        else {
+         $comment_by = $character->title;
+        }
+        $comment_display = check_markup($comment->comment_body[$comment->language][0]['value'], $comment->comment_body[$comment->language][0]['format']);
+        if (!empty($comment->field_ooc[$comment->language][0]['value'])) {
+          $comment_ooc = check_markup($comment->field_ooc[$comment->language][0]['value'], $comment->field_ooc[$comment->language][0]['format']);
+          $comment_display .= 'OOC: ' . $comment_ooc;
+        }
       }
-      else {
-        $comment_by = $character->title;
-      }
-      $comment_display = check_markup($comment->comment_body[$comment->language][0]['value'], $comment->comment_body[$comment->language][0]['format']);
-      if (!empty($comment->field_ooc[$comment->language][0]['value'])) {
-        $comment_ooc = check_markup($comment->field_ooc[$comment->language][0]['value'], $comment->field_ooc[$comment->language][0]['format']);
-        $comment_display .= 'OOC: ' . $comment_ooc;
-      }
-    }
-    // Get dice display.
-    $dice_rolls = _dice_roller_get_roll($cid, 'c');
-    $comment_display .= !empty($dice_rolls) ? theme('dice_roller_results', array('dice_rolls' => $dice_rolls)) : '';
-    // Add to rows.
-    $rows[] = array(
-      $comment_display,
-      array(
+      // Get dice display.
+      $dice_rolls = _dice_roller_get_roll($cid, 'c');
+      $comment_display .= !empty($dice_rolls) ? theme('dice_roller_results', array('dice_rolls' => $dice_rolls)) : '';
+      // Add to rows.
+      $rows[] = array(
+        $comment_display,
+        array(
         'data' => $scene_comment->results,
         'nowrap' => array('nowrap'),
-      ),
-    );
+        ),
+      );
+    }
   }
 }
 
