@@ -364,7 +364,7 @@ function _vaxia_donation_save_donation_xp($pid, $donated_amount) {
   $user_so_far = isset($this_user->field_donated['und'][0]['value']) ? $this_user->field_donated['und'][0]['value'] : 0;
   $donate_left = $cap - $user_so_far;
   // Add the amount to the user and site.
-  $this_user->field_donated['und'][0]['value'] = $user_so_far + $amount;
+  $this_user->field_donated['und'][0]['value'] = $user_so_far + $donated_amount;
   user_save($this_user);
   // Check if ok.
   if ($donate_left <= 0) {
