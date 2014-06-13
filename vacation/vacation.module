@@ -57,13 +57,6 @@ function vacation_admin_form() {
  * Implements hook_cron().
  */
 function vacation_cron() {
-  _vacation_cron_end_vacations();
-}
-
-/**
- * Cron worker.
- */
-function _vacation_cron_end_vacations() {
   $last_run = variable_get('vacation_cron', 0);
   $yesterday = strtotime('-1 day');
   if ($last_run < $yesterday) {
@@ -72,6 +65,17 @@ function _vacation_cron_end_vacations() {
     // End all vacations.
     _vacation_end_todays_vacations($today);
   }
+}
+
+/**
+ * Implements hook_cronapi().
+ */
+function vacation_cronapi($op, $job = NULL) {
+  $items['_vacation_end_todays_vacations'] = array(
+  	'description' => 'Vacation: Return users from vacation',
+  	'rule' => '1 1 * * *', // Once a day at 1:01 AM.
+  );
+  return $items;
 }
 
 /**
@@ -393,6 +397,7 @@ function _vacation_end_vacation($vacation) {
 }
 
 /**
+ * Cron handler.
  * DB function, remove all vacations ending today.
  */
 function _vacation_end_todays_vacations($today) {

@@ -130,8 +130,28 @@ function npcs_cron_queue_info() {
  * Implements hook_cron().
  */
 function npcs_cron() {
-  _vaxia_cron_pullback_npcs();
-  _vaxia_cron_delete_inactive_no_post_npcs();
+  $last_run = variable_get('npcs_cron', 0);
+  $yesterday = strtotime('-1 day');
+  if ($last_run < $yesterday) {
+    $last_run = variable_set('npcs_cron', strtotime('now'));
+    _vaxia_cron_pullback_npcs();
+    _vaxia_cron_delete_inactive_no_post_npcs();
+  }
+}
+
+/**
+ * Implements hook_cronapi().
+ */
+function npcs_cronapi($op, $job = NULL) {
+  $items['_vaxia_cron_pullback_npcs'] = array(
+  	'description' => 'NPCs: Move unused NPCs to inactive',
+  	'rule' => '1 1 * * *', // Once a day at 1:01 AM.
+  );
+  $items['_vaxia_cron_delete_inactive_no_post_npcs'] = array(
+  	'description' => 'NPCs: Delete unused NPCs moved to wiki',
+  	'rule' => '1 1 * * *', // Once a day at 1:01 AM.
+  );
+  return $items;
 }
 
 /**
@@ -174,50 +194,47 @@ function _vaxia_cron_delete_inactive_no_post_npcs() {
  * Cron handler.
  */
 function _vaxia_cron_pullback_npcs() {
-  $last_run = variable_get('npcs_cron', 0);
-  $yesterday = strtotime('-1 day');
-  if ($last_run < $yesterday) {
-    $workflow = variable_get('npcs_pullback_workflow', '');
-    $queue = DrupalQueue::get('vaxiaNPCReturnQueue');
-    $last_run = variable_set('npcs_cron', strtotime('now'));
-    // On cron. Go through ALL NPC sheets.
-    // Using this query to make sure we don't load anything we really don't need to.
-    $npcs = db_query('SELECT npc.entity_id FROM {field_data_field_is_npc} npc ' . // Where an NPC
-      'LEFT JOIN {node} n ON n.nid = npc.entity_id  AND n.vid = npc.revision_id ' .
-      'LEFT JOIN {workflow_node} w ON n.nid = w.nid ' .
-      'WHERE n.status = 1 ' . // Active node
-      'AND w.sid = :state ' . // Is in the right state.
-      'AND npc.field_is_npc_value = 1 ' . // Is an NPC
-      'UNION ' . // Merge two sets
-      'SELECT onpc.entity_id FROM {field_data_field_is_open_npc} onpc ' . // Where an open NPC
-      'LEFT JOIN {node} n2 ON n2.nid = onpc.entity_id AND n2.vid = onpc.revision_id ' .
-      'LEFT JOIN {workflow_node} w2 ON n2.nid = w2.nid ' .
-      'WHERE n2.status = 1 ' . // Active node
-      'AND w2.sid = :state2 ' . // Is in the right state.
-      'AND onpc.field_is_open_npc_value = 1 ', // Is an open NPC
-      array(':state' => $workflow, ':state2' => $workflow)
+  // On cron. Go through ALL NPC sheets.
+  // Using this query to make sure we don't load anything we really don't need to.
+  $workflow = variable_get('npcs_pullback_workflow', '');
+  $queue = DrupalQueue::get('vaxiaNPCReturnQueue');
+  // On cron. Go through ALL NPC sheets.
+  // Using this query to make sure we don't load anything we really don't need to.
+  $npcs = db_query('SELECT npc.entity_id FROM {field_data_field_is_npc} npc ' . // Where an NPC
+    'LEFT JOIN {node} n ON n.nid = npc.entity_id  AND n.vid = npc.revision_id ' .
+    'LEFT JOIN {workflow_node} w ON n.nid = w.nid ' .
+    'WHERE n.status = 1 ' . // Active node
+    'AND w.sid = :state ' . // Is in the right state.
+    'AND npc.field_is_npc_value = 1 ' . // Is an NPC
+    'UNION ' . // Merge two sets
+    'SELECT onpc.entity_id FROM {field_data_field_is_open_npc} onpc ' . // Where an open NPC
+    'LEFT JOIN {node} n2 ON n2.nid = onpc.entity_id AND n2.vid = onpc.revision_id ' .
+    'LEFT JOIN {workflow_node} w2 ON n2.nid = w2.nid ' .
+    'WHERE n2.status = 1 ' . // Active node
+    'AND w2.sid = :state2 ' . // Is in the right state.
+    'AND onpc.field_is_open_npc_value = 1 ', // Is an open NPC
+    array(':state' => $workflow, ':state2' => $workflow)
+  );
+  foreach ($npcs as $npc) {
+    $remove = TRUE;
+    // Determine what the latest post (if there was one) with this character was.
+    $comment_times = db_query('SELECT MAX(c.created) AS comment_time FROM {comment} c ' .
+      'LEFT JOIN {field_data_field_comment_character} npc ON c.cid = npc.entity_id ' .
+      'WHERE npc.field_comment_character_nid = :nid ',
+      array(':nid' => $npc->entity_id)
     );
-    foreach ($npcs as $npc) {
-      $remove = TRUE;
-      // Determine what the latest post (if there was one) with this character was.
-      $comment_times = db_query('SELECT MAX(c.created) AS comment_time FROM {comment} c ' .
-        'LEFT JOIN {field_data_field_comment_character} npc ON c.cid = npc.entity_id ' .
-        'WHERE npc.field_comment_character_nid = :nid ',
-        array(':nid' => $npc->entity_id)
+    $timeout = strtotime(variable_get('npcs_claim_timeout', '6 months') . ' ago');
+    foreach ($comment_times as $comment_time) {
+      if ($timeout < $comment_time->comment_time) {
+        $remove = FALSE;
+      }
+    }
+    // Remove if we still want to remove it.
+    if ($remove) {
+      $item = array(
+        'nid' => $npc->entity_id
       );
-      $timeout = strtotime(variable_get('npcs_claim_timeout', '6 months') . ' ago');
-      foreach ($comment_times as $comment_time) {
-        if ($timeout < $comment_time->comment_time) {
-          $remove = FALSE;
-        }
-      }
-      // Remove if we still want to remove it.
-      if ($remove) {
-        $item = array(
-          'nid' => $npc->entity_id
-        );
-        $queue->createItem($item);
-      }
+      $queue->createItem($item);
     }
   }
 }

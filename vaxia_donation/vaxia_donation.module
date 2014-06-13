@@ -37,25 +37,52 @@ function _vaxia_donation_cron() {
   if ($last_run < $yesterday) {
     $today = strtotime(date('m/d/Y') . ' 00:00:01'); // We always want to plan to run just after midnight.
     variable_set('vaxia_donation_cron', $today);
-    // Is today Jan 1st? Yes! Reset everybody.
-        _vacation_end_todays_vacations($today);
-    $today = date('j');
     // Is today the first of any month? Yes? Remove the cost from the amount in the kitty.
+    $today = date('j');
     if ($today == 1) {
-      watchdog('vax_don', 'Charged the cost for the month to the donation fund.');
-      $cost = variable_get('vaxia_donation_site_cost', 40);
-      $fund = variable_get('vaxia_donation_site_fund', 0);
-      $fund = $fund - $cost;
-      variable_set('vaxia_donation_site_fund', $fund);
+      _vaxia_donation_cron_charge_month();
       // Is it January first? If so - reset everyone's donation set.
       $month = date('n');
       if ($month == 1) {
-        watchdog('vax_don', 'Reset all donation records for all users.');
-        db_query('UPDATE {field_data_field_donated} SET field_donated_value = 0');
-        db_query('UPDATE {field_revision_field_donated} SET field_donated_value = 0');
+        _vaxia_donation_cron_clear_year();
       }
     }
   }
+}
+
+/**
+ * Implements hook_cronapi().
+ */
+function vaxia_donation_cronapi($op, $job = NULL) {
+  $items['_vaxia_donation_cron_charge_month'] = array(
+  	'description' => 'Vaxia donation: Charge monthly',
+  	'rule' => '1 1 1 * *', // Once a month, on the 1st at 1:01 AM.
+  );
+  $items['_vaxia_donation_cron_clear_year'] = array(
+  	'description' => 'Vaxia donation: Reset year totals',
+  	'rule' => '1 1 1 1 *', // Once a year, on Jan 1st at 1:01 AM.
+  );
+  return $items;
+}
+
+/**
+ * Cron handler.
+ */
+function _vaxia_donation_cron_charge_month() {
+  watchdog('vax_don', 'Charged the cost for the month to the donation fund.');
+  $cost = variable_get('vaxia_donation_site_cost', 40);
+  $fund = variable_get('vaxia_donation_site_fund', 0);
+  $fund = $fund - $cost;
+  variable_set('vaxia_donation_site_fund', $fund);
+}
+
+/**
+ * Cron handler.
+ */
+function _vaxia_donation_cron_clear_year() {
+  watchdog('vax_don', 'Reset all donation records for all users.');
+  db_query('UPDATE {field_data_field_donated} SET field_donated_value = 0');
+  db_query('UPDATE {field_revision_field_donated} SET field_donated_value = 0');
 }
 
 /**

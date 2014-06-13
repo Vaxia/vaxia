@@ -93,7 +93,25 @@ function rpg_site_staff_node_update($node) {
  * Implements hook_cron().
  */
 function rpg_site_staff_cron() {
-  _rpg_site_staff_cron_election();
+  $last_run = variable_get('election_cron', 0);
+  $yesterday = strtotime('-1 day');
+  if ($last_run < $yesterday) {
+    $today = date('m/d/Y');
+    $today = strtotime($today . ' 00:00:01'); // We always want to plan to run just after midnight.
+    variable_set('election_cron', $today);
+    _rpg_site_staff_cron_election();
+  }
+}
+
+/**
+ * Implements hook_cronapi().
+ */
+function rpg_site_staff_cronapi($op, $job = NULL) {
+  $items['_rpg_site_staff_cron_election'] = array(
+  	'description' => 'Election: Check election day',
+  	'rule' => '1 1 * * *', // Once every day at 1:01 AM.
+  );
+  return $items;
 }
 
 /**

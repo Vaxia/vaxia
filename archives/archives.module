@@ -29,10 +29,28 @@ function archives_cron() {
     $yesterday = strtotime('-1 day');
     if ($last_run < $yesterday) {
       variable_set('archives_crontime', strtotime('now'));
-      watchdog('archives', t('Ran archives cron.'));
-      return _archives_posts_archive();
+      _archives_cron();
     }
   }
+}
+
+/**
+ * Implements hook_cronapi().
+ */
+function archives_cronapi($op, $job = NULL) {
+  $items['_archives_cron'] = array(
+  	'description' => 'Archives: Move posts to archive',
+  	'rule' => '1 1 * * *', // Once a day at 1:01 AM.
+  );
+  return $items;
+}
+
+/**
+ * Cron handler.
+ */
+function _archives_cron() {
+  watchdog('archives', t('Ran archives cron.'));
+  _archives_posts_archive();
 }
 
 /**

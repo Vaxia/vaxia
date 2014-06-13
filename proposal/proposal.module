@@ -55,13 +55,6 @@ function proposal_rules_event_info() {
  * Implements hook_cron().
  */
 function proposal_cron() {
-  _proposal_cron_proposal();
-}
-
-/**
- * Cron worker.
- */
-function _proposal_cron_proposal() {
   $last_run = variable_get('proposal_cron', 0);
   $yesterday = strtotime('-1 day');
   if ($last_run < $yesterday) {
@@ -69,8 +62,26 @@ function _proposal_cron_proposal() {
     $today = strtotime($today . ' 00:00:01'); // We always want to plan to run just after midnight.
     variable_set('proposal_cron', $today);
     // Close the proposals.
-    proposal_close_in_timeframe();
+    _proposal_cron_proposal();
   }
+}
+
+/**
+ * Implements hook_cronapi().
+ */
+function proposal_cronapi($op, $job = NULL) {
+  $items['_proposal_cron_proposal'] = array(
+  	'description' => 'Proposal: Close proposals',
+  	'rule' => '1 1 * * *', // Once a day at 1:01 AM.
+  );
+  return $items;
+}
+
+/**
+ * Cron worker.
+ */
+function _proposal_cron_proposal() {
+  proposal_close_in_timeframe();
 }
 
 /**

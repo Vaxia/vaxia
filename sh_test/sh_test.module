@@ -57,33 +57,48 @@ function sh_test_rules_event_info() {
  * Implements hook_cron().
  */
 function sh_test_cron() {
-  _sh_test_cron_check_overdue();
-}
-
-/**
- * Cron handler for overdue applications.
- */
-function _sh_test_cron_check_overdue() {
   if (!function_exists('rules_invoke_event')) {
     return; // Bail out if no rules.
   }
   $last_run = variable_get('sh_test_cron', 0);
   $yesterday = strtotime('-1 day');
   if ($last_run < $yesterday) {
-    $timeframe = strtotime('-1 week');
-    $applications = db_query('SELECT n.nid FROM {node} n ' .
-      'LEFT JOIN {webform} w ON w.nid = n.nid ' .
-      'WHERE w.status = 1 '. // Where the webform is still open.
-      'AND n.type = \'storyhost_application\' ' . // And it's a storyhost application type.
-      'AND n.changed < :timeframe', // And it's been open for more than a week.
-      array(':timeframe' => $timeframe));
-    // Now that we have a list of applications that might qualify.
-    $today = strtotime('now');
-    foreach ($applications as $application) {
-      $node = node_load($application->nid);
-      // Execute the rule.
-      rules_invoke_event('overdue_application', $node);
-    }
+    variable_set('sh_test_cron', strtotime('now'));
+    _sh_test_cron_check_overdue();
+  }
+}
+
+/**
+ * Implements hook_cronapi().
+ */
+function sh_test_cronapi($op, $job = NULL) {
+  if (!function_exists('rules_invoke_event')) {
+    return; // Bail out if no rules.
+  }
+  $items['_sh_test_cron_check_overdue'] = array(
+  	'description' => 'SH Test: Check overdue applications',
+  	'rule' => '1 1 * * *', // Once every day at 1:01 AM.
+  );
+  return $items;
+}
+
+/**
+ * Cron handler for overdue applications.
+ */
+function _sh_test_cron_check_overdue() {
+  $timeframe = strtotime('-1 week');
+  $applications = db_query('SELECT n.nid FROM {node} n ' .
+    'LEFT JOIN {webform} w ON w.nid = n.nid ' .
+    'WHERE w.status = 1 '. // Where the webform is still open.
+    'AND n.type = \'storyhost_application\' ' . // And it's a storyhost application type.
+    'AND n.changed < :timeframe', // And it's been open for more than a week.
+     array(':timeframe' => $timeframe));
+  // Now that we have a list of applications that might qualify.
+  $today = strtotime('now');
+  foreach ($applications as $application) {
+    $node = node_load($application->nid);
+    // Execute the rule.
+    rules_invoke_event('overdue_application', $node);
   }
 }
 

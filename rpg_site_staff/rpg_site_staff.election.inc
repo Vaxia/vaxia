@@ -7,24 +7,17 @@
  * Cron handler for elections.
  */
 function _rpg_site_staff_cron_election() {
-  $last_run = variable_get('proposal_cron', 0);
-  $yesterday = strtotime('-1 day');
-  if ($last_run < $yesterday) {
-    $today = date('m/d/Y');
-    $today = strtotime($today . ' 00:00:01'); // We always want to plan to run just after midnight.
-    variable_set('proposal_cron', $today);
-    $election_day = _rpg_site_staff_check_election_day();
-    if ($election_day) {
-      // This is an official election! Time to get things sorted out.
-      // First remove current heads from positions, put admin in for anon mailer.
-      $head_role = variable_get('rpg_site_staff_head_role', '');
-      db_query('DELETE FROM {users_roles} WHERE rid = :rid',
-        array(':uid' => $winner->uid, ':rid' => $head_role));
-      $data = array('uid' => 1, 'rid' => $head_role);
-      drupal_write_record('users_roles', $data);
-      // And start the election.
-      _rpg_site_staff_trigger_election();
-    }
+  $election_day = _rpg_site_staff_check_election_day();
+  if ($election_day) {
+    // This is an official election! Time to get things sorted out.
+    // First remove current heads from positions, put admin in for anon mailer.
+    $head_role = variable_get('rpg_site_staff_head_role', '');
+    db_query('DELETE FROM {users_roles} WHERE rid = :rid',
+      array(':uid' => $winner->uid, ':rid' => $head_role));
+    $data = array('uid' => 1, 'rid' => $head_role);
+    drupal_write_record('users_roles', $data);
+    // And start the election.
+    _rpg_site_staff_trigger_election();
   }
 }
 

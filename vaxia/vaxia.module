@@ -134,6 +134,17 @@ function vaxia_cron() {
 }
 
 /**
+ * Implements hook_cronapi().
+ */
+function vaxia_cronapi($op, $job = NULL) {
+  $items['_vaxia_cron_dblog_cleanup'] = array(
+  	'description' => 'Vaxia: DBlog cleanup',
+  	'rule' => '1 1 * * *', // Once a day at 1:01 AM.
+  );
+  return $items;
+}
+
+/**
  * Cron job for cleaning up useless dblog entries.
  */
 function _vaxia_cron_dblog_cleanup() {

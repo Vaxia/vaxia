@@ -29,11 +29,28 @@ function room_cleanup_cron() {
     $yesterday = strtotime('-1 day');
     if ($last_run < $yesterday) {
       variable_set('room_cleanup_crontime', strtotime('now'));
-      watchdog('room_cleanup', t('Ran room cleanup cron.'));
-      return _room_cleanup_rooms();
+      _room_cleanup_rooms();
     }
   }
-  return;
+}
+
+/**
+ * Implements hook_cronapi().
+ */
+function room_cleanup_cronapi($op, $job = NULL) {
+  $items['_room_cleanup_cron'] = array(
+  	'description' => 'Room cleanup: Remove spare rooms',
+  	'rule' => '1 1 * * *', // Once a day at 1:01 AM.
+  );
+  return $items;
+}
+
+/**
+ * Cron handler.
+ */
+function _room_cleanup_cron() {
+  watchdog('room_cleanup', t('Ran room cleanup cron.'));
+  _room_cleanup_rooms();
 }
 
 /**

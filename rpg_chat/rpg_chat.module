@@ -29,8 +29,26 @@ function rpg_chat_menu() {
  * Implements hook_cron().
  */
 function rpg_chat_cron() {
+  _rpg_chat_cron();
+}
+
+/**
+ * Implements hook_cronapi().
+ */
+function rpg_chat_cronapi($op, $job = NULL) {
+  $items['_rpg_chat_cron'] = array(
+  	'description' => 'RPG Chat: Clear users in room',
+  	'rule' => '*/15 * * * *', // Every 15 minutes.
+  );
+  return $items;
+}
+
+/**
+ * Cron handler.
+ */
+function _rpg_chat_cron() {
   db_query('DELETE FROM {rpg_chat_room_users} WHERE timestamp < :timestamp',
-    array(':timestamp' => strtotime('-15 minutes')));
+    array(':timestamp' => strtotime('-1 minutes')));
 }
 
 /**
