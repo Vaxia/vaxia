@@ -908,11 +908,13 @@ function _item_helper_calculate_results($found_comments) {
     $might_2 = empty($mights[1]) ? '' : '/ ' . $mights[1];
     $break_1 = empty($set_bonus_txt) ? '' : '</br>';
     $break_2 = empty($roll_txt) ? '' : '</br>';
+    $ongoing_100_text = $ongoing_100;
     if ($ongoing_100 == 0) {
-      $ongoing_100 = 'no';
+      $ongoing_100_text = 'no';
     }
+    $ongoing_1_text = $ongoing_1;
     if ($ongoing_1 == 0) {
-      $ongoing_1 = 'no';
+      $ongoing_1_text = 'no';
     }
     $item_comment->results = t(
       '%roll_txt' . $break_2 .
@@ -925,7 +927,7 @@ function _item_helper_calculate_results($found_comments) {
       '',
       array('@diff_text' => $diff_txt, '@set_bonus_txt' => $set_bonus_txt, '%roll_txt' => $roll_txt,
         '@might1' => !empty($might_1) ? $might_1 : 0, '@might2' => !empty($might_2) ? $might_2 : 0,
-        '@PP' => number_format($ongoing_PP), '@100' => $ongoing_100, '@1' => $ongoing_1,
+        '@PP' => number_format($ongoing_PP), '@100' => $ongoing_100_text, '@1' => $ongoing_1_text,
         '@rp' => $rp_bonus, '@prep' => $ongoing_prep_bonus, '@diff' => $ongoing_prep_diff * -1 ));
   }
   return $found_comments;
