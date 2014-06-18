@@ -192,12 +192,114 @@ function proposal_theme_registry_alter(&$theme_registry) {
   $theme_registry['webform_results_table']['function'] = 'proposal_webform_results_table';
   $theme_registry['webform_results_analysis']['theme path'] = drupal_get_path('module', 'proposal');
   $theme_registry['webform_results_analysis']['function'] = 'proposal_webform_results_analysis';
+  $theme_registry['webform_components_form']['theme path'] = drupal_get_path('module', 'proposal');
+  $theme_registry['webform_components_form']['function'] = 'proposal_webform_components_form';
+}
+
+/**
+ * Implements theme_webform_components_form().
+ * Adjust the output for proposals only.
+ */
+function proposal_webform_components_form($variables) {
+  if (strpos($current_path, 'webform') !== FALSE) {
+    $node = node_load(arg(1));
+    if ($node->type != 'proposal') {
+      return theme_webform_components_form($variables);
+    }
+  }
+  // Modify the proposal theme display as follows:
+  // Show the actual output of the form (inactive). And clarify text options throughout.
+
+  // Get the form and header information.
+  $form = $variables['form'];
+  $form['components']['#attached']['library'][] = array('webform', 'admin');
+  // TODO: Attach these. See http://drupal.org/node/732022.
+  drupal_add_tabledrag('webform-components', 'order', 'sibling', 'webform-weight');
+  drupal_add_tabledrag('webform-components', 'match', 'parent', 'webform-pid', 'webform-pid', 'webform-cid');
+  $node = $form['#node'];
+  $header = array(t('Element'), t('Mandatory'), t('Weight'), array(
+      'data' => t('Operations'),
+      'colspan' => 3,
+    ));
+  $rows = array();
+
+  // Add existing form components.
+  if (!empty($node->webform['components'])) {
+    $component_tree = array();
+    $page_count = 1;
+    _webform_components_tree_build($node->webform['components'], $component_tree, 0, $page_count);
+    $component_tree = _webform_components_tree_sort($component_tree);
+
+    // Build the table rows.
+    function _webform_components_form_rows($node, $cid, $component, $level, &$form, &$rows, &$add_form) {
+      // Remove individual titles from the mandatory and weight fields.
+      unset($form['components'][$cid]['mandatory']['#title']);
+      unset($form['components'][$cid]['pid']['#title']);
+      unset($form['components'][$cid]['weight']['#title']);
+      // Add special classes for weight and parent fields.
+      $form['components'][$cid]['cid']['#attributes']['class'] = array('webform-cid');
+      $form['components'][$cid]['pid']['#attributes']['class'] = array('webform-pid');
+      $form['components'][$cid]['weight']['#attributes']['class'] = array('webform-weight');
+      // Create presentable rendered format.
+      $rendered = webform_component_invoke($component['type'], 'render', $component);
+
+      // Disable the element.
+      $rendered['#disabled'] = TRUE;
+      $rendered['#attributes']['disabled'] = TRUE;
+      // Set a default value.
+      $rendered['#value'] = !empty($component['value']) ? $component['value'] : t('Ipsum lorem...');
+      $rendered['#value'] = !empty($rendered['#options']) ? array_shift(array_keys($rendered['#options'])) : $rendered['#value'];
+      // Allow for elements to expand to multiple elements, e.g., radios, checkboxes and files.
+      if (isset($rendered['#process'])) {
+        foreach ($rendered['#process'] as $process) {
+          $rendered = $process($rendered);
+        }
+      }
+      // Render it.
+      $rendered = drupal_render($rendered);
+      // Add each component to a table row.
+      $row_data = array(
+        $rendered,
+        drupal_render($form['components'][$cid]['mandatory']),
+        drupal_render($form['components'][$cid]['cid']) .
+        drupal_render($form['components'][$cid]['pid']) .
+        drupal_render($form['components'][$cid]['weight']),
+        l(t('Edit'), 'node/' . $node->nid . '/webform/components/' . $cid, array('query' => drupal_get_destination())),
+        l(t('Clone'), 'node/' . $node->nid . '/webform/components/' . $cid . '/clone', array('query' => drupal_get_destination())),
+        l(t('Delete'), 'node/' . $node->nid . '/webform/components/' . $cid . '/delete', array('query' => drupal_get_destination())),
+      );
+      $row_class = array('draggable', 'proposal-element', 'proposal-' . $component['type']);
+      if (!webform_component_feature($component['type'], 'group')) {
+        $row_class[] = 'tabledrag-leaf';
+      }
+      $rows[] = array(
+        'data' => $row_data,
+        'class' => $row_class,
+      );
+    }// End function.
+
+    // Process each component to add to rows.
+    foreach ($component_tree['children'] as $cid => $component) {
+      _webform_components_form_rows($node, $cid, $component, 0, $form, $rows, $add_form);
+    }
+  }
+  else {
+    $rows[] = array(array(
+        'data' => t('No Components, add a component below.'),
+        'colspan' => 9,
+      ));
+  }
+
+  // And output.
+  $output = '<style>#webform-components-form .proposal-element .form-item{white-space: normal;margin-left:25px;}</style>';
+  $output .= theme('table', array('header' => $header, 'rows' => $rows, 'attributes' => array('id' => 'webform-components')));
+  $output .=  $add_form . drupal_render_children($form);
+  return $output;
 }
 
 /**
  * Implements theme_webform_token_help().
  * Remove the exposure of sensitive material from the user facing interface.
- * It removes it for all webforms sadly, because there's no good way to tell it not to with the theme system.
  */
 function proposal_webform_token_help($variables) {
   // Ok, let's try this another way.
@@ -372,19 +474,57 @@ function proposal_node_view($node, $view_mode, $langcode) {
 
   // Only override the displays for proposals.
   if ($node->type == 'proposal') {
+    // Include everything we need for the webform report.
     module_load_include('inc', 'webform', 'includes/webform.report');
+
     // Get 2 weeks in the future timestamp.
     $timeframe = variable_get('proposal_open_timeframe', '2 weeks');
     $date = strtotime($timeframe, $node->changed); // Two weeks from now.
     $date = date('l, F j, Y', $date);
     // Show messages.
     if ($view_mode == 'full') {
+      // Figure out the message to show.
       if ($node->webform['status'] == TRUE) {
         drupal_set_message(t('This proposal will stay open for two weeks since it was last updated. It is set to close on @date.',
           array('@date' => $date)));
       }
       else {
         drupal_set_message(t('This proposal is closed.'));
+      }
+      
+      // Figure out if we want to show the form deactived or not.
+      // If the webform is not active.
+      if ($node->webform['status'] == FALSE) {
+        $form = drupal_get_form('webform_client_form_' . $node->nid, $node, array(), FALSE);
+        unset($form['actions']);
+        $form['help_done'] = array(
+          '#markup' => '</br><div class="proposal_done_message"><b>' .
+            t('This webform is no longer accepting submissions.') . '</b></div>',
+        );
+        
+          $form['submitted']['#disabled'] = TRUE;
+          $form['submitted']['#attributes']['disabled'] = TRUE;
+		// Disable all expanded child elements if possible.
+        foreach (element_children($form['submitted']) as $child) {
+          // Mark as disabled.
+          $form['submitted'][$child]['#disabled'] = TRUE;
+          $form['submitted'][$child]['#attributes']['disabled'] = TRUE;
+          // Prepare for rendering.
+          if (isset($form['submitted'][$child]['#process'])) {
+            foreach ($form['submitted'][$child]['#process'] as $process) {
+              $form['submitted'][$child] = $process($form['submitted'][$child]);
+            }
+          }
+          // Now that we have potentially expanded fields - disable as well.
+          foreach (element_children($form['submitted'][$child]) as $grandchild) {
+            $form['submitted'][$child][$grandchild]['#disabled'] = TRUE;
+            $form['submitted'][$child][$grandchild]['#attributes']['disabled'] = TRUE;
+          }
+		}
+        // Add to display.
+        $node->content['webform_done_view'] = array(
+          '#markup' => drupal_render($form),
+        );
       }
     }
 
@@ -494,50 +634,160 @@ function proposal_form_webform_components_form_alter(&$form, &$form_state, $form
     return; // Use defaults.
   }
   $form['help'] = array(
-    '#markup' => '<style>.form-item-add-name{margin-left:30px;}</style>' .
+    '#markup' => 
       '<div class="webform_component_help">' .
       'Once you add a form piece to the form you can shuffle them around to display them in the order you want them to display in. ' .
       'Mandatory form components are questions that must be answered before a submission can be made. ' .
       'The pieces you can add are mostly self-explanatory but a few you may not be familiar with: </br></br>' .
-      '* Fieldset: Just a display wrapper - a box - around the other form pieces. </br>' .
-      '* Grid: A way to display a table of options beside a label. </br>' .
-      '* Markup: Text to display - useful for help messages. </br>' .
+      '* Markup: Text to display - useful for displaying long pieces of text or help messages. </br>' .
+      '* Radio / checkbox / dropdown - used for selecting between set values. </br>' .
       '* Text area: Multi-line area for entering text. </br>' .
       '* Text field: Single-line area for entering text. </br>' .
       '</br>' .
       'Once you have all the form pieces you want, in the order you want them, click "Save" to set the proposal active.' .
       '</div>',
-    '#weight' => -40,
+     '#weight' => 20,
   );
   // Recreate the options array for the types of components we want to allow.
+  
+  $form['add']['#type'] = 'fieldset';
+  $form['add']['#title'] = t('Add a new form element');
+  $form['add']['#title'] = t('Add a new form element');
+  $form['add']['#weight'] = 10;
+  $form['add']['name']['#title'] = t('Label for new element');
+  $form['add']['name']['#default_value'] = t('New element');
+  $form['add']['type']['#title'] = t('Type of new element');
+  $form['add']['mandatory']['#title'] = t('Required?');
+  $form['add']['weight']['#type'] = 'hidden';
+  $form['add']['add']['#value'] = t('Add new element');
   $options = webform_component_options();
-  unset($options['email']);
-  unset($options['pagebreak']);
-  $form['add']['type']['#options'] = $options;
+  $keep = array();
+  foreach ($options as $key => $values) {
+  	if (in_array($key, array('markup', 'textarea', 'textfield', 'select'))) {
+  	  $keep[$key] = $values;
+  	}
+  }
+  // Add radio and checkboxes explicitly. As forms of select.
+  $keep['select'] = t('Radio, checkboxes, or dropdown');
+  $form['add']['type']['#options'] = $keep;
 }
 
 /**
  * Implements hook_form_FORM_ID_alter().
  */
 function proposal_form_webform_component_edit_form_alter(&$form, &$form_state, $form_id) {
-  $node = isset($form['#node']) ? $form['#node'] : '';
-  // If we're not looking at a proposal, bail out with the normal view.
-  if (!isset($node->type)) {
-    return; // Use defaults.
+  // Check for the associated node.
+  $current_path = current_path();
+  if (strpos($current_path, 'webform/components') !== FALSE) {
+    $node = node_load(arg(1));
+    if ($node->type != 'proposal') {
+      return; // Hide the tokens from view.
+    }
   }
-  if ($node->type != 'proposal') {
-    return; // Use defaults.
-  }
+  // Add help display.
   $form['help'] = array(
     '#markup' => '<div class="webform_component_help">' .
-      'Edit the individual pieces of your form here. A name is required, as is a form_key so that the form submission system can recognize the ' .
-      'value later. Where you see the form ask for "Key-value pairs", the format is key|value - where the Key is stored in the database (no worries ' .
-      'almost anything you pick is ok), and the Value is what is shown to the person selecting options on your form. </br></br>' .
+      'Edit the individual pieces of your form here.  Where you see the form ask for "Key-value pairs", ' .
+      'the format is key|value - where the Key is stored in the database (no worries almost anything you ' .
+      'pick is ok), and the Value is what is shown to the person selecting options on your form. </br></br>' .
       '</div>',
     '#weight' => -40,
   );
-  // Remove private fields.
-  unset($form['display']['private']);
+  // Set form key
+  $form['form_key']['#access'] = FALSE;
+  $form['form_key']['#value'] = !empty($component['form_key']) ?
+    $component['form_key'] : 'proposal_' . uniqid();
+  // Hide fields / set defaults.
+  if (isset($form['display']['private'])) {
+    $form['display']['private']['#access'] = FALSE;
+    $form['display']['private']['#value'] = FALSE;
+  }
+  if (isset($form['position']['weight'])) {
+    $form['position']['#access'] = FALSE;
+    $form['position']['weight']['#value'] = isset($form['position']['weight']['#default_value']) ? 
+      $form['position']['weight']['#default_value'] : 0;
+  }
+  if (isset($form['value']) && $form['type']['#value'] != 'markup') {
+    $form['value']['#access'] = FALSE;
+  }
+  if (isset($form['extra']['options_source'])) {
+    $form['extra']['options_source']['#access'] = FALSE;
+  }
+  // Move fields into the right locations.
+  if (isset($form['display']['title_display'])) {
+    $form['title_display'] = $form['display']['title_display'];
+    $form['title_display']['#weight'] = 0;
+    unset($form['display']['title_display']);
+    $form['display']['#access'] = FALSE;
+  }
+  if (isset($form['extra']['multiple'])) {
+    $form['extra']['multiple']['#title'] = t('Show as checkboxes');
+    $form['extra']['multiple']['#description'] = t('Check this option if you want the form element ' .
+      'to be displayed as checkboxes. Default shows as radio buttons.');
+    $form['extra']['multiple']['#weight'] = 15;
+  }
+  if (isset($form['display']['aslist'])) {
+    $form['aslist'] = $form['display']['aslist'];
+    $form['aslist']['#title'] = t('Show as a dropdown');
+    $form['aslist']['#description'] = t('Check this option if you want the form element ' .
+      'to be displayed as a dropdown. Default shows as radio buttons.');
+    $form['aslist']['#weight'] = 20;
+    unset($form['display']['aslist']);
+    $form['display']['#access'] = FALSE;
+  }
+  if (isset($form['validation']['mandatory'])) {
+    $form['mandatory'] = $form['validation']['mandatory'];
+    $form['mandatory']['#default_value'] = !empty($form['mandatory']['#default_value']) ? TRUE : FALSE;
+    $form['mandatory']['#weight'] = 25;
+    unset($form['validation']['mandatory']);
+    $form['validation']['#access'] = FALSE;
+  }
+  if (isset($form['display']['optrand'])) {
+    $form['optrand'] = $form['display']['optrand'];
+    $form['optrand']['#weight'] = 30;
+    unset($form['display']['optrand']);
+    $form['display']['#access'] = FALSE;
+  }
+  // And adjust values for options if relevant.
+  if (isset($form['extra']['items'])) {
+    $options = $form['extra']['items']['#default_value'];
+    if (!empty($options)) {
+      $options = explode("\n", $options);
+      $new_options = '';
+      foreach ($options as $option) {
+        $option = explode('|', $option);
+        $new_options .= trim($option[1]) . "\n";
+      }
+      $form['extra']['items']['#default_value'] = $new_options;
+    }
+    $form['extra']['items']['#description'] = t('Enter one option per line.');
+    // Because QS didn't use the proper source for checking the set value in
+    // _webform_edit_validate_select() : http://api.drupalize.me/api/drupal/function/_webform_edit_validate_select/7
+    $form['extra']['items']['#element_validate'] = array('_proposal_form_extra_items_options_validate');
+  }
+}
+
+/**
+ * Element validation callback.
+ */
+function _proposal_form_extra_items_options_validate($element, &$form_state) {
+  if ($form_state['values']['type'] == 'select') {
+    $options = $form_state['values']['extra']['items'];
+    $options = explode("\n", $options);
+    $new_option = '';
+    foreach($options as $option) {
+      $option = trim($option);
+      if (!empty($option)) {
+        $new_option .= $option . '|' . $option . "\n";
+      }
+    }
+    $form_state['values']['extra']['items'] = $new_option;
+    form_set_value($element, $new_option, $form_state);
+    // Because QS didn't use the proper source for checking the set value in
+    // _webform_edit_validate_select() : http://api.drupalize.me/api/drupal/function/_webform_edit_validate_select/7
+    $element['#value'] = $new_option;
+    return _webform_edit_validate_select($element, $form_state);
+  }
 }
 
 /**
