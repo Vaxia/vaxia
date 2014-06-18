@@ -779,7 +779,7 @@ function _proposal_form_extra_items_options_validate($element, &$form_state) {
     foreach($options as $option) {
       $option = trim($option);
       if (!empty($option)) {
-        $new_option .= $option . '|' . $option . "\n";
+        $new_option .= md5($option) . '|' . $option . "\n";
       }
     }
     $form_state['values']['extra']['items'] = $new_option;
