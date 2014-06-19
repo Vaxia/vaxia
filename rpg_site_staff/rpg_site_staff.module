@@ -185,7 +185,7 @@ function _rpg_site_staff_oldest_unread_pm_count_value($uid) {
     'AND pm.recipient = :uid AND m.timestamp > :timeframe',
     array(':uid' => $uid, ':timeframe' => $timeframe));
   foreach ($results as $result) {
-    return format_date($result->count);
+    return $result->count;
   }
   return 0;
 }
