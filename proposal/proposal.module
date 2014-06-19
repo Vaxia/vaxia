@@ -872,7 +872,7 @@ function _proposal_form_proposal_node_form_submit($form, &$form_state) {
     $component['form_key'] = 'additional_comments';
     $component['name'] = t('Additional Comments');
     $component['type'] = 'textarea';
-    $component['mandatory'] = 1;
+    $component['mandatory'] = 0;
     $component['extra'] = array(
       );
     $component['weight'] = 1000;
