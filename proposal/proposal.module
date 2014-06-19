@@ -207,6 +207,7 @@ function proposal_theme_registry_alter(&$theme_registry) {
  * Adjust the output for proposals only.
  */
 function proposal_webform_components_form($variables) {
+  $current_path = current_path();
   if (strpos($current_path, 'webform') !== FALSE) {
     $node = node_load(arg(1));
     if ($node->type != 'proposal') {
@@ -714,11 +715,7 @@ function proposal_form_webform_component_edit_form_alter(&$form, &$form_state, $
   }
   // Add help display.
   $form['help'] = array(
-    '#markup' => '<div class="webform_component_help">' .
-      'Edit the individual pieces of your form here.  Where you see the form ask for "Key-value pairs", ' .
-      'the format is key|value - where the Key is stored in the database (no worries almost anything you ' .
-      'pick is ok), and the Value is what is shown to the person selecting options on your form. </br></br>' .
-      '</div>',
+    '#markup' => '<div class="webform_component_help">Edit the individual pieces of your form here.</div>',
     '#weight' => -40,
   );
   // Set form key
@@ -814,6 +811,7 @@ function _proposal_form_extra_items_options_validate($element, &$form_state) {
     // Because QS didn't use the proper source for checking the set value in
     // _webform_edit_validate_select() : http://api.drupalize.me/api/drupal/function/_webform_edit_validate_select/7
     $element['#value'] = $new_option;
+    $element['#parents'] = isset($element['#parents']) ? $element['#parents'] : array();
     return _webform_edit_validate_select($element, $form_state);
   }
 }
