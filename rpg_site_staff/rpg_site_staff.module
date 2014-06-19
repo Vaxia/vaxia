@@ -98,7 +98,7 @@ function _rpg_site_staff_eligable_session_count_value($uid) {
   $timeframe = strtotime('1 year ago');
   $results = db_query('SELECT n.nid ' .
     'FROM {node} n ' .
-    'WHERE n.uid = :uid AND n.type = "session_report" AND created > :timeframe',
+    'WHERE n.uid = :uid AND n.type = \'session_report\' AND created > :timeframe',
     array(':uid' => $uid, ':timeframe' => $timeframe));
   $value = array();
   $count = 0;
