@@ -177,12 +177,11 @@ function _rpg_site_staff_comments_in_sh_forums_count_value($uid) {
  * Helper function for views.
  */
 function _rpg_site_staff_oldest_unread_pm_count_value($uid) {
-  $results = db_query('SELECT COUNT(pm.thread_id) AS count ' .
+  $results = db_query('SELECT COUNT(DISTINCT pm.thread_id) AS count ' .
     'FROM {pm_index} pm ' .
     'LEFT JOIN {pm_message} m ON m.mid = pm.mid ' .
     'WHERE pm.is_new = 1 AND m.author != pm.recipient ' .
-    'AND pm.recipient = :uid ' .
-    'GROUP BY pm.thread_id',
+    'AND pm.recipient = :uid',
     array(':uid' => $uid));
   foreach ($results as $result) {
     return $result->count;
