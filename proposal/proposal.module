@@ -264,7 +264,7 @@ function proposal_webform_components_form($variables) {
       // Render it.
       $rendered = drupal_render($rendered);
       $edit = $clone = $delete = '';
-      if ($component['key'] != 'additional_comments') {
+      if ($component['form_key'] != 'additional_comments') {
         $edit = l(t('Edit'), 'node/' . $node->nid . '/webform/components/' . $cid, array('query' => drupal_get_destination()));
         $clone = l(t('Clone'), 'node/' . $node->nid . '/webform/components/' . $cid . '/clone', array('query' => drupal_get_destination()));
         $delete = l(t('Delete'), 'node/' . $node->nid . '/webform/components/' . $cid . '/delete', array('query' => drupal_get_destination()));
