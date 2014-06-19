@@ -61,44 +61,32 @@ function _rpg_site_staff_return_title($uid) {
 /**
  * Helper function for views.
  */
-function _rpg_site_staff_create_content_count_value($uid) {
+function _rpg_site_staff_create_content_count_value($uid, $type = 'session_report') {
+  $timeframe = strtotext('1 year ago');
   $results = db_query('SELECT COUNT(n.nid) AS count, n.type ' .
     'FROM {node} n ' .
-    'WHERE n.uid = :uid GROUP BY n.type',
-    array(':uid' => $uid));
+    'WHERE n.uid = :uid AND n.type = :type AND created > :timeframe',
+    array(':uid' => $uid, ':type' => $type, ':timeframe' => $timeframe));
   $value = array();
   foreach ($results as $result) {
-    $value[$result->type] = $result->count;
+    return $result->count;
   }
-  return $value;
+  return 0;
 }
 
 /**
  * Helper function for views.
  */
-function _rpg_site_staff_revise_content_count_value($uid) {
+function _rpg_site_staff_revise_content_count_value($uid, $type = 'session_report') {
+  $timeframe = strtotext('1 year ago');
   $results = db_query('SELECT COUNT(r.nid) AS count, n.type ' .
     'FROM {node_revision} r ' .
     'LEFT JOIN {node} n ON n.nid = r.nid ' .
-    'WHERE r.uid = :uid GROUP BY n.type',
-    array(':uid' => $uid));
+    'WHERE r.uid = :uid AND n.type = :type AND timestamp > :timeframe',
+    array(':uid' => $uid, ':type' => $type, ':timeframe' => $timeframe));
   $value = array();
   foreach ($results as $result) {
-    $value[$result->type] = $result->count;
+    return $result->count;
   }
-  return $value;
-}
-
-/**
- * Helper function for views.
- */
-function _rpg_site_staff_content_count_display($value) {
-  $output = '<ul>';
-  foreach ($value as $type => $count) {
-    if (in_array($type, array('wiki_page', 'session_report', ) )) {
-        $output .= '<li>'. $type . ' : ' . $count . '</li>';
-    }
-  }
-  $output .= '</ul>';
-  return $output;
+  return 0;
 }
