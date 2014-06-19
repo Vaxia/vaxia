@@ -62,7 +62,7 @@ function _rpg_site_staff_return_title($uid) {
  * Helper function for views.
  */
 function _rpg_site_staff_create_content_count_value($uid, $type = 'session_report') {
-  $timeframe = strtotext('1 year ago');
+  $timeframe = strtotime('1 year ago');
   $results = db_query('SELECT COUNT(n.nid) AS count, n.type ' .
     'FROM {node} n ' .
     'WHERE n.uid = :uid AND n.type = :type AND created > :timeframe',
@@ -78,7 +78,7 @@ function _rpg_site_staff_create_content_count_value($uid, $type = 'session_repor
  * Helper function for views.
  */
 function _rpg_site_staff_revise_content_count_value($uid, $type = 'session_report') {
-  $timeframe = strtotext('1 year ago');
+  $timeframe = strtotime('1 year ago');
   $results = db_query('SELECT COUNT(r.nid) AS count, n.type ' .
     'FROM {node_revision} r ' .
     'LEFT JOIN {node} n ON n.nid = r.nid ' .
