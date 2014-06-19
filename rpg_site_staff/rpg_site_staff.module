@@ -134,3 +134,22 @@ function _rpg_site_staff_prompt_eval_char_count_value($uid) {
   }
   return 0;
 }
+
+/**
+ * Helper function for views.
+ */
+function _rpg_site_staff_prompt_eval_item_count_value($uid) {
+  $timeframe = strtotime('1 year ago');
+  $results = db_query('SELECT COUNT(n.nid) AS count ' .
+    'FROM {node} n ' .
+    'LEFT JOIN {workflow_node_history} w ON w.nid = n.nid ' .
+    'LEFT JOIN {workflow_states} s ON s.sid = w.sid ' .
+    'WHERE w.uid = :uid AND n.type = \'items\' AND n.created > :timeframe AND n.uid != w.uid ' .
+    'AND w.old_sid != w.sid AND s.state = \'approved\' ' .
+    'AND w.stamp <= DATE_ADD(FROM_UNIXTIME(n.created), INTERVAL +3 DAY)',
+    array(':uid' => $uid, ':timeframe' => $timeframe));
+  foreach ($results as $result) {
+    return $result->count;
+  }
+  return 0;
+}
