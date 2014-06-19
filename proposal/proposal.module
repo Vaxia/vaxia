@@ -1025,13 +1025,13 @@ function proposal_eligable_count($nid) {
 /**
  * DB function. Count eligable voters.
  */
-function proposal_eligable_active_count($nid, $from_time) {
+function proposal_eligable_active_count($nid, $end) {
   if (empty($nid)) {
     return FALSE; // Bail if error.
   }
-  $end = $from_time;
+  // Get the date given time before the end time.
   $active_timeframe = variable_get('proposal_active_timeframe', '2 weeks') . ' ago';
-  $start = strtotime('-1 weeks', $active_timeframe);
+  $start = strtotime($active_timeframe, $end);
   // Check if they created a comment in the timeframe.
   // Why comments? Cause creating a character and vanishing from the site
   // happens, and we want to see gut-check-level active people. That means
