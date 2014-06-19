@@ -163,7 +163,7 @@ function _rpg_site_staff_comments_in_sh_forums_count_value($uid) {
     'FROM {comment} c ' .
     'LEFT JOIN {node} n ON n.nid = c.nid ' .
     'LEFT JOIN {taxonomy_index} t ON t.nid = n.nid ' .
-    'WHERE t.tid IN \':terms\' AND c.uid = :uid AND c.created > :timeframe',
+    'WHERE t.tid IN :terms AND c.uid = :uid AND c.created > :timeframe',
     array(':terms' => array(10, 11), ':uid' => $uid, ':timeframe' => $timeframe));
     // Taxonomy (should be configured - do that later).
     // 10, 11 are SH request forums
