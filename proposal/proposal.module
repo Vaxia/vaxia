@@ -110,6 +110,12 @@ function proposal_admin_form($form, &$form_state) {
     '#type' => 'textfield',
     '#default_value' => variable_get('proposal_open_timeframe', '2 weeks'),
   );
+  $form['proposal_active_timeframe'] = array(
+    '#title' => t('Active timeframe'),
+    '#description' => t('Timeframe to watch for active voters in. Use the same strings as date().'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('proposal_active_timeframe', '2 weeks'),
+  );
   $form['proposal_voter_timeframe'] = array(
     '#title' => t('Voter timeframe'),
     '#description' => t('Timeframe for determining user activity as a voter. Use the same strings as date().'),
@@ -638,12 +644,11 @@ function proposal_form_webform_components_form_alter(&$form, &$form_state, $form
     '#markup' => 
       '<div class="webform_component_help">' .
       'Once you add a form piece to the form you can shuffle them around to display them in the order you want them to display in. ' .
-      'Mandatory form components are questions that must be answered before a submission can be made. ' .
-      'The pieces you can add are mostly self-explanatory but a few you may not be familiar with: </br></br>' .
+      'Mandatory form components are questions that must be answered before a submission can be made. Available form elements are: </br></br>' .
       '* Markup: Text to display - useful for displaying long pieces of text or help messages. </br>' .
       '* Radio / checkbox / dropdown - used for selecting between set values. </br>' .
-      '* Text area: Multi-line area for entering text. </br>' .
-      '* Text field: Single-line area for entering text. </br>' .
+      '* Text area: Multi-line area for entering long text. </br>' .
+      '* Text field: Single-line area for entering short text. </br>' .
       '</br>' .
       'Once you have all the form pieces you want, in the order you want them, click "Save" to set the proposal active.' .
       '</div>',
@@ -1024,7 +1029,8 @@ function proposal_eligable_active_count($nid, $from_time) {
     return FALSE; // Bail if error.
   }
   $end = $from_time;
-  $start = strtotime('-1 weeks', $from_time);
+  $active_timeframe = variable_get('proposal_active_timeframe', '2 weeks') . ' ago';
+  $start = strtotime('-1 weeks', $active_timeframe);
   // Check if they created a comment in the timeframe.
   // Why comments? Cause creating a character and vanishing from the site
   // happens, and we want to see gut-check-level active people. That means
