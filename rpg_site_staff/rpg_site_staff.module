@@ -182,7 +182,8 @@ function _rpg_site_staff_oldest_unread_pm_count_value($uid) {
     'FROM {pm_index} pm ' .
     'LEFT JOIN pm_message} m ON m.mid = pm.mid ' .
     'WHERE pm.is_new = 1 AND m.author != pm.recipient ' .
-    'AND pm.recipient = :uid AND m.timestamp > :timeframe',
+    'AND pm.recipient = :uid AND m.timestamp > :timeframe ' .
+    'GROUP BY pm.thread_id',
     array(':uid' => $uid, ':timeframe' => $timeframe));
   foreach ($results as $result) {
     return $result->count;
@@ -199,7 +200,8 @@ function _rpg_site_staff_oldest_unread_pm_date_value($uid) {
     'FROM {pm_index} pm ' .
     'LEFT JOIN pm_message} m ON m.mid = pm.mid ' .
     'WHERE pm.is_new = 1 AND m.author != pm.recipient ' .
-    'AND pm.recipient = :uid AND m.timestamp > :timeframe',
+    'AND pm.recipient = :uid AND m.timestamp > :timeframe ' .
+    'GROUP BY pm.thread_id',
     array(':uid' => $uid, ':timeframe' => $timeframe));
   foreach ($results as $result) {
     return format_date($result->oldest);
