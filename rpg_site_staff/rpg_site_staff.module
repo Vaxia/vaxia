@@ -179,7 +179,7 @@ function _rpg_site_staff_comments_in_sh_forums_count_value($uid) {
 function _rpg_site_staff_oldest_unread_pm_count_value($uid) {
   $results = db_query('SELECT COUNT(m.timestamp) AS count ' .
     'FROM {pm_index} pm ' .
-    'LEFT JOIN pm_message} m ON m.mid = pm.mid ' .
+    'LEFT JOIN {pm_message} m ON m.mid = pm.mid ' .
     'WHERE pm.is_new = 1 AND m.author != pm.recipient ' .
     'AND pm.recipient = :uid ' .
     'GROUP BY pm.thread_id',
@@ -196,7 +196,7 @@ function _rpg_site_staff_oldest_unread_pm_count_value($uid) {
 function _rpg_site_staff_oldest_unread_pm_date_value($uid) {
   $results = db_query('SELECT MIN(m.timestamp) AS oldest ' .
     'FROM {pm_index} pm ' .
-    'LEFT JOIN pm_message} m ON m.mid = pm.mid ' .
+    'LEFT JOIN {pm_message} m ON m.mid = pm.mid ' .
     'WHERE pm.is_new = 1 AND m.author != pm.recipient ' .
     'AND pm.recipient = :uid ' .
     'GROUP BY pm.thread_id',
