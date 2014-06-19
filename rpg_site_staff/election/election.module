@@ -495,7 +495,7 @@ function _election_setup_election_proposal_components($new_election, $keys) {
  */
 function _election_election_check_close($node) {
   // Check if we are closed. If we aren't an election this returns nothing.
-  $election = __election_get_election_by_nid($node->nid);
+  $election = _election_get_election_by_nid($node->nid);
   if ($election && $election->closed == -1 && $node->webform['status'] == FALSE) {
     // And now we mark this proposal as having been created in our site as an election object.
     $election->closed = strtotime('now');
@@ -605,7 +605,7 @@ function _election_update_election($election) {
   if (!isset($data['nid'])) {
     return FALSE; // We must have a nid for this election data.
   }
-  $old_data = __election_get_election_by_nid($data['nid']);
+  $old_data = _election_get_election_by_nid($data['nid']);
   if ($old_data) {
     $data = array_merge( (array) $old_data, $data);
     $data['positions'] = serialize($data['positions']);
@@ -649,7 +649,7 @@ function _election_get_election($eid) {
 /**
  * CRUD function. Get election info for a node.
  */
-function __election_get_election_by_nid($nid) {
+function _election_get_election_by_nid($nid) {
   if (empty($nid)) {
     return FALSE; // Bail if error.
   }
@@ -681,7 +681,7 @@ function _election_delete_election($eid) {
 /**
  * CRUD function. Delete election info for a node.
  */
-function __election_delete_election_by_nid($nid) {
+function _election_delete_election_by_nid($nid) {
   if (empty($nid)) {
     return FALSE; // Bail if error.
   }
@@ -714,7 +714,7 @@ function _election_mark_winner($winner) {
 /**
  * DB function. Get election info for an election.
  */
-function __election_get_election_winner($uid, $cycle, $postion) {
+function _election_get_election_winner($uid, $cycle, $postion) {
   if (empty($eid)) {
     return FALSE; // Bail if error.
   }
