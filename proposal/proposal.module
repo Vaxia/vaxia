@@ -263,6 +263,12 @@ function proposal_webform_components_form($variables) {
       }
       // Render it.
       $rendered = drupal_render($rendered);
+      $edit = $clone = $delete = '';
+      if ($component['key'] != 'additional_comments') {
+        $edit = l(t('Edit'), 'node/' . $node->nid . '/webform/components/' . $cid, array('query' => drupal_get_destination()));
+        $clone = l(t('Clone'), 'node/' . $node->nid . '/webform/components/' . $cid . '/clone', array('query' => drupal_get_destination()));
+        $delete = l(t('Delete'), 'node/' . $node->nid . '/webform/components/' . $cid . '/delete', array('query' => drupal_get_destination()));
+      }
       // Add each component to a table row.
       $row_data = array(
         $rendered,
@@ -270,9 +276,9 @@ function proposal_webform_components_form($variables) {
         drupal_render($form['components'][$cid]['cid']) .
         drupal_render($form['components'][$cid]['pid']) .
         drupal_render($form['components'][$cid]['weight']),
-        l(t('Edit'), 'node/' . $node->nid . '/webform/components/' . $cid, array('query' => drupal_get_destination())),
-        l(t('Clone'), 'node/' . $node->nid . '/webform/components/' . $cid . '/clone', array('query' => drupal_get_destination())),
-        l(t('Delete'), 'node/' . $node->nid . '/webform/components/' . $cid . '/delete', array('query' => drupal_get_destination())),
+        $edit,
+        $clone,
+        $delete
       );
       $row_class = array('draggable', 'proposal-element', 'proposal-' . $component['type']);
       if (!webform_component_feature($component['type'], 'group')) {
@@ -642,6 +648,9 @@ function _proposal_launch_form_submit($form, &$form_state) {
   $node->webform['status'] = TRUE;
   node_save($node);
   drupal_set_message(t('This proposal has been opened for voting.'));
+  if (function_exists('rules_invoke_event')) {
+    rules_invoke_event('open_proposal', $node);
+  }
 }
 
 /**
@@ -854,9 +863,20 @@ function _proposal_form_proposal_node_form_submit($form, &$form_state) {
     $node->webform['status'] = FALSE;
     // Save the node.
     node_save($node);
-    if (function_exists('rules_invoke_event')) {
-      rules_invoke_event('open_proposal', $node);
-    }
+    // Include the webform module that allows components to be created.
+    module_load_include('inc', 'webform', 'includes/webform.components');
+    // Add the default comment box.
+    $component = array();
+    $component['nid'] = $node->nid;
+    $component['pid'] = 0;
+    $component['form_key'] = 'additional_comments';
+    $component['name'] = t('Additional Comments');
+    $component['type'] = 'textarea';
+    $component['mandatory'] = 1;
+    $component['extra'] = array(
+      );
+    $component['weight'] = 1000;
+    webform_component_insert($component);
   }
   drupal_set_message(t('The webform %title has been updated. Add new fields to your webform with the form below. ' .
     'When you are ready to open the proposal to voters go to the View tab and click the button to launch it.',
