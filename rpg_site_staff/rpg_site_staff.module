@@ -127,7 +127,7 @@ function _rpg_site_staff_prompt_eval_char_count_value($uid) {
     'AND onpc.field_is_open_npc_value = 0 ' .
     'AND st.field_is_storyteller_value = 0 ' .
     'AND w.old_sid != w.sid AND s.state = \'approved\' ' .
-    'AND w.stamp <= DATE_ADD(FROM_UNIXTIME(n.created), INTERVAL +3 DAYS)',
+    'AND w.stamp <= DATE_ADD(FROM_UNIXTIME(n.created), INTERVAL +3 DAY)',
     array(':uid' => $uid, ':timeframe' => $timeframe));
   foreach ($results as $result) {
     return $result->count;
