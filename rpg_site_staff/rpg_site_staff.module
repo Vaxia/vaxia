@@ -159,7 +159,7 @@ function _rpg_site_staff_prompt_eval_item_count_value($uid) {
  */
 function _rpg_site_staff_comments_in_sh_forums_count_value($uid) {
   $timeframe = strtotime('1 year ago');
-  $results = db_query('SELECT COUNT(c.comment) AS count ' .
+  $results = db_query('SELECT COUNT(c.cid) AS count ' .
     'FROM {comment} c ' .
     'LEFT JOIN {node} n ON n.nid = c.nid ' .
     'LEFT JOIN {taxonomy_index} t ON t.nid = n.nid ' .
