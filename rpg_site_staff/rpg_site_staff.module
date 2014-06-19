@@ -122,7 +122,7 @@ function _rpg_site_staff_prompt_eval_char_count_value($uid) {
     'LEFT JOIN {field_data_field_is_storyteller} st ON st.entity_id = n.nid ' .
     'LEFT JOIN {workflow_node_history} w ON w.nid = n.nid ' .
     'LEFT JOIN {workflow_states} s ON s.sid = w.sid ' .
-    'WHERE w.uid = :uid AND n.type = \'character_sheet\' AND n.created > :timeframe ' .
+    'WHERE w.uid = :uid AND n.type = \'character_sheet\' AND n.created > :timeframe AND n.uid != w.uid ' .
     'AND npc.field_is_npc_value = 0 ' .
     'AND onpc.field_is_open_npc_value = 0 ' .
     'AND st.field_is_storyteller_value = 0 ' .
