@@ -473,7 +473,7 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
       $headers =  array(
         t('Item creation posts'),
         t('Roll type'),
-        t('Flat bonus'),
+        t('Flat modifier'),
         '',
         '',
         t('Result'),
@@ -778,6 +778,8 @@ function _item_helper_admin_settings($form, &$form_state) {
  */
 function _item_helper_calculate_results($found_comments) {
   $ongoing_PP = 0;
+  $critwin = 0;
+  $critfail = 0;
   $ongoing_100 = 0;
   $ongoing_1 = 0;
   $ongoing_prep_bonus = 0;
@@ -867,11 +869,17 @@ function _item_helper_calculate_results($found_comments) {
         if ($winsby_generated < 0 && $item_comment->roll_type == 'gen_pp') { // If just gen_add, then add.
           $lost_PP = floor( $ongoing_PP * (($winsby_generated * -1) / 100) );
           $roll_txt = t('Roll lost ' . $lost_PP . 'PP, ' . $winsby_generated . ' winsby.');
-          $ongoing_PP -= $lost_PP;
+          $ongoing_PP -= $lost_PP
+          if ($winsby_generated <= -25) {
+            $critfail++;
+          }
         }
         if ($winsby_generated >= 0 && $item_comment->roll_type == 'gen_pp') { // If just gen_add, then add.
           $roll_txt = t('Roll generated ' . $PP_generated . ' PP, ' . $winsby_generated . ' winsby.');
           $ongoing_PP += $PP_generated;
+          if ($winsby_generated >= 25) {
+            $critwin++;
+          }
         }
         if ($item_comment->roll_type == 'prep_diff') { // If prep_diff, divide, add.
           $roll_txt = t('Roll did not change diff for future rolls.');
@@ -898,6 +906,14 @@ function _item_helper_calculate_results($found_comments) {
     $might_2 = empty($mights[1]) ? '' : '/ ' . $mights[1];
     $break_1 = empty($set_bonus_txt) ? '' : '</br>';
     $break_2 = empty($roll_txt) ? '' : '</br>';
+    $critwin_text = $critwin;
+    if ($critwin == 0) {
+      $critwin_text = 'no';
+    }
+    $critfail_text = $critfail;
+    if ($critfail == 0) {
+      $critfail_text = 'no';
+    }
     $ongoing_100_text = $ongoing_100;
     if ($ongoing_100 == 0) {
       $ongoing_100_text = 'no';
@@ -913,11 +929,13 @@ function _item_helper_calculate_results($found_comments) {
       '@set_bonus_txt' . $break_1 .
       '@rp RP bonus </br> ' .
       '@prep Prep bonus / @diff Diff mod </br> ' .
-      '<span style="font-weight:bold;">@PP PP / <span style="color:green;">@100 100s</span> / <span style="color:red;">@1 1s</span></span>' .
+      '<b"><span style="color:green;">@critwin crit wins-by</span> / <span style="color:red;">@critfail crit fails-by</span></b>' .
+      '<b>@PP PP / <span style="color:green;">@100 100s</span> / <span style="color:red;">@1 1s</span></b>' .
       '',
       array('@diff_text' => $diff_txt, '@set_bonus_txt' => $set_bonus_txt, '%roll_txt' => $roll_txt,
         '@might1' => !empty($might_1) ? $might_1 : 0, '@might2' => !empty($might_2) ? $might_2 : 0,
-        '@PP' => number_format($ongoing_PP), '@100' => $ongoing_100_text, '@1' => $ongoing_1_text,
+        '@critwin' => $critwin_text, '@critfail' => $critfail_text,
+        '@PP' => number_format($ongoing_PP),'@100' => $ongoing_100_text, '@1' => $ongoing_1_text,
         '@rp' => $rp_bonus, '@prep' => $ongoing_prep_bonus, '@diff' => $ongoing_prep_diff * -1 ));
   }
   return $found_comments;
