@@ -88,10 +88,10 @@ function _election_cron_election() {
   if ($election_day) {
     // This is an official election! Time to get things sorted out.
     // First remove current heads from positions, put admin in for anon mailer.
-    $head_role = variable_get('election_head_role', '');
+    $role = variable_get('election_role', '');
     db_query('DELETE FROM {users_roles} WHERE rid = :rid',
-      array(':uid' => $winner->uid, ':rid' => $head_role));
-    $data = array('uid' => 1, 'rid' => $head_role);
+      array(':uid' => $winner->uid, ':rid' => $role));
+    $data = array('uid' => 1, 'rid' => $role);
     drupal_write_record('users_roles', $data);
     // And start the election.
     _election_trigger_election();
@@ -103,7 +103,7 @@ function _election_cron_election() {
  */
 function _election_check_election_day() {
   // Grab the info about the last election and when / how to run it.
-  $last_held = variable_get('election_election_day', '5/1/2013');
+  $last_held = variable_get('election_day', '5/1/2013');
   $rate = variable_get('election_rate', '1 year');
   // Based on the last election, get the next election in a standard format.
   $last_election = strtotime($last_held);
@@ -112,7 +112,7 @@ function _election_check_election_day() {
   $today = date('m/d/Y', strtotime('now'));
   // Do they match? Mark today in the variables.
   if ($today == $next_election) {
-    variable_set('election_election_day', date('m/d/Y'));
+    variable_set('election_day', date('m/d/Y'));
     return TRUE;
   }
   return FALSE;
@@ -122,37 +122,33 @@ function _election_check_election_day() {
  * Menu callback, admin form.
  */
 function _election_admin_settings($form, &$form_state) {
-  $form['elections'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Election settings'),
-    '#collapsible' => TRUE,
-  );
-  $form['elections']['election_election_day'] = array(
+  $form['election_day'] = array(
     '#title' => t('Last election day'),
     '#description' => t('The last-held election day for calculating further elections.'),
     '#type' => 'textfield',
     '#disabled' => TRUE,
-    '#default_value' => variable_get('election_election_day', '5/1/2013'),
+    '#default_value' => variable_get('election_day', '5/1/2013'),
+    '#value' => variable_get('election_day', '5/1/2013'),
   );
-  $form['elections']['election_rate'] = array(
+  $form['election_rate'] = array(
     '#title' => t('Election rate'),
     '#description' => t('How often to hold elections. Use timeframe formats strtotime will recognize.'),
     '#type' => 'textfield',
     '#default_value' => variable_get('election_rate', '1 year'),
   );
-  $form['elections']['election_term_limits'] = array(
+  $form['election_term_limits'] = array(
     '#title' => t('Term limits'),
     '#description' => t('Use term limits when calculating eligable users for positions.'),
     '#type' => 'checkbox',
     '#default_value' => variable_get('election_term_limits', TRUE),
   );
-  $form['elections']['election_term_limit_limits'] = array(
+  $form['election_term_limit_limits'] = array(
     '#title' => t('Term limit'),
     '#description' => t('How many consecutive (not lifetime) terms can a user serve in the same position.'),
     '#type' => 'textfield',
     '#default_value' => variable_get('election_term_limit_limits', 2),
   );
-  $form['elections']['election_run_roles'] = array(
+  $form['election_run_roles'] = array(
     '#title' => t('Election run role'),
     '#description' => t('These roles are allowed to run.'),
     '#type' => 'select',
@@ -160,12 +156,12 @@ function _election_admin_settings($form, &$form_state) {
     '#options' =>  user_roles(),
     '#default_value' => variable_get('election_run_roles', array()),
   );
-  $form['elections']['election_head_role'] = array(
-    '#title' => t('Head role'),
-    '#description' => t('This role is considered the head role. It recieves anonymous emails.'),
+  $form['election_role'] = array(
+    '#title' => t('Elected role'),
+    '#description' => t('This role is considered the elected role. Election winners automatically recieve this role.'),
     '#type' => 'select',
     '#options' =>  user_roles(),
-    '#default_value' => variable_get('election_head_role', ''),
+    '#default_value' => variable_get('election_role', ''),
   );
   $vid = variable_get('forum_nav_vocabulary', 0);
   $options = array();
@@ -174,26 +170,26 @@ function _election_admin_settings($form, &$form_state) {
       $options[$term->tid] = str_repeat('-', $term->depth) . $term->name;
     }
   }
-  $form['elections']['election_default_forum'] = array(
+  $form['election_default_forum'] = array(
     '#title' => t('Election forum'),
-    '#description' => t('The default forum to post the election in.'),
+    '#description' => t('The default forum to post the election proposal in.'),
     '#type' => 'select',
     '#options' => $options,
     '#default_value' => variable_get('election_default_forum', ''),
   );
-  $intro_text = t('Each year Vaxia has an election for the key positions on our site. ' .
+  $intro_text = t('Each year we have an election for key positions on our site. ' .
     'This is so that we can always be sure that the current leadership is connected to ' .
     'and trusted by our players.');
-  $form['elections']['election_election_intro'] = array(
+  $form['election_election_intro'] = array(
     '#title' => t('Election intro'),
     '#description' => t('Election introduction text.'),
     '#type' => 'textarea',
     '#default_value' => variable_get('election_election_intro', $intro_text),
   );
-  $available = implode("\n", array('Setting Head', 'System Head') );
-  $form['elections']['election_positions'] = array(
+  $available = implode("\n", array('Setting Lead', 'System Lead', 'Social Lead') );
+  $form['election_positions'] = array(
     '#title' => t('Available positions'),
-    '#description' => t('List postitions avaiblae on the site, one per row.'),
+    '#description' => t('List postitions available on the site, one per row.'),
     '#type' => 'textarea',
     '#default_value' => variable_get('election_positions', $available),
   );
@@ -212,12 +208,13 @@ function _election_admin_settings($form, &$form_state) {
 function _election_election_submit($form, &$form_state) {
   // This is an official election! Time to get things sorted out.
   // First remove current heads from positions, put admin in for anon mailer.
-  $head_role = variable_get('election_head_role', '');
+  $elected_role = variable_get('election_role', '');
   db_query('DELETE FROM {users_roles} WHERE rid = :rid',
-    array(':uid' => $winner->uid, ':rid' => $head_role));
-  $data = array('uid' => 1, 'rid' => $head_role);
+    array(':uid' => $winner->uid, ':rid' => $elected_role));
+  $data = array('uid' => 1, 'rid' => $elected_role);
   drupal_write_record('users_roles', $data);
   // And start the election.
+  variable_set('election_day', date('m/d/Y'));
   _election_trigger_election();
 }
 
@@ -226,7 +223,7 @@ function _election_election_submit($form, &$form_state) {
  */
 function _election_positions_submit($form, &$form_state) {
   // Grab the old positions.
-  // Delete the old fields. TODO: For now, leave this to the admin to delete the old ones.
+  // TODO: For now, leave it to the admin to delete the old ones.
   // Grab the new positions from the settings.
   $available = $form_state['values']['election_positions'];
   $available = explode("\n", $available);
@@ -355,7 +352,7 @@ function _election_trigger_election($title = '', $positions = array(), $election
 function _election_setup_election_proposal($new_election, $set_positions = array(), $election = array()) {
   $output = '';
   $output .= '<h3><b>Election</b></h3>';
-  $intro_text = t('Each year Vaxia has an election for the key positions on our site. ' .
+  $intro_text = t('Each year we have an election for key positions on our site. ' .
     'This is so that we can always be sure that the current leadership is connected to ' .
     'and trusted by our players.');
   $output .= '<p>' . variable_get('election_election_intro', $intro_text) . '</p>';
@@ -371,7 +368,7 @@ function _election_setup_election_proposal($new_election, $set_positions = array
     }
   }
   else {
-    $available = variable_get('election_positions', "Setting Head\nSystem Head");
+    $available = variable_get('election_positions', "Setting Lead\nSystem Lead\nSocial Lead");
     $available = explode("\n", $available);
     foreach ($available as $position) {
       $position = trim($position);
@@ -428,7 +425,8 @@ function _election_setup_election_proposal_components($new_election, $keys) {
   // Create the webform fields for possible elected.
   $weight = 0;
   foreach ($keys as $key => $title) {
-    $field_key_name = str_replace(' ', '_', strtolower(substr($key, 0, -2))); // Trim end, fied field.
+    $key = preg_replace("/[^A-Za-z0-9 ]/", '', $key); // Remove all but space and alphanumeric.
+    $field_key_name = str_replace(' ', '_', strtolower(substr($key, 0, -2))); // Trim end, find field.
     // Gather the user info.
     $roles = variable_get('election_run_roles', array());
     $roles = array_values($roles);
@@ -455,6 +453,7 @@ function _election_setup_election_proposal_components($new_election, $keys) {
         $system_eligible .= $system_eligible_name->name . '|' . $system_eligible_name->name . "\n";
       }
     }
+    // Create the component for the position.
     $component = array();
     $component['nid'] = $new_election->nid;
     $component['pid'] = 0;
@@ -471,23 +470,22 @@ function _election_setup_election_proposal_components($new_election, $keys) {
     $component['weight'] = $weight;
     $weight++;
     webform_component_insert($component);
+    // Copy from proposal.module.
+    // Include the webform module that allows components to be created.
+    module_load_include('inc', 'webform', 'includes/webform.components');
+    // Add the default comment box.
+    $component = array();
+    $component['nid'] = $node->nid;
+    $component['pid'] = 0;
+    $component['form_key'] = 'additional_comments';
+    $component['name'] = t('Additional Comments');
+    $component['type'] = 'textarea';
+    $component['mandatory'] = 0;
+    $component['extra'] = array(
+      );
+    $component['weight'] = 1000;
+    webform_component_insert($component);
   }
-  // Add additional fields or comments.
-  $component = array();
-  $component['nid'] = $new_election->nid;
-  $component['pid'] = 0;
-  $component['form_key'] = 'comments';
-  $component['name'] = t('Additional Comments and Feedback');
-  $component['type'] = 'textarea';
-  $component['mandatory'] = 0;
-  $component['extra'] = array(
-    'description' => '',
-    'items' => '',
-    'multiple' => '0',
-    'aslist' => '0',
-    );
-  $component['weight'] = $weight;
-  webform_component_insert($component);
 }
 
 /**
@@ -501,21 +499,22 @@ function _election_election_check_close($node) {
     $election->closed = strtotime('now');
     $election->winners = array();
     $winners = _election_get_elected($node);
-    $head_role = variable_get('election_head_role', '');
+    $elected_role = variable_get('election_role', '');
     // Closed? Good - now we should be getting some winners in - if so, yank user one out of head.
+    // User one is no longer required to operated as a temporary head.
     if (!empty($winners['winners'])) {
-      db_query('DELETE FROM {users_roles} WHERE rid = :rid',
-        array(':uid' => 1, ':rid' => $head_role));
+      db_query('DELETE FROM {users_roles} WHERE uid = :uis AND rid = :rid',
+        array(':uid' => 1, ':rid' => $elected_role));
     }
     // Now process the winners, marking them for terms etc as needed.
     $these_winners = array();
     foreach ($winners['winners'] as $position => $winner) {
       // Add the winner to the heads role.
       db_query('DELETE FROM {users_roles} WHERE uid = :uid AND rid = :rid',
-        array(':uid' => $winner->uid, ':rid' => $head_role));
-      $data = array('uid' => $winner->uid, 'rid' => $head_role);
+        array(':uid' => $winner->uid, ':rid' => $elected_role));
+      $data = array('uid' => $winner->uid, 'rid' => $elected_role);
       drupal_write_record('users_roles', $data);
-      // Note the position fore recording.
+      // Note the position before recording.
       $these_winners[$position] = $winner->uid;
       // And for each winner, mark that they've been assigned for this cycle to this position.
       $this_winner = array();
@@ -527,11 +526,12 @@ function _election_election_check_close($node) {
     // Add to the election information recorded so far.
     $election->winners = $these_winners;
     $election = _election_update_election($election);
-    // Now we have to address the ties. We need to run a tie breaker election with JUST these postions.
+    // Now we have to address the ties.
+    // We need to run a tie breaker election with JUST these postions.
     // So we open ANOTHER election.
     if (!empty($winners['ties'])) {
       $winners['ties'] = array_unique($winners['ties']);
-      _election_trigger_election(t('Vaxia Site Run-off Election'), $winners['ties'], $election);
+      _election_trigger_election(t('Site Run-off Election'), $winners['ties'], $election);
     } // End tie handling.
   }
 }
@@ -542,7 +542,7 @@ function _election_election_check_close($node) {
 function _election_get_elected($node) {
   // Include the webform file we need.
   module_load_include('inc', 'webform', 'includes/webform.submissions');
-  // Get submission results.
+  // Get submission results and put into a format for review.
   $submissions = webform_get_submissions($node->nid);
   $results = array();
   foreach ($submissions as $sid => $submission) {

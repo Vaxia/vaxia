@@ -1,0 +1,20 @@
+<?php
+/**
+ * @file
+ * Installation code for the Election.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function department_schema() {}
+
+/**
+ * Implements hook_install().
+ */
+function department_install() {}
+
+/**
+ * Implements hook_uninstall().
+ */
+function department_uninstall() {}

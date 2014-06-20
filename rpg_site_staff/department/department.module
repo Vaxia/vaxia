@@ -1,0 +1,195 @@
+<?php
+/**
+ * @file
+ * Code for Departments. Limit and restrict the behavior of other systems on the site per department.
+ */
+
+/**
+ * Implements hook_permission().
+ */
+function department_permission() {
+  return array(
+    'administrate departments'=> array(
+      'title' => t('administrate departments'),
+      'description' => t('Administrate departments.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function department_menu() {
+  $items['admin/vaxia/departments'] = array(
+    'title' => 'Department settings',
+    'description' => 'Department for administration.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('_department_admin_settings'),
+    'access arguments' => array('administrate departments'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  return $items;
+}
+
+/**
+ * Menu callback.
+ */
+function _department_admin_settings($form, &$form_state) {
+  $default_departments = implode("\n", array('Setting', 'System', 'Social') );
+  $departments = variable_get('departments', $default_departments);
+  $form['departments'] = array(
+    '#title' => t('Available departments'),
+    '#description' => t('List departments available on the site, one per row.'),
+    '#type' => 'textarea',
+    '#default_value' => $departments,
+  );
+  // Department associated roles.
+  $form['roles'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Department associated role.'),
+    '#description' => t('Each department has a role that grants access to voting and other memebership features.'),
+  );
+  $departments = explode("\n", $departments);
+  foreach ($departments as $department) {
+    $name = preg_replace("/[^A-Za-z0-9 ]/", '', $department); // Remove all but space and alphanumeric.
+    $name = str_replace(' ', '_', strtolower($name)); // Replace space with underscore.
+    $name = trim(strtolower($name));
+    $form['roles']['department_roles_' . $name] = array(
+      '#type' => 'select',
+      '#title' => t('Department role: ' . $department),
+      '#options' => user_roles(),
+      '#default_value' => variable_get('department_roles_' . $name, array()),
+    );
+  }
+  // Set vacation cutoff time.
+  if (module_exists('vacation')) {
+    $form['department_vacation_cutoff'] = array(
+      '#title' => t('Vacation substitute cutoff'),
+      '#description' => t('Vacation length at which a second in command is required.'),
+      '#type' => 'textarea',
+      '#default_value' => variable_get('department_vacation_cutoff', '2 weeks'),
+    );
+  }
+  $form['#submit'][] = '_department_admin_settings_submit';
+  return system_settings_form($form);
+}
+
+/**
+ * Menu callback submit.
+ */
+function _department_admin_settings_submit($form, &$form_state) {
+  $departments = $form_state['value']['departments'];
+  $departments = explode("\n", $departments);
+  $departments = implode(" Lead\n", $departments);
+  variable_set('election_positions', $departments);
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function department_form__election_admin_settings_alter(&$form, &$form_state) {
+  $default_departments = implode("\n", array('Setting', 'System', 'Social') );
+  $departments = variable_get('departments', $default_departments);
+  $departments = explode("\n", $departments);
+  $departments = implode(' Lead' . "\n", $departments) . ' Lead';
+  $form['election_positions'] = array(
+    '#title' => t('Available positions'),
+    '#description' => t('List postitions available on the site per department, one per row.'),
+    '#type' => 'textarea',
+    '#disabled' => TRUE,
+    '#default_value' => $departments,
+    '#value' => $departments,
+  );
+}
+
+// If vacation exists, modify that form to make sure that elected department members
+// select a second in command - and mark them as tempoary leads and trigger rules.
+/**
+ * Implements hook_vacation().
+ */
+function department_vacation($form, $form_state) {
+  // If the user is in department leadership roles, they need to set a department second.
+  // If they're gonna be gone for more than set time or if they are retiring.
+  if (isset($form['vacation'])) {
+    $this_user = user_load($form['#user']->uid);
+    $elected_role = variable_get('election_role', '');
+    if (in_array($elected_role, array_keys($this_user->roles))) {
+      $department_members = array();
+      $run_roles = variable_get('election_run_roles', array());
+      $role_users = db_query('SELECT uid FROM {users_roles} WHERE rid IN (:run_roles)', array(':run_roles' => $run_roles));
+      foreach ($role_users as $role_user) {
+        $this_user = user_load($role_user->uid);
+        $department_members[$this_user->uid] = $this_user->name;
+      }
+      $form['vacation']['temp_replacement'] = array(
+        '#type' => 'select',
+        '#title' => t('Temporary replacement'),
+        '#description' => t('Because you hold an elected position on this site, we need to make sure ' .
+          'that your position is covered while you are away. Please select your temporary replacement. ' .
+          'If you are gone for logner than expected, your temporary replacement may be automatically ' .
+          'promoted to take over the position.'),
+        '#options' => $department_members,
+        '#required' => TRUE,
+        '#default_value' => array_unshift(array_keys($department_members)),
+        '#states' => array(
+          'visible' => array(
+            ':input[name="vacation_end"]' => array(
+              array('value' => t('2 weeks')),
+              array('value' => t('1 month')),
+              array('value' => t('2 months')),
+              array('value' => t('3 months')),
+              array('value' => t('indefinitely')),
+            ),
+          ),
+        ),
+      //  '#required' => TRUE,
+      );
+      $form['#submit'][] ='_department_vacation_form';
+    }
+  }
+  return $form;
+}
+
+
+/**
+ * Implements hook_rules_event_info().
+ */
+function department_rules_event_info() {
+  $items = array(
+    'department_tmp_lead' => array(
+      'label' => t('Assign temp lead'),
+      'group' => t('Vacation'),
+      'variables' => array(
+        'user' => array(
+            'type' => 'user',
+            'label' => t('Vacation user'),
+        ),
+        'temp_lead' => array(
+            'type' => 'user',
+            'label' => t('Temporary lead'),
+        ),
+      ),
+    ),
+  );
+  return $items;
+}
+
+/**
+ * Form submit handler.
+ */
+function _department_vacation_form($form, &$form_state) {
+  if (isset($form['vacation'])) {
+    $selected_tmp = isset($form_state['values']['temp_replacement']) ? $form_state['values']['temp_replacement'] : 0;
+    if ($selected_tmp) {
+      // Trigger rules event to promote user and handle additional reactions.
+      if (function_exists('rules_invoke_event')) {
+        $selected_tmp = user_load($selected_tmp);
+        $vacationer = user_load($form['#user']->uid);
+        rules_invoke_event('department_tmp_lead', $vacationer, $selected_tmp);
+      }
+    }
+  }
+}
+
+// For proposals, if the proposal field exists to limit proposals, then
+// consult proposal categories by enabled departments to limit available voters as needed.

@@ -1,0 +1,10 @@
+name = Department
+description = Site department support
+core = 7.x
+package = RPG
+php = 5.2.4
+version = 7.x-1.0
+project = department
+dependencies[] = proposal
+dependencies[] = election
+dependencies[] = rpg_site_staff
