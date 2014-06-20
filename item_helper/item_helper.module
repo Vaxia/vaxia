@@ -402,7 +402,7 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
     $default_rb_bon_value = !empty($form_state['input']['general_rp_bonus']) ? $form_state['input']['general_rp_bonus'] : $default_rb_bon_value;
     $default_rb_bon_value = !empty($form_state['values']['general_rp_bonus']) ? $form_state['values']['general_rp_bonus'] : $default_rb_bon_value;
     // Set the diff generic field.
-    $diffs = array(
+    $form['item_helper']['included_comments']['general_difficulty'] = array(
       '#title' => t('Difficulty for the item'),
       '#type' => 'select',
       '#options' => array(
@@ -430,7 +430,6 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
         '35' => t(' - (120)'),
       ),
       '#default_value' => $default_diff_value,
-      '#access' => !$user_can_set_diffs, // If you have no permissions, you ALWAYS see this dropdown.
       '#limit_validation_errors' => array(array('included_comments_table')),
       // DOUBLE ARRAY. Because drupal docs suck.
       '#ajax' => array(
@@ -440,7 +439,6 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
         'effect' => 'fade',
       ),
     );
-    $form['item_helper']['included_comments']['general_difficulty'] = $diffs;
     // Set the Diff as a general value, and set RP bonus that way too.
     $form['item_helper']['included_comments']['general_rp_bonus'] =  array(
       '#title' => t('RP Bonus for the scene'),
