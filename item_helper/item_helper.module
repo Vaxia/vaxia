@@ -465,7 +465,9 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
     $headers =  array(
       t('Item creation posts'),
       t('Roll type'),
-      '', // Empty row for flat bonuses.
+      '',
+      '',
+      '',
       t('Result'),
       t('(X)'),
     );
@@ -474,6 +476,8 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
         t('Item creation posts'),
         t('Roll type'),
         t('Flat bonus'),
+        '',
+        '',
         t('Result'),
         t('(X)'),
       );
