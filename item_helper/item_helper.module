@@ -409,9 +409,25 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
         '5' => t('Ridiculously easy (5)'),
         '15' => t('Easy (15)'),
         '25' => t('Normal (25)'),
+        '30' => t(' - (30)'),
+        '35' => t(' - (35)'),
+        '35' => t(' - (40)'),
         '45' => t('Skilled (45)'),
+        '35' => t(' - (50)'),
+        '35' => t(' - (55)'),
+        '35' => t(' - (60)'),
         '65' => t('Mastery (65)'),
+        '35' => t(' - (70)'),
+        '35' => t(' - (75)'),
+        '35' => t(' - (80)'),
+        '35' => t(' - (85)'),
+        '35' => t(' - (90)'),
+        '35' => t(' - (95)'),
         '100' => t('Extremely Difficult (100)'),
+        '35' => t(' - (105)'),
+        '35' => t(' - (110)'),
+        '35' => t(' - (115)'),
+        '35' => t(' - (120)'),
       ),
       '#default_value' => $default_diff_value,
       '#access' => !$user_can_set_diffs, // If you have no permissions, you ALWAYS see this dropdown.
@@ -425,9 +441,7 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
       ),
     );
     $form['item_helper']['included_comments']['general_difficulty'] = $diffs;
-    // Can't set the difficulties on a roll directly?
     // Set the Diff as a general value, and set RP bonus that way too.
-    // There is no 'in-between' where you can set by row but only use drop-downs.
     $form['item_helper']['included_comments']['general_rp_bonus'] =  array(
       '#title' => t('RP Bonus for the scene'),
       '#type' => 'select',
@@ -436,7 +450,6 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
         '5' => t('Average (5)'),
         '10' => t('Good (10)'),
         '15' => t('Excellent (15)'),
-        '20' => t('Superior (20)'),
       ),
       '#default_value' => $default_rb_bon_value,
       '#limit_validation_errors' => array(array('included_comments_table')),
@@ -452,9 +465,7 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
     $headers =  array(
       t('Item creation posts'),
       t('Roll type'),
-      '', // Empty row for bonuses.
-      '', // Empty row for diffs.
-      '', // Empty row for RP bonuses.
+      '', // Empty row for flat bonuses.
       t('Result'),
       t('(X)'),
     );
@@ -463,8 +474,6 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
         t('Item creation posts'),
         t('Roll type'),
         t('Flat bonus'),
-        t('Difficulty'),
-        '', // Empty row for RP bonuses.
         t('Result'),
         t('(X)'),
       );
@@ -487,11 +496,8 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
     foreach ($found_comments as $index => $comment) {
       // Make sure the default is set correctly for the RP bonus.
       $found_comments[$index]->rp_bonus = $default_rb_bon_value;
-      // If you can't set the defaults in the form, then we need to pull from the dropdown.
-      if (!$user_can_set_diffs) {
-        // But before we can pull from
-        $found_comments[$index]->difficulty = $default_diff_value;
-      }
+      // Make sure the default is set correctly for the diff.
+      $found_comments[$index]->difficulty = $default_diff_value;
       // Set the defaults if needed.
       $found_comments[$index]->might_1 = !empty($found_comments[$index]->might_1) ? $found_comments[$index]->might_1 : 0;
       $found_comments[$index]->might_2 = !empty($found_comments[$index]->might_2) ? $found_comments[$index]->might_2 : $found_comments[$index]->might_1;
@@ -623,30 +629,12 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
           'effect' => 'fade',
         ),
       );
-      // Get the difficulty so we can check if it's a standard one.
-      $item_difficulty = isset($item_comment->difficulty) ? $item_comment->difficulty : $default_diff_value;
-      // Set the value for the priv field, user a hidden unless user is priv.
-      if ($user_can_set_diffs || !in_array($item_difficulty, array_keys($form['item_helper']['included_comments']['general_difficulty']['#options']))) {
-        $difficulty = array(
-          '#type' => 'textfield',
-          '#size' => 4,
-          '#default_value' => $item_difficulty,
-          '#limit_validation_errors' => array(array('included_comments_table')),
-          // DOUBLE ARRAY. Because drupal docs suck.
-          '#ajax' => array(
-            'callback' => '_item_helper_ajax_add_comments',
-            'wrapper' => 'item-helper-included-comments-table',
-            'method' => 'replace',
-            'effect' => 'fade',
-          ),
-        );
-      }
-      else {
-        $difficulty =  array(
-          '#type' => 'hidden',
-          '#value' => $item_difficulty,
-        );
-      }
+      // Add the default bonus to the table as a hidden value field.
+      // That way the submission system still knows where to look for this in the end.
+      $difficulty =  array(
+        '#type' => 'hidden',
+        '#value' => isset($item_comment->difficulty) ? $item_comment->difficulty : $default_diff_value,
+      );
       // Add the default bonus to the table as a hidden value field.
       // That way the submission system still knows where to look for this in the end.
       $rp_bonus = array(
