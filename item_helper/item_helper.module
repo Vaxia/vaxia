@@ -929,7 +929,7 @@ function _item_helper_calculate_results($found_comments) {
       '@set_bonus_txt' . $break_1 .
       '@rp RP bonus </br> ' .
       '@prep Prep bonus / @diff Diff mod </br> ' .
-      '<b"><span style="color:green;">@critwin crit wins-by</span> / <span style="color:red;">@critfail crit fails-by</span></b>' .
+      '<b><span style="color:green;">@critwin crit wins-by</span> / <span style="color:red;">@critfail crit fails-by</span></b></br>' .
       '<b>@PP PP / <span style="color:green;">@100 100s</span> / <span style="color:red;">@1 1s</span></b>' .
       '',
       array('@diff_text' => $diff_txt, '@set_bonus_txt' => $set_bonus_txt, '%roll_txt' => $roll_txt,
