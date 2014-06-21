@@ -698,8 +698,8 @@ function _vaxia_filter_characters_by_room($nid) {
   $room = node_load(arg(1));
   if ($room) {
     $realm = isset($room->field_realm[$room->language][0]['value']) ? $room->field_realm[$room->language][0]['value'] : '';
-    if (!empty($realm) && $realm != 'storyhost') {
-      return $realm . '+storyhost';
+    if (!empty($realm) && strtolower($realm) != 'storyhost') {
+      return $realm . '+storyhost+Storyhost';
     }
   }
   return 'all';
