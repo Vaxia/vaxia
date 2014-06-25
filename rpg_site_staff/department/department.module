@@ -79,7 +79,7 @@ function _department_admin_settings($form, &$form_state) {
  */
 function _department_admin_settings_submit($form, &$form_state) {
   // Set the election positions for saving.
-  $departments = isset($form_state['value']['departments']) ? $form_state['value']['departments'] : '';
+  $departments = isset($form_state['values']['departments']) ? $form_state['values']['departments'] : '';
   $departments = explode("\n", $departments);
   foreach ($departments as $index => $department) {
     $departments[$index] = str_replace("\n", '', trim($department));
@@ -90,7 +90,7 @@ function _department_admin_settings_submit($form, &$form_state) {
     $name = preg_replace("/[^A-Za-z0-9 ]/", '', $department); // Remove all but space and alphanumeric.
     $name = str_replace(' ', '_', strtolower($name)); // Replace space with underscore.
     $name = trim(strtolower($name));
-    $selected_role = $form_state['value']['department_roles_' . $name];
+    $selected_role = $form_state['values']['department_roles_' . $name];
     user_role_grant_permissions($selected_role, array('vote on proposal'));
   }
 }
