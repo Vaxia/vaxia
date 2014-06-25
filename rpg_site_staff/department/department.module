@@ -162,8 +162,10 @@ function department_vacation_form($form, $form_state) {
         $run_roles = variable_get('election_run_roles', array());
         $role_users = db_query('SELECT uid FROM {users_roles} WHERE rid IN (:run_roles)', array(':run_roles' => $run_roles));
         foreach ($role_users as $role_user) {
-          $this_user = user_load($role_user->uid);
-          $department_members[$this_user->uid] = $this_user->name;
+          if ($role_user->uid != $form['#user']->uid) {
+            $this_user = user_load($role_user->uid);
+            $department_members[$this_user->uid] = $this_user->name;
+          }
         }
         $form['vacation']['temp_replacement'] = array(
           '#type' => 'select',
