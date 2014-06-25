@@ -197,7 +197,7 @@ function department_vacation_form($form, $form_state) {
         else {
           $form['vacation']['temp_replacement'] = array(
             '#markup' => t('There are no available temporary replacements for your position. You cannot go on vacation at this time.'),
-          }
+          );
           $form['vacation']['vacation_submit']['#access'] = FALSE;
         }
       }
