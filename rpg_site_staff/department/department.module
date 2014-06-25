@@ -163,8 +163,11 @@ function department_vacation_form($form, $form_state) {
         $role_users = db_query('SELECT uid FROM {users_roles} WHERE rid IN (:run_roles)', array(':run_roles' => $run_roles));
         foreach ($role_users as $role_user) {
           if ($role_user->uid != $form['#user']->uid) {
-            $this_user = user_load($role_user->uid);
-            $department_members[$this_user->uid] = $this_user->name;
+            $tmp_user = user_load($role_user->uid);
+            // If this user is not already an elected user.
+            if (!in_array($elected_role, array_keys($tmp_user->roles))) {
+              $department_members[$tmp_user->uid] = $tmp_user->name;
+            }
           }
         }
         $form['vacation']['temp_replacement'] = array(
@@ -200,7 +203,6 @@ function department_vacation_form($form, $form_state) {
  * Form submit handler.
  */
 function _department_vacation_form_submit($form, &$form_state) {
-drupal_set_message('_department_vacation_form_submit');
   if (isset($form['vacation'])) {
     $selected_tmp = isset($form_state['values']['temp_replacement']) ? $form_state['values']['temp_replacement'] : 0;
     $vacation_end = isset($form_state['values']['vacation_end']) ? $form_state['values']['vacation_end'] : FALSE;
