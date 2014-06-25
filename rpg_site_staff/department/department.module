@@ -170,29 +170,36 @@ function department_vacation_form($form, $form_state) {
             }
           }
         }
-        $form['vacation']['temp_replacement'] = array(
-          '#type' => 'select',
-          '#title' => t('Temporary replacement'),
-          '#description' => t('Because you hold an elected position on this site, we need to make sure ' .
-            'that your position is covered while you are away. Please select your temporary replacement. ' .
-            'If you are gone for logner than expected, your temporary replacement may be automatically ' .
-            'promoted to take over the position.'),
-          '#options' => $department_members,
-          '#default_value' => array_unshift(array_keys($department_members)),
-          '#states' => array(
-            'visible' => array(
-              ':input[name="vacation_end"]' => array(
-                array('value' => t('2 weeks')),
-                array('value' => t('1 month')),
-                array('value' => t('2 months')),
-                array('value' => t('3 months')),
-                array('value' => t('indefinitely')),
+        if (count($department_members) > 0) {
+          $form['vacation']['temp_replacement'] = array(
+            '#type' => 'select',
+            '#title' => t('Temporary replacement'),
+            '#description' => t('Because you hold an elected position on this site, we need to make sure ' .
+              'that your position is covered while you are away. Please select your temporary replacement. ' .
+              'If you are gone for logner than expected, your temporary replacement may be automatically ' .
+              'promoted to take over the position.'),
+            '#options' => $department_members,
+            '#default_value' => array_unshift(array_keys($department_members)),
+            '#states' => array(
+              'visible' => array(
+                ':input[name="vacation_end"]' => array(
+                  array('value' => t('2 weeks')),
+                  array('value' => t('1 month')),
+                  array('value' => t('2 months')),
+                  array('value' => t('3 months')),
+                  array('value' => t('indefinitely')),
+                ),
               ),
             ),
-          ),
-        //  '#required' => TRUE,
-        );
-        $form['vacation']['vacation_submit']['#submit'][] ='_department_vacation_form_submit';
+          );
+          $form['vacation']['vacation_submit']['#submit'][] ='_department_vacation_form_submit';
+        }
+        else {
+          $form['vacation']['temp_replacement'] = array(
+            '#markup' => t('There are no available temporary replacements for your position. You cannot go on vacation at this time.'),
+          }
+          $form['vacation']['vacation_submit']['#access'] = FALSE;
+        }
       }
     }
   }
