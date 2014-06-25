@@ -154,39 +154,41 @@ function department_vacation_form($form, $form_state) {
   // If they're gonna be gone for more than set time or if they are retiring.
   if (isset($form['vacation'])) {
     $this_user = user_load($form['#user']->uid);
-    $elected_role = variable_get('election_role', '');
-    if (in_array($elected_role, array_keys($this_user->roles))) {
-      $department_members = array();
-      $run_roles = variable_get('election_run_roles', array());
-      $role_users = db_query('SELECT uid FROM {users_roles} WHERE rid IN (:run_roles)', array(':run_roles' => $run_roles));
-      foreach ($role_users as $role_user) {
-        $this_user = user_load($role_user->uid);
-        $department_members[$this_user->uid] = $this_user->name;
-      }
-      $form['vacation']['temp_replacement'] = array(
-        '#type' => 'select',
-        '#title' => t('Temporary replacement'),
-        '#description' => t('Because you hold an elected position on this site, we need to make sure ' .
-          'that your position is covered while you are away. Please select your temporary replacement. ' .
-          'If you are gone for logner than expected, your temporary replacement may be automatically ' .
-          'promoted to take over the position.'),
-        '#options' => $department_members,
-        '#required' => TRUE,
-        '#default_value' => array_unshift(array_keys($department_members)),
-        '#states' => array(
-          'visible' => array(
-            ':input[name="vacation_end"]' => array(
-              array('value' => t('2 weeks')),
-              array('value' => t('1 month')),
-              array('value' => t('2 months')),
-              array('value' => t('3 months')),
-              array('value' => t('indefinitely')),
+    $vacation = _vacation_get_current_vacation_uid($form['#user']->uid);
+    if (!$vacation) {
+      $elected_role = variable_get('election_role', '');
+      if (in_array($elected_role, array_keys($this_user->roles))) {
+        $department_members = array();
+        $run_roles = variable_get('election_run_roles', array());
+        $role_users = db_query('SELECT uid FROM {users_roles} WHERE rid IN (:run_roles)', array(':run_roles' => $run_roles));
+        foreach ($role_users as $role_user) {
+          $this_user = user_load($role_user->uid);
+          $department_members[$this_user->uid] = $this_user->name;
+        }
+        $form['vacation']['temp_replacement'] = array(
+          '#type' => 'select',
+          '#title' => t('Temporary replacement'),
+          '#description' => t('Because you hold an elected position on this site, we need to make sure ' .
+            'that your position is covered while you are away. Please select your temporary replacement. ' .
+            'If you are gone for logner than expected, your temporary replacement may be automatically ' .
+            'promoted to take over the position.'),
+          '#options' => $department_members,
+          '#default_value' => array_unshift(array_keys($department_members)),
+          '#states' => array(
+            'visible' => array(
+              ':input[name="vacation_end"]' => array(
+                array('value' => t('2 weeks')),
+                array('value' => t('1 month')),
+                array('value' => t('2 months')),
+                array('value' => t('3 months')),
+                array('value' => t('indefinitely')),
+              ),
             ),
           ),
-        ),
-      //  '#required' => TRUE,
-      );
-      $form['#submit'][] ='_department_vacation_form_submit';
+        //  '#required' => TRUE,
+        );
+        $form['vacation']['vacation_submit']['#submit'][] ='_department_vacation_form_submit';
+      }
     }
   }
   return $form;
@@ -196,6 +198,7 @@ function department_vacation_form($form, $form_state) {
  * Form submit handler.
  */
 function _department_vacation_form_submit($form, &$form_state) {
+drupal_set_message('_department_vacation_form_submit');
   if (isset($form['vacation'])) {
     $selected_tmp = isset($form_state['values']['temp_replacement']) ? $form_state['values']['temp_replacement'] : 0;
     $vacation_end = isset($form_state['values']['vacation_end']) ? $form_state['values']['vacation_end'] : FALSE;
@@ -223,13 +226,14 @@ function department_vacation_off_post($vacation, $returned) {
     $uid = $vacation->uid;
     // Unset the temp leadership replacement if there is one.
     $department_vacation_tmp = variable_get('department_vacation_tmp', array());
-    if (isset($department_vacation_tmp[$uid]) {
+    $assigned_tmp = 0;
+    if (isset($department_vacation_tmp[$uid])) {
       $assigned_tmp = $department_vacation_tmp[$uid];
       unset($department_vacation_tmp[$uid]);
     }
     variable_set('department_vacation_tmp', $department_vacation_tmp);
     // Trigger rules event to depromote user and handle additional reactions.
-    if (function_exists('rules_invoke_event')) {
+    if (function_exists('rules_invoke_event') && !empty($assigned_tmp)) {
       $selected_tmp = user_load($assigned_tmp);
       $vacationer = user_load($uid);
       rules_invoke_event('department_unpromote_lead', $vacationer, $selected_tmp);
