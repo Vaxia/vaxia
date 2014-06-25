@@ -104,10 +104,52 @@ function department_form__election_admin_settings_alter(&$form, &$form_state) {
 
 // If vacation exists, modify that form to make sure that elected department members
 // select a second in command - and mark them as tempoary leads and trigger rules.
+
 /**
- * Implements hook_vacation().
+ * Implements hook_rules_event_info().
  */
-function department_vacation($form, $form_state) {
+function department_rules_event_info() {
+  $items = array(
+    'department_promote_lead' => array(
+      'label' => t('Promote temp lead'),
+      'group' => t('Vacation'),
+      'variables' => array(
+        'user' => array(
+            'type' => 'user',
+            'label' => t('Vacation user'),
+        ),
+        'temp_lead' => array(
+            'type' => 'user',
+            'label' => t('Temporary lead'),
+        ),
+        'until' => array(
+            'type' => 'date',
+            'label' => t('Until'),
+        ),
+      ),
+    ),
+    'department_unpromote_lead' => array(
+      'label' => t('Unpromote temp lead'),
+      'group' => t('Vacation'),
+      'variables' => array(
+        'user' => array(
+            'type' => 'user',
+            'label' => t('Vacation user'),
+        ),
+        'temp_lead' => array(
+            'type' => 'user',
+            'label' => t('Temporary lead'),
+        ),
+      ),
+    ), 
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_vacation_form().
+ */
+function department_vacation_form($form, $form_state) {
   // If the user is in department leadership roles, they need to set a department second.
   // If they're gonna be gone for more than set time or if they are retiring.
   if (isset($form['vacation'])) {
@@ -144,52 +186,57 @@ function department_vacation($form, $form_state) {
         ),
       //  '#required' => TRUE,
       );
-      $form['#submit'][] ='_department_vacation_form';
+      $form['#submit'][] ='_department_vacation_form_submit';
     }
   }
   return $form;
 }
 
-
-/**
- * Implements hook_rules_event_info().
- */
-function department_rules_event_info() {
-  $items = array(
-    'department_tmp_lead' => array(
-      'label' => t('Assign temp lead'),
-      'group' => t('Vacation'),
-      'variables' => array(
-        'user' => array(
-            'type' => 'user',
-            'label' => t('Vacation user'),
-        ),
-        'temp_lead' => array(
-            'type' => 'user',
-            'label' => t('Temporary lead'),
-        ),
-      ),
-    ),
-  );
-  return $items;
-}
-
 /**
  * Form submit handler.
  */
-function _department_vacation_form($form, &$form_state) {
+function _department_vacation_form_submit($form, &$form_state) {
   if (isset($form['vacation'])) {
     $selected_tmp = isset($form_state['values']['temp_replacement']) ? $form_state['values']['temp_replacement'] : 0;
-    if ($selected_tmp) {
+    $vacation_end = isset($form_state['values']['vacation_end']) ? $form_state['values']['vacation_end'] : FALSE;
+    if ($selected_tmp && $vacation_end) {
+      // Set the temp leadership replacement.
+      $department_vacation_tmp = variable_get('department_vacation_tmp', array());
+      $department_vacation_tmp[ $form['#user']->uid ] = $selected_tmp;
+      variable_set('department_vacation_tmp', $department_vacation_tmp);
       // Trigger rules event to promote user and handle additional reactions.
       if (function_exists('rules_invoke_event')) {
         $selected_tmp = user_load($selected_tmp);
         $vacationer = user_load($form['#user']->uid);
-        rules_invoke_event('department_tmp_lead', $vacationer, $selected_tmp);
+        $date = strtotime($vacation_end);
+        rules_invoke_event('department_promote_lead', $vacationer, $selected_tmp, $date);
       }
     }
   }
 }
+
+/**
+ * Implements hook_vacation_off_post().
+ */
+function department_vacation_off_post($vacation, $returned) {
+  if ($returned) {
+    $uid = $vacation->uid;
+    // Unset the temp leadership replacement if there is one.
+    $department_vacation_tmp = variable_get('department_vacation_tmp', array());
+    if (isset($department_vacation_tmp[$uid]) {
+      $assigned_tmp = $department_vacation_tmp[$uid];
+      unset($department_vacation_tmp[$uid]);
+    }
+    variable_set('department_vacation_tmp', $department_vacation_tmp);
+    // Trigger rules event to depromote user and handle additional reactions.
+    if (function_exists('rules_invoke_event')) {
+      $selected_tmp = user_load($assigned_tmp);
+      $vacationer = user_load($uid);
+      rules_invoke_event('department_unpromote_lead', $vacationer, $selected_tmp);
+    }
+  }
+}
+
 
 // For proposals, if the proposal field exists to limit proposals, then
 // consult proposal categories by enabled departments to limit available voters as needed.

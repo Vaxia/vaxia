@@ -223,7 +223,7 @@ function vacation_form_user_profile_form_alter(&$form, &$form_state) {
       '#weight' => 100,
     );
     $form['vacation']['vacation_submit']['#submit'][] = '_vacation_go_on_vacation';
-    $form = module_invoke_all('vacation', $form, $form_state);
+    $form = module_invoke_all('vacation_form', $form, $form_state);
   }
   elseif ($vacation) {
     // Provide element.
@@ -233,6 +233,7 @@ function vacation_form_user_profile_form_alter(&$form, &$form_state) {
        array(':end' => date('m/d/Y', $vacation->end))),
       '#weight' => 1000,
     );
+    $form['vacation']['vacation_submit']['#submit'][] = '_vacation_return_from_vacation';
   }
   return $form;
 }
@@ -265,6 +266,15 @@ function _vacation_go_on_vacation(&$form, &$form_state) {
 }
 
 /**
+ * Implements form submit handler.
+ */
+function _vacation_return_from_vacation(&$form, &$form_state) {
+  $uid = $form_state['values']['vacation_uid'];
+  $vacation = _vacation_get_current_vacation_uid($uid);
+  _vacation_end_vacation($vacation);
+}
+
+/**
  * Helper function update roles for given user.
  */
 function _vacation_update_roles($account) {
@@ -290,6 +300,9 @@ function _vacation_update_roles($account) {
  */
 function _vacation_create_vacation($vacation) {
   $data = (array) $vacation;
+  // Call hook before vacation.
+  $data = module_invoke_all('vacation_on_pre', $data);
+  // Handle the vacation setup.
   if (isset($data['vid'])) {
     _vacation_update_vacation($vacation);
   }
@@ -312,6 +325,8 @@ function _vacation_create_vacation($vacation) {
       rules_invoke_event('vacation_start', $account);
     }
   }
+  // Call hook after vacation.
+  $data = module_invoke_all('vacation_on_post', $data);
   return (object) $data;
 }
 
@@ -393,7 +408,10 @@ function _vacation_get_current_vacation_uid($uid) {
  * DB function. Force end a vacation.
  */
 function _vacation_end_vacation($vacation) {
+  // Call hook after vacation.
+  $data = module_invoke_all('vacation_off_pre', $vacation);
   if ($vacation && !empty($vacation->vid)) {
+    // Handle turning the vacation off.
     _vacation_delete_vacation($vacation->vid);
     $account = user_load($vacation->uid);
     // Put the user's roles back.
@@ -405,9 +423,12 @@ function _vacation_end_vacation($vacation) {
     if (function_exists('rules_invoke_event')) {  
       rules_invoke_event('vacation_end', $account);
     }
-    return TRUE;
+    $result = TRUE;
   }
-  return FALSE;
+  $result = FALSE;
+  // Call hook after vacation.
+  $data = module_invoke_all('vacation_off_post', $vacation, $result);
+  return $result;
 }
 
 /**
