@@ -78,20 +78,30 @@ function _department_admin_settings($form, &$form_state) {
  * Menu callback submit.
  */
 function _department_admin_settings_submit($form, &$form_state) {
-  $departments = $form_state['value']['departments'];
+  // Set the election positions for saving.
+  $departments = variable_get('departments', $form_state['value']['departments']);
   $departments = explode("\n", $departments);
-  $departments = implode(" Lead\n", $departments);
+  foreach ($departments as $index => $department) {
+    $departments[$index] = str_replace("\n", '', trim($department));
+  }
+  $departments = implode(' ' . t(Lead) . "\n", $departments) . ' ' . t('Lead');
   variable_set('election_positions', $departments);
 }
 
+// Make sure the election form only shows the positions for leads of departments.
 /**
  * Implements hook_form_FORM_ID_alter().
  */
 function department_form__election_admin_settings_alter(&$form, &$form_state) {
+  // Over-ride the election positions.
   $default_departments = implode("\n", array('Setting', 'System', 'Social') );
   $departments = variable_get('departments', $default_departments);
   $departments = explode("\n", $departments);
-  $departments = implode(' Lead' . "\n", $departments) . ' Lead';
+  foreach ($departments as $index => $department) {
+    $departments[$index] = str_replace("\n", '', trim($department));
+  }
+  $departments = implode(' ' . t(Lead) . "\n", $departments) . ' ' . t('Lead');
+  //$departments = implode(' Lead' , $departments) . ' Lead';
   $form['election_positions'] = array(
     '#title' => t('Available positions'),
     '#description' => t('List postitions available on the site per department, one per row.'),
