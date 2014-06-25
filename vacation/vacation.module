@@ -190,15 +190,19 @@ function vacation_form_user_profile_form_alter(&$form, &$form_state) {
     }
   }
   // Display the form.
+  $form['vacation'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Vacation mode'),
+    '#description' => $default_message,
+    '#weight' => 1000,
+  );
+  $form['vacation']['vacation_uid'] = array(
+    '#type' => 'hidden',
+    '#value' => $form['#user']->uid,
+  );
   $vacation = _vacation_get_current_vacation_uid($form['#user']->uid);
   if ($has_extra && !$vacation) {
     // Provide element.
-    $form['vacation'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Vacation mode'),
-      '#description' => $default_message,
-      '#weight' => 1000,
-    );
     $options = array(
       '3 days' => '3 days',
       '1 week' => '1 week',
@@ -213,27 +217,26 @@ function vacation_form_user_profile_form_alter(&$form, &$form_state) {
       '#options' => $options,
       '#default_option' => '1 week',
     );
-    $form['vacation']['vacation_uid'] = array(
-      '#type' => 'hidden',
-      '#value' => $form['#user']->uid,
-    );
     $form['vacation']['vacation_submit'] = array(
       '#type' => 'submit',
       '#value' => t('Go on vacation'),
       '#weight' => 100,
+      '#submit' => array('_vacation_go_on_vacation'),
     );
-    $form['vacation']['vacation_submit']['#submit'][] = '_vacation_go_on_vacation';
-    $form = module_invoke_all('vacation_form', $form, $form_state);
+    $form = array_merge($form, module_invoke_all('vacation_form', $form, $form_state));
   }
   elseif ($vacation) {
     // Provide element.
-    $form['vacation'] = array(
-     '#markup' => t('You are currently listed as on vacation. Based on the options selected ' .
+    $form['vacation']['#description'] = t('You are currently listed as on vacation. Based on the options selected ' .
        'when you went on vacation, you will be on vacation until: :end',
-       array(':end' => date('m/d/Y', $vacation->end))),
-      '#weight' => 1000,
+       array(':end' => date('m/d/Y', $vacation->end))
     );
-    $form['vacation']['vacation_submit']['#submit'][] = '_vacation_return_from_vacation';
+    $form['vacation']['vacation_submit'] = array(
+      '#type' => 'submit',
+      '#value' => t('Return from vacation'),
+      '#weight' => 100,
+      '#submit' => array('_vacation_return_from_vacation'),
+    );
   }
   return $form;
 }
@@ -301,7 +304,7 @@ function _vacation_update_roles($account) {
 function _vacation_create_vacation($vacation) {
   $data = (array) $vacation;
   // Call hook before vacation.
-  $data = module_invoke_all('vacation_on_pre', $data);
+  $data = array_merge($data, module_invoke_all('vacation_on_pre', $data));
   // Handle the vacation setup.
   if (isset($data['vid'])) {
     _vacation_update_vacation($vacation);
@@ -326,7 +329,7 @@ function _vacation_create_vacation($vacation) {
     }
   }
   // Call hook after vacation.
-  $data = module_invoke_all('vacation_on_post', $data);
+  $data = array_merge($form, module_invoke_all('vacation_on_post', $data));
   return (object) $data;
 }
 
@@ -409,9 +412,9 @@ function _vacation_get_current_vacation_uid($uid) {
  */
 function _vacation_end_vacation($vacation) {
   // Call hook after vacation.
-  $data = module_invoke_all('vacation_off_pre', $vacation);
+  $vacation = (object) array_merge((array) $vacation, module_invoke_all('vacation_off_pre', $vacation));
+  // Handle turning the vacation off.
   if ($vacation && !empty($vacation->vid)) {
-    // Handle turning the vacation off.
     _vacation_delete_vacation($vacation->vid);
     $account = user_load($vacation->uid);
     // Put the user's roles back.
@@ -427,7 +430,7 @@ function _vacation_end_vacation($vacation) {
   }
   $result = FALSE;
   // Call hook after vacation.
-  $data = module_invoke_all('vacation_off_post', $vacation, $result);
+  module_invoke_all('vacation_off_post', $vacation, $result);
   return $result;
 }
 
