@@ -86,6 +86,14 @@ function _department_admin_settings_submit($form, &$form_state) {
   }
   $departments = implode(' ' . t(Lead) . "\n", $departments) . ' ' . t('Lead');
   variable_set('election_positions', $departments);
+  // Set the election roles for proposal voting permissions.
+  foreach ($departments as $department) {
+    $name = preg_replace("/[^A-Za-z0-9 ]/", '', $department); // Remove all but space and alphanumeric.
+    $name = str_replace(' ', '_', strtolower($name)); // Replace space with underscore.
+    $name = trim(strtolower($name));
+    $selected_role = $form_state['value']['department_roles_' . $name];
+    user_role_grant_permissions($selected_role, array('vote on proposal'));
+  }
 }
 
 // Make sure the election form only shows the positions for leads of departments.
@@ -101,7 +109,6 @@ function department_form__election_admin_settings_alter(&$form, &$form_state) {
     $departments[$index] = str_replace("\n", '', trim($department));
   }
   $departments = implode(' ' . t(Lead) . "\n", $departments) . ' ' . t('Lead');
-  //$departments = implode(' Lead' , $departments) . ' Lead';
   $form['election_positions'] = array(
     '#title' => t('Available positions'),
     '#description' => t('List postitions available on the site per department, one per row.'),
