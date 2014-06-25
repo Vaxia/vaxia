@@ -84,9 +84,10 @@ function _department_admin_settings_submit($form, &$form_state) {
   foreach ($departments as $index => $department) {
     $departments[$index] = str_replace("\n", '', trim($department));
   }
-  $departments = implode(' ' . t(Lead) . "\n", $departments) . ' ' . t('Lead');
+  $departments = implode(' ' . t('Lead') . "\n", $departments) . ' ' . t('Lead');
   variable_set('election_positions', $departments);
   // Set the election roles for proposal voting permissions.
+  $departments = variable_get('departments', $form_state['value']['departments']);
   foreach ($departments as $department) {
     $name = preg_replace("/[^A-Za-z0-9 ]/", '', $department); // Remove all but space and alphanumeric.
     $name = str_replace(' ', '_', strtolower($name)); // Replace space with underscore.
