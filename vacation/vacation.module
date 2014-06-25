@@ -223,7 +223,6 @@ function vacation_form_user_profile_form_alter(&$form, &$form_state) {
       '#weight' => 100,
       '#submit' => array('_vacation_go_on_vacation'),
     );
-    $form = array_merge($form, module_invoke_all('vacation_form', $form, $form_state));
   }
   elseif ($vacation) {
     // Provide element.
@@ -238,6 +237,7 @@ function vacation_form_user_profile_form_alter(&$form, &$form_state) {
       '#submit' => array('_vacation_return_from_vacation'),
     );
   }
+  $form = array_merge($form, module_invoke_all('vacation_form', $form, $form_state));
   return $form;
 }
 
@@ -414,6 +414,7 @@ function _vacation_end_vacation($vacation) {
   // Call hook after vacation.
   $vacation = (object) array_merge((array) $vacation, module_invoke_all('vacation_off_pre', $vacation));
   // Handle turning the vacation off.
+  $returned = FALSE;
   if ($vacation && !empty($vacation->vid)) {
     _vacation_delete_vacation($vacation->vid);
     $account = user_load($vacation->uid);
@@ -426,12 +427,11 @@ function _vacation_end_vacation($vacation) {
     if (function_exists('rules_invoke_event')) {  
       rules_invoke_event('vacation_end', $account);
     }
-    $result = TRUE;
+    $returned = TRUE;
   }
-  $result = FALSE;
   // Call hook after vacation.
-  module_invoke_all('vacation_off_post', $vacation, $result);
-  return $result;
+  module_invoke_all('vacation_off_post', $vacation, $returned);
+  return $returned;
 }
 
 /**
