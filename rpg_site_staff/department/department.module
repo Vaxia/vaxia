@@ -96,6 +96,7 @@ function _department_admin_settings_submit($form, &$form_state) {
 }
 
 // Make sure the election form only shows the positions for leads of departments.
+// We want to make sure we have things properly limited to just the departments.
 /**
  * Implements hook_form_FORM_ID_alter().
  */
@@ -118,9 +119,50 @@ function department_form__election_admin_settings_alter(&$form, &$form_state) {
   );
 }
 
+// For proposals, if the proposal field exists to limit proposals, then
+// consult proposal categories by enabled departments to limit available roles as needed.
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function department_form_webform_components_form_alter(&$form, &$form_state, $form_id) {
+  // Rename roles by departments so we know which role has which value to the end user.
+  $default_departments = implode("\n", array('Setting', 'System', 'Social') );
+  $departments = variable_get('departments', $default_departments);
+  $departments = explode("\n", $departments); 
+  // Automatically add voter since proposal will add that role.
+  $role = user_role_load_by_name('voter');
+  if ($role) {
+    $human_role_names[$role->rid][] = t('Voters');
+  }
+  foreach ($departments as $index => $department) {
+    $name = preg_replace("/[^A-Za-z0-9 ]/", '', $department); // Remove all but space and alphanumeric.
+    $name = str_replace(' ', '_', strtolower($name)); // Replace space with underscore.
+    $name = trim(strtolower($name));
+    $role = variable_get('department_roles_' . $name);
+    $human_role_names[$role][] = $department . ' ' . t('Department');
+  }
+  foreach ($human_role_names as $role => $human_names) {
+    $human_role_names[$role] = implode(', ', $human_names);
+  }
+  // Now with the mapping in place, rename the roles to the right departments.
+  // And remove anything not in a listed department or all role.
+  $role_options = $form['role_control']['roles']['#options'];
+  foreach ($role_options as $rid => $role_name) {
+    if (in_array($rid, array_keys($human_role_names))) {
+      $role_options[$rid] = webform_tt('user:rid:' . $rid . ':name', $human_role_names[$rid]);
+    }
+    else {
+      unset($role_options[$rid]);
+    }
+  }
+  $form['role_control']['roles']['#options'] = $role_options;
+  $form['role_control']['roles']['#title'] = t('Departments that can vote on this proposal');
+  // And unset the disallowed, we're not using that if we're using departments.
+  $form['role_control']['disallowed_fieldset']['#access'] = FALSE;
+}
+
 // If vacation exists, modify that form to make sure that elected department members
 // select a second in command - and mark them as tempoary leads and trigger rules.
-
 /**
  * Implements hook_rules_event_info().
  */
@@ -267,7 +309,3 @@ function department_vacation_off_post($vacation, $returned) {
     }
   }
 }
-
-
-// For proposals, if the proposal field exists to limit proposals, then
-// consult proposal categories by enabled departments to limit available voters as needed.
