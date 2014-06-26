@@ -12,7 +12,10 @@ function department_schema() {}
 /**
  * Implements hook_install().
  */
-function department_install() {}
+function department_install() {
+  // Bump the weight down to make sure we can modify forms after proposal.
+  db_query("UPDATE {system} SET weight = 10 WHERE name = 'department'");
+}
 
 /**
  * Implements hook_uninstall().
