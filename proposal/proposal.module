@@ -293,36 +293,41 @@ function _webform_components_form_rows($node, $cid, $component, $level, &$form, 
   $rendered['#value'] = !empty($rendered['#options']) ? array_shift(array_keys($rendered['#options'])) : $rendered['#value'];
   // Allow for elements to expand to multiple elements, e.g., radios, checkboxes and files.
   if (isset($rendered['#process'])) {
-  foreach ($rendered['#process'] as $process) {
-    $rendered = $process($rendered);
-  }
+    foreach ($rendered['#process'] as $process) {
+      $rendered = $process($rendered);
+    }
   }
   // Render it.
   $rendered = drupal_render($rendered);
   $edit = $clone = $delete = '';
-  if ($component['form_key'] != 'additional_comments') {
-  $edit = l(t('Edit'), 'node/' . $node->nid . '/webform/components/' . $cid, array('query' => drupal_get_destination()));
-  $clone = l(t('Clone'), 'node/' . $node->nid . '/webform/components/' . $cid . '/clone', array('query' => drupal_get_destination()));
-  $delete = l(t('Delete'), 'node/' . $node->nid . '/webform/components/' . $cid . '/delete', array('query' => drupal_get_destination()));
+
+  module_load_include('inc', 'webform', 'includes/webform.report');
+  $voted = webform_get_submission_count($node->nid);
+  if ($node->webform['status'] == FALSE && $voted == 0 ) {
+    if ($component['form_key'] != 'additional_comments') {
+      $edit = l(t('Edit'), 'node/' . $node->nid . '/webform/components/' . $cid, array('query' => drupal_get_destination()));
+      $clone = l(t('Clone'), 'node/' . $node->nid . '/webform/components/' . $cid . '/clone', array('query' => drupal_get_destination()));
+      $delete = l(t('Delete'), 'node/' . $node->nid . '/webform/components/' . $cid . '/delete', array('query' => drupal_get_destination()));
+    }
   }
   // Add each component to a table row.
   $row_data = array(
-  $rendered,
-  drupal_render($form['components'][$cid]['mandatory']),
-  drupal_render($form['components'][$cid]['cid']) .
-  drupal_render($form['components'][$cid]['pid']) .
-  drupal_render($form['components'][$cid]['weight']),
-  $edit,
-  $clone,
-  $delete
+    $rendered,
+    drupal_render($form['components'][$cid]['mandatory']),
+    drupal_render($form['components'][$cid]['cid']) .
+    drupal_render($form['components'][$cid]['pid']) .
+    drupal_render($form['components'][$cid]['weight']),
+    $edit,
+    $clone,
+    $delete
   );
   $row_class = array('draggable', 'proposal-element', 'proposal-' . $component['type']);
   if (!webform_component_feature($component['type'], 'group')) {
-  $row_class[] = 'tabledrag-leaf';
+    $row_class[] = 'tabledrag-leaf';
   }
   $rows[] = array(
-  'data' => $row_data,
-  'class' => $row_class,
+    'data' => $row_data,
+    'class' => $row_class,
   );
 }
 
@@ -382,9 +387,7 @@ function proposal_webform_results_table($variables) {
   $submissions = $variables['submissions'];
   $total_count = $variables['total_count'];
   $pager_count = $variables['pager_count'];
-  $header = array();
-  $rows = array();
-  $cell = array();
+  $header = $rows = $cell = array();
   // This header has to be generated seperately so we can add the SQL necessary.
   // to sort the results.
   $header = array(
@@ -736,6 +739,8 @@ function proposal_form_webform_components_form_alter(&$form, &$form_state, $form
 
   // If the webform is closed and no one voted yet, probably not yet launched.
   // Show the option to launch it.
+  module_load_include('inc', 'webform', 'includes/webform.report');
+  $voted = webform_get_submission_count($node->nid);
   if ($node->webform['status'] == FALSE && $voted == 0 ) {
     $form['launch'] = array(
       '#type' => 'fieldset',
@@ -750,6 +755,12 @@ function proposal_form_webform_components_form_alter(&$form, &$form_state, $form
       '#value' => t('Click here to launch the proposal'),
       '#submit' => array('_proposal_launch_form_submit'),
     );
+  }
+  else {
+    drupal_set_message(t('This proposal has already been voted on and closed. It cannot be modified after closing.'), 'error');
+    foreach (element_children($form) as $child_name) {
+      $form['#disabled'] = TRUE;
+    }
   }
 }
 
