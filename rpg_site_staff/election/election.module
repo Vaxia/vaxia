@@ -36,6 +36,71 @@ function election_menu() {
 }
 
 /**
+ * Implements hook_rules_event_info().
+ */
+function election_rules_event_info() {
+  $items = array(
+    'open_election' => array(
+      'label' => t('Election open'),
+      'group' => t('Proposal'),
+      'variables' => array(
+        'node' => array(
+            'type' => 'node',
+            'label' => t('Election'),
+        ),
+      ),
+    ),
+    'close_election' => array(
+      'label' => t('Election close'),
+      'group' => t('Proposal'),
+      'variables' => array(
+        'node' => array(
+            'type' => 'node',
+            'label' => t('Election'),
+        ),
+        'winners' => array(
+            'type' => 'list<integer>',
+            'label' => t('Winners'),
+        ),
+        'ties' => array(
+            'type' => 'list<text>',
+            'label' => t('Ties'),
+        ),
+      ),
+    ),
+    'open_runoff_election' => array(
+      'label' => t('Election runoff'),
+      'group' => t('Proposal'),
+      'variables' => array(
+        'node' => array(
+            'type' => 'node',
+            'label' => t('Election runoff'),
+        ),
+        'winners' => array(
+            'type' => 'list<integer>',
+            'label' => t('Winners'),
+        ),
+        'ties' => array(
+            'type' => 'list<text>',
+            'label' => t('Ties'),
+        ),
+      ),
+    ),
+    'cancelled_election' => array(
+      'label' => t('Election cancelled'),
+      'group' => t('Proposal'),
+      'variables' => array(
+        'node' => array(
+            'type' => 'node',
+            'label' => t('Election cancelled'),
+        ),
+      ),
+    ),
+  );
+  return $items;
+}
+
+/**
  * Implements hook_node_delete().
  */
 function election_node_delete($node) {
@@ -186,31 +251,72 @@ function _election_admin_settings($form, &$form_state) {
     '#type' => 'textarea',
     '#default_value' => variable_get('election_election_intro', $intro_text),
   );
-  $available = implode("\n", array('Setting Lead', 'System Lead', 'Social Lead') );
+  $positions = _election_get_positions();
+  $available = implode("\n", $positions);
+  if (empty($positions)) {
+    $available = implode("\n", array('Setting Lead', 'System Lead', 'Social Lead') );
+  }
   $form['election_positions'] = array(
     '#title' => t('Available positions'),
     '#description' => t('List postitions available on the site, one per row.'),
     '#type' => 'textarea',
-    '#default_value' => variable_get('election_positions', $available),
+    '#default_value' => $available,
   );
-  $form['election_emergency_election'] = array(
+  $form['election_open_submit'] = array(
     '#type' => 'submit',
     '#value' => t('Hold an election off-cycle'),
-    '#submit' => array('_election_election_submit'),
+    '#submit' => array('_election_open_submit'),
+  );
+  $form['election_close_election'] = array(
+    '#type' => 'submit',
+    '#value' => t('Close open elections'),
+    '#submit' => array('_election_close_submit'),
   );
   $form['#submit'][] = '_election_positions_submit';
   return system_settings_form($form);
 }
 
 /**
+ * Submit callback, close open elections.
+ */
+function _election_close_submit($form, &$form_state) {
+  // And get the correct timeframe assuming a start time of 2 weeks ago.
+  $proposals = db_query('SELECT n.nid FROM {node} n ' .
+    'LEFT JOIN webform w ON n.nid = w.nid ' .
+    'WHERE n.type = \'proposal\' ' .
+    'AND n.status = 1 ' .
+    'AND w.status = 1 ');
+  // Trigger event.
+  foreach ($proposals as $proposal) {
+    $election = _election_get_election_by_nid($proposal->nid);
+    if ($election) {
+      if (function_exists('rules_invoke_event')) {
+        $node = node_load($proposal->nid);
+        // Clear out the disallowed roles option for this proposal
+        $disallowed = variable_get('proposal_disallowed_roles', array());
+        if (isset($disallowed[ $node->nid ])) {
+          unset($disallowed[ $node->nid ]);
+        }
+        variable_set('proposal_disallowed_roles', $disallowed);
+        // Call the rules.
+        rules_invoke_event('close_proposal', $node);
+      }
+    }
+  }
+}
+
+/**
  * Submit callback, add user fields for each defined position.
  */
-function _election_election_submit($form, &$form_state) {
+function _election_open_submit($form, &$form_state) {
   // This is an official election! Time to get things sorted out.
   // First remove current heads from positions, put admin in for anon mailer.
   $elected_role = variable_get('election_role', '');
-  db_query('DELETE FROM {users_roles} WHERE rid = :rid',
-    array(':uid' => $winner->uid, ':rid' => $elected_role));
+  // Remove current people from position.
+  // This ONLY happens during election triggers like form or cron.
+  // It does NOT happen on runoff elections.
+  db_query('DELETE FROM {users_roles} WHERE rid = :rid', array(':rid' => $elected_role));
+  // Set user one as the temporary position holder.
   $data = array('uid' => 1, 'rid' => $elected_role);
   drupal_write_record('users_roles', $data);
   // And start the election.
@@ -225,18 +331,475 @@ function _election_positions_submit($form, &$form_state) {
   // Grab the old positions.
   // TODO: For now, leave it to the admin to delete the old ones.
   // Grab the new positions from the settings.
-  $available = $form_state['values']['election_positions'];
-  $available = explode("\n", $available);
-  // Add the new position.
-  foreach ($available as $position) {
-    // Get the name.
+  $positions = isset($form_state['values']['election_positions']) ?
+    $form_state['values']['election_positions'] : '';
+  $positions = explode("\n", $positions);
+  $available = array();
+  foreach ($positions as $index => $position) {
     $position = trim($position); // Trim.
-    if (strlen($position) == 0) {
-      // Skip ahead.
-      continue;
+    if (!empty($position)) {
+      $available[] = $position;
     }
-    $position = preg_replace("/[^A-Za-z0-9 ]/", '', $position); // Remove all but space and alphanumeric.
-    $field_key_name = str_replace(' ', '_', strtolower($position)); // Replace space with underscore.
+  }
+  // Make sure to set the variable early so the position fields can use it.
+  variable_set('election_positions', implode("\n", $available));
+  // And create fields.
+  if (!empty($available)) {
+    create_election_position_fields();
+  }
+}
+
+/**
+ * Create an election set with all relevant data.
+ * Title is optional, can be set to override default.
+ * Postions optiona, can be set to override defaults in for example runoffs.
+ * Election is the election object for tracking the cycle - for runoffs.
+ */
+function _election_trigger_election($title = '', $positions = array(), $election = array()) {
+  // Make sure we have the right positions in place.
+  create_election_position_fields();
+  // Create the node.
+  $title = !empty($title) ? $title : t('Site Election');
+  $node->title = date('m/d/Y') . ' ' . $title;
+  $node->type = 'proposal';
+  $node->uid = 1;
+  $node->language = 'und';
+  // node_save($node);
+  // Post to the correct forum.
+  $tid = variable_get('election_default_forum', '');
+  $node->taxonomy_forums[ $node->language ][0]['tid'] = !empty($tid) ? $tid : '';
+  node_save($node);
+  $node = node_load($node->nid);
+  // Check that the node was properly created.
+  if (!empty($node)) {
+    // Ok, set up the webform elements for this election.
+    _election_setup_election_proposal($node, $positions, $election);
+  }
+  // If we have rules, trigger it.
+  if (function_exists('rules_invoke_event')) {
+    rules_invoke_event('open_election', $node);
+  }
+}
+
+/**
+ * Helper function. Create an election webform with the right settings.
+ */
+function _election_setup_election_proposal($new_election, $positions = array(), $election = array()) {
+
+  // Figure out the positions.
+  // If we were passed positions for this election, use those. (Probably a runoff.)
+  if (empty($positions)) {
+    // Otherwise load the list from the stored variable.
+    $positions = _election_get_positions();
+  }
+
+  // Trim up for possible bad input.
+  foreach ($positions as $index => $position) {
+    $position = trim($position);
+    if (!empty($position)) {
+      $positions[$index] = $position;
+    }
+  }
+
+  // Set the webform body and basic configuration.
+  $output = '';
+  $output .= '<h3><b>' . t('Election') . '</b></h3>';
+  $output .= '<p>' . variable_get('election_election_intro', '') . '</p>';
+  $output .= '<p>' . t('Available positions are:') . '</p>';
+  $output .= theme('item_list', array('items' => $positions));
+  $output .= '<p>Please take a moment to review the candidates for this ' .
+    'year and select those you feel to be the best choices for the available positions.</p>';
+  $new_election->body[$new_election->language][0]['value'] = $output;
+  // Set up the webform defaults if node hasn't yet.
+  if (!isset($new_election->webform)) {
+    $new_election->webform = webform_node_defaults();
+  }
+  $new_election->webform['confirmation'] = t('Thank you for participating!');
+  $new_election->webform['confirmation_format'] = 'plain_text';
+  $new_election->webform['submit_limit'] = 1;
+  // Set approving roles for users based on all roles with 'can vote on elections' permission.
+  $election_voting_roles = user_roles(FALSE, 'can vote on elections');
+  $record = db_query('DELETE FROM {webform_roles} WHERE nid = :nid', array(':nid' => $new_election->nid));
+  $roles = array();
+  foreach ($election_voting_roles as $rid => $role) {
+    if ($role) {
+      $roles[] = $rid;
+    }
+  }
+  // Set the default users.
+  $new_election->webform['roles'] = $roles;
+  _proposal_webform_set_users($roles, array(), $new_election->nid);
+  // Set the status to ON on new elections.
+  $new_election->webform['status'] = TRUE;
+  node_save($new_election);
+
+  // And now the fun part: set the components for the form.
+  _election_setup_election_proposal_components($new_election, $positions);
+
+  // And now we mark this proposal as having been created in our site as an election object.
+  $data = array(
+    'nid' => $new_election->nid,
+    'positions' => $positions,
+    'closed' => -1,
+    'winners' => array(),
+  );
+  $data = array_merge( (array) $election, $data); // Merge any existing election info.
+  if (isset($data['eid'])) {
+    // It's a runoff election, new node, but same cycle, same positions.
+    unset($data['eid']);
+  }
+  $data = _election_update_election($data);
+
+  // And set a message to our user.
+  drupal_set_message(t('A new election has been created at !link.',
+    array('!link' => l($new_election->title, 'node/' . $new_election->nid))));
+}
+
+/**
+ * Helper function. Create the components for an election form.
+ */
+function _election_setup_election_proposal_components($new_election, $positions) {
+  // Include the webform module that allows components to be created.
+  module_load_include('inc', 'webform', 'includes/webform.components');
+  // Create the webform fields for possible elected.
+  $weight = 0;
+  $positions_ready = FALSE;
+  foreach ($positions as $position) {
+    // Get the key to use.
+    $field_key_name = get_field_key_name($position);
+    if ($field_key_name) {
+      // Gather the user info.
+      $run_roles = variable_get('election_run_roles', array());
+      $run_roles = array_values($run_roles);
+      $elected_role = variable_get('election_role', '');
+      $candidates = db_query('SELECT DISTINCT u.name, u.uid FROM {users} u ' . 
+        'LEFT JOIN {users_roles} ur ON u.uid = ur.uid ' .
+        'LEFT JOIN {field_data_field_staff_' . $field_key_name . '} f ON u.uid = f.entity_id ' .
+        'WHERE ur.rid IN (:run_roles) ' . // They're in the role for running.
+        'AND u.uid NOT IN (SELECT ur2.uid FROM users_roles ur2 WHERE ur2.rid IN (:elected_role) ) ' . // Can't hold more than one position.
+        'AND f.field_staff_' . $field_key_name . '_value = 1 ' . // And they haven't opted out.
+        'ORDER BY u.name', // Alphabetical order.
+        array(':run_roles' => $run_roles, ':elected_role' => $elected_role));
+
+      // Check the user for eligabilty and term limits.
+      $eligable_candidates = '';
+      $term_limits = variable_get('election_term_limits', TRUE);
+      $term_limits_limit = variable_get('election_term_limit_limits', 2);
+      foreach ($candidates as $candidate) {
+        $eligable = TRUE;
+        if ($term_limits) {
+          // Check for this position key if the user has the ok or if they need to lay off for a bit.
+          $eligable = !_election_is_at_term_limit( $candidate->uid, $term_limits_limit, $field_key_name);
+        }
+        // If we're still ok, add em.
+        if($eligable) {
+          $eligable_candidates .= $candidate->name . '|' . $candidate->name . "\n";
+        }
+      }
+
+      // Create the component for the position IF we have any eligable candidates.
+      if (!empty($eligable_candidates)) {
+        $component = array();
+        $component['nid'] = $new_election->nid;
+        $component['pid'] = 0;
+        $component['form_key'] = $field_key_name; // Use the position fieldname as the key.
+        $component['name'] = $position;
+        $component['type'] = 'select';
+        $component['mandatory'] = 1;
+        $component['extra'] = array(
+          'description' => '',
+          'items' => $eligable_candidates,
+          'multiple' => '0',
+          'aslist' => '1',
+        );
+        $component['weight'] = $weight;
+        $weight++;
+        webform_component_insert($component);
+        $positions_ready = TRUE;
+      }
+      else {
+        $component = array();
+        $component['nid'] = $new_election->nid;
+        $component['pid'] = 0;
+        $component['form_key'] = $field_key_name . '_nc'; // Use the position fieldname as the key.
+        $component['name'] = $position;
+        $component['type'] = 'markup';
+        $component['mandatory'] = 0;
+        $component['value'] = t('There are no eligable candidates for ' . $position . '.');
+        $component['extra'] = array(
+          'format' => 'filtered_html',
+          'private' => 0,
+        );
+        $component['weight'] = $weight;
+        $weight++;
+        webform_component_insert($component);
+        watchdog('election', 'This election has no candidates for ' . $position . '.');
+        drupal_set_message(t('This election has no candidates for ' . $position . '.'));
+      }
+    } // Done with the if for each position key name.
+  } // Done with loop for positions.
+
+  // If we didn't find anyone for any of these positions we really don't
+  // have enough people for an election. This is an EMERGENCY situation
+  // that we should mark as such - also we close the election right now
+  // to avoid triggering any future looping until we're ready to elect.
+  if (!$positions_ready) {
+    // Reload the election before saving any changes to make sure we don't
+    // zap any components that were placed on it since the last load.
+    $new_election = node_load($new_election->nid);
+    $new_election->title .= ' ' . t('(Cancelled)');
+    $new_election->status = 0; // TMP hiden from view.
+    $new_election->webform['status'] = FALSE;
+    watchdog('election', 'This election has no candidates for ANY position. It has been automatically closed without runoff.');
+    drupal_set_message(t('This election has no candidates for ANY position. It has been automatically closed without runoff.'), 'error');
+    node_save($new_election);
+    // And set rule to trigger in case of a cancelled election.
+    if (function_exists('rules_invoke_event')) {
+      rules_invoke_event('cancelled_election', $new_election);
+    }
+  }
+  else {
+    // Copy from proposal.module - include the comment field.
+    $component = array();
+    $component['nid'] = $new_election->nid;
+    $component['pid'] = 0;
+    $component['form_key'] = 'additional_comments';
+    $component['name'] = t('Additional Comments');
+    $component['type'] = 'textarea';
+    $component['mandatory'] = 0;
+    $component['extra'] = array();
+    $component['weight'] = 1000;
+    webform_component_insert($component);
+  }
+}
+
+/**
+ * Handle when we close an election. Called on proposal close.
+ */
+function _election_election_check_close($node) {
+  $election = _election_get_election_by_nid($node->nid);
+  // Check if we are closed. If we aren't an election this returns nothing.
+  if ($election && $election->closed == -1 && $node->webform['status'] == FALSE) {
+
+    // Close the election.
+    $election->closed = strtotime('now');
+    $election->winners = array();
+    $elected_role = variable_get('election_role', '');
+    // And save this election as done.
+    _election_update_election($election);
+    // Read the results into a readable array.
+    $results = _election_get_results($node);
+
+    // Gather winners and set them up.
+    $winners = _election_get_winners($node, $results); // Return as assoc array, array('position' => 'uid');
+	if (!empty($winners)) {
+      // User one is no longer required to operated as a temporary position.
+      db_query('DELETE FROM {users_roles} WHERE uid = :uid AND rid = :rid',
+        array(':uid' => 1, ':rid' => $elected_role));
+      // Now process the winners, marking them for terms etc as needed.
+      foreach ($winners as $position => $winner) {
+        // Add the winner to the heads role.
+        db_query('DELETE FROM {users_roles} WHERE uid = :uid AND rid = :rid',
+          array(':uid' => $winner, ':rid' => $elected_role));
+        $data = array('uid' => $winner, 'rid' => $elected_role);
+        drupal_write_record('users_roles', $data);
+        // And for each winner, mark that they've been assigned for this cycle to this position.
+        $this_winner = _election_mark_winner(array(
+          'uid' => $winner,
+          'cycle' => $election->cycle,
+          'position' => $position,
+        ));
+      }
+      // Add to the election information recorded so far.
+      $election->winners = $winners;
+    }
+
+    // Gather ties and set up a runoff.
+    $ties = _election_get_ties($node, $results, $winners); // Return as assoc array, array('position' => 'uid');
+	if (!empty($ties)) {
+      // We need to run a tie breaker election with JUST these postions.
+      // So we open ANOTHER election, not the same one.
+      // Technically this could go on forever.
+      _election_trigger_election(t('Site Run-off Election'), $ties, $election);
+      // If we have rules, trigger it.
+      if (function_exists('rules_invoke_event')) {
+        rules_invoke_event('open_runoff_election', $node, array_values($winners), $ties);
+      }
+    }
+
+    // And save this election as done.
+    _election_update_election($election);
+    // If we have rules, trigger it.
+    if (function_exists('rules_invoke_event')) {
+      rules_invoke_event('close_election', $node, array_values($winners), $ties);
+    }
+  }
+}
+
+/**
+ * RECURSIVE function, determine who the winner is.
+ */
+function _election_get_winners_by_position($results) {
+  // Figure out who the exact winners are.
+  // Naive voting - it's whoever has the most votes for the position.
+  // Now it's possible for a candidate to get elected to TWO or more positions.
+  // In which case we need to boot him for which-ever one was least voted for.
+  // And and put the second in place.
+  $winners = array();
+  $sub_results = array();
+  foreach ($results as $position => $candidates) {
+    // Numerically winning candidate.
+    $votes_got = max($candidates);
+    $candidates_with_max = array_keys($candidates, $votes_got);
+    // If we have more than one winner, it's a tie. But if only one, then we have a front runner.
+    if ($votes_got > 0 && count($candidates_with_max) == 1) {
+      $candidates_with_max = $candidates_with_max[0];
+      // Possible winner! We have to make sure he didn't win anything else though first.
+      if (empty($positions[$candidates_with_max])) {
+        // Hasn't won anything so far, so put winner in this one.
+        $winners[$position] = $candidates_with_max;
+        $positions[$candidates_with_max] = $votes_got;          
+      }
+      else {
+        // Ok - he has won something already. So is this the one to stay with or the other?
+        if ($votes_got <= $positions[$candidates_with_max]) {
+          // If this position is less than or equal to the previous one found, set this position to re-do.
+          // Remove this candidate from this set by setting votes to zero.
+          $results[$position][$candidates_with_max] = 0;
+          // And add the position to the dupes for redo.
+          $sub_results[$position] = $results[$position];
+        }
+        else {
+          // If this position is greater than or less than the previous one, set the other to re-do.
+          $old_position = array_keys($winners, $candidates_with_max);
+          unset($winners[$old_position]);
+          // Remove this candidate from that set by setting votes to zero.
+          $results[$old_position][$candidates_with_max] = 0;
+          // And add the position to the dupes for redo.
+          $sub_results[$old_position] = $results[$old_position];
+          // And add the new position for this winner instead.
+          $winners[$position] = $candidates_with_max;
+          $positions[$candidates_with_max] = $votes_got;
+        }
+      }
+    } // End if, no clear winner to check.
+  } // End check each position.
+
+  // RECURSIVE HERE.
+  // Check everything that was a dupe for sub-winners.
+  // This should return a set of winners ignoring the dupe winners from above.
+  // For all positions not already won - so all we have to do is merge arrays.
+  if (!empty($sub_results)) {
+    $sub_winners = _election_get_winners_by_position($sub_results);
+    $winners = array_merge($winners, $sub_winners);
+  }
+  return $winners;
+}
+
+/**
+ * Helper function, given an election node figure out who the winners are.
+ */
+function _election_get_winners($node, $results) {
+  $winners = _election_get_winners_by_position($results);
+  // NOTE: THIS IS A SIMPLE ELECTION MECHANIC.
+  // Aka, he with the most votes wins.
+  // This does NOT require minimum # of voters to participate. Or min % of the vote
+  // for the winner to be marked with the lead position and ready to go.
+  // This is not nessecarily ideal! So we should ABSOLUTELY allow for hook overrides here.
+  // So that more than one voting winner may be determined.
+  drupal_alter('election_winners', $winners, $results, $node);
+  // To modify the election results, call hook_election_winners_alter(&$winners, $results, $node);
+  return $winners;
+}
+
+/**
+ * Helper function, given an election node figure out who the winners are.
+ */
+function _election_get_ties($node, $results, $winners) {
+  // Map components to head positions.
+  $ties = array();
+  foreach ($results as $position => $candidates) {
+    // If the position doesn't have a clear winner, it's a tie.
+    if (!in_array($position, array_keys($winners))) {
+      $hn_position = get_field_human_name($position);
+      if ($hn_position) {
+        $ties[] = $hn_position; // ALL candidates go up for the re-election vote, no need to set values here.
+        watchdog('election', 'This election has a TIE for ' . $hn_position . '. Another follow-up should be run.');
+        drupal_set_message(t('This election has a TIE for ' . $hn_position . '. Another follow-up should be run.'));
+      }
+    }
+  }
+  return $ties;
+}
+
+/**
+ * Helper function, summarize election results in a readable array.
+ */
+function _election_get_results($node) {
+  // Include the webform file we need.
+  module_load_include('inc', 'webform', 'includes/webform.submissions');
+  // Local cache of looked up users by name.
+  $users = array();
+  // Get submission results and put into a format for review.
+  $submissions = webform_get_submissions($node->nid);
+  $results = array();
+  if (!empty($submissions)) {
+    foreach ($submissions as $sid => $submission) {
+      // Process each submission.
+      foreach ($submission->data as $cid => $submission_answer) {
+        // Process each position for each compontent.
+        $component = $node->webform['components'][$cid];
+        if ($component['form_key'] != 'additional_comments') {
+          // Get the position key name.
+          $position = $component['form_key'];
+          // Get the user. NOTE this is the user's name, not uid.
+          $voted_for = $submission_answer['value'][0];
+          $user = isset($users[$voted_for]) ? $users[$voted_for] : user_load_by_name($voted_for);
+          $users[$voted_for] = $user; // Save the user so we don't look them up repeatedly.
+          // Add to the results table.
+          $results[$position][$user->uid] = !empty($results[$position][$user->uid]) ?
+            $results[$position][$user->uid] + 1 : 1;
+        }
+      }
+    }
+  }
+  else {
+    // No submissions yet. So enter zero for everyone.
+    foreach ($node->webform['components'] as $cid => $component) {
+      if ($component['form_key'] != 'additional_comments') {
+        // Get the position key name.
+        $position = $component['form_key'];
+        // Enter a zero vote for user 1 to make sure position is available.
+        $results[$position][1] = 0;
+      }
+    }
+  }
+  // Ok, now we have a 2d array of results.
+  // Sort them so the first on the list are the winners.
+  foreach ($results as $position => $candidates) {
+    // And make sure each user who got a vote anywhere, is marked as having a value
+    // In this table, even if it's just a zero.
+    foreach ($users as $user) {
+      if (empty($candidates[$user->uid])) {
+        $candidates[$user->uid] = 0;
+      }
+    }
+    // Now we want to preserve the associated key though, uid => #votes.
+    // Just sort by # of votes - so an associated, reverse sort.
+    arsort($candidates);
+    $results[$position] = $candidates;
+  }
+  // Now that we have them sorted, return them.
+  return $results;
+}
+
+/**
+ * Helper function, create position fields on users given an array of position titles.
+ */
+function create_election_position_fields() {
+  // Add the new position.
+  $positions = _election_get_positions();
+  foreach ($positions as $field_key_name => $position) {
     $existing_field = field_info_field('field_staff_' . $field_key_name);
     if (empty($existing_field)) {
       // Set up the data arrays.
@@ -301,16 +864,6 @@ function _election_positions_submit($form, &$form_state) {
       field_create_field($field);
       // Create the instance.
       field_create_instance($instance);
-      // Add the field to the election group form.
-      $group = field_group_info_groups('user', 'user', 'form', TRUE);
-      $group = $group['group_election_settings'];
-      $group->children[] = $field_key_name;
-      field_group_group_save($group);
-      // Add the field to the election group display.
-      $group = field_group_info_groups('user', 'user', 'default', TRUE);
-      $group = $group['group_voting'];
-      $group->children[] = $field_key_name;
-      field_group_group_save($group);
       // Update all existing users to have this field automatically turned on.
       db_query('REPLACE INTO {field_data_field_staff_' . $field_key_name . '} ' .
         '(entity_type, bundle, deleted, entity_id, revision_id, language, delta, field_staff_' . $field_key_name . '_value) ' .
@@ -319,7 +872,7 @@ function _election_positions_submit($form, &$form_state) {
         '(entity_type, bundle, deleted, entity_id, revision_id, language, delta, field_staff_' . $field_key_name . '_value) ' .
         'SELECT \'user\', \'user\', 0, u.uid, u.uid, \'und\', 0, 1 FROM {users} u WHERE u.status = 1');
       // Output message.
-      drupal_set_message('Created user field ' . $field_key_name);
+      drupal_set_message('Created user field instance: ' . $field_key_name);
     }
   }
   // Flush Entity Cache record.
@@ -329,272 +882,38 @@ function _election_positions_submit($form, &$form_state) {
 }
 
 /**
- * Create an election set with all relevant data.
+ * Helper function. Return an array of positions on site, assoc (form_key => human name).
  */
-function _election_trigger_election($title = '', $positions = array(), $election = array()) {
-  $title = !empty($title) ? $title : t('Site Election');
-  $node->title = date('m/d/Y') . ' ' . t('Site Election');
-  $node->type = 'proposal';
-  $node->uid = 1;
-  $node->language = 'und';
-  $tid = variable_get('election_default_forum', '');
-  $node->taxonomy_forums[ $new_election->language ][0]['tid'] = !empty($tid) ? $tid : '';
-  node_save($node);
-  $node = node_load($node->nid);
-  if (!empty($node)) {
-    _election_setup_election_proposal($node, $postion, $election);
+function _election_get_positions() {
+  $saved_positions = variable_get('election_positions', '');
+  $saved_positions = explode("\n", $saved_positions);
+  $positions = array();
+  foreach ($saved_positions as $postion) {
+    $postion = trim($postion);
+    if (!empty($postion)) {
+      $key = preg_replace("/[^A-Za-z0-9_ ]/", '', $postion); // Remove all but space, underscore, and alphanumeric.
+      $key = trim(str_replace(' ', '_', strtolower($key))); // Lowercase, replace spaces, trim.
+      $positions[$key] = trim($postion);
+    }
   }
+  return $positions;
 }
 
 /**
- * Helper function. Create an election form with the right settings.
+ * Helper function, translate a human name into a key for field names.
  */
-function _election_setup_election_proposal($new_election, $set_positions = array(), $election = array()) {
-  $output = '';
-  $output .= '<h3><b>Election</b></h3>';
-  $intro_text = t('Each year we have an election for key positions on our site. ' .
-    'This is so that we can always be sure that the current leadership is connected to ' .
-    'and trusted by our players.');
-  $output .= '<p>' . variable_get('election_election_intro', $intro_text) . '</p>';
-  $output .= '<p>Available positions are:</p>';
-  $output .= '<ul>';
-  // Figure out the positions.
-  // If we've not been handed the election ties...
-  $keys = array();
-  if (!empty($set_positions)) {
-    foreach ($set_positions as $position) {
-      $position = trim($position);
-      $keys[$position] = $position;
-    }
-  }
-  else {
-    $available = variable_get('election_positions', "Setting Lead\nSystem Lead\nSocial Lead");
-    $available = explode("\n", $available);
-    foreach ($available as $position) {
-      $position = trim($position);
-      $keys[$position . ' A'] = $position . ' A';
-      $keys[$position . ' B'] = $position . ' B';
-    }
-  }
-  // Set up the output based on the key.
-  foreach ($keys as $key) {
-    $output .= '<li>' . check_plain($key) . '</li>';
-  }
-  $output .= '</ul>';
-  $output .= '<p>Please take a moment to review the candidates for this ' .
-    'year and select those you feel to be the best choices for the available positions.</p>';
-  // Set the webform body and basic configurations.
-  $new_election->body[$new_election->language][0]['value'] = $output;
-  $new_election->webform['confirmation'] = t('Thank you for participating!');
-  $new_election->webform['confirmation_format'] = 'plain_text';
-  $new_election->webform['submit_limit'] = 1;
-  // Save the node.
-  node_save($new_election);
-  // Set approving roles for users based on all roles with 'can vote on elections' permission.
-  $election_voting_roles = user_roles(FALSE, 'can vote on elections');
-  $record = db_query('DELETE FROM {webform_roles} WHERE nid = :nid', array(':nid' => $new_election->nid));
-  foreach ($election_voting_roles as $rid => $role) {
-    if ($role) {
-      db_insert('webform_roles')->fields(array('nid' => $new_election->nid, 'rid' => $rid))->execute();
-    }
-  }
-  // Set the components for the form.
-  _election_setup_election_proposal_components($new_election, $keys);
-  // And now we mark this proposal as having been created in our site as an election object.
-  $data = array(
-    'nid' => $new_election->nid,
-    'positions' => $keys,
-  );
-  $data = array_merge( (array) $election, $data); // Merge any existing election info.
-  if (isset($data['eid'])) {
-    unset($data['eid']); // It's a new election, but same cycle, same positions.
-  }
-  // If this is a runoff it's on the same cycle after all.
-  $data = _election_update_election($data);
-  // And set a message to our posts.
-  drupal_set_message(t('A new election has been created at !link.',
-    array('!link' => l($new_election->title, 'node/' . $new_election->nid))));
+function get_field_key_name($position) {
+  $positions = _election_get_positions();
+  $key = array_keys($positions, trim($position));
+  return !empty($key) ? $key[0] : FALSE;
 }
 
 /**
- * Helper function. Create the components for an election form.
+ * Helper function, translate a key into a human name for output.
  */
-function _election_setup_election_proposal_components($new_election, $keys) {
-  // Include the webform module that allows components to be created.
-  module_load_include('inc', 'webform', 'includes/webform.components');
-  // Create the webform fields for possible elected.
-  $weight = 0;
-  foreach ($keys as $key => $title) {
-    $key = preg_replace("/[^A-Za-z0-9 ]/", '', $key); // Remove all but space and alphanumeric.
-    $field_key_name = str_replace(' ', '_', strtolower(substr($key, 0, -2))); // Trim end, find field.
-    // Gather the user info.
-    $roles = variable_get('election_run_roles', array());
-    $roles = array_values($roles);
-    $system_eligible_names = db_query('SELECT u.name, u.uid FROM {users} u ' . 
-      'LEFT JOIN {users_roles} ur ON u.uid = ur.uid ' .
-      'LEFT JOIN {field_data_field_staff_' . $field_key_name . '} f ON u.uid = f.entity_id ' .
-      'WHERE ur.rid IN (:voting_roles) ' .
-      'AND f.field_staff_' . $field_key_name . '_value = 1 ' .
-      'ORDER BY u.name',
-      array(':voting_roles' => $roles));
-    $system_eligible = '';
-    $term_limits = variable_get('election_term_limits', TRUE);
-    $term_limits_limit = variable_get('election_term_limit_limits', 2);
-    foreach ($system_eligible_names as $system_eligible_name) {
-      // Check term limtis
-      $eligable = TRUE;
-      if ($term_limits) {
-        // Check for this position key if the user has the ok or if they need to lay off for a bit.
-        $this_position = substr($key, 0, -2); // Clip the last two characters off the end.
-        $eligable = !_election_is_at_term_limit( $system_eligible_name->uid, $term_limits_limit, $this_position);
-      }
-      // If we're still ok, post it.
-      if($eligable) {
-        $system_eligible .= $system_eligible_name->name . '|' . $system_eligible_name->name . "\n";
-      }
-    }
-    // Create the component for the position.
-    $component = array();
-    $component['nid'] = $new_election->nid;
-    $component['pid'] = 0;
-    $component['form_key'] = $key;
-    $component['name'] = $title;
-    $component['type'] = 'select';
-    $component['mandatory'] = 1;
-    $component['extra'] = array(
-      'description' => '',
-      'items' => $system_eligible,
-      'multiple' => '0',
-      'aslist' => '1',
-    );
-    $component['weight'] = $weight;
-    $weight++;
-    webform_component_insert($component);
-    // Copy from proposal.module.
-    // Include the webform module that allows components to be created.
-    module_load_include('inc', 'webform', 'includes/webform.components');
-    // Add the default comment box.
-    $component = array();
-    $component['nid'] = $node->nid;
-    $component['pid'] = 0;
-    $component['form_key'] = 'additional_comments';
-    $component['name'] = t('Additional Comments');
-    $component['type'] = 'textarea';
-    $component['mandatory'] = 0;
-    $component['extra'] = array(
-      );
-    $component['weight'] = 1000;
-    webform_component_insert($component);
-  }
-}
-
-/**
- * Handle when we close an election.
- */
-function _election_election_check_close($node) {
-  // Check if we are closed. If we aren't an election this returns nothing.
-  $election = _election_get_election_by_nid($node->nid);
-  if ($election && $election->closed == -1 && $node->webform['status'] == FALSE) {
-    // And now we mark this proposal as having been created in our site as an election object.
-    $election->closed = strtotime('now');
-    $election->winners = array();
-    $winners = _election_get_elected($node);
-    $elected_role = variable_get('election_role', '');
-    // Closed? Good - now we should be getting some winners in - if so, yank user one out of head.
-    // User one is no longer required to operated as a temporary head.
-    if (!empty($winners['winners'])) {
-      db_query('DELETE FROM {users_roles} WHERE uid = :uis AND rid = :rid',
-        array(':uid' => 1, ':rid' => $elected_role));
-    }
-    // Now process the winners, marking them for terms etc as needed.
-    $these_winners = array();
-    foreach ($winners['winners'] as $position => $winner) {
-      // Add the winner to the heads role.
-      db_query('DELETE FROM {users_roles} WHERE uid = :uid AND rid = :rid',
-        array(':uid' => $winner->uid, ':rid' => $elected_role));
-      $data = array('uid' => $winner->uid, 'rid' => $elected_role);
-      drupal_write_record('users_roles', $data);
-      // Note the position before recording.
-      $these_winners[$position] = $winner->uid;
-      // And for each winner, mark that they've been assigned for this cycle to this position.
-      $this_winner = array();
-      $this_winner['uid'] = $winner->uid;
-      $this_winner['cycle'] = $election->cycle;
-      $this_winner['position'] = substr($position, 0, -2); // Clip the last two characters off the end.
-      $this_winner = _election_mark_winner($this_winner);
-    }
-    // Add to the election information recorded so far.
-    $election->winners = $these_winners;
-    $election = _election_update_election($election);
-    // Now we have to address the ties.
-    // We need to run a tie breaker election with JUST these postions.
-    // So we open ANOTHER election.
-    if (!empty($winners['ties'])) {
-      $winners['ties'] = array_unique($winners['ties']);
-      _election_trigger_election(t('Site Run-off Election'), $winners['ties'], $election);
-    } // End tie handling.
-  }
-}
-
-/**
- * Helper function, given an election node figure out who the winners are.
- */
-function _election_get_elected($node) {
-  // Include the webform file we need.
-  module_load_include('inc', 'webform', 'includes/webform.submissions');
-  // Get submission results and put into a format for review.
-  $submissions = webform_get_submissions($node->nid);
-  $results = array();
-  foreach ($submissions as $sid => $submission) {
-    foreach ($submission->data as $cid => $submission_answer) {
-      $answer = $submission_answer['value'][0];
-      $results[$cid][$answer] = !empty($results[$cid][$answer]) ? $results[$cid][$answer] + 1 : 1;
-    }
-  }
-  // Map components to head positions.
-  $elected = array();
-  foreach ($node->webform['components'] as $cid => $component) {
-    if ($component['type'] == 'select') {
-      $voted_for = $results[$cid];
-      $max = 0;
-      $winner = array();
-      foreach ($voted_for as $user_name => $votes) {
-        if ($votes == $max) {
-          $max = $votes;
-          $winner[] = $user_name;
-        }
-        elseif ($votes > $max) {
-          $max = $votes;
-          $winner = array($user_name);
-        }
-      }
-      $elected[ $component['name'] ] = $winner;
-    }
-  }
-  // Now we look for ties and set user ids.
-  $tie_positions = array();
-  foreach ($elected as $position => $winners) {
-    if (count($winners) > 1) {
-      // WE HAVE A TIE.
-      $tie_positions[$position] = 1;
-      foreach ($winners as $index => $winner_name) {
-        $this_winner = user_load_by_name($winner_name);
-        $elected['tied_winners'][$position][$index] = $this_winner;
-      }
-    }
-    else {
-      unset( $tie_positions[$position] );
-      $this_winner = user_load_by_name($winners[0]);
-      $elected['winners'][$position] = $this_winner;
-    }
-  }
-  // We have a tie. This is a not good thing.
-  if (!empty($tie_positions)) {
-    watchdog('election', 'This election has a TIE. Another follow-up should be run.');
-    drupal_set_message(t('This election has a TIE. Another follow-up should be run.'));
-    $elected['ties'] = array_keys($tie_positions);
-  }
-  return $elected;
+function get_field_human_name($key) {
+  $positions = _election_get_positions();
+  return !empty($positions[$key]) ? $positions[$key] : FALSE;
 }
 
 /**
@@ -610,7 +929,7 @@ function _election_update_election($election) {
     $data = array_merge( (array) $old_data, $data);
     $data['positions'] = serialize($data['positions']);
     $data['winners'] = serialize($data['winners']);
-    drupal_write_record('election_election_nodes', $data, 'eid');
+    drupal_write_record('election_nodes', $data, 'eid');
   }
   else {
     // New election post. Set the new cycle and open time.
@@ -623,7 +942,7 @@ function _election_update_election($election) {
     $data['positions'] = serialize($data['positions']);
     $data['winners'] = serialize($data['winners']);
     // Write it.
-    drupal_write_record('election_election_nodes', $data);
+    drupal_write_record('election_nodes', $data);
   }
   // Data returned on pointer, but just in case.
   return (object) $data;
@@ -693,7 +1012,7 @@ function _election_delete_election_by_nid($nid) {
  * DB function. Get the current max cycle.
  */
 function _election_get_last_cycle() {
-  $cycle = db_query('SELECT MAX(cycle) FROM {election_nodes}')->fetchField();
+  $cycle = db_query('SELECT MAX(cycle) FROM {election_winners}')->fetchField();
   return !empty($cycle) ? $cycle : 1;
 }
 
@@ -703,42 +1022,14 @@ function _election_get_last_cycle() {
 function _election_mark_winner($winner) {
   $data = (array) $winner;
   if (empty($data['uid']) || empty($data['cycle']) || empty($data['position'])) {
-    return FALSE; // We must have a nid for this election data.
+    return FALSE; // We must have data for this election data.
   }
   // New election post. Set the new cycle and open time.
-  drupal_write_record('election_election_winners', $data);
+  drupal_write_record('election_winners', $data);
   // Data returned on pointer, but just in case.
   return (object) $data;
 }
-
-/**
- * DB function. Get election info for an election.
- */
-function _election_get_election_winner($uid, $cycle, $postion) {
-  if (empty($eid)) {
-    return FALSE; // Bail if error.
-  }
-  $election = db_query('SELECT * FROM {election_winners} ' .
-    'WHERE uid = :uid ' .
-    'AND cycle = :cycle ' .
-    'AND position = :position',
-    array(':uid' => $uid, ':cycle' => $cycle, ':position' => $position))->fetchObject();
-  if (empty($election->wid)) {
-    return FALSE; // Bail if error.
-  }
-  return $election;
-}
-
-/**
- * CRUD function. Delete election info for a node.
- */
-function _election_delete_winners_by_uid($uid) {
-  if (empty($uid)) {
-    return FALSE; // Bail if error.
-  }
-  db_query('DELETE FROM {election_winners} WHERE uid = :uid',
-    array(':uid' => $uid));
-}
+// NO DELETE FUNCTION. We do not remove records of elections to avoid messing up cycle count.
 
 /**
  * DB function. Figure out if this user is at term limit.
