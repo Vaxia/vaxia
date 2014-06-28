@@ -465,22 +465,22 @@ function _election_setup_election_proposal($new_election, $positions = array(), 
   $new_election->webform['status'] = TRUE;
   node_save($new_election);
 
-  // And now the fun part: set the components for the form.
-  _election_setup_election_proposal_components($new_election, $positions);
-
   // And now we mark this proposal as having been created in our site as an election object.
-  $data = array(
+  $election_data = array(
     'nid' => $new_election->nid,
     'positions' => $positions,
     'closed' => -1,
     'winners' => array(),
   );
-  $data = array_merge( (array) $election, $data); // Merge any existing election info.
-  if (isset($data['eid'])) {
+  $election_data = array_merge( (array) $election, $election_data); // Merge any existing election info.
+  if (isset($election_data['eid'])) {
     // It's a runoff election, new node, but same cycle, same positions.
-    unset($data['eid']);
+    unset($election_data['eid']);
   }
-  $data = _election_update_election($data);
+  $election_data = _election_update_election($election_data);
+
+  // And now the fun part: set the components for the form.
+  _election_setup_election_proposal_components($new_election, $positions, $election_data);
 
   // And set a message to our user.
   drupal_set_message(t('A new election has been created at !link.',
@@ -490,7 +490,7 @@ function _election_setup_election_proposal($new_election, $positions = array(), 
 /**
  * Helper function. Create the components for an election form.
  */
-function _election_setup_election_proposal_components($new_election, $positions) {
+function _election_setup_election_proposal_components($new_election, $positions, $election_data) {
   // Include the webform module that allows components to be created.
   module_load_include('inc', 'webform', 'includes/webform.components');
   // Create the webform fields for possible elected.
@@ -505,12 +505,16 @@ function _election_setup_election_proposal_components($new_election, $positions)
       $run_roles = variable_get('election_run_roles', array());
       $run_roles = array_values($run_roles);
       $elected_role = variable_get('election_role', '');
+      // This filter removes candidates from sligibility as follows:
+      // They're in the role to run.
+      // They DO NOT currently have a seat.
+      // They haven't opted out.
       $candidates = db_query('SELECT DISTINCT u.name, u.uid FROM {users} u ' . 
         'LEFT JOIN {users_roles} ur ON u.uid = ur.uid ' .
         'LEFT JOIN {field_data_field_staff_' . $field_key_name . '} f ON u.uid = f.entity_id ' .
-        'WHERE ur.rid IN (:run_roles) ' . // They're in the role for running.
-        'AND u.uid NOT IN (SELECT ur2.uid FROM users_roles ur2 WHERE ur2.rid IN (:elected_role) ) ' . // Can't hold more than one position.
-        'AND f.field_staff_' . $field_key_name . '_value = 1 ' . // And they haven't opted out.
+        'WHERE ur.rid IN (:run_roles) ' .
+        'AND u.uid NOT IN (SELECT ur2.uid FROM users_roles ur2 WHERE ur2.rid IN (:elected_role) ) ' .
+        'AND f.field_staff_' . $field_key_name . '_value = 1 ' .
         'ORDER BY u.name', // Alphabetical order.
         array(':run_roles' => $run_roles, ':elected_role' => $elected_role));
 
@@ -554,24 +558,46 @@ function _election_setup_election_proposal_components($new_election, $positions)
         }
         // Find out if we're doing doubles or not.
         $slots = variable_get('election_position_count_' . $field_key_name, 2);
+        // For every slot we have, where we do not already have someone locked in.
+        // Then we run the election for that slot.
+        $currently_held = _election_get_current_holders($field_key_name, $election_data->cycle);
         for ($i = 0; $i < $slots; $i++) {
-          $component = array();
-          $component['nid'] = $new_election->nid;
-          $component['pid'] = 0;
-          $component['form_key'] = $field_key_name . '_' . $alphabet[$i]; // Use the position fieldname as the key.
-          $component['name'] = $position . ' ' . strtoupper($alphabet[$i]);
-          $component['type'] = 'select';
-          $component['mandatory'] = 0;
-          $component['extra'] = array(
-            'description' => '',
-            'items' => $eligable_candidates,
-            'multiple' => '0',
-            'aslist' => '1',
-          );
-          $component['weight'] = $weight;
-          $weight++;
-          webform_component_insert($component);
-          $positions_ready = TRUE;
+          if ($i < count($currently_held)) {
+            $component = array();
+            $component['nid'] = $new_election->nid;
+            $component['pid'] = 0;
+            $component['form_key'] = $field_key_name . '_not_position'; // Use the position fieldname as the key.
+            $component['name'] = $position . ' ' . strtoupper($alphabet[$i]);
+            $component['type'] = 'markup';
+            $component['mandatory'] = 0;
+            $component['value'] = $position . ' ' . strtoupper($alphabet[$i]) . ': '. t('is currently held by ' . $currently_held[$i]->name . '.');
+            $component['extra'] = array(
+              'format' => 'filtered_html',
+              'private' => 0,
+            );
+            $component['weight'] = $weight;
+            $weight++;
+            webform_component_insert($component);
+          }
+          else {
+            $component = array();
+            $component['nid'] = $new_election->nid;
+            $component['pid'] = 0;
+            $component['form_key'] = $field_key_name . '_' . $alphabet[$i]; // Use the position fieldname as the key.
+            $component['name'] = $position . ' ' . strtoupper($alphabet[$i]);
+            $component['type'] = 'select';
+            $component['mandatory'] = 0;
+            $component['extra'] = array(
+              'description' => '',
+              'items' => $eligable_candidates,
+              'multiple' => '0',
+              'aslist' => '1',
+            );
+            $component['weight'] = $weight;
+            $weight++;
+            webform_component_insert($component);
+            $positions_ready = TRUE;
+          }
         }
       }
       else {
@@ -582,7 +608,7 @@ function _election_setup_election_proposal_components($new_election, $positions)
         $component['name'] = $position;
         $component['type'] = 'markup';
         $component['mandatory'] = 0;
-        $component['value'] = t('There are no eligable candidates for ' . $position . '.');
+        $component['value'] = $position . ' ' . strtoupper($alphabet[$i]) . ': '. t('There are no eligable candidates for ' . $position . '.');
         $component['extra'] = array(
           'format' => 'filtered_html',
           'private' => 0,
@@ -737,29 +763,45 @@ function _election_get_winners($node, $results) {
   // That will prioritize the roles given to the slots than need them more.
   // Now we want to preserve the associated key though, position_name => slot.
   asort($positions);
+
   // Use positions as the control. Once we're out of positions to sort, we're done.
   $results = _election_get_winners_by_position($results, $positions);
+
+  // Remove anything that's a zero from the results.
+  $found_results = $results;
+  foreach ($found_results as $position => $candidates) {
+    // Check each candidate, and remove zeros from the results.
+    foreach ($candidates as $uid => $votes) {
+      if ($votes == 0) {
+        unset($results[$position][$uid]);
+      }
+    }
+  }
+
+  // It might be a tie. If so, lets remove anyone who would be unclear.
+  $found_results = $results;
+  foreach ($found_results as $position => $candidates) {
+    // Get the least value, should be greater than zero now.
+    $least_votes = min($candidates);
+    // Check each candidate, and remove zeros from the results.
+    foreach ($candidates as $uid => $votes) {
+      // Remove all the lag-behinds from the winners.
+      // This will bring us to less than the required number of slots.
+      // So that the competion for the last slot can be in the run-off.
+      if ($votes == $least_votes) {
+        unset($results[$position][$uid]);
+      }
+    }
+  }
 
   // Ok, we now have as completely clipped a set of positions as humanly possible.
   // Lets get our winners out of there, ok?
   $won_positions = array();
-  // Remove any result that's a zero.
   foreach ($results as $position => $candidates) {
     foreach ($candidates as $uid => $votes) {
-      if ($votes != 0) {
-        $won_positions[$position][] = $uid;
-      }
+      $won_positions[$position][] = $uid;
     }
   }
-  // Count the winners, do we have more winners than slots?
-  foreach ($positions as $position => $slots) {
-    if (count($won_positions[$position]) > $slots) {
-      // It's a tie. Remove this from the winners.
-      unset($won_positions[$position]);
-    }
-  }
-  // Ok, now we're down to the completely clear and set ones.
-  // The recursion would have already cleared out the results for these.
   // So we should have no unclear positions left. Now we map winners to positions for return.
   $winners = array();
   foreach ($won_positions as $won_position => $candidates) {
@@ -777,6 +819,29 @@ function _election_get_winners($node, $results) {
   drupal_alter('election_winners', $winners, $orig_results, $node);
   // To modify the election results, call hook_election_winners_alter(&$winners, $results, $node);
   return $winners;
+}
+
+/**
+ * Helper function, given an election node figure out who the winners are.
+ */
+function _election_get_ties($node, $results, $winners) {
+  // Map components to head positions.
+  $ties = array();
+  foreach ($results as $position => $candidates) {
+    $slots = variable_get('election_position_count_' . $position, 2);
+    $position_winners = array_keys($winners, $position);
+    // If the position has more winners or less winners than it needs.
+    // We will have runoffs if don't have EXACTLY the numbers we need.   
+    if ($slots != count($position_winners)) {
+      $hn_position = get_field_human_name($position);
+      if ($hn_position) {
+        $ties[] = $hn_position; // ALL candidates go up for the re-election vote, no need to set values here.
+        watchdog('election', 'This election has a TIE for ' . $hn_position . '. Another follow-up should be run.');
+        drupal_set_message(t('This election has a TIE for ' . $hn_position . '. Another follow-up should be run.'));
+      }
+    }
+  }
+  return $ties;
 }
 
 /**
@@ -847,28 +912,6 @@ function _election_get_winners_by_position($results, $positions) {
 
   // Ok, at this point we have clipped and consolidated as much of the results as we can.
   return $results;
-}
-
-/**
- * Helper function, given an election node figure out who the winners are.
- */
-function _election_get_ties($node, $results, $winners) {
-  // Map components to head positions.
-  $ties = array();
-  foreach ($results as $position => $candidates) {
-    // If the position has more winners or less winners than it needs.
-    $slots = variable_get('election_position_count_' . $position, 2);
-    $position_winners = array_keys($winners, $position);
-    if ($slots != count($position_winners)) {
-      $hn_position = get_field_human_name($position);
-      if ($hn_position) {
-        $ties[] = $hn_position; // ALL candidates go up for the re-election vote, no need to set values here.
-        watchdog('election', 'This election has a TIE for ' . $hn_position . '. Another follow-up should be run.');
-        drupal_set_message(t('This election has a TIE for ' . $hn_position . '. Another follow-up should be run.'));
-      }
-    }
-  }
-  return $ties;
 }
 
 /**
@@ -1177,6 +1220,37 @@ function _election_mark_winner($winner) {
   return (object) $data;
 }
 // NO DELETE FUNCTION. We do not remove records of elections to avoid messing up cycle count.
+
+/**
+ * DB function. Set or create election info for a node.
+ */
+function _election_get_current_winners($position) {
+  $current_cycle = _election_get_last_cycle();
+  $winners = db_query('SELECT uid FROM {election_winners} ' .
+    'WHERE position = :position ' .
+    'AND cycle = :cycle',
+    array(':position' => $position, ':cycle' => $current_cycle));
+  $users = array();
+  foreach ($winners as $winner) {
+    $users[] = user_load($winner->uid);
+  }
+  return $users;
+}
+
+/**
+ * DB function. Set or create election info for a node.
+ */
+function _election_get_current_holders($position, $cycle) {
+  $winners = db_query('SELECT uid FROM {election_winners} ' .
+    'WHERE position = :position ' .
+    'AND cycle = :cycle',
+    array(':position' => $position, ':cycle' => $cycle));
+  $users = array();
+  foreach ($winners as $winner) {
+    $users[] = user_load($winner->uid);
+  }
+  return $users;
+}
 
 /**
  * DB function. Figure out if this user is at term limit.

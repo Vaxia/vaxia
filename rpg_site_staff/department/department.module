@@ -110,7 +110,7 @@ function department_form__election_admin_settings_alter(&$form, &$form_state) {
   foreach ($departments as $index => $department) {
     $departments[$index] = str_replace("\n", '', trim($department));
   }
-  $departments = implode(' ' . t(Lead) . "\n", $departments) . ' ' . t('Lead');
+  $departments = implode(' ' . t('Lead') . "\n", $departments) . ' ' . t('Lead');
   $form['election_positions'] = array(
     '#title' => t('Available positions'),
     '#description' => t('List postitions available on the site per department, one per row.'),
