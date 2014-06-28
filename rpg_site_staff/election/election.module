@@ -184,6 +184,26 @@ function _election_check_election_day() {
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter(). Remove the election fields from display or access if not eligable.
+ */
+function election_form_user_profile_form_alter(&$form, &$form_state, $form_id) {
+  // If we're qualified, don't hide anything.
+  $roles = variable_get('election_run_roles', '');
+  foreach ($roles as $role) {
+    if (in_array($role, array_keys($form['#user']->roles))) {
+      // Do nothing.
+      return;
+    }
+  }
+  // Hide anything in the hidden fieldgroup.
+  foreach (element_children($form) as $field_name) {
+    if (strpos($field_name,'field_staff_') !== FALSE) {
+      $form[$field_name]['#access'] = FALSE;
+    }
+  }
+}
+
+/**
  * Menu callback, admin form.
  */
 function _election_admin_settings($form, &$form_state) {
