@@ -90,8 +90,10 @@ function _department_admin_settings_submit($form, &$form_state) {
     $name = preg_replace("/[^A-Za-z0-9 ]/", '', $department); // Remove all but space and alphanumeric.
     $name = str_replace(' ', '_', strtolower($name)); // Replace space with underscore.
     $name = trim(strtolower($name));
-    $selected_role = $form_state['values']['department_roles_' . $name];
-    user_role_grant_permissions($selected_role, array('vote on proposal'));
+    if (!empty($form_state['values']['department_roles_' . $name])) {
+      $selected_role = $form_state['values']['department_roles_' . $name];
+      user_role_grant_permissions($selected_role, array('vote on proposal'));
+    }
   }
 }
 
