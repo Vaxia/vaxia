@@ -619,7 +619,8 @@ function vaxia_form_character_sheet_node_form_alter(&$form, &$form_state, $form_
   $node = isset($form['#node']) ? $form['#node'] : '';
   if (_character_sheet_is_enabled($node) && _character_sheet_is_playable($node)) {
     $user_sh = _vaxia_get_SH_characters($node->uid);
-    if ($node->nid == $user_sh->nid) {
+    global $user;
+    if ($node->uid == $user->uid && $node->nid == $user_sh->nid) {
       $allowed_edit = array('field_personality', 'field_description',
         'field_sh_notes', 'field_sh_private_notes', 'field_player_notes', 'field_artwork_image');
       foreach (element_children($form) as $child) {
@@ -632,7 +633,7 @@ function vaxia_form_character_sheet_node_form_alter(&$form, &$form_state, $form_
           $form[$child]['#value'] = $form[$child]['#default_value'];
         }
       }
-      drupal_set_message('You are attempting to edit a Storyhost character sheet. Storyhosts are not playable characters - your options are limited for this sheet.');
+      drupal_set_message('You are attempting to edit your Storyhost character sheet. Storyhosts are not playable characters - your options are limited for this sheet.');
     }
   }
 }
