@@ -743,92 +743,25 @@ function _election_election_check_close($node) {
  * Helper function, given an election node figure out who the winners are.
  */
 function _election_get_winners($node, $results) {
-  // Save the original results to pass up to other systems.
-  $orig_results = $results;
-
-  // Take the greatest or equal to greatest votes only.
-  // This allows the site opnion on wanting a candidate for more
-  // than one position to be the deciding factor on which position
-  // they will ultimately recieve. Order doesn't matter here.
-  $max_votes = array();
-  foreach ($results as $position => $candidates) {
-    foreach ($candidates as $uid => $vote_got) {
-      // Make sure it's set.
-      $max_votes[$uid] = isset($max_votes[$uid]) ? $max_votes[$uid] : 0;
-      // See if this one is higher than the other one.
-      if ($vote_got < $max_votes[$uid]) {
-        // If this position is less than the max, zero it.
-        $results[$position][$uid] = 0;
-      }
-      else {
-        // If this position is equal or greater set value, save and ignore.
-        $max_votes[$uid] = $vote_got;
+  $election_data = _election_get_election_by_nid($node->nid);
+  // Get position information.
+  // Easiest to look it up now, so we don't have to keep looking it up.
+  if (empty($positions)) {
+    foreach ($results as $vote => $positions) {
+      foreach ($positions as $position => $candidates) {
+        $slot_count = variable_get('election_position_count_' . $position, 2);
+        $currently_held = _election_get_current_holders($position, $election_data->cycle);
+        $positions[$position] = $slot_count - count($currently_held);
       }
     }
+    // And organize the positions by slot value. So we can do them in order.
+    asort($positions); // Low to high.
   }
 
   // And now do the recursion to figure out who wins out in which position.
-  // Order matters here because we're checking against slots.
-  // Reorder the positions so winners are up front.
-  $positions = array();
-  foreach ($results as $position => $candidates) {
-    // Now we want to preserve the associated key though, uid => #votes.
-    // Just sort by # of votes - so an associated, reverse sort.
-    arsort($candidates);
-    $results[$position] = $candidates;
-    // Figure out how many slots we have in this position.
-    $positions[$position] = variable_get('election_position_count_' . $position, 2);
-  }
-  // Order our list of positions to process by smallest # of slots to greatest.
-  // That will prioritize the roles given to the slots than need them more.
-  // Now we want to preserve the associated key though, position_name => slot.
-  asort($positions);
-
-  // Use positions as the control. Once we're out of positions to sort, we're done.
-  $results = _election_get_winners_by_position($results, $positions);
-
-  // Remove anything that's a zero from the results.
-  $found_results = $results;
-  foreach ($found_results as $position => $candidates) {
-    // Check each candidate, and remove zeros from the results.
-    foreach ($candidates as $uid => $votes) {
-      if ($votes == 0) {
-        unset($results[$position][$uid]);
-      }
-    }
-  }
-
-  // It might be a tie. If so, lets remove anyone who would be unclear.
-  $found_results = $results;
-  foreach ($found_results as $position => $candidates) {
-    // Get the least value, should be greater than zero now.
-    $least_votes = min($candidates);
-    // Check each candidate, and remove zeros from the results.
-    foreach ($candidates as $uid => $votes) {
-      // Remove all the lag-behinds from the winners.
-      // This will bring us to less than the required number of slots.
-      // So that the competion for the last slot can be in the run-off.
-      if ($votes == $least_votes) {
-        unset($results[$position][$uid]);
-      }
-    }
-  }
-
-  // Ok, we now have as completely clipped a set of positions as humanly possible.
-  // Lets get our winners out of there, ok?
-  $won_positions = array();
-  foreach ($results as $position => $candidates) {
-    foreach ($candidates as $uid => $votes) {
-      $won_positions[$position][] = $uid;
-    }
-  }
-  // So we should have no unclear positions left. Now we map winners to positions for return.
-  $winners = array();
-  foreach ($won_positions as $won_position => $candidates) {
-    foreach ($candidates as $candidate) {
-      $winners[$candidate] = $won_position;
-    }
-  }
+  // It is possible to return more winners than we have positions.
+  // In which case we'll need to have a run-off.
+  $winners = _election_get_winners_by_position($results, $positions);
 
   // NOTE: THIS IS A SIMPLE ELECTION MECHANIC. (yes. I know.)
   // Aka, he with the most votes wins.
@@ -836,7 +769,6 @@ function _election_get_winners($node, $results) {
   // for the winner to be marked with the lead position and ready to go.
   // This is not nessecarily ideal! So we should ABSOLUTELY allow for hook overrides here.
   // So that more than one voting winner may be determined.
-  drupal_alter('election_winners', $winners, $orig_results, $node);
   // To modify the election results, call hook_election_winners_alter(&$winners, $results, $node);
   return $winners;
 }
@@ -845,14 +777,27 @@ function _election_get_winners($node, $results) {
  * Helper function, given an election node figure out who the winners are.
  */
 function _election_get_ties($node, $results, $winners) {
+  $election_data = _election_get_election_by_nid($node->nid);
+  // Get position information.
+  // Easiest to look it up now, so we don't have to keep looking it up.
+  foreach ($results as $vote => $positions) {
+    foreach ($positions as $position => $candidates) {
+      $slot_count = variable_get('election_position_count_' . $position, 2);
+      $currently_held = _election_get_current_holders($position, $election_data->cycle);
+      $current_winners = array_keys($winners, $position);
+      $positions[$position] = $slot_count - count($currently_held) + count($current_winners);
+    }
+  }
+  // And organize the positions by slot value. So we can do them in order.
+  asort($positions); // Low to high.
+
   // Map components to head positions.
   $ties = array();
-  foreach ($results as $position => $candidates) {
-    $slots = variable_get('election_position_count_' . $position, 2);
+  foreach ($positions as $position => $slot_count) {
     $position_winners = array_keys($winners, $position);
     // If the position has more winners or less winners than it needs.
-    // We will have runoffs if don't have EXACTLY the numbers we need.   
-    if ($slots != count($position_winners)) {
+    // We will have runoffs if don't have EXACTLY the numbers we need. 
+    if ($slot_count != count($position_winners)) {
       $hn_position = get_field_human_name($position);
       if ($hn_position) {
         $ties[] = $hn_position; // ALL candidates go up for the re-election vote, no need to set values here.
@@ -867,75 +812,111 @@ function _election_get_ties($node, $results, $winners) {
 /**
  * Recursive function, determine who the winner is.
  */
-function _election_get_winners_by_position($results, $positions) {
+function _election_get_winners_by_position($results, $positions, $winners = array()) {
+  // If we're out of results to process, then we're done. Return.
+  if (empty($results)) {
+    return array();
+  }
 
-  // Now we check for any results across the 'line' of accepted positions.
-  // If there are clear accepted spots for the slots given, we clear all other
-  // positions for that user and accept the given position winners.
-  // This does mean, by sheer accident of position, that preference is given
-  // For the first position in the list if there is otherwise two clear positions.
-  // This also means we need to reorder after EACH clear of a position.
-  foreach ($positions as $position => $slots) {
+  // Winners keeps track of when and where we processed a row, so we can eventually
+  // Lock in any known positions based on available slots. It starts as an empty array.
+  // Winners is an assoc array (position -> people).
+  if (empty($winners)) {
+    $winners = array();
+  }
 
-    // First figure out if this position is a clearly defined one or not.
-    $candidates = $results[$position];
-    // If we have more slots than candidates then ANY vote is a win.
-    $least_winning_vote = isset($candidates[$slots - 1]) ? $candidates[$slots - 1] : 1;
-    $possible_winners = $possible_losers = array();
-    foreach ($candidates as $uid => $vote_got) {
-      // Only count non-zero votes for this. If zero, then anywhere else is better.
-      if ($vote_got >= $least_winning_vote && $vote_got > 0) {
-        $possible_winners[] = $uid;
-      }
-      else {
-        $possible_losers[] = $uid;
+  // Now we start assigning positions from the top vote down.
+  // We only process ONE vote assignment at a time, and it's possible to not have any
+  // winners for this loop. We'll be 'eating' through them though.
+  $top_vote = array_shift($results); // TOP votes. This shrinks the results array as well.
+  $added_this_round = array();
+  // Starting with the smallest set of slots available - prioritze.
+  foreach ($positions as $position => $slot_count) {
+    // If we still have open slots for this position.
+    $won_slot = count(array_keys($winners, $position));
+
+    if ($won_slot < $slot_count) {
+      // Now we check to see if there are any candidates in the position we're checking.
+      if (!empty($top_vote[$position])) {
+        // Process each position winner for this position.
+        // Grab each winner and put them in the position.
+        // If this makes us run over the slot, that's ok.
+        // If we note that we're running over, mark them for the waitlist.
+        foreach ($top_vote[$position] as $winner) {
+          // Place the winner in position if the winner isn't already set.
+          // The winner may later be moved to a different position,
+          // Or this position may actually be in a tie situation.
+          if (empty($winners[$winner])) {
+            $winners[$winner] = $position;
+            $added_this_round[$winner] = $position;
+          }
+          else {
+            // Only place this user in position if the other position is over full.
+            // Cause that way they can get off the waitlist and get into a position.
+            $old_position = $winners[$winner];     
+            $old_won_slot = count(array_keys($winners, $old_position));
+            if ($old_won_slot > $positions[$old_position]) {
+              $winners[$winner] = $position;
+              $added_this_round[$winner] = $position;
+            }
+          }
+          // Remove the winner from all voting positions Lower than this one in votes.
+          // So anything where the winner is still in $results.
+          foreach ($results as $result_vote => $result_positions) {
+            foreach ($result_positions as $result_position => $result_candidates) {
+              // Remove our winning candidate from the positions.
+              if (!empty($results[$result_vote][$result_position][$winner])) {
+                unset($results[$result_vote][$result_position][$winner]);
+              }
+              // No more candidate on this position, remove this.
+              if (empty($results[$result_vote][$result_position])) {
+                unset($results[$result_vote][$result_position]);
+              }
+            }
+            // No more positions, remove this.
+            if (empty($results[$result_vote])) {
+              unset($results[$result_vote]);
+            }
+          } // End looking over all results to yank lower wins.
+          // Now that we've cleared out any sub values, back to the top!
+        } // End processing of this position.
+      } // End if (!empty($top_vote[$position])).
+    } // End if ($won_slot < $slot_count).
+    // Else we're all full up for this position already, so we can skip it.
+  } // End checking each position by smallest to largest.
+
+  // If we still have anything in results, do it again.
+  // Pass winners down in a complete form, so any sub-votes are properly reviewed.
+  if (!empty($results)) {
+    $sub_winners = _election_get_winners_by_position($results, $positions, $winners);
+    $winners = array_replace($winners, $sub_winners);
+  }
+
+  // But before we pass it back up.
+  // Check each position again, to see if we just added more people than the slot can
+  // hold. If we did, we need to yank them back out.
+  // Starting with the smallest set of slots available - prioritze.
+  foreach ($positions as $position => $slot_count) {
+    // If we have more won slots than open slots for this position.
+    $curr_winners = array_keys($winners, $position);
+    $won_slot = count($curr_winners);
+    if ($won_slot > $slot_count) {
+      // We have to (sadly) remove the winners from the positions.
+      $tied_winners = array_keys($added_this_round, $position);
+      foreach ($tied_winners as $tied_winner) {
+        unset($winners[$tied_winner]);
       }
     }
-
-    // We may have less than or just enough winners for a specific position.
-    if ($slots <= count($possible_winners)) {
-      // Modify the lesser results of this position to lock in values.
-      foreach ($possible_losers as $uid) {
-        $results[$position][$uid] = 0;
-      }
-      // At this point the site doesn't care if these people are in one role or the other
-      // role. But since they can't have both, they'll have to go with the one that's
-      // in more need of them than the others. So we clear that user in all other positions.
-      // This is why we are looking at narrow slots first.
-      foreach ($positions as $other_position => $other_slots) {
-        if ($other_position != $position) {
-          // Modify the results of other positions.
-          foreach ($possible_winners as $uid) {
-            $results[$other_position][$uid] = 0;
-          }
-        }
-      }
-      // But now that we have changed the content of results.
-      // We have to start over again from the smallest to largets, but we can
-      // safely ignore the one we just processed. We have to order it first.
-      foreach ($results as $this_position => $candidates) {
-        // Now we want to preserve the associated key though, uid => #votes.
-        // Just sort by # of votes - so an associated, reverse sort.
-        arsort($candidates);
-        $results[$this_position] = $candidates;
-      }
-      // Figure out the positions left to go.
-      $child_positions = $positions;
-      unset($child_positions[$position]);
-      // Use positions as the control. Once we're out of positions to sort, we're done.
-      if (!empty($child_positions)) {
-        $results = _election_get_winners_by_position($results, $child_positions);
-      }
-    } // End if slot has enough children.
-
-  } // End processing for each position.
+  }
 
   // Ok, at this point we have clipped and consolidated as much of the results as we can.
-  return $results;
+  return $winners;
 }
 
 /**
  * Helper function, summarize election results in a readable array.
+ * We're going to return results in the following order:
+ * [VOTE-COUNT][POSITION][USER] where position is sorted by slot size. Small to large.
  */
 function _election_get_results($node) {
   // Include the webform file we need.
@@ -947,7 +928,7 @@ function _election_get_results($node) {
   $results = array();
   // Find out if we're doing doubles or not.
   $doubles = variable_get('election_positions_redundant', TRUE);
-  if (!empty($submissions)) { 
+  if (!empty($submissions)) {
     // And process the submissions for results.
     // If we are in doublemode we put both sets of results in the 
     // same bucket so that the top two elected from both A and B win.
@@ -956,7 +937,7 @@ function _election_get_results($node) {
       foreach ($submission->data as $cid => $submission_answer) {
         // Process each position for each compontent.
         $component = $node->webform['components'][$cid];
-        if ($component['form_key'] != 'additional_comments') {
+        if ($component['form_key'] != 'additional_comments' && strpos($component['form_key'], '_not_position') === FALSE) {
           // Get the position key name.
           // If we're in double mode here, this will return a '_X' value.
           $position = ($doubles) ? substr( $component['form_key'], 0, -2) : $component['form_key'];
@@ -980,7 +961,7 @@ function _election_get_results($node) {
         // If we're in double mode here, this will return a '_X' value.
         $position = ($doubles) ? substr( $component['form_key'], 0, -2) : $component['form_key'];
         // Enter a zero vote for user 1 to make sure position is available.
-        $results[$position][1] = 0;
+        $results[$position] = array();
       }
     }
   }
@@ -1000,7 +981,19 @@ function _election_get_results($node) {
       unset($results[$position][0]); // Candidate 'zero' is no-vote-cast.
     }
   }
-  return $results;
+
+  // Reprocess the voting to get the results in the format we want.
+  $final_results = array();
+  foreach ($results as $position => $candidates) {
+    // Make sure the position exists.
+    $final_results[0][$position] = array();
+    foreach ($candidates as $uid => $votes) {
+      $final_results[$votes][$position][$uid] = $uid;
+    }
+  }
+  // And order the votes top to least.
+  krsort($final_results);
+  return $final_results;
 }
 
 /**
