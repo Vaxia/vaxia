@@ -934,6 +934,9 @@ function _election_get_results($node) {
     // same bucket so that the top two elected from both A and B win.
     foreach ($submissions as $sid => $submission) {
       // Process each submission.
+      // Track positions for winners for each submission.
+      // This way we can avoid someone stuffing extra votes for the same person.
+      $these_position_winners = array();
       foreach ($submission->data as $cid => $submission_answer) {
         // Process each position for each compontent.
         $component = $node->webform['components'][$cid];
@@ -943,11 +946,16 @@ function _election_get_results($node) {
           $position = ($doubles) ? substr( $component['form_key'], 0, -2) : $component['form_key'];
           // Get the user. NOTE this is the user's name, not uid.
           $voted_for = $submission_answer['value'][0];
-          $user = isset($users[$voted_for]) ? $users[$voted_for] : user_load_by_name($voted_for);
-          $users[$voted_for] = $user; // Save the user so we don't look them up repeatedly.
-          // Add to the results table.
-          $results[$position][$user->uid] = !empty($results[$position][$user->uid]) ?
-            $results[$position][$user->uid] + 1 : 1;
+          // Check if the user already voted for this candidate for this position. No ballot stuffing.
+          if (empty($these_position_winners[$position][$voted_for])) { 
+            $user = isset($users[$voted_for]) ? $users[$voted_for] : user_load_by_name($voted_for);
+            $users[$voted_for] = $user; // Save the user so we don't look them up repeatedly.
+            // Add to the results table.
+            $results[$position][$user->uid] = !empty($results[$position][$user->uid]) ?
+              $results[$position][$user->uid] + 1 : 1;
+            // And mark this submission set this person for this position.
+            $these_position_winners[$position][$voted_for] = $voted_for;
+          }
         }
       }
     }
