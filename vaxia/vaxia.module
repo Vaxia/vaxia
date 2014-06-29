@@ -296,20 +296,35 @@ function vaxia_process_comment(&$variables) {
   // Redo the submitted field for RPG chatrooms only.
   $variables['submitted'] = t('!username </br> !datetime',
     array('!username' => $variables['author'], '!datetime' => $variables['created']));
-  // Now check for user pictures again.
+
+  // Now check for specific character values. Art, post color, etc.
   // Good thing node_load caches else calling this for Every Comment would get really ugly.
   if (isset($comment->field_comment_character[$lang][0]['nid'])) {
     $character = node_load($comment->field_comment_character[$lang][0]['nid']);
     if (isset($character->nid)) {
+
+      // Set character comment color.
+      if (empty($comment->field_comment_color[$lang][0]['value']) && isset($character->field_post_color[$lang][0]['value'])) {
+        $color = strtolower(trim($character->field_post_color[$lang][0]['value']));
+        $color = PREG_REPLACE("/[^0-9a-z]/i", '', $color); // Filter non-alphanumeric out.
+        $color_codes = array('aqua', 'black', 'blue', 'fuchsia', 'gray', 'green', 'lime', 'maroon',
+          'navy', 'olive', 'purple', 'red', 'silver', 'teal', 'white', 'yellow');
+        if (!in_array($color, $color_codes)) {
+          $color = '#'. $color;
+        }
+        $variables['content']['comment_body']['#prefix'] = '<span style="color:' . $color . '">';
+        $variables['content']['comment_body']['#suffix'] = '</span>';
+      }
+
+      // Set character name, titles.
       $character_name = $character->title;
-      // Set character title to name.
       if (isset($character->field_titles[$lang][0]['value'])) {
         $character_name = $character->field_titles[$lang][0]['value'] .' ' . $character_name;
       } 
-      // Set character last name.
       if (isset($character->field_last_name[$lang][0]['value'])) {
         $character_name .= ' ' . $character->field_last_name[$lang][0]['value'];
       }
+
       // Set character description.
       $char_desc = isset($character->field_description[$lang][0]['value']) ? $character->field_description[$lang][0]['value'] : '';
       $char_desc = check_plain($char_desc);
@@ -317,12 +332,14 @@ function vaxia_process_comment(&$variables) {
         $char_desc = drupal_substr($char_desc, 0, 600) . '...';
       }
       $options = array('attributes' => array('title' => $char_desc));
+
       // Update the submission variables with name, description information.
       $variables['submitted'] = t('!username </br> !datetime',
         array(
           '!username' => l($character_name, 'node/' . $character->nid, $options),
           '!datetime' => $variables['created'])
         );
+
       // Now work on the character art display. Setup the link options for the character pic.
       $alt = t('Presence: @pre, Charisma: @char, Appearance: @app',
         array('@pre' => $character->field_presence[$lang][0]['value'],
@@ -349,7 +366,8 @@ function vaxia_process_comment(&$variables) {
           $character->field_artwork_image[$lang][0]['fid'], $character->title, $alt),
             'node/' . $character->nid, $link_options);
       }
-      // And done, the art is set for the comment.
+
+      // And done, the comment is set for the character.
     } // End character exists.
   } // End character on comment.
 }
