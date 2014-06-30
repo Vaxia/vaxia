@@ -611,7 +611,7 @@ function _election_setup_election_proposal_components($new_election, $positions,
             $component = array();
             $component['nid'] = $new_election->nid;
             $component['pid'] = 0;
-            $component['form_key'] = $field_key_name . '_not_position'; // Use the position fieldname as the key.
+            $component['form_key'] = $field_key_name . '_' . $alphabet[$i] . '_not_position'; // Use the position fieldname as the key.
             $component['name'] = $position . ' ' . strtoupper($alphabet[$i]);
             $component['type'] = 'markup';
             $component['mandatory'] = 0;
