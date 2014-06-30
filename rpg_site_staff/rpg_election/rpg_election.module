@@ -36,49 +36,6 @@ function rpg_election_menu() {
 }
 
 /**
- * Implements hook_rules_data_info().
- */
-function rpg_election_rules_data_info() {
-  return array(
-    'list<data>' => array(
-      'label' => t('lists of paired data'),
-      'parent' => 'list', 
-      'ui class' => 'RulesDataUIListText',
-      'wrap' => TRUE,
-      'group' => t('Assoc array', array(), array('context' => 'data_types')),
-      'property info' => array(
-        'key' => array(
-          'type' => 'text', 
-          'description' => t('The key for this position of the array.'), 
-          'label' => t('Key'),
-        ), 
-        'value' => array(
-          'type' => 'text', 
-          'description' => t('The value for this position of the array.'), 
-          'label' => t('Value'),
-        ),
-      ),
-    ),
-  );
-}
-
-/** 
- * Given an array, modify the data to the right formats.
- */
-function _election_rules_prepare_data_array($this_array) {
-  $ret_array = array();
-  $this_array = (array) $this_array;
-  foreach ($this_array as $key => $value) {
-    $ret_array[] = array(
-      'key' => $key,
-      'value' => $value,
-    );
-  }
-drupal_set_message(print_r($ret_array,1));
-  return $ret_array();
-}
-
-/**
  * Implements hook_rules_event_info().
  */
 function rpg_election_rules_event_info() {
@@ -102,11 +59,15 @@ function rpg_election_rules_event_info() {
             'label' => t('Election'),
         ),
         'winners' => array(
-            'type' => 'list<data>',
+            'type' => 'list<integer>',
             'label' => t('Winners'),
         ),
+        'winner_strings' => array(
+            'type' => 'list<text>',
+            'label' => t('Winner strings'),
+        ),
         'ties' => array(
-            'type' => 'list<data>',
+            'type' => 'list<text>',
             'label' => t('Ties'),
         ),
       ),
@@ -120,11 +81,15 @@ function rpg_election_rules_event_info() {
             'label' => t('Election runoff'),
         ),
         'winners' => array(
-            'type' => 'list<data>',
+            'type' => 'list<integer>',
             'label' => t('Winners'),
         ),
+        'winner_strings' => array(
+            'type' => 'list<text>',
+            'label' => t('Winner strings'),
+        ),
         'ties' => array(
-            'type' => 'list<data>',
+            'type' => 'list<text>',
             'label' => t('Ties'),
         ),
       ),
@@ -141,6 +106,22 @@ function rpg_election_rules_event_info() {
     ),
   );
   return $items;
+}
+
+/** 
+ * Helper function, Given an array_keys modify the data for display in rules.
+ */
+function _election_rules_prepare_winner_strings($this_array) {
+  // Cast to the right data type.
+  $this_array = (array) $this_array;
+  // Prepare array of strings.
+  $ret_array = array();
+  foreach ($this_array as $key => $value) {
+    $user = user_load($key);
+    $position = get_field_human_name($value);
+    $ret_array[] = t('@user has been elected to @position.', array('@user' => $user->name, '@position' => $position));
+  }
+  return $ret_array;
 }
 
 /**
@@ -770,7 +751,7 @@ function _election_election_check_close($node) {
       _election_trigger_election(t('Site Run-off Election'), $ties, $election, TRUE);
       // If we have rules, trigger it.
       if (function_exists('rules_invoke_event')) {
-        rules_invoke_event('open_runoff_election', $node, _election_rules_prepare_data_array($winners), _election_rules_prepare_data_array($ties));
+        rules_invoke_event('open_runoff_election', $node, array_keys($winners), _election_rules_prepare_winner_strings($winners), $ties);
       }
     }
 
@@ -778,7 +759,7 @@ function _election_election_check_close($node) {
     _election_update_election($election);
     // If we have rules, trigger it.
     if (function_exists('rules_invoke_event')) {
-      rules_invoke_event('close_election', $node, _election_rules_prepare_data_array($winners), _election_rules_prepare_data_array($ties));
+      rules_invoke_event('close_election', $node, array_keys($winners), _election_rules_prepare_winner_strings($winners), $ties);
     }
   }
 }
@@ -1184,7 +1165,7 @@ function _election_update_election($election) {
     $data = array_merge( (array) $old_data, $data);
     $data['positions'] = serialize($data['positions']);
     $data['winners'] = serialize($data['winners']);
-    drupal_write_record('election_nodes', $data, 'eid');
+    drupal_write_record('rpg_election_nodes', $data, 'eid');
   }
   else {
     // New rpg_election post. Set the new cycle and open time.
@@ -1197,7 +1178,7 @@ function _election_update_election($election) {
     $data['positions'] = serialize($data['positions']);
     $data['winners'] = serialize($data['winners']);
     // Write it.
-    drupal_write_record('election_nodes', $data);
+    drupal_write_record('rpg_election_nodes', $data);
   }
   // Data returned on pointer, but just in case.
   return (object) $data;
@@ -1280,7 +1261,7 @@ function _election_mark_winner($winner) {
     return FALSE; // We must have data for this rpg_election data.
   }
   // New rpg_election post. Set the new cycle and open time.
-  drupal_write_record('election_winners', $data);
+  drupal_write_record('rpg_election_winners', $data);
   // Data returned on pointer, but just in case.
   return (object) $data;
 }
