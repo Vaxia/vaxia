@@ -256,6 +256,11 @@ function vaxia_character_sheet_field_info() {
         'other' => DISABLE_SHEET, // So we don't want this value getting meddled with.
       ),
     ),
+    'field_languages' => array(
+      'permissions' => array(
+        'owner' => DISABLE_SHEET,
+      ),
+    ),
     'field_property' => array(
       'permissions' => array(
         'owner' => DISABLE_SHEET,
