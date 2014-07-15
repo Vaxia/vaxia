@@ -21,7 +21,6 @@ dependencies[] = options
 dependencies[] = php
 dependencies[] = quiz_rules
 dependencies[] = rules
-dependencies[] = sh_test
 dependencies[] = strongarm
 dependencies[] = taxonomy
 dependencies[] = user_stats
