@@ -148,8 +148,8 @@ function department_form_webform_components_form_alter(&$form, &$form_state, $fo
   }
   // Now with the mapping in place, rename the roles to the right departments.
   // And remove anything not in a listed department or all role.
-  $role_options = $form['role_control']['roles']['#options'];
-  if (array($role_options)) {
+  if (!empty($form['role_control']['roles']['#options'])) {
+    $role_options = $form['role_control']['roles']['#options'];
     foreach ($role_options as $rid => $role_name) {
       if (in_array($rid, array_keys($human_role_names))) {
         $role_options[$rid] = webform_tt('user:rid:' . $rid . ':name', $human_role_names[$rid]);
