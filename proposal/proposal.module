@@ -225,7 +225,8 @@ function proposal_webform_components_form($variables) {
   if (strpos($current_path, 'webform') !== FALSE) {
     $node = node_load(arg(1));
     if ($node->type != 'proposal') {
-      return theme_webform_components_form($variables);
+        module_load_include('inc', 'webform', 'includes/webform.components');
+        return theme_webform_components_form($variables);
     }
   }
   // Modify the proposal theme display as follows:
@@ -374,6 +375,7 @@ function proposal_webform_results_table($variables) {
   $node = $variables['node'];
   // If we're not looking at a proposal, bail out with the normal view.
   if ($node->type != 'proposal') {
+    module_load_include('inc', 'webform', 'includes/webform.report');
     return theme_webform_results_table($variables);
   }
 
@@ -434,6 +436,7 @@ function proposal_webform_results_analysis($variables) {
   $node = $variables['node'];
   // If we're not looking at a proposal, bail out with the normal view.
   if ($node->type != 'proposal') {
+    module_load_include('inc', 'webform', 'includes/webform.report');
     return theme_webform_results_analysis($variables);
   }
   $data = $variables['data'];
