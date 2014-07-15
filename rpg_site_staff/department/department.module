@@ -158,8 +158,8 @@ function department_form_webform_components_form_alter(&$form, &$form_state, $fo
         unset($role_options[$rid]);
       }
     }
+    $form['role_control']['roles']['#options'] = $role_options;
   }
-  $form['role_control']['roles']['#options'] = $role_options;
   $form['role_control']['roles']['#title'] = t('Departments that can vote on this proposal');
   // And unset the disallowed, we're not using that if we're using departments.
   $form['role_control']['disallowed_fieldset']['#access'] = FALSE;
