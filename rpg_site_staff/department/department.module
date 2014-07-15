@@ -159,10 +159,10 @@ function department_form_webform_components_form_alter(&$form, &$form_state, $fo
       }
     }
     $form['role_control']['roles']['#options'] = $role_options;
+    $form['role_control']['roles']['#title'] = t('Departments that can vote on this proposal');
+    // And unset the disallowed, we're not using that if we're using departments.
+    $form['role_control']['disallowed_fieldset']['#access'] = FALSE;
   }
-  $form['role_control']['roles']['#title'] = t('Departments that can vote on this proposal');
-  // And unset the disallowed, we're not using that if we're using departments.
-  $form['role_control']['disallowed_fieldset']['#access'] = FALSE;
 }
 
 // If vacation exists, modify that form to make sure that elected department members
