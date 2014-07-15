@@ -254,7 +254,7 @@ function proposal_webform_components_form($variables) {
 
     // Process each component to add to rows.
     foreach ($component_tree['children'] as $cid => $component) {
-      _webform_components_form_rows($node, $cid, $component, 0, $form, $rows);
+      _proposal_webform_components_form_rows($node, $cid, $component, 0, $form, $rows);
     }
   }
   else {
@@ -274,7 +274,7 @@ function proposal_webform_components_form($variables) {
 /**
  * Helper function to build out component rows.
  */
-function _webform_components_form_rows($node, $cid, $component, $level, &$form, &$rows) {
+function _proposal_webform_components_form_rows($node, $cid, $component, $level, &$form, &$rows) {
   // Remove individual titles from the mandatory and weight fields.
   unset($form['components'][$cid]['mandatory']['#title']);
   unset($form['components'][$cid]['pid']['#title']);
