@@ -11,6 +11,361 @@ function vaxia_views_default_views() {
   $export = array();
 
   $view = new view();
+  $view->name = 'character_xp_flavors';
+  $view->description = 'Character XP Flavors';
+  $view->tag = 'default';
+  $view->base_table = 'vaxia_xp_type_totals';
+  $view->human_name = 'Character XP Flavors';
+  $view->core = 7;
+  $view->api_version = '3.0';
+  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Master */
+  $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['title'] = 'Character XP Flavors';
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '9';
+  $handler->display->display_options['style_plugin'] = 'table';
+  $handler->display->display_options['style_options']['columns'] = array(
+    'nid' => 'nid',
+    'php_1' => 'php_1',
+    'php_2' => 'php_2',
+    'php' => 'php',
+    'expression_1' => 'expression_1',
+    'xp' => 'xp',
+  );
+  $handler->display->display_options['style_options']['default'] = '-1';
+  $handler->display->display_options['style_options']['info'] = array(
+    'nid' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'php_1' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'php_2' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'php' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'expression_1' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'xp' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+  );
+  /* Relationship: Vaxia type xp: Vaxia sheet xp node */
+  $handler->display->display_options['relationships']['nid']['id'] = 'nid';
+  $handler->display->display_options['relationships']['nid']['table'] = 'vaxia_xp_type_totals';
+  $handler->display->display_options['relationships']['nid']['field'] = 'nid';
+  $handler->display->display_options['relationships']['nid']['required'] = TRUE;
+  /* Field: Content: Nid */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'node';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['relationship'] = 'nid';
+  $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
+  /* Field: Global: PHP */
+  $handler->display->display_options['fields']['php_1']['id'] = 'php_1';
+  $handler->display->display_options['fields']['php_1']['table'] = 'views';
+  $handler->display->display_options['fields']['php_1']['field'] = 'php';
+  $handler->display->display_options['fields']['php_1']['label'] = 'Total XP';
+  $handler->display->display_options['fields']['php_1']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php_1']['php_value'] = 'static $nid_hxp = -1;
+if ($nid_hxp == -1) {
+$nid_hxp = 0;
+$hxp = db_query(\'SELECT SUM(xp) AS hxp FROM {character_sheet_xp} WHERE type=\\\'spent_xp\\\' AND nid = :nid\', array(\':nid\' => $row->nid));
+foreach($hxp as $this_xp) {
+  $nid_hxp = floor($this_xp->hxp);
+} // End foreach.
+} // End if.
+return $nid_hxp;';
+  $handler->display->display_options['fields']['php_1']['use_php_click_sortable'] = '0';
+  $handler->display->display_options['fields']['php_1']['php_click_sortable'] = '';
+  /* Field: Global: PHP */
+  $handler->display->display_options['fields']['php_2']['id'] = 'php_2';
+  $handler->display->display_options['fields']['php_2']['table'] = 'views';
+  $handler->display->display_options['fields']['php_2']['field'] = 'php';
+  $handler->display->display_options['fields']['php_2']['label'] = 'Transfer XP';
+  $handler->display->display_options['fields']['php_2']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php_2']['php_value'] = 'static $nid_txp = -1;
+if ($nid_txp == -1) {
+$nid_txp = 0;
+$txp = db_query(\'SELECT SUM(xp) AS txp FROM {vaxia_xp_type_totals} WHERE type IN(\\\'transfer\\\', \\\'site-award\\\') AND nid = :nid\', array(\':nid\' => $row->nid));
+foreach($txp as $this_xp) {
+  $nid_txp = floor($this_xp->txp);
+} // End foreach.
+} // End if.
+return $nid_txp;';
+  $handler->display->display_options['fields']['php_2']['use_php_click_sortable'] = '0';
+  $handler->display->display_options['fields']['php_2']['php_click_sortable'] = '';
+  /* Field: Global: PHP */
+  $handler->display->display_options['fields']['php']['id'] = 'php';
+  $handler->display->display_options['fields']['php']['table'] = 'views';
+  $handler->display->display_options['fields']['php']['field'] = 'php';
+  $handler->display->display_options['fields']['php']['label'] = 'Flavor XP';
+  $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php']['php_value'] = 'static $nid_fxp = -1;
+if ($nid_fxp == -1) {
+$nid_fxp = 0;
+$fxp = db_query(\'SELECT SUM(xp) AS fxp FROM {vaxia_xp_type_totals} WHERE type NOT IN(\\\'transfer\\\', \\\'site-award\\\') AND nid = :nid\', array(\':nid\' => $row->nid));
+foreach($fxp as $this_xp) {
+  $nid_fxp = floor($this_xp->fxp);
+} // End foreach.
+} // End if.
+return $nid_fxp;';
+  $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
+  $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
+  /* Field: Global: Math expression */
+  $handler->display->display_options['fields']['expression_1']['id'] = 'expression_1';
+  $handler->display->display_options['fields']['expression_1']['table'] = 'views';
+  $handler->display->display_options['fields']['expression_1']['field'] = 'expression';
+  $handler->display->display_options['fields']['expression_1']['label'] = 'Other XP';
+  $handler->display->display_options['fields']['expression_1']['precision'] = '0';
+  $handler->display->display_options['fields']['expression_1']['expression'] = '[php_1] - [php_2] - [php]';
+  /* Field: Vaxia type xp: Vaxia sheet xp node */
+  $handler->display->display_options['fields']['xp']['id'] = 'xp';
+  $handler->display->display_options['fields']['xp']['table'] = 'vaxia_xp_type_totals';
+  $handler->display->display_options['fields']['xp']['field'] = 'xp';
+  $handler->display->display_options['fields']['xp']['label'] = 'XP amount';
+  $handler->display->display_options['fields']['xp']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['xp']['separator'] = '';
+  /* Sort criterion: Vaxia type xp: Vaxia sheet xp type */
+  $handler->display->display_options['sorts']['type']['id'] = 'type';
+  $handler->display->display_options['sorts']['type']['table'] = 'vaxia_xp_type_totals';
+  $handler->display->display_options['sorts']['type']['field'] = 'type';
+  /* Contextual filter: Content: Nid */
+  $handler->display->display_options['arguments']['nid']['id'] = 'nid';
+  $handler->display->display_options['arguments']['nid']['table'] = 'node';
+  $handler->display->display_options['arguments']['nid']['field'] = 'nid';
+  $handler->display->display_options['arguments']['nid']['relationship'] = 'nid';
+  $handler->display->display_options['arguments']['nid']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['nid']['default_argument_type'] = 'raw';
+  $handler->display->display_options['arguments']['nid']['default_argument_options']['index'] = '1';
+  $handler->display->display_options['arguments']['nid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['nid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['nid']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['nid']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['nid']['validate']['type'] = 'node';
+  $handler->display->display_options['arguments']['nid']['validate_options']['types'] = array(
+    'character_sheet' => 'character_sheet',
+  );
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['relationship'] = 'nid';
+  $handler->display->display_options['filters']['status']['value'] = '1';
+  /* Filter criterion: Workflow: Current state */
+  $handler->display->display_options['filters']['sid']['id'] = 'sid';
+  $handler->display->display_options['filters']['sid']['table'] = 'workflow_node';
+  $handler->display->display_options['filters']['sid']['field'] = 'sid';
+  $handler->display->display_options['filters']['sid']['relationship'] = 'nid';
+  $handler->display->display_options['filters']['sid']['value'] = array(
+    4 => '4',
+  );
+  /* Filter criterion: Vaxia type xp: Vaxia sheet xp type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'vaxia_xp_type_totals';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['operator'] = 'word';
+  $handler->display->display_options['filters']['type']['value'] = 'charismatic evil good smart warrior mage';
+  $handler->display->display_options['filters']['type']['expose']['operator_id'] = 'type_op';
+  $handler->display->display_options['filters']['type']['expose']['label'] = 'Vaxia sheet xp type';
+  $handler->display->display_options['filters']['type']['expose']['operator'] = 'type_op';
+  $handler->display->display_options['filters']['type']['expose']['identifier'] = 'type';
+  $handler->display->display_options['filters']['type']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    8 => 0,
+    19 => 0,
+    12 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    9 => 0,
+    20 => 0,
+    14 => 0,
+    25 => 0,
+    21 => 0,
+    3 => 0,
+    11 => 0,
+    22 => 0,
+    23 => 0,
+    24 => 0,
+    26 => 0,
+    27 => 0,
+    28 => 0,
+  );
+
+  /* Display: Character Flavor Percents */
+  $handler = $view->new_display('block', 'Character Flavor Percents', 'block');
+  $handler->display->display_options['display_description'] = 'Character Flavor Percents';
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['content'] = '<style>
+.view-character-xp-flavors table{width:40%;float:left;margin-left:5%;}
+</style>';
+  $handler->display->display_options['header']['area']['format'] = 'full_html';
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Nid */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'node';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['relationship'] = 'nid';
+  $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
+  /* Field: Global: PHP */
+  $handler->display->display_options['fields']['php']['id'] = 'php';
+  $handler->display->display_options['fields']['php']['table'] = 'views';
+  $handler->display->display_options['fields']['php']['field'] = 'php';
+  $handler->display->display_options['fields']['php']['label'] = 'Flavor XP';
+  $handler->display->display_options['fields']['php']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php']['php_value'] = 'static $nid_fxp = -1;
+if ($nid_fxp == -1) {
+$nid_fxp = 0;
+$fxp = db_query(\'SELECT SUM(xp) AS fxp FROM {vaxia_xp_type_totals} WHERE type NOT IN(\\\'transfer\\\', \\\'site-award\\\') AND nid = :nid\', array(\':nid\' => $row->nid));
+foreach($fxp as $this_xp) {
+  $nid_fxp = floor($this_xp->fxp);
+} // End foreach.
+} // End if.
+return $nid_fxp;';
+  $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
+  $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
+  /* Field: Vaxia type xp: Vaxia sheet xp node */
+  $handler->display->display_options['fields']['xp']['id'] = 'xp';
+  $handler->display->display_options['fields']['xp']['table'] = 'vaxia_xp_type_totals';
+  $handler->display->display_options['fields']['xp']['field'] = 'xp';
+  $handler->display->display_options['fields']['xp']['exclude'] = TRUE;
+  /* Field: Global: Math expression */
+  $handler->display->display_options['fields']['expression']['id'] = 'expression';
+  $handler->display->display_options['fields']['expression']['table'] = 'views';
+  $handler->display->display_options['fields']['expression']['field'] = 'expression';
+  $handler->display->display_options['fields']['expression']['label'] = '';
+  $handler->display->display_options['fields']['expression']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['expression']['set_precision'] = TRUE;
+  $handler->display->display_options['fields']['expression']['precision'] = '2';
+  $handler->display->display_options['fields']['expression']['suffix'] = '%';
+  $handler->display->display_options['fields']['expression']['expression'] = '([xp] / [php]) * 100';
+  /* Field: Vaxia type xp: Vaxia sheet xp type */
+  $handler->display->display_options['fields']['type']['id'] = 'type';
+  $handler->display->display_options['fields']['type']['table'] = 'vaxia_xp_type_totals';
+  $handler->display->display_options['fields']['type']['field'] = 'type';
+  $handler->display->display_options['fields']['type']['label'] = '';
+  $handler->display->display_options['fields']['type']['element_label_colon'] = FALSE;
+  $handler->display->display_options['block_description'] = 'Character XP Flavors';
+
+  /* Display: Character XP Breakdown */
+  $handler = $view->new_display('block', 'Character XP Breakdown', 'block_1');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Character XP Breakdown';
+  $handler->display->display_options['display_description'] = 'Character XP Breakdown';
+  $handler->display->display_options['defaults']['pager'] = FALSE;
+  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '1';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Nid */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'node';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['relationship'] = 'nid';
+  $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
+  /* Field: Global: PHP */
+  $handler->display->display_options['fields']['php_1']['id'] = 'php_1';
+  $handler->display->display_options['fields']['php_1']['table'] = 'views';
+  $handler->display->display_options['fields']['php_1']['field'] = 'php';
+  $handler->display->display_options['fields']['php_1']['label'] = 'Total XP';
+  $handler->display->display_options['fields']['php_1']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php_1']['php_value'] = 'static $nid_hxp = -1;
+if ($nid_hxp == -1) {
+$nid_hxp = 0;
+$hxp = db_query(\'SELECT SUM(xp) AS hxp FROM {character_sheet_xp} WHERE type=\\\'spent_xp\\\' AND nid = :nid\', array(\':nid\' => $row->nid));
+foreach($hxp as $this_xp) {
+  $nid_hxp = floor($this_xp->hxp);
+} // End foreach.
+} // End if.
+return $nid_hxp;';
+  $handler->display->display_options['fields']['php_1']['use_php_click_sortable'] = '0';
+  $handler->display->display_options['fields']['php_1']['php_click_sortable'] = '';
+  /* Field: Global: PHP */
+  $handler->display->display_options['fields']['php_2']['id'] = 'php_2';
+  $handler->display->display_options['fields']['php_2']['table'] = 'views';
+  $handler->display->display_options['fields']['php_2']['field'] = 'php';
+  $handler->display->display_options['fields']['php_2']['label'] = 'Transfer';
+  $handler->display->display_options['fields']['php_2']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php_2']['php_value'] = 'static $nid_txp = -1;
+if ($nid_txp == -1) {
+$nid_txp = 0;
+$txp = db_query(\'SELECT SUM(xp) AS txp FROM {vaxia_xp_type_totals} WHERE type = \\\'transfer\\\' AND nid = :nid\', array(\':nid\' => $row->nid));
+foreach($txp as $this_xp) {
+  $nid_txp = floor($this_xp->txp);
+} // End foreach.
+} // End if.
+return $nid_txp;';
+  $handler->display->display_options['fields']['php_2']['use_php_click_sortable'] = '0';
+  $handler->display->display_options['fields']['php_2']['php_click_sortable'] = '';
+  /* Field: Global: PHP */
+  $handler->display->display_options['fields']['php']['id'] = 'php';
+  $handler->display->display_options['fields']['php']['table'] = 'views';
+  $handler->display->display_options['fields']['php']['field'] = 'php';
+  $handler->display->display_options['fields']['php']['label'] = 'Flavor';
+  $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php']['php_value'] = 'static $nid_fxp = -1;
+if ($nid_fxp == -1) {
+$nid_fxp = 0;
+$fxp = db_query(\'SELECT SUM(xp) AS fxp FROM {vaxia_xp_type_totals} WHERE type NOT IN(\\\'transfer\\\', \\\'site-award\\\') AND nid = :nid\', array(\':nid\' => $row->nid));
+foreach($fxp as $this_xp) {
+  $nid_fxp = floor($this_xp->fxp);
+} // End foreach.
+} // End if.
+return $nid_fxp;';
+  $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
+  $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
+  /* Field: Global: Math expression */
+  $handler->display->display_options['fields']['expression_1']['id'] = 'expression_1';
+  $handler->display->display_options['fields']['expression_1']['table'] = 'views';
+  $handler->display->display_options['fields']['expression_1']['field'] = 'expression';
+  $handler->display->display_options['fields']['expression_1']['label'] = 'Other';
+  $handler->display->display_options['fields']['expression_1']['precision'] = '0';
+  $handler->display->display_options['fields']['expression_1']['expression'] = '[php_1] - [php_2] - [php]';
+  /* Field: Vaxia type xp: Vaxia sheet xp node */
+  $handler->display->display_options['fields']['xp']['id'] = 'xp';
+  $handler->display->display_options['fields']['xp']['table'] = 'vaxia_xp_type_totals';
+  $handler->display->display_options['fields']['xp']['field'] = 'xp';
+  $handler->display->display_options['fields']['xp']['label'] = 'XP amount';
+  $handler->display->display_options['fields']['xp']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['xp']['separator'] = '';
+  $handler->display->display_options['block_description'] = 'Character XP Breakdown';
+  $export['character_xp_flavors'] = $view;
+
+  $view = new view();
   $view->name = 'vaxia_character_sheets';
   $view->description = 'Vaxia character sheets';
   $view->tag = 'Vaxia';
