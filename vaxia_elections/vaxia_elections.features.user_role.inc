@@ -16,5 +16,11 @@ function vaxia_elections_user_default_roles() {
     'weight' => '13',
   );
 
+  // Exported role: starvation-mode-ash-approver.
+  $roles['starvation-mode-ash-approver'] = array(
+    'name' => 'starvation-mode-ash-approver',
+    'weight' => '12',
+  );
+
   return $roles;
 }
