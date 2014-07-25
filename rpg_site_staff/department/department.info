@@ -5,6 +5,7 @@ package = RPG
 php = 5.2.4
 version = 7.x-1.0
 project = department
+features[features_api][] = api:1
 dependencies[] = proposal
 dependencies[] = rpg_election
 dependencies[] = rpg_site_staff
