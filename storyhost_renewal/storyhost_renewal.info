@@ -1,0 +1,13 @@
+name = Storyhost Renewal
+description = Storyhost renewal Rules
+core = 7.x
+package = Vaxia
+version = 7.x-1.0
+project = storyhost_renewal
+dependencies[] = entity
+dependencies[] = php
+dependencies[] = quiz_rules
+dependencies[] = rules
+dependencies[] = sh_test
+dependencies[] = user_stats
+features[features_api][] = api:1
