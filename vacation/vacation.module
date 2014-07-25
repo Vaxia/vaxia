@@ -201,6 +201,8 @@ function vacation_form_user_profile_form_alter(&$form, &$form_state) {
     '#value' => $form['#user']->uid,
   );
   $vacation = _vacation_get_current_vacation_uid($form['#user']->uid);
+  $form['#vacation']['has_extra'] = $has_extra;
+  $form['#vacation']['vacation'] = $vacation;
   if ($has_extra && !$vacation) {
     // Provide element.
     $options = array(

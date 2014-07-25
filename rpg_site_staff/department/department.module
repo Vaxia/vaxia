@@ -221,8 +221,9 @@ function department_vacation_form($form, $form_state) {
   // If they're gonna be gone for more than set time or if they are retiring.
   if (isset($form['vacation'])) {
     $this_user = user_load($form['#user']->uid);
-    $vacation = _vacation_get_current_vacation_uid($form['#user']->uid);
-    if (!$vacation) {
+    $has_extra = $form['#vacation']['has_extra'];
+    $vacation = $form['#vacation']['vacation'];
+    if ($has_extra && !$vacation) {
       $elected_role = variable_get('election_role', '');
       if (in_array($elected_role, array_keys($this_user->roles))) {
         $department_members = array();
