@@ -168,7 +168,7 @@ function _items_get_type_id($type) {
 function _items_menu_ownership_access_callback($node) {
   if ($node->type == 'items') {
     global $user;
-    if (user_access('change item owner') || ($user->uid == $node->uid && 
+    if (user_access('change item owner') && ($user->uid == $node->uid && 
         (user_access('edit any items content')
           || user_access('edit own items content')))) {
       return TRUE;
