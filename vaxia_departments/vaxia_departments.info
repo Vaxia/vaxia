@@ -1,7 +1,7 @@
 name = Vaxia Departments
 description = Vaxia specific department handling
 core = 7.x
-package = Vaxi
+package = Vaxia
 version = 7.x-1.0
 project = vaxia_departments
 dependencies[] = entity
