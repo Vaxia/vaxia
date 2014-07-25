@@ -14,7 +14,7 @@ function department_schema() {}
  */
 function department_install() {
   // Bump the weight down to make sure we can modify forms after proposal.
-  db_query("UPDATE {system} SET weight = 10 WHERE name = 'department'");
+  db_query("UPDATE {system} SET weight = 20 WHERE name = 'department'");
 }
 
 /**

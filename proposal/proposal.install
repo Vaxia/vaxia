@@ -32,7 +32,10 @@ function proposal_schema() {
 /**
  * Implements hook_install().
  */
-function proposal_install() {}
+function proposal_install() {
+  // Bump the weight down to make sure we can modify forms after webform.
+  db_query("UPDATE {system} SET weight = 10 WHERE name = 'proposal'");
+}
 
 /**
  * Implements hook_uninstall().
