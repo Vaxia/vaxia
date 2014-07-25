@@ -3,8 +3,6 @@
  * @file
  * Code for the Vaxia Donations module.
  */
- 
-include_once('vaxia_donation.features.inc');
 
 /**
  * Implements hook_permission().

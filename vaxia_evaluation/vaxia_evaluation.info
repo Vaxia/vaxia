@@ -1,0 +1,14 @@
+name = Vaxia Evaluation
+description = Vaxia evaluation rules
+core = 7.x
+package = Vaxia
+version = 7.x-1.0
+project = vaxia_evaluation
+dependencies[] = entity
+dependencies[] = php
+dependencies[] = rules
+dependencies[] = workflow_rules
+features[features_api][] = api:1
+features[rules_config][] = items_notify_char_eval_re_new_char
+features[rules_config][] = items_notify_player_when_char_approved
+features[rules_config][] = items_notify_player_when_char_disapproved

@@ -1,4 +1,4 @@
-name = Vaxia Staff
+name = Vaxia RPG Staff
 description = Views and rules for Vaxia staff
 core = 7.x
 package = Vaxia
@@ -14,5 +14,3 @@ dependencies[] = rules
 dependencies[] = views
 features[ctools][] = views:views_default:3.0
 features[features_api][] = api:1
-features[rules_config][] = rules_mark_passed_system_walkthrough
-features[user_role][] = knows-the-system
