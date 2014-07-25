@@ -1,0 +1,7 @@
+name = Storyhost Duties
+description = Storyhost duty handling
+core = 7.x
+package = Vaxia
+version = 7.x-1.0
+project = storyhost_duties
+features[features_api][] = api:1
