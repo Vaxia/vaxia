@@ -286,8 +286,15 @@ function _proposal_webform_components_form_rows($node, $cid, $component, $level,
   // Create presentable rendered format.
   $rendered = webform_component_invoke($component['type'], 'render', $component);
 
+  // Grab description form element.
+  $description = isset($rendered['#description']) ? $rendered['#description'] : '';
+  $title = isset($rendered['#title']) ? $rendered['#title'] : '';
   // Disable the element.
   $rendered['#disabled'] = TRUE;
+  $rendered['#description'] = '';
+  if (!empty($description)) {
+    $rendered['#title'] = '';
+  }
   $rendered['#attributes']['disabled'] = TRUE;
   // Set a default value.
   $rendered['#value'] = !empty($component['value']) ? $component['value'] : t('Ipsum lorem...');
@@ -300,6 +307,13 @@ function _proposal_webform_components_form_rows($node, $cid, $component, $level,
   }
   // Render it.
   $rendered = drupal_render($rendered);
+  // Render description.
+  if (!empty($description)) {
+    $desc_element = array(
+      '#markup' => '<div><b>' . $title . '</b></div>' . $description,
+    );
+    $rendered = drupal_render($desc_element) . $rendered;
+  }
   $edit = $clone = $delete = '';
 
   module_load_include('inc', 'webform', 'includes/webform.report');
