@@ -97,7 +97,7 @@ function items_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '15',
+          'weight' => '16',
         ),
       ),
       'entity_type' => 'node',
@@ -364,7 +364,7 @@ function items_field_default_fields() {
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => '3',
+          'weight' => '4',
         ),
       ),
       'entity_type' => 'node',
@@ -381,7 +381,7 @@ function items_field_default_fields() {
           'display_label' => 1,
         ),
         'type' => 'options_onoff',
-        'weight' => '7',
+        'weight' => '9',
       ),
     ),
   );
@@ -435,7 +435,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '11',
+          'weight' => '7',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -460,7 +460,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '15',
+        'weight' => '11',
       ),
     ),
   );
@@ -593,7 +593,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '13',
+          'weight' => '11',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -618,7 +618,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '17',
+        'weight' => '15',
       ),
     ),
   );
@@ -672,7 +672,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '8',
+          'weight' => '14',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -697,7 +697,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '12',
+        'weight' => '18',
       ),
     ),
   );
@@ -751,7 +751,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '10',
+          'weight' => '5',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -776,7 +776,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '14',
+        'weight' => '9',
       ),
     ),
   );
@@ -829,7 +829,7 @@ function items_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '4',
+          'weight' => '5',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -933,7 +933,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '5',
+          'weight' => '8',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -958,7 +958,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '9',
+        'weight' => '12',
       ),
     ),
   );
@@ -1012,7 +1012,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '3',
+          'weight' => '4',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1037,7 +1037,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '7',
+        'weight' => '8',
       ),
     ),
   );
@@ -1091,7 +1091,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '9',
+          'weight' => '3',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1116,7 +1116,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '13',
+        'weight' => '7',
       ),
     ),
   );
@@ -1169,7 +1169,7 @@ function items_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '5',
+          'weight' => '6',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1273,7 +1273,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '6',
+          'weight' => '10',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1298,7 +1298,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '10',
+        'weight' => '14',
       ),
     ),
   );
@@ -1428,7 +1428,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '16',
+          'weight' => '12',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1453,7 +1453,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '109',
+        'weight' => '105',
       ),
     ),
   );
@@ -1580,7 +1580,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '18',
+          'weight' => '16',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1605,7 +1605,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '111',
+        'weight' => '109',
       ),
     ),
   );
@@ -1656,7 +1656,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '13',
+          'weight' => '19',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1681,7 +1681,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '106',
+        'weight' => '112',
       ),
     ),
   );
@@ -1732,7 +1732,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '15',
+          'weight' => '10',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1757,7 +1757,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '108',
+        'weight' => '103',
       ),
     ),
   );
@@ -1808,7 +1808,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '10',
+          'weight' => '13',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1833,7 +1833,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '103',
+        'weight' => '106',
       ),
     ),
   );
@@ -1884,7 +1884,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '8',
+          'weight' => '9',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1909,7 +1909,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '101',
+        'weight' => '102',
       ),
     ),
   );
@@ -1960,7 +1960,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '14',
+          'weight' => '8',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1985,7 +1985,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '107',
+        'weight' => '101',
       ),
     ),
   );
@@ -2036,7 +2036,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '11',
+          'weight' => '15',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2061,7 +2061,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '104',
+        'weight' => '108',
       ),
     ),
   );
@@ -2188,7 +2188,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '19',
+          'weight' => '18',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2213,7 +2213,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '112',
+        'weight' => '111',
       ),
     ),
   );
@@ -2264,7 +2264,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '17',
+          'weight' => '14',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2275,7 +2275,7 @@ function items_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_item_over_reflexes',
-      'label' => 'Reflexes',
+      'label' => 'Finesse',
       'required' => 0,
       'settings' => array(
         'max' => '',
@@ -2289,7 +2289,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '110',
+        'weight' => '107',
       ),
     ),
   );
@@ -2416,7 +2416,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '12',
+          'weight' => '17',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2441,7 +2441,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '105',
+        'weight' => '110',
       ),
     ),
   );
@@ -2492,7 +2492,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '9',
+          'weight' => '11',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2517,7 +2517,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '102',
+        'weight' => '104',
       ),
     ),
   );
@@ -2571,7 +2571,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '45',
+          'weight' => '41',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2596,7 +2596,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '40',
+        'weight' => '35',
       ),
     ),
   );
@@ -2675,7 +2675,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '44',
+        'weight' => '43',
       ),
     ),
   );
@@ -2729,7 +2729,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '47',
+          'weight' => '45',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2754,7 +2754,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '42',
+        'weight' => '39',
       ),
     ),
   );
@@ -2808,7 +2808,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '42',
+          'weight' => '48',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2833,7 +2833,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '37',
+        'weight' => '42',
       ),
     ),
   );
@@ -2887,7 +2887,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '44',
+          'weight' => '39',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2912,7 +2912,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '39',
+        'weight' => '33',
       ),
     ),
   );
@@ -2966,7 +2966,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '39',
+          'weight' => '42',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2991,7 +2991,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '34',
+        'weight' => '36',
       ),
     ),
   );
@@ -3045,7 +3045,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '37',
+          'weight' => '38',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -3070,7 +3070,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '31',
+        'weight' => '32',
       ),
     ),
   );
@@ -3124,7 +3124,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '43',
+          'weight' => '37',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -3149,7 +3149,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '38',
+        'weight' => '31',
       ),
     ),
   );
@@ -3203,7 +3203,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '40',
+          'weight' => '44',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -3228,7 +3228,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '35',
+        'weight' => '38',
       ),
     ),
   );
@@ -3361,7 +3361,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '48',
+          'weight' => '47',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -3386,7 +3386,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '43',
+        'weight' => '41',
       ),
     ),
   );
@@ -3440,7 +3440,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '46',
+          'weight' => '43',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -3451,7 +3451,7 @@ function items_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_item_pen_reflexes',
-      'label' => 'Reflexes',
+      'label' => 'Finesse',
       'required' => 0,
       'settings' => array(
         'max' => '',
@@ -3465,7 +3465,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '41',
+        'weight' => '37',
       ),
     ),
   );
@@ -3544,7 +3544,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '45',
+        'weight' => '44',
       ),
     ),
   );
@@ -3598,7 +3598,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '41',
+          'weight' => '46',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -3623,7 +3623,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '36',
+        'weight' => '40',
       ),
     ),
   );
@@ -3677,7 +3677,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '38',
+          'weight' => '40',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -3702,7 +3702,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '33',
+        'weight' => '34',
       ),
     ),
   );
@@ -3836,7 +3836,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '14',
+          'weight' => '13',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -3861,7 +3861,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '18',
+        'weight' => '17',
       ),
     ),
   );
@@ -3915,7 +3915,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '12',
+          'weight' => '9',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -3926,7 +3926,7 @@ function items_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_item_reflexes',
-      'label' => 'Reflexes',
+      'label' => 'Finesse',
       'required' => 0,
       'settings' => array(
         'max' => '',
@@ -3940,7 +3940,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '16',
+        'weight' => '13',
       ),
     ),
   );
@@ -3994,7 +3994,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '37',
+          'weight' => '33',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -4019,7 +4019,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '23',
+        'weight' => '19',
       ),
     ),
   );
@@ -4152,7 +4152,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '39',
+          'weight' => '37',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -4177,7 +4177,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '25',
+        'weight' => '23',
       ),
     ),
   );
@@ -4231,7 +4231,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '34',
+          'weight' => '40',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -4256,7 +4256,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '20',
+        'weight' => '26',
       ),
     ),
   );
@@ -4310,7 +4310,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '36',
+          'weight' => '31',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -4335,7 +4335,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '22',
+        'weight' => '17',
       ),
     ),
   );
@@ -4389,7 +4389,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '31',
+          'weight' => '34',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -4414,7 +4414,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '17',
+        'weight' => '20',
       ),
     ),
   );
@@ -4468,7 +4468,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '29',
+          'weight' => '30',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -4493,7 +4493,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '15',
+        'weight' => '16',
       ),
     ),
   );
@@ -4547,7 +4547,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '35',
+          'weight' => '29',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -4572,7 +4572,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '21',
+        'weight' => '15',
       ),
     ),
   );
@@ -4626,7 +4626,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '32',
+          'weight' => '36',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -4651,7 +4651,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '18',
+        'weight' => '22',
       ),
     ),
   );
@@ -4784,7 +4784,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '40',
+          'weight' => '39',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -4809,7 +4809,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '26',
+        'weight' => '25',
       ),
     ),
   );
@@ -4863,7 +4863,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '38',
+          'weight' => '35',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -4874,7 +4874,7 @@ function items_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_item_required_reflexes',
-      'label' => 'Reflexes',
+      'label' => 'Finesse',
       'required' => 0,
       'settings' => array(
         'max' => '',
@@ -4888,7 +4888,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '24',
+        'weight' => '21',
       ),
     ),
   );
@@ -5021,7 +5021,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '33',
+          'weight' => '38',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -5046,7 +5046,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '19',
+        'weight' => '24',
       ),
     ),
   );
@@ -5100,7 +5100,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '30',
+          'weight' => '32',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -5125,7 +5125,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '16',
+        'weight' => '18',
       ),
     ),
   );
@@ -5258,7 +5258,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '7',
+          'weight' => '12',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -5283,7 +5283,7 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '11',
+        'weight' => '16',
       ),
     ),
   );
@@ -5337,7 +5337,7 @@ function items_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_decimal',
-          'weight' => '4',
+          'weight' => '6',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -5362,7 +5362,73 @@ function items_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '8',
+        'weight' => '10',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-items-field_item_uses'.
+  $fields['node-items-field_item_uses'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_item_uses',
+      'foreign keys' => array(),
+      'indexes' => array(),
+      'locked' => '0',
+      'module' => 'number',
+      'settings' => array(),
+      'translatable' => '0',
+      'type' => 'number_integer',
+    ),
+    'field_instance' => array(
+      'bundle' => 'items',
+      'default_value' => array(
+        0 => array(
+          'value' => '-1',
+        ),
+      ),
+      'deleted' => '0',
+      'description' => 'The number of times an item can be used. After used up, the item goes away. Leave at -1 for infinite uses.',
+      'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'default' => array(
+          'label' => 'above',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 0,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_integer',
+          'weight' => '2',
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_item_uses',
+      'label' => 'Item Uses',
+      'required' => 1,
+      'settings' => array(
+        'max' => '',
+        'min' => '-1',
+        'prefix' => '',
+        'suffix' => '',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'number',
+        'settings' => array(),
+        'type' => 'number',
+        'weight' => '7',
       ),
     ),
   );
@@ -5413,7 +5479,7 @@ function items_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '52',
+          'weight' => '17',
         ),
       ),
       'entity_type' => 'node',
@@ -5534,6 +5600,66 @@ function items_field_default_fields() {
         ),
         'type' => 'text_textarea',
         'weight' => '50',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-items-field_pp_created'.
+  $fields['node-items-field_pp_created'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_pp_created',
+      'foreign keys' => array(),
+      'indexes' => array(),
+      'locked' => '0',
+      'module' => 'number',
+      'settings' => array(),
+      'translatable' => '0',
+      'type' => 'number_integer',
+    ),
+    'field_instance' => array(
+      'bundle' => 'items',
+      'default_value' => array(
+        0 => array(
+          'value' => '-1',
+        ),
+      ),
+      'deleted' => '0',
+      'description' => 'If this item was created by a user - make note of the amount of PP used to create the item so any additional improvements can be tracked.',
+      'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'default' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '15',
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_pp_created',
+      'label' => 'PP Created',
+      'required' => 0,
+      'settings' => array(
+        'max' => '',
+        'min' => '',
+        'prefix' => '',
+        'suffix' => '',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'number',
+        'settings' => array(),
+        'type' => 'number',
+        'weight' => '4',
       ),
     ),
   );
@@ -5885,7 +6011,7 @@ function items_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '4',
+        'weight' => '5',
       ),
     ),
   );
@@ -5939,7 +6065,7 @@ function items_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '2',
+          'weight' => '3',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -5963,7 +6089,7 @@ function items_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '6',
+        'weight' => '8',
       ),
     ),
   );
@@ -5983,24 +6109,28 @@ function items_field_default_fields() {
   t('Description');
   t('Dexterity');
   t('Endurance');
+  t('Finesse');
   t('Health');
   t('History');
   t('If checked this item will be available in the player shop.');
+  t('If this item was created by a user - make note of the amount of PP used to create the item so any additional improvements can be tracked.');
   t('In shop');
   t('Intellegence');
   t('Intelligence');
+  t('Item Uses');
   t('Life');
   t('Needs review');
+  t('PP Created');
   t('Player Notes');
   t('Presence');
   t('Private SH Notes');
   t('Realm');
-  t('Reflexes');
   t('SH Notes');
   t('Select a base item template so evaluators may easily identify the basic type of item you are creating. The PP to make this item is noted in the drop-down. The PP listed is an estimate of an average item, an evaluator may rule your item as requiring more or less PP.');
   t('Skill');
   t('Spirituality');
   t('Strength');
+  t('The number of times an item can be used. After used up, the item goes away. Leave at -1 for infinite uses.');
   t('The percentage this weapon adds to damage, in addition to the amount added by weapon type.');
   t('The type of the item is a required field, as this allows the Vaxian system to correctly handle using the item in dice rulings. If the item doesn\'t fit any other category, use "Misc"');
   t('Type');

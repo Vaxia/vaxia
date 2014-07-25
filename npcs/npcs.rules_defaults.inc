@@ -58,6 +58,7 @@ function npcs_default_rules_configuration() {
       "TAGS" : [ "NPCs" ],
       "REQUIRES" : [ "rules", "npcs" ],
       "ON" : { "npcs_request" : [] },
+      "IF" : [ { "NOT user_is_blocked" : { "account" : [ "node:author" ] } } ],
       "DO" : [
         { "mail" : {
             "to" : "[node:author:mail], [user:mail]",

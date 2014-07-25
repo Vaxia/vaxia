@@ -203,6 +203,102 @@ function wiki_feature_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-wiki_page-field_parent_wiki_page'.
+  $fields['node-wiki_page-field_parent_wiki_page'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_parent_wiki_page',
+      'foreign keys' => array(
+        'nid' => array(
+          'columns' => array(
+            'nid' => 'nid',
+          ),
+          'table' => 'node',
+        ),
+      ),
+      'indexes' => array(
+        'nid' => array(
+          0 => 'nid',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'node_reference',
+      'settings' => array(
+        'referenceable_types' => array(
+          'article' => 0,
+          'artwork' => 0,
+          'character_sheet' => 0,
+          'event' => 0,
+          'filedepot_folder' => 0,
+          'forum' => 0,
+          'items' => 0,
+          'long_answer' => 0,
+          'mass_contact' => 0,
+          'multichoice' => 0,
+          'page' => 0,
+          'proposal' => 0,
+          'quiz' => 0,
+          'rpg_chatroom' => 0,
+          'scene' => 0,
+          'session_report' => 0,
+          'storyhost_application' => 0,
+          'strike' => 0,
+          'webform' => 0,
+          'wiki_page' => 'wiki_page',
+        ),
+        'view' => array(
+          'args' => array(),
+          'display_name' => '',
+          'view_name' => '',
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'node_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'wiki_page',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'default' => array(
+          'label' => 'above',
+          'module' => 'node_reference',
+          'settings' => array(),
+          'type' => 'node_reference_default',
+          'weight' => 6,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_parent_wiki_page',
+      'label' => 'Parent Wiki Page',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'node_reference',
+        'settings' => array(
+          'autocomplete_match' => 'contains',
+          'autocomplete_path' => 'node_reference/autocomplete',
+          'size' => '60',
+        ),
+        'type' => 'node_reference_autocomplete',
+        'weight' => '31',
+      ),
+    ),
+  );
+
   // Exported field: 'node-wiki_page-field_referencing_chat_rooms'.
   $fields['node-wiki_page-field_referencing_chat_rooms'] = array(
     'field_config' => array(
@@ -562,6 +658,7 @@ function wiki_feature_field_default_fields() {
   t('Check the relevant category for this article, this will help us sort out areas of the wiki by over-arching segment of the site.');
   t('Files');
   t('Images');
+  t('Parent Wiki Page');
   t('Referencing Chat Rooms');
   t('Tags');
   t('Upload any files to go with this article.');

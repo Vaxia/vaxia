@@ -98,7 +98,7 @@ return $submission->data[1][\'value\'][0];';
   $handler->display->display_options['filters']['nid']['value']['value'] = '9368';
 
   /* Display: Anonymous mailer posts */
-  $handler = $view->new_display('page', 'Anonymous mailer posts', 'page');
+  $handler = $view->new_display('page', 'Anonymous mailer posts', 'anon_mail_posts');
   $handler->display->display_options['display_description'] = 'Anonymous mailer posts';
   $handler->display->display_options['path'] = 'node/%/anon-posts';
   $handler->display->display_options['menu']['type'] = 'tab';
@@ -129,6 +129,7 @@ return $submission->data[1][\'value\'][0];';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['reset_button'] = TRUE;
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '35';
   $handler->display->display_options['style_plugin'] = 'table';
@@ -219,7 +220,8 @@ return $submission->data[1][\'value\'][0];';
   $handler->display->display_options['fields']['timestamp']['id'] = 'timestamp';
   $handler->display->display_options['fields']['timestamp']['table'] = 'watchdog';
   $handler->display->display_options['fields']['timestamp']['field'] = 'timestamp';
-  $handler->display->display_options['fields']['timestamp']['date_format'] = 'privatemsg_current_day';
+  $handler->display->display_options['fields']['timestamp']['date_format'] = 'short';
+  $handler->display->display_options['fields']['timestamp']['second_date_format'] = 'privatemsg_current_day';
   /* Field: User: Name */
   $handler->display->display_options['fields']['name']['id'] = 'name';
   $handler->display->display_options['fields']['name']['table'] = 'users';
@@ -431,10 +433,10 @@ return $submission->data[1][\'value\'][0];';
 
   $view = new view();
   $view->name = 'user_activity_totals';
-  $view->description = 'Display roughly how active a player has been on the site';
+  $view->description = 'Display roughly how active a host has been on the site';
   $view->tag = 'Staff';
   $view->base_table = 'users';
-  $view->human_name = 'User Activity Totals';
+  $view->human_name = 'Storyhost Activity';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
@@ -443,11 +445,7 @@ return $submission->data[1][\'value\'][0];';
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['title'] = 'SH Activity Totals';
   $handler->display->display_options['use_more_always'] = FALSE;
-  $handler->display->display_options['access']['type'] = 'role';
-  $handler->display->display_options['access']['role'] = array(
-    3 => '3',
-    4 => '4',
-  );
+  $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
@@ -455,33 +453,20 @@ return $submission->data[1][\'value\'][0];';
   $handler->display->display_options['pager']['options']['items_per_page'] = '100';
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
-    'name' => 'name',
-    'status' => 'status',
-    'rid' => 'rid',
     'uid' => 'uid',
+    'name' => 'name',
+    'php_2' => 'php_2',
+    'php_3' => 'php_3',
+    'php_4' => 'php_4',
     'php' => 'php',
+    'php_1' => 'php_1',
+    'php_5' => 'php_5',
+    'php_6' => 'php_6',
+    'php_7' => 'php_7',
+    'access' => 'access',
   );
-  $handler->display->display_options['style_options']['default'] = 'uid';
+  $handler->display->display_options['style_options']['default'] = 'access';
   $handler->display->display_options['style_options']['info'] = array(
-    'name' => array(
-      'sortable' => 1,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'status' => array(
-      'sortable' => 1,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'rid' => array(
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
     'uid' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
@@ -489,12 +474,84 @@ return $submission->data[1][\'value\'][0];';
       'separator' => '',
       'empty_column' => 0,
     ),
+    'name' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'php_2' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'php_3' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'php_4' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
     'php' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'php_1' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'php_5' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'php_6' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'php_7' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'access' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'desc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
   );
+  /* Footer: Global: Text area */
+  $handler->display->display_options['footer']['area']['id'] = 'area';
+  $handler->display->display_options['footer']['area']['table'] = 'views';
+  $handler->display->display_options['footer']['area']['field'] = 'area';
+  $handler->display->display_options['footer']['area']['empty'] = TRUE;
+  $handler->display->display_options['footer']['area']['content'] = 'Values are displayed for full storyhosts and those on vacation. They are calculated based on all activity within the last year. Items and characters must have been promptly evaluated. Sessions must have qualified under session requirements.';
+  $handler->display->display_options['footer']['area']['format'] = 'wiki';
   /* Field: User: Uid */
   $handler->display->display_options['fields']['uid']['id'] = 'uid';
   $handler->display->display_options['fields']['uid']['table'] = 'users';
@@ -509,41 +566,85 @@ return $submission->data[1][\'value\'][0];';
   $handler->display->display_options['fields']['name']['field'] = 'name';
   $handler->display->display_options['fields']['name']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['name']['alter']['ellipsis'] = FALSE;
-  /* Field: User: Active */
-  $handler->display->display_options['fields']['status']['id'] = 'status';
-  $handler->display->display_options['fields']['status']['table'] = 'users';
-  $handler->display->display_options['fields']['status']['field'] = 'status';
-  $handler->display->display_options['fields']['status']['not'] = 0;
-  /* Field: User: Roles */
-  $handler->display->display_options['fields']['rid']['id'] = 'rid';
-  $handler->display->display_options['fields']['rid']['table'] = 'users_roles';
-  $handler->display->display_options['fields']['rid']['field'] = 'rid';
-  $handler->display->display_options['fields']['rid']['type'] = 'ul';
+  /* Field: Global: PHP */
+  $handler->display->display_options['fields']['php_2']['id'] = 'php_2';
+  $handler->display->display_options['fields']['php_2']['table'] = 'views';
+  $handler->display->display_options['fields']['php_2']['field'] = 'php';
+  $handler->display->display_options['fields']['php_2']['label'] = 'Ran Sessions';
+  $handler->display->display_options['fields']['php_2']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php_2']['php_value'] = 'return _rpg_site_staff_eligable_session_count_value($row->uid);';
+  $handler->display->display_options['fields']['php_2']['use_php_click_sortable'] = '1';
+  $handler->display->display_options['fields']['php_2']['php_click_sortable'] = '';
+  /* Field: Global: PHP */
+  $handler->display->display_options['fields']['php_3']['id'] = 'php_3';
+  $handler->display->display_options['fields']['php_3']['table'] = 'views';
+  $handler->display->display_options['fields']['php_3']['field'] = 'php';
+  $handler->display->display_options['fields']['php_3']['label'] = 'Characters Eval';
+  $handler->display->display_options['fields']['php_3']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php_3']['php_value'] = 'return _rpg_site_staff_prompt_eval_char_count_value($row->uid);';
+  $handler->display->display_options['fields']['php_3']['use_php_click_sortable'] = '1';
+  $handler->display->display_options['fields']['php_3']['php_click_sortable'] = '';
+  /* Field: Global: PHP */
+  $handler->display->display_options['fields']['php_4']['id'] = 'php_4';
+  $handler->display->display_options['fields']['php_4']['table'] = 'views';
+  $handler->display->display_options['fields']['php_4']['field'] = 'php';
+  $handler->display->display_options['fields']['php_4']['label'] = 'Items Eval';
+  $handler->display->display_options['fields']['php_4']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php_4']['php_value'] = 'return _rpg_site_staff_prompt_eval_item_count_value($row->uid);';
+  $handler->display->display_options['fields']['php_4']['use_php_click_sortable'] = '1';
+  $handler->display->display_options['fields']['php_4']['php_click_sortable'] = '';
   /* Field: Global: PHP */
   $handler->display->display_options['fields']['php']['id'] = 'php';
   $handler->display->display_options['fields']['php']['table'] = 'views';
   $handler->display->display_options['fields']['php']['field'] = 'php';
-  $handler->display->display_options['fields']['php']['label'] = 'Content Created';
+  $handler->display->display_options['fields']['php']['label'] = 'Created Wiki';
   $handler->display->display_options['fields']['php']['hide_alter_empty'] = FALSE;
   $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
-  $handler->display->display_options['fields']['php']['php_value'] = 'return _rpg_site_staff_create_content_count_value($row->uid);';
-  $handler->display->display_options['fields']['php']['php_output'] = '<?php
-echo _rpg_site_staff_content_count_display($value);
-?>';
-  $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
+  $handler->display->display_options['fields']['php']['php_value'] = 'return _rpg_site_staff_create_content_count_value($row->uid, \'wiki_page\');';
+  $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '1';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
   /* Field: Global: PHP */
   $handler->display->display_options['fields']['php_1']['id'] = 'php_1';
   $handler->display->display_options['fields']['php_1']['table'] = 'views';
   $handler->display->display_options['fields']['php_1']['field'] = 'php';
-  $handler->display->display_options['fields']['php_1']['label'] = 'Content Revised';
+  $handler->display->display_options['fields']['php_1']['label'] = 'Revised Wiki';
   $handler->display->display_options['fields']['php_1']['use_php_setup'] = 0;
-  $handler->display->display_options['fields']['php_1']['php_value'] = 'return _rpg_site_staff_revise_content_count_value($row->uid);';
-  $handler->display->display_options['fields']['php_1']['php_output'] = '<?php
-echo _rpg_site_staff_content_count_display($value);
-?>';
-  $handler->display->display_options['fields']['php_1']['use_php_click_sortable'] = '0';
+  $handler->display->display_options['fields']['php_1']['php_value'] = 'return _rpg_site_staff_revise_content_count_value($row->uid, \'wiki_page\');';
+  $handler->display->display_options['fields']['php_1']['use_php_click_sortable'] = '1';
   $handler->display->display_options['fields']['php_1']['php_click_sortable'] = '';
+  /* Field: Global: PHP */
+  $handler->display->display_options['fields']['php_5']['id'] = 'php_5';
+  $handler->display->display_options['fields']['php_5']['table'] = 'views';
+  $handler->display->display_options['fields']['php_5']['field'] = 'php';
+  $handler->display->display_options['fields']['php_5']['label'] = 'Replies on SH Requests';
+  $handler->display->display_options['fields']['php_5']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php_5']['php_value'] = 'return _rpg_site_staff_comments_in_sh_forums_count_value($row->uid);';
+  $handler->display->display_options['fields']['php_5']['use_php_click_sortable'] = '1';
+  $handler->display->display_options['fields']['php_5']['php_click_sortable'] = '';
+  /* Field: Global: PHP */
+  $handler->display->display_options['fields']['php_6']['id'] = 'php_6';
+  $handler->display->display_options['fields']['php_6']['table'] = 'views';
+  $handler->display->display_options['fields']['php_6']['field'] = 'php';
+  $handler->display->display_options['fields']['php_6']['label'] = 'Oldest Unread PM';
+  $handler->display->display_options['fields']['php_6']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php_6']['php_value'] = 'return _rpg_site_staff_oldest_unread_pm_date_value($row->uid);';
+  $handler->display->display_options['fields']['php_6']['use_php_click_sortable'] = '5';
+  $handler->display->display_options['fields']['php_6']['php_click_sortable'] = '';
+  /* Field: Global: PHP */
+  $handler->display->display_options['fields']['php_7']['id'] = 'php_7';
+  $handler->display->display_options['fields']['php_7']['table'] = 'views';
+  $handler->display->display_options['fields']['php_7']['field'] = 'php';
+  $handler->display->display_options['fields']['php_7']['label'] = 'Count Unread PM Threads';
+  $handler->display->display_options['fields']['php_7']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php_7']['php_value'] = 'return _rpg_site_staff_oldest_unread_pm_count_value($row->uid);';
+  $handler->display->display_options['fields']['php_7']['use_php_click_sortable'] = '1';
+  $handler->display->display_options['fields']['php_7']['php_click_sortable'] = '';
+  /* Field: User: Last access */
+  $handler->display->display_options['fields']['access']['id'] = 'access';
+  $handler->display->display_options['fields']['access']['table'] = 'users';
+  $handler->display->display_options['fields']['access']['field'] = 'access';
+  $handler->display->display_options['fields']['access']['date_format'] = 'short';
+  $handler->display->display_options['fields']['access']['second_date_format'] = 'privatemsg_current_day';
   /* Sort criterion: User: Created date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'users';
@@ -556,48 +657,16 @@ echo _rpg_site_staff_content_count_display($value);
   $handler->display->display_options['filters']['status']['value'] = '1';
   $handler->display->display_options['filters']['status']['group'] = 1;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: User: Name */
-  $handler->display->display_options['filters']['uid']['id'] = 'uid';
-  $handler->display->display_options['filters']['uid']['table'] = 'users';
-  $handler->display->display_options['filters']['uid']['field'] = 'uid';
-  $handler->display->display_options['filters']['uid']['value'] = '';
-  $handler->display->display_options['filters']['uid']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['uid']['expose']['operator_id'] = 'uid_op';
-  $handler->display->display_options['filters']['uid']['expose']['label'] = 'User Name';
-  $handler->display->display_options['filters']['uid']['expose']['operator'] = 'uid_op';
-  $handler->display->display_options['filters']['uid']['expose']['identifier'] = 'uid';
-  $handler->display->display_options['filters']['uid']['expose']['remember'] = TRUE;
-  $handler->display->display_options['filters']['uid']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    8 => 0,
-    19 => 0,
-    12 => 0,
-    13 => 0,
-    10 => 0,
-    17 => 0,
-    15 => 0,
-    9 => 0,
-    20 => 0,
-    14 => 0,
-    4 => 0,
-    3 => 0,
-    11 => 0,
-  );
   /* Filter criterion: User: Roles */
   $handler->display->display_options['filters']['rid']['id'] = 'rid';
   $handler->display->display_options['filters']['rid']['table'] = 'users_roles';
   $handler->display->display_options['filters']['rid']['field'] = 'rid';
   $handler->display->display_options['filters']['rid']['value'] = array(
-    13 => '13',
-    10 => '10',
-    17 => '17',
-    15 => '15',
     9 => '9',
-    20 => '20',
     14 => '14',
+    23 => '23',
   );
-  $handler->display->display_options['filters']['rid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['rid']['group'] = 1;
   $handler->display->display_options['filters']['rid']['expose']['operator_id'] = 'rid_op';
   $handler->display->display_options['filters']['rid']['expose']['label'] = 'Roles';
   $handler->display->display_options['filters']['rid']['expose']['operator'] = 'rid_op';
@@ -624,19 +693,55 @@ echo _rpg_site_staff_content_count_display($value);
   );
   $handler->display->display_options['filters']['rid']['expose']['reduce'] = TRUE;
   $handler->display->display_options['filters']['rid']['reduce_duplicates'] = TRUE;
+  /* Filter criterion: User: Name */
+  $handler->display->display_options['filters']['uid']['id'] = 'uid';
+  $handler->display->display_options['filters']['uid']['table'] = 'users';
+  $handler->display->display_options['filters']['uid']['field'] = 'uid';
+  $handler->display->display_options['filters']['uid']['value'] = '';
+  $handler->display->display_options['filters']['uid']['group'] = 1;
+  $handler->display->display_options['filters']['uid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['uid']['expose']['operator_id'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['label'] = 'User Name';
+  $handler->display->display_options['filters']['uid']['expose']['operator'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['identifier'] = 'uid';
+  $handler->display->display_options['filters']['uid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['uid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    8 => 0,
+    19 => 0,
+    12 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    9 => 0,
+    20 => 0,
+    14 => 0,
+    4 => 0,
+    3 => 0,
+    11 => 0,
+  );
 
   /* Display: User Activity Totals */
   $handler = $view->new_display('page', 'User Activity Totals', 'user_activity_totals');
   $handler->display->display_options['display_description'] = 'User Activity Totals';
-  $handler->display->display_options['path'] = 'admin/user-activity-totals';
+  $handler->display->display_options['path'] = 'user-activity';
+  $handler->display->display_options['menu']['type'] = 'normal';
+  $handler->display->display_options['menu']['title'] = 'Storyhost Activity';
+  $handler->display->display_options['menu']['description'] = 'Storyhost Activity';
+  $handler->display->display_options['menu']['weight'] = '0';
+  $handler->display->display_options['menu']['name'] = 'menu-vaxia';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
   $export['user_activity_totals'] = $view;
 
   $view = new view();
   $view->name = 'users_with_system_knowledge';
-  $view->description = 'Users with Knowledge';
-  $view->tag = 'Staff';
+  $view->description = 'Departments';
+  $view->tag = 'Departments';
   $view->base_table = 'users';
-  $view->human_name = 'Users with Knowledge';
+  $view->human_name = 'Departments';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
@@ -646,7 +751,6 @@ echo _rpg_site_staff_content_count_display($value);
   $handler->display->display_options['title'] = 'Users with Social Knowledge';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'perm';
-  $handler->display->display_options['access']['perm'] = 'administer users';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
@@ -756,127 +860,12 @@ echo _rpg_site_staff_content_count_display($value);
       'empty_column' => 0,
     ),
   );
-  /* Field: Bulk operations: User */
-  $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
-  $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'users';
-  $handler->display->display_options['fields']['views_bulk_operations']['field'] = 'views_bulk_operations';
-  $handler->display->display_options['fields']['views_bulk_operations']['label'] = '';
-  $handler->display->display_options['fields']['views_bulk_operations']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['display_type'] = '0';
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['enable_select_all_pages'] = 1;
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['force_single'] = 0;
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['entity_load_capacity'] = '10';
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_operations'] = array(
-    'action::user_block_user_action' => array(
-      'selected' => 1,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-    ),
-    'action::views_bulk_operations_user_cancel_action' => array(
-      'selected' => 0,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-    ),
-    'action::views_bulk_operations_delete_item' => array(
-      'selected' => 0,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-    ),
-    'action::views_bulk_operations_delete_revision' => array(
-      'selected' => 0,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-    ),
-    'action::views_bulk_operations_script_action' => array(
-      'selected' => 0,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-    ),
-    'action::flag_user_action' => array(
-      'selected' => 0,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-    ),
-    'action::views_bulk_operations_modify_action' => array(
-      'selected' => 1,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-      'settings' => array(
-        'show_all_tokens' => 1,
-        'display_values' => array(
-          '_all_' => '_all_',
-        ),
-      ),
-    ),
-    'action::views_bulk_operations_user_roles_action' => array(
-      'selected' => 1,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-    ),
-    'action::views_bulk_operations_argument_selector_action' => array(
-      'selected' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-      'settings' => array(
-        'url' => '',
-      ),
-    ),
-    'action::user_stats_login_count_reset_action' => array(
-      'selected' => 0,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-    ),
-    'action::user_stats_post_count_reset_action' => array(
-      'selected' => 0,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-    ),
-    'action::system_send_email_action' => array(
-      'selected' => 1,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-    ),
-    'action::pathauto_user_update_action' => array(
-      'selected' => 0,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-    ),
-  );
   /* Field: User: Name */
   $handler->display->display_options['fields']['name']['id'] = 'name';
   $handler->display->display_options['fields']['name']['table'] = 'users';
   $handler->display->display_options['fields']['name']['field'] = 'name';
   $handler->display->display_options['fields']['name']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['name']['alter']['ellipsis'] = FALSE;
-  /* Field: User: Roles */
-  $handler->display->display_options['fields']['rid']['id'] = 'rid';
-  $handler->display->display_options['fields']['rid']['table'] = 'users_roles';
-  $handler->display->display_options['fields']['rid']['field'] = 'rid';
   /* Field: User: Created date */
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'users';
@@ -888,97 +877,6 @@ echo _rpg_site_staff_content_count_display($value);
   $handler->display->display_options['fields']['access']['table'] = 'users';
   $handler->display->display_options['fields']['access']['field'] = 'access';
   $handler->display->display_options['fields']['access']['date_format'] = 'privatemsg_current_day';
-  /* Field: User: Last Took System Walkthrough */
-  $handler->display->display_options['fields']['field_took_system_walkthrough']['id'] = 'field_took_system_walkthrough';
-  $handler->display->display_options['fields']['field_took_system_walkthrough']['table'] = 'field_data_field_took_system_walkthrough';
-  $handler->display->display_options['fields']['field_took_system_walkthrough']['field'] = 'field_took_system_walkthrough';
-  $handler->display->display_options['fields']['field_took_system_walkthrough']['label'] = 'Took System WT';
-  $handler->display->display_options['fields']['field_took_system_walkthrough']['settings'] = array(
-    'format_type' => 'long',
-    'fromto' => 'both',
-    'multiple_number' => '',
-    'multiple_from' => '',
-    'multiple_to' => '',
-    'show_repeat_rule' => 'show',
-  );
-  /* Field: User: Last Took Social Walkthrough */
-  $handler->display->display_options['fields']['field_took_social_walkthrough']['id'] = 'field_took_social_walkthrough';
-  $handler->display->display_options['fields']['field_took_social_walkthrough']['table'] = 'field_data_field_took_social_walkthrough';
-  $handler->display->display_options['fields']['field_took_social_walkthrough']['field'] = 'field_took_social_walkthrough';
-  $handler->display->display_options['fields']['field_took_social_walkthrough']['label'] = 'Took Social WT';
-  $handler->display->display_options['fields']['field_took_social_walkthrough']['settings'] = array(
-    'format_type' => 'long',
-    'fromto' => 'both',
-    'multiple_number' => '',
-    'multiple_from' => '',
-    'multiple_to' => '',
-    'show_repeat_rule' => 'show',
-  );
-  /* Field: User: Last Took Setting Walkthrough */
-  $handler->display->display_options['fields']['field_took_setting_walkthrough']['id'] = 'field_took_setting_walkthrough';
-  $handler->display->display_options['fields']['field_took_setting_walkthrough']['table'] = 'field_data_field_took_setting_walkthrough';
-  $handler->display->display_options['fields']['field_took_setting_walkthrough']['field'] = 'field_took_setting_walkthrough';
-  $handler->display->display_options['fields']['field_took_setting_walkthrough']['label'] = 'Took Setting WT';
-  $handler->display->display_options['fields']['field_took_setting_walkthrough']['settings'] = array(
-    'format_type' => 'long',
-    'fromto' => 'both',
-    'multiple_number' => '',
-    'multiple_from' => '',
-    'multiple_to' => '',
-    'show_repeat_rule' => 'show',
-  );
-  /* Field: User: Last Took ASH Test One */
-  $handler->display->display_options['fields']['field_took_ash1']['id'] = 'field_took_ash1';
-  $handler->display->display_options['fields']['field_took_ash1']['table'] = 'field_data_field_took_ash1';
-  $handler->display->display_options['fields']['field_took_ash1']['field'] = 'field_took_ash1';
-  $handler->display->display_options['fields']['field_took_ash1']['label'] = 'Took ASH 1';
-  $handler->display->display_options['fields']['field_took_ash1']['settings'] = array(
-    'format_type' => 'long',
-    'fromto' => 'both',
-    'multiple_number' => '',
-    'multiple_from' => '',
-    'multiple_to' => '',
-    'show_repeat_rule' => 'show',
-  );
-  /* Field: User: Last Took ASH Test Two */
-  $handler->display->display_options['fields']['field_took_ash2']['id'] = 'field_took_ash2';
-  $handler->display->display_options['fields']['field_took_ash2']['table'] = 'field_data_field_took_ash2';
-  $handler->display->display_options['fields']['field_took_ash2']['field'] = 'field_took_ash2';
-  $handler->display->display_options['fields']['field_took_ash2']['label'] = 'Took ASH 2';
-  $handler->display->display_options['fields']['field_took_ash2']['settings'] = array(
-    'format_type' => 'long',
-    'fromto' => 'both',
-    'multiple_number' => '',
-    'multiple_from' => '',
-    'multiple_to' => '',
-    'show_repeat_rule' => 'show',
-  );
-  /* Field: User: Last Took ASH Test Three */
-  $handler->display->display_options['fields']['field_took_ash3']['id'] = 'field_took_ash3';
-  $handler->display->display_options['fields']['field_took_ash3']['table'] = 'field_data_field_took_ash3';
-  $handler->display->display_options['fields']['field_took_ash3']['field'] = 'field_took_ash3';
-  $handler->display->display_options['fields']['field_took_ash3']['label'] = 'Took ASH 3';
-  $handler->display->display_options['fields']['field_took_ash3']['settings'] = array(
-    'format_type' => 'long',
-    'fromto' => 'both',
-    'multiple_number' => '',
-    'multiple_from' => '',
-    'multiple_to' => '',
-    'show_repeat_rule' => 'show',
-  );
-  /* Field: User: Took Eval Test */
-  $handler->display->display_options['fields']['field_took_eval_test']['id'] = 'field_took_eval_test';
-  $handler->display->display_options['fields']['field_took_eval_test']['table'] = 'field_data_field_took_eval_test';
-  $handler->display->display_options['fields']['field_took_eval_test']['field'] = 'field_took_eval_test';
-  $handler->display->display_options['fields']['field_took_eval_test']['label'] = 'Took Eval';
-  $handler->display->display_options['fields']['field_took_eval_test']['settings'] = array(
-    'format_type' => 'long',
-    'fromto' => 'both',
-    'multiple_number' => '',
-    'multiple_from' => '',
-    'multiple_to' => '',
-    'show_repeat_rule' => 'show',
-  );
   /* Sort criterion: User: Created date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'users';
@@ -1010,11 +908,11 @@ echo _rpg_site_staff_content_count_display($value);
   $handler->display->display_options['filters']['field_took_system_walkthrough_value']['group'] = 2;
   $handler->display->display_options['filters']['field_took_system_walkthrough_value']['form_type'] = 'date_text';
 
-  /* Display: Users with System Knowledge */
-  $handler = $view->new_display('page', 'Users with System Knowledge', 'users_system_know');
+  /* Display: System Department */
+  $handler = $view->new_display('page', 'System Department', 'system_department');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Users with System Knowledge';
-  $handler->display->display_options['display_description'] = 'Users with System Knowledge';
+  $handler->display->display_options['title'] = 'System Department';
+  $handler->display->display_options['display_description'] = 'System Department';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['filter_groups']['groups'] = array(
     1 => 'AND',
@@ -1028,33 +926,26 @@ echo _rpg_site_staff_content_count_display($value);
   $handler->display->display_options['filters']['status']['value'] = '1';
   $handler->display->display_options['filters']['status']['group'] = 1;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: User: Last Took ASH Test Two (field_took_ash2) */
-  $handler->display->display_options['filters']['field_took_ash2_value']['id'] = 'field_took_ash2_value';
-  $handler->display->display_options['filters']['field_took_ash2_value']['table'] = 'field_data_field_took_ash2';
-  $handler->display->display_options['filters']['field_took_ash2_value']['field'] = 'field_took_ash2_value';
-  $handler->display->display_options['filters']['field_took_ash2_value']['operator'] = 'not empty';
-  $handler->display->display_options['filters']['field_took_ash2_value']['group'] = 2;
-  $handler->display->display_options['filters']['field_took_ash2_value']['form_type'] = 'date_text';
-  /* Filter criterion: User: Last Took System Walkthrough (field_took_system_walkthrough) */
-  $handler->display->display_options['filters']['field_took_system_walkthrough_value']['id'] = 'field_took_system_walkthrough_value';
-  $handler->display->display_options['filters']['field_took_system_walkthrough_value']['table'] = 'field_data_field_took_system_walkthrough';
-  $handler->display->display_options['filters']['field_took_system_walkthrough_value']['field'] = 'field_took_system_walkthrough_value';
-  $handler->display->display_options['filters']['field_took_system_walkthrough_value']['operator'] = 'not empty';
-  $handler->display->display_options['filters']['field_took_system_walkthrough_value']['group'] = 2;
-  $handler->display->display_options['filters']['field_took_system_walkthrough_value']['form_type'] = 'date_text';
-  $handler->display->display_options['path'] = 'admin/people/users-with-system-knowledge';
+  /* Filter criterion: User: Roles */
+  $handler->display->display_options['filters']['rid']['id'] = 'rid';
+  $handler->display->display_options['filters']['rid']['table'] = 'users_roles';
+  $handler->display->display_options['filters']['rid']['field'] = 'rid';
+  $handler->display->display_options['filters']['rid']['value'] = array(
+    24 => '24',
+  );
+  $handler->display->display_options['path'] = 'players/system-department';
   $handler->display->display_options['menu']['type'] = 'tab';
-  $handler->display->display_options['menu']['title'] = 'User: System';
-  $handler->display->display_options['menu']['description'] = 'User: System';
+  $handler->display->display_options['menu']['title'] = 'System Department';
+  $handler->display->display_options['menu']['description'] = 'System Department';
   $handler->display->display_options['menu']['weight'] = '0';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
 
-  /* Display: Users with Social Knowledge */
-  $handler = $view->new_display('page', 'Users with Social Knowledge', 'users_social_know');
+  /* Display: Social Department */
+  $handler = $view->new_display('page', 'Social Department', 'social_department');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Users with Social Knowledge';
-  $handler->display->display_options['display_description'] = 'Users with Social Knowledge';
+  $handler->display->display_options['title'] = 'Social Department';
+  $handler->display->display_options['display_description'] = 'Social Department';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['filter_groups']['groups'] = array(
     1 => 'AND',
@@ -1068,33 +959,26 @@ echo _rpg_site_staff_content_count_display($value);
   $handler->display->display_options['filters']['status']['value'] = '1';
   $handler->display->display_options['filters']['status']['group'] = 1;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: User: Last Took Social Walkthrough (field_took_social_walkthrough) */
-  $handler->display->display_options['filters']['field_took_social_walkthrough_value']['id'] = 'field_took_social_walkthrough_value';
-  $handler->display->display_options['filters']['field_took_social_walkthrough_value']['table'] = 'field_data_field_took_social_walkthrough';
-  $handler->display->display_options['filters']['field_took_social_walkthrough_value']['field'] = 'field_took_social_walkthrough_value';
-  $handler->display->display_options['filters']['field_took_social_walkthrough_value']['operator'] = 'not empty';
-  $handler->display->display_options['filters']['field_took_social_walkthrough_value']['group'] = 2;
-  $handler->display->display_options['filters']['field_took_social_walkthrough_value']['form_type'] = 'date_text';
-  /* Filter criterion: User: Last Took ASH Test Two (field_took_ash2) */
-  $handler->display->display_options['filters']['field_took_ash2_value']['id'] = 'field_took_ash2_value';
-  $handler->display->display_options['filters']['field_took_ash2_value']['table'] = 'field_data_field_took_ash2';
-  $handler->display->display_options['filters']['field_took_ash2_value']['field'] = 'field_took_ash2_value';
-  $handler->display->display_options['filters']['field_took_ash2_value']['operator'] = 'not empty';
-  $handler->display->display_options['filters']['field_took_ash2_value']['group'] = 2;
-  $handler->display->display_options['filters']['field_took_ash2_value']['form_type'] = 'date_text';
-  $handler->display->display_options['path'] = 'admin/people/users-with-social';
+  /* Filter criterion: User: Roles */
+  $handler->display->display_options['filters']['rid']['id'] = 'rid';
+  $handler->display->display_options['filters']['rid']['table'] = 'users_roles';
+  $handler->display->display_options['filters']['rid']['field'] = 'rid';
+  $handler->display->display_options['filters']['rid']['value'] = array(
+    26 => '26',
+  );
+  $handler->display->display_options['path'] = 'players/social-department';
   $handler->display->display_options['menu']['type'] = 'tab';
-  $handler->display->display_options['menu']['title'] = 'User: Social';
-  $handler->display->display_options['menu']['description'] = 'User: Social';
+  $handler->display->display_options['menu']['title'] = 'Social Department';
+  $handler->display->display_options['menu']['description'] = 'Social Department';
   $handler->display->display_options['menu']['weight'] = '0';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
 
-  /* Display: Users with Setting Knowledge */
-  $handler = $view->new_display('page', 'Users with Setting Knowledge', 'users_setting_know');
+  /* Display: Setting Department */
+  $handler = $view->new_display('page', 'Setting Department', 'setting_department');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Users with Setting Knowledge';
-  $handler->display->display_options['display_description'] = 'Users with Setting Knowledge';
+  $handler->display->display_options['title'] = 'Setting Department';
+  $handler->display->display_options['display_description'] = 'Setting Department';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['filter_groups']['groups'] = array(
     1 => 'AND',
@@ -1108,24 +992,17 @@ echo _rpg_site_staff_content_count_display($value);
   $handler->display->display_options['filters']['status']['value'] = '1';
   $handler->display->display_options['filters']['status']['group'] = 1;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: User: Last Took ASH Test Two (field_took_ash2) */
-  $handler->display->display_options['filters']['field_took_ash2_value']['id'] = 'field_took_ash2_value';
-  $handler->display->display_options['filters']['field_took_ash2_value']['table'] = 'field_data_field_took_ash2';
-  $handler->display->display_options['filters']['field_took_ash2_value']['field'] = 'field_took_ash2_value';
-  $handler->display->display_options['filters']['field_took_ash2_value']['operator'] = 'not empty';
-  $handler->display->display_options['filters']['field_took_ash2_value']['group'] = 2;
-  $handler->display->display_options['filters']['field_took_ash2_value']['form_type'] = 'date_text';
-  /* Filter criterion: User: Last Took Setting Walkthrough (field_took_setting_walkthrough) */
-  $handler->display->display_options['filters']['field_took_setting_walkthrough_value']['id'] = 'field_took_setting_walkthrough_value';
-  $handler->display->display_options['filters']['field_took_setting_walkthrough_value']['table'] = 'field_data_field_took_setting_walkthrough';
-  $handler->display->display_options['filters']['field_took_setting_walkthrough_value']['field'] = 'field_took_setting_walkthrough_value';
-  $handler->display->display_options['filters']['field_took_setting_walkthrough_value']['operator'] = 'not empty';
-  $handler->display->display_options['filters']['field_took_setting_walkthrough_value']['group'] = 2;
-  $handler->display->display_options['filters']['field_took_setting_walkthrough_value']['form_type'] = 'date_text';
-  $handler->display->display_options['path'] = 'admin/people/users-with-setting';
+  /* Filter criterion: User: Roles */
+  $handler->display->display_options['filters']['rid']['id'] = 'rid';
+  $handler->display->display_options['filters']['rid']['table'] = 'users_roles';
+  $handler->display->display_options['filters']['rid']['field'] = 'rid';
+  $handler->display->display_options['filters']['rid']['value'] = array(
+    27 => '27',
+  );
+  $handler->display->display_options['path'] = 'players/setting-department';
   $handler->display->display_options['menu']['type'] = 'tab';
-  $handler->display->display_options['menu']['title'] = 'User: Setting';
-  $handler->display->display_options['menu']['description'] = 'User: Setting';
+  $handler->display->display_options['menu']['title'] = 'Setting Department';
+  $handler->display->display_options['menu']['description'] = 'Setting Department';
   $handler->display->display_options['menu']['weight'] = '0';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;

@@ -13,7 +13,7 @@ function sh_test_views_default_views() {
   $view = new view();
   $view->name = 'sessions';
   $view->description = 'A list of your sessions';
-  $view->tag = 'Staff';
+  $view->tag = 'Storyhosts';
   $view->base_table = 'node';
   $view->human_name = 'Sessions';
   $view->core = 7;
@@ -383,6 +383,8 @@ function sh_test_views_default_views() {
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'SH Sessions';
   $handler->display->display_options['display_description'] = 'SH sessions';
+  $handler->display->display_options['defaults']['access'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'none';
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: User: Name */
   $handler->display->display_options['fields']['name']['id'] = 'name';
@@ -666,7 +668,7 @@ echo $message
   $view = new view();
   $view->name = 'sh_applications';
   $view->description = 'SH Applications';
-  $view->tag = 'SH Test';
+  $view->tag = 'Storyhosts';
   $view->base_table = 'node';
   $view->human_name = 'SH Applications';
   $view->core = 7;
@@ -760,7 +762,7 @@ echo $message
   $handler->display->display_options['filters']['changed']['table'] = 'node';
   $handler->display->display_options['filters']['changed']['field'] = 'changed';
   $handler->display->display_options['filters']['changed']['operator'] = '>';
-  $handler->display->display_options['filters']['changed']['value']['value'] = '-1 month';
+  $handler->display->display_options['filters']['changed']['value']['value'] = '-1 days';
   $handler->display->display_options['filters']['changed']['value']['type'] = 'offset';
   $handler->display->display_options['filters']['changed']['group'] = 2;
 

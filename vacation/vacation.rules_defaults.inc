@@ -37,7 +37,11 @@ function vacation_default_rules_configuration() {
       "REQUIRES" : [ "rules", "vacation" ],
       "ON" : { "vacation_start" : [] },
       "DO" : [
-        { "user_add_role" : { "account" : [ "user" ], "roles" : { "value" : { "23" : "23" } } } },
+        { "user_add_role" : {
+            "account" : [ "user" ],
+            "roles" : { "value" : { "8" : "8", "23" : "23" } }
+          }
+        },
         { "redirect" : { "url" : "\\u003Cfront\\u003E" } },
         { "drupal_message" : { "message" : "Your vacation notice has gone out, roles have been removed and you are ready to hit the beach and\\/or deal with what you need to. Good luck, and we\\u0027ll see you again when you\\u0027re ready to return." } },
         { "mail_to_users_of_role" : {

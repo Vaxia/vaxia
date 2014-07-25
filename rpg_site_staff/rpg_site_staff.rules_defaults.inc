@@ -153,24 +153,8 @@ function rpg_site_staff_default_rules_configuration() {
       "IF" : [
         { "NOT user_is_blocked" : { "account" : [ "user" ] } },
         { "user_has_role" : { "account" : [ "user" ], "roles" : { "value" : { "8" : "8" } } } },
-        { "data_is" : {
-            "data" : [ "user:created" ],
-            "op" : "\\u003C",
-            "value" : {
-              "select" : "site:current-date",
-              "date_offset" : { "value" : -31104000 }
-            }
-          }
-        },
-        { "data_is" : {
-            "data" : [ "user:last-access" ],
-            "op" : "\\u003C",
-            "value" : {
-              "select" : "site:current-date",
-              "date_offset" : { "value" : -31536000 }
-            }
-          }
-        }
+        { "data_is" : { "data" : [ "user:created" ], "op" : "\\u003C", "value" : "-1 year" } },
+        { "data_is" : { "data" : [ "user:last-access" ], "op" : "\\u003C", "value" : "-1 year" } }
       ],
       "DO" : [
         { "user_remove_role" : {
@@ -237,6 +221,7 @@ function rpg_site_staff_default_rules_configuration() {
   $items['rules_user_is_of_minimal_age'] = entity_import('rules_config', '{ "rules_user_is_of_minimal_age" : {
       "LABEL" : "User is of minimal age",
       "PLUGIN" : "reaction rule",
+      "ACTIVE" : false,
       "OWNER" : "rules",
       "TAGS" : [ "Staff" ],
       "REQUIRES" : [ "rules" ],
@@ -262,7 +247,7 @@ function rpg_site_staff_default_rules_configuration() {
         { "mail" : {
             "to" : "[account:mail]",
             "subject" : "Account details for [user:name] at [site:name] (NOT approved)",
-            "message" : "[user:name],\\r\\n\\r\\nThank you for your interest in [site:name]. Your application for an account has been denied because you are under 13. We have a minimum age to play on the site.\\r\\n\\r\\n\\r\\n--  [site:name] team",
+            "message" : "[user:name],\\r\\n\\r\\nThank you for your interest in [site:name]. Your application for an account has been denied because you are under 13.\\r\\n\\r\\nWe have a minimum age to play on the site. Please feel free to return when you\\u0027re 13, and we\\u0027ll be glad to have you!\\r\\n\\r\\n\\r\\n--  [site:name] team",
             "language" : [ "" ]
           }
         }

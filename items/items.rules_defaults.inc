@@ -50,7 +50,8 @@ function items_default_rules_configuration() {
             "old_state" : { "value" : { "ANY" : "ANY" } },
             "new_state" : { "value" : { "15" : "15" } }
           }
-        }
+        },
+        { "NOT user_is_blocked" : { "account" : [ "node:author" ] } }
       ],
       "DO" : [
         { "mail" : {
@@ -77,7 +78,8 @@ function items_default_rules_configuration() {
             "old_state" : { "value" : { "3" : "3", "4" : "4" } },
             "new_state" : { "value" : { "2" : "2" } }
           }
-        }
+        },
+        { "NOT user_is_blocked" : { "account" : [ "node:author" ] } }
       ],
       "DO" : [
         { "mail" : {

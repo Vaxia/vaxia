@@ -123,7 +123,7 @@ function top_tens_views_default_views() {
 
 <p>The Top Ten shows appreciation for those players who have consistently portrayed  their characters through their actions over time.</p>';
   $handler->display->display_options['footer']['area']['format'] = 'full_html';
-  /* Relationship: Broken/missing handler */
+  /* Relationship: Vaxia type xp: Vaxia sheet xp node */
   $handler->display->display_options['relationships']['nid']['id'] = 'nid';
   $handler->display->display_options['relationships']['nid']['table'] = 'vaxia_xp_type_totals';
   $handler->display->display_options['relationships']['nid']['field'] = 'nid';
@@ -136,7 +136,7 @@ function top_tens_views_default_views() {
   $handler->display->display_options['fields']['nid']['label'] = '';
   $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
   $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
-  /* Field: Broken/missing handler */
+  /* Field: Vaxia type xp: Vaxia sheet xp type */
   $handler->display->display_options['fields']['type']['id'] = 'type';
   $handler->display->display_options['fields']['type']['table'] = 'vaxia_xp_type_totals';
   $handler->display->display_options['fields']['type']['field'] = 'type';
@@ -146,7 +146,7 @@ function top_tens_views_default_views() {
   $handler->display->display_options['fields']['type']['alter']['text'] = '<h2>[type]</h2>';
   $handler->display->display_options['fields']['type']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['type']['element_wrapper_type'] = 'h2';
-  /* Field: Broken/missing handler */
+  /* Field: Vaxia type xp: Vaxia sheet xp node */
   $handler->display->display_options['fields']['xp']['id'] = 'xp';
   $handler->display->display_options['fields']['xp']['table'] = 'vaxia_xp_type_totals';
   $handler->display->display_options['fields']['xp']['field'] = 'xp';
@@ -177,11 +177,11 @@ function top_tens_views_default_views() {
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['relationship'] = 'nid';
   $handler->display->display_options['fields']['title']['label'] = 'Character';
-  /* Sort criterion: Broken/missing handler */
+  /* Sort criterion: Vaxia type xp: Vaxia sheet xp type */
   $handler->display->display_options['sorts']['type']['id'] = 'type';
   $handler->display->display_options['sorts']['type']['table'] = 'vaxia_xp_type_totals';
   $handler->display->display_options['sorts']['type']['field'] = 'type';
-  /* Sort criterion: Broken/missing handler */
+  /* Sort criterion: Vaxia type xp: Vaxia sheet xp node */
   $handler->display->display_options['sorts']['xp']['id'] = 'xp';
   $handler->display->display_options['sorts']['xp']['table'] = 'vaxia_xp_type_totals';
   $handler->display->display_options['sorts']['xp']['field'] = 'xp';
@@ -195,7 +195,7 @@ function top_tens_views_default_views() {
     'character_sheet' => 'character_sheet',
   );
   $handler->display->display_options['filters']['type_1']['group'] = 1;
-  /* Filter criterion: Broken/missing handler */
+  /* Filter criterion: Vaxia type xp: Vaxia sheet xp type */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'vaxia_xp_type_totals';
   $handler->display->display_options['filters']['type']['field'] = 'type';
@@ -286,7 +286,13 @@ function top_tens_views_default_views() {
   $handler->display->display_options['filters']['php']['field'] = 'php';
   $handler->display->display_options['filters']['php']['group'] = 1;
   $handler->display->display_options['filters']['php']['use_php_setup'] = 0;
-  $handler->display->display_options['filters']['php']['php_filter'] = 'return _top_tens_filter_type_already_displayed($row->type, &$static);';
+  $handler->display->display_options['filters']['php']['php_filter'] = 'return _top_tens_filter_type_already_displayed($row->type, $static);';
+  /* Filter criterion: Vaxia type xp: Vaxia sheet xp type */
+  $handler->display->display_options['filters']['type_2']['id'] = 'type_2';
+  $handler->display->display_options['filters']['type_2']['table'] = 'vaxia_xp_type_totals';
+  $handler->display->display_options['filters']['type_2']['field'] = 'type';
+  $handler->display->display_options['filters']['type_2']['operator'] = '!=';
+  $handler->display->display_options['filters']['type_2']['value'] = 'site-award';
 
   /* Display: Top Tens */
   $handler = $view->new_display('page', 'Top Tens', 'top_ten_page');
@@ -305,7 +311,7 @@ function top_tens_views_default_views() {
   $view->description = 'A view of the total top tens';
   $view->tag = 'Top Tens';
   $view->base_table = 'character_sheet_xp';
-  $view->human_name = 'Total top ten';
+  $view->human_name = 'Top Tens - Supplemental';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
@@ -562,7 +568,7 @@ function top_tens_views_default_views() {
   $handler->display->display_options['filters']['php']['field'] = 'php';
   $handler->display->display_options['filters']['php']['group'] = 1;
   $handler->display->display_options['filters']['php']['use_php_setup'] = 0;
-  $handler->display->display_options['filters']['php']['php_filter'] = 'return _top_tens_filter_type_already_displayed($row->type, &$static);';
+  $handler->display->display_options['filters']['php']['php_filter'] = 'return _top_tens_filter_type_already_displayed($row->type, $static);';
 
   /* Display: Total Top Ten */
   $handler = $view->new_display('page', 'Total Top Ten', 'top_ten_page_two');

@@ -1,9 +1,9 @@
 name = NPCs
-description = NPC (a subset of character sheets) management
+description = NPC handling
 core = 7.x
 package = Vaxia
 php = 5.2.4
-version = 7.x-1.2
+version = 7.x-1.3
 project = npcs
 dependencies[] = ctools
 dependencies[] = entity

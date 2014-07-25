@@ -21,14 +21,12 @@ function sh_test_field_group_info() {
   $field_group->parent_name = 'group_storyhosting';
   $field_group->data = array(
     'label' => 'A/SH Test and Renewal Dates',
-    'weight' => '8',
+    'weight' => '9',
     'children' => array(
       0 => 'field_took_ash1',
       1 => 'field_took_ash2',
       2 => 'field_took_ash3',
       3 => 'field_took_eval_test',
-      4 => 'field_ash_3_application',
-      5 => 'field_powers_expire',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(

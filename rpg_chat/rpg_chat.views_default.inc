@@ -116,9 +116,10 @@ function rpg_chat_views_default_views() {
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['path'] = 'node/%/chat-archives';
   $handler->display->display_options['menu']['type'] = 'tab';
-  $handler->display->display_options['menu']['title'] = 'Archives';
+  $handler->display->display_options['menu']['title'] = 'Earlier Posts';
   $handler->display->display_options['menu']['weight'] = '0';
   $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
   $export['chat_archives'] = $view;
 
   $view = new view();

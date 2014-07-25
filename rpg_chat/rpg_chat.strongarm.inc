@@ -96,13 +96,19 @@ function rpg_chat_strongarm() {
     'extra_fields' => array(
       'form' => array(
         'dice_roller' => array(
-          'weight' => '6',
+          'weight' => '7',
         ),
         'title' => array(
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '7',
+          'weight' => '8',
+        ),
+        'locations' => array(
+          'weight' => '10',
+        ),
+        'badges' => array(
+          'weight' => '9',
         ),
       ),
       'display' => array(

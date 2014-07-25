@@ -128,7 +128,7 @@ function players_views_default_views() {
   /* Display: Players */
   $handler = $view->new_display('page', 'Players', 'players');
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
-  $handler->display->display_options['path'] = 'players';
+  $handler->display->display_options['path'] = 'players/all';
   $handler->display->display_options['menu']['type'] = 'default tab';
   $handler->display->display_options['menu']['title'] = 'Players';
   $handler->display->display_options['menu']['description'] = 'Players';

@@ -49,7 +49,11 @@ Step 2. Make sure to add all the specifics of the item. Remember if the str says
 <br/><br/>
 Step 3. In the SH notes, please add which template you are basing the item off of. A simple note like \'mastercraft medium armor\' will do. As well as a more complex note like "mastercraft medium armor with snail skin backer, for extra end" so that the items approval team knows where to look to make sure the item is within the parameters.
 <br/><br/>
-Step 4. Change workflow to submitted and and click \'save.\''),
+Step 4. Change workflow to submitted and and click \'save.\'
+<br/><br/>
+<b>Are you evaluating an item created by a player?</b>
+<br/>
+Don\'t forget to look over the settings in the Item Build Assistant. Make sure the RP bonus is set properly and each roll is interpreted correctly at the right difficulty. When in doubt - you can always ask the player about the intent for a particular post.'),
     ),
   );
   return $items;
@@ -129,7 +133,7 @@ function items_workflow_default_workflows() {
         'target_state' => 'submitted',
       ),
       2 => array(
-        'roles' => 'workflow_features_author_name,storyteller,evaluator,administrator',
+        'roles' => 'workflow_features_author_name,evaluator,administrator',
         'state' => 'draft',
         'target_state' => 'submitted',
       ),
@@ -144,22 +148,22 @@ function items_workflow_default_workflows() {
         'target_state' => 'disapproved',
       ),
       5 => array(
-        'roles' => 'storyteller,evaluator,administrator',
+        'roles' => 'evaluator,administrator',
         'state' => 'submitted',
         'target_state' => 'draft',
       ),
       6 => array(
-        'roles' => 'storyteller,evaluator,administrator',
+        'roles' => 'evaluator,administrator',
         'state' => 'submitted',
         'target_state' => 'approved',
       ),
       7 => array(
-        'roles' => 'storyteller,evaluator,administrator',
+        'roles' => 'evaluator,administrator',
         'state' => 'submitted',
         'target_state' => 'disapproved',
       ),
       8 => array(
-        'roles' => 'storyteller,evaluator,administrator',
+        'roles' => 'evaluator,administrator',
         'state' => 'submitted',
         'target_state' => 'moved to property tab',
       ),
@@ -169,7 +173,7 @@ function items_workflow_default_workflows() {
         'target_state' => 'removed from game',
       ),
       10 => array(
-        'roles' => 'storyteller,evaluator,administrator',
+        'roles' => 'evaluator,administrator',
         'state' => 'approved',
         'target_state' => 'draft',
       ),
@@ -179,7 +183,7 @@ function items_workflow_default_workflows() {
         'target_state' => 'submitted',
       ),
       12 => array(
-        'roles' => 'storyteller,evaluator,administrator',
+        'roles' => 'evaluator,administrator',
         'state' => 'approved',
         'target_state' => 'disapproved',
       ),
@@ -189,7 +193,7 @@ function items_workflow_default_workflows() {
         'target_state' => 'moved to property tab',
       ),
       14 => array(
-        'roles' => 'storyteller,evaluator,administrator',
+        'roles' => 'evaluator,administrator',
         'state' => 'approved',
         'target_state' => 'removed from game',
       ),

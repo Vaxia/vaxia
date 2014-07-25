@@ -327,9 +327,10 @@ For more information about proposals and how to make one yourself, <a href="http
   $handler->display->display_options['filters']['changed']['table'] = 'node';
   $handler->display->display_options['filters']['changed']['field'] = 'changed';
   $handler->display->display_options['filters']['changed']['operator'] = '>';
-  $handler->display->display_options['filters']['changed']['value']['value'] = '-1 month';
+  $handler->display->display_options['filters']['changed']['value']['value'] = '-3 days';
   $handler->display->display_options['filters']['changed']['value']['type'] = 'offset';
   $handler->display->display_options['filters']['changed']['group'] = 2;
+  $handler->display->display_options['block_description'] = 'Proposals';
   $export['proposals'] = $view;
 
   return $export;

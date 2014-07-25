@@ -411,12 +411,12 @@ function sh_test_field_default_fields() {
             'show_repeat_rule' => 'show',
           ),
           'type' => 'date_default',
-          'weight' => '7',
+          'weight' => '6',
         ),
       ),
       'entity_type' => 'user',
       'field_name' => 'field_took_eval_test',
-      'label' => 'Took Eval Test',
+      'label' => 'Last Took Eval Test',
       'required' => 0,
       'settings' => array(
         'default_value' => 'blank',
@@ -449,7 +449,7 @@ function sh_test_field_default_fields() {
   t('Last Took ASH Test One');
   t('Last Took ASH Test Three');
   t('Last Took ASH Test Two');
-  t('Took Eval Test');
+  t('Last Took Eval Test');
 
   return $fields;
 }

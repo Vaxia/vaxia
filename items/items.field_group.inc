@@ -55,7 +55,9 @@ function items_field_group_info() {
       2 => 'field_in_shop',
       3 => 'field_base_item_template',
       4 => 'field_type',
-      5 => 'group_percentages',
+      5 => 'field_item_uses',
+      6 => 'field_pp_created',
+      7 => 'group_percentages',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -556,7 +558,7 @@ function items_field_group_info() {
   $field_group->parent_name = 'group_details';
   $field_group->data = array(
     'label' => 'Additional percent',
-    'weight' => '5',
+    'weight' => '6',
     'children' => array(
       0 => 'field_item_perc_strength',
     ),

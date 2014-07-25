@@ -104,6 +104,12 @@ function vaxia_strongarm() {
         'workflow' => array(
           'weight' => '13',
         ),
+        'locations' => array(
+          'weight' => '15',
+        ),
+        'badges' => array(
+          'weight' => '14',
+        ),
       ),
       'display' => array(
         'workflow_current_state' => array(

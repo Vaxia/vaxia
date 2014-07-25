@@ -50,9 +50,9 @@ function rpg_site_staff_field_group_info() {
     'label' => 'Election Settings',
     'weight' => '4',
     'children' => array(
-      0 => 'field_staff_vaxia_world_head',
-      1 => 'field_staff_sirian_world_head',
-      2 => 'field_staff_academy_head',
+      0 => 'field_staff_setting_lead',
+      1 => 'field_staff_social_lead',
+      2 => 'field_staff_system_lead',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -60,9 +60,9 @@ function rpg_site_staff_field_group_info() {
       'instance_settings' => array(
         'required_fields' => 1,
         'classes' => 'group-election-settings field-group-fieldset',
-        'description' => '(TMP placeholder - testing code atm. Please ignore.)',
+        'description' => 'Configure your preferred settings for elections. When the next election comes up you will be assumed to be interested in all marked positions.',
       ),
-      'formatter' => 'collapsed',
+      'formatter' => 'open',
     ),
   );
   $export['group_election_settings|user|user|form'] = $field_group;
@@ -97,6 +97,8 @@ function rpg_site_staff_field_group_info() {
       14 => 'field_took_social_walkthrough',
       15 => 'field_powers_expire',
       16 => 'field_voting_expire',
+      17 => 'field_personal_folder',
+      18 => 'field_donated',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -122,10 +124,11 @@ function rpg_site_staff_field_group_info() {
   $field_group->parent_name = 'group_storyhosting';
   $field_group->data = array(
     'label' => 'SH Dates',
-    'weight' => '7',
+    'weight' => '8',
     'children' => array(
       0 => 'field_became_sh',
       1 => 'field_became_evaluator',
+      2 => 'field_powers_expire',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -152,10 +155,7 @@ function rpg_site_staff_field_group_info() {
     'weight' => '4',
     'children' => array(
       0 => 'field_became_voter',
-      1 => 'field_staff_vaxia_world_head',
-      2 => 'field_staff_sirian_world_head',
-      3 => 'field_staff_academy_head',
-      4 => 'field_voting_expire',
+      1 => 'field_voting_expire',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -164,7 +164,7 @@ function rpg_site_staff_field_group_info() {
         'classes' => '',
         'description' => '',
       ),
-      'formatter' => 'open',
+      'formatter' => 'collapsible',
     ),
   );
   $export['group_voting|user|user|default'] = $field_group;

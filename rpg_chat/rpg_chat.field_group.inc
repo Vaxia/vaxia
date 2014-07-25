@@ -24,6 +24,7 @@ function rpg_chat_field_group_info() {
     'weight' => '9',
     'children' => array(
       0 => 'field_wiki_source',
+      1 => 'field_npcs',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(

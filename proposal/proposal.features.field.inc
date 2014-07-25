@@ -81,7 +81,67 @@ function proposal_field_default_fields() {
           'summary_rows' => 5,
         ),
         'type' => 'text_textarea_with_summary',
-        'weight' => '3',
+        'weight' => '4',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-proposal-field_associated_department'.
+  $fields['node-proposal-field_associated_department'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_associated_department',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => 'General proposal (all voting site members)',
+        ),
+        'allowed_values_function' => '',
+      ),
+      'translatable' => '0',
+      'type' => 'list_integer',
+    ),
+    'field_instance' => array(
+      'bundle' => 'proposal',
+      'default_value' => array(
+        0 => array(
+          'value' => '0',
+        ),
+      ),
+      'deleted' => '0',
+      'description' => 'Some proposals are only for specific departments, to suggest new policy or other changes. Please select the departments relevant for this proposal - or select "General" to make this a site wide vote.',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 4,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_associated_department',
+      'label' => 'Associated department',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_buttons',
+        'weight' => '7',
       ),
     ),
   );
@@ -148,7 +208,7 @@ function proposal_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '4',
+        'weight' => '9',
       ),
     ),
   );
@@ -241,7 +301,7 @@ function proposal_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'node_reference_autocomplete',
-        'weight' => '2',
+        'weight' => '8',
       ),
     ),
   );
@@ -323,8 +383,10 @@ function proposal_field_default_fields() {
   t('Add any related forum threads that will provide useful context to this proposal.');
   t('Associated Files');
   t('Associated Forum Threads');
+  t('Associated department');
   t('Body');
   t('Forums');
+  t('Some proposals are only for specific departments, to suggest new policy or other changes. Please select the departments relevant for this proposal - or select "General" to make this a site wide vote.');
   t('Upload any files, spreadsheets or images detailing system numbers, or other useful information to give context to this proposal.');
 
   return $fields;

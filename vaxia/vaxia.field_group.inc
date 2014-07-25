@@ -47,7 +47,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Art',
-    'weight' => '6',
+    'weight' => '7',
     'children' => array(
       0 => 'field_artwork_image',
     ),
@@ -159,7 +159,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Details',
-    'weight' => '5',
+    'weight' => '6',
     'children' => array(
       0 => 'field_age_app',
       1 => 'field_age_real',
@@ -219,7 +219,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Items',
-    'weight' => '9',
+    'weight' => '10',
     'children' => array(
       0 => 'field_economy',
       1 => 'field_items',
@@ -253,6 +253,7 @@ function vaxia_field_group_info() {
       0 => 'field_player_notes',
       1 => 'field_sh_notes',
       2 => 'field_sh_private_notes',
+      3 => 'field_character_goals',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -281,6 +282,7 @@ function vaxia_field_group_info() {
       0 => 'field_player_notes',
       1 => 'field_sh_notes',
       2 => 'field_sh_private_notes',
+      3 => 'field_character_goals',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -336,7 +338,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Personal',
-    'weight' => '4',
+    'weight' => '5',
     'children' => array(
       0 => 'field_background',
       1 => 'field_description',
@@ -395,7 +397,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Skills',
-    'weight' => '8',
+    'weight' => '9',
     'children' => array(
       0 => 'field_skill',
       1 => 'field_languages',
@@ -462,7 +464,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Stats',
-    'weight' => '7',
+    'weight' => '8',
     'children' => array(
       0 => 'field_agility',
       1 => 'field_appearance',

@@ -1,8 +1,9 @@
-name = Vaxia Players
-description = Views and rules for Vaxia players
+name = Players
+description = Views and rules for player handling
 core = 7.x
 package = Vaxia
-version = 7.x-1.0
+php = 5.2.4
+version = 7.x-1.1
 project = vaxia_players
 dependencies[] = ctools
 dependencies[] = views

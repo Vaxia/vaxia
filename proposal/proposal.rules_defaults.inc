@@ -95,7 +95,8 @@ function proposal_default_rules_configuration() {
             "type" : { "value" : { "proposal" : "proposal" } }
           }
         },
-        { "node_is_webform" : { "node" : [ "node" ] } }
+        { "node_is_webform" : { "node" : [ "node" ] } },
+        { "NOT user_is_blocked" : { "account" : [ "node:author" ] } }
       ],
       "DO" : [
         { "webform_close" : { "entity" : [ "node" ], "selected_webform" : { "value" : [] } } },
@@ -121,7 +122,8 @@ function proposal_default_rules_configuration() {
             "node" : [ "node" ],
             "type" : { "value" : { "proposal" : "proposal" } }
           }
-        }
+        },
+        { "NOT user_is_blocked" : { "account" : [ "user" ] } }
       ],
       "DO" : [
         { "mail" : {

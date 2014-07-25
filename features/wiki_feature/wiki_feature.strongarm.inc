@@ -104,6 +104,12 @@ function wiki_feature_strongarm() {
         'workflow' => array(
           'weight' => '8',
         ),
+        'locations' => array(
+          'weight' => '30',
+        ),
+        'badges' => array(
+          'weight' => '30',
+        ),
       ),
       'display' => array(
         'workflow_current_state' => array(

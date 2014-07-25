@@ -37,13 +37,15 @@ We use proposals because while a forum thread may give you a rough feel for the 
 </br></br>
 If you haven\'t looked over our recommendations for <a href="http://vaxia.org/wiki/help/i-have-seen-site-proposals-how-can-i-make-one-my-own">how to start a proposal you can find that in the wiki.</a> There\'s some good information in there about how to make sure your proposal takes into account multiple view points and recommended preparation for it, so if this is your first one you should start there.
 </br></br>
-The form will be open for two weeks, then it will automatically close. If you edit it in that timespan the timer will re-set. This is to make sure everyone can get a chance to weigh in.
+The form will be open for two weeks, then it will automatically close. If you edit it in that timespan the timer will re-set. This is to make sure everyone can get a chance to weigh in, or update their vote if they change their mind.
 </br></br>
 Not all site members will be able to vote in this proposal - only those currently active when it was created. This is to avoid ballot stuffing or swoop-ins from long absent players.
 </br></br>
 And lastly, no one can see the names or IP addresses of the people who do vote. This is so they feel safe in making their wishes known. 
 </br></br>
-Once the proposal closes, the results will be posted publicly for all to see. Names will still anonymous.'),
+Once the proposal closes, the results will be posted publicly for all to see. Names will still anonymous.
+</br></br>
+Creating a proposal is a TWO-STEP process. Fill out the information here, and on saving it - the system will take you to part two to set up your form.'),
     ),
   );
   return $items;

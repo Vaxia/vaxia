@@ -81,7 +81,97 @@ function rpg_chat_field_default_fields() {
         'module' => 'nodereferrer',
         'settings' => array(),
         'type' => 'nodereferrer_list',
-        'weight' => '5',
+        'weight' => '6',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-rpg_chatroom-field_npcs'.
+  $fields['node-rpg_chatroom-field_npcs'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_npcs',
+      'foreign keys' => array(
+        'nid' => array(
+          'columns' => array(
+            'nid' => 'nid',
+          ),
+          'table' => 'node',
+        ),
+      ),
+      'indexes' => array(
+        'nid' => array(
+          0 => 'nid',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'node_reference',
+      'settings' => array(
+        'referenceable_types' => array(
+          'article' => 0,
+          'artwork' => 0,
+          'character_sheet' => 'character_sheet',
+          'event' => 0,
+          'filedepot_folder' => 0,
+          'forum' => 0,
+          'items' => 0,
+          'long_answer' => 0,
+          'mass_contact' => 0,
+          'multichoice' => 0,
+          'page' => 0,
+          'proposal' => 0,
+          'quiz' => 0,
+          'rpg_chatroom' => 0,
+          'scene' => 0,
+          'session_report' => 0,
+          'storyhost_application' => 0,
+          'strike' => 0,
+          'webform' => 0,
+          'wiki_page' => 0,
+        ),
+        'view' => array(
+          'args' => array(),
+          'display_name' => 'references_1',
+          'view_name' => 'room_npcs',
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'node_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'rpg_chatroom',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'Make a note of NPCs commonly found in this  location.',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'module' => 'node_reference',
+          'settings' => array(),
+          'type' => 'node_reference_default',
+          'weight' => '4',
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_npcs',
+      'label' => 'NPCs',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'node_reference',
+        'settings' => array(
+          'autocomplete_match' => 'contains',
+          'autocomplete_path' => 'node_reference/autocomplete',
+          'size' => '60',
+        ),
+        'type' => 'node_reference_autocomplete',
+        'weight' => '4',
       ),
     ),
   );
@@ -476,7 +566,7 @@ function rpg_chat_field_default_fields() {
         'module' => 'location_cck',
         'settings' => array(),
         'type' => 'location',
-        'weight' => '4',
+        'weight' => '5',
       ),
     ),
   );
@@ -579,6 +669,8 @@ function rpg_chat_field_default_fields() {
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('Make a note of NPCs commonly found in this  location.');
+  t('NPCs');
   t('Parent-locations');
   t('RL weather');
   t('Realm');
