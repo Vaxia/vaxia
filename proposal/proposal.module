@@ -304,12 +304,11 @@ function _proposal_webform_components_form_rows($node, $cid, $component, $level,
 
   module_load_include('inc', 'webform', 'includes/webform.report');
   $voted = webform_get_submission_count($node->nid);
-  if ($node->webform['status'] == FALSE && $voted == 0 ) {
-    if ($component['form_key'] != 'additional_comments') {
-      $edit = l(t('Edit'), 'node/' . $node->nid . '/webform/components/' . $cid, array('query' => drupal_get_destination()));
-      $clone = l(t('Clone'), 'node/' . $node->nid . '/webform/components/' . $cid . '/clone', array('query' => drupal_get_destination()));
-      $delete = l(t('Delete'), 'node/' . $node->nid . '/webform/components/' . $cid . '/delete', array('query' => drupal_get_destination()));
-    }
+  // If you can view this form, you can edit. By editting - you mark the form updated.
+  if ($component['form_key'] != 'additional_comments') {
+    $edit = l(t('Edit'), 'node/' . $node->nid . '/webform/components/' . $cid, array('query' => drupal_get_destination()));
+    $clone = l(t('Clone'), 'node/' . $node->nid . '/webform/components/' . $cid . '/clone', array('query' => drupal_get_destination()));
+    $delete = l(t('Delete'), 'node/' . $node->nid . '/webform/components/' . $cid . '/delete', array('query' => drupal_get_destination()));
   }
   // Add each component to a table row.
   $row_data = array(
