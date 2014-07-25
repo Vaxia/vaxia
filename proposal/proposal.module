@@ -1019,6 +1019,21 @@ function proposal_form_alter(&$form, &$form_state, $form_id) {
         $form['#disabled'] = TRUE;
       }
     }
+    // Adjust the description location for all form elements.
+    foreach (element_children($form['submitted']) as $child) {
+      // Grab description form element.
+      $description = isset($form['submitted'][$child]['#description']) ? $form['submitted'][$child]['#description'] : '';
+      $title = isset($form['submitted'][$child]['#title']) ? $form['submitted'][$child]['#title'] : '';
+      $weight = isset($form['submitted'][$child]['#weight']) ? $form['submitted'][$child]['#weight'] : 0;
+      $form['submitted'][$child]['#description'] = '';
+      if (!empty($description)) {
+        $form['submitted'][$child]['#title'] = '';
+      }
+      // Render description.
+      if (!empty($description)) {
+        $form['submitted'][$child]['#prefix'] = '</br><div><b>' . $title . '</b></div>' . $description;
+      }
+    }
   } // End alter of webform.
 
   return $form;
