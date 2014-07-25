@@ -1,0 +1,12 @@
+name = Storyhosts
+description = General handling of the storyhost role
+core = 7.x
+package = Vaxia
+version = 7.x-1.0
+project = storyhosts
+dependencies[] = entity
+dependencies[] = rules
+dependencies[] = workflow_rules
+features[features_api][] = api:1
+features[rules_config][] = rules_make_user_eligible_for_sh_on_xp_gain
+features[rules_config][] = rules_set_sh_character_on_user
