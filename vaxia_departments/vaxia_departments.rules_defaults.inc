@@ -9,6 +9,20 @@
  */
 function vaxia_departments_default_rules_configuration() {
   $items = array();
+  $items['vaxia_staff_mark_passed_newbie_helper'] = entity_import('rules_config', '{ "vaxia_staff_mark_passed_newbie_helper" : {
+      "LABEL" : "Mark passed Newbie Helper",
+      "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
+      "TAGS" : [ "Newbie Helper" ],
+      "REQUIRES" : [ "rules", "quiz_rules" ],
+      "ON" : { "quiz_rules_quiz_passed" : [] },
+      "IF" : [ { "data_is" : { "data" : [ "node:nid" ], "value" : "10564" } } ],
+      "DO" : [
+        { "drupal_message" : { "message" : "Congratulations! You\\u0027ve passed the newbie helper training - welcome aboard! If you have any questions feel free to ask one of our A\\/SHs for clarification. If there\\u0027s anything in this walkthrough that we didn\\u0027t cover please let us know." } },
+        { "user_add_role" : { "account" : [ "user" ], "roles" : { "value" : { "28" : "28" } } } }
+      ]
+    }
+  }');
   $items['vaxia_staff_mark_passed_setting_walkthrough'] = entity_import('rules_config', '{ "vaxia_staff_mark_passed_setting_walkthrough" : {
       "LABEL" : "Mark passed Setting Walkthrough",
       "PLUGIN" : "reaction rule",
