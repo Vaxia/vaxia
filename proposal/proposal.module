@@ -305,17 +305,14 @@ function _proposal_webform_components_form_rows($node, $cid, $component, $level,
       $rendered = $process($rendered);
     }
   }
-  // Render it.
-  $rendered = drupal_render($rendered);
   // Render description.
   if (!empty($description)) {
-    $desc_element = array(
-      '#markup' => '<div><b>' . $title . '</b></div>' . $description,
-    );
-    $rendered = drupal_render($desc_element) . $rendered;
+    $rendered['#prefix'] = '</br><div><b>' . $title . '</b></div>' . $description;
   }
-  $edit = $clone = $delete = '';
+  // Render it.
+  $rendered = drupal_render($rendered);
 
+  $edit = $clone = $delete = '';
   module_load_include('inc', 'webform', 'includes/webform.report');
   $voted = webform_get_submission_count($node->nid);
   // If you can view this form, you can edit. By editting - you mark the form updated.
