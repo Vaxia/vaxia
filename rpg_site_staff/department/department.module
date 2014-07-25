@@ -4,6 +4,8 @@
  * Code for Departments. Limit and restrict the behavior of other systems on the site per department.
  */
 
+include_once('department.features.inc');
+
 /**
  * Implements hook_permission().
  */
