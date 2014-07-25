@@ -9,6 +9,7 @@ dependencies[] = entity
 dependencies[] = quiz_rules
 dependencies[] = rules
 features[features_api][] = api:1
+features[rules_config][] = rules_mark_passed_system_walkthrough
 features[rules_config][] = vaxia_staff_mark_passed_newbie_helper
 features[rules_config][] = vaxia_staff_mark_passed_setting_walkthrough
 features[rules_config][] = vaxia_staff_mark_passed_social_walkthrough
