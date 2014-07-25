@@ -13,7 +13,7 @@ function storyhosts_default_rules_configuration() {
       "LABEL" : "Make user eligible for SH on XP gain",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "TAGS" : [ "Staff" ],
+      "TAGS" : [ "Storyhosts" ],
       "REQUIRES" : [ "rules" ],
       "ON" : { "user_update" : [] },
       "IF" : [
