@@ -40,7 +40,7 @@ function artwork_menu() {
 function _artwork_menu_ownership_access_callback($node) {
   if ($node->type == 'artwork') {
     global $user;
-    if (user_access('change art owner') || ($user->uid == $node->uid && 
+    if (user_access('change art owner') && ($user->uid == $node->uid && 
         (user_access('edit any artwork content')
           || user_access('edit own artwork content')))) {
       return TRUE;
