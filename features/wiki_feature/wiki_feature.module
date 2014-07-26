@@ -391,7 +391,6 @@ function wiki_feature_block_view($delta = '') {
   }
   // Per delta, select an output.
   switch ($delta) {
-    break;
     case 'wiki_feature_templates':
       $templates = variable_get('wiki_feature_templates', array());
       if (!empty($templates)) {
