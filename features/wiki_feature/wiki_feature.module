@@ -384,11 +384,6 @@ function wiki_feature_freelink_alter(&$link, $target, $plugin_name, $plugin) {
  */
 function wiki_feature_block_view($delta = '') {
   $block = array();
-  $path = drupal_get_path_alias();
-  $position = strpos($path, 'wiki/');
-  if ($position === FALSE || $position !== 0) {
-    return array();
-  }
   // Per delta, select an output.
   switch ($delta) {
     case 'wiki_feature_templates':
