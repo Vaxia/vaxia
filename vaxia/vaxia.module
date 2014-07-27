@@ -333,7 +333,7 @@ function vaxia_process_comment(&$variables) {
       }
       $options = array('attributes' => array('title' => $char_desc));
       $character_name = '<span class="rpgchat-character-name">' . l($character_name, 'node/' . $character->nid, $options) . '</span>' .
-            '<span class="rpgchat-user-name">(' . l($user->name, 'users/' . $user->name, $options) . ')</span>';
+            '<span class="rpgchat-user-name">(' . l($user->name, 'user/' . $user->uid) . ')</span>';
       // Update the submission variables with name, description information.
       $variables['submitted'] = t('!username !datetime',
         array(
