@@ -37,30 +37,13 @@ function wiki_feature_menu() {
     'page arguments' => array('_wiki_feature_admin_settings'),
     'access arguments' => array('administer wiki feature'),
   );
-  $items['wiki_feature/autocomplete/room'] = array(
+  $items['admin/config/system/wiki_feature/autocomplete/room'] = array(
     'title' => 'Wiki feature room lookup',
     'type' => MENU_CALLBACK,
     'page callback' => '_wiki_feature_autocomplete_room',
     'access arguments' => array('administer wiki feature'),
   );
   return $items;
-}
-
-/**
- * Autocomplete function, callback for room look up.
- */
-function _wiki_feature_autocomplete_room($string = '') {
-  $matches = array();
-  if (!empty($string)) {
-    $results = db_query('SELECT n.nid, n.title FROM {node} n ' .
-      'WHERE n.title LIKE :title',
-      array(':title' => '%' . $string . '%'));
-    foreach ($results as $result) {
-      $label = $result->title . ' [nid:' . $result->nid . ']';
-      $matches[ check_plain($label) ] = check_plain($label);
-    }
-  }
-  drupal_json_output($matches);
 }
 
 /**
@@ -71,7 +54,7 @@ function _wiki_feature_admin_settings($form, &$form_state) {
     '#title' => t('Wiki root room'),
     '#type' => 'textfield',
     '#default_value' => variable_get('wiki_feature_root', ''),
-    '#autocomplete_path' => 'wiki_feature/autocomplete/room',
+    '#autocomplete_path' => 'admin/config/system/wiki_feature/autocomplete/room',
   );
   $form['wiki_feature_link_depth'] = array(
     '#title' => t('Wiki children depth'),
@@ -132,6 +115,23 @@ function _wiki_feature_admin_settings($form, &$form_state) {
 }
 
 /**
+ * Autocomplete function, callback for room look up.
+ */
+function _wiki_feature_autocomplete_room($string = '') {
+  $matches = array();
+  if (!empty($string)) {
+    $results = db_query('SELECT n.nid, n.title FROM {node} n ' .
+      'WHERE n.title LIKE :title',
+      array(':title' => '%' . $string . '%'));
+    foreach ($results as $result) {
+      $label = $result->title . ' [nid:' . $result->nid . ']';
+      $matches[ check_plain($label) ] = check_plain($label);
+    }
+  }
+  drupal_json_output($matches);
+}
+
+/**
  * Implements hook_menu_alter().
  */
 function wiki_feature_menu_alter($node, $op, $account) {
@@ -167,6 +167,28 @@ function wiki_feature_node_view($node, $view_mode, $langcode) {
     );
   }
 
+}
+/**
+ * Implements hook_node_presave().
+ */
+function wiki_feature_node_presave($node) {
+  // If node is a wiki page, add obvious links for cross linking..
+  if ($node->type == 'wiki_page') {
+    $body = $node->body[ $node->language ][0]['value'];
+    // Get array of matches.
+    $nodes = db_query('SELECT title, nid FROM {node} WHERE type = \'wiki_page\'');
+    $replacements = array();
+    foreach ($nodes as $values) {
+      $replacements[' ' . $values->title . ' ' ] = ' [[' . $values->title . ']] ';
+      $replacements[' ' . $values->title . '.' ] = ' [[' . $values->title . ']].';
+      $replacements[' ' . $values->title . ',' ] = ' [[' . $values->title . ']],';
+    }
+    // Replace.
+    $body = strtr($body, $replacements);
+    // Put output back in.x
+    $node->body[ $node->language ][0]['value'] = $body;
+  }
+  // And now proceed with the saving.
 }
 
 /**
