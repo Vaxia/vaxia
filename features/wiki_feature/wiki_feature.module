@@ -329,7 +329,7 @@ function wiki_feature_freelinking_nodetitle_nid_from_title(&$target, $this_nid) 
     $sql = 'SELECT n.title, n.nid, n.language FROM {node} n ' .
       'WHERE n.title LIKE :title ' .
       'AND n.nid != :nid'; 
-    $params = array(':title' => '%/' . $title, ':nid' => $this_nid);
+    $params = array(':title' => '%' . $title_end, ':nid' => $this_nid);
     if ($type != 'none') {
       $sql .= ' AND n.type = :type';
       $params[':type'] = $type;
