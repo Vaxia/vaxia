@@ -336,7 +336,7 @@ function vaxia_process_comment(&$variables) {
       // Update the submission variables with name, description information.
       $variables['submitted'] = t('!username </br> !datetime',
         array(
-          '!username' => l($character_name, 'node/' . $character->nid, $options),
+          '!username' => l($character_name, 'node/' . $character->nid, $options) . '</br>(' . $user->name . ')',
           '!datetime' => $variables['created'])
         );
 
