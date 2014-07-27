@@ -263,6 +263,10 @@ function wiki_feature_block_info() {
     'info' => t('Wiki Templates'),
     'cache' => DRUPAL_CACHE_PER_ROLE,
   );
+  $blocks['wiki_feature_disamb'] = array(
+    'info' => t('Wiki Disambiguation'),
+    'cache' => DRUPAL_CACHE_PER_ROLE,
+  );
   return $blocks;
 }
 
@@ -427,6 +431,33 @@ function wiki_feature_block_view($delta = '') {
         $block['content'] .= '<div>' . t('These templates are provided to make it easier to quickly load a basic template for ' .
           'wiki articles. If you already have information in the page, or are not using a template feel free to ignore these links.') .
           '</div>';
+      }
+    break;
+    case 'wiki_feature_disamb':
+      $block['subject'] = t('Wiki disambiguation');
+      $block['content'] = '';
+      // Find out if we have more than jsut this one node with the title.
+      $path_root = arg(0);
+      $nid = arg(1);
+      if ($path_root == 'node' && is_numeric($nid)) {
+        $node = node_load($nid);
+        if ($node->type == 'wiki_page') {
+          // Grab everything else with the same title and type.
+          $others = db_query('SELECT nid FROM {node} WHERE type = \'wiki_page\' AND title = :title AND nid != :nid',
+            array(':title' => $node->title, ':nid' => $node->nid));
+          $found_others = array();
+          foreach ($others as $other) {
+            $other_node = node_load($other->nid);
+            $sample = node_view($other_node,'teaser');
+            $sample = substr(strip_tags($sample['body'][0]['#markup']),0,255);
+            $found_others[] = t('Did you mean !link', array('!link' => l($other_node->title, 'node/' . $other_node->nid))) .
+              ': <span class="wiki-disamb-sample" style="font-size:80%;">' . $sample . '</span>';
+          }
+          // Set up the links.
+          if (!empty($found_others)) {
+            $block['content'] = t('Other wiki articles share the same title...') . theme('item_list', array('items' => $found_others));
+          }
+        }
       }
     break;
     default:
