@@ -216,7 +216,7 @@ function vaxia_node_view($node, $view_mode, $langcode) {
       if ($spent_on_stats >= 240 || $skill_average <= 20) {
         drupal_set_message(t('This character spent %spent_on_stats on stats, and an average of %skill_average on skills. This is ' .
           'a character design approach that is likely to be reviewed by our evaluation staff as a potential min-maxed build. ' .
-          'We strongly encourage new characters to have a wider base of skills and at most two stats at 40. You may want to ' .
+          'We strongly encourage new characters to have stronger skills and at most two stats at 40. You may want to ' .
           'revise your build or expect for an evaluator to assist with this character build.',
           array('%spent_on_stats' => $spent_on_stats, '%skill_average' => number_format($skill_average, 2))), 'warning');
       }
