@@ -437,27 +437,12 @@ function vaxia_character_sheet_validate_sheet($node, $old_node, $form, $form_sta
         $xp_type = $field_info['costs']['xp_type'];
         $cost = $new_value;
         $spent_xp[$xp_type] = isset($spent_xp[$xp_type]) ? $spent_xp[$xp_type] + $cost : $cost;
-        if ($field_key != 'field_skill_value') {
-          $spent_on_stats += $cost;
-        }
-        else {
-          $spent_on_skills += $cost;
-          $numb_skills = $totals['number'];
-        }
         if ($spent_xp[$xp_type] > $available_xp) {
           return $error = array('field' => '', 'message' => 
             t('You have spent %spent_xp xp out of %available_xp available xp. Please revise your sheet.',
               array('%spent_xp' => $spent_xp[$xp_type], '%available_xp' => $available_xp)));
         }
       }
-    }
-    $skill_average = ($numb_skills > 0) ? $spent_on_skills / $numb_skills : 0;
-    if ($spent_on_stats >= 240 && $skill_average <= 20) {
-      drupal_set_message(t('This character spent %spent_on_stats on stats, and an average of %skill_average on skills. This is ' .
-        'a character design approach that is likely to be reviewed by our evaluation staff as a potential min-maxed build. ' .
-        'We strongly encourage new characters to have a wider base of skills and at most two stats at 40. You may want to ' .
-        'revise your build or expect for an evaluator to assist with this character build.',
-        array('%spent_on_stats' => $spent_on_stats, '%skill_average' => number_format($skill_average, 2))), 'warning');
     }
     if ($spent_xp[$xp_type] < $available_xp) {
       return $error = array('field' => '', 'message' => 
