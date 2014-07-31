@@ -1229,9 +1229,9 @@ function _vaxia_get_field_value_flat($node, $field_key, $field_info, $nodes_seen
     // We didn't find it on the top level. So it may be in a child somewhere.
     // Go looking.
     foreach (element_children($walkable_node) as $this_child) {
-      $child = $walkable_node[$this_child];
-      if (isset($child[$language]) && is_array($child[$language])) {
-        foreach ($child[$language] as $delta => $delta_field) {
+      $child = !empty($walkable_node[$this_child]) ? $walkable_node[$this_child] : array();
+      if (is_array($child) && !empty($child[$language]) && is_array($child[$language])) {
+       foreach ($child[$language] as $delta => $delta_field) {
           $sub_node = '';
           if (isset($delta_field['nid'])) {
             // We have a node reference subnode.
@@ -1250,10 +1250,10 @@ function _vaxia_get_field_value_flat($node, $field_key, $field_info, $nodes_seen
               }
             }
           }
-          // If we found a subnode at this this child, check it.
+          // If we found a subnode or field colelction at this this child, check it.
           if (!empty($sub_node)) {
             // NOTE: THIS DOES NOT HANDLE RECUSIVE LOOPS WELL - SO DON'T RECOUNT THINGS COUNTED.
-            if (!isset($sub_node->nid) || !in_array($sub_node->nid, $nodes_seen)) {
+            if ( (!isset($sub_node->nid)) || (isset($sub_node->nid) && !in_array($sub_node->nid, $nodes_seen)) ) {
               $new_totals = _vaxia_get_field_value_flat($sub_node, $field_key, $field_info, $nodes_seen);
               $values['total'] += $new_totals['total'];
               $values['number'] += $new_totals['number'];
