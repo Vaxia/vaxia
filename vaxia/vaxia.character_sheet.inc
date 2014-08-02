@@ -434,6 +434,7 @@ function vaxia_character_sheet_validate_sheet($node, $old_node, $form, $form_sta
     $zero_max = variable_get('vaxia_pc_stat_zero_cap', 1);
     $high_skill = variable_get('vaxia_pc_skill_max', 40);
     $high_stat = variable_get('vaxia_pc_stat_max', 40);
+    // Field info.
     $fields_info = _character_sheet_get_field_info($node);
     // Gather data on spending.
     $spent_xp = array(); // XP by type.
@@ -661,43 +662,81 @@ function _vaxia_admin_settings() {
     '#title' => 'Character creation rules',
     '#type' => 'fieldset',
   );
-  $form['char_rules']['vaxia_pc_skill_min'] = array(
+  $form['char_rules']['warn'] = array(
+    '#title' => 'Warn creation',
+    '#type' => 'fieldset',
+  );
+  $form['char_rules']['warn']['vaxia_pc_skill_warn'] = array(
+    '#title' => 'Skill min warn',
+    '#description' => 'Warning on min skill value for a PC.',
+    '#type' => 'textfield',
+    '#default_value' =>  variable_get('vaxia_pc_skill_warn', 10),
+  );
+  $form['char_rules']['warn']['vaxia_pc_stat_spend_warn'] = array(
+    '#title' => 'Stat spending warn',
+    '#description' => 'Warning spent on stats for a PC.',
+    '#type' => 'textfield',
+    '#default_value' => variable_get('vaxia_pc_stat_spend_warn', 210),
+  );
+  $form['char_rules']['warn']['vaxia_pc_stat_high_warn'] = array(
+    '#title' => 'Max caps warn',
+    '#description' => 'Warning on number of allowed max values for a PC.',
+    '#type' => 'textfield',
+    '#default_value' => variable_get('vaxia_pc_stat_high_warn', 3),
+  );
+  $form['char_rules']['warn']['vaxia_pc_stat_min_warn'] = array(
+    '#title' => 'Max mins warn',
+    '#description' => 'Warning on number of allowed min values for a PC.',
+    '#type' => 'textfield',
+    '#default_value' => variable_get('vaxia_pc_stat_min_warn', 2),
+  );
+  $form['char_rules']['warn']['vaxia_pc_skill_ave_warn'] = array(
+    '#title' => 'Skill average warn',
+    '#description' => 'Warning on average skill values for a PC.',
+    '#type' => 'textfield',
+    '#default_value' => variable_get('vaxia_pc_skill_ave_warn', 20),
+  );
+  $form['char_rules']['block'] = array(
+    '#title' => 'Block creation',
+    '#type' => 'fieldset',
+  );
+  $form['char_rules']['block']['vaxia_pc_skill_min'] = array(
     '#title' => 'Skill min',
     '#description' => 'Minimum allowed skill value for a PC.',
     '#type' => 'textfield',
     '#default_value' =>  variable_get('vaxia_pc_skill_min', 5),
   );
-  $form['char_rules']['vaxia_pc_skill_max'] = array(
+  $form['char_rules']['block']['vaxia_pc_skill_max'] = array(
     '#title' => 'Skill min',
     '#description' => 'Minimum allowed skill value for a PC.',
     '#type' => 'textfield',
     '#default_value' => variable_get('vaxia_pc_skill_max', 40),
   );
-  $form['char_rules']['vaxia_pc_stat_min'] = array(
+  $form['char_rules']['block']['vaxia_pc_stat_min'] = array(
     '#title' => 'Stat min',
     '#description' => 'Minimum allowed stat value for a PC.',
     '#type' => 'textfield',
     '#default_value' =>  variable_get('vaxia_pc_stat_min', 10),
   );
-  $form['char_rules']['vaxia_pc_stat_max'] = array(
+  $form['char_rules']['block']['vaxia_pc_stat_max'] = array(
     '#title' => 'Stat min',
     '#description' => 'Minimum allowed stat value for a PC.',
     '#type' => 'textfield',
     '#default_value' => variable_get('vaxia_pc_stat_max', 40),
   );
-  $form['char_rules']['vaxia_pc_stat_spend_cap'] = array(
+  $form['char_rules']['block']['vaxia_pc_stat_spend_cap'] = array(
     '#title' => 'Stat spending cap',
     '#description' => 'Maximum allowed to be spent on stats for a PC.',
     '#type' => 'textfield',
     '#default_value' => variable_get('vaxia_pc_stat_spend_cap', 225),
   );
-  $form['char_rules']['vaxia_pc_stat_high_cap'] = array(
+  $form['char_rules']['block']['vaxia_pc_stat_high_cap'] = array(
     '#title' => 'Max caps',
     '#description' => 'Maximum number of allowed max values for a PC.',
     '#type' => 'textfield',
     '#default_value' => variable_get('vaxia_pc_stat_high_cap', 4),
   );
-  $form['char_rules']['vaxia_pc_stat_zero_cap'] = array(
+  $form['char_rules']['block']['vaxia_pc_stat_zero_cap'] = array(
     '#title' => 'Zero caps',
     '#description' => 'Maximum number of zero skills for a PC.',
     '#type' => 'textfield',

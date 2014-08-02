@@ -194,31 +194,123 @@ function vaxia_node_view($node, $view_mode, $langcode) {
     if ( !isset($node->workflow) || // Current node has no workflow.
       (!_character_sheet_is_playable($node) && $has_xp < 20) // In submission, inactive, or disapproved, under 20 XP spent.
     ) {
-      // Total the value of points against starting points flat.
+      $stat_max = variable_get('vaxia_pc_stat_spend_cap', 225);
+      $max_max = variable_get('vaxia_pc_stat_high_cap', 4);
+      $zero_max = variable_get('vaxia_pc_stat_zero_cap', 1);
+      
+      $high_skill = variable_get('vaxia_pc_skill_max', 40);
+      $high_stat = variable_get('vaxia_pc_stat_max', 40);
+      
+      
+      $stat_max_warn = variable_get('vaxia_pc_stat_spend_warn', 210);
+      $min_warn = variable_get('vaxia_pc_skill_warn', 10);
+      $max_max = variable_get('vaxia_pc_stat_high_warn', 3);    
+      $min_max = variable_get('vaxia_pc_stat_min_warn', 2);
+      $skill_ave_warn = variable_get('vaxia_pc_skill_ave_warn', 20);
+
+
+      // Field info.
+      $messages = array();
       $fields_info = _character_sheet_get_field_info($node);
-      $spent_on_stats = 0;
-      $spent_on_skills = 0;
-      $numb_skills = 0;
+      // Gather data on spending.
+      $spent_xp = array(); // XP by type.
+      $spent_on_stats = 0; // Amount spent on stats.
+      $spent_on_skills = 0; // Amount spent on skills.
+      $maxed_values = 0; // Number of maxed values.
+      $zero_skills = 0; // Number of zeroth sklls.
+      $low_stats = 0; // Number of low stats.
+      $low_vals = 0; // Number of low anyting.
+      $numb_skills = 0; // Number of skills.
+      // Loop through field data.
+      $node_data = (array) $node;
       foreach ($fields_info as $field_key => $field_info) {
         if (isset($field_info['costs']['xp_type'])) {
           // Calculate cost difference.
           $totals = _vaxia_get_field_value_flat($node, $field_key, $fields_info);
+          $cost = $totals['total'];
+          $xp_type = $field_info['costs']['xp_type'];
+          // Track for stat spending.
           if ($field_key != 'field_skill_value') {
-            $spent_on_stats += $totals['total'];
+            $spent_on_stats += $cost;
+            // Too high.
+            if ($cost >= $high_stat) {
+              $maxed_values++;
+            }
+            // Low stat.
+            if ($cost < $min_warn) {
+              $low_stats++;
+            }
+            // Low values.
+            if ($cost <= $min_warn) {
+              $low_vals++;
+            }
           }
           else {
-            $spent_on_skills += $totals['total'];
+            $spent_on_skills += $cost;
             $numb_skills = $totals['number'];
-          }
+            foreach(element_children($node_data) as $this_field) {
+              if ($this_field == 'field_skill') {
+                $lang = $node->language;
+                $skill_data = $node->$this_field;
+                foreach ($skill_data as $skills) {
+                  foreach ($skills as $delta => $skill_data) {
+                    $skill_info = field_collection_item_load($skill_data['value']);
+                    $skill_cost = $skill_info->field_skill_value['und'][0]['value'];
+                    // Max sills.
+                    if ($skill_cost >= $high_skill) {
+                      $maxed_values++;
+                    }
+                    // Zero skills.
+                    if (is_array($skill_data) && $skill_cost == 0) {
+                      $zero_skills++;
+                    }
+                    // Low skill.
+                    if ($skill_cost <= $min_warn) {
+                      $low_vals++;
+                    }
+                  }
+                }
+              }
+            }
+          } // End skills.
+          $spent_xp[$xp_type] = isset($spent_xp[$xp_type]) ? $spent_xp[$xp_type] + $cost : $cost;
+          // Over spent XP.
         }
+      } // End loop.
+      // Any under value stat.
+      if ($low_stats > 1) {
+        $messages[] = t('You have %low_stats stat below %min_warn. We recommend having higher stats.',
+            array('%low_stats' => $low_stats, '%min_warn' => $min_warn));    
       }
+      // More than two low stats or skills.
+      if ($low_vals > $min_max) {
+        $messages[] = t('You have %low_vals values at %min_warn or below. We recommend no more than %min_max low values.',
+            array('%low_vals' => ($low_vals), '%min_warn' => $min_warn, '%min_max' => $min_max));    
+      }
+      // Focused too much on stats.
+      if ($spent_on_stats > $stat_max_warn) {
+        $messages[] = t('You have spent %spent_on_stats points on stats. We recommend no more than %stat_max on stats.',
+            array('%spent_on_stats' => $spent_on_stats, '%stat_max' => $stat_max_warn));    
+      }
+      // Too many maxes.
+      if ($maxed_values > $max_max) {
+        $messages[] = t('You have %maxed_values maximized values.  We recommend no more than %max_max maxed values.',
+            array('%maxed_values' => $maxed_values, '%max_max' => $max_max));
+      }
+      // Existing warning on averages.
       $skill_average = ($numb_skills > 0) ? $spent_on_skills / $numb_skills : 0;
-      if ($spent_on_stats >= 240 || $skill_average < 20) {
-        drupal_set_message(t('This character spent %spent_on_stats on stats, and an average of %skill_average on skills. This is ' .
-          'a character design approach that is likely to be reviewed by our evaluation staff as a potential min-maxed build. ' .
-          'We strongly encourage new characters to have stronger skills and at most two stats at 40. You may want to ' .
-          'revise your build or expect for an evaluator to assist with this character build.',
-          array('%spent_on_stats' => $spent_on_stats, '%skill_average' => number_format($skill_average, 2))), 'warning');
+      if ($skill_average < $skill_ave_warn) {
+        $messages[] = t('You have an average of %skill_average on skills. We recommend having higher stats on average.',
+          array('%spent_on_stats' => $spent_on_stats, '%skill_average' => number_format($skill_ave_warn, 2)));
+      }
+      // General warn.
+      if (!empty($messages)) {
+        $messages[] = t('This is a character design approach that is likely to be reviewed by our evaluation ' .
+          'staff as a potential min-maxed build. Please expect to be asked to revise.');
+        drupal_set_message(implode(' ', $messages), 'warning');
+      }
+      else {
+        drupal_set_message("$low_stats");
       }
     }
 
