@@ -310,6 +310,7 @@ function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
     }
     // If the owner, and new, and user isn't an SH sort.
     if ($user->uid == $node->uid && !user_access('create NPCs') && !user_access('create open NPCs')) {
+      // Stat option changes.
       $reduced = array('field_life', 'field_endurance', 'field_strength', 'field_dexterity',
         'field_intelligence', 'field_spirituality', 'field_charisma');
       $low = variable_get('vaxia_pc_stat_min', 10);
@@ -323,6 +324,7 @@ function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
           $form[$field_name][$lang][0]['value']['#options'] = $options;
         }
       }
+      // Skill option changes.
       $low = variable_get('vaxia_pc_skill_min', 5);
       $high = variable_get('vaxia_pc_skill_max', 40);
       $vals = range($low, $high);
@@ -336,11 +338,22 @@ function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
           $form['field_skill'][$lang][$delta]['field_skill_value'][$lang][0]['value']['#options'] = $options;
         }
       }
+      // Condition change.
+      $min_hxp = variable_get('vaxia_other_min_hxp', 1);
+      $user = user_load($user->uid);
+      $hxp = $user->field_xp_over_time['und'][0]['value'];
+      if ($hxp < $min_hxp) {
+          $options = $form['field_race'][$lang]['#options'];
+          unset($form['field_race'][$lang]['#options']['other']);
+          $form['field_conditions']['#disabled'] = TRUE;
+      }
     }
+
     // If in submit / review mode then really remove access.
     if ($user->uid == $node->uid && isset($node->workflow_state_name) && $node->workflow_state_name == 'submitted') {
       $form['#disabled'] = TRUE;
     }
+
     // If has xp, and in draft - then disable. We only want to see you submit this character, it's been pulled back from cold storage.
     if (!empty($node->nid)) {
       $has_xp = _character_sheet_get_xp($node->nid, 'xp');
@@ -741,6 +754,12 @@ function _vaxia_admin_settings() {
     '#description' => 'Maximum number of zero skills for a PC.',
     '#type' => 'textfield',
     '#default_value' => variable_get('vaxia_pc_stat_zero_cap', 1),
+  );
+  $form['char_rules']['block']['vaxia_other_min_hxp'] = array(
+    '#title' => 'Min HXP for others',
+    '#description' => 'Min HXP to be able to select Other and Conditions.',
+    '#type' => 'textfield',
+    '#default_value' => variable_get('vaxia_other_min_hxp', 1),
   );
   return $form;
 }
