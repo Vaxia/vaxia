@@ -427,32 +427,63 @@ function vaxia_character_sheet_validate_sheet($node, $old_node, $form, $form_sta
   ) {
     // Total the value of points against starting points flat.
     $available_xp = variable_get('vaxia_starting_points', 300);
+    $stat_max = variable_get('vaxia_pc_stat_spend_cap', 225);
+    $max_max = variable_get('vaxia_pc_stat_high_cap', 4);
+    $high_skill = variable_get('vaxia_pc_skill_max', 40);
+    $high_stat = variable_get('vaxia_pc_stat_max', 40);
     $fields_info = _character_sheet_get_field_info($node);
-    $spent_xp = array();
-    $spent_on_stats = 0;
-    $spent_on_skills = 0;
-    $numb_skills = 0;
+    // Gather data on spending.
+    $spent_xp = array(); // XP by type.
+    $spent_on_stats = 0; // Amount spent on stats.
+    $spent_on_skills = 0; // Amount spent on skills.
+    $maxed_values = 0; // Number of maxed values.
     foreach ($fields_info as $field_key => $field_info) {
       if (isset($field_info['costs']['xp_type'])) {
         // Calculate cost difference.
         $totals = _vaxia_get_field_value_flat($node, $field_key, $fields_info);
-        $new_value = $totals['total'];
-        // Add the debt to the ongoing total for this type.
+        $cost = $totals['total'];
         $xp_type = $field_info['costs']['xp_type'];
-        $cost = $new_value;
+        // Track for stat spending.
+        if ($field_key != 'field_skill_value') {
+          $spent_on_stats += $cost;
+          if ($cost >= $high_stat) {
+            $maxed_values++;
+          }
+        }
+        else {
+          $spent_on_skills += $cost;
+          if ($cost >= $high_skill) {
+            $maxed_values++;
+          }
+        }
         $spent_xp[$xp_type] = isset($spent_xp[$xp_type]) ? $spent_xp[$xp_type] + $cost : $cost;
+        // Over spent XP.
         if ($spent_xp[$xp_type] > $available_xp) {
           return $error = array('field' => '', 'message' => 
-            t('You have spent %spent_xp xp out of %available_xp available xp. Please revise your sheet.',
+            t('You have spent %spent_xp points out of %available_xp available points. Please revise your sheet.',
               array('%spent_xp' => $spent_xp[$xp_type], '%available_xp' => $available_xp)));
         }
       }
     }
+    // Under spent XP.
     if ($spent_xp[$xp_type] < $available_xp) {
       return $error = array('field' => '', 'message' => 
-        t('You have spent %spent_xp xp out of %available_xp available xp. You have more XP to spend. Please revise your sheet.',
+        t('You have spent %spent_xp points out of %available_xp available points. You have more points to spend. Please revise your sheet.',
           array('%spent_xp' => $spent_xp[$xp_type], '%available_xp' => $available_xp)));    
     }
+    // Focused too much on stats.
+    if ($spent_on_stats > $stat_max) {
+      return $error = array('field' => '', 'message' => 
+        t('You have spent %spent_on_stats points on stats. You cannot spend more than %stat_max on stats. Please revise your sheet.',
+          array('%spent_on_stats' => $spent_on_stats, '%stat_max' => $stat_max)));    
+    }
+    // Too many maxes.
+    if ($maxed_values > $max_max) {
+      return $error = array('field' => '', 'message' => 
+        t('You have %maxed_values maximized values. You cannot have more than %max_max. Please revise your sheet.',
+          array('%maxed_values' => $maxed_values, '%max_max' => $max_max)));    
+    }
+
   }
   return FALSE;
 }
@@ -627,6 +658,18 @@ function _vaxia_admin_settings() {
     '#description' => 'Minimum allowed stat value for a PC.',
     '#type' => 'textfield',
     '#default_value' => variable_get('vaxia_pc_stat_max', 40),
+  );
+  $form['char_rules']['vaxia_pc_stat_spend_cap'] = array(
+    '#title' => 'Stat spending cap',
+    '#description' => 'Maximum allowed to be spent on stats for a PC.',
+    '#type' => 'textfield',
+    '#default_value' => variable_get('vaxia_pc_stat_spend_cap', 225),
+  );
+  $form['char_rules']['vaxia_pc_stat_high_cap'] = array(
+    '#title' => 'Max caps',
+    '#description' => 'Maximum number of allowed max values for a PC.',
+    '#type' => 'textfield',
+    '#default_value' => variable_get('vaxia_pc_stat_high_cap', 4),
   );
   return $form;
 }
