@@ -312,7 +312,9 @@ function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
     if ($user->uid == $node->uid && !user_access('create NPCs') && !user_access('create open NPCs')) {
       $reduced = array('field_life', 'field_endurance', 'field_strength', 'field_dexterity',
         'field_intelligence', 'field_spirituality', 'field_charisma');
-      $options = array_combine(range(10, 40), range(10, 40));
+      $low = variable_get('vaxia_pc_stat_min', 10);
+      $high = variable_get('vaxia_pc_stat_max', 40);
+      $options = array_combine(range($low, $high), range($low, $high));
       foreach ($reduced as $field_name) {
         if (isset($form[$field_name][$lang][0]['value']['#type'])
           && $form[$field_name][$lang][0]['value']['#type'] == 'textfield') {
@@ -321,7 +323,9 @@ function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
           $form[$field_name][$lang][0]['value']['#options'] = $options;
         }
       }
-      $options = array_combine(range(1, 40), range(1, 40));
+      $low = variable_get('vaxia_pc_skill_min', 5);
+      $high = variable_get('vaxia_pc_skill_max', 40);
+      $options = array_combine(range($low, $high), range($low, $high));
       foreach ($form['field_skill'][$lang] as $delta => $field) {
         if (is_array($field) && isset($form['field_skill'][$lang][$delta]['field_skill_value'][$lang][0]['value']['#type'])
           && $form['field_skill'][$lang][$delta]['field_skill_value'][$lang][0]['value']['#type'] == 'textfield') {
@@ -595,6 +599,34 @@ function _vaxia_admin_settings() {
     '#type' => 'select',
     '#options' => $workflow_options,
     '#default_value' => variable_get('vaxia_draft_workflow', ''),
+  );
+  $form['char_rules'] = array(
+    '#title' => 'Character creation rules',
+    '#type' => 'fieldset',
+  );
+  $form['char_rules']['vaxia_pc_skill_min'] = array(
+    '#title' => 'Skill min',
+    '#description' => 'Minimum allowed skill value for a PC.',
+    '#type' => 'textfield',
+    '#default_value' =>  variable_get('vaxia_pc_skill_min', 5),
+  );
+  $form['char_rules']['vaxia_pc_skill_max'] = array(
+    '#title' => 'Skill min',
+    '#description' => 'Minimum allowed skill value for a PC.',
+    '#type' => 'textfield',
+    '#default_value' => variable_get('vaxia_pc_skill_max', 40),
+  );
+  $form['char_rules']['vaxia_pc_stat_min'] = array(
+    '#title' => 'Stat min',
+    '#description' => 'Minimum allowed stat value for a PC.',
+    '#type' => 'textfield',
+    '#default_value' =>  variable_get('vaxia_pc_stat_min', 10),
+  );
+  $form['char_rules']['vaxia_pc_stat_max'] = array(
+    '#title' => 'Stat min',
+    '#description' => 'Minimum allowed stat value for a PC.',
+    '#type' => 'textfield',
+    '#default_value' => variable_get('vaxia_pc_stat_max', 40),
   );
   return $form;
 }
