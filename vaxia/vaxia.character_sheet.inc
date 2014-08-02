@@ -325,7 +325,9 @@ function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
       }
       $low = variable_get('vaxia_pc_skill_min', 5);
       $high = variable_get('vaxia_pc_skill_max', 40);
-      $options = array_combine(range($low, $high), range($low, $high));
+      $vals = range($low, $high);
+      array_unshift($vals, 0);
+      $options = array_combine($vals, $vals);
       foreach ($form['field_skill'][$lang] as $delta => $field) {
         if (is_array($field) && isset($form['field_skill'][$lang][$delta]['field_skill_value'][$lang][0]['value']['#type'])
           && $form['field_skill'][$lang][$delta]['field_skill_value'][$lang][0]['value']['#type'] == 'textfield') {
@@ -429,6 +431,7 @@ function vaxia_character_sheet_validate_sheet($node, $old_node, $form, $form_sta
     $available_xp = variable_get('vaxia_starting_points', 300);
     $stat_max = variable_get('vaxia_pc_stat_spend_cap', 225);
     $max_max = variable_get('vaxia_pc_stat_high_cap', 4);
+    $zero_max = variable_get('vaxia_pc_stat_zero_cap', 1);
     $high_skill = variable_get('vaxia_pc_skill_max', 40);
     $high_stat = variable_get('vaxia_pc_stat_max', 40);
     $fields_info = _character_sheet_get_field_info($node);
@@ -437,6 +440,9 @@ function vaxia_character_sheet_validate_sheet($node, $old_node, $form, $form_sta
     $spent_on_stats = 0; // Amount spent on stats.
     $spent_on_skills = 0; // Amount spent on skills.
     $maxed_values = 0; // Number of maxed values.
+    $zero_skills = 0; // Number of zeroth sklls.
+    // Loop through field data.
+    $node_data = (array) $node;
     foreach ($fields_info as $field_key => $field_info) {
       if (isset($field_info['costs']['xp_type'])) {
         // Calculate cost difference.
@@ -452,8 +458,23 @@ function vaxia_character_sheet_validate_sheet($node, $old_node, $form, $form_sta
         }
         else {
           $spent_on_skills += $cost;
-          if ($cost >= $high_skill) {
-            $maxed_values++;
+          foreach(element_children($node_data) as $this_field) {
+            if ($this_field == 'field_skill') {
+              $lang = $node->language;
+              $skill_data = $node->$this_field;
+              foreach ($skill_data as $skills) {
+                foreach ($skills as $delta => $skill_data) {
+                  // Max sills.
+                  if ($skill_data['field_skill_value'][$lang][0]['value'] >= $high_skill) {
+                    $maxed_values++;
+                  }
+                  // Zero skills.
+                  if (is_array($skill_data) && $skill_data['field_skill_value'][$lang][0]['value'] == 0) {
+                    $zero_skills++;
+                  }
+                }
+              }
+            }
           }
         }
         $spent_xp[$xp_type] = isset($spent_xp[$xp_type]) ? $spent_xp[$xp_type] + $cost : $cost;
@@ -483,7 +504,12 @@ function vaxia_character_sheet_validate_sheet($node, $old_node, $form, $form_sta
         t('You have %maxed_values maximized values. You cannot have more than %max_max. Please revise your sheet.',
           array('%maxed_values' => $maxed_values, '%max_max' => $max_max)));    
     }
-
+    // Too many zero skills.
+    if ($zero_skills > $zero_max) {
+      return $error = array('field' => '', 'message' => 
+        t('You have %zero_skills skills at zero. You can only have one skill at zero. Please revise your sheet.',
+          array('%zero_skills' => $zero_skills, '%zero_max' => $zero_max)));    
+    }
   }
   return FALSE;
 }
@@ -670,6 +696,12 @@ function _vaxia_admin_settings() {
     '#description' => 'Maximum number of allowed max values for a PC.',
     '#type' => 'textfield',
     '#default_value' => variable_get('vaxia_pc_stat_high_cap', 4),
+  );
+  $form['char_rules']['vaxia_pc_stat_zero_cap'] = array(
+    '#title' => 'Zero caps',
+    '#description' => 'Maximum number of zero skills for a PC.',
+    '#type' => 'textfield',
+    '#default_value' => variable_get('vaxia_pc_stat_zero_cap', 1),
   );
   return $form;
 }
