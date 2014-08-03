@@ -300,7 +300,7 @@ function vaxia_node_view($node, $view_mode, $langcode) {
       // Existing warning on averages.
       $skill_average = ($numb_skills > 0) ? $spent_on_skills / $numb_skills : 0;
       if ($skill_average < $skill_ave_warn) {
-        $messages[] = t('You have an average of %skill_average on skills. We recommend having higher stats on average.',
+        $messages[] = t('You have an average of %skill_average on skills. We recommend having higher skills on average.',
           array('%spent_on_stats' => $spent_on_stats, '%skill_average' => number_format($skill_ave_warn, 2)));
       }
       // General warn.
