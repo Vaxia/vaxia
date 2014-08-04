@@ -133,6 +133,7 @@ function department_node_view($node, $view_mode, $langcode) {
     // Get department unformation.
     $default_departments = implode("\n", array('Setting', 'System', 'Social') );
     $departments = variable_get('departments', $default_departments);
+    $departments = explode("\n", $departments);
     $department_roles = array();
     foreach($departments as $department) {
       $name = preg_replace("/[^A-Za-z0-9 ]/", '', $department); // Remove all but space and alphanumeric.
