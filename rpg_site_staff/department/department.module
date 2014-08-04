@@ -148,7 +148,7 @@ function department_node_view($node, $view_mode, $langcode) {
     if (!empty($department_roles)) {
       $node->content['department_roles'] = array(
         '#markup' => '<div class="department_roles" style="margin:1em 0;">' .
-          t('Roles and departments that can vote on this are: ' . implode(', ', $department_roles)) .
+          t('Departments that can vote on this are: ' . implode(', ', $department_roles)) .
           '</div>',
         '#weight' => 1002,
       );
