@@ -172,7 +172,7 @@ function rpg_chat_node_view($node, $view_mode = 'full', $langcode) {
     }
     // And add the JS we need to drive the conversation iff we are on the primary display page.
     // NOT on comment pages and other alternate views.
-    if (arg(0) == 'node') {
+    if (arg(0) == 'node' && arg(0, request_path()) != 'comment') {
       drupal_add_js(array('rpg_chat' => array('refreshRate' => $refresh)), 'setting');
       drupal_add_js(drupal_get_path('module', 'rpg_chat') . '/js/rpg_chat.js');
       drupal_add_css(drupal_get_path('module', 'rpg_chat') . '/css/rpg_chat.css');
