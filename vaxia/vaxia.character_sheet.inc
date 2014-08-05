@@ -94,7 +94,6 @@ function vaxia_character_sheet_field_info() {
     'title' => array(
       'permissions' => array(
         'owner' => DISABLE_SHEET,
-        'other' => DISABLE_SHEET,
       ),
     ),
     'field_is_npc' => array(
