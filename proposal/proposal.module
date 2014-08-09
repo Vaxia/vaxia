@@ -402,15 +402,9 @@ function proposal_webform_results_table($variables) {
   $header = $rows = $cell = array();
   // This header has to be generated seperately so we can add the SQL necessary.
   // to sort the results.
-  $header = array(
-    array(
-      'data' => t('Submitted'),
-      'field' => 'submitted',
-    ),
-  );
+  $header = array();
   // Generate a row for each submission.
   foreach ($submissions as $sid => $submission) {
-    $cell[] = format_date($submission->submitted, 'short');
     $component_headers = array();
     // Generate a cell for each component.
     foreach ($node->webform['components'] as $component) {
