@@ -172,6 +172,8 @@ function wiki_feature_node_view($node, $view_mode, $langcode) {
  * Implements hook_node_presave().
  */
 function wiki_feature_node_presave($node) {
+  // TMP removing this as a feature, pending correcting for double-nested links.
+  return;
   // If node is a wiki page, add obvious links for cross linking..
   if ($node->type == 'wiki_page') {
     $body = $node->body[ $node->language ][0]['value'];
