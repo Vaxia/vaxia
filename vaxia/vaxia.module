@@ -808,10 +808,10 @@ function _vaxia_get_SH_characters($uid) {
   if (empty($user->field_storyhost_character[$user->language][0]['value'])) {
     $nodes = node_load_multiple(array(), array('type' => 'character_sheet', 'uid' => $uid));
     foreach ($nodes as $nid => $node) {
-	  if (isset($node->field_is_storyteller[$node->language][0]['value']) &&
-	    $node->field_is_storyteller[$node->language][0]['value'] == 1) {
-	    $SH_characters[$uid] = $node;
-	  }
+      if (isset($node->field_is_storyteller[$node->language][0]['value']) &&
+        $node->field_is_storyteller[$node->language][0]['value'] == 1) {
+        $SH_characters[$uid] = $node;
+      }
     }
     // Save this value so we don't have to dig this deep again.
     $user->field_storyhost_character[$user->language][0]['value'] = $SH_characters[$uid];
@@ -834,11 +834,11 @@ function _vaxia_get_character_ref_types($nid) {
     $node->field_is_open_npc[$lang][0]['value'] : 0;
   $field_is_npc = isset($node->field_is_npc[$lang][0]['value']) ?
     $node->field_is_npc[$lang][0]['value'] : 0;
-  if (($field_is_npc == 1 || $field_is_open_npc == 1) && $node->uid == $user->uid ) {
-    return 'Personal NPCs';
-  }
-  if ($field_is_open_npc == 1 && $node->uid != $user->uid) {
+  if ($field_is_open_npc == 1) {
     return 'Open NPCs';
+  }
+  if ($field_is_npc == 1 && $node->uid == $user->uid ) {
+    return 'Personal NPCs';
   }
   return 'Characters';
 }
