@@ -834,11 +834,11 @@ function _vaxia_get_character_ref_types($nid) {
     $node->field_is_open_npc[$lang][0]['value'] : 0;
   $field_is_npc = isset($node->field_is_npc[$lang][0]['value']) ?
     $node->field_is_npc[$lang][0]['value'] : 0;
-  if (!empty($field_is_open_npc) && $field_is_open_npc == 1) {
-    return 'Open NPCs';
-  }
-  if (!empty($field_is_npc) && $field_is_npc == 1) {
+  if (($field_is_npc == 1 || $field_is_open_npc == 1) && $node->uid == $user->uid ) {
     return 'Personal NPCs';
+  }
+  if ($field_is_open_npc == 1 && $node->uid != $user->uid) {
+    return 'Open NPCs';
   }
   return 'Characters';
 }
