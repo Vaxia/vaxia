@@ -396,6 +396,7 @@ function vaxia_process_comment(&$variables) {
     global $user;
     $color_codes = array('aqua', 'black', 'blue', 'fuchsia', 'gray', 'green', 'lime', 'maroon',
       'navy', 'olive', 'purple', 'red', 'silver', 'teal', 'white', 'yellow');
+/*
     // Add the style for the content background.
     $bkcolor = isset($user->field_background_color[$lang][0]['value']) 
       ? $user->field_background_color[$lang][0]['value'] : '555555';
@@ -407,6 +408,7 @@ function vaxia_process_comment(&$variables) {
       $bkcolor = '#'. $bkcolor;
     }
     $variables['comment_background_color'] = $bkcolor;
+*/
     // Add the style attribute for our content color.
     $color = isset($user->field_comment_color[$lang][0]['value']) 
       ? $user->field_comment_color[$lang][0]['value'] : '111111';
@@ -417,7 +419,6 @@ function vaxia_process_comment(&$variables) {
     if (!in_array($color, $color_codes)) {
       $color = '#'. $color;
     }
-    //$variables['comment_foreground_color'] = $color;
     $variables['content']['comment_body']['#prefix'] = '<span style="color:' . $color . '">';
     $variables['content']['comment_body']['#suffix'] = '</span>';
   }
