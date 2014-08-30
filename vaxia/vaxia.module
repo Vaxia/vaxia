@@ -522,6 +522,148 @@ function vaxia_process_comment(&$variables) {
 }
 
 /**
+ * Implements process suggestion for comment theme. This allows us to override parts of the comment form.
+ * This code is executed on display of the comment.
+ */
+function vaxia_process_comment(&$variables) {
+  // Set the defaults
+  $comment = $variables['comment'];
+  $lang = $comment->language;
+
+  // Check for character type only on RPG type nodes. (and do some other work as well on RPG chat nodes)
+  if (_rpg_chat_is_enabled($variables['node']->type)) {
+    // Add the variables for our narrative and colors.
+    if(isset($comment->field_comment_narrative[$lang][0]['value'])
+      && ($comment->field_comment_narrative[$lang][0]['value'] == 1) ) {
+      $variables['classes'] .= ' rpg-chat-narrative';
+    }
+    global $user;
+    $color_codes = array('aqua', 'black', 'blue', 'fuchsia', 'gray', 'green', 'lime', 'maroon',
+      'navy', 'olive', 'purple', 'red', 'silver', 'teal', 'white', 'yellow');
+    // Add the style for the content background.
+    $bkcolor = isset($user->field_background_color[$lang][0]['value']) 
+      ? $user->field_background_color[$lang][0]['value'] : '555555';
+    $bkcolor = isset($comment->field_background_color[$lang][0]['value']) 
+      ? $comment->field_background_color[$lang][0]['value'] : $bkcolor;
+    $bkcolor = strtolower(trim($bkcolor));
+    $bkcolor = PREG_REPLACE("/[^0-9a-z]/i", '', $bkcolor); // Filter non-alphanumeric out.
+    if (!in_array($bkscolor, $color_codes)) {
+      $bkcolor = '#'. $bkcolor;
+    }
+    $variables['comment_background_color'] = $bkcolor;
+    // Add the style attribute for our content color.
+    $color = isset($user->field_comment_color[$lang][0]['value']) 
+      ? $user->field_comment_color[$lang][0]['value'] : '111111';
+    $color = isset($comment->field_comment_color[$lang][0]['value']) 
+      ? $comment->field_comment_color[$lang][0]['value'] : $color;
+    $color = strtolower(trim($color));
+    $color = PREG_REPLACE("/[^0-9a-z]/i", '', $color); // Filter non-alphanumeric out.
+    if (!in_array($color, $color_codes)) {
+      $color = '#'. $color;
+    }
+    $variables['content']['comment_body']['#prefix'] = '<span style="color:' . $color . '">';
+    $variables['content']['comment_body']['#suffix'] = '</span>';
+  }
+
+  // Update the user image for submission to no image.
+  // Check for user profile settings.
+  $this_user = user_load($comment->uid);
+  $variables['picture'] = _vaxia_create_avatar_image_link(-1, $this_user->name);
+  if (isset($this_user->field_artwork_image[$lang][0]['fid'])) {
+    $variables['picture'] = _vaxia_create_avatar_image_link(
+      $this_user->field_artwork_image[$lang][0]['fid'], $this_user->name);
+  }
+  // If not, fall back to the commment itself.
+  if (isset($comment->field_artwork[$lang][0]['nid'])) {
+    $artwork = node_load($comment->field_artwork[$lang][0]['nid']);
+    if (isset($artwork->field_artwork_image[$lang][0]['fid'])) {
+      $variables['picture'] = _vaxia_create_avatar_image_link(
+        $artwork->field_artwork_image[$lang][0]['fid'], $this_user->name);
+    }
+  }
+
+  // Apply picture rules to All node types.
+  // Redo the submitted field for RPG chatrooms only.
+  $variables['submitted'] = t('!username </br> !datetime',
+    array('!username' => $variables['author'], '!datetime' => $variables['created']));
+
+  // Now check for specific character values. Art, post color, etc.
+  // Good thing node_load caches else calling this for Every Comment would get really ugly.
+  if (isset($comment->field_comment_character[$lang][0]['nid'])) {
+    $character = node_load($comment->field_comment_character[$lang][0]['nid']);
+    if (isset($character->nid)) {
+
+      // Set character comment color.
+      if (empty($comment->field_comment_color[$lang][0]['value']) && isset($character->field_post_color[$lang][0]['value'])) {
+        $color = strtolower(trim($character->field_post_color[$lang][0]['value']));
+        $color = PREG_REPLACE("/[^0-9a-z]/i", '', $color); // Filter non-alphanumeric out.
+        $color_codes = array('aqua', 'black', 'blue', 'fuchsia', 'gray', 'green', 'lime', 'maroon',
+          'navy', 'olive', 'purple', 'red', 'silver', 'teal', 'white', 'yellow');
+        if (!in_array($color, $color_codes)) {
+          $color = '#'. $color;
+        }
+        $variables['content']['comment_body']['#prefix'] = '<span style="color:' . $color . '">';
+        $variables['content']['comment_body']['#suffix'] = '</span>';
+      }
+
+      // Set character name, titles.
+      $character_name = $character->title;
+      if (isset($character->field_titles[$lang][0]['value'])) {
+        $character_name = $character->field_titles[$lang][0]['value'] .' ' . $character_name;
+      } 
+      if (isset($character->field_last_name[$lang][0]['value'])) {
+        $character_name .= ' ' . $character->field_last_name[$lang][0]['value'];
+      }
+
+      // Set character description.
+      $char_desc = isset($character->field_description[$lang][0]['value']) ? $character->field_description[$lang][0]['value'] : '';
+      $char_desc = check_plain($char_desc);
+      if (strlen($char_desc) > 595) {
+        $char_desc = drupal_substr($char_desc, 0, 600) . '...';
+      }
+      $options = array('attributes' => array('title' => $char_desc));
+      $character_name = '<span class="rpgchat-character-name">' . l($character_name, 'node/' . $character->nid, $options) . '</span>' .
+            '<span class="rpgchat-user-name">(' . l($this_user->name, 'user/' . $this_user->uid) . ')</span>';
+      // Update the submission variables with name, description information.
+      $variables['submitted'] = t('!username !datetime',
+        array(
+          '!username' => $character_name,
+          '!datetime' => $variables['created'])
+        );
+
+      // Now work on the character art display. Setup the link options for the character pic.
+      $alt = t('Presence: @pre, Charisma: @char, Appearance: @app',
+        array('@pre' => $character->field_presence[$lang][0]['value'],
+          '@char' => $character->field_charisma[$lang][0]['value'],
+          '@app' => $character->field_appearance[$lang][0]['value']));
+      $link_options = array('html' => TRUE, 'attributes' => array('target' => '_blank'));    
+      // Set picture to the default value (vaxia logo) as the fallback if no other resource found.
+      $variables['picture'] = l( _vaxia_create_avatar_image_link(-1, $character_name, $alt),
+        'node/' . $character->nid, $link_options);
+      // Check first against the selected comment for an artwork node.
+      if (!empty($comment->field_artwork[$lang][0]['nid'])) {
+        // Set picture to the attached art node for the comment.
+        $artwork = node_load($comment->field_artwork[$lang][0]['nid']);
+        if (!empty($artwork->field_artwork_image[$lang][0]['fid'])) {
+          $variables['picture'] = l( _vaxia_create_avatar_image_link(
+            $artwork->field_artwork_image[$lang][0]['fid'], $character->title, $alt),
+              'node/' . $character->nid, $link_options);
+        }
+      }
+      // Else, if the character has it's own artwork file, use that.
+      elseif (!empty($character->field_artwork_image[$lang][0]['fid'])) {
+        // Set picture to the attached file for the character node.
+        $variables['picture'] = l( _vaxia_create_avatar_image_link(
+          $character->field_artwork_image[$lang][0]['fid'], $character->title, $alt),
+            'node/' . $character->nid, $link_options);
+      }
+
+      // And done, the comment is set for the character.
+    } // End character exists.
+  } // End character on comment.
+}
+
+/**
  * Helper function, given a fid return the image link.
  */
 function _vaxia_create_avatar_image_link($fid, $name, $alt = '') {
