@@ -397,8 +397,9 @@ function vaxia_process_comment(&$variables) {
     $color_codes = array('aqua', 'black', 'blue', 'fuchsia', 'gray', 'green', 'lime', 'maroon',
       'navy', 'olive', 'purple', 'red', 'silver', 'teal', 'white', 'yellow');
     // Add the style for the content background.
-    $bkcolor = isset($user->field_background_color[$lang][0]['value']) 
-      ? $user->field_background_color[$lang][0]['value'] : '555555';
+    //$bkcolor = isset($user->field_background_color[$lang][0]['value']) 
+    //  ? $user->field_background_color[$lang][0]['value'] : '555555';
+    $bkcolor = '555555';
     $bkcolor = isset($comment->field_background_color[$lang][0]['value']) 
       ? $comment->field_background_color[$lang][0]['value'] : $bkcolor;
     $bkcolor = strtolower(trim($bkcolor));
@@ -408,8 +409,9 @@ function vaxia_process_comment(&$variables) {
     }
     $variables['comment_background_color'] = $bkcolor;
     // Add the style attribute for our content color.
-    $color = isset($user->field_comment_color[$lang][0]['value']) 
-      ? $user->field_comment_color[$lang][0]['value'] : '111111';
+    //$color = isset($user->field_comment_color[$lang][0]['value']) 
+    //  ? $user->field_comment_color[$lang][0]['value'] : '111111';
+    $color = '111111';
     $color = isset($comment->field_comment_color[$lang][0]['value']) 
       ? $comment->field_comment_color[$lang][0]['value'] : $color;
     $color = strtolower(trim($color));
@@ -451,7 +453,7 @@ function vaxia_process_comment(&$variables) {
       $color_codes = array('aqua', 'black', 'blue', 'fuchsia', 'gray', 'green', 'lime', 'maroon',
          'navy', 'olive', 'purple', 'red', 'silver', 'teal', 'white', 'yellow');
       // Set character comment color.
-      if (isset($character->field_background_color[$lang][0]['value'])) {
+      if (empty($comment->field_background_color[$lang][0]['value']) && isset($character->field_background_color[$lang][0]['value'])) {
         $bkcolor = strtolower(trim($character->field_background_color[$lang][0]['value']));
         $bkcolor = PREG_REPLACE("/[^0-9a-z]/i", '', $bkcolor); // Filter non-alphanumeric out.
         if (!in_array($bkcolor, $color_codes)) {
