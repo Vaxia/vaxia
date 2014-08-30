@@ -88,6 +88,10 @@ Drupal.behaviors.diceHelper = {
       $('#dice-helper-image').show();
     }
     // Check the cookie against the helper value to set pic and color.
+    var bkcolor = getCookie('vaxia_dice_helper_' + character_value + '_bkcolor');
+    if (typeof bkcolor !== 'undefined' && bkcolor.length > 0) {
+      $('#edit-field-background-color-und').val(bkcolor);
+    }
     var color = getCookie('vaxia_dice_helper_' + character_value + '_color');
     if (typeof color !== 'undefined' && color.length > 0) {
       $('#edit-field-comment-color-und-0-value').val(color);
@@ -155,6 +159,8 @@ Drupal.behaviors.diceHelper = {
   // Save the color and pic on post.
   $('#edit-submit, #edit-1').click(function() {
     var helper = $('#edit-field-comment-character-und').val();
+    var bkcolor = $('#edit-field-background-color-und').val();
+    setCookie('vaxia_dice_helper_' + helper + '_bkcolor', bkcolor, 30);
     var color = $('#edit-field-comment-color-und-0-value').val();
     setCookie('vaxia_dice_helper_' + helper + '_color', color, 30);
     var pic = $('#edit-field-artwork-und').val();
