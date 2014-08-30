@@ -393,7 +393,7 @@ function vaxia_process_comment(&$variables) {
       && ($comment->field_comment_narrative[$lang][0]['value'] == 1) ) {
       $variables['classes'] .= ' rpg-chat-narrative';
     }
-    global $user;
+//    global $user;
     $color_codes = array('aqua', 'black', 'blue', 'fuchsia', 'gray', 'green', 'lime', 'maroon',
       'navy', 'olive', 'purple', 'red', 'silver', 'teal', 'white', 'yellow');
 /*
