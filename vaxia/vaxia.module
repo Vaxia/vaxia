@@ -449,7 +449,7 @@ function vaxia_process_comment(&$variables) {
     $character = node_load($comment->field_comment_character[$lang][0]['nid']);
     if (isset($character->nid)) {
       $color_codes = array('aqua', 'black', 'blue', 'fuchsia', 'gray', 'green', 'lime', 'maroon',
-         navy', 'olive', 'purple', 'red', 'silver', 'teal', 'white', 'yellow');
+         'navy', 'olive', 'purple', 'red', 'silver', 'teal', 'white', 'yellow');
       // Set character comment color.
       if (empty($comment->field_background_color[$lang][0]['value']) && isset($character->field_background_color[$lang][0]['value'])) {
         $bkcolor = strtolower(trim($character->field_background_color[$lang][0]['value']));
