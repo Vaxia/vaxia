@@ -393,10 +393,9 @@ function vaxia_process_comment(&$variables) {
       && ($comment->field_comment_narrative[$lang][0]['value'] == 1) ) {
       $variables['classes'] .= ' rpg-chat-narrative';
     }
-//    global $user;
+    global $user;
     $color_codes = array('aqua', 'black', 'blue', 'fuchsia', 'gray', 'green', 'lime', 'maroon',
       'navy', 'olive', 'purple', 'red', 'silver', 'teal', 'white', 'yellow');
-/*
     // Add the style for the content background.
     $bkcolor = isset($user->field_background_color[$lang][0]['value']) 
       ? $user->field_background_color[$lang][0]['value'] : '555555';
@@ -408,7 +407,6 @@ function vaxia_process_comment(&$variables) {
       $bkcolor = '#'. $bkcolor;
     }
     $variables['comment_background_color'] = $bkcolor;
-*/
     // Add the style attribute for our content color.
     $color = isset($user->field_comment_color[$lang][0]['value']) 
       ? $user->field_comment_color[$lang][0]['value'] : '111111';
@@ -425,18 +423,18 @@ function vaxia_process_comment(&$variables) {
 
   // Update the user image for submission to no image.
   // Check for user profile settings.
-  $user = user_load($comment->uid);
-  $variables['picture'] = _vaxia_create_avatar_image_link(-1, $user->name);
-  if (isset($user->field_artwork_image[$lang][0]['fid'])) {
+  $this_user = user_load($comment->uid);
+  $variables['picture'] = _vaxia_create_avatar_image_link(-1, $this_user->name);
+  if (isset($this_user->field_artwork_image[$lang][0]['fid'])) {
     $variables['picture'] = _vaxia_create_avatar_image_link(
-      $user->field_artwork_image[$lang][0]['fid'], $user->name);
+      $this_user->field_artwork_image[$lang][0]['fid'], $this_user->name);
   }
   // If not, fall back to the commment itself.
   if (isset($comment->field_artwork[$lang][0]['nid'])) {
     $artwork = node_load($comment->field_artwork[$lang][0]['nid']);
     if (isset($artwork->field_artwork_image[$lang][0]['fid'])) {
       $variables['picture'] = _vaxia_create_avatar_image_link(
-        $artwork->field_artwork_image[$lang][0]['fid'], $user->name);
+        $artwork->field_artwork_image[$lang][0]['fid'], $this_user->name);
     }
   }
 
@@ -481,7 +479,7 @@ function vaxia_process_comment(&$variables) {
       }
       $options = array('attributes' => array('title' => $char_desc));
       $character_name = '<span class="rpgchat-character-name">' . l($character_name, 'node/' . $character->nid, $options) . '</span>' .
-            '<span class="rpgchat-user-name">(' . l($user->name, 'user/' . $user->uid) . ')</span>';
+            '<span class="rpgchat-user-name">(' . l($this_user->name, 'user/' . $this_user->uid) . ')</span>';
       // Update the submission variables with name, description information.
       $variables['submitted'] = t('!username !datetime',
         array(
