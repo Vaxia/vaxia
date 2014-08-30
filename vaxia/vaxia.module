@@ -451,7 +451,7 @@ function vaxia_process_comment(&$variables) {
       $color_codes = array('aqua', 'black', 'blue', 'fuchsia', 'gray', 'green', 'lime', 'maroon',
          'navy', 'olive', 'purple', 'red', 'silver', 'teal', 'white', 'yellow');
       // Set character comment color.
-      if (empty($comment->field_background_color[$lang][0]['value']) && isset($character->field_background_color[$lang][0]['value'])) {
+      if (isset($character->field_background_color[$lang][0]['value'])) {
         $bkcolor = strtolower(trim($character->field_background_color[$lang][0]['value']));
         $bkcolor = PREG_REPLACE("/[^0-9a-z]/i", '', $bkcolor); // Filter non-alphanumeric out.
         if (!in_array($bkcolor, $color_codes)) {
