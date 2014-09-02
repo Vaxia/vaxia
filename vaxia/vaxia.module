@@ -404,7 +404,7 @@ function vaxia_process_comment(&$variables) {
       ? $comment->field_background_color[$lang][0]['value'] : $bkcolor;
     $bkcolor = strtolower(trim($bkcolor));
     $bkcolor = PREG_REPLACE("/[^0-9a-z]/i", '', $bkcolor); // Filter non-alphanumeric out.
-    if (!in_array($bkscolor, $color_codes)) {
+    if (!in_array($bkcolor, $color_codes)) {
       $bkcolor = '#'. $bkcolor;
     }
     $variables['comment_background_color'] = $bkcolor;
