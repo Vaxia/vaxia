@@ -7,7 +7,8 @@
  *
  * Incoming variables:  $dice_rolls, an array of roll results.
  */
-<?php
+?>
+<div class="dice_rolls"><?php
   $str_rolls = '';
   if (isset($dice_rolls) && is_array($dice_rolls)) {
     $rolls_found = array();
@@ -84,7 +85,5 @@
       $str_rolls .= '</span>'. "\n";
     }
   }
-  if (!empty($str_rolls)) {
-    print '<div class="dice_rolls">' . $str_rolls . '</div>';
-  }
-?>
+  print $str_rolls;
+?></div>
