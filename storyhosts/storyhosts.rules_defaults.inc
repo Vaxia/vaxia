@@ -99,6 +99,25 @@ function storyhosts_default_rules_configuration() {
       ]
     }
   }');
+  $items['rules_remove_starvation_role_from_sh'] = entity_import('rules_config', '{ "rules_remove_starvation_role_from_sh" : {
+      "LABEL" : "Remove starvation role from SH",
+      "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
+      "TAGS" : [ "Starvation mode" ],
+      "REQUIRES" : [ "rules", "user_stats" ],
+      "ON" : { "user_stats_day_older" : [] },
+      "IF" : [
+        { "user_has_role" : {
+            "account" : [ "user" ],
+            "roles" : { "value" : { "25" : "25", "9" : "9" } }
+          }
+        }
+      ],
+      "DO" : [
+        { "user_remove_role" : { "account" : [ "user" ], "roles" : { "value" : { "25" : "25" } } } }
+      ]
+    }
+  }');
   $items['rules_set_ash_title_on_gain_ash'] = entity_import('rules_config', '{ "rules_set_ash_title_on_gain_ash" : {
       "LABEL" : "Set ASH title on Gain ASH",
       "PLUGIN" : "reaction rule",

@@ -18,3 +18,4 @@ features[rules_config][] = rules_request_npc
 features[rules_config][] = vaxia_notify_char_eval_re_oversight_npc_pass_npc
 features[views_view][] = character_npcs
 features[views_view][] = oversight
+features[views_view][] = room_npcs

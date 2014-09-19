@@ -911,7 +911,7 @@ function storyhosts_views_default_views() {
   /* Display: Skill inventory */
   $handler = $view->new_display('page', 'Skill inventory', 'skill_inventory');
   $handler->display->display_options['display_description'] = 'Skill inventory';
-  $handler->display->display_options['path'] = 'sh/skill-inventory';
+  $handler->display->display_options['path'] = 'skill-inventory';
   $handler->display->display_options['menu']['type'] = 'normal';
   $handler->display->display_options['menu']['title'] = 'Skill inventory';
   $handler->display->display_options['menu']['name'] = 'menu-vaxia-sh';
@@ -1451,8 +1451,8 @@ function storyhosts_views_default_views() {
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'character_sheet_log';
   $handler->display->display_options['filters']['type']['field'] = 'type';
-  $handler->display->display_options['filters']['type']['operator'] = '!=';
-  $handler->display->display_options['filters']['type']['value'] = 'daily_silver';
+  $handler->display->display_options['filters']['type']['operator'] = 'not';
+  $handler->display->display_options['filters']['type']['value'] = 'silver';
   $handler->display->display_options['filters']['type']['exposed'] = TRUE;
   $handler->display->display_options['filters']['type']['expose']['operator_id'] = 'type_op';
   $handler->display->display_options['filters']['type']['expose']['label'] = 'Log type';
@@ -1463,23 +1463,27 @@ function storyhosts_views_default_views() {
   $handler->display->display_options['filters']['type']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
+    3 => 0,
+    30 => 0,
     8 => 0,
+    9 => 0,
+    14 => 0,
+    21 => 0,
+    24 => 0,
+    26 => 0,
+    27 => 0,
     19 => 0,
+    28 => 0,
+    29 => 0,
     12 => 0,
+    25 => 0,
     13 => 0,
     10 => 0,
     17 => 0,
     15 => 0,
-    9 => 0,
     20 => 0,
-    14 => 0,
-    21 => 0,
-    3 => 0,
-    11 => 0,
     22 => 0,
     23 => 0,
-    24 => 0,
-    25 => 0,
   );
   /* Filter criterion: Character sheet log: Message */
   $handler->display->display_options['filters']['message']['id'] = 'message';
@@ -1645,9 +1649,9 @@ function storyhosts_views_default_views() {
     25 => 0,
   );
 
-  /* Display: Moderation log */
-  $handler = $view->new_display('page', 'Moderation log', 'character_sheets_moderation_log');
-  $handler->display->display_options['display_description'] = 'Moderation log';
+  /* Display: Vaxia Moderation log */
+  $handler = $view->new_display('page', 'Vaxia Moderation log', 'vaxia_character_sheets_moderation_log');
+  $handler->display->display_options['display_description'] = 'Vaxia Moderation log';
   $handler->display->display_options['path'] = 'character-sheets/moderation_log';
   $handler->display->display_options['menu']['title'] = 'Moderation log';
   $handler->display->display_options['menu']['weight'] = '0';
