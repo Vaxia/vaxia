@@ -66,57 +66,6 @@ function vaxia_field_group_info() {
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
-  $field_group->identifier = 'group_associates|node|character_sheet|default';
-  $field_group->group_name = 'group_associates';
-  $field_group->entity_type = 'node';
-  $field_group->bundle = 'character_sheet';
-  $field_group->mode = 'default';
-  $field_group->parent_name = '';
-  $field_group->data = array(
-    'label' => 'Associates',
-    'weight' => '6',
-    'children' => array(),
-    'format_type' => 'fieldset',
-    'format_settings' => array(
-      'formatter' => 'collapsible',
-      'instance_settings' => array(
-        'description' => '',
-        'classes' => ' group-associates field-group-fieldset',
-      ),
-    ),
-  );
-  $export['group_associates|node|character_sheet|default'] = $field_group;
-
-  $field_group = new stdClass();
-  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
-  $field_group->api_version = 1;
-  $field_group->identifier = 'group_associates|node|character_sheet|form';
-  $field_group->group_name = 'group_associates';
-  $field_group->entity_type = 'node';
-  $field_group->bundle = 'character_sheet';
-  $field_group->mode = 'form';
-  $field_group->parent_name = '';
-  $field_group->data = array(
-    'label' => 'Associates',
-    'weight' => '10',
-    'children' => array(
-      0 => 'field_npcs',
-    ),
-    'format_type' => 'fieldset',
-    'format_settings' => array(
-      'formatter' => 'collapsible',
-      'instance_settings' => array(
-        'description' => '',
-        'classes' => ' group-associates field-group-fieldset',
-        'required_fields' => 1,
-      ),
-    ),
-  );
-  $export['group_associates|node|character_sheet|form'] = $field_group;
-
-  $field_group = new stdClass();
-  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
-  $field_group->api_version = 1;
   $field_group->identifier = 'group_details|node|character_sheet|default';
   $field_group->group_name = 'group_details';
   $field_group->entity_type = 'node';
