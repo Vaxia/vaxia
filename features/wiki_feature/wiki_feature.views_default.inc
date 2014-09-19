@@ -583,7 +583,7 @@ function wiki_feature_views_default_views() {
   $view = new view();
   $view->name = 'wiki_categories';
   $view->description = 'Wiki Categories';
-  $view->tag = 'Wiki Categories';
+  $view->tag = 'Wiki';
   $view->base_table = 'taxonomy_term_data';
   $view->human_name = 'Wiki Categories';
   $view->core = 7;
@@ -654,7 +654,7 @@ function wiki_feature_views_default_views() {
   $view = new view();
   $view->name = 'wiki_category';
   $view->description = 'Wiki Category';
-  $view->tag = 'default';
+  $view->tag = 'Wiki';
   $view->base_table = 'taxonomy_term_data';
   $view->human_name = 'Wiki Category';
   $view->core = 7;
@@ -750,7 +750,7 @@ function wiki_feature_views_default_views() {
   $view = new view();
   $view->name = 'wiki_category_pages';
   $view->description = 'Wiki Category Pages';
-  $view->tag = 'default';
+  $view->tag = 'Wiki';
   $view->base_table = 'node';
   $view->human_name = 'Wiki Category Pages';
   $view->core = 7;
@@ -1062,7 +1062,7 @@ function wiki_feature_views_default_views() {
   $view = new view();
   $view->name = 'wiki_sub_pages';
   $view->description = 'Wiki Sub-pages';
-  $view->tag = 'default';
+  $view->tag = 'Wiki';
   $view->base_table = 'node';
   $view->human_name = 'Wiki Sub-pages';
   $view->core = 7;
