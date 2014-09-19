@@ -99,12 +99,18 @@ function vaxia_players_views_default_views() {
   $handler->display->display_options['relationships']['nid']['id'] = 'nid';
   $handler->display->display_options['relationships']['nid']['table'] = 'comment';
   $handler->display->display_options['relationships']['nid']['field'] = 'nid';
+  $handler->display->display_options['relationships']['nid']['label'] = 'Room';
   $handler->display->display_options['relationships']['nid']['required'] = TRUE;
   /* Relationship: Comment: As character (field_comment_character) */
   $handler->display->display_options['relationships']['field_comment_character_nid']['id'] = 'field_comment_character_nid';
   $handler->display->display_options['relationships']['field_comment_character_nid']['table'] = 'field_data_field_comment_character';
   $handler->display->display_options['relationships']['field_comment_character_nid']['field'] = 'field_comment_character_nid';
   $handler->display->display_options['relationships']['field_comment_character_nid']['delta'] = '0';
+  /* Relationship: Comment: Author */
+  $handler->display->display_options['relationships']['uid']['id'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['table'] = 'comment';
+  $handler->display->display_options['relationships']['uid']['field'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['label'] = 'player';
   /* Field: Comment: Title */
   $handler->display->display_options['fields']['subject']['id'] = 'subject';
   $handler->display->display_options['fields']['subject']['table'] = 'comment';
@@ -137,6 +143,11 @@ function vaxia_players_views_default_views() {
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['relationship'] = 'nid';
   $handler->display->display_options['fields']['title']['label'] = 'RPG Room';
+  /* Field: User: Name */
+  $handler->display->display_options['fields']['name_1']['id'] = 'name_1';
+  $handler->display->display_options['fields']['name_1']['table'] = 'users';
+  $handler->display->display_options['fields']['name_1']['field'] = 'name';
+  $handler->display->display_options['fields']['name_1']['relationship'] = 'uid';
   /* Sort criterion: Comment: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'comment';
@@ -166,6 +177,24 @@ function vaxia_players_views_default_views() {
     'rpg_chatroom' => 'rpg_chatroom',
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
+  /* Filter criterion: Content: Locked to users (field_locked_to_users) */
+  $handler->display->display_options['filters']['field_locked_to_users_value']['id'] = 'field_locked_to_users_value';
+  $handler->display->display_options['filters']['field_locked_to_users_value']['table'] = 'field_data_field_locked_to_users';
+  $handler->display->display_options['filters']['field_locked_to_users_value']['field'] = 'field_locked_to_users_value';
+  $handler->display->display_options['filters']['field_locked_to_users_value']['relationship'] = 'nid';
+  $handler->display->display_options['filters']['field_locked_to_users_value']['value'] = array(
+    0 => '0',
+  );
+  $handler->display->display_options['filters']['field_locked_to_users_value']['group'] = 1;
+  /* Filter criterion: Content: Mature posting (field_mature_posting) */
+  $handler->display->display_options['filters']['field_mature_posting_value']['id'] = 'field_mature_posting_value';
+  $handler->display->display_options['filters']['field_mature_posting_value']['table'] = 'field_data_field_mature_posting';
+  $handler->display->display_options['filters']['field_mature_posting_value']['field'] = 'field_mature_posting_value';
+  $handler->display->display_options['filters']['field_mature_posting_value']['relationship'] = 'nid';
+  $handler->display->display_options['filters']['field_mature_posting_value']['value'] = array(
+    0 => '0',
+  );
+  $handler->display->display_options['filters']['field_mature_posting_value']['group'] = 1;
   /* Filter criterion: Content: Title */
   $handler->display->display_options['filters']['title']['id'] = 'title';
   $handler->display->display_options['filters']['title']['table'] = 'node';
@@ -181,30 +210,6 @@ function vaxia_players_views_default_views() {
   $handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
   $handler->display->display_options['filters']['title']['expose']['remember'] = TRUE;
   $handler->display->display_options['filters']['title']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    3 => 0,
-    8 => 0,
-    9 => 0,
-    10 => 0,
-    6 => 0,
-    7 => 0,
-    5 => 0,
-    4 => 0,
-  );
-  /* Filter criterion: Comment: Post date */
-  $handler->display->display_options['filters']['created']['id'] = 'created';
-  $handler->display->display_options['filters']['created']['table'] = 'comment';
-  $handler->display->display_options['filters']['created']['field'] = 'created';
-  $handler->display->display_options['filters']['created']['group'] = 1;
-  $handler->display->display_options['filters']['created']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['created']['expose']['operator_id'] = 'created_op';
-  $handler->display->display_options['filters']['created']['expose']['label'] = 'Post date';
-  $handler->display->display_options['filters']['created']['expose']['use_operator'] = TRUE;
-  $handler->display->display_options['filters']['created']['expose']['operator'] = 'created_op';
-  $handler->display->display_options['filters']['created']['expose']['identifier'] = 'created';
-  $handler->display->display_options['filters']['created']['expose']['remember'] = TRUE;
-  $handler->display->display_options['filters']['created']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
     3 => 0,
@@ -240,6 +245,67 @@ function vaxia_players_views_default_views() {
     7 => 0,
     4 => 0,
     11 => 0,
+  );
+  /* Filter criterion: User: Name */
+  $handler->display->display_options['filters']['uid']['id'] = 'uid';
+  $handler->display->display_options['filters']['uid']['table'] = 'users';
+  $handler->display->display_options['filters']['uid']['field'] = 'uid';
+  $handler->display->display_options['filters']['uid']['relationship'] = 'uid';
+  $handler->display->display_options['filters']['uid']['value'] = '';
+  $handler->display->display_options['filters']['uid']['group'] = 1;
+  $handler->display->display_options['filters']['uid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['uid']['expose']['operator_id'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['label'] = 'Player';
+  $handler->display->display_options['filters']['uid']['expose']['operator'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['identifier'] = 'uid';
+  $handler->display->display_options['filters']['uid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['uid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    8 => 0,
+    9 => 0,
+    14 => 0,
+    21 => 0,
+    24 => 0,
+    26 => 0,
+    27 => 0,
+    19 => 0,
+    28 => 0,
+    29 => 0,
+    12 => 0,
+    25 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    20 => 0,
+    22 => 0,
+    23 => 0,
+  );
+  /* Filter criterion: Comment: Post date */
+  $handler->display->display_options['filters']['created']['id'] = 'created';
+  $handler->display->display_options['filters']['created']['table'] = 'comment';
+  $handler->display->display_options['filters']['created']['field'] = 'created';
+  $handler->display->display_options['filters']['created']['group'] = 1;
+  $handler->display->display_options['filters']['created']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['created']['expose']['operator_id'] = 'created_op';
+  $handler->display->display_options['filters']['created']['expose']['label'] = 'Post date';
+  $handler->display->display_options['filters']['created']['expose']['use_operator'] = TRUE;
+  $handler->display->display_options['filters']['created']['expose']['operator'] = 'created_op';
+  $handler->display->display_options['filters']['created']['expose']['identifier'] = 'created';
+  $handler->display->display_options['filters']['created']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['created']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    8 => 0,
+    9 => 0,
+    10 => 0,
+    6 => 0,
+    7 => 0,
+    5 => 0,
+    4 => 0,
   );
   /* Filter criterion: Comment: Comment (comment_body) */
   $handler->display->display_options['filters']['comment_body_value']['id'] = 'comment_body_value';

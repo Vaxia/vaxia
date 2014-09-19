@@ -104,11 +104,14 @@ function proposal_strongarm() {
         'badges' => array(
           'weight' => '6',
         ),
+        'locations' => array(
+          'weight' => '7',
+        ),
       ),
       'display' => array(
         'webform' => array(
           'default' => array(
-            'weight' => '4',
+            'weight' => '5',
             'visible' => TRUE,
           ),
         ),
@@ -137,6 +140,7 @@ function proposal_strongarm() {
   $strongarm->name = 'node_options_proposal';
   $strongarm->value = array(
     0 => 'status',
+    1 => 'revision',
   );
   $export['node_options_proposal'] = $strongarm;
 

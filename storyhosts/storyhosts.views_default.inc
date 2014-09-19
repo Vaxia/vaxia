@@ -1050,6 +1050,75 @@ function storyhosts_views_default_views() {
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '35';
   $handler->display->display_options['style_plugin'] = 'table';
+  $handler->display->display_options['style_options']['columns'] = array(
+    'views_bulk_operations' => 'views_bulk_operations',
+    'name' => 'name',
+    'field_storyhost_character' => 'name',
+    'rid' => 'rid',
+    'field_titles' => 'title',
+    'title' => 'title',
+    'edit_node' => 'edit_node',
+    'delete_node' => 'delete_node',
+    'sid' => 'sid',
+  );
+  $handler->display->display_options['style_options']['default'] = '-1';
+  $handler->display->display_options['style_options']['info'] = array(
+    'views_bulk_operations' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'name' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '<br>',
+      'empty_column' => 0,
+    ),
+    'field_storyhost_character' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'rid' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_titles' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'title' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => ' ',
+      'empty_column' => 0,
+    ),
+    'edit_node' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'delete_node' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'sid' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+  );
   /* Relationship: Content: Author */
   $handler->display->display_options['relationships']['uid']['id'] = 'uid';
   $handler->display->display_options['relationships']['uid']['table'] = 'node';
@@ -1223,10 +1292,30 @@ function storyhosts_views_default_views() {
   $handler->display->display_options['fields']['name']['table'] = 'users';
   $handler->display->display_options['fields']['name']['field'] = 'name';
   $handler->display->display_options['fields']['name']['relationship'] = 'uid';
+  $handler->display->display_options['fields']['name']['label'] = 'Player';
+  /* Field: User: Storyhost Character */
+  $handler->display->display_options['fields']['field_storyhost_character']['id'] = 'field_storyhost_character';
+  $handler->display->display_options['fields']['field_storyhost_character']['table'] = 'field_data_field_storyhost_character';
+  $handler->display->display_options['fields']['field_storyhost_character']['field'] = 'field_storyhost_character';
+  $handler->display->display_options['fields']['field_storyhost_character']['relationship'] = 'uid';
+  $handler->display->display_options['fields']['field_storyhost_character']['label'] = 'Listed SH Character';
+  /* Field: User: Roles */
+  $handler->display->display_options['fields']['rid']['id'] = 'rid';
+  $handler->display->display_options['fields']['rid']['table'] = 'users_roles';
+  $handler->display->display_options['fields']['rid']['field'] = 'rid';
+  $handler->display->display_options['fields']['rid']['relationship'] = 'uid';
+  /* Field: Content: Titles */
+  $handler->display->display_options['fields']['field_titles']['id'] = 'field_titles';
+  $handler->display->display_options['fields']['field_titles']['table'] = 'field_data_field_titles';
+  $handler->display->display_options['fields']['field_titles']['field'] = 'field_titles';
+  $handler->display->display_options['fields']['field_titles']['exclude'] = TRUE;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = 'Storyhost Character';
+  $handler->display->display_options['fields']['title']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['title']['alter']['text'] = '[field_titles] [title]';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   /* Field: Content: Edit link */
@@ -1267,12 +1356,53 @@ function storyhosts_views_default_views() {
   $handler->display->display_options['filters']['field_is_storyteller_value']['value'] = array(
     1 => '1',
   );
+  /* Filter criterion: User: Roles */
+  $handler->display->display_options['filters']['rid']['id'] = 'rid';
+  $handler->display->display_options['filters']['rid']['table'] = 'users_roles';
+  $handler->display->display_options['filters']['rid']['field'] = 'rid';
+  $handler->display->display_options['filters']['rid']['relationship'] = 'uid';
+  $handler->display->display_options['filters']['rid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['rid']['expose']['operator_id'] = 'rid_op';
+  $handler->display->display_options['filters']['rid']['expose']['label'] = 'Roles';
+  $handler->display->display_options['filters']['rid']['expose']['use_operator'] = TRUE;
+  $handler->display->display_options['filters']['rid']['expose']['operator'] = 'rid_op';
+  $handler->display->display_options['filters']['rid']['expose']['identifier'] = 'rid';
+  $handler->display->display_options['filters']['rid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['rid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['rid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    30 => 0,
+    8 => 0,
+    9 => 0,
+    14 => 0,
+    21 => 0,
+    24 => 0,
+    26 => 0,
+    27 => 0,
+    19 => 0,
+    28 => 0,
+    29 => 0,
+    12 => 0,
+    25 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    20 => 0,
+    22 => 0,
+    23 => 0,
+  );
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
   $handler->display->display_options['path'] = 'admin/content/storyhost-characters';
-  $handler->display->display_options['menu']['type'] = 'normal';
-  $handler->display->display_options['menu']['title'] = 'Storyhost characters';
+  $handler->display->display_options['menu']['type'] = 'tab';
+  $handler->display->display_options['menu']['title'] = 'SH characters';
+  $handler->display->display_options['menu']['weight'] = '0';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
   $export['storyhost_characters'] = $view;
 
   $view = new view();

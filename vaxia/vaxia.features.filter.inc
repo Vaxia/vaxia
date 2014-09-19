@@ -10,10 +10,10 @@
 function vaxia_filter_default_formats() {
   $formats = array();
 
-  // Exported format: Plain text with BBCode.
+  // Exported format: Plain text.
   $formats['plain_text'] = array(
     'format' => 'plain_text',
-    'name' => 'Plain text with BBCode',
+    'name' => 'Plain text',
     'cache' => '0',
     'status' => '1',
     'weight' => '10',
@@ -22,8 +22,8 @@ function vaxia_filter_default_formats() {
         'weight' => '-49',
         'status' => '1',
         'settings' => array(
-          'allowed_html' => '<a> <em> <strong> <cite> <blockquote> <code> <ul> <ol> <li> <dl> <dt> <dd> <p> <br> <br />',
-          'filter_html_help' => 1,
+          'allowed_html' => '<a> <em> <strong> <b> <i> <cite> <blockquote> <code> <ul> <ol> <li> <dl> <dt> <dd> <p> <br> <br />',
+          'filter_html_help' => 0,
           'filter_html_nofollow' => 0,
         ),
       ),
@@ -38,7 +38,7 @@ function vaxia_filter_default_formats() {
         'settings' => array(
           'bbcode_make_links' => '0',
           'bbcode_filter_nofollow' => '1',
-          'bbcode_encode_mailto' => '1',
+          'bbcode_encode_mailto' => '0',
           'bbcode_paragraph_breaks' => '2',
           'bbcode_debug' => '0',
         ),

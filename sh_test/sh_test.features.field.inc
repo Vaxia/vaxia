@@ -198,7 +198,7 @@ function sh_test_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_text',
-        'weight' => '27',
+        'weight' => '47',
       ),
     ),
   );
@@ -278,7 +278,7 @@ function sh_test_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_text',
-        'weight' => '28',
+        'weight' => '48',
       ),
     ),
   );
@@ -358,7 +358,7 @@ function sh_test_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_text',
-        'weight' => '29',
+        'weight' => '49',
       ),
     ),
   );
@@ -438,7 +438,7 @@ function sh_test_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_text',
-        'weight' => '33',
+        'weight' => '54',
       ),
     ),
   );

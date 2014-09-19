@@ -129,6 +129,7 @@ function vaxia_players_default_rules_configuration() {
         { "data_is" : { "data" : [ "account:field-age-requirement" ], "value" : 0 } }
       ],
       "DO" : [
+        { "user_remove_role" : { "account" : [ "account" ], "roles" : { "value" : { "30" : "30" } } } },
         { "user_block" : { "account" : [ "account" ] } },
         { "mail" : {
             "to" : "[account:mail]",

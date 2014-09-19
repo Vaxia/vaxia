@@ -191,7 +191,7 @@ return $nid_fxp;';
   $handler->display->display_options['filters']['type']['table'] = 'vaxia_xp_type_totals';
   $handler->display->display_options['filters']['type']['field'] = 'type';
   $handler->display->display_options['filters']['type']['operator'] = 'word';
-  $handler->display->display_options['filters']['type']['value'] = 'charismatic evil good smart warrior mage';
+  $handler->display->display_options['filters']['type']['value'] = 'physical magical support artist rogue intelligent charismatic good evil';
   $handler->display->display_options['filters']['type']['expose']['operator_id'] = 'type_op';
   $handler->display->display_options['filters']['type']['expose']['label'] = 'Vaxia sheet xp type';
   $handler->display->display_options['filters']['type']['expose']['operator'] = 'type_op';
@@ -938,6 +938,20 @@ return $nid_fxp;';
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['content'] = 'These are the characters for this user that have been approved for play.';
+  $handler->display->display_options['header']['area']['format'] = 'wiki';
+  $handler->display->display_options['defaults']['footer'] = FALSE;
+  /* Footer: Global: Text area */
+  $handler->display->display_options['footer']['area']['id'] = 'area';
+  $handler->display->display_options['footer']['area']['table'] = 'views';
+  $handler->display->display_options['footer']['area']['field'] = 'area';
+  $handler->display->display_options['footer']['area']['content'] = '[url=/character-sheets/mine]Click here to see all of your own character sheets.[/url]';
+  $handler->display->display_options['footer']['area']['format'] = 'wiki';
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
@@ -1076,6 +1090,7 @@ return $nid_fxp;';
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['row_plugin'] = 'references_fields';
+  $handler->display->display_options['row_options']['separator'] = ' ';
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: Nid */
@@ -1085,11 +1100,30 @@ return $nid_fxp;';
   $handler->display->display_options['fields']['nid']['label'] = '';
   $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
   $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
+  /* Field: Content: Titles */
+  $handler->display->display_options['fields']['field_titles']['id'] = 'field_titles';
+  $handler->display->display_options['fields']['field_titles']['table'] = 'field_data_field_titles';
+  $handler->display->display_options['fields']['field_titles']['field'] = 'field_titles';
+  $handler->display->display_options['fields']['field_titles']['label'] = '';
+  $handler->display->display_options['fields']['field_titles']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_titles']['element_label_colon'] = FALSE;
+  /* Field: Content: Last Name */
+  $handler->display->display_options['fields']['field_last_name']['id'] = 'field_last_name';
+  $handler->display->display_options['fields']['field_last_name']['table'] = 'field_data_field_last_name';
+  $handler->display->display_options['fields']['field_last_name']['field'] = 'field_last_name';
+  $handler->display->display_options['fields']['field_last_name']['label'] = '';
+  $handler->display->display_options['fields']['field_last_name']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_last_name']['element_label_colon'] = FALSE;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
   $handler->display->display_options['fields']['title_1']['table'] = 'node';
   $handler->display->display_options['fields']['title_1']['field'] = 'title';
   $handler->display->display_options['fields']['title_1']['label'] = '';
+  $handler->display->display_options['fields']['title_1']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['title_1']['alter']['text'] = '[field_titles] [title_1] [field_last_name]';
+  $handler->display->display_options['fields']['title_1']['alter']['max_length'] = '40';
+  $handler->display->display_options['fields']['title_1']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title_1']['alter']['trim'] = TRUE;
   $handler->display->display_options['fields']['title_1']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title_1']['hide_alter_empty'] = FALSE;
   $handler->display->display_options['fields']['title_1']['link_to_node'] = FALSE;
@@ -1114,14 +1148,14 @@ return $nid_fxp;';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
   $handler->display->display_options['defaults']['sorts'] = FALSE;
-  /* Sort criterion: Content: NPC (field_is_npc) */
-  $handler->display->display_options['sorts']['field_is_npc_value']['id'] = 'field_is_npc_value';
-  $handler->display->display_options['sorts']['field_is_npc_value']['table'] = 'field_data_field_is_npc';
-  $handler->display->display_options['sorts']['field_is_npc_value']['field'] = 'field_is_npc_value';
   /* Sort criterion: Content: Open NPC (field_is_open_npc) */
   $handler->display->display_options['sorts']['field_is_open_npc_value']['id'] = 'field_is_open_npc_value';
   $handler->display->display_options['sorts']['field_is_open_npc_value']['table'] = 'field_data_field_is_open_npc';
   $handler->display->display_options['sorts']['field_is_open_npc_value']['field'] = 'field_is_open_npc_value';
+  /* Sort criterion: Content: NPC (field_is_npc) */
+  $handler->display->display_options['sorts']['field_is_npc_value']['id'] = 'field_is_npc_value';
+  $handler->display->display_options['sorts']['field_is_npc_value']['table'] = 'field_data_field_is_npc';
+  $handler->display->display_options['sorts']['field_is_npc_value']['field'] = 'field_is_npc_value';
   /* Sort criterion: Content: Title */
   $handler->display->display_options['sorts']['title']['id'] = 'title';
   $handler->display->display_options['sorts']['title']['table'] = 'node';
@@ -1543,6 +1577,17 @@ return !( user_access(\'use NPCs\') || $row->uid == $user->uid );';
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['footer'] = FALSE;
+  /* Footer: Global: Text area */
+  $handler->display->display_options['footer']['area']['id'] = 'area';
+  $handler->display->display_options['footer']['area']['table'] = 'views';
+  $handler->display->display_options['footer']['area']['field'] = 'area';
+  $handler->display->display_options['footer']['area']['content'] = 'Characters marked as Other require approval from the Setting department.
+
+Other char eval considerations:
+
+* For Sirian characters - please make sure the character provides a location of origin so we know the plots and legal systems that may apply to them. If their current loyalties are different from home-land, please ask for those as well.';
+  $handler->display->display_options['footer']['area']['format'] = 'plain_text';
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
@@ -1557,6 +1602,14 @@ return !( user_access(\'use NPCs\') || $row->uid == $user->uid );';
   $handler->display->display_options['fields']['name']['relationship'] = 'uid';
   $handler->display->display_options['fields']['name']['label'] = 'Player';
   $handler->display->display_options['fields']['name']['hide_alter_empty'] = FALSE;
+  /* Field: Content: Realm */
+  $handler->display->display_options['fields']['field_realm']['id'] = 'field_realm';
+  $handler->display->display_options['fields']['field_realm']['table'] = 'field_data_field_realm';
+  $handler->display->display_options['fields']['field_realm']['field'] = 'field_realm';
+  /* Field: Content: Species */
+  $handler->display->display_options['fields']['field_race']['id'] = 'field_race';
+  $handler->display->display_options['fields']['field_race']['table'] = 'field_data_field_race';
+  $handler->display->display_options['fields']['field_race']['field'] = 'field_race';
   /* Field: Content: Post date */
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'node';
@@ -1976,6 +2029,90 @@ return !( user_access(\'use NPCs\') || $row->uid == $user->uid );';
     4 => '4',
   );
   $handler->display->display_options['filters']['sid']['group'] = 1;
+  $handler->display->display_options['rules_parameter'] = array(
+    'uid' => array(
+      'enabled' => 1,
+      'type' => 'integer',
+      'label' => 'Content: Author uid',
+      'name' => 'uid',
+    ),
+  );
+  $handler->display->display_options['rules_variables'] = array(
+    'nid' => array(
+      'enabled' => 1,
+      'rendered' => 0,
+      'type' => 'integer',
+      'label' => 'Nid',
+      'name' => 'nid',
+    ),
+    'title_1' => array(
+      'enabled' => 1,
+      'rendered' => 0,
+      'type' => 'text',
+      'label' => 'Name',
+      'name' => 'title_1',
+    ),
+  );
+
+  /* Display: Eval Rules Characters by User */
+  $handler = $view->new_display('views_rules', 'Eval Rules Characters by User', 'eval2');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Rules Characters by User';
+  $handler->display->display_options['display_description'] = 'Eval Rules Characters by User';
+  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '1';
+  $handler->display->display_options['pager']['options']['offset'] = '4';
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Nid */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'node';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
+  $handler->display->display_options['fields']['title_1']['table'] = 'node';
+  $handler->display->display_options['fields']['title_1']['field'] = 'title';
+  $handler->display->display_options['fields']['title_1']['label'] = 'Name';
+  $handler->display->display_options['fields']['title_1']['hide_alter_empty'] = FALSE;
+  $handler->display->display_options['defaults']['sorts'] = FALSE;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'character_sheet' => 'character_sheet',
+  );
+  $handler->display->display_options['filters']['type']['group'] = 1;
+  /* Filter criterion: Workflow: Current state */
+  $handler->display->display_options['filters']['sid']['id'] = 'sid';
+  $handler->display->display_options['filters']['sid']['table'] = 'workflow_node';
+  $handler->display->display_options['filters']['sid']['field'] = 'sid';
+  $handler->display->display_options['filters']['sid']['value'] = array(
+    3 => '3',
+  );
+  $handler->display->display_options['filters']['sid']['group'] = 1;
+  /* Filter criterion: Content: NPC (field_is_npc) */
+  $handler->display->display_options['filters']['field_is_npc_value']['id'] = 'field_is_npc_value';
+  $handler->display->display_options['filters']['field_is_npc_value']['table'] = 'field_data_field_is_npc';
+  $handler->display->display_options['filters']['field_is_npc_value']['field'] = 'field_is_npc_value';
+  $handler->display->display_options['filters']['field_is_npc_value']['value'] = array(
+    0 => '0',
+  );
+  /* Filter criterion: Content: Open NPC (field_is_open_npc) */
+  $handler->display->display_options['filters']['field_is_open_npc_value']['id'] = 'field_is_open_npc_value';
+  $handler->display->display_options['filters']['field_is_open_npc_value']['table'] = 'field_data_field_is_open_npc';
+  $handler->display->display_options['filters']['field_is_open_npc_value']['field'] = 'field_is_open_npc_value';
+  $handler->display->display_options['filters']['field_is_open_npc_value']['value'] = array(
+    0 => '0',
+  );
+  /* Filter criterion: Content: Storyhost (field_is_storyteller) */
+  $handler->display->display_options['filters']['field_is_storyteller_value']['id'] = 'field_is_storyteller_value';
+  $handler->display->display_options['filters']['field_is_storyteller_value']['table'] = 'field_data_field_is_storyteller';
+  $handler->display->display_options['filters']['field_is_storyteller_value']['field'] = 'field_is_storyteller_value';
+  $handler->display->display_options['filters']['field_is_storyteller_value']['value'] = array(
+    0 => '0',
+  );
   $handler->display->display_options['rules_parameter'] = array(
     'uid' => array(
       'enabled' => 1,

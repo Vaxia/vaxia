@@ -99,22 +99,22 @@ function wiki_feature_strongarm() {
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '7',
+          'weight' => '6',
         ),
         'workflow' => array(
-          'weight' => '8',
+          'weight' => '7',
         ),
         'locations' => array(
-          'weight' => '30',
+          'weight' => '10',
         ),
         'badges' => array(
-          'weight' => '30',
+          'weight' => '9',
         ),
       ),
       'display' => array(
         'workflow_current_state' => array(
           'default' => array(
-            'weight' => '6',
+            'weight' => '7',
             'visible' => TRUE,
           ),
           'artwork' => array(
@@ -124,7 +124,7 @@ function wiki_feature_strongarm() {
         ),
         'workflow' => array(
           'default' => array(
-            'weight' => '7',
+            'weight' => '8',
             'visible' => FALSE,
           ),
           'artwork' => array(

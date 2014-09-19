@@ -31,7 +31,7 @@ function strikes_node_info() {
       'base' => 'node_content',
       'description' => t('A strike is a disciplinary action taken against a player for a documented on-site offense.'),
       'has_title' => '1',
-      'title_label' => t('Offense'),
+      'title_label' => t('(Date) - Short summary'),
       'help' => t('STOP. If you are building a strike against a player on this site, make very very sure what you are doing qualifies under a strike condition. Abuse of strikes is a strike itself.'),
     ),
   );

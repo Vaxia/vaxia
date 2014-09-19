@@ -17,6 +17,11 @@ function vaxia_elections_default_rules_configuration() {
       "REQUIRES" : [ "rules" ],
       "ON" : { "node_insert--session_report" : { "bundle" : "session_report" } },
       "IF" : [
+        { "user_has_role" : {
+            "account" : [ "node:author" ],
+            "roles" : { "value" : { "12" : "12", "13" : "13" } }
+          }
+        },
         { "NOT user_has_role" : { "account" : [ "node:author" ], "roles" : { "value" : { "25" : "25" } } } }
       ],
       "DO" : [

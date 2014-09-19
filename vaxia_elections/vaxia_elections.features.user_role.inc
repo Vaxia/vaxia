@@ -13,13 +13,13 @@ function vaxia_elections_user_default_roles() {
   // Exported role: lead.
   $roles['lead'] = array(
     'name' => 'lead',
-    'weight' => '13',
+    'weight' => '7',
   );
 
   // Exported role: starvation-mode-ash-approver.
   $roles['starvation-mode-ash-approver'] = array(
     'name' => 'starvation-mode-ash-approver',
-    'weight' => '12',
+    'weight' => '15',
   );
 
   return $roles;

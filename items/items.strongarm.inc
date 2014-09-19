@@ -107,6 +107,9 @@ function items_strongarm() {
         'badges' => array(
           'weight' => '30',
         ),
+        'locations' => array(
+          'weight' => '30',
+        ),
       ),
       'display' => array(
         'workflow_current_state' => array(

@@ -99,23 +99,23 @@ function vaxia_strongarm() {
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '12',
-        ),
-        'workflow' => array(
           'weight' => '13',
         ),
+        'workflow' => array(
+          'weight' => '14',
+        ),
         'locations' => array(
-          'weight' => '15',
+          'weight' => '16',
         ),
         'badges' => array(
-          'weight' => '14',
+          'weight' => '15',
         ),
       ),
       'display' => array(
         'workflow_current_state' => array(
           'default' => array(
             'weight' => '8',
-            'visible' => TRUE,
+            'visible' => FALSE,
           ),
         ),
         'workflow' => array(

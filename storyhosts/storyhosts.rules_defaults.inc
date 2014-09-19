@@ -57,13 +57,13 @@ function storyhosts_default_rules_configuration() {
         },
         { "entity_save" : { "data" : [ "node:author" ] } },
         { "data_set" : { "data" : [ "node:field-realm" ], "value" : "storyhost" } },
+        { "data_set" : { "data" : [ "node:field-titles" ], "value" : "ASH" } },
         { "workflow_rules_set_state" : {
             "node" : [ "node" ],
             "workflow_state" : { "value" : { "4" : "4" } },
             "workflow_comment" : "Storyhost characters are auto approved"
           }
-        },
-        { "data_set" : { "data" : [ "node:field-titles" ], "value" : "ASH" } }
+        }
       ]
     }
   }');

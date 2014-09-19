@@ -51,7 +51,7 @@ function sh_test_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Storyhosting',
-    'weight' => '3',
+    'weight' => '5',
     'children' => array(
       0 => 'field_storyhost_character',
       1 => 'group_ash_dates',

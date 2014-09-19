@@ -582,17 +582,17 @@ function wiki_feature_views_default_views() {
 
   $view = new view();
   $view->name = 'wiki_categories';
-  $view->description = 'Wiki tag categories';
-  $view->tag = 'Wiki';
+  $view->description = 'Wiki Categories';
+  $view->tag = 'Wiki Categories';
   $view->base_table = 'taxonomy_term_data';
-  $view->human_name = 'Wiki categories';
+  $view->human_name = 'Wiki Categories';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Wiki categories';
+  $handler->display->display_options['title'] = 'Wiki Categories';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['cache']['type'] = 'none';
@@ -636,8 +636,7 @@ function wiki_feature_views_default_views() {
   $handler->display->display_options['filters']['machine_name']['table'] = 'taxonomy_vocabulary';
   $handler->display->display_options['filters']['machine_name']['field'] = 'machine_name';
   $handler->display->display_options['filters']['machine_name']['value'] = array(
-    'tags' => 'tags',
-    'wiki_categories' => 'wiki_categories',
+    'wiki_tags' => 'wiki_tags',
   );
   /* Filter criterion: Global: PHP */
   $handler->display->display_options['filters']['php']['id'] = 'php';
@@ -646,9 +645,10 @@ function wiki_feature_views_default_views() {
   $handler->display->display_options['filters']['php']['use_php_setup'] = 0;
   $handler->display->display_options['filters']['php']['php_filter'] = 'return _wiki_feature_limit_categories_by_nodecount($row->tid);';
 
-  /* Display: Wiki categories */
-  $handler = $view->new_display('block', 'Wiki categories', 'wiki_categories_block');
-  $handler->display->display_options['display_description'] = 'Wiki categories block';
+  /* Display: Wiki Categories */
+  $handler = $view->new_display('block', 'Wiki Categories', 'wiki_categories_block');
+  $handler->display->display_options['display_description'] = 'Wiki Categories';
+  $handler->display->display_options['block_description'] = 'Wiki Categories';
   $export['wiki_categories'] = $view;
 
   $view = new view();
@@ -779,11 +779,6 @@ function wiki_feature_views_default_views() {
   $handler->display->display_options['fields']['name_1']['relationship'] = 'uid_1';
   $handler->display->display_options['fields']['name_1']['label'] = 'Updated By';
   /* Field: Content: Categories */
-  $handler->display->display_options['fields']['field_wiki_categories']['id'] = 'field_wiki_categories';
-  $handler->display->display_options['fields']['field_wiki_categories']['table'] = 'field_data_field_wiki_categories';
-  $handler->display->display_options['fields']['field_wiki_categories']['field'] = 'field_wiki_categories';
-  $handler->display->display_options['fields']['field_wiki_categories']['delta_offset'] = '0';
-  /* Field: Content: Tags */
   $handler->display->display_options['fields']['field_additional_tagging']['id'] = 'field_additional_tagging';
   $handler->display->display_options['fields']['field_additional_tagging']['table'] = 'field_data_field_additional_tagging';
   $handler->display->display_options['fields']['field_additional_tagging']['field'] = 'field_additional_tagging';
@@ -814,10 +809,10 @@ function wiki_feature_views_default_views() {
   $handler->display->display_options['display_description'] = 'Recently edited entries in the wiki';
   $handler->display->display_options['path'] = 'wiki/recently-edited';
   $handler->display->display_options['menu']['type'] = 'normal';
-  $handler->display->display_options['menu']['title'] = 'Recently edited articles';
+  $handler->display->display_options['menu']['title'] = 'Wiki Updates';
   $handler->display->display_options['menu']['description'] = 'Wiki articles that have been recently edited';
   $handler->display->display_options['menu']['weight'] = '0';
-  $handler->display->display_options['menu']['name'] = 'menu-wiki-links';
+  $handler->display->display_options['menu']['name'] = 'menu-vaxia';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
 

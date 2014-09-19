@@ -19,7 +19,7 @@ function proposal_default_rules_configuration() {
       "IF" : [
         { "user_has_role" : {
             "account" : [ "comment:author" ],
-            "roles" : { "value" : { "19" : "19" } }
+            "roles" : { "value" : { "8" : "8", "19" : "19" } }
           }
         }
       ],
@@ -40,7 +40,11 @@ function proposal_default_rules_configuration() {
       "REQUIRES" : [ "rules" ],
       "ON" : { "node_insert" : [] },
       "IF" : [
-        { "user_has_role" : { "account" : [ "node:author" ], "roles" : { "value" : { "19" : "19" } } } }
+        { "user_has_role" : {
+            "account" : [ "node:author" ],
+            "roles" : { "value" : { "8" : "8", "19" : "19" } }
+          }
+        }
       ],
       "DO" : [
         { "data_set" : { "data" : [ "node:author:field-voting-expire" ], "value" : "+6 months" } }
@@ -51,7 +55,7 @@ function proposal_default_rules_configuration() {
       "LABEL" : "Add voter on create comment",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "TAGS" : [ "Staff" ],
+      "TAGS" : [ "Proposals" ],
       "REQUIRES" : [ "rules", "comment" ],
       "ON" : { "comment_insert" : [] },
       "IF" : [
@@ -95,8 +99,7 @@ function proposal_default_rules_configuration() {
             "type" : { "value" : { "proposal" : "proposal" } }
           }
         },
-        { "node_is_webform" : { "node" : [ "node" ] } },
-        { "NOT user_is_blocked" : { "account" : [ "node:author" ] } }
+        { "node_is_webform" : { "node" : [ "node" ] } }
       ],
       "DO" : [
         { "webform_close" : { "entity" : [ "node" ], "selected_webform" : { "value" : [] } } },

@@ -89,6 +89,9 @@ function strikes_strongarm() {
       'token' => array(
         'custom_settings' => FALSE,
       ),
+      'artwork' => array(
+        'custom_settings' => TRUE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(
@@ -96,7 +99,13 @@ function strikes_strongarm() {
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '6',
+          'weight' => '8',
+        ),
+        'locations' => array(
+          'weight' => '10',
+        ),
+        'badges' => array(
+          'weight' => '9',
         ),
       ),
       'display' => array(),
@@ -124,6 +133,7 @@ function strikes_strongarm() {
   $strongarm->name = 'node_options_strike';
   $strongarm->value = array(
     0 => 'status',
+    1 => 'revision',
   );
   $export['node_options_strike'] = $strongarm;
 
