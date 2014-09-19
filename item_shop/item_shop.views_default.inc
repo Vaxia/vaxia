@@ -15,7 +15,7 @@ function item_shop_views_default_views() {
   $view->description = 'Display items for item shop';
   $view->tag = 'Item Shop';
   $view->base_table = 'node';
-  $view->human_name = 'Vaxia item Shop';
+  $view->human_name = 'Item Shop';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */

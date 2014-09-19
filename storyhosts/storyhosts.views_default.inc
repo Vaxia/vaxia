@@ -12,8 +12,8 @@ function storyhosts_views_default_views() {
 
   $view = new view();
   $view->name = 'character_goals';
-  $view->description = '';
-  $view->tag = 'default';
+  $view->description = 'Character goals for SH review';
+  $view->tag = 'Storyhosts';
   $view->base_table = 'node';
   $view->human_name = 'Character goals';
   $view->core = 7;
@@ -242,8 +242,8 @@ function storyhosts_views_default_views() {
 
   $view = new view();
   $view->name = 'skill_inventory';
-  $view->description = 'Skill inventory';
-  $view->tag = 'Vaxia skills';
+  $view->description = 'A list of skills in play on the site';
+  $view->tag = 'Storyhosts';
   $view->base_table = 'field_collection_item';
   $view->human_name = 'Skill inventory';
   $view->core = 7;
@@ -920,7 +920,7 @@ function storyhosts_views_default_views() {
   $view = new view();
   $view->name = 'storyhost_characters';
   $view->description = 'Storyhost characters';
-  $view->tag = 'default';
+  $view->tag = 'Storyhosts';
   $view->base_table = 'node';
   $view->human_name = 'Storyhost characters';
   $view->core = 7;
@@ -1296,10 +1296,10 @@ function storyhosts_views_default_views() {
 
   $view = new view();
   $view->name = 'vaxia_moderation_log';
-  $view->description = 'Moderation log';
-  $view->tag = 'Vaxia';
+  $view->description = 'Vaxia moderation log';
+  $view->tag = 'Storyhosts';
   $view->base_table = 'character_sheet_log';
-  $view->human_name = 'Moderation log';
+  $view->human_name = 'Vaxia moderation log';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */

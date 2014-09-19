@@ -1348,7 +1348,7 @@ return $uid;';
   $view = new view();
   $view->name = 'oversight_items';
   $view->description = 'These objects need additional oversight';
-  $view->tag = 'Items';
+  $view->tag = 'Oversight';
   $view->base_table = 'node';
   $view->human_name = 'Vaxia oversight items';
   $view->core = 7;

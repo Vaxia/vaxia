@@ -864,7 +864,7 @@ function sh_test_views_default_views() {
   $view = new view();
   $view->name = 'sh_applications';
   $view->description = 'SH Applications';
-  $view->tag = 'Storyhosts';
+  $view->tag = 'SH Test';
   $view->base_table = 'node';
   $view->human_name = 'SH Applications';
   $view->core = 7;

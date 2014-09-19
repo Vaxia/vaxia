@@ -185,7 +185,7 @@ function storyhost_duties_views_default_views() {
   $handler->display->display_options['fields']['php_2']['field'] = 'php';
   $handler->display->display_options['fields']['php_2']['label'] = 'Ran Sessions';
   $handler->display->display_options['fields']['php_2']['use_php_setup'] = 0;
-  $handler->display->display_options['fields']['php_2']['php_value'] = 'return _storyhost_duties_eligable_session_count_value($row->uid);';
+  $handler->display->display_options['fields']['php_2']['php_value'] = 'return _rpg_site_staff_eligable_session_count_value($row->uid);';
   $handler->display->display_options['fields']['php_2']['use_php_click_sortable'] = '1';
   $handler->display->display_options['fields']['php_2']['php_click_sortable'] = '';
   /* Field: Global: PHP */
@@ -194,7 +194,7 @@ function storyhost_duties_views_default_views() {
   $handler->display->display_options['fields']['php_3']['field'] = 'php';
   $handler->display->display_options['fields']['php_3']['label'] = 'Characters Eval';
   $handler->display->display_options['fields']['php_3']['use_php_setup'] = 0;
-  $handler->display->display_options['fields']['php_3']['php_value'] = 'return _storyhost_duties_prompt_eval_char_count_value($row->uid);';
+  $handler->display->display_options['fields']['php_3']['php_value'] = 'return _rpg_site_staff_prompt_eval_char_count_value($row->uid);';
   $handler->display->display_options['fields']['php_3']['use_php_click_sortable'] = '1';
   $handler->display->display_options['fields']['php_3']['php_click_sortable'] = '';
   /* Field: Global: PHP */
@@ -203,7 +203,7 @@ function storyhost_duties_views_default_views() {
   $handler->display->display_options['fields']['php_4']['field'] = 'php';
   $handler->display->display_options['fields']['php_4']['label'] = 'Items Eval';
   $handler->display->display_options['fields']['php_4']['use_php_setup'] = 0;
-  $handler->display->display_options['fields']['php_4']['php_value'] = 'return _storyhost_duties_prompt_eval_item_count_value($row->uid);';
+  $handler->display->display_options['fields']['php_4']['php_value'] = 'return _rpg_site_staff_prompt_eval_item_count_value($row->uid);';
   $handler->display->display_options['fields']['php_4']['use_php_click_sortable'] = '1';
   $handler->display->display_options['fields']['php_4']['php_click_sortable'] = '';
   /* Field: Global: PHP */
@@ -213,7 +213,7 @@ function storyhost_duties_views_default_views() {
   $handler->display->display_options['fields']['php']['label'] = 'Created Wiki';
   $handler->display->display_options['fields']['php']['hide_alter_empty'] = FALSE;
   $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
-  $handler->display->display_options['fields']['php']['php_value'] = 'return _storyhost_duties_create_content_count_value($row->uid, \'wiki_page\');';
+  $handler->display->display_options['fields']['php']['php_value'] = 'return _rpg_site_staff_create_content_count_value($row->uid, \'wiki_page\');';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '1';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
   /* Field: Global: PHP */
@@ -222,7 +222,7 @@ function storyhost_duties_views_default_views() {
   $handler->display->display_options['fields']['php_1']['field'] = 'php';
   $handler->display->display_options['fields']['php_1']['label'] = 'Revised Wiki';
   $handler->display->display_options['fields']['php_1']['use_php_setup'] = 0;
-  $handler->display->display_options['fields']['php_1']['php_value'] = 'return _storyhost_duties_revise_content_count_value($row->uid, \'wiki_page\');';
+  $handler->display->display_options['fields']['php_1']['php_value'] = 'return _rpg_site_staff_revise_content_count_value($row->uid, \'wiki_page\');';
   $handler->display->display_options['fields']['php_1']['use_php_click_sortable'] = '1';
   $handler->display->display_options['fields']['php_1']['php_click_sortable'] = '';
   /* Field: Global: PHP */
@@ -231,7 +231,7 @@ function storyhost_duties_views_default_views() {
   $handler->display->display_options['fields']['php_5']['field'] = 'php';
   $handler->display->display_options['fields']['php_5']['label'] = 'Replies on SH Requests';
   $handler->display->display_options['fields']['php_5']['use_php_setup'] = 0;
-  $handler->display->display_options['fields']['php_5']['php_value'] = 'return _storyhost_duties_comments_in_sh_forums_count_value($row->uid);';
+  $handler->display->display_options['fields']['php_5']['php_value'] = 'return _rpg_site_staff_comments_in_sh_forums_count_value($row->uid);';
   $handler->display->display_options['fields']['php_5']['use_php_click_sortable'] = '1';
   $handler->display->display_options['fields']['php_5']['php_click_sortable'] = '';
   /* Field: Global: PHP */
@@ -240,7 +240,7 @@ function storyhost_duties_views_default_views() {
   $handler->display->display_options['fields']['php_6']['field'] = 'php';
   $handler->display->display_options['fields']['php_6']['label'] = 'Oldest Unread PM';
   $handler->display->display_options['fields']['php_6']['use_php_setup'] = 0;
-  $handler->display->display_options['fields']['php_6']['php_value'] = 'return _storyhost_duties_oldest_unread_pm_date_value($row->uid);';
+  $handler->display->display_options['fields']['php_6']['php_value'] = 'return _rpg_site_staff_oldest_unread_pm_date_value($row->uid);';
   $handler->display->display_options['fields']['php_6']['use_php_click_sortable'] = '5';
   $handler->display->display_options['fields']['php_6']['php_click_sortable'] = '';
   /* Field: Global: PHP */
@@ -249,7 +249,7 @@ function storyhost_duties_views_default_views() {
   $handler->display->display_options['fields']['php_7']['field'] = 'php';
   $handler->display->display_options['fields']['php_7']['label'] = 'Count Unread PM Threads';
   $handler->display->display_options['fields']['php_7']['use_php_setup'] = 0;
-  $handler->display->display_options['fields']['php_7']['php_value'] = 'return _storyhost_duties_oldest_unread_pm_count_value($row->uid);';
+  $handler->display->display_options['fields']['php_7']['php_value'] = 'return _rpg_site_staff_oldest_unread_pm_count_value($row->uid);';
   $handler->display->display_options['fields']['php_7']['use_php_click_sortable'] = '1';
   $handler->display->display_options['fields']['php_7']['php_click_sortable'] = '';
   /* Field: User: Last access */

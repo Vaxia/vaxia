@@ -12,10 +12,10 @@ function npcs_views_default_views() {
 
   $view = new view();
   $view->name = 'character_npcs';
-  $view->description = 'Storyhost NPCs';
+  $view->description = 'NPCs';
   $view->tag = 'NPCs';
   $view->base_table = 'node';
-  $view->human_name = 'Storyhost NPCs';
+  $view->human_name = 'NPCs';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
@@ -193,7 +193,7 @@ function npcs_views_default_views() {
   );
 
   /* Display: My NPCs */
-  $handler = $view->new_display('page', 'My NPCs', 'storyteller_npcs');
+  $handler = $view->new_display('page', 'My NPCs', 'npcs');
   $handler->display->display_options['display_description'] = 'My NPCs';
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
@@ -441,7 +441,7 @@ function npcs_views_default_views() {
   $view = new view();
   $view->name = 'oversight';
   $view->description = 'These NPCs need additional oversight';
-  $view->tag = 'NPCs';
+  $view->tag = 'Oversight';
   $view->base_table = 'node';
   $view->human_name = 'Vaxia oversight NPCs';
   $view->core = 7;
@@ -1021,10 +1021,10 @@ return !npcs_check_needs_oversight(node_load($row->nid));';
 
   $view = new view();
   $view->name = 'room_npcs';
-  $view->description = 'NPCs for reference in Rooms';
-  $view->tag = 'default';
+  $view->description = 'Vaxia NPCs in Rooms';
+  $view->tag = 'NPCs';
   $view->base_table = 'node';
-  $view->human_name = 'Room NPCs';
+  $view->human_name = 'Vaxia NPCs in Rooms';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */

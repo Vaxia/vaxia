@@ -13,7 +13,7 @@ function vaxia_players_views_default_views() {
   $view = new view();
   $view->name = 'tolex_power_search';
   $view->description = 'Power Search for RP on site';
-  $view->tag = 'Vaxia';
+  $view->tag = 'Vaxia Players';
   $view->base_table = 'comment';
   $view->human_name = 'Tolex Power Search';
   $view->core = 7;

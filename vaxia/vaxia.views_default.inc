@@ -13,7 +13,7 @@ function vaxia_views_default_views() {
   $view = new view();
   $view->name = 'character_xp_flavors';
   $view->description = 'Character XP Flavors';
-  $view->tag = 'default';
+  $view->tag = 'Vaxia Characters';
   $view->base_table = 'vaxia_xp_type_totals';
   $view->human_name = 'Character XP Flavors';
   $view->core = 7;
@@ -368,7 +368,7 @@ return $nid_fxp;';
   $view = new view();
   $view->name = 'vaxia_character_sheets';
   $view->description = 'Vaxia character sheets';
-  $view->tag = 'Vaxia';
+  $view->tag = 'Vaxia Characters';
   $view->base_table = 'node';
   $view->human_name = 'Vaxia character sheets';
   $view->core = 7;
