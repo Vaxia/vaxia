@@ -4,6 +4,8 @@
  * Drupal needs this blank file.
  */
 
+include_once 'storyhost_duties.features.inc';
+
 /**
  * Helper function for views.
  */
