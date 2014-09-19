@@ -20,7 +20,6 @@ features[rules_config][] = rules_set_ash_title_on_gain_ash
 features[rules_config][] = rules_set_sh_character_on_user
 features[rules_config][] = rules_set_sh_title_on_gain_sh
 features[views_view][] = character_goals
-features[views_view][] = room_npcs
 features[views_view][] = skill_inventory
 features[views_view][] = storyhost_characters
 features[views_view][] = vaxia_moderation_log

@@ -17,12 +17,12 @@ function vaxia_donation_views_api() {
 function vaxia_donation_default_payment_method() {
   $items = array();
   $items['payment_method_unavailable'] = entity_import('payment_method', '{
+    "controller_data" : [],
     "enabled" : false,
     "name" : "payment_method_unavailable",
-    "controller_data" : [],
     "title_specific" : "Unavailable",
     "title_generic" : "Unavailable",
-    "uid" : null,
+    "uid" : 0,
     "controller_class_name" : "PaymentMethodControllerUnavailable"
   }');
   $items['paypal_vaxia_fund'] = entity_import('payment_method', '{
