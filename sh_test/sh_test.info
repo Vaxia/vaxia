@@ -11,7 +11,6 @@ dependencies[] = field_group
 dependencies[] = menu
 dependencies[] = php
 dependencies[] = quiz_rules
-dependencies[] = rpg_site_staff
 dependencies[] = strongarm
 dependencies[] = taxonomy
 dependencies[] = user_stats
