@@ -12,8 +12,8 @@ function scene_record_views_default_views() {
 
   $view = new view();
   $view->name = 'scenes';
-  $view->description = '';
-  $view->tag = 'default';
+  $view->description = 'Recorded scene content';
+  $view->tag = 'Scenes';
   $view->base_table = 'node';
   $view->human_name = 'Scenes';
   $view->core = 7;

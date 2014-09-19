@@ -9,6 +9,5 @@ dependencies[] = ctools
 dependencies[] = views
 features[ctools][] = views:views_default:3.0
 features[features_api][] = api:1
-features[views_view][] = storytellers_and_assistants
 features[views_view][] = wiki_display_sessions
 features[views_view][] = wiki_npcs_list

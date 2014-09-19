@@ -8,7 +8,6 @@ project = department
 dependencies[] = features
 dependencies[] = proposal
 dependencies[] = rpg_election
-dependencies[] = rpg_site_staff
 dependencies[] = rules
 features[features_api][] = api:1
 features[rules_config][] = rules_demote_temporary_lead

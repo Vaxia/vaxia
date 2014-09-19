@@ -12,8 +12,8 @@ function strikes_views_default_views() {
 
   $view = new view();
   $view->name = 'strikes';
-  $view->description = 'Notations a player is involved in';
-  $view->tag = 'Notations';
+  $view->description = 'Notations a player has been involved in';
+  $view->tag = 'Strikes';
   $view->base_table = 'node';
   $view->human_name = 'Notations';
   $view->core = 7;

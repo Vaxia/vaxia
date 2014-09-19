@@ -13,7 +13,7 @@ function players_views_default_views() {
   $view = new view();
   $view->name = 'players';
   $view->description = 'View a list of all players';
-  $view->tag = 'Vaxia';
+  $view->tag = 'Players';
   $view->base_table = 'users';
   $view->human_name = 'Players';
   $view->core = 7;

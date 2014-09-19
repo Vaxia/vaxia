@@ -7,7 +7,6 @@ version = 7.x-1.1
 project = storyhost_duties
 dependencies[] = entity
 dependencies[] = php
-dependencies[] = rpg_site_staff
 dependencies[] = rules
 dependencies[] = user_stats
 dependencies[] = workflow_rules

@@ -5,3 +5,30 @@
  */
 
 include_once 'storyhosts.features.inc';
+
+/**
+ * Implements hook_permission().
+ */
+function storyhosts_permission() {
+  return array(
+    'view session notes'=> array(
+      'title' => t('view session notes'),
+      'description' => t('View session notes.'),
+    ),
+  );
+}
+
+
+/*
+ * Implements hook_node_view().
+ */
+function storyhosts_node_view($node, $view_mode, $langcode) {
+  // If node session report, make sure users can view the reports.
+  if ($node->type == 'session_report') {
+    global $user;
+    // Check if the user has the 'view session notes' permission.
+    if (!user_access('view session notes') && !empty($node->content['field_additional_notes'])) {
+      unset($node->content['field_additional_notes']);
+    }
+  }
+}
