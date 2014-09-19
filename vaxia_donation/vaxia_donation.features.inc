@@ -10,3 +10,33 @@
 function vaxia_donation_views_api() {
   return array("version" => "3.0");
 }
+
+/**
+ * Implements hook_default_payment_method().
+ */
+function vaxia_donation_default_payment_method() {
+  $items = array();
+  $items['payment_method_unavailable'] = entity_import('payment_method', '{
+    "enabled" : false,
+    "name" : "payment_method_unavailable",
+    "controller_data" : [],
+    "title_specific" : "Unavailable",
+    "title_generic" : "Unavailable",
+    "uid" : null,
+    "controller_class_name" : "PaymentMethodControllerUnavailable"
+  }');
+  $items['paypal_vaxia_fund'] = entity_import('payment_method', '{
+    "controller_data" : {
+      "capture" : "0",
+      "email_address" : "vaxiauserone@gmail.com",
+      "server" : "https:\\/\\/www.paypal.com\\/cgi-bin\\/webscr"
+    },
+    "enabled" : true,
+    "name" : "paypal_vaxia_fund",
+    "title_specific" : "Paypal - Vaxia Fund",
+    "title_generic" : "Paypal",
+    "uid" : 1,
+    "controller_class_name" : "PayPalPaymentPPSPaymentMethodController"
+  }');
+  return $items;
+}
