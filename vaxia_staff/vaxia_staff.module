@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the Vaxia Staff feature.
- */
-
-include_once 'vaxia_staff.features.inc';
