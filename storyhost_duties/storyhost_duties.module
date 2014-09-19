@@ -4,39 +4,6 @@
  * Drupal needs this blank file.
  */
 
-
-/**
- * Helper function for views.
- */
-function _storyhost_duties_create_content_count_value($uid, $type = 'session_report') {
-  $timeframe = strtotime('1 year ago');
-  $results = db_query('SELECT COUNT(n.nid) AS count, n.type ' .
-    'FROM {node} n ' .
-    'WHERE n.uid = :uid AND n.type = :type AND created > :timeframe',
-    array(':uid' => $uid, ':type' => $type, ':timeframe' => $timeframe));
-  foreach ($results as $result) {
-    return $result->count;
-  }
-  return 0;
-}
-
-/**
- * Helper function for views.
- */
-function _storyhost_duties_revise_content_count_value($uid, $type = 'session_report') {
-  $timeframe = strtotime('1 year ago');
-  $results = db_query('SELECT COUNT(r.nid) AS count, n.type ' .
-    'FROM {node_revision} r ' .
-    'LEFT JOIN {node} n ON n.nid = r.nid ' .
-    'WHERE r.uid = :uid AND n.type = :type AND timestamp > :timeframe',
-    array(':uid' => $uid, ':type' => $type, ':timeframe' => $timeframe));
-  foreach ($results as $result) {
-    return $result->count;
-  }
-  return 0;
-}
-
-
 /**
  * Helper function for views.
  */
