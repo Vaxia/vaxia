@@ -1,0 +1,14 @@
+name = Anon Mailer
+description = Views and rules for handling the anon. mailer
+core = 7.x
+package = Vaxia
+version = 7.x-1.0
+project = anon_mailer
+dependencies[] = entity
+dependencies[] = php
+dependencies[] = rules
+dependencies[] = webform_rules
+features[features_api][] = api:1
+features[rules_config][] = rules_anon_mailer
+features[rules_config][] = rules_grievance_posting
+features[rules_config][] = rules_non_grievance_posting
