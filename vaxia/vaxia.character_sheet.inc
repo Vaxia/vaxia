@@ -995,17 +995,17 @@ function _vaxia_transfer_xp_autocomplete($character_name = '') {
     $workflow = $approved_workflow;
   }
   // In playable state, and NOT an NPC.
-  $results = db_query('SELECT n.nid, n.title, u.name FROM {node} n ' .
+  $results = db_query('SELECT DISTINCT n.nid, n.title, u.name FROM {node} n ' .
     'LEFT JOIN {users} u ON n.uid = u.uid ' .
     'LEFT JOIN {workflow_node} w ON w.nid = n.nid ' .
     'LEFT JOIN {field_data_field_is_npc} npc ON npc.entity_id = n.nid ' .
     'LEFT JOIN {field_data_field_is_open_npc} onpc ON onpc.entity_id = n.nid ' .
     'LEFT JOIN {field_data_field_is_storyteller} s ON s.entity_id = n.nid ' .
     'WHERE n.type LIKE \'character_sheet\' AND n.status = 1 ' .
-    'AND w.sid = :approved_workflow '.
-    'AND npc.field_is_npc_value = 0 '.
-    'AND onpc.field_is_open_npc_value = 0 '.
-    'AND s.field_is_storyteller_value = 0 '.
+    'AND w.sid = :approved_workflow ' .
+    'AND npc.field_is_npc_value = 0 ' .
+    'AND onpc.field_is_open_npc_value = 0 ' .
+    'AND s.field_is_storyteller_value = 0 ' .
     'AND n.uid = :uid AND n.title LIKE :name',
     array(':approved_workflow' => $workflow,
     ':uid' => $user->uid, ':name' => $character_name . '%'));
