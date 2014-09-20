@@ -13,9 +13,9 @@ function rpg_chat_views_default_views() {
   $view = new view();
   $view->name = 'chat_archives';
   $view->description = 'View the archives of posts in a specific chatroom';
-  $view->tag = 'Chat';
+  $view->tag = 'RPG Chat';
   $view->base_table = 'comment';
-  $view->human_name = 'Chat Archives';
+  $view->human_name = 'RPG Chat Archives';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
@@ -125,7 +125,7 @@ function rpg_chat_views_default_views() {
   $view = new view();
   $view->name = 'rpg_chats';
   $view->description = 'Display a list of RPG chats';
-  $view->tag = 'Chat';
+  $view->tag = 'RPG Chat';
   $view->base_table = 'node';
   $view->human_name = 'RPG Chats';
   $view->core = 7;

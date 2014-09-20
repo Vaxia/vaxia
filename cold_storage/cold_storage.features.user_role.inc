@@ -13,7 +13,7 @@ function cold_storage_user_default_roles() {
   // Exported role: cold storage.
   $roles['cold storage'] = array(
     'name' => 'cold storage',
-    'weight' => '16',
+    'weight' => '21',
   );
 
   return $roles;

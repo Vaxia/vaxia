@@ -26,38 +26,6 @@ function vaxia_views_api() {
 }
 
 /**
- * Implements hook_image_default_styles().
- */
-function vaxia_image_default_styles() {
-  $styles = array();
-
-  // Exported image style: tiny-thumbnail.
-  $styles['tiny-thumbnail'] = array(
-    'name' => 'tiny-thumbnail',
-    'label' => 'tiny-thumbnail',
-    'effects' => array(
-      2 => array(
-        'label' => 'Resize',
-        'help' => 'Resizing will make images an exact set of dimensions. This may cause images to be stretched or shrunk disproportionately.',
-        'effect callback' => 'image_resize_effect',
-        'dimensions callback' => 'image_resize_dimensions',
-        'form callback' => 'image_resize_form',
-        'summary theme' => 'image_resize_summary',
-        'module' => 'image',
-        'name' => 'image_resize',
-        'data' => array(
-          'width' => '40',
-          'height' => '40',
-        ),
-        'weight' => '1',
-      ),
-    ),
-  );
-
-  return $styles;
-}
-
-/**
  * Implements hook_node_info().
  */
 function vaxia_node_info() {

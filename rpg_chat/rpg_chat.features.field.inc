@@ -86,6 +86,132 @@ function rpg_chat_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-rpg_chatroom-field_locked_to_users'.
+  $fields['node-rpg_chatroom-field_locked_to_users'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_locked_to_users',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => 'Do not lock to specific users',
+          1 => 'Lock to specific users',
+        ),
+        'allowed_values_function' => '',
+        'allowed_values_php' => '',
+      ),
+      'translatable' => '0',
+      'type' => 'list_boolean',
+    ),
+    'field_instance' => array(
+      'bundle' => 'rpg_chatroom',
+      'default_value' => array(
+        0 => array(
+          'value' => '0',
+        ),
+      ),
+      'default_value_function' => '',
+      'default_value_php' => '',
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '8',
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_locked_to_users',
+      'label' => 'Locked to users',
+      'required' => 1,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_buttons',
+        'weight' => '2',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-rpg_chatroom-field_mature_posting'.
+  $fields['node-rpg_chatroom-field_mature_posting'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_mature_posting',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => 'Mature posts are NOT allowed in this room.',
+          1 => 'Mature posts are allowed in this room.',
+        ),
+        'allowed_values_function' => '',
+        'allowed_values_php' => '',
+      ),
+      'translatable' => '0',
+      'type' => 'list_boolean',
+    ),
+    'field_instance' => array(
+      'bundle' => 'rpg_chatroom',
+      'default_value' => array(
+        0 => array(
+          'value' => '0',
+        ),
+      ),
+      'default_value_function' => '',
+      'default_value_php' => '',
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '7',
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_mature_posting',
+      'label' => 'Mature posting',
+      'required' => 1,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_buttons',
+        'weight' => '1',
+      ),
+    ),
+  );
+
   // Exported field: 'node-rpg_chatroom-field_npcs'.
   $fields['node-rpg_chatroom-field_npcs'] = array(
     'field_config' => array(
@@ -148,7 +274,7 @@ function rpg_chat_field_default_fields() {
       'description' => 'Make a note of NPCs commonly found in this  location.',
       'display' => array(
         'default' => array(
-          'label' => 'hidden',
+          'label' => 'above',
           'module' => 'node_reference',
           'settings' => array(),
           'type' => 'node_reference_default',
@@ -171,7 +297,7 @@ function rpg_chat_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'node_reference_autocomplete',
-        'weight' => '4',
+        'weight' => '5',
       ),
     ),
   );
@@ -283,7 +409,7 @@ function rpg_chat_field_default_fields() {
           'size' => 60,
         ),
         'type' => 'node_reference_autocomplete',
-        'weight' => '3',
+        'weight' => '5',
       ),
     ),
   );
@@ -347,7 +473,7 @@ function rpg_chat_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '1',
+        'weight' => '2',
       ),
     ),
   );
@@ -566,7 +692,101 @@ function rpg_chat_field_default_fields() {
         'module' => 'location_cck',
         'settings' => array(),
         'type' => 'location',
-        'weight' => '5',
+        'weight' => '3',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-rpg_chatroom-field_users'.
+  $fields['node-rpg_chatroom-field_users'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_users',
+      'foreign keys' => array(
+        'uid' => array(
+          'columns' => array(
+            'uid' => 'uid',
+          ),
+          'table' => 'users',
+        ),
+      ),
+      'indexes' => array(
+        'uid' => array(
+          0 => 'uid',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'user_reference',
+      'settings' => array(
+        'referenceable_roles' => array(
+          2 => 0,
+          3 => 0,
+          8 => '8',
+          9 => 0,
+          10 => 0,
+          12 => 0,
+          13 => 0,
+          14 => 0,
+          15 => 0,
+          17 => 0,
+          19 => 0,
+          20 => 0,
+          21 => 0,
+          22 => 0,
+          23 => 0,
+          24 => 0,
+          25 => 0,
+          26 => 0,
+          27 => 0,
+          28 => 0,
+          29 => 0,
+        ),
+        'referenceable_status' => array(
+          0 => 0,
+          1 => '1',
+        ),
+        'view' => array(
+          'args' => array(),
+          'display_name' => '',
+          'view_name' => '',
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'user_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'rpg_chatroom',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'Select the users to lock this room for. Only these users may post here.',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '9',
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_users',
+      'label' => 'Users',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'user_reference',
+        'settings' => array(
+          'autocomplete_match' => 'contains',
+          'autocomplete_path' => 'user_reference/autocomplete',
+          'size' => '60',
+        ),
+        'type' => 'user_reference_autocomplete',
+        'weight' => '3',
       ),
     ),
   );
@@ -662,19 +882,23 @@ function rpg_chat_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'node_reference_autocomplete',
-        'weight' => '2',
+        'weight' => '4',
       ),
     ),
   );
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('Locked to users');
   t('Make a note of NPCs commonly found in this  location.');
+  t('Mature posting');
   t('NPCs');
   t('Parent-locations');
   t('RL weather');
   t('Realm');
+  t('Select the users to lock this room for. Only these users may post here.');
   t('Sub-locations');
+  t('Users');
   t('Wiki source');
 
   return $fields;

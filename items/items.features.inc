@@ -133,7 +133,7 @@ function items_workflow_default_workflows() {
         'target_state' => 'submitted',
       ),
       2 => array(
-        'roles' => 'workflow_features_author_name,evaluator,administrator',
+        'roles' => 'workflow_features_author_name,administrator,evaluator',
         'state' => 'draft',
         'target_state' => 'submitted',
       ),
@@ -148,22 +148,22 @@ function items_workflow_default_workflows() {
         'target_state' => 'disapproved',
       ),
       5 => array(
-        'roles' => 'evaluator,administrator',
+        'roles' => 'administrator,evaluator',
         'state' => 'submitted',
         'target_state' => 'draft',
       ),
       6 => array(
-        'roles' => 'evaluator,administrator',
+        'roles' => 'administrator,evaluator',
         'state' => 'submitted',
         'target_state' => 'approved',
       ),
       7 => array(
-        'roles' => 'evaluator,administrator',
+        'roles' => 'administrator,evaluator',
         'state' => 'submitted',
         'target_state' => 'disapproved',
       ),
       8 => array(
-        'roles' => 'evaluator,administrator',
+        'roles' => 'administrator,evaluator',
         'state' => 'submitted',
         'target_state' => 'moved to property tab',
       ),
@@ -173,27 +173,27 @@ function items_workflow_default_workflows() {
         'target_state' => 'removed from game',
       ),
       10 => array(
-        'roles' => 'evaluator,administrator',
+        'roles' => 'administrator,evaluator',
         'state' => 'approved',
         'target_state' => 'draft',
       ),
       11 => array(
-        'roles' => 'storyteller,evaluator,administrator',
+        'roles' => 'administrator,storyteller,evaluator',
         'state' => 'approved',
         'target_state' => 'submitted',
       ),
       12 => array(
-        'roles' => 'evaluator,administrator',
+        'roles' => 'administrator,evaluator',
         'state' => 'approved',
         'target_state' => 'disapproved',
       ),
       13 => array(
-        'roles' => 'storyteller,evaluator,administrator',
+        'roles' => 'administrator,storyteller,evaluator',
         'state' => 'approved',
         'target_state' => 'moved to property tab',
       ),
       14 => array(
-        'roles' => 'evaluator,administrator',
+        'roles' => 'administrator,evaluator',
         'state' => 'approved',
         'target_state' => 'removed from game',
       ),

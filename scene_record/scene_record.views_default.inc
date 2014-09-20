@@ -12,8 +12,8 @@ function scene_record_views_default_views() {
 
   $view = new view();
   $view->name = 'scenes';
-  $view->description = '';
-  $view->tag = 'default';
+  $view->description = 'Recorded scene content';
+  $view->tag = 'Scenes';
   $view->base_table = 'node';
   $view->human_name = 'Scenes';
   $view->core = 7;
@@ -36,7 +36,7 @@ function scene_record_views_default_views() {
   $handler->display->display_options['empty']['area']['table'] = 'views';
   $handler->display->display_options['empty']['area']['field'] = 'area';
   $handler->display->display_options['empty']['area']['empty'] = TRUE;
-  $handler->display->display_options['empty']['area']['content'] = 'You have not recorded any scenes.';
+  $handler->display->display_options['empty']['area']['content'] = 'No scenes found.';
   $handler->display->display_options['empty']['area']['format'] = 'wiki';
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';

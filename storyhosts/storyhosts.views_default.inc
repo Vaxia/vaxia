@@ -12,8 +12,8 @@ function storyhosts_views_default_views() {
 
   $view = new view();
   $view->name = 'character_goals';
-  $view->description = '';
-  $view->tag = 'default';
+  $view->description = 'Character goals for SH review';
+  $view->tag = 'Storyhosts';
   $view->base_table = 'node';
   $view->human_name = 'Character goals';
   $view->core = 7;
@@ -241,120 +241,9 @@ function storyhosts_views_default_views() {
   $export['character_goals'] = $view;
 
   $view = new view();
-  $view->name = 'room_npcs';
-  $view->description = 'NPCs for reference in Rooms';
-  $view->tag = 'default';
-  $view->base_table = 'node';
-  $view->human_name = 'Room NPCs';
-  $view->core = 7;
-  $view->api_version = '3.0';
-  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
-
-  /* Display: Master */
-  $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['use_more_always'] = FALSE;
-  $handler->display->display_options['access']['type'] = 'perm';
-  $handler->display->display_options['cache']['type'] = 'none';
-  $handler->display->display_options['query']['type'] = 'views_query';
-  $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['pager']['type'] = 'full';
-  $handler->display->display_options['style_plugin'] = 'default';
-  $handler->display->display_options['row_plugin'] = 'fields';
-  /* Field: Content: Titles */
-  $handler->display->display_options['fields']['field_titles']['id'] = 'field_titles';
-  $handler->display->display_options['fields']['field_titles']['table'] = 'field_data_field_titles';
-  $handler->display->display_options['fields']['field_titles']['field'] = 'field_titles';
-  $handler->display->display_options['fields']['field_titles']['label'] = '';
-  $handler->display->display_options['fields']['field_titles']['element_label_colon'] = FALSE;
-  /* Field: Content: Title */
-  $handler->display->display_options['fields']['title']['id'] = 'title';
-  $handler->display->display_options['fields']['title']['table'] = 'node';
-  $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = '';
-  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
-  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  /* Field: Content: Last Name */
-  $handler->display->display_options['fields']['field_last_name']['id'] = 'field_last_name';
-  $handler->display->display_options['fields']['field_last_name']['table'] = 'field_data_field_last_name';
-  $handler->display->display_options['fields']['field_last_name']['field'] = 'field_last_name';
-  $handler->display->display_options['fields']['field_last_name']['label'] = '';
-  $handler->display->display_options['fields']['field_last_name']['element_label_colon'] = FALSE;
-  /* Field: Workflow: Current state name */
-  $handler->display->display_options['fields']['state']['id'] = 'state';
-  $handler->display->display_options['fields']['state']['table'] = 'workflow_states';
-  $handler->display->display_options['fields']['state']['field'] = 'state';
-  $handler->display->display_options['fields']['state']['label'] = '';
-  $handler->display->display_options['fields']['state']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['state']['alter']['text'] = '([state])';
-  $handler->display->display_options['fields']['state']['element_label_colon'] = FALSE;
-  /* Sort criterion: Content: Post date */
-  $handler->display->display_options['sorts']['created']['id'] = 'created';
-  $handler->display->display_options['sorts']['created']['table'] = 'node';
-  $handler->display->display_options['sorts']['created']['field'] = 'created';
-  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
-  $handler->display->display_options['filter_groups']['groups'] = array(
-    1 => 'AND',
-    2 => 'OR',
-  );
-  /* Filter criterion: Content: Published */
-  $handler->display->display_options['filters']['status']['id'] = 'status';
-  $handler->display->display_options['filters']['status']['table'] = 'node';
-  $handler->display->display_options['filters']['status']['field'] = 'status';
-  $handler->display->display_options['filters']['status']['value'] = 1;
-  $handler->display->display_options['filters']['status']['group'] = 1;
-  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Content: Type */
-  $handler->display->display_options['filters']['type']['id'] = 'type';
-  $handler->display->display_options['filters']['type']['table'] = 'node';
-  $handler->display->display_options['filters']['type']['field'] = 'type';
-  $handler->display->display_options['filters']['type']['value'] = array(
-    'character_sheet' => 'character_sheet',
-  );
-  $handler->display->display_options['filters']['type']['group'] = 1;
-  /* Filter criterion: Workflow: Current state */
-  $handler->display->display_options['filters']['sid']['id'] = 'sid';
-  $handler->display->display_options['filters']['sid']['table'] = 'workflow_node';
-  $handler->display->display_options['filters']['sid']['field'] = 'sid';
-  $handler->display->display_options['filters']['sid']['value'] = array(
-    4 => '4',
-    6 => '6',
-  );
-  $handler->display->display_options['filters']['sid']['group'] = 1;
-  /* Filter criterion: Content: NPC (field_is_npc) */
-  $handler->display->display_options['filters']['field_is_npc_value']['id'] = 'field_is_npc_value';
-  $handler->display->display_options['filters']['field_is_npc_value']['table'] = 'field_data_field_is_npc';
-  $handler->display->display_options['filters']['field_is_npc_value']['field'] = 'field_is_npc_value';
-  $handler->display->display_options['filters']['field_is_npc_value']['value'] = array(
-    1 => '1',
-  );
-  $handler->display->display_options['filters']['field_is_npc_value']['group'] = 2;
-  /* Filter criterion: Content: Open NPC (field_is_open_npc) */
-  $handler->display->display_options['filters']['field_is_open_npc_value']['id'] = 'field_is_open_npc_value';
-  $handler->display->display_options['filters']['field_is_open_npc_value']['table'] = 'field_data_field_is_open_npc';
-  $handler->display->display_options['filters']['field_is_open_npc_value']['field'] = 'field_is_open_npc_value';
-  $handler->display->display_options['filters']['field_is_open_npc_value']['value'] = array(
-    1 => '1',
-  );
-  $handler->display->display_options['filters']['field_is_open_npc_value']['group'] = 2;
-
-  /* Display: References */
-  $handler = $view->new_display('references', 'References', 'references_1');
-  $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['pager']['type'] = 'none';
-  $handler->display->display_options['pager']['options']['offset'] = '0';
-  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
-  $handler->display->display_options['style_plugin'] = 'references_style';
-  $handler->display->display_options['defaults']['style_options'] = FALSE;
-  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
-  $handler->display->display_options['row_plugin'] = 'references_fields';
-  $handler->display->display_options['row_options']['separator'] = ' ';
-  $handler->display->display_options['defaults']['row_options'] = FALSE;
-  $export['room_npcs'] = $view;
-
-  $view = new view();
   $view->name = 'skill_inventory';
-  $view->description = 'Skill inventory';
-  $view->tag = 'Vaxia skills';
+  $view->description = 'A list of skills in play on the site';
+  $view->tag = 'Storyhosts';
   $view->base_table = 'field_collection_item';
   $view->human_name = 'Skill inventory';
   $view->core = 7;
@@ -1022,7 +911,7 @@ function storyhosts_views_default_views() {
   /* Display: Skill inventory */
   $handler = $view->new_display('page', 'Skill inventory', 'skill_inventory');
   $handler->display->display_options['display_description'] = 'Skill inventory';
-  $handler->display->display_options['path'] = 'sh/skill-inventory';
+  $handler->display->display_options['path'] = 'skill-inventory';
   $handler->display->display_options['menu']['type'] = 'normal';
   $handler->display->display_options['menu']['title'] = 'Skill inventory';
   $handler->display->display_options['menu']['name'] = 'menu-vaxia-sh';
@@ -1031,7 +920,7 @@ function storyhosts_views_default_views() {
   $view = new view();
   $view->name = 'storyhost_characters';
   $view->description = 'Storyhost characters';
-  $view->tag = 'default';
+  $view->tag = 'Storyhosts';
   $view->base_table = 'node';
   $view->human_name = 'Storyhost characters';
   $view->core = 7;
@@ -1050,6 +939,75 @@ function storyhosts_views_default_views() {
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '35';
   $handler->display->display_options['style_plugin'] = 'table';
+  $handler->display->display_options['style_options']['columns'] = array(
+    'views_bulk_operations' => 'views_bulk_operations',
+    'name' => 'name',
+    'field_storyhost_character' => 'name',
+    'rid' => 'rid',
+    'field_titles' => 'title',
+    'title' => 'title',
+    'edit_node' => 'edit_node',
+    'delete_node' => 'delete_node',
+    'sid' => 'sid',
+  );
+  $handler->display->display_options['style_options']['default'] = '-1';
+  $handler->display->display_options['style_options']['info'] = array(
+    'views_bulk_operations' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'name' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '<br>',
+      'empty_column' => 0,
+    ),
+    'field_storyhost_character' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'rid' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_titles' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'title' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => ' ',
+      'empty_column' => 0,
+    ),
+    'edit_node' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'delete_node' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'sid' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+  );
   /* Relationship: Content: Author */
   $handler->display->display_options['relationships']['uid']['id'] = 'uid';
   $handler->display->display_options['relationships']['uid']['table'] = 'node';
@@ -1223,10 +1181,30 @@ function storyhosts_views_default_views() {
   $handler->display->display_options['fields']['name']['table'] = 'users';
   $handler->display->display_options['fields']['name']['field'] = 'name';
   $handler->display->display_options['fields']['name']['relationship'] = 'uid';
+  $handler->display->display_options['fields']['name']['label'] = 'Player';
+  /* Field: User: Storyhost Character */
+  $handler->display->display_options['fields']['field_storyhost_character']['id'] = 'field_storyhost_character';
+  $handler->display->display_options['fields']['field_storyhost_character']['table'] = 'field_data_field_storyhost_character';
+  $handler->display->display_options['fields']['field_storyhost_character']['field'] = 'field_storyhost_character';
+  $handler->display->display_options['fields']['field_storyhost_character']['relationship'] = 'uid';
+  $handler->display->display_options['fields']['field_storyhost_character']['label'] = 'Listed SH Character';
+  /* Field: User: Roles */
+  $handler->display->display_options['fields']['rid']['id'] = 'rid';
+  $handler->display->display_options['fields']['rid']['table'] = 'users_roles';
+  $handler->display->display_options['fields']['rid']['field'] = 'rid';
+  $handler->display->display_options['fields']['rid']['relationship'] = 'uid';
+  /* Field: Content: Titles */
+  $handler->display->display_options['fields']['field_titles']['id'] = 'field_titles';
+  $handler->display->display_options['fields']['field_titles']['table'] = 'field_data_field_titles';
+  $handler->display->display_options['fields']['field_titles']['field'] = 'field_titles';
+  $handler->display->display_options['fields']['field_titles']['exclude'] = TRUE;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = 'Storyhost Character';
+  $handler->display->display_options['fields']['title']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['title']['alter']['text'] = '[field_titles] [title]';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   /* Field: Content: Edit link */
@@ -1267,20 +1245,61 @@ function storyhosts_views_default_views() {
   $handler->display->display_options['filters']['field_is_storyteller_value']['value'] = array(
     1 => '1',
   );
+  /* Filter criterion: User: Roles */
+  $handler->display->display_options['filters']['rid']['id'] = 'rid';
+  $handler->display->display_options['filters']['rid']['table'] = 'users_roles';
+  $handler->display->display_options['filters']['rid']['field'] = 'rid';
+  $handler->display->display_options['filters']['rid']['relationship'] = 'uid';
+  $handler->display->display_options['filters']['rid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['rid']['expose']['operator_id'] = 'rid_op';
+  $handler->display->display_options['filters']['rid']['expose']['label'] = 'Roles';
+  $handler->display->display_options['filters']['rid']['expose']['use_operator'] = TRUE;
+  $handler->display->display_options['filters']['rid']['expose']['operator'] = 'rid_op';
+  $handler->display->display_options['filters']['rid']['expose']['identifier'] = 'rid';
+  $handler->display->display_options['filters']['rid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['rid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['rid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    30 => 0,
+    8 => 0,
+    9 => 0,
+    14 => 0,
+    21 => 0,
+    24 => 0,
+    26 => 0,
+    27 => 0,
+    19 => 0,
+    28 => 0,
+    29 => 0,
+    12 => 0,
+    25 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    20 => 0,
+    22 => 0,
+    23 => 0,
+  );
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
   $handler->display->display_options['path'] = 'admin/content/storyhost-characters';
-  $handler->display->display_options['menu']['type'] = 'normal';
-  $handler->display->display_options['menu']['title'] = 'Storyhost characters';
+  $handler->display->display_options['menu']['type'] = 'tab';
+  $handler->display->display_options['menu']['title'] = 'SH characters';
+  $handler->display->display_options['menu']['weight'] = '0';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
   $export['storyhost_characters'] = $view;
 
   $view = new view();
   $view->name = 'vaxia_moderation_log';
-  $view->description = 'Moderation log';
-  $view->tag = 'Vaxia';
+  $view->description = 'Vaxia moderation log';
+  $view->tag = 'Storyhosts';
   $view->base_table = 'character_sheet_log';
-  $view->human_name = 'Moderation log';
+  $view->human_name = 'Vaxia moderation log';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
@@ -1432,8 +1451,8 @@ function storyhosts_views_default_views() {
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'character_sheet_log';
   $handler->display->display_options['filters']['type']['field'] = 'type';
-  $handler->display->display_options['filters']['type']['operator'] = '!=';
-  $handler->display->display_options['filters']['type']['value'] = 'daily_silver';
+  $handler->display->display_options['filters']['type']['operator'] = 'not';
+  $handler->display->display_options['filters']['type']['value'] = 'silver';
   $handler->display->display_options['filters']['type']['exposed'] = TRUE;
   $handler->display->display_options['filters']['type']['expose']['operator_id'] = 'type_op';
   $handler->display->display_options['filters']['type']['expose']['label'] = 'Log type';
@@ -1444,23 +1463,27 @@ function storyhosts_views_default_views() {
   $handler->display->display_options['filters']['type']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
+    3 => 0,
+    30 => 0,
     8 => 0,
+    9 => 0,
+    14 => 0,
+    21 => 0,
+    24 => 0,
+    26 => 0,
+    27 => 0,
     19 => 0,
+    28 => 0,
+    29 => 0,
     12 => 0,
+    25 => 0,
     13 => 0,
     10 => 0,
     17 => 0,
     15 => 0,
-    9 => 0,
     20 => 0,
-    14 => 0,
-    21 => 0,
-    3 => 0,
-    11 => 0,
     22 => 0,
     23 => 0,
-    24 => 0,
-    25 => 0,
   );
   /* Filter criterion: Character sheet log: Message */
   $handler->display->display_options['filters']['message']['id'] = 'message';
@@ -1626,9 +1649,9 @@ function storyhosts_views_default_views() {
     25 => 0,
   );
 
-  /* Display: Moderation log */
-  $handler = $view->new_display('page', 'Moderation log', 'character_sheets_moderation_log');
-  $handler->display->display_options['display_description'] = 'Moderation log';
+  /* Display: Vaxia Moderation log */
+  $handler = $view->new_display('page', 'Vaxia Moderation log', 'vaxia_character_sheets_moderation_log');
+  $handler->display->display_options['display_description'] = 'Vaxia Moderation log';
   $handler->display->display_options['path'] = 'character-sheets/moderation_log';
   $handler->display->display_options['menu']['title'] = 'Moderation log';
   $handler->display->display_options['menu']['weight'] = '0';

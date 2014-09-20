@@ -24,10 +24,7 @@ function top_tens_views_default_views() {
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['title'] = 'Top Tens';
   $handler->display->display_options['use_more_always'] = FALSE;
-  $handler->display->display_options['access']['type'] = 'role';
-  $handler->display->display_options['access']['role'] = array(
-    8 => '8',
-  );
+  $handler->display->display_options['access']['type'] = 'none';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
@@ -44,10 +41,8 @@ function top_tens_views_default_views() {
   $handler->display->display_options['style_options']['columns'] = array(
     'nid' => 'nid',
     'type' => 'type',
-    'xp' => 'xp',
-    'field_artwork_image' => 'field_artwork_image',
     'title' => 'title',
-    'php' => 'php',
+    'field_artwork_image' => 'title',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
@@ -65,30 +60,18 @@ function top_tens_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
-    'xp' => array(
-      'sortable' => 1,
+    'title' => array(
+      'sortable' => 0,
       'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
+      'align' => 'views-align-center',
+      'separator' => ' </br>',
       'empty_column' => 0,
     ),
     'field_artwork_image' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'title' => array(
-      'sortable' => 1,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => ' ',
-      'empty_column' => 0,
-    ),
-    'php' => array(
-      'align' => '',
-      'separator' => '',
+      'align' => 'views-align-center',
+      'separator' => '</br>',
       'empty_column' => 0,
     ),
   );
@@ -103,25 +86,13 @@ function top_tens_views_default_views() {
 .view-footer .view-filters{display:none;}
 </style>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
-  /* Footer: Global: View area */
-  $handler->display->display_options['footer']['view']['id'] = 'view';
-  $handler->display->display_options['footer']['view']['table'] = 'views';
-  $handler->display->display_options['footer']['view']['field'] = 'view';
-  $handler->display->display_options['footer']['view']['label'] = 'Top Ten Part Two';
-  $handler->display->display_options['footer']['view']['empty'] = TRUE;
-  $handler->display->display_options['footer']['view']['view_to_insert'] = 'total_top_ten:top_ten_page_two';
-  $handler->display->display_options['footer']['view']['inherit_arguments'] = TRUE;
   /* Footer: Global: Text area */
   $handler->display->display_options['footer']['area']['id'] = 'area';
   $handler->display->display_options['footer']['area']['table'] = 'views';
   $handler->display->display_options['footer']['area']['field'] = 'area';
   $handler->display->display_options['footer']['area']['empty'] = TRUE;
   $handler->display->display_options['footer']['area']['content'] = '<div style="clear:both;">&nbsp;</div>
-<p>Since SHs can reward multiple flavors of XP in a session you should read the Top Ten rankings as a whole. While a character may have a high raking in Evil XP, they may also have a high ranking in Good XP. These are an eyeball summary of a character\'s behavior overall.</p>
-
-<p>Rankings should not be taken as an indication of anything more than activity levels of characters. Some characters have a long history on the site and a long record of XP to show for it, while others are much newer but also much more active. Rankings on this page reflect the activities of individual characters and should not be used to rank players.</p>
-
-<p>The Top Ten shows appreciation for those players who have consistently portrayed  their characters through their actions over time.</p>';
+<p>Since SHs can reward multiple flavors of XP in a session you should read the Top Ten rankings as a whole. While a character may have a high raking in Evil XP, they may also have a high ranking in Good XP. Check the character\'s sheet for a more accurate assessment of personality.</p>';
   $handler->display->display_options['footer']['area']['format'] = 'full_html';
   /* Relationship: Vaxia type xp: Vaxia sheet xp node */
   $handler->display->display_options['relationships']['nid']['id'] = 'nid';
@@ -146,19 +117,12 @@ function top_tens_views_default_views() {
   $handler->display->display_options['fields']['type']['alter']['text'] = '<h2>[type]</h2>';
   $handler->display->display_options['fields']['type']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['type']['element_wrapper_type'] = 'h2';
-  /* Field: Vaxia type xp: Vaxia sheet xp node */
-  $handler->display->display_options['fields']['xp']['id'] = 'xp';
-  $handler->display->display_options['fields']['xp']['table'] = 'vaxia_xp_type_totals';
-  $handler->display->display_options['fields']['xp']['field'] = 'xp';
-  $handler->display->display_options['fields']['xp']['label'] = 'Amount';
-  /* Field: Global: Custom text */
-  $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
-  $handler->display->display_options['fields']['nothing']['table'] = 'views';
-  $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
-  $handler->display->display_options['fields']['nothing']['label'] = '';
-  $handler->display->display_options['fields']['nothing']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['nothing']['alter']['text'] = '<img width="40" height="40" src="http://vaxia.org/sites/all/themes/vaxia_theme/logo.png">';
-  $handler->display->display_options['fields']['nothing']['element_label_colon'] = FALSE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['relationship'] = 'nid';
+  $handler->display->display_options['fields']['title']['label'] = 'Character';
   /* Field: Field: Image */
   $handler->display->display_options['fields']['field_artwork_image']['id'] = 'field_artwork_image';
   $handler->display->display_options['fields']['field_artwork_image']['table'] = 'field_data_field_artwork_image';
@@ -166,17 +130,13 @@ function top_tens_views_default_views() {
   $handler->display->display_options['fields']['field_artwork_image']['relationship'] = 'nid';
   $handler->display->display_options['fields']['field_artwork_image']['label'] = '';
   $handler->display->display_options['fields']['field_artwork_image']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_artwork_image']['empty'] = '<img width="40" height="40" src="http://vaxia.org/sites/all/themes/vaxia_theme/logo.png">';
+  $handler->display->display_options['fields']['field_artwork_image']['empty_zero'] = TRUE;
   $handler->display->display_options['fields']['field_artwork_image']['click_sort_column'] = 'fid';
   $handler->display->display_options['fields']['field_artwork_image']['settings'] = array(
     'image_style' => 'tiny-thumbnail',
     'image_link' => '',
   );
-  /* Field: Content: Title */
-  $handler->display->display_options['fields']['title']['id'] = 'title';
-  $handler->display->display_options['fields']['title']['table'] = 'node';
-  $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['relationship'] = 'nid';
-  $handler->display->display_options['fields']['title']['label'] = 'Character';
   /* Sort criterion: Vaxia type xp: Vaxia sheet xp type */
   $handler->display->display_options['sorts']['type']['id'] = 'type';
   $handler->display->display_options['sorts']['type']['table'] = 'vaxia_xp_type_totals';
@@ -202,6 +162,13 @@ function top_tens_views_default_views() {
   $handler->display->display_options['filters']['type']['operator'] = '!=';
   $handler->display->display_options['filters']['type']['value'] = 'transfer';
   $handler->display->display_options['filters']['type']['group'] = 1;
+  /* Filter criterion: Vaxia type xp: Vaxia sheet xp type */
+  $handler->display->display_options['filters']['type_2']['id'] = 'type_2';
+  $handler->display->display_options['filters']['type_2']['table'] = 'vaxia_xp_type_totals';
+  $handler->display->display_options['filters']['type_2']['field'] = 'type';
+  $handler->display->display_options['filters']['type_2']['operator'] = '!=';
+  $handler->display->display_options['filters']['type_2']['value'] = 'site-award';
+  $handler->display->display_options['filters']['type_2']['group'] = 1;
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
@@ -287,12 +254,6 @@ function top_tens_views_default_views() {
   $handler->display->display_options['filters']['php']['group'] = 1;
   $handler->display->display_options['filters']['php']['use_php_setup'] = 0;
   $handler->display->display_options['filters']['php']['php_filter'] = 'return _top_tens_filter_type_already_displayed($row->type, $static);';
-  /* Filter criterion: Vaxia type xp: Vaxia sheet xp type */
-  $handler->display->display_options['filters']['type_2']['id'] = 'type_2';
-  $handler->display->display_options['filters']['type_2']['table'] = 'vaxia_xp_type_totals';
-  $handler->display->display_options['filters']['type_2']['field'] = 'type';
-  $handler->display->display_options['filters']['type_2']['operator'] = '!=';
-  $handler->display->display_options['filters']['type_2']['value'] = 'site-award';
 
   /* Display: Top Tens */
   $handler = $view->new_display('page', 'Top Tens', 'top_ten_page');
@@ -473,7 +434,7 @@ function top_tens_views_default_views() {
   $handler->display->display_options['filters']['type']['table'] = 'character_sheet_xp';
   $handler->display->display_options['filters']['type']['field'] = 'type';
   $handler->display->display_options['filters']['type']['operator'] = 'word';
-  $handler->display->display_options['filters']['type']['value'] = 'bxp rxp spent_xp';
+  $handler->display->display_options['filters']['type']['value'] = 'spent_xp';
   $handler->display->display_options['filters']['type']['group'] = 1;
   /* Filter criterion: Content: Type */
   $handler->display->display_options['filters']['type_1']['id'] = 'type_1';

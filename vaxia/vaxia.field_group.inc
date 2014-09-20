@@ -47,7 +47,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Art',
-    'weight' => '7',
+    'weight' => '8',
     'children' => array(
       0 => 'field_artwork_image',
     ),
@@ -62,57 +62,6 @@ function vaxia_field_group_info() {
     ),
   );
   $export['group_artwork|node|character_sheet|form'] = $field_group;
-
-  $field_group = new stdClass();
-  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
-  $field_group->api_version = 1;
-  $field_group->identifier = 'group_associates|node|character_sheet|default';
-  $field_group->group_name = 'group_associates';
-  $field_group->entity_type = 'node';
-  $field_group->bundle = 'character_sheet';
-  $field_group->mode = 'default';
-  $field_group->parent_name = '';
-  $field_group->data = array(
-    'label' => 'Associates',
-    'weight' => '6',
-    'children' => array(),
-    'format_type' => 'fieldset',
-    'format_settings' => array(
-      'formatter' => 'collapsible',
-      'instance_settings' => array(
-        'description' => '',
-        'classes' => ' group-associates field-group-fieldset',
-      ),
-    ),
-  );
-  $export['group_associates|node|character_sheet|default'] = $field_group;
-
-  $field_group = new stdClass();
-  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
-  $field_group->api_version = 1;
-  $field_group->identifier = 'group_associates|node|character_sheet|form';
-  $field_group->group_name = 'group_associates';
-  $field_group->entity_type = 'node';
-  $field_group->bundle = 'character_sheet';
-  $field_group->mode = 'form';
-  $field_group->parent_name = '';
-  $field_group->data = array(
-    'label' => 'Associates',
-    'weight' => '10',
-    'children' => array(
-      0 => 'field_npcs',
-    ),
-    'format_type' => 'fieldset',
-    'format_settings' => array(
-      'formatter' => 'collapsible',
-      'instance_settings' => array(
-        'description' => '',
-        'classes' => ' group-associates field-group-fieldset',
-        'required_fields' => 1,
-      ),
-    ),
-  );
-  $export['group_associates|node|character_sheet|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -159,7 +108,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Details',
-    'weight' => '6',
+    'weight' => '7',
     'children' => array(
       0 => 'field_age_app',
       1 => 'field_age_real',
@@ -219,7 +168,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Items',
-    'weight' => '10',
+    'weight' => '11',
     'children' => array(
       0 => 'field_economy',
       1 => 'field_items',
@@ -277,12 +226,13 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Notes',
-    'weight' => '11',
+    'weight' => '12',
     'children' => array(
       0 => 'field_player_notes',
       1 => 'field_sh_notes',
       2 => 'field_sh_private_notes',
       3 => 'field_character_goals',
+      4 => 'field_skill_review',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -338,7 +288,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Personal',
-    'weight' => '5',
+    'weight' => '6',
     'children' => array(
       0 => 'field_background',
       1 => 'field_description',
@@ -397,7 +347,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Skills',
-    'weight' => '9',
+    'weight' => '10',
     'children' => array(
       0 => 'field_skill',
       1 => 'field_languages',
@@ -464,7 +414,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Stats',
-    'weight' => '8',
+    'weight' => '9',
     'children' => array(
       0 => 'field_agility',
       1 => 'field_appearance',

@@ -26,12 +26,20 @@ function strikes_views_api() {
  */
 function strikes_node_info() {
   $items = array(
+    'notation' => array(
+      'name' => t('Notation'),
+      'base' => 'node_content',
+      'description' => t('A record of interaction is used by social to keep track of interactions with the social team. These are instanced in which Social talked to a player about a behavior, improvement needed, or noted an improvement was detected. They\'re meant to serve as a way to track patterns and behaviors on the site.'),
+      'has_title' => '1',
+      'title_label' => t('(Date) - Short summary'),
+      'help' => '',
+    ),
     'strike' => array(
       'name' => t('Strike'),
       'base' => 'node_content',
       'description' => t('A strike is a disciplinary action taken against a player for a documented on-site offense.'),
       'has_title' => '1',
-      'title_label' => t('Offense'),
+      'title_label' => t('(Date) - Short summary'),
       'help' => t('STOP. If you are building a strike against a player on this site, make very very sure what you are doing qualifies under a strike condition. Abuse of strikes is a strike itself.'),
     ),
   );

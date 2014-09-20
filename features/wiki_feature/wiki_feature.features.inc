@@ -210,12 +210,12 @@ function wiki_feature_workflow_default_workflows() {
         'target_state' => 'locked',
       ),
       2 => array(
-        'roles' => 'evaluator,administrator',
+        'roles' => 'administrator,evaluator',
         'state' => 'open',
         'target_state' => 'locked',
       ),
       3 => array(
-        'roles' => 'evaluator,administrator',
+        'roles' => 'administrator,evaluator',
         'state' => 'locked',
         'target_state' => 'open',
       ),

@@ -39,6 +39,115 @@ function storyhosts_default_rules_configuration() {
       ]
     }
   }');
+  $items['rules_remove_ash_title_on_lose_ash'] = entity_import('rules_config', '{ "rules_remove_ash_title_on_lose_ash" : {
+      "LABEL" : "Remove ASH title on Lose ASH",
+      "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
+      "TAGS" : [ "SH Titles" ],
+      "REQUIRES" : [ "rules", "user_badges" ],
+      "ON" : { "user_badges_badge_removed" : [] },
+      "IF" : [
+        { "NOT user_has_role" : {
+            "account" : [ "user" ],
+            "roles" : { "value" : { "15" : "15" } },
+            "operation" : "OR"
+          }
+        },
+        { "NOT data_is_empty" : { "data" : [ "user:field-storyhost-character" ] } },
+        { "node_is_of_type" : {
+            "node" : [ "user:field-storyhost-character" ],
+            "type" : { "value" : { "character_sheet" : "character_sheet" } }
+          }
+        }
+      ],
+      "DO" : [
+        { "data_set" : {
+            "data" : [ "user:field-storyhost-character:field-titles" ],
+            "value" : "ASH (retired)"
+          }
+        }
+      ]
+    }
+  }');
+  $items['rules_remove_sh_title_on_lose_sh'] = entity_import('rules_config', '{ "rules_remove_sh_title_on_lose_sh" : {
+      "LABEL" : "Remove SH title on Lose SH",
+      "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
+      "TAGS" : [ "SH Titles" ],
+      "REQUIRES" : [ "rules", "user_badges" ],
+      "ON" : { "user_badges_badge_removed" : [] },
+      "IF" : [
+        { "NOT user_has_role" : {
+            "account" : [ "user" ],
+            "roles" : { "value" : { "9" : "9", "13" : "13", "10" : "10", "17" : "17", "15" : "15" } },
+            "operation" : "OR"
+          }
+        },
+        { "NOT data_is_empty" : { "data" : [ "user:field-storyhost-character" ] } },
+        { "node_is_of_type" : {
+            "node" : [ "user:field-storyhost-character" ],
+            "type" : { "value" : { "character_sheet" : "character_sheet" } }
+          }
+        }
+      ],
+      "DO" : [
+        { "data_set" : {
+            "data" : [ "user:field-storyhost-character:field-titles" ],
+            "value" : "SH (retired)"
+          }
+        }
+      ]
+    }
+  }');
+  $items['rules_remove_starvation_role_from_sh'] = entity_import('rules_config', '{ "rules_remove_starvation_role_from_sh" : {
+      "LABEL" : "Remove starvation role from SH",
+      "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
+      "TAGS" : [ "Starvation mode" ],
+      "REQUIRES" : [ "rules", "user_stats" ],
+      "ON" : { "user_stats_day_older" : [] },
+      "IF" : [
+        { "user_has_role" : {
+            "account" : [ "user" ],
+            "roles" : { "value" : { "25" : "25", "9" : "9" } }
+          }
+        }
+      ],
+      "DO" : [
+        { "user_remove_role" : { "account" : [ "user" ], "roles" : { "value" : { "25" : "25" } } } }
+      ]
+    }
+  }');
+  $items['rules_set_ash_title_on_gain_ash'] = entity_import('rules_config', '{ "rules_set_ash_title_on_gain_ash" : {
+      "LABEL" : "Set ASH title on Gain ASH",
+      "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
+      "TAGS" : [ "SH Titles" ],
+      "REQUIRES" : [ "rules", "user_badges" ],
+      "ON" : { "user_badges_badge_given" : [] },
+      "IF" : [
+        { "NOT data_is_empty" : { "data" : [ "user:field-storyhost-character" ] } },
+        { "node_is_of_type" : {
+            "node" : [ "user:field-storyhost-character" ],
+            "type" : { "value" : { "character_sheet" : "character_sheet" } }
+          }
+        },
+        { "OR" : [
+            { "user_badges_has_badge" : { "badge_id" : "1", "user" : [ "user" ] } },
+            { "user_badges_has_badge" : { "badge_id" : "2", "user" : [ "user" ] } },
+            { "user_badges_has_badge" : { "badge_id" : "6", "user" : [ "user" ] } }
+          ]
+        }
+      ],
+      "DO" : [
+        { "data_set" : {
+            "data" : [ "user:field-storyhost-character:field-titles" ],
+            "value" : "ASH"
+          }
+        }
+      ]
+    }
+  }');
   $items['rules_set_sh_character_on_user'] = entity_import('rules_config', '{ "rules_set_sh_character_on_user" : {
       "LABEL" : "Set SH character on User",
       "PLUGIN" : "reaction rule",
@@ -57,13 +166,38 @@ function storyhosts_default_rules_configuration() {
         },
         { "entity_save" : { "data" : [ "node:author" ] } },
         { "data_set" : { "data" : [ "node:field-realm" ], "value" : "storyhost" } },
+        { "data_set" : { "data" : [ "node:field-titles" ], "value" : "ASH" } },
         { "workflow_rules_set_state" : {
             "node" : [ "node" ],
             "workflow_state" : { "value" : { "4" : "4" } },
             "workflow_comment" : "Storyhost characters are auto approved"
           }
+        }
+      ]
+    }
+  }');
+  $items['rules_set_sh_title_on_gain_sh'] = entity_import('rules_config', '{ "rules_set_sh_title_on_gain_sh" : {
+      "LABEL" : "Set SH title on Gain SH",
+      "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
+      "TAGS" : [ "SH Titles" ],
+      "REQUIRES" : [ "rules", "user_badges" ],
+      "ON" : { "user_badges_badge_given" : [] },
+      "IF" : [
+        { "NOT data_is_empty" : { "data" : [ "user:field-storyhost-character" ] } },
+        { "node_is_of_type" : {
+            "node" : [ "user:field-storyhost-character" ],
+            "type" : { "value" : { "character_sheet" : "character_sheet" } }
+          }
         },
-        { "data_set" : { "data" : [ "node:field-titles" ], "value" : "ASH" } }
+        { "user_badges_has_badge" : { "badge_id" : "3", "user" : [ "user" ] } }
+      ],
+      "DO" : [
+        { "data_set" : {
+            "data" : [ "user:field-storyhost-character:field-titles" ],
+            "value" : "SH"
+          }
+        }
       ]
     }
   }');

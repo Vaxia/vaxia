@@ -118,6 +118,25 @@ function vaxia_players_default_rules_configuration() {
       ]
     }
   }');
+  $items['rules_set_new_account_role_on_new_accounts'] = entity_import('rules_config', '{ "rules_set_new_account_role_on_new_accounts" : {
+      "LABEL" : "Set new account role on new accounts",
+      "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
+      "TAGS" : [ "Players" ],
+      "REQUIRES" : [ "rules" ],
+      "ON" : { "user_insert" : [] },
+      "IF" : [
+        { "NOT user_has_role" : {
+            "account" : [ "account" ],
+            "roles" : { "value" : { "30" : "30", "8" : "8" } }
+          }
+        }
+      ],
+      "DO" : [
+        { "user_add_role" : { "account" : [ "account" ], "roles" : { "value" : { "30" : "30" } } } }
+      ]
+    }
+  }');
   $items['rules_user_is_under_minimal_age'] = entity_import('rules_config', '{ "rules_user_is_under_minimal_age" : {
       "LABEL" : "User is under minimal age",
       "PLUGIN" : "reaction rule",
@@ -129,6 +148,7 @@ function vaxia_players_default_rules_configuration() {
         { "data_is" : { "data" : [ "account:field-age-requirement" ], "value" : 0 } }
       ],
       "DO" : [
+        { "user_remove_role" : { "account" : [ "account" ], "roles" : { "value" : { "30" : "30" } } } },
         { "user_block" : { "account" : [ "account" ] } },
         { "mail" : {
             "to" : "[account:mail]",

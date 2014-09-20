@@ -17,5 +17,13 @@ function sh_test_taxonomy_default_vocabularies() {
       'module' => 'taxonomy',
       'weight' => '0',
     ),
+    'sagas' => array(
+      'name' => 'Sagas',
+      'machine_name' => 'sagas',
+      'description' => 'Saga labels for session reports.',
+      'hierarchy' => '0',
+      'module' => 'taxonomy',
+      'weight' => '0',
+    ),
   );
 }

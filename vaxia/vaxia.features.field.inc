@@ -528,7 +528,7 @@ function vaxia_field_default_fields() {
       'required' => 0,
       'settings' => array(
         'alt_field' => 0,
-        'default_image' => 0,
+        'default_image' => '5240',
         'file_directory' => 'character_image',
         'file_extensions' => 'png gif jpg jpeg',
         'max_filesize' => '',
@@ -656,9 +656,14 @@ function vaxia_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'character_sheet',
-      'default_value' => NULL,
+      'default_value' => array(
+        0 => array(
+          'value' => '',
+          'format' => 'plain_text',
+        ),
+      ),
       'deleted' => '0',
-      'description' => '',
+      'description' => 'For character evaluation purposes - Sirian characters need to note their country or city of origin. We need to know political alliances (and what legal system your character may fall under) for Sirian plots.',
       'display' => array(
         'default' => array(
           'label' => 'above',
@@ -681,6 +686,7 @@ function vaxia_field_default_fields() {
       'settings' => array(
         'better_formats' => array(
           'allowed_formats' => array(
+            'filtered_html' => 0,
             'full_html' => 0,
             'php_code' => 0,
             'plain_text' => 'plain_text',
@@ -691,6 +697,9 @@ function vaxia_field_default_fields() {
           'default_order_toggle' => 0,
           'default_order_wrapper' => array(
             'formats' => array(
+              'filtered_html' => array(
+                'weight' => '0',
+              ),
               'full_html' => array(
                 'weight' => '1',
               ),
@@ -724,6 +733,70 @@ function vaxia_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-character_sheet-field_background_color'.
+  $fields['node-character_sheet-field_background_color'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_background_color',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          555555 => 'grey',
+          222222 => 'dark',
+          888888 => 'light',
+        ),
+        'allowed_values_function' => '',
+        'allowed_values_php' => '',
+      ),
+      'translatable' => '0',
+      'type' => 'list_text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'character_sheet',
+      'default_value' => array(
+        0 => array(
+          'value' => '555555',
+        ),
+      ),
+      'default_value_function' => '',
+      'default_value_php' => '',
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '12',
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_background_color',
+      'label' => 'Background #',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '2',
+      ),
+    ),
+  );
+
   // Exported field: 'node-character_sheet-field_character_goals'.
   $fields['node-character_sheet-field_character_goals'] = array(
     'field_config' => array(
@@ -753,7 +826,11 @@ function vaxia_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'character_sheet',
-      'default_value' => NULL,
+      'default_value' => array(
+        0 => array(
+          'value' => '',
+        ),
+      ),
       'deleted' => '0',
       'description' => 'If your character has any over-arching life goals. Things they want to do or see done that may require an A/SH to help achieve - make note of them here.',
       'display' => array(
@@ -772,14 +849,14 @@ function vaxia_field_default_fields() {
       'settings' => array(
         'better_formats' => array(
           'allowed_formats' => array(
-            'filtered_html' => 'filtered_html',
-            'full_html' => 'full_html',
-            'php_code' => 'php_code',
+            'filtered_html' => 0,
+            'full_html' => 0,
+            'php_code' => 0,
             'plain_text' => 'plain_text',
-            'whiteboard' => 'whiteboard',
-            'wiki' => 'wiki',
+            'whiteboard' => 0,
+            'wiki' => 0,
           ),
-          'allowed_formats_toggle' => 0,
+          'allowed_formats_toggle' => 1,
           'default_order_toggle' => 0,
           'default_order_wrapper' => array(
             'formats' => array(
@@ -804,7 +881,7 @@ function vaxia_field_default_fields() {
             ),
           ),
         ),
-        'text_processing' => '0',
+        'text_processing' => '1',
         'user_register_form' => FALSE,
       ),
       'widget' => array(
@@ -814,7 +891,7 @@ function vaxia_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '13',
+        'weight' => '14',
       ),
     ),
   );
@@ -913,6 +990,7 @@ function vaxia_field_default_fields() {
           'other' => 'Other',
         ),
         'allowed_values_function' => '',
+        'allowed_values_php' => '',
       ),
       'translatable' => '0',
       'type' => 'list_text',
@@ -920,8 +998,10 @@ function vaxia_field_default_fields() {
     'field_instance' => array(
       'bundle' => 'character_sheet',
       'default_value' => NULL,
+      'default_value_function' => '',
+      'default_value_php' => '',
       'deleted' => '0',
-      'description' => 'Most characters should start play with no conditions. Starting play with a condition requires oversight and approval from the World department. It is strongly recommended that new players start play as one of the pre-approved races instead to get familiar with the setting and community first.',
+      'description' => 'Most characters should start play with no conditions. Starting play with a condition requires oversight and approval from the World department. New players to our site are required to play for a bit as one of the pre-approved species to get familiar with the setting and community before taking on the more complicated Condition concepts.',
       'display' => array(
         'default' => array(
           'label' => 'inline',
@@ -1539,7 +1619,7 @@ function vaxia_field_default_fields() {
           'display_label' => 1,
         ),
         'type' => 'options_onoff',
-        'weight' => '3',
+        'weight' => '4',
       ),
     ),
   );
@@ -1611,7 +1691,7 @@ function vaxia_field_default_fields() {
           'display_label' => 1,
         ),
         'type' => 'options_onoff',
-        'weight' => '4',
+        'weight' => '5',
       ),
     ),
   );
@@ -1674,7 +1754,7 @@ function vaxia_field_default_fields() {
           'display_label' => 1,
         ),
         'type' => 'options_onoff',
-        'weight' => '2',
+        'weight' => '3',
       ),
     ),
   );
@@ -1807,7 +1887,7 @@ function vaxia_field_default_fields() {
       'locked' => '0',
       'module' => 'text',
       'settings' => array(
-        'max_length' => 255,
+        'max_length' => '255',
       ),
       'translatable' => '0',
       'type' => 'text',
@@ -1882,8 +1962,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
         'active' => 1,
         'module' => 'text',
         'settings' => array(
-          'rows' => '1',
-          'size' => 60,
+          'size' => '60',
         ),
         'type' => 'text_textfield',
         'weight' => '16',
@@ -2327,7 +2406,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '12',
+        'weight' => '13',
       ),
     ),
   );
@@ -2375,12 +2454,12 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'label' => 'hidden',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '38',
+          'weight' => '11',
         ),
       ),
       'entity_type' => 'node',
       'field_name' => 'field_post_color',
-      'label' => 'Post color',
+      'label' => 'Default Color #',
       'required' => 0,
       'settings' => array(
         'better_formats' => array(
@@ -2640,15 +2719,10 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'centaur' => 'Centaur',
           'merfolk' => 'Merfolk',
           'yeek' => 'Yeek',
-          'human_clanspeople' => 'human - Clanspeople',
-          'human_dalhan' => 'human - Dalhan',
-          'human_mountainese' => 'human - Mountainese',
-          'human_rohearn' => 'human - Rohearn',
-          'human_gargorian' => 'human - Gargorian',
-          'human_demi' => 'human - Demi-Human',
           'other' => 'Other',
         ),
         'allowed_values_function' => '',
+        'allowed_values_php' => '',
       ),
       'translatable' => '0',
       'type' => 'list_text',
@@ -2660,12 +2734,10 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'value' => 'human',
         ),
       ),
+      'default_value_function' => '',
+      'default_value_php' => '',
       'deleted' => '0',
-      'description' => 'If the species you want to play is not listed here, select \'Other\'. Other races *do* require oversight and approval from the Setting department. It is strongly recommended that new players start play as one of the pre-approved species instead to get familiar with the setting and community first.
-<ul>
-<li><a href="http://vaxia.org/wiki/vaxia/races">Species of Vaxia</a></li>
-<li><a href="http://vaxia.org/wiki/sirian/races">Species of Sirian</a></li>
-</ul>',
+      'description' => 'If the species you want to play is not listed here, select \'Other\'. Other races *do* require oversight and approval from the Setting department. New players to our site are required to start play as one of the pre-approved species to get familiar with the setting and community before taking on the more complicated Other concepts.',
       'display' => array(
         'default' => array(
           'label' => 'inline',
@@ -3139,7 +3211,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '11',
+        'weight' => '12',
       ),
     ),
   );
@@ -3206,6 +3278,70 @@ Posting does not have to occur all at once, so feel free to spread it out across
         'settings' => array(),
         'type' => 'field_collection_embed',
         'weight' => '15',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-character_sheet-field_skill_review'.
+  $fields['node-character_sheet-field_skill_review'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_skill_review',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          'NR' => 'Needs review',
+          'IR' => 'In review',
+          'CR' => 'Completed review',
+        ),
+        'allowed_values_function' => '',
+        'allowed_values_php' => '',
+      ),
+      'translatable' => '0',
+      'type' => 'list_text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'character_sheet',
+      'default_value' => array(
+        0 => array(
+          'value' => 'NR',
+        ),
+      ),
+      'default_value_function' => '',
+      'default_value_php' => '',
+      'deleted' => '0',
+      'description' => 'This field is a *temporary* field to allow us to quickly identify character sheets that have not been reviewed as part of a site-wide effort to bring all characters up to spec for skills.',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '9',
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_skill_review',
+      'label' => 'Skill Review',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '11',
       ),
     ),
   );
@@ -3440,6 +3576,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
   t('Appearance');
   t('Awareness');
   t('Background');
+  t('Background #');
   t('Character Goals');
   t('Charisma');
   t('Check this box if the character is intended to be an NPC.');
@@ -3453,18 +3590,16 @@ Posting does not have to occur all at once, so feel free to spread it out across
   t('Contributes to Finesse and Awareness.');
   t('Contributes to Health and Constitution.');
   t('Contributes to Presence and Appearance.');
+  t('Default Color #');
   t('Description');
   t('Dexterity');
   t('Economy');
   t('Endurance');
   t('Enter as a hex value such as "001100" or text such as "red".');
   t('Finesse');
+  t('For character evaluation purposes - Sirian characters need to note their country or city of origin. We need to know political alliances (and what legal system your character may fall under) for Sirian plots.');
   t('Health');
-  t('If the species you want to play is not listed here, select \'Other\'. Other races *do* require oversight and approval from the Setting department. It is strongly recommended that new players start play as one of the pre-approved species instead to get familiar with the setting and community first.
-<ul>
-<li><a href="http://vaxia.org/wiki/vaxia/races">Species of Vaxia</a></li>
-<li><a href="http://vaxia.org/wiki/sirian/races">Species of Sirian</a></li>
-</ul>');
+  t('If the species you want to play is not listed here, select \'Other\'. Other races *do* require oversight and approval from the Setting department. New players to our site are required to start play as one of the pre-approved species to get familiar with the setting and community before taking on the more complicated Other concepts.');
   t('If your character has any over-arching life goals. Things they want to do or see done that may require an A/SH to help achieve - make note of them here.');
   t('Image');
   t('Intelligence');
@@ -3474,24 +3609,25 @@ Posting does not have to occur all at once, so feel free to spread it out across
   t('Last Name');
   t('Life');
   t('Mark this sheet as a storyteller sheet.');
-  t('Most characters should start play with no conditions. Starting play with a condition requires oversight and approval from the World department. It is strongly recommended that new players start play as one of the pre-approved races instead to get familiar with the setting and community first.');
+  t('Most characters should start play with no conditions. Starting play with a condition requires oversight and approval from the World department. New players to our site are required to play for a bit as one of the pre-approved species to get familiar with the setting and community before taking on the more complicated Condition concepts.');
   t('NPC');
   t('Name');
   t('Occupation');
   t('Open NPC');
   t('Personality');
   t('Player Notes');
-  t('Post color');
   t('Presence');
   t('Private SH Notes');
   t('Real Age');
   t('Realm');
   t('SH Notes');
   t('Skill');
+  t('Skill Review');
   t('Species');
   t('Spirituality');
   t('Storyhost');
   t('Strength');
+  t('This field is a *temporary* field to allow us to quickly identify character sheets that have not been reviewed as part of a site-wide effort to bring all characters up to spec for skills.');
   t('Titles');
   t('Value');
   t('You can invest silver instead on the Sheet tab.');

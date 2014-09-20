@@ -56,7 +56,30 @@ function cold_storage_default_rules_configuration() {
       ],
       "DO" : [
         { "user_add_role" : { "account" : [ "account" ], "roles" : { "value" : { "22" : "22" } } } },
-        { "user_remove_role" : { "account" : [ "account" ], "roles" : { "value" : { "8" : "8" } } } },
+        { "user_remove_role" : {
+            "account" : [ "account" ],
+            "roles" : { "value" : {
+                "8" : "8",
+                "24" : "24",
+                "26" : "26",
+                "27" : "27",
+                "19" : "19",
+                "28" : "28",
+                "29" : "29",
+                "12" : "12",
+                "25" : "25",
+                "13" : "13",
+                "10" : "10",
+                "17" : "17",
+                "15" : "15",
+                "9" : "9",
+                "20" : "20",
+                "14" : "14",
+                "21" : "21"
+              }
+            }
+          }
+        },
         { "entity_save" : { "data" : [ "account" ], "immediate" : 1 } },
         { "VIEW LOOP" : {
             "VIEW" : "vaxia_character_sheets",

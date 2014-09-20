@@ -86,66 +86,6 @@ function proposal_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-proposal-field_associated_department'.
-  $fields['node-proposal-field_associated_department'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '-1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_associated_department',
-      'foreign keys' => array(),
-      'indexes' => array(
-        'value' => array(
-          0 => 'value',
-        ),
-      ),
-      'locked' => '0',
-      'module' => 'list',
-      'settings' => array(
-        'allowed_values' => array(
-          0 => 'General proposal (all voting site members)',
-        ),
-        'allowed_values_function' => '',
-      ),
-      'translatable' => '0',
-      'type' => 'list_integer',
-    ),
-    'field_instance' => array(
-      'bundle' => 'proposal',
-      'default_value' => array(
-        0 => array(
-          'value' => '0',
-        ),
-      ),
-      'deleted' => '0',
-      'description' => 'Some proposals are only for specific departments, to suggest new policy or other changes. Please select the departments relevant for this proposal - or select "General" to make this a site wide vote.',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'module' => 'list',
-          'settings' => array(),
-          'type' => 'list_default',
-          'weight' => 4,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_associated_department',
-      'label' => 'Associated department',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'options',
-        'settings' => array(),
-        'type' => 'options_buttons',
-        'weight' => '7',
-      ),
-    ),
-  );
-
   // Exported field: 'node-proposal-field_associated_files'.
   $fields['node-proposal-field_associated_files'] = array(
     'field_config' => array(
@@ -187,7 +127,7 @@ function proposal_field_default_fields() {
           'module' => 'file',
           'settings' => array(),
           'type' => 'file_default',
-          'weight' => '3',
+          'weight' => '4',
         ),
       ),
       'entity_type' => 'node',
@@ -238,27 +178,24 @@ function proposal_field_default_fields() {
       'module' => 'node_reference',
       'settings' => array(
         'referenceable_types' => array(
-          'article' => 0,
           'artwork' => 0,
           'character_sheet' => 0,
           'event' => 0,
-          'feature_request' => 0,
+          'filedepot_folder' => 0,
           'forum' => 'forum',
           'items' => 0,
           'long_answer' => 0,
-          'matching' => 0,
+          'mass_contact' => 0,
           'multichoice' => 0,
+          'notation' => 0,
           'page' => 0,
           'proposal' => 0,
           'quiz' => 0,
-          'quiz_directions' => 0,
-          'quiz_evaluation' => 0,
           'rpg_chatroom' => 0,
+          'scene' => 0,
           'session_report' => 0,
-          'short_answer' => 0,
           'storyhost_application' => 0,
           'strike' => 0,
-          'truefalse' => 0,
           'webform' => 0,
           'wiki_page' => 0,
         ),
@@ -282,13 +219,13 @@ function proposal_field_default_fields() {
           'module' => 'node_reference',
           'settings' => array(),
           'type' => 'node_reference_default',
-          'weight' => '2',
+          'weight' => '3',
         ),
       ),
       'entity_type' => 'node',
       'field_name' => 'field_associated_forum_threads',
       'label' => 'Associated Forum Threads',
-      'required' => 0,
+      'required' => 1,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
@@ -302,6 +239,72 @@ function proposal_field_default_fields() {
         ),
         'type' => 'node_reference_autocomplete',
         'weight' => '8',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-proposal-field_proposal_type'.
+  $fields['node-proposal-field_proposal_type'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_proposal_type',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          'proposal' => 'Standard proposal',
+          'amendment' => 'Amendment to site governance',
+          'grievance' => 'Grievance resolution',
+          'election' => 'Election',
+        ),
+        'allowed_values_function' => '',
+        'allowed_values_php' => '',
+      ),
+      'translatable' => '0',
+      'type' => 'list_text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'proposal',
+      'default_value' => array(
+        0 => array(
+          'value' => 'proposal',
+        ),
+      ),
+      'default_value_function' => '',
+      'default_value_php' => '',
+      'deleted' => '0',
+      'description' => 'Select the type of proposal this is. Most proposals are going to be standard proposals.',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => '2',
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_proposal_type',
+      'label' => 'Type',
+      'required' => 1,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '1',
       ),
     ),
   );
@@ -373,7 +376,7 @@ function proposal_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '1',
+        'weight' => '2',
       ),
     ),
   );
@@ -383,10 +386,10 @@ function proposal_field_default_fields() {
   t('Add any related forum threads that will provide useful context to this proposal.');
   t('Associated Files');
   t('Associated Forum Threads');
-  t('Associated department');
   t('Body');
   t('Forums');
-  t('Some proposals are only for specific departments, to suggest new policy or other changes. Please select the departments relevant for this proposal - or select "General" to make this a site wide vote.');
+  t('Select the type of proposal this is. Most proposals are going to be standard proposals.');
+  t('Type');
   t('Upload any files, spreadsheets or images detailing system numbers, or other useful information to give context to this proposal.');
 
   return $fields;

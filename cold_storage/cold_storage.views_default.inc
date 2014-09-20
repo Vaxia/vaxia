@@ -12,8 +12,8 @@ function cold_storage_views_default_views() {
 
   $view = new view();
   $view->name = 'cold_storage';
-  $view->description = 'View a list of all players';
-  $view->tag = 'Vaxia';
+  $view->description = 'View a list of players in storage';
+  $view->tag = 'Cold Storage';
   $view->base_table = 'users';
   $view->human_name = 'Cold Storage';
   $view->core = 7;

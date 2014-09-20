@@ -60,7 +60,7 @@ function wiki_feature_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '0',
+          'weight' => '2',
         ),
         'teaser' => array(
           'label' => 'hidden',
@@ -115,7 +115,7 @@ function wiki_feature_field_default_fields() {
           'summary_rows' => 5,
         ),
         'type' => 'text_textarea_with_summary',
-        'weight' => '2',
+        'weight' => '3',
       ),
     ),
   );
@@ -149,7 +149,7 @@ function wiki_feature_field_default_fields() {
       'settings' => array(
         'allowed_values' => array(
           0 => array(
-            'vocabulary' => 'tags',
+            'vocabulary' => 'wiki_tags',
             'parent' => '0',
           ),
         ),
@@ -161,7 +161,7 @@ function wiki_feature_field_default_fields() {
       'bundle' => 'wiki_page',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => '',
+      'description' => 'Add categories to the wiki page to help us locate information about it. Example tags include: Vaxia, Sirian, Setting, Social, and System...',
       'display' => array(
         'artwork' => array(
           'label' => 'inline',
@@ -174,7 +174,7 @@ function wiki_feature_field_default_fields() {
           'module' => 'taxonomy',
           'settings' => array(),
           'type' => 'taxonomy_term_reference_link',
-          'weight' => '4',
+          'weight' => '6',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -185,7 +185,7 @@ function wiki_feature_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_additional_tagging',
-      'label' => 'Tags',
+      'label' => 'Categories',
       'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
@@ -198,7 +198,7 @@ function wiki_feature_field_default_fields() {
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => '6',
+        'weight' => '1',
       ),
     ),
   );
@@ -275,7 +275,7 @@ function wiki_feature_field_default_fields() {
           'module' => 'node_reference',
           'settings' => array(),
           'type' => 'node_reference_default',
-          'weight' => 6,
+          'weight' => '0',
         ),
       ),
       'entity_type' => 'node',
@@ -294,7 +294,7 @@ function wiki_feature_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'node_reference_autocomplete',
-        'weight' => '31',
+        'weight' => '2',
       ),
     ),
   );
@@ -374,7 +374,7 @@ function wiki_feature_field_default_fields() {
           'module' => 'nodereferrer',
           'settings' => array(),
           'type' => 'nodereferrer_default',
-          'weight' => '5',
+          'weight' => '1',
         ),
       ),
       'entity_type' => 'node',
@@ -391,87 +391,7 @@ function wiki_feature_field_default_fields() {
         'module' => 'nodereferrer',
         'settings' => array(),
         'type' => 'nodereferrer_list',
-        'weight' => '9',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-wiki_page-field_wiki_categories'.
-  $fields['node-wiki_page-field_wiki_categories'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '-1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_wiki_categories',
-      'field_permissions' => array(
-        'type' => '0',
-      ),
-      'foreign keys' => array(
-        'tid' => array(
-          'columns' => array(
-            'tid' => 'tid',
-          ),
-          'table' => 'taxonomy_term_data',
-        ),
-      ),
-      'indexes' => array(
-        'tid' => array(
-          0 => 'tid',
-        ),
-      ),
-      'locked' => '0',
-      'module' => 'taxonomy',
-      'settings' => array(
-        'allowed_values' => array(
-          0 => array(
-            'vocabulary' => 'wiki_categories',
-            'parent' => '0',
-          ),
-        ),
-      ),
-      'translatable' => '0',
-      'type' => 'taxonomy_term_reference',
-    ),
-    'field_instance' => array(
-      'bundle' => 'wiki_page',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => 'Check the relevant category for this article, this will help us sort out areas of the wiki by over-arching segment of the site.',
-      'display' => array(
-        'artwork' => array(
-          'label' => 'inline',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '3',
-        ),
-        'default' => array(
-          'label' => 'inline',
-          'module' => 'taxonomy',
-          'settings' => array(),
-          'type' => 'taxonomy_term_reference_link',
-          'weight' => '3',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_wiki_categories',
-      'label' => 'Categories',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'options',
-        'settings' => array(),
-        'type' => 'options_buttons',
-        'weight' => '5',
+        'weight' => '8',
       ),
     ),
   );
@@ -526,7 +446,7 @@ function wiki_feature_field_default_fields() {
           'module' => 'file',
           'settings' => array(),
           'type' => 'file_table',
-          'weight' => '2',
+          'weight' => '4',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -553,7 +473,7 @@ function wiki_feature_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '4',
+        'weight' => '5',
       ),
     ),
   );
@@ -614,7 +534,7 @@ function wiki_feature_field_default_fields() {
             'image_style' => 'medium',
           ),
           'type' => 'image',
-          'weight' => '1',
+          'weight' => '3',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -646,21 +566,20 @@ function wiki_feature_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'image_image',
-        'weight' => '3',
+        'weight' => '4',
       ),
     ),
   );
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('Add categories to the wiki page to help us locate information about it. Example tags include: Vaxia, Sirian, Setting, Social, and System...');
   t('Body');
   t('Categories');
-  t('Check the relevant category for this article, this will help us sort out areas of the wiki by over-arching segment of the site.');
   t('Files');
   t('Images');
   t('Parent Wiki Page');
   t('Referencing Chat Rooms');
-  t('Tags');
   t('Upload any files to go with this article.');
   t('Upload any images to go with this article.');
 

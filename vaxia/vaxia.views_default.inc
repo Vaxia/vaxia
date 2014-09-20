@@ -11,364 +11,9 @@ function vaxia_views_default_views() {
   $export = array();
 
   $view = new view();
-  $view->name = 'character_xp_flavors';
-  $view->description = 'Character XP Flavors';
-  $view->tag = 'default';
-  $view->base_table = 'vaxia_xp_type_totals';
-  $view->human_name = 'Character XP Flavors';
-  $view->core = 7;
-  $view->api_version = '3.0';
-  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
-
-  /* Display: Master */
-  $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Character XP Flavors';
-  $handler->display->display_options['use_more_always'] = FALSE;
-  $handler->display->display_options['access']['type'] = 'perm';
-  $handler->display->display_options['cache']['type'] = 'none';
-  $handler->display->display_options['query']['type'] = 'views_query';
-  $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['pager']['type'] = 'some';
-  $handler->display->display_options['pager']['options']['items_per_page'] = '9';
-  $handler->display->display_options['style_plugin'] = 'table';
-  $handler->display->display_options['style_options']['columns'] = array(
-    'nid' => 'nid',
-    'php_1' => 'php_1',
-    'php_2' => 'php_2',
-    'php' => 'php',
-    'expression_1' => 'expression_1',
-    'xp' => 'xp',
-  );
-  $handler->display->display_options['style_options']['default'] = '-1';
-  $handler->display->display_options['style_options']['info'] = array(
-    'nid' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'php_1' => array(
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'php_2' => array(
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'php' => array(
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'expression_1' => array(
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'xp' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-  );
-  /* Relationship: Vaxia type xp: Vaxia sheet xp node */
-  $handler->display->display_options['relationships']['nid']['id'] = 'nid';
-  $handler->display->display_options['relationships']['nid']['table'] = 'vaxia_xp_type_totals';
-  $handler->display->display_options['relationships']['nid']['field'] = 'nid';
-  $handler->display->display_options['relationships']['nid']['required'] = TRUE;
-  /* Field: Content: Nid */
-  $handler->display->display_options['fields']['nid']['id'] = 'nid';
-  $handler->display->display_options['fields']['nid']['table'] = 'node';
-  $handler->display->display_options['fields']['nid']['field'] = 'nid';
-  $handler->display->display_options['fields']['nid']['relationship'] = 'nid';
-  $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
-  /* Field: Global: PHP */
-  $handler->display->display_options['fields']['php_1']['id'] = 'php_1';
-  $handler->display->display_options['fields']['php_1']['table'] = 'views';
-  $handler->display->display_options['fields']['php_1']['field'] = 'php';
-  $handler->display->display_options['fields']['php_1']['label'] = 'Total XP';
-  $handler->display->display_options['fields']['php_1']['use_php_setup'] = 0;
-  $handler->display->display_options['fields']['php_1']['php_value'] = 'static $nid_hxp = -1;
-if ($nid_hxp == -1) {
-$nid_hxp = 0;
-$hxp = db_query(\'SELECT SUM(xp) AS hxp FROM {character_sheet_xp} WHERE type=\\\'spent_xp\\\' AND nid = :nid\', array(\':nid\' => $row->nid));
-foreach($hxp as $this_xp) {
-  $nid_hxp = floor($this_xp->hxp);
-} // End foreach.
-} // End if.
-return $nid_hxp;';
-  $handler->display->display_options['fields']['php_1']['use_php_click_sortable'] = '0';
-  $handler->display->display_options['fields']['php_1']['php_click_sortable'] = '';
-  /* Field: Global: PHP */
-  $handler->display->display_options['fields']['php_2']['id'] = 'php_2';
-  $handler->display->display_options['fields']['php_2']['table'] = 'views';
-  $handler->display->display_options['fields']['php_2']['field'] = 'php';
-  $handler->display->display_options['fields']['php_2']['label'] = 'Transfer XP';
-  $handler->display->display_options['fields']['php_2']['use_php_setup'] = 0;
-  $handler->display->display_options['fields']['php_2']['php_value'] = 'static $nid_txp = -1;
-if ($nid_txp == -1) {
-$nid_txp = 0;
-$txp = db_query(\'SELECT SUM(xp) AS txp FROM {vaxia_xp_type_totals} WHERE type IN(\\\'transfer\\\', \\\'site-award\\\') AND nid = :nid\', array(\':nid\' => $row->nid));
-foreach($txp as $this_xp) {
-  $nid_txp = floor($this_xp->txp);
-} // End foreach.
-} // End if.
-return $nid_txp;';
-  $handler->display->display_options['fields']['php_2']['use_php_click_sortable'] = '0';
-  $handler->display->display_options['fields']['php_2']['php_click_sortable'] = '';
-  /* Field: Global: PHP */
-  $handler->display->display_options['fields']['php']['id'] = 'php';
-  $handler->display->display_options['fields']['php']['table'] = 'views';
-  $handler->display->display_options['fields']['php']['field'] = 'php';
-  $handler->display->display_options['fields']['php']['label'] = 'Flavor XP';
-  $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
-  $handler->display->display_options['fields']['php']['php_value'] = 'static $nid_fxp = -1;
-if ($nid_fxp == -1) {
-$nid_fxp = 0;
-$fxp = db_query(\'SELECT SUM(xp) AS fxp FROM {vaxia_xp_type_totals} WHERE type NOT IN(\\\'transfer\\\', \\\'site-award\\\') AND nid = :nid\', array(\':nid\' => $row->nid));
-foreach($fxp as $this_xp) {
-  $nid_fxp = floor($this_xp->fxp);
-} // End foreach.
-} // End if.
-return $nid_fxp;';
-  $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
-  $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
-  /* Field: Global: Math expression */
-  $handler->display->display_options['fields']['expression_1']['id'] = 'expression_1';
-  $handler->display->display_options['fields']['expression_1']['table'] = 'views';
-  $handler->display->display_options['fields']['expression_1']['field'] = 'expression';
-  $handler->display->display_options['fields']['expression_1']['label'] = 'Other XP';
-  $handler->display->display_options['fields']['expression_1']['precision'] = '0';
-  $handler->display->display_options['fields']['expression_1']['expression'] = '[php_1] - [php_2] - [php]';
-  /* Field: Vaxia type xp: Vaxia sheet xp node */
-  $handler->display->display_options['fields']['xp']['id'] = 'xp';
-  $handler->display->display_options['fields']['xp']['table'] = 'vaxia_xp_type_totals';
-  $handler->display->display_options['fields']['xp']['field'] = 'xp';
-  $handler->display->display_options['fields']['xp']['label'] = 'XP amount';
-  $handler->display->display_options['fields']['xp']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['xp']['separator'] = '';
-  /* Sort criterion: Vaxia type xp: Vaxia sheet xp type */
-  $handler->display->display_options['sorts']['type']['id'] = 'type';
-  $handler->display->display_options['sorts']['type']['table'] = 'vaxia_xp_type_totals';
-  $handler->display->display_options['sorts']['type']['field'] = 'type';
-  /* Contextual filter: Content: Nid */
-  $handler->display->display_options['arguments']['nid']['id'] = 'nid';
-  $handler->display->display_options['arguments']['nid']['table'] = 'node';
-  $handler->display->display_options['arguments']['nid']['field'] = 'nid';
-  $handler->display->display_options['arguments']['nid']['relationship'] = 'nid';
-  $handler->display->display_options['arguments']['nid']['default_action'] = 'default';
-  $handler->display->display_options['arguments']['nid']['default_argument_type'] = 'raw';
-  $handler->display->display_options['arguments']['nid']['default_argument_options']['index'] = '1';
-  $handler->display->display_options['arguments']['nid']['summary']['number_of_records'] = '0';
-  $handler->display->display_options['arguments']['nid']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['nid']['summary_options']['items_per_page'] = '25';
-  $handler->display->display_options['arguments']['nid']['specify_validation'] = TRUE;
-  $handler->display->display_options['arguments']['nid']['validate']['type'] = 'node';
-  $handler->display->display_options['arguments']['nid']['validate_options']['types'] = array(
-    'character_sheet' => 'character_sheet',
-  );
-  /* Filter criterion: Content: Published */
-  $handler->display->display_options['filters']['status']['id'] = 'status';
-  $handler->display->display_options['filters']['status']['table'] = 'node';
-  $handler->display->display_options['filters']['status']['field'] = 'status';
-  $handler->display->display_options['filters']['status']['relationship'] = 'nid';
-  $handler->display->display_options['filters']['status']['value'] = '1';
-  /* Filter criterion: Workflow: Current state */
-  $handler->display->display_options['filters']['sid']['id'] = 'sid';
-  $handler->display->display_options['filters']['sid']['table'] = 'workflow_node';
-  $handler->display->display_options['filters']['sid']['field'] = 'sid';
-  $handler->display->display_options['filters']['sid']['relationship'] = 'nid';
-  $handler->display->display_options['filters']['sid']['value'] = array(
-    4 => '4',
-  );
-  /* Filter criterion: Vaxia type xp: Vaxia sheet xp type */
-  $handler->display->display_options['filters']['type']['id'] = 'type';
-  $handler->display->display_options['filters']['type']['table'] = 'vaxia_xp_type_totals';
-  $handler->display->display_options['filters']['type']['field'] = 'type';
-  $handler->display->display_options['filters']['type']['operator'] = 'word';
-  $handler->display->display_options['filters']['type']['value'] = 'charismatic evil good smart warrior mage';
-  $handler->display->display_options['filters']['type']['expose']['operator_id'] = 'type_op';
-  $handler->display->display_options['filters']['type']['expose']['label'] = 'Vaxia sheet xp type';
-  $handler->display->display_options['filters']['type']['expose']['operator'] = 'type_op';
-  $handler->display->display_options['filters']['type']['expose']['identifier'] = 'type';
-  $handler->display->display_options['filters']['type']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    8 => 0,
-    19 => 0,
-    12 => 0,
-    13 => 0,
-    10 => 0,
-    17 => 0,
-    15 => 0,
-    9 => 0,
-    20 => 0,
-    14 => 0,
-    25 => 0,
-    21 => 0,
-    3 => 0,
-    11 => 0,
-    22 => 0,
-    23 => 0,
-    24 => 0,
-    26 => 0,
-    27 => 0,
-    28 => 0,
-  );
-
-  /* Display: Character Flavor Percents */
-  $handler = $view->new_display('block', 'Character Flavor Percents', 'block');
-  $handler->display->display_options['display_description'] = 'Character Flavor Percents';
-  $handler->display->display_options['defaults']['header'] = FALSE;
-  /* Header: Global: Text area */
-  $handler->display->display_options['header']['area']['id'] = 'area';
-  $handler->display->display_options['header']['area']['table'] = 'views';
-  $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['content'] = '<style>
-.view-character-xp-flavors table{width:40%;float:left;margin-left:5%;}
-</style>';
-  $handler->display->display_options['header']['area']['format'] = 'full_html';
-  $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Content: Nid */
-  $handler->display->display_options['fields']['nid']['id'] = 'nid';
-  $handler->display->display_options['fields']['nid']['table'] = 'node';
-  $handler->display->display_options['fields']['nid']['field'] = 'nid';
-  $handler->display->display_options['fields']['nid']['relationship'] = 'nid';
-  $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
-  /* Field: Global: PHP */
-  $handler->display->display_options['fields']['php']['id'] = 'php';
-  $handler->display->display_options['fields']['php']['table'] = 'views';
-  $handler->display->display_options['fields']['php']['field'] = 'php';
-  $handler->display->display_options['fields']['php']['label'] = 'Flavor XP';
-  $handler->display->display_options['fields']['php']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
-  $handler->display->display_options['fields']['php']['php_value'] = 'static $nid_fxp = -1;
-if ($nid_fxp == -1) {
-$nid_fxp = 0;
-$fxp = db_query(\'SELECT SUM(xp) AS fxp FROM {vaxia_xp_type_totals} WHERE type NOT IN(\\\'transfer\\\', \\\'site-award\\\') AND nid = :nid\', array(\':nid\' => $row->nid));
-foreach($fxp as $this_xp) {
-  $nid_fxp = floor($this_xp->fxp);
-} // End foreach.
-} // End if.
-return $nid_fxp;';
-  $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
-  $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
-  /* Field: Vaxia type xp: Vaxia sheet xp node */
-  $handler->display->display_options['fields']['xp']['id'] = 'xp';
-  $handler->display->display_options['fields']['xp']['table'] = 'vaxia_xp_type_totals';
-  $handler->display->display_options['fields']['xp']['field'] = 'xp';
-  $handler->display->display_options['fields']['xp']['exclude'] = TRUE;
-  /* Field: Global: Math expression */
-  $handler->display->display_options['fields']['expression']['id'] = 'expression';
-  $handler->display->display_options['fields']['expression']['table'] = 'views';
-  $handler->display->display_options['fields']['expression']['field'] = 'expression';
-  $handler->display->display_options['fields']['expression']['label'] = '';
-  $handler->display->display_options['fields']['expression']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['expression']['set_precision'] = TRUE;
-  $handler->display->display_options['fields']['expression']['precision'] = '2';
-  $handler->display->display_options['fields']['expression']['suffix'] = '%';
-  $handler->display->display_options['fields']['expression']['expression'] = '([xp] / [php]) * 100';
-  /* Field: Vaxia type xp: Vaxia sheet xp type */
-  $handler->display->display_options['fields']['type']['id'] = 'type';
-  $handler->display->display_options['fields']['type']['table'] = 'vaxia_xp_type_totals';
-  $handler->display->display_options['fields']['type']['field'] = 'type';
-  $handler->display->display_options['fields']['type']['label'] = '';
-  $handler->display->display_options['fields']['type']['element_label_colon'] = FALSE;
-  $handler->display->display_options['block_description'] = 'Character XP Flavors';
-
-  /* Display: Character XP Breakdown */
-  $handler = $view->new_display('block', 'Character XP Breakdown', 'block_1');
-  $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Character XP Breakdown';
-  $handler->display->display_options['display_description'] = 'Character XP Breakdown';
-  $handler->display->display_options['defaults']['pager'] = FALSE;
-  $handler->display->display_options['pager']['type'] = 'some';
-  $handler->display->display_options['pager']['options']['items_per_page'] = '1';
-  $handler->display->display_options['pager']['options']['offset'] = '0';
-  $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Content: Nid */
-  $handler->display->display_options['fields']['nid']['id'] = 'nid';
-  $handler->display->display_options['fields']['nid']['table'] = 'node';
-  $handler->display->display_options['fields']['nid']['field'] = 'nid';
-  $handler->display->display_options['fields']['nid']['relationship'] = 'nid';
-  $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
-  /* Field: Global: PHP */
-  $handler->display->display_options['fields']['php_1']['id'] = 'php_1';
-  $handler->display->display_options['fields']['php_1']['table'] = 'views';
-  $handler->display->display_options['fields']['php_1']['field'] = 'php';
-  $handler->display->display_options['fields']['php_1']['label'] = 'Total XP';
-  $handler->display->display_options['fields']['php_1']['use_php_setup'] = 0;
-  $handler->display->display_options['fields']['php_1']['php_value'] = 'static $nid_hxp = -1;
-if ($nid_hxp == -1) {
-$nid_hxp = 0;
-$hxp = db_query(\'SELECT SUM(xp) AS hxp FROM {character_sheet_xp} WHERE type=\\\'spent_xp\\\' AND nid = :nid\', array(\':nid\' => $row->nid));
-foreach($hxp as $this_xp) {
-  $nid_hxp = floor($this_xp->hxp);
-} // End foreach.
-} // End if.
-return $nid_hxp;';
-  $handler->display->display_options['fields']['php_1']['use_php_click_sortable'] = '0';
-  $handler->display->display_options['fields']['php_1']['php_click_sortable'] = '';
-  /* Field: Global: PHP */
-  $handler->display->display_options['fields']['php_2']['id'] = 'php_2';
-  $handler->display->display_options['fields']['php_2']['table'] = 'views';
-  $handler->display->display_options['fields']['php_2']['field'] = 'php';
-  $handler->display->display_options['fields']['php_2']['label'] = 'Transfer';
-  $handler->display->display_options['fields']['php_2']['use_php_setup'] = 0;
-  $handler->display->display_options['fields']['php_2']['php_value'] = 'static $nid_txp = -1;
-if ($nid_txp == -1) {
-$nid_txp = 0;
-$txp = db_query(\'SELECT SUM(xp) AS txp FROM {vaxia_xp_type_totals} WHERE type = \\\'transfer\\\' AND nid = :nid\', array(\':nid\' => $row->nid));
-foreach($txp as $this_xp) {
-  $nid_txp = floor($this_xp->txp);
-} // End foreach.
-} // End if.
-return $nid_txp;';
-  $handler->display->display_options['fields']['php_2']['use_php_click_sortable'] = '0';
-  $handler->display->display_options['fields']['php_2']['php_click_sortable'] = '';
-  /* Field: Global: PHP */
-  $handler->display->display_options['fields']['php']['id'] = 'php';
-  $handler->display->display_options['fields']['php']['table'] = 'views';
-  $handler->display->display_options['fields']['php']['field'] = 'php';
-  $handler->display->display_options['fields']['php']['label'] = 'Flavor';
-  $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
-  $handler->display->display_options['fields']['php']['php_value'] = 'static $nid_fxp = -1;
-if ($nid_fxp == -1) {
-$nid_fxp = 0;
-$fxp = db_query(\'SELECT SUM(xp) AS fxp FROM {vaxia_xp_type_totals} WHERE type NOT IN(\\\'transfer\\\', \\\'site-award\\\') AND nid = :nid\', array(\':nid\' => $row->nid));
-foreach($fxp as $this_xp) {
-  $nid_fxp = floor($this_xp->fxp);
-} // End foreach.
-} // End if.
-return $nid_fxp;';
-  $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
-  $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
-  /* Field: Global: Math expression */
-  $handler->display->display_options['fields']['expression_1']['id'] = 'expression_1';
-  $handler->display->display_options['fields']['expression_1']['table'] = 'views';
-  $handler->display->display_options['fields']['expression_1']['field'] = 'expression';
-  $handler->display->display_options['fields']['expression_1']['label'] = 'Other';
-  $handler->display->display_options['fields']['expression_1']['precision'] = '0';
-  $handler->display->display_options['fields']['expression_1']['expression'] = '[php_1] - [php_2] - [php]';
-  /* Field: Vaxia type xp: Vaxia sheet xp node */
-  $handler->display->display_options['fields']['xp']['id'] = 'xp';
-  $handler->display->display_options['fields']['xp']['table'] = 'vaxia_xp_type_totals';
-  $handler->display->display_options['fields']['xp']['field'] = 'xp';
-  $handler->display->display_options['fields']['xp']['label'] = 'XP amount';
-  $handler->display->display_options['fields']['xp']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['xp']['separator'] = '';
-  $handler->display->display_options['block_description'] = 'Character XP Breakdown';
-  $export['character_xp_flavors'] = $view;
-
-  $view = new view();
   $view->name = 'vaxia_character_sheets';
   $view->description = 'Vaxia character sheets';
-  $view->tag = 'Vaxia';
+  $view->tag = 'Vaxia Characters';
   $view->base_table = 'node';
   $view->human_name = 'Vaxia character sheets';
   $view->core = 7;
@@ -938,6 +583,20 @@ return $nid_fxp;';
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['content'] = 'These are the characters for this user that have been approved for play.';
+  $handler->display->display_options['header']['area']['format'] = 'wiki';
+  $handler->display->display_options['defaults']['footer'] = FALSE;
+  /* Footer: Global: Text area */
+  $handler->display->display_options['footer']['area']['id'] = 'area';
+  $handler->display->display_options['footer']['area']['table'] = 'views';
+  $handler->display->display_options['footer']['area']['field'] = 'area';
+  $handler->display->display_options['footer']['area']['content'] = '[url=/character-sheets/mine]Click here to see all of your own character sheets.[/url]';
+  $handler->display->display_options['footer']['area']['format'] = 'wiki';
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
@@ -1076,6 +735,7 @@ return $nid_fxp;';
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['row_plugin'] = 'references_fields';
+  $handler->display->display_options['row_options']['separator'] = ' ';
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: Nid */
@@ -1085,11 +745,30 @@ return $nid_fxp;';
   $handler->display->display_options['fields']['nid']['label'] = '';
   $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
   $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
+  /* Field: Content: Titles */
+  $handler->display->display_options['fields']['field_titles']['id'] = 'field_titles';
+  $handler->display->display_options['fields']['field_titles']['table'] = 'field_data_field_titles';
+  $handler->display->display_options['fields']['field_titles']['field'] = 'field_titles';
+  $handler->display->display_options['fields']['field_titles']['label'] = '';
+  $handler->display->display_options['fields']['field_titles']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_titles']['element_label_colon'] = FALSE;
+  /* Field: Content: Last Name */
+  $handler->display->display_options['fields']['field_last_name']['id'] = 'field_last_name';
+  $handler->display->display_options['fields']['field_last_name']['table'] = 'field_data_field_last_name';
+  $handler->display->display_options['fields']['field_last_name']['field'] = 'field_last_name';
+  $handler->display->display_options['fields']['field_last_name']['label'] = '';
+  $handler->display->display_options['fields']['field_last_name']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_last_name']['element_label_colon'] = FALSE;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
   $handler->display->display_options['fields']['title_1']['table'] = 'node';
   $handler->display->display_options['fields']['title_1']['field'] = 'title';
   $handler->display->display_options['fields']['title_1']['label'] = '';
+  $handler->display->display_options['fields']['title_1']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['title_1']['alter']['text'] = '[field_titles] [title_1] [field_last_name]';
+  $handler->display->display_options['fields']['title_1']['alter']['max_length'] = '40';
+  $handler->display->display_options['fields']['title_1']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title_1']['alter']['trim'] = TRUE;
   $handler->display->display_options['fields']['title_1']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title_1']['hide_alter_empty'] = FALSE;
   $handler->display->display_options['fields']['title_1']['link_to_node'] = FALSE;
@@ -1114,14 +793,14 @@ return $nid_fxp;';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
   $handler->display->display_options['defaults']['sorts'] = FALSE;
-  /* Sort criterion: Content: NPC (field_is_npc) */
-  $handler->display->display_options['sorts']['field_is_npc_value']['id'] = 'field_is_npc_value';
-  $handler->display->display_options['sorts']['field_is_npc_value']['table'] = 'field_data_field_is_npc';
-  $handler->display->display_options['sorts']['field_is_npc_value']['field'] = 'field_is_npc_value';
   /* Sort criterion: Content: Open NPC (field_is_open_npc) */
   $handler->display->display_options['sorts']['field_is_open_npc_value']['id'] = 'field_is_open_npc_value';
   $handler->display->display_options['sorts']['field_is_open_npc_value']['table'] = 'field_data_field_is_open_npc';
   $handler->display->display_options['sorts']['field_is_open_npc_value']['field'] = 'field_is_open_npc_value';
+  /* Sort criterion: Content: NPC (field_is_npc) */
+  $handler->display->display_options['sorts']['field_is_npc_value']['id'] = 'field_is_npc_value';
+  $handler->display->display_options['sorts']['field_is_npc_value']['table'] = 'field_data_field_is_npc';
+  $handler->display->display_options['sorts']['field_is_npc_value']['field'] = 'field_is_npc_value';
   /* Sort criterion: Content: Title */
   $handler->display->display_options['sorts']['title']['id'] = 'title';
   $handler->display->display_options['sorts']['title']['table'] = 'node';
@@ -1543,6 +1222,17 @@ return !( user_access(\'use NPCs\') || $row->uid == $user->uid );';
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['footer'] = FALSE;
+  /* Footer: Global: Text area */
+  $handler->display->display_options['footer']['area']['id'] = 'area';
+  $handler->display->display_options['footer']['area']['table'] = 'views';
+  $handler->display->display_options['footer']['area']['field'] = 'area';
+  $handler->display->display_options['footer']['area']['content'] = 'Characters marked as Other require approval from the Setting department.
+
+Other char eval considerations:
+
+* For Sirian characters - please make sure the character provides a location of origin so we know the plots and legal systems that may apply to them. If their current loyalties are different from home-land, please ask for those as well.';
+  $handler->display->display_options['footer']['area']['format'] = 'plain_text';
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
@@ -1557,6 +1247,14 @@ return !( user_access(\'use NPCs\') || $row->uid == $user->uid );';
   $handler->display->display_options['fields']['name']['relationship'] = 'uid';
   $handler->display->display_options['fields']['name']['label'] = 'Player';
   $handler->display->display_options['fields']['name']['hide_alter_empty'] = FALSE;
+  /* Field: Content: Realm */
+  $handler->display->display_options['fields']['field_realm']['id'] = 'field_realm';
+  $handler->display->display_options['fields']['field_realm']['table'] = 'field_data_field_realm';
+  $handler->display->display_options['fields']['field_realm']['field'] = 'field_realm';
+  /* Field: Content: Species */
+  $handler->display->display_options['fields']['field_race']['id'] = 'field_race';
+  $handler->display->display_options['fields']['field_race']['table'] = 'field_data_field_race';
+  $handler->display->display_options['fields']['field_race']['field'] = 'field_race';
   /* Field: Content: Post date */
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'node';
@@ -1976,6 +1674,90 @@ return !( user_access(\'use NPCs\') || $row->uid == $user->uid );';
     4 => '4',
   );
   $handler->display->display_options['filters']['sid']['group'] = 1;
+  $handler->display->display_options['rules_parameter'] = array(
+    'uid' => array(
+      'enabled' => 1,
+      'type' => 'integer',
+      'label' => 'Content: Author uid',
+      'name' => 'uid',
+    ),
+  );
+  $handler->display->display_options['rules_variables'] = array(
+    'nid' => array(
+      'enabled' => 1,
+      'rendered' => 0,
+      'type' => 'integer',
+      'label' => 'Nid',
+      'name' => 'nid',
+    ),
+    'title_1' => array(
+      'enabled' => 1,
+      'rendered' => 0,
+      'type' => 'text',
+      'label' => 'Name',
+      'name' => 'title_1',
+    ),
+  );
+
+  /* Display: Eval Rules Characters by User */
+  $handler = $view->new_display('views_rules', 'Eval Rules Characters by User', 'eval2');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Rules Characters by User';
+  $handler->display->display_options['display_description'] = 'Eval Rules Characters by User';
+  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '1';
+  $handler->display->display_options['pager']['options']['offset'] = '4';
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Nid */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'node';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
+  $handler->display->display_options['fields']['title_1']['table'] = 'node';
+  $handler->display->display_options['fields']['title_1']['field'] = 'title';
+  $handler->display->display_options['fields']['title_1']['label'] = 'Name';
+  $handler->display->display_options['fields']['title_1']['hide_alter_empty'] = FALSE;
+  $handler->display->display_options['defaults']['sorts'] = FALSE;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'character_sheet' => 'character_sheet',
+  );
+  $handler->display->display_options['filters']['type']['group'] = 1;
+  /* Filter criterion: Workflow: Current state */
+  $handler->display->display_options['filters']['sid']['id'] = 'sid';
+  $handler->display->display_options['filters']['sid']['table'] = 'workflow_node';
+  $handler->display->display_options['filters']['sid']['field'] = 'sid';
+  $handler->display->display_options['filters']['sid']['value'] = array(
+    3 => '3',
+  );
+  $handler->display->display_options['filters']['sid']['group'] = 1;
+  /* Filter criterion: Content: NPC (field_is_npc) */
+  $handler->display->display_options['filters']['field_is_npc_value']['id'] = 'field_is_npc_value';
+  $handler->display->display_options['filters']['field_is_npc_value']['table'] = 'field_data_field_is_npc';
+  $handler->display->display_options['filters']['field_is_npc_value']['field'] = 'field_is_npc_value';
+  $handler->display->display_options['filters']['field_is_npc_value']['value'] = array(
+    0 => '0',
+  );
+  /* Filter criterion: Content: Open NPC (field_is_open_npc) */
+  $handler->display->display_options['filters']['field_is_open_npc_value']['id'] = 'field_is_open_npc_value';
+  $handler->display->display_options['filters']['field_is_open_npc_value']['table'] = 'field_data_field_is_open_npc';
+  $handler->display->display_options['filters']['field_is_open_npc_value']['field'] = 'field_is_open_npc_value';
+  $handler->display->display_options['filters']['field_is_open_npc_value']['value'] = array(
+    0 => '0',
+  );
+  /* Filter criterion: Content: Storyhost (field_is_storyteller) */
+  $handler->display->display_options['filters']['field_is_storyteller_value']['id'] = 'field_is_storyteller_value';
+  $handler->display->display_options['filters']['field_is_storyteller_value']['table'] = 'field_data_field_is_storyteller';
+  $handler->display->display_options['filters']['field_is_storyteller_value']['field'] = 'field_is_storyteller_value';
+  $handler->display->display_options['filters']['field_is_storyteller_value']['value'] = array(
+    0 => '0',
+  );
   $handler->display->display_options['rules_parameter'] = array(
     'uid' => array(
       'enabled' => 1,

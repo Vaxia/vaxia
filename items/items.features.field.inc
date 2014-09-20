@@ -5433,74 +5433,6 @@ function items_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-items-field_needs_review'.
-  $fields['node-items-field_needs_review'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_needs_review',
-      'foreign keys' => array(),
-      'indexes' => array(
-        'value' => array(
-          0 => 'value',
-        ),
-      ),
-      'locked' => '0',
-      'module' => 'list',
-      'settings' => array(
-        'allowed_values' => array(
-          0 => 'Does not need review',
-          1 => 'Needs review',
-        ),
-        'allowed_values_function' => '',
-      ),
-      'translatable' => '0',
-      'type' => 'list_boolean',
-    ),
-    'field_instance' => array(
-      'bundle' => 'items',
-      'default_value' => array(
-        0 => array(
-          'value' => 0,
-        ),
-      ),
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'artwork' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '9',
-        ),
-        'default' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '17',
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_needs_review',
-      'label' => 'Needs review',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'options',
-        'settings' => array(
-          'display_label' => 0,
-        ),
-        'type' => 'options_onoff',
-        'weight' => '13',
-      ),
-    ),
-  );
-
   // Exported field: 'node-items-field_player_notes'.
   $fields['node-items-field_player_notes'] = array(
     'field_config' => array(
@@ -6119,7 +6051,6 @@ function items_field_default_fields() {
   t('Intelligence');
   t('Item Uses');
   t('Life');
-  t('Needs review');
   t('PP Created');
   t('Player Notes');
   t('Presence');

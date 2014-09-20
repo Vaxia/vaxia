@@ -21,11 +21,10 @@ function proposal_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Additional information',
-    'weight' => '2',
+    'weight' => '3',
     'children' => array(
       0 => 'field_associated_forum_threads',
       1 => 'field_associated_files',
-      2 => 'field_associated_department',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(

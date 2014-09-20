@@ -44,6 +44,7 @@ function proposal_views_default_views() {
     'created' => 'created',
     'php' => 'php',
     'status' => 'status',
+    'field_proposal_type' => 'field_proposal_type',
   );
   $handler->display->display_options['style_options']['default'] = 'created';
   $handler->display->display_options['style_options']['info'] = array(
@@ -74,6 +75,13 @@ function proposal_views_default_views() {
       'empty_column' => 0,
     ),
     'status' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_proposal_type' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -221,6 +229,11 @@ For more information about proposals and how to make one yourself, <a href="http
   $handler->display->display_options['fields']['status']['field'] = 'status';
   $handler->display->display_options['fields']['status']['label'] = 'Proposal status';
   $handler->display->display_options['fields']['status']['not'] = 0;
+  /* Field: Content: Type */
+  $handler->display->display_options['fields']['field_proposal_type']['id'] = 'field_proposal_type';
+  $handler->display->display_options['fields']['field_proposal_type']['table'] = 'field_data_field_proposal_type';
+  $handler->display->display_options['fields']['field_proposal_type']['field'] = 'field_proposal_type';
+  $handler->display->display_options['fields']['field_proposal_type']['label'] = 'Proposal Type';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['filter_groups']['groups'] = array(
     1 => 'AND',

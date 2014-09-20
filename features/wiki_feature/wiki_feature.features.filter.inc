@@ -19,23 +19,35 @@ function wiki_feature_filter_default_formats() {
     'weight' => '0',
     'filters' => array(
       'filter_html' => array(
-        'weight' => '-48',
+        'weight' => '-49',
         'status' => '1',
         'settings' => array(
           'allowed_html' => '<p> <br /> <br> <a> <em> <strong> <cite> <blockquote> <code> <ul> <ol> <li> <dl> <dt> <dd> <b> <i> <h1> <h2> <h3> <hr>',
-          'filter_html_help' => 1,
+          'filter_html_help' => 0,
           'filter_html_nofollow' => 0,
         ),
+      ),
+      'spoiler' => array(
+        'weight' => '-48',
+        'status' => '1',
+        'settings' => array(),
       ),
       'bbcode' => array(
         'weight' => '-47',
         'status' => '1',
         'settings' => array(
-          'bbcode_make_links' => '1',
+          'bbcode_make_links' => '0',
           'bbcode_filter_nofollow' => '1',
           'bbcode_encode_mailto' => '0',
           'bbcode_paragraph_breaks' => '2',
           'bbcode_debug' => '0',
+        ),
+      ),
+      'filter_url' => array(
+        'weight' => '-46',
+        'status' => '1',
+        'settings' => array(
+          'filter_url_length' => '72',
         ),
       ),
       'freelinking' => array(
@@ -44,7 +56,7 @@ function wiki_feature_filter_default_formats() {
         'settings' => array(),
       ),
       'filter_htmlcorrector' => array(
-        'weight' => '-41',
+        'weight' => '-40',
         'status' => '1',
         'settings' => array(),
       ),

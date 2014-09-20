@@ -13,13 +13,13 @@ function storyhost_renewal_user_default_roles() {
   // Exported role: evaluator-expired.
   $roles['evaluator-expired'] = array(
     'name' => 'evaluator-expired',
-    'weight' => '10',
+    'weight' => '20',
   );
 
   // Exported role: storyteller-expired.
   $roles['storyteller-expired'] = array(
     'name' => 'storyteller-expired',
-    'weight' => '8',
+    'weight' => '19',
   );
 
   return $roles;

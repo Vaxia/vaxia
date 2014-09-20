@@ -34,6 +34,7 @@ function storyhost_duties_default_rules_configuration() {
         { "user_remove_role" : {
             "account" : [ "user" ],
             "roles" : { "value" : {
+                "25" : "25",
                 "13" : "13",
                 "10" : "10",
                 "17" : "17",
@@ -97,6 +98,7 @@ function storyhost_duties_default_rules_configuration() {
         { "user_remove_role" : {
             "account" : [ "user" ],
             "roles" : { "value" : {
+                "25" : "25",
                 "13" : "13",
                 "10" : "10",
                 "17" : "17",
@@ -139,7 +141,6 @@ function storyhost_duties_default_rules_configuration() {
           }
         },
         { "NOT data_is" : { "data" : [ "node:author:uid" ], "value" : [ "site:current-user:uid" ] } },
-        { "data_is" : { "data" : [ "node:created" ], "op" : "\\u003E", "value" : "-7 days" } },
         { "workflow_check_transition" : {
             "node" : [ "node" ],
             "old_state" : { "value" : { "3" : "3" } },
@@ -178,6 +179,7 @@ function storyhost_duties_default_rules_configuration() {
         "node_insert--session_report" : { "bundle" : "session_report" }
       },
       "IF" : [
+        { "user_has_role" : { "account" : [ "node:author" ], "roles" : { "value" : { "9" : "9" } } } },
         { "data_is" : {
             "data" : [ "node:author:field-powers-expire" ],
             "op" : "\\u003C",
@@ -186,8 +188,7 @@ function storyhost_duties_default_rules_configuration() {
         },
         { "data_is" : { "data" : [ "node:created" ], "op" : "\\u003E", "value" : "-3 days" } },
         { "data_is" : { "data" : [ "node:author:uid" ], "value" : [ "site:current-user:uid" ] } },
-        { "php_eval" : { "code" : "return sh_test_session_counts($node);" } },
-        { "user_has_role" : { "account" : [ "node:author" ], "roles" : { "value" : { "9" : "9" } } } }
+        { "php_eval" : { "code" : "return sh_test_session_counts($node);" } }
       ],
       "DO" : [
         { "data_set" : { "data" : [ "node:author:field-powers-expire" ], "value" : "+3 months" } }
@@ -226,9 +227,13 @@ function storyhost_duties_default_rules_configuration() {
       "REQUIRES" : [ "rules", "workflow_rules" ],
       "ON" : { "workflow_state_changed" : [] },
       "IF" : [
+        { "user_has_role" : {
+            "account" : [ "site:current-user" ],
+            "roles" : { "value" : { "9" : "9" } }
+          }
+        },
         { "node_is_of_type" : { "node" : [ "node" ], "type" : { "value" : { "items" : "items" } } } },
         { "NOT data_is" : { "data" : [ "node:author:uid" ], "value" : [ "site:current-user:uid" ] } },
-        { "data_is" : { "data" : [ "node:created" ], "op" : "\\u003E", "value" : "-7 days" } },
         { "workflow_check_transition" : {
             "node" : [ "node" ],
             "old_state" : { "value" : { "14" : "14" } },
@@ -239,11 +244,6 @@ function storyhost_duties_default_rules_configuration() {
             "data" : [ "site:current-user:field-powers-expire" ],
             "op" : "\\u003C",
             "value" : "+6 months"
-          }
-        },
-        { "user_has_role" : {
-            "account" : [ "site:current-user" ],
-            "roles" : { "value" : { "9" : "9" } }
           }
         }
       ],
