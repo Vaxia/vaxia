@@ -989,6 +989,11 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
 function _vaxia_transfer_xp_autocomplete($character_name = '') {
   $matches = array();
   global $user;
+  $approved_workflows = variable_get('character_sheet_vaxia_playable', '1');
+  $workflow = '';
+  foreach ($approved_workflows as $approved_workflow) {
+    $workflow = $approved_workflow;
+  }
   // In playable state, and NOT an NPC.
   $results = db_query('SELECT n.nid, n.title, u.name FROM {node} n ' .
     'LEFT JOIN {users} u ON n.uid = u.uid ' .
@@ -1002,7 +1007,7 @@ function _vaxia_transfer_xp_autocomplete($character_name = '') {
     'AND onpc.field_is_open_npc_value = 0 '.
     'AND s.field_is_storyteller_value = 0 '.
     'AND n.uid = :uid AND n.title LIKE :name',
-    array(':approved_workflow' => varible_get('character_sheet_vaxia_playable', '1'),
+    array(':approved_workflow' => $workflow,
     ':uid' => $user->uid, ':name' => $character_name . '%'));
   foreach ($results as $character) {
     $character_label = $character->title . ' (' . $character->name. ') [nid:' . $character->nid . ']';
