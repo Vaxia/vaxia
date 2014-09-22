@@ -1,0 +1,67 @@
+<?php
+
+/**
+ * @file
+ * Provide themeatic overrides for quiz output.
+ */
+
+/**
+ * Implements hook_theme_registry_alter().
+ * Remove the exposure of sensitive material from the user facing interface.
+ */
+function quiz_feedback_theme_registry_alter(&$theme_registry) {
+  $theme_registry['multichoice_response']['theme path'] = drupal_get_path('module', 'quiz_feedback');
+  $theme_registry['multichoice_response']['function'] = 'quiz_feedback_multichoice_response';
+}
+
+/**
+ * Theme function for the multichoice report
+ * Based on: function theme_multichoice_response($variables) {}
+ *
+ * @param $data
+ *  Array of data to be presented in the report
+ */
+function quiz_feedback_multichoice_response($variables) {
+  // Add the css.
+  static $css_added;
+  if (!$css_added) {
+    drupal_add_css(drupal_get_path('module', 'multichoice') . '/theme/multichoice.css');
+    $css_added = TRUE;
+  }
+  $output = '';
+  // Display feedback based on rows.
+  $rows = array();
+  foreach ($variables['data'] as &$alternative) {
+    if ($alternative['is_chosen']) {
+      switch ($alternative['is_correct']) {
+        case 0:
+          $icon = '<span class="multichoice-icon wrong" title="' . t('This option is wrong.') . '"></span>';
+          break;
+        case 1:
+          $icon = '<span class="multichoice-icon almost" title="' . t('This option is correct, but there is another that gives a higher score.') . '"></span>';
+          break;
+        case 2:
+          $icon = '<span class="multichoice-icon correct" title="' . t('This option is correct.') . '"></span>';
+          break;
+      }
+    }
+    else {
+      // Here's the big change. We're NOT showing which one actually is correct.
+      $icon = '';//$alternative['is_correct'] == 2 ? '<span class="multichoice-icon should" title="' . t("This option is correct, but you didn't select it.") . '"></span>' : '';
+    }
+    $rowspan = $alternative['feedback'] ? 2 : 1;
+    $rows[] = array(
+      array(
+        'data' => $icon,
+        'rowspan' => $rowspan,
+        'class' => 'selector-td multichoice-icon-cell',
+      ),
+      $alternative['answer']
+    );
+    if ($rowspan == 2) {
+      $rows[] = array('<div class="multichoice-label">' . t('Feedback') . ':</div><div class="multichoice-feedback">' . $alternative['feedback'] . '</div>');
+    }
+  }
+  // Return the new display.
+  return theme('table', array('header' => NULL, 'rows' => $rows));
+}

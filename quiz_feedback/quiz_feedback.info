@@ -1,0 +1,5 @@
+name = Quiz Feedback
+description = Give additional options for controlling quiz feedback.
+package = Quiz Question
+core = 7.x
+dependencies[] = multichoice
