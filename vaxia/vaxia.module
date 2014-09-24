@@ -299,15 +299,17 @@ function vaxia_node_view($node, $view_mode, $langcode) {
 
   // If node is a character sheet.
   if (_character_sheet_is_enabled($node)) {
+    // Get current user.
+    global $user;
 
     // Display warning alert for new characters.
     // Check if the sheet has been finalized.
-    global $user;
     $has_xp = _character_sheet_get_xp($node->nid, 'xp');
-    if ( !isset($node->workflow) || // Current node has no workflow.
-      (!_character_sheet_is_playable($node) && $has_xp < 20) // In submission, inactive, or disapproved, under 20 XP spent.
+    if ( !isset($node->workflow) || // Current node has no workflow. (new)
+      ($node->workflow_state_name == 'draft' && $has_xp < 20) || // Is in draft and below HXP amounts.
+      (_character_sheet_is_playable($node) && $has_xp < 20) // Approved and below HXP amounts.
     ) {
-      // Get messages.
+      // Get warning messages.
       $messages = _vaxia_check_minmax_flags($node);
       // General warn.
       if (!empty($messages)) {
@@ -315,15 +317,10 @@ function vaxia_node_view($node, $view_mode, $langcode) {
           'staff as a potential min-maxed build. Please expect to be asked to revise.');
         drupal_set_message(implode(' ', $messages), 'warning');
       }
-      else {
-        drupal_set_message("$low_stats");
-      }
+      drupal_set_message('This character is currently listed below 20 XP. You may request assistance from our Evaluation team to revise the character.');
     }
 
-    // Unset the logs.
-    unset($node->content['character_sheet_log']);
-
-    // Disable all the fields from viewing if you're not the owner.
+    // Disable the fields from viewing if you're not the owner or permissioned.
     if (!($user->uid == $node->uid || user_access('edit SH notes'))) {
       $display = array('field_description', 'field_age_app', 'field_sex', 'field_race',
         'field_appearance', 'field_charisma', 'field_presence');
@@ -348,6 +345,9 @@ function vaxia_node_view($node, $view_mode, $langcode) {
     if (!($user->uid == $node->uid || user_access('edit SH notes'))) {
       unset($node->content['field_player_notes']);
     }
+
+    // Hide the logs.
+    unset($node->content['character_sheet_log']);
   }
 
   // If node is an RPG chatroom, add the js, css for additional behaviors for Vaxia specifically.
