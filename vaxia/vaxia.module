@@ -305,9 +305,15 @@ function vaxia_node_view($node, $view_mode, $langcode) {
     // Display warning alert for new characters.
     // Check if the sheet has been finalized.
     $has_xp = _character_sheet_get_xp($node->nid, 'xp');
-    if ( !isset($node->workflow) || // Current node has no workflow. (new)
-      ($node->workflow_state_name == 'draft' && $has_xp < 20) || // Is in draft and below HXP amounts.
-      (_character_sheet_is_playable($node) && $has_xp < 20) // Approved and below HXP amounts.
+    if (
+      ( $user->uid == $node->uid || // Current viewer is the owner.
+        user_access('edit SH notes') // Current viewer is an SH.
+      )
+      &&
+      (!isset($node->workflow) || // Current node has no workflow. (new)
+        ($node->workflow_state_name == 'draft' && $has_xp < 20) || // Is in draft and below HXP amounts.
+        (_character_sheet_is_playable($node) && $has_xp < 20) // Approved and below HXP amounts.
+      )
     ) {
       // Get warning messages.
       $messages = _vaxia_check_minmax_flags($node);
