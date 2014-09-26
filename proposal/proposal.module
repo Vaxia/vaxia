@@ -602,7 +602,8 @@ function proposal_node_view($node, $view_mode, $langcode) {
         '#weight' => 1002,
       );
       $node->content['proposal_results_participation'] = array(
-        '#markup' => '<div class="proposal_result">' . t('This type of proposal does not require a minimum participation from the site.') . '</div></br>',
+        '#markup' => '<div class="proposal_result">' . t('This type of proposal does not require a minimum participation from the site.') .
+          '<span color="green">' . t('Enough') . '</span> voters have participated for the results of this proposal to be accepted.</div></br>',
         '#weight' => 1003,
       );
       if ($node->field_proposal_type['und'][0]['value'] == 'amendment' || $node->field_proposal_type['und'][0]['value'] == 'grievance') {
