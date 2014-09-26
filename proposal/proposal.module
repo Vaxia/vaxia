@@ -608,14 +608,16 @@ function proposal_node_view($node, $view_mode, $langcode) {
       );
       if ($node->field_proposal_type['und'][0]['value'] == 'amendment' || $node->field_proposal_type['und'][0]['value'] == 'grievance') {
         $proposal_required_perc = variable_get('proposal_required_perc', '50');
-        $proposal_min_message = '<span color="red">' . t('NOT enough') . '</span>';
+        $proposal_min_message = t('NOT enough');
+        $min_color = 'red';
         if ($proposal_required_perc < $percent_active) {
-          $proposal_min_message = '<span color="green">' . t('Enough') . '</span>';
+          $proposal_min_message = t('Enough');
+          $min_color = 'green';
         }
         $node->content['proposal_results_participation'] = array(
-          '#markup' => '<div class="proposal_result">' . t('Based on the percentage of active voter responses: %proposal_min_message ' .
+          '#markup' => '<div class="proposal_result">' . t('Based on the percentage of active voter responses: <span color="!min_color">%proposal_min_message</span> ' .
             ' voters have participated for the results of this proposal to be accepted.',
-            array('%proposal_min_message' => $proposal_min_message)) . '</div></br>',
+            array('!min_color' => $min_color, '%proposal_min_message' => $proposal_min_message)) . '</div></br>',
           '#weight' => 1003,
         );
       }
