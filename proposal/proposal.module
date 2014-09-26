@@ -615,7 +615,7 @@ function proposal_node_view($node, $view_mode, $langcode) {
           $min_color = 'green';
         }
         $node->content['proposal_results_participation'] = array(
-          '#markup' => '<div class="proposal_result">' . t('Based on the percentage of active voter responses: <span color="!min_color">%proposal_min_message</span> ' .
+          '#markup' => '<div class="proposal_result">' . t('Based on the percentage of active voter responses: <span style="text-color:!min_color">%proposal_min_message</span> ' .
             ' voters have participated for the results of this proposal to be accepted.',
             array('!min_color' => $min_color, '%proposal_min_message' => $proposal_min_message)) . '</div></br>',
           '#weight' => 1003,
