@@ -149,11 +149,6 @@ class item_shop_field_handler_add_item extends views_handler_field {
         }
 
         if(!$error) {
-          // Charge silver.
-          _add_silver_submit_form_remove_silver($char, -1 * $this_value);
-          $message = t('@xp silver removed by System to purchase @title by @user.',
-            array('@xp' => $this_value, '@title' => $node->title, '@user' => $user->name));
-          _character_sheet_update_log($char, 'silver', $message, $variables = array());
           // Create new node for the player, and character.
           $new_node = clone $node;
           unset($new_node->nid);
@@ -173,6 +168,11 @@ class item_shop_field_handler_add_item extends views_handler_field {
               }
             }
           }
+          // Charge silver.
+          _add_silver_submit_form_remove_silver($char, -1 * $this_value);
+          $message = t('@xp silver removed by System to purchase @title by @user.',
+            array('@xp' => $this_value, '@title' => $node->title, '@user' => $user->name));
+          _character_sheet_update_log($char, 'silver', $message, $variables = array());
           // Display message.
           drupal_set_message(t(':title has been added to this character. :silver silver charged.',
             array(':title' => $new_node->title, ':silver' => $this_value)));
