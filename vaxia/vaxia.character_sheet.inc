@@ -315,6 +315,7 @@ function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
     }
     // If the owner, and new, and user isn't an SH sort.
     if ($user->uid == $node->uid && !user_access('create NPCs') && !user_access('create open NPCs')) {
+      drupal_set_message(t('This character is currently not playable.'));
       // Stat option changes.
       $reduced = array('field_life', 'field_endurance', 'field_strength', 'field_dexterity',
         'field_intelligence', 'field_spirituality', 'field_charisma');
@@ -356,6 +357,7 @@ function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
 
     // If in submit / review mode then really remove access.
     if ($user->uid == $node->uid && isset($node->workflow_state_name) && $node->workflow_state_name == 'submitted') {
+      drupal_set_message(t('This character is currently in submit and cannot be edited by the owner.'));
       $form['#disabled'] = TRUE;
     }
 
@@ -363,6 +365,7 @@ function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
     if (!empty($node->nid)) {
       $has_xp = _character_sheet_get_xp($node->nid, 'xp');
       if ($user->uid == $node->uid && isset($node->workflow_state_name) && $node->workflow_state_name == 'draft' && $has_xp != 0) {
+        drupal_set_message(t('This character is currently in draft, but has earned XP and cannot be edited by the owner.'));
         $form['#disabled'] = TRUE;
       }
     }
