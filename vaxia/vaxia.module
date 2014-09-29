@@ -307,7 +307,7 @@ function vaxia_node_view($node, $view_mode, $langcode) {
     $has_xp = _character_sheet_get_xp($node->nid, 'xp');
     if ( $user->uid == $node->uid || user_access('edit SH notes')) { // Owner or an SH.
 
-      if ( !isset($node->workflow || // Current node has no workflow. (new)
+      if ( !isset($node->workflow) || // Current node has no workflow. (new)
           ($node->workflow_state_name == 'draft' && $has_xp < 20) || // Is in draft and below HXP amounts.
           ($node->workflow_state_name == 'submitted' && $has_xp < 20) // Submitted and below HXP amounts.
       ) {
