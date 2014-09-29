@@ -322,7 +322,7 @@ function vaxia_node_view($node, $view_mode, $langcode) {
       }
 
       // Display a note re allowed revisions.
-      if (_character_sheet_is_playable($node) && $has_xp < 20)) { // Approved and below HXP amounts.
+      if (_character_sheet_is_playable($node) && $has_xp < 20) { // Approved and below HXP amounts.
         drupal_set_message('This character is currently listed below 20 XP. You may request assistance from our Evaluation team to revise the character.');
       }
     }
