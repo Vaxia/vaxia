@@ -32,45 +32,6 @@ function imagefield_crop_field_widget_info() {
 }
 
 /**
- * Get imagefield_crop settings for a file.
- */
-function imagefield_crop_file_settings($fid) {
-  $settings = &drupal_static(__FUNCTION__, array());
-  if (isset($settings[$fid])) {
-    return $settings[$fid];
-  }
-  $settings[$fid] = db_query('SELECT * FROM {imagefield_crop} WHERE fid = :fid', array(':fid' => $fid))->fetchAssoc();
-
-  // We should always return an array, even if there are no settings found.
-  if (!is_array($settings[$fid])) {
-    $settings[$fid] = array(
-      'x' => 0,
-      'y' => 0,
-      'width' => 50,
-      'height' => 50,
-      'changed' => 0,
-    );
-  }
-  return $settings[$fid];
-}
-
-/**
- * Save imagefield_crop settings for a file.
- */
-function imagefield_crop_file_settings_save($crop_settings) {
-  $fid = $crop_settings['fid'];
-  $settings = &drupal_static('imagefield_crop_file_settings', array());
-  $settings[$fid] = $crop_settings;
-
-  unset($crop_settings['fid']);
-
-  return db_merge('imagefield_crop')
-    ->key(array('fid' => $fid))
-    ->fields($crop_settings)
-    ->execute();
-}
-
-/**
  * Implements hook_field_widget_settings_form().
  */
 function imagefield_crop_field_widget_settings_form($field, $instance) {
@@ -205,7 +166,7 @@ function imagefield_crop_field_widget_form(&$form, &$form_state, $field, $instan
     // Add all extra functionality provided by the imagefield_crop widget.
     $elements[$delta]['#process'][] = 'imagefield_crop_widget_process';
 
-    // Register our value callback.
+    // Register our value callback
     $elements[$delta]['#file_value_callbacks'] =
       array_merge(array('imagefield_crop_widget_value'), element_info_property('managed_file', '#file_value_callbacks', array()));
 
@@ -288,8 +249,13 @@ function imagefield_crop_widget_process($element, &$form_state, $form) {
 }
 
 function _imagefield_add_cropinfo_fields($fid = NULL) {
-  $defaults = imagefield_crop_file_settings($fid);
-  $defaults['changed'] = 0;
+  $defaults = array(
+    'x'       => 0,
+    'y'       => 0,
+    'width'   => 50,
+    'height'  => 50,
+    'changed' => 0,
+  );
   if ($fid) {
     $crop_info = variable_get('imagefield_crop_info', array());
     if (isset($crop_info[$fid]) && !empty($crop_info[$fid])) {
@@ -385,9 +351,10 @@ function imagefield_crop_widget_value(&$element, &$input, $form_state) {
 
     if (_imagefield_crop_resize(drupal_realpath($file_to_crop->uri), $crop, $scale, drupal_realpath($src->uri))) {
       // insert crop info for this image in imagefield_crop_info variable
-      $crop['fid'] = $src->fid;
+      $crop_info = variable_get('imagefield_crop_info', array());
       unset($crop['changed']);
-      imagefield_crop_file_settings_save($crop);
+      $crop_info[$src->fid] = $crop;
+      variable_set('imagefield_crop_info', $crop_info);
       // Remove cached versions of the cropped image.
       image_path_flush($src->uri);
     }
@@ -402,7 +369,9 @@ function imagefield_crop_widget_delete($form, &$form_state) {
   if ($orig->fid != $element['fid']) {
     file_usage_delete($orig, 'imagefield_crop');
     file_delete($orig);
-    db_delete('imagefield_crop')->condition('fid', $element['fid'])->execute();
+    $crop_info = variable_get('imagefield_crop_info', array());
+    unset($crop_info[$element['fid']]);
+    variable_set('imagefield_crop_info', $crop_info);
   }
 }
 
