@@ -266,10 +266,6 @@ function vaxia_character_sheet_field_info() {
         'owner' => DISABLE_SHEET,
       ),
     ),
-    'field_economy' => array(
-      'permissions' => array(
-        'owner' => DISABLE_SHEET,
-      ),
     'field_achivements' => array(
       'permissions' => array(
         'owner' => DISABLE_SHEET,
