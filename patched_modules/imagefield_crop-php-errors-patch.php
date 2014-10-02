@@ -40,7 +40,7 @@ index 9e92d76..407473c 100644
  
      // get crop and scale info
      $crop = $input['cropinfo'];
-+    $scale = NULL
++    $scale = NULL;
      $instance = field_widget_instance($element, $form_state);
      if ($instance['widget']['settings']['resolution']) {
        list($scale['width'], $scale['height']) = explode('x', $instance['widget']['settings']['resolution']);
