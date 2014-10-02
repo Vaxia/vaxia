@@ -589,16 +589,16 @@ function proposal_node_view($node, $view_mode, $langcode) {
     $percent_active = 0; // Percentage of active voters who have voted on this.
     if ($potential_voters != 0) {
       $percent = number_format(($voted / $potential_voters) * 100);
-      // If closed, use the time of closing. Else now.
-      $timeframe = ($node->webform['status'] == FALSE) ? $node->changed : strtotime('now');
-      $active_voters = proposal_eligable_active_count($node->nid, $timeframe); // Within a window of two weeks active.
+      // If closed, use the time of closing minus two weeks. Otherwise use last changed.
+      $timeframe = ($node->webform['status'] == FALSE) ? $node->changed : strtotime('-2 weeks', $node->changed);
+      $active_voters = proposal_eligable_active_count($node->nid, $timeframe); // Within a window of two weeks active from last edit.
       $percent_active = number_format(($voted / $active_voters) * 100);
       $active_timeframe = variable_get('proposal_active_timeframe', '2 weeks');
       $node->content['proposal_response'] = array(
         '#markup' => '<div class="proposal_response" style="margin:1em 0;">' . t('%voted out of %potential_voters potential voters (%percent %) responsed ' .
-        'to this proposal. %voted2 out of %active_voters potential voters active on the site in the last %active_timeframe (%percent_active %) responded to this proposal.',
+        'to this proposal. %voted2 out of %active_voters potential voters active on the site while the proposal was open (%percent_active %) responded to this proposal.',
         array('%voted' => $voted, '%potential_voters' => $potential_voters, '%percent' => $percent,
-          '%voted2' => $voted, '%active_voters' => $active_voters, '%active_timeframe' => $active_timeframe, '%percent_active' => $percent_active, )) . '</div>',
+          '%voted2' => $voted, '%active_voters' => $active_voters, '%percent_active' => $percent_active, )) . '</div>',
         '#weight' => 1002,
       );
       $node->content['proposal_results_participation'] = array(
@@ -1112,13 +1112,13 @@ function proposal_eligable_count($nid) {
 /**
  * DB function. Count eligable voters.
  */
-function proposal_eligable_active_count($nid, $end) {
+function proposal_eligable_active_count($nid, $start) {
   if (empty($nid)) {
     return FALSE; // Bail if error.
   }
   // Get the date given time before the end time.
-  $active_timeframe = variable_get('proposal_active_timeframe', '2 weeks') . ' ago';
-  $start = strtotime($active_timeframe, $end);
+  $active_timeframe = '+' . variable_get('proposal_active_timeframe', '2 weeks');
+  $end = strtotime($active_timeframe, $start);
   // Check if they created a comment in the timeframe.
   // Why comments? Cause creating a character and vanishing from the site
   // happens, and we want to see gut-check-level active people. That means

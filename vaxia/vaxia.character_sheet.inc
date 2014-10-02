@@ -121,11 +121,7 @@ function vaxia_character_sheet_field_info() {
         'owner' => DISABLE_SHEET,
       ),
     ),
-    'field_sex' => array(
-      'permissions' => array(
-        'owner' => DISABLE_SHEET,
-      ),
-    ),
+    //'field_sex' => array(
     'field_race' => array(
       'permissions' => array(
         'owner' => DISABLE_SHEET,
@@ -270,6 +266,11 @@ function vaxia_character_sheet_field_info() {
         'owner' => DISABLE_SHEET,
       ),
     ),
+    'field_achivements' => array(
+      'permissions' => array(
+        'owner' => DISABLE_SHEET,
+      ),
+    ),
     'field_sh_notes' => array(
       'permissions' => array(
         'owner' => DISABLE_SHEET,
@@ -302,7 +303,7 @@ function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
   if (_character_sheet_is_enabled($node) && !_character_sheet_is_playable($node)) {
     // Hide these fields for new characters.
     $disabled = array('field_economy', 'field_npcs', 'field_items', 'field_property',
-      'field_sh_notes', 'field_sh_private_notes');
+      'field_sh_notes', 'field_sh_private_notes', 'field_achivements', 'field_skill_review');
     foreach ($disabled as $field_name) {
       $form[$field_name]['#access'] = FALSE;
       $form[$field_name][$lang][0]['#access'] = FALSE;
