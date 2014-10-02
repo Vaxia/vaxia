@@ -271,6 +271,11 @@ function vaxia_character_sheet_field_info() {
         'owner' => DISABLE_SHEET,
       ),
     ),
+    'field_sh_notes' => array(
+      'permissions' => array(
+        'owner' => DISABLE_SHEET,
+      ),
+    ),
     'field_sh_private_notes' => array(
       'permissions' => array(
         'owner' => DISABLE_SHEET,
