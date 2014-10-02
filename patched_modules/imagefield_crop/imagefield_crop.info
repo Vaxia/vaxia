@@ -1,5 +1,0 @@
-name = Image crop
-description = Add cropping ability to images using javascript
-core = 7.x
-dependencies[] = image
-files[] = imagefield_crop.module
