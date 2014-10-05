@@ -957,7 +957,6 @@ function _proposal_form_proposal_node_form_submit($form, &$form_state) {
     $node->webform['nid'] = $node->nid;
     $node->webform['record_exists'] = (bool) drupal_write_record('webform', $node->webform);
     // Set the webform body
-    $node->body[$node->language][0]['value'] = $output;
     $node->webform['confirmation'] = t('Thank you for participating!');
     $node->webform['confirmation_format'] = 'plain_text';
     $node->webform['submit_limit'] = 1;
@@ -971,10 +970,44 @@ function _proposal_form_proposal_node_form_submit($form, &$form_state) {
     _proposal_webform_set_users(array($role->rid), array(), $node->nid);
     // Set the status to OFF on new nodes.
     $node->webform['status'] = FALSE;
-    // Save the node.
+    // Tweak the settings for the node the node.
+    if ($node->field_proposal_type['und'][0]['value'] == 'grievance') {
+      $node->webform['status'] = TRUE;
+      $node->uid = 1;
+    }
     node_save($node);
     // Include the webform module that allows components to be created.
     module_load_include('inc', 'webform', 'includes/webform.components');
+    // Is this a grievance closure? Check for members to close against.
+    if ($node->field_proposal_type['und'][0]['value'] == 'grievance') {
+      $members = !empty($node->field_grievance_members['und']) ? $node->field_grievance_members['und'] : array();
+      $weight = 1;
+      $options = "Yes|Yes\nNo|No";
+      foreach ($members as $member) {
+        $member = user_load($member['uid']);
+        $question = t('Should @member be removed from their position(s) on the site for misuse of power?', array('@member' => $member->name));
+        // Add the default comment box.
+        $component = array();
+        $component['nid'] = $node->nid;
+        $component['pid'] = 0;
+        $component['form_key'] = 'member_' . $member->uid;
+        $component['name'] = $question;
+        $component['type'] = 'select';
+        $component['mandatory'] = 1;
+        $component['extra'] = array(
+          'items' => $options,
+          'other_option' => 0,
+          'multiple' => 0,
+          'private' => 0,
+          'title_display' => 'before',
+          'aslist' => 0,
+          'optrand' => 0,
+        );
+        $component['weight'] = $weight;
+        webform_component_insert($component);
+        $weight++;
+      }
+    }
     // Add the default comment box.
     $component = array();
     $component['nid'] = $node->nid;
