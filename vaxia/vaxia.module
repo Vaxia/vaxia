@@ -377,8 +377,9 @@ function vaxia_node_view($node, $view_mode, $langcode) {
 function vaxia_process_node(&$variables) {
   if (_rpg_chat_is_enabled($variables['node']->type)) {
     $rpg_class = 'ic-room';
+    $limbo_room = variable_get('vaxia_limbo_room', array());
     // Set narrative checkbox access and no access in limbo rooms.
-    if (!user_access('post in narrative format') || in_array($node->nid, $limbo_room)) {
+    if (!user_access('post in narrative format') || in_array($variables['node']->nid, $limbo_room)) {
       $rpg_class = 'ooc-room';
     }
     $variables['classes'] .= ' ' . $rpg_class;
