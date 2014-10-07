@@ -369,6 +369,15 @@ function vaxia_node_view($node, $view_mode, $langcode) {
     drupal_add_js(drupal_get_path('module', 'vaxia') . '/js/vaxiaPullouts.js');
     drupal_add_css(drupal_get_path('module', 'vaxia') . '/css/vaxiaPullouts.css');
   }
+
+  if (_rpg_chat_is_enabled($node->type) && $view_mode == 'full' ) {
+    $rpg_class = 'ic-room';
+    // Set narrative checkbox access and no access in limbo rooms.
+    if (!user_access('post in narrative format') || in_array($node->nid, $limbo_room)) {
+      $rpg_class = 'ooc-room';
+    }
+     $node->content['#attributes']['class'][] = $rpg_class;
+  }
 }
 
 /**
@@ -632,20 +641,6 @@ function vaxia_form_workflow_tab_form_alter(&$form, &$form_state, $form_id) {
         $form['workflow'][$workflow_name]['#default_value'] = $node->workflow;
       }
     }
-  }
-}
-
-/**
- * Implements hook_node_view().
- */
-function vaxia_node_view($node, $view_mode = 'full', $langcode) {
-  if (_rpg_chat_is_enabled($node->type) && $view_mode == 'full' ) {
-    $rpg_class = 'ic-room';
-    // Set narrative checkbox access and no access in limbo rooms.
-    if (!user_access('post in narrative format') || in_array($node->nid, $limbo_room)) {
-      $rpg_class = 'ooc-room';
-    }
-     $node->content['#attributes']['class'][] = $rpg_class;
   }
 }
 
