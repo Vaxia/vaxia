@@ -636,6 +636,20 @@ function vaxia_form_workflow_tab_form_alter(&$form, &$form_state, $form_id) {
 }
 
 /**
+ * Implements hook_node_view().
+ */
+function vaxia_node_view($node, $view_mode = 'full', $langcode) {
+  if (_rpg_chat_is_enabled($node->type) && $view_mode == 'full' ) {
+    $rpg_class = 'ic-room';
+    // Set narrative checkbox access and no access in limbo rooms.
+    if (!user_access('post in narrative format') || in_array($node->nid, $limbo_room)) {
+      $rpg_class = 'ooc-room';
+    }
+     $node->content['#attributes']['class'][] = $rpg_class;
+  }
+}
+
+/**
  * Implements hook_form_alter().
  */
 function vaxia_form_alter(&$form, &$form_state, $form_id) {
