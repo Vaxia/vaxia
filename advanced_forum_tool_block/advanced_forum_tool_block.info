@@ -1,0 +1,5 @@
+name = Advanced Forum Tool Block
+description = Provide a block that displays Advanced Forums Forum Tools
+package = Other
+core = 7.x
+dependencies[] = advanced_forum
