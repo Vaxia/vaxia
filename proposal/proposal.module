@@ -590,7 +590,10 @@ function proposal_node_view($node, $view_mode, $langcode) {
     if ($potential_voters != 0) {
       $percent = number_format(($voted / $potential_voters) * 100);
       // If closed, use the time of closing minus two weeks. Otherwise use last changed.
-      $timeframe = ($node->webform['status'] == FALSE) ? $node->changed : strtotime('-2 weeks', $node->changed);
+      $timeframe = $node->changed;
+      if ($node->webform['status'] == FALSE) {
+        $timeframe = strtotime('-2 weeks', $node->changed);
+      }
       $active_voters = proposal_eligable_active_count($node->nid, $timeframe); // Within a window of two weeks active from last edit.
       $percent_active = number_format(($voted / $active_voters) * 100);
       $active_timeframe = variable_get('proposal_active_timeframe', '2 weeks');
