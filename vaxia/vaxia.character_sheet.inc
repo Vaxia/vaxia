@@ -1141,6 +1141,11 @@ function _vaxia_invest_silver_submit($form, $form_state) {
   $silver_invested = _character_sheet_get_xp($node->nid, 'invest_silver');
   $available_silver = $silver - ($silver_spent + $silver_invested);
   // Act.
+  $save_node = FALSE;
+  // Clear the cache if need be.
+  if (module_exists('entitycache')) {
+    cache_clear_all($nid, 'cache_entity_node');
+  }
   if (is_numeric($invest) && $invest > 0 && $invest <= $available_silver) {
     // Figure out how many to add based on added silver.
     $cost = _vaxia_invest_calculate_cost_to_improve($node->field_economy[$node->language][0]['value']);
@@ -1153,6 +1158,7 @@ function _vaxia_invest_silver_submit($form, $form_state) {
       if ($silver_invested >= $cost ) {
         // Pay the investment.
         $node->field_economy[$node->language][0]['value']++;
+        $save_node = TRUE;
         _character_sheet_update_xp($node->nid, $silver_invested, 'spent_silver');
         // Remove silver invested - back to zero.
         $current_invest = _character_sheet_get_xp($node->nid, 'invest_silver');
@@ -1162,6 +1168,9 @@ function _vaxia_invest_silver_submit($form, $form_state) {
       }
     }
     _character_sheet_update_xp($node->nid, $silver_to_invest, 'invest_silver');
+  }
+  // Flag to save the node if called for.
+  if ($save_node) {
     node_save($node);
   }
 }
@@ -1187,13 +1196,17 @@ function add_silver_submit_form(&$form, &$form_state) {
   $nid = $form_state['values']['nid'];
   $character = node_load($nid);
   $add_silver = $form_state['values']['add_silver'];
+  // Clear the cache if need be.
+  if (module_exists('entitycache')) {
+    cache_clear_all($nid, 'cache_entity_node');
+  }
   // If positive, add silver as per standard XP.
   if ($add_silver > 0) {
     _character_sheet_update_xp($nid, $add_silver, 'silver');
     drupal_set_message(t('%add_silver silver has been added to this sheet.', array('%add_silver' => $add_silver)));
-	$message = t('@xp silver added to @title by @user.',
-		array('@xp' => $add_silver, '@title' => $character->title, '@user' => $user->name));
-	_character_sheet_update_log($nid, 'silver', $message);
+    $message = t('@xp silver added to @title by @user.',
+      array('@xp' => $add_silver, '@title' => $character->title, '@user' => $user->name));
+    _character_sheet_update_log($nid, 'silver', $message);
     return;
   }
   // If negative. First check if we can just subtract off of given XP.
@@ -1201,9 +1214,9 @@ function add_silver_submit_form(&$form, &$form_state) {
     _add_silver_submit_form_remove_silver($nid, $add_silver);
     drupal_set_message(t('%add_silver silver has been removed from this sheet.',
       array('%add_silver' => $add_silver)));
-	$message = t('@xp silver removed from @title by @user.',
-		array('@xp' => $add_silver, '@title' => $character->title, '@user' => $user->name));
-	_character_sheet_update_log($character, 'silver', $message);
+    $message = t('@xp silver removed from @title by @user.',
+      array('@xp' => $add_silver, '@title' => $character->title, '@user' => $user->name));
+    _character_sheet_update_log($character, 'silver', $message);
   }
 }
 
