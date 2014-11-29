@@ -1,0 +1,11 @@
+name = Suspend Players
+description = Suspend troublesome players for tmp time
+core = 7.x
+package = RPG
+version = 7.x-1.0
+project = suspend_players
+dependencies[] = entity
+dependencies[] = rules
+dependencies[] = user_stats
+features[features_api][] = api:1
+features[rules_config][] = rules_unban_a_banned_user
