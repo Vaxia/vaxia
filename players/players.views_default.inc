@@ -25,7 +25,7 @@ function players_views_default_views() {
   $handler->display->display_options['title'] = 'Players';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'perm';
-  $handler->display->display_options['access']['perm'] = 'access user profiles';
+  $handler->display->display_options['access']['perm'] = 'administer users';
   $handler->display->display_options['cache']['type'] = 'time';
   $handler->display->display_options['cache']['results_lifespan'] = '3600';
   $handler->display->display_options['cache']['output_lifespan'] = '3600';
@@ -81,6 +81,11 @@ function players_views_default_views() {
   $handler->display->display_options['fields']['login']['table'] = 'users';
   $handler->display->display_options['fields']['login']['field'] = 'login';
   $handler->display->display_options['fields']['login']['date_format'] = 'time ago';
+  /* Field: User Badges: Grouped User Badges */
+  $handler->display->display_options['fields']['user_badges_html']['id'] = 'user_badges_html';
+  $handler->display->display_options['fields']['user_badges_html']['table'] = 'users';
+  $handler->display->display_options['fields']['user_badges_html']['field'] = 'user_badges_html';
+  $handler->display->display_options['fields']['user_badges_html']['label'] = 'Badges';
   /* Sort criterion: User: Created date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'users';
@@ -124,10 +129,21 @@ function players_views_default_views() {
     11 => 0,
     22 => 0,
   );
+  /* Filter criterion: User: Roles */
+  $handler->display->display_options['filters']['rid']['id'] = 'rid';
+  $handler->display->display_options['filters']['rid']['table'] = 'users_roles';
+  $handler->display->display_options['filters']['rid']['field'] = 'rid';
+  $handler->display->display_options['filters']['rid']['value'] = array(
+    8 => '8',
+  );
 
   /* Display: Players */
   $handler = $view->new_display('page', 'Players', 'players');
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['defaults']['access'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['access']['perm'] = 'access user profiles';
+  $handler->display->display_options['defaults']['footer'] = FALSE;
   $handler->display->display_options['path'] = 'players/all';
   $handler->display->display_options['menu']['type'] = 'default tab';
   $handler->display->display_options['menu']['title'] = 'Players';

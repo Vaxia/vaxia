@@ -99,13 +99,13 @@ function proposal_strongarm() {
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '5',
+          'weight' => '7',
         ),
         'badges' => array(
-          'weight' => '6',
+          'weight' => '8',
         ),
         'locations' => array(
-          'weight' => '7',
+          'weight' => '9',
         ),
       ),
       'display' => array(

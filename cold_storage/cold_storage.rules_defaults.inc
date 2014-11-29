@@ -14,14 +14,23 @@ function cold_storage_default_rules_configuration() {
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
       "TAGS" : [ "Cold storage" ],
-      "REQUIRES" : [ "views_rules", "rules", "workflow_rules", "rules_block_user" ],
+      "REQUIRES" : [ "rules", "views_rules", "workflow_rules", "rules_block_user" ],
       "ON" : { "user_was_unblocked" : [] },
+      "IF" : [
+        { "user_has_role" : { "account" : [ "account" ], "roles" : { "value" : { "22" : "22" } } } },
+        { "NOT user_has_role" : {
+            "account" : [ "account" ],
+            "roles" : { "value" : { "31" : "31", "32" : "32" } },
+            "operation" : "OR"
+          }
+        }
+      ],
       "DO" : [
         { "VIEW LOOP" : {
             "VIEW" : "vaxia_character_sheets",
             "DISPLAY" : "rules_chars_by_user",
             "USING" : { "uid" : [ "account:uid" ] },
-            "ROW VARIABLES" : { "nid" : { "nid" : "Nid" }, "title_1" : { "character_name" : "Name" } },
+            "ROW VARIABLES" : { "nid" : { "nid" : "Nid" } },
             "DO" : [
               { "entity_fetch" : {
                   "USING" : { "type" : "node", "id" : [ "nid" ] },
@@ -29,10 +38,31 @@ function cold_storage_default_rules_configuration() {
                 }
               },
               { "node_publish" : { "node" : [ "entity-fetched" ] } },
+              { "entity_save" : { "data" : [ "entity-fetched" ], "immediate" : 1 } },
+              { "workflow_rules_set_state" : {
+                  "node" : [ "entity-fetched" ],
+                  "workflow_state" : { "value" : { "2" : "2" } },
+                  "workflow_comment" : "Characters from cold storage set to draft."
+                }
+              }
+            ]
+          }
+        },
+        { "VIEW LOOP" : {
+            "VIEW" : "vaxia_character_sheets",
+            "DISPLAY" : "views_rules_1",
+            "USING" : { "uid" : [ "account:uid" ] },
+            "ROW VARIABLES" : { "nid" : { "nid" : "Nid" } },
+            "DO" : [
+              { "entity_fetch" : {
+                  "USING" : { "type" : "node", "id" : [ "nid" ] },
+                  "PROVIDE" : { "entity_fetched" : { "entity_fetched" : "Fetched entity" } }
+                }
+              },
               { "workflow_rules_set_state" : {
                   "node" : [ "entity-fetched" ],
                   "workflow_state" : { "value" : { "3" : "3" } },
-                  "workflow_comment" : "Returned to submit pending re-approval after player moved from cold storage."
+                  "workflow_comment" : "Re-submission of previously approved character by system. This is so that current eval may review characters from previous versions of the system to bring them up to date."
                 }
               }
             ]
@@ -52,7 +82,13 @@ function cold_storage_default_rules_configuration() {
       "REQUIRES" : [ "rules", "views_rules", "workflow_rules", "rules_block_user" ],
       "ON" : { "user_was_blocked" : [] },
       "IF" : [
-        { "user_has_role" : { "account" : [ "account" ], "roles" : { "value" : { "8" : "8" } } } }
+        { "user_has_role" : { "account" : [ "account" ], "roles" : { "value" : { "8" : "8" } } } },
+        { "NOT user_has_role" : {
+            "account" : [ "account" ],
+            "roles" : { "value" : { "31" : "31", "32" : "32" } },
+            "operation" : "OR"
+          }
+        }
       ],
       "DO" : [
         { "user_add_role" : { "account" : [ "account" ], "roles" : { "value" : { "22" : "22" } } } },
@@ -85,7 +121,7 @@ function cold_storage_default_rules_configuration() {
             "VIEW" : "vaxia_character_sheets",
             "DISPLAY" : "rules_chars_by_user",
             "USING" : { "uid" : [ "account:uid" ] },
-            "ROW VARIABLES" : { "nid" : { "nid" : "Nid" }, "title_1" : { "character_name" : "Name" } },
+            "ROW VARIABLES" : { "nid" : { "nid" : "Nid" } },
             "DO" : [
               { "entity_fetch" : {
                   "USING" : { "type" : "node", "id" : [ "nid" ] },
@@ -96,7 +132,7 @@ function cold_storage_default_rules_configuration() {
               { "workflow_rules_set_state" : {
                   "node" : [ "entity-fetched" ],
                   "workflow_state" : { "value" : { "2" : "2" } },
-                  "workflow_comment" : "Set to default after player moved to cold storage."
+                  "workflow_comment" : "Set to draft after player moved to cold storage."
                 }
               }
             ]

@@ -145,16 +145,16 @@ function strikes_strongarm() {
     'extra_fields' => array(
       'form' => array(
         'locations' => array(
-          'weight' => '12',
+          'weight' => '11',
         ),
         'title' => array(
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '10',
+          'weight' => '9',
         ),
         'badges' => array(
-          'weight' => '11',
+          'weight' => '10',
         ),
       ),
       'display' => array(),
@@ -202,13 +202,13 @@ function strikes_strongarm() {
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '8',
+          'weight' => '6',
         ),
         'locations' => array(
-          'weight' => '10',
+          'weight' => '8',
         ),
         'badges' => array(
-          'weight' => '9',
+          'weight' => '7',
         ),
       ),
       'display' => array(),

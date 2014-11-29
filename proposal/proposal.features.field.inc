@@ -81,7 +81,7 @@ function proposal_field_default_fields() {
           'summary_rows' => 5,
         ),
         'type' => 'text_textarea_with_summary',
-        'weight' => '4',
+        'weight' => '6',
       ),
     ),
   );
@@ -243,6 +243,103 @@ function proposal_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-proposal-field_grievance_members'.
+  $fields['node-proposal-field_grievance_members'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_grievance_members',
+      'foreign keys' => array(
+        'uid' => array(
+          'columns' => array(
+            'uid' => 'uid',
+          ),
+          'table' => 'users',
+        ),
+      ),
+      'indexes' => array(
+        'uid' => array(
+          0 => 'uid',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'user_reference',
+      'settings' => array(
+        'referenceable_roles' => array(
+          2 => 0,
+          3 => 0,
+          8 => '8',
+          9 => 0,
+          10 => 0,
+          12 => 0,
+          13 => 0,
+          14 => 0,
+          15 => 0,
+          17 => 0,
+          19 => 0,
+          20 => 0,
+          21 => 0,
+          22 => 0,
+          23 => 0,
+          24 => 0,
+          25 => 0,
+          26 => 0,
+          27 => 0,
+          28 => 0,
+          29 => 0,
+          30 => 0,
+        ),
+        'referenceable_status' => array(
+          0 => 0,
+          1 => '1',
+        ),
+        'view' => array(
+          'args' => array(),
+          'display_name' => '',
+          'view_name' => '',
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'user_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'proposal',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'Please list all members whose behavior has been noted as problematic for the associated grievance. A question regarding each site member\'s fitness for the roles they hold will be automatically created for the grievance.
+
+After you click save, this proposal will be automatically opened to begin the grievance closure.',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '6',
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_grievance_members',
+      'label' => 'Site members under question',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'user_reference',
+        'settings' => array(
+          'autocomplete_match' => 'contains',
+          'autocomplete_path' => 'user_reference/autocomplete',
+          'size' => '60',
+        ),
+        'type' => 'user_reference_autocomplete',
+        'weight' => '3',
+      ),
+    ),
+  );
+
   // Exported field: 'node-proposal-field_proposal_type'.
   $fields['node-proposal-field_proposal_type'] = array(
     'field_config' => array(
@@ -304,7 +401,7 @@ function proposal_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '1',
+        'weight' => '2',
       ),
     ),
   );
@@ -376,7 +473,7 @@ function proposal_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '2',
+        'weight' => '1',
       ),
     ),
   );
@@ -388,7 +485,11 @@ function proposal_field_default_fields() {
   t('Associated Forum Threads');
   t('Body');
   t('Forums');
+  t('Please list all members whose behavior has been noted as problematic for the associated grievance. A question regarding each site member\'s fitness for the roles they hold will be automatically created for the grievance.
+
+After you click save, this proposal will be automatically opened to begin the grievance closure.');
   t('Select the type of proposal this is. Most proposals are going to be standard proposals.');
+  t('Site members under question');
   t('Type');
   t('Upload any files, spreadsheets or images detailing system numbers, or other useful information to give context to this proposal.');
 

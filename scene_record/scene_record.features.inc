@@ -29,10 +29,10 @@ function scene_record_node_info() {
     'scene' => array(
       'name' => t('Scene'),
       'base' => 'node_content',
-      'description' => t('A scene to be recorded.'),
+      'description' => t('A scene to record.'),
       'has_title' => '1',
       'title_label' => t('Title'),
-      'help' => '',
+      'help' => t('Need help using this? We have a help page! Check it: <a href="http://vaxia.org/wiki/scene-creation-guide" target="_blank">Scene Creation Guide</a>.'),
     ),
   );
   return $items;

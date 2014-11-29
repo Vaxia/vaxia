@@ -365,10 +365,9 @@ function rpg_chat_views_default_views() {
   $handler->display->display_options['defaults']['cache'] = FALSE;
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['defaults']['exposed_form'] = FALSE;
-  $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Go';
-  $handler->display->display_options['exposed_form']['options']['autosubmit'] = TRUE;
-  $handler->display->display_options['exposed_form']['options']['autosubmit_hide'] = FALSE;
+  $handler->display->display_options['exposed_form']['type'] = 'input_required';
+  $handler->display->display_options['exposed_form']['options']['text_input_required'] = '';
+  $handler->display->display_options['exposed_form']['options']['text_input_required_format'] = 'wiki';
   $handler->display->display_options['defaults']['pager'] = FALSE;
   $handler->display->display_options['pager']['type'] = 'some';
   $handler->display->display_options['pager']['options']['items_per_page'] = '5';
@@ -440,24 +439,31 @@ function rpg_chat_views_default_views() {
   $handler->display->display_options['filters']['title']['expose']['operator_id'] = 'title_op';
   $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
   $handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
-  $handler->display->display_options['filters']['title']['expose']['required'] = TRUE;
   $handler->display->display_options['filters']['title']['expose']['remember'] = TRUE;
   $handler->display->display_options['filters']['title']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
+    3 => 0,
+    30 => 0,
     8 => 0,
+    9 => 0,
+    14 => 0,
+    21 => 0,
+    24 => 0,
+    26 => 0,
+    27 => 0,
     19 => 0,
+    28 => 0,
+    29 => 0,
     12 => 0,
+    25 => 0,
     13 => 0,
     10 => 0,
     17 => 0,
     15 => 0,
-    9 => 0,
     20 => 0,
-    14 => 0,
-    4 => 0,
-    3 => 0,
-    11 => 0,
+    22 => 0,
+    23 => 0,
   );
   /* Filter criterion: Content: Realm (field_realm) */
   $handler->display->display_options['filters']['field_realm_value']['id'] = 'field_realm_value';
@@ -517,6 +523,10 @@ function rpg_chat_views_default_views() {
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['row_options']['inline'] = array(
+    'title' => 'title',
+    'field_realm' => 'field_realm',
+  );
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['header'] = FALSE;
   /* Header: Global: Text area */
@@ -552,6 +562,14 @@ function rpg_chat_views_default_views() {
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title']['hide_alter_empty'] = FALSE;
+  /* Field: Content: Realm */
+  $handler->display->display_options['fields']['field_realm']['id'] = 'field_realm';
+  $handler->display->display_options['fields']['field_realm']['table'] = 'field_data_field_realm';
+  $handler->display->display_options['fields']['field_realm']['field'] = 'field_realm';
+  $handler->display->display_options['fields']['field_realm']['label'] = '';
+  $handler->display->display_options['fields']['field_realm']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_realm']['alter']['text'] = ' ([field_realm])';
+  $handler->display->display_options['fields']['field_realm']['element_label_colon'] = FALSE;
   $handler->display->display_options['defaults']['sorts'] = FALSE;
   /* Sort criterion: Content: Last comment time */
   $handler->display->display_options['sorts']['last_comment_timestamp']['id'] = 'last_comment_timestamp';

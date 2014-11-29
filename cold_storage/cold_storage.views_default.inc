@@ -82,10 +82,6 @@ function cold_storage_views_default_views() {
   $handler->display->display_options['fields']['login']['table'] = 'users';
   $handler->display->display_options['fields']['login']['field'] = 'login';
   $handler->display->display_options['fields']['login']['date_format'] = 'time ago';
-  /* Sort criterion: User: Name */
-  $handler->display->display_options['sorts']['name']['id'] = 'name';
-  $handler->display->display_options['sorts']['name']['table'] = 'users';
-  $handler->display->display_options['sorts']['name']['field'] = 'name';
   /* Filter criterion: User: Active */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'users';
@@ -126,7 +122,7 @@ function cold_storage_views_default_views() {
   );
 
   /* Display: Cold Storage */
-  $handler = $view->new_display('page', 'Cold Storage', 'user_cold_storage');
+  $handler = $view->new_display('page', 'Cold Storage', 'cold_storage');
   $handler->display->display_options['display_description'] = 'Players in cold storage - legacy user accounts';
   $handler->display->display_options['defaults']['access'] = FALSE;
   $handler->display->display_options['access']['type'] = 'role';
@@ -365,10 +361,85 @@ function cold_storage_views_default_views() {
   $handler->display->display_options['menu']['type'] = 'tab';
   $handler->display->display_options['menu']['title'] = 'Cold storage';
   $handler->display->display_options['menu']['description'] = 'Players in cold storage';
-  $handler->display->display_options['menu']['weight'] = '1';
+  $handler->display->display_options['menu']['weight'] = '1000';
   $handler->display->display_options['menu']['name'] = 'menu-vaxia';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
+
+  /* Display: Rules: Retrieve from cold storage */
+  $handler = $view->new_display('views_rules', 'Rules: Retrieve from cold storage', 'cold_storage_retrieve');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Retrieve from cold storage';
+  $handler->display->display_options['display_description'] = 'Rules: Retrieve from cold storage';
+  $handler->display->display_options['defaults']['access'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'none';
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['defaults']['empty'] = FALSE;
+  /* No results behavior: Global: PHP */
+  $handler->display->display_options['empty']['php']['id'] = 'php';
+  $handler->display->display_options['empty']['php']['table'] = 'views';
+  $handler->display->display_options['empty']['php']['field'] = 'php';
+  $handler->display->display_options['empty']['php']['empty'] = TRUE;
+  $handler->display->display_options['empty']['php']['php_output'] = '<?php drupal_set_message(t(\'No account matching this email was found in cold storage.\')); ?>';
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: User: Uid */
+  $handler->display->display_options['fields']['uid']['id'] = 'uid';
+  $handler->display->display_options['fields']['uid']['table'] = 'users';
+  $handler->display->display_options['fields']['uid']['field'] = 'uid';
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: User: E-mail */
+  $handler->display->display_options['arguments']['mail']['id'] = 'mail';
+  $handler->display->display_options['arguments']['mail']['table'] = 'users';
+  $handler->display->display_options['arguments']['mail']['field'] = 'mail';
+  $handler->display->display_options['arguments']['mail']['default_action'] = 'empty';
+  $handler->display->display_options['arguments']['mail']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['mail']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['mail']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['mail']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['mail']['limit'] = '0';
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: User: Active */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'users';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '0';
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: User: Roles */
+  $handler->display->display_options['filters']['rid']['id'] = 'rid';
+  $handler->display->display_options['filters']['rid']['table'] = 'users_roles';
+  $handler->display->display_options['filters']['rid']['field'] = 'rid';
+  $handler->display->display_options['filters']['rid']['value'] = array(
+    22 => '22',
+  );
+  /* Filter criterion: User: Roles */
+  $handler->display->display_options['filters']['rid_1']['id'] = 'rid_1';
+  $handler->display->display_options['filters']['rid_1']['table'] = 'users_roles';
+  $handler->display->display_options['filters']['rid_1']['field'] = 'rid';
+  $handler->display->display_options['filters']['rid_1']['operator'] = 'not';
+  $handler->display->display_options['filters']['rid_1']['value'] = array(
+    31 => '31',
+    32 => '32',
+  );
+  $handler->display->display_options['rules_parameter'] = array(
+    'mail' => array(
+      'enabled' => 1,
+      'type' => 'text',
+      'label' => 'User: E-mail',
+      'name' => 'mail',
+    ),
+  );
+  $handler->display->display_options['rules_variables'] = array(
+    'uid' => array(
+      'enabled' => 1,
+      'rendered' => 0,
+      'type' => 'integer',
+      'label' => 'Uid',
+      'name' => 'uid',
+    ),
+  );
   $export['cold_storage'] = $view;
 
   return $export;
