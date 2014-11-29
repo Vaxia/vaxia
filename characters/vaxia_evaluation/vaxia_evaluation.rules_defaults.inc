@@ -122,6 +122,23 @@ function vaxia_evaluation_default_rules_configuration() {
       ]
     }
   }');
+  $items['rules_add_character_and_become_a_player'] = entity_import('rules_config', '{ "rules_add_character_and_become_a_player" : {
+      "LABEL" : "Add character and become a player",
+      "PLUGIN" : "reaction rule",
+      "ACTIVE" : false,
+      "OWNER" : "rules",
+      "TAGS" : [ "Players" ],
+      "REQUIRES" : [ "rules" ],
+      "ON" : { "node_insert--character_sheet" : { "bundle" : "character_sheet" } },
+      "IF" : [
+        { "NOT user_has_role" : { "account" : [ "node:author" ], "roles" : { "value" : { "8" : "8" } } } }
+      ],
+      "DO" : [
+        { "user_add_role" : { "account" : [ "node:author" ], "roles" : { "value" : { "8" : "8" } } } },
+        { "user_remove_role" : { "account" : [ "node:author" ], "roles" : { "value" : { "30" : "30" } } } }
+      ]
+    }
+  }');
   $items['rules_cap_of_characters_in_the_bin_at_the_same_time'] = entity_import('rules_config', '{ "rules_cap_of_characters_in_the_bin_at_the_same_time" : {
       "LABEL" : "Cap # of characters in the bin at the same time",
       "PLUGIN" : "reaction rule",
@@ -163,6 +180,72 @@ function vaxia_evaluation_default_rules_configuration() {
             ]
           }
         }
+      ]
+    }
+  }');
+  $items['rules_catch_too_many_min_max_characters'] = entity_import('rules_config', '{ "rules_catch_too_many_min_max_characters" : {
+      "LABEL" : "Catch too many Min Max characters",
+      "PLUGIN" : "reaction rule",
+      "WEIGHT" : "-5",
+      "OWNER" : "rules",
+      "TAGS" : [ "Characters" ],
+      "REQUIRES" : [ "rules", "workflow_rules", "php" ],
+      "ON" : { "workflow_state_changed" : [] },
+      "IF" : [
+        { "node_is_of_type" : {
+            "node" : [ "node" ],
+            "type" : { "value" : { "character_sheet" : "character_sheet" } }
+          }
+        },
+        { "workflow_check_transition" : {
+            "node" : [ "node" ],
+            "old_state" : { "value" : { "1" : "1", "2" : "2" } },
+            "new_state" : { "value" : { "3" : "3" } }
+          }
+        },
+        { "data_is" : { "data" : [ "site:current-user" ], "value" : [ "node:author" ] } },
+        { "data_is" : {
+            "data" : [ "node:author:field-characters-submitted" ],
+            "op" : "\\u003E",
+            "value" : "3"
+          }
+        },
+        { "data_is" : {
+            "data" : [ "node:author:field-characters-minmax" ],
+            "op" : "\\u003E",
+            "value" : "0"
+          }
+        },
+        { "data_is" : { "data" : [ "node:field-is-npc" ], "value" : 0 } },
+        { "data_is" : { "data" : [ "node:field-is-open-npc" ], "value" : 0 } },
+        { "data_is" : { "data" : [ "node:field-is-storyteller" ], "value" : 0 } },
+        { "php_eval" : { "code" : "$has_xp = _character_sheet_get_xp($node-\\u003Enid, \\u0027xp\\u0027);\\r\\n\\/\\/ Only run this check if they don\\u0027t have XP.\\r\\nif (!$has_xp) {\\r\\n$messages = _vaxia_check_minmax_flags($node);\\r\\nreturn !empty($messages); \\/\\/ True if messages were flagged.\\r\\n}\\r\\nreturn FALSE;" } },
+        { "php_eval" : { "code" : "$mm_chars = [node:author:field-characters-minmax];\\r\\n$chars = [node:author:field-characters-submitted];\\r\\n$perc = $mm_chars \\/ $chars;\\r\\nif ($perc \\u003E 0.5) {\\r\\nreturn TRUE;\\r\\n}\\r\\nreturn FALSE;" } }
+      ],
+      "DO" : [
+        { "workflow_rules_set_state" : {
+            "node" : [ "node" ],
+            "workflow_state" : { "value" : { "2" : "2" } },
+            "workflow_comment" : "This character has been returned to draft by the system. The majority of this player\\u0027s submissions over time have been flagged under the min-max settings. Most characters submitted should not fall under min-max flags."
+          }
+        },
+        { "data_set" : {
+            "data" : [ "node:author:field-characters-minmax" ],
+            "value" : {
+              "select" : "node:author:field-characters-minmax",
+              "num_offset" : { "value" : "1" }
+            }
+          }
+        },
+        { "data_set" : {
+            "data" : [ "node:author:field-characters-submitted" ],
+            "value" : {
+              "select" : "node:author:field-characters-submitted",
+              "num_offset" : { "value" : "-1" }
+            }
+          }
+        },
+        { "php_eval" : { "code" : "db_query(\\u0027UPDATE {workflow_node_history} h \\u0027 .\\r\\n\\u0027SET h.stamp = h.stamp + 1 \\u0027 .\\r\\n\\u0027WHERE h.nid = :nid \\u0027 .\\r\\n\\u0027ORDER BY hid DESC LIMIT 1\\u0027,\\r\\narray(\\u0027:nid\\u0027 =\\u003E $node-\\u003Enid));" } }
       ]
     }
   }');

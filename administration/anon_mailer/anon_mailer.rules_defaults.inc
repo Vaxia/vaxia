@@ -9,6 +9,24 @@
  */
 function anon_mailer_default_rules_configuration() {
   $items = array();
+  $items['anon_mailer_grievance_posting_incomplete'] = entity_import('rules_config', '{ "anon_mailer_grievance_posting_incomplete" : {
+      "LABEL" : "Grievance Posting - Incomplete",
+      "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
+      "TAGS" : [ "Anon Mailer" ],
+      "REQUIRES" : [ "rules", "php", "webform_rules" ],
+      "ON" : { "webform_rules_submit" : [] },
+      "IF" : [
+        { "node_is_of_type" : { "node" : [ "node" ], "type" : { "value" : { "webform" : "webform" } } } },
+        { "data_is" : { "data" : [ "node:nid" ], "value" : "9368" } },
+        { "php_eval" : { "code" : "$grievance = trim(\\u0022[data:grievance_request-value]\\u0022);\\r\\nreturn ($grievance == \\u0027This is a grievance request.\\u0027) ? TRUE: FALSE;" } },
+        { "NOT php_eval" : { "code" : "$violation = trim(\\u0022[data:grievance_violation-value]\\u0022);\\r\\n$person = trim(\\u0022[data:grievance_names-value]\\u0022);\\r\\nif (empty($violation)) {\\r\\nreturn FALSE;\\r\\n}\\r\\nif (empty($person)) {\\r\\nreturn FALSE;\\r\\n}\\r\\nreturn TRUE;" } }
+      ],
+      "DO" : [
+        { "drupal_message" : { "message" : "Your grievance posting is incomplete. You must provide named individuals, a category of violation, and logs in order to open a grievance. Remember - a grievance is an impeachment process on this site and can be incredibly disruptive - do not open one unless you intend to see it through." } }
+      ]
+    }
+  }');
   $items['rules_anon_mailer'] = entity_import('rules_config', '{ "rules_anon_mailer" : {
       "LABEL" : "Anon Mailer",
       "PLUGIN" : "reaction rule",

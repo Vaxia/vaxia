@@ -708,6 +708,68 @@ function sh_test_default_rules_configuration() {
       ]
     }
   }');
+  $items['sh_test_sh_test_ash_1_expire_set_title'] = entity_import('rules_config', '{ "sh_test_sh_test_ash_1_expire_set_title" : {
+      "LABEL" : "SH Test - ASH 1 Expire Set Title",
+      "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
+      "TAGS" : [ "SH Course" ],
+      "REQUIRES" : [ "rules", "user_stats" ],
+      "ON" : { "user_stats_day_older" : [] },
+      "IF" : [
+        { "user_has_role" : {
+            "account" : [ "user" ],
+            "roles" : { "value" : { "8" : "8", "13" : "13", "12" : "12" } }
+          }
+        },
+        { "data_is" : {
+            "data" : [ "user:field-took-ash1" ],
+            "op" : "\\u003C",
+            "value" : "-6 months"
+          }
+        },
+        { "node_is_of_type" : {
+            "node" : [ "user:field-storyhost-character" ],
+            "type" : { "value" : { "character_sheet" : "character_sheet" } }
+          }
+        }
+      ],
+      "DO" : [
+        { "data_set" : {
+            "data" : [ "user:field-storyhost-character:field-titles" ],
+            "value" : "ASH (retired)"
+          }
+        }
+      ]
+    }
+  }');
+  $items['sh_test_sh_test_record_ash_title'] = entity_import('rules_config', '{ "sh_test_sh_test_record_ash_title" : {
+      "LABEL" : "SH Test - Set ASH Title",
+      "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
+      "TAGS" : [ "SH Course" ],
+      "REQUIRES" : [ "rules", "quiz_rules" ],
+      "ON" : { "quiz_rules_quiz_passed" : [] },
+      "IF" : [
+        { "node_is_of_type" : {
+            "node" : [ "user:field-storyhost-character" ],
+            "type" : { "value" : { "character_sheet" : "character_sheet" } }
+          }
+        },
+        { "OR" : [
+            { "data_is" : { "data" : [ "node:nid" ], "value" : "7050" } },
+            { "data_is" : { "data" : [ "node:nid" ], "value" : "7037" } }
+          ]
+        }
+      ],
+      "DO" : [
+        { "data_set" : {
+            "data" : [ "user:field-storyhost-character:field-titles" ],
+            "value" : "ASH"
+          }
+        }
+      ]
+    }
+  }');
   $items['sh_test_warn_at_sh_test_2_if_not_eligable'] = entity_import('rules_config', '{ "sh_test_warn_at_sh_test_2_if_not_eligable" : {
       "LABEL" : "SH Test - Warn if not Eligable as ASH 2",
       "PLUGIN" : "reaction rule",
