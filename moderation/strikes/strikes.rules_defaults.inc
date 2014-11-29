@@ -9,8 +9,100 @@
  */
 function strikes_default_rules_configuration() {
   $items = array();
+  $items['rules_create_red_strike'] = entity_import('rules_config', '{ "rules_create_red_strike" : {
+      "LABEL" : "Strikes - Create red strike",
+      "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
+      "TAGS" : [ "Strikes" ],
+      "REQUIRES" : [ "rules_list_conditions", "rules" ],
+      "ON" : { "node_insert--notation" : { "bundle" : "notation" } },
+      "IF" : [
+        { "ANY" : {
+            "USING" : { "list" : [ "node:field-results" ] },
+            "ITEM" : { "result" : "Result" },
+            "ANY" : [ { "data_is" : { "data" : [ "result" ], "value" : "red" } } ]
+          }
+        }
+      ],
+      "DO" : [
+        { "LOOP" : {
+            "USING" : { "list" : [ "node:field-red-strike" ] },
+            "ITEM" : { "strike_user" : "Strike user" },
+            "DO" : [
+              { "entity_create" : {
+                  "USING" : {
+                    "type" : "node",
+                    "param_type" : "strike",
+                    "param_title" : "Red Strike - [strike-user:name]",
+                    "param_author" : [ "node:author" ]
+                  },
+                  "PROVIDE" : { "entity_created" : { "strike" : "Strike" } }
+                }
+              },
+              { "data_set" : { "data" : [ "strike:field-severity" ], "value" : "Red" } },
+              { "data_set" : { "data" : [ "strike:field-associated-record" ], "value" : [ "node" ] } },
+              { "data_set" : {
+                  "data" : [ "strike:field-date-of-incident" ],
+                  "value" : [ "node:field-date-of-incident" ]
+                }
+              },
+              { "data_set" : { "data" : [ "strike:field-struck-player" ], "value" : [ "strike-user" ] } },
+              { "entity_save" : { "data" : [ "strike" ] } },
+              { "drupal_message" : { "message" : "A red strike has been issued to [strike-user:name]." } }
+            ]
+          }
+        }
+      ]
+    }
+  }');
+  $items['rules_create_yellow_strike'] = entity_import('rules_config', '{ "rules_create_yellow_strike" : {
+      "LABEL" : "Strikes - Create yellow strike",
+      "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
+      "TAGS" : [ "Strikes" ],
+      "REQUIRES" : [ "rules_list_conditions", "rules" ],
+      "ON" : { "node_insert--notation" : { "bundle" : "notation" } },
+      "IF" : [
+        { "ANY" : {
+            "USING" : { "list" : [ "node:field-results" ] },
+            "ITEM" : { "result" : "Result" },
+            "ANY" : [ { "data_is" : { "data" : [ "result" ], "value" : "yellow" } } ]
+          }
+        }
+      ],
+      "DO" : [
+        { "LOOP" : {
+            "USING" : { "list" : [ "node:field-yellow-strike" ] },
+            "ITEM" : { "strike_user" : "Strike user" },
+            "DO" : [
+              { "entity_create" : {
+                  "USING" : {
+                    "type" : "node",
+                    "param_type" : "strike",
+                    "param_title" : "Yellow Strike - [strike-user:name] ",
+                    "param_author" : [ "node:author" ]
+                  },
+                  "PROVIDE" : { "entity_created" : { "strike" : "Strike" } }
+                }
+              },
+              { "data_set" : { "data" : [ "strike:field-severity" ], "value" : "Yellow" } },
+              { "data_set" : { "data" : [ "strike:field-associated-record" ], "value" : [ "node" ] } },
+              { "data_set" : {
+                  "data" : [ "strike:field-date-of-incident" ],
+                  "value" : [ "node:field-date-of-incident" ]
+                }
+              },
+              { "data_set" : { "data" : [ "strike:field-struck-player" ], "value" : [ "strike-user" ] } },
+              { "entity_save" : { "data" : [ "strike" ], "immediate" : 1 } },
+              { "drupal_message" : { "message" : "A yellow strike has been issued to [strike-user:name]." } }
+            ]
+          }
+        }
+      ]
+    }
+  }');
   $items['rules_notation_email'] = entity_import('rules_config', '{ "rules_notation_email" : {
-      "LABEL" : "Notation Email",
+      "LABEL" : "Strikes - Notation Email",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
       "TAGS" : [ "Strikes" ],
@@ -69,120 +161,28 @@ function strikes_default_rules_configuration() {
     }
   }');
   $items['rules_red_strike'] = entity_import('rules_config', '{ "rules_red_strike" : {
-      "LABEL" : "Red strike and Suspend User",
+      "LABEL" : "Strikes - Red strike",
       "PLUGIN" : "reaction rule",
+      "WEIGHT" : "10",
       "OWNER" : "rules",
-      "TAGS" : [ "Strikes", "Suspensions" ],
-      "REQUIRES" : [ "rules", "views_rules", "php" ],
+      "TAGS" : [ "Strikes" ],
+      "REQUIRES" : [ "rules" ],
       "ON" : { "node_insert" : [] },
       "IF" : [
         { "node_is_of_type" : { "node" : [ "node" ], "type" : { "value" : { "strike" : "strike" } } } },
         { "data_is" : { "data" : [ "node:field-severity" ], "value" : "Red" } }
       ],
       "DO" : [
-        { "entity_save" : { "data" : [ "node" ], "immediate" : 1 } },
-        { "variable_add" : {
-            "USING" : { "type" : "list", "value" : [ "" ] },
-            "PROVIDE" : { "variable_added" : { "list_for_months" : "List for Months" } }
-          }
-        },
-        { "list_add" : { "list" : [ "list-for-months" ], "item" : [ "node:nid" ] } },
-        { "VIEW LOOP" : {
-            "VIEW" : "strikes",
-            "DISPLAY" : "players_multi_reds",
-            "USING" : { "field_struck_player_uid" : [ "node:field-struck-player:uid" ] },
-            "ROW VARIABLES" : {
-              "title" : { "title" : "Details" },
-              "strike_nid" : { "strike_nid" : "Nid" }
-            },
-            "DO" : [
-              { "list_remove" : { "list" : [ "list-for-months" ], "item" : [ "node:nid" ] } },
-              { "list_add" : { "list" : [ "list-for-months" ], "item" : [ "strike-nid" ] } },
-              { "list_add" : { "list" : [ "list-for-months" ], "item" : [ "strike-nid" ] } },
-              { "list_add" : { "list" : [ "list-for-months" ], "item" : [ "strike-nid" ] } }
-            ]
-          }
-        },
-        { "variable_add" : {
-            "USING" : { "type" : "integer", "value" : "0" },
-            "PROVIDE" : { "variable_added" : { "ban_months" : "Ban Months" } }
-          }
-        },
-        { "variable_add" : {
-            "USING" : {
-              "type" : "date",
-              "value" : {
-                "select" : "node:field-struck-player:field-banned-until",
-                "php" : { "code" : "\\u003C?php\\r\\n$now = strtotime(\\u0027now\\u0027);\\r\\nif ($now \\u003C $value) {\\r\\n  $now = $value;\\r\\n}\\r\\nreturn $now;\\r\\n?\\u003E" }
-              }
-            },
-            "PROVIDE" : { "variable_added" : { "banned_until" : "Banned until" } }
-          }
-        },
-        { "LOOP" : {
-            "USING" : { "list" : [ "list-for-months" ] },
-            "ITEM" : { "list_item" : "Current list item" },
-            "DO" : [
-              { "data_set" : {
-                  "data" : [ "ban-months" ],
-                  "value" : { "select" : "ban-months", "num_offset" : { "value" : "1" } }
-                }
-              },
-              { "data_set" : {
-                  "data" : [ "banned-until" ],
-                  "value" : { "select" : "banned-until", "date_offset" : { "value" : 2592000 } }
-                }
-              }
-            ]
-          }
-        },
-        { "data_set" : {
-            "data" : [ "node:field-struck-player:field-banned-until" ],
-            "value" : [ "banned-until" ]
-          }
-        },
-        { "entity_save" : { "data" : [ "node:field-struck-player" ], "immediate" : 1 } },
-        { "user_remove_role" : {
-            "account" : [ "node:field-struck-player" ],
-            "roles" : { "value" : {
-                "30" : "30",
-                "8" : "8",
-                "9" : "9",
-                "14" : "14",
-                "21" : "21",
-                "24" : "24",
-                "26" : "26",
-                "27" : "27",
-                "19" : "19",
-                "28" : "28",
-                "29" : "29",
-                "12" : "12",
-                "25" : "25",
-                "13" : "13",
-                "10" : "10",
-                "17" : "17",
-                "15" : "15",
-                "20" : "20"
-              }
-            }
-          }
-        },
-        { "user_add_role" : {
-            "account" : [ "node:field-struck-player" ],
-            "roles" : { "value" : { "32" : "32" } }
-          }
-        },
-        { "user_block" : { "account" : [ "node:field-struck-player" ] } },
         { "mail_to_users_of_role" : {
             "roles" : { "value" : { "9" : "9", "21" : "21", "29" : "29" } },
-            "subject" : "[Vaxia] A red strike against [node:field-struck-player:name]",
-            "message" : "A red strike has been issued against [node:field-struck-player:name].\\r\\n\\r\\nFurther questions or concerns regarding this strike should be directed to [node:author] .\\r\\n\\r\\nFurther questions, concerns, or challenges to this strike, please direct them here: http:\\/\\/vaxia.org\\/contact\\r\\n\\r\\nAs a red strike, [node:field-struck-player:name] is banned from the site for [ban-months:value] month(s).\\r\\n\\r\\n~~~~~~\\r\\nThis email was automatically generated by vaxia.org.\\r\\nYou are receiving this email as part of your membership at vaxia.org.\\r\\nDo not reply this this email, it is not a monitored account and messages will not be received by a human.\\r\\n~~~~~~ "
+            "subject" : "[Vaxia] A red strike has been issued [node:field-struck-player:name]",
+            "message" : "A red strike has been issued against [node:field-struck-player:name].\\r\\n\\r\\nFurther questions or concerns regarding this strike should be directed to [node:author] .\\r\\n\\r\\nFurther questions, concerns, or challenges to this strike, please direct them here: http:\\/\\/vaxia.org\\/contact\\r\\n\\r\\nAs a red strike, [node:field-struck-player:name] is banned from the site thru [node:field-struck-player:field-banned-until] .\\r\\n\\r\\n~~~~~~\\r\\nThis email was automatically generated by vaxia.org.\\r\\nYou are receiving this email as part of your membership at vaxia.org.\\r\\nDo not reply this this email, it is not a monitored account and messages will not be received by a human.\\r\\n~~~~~~ "
           }
         },
         { "mail" : {
             "to" : [ "node:field-struck-player:mail" ],
             "subject" : "[Vaxia] A red strike has been issued on your account",
-            "message" : "A red strike has been issued to your account.\\r\\n\\r\\nFurther questions, concerns, or challenges to this strike, please direct them here: http:\\/\\/vaxia.org\\/contact\\r\\n\\r\\nAs a red strike, you are banned from the site for [ban-months:value] month(s) in addition to any existing bans..\\r\\n\\r\\nIf this is not your first strike within the last year, you may be banned for longer.\\r\\n\\r\\n~~~~~~\\r\\nThis email was automatically generated by vaxia.org.\\r\\nYou are receiving this email as part of your membership at vaxia.org.\\r\\nDo not reply this this email, it is not a monitored account and messages will not be received by a human.\\r\\n~~~~~~ ",
+            "message" : "A red strike has been issued to your account.\\r\\n\\r\\nFurther questions, concerns, or challenges to this strike, please direct them here: http:\\/\\/vaxia.org\\/contact\\r\\n\\r\\nAs a red strike, you are banned from the site thru [node:field-struck-player:field-banned-until] in addition to any existing bans.\\r\\n\\r\\nIf this is not your first strike within the last year, you may be banned for longer.\\r\\n\\r\\nIf this is a pattern, you may be banned for life from Vaxia. Please take advice given as part of this ban seriously.\\r\\n\\r\\nWhen you return you may be expected to agree to a contract with Social to avoid further strikes and bans.\\r\\n\\r\\n~~~~~~\\r\\nThis email was automatically generated by vaxia.org.\\r\\nYou are receiving this email as part of your membership at vaxia.org.\\r\\nDo not reply this this email, it is not a monitored account and messages will not be received by a human.\\r\\n~~~~~~ ",
             "language" : [ "" ]
           }
         }
@@ -190,7 +190,7 @@ function strikes_default_rules_configuration() {
     }
   }');
   $items['rules_yellow_strike'] = entity_import('rules_config', '{ "rules_yellow_strike" : {
-      "LABEL" : "Yellow strike",
+      "LABEL" : "Strikes - Yellow strike",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
       "TAGS" : [ "Strikes" ],
@@ -214,76 +214,6 @@ function strikes_default_rules_configuration() {
             "message" : "A yellow strike has been issued to your account.\\r\\n\\r\\nFurther questions, concerns, or challenges to this strike should also be directed to [node:author] and to the SH body as a whole.\\r\\n\\r\\nIf this is at least your third yellow strike within the last year, you will also have received a red strike and a temporary ban.\\r\\n\\r\\n~~~~~~\\r\\nThis email was automatically generated by vaxia.org.\\r\\nYou are receiving this email as part of your membership at vaxia.org.\\r\\nDo not reply this this email, it is not a monitored account and messages will not be received by a human.\\r\\n~~~~~~ ",
             "from" : [ "" ],
             "language" : [ "" ]
-          }
-        }
-      ]
-    }
-  }');
-  $items['strikes_strikes_third_yellow_strike'] = entity_import('rules_config', '{ "strikes_strikes_third_yellow_strike" : {
-      "LABEL" : "Third yellow strike ",
-      "PLUGIN" : "reaction rule",
-      "WEIGHT" : "5",
-      "OWNER" : "rules",
-      "TAGS" : [ "Strikes" ],
-      "REQUIRES" : [ "rules", "views_rules" ],
-      "ON" : { "node_insert--strike" : { "bundle" : "strike" } },
-      "IF" : [
-        { "node_is_of_type" : { "node" : [ "node" ], "type" : { "value" : { "strike" : "strike" } } } },
-        { "data_is" : { "data" : [ "node:field-severity" ], "value" : "Yellow" } },
-        { "entity_is_of_bundle" : {
-            "entity" : [ "node:field-associated-record" ],
-            "type" : "node",
-            "bundle" : { "value" : { "notation" : "notation" } }
-          }
-        }
-      ],
-      "DO" : [
-        { "entity_save" : { "data" : [ "node" ], "immediate" : 1 } },
-        { "VIEW LOOP" : {
-            "VIEW" : "strikes",
-            "DISPLAY" : "players_over_strike",
-            "USING" : { "field_struck_player_uid" : [ "node:field-struck-player:uid" ] },
-            "ROW VARIABLES" : { "title" : { "title" : "Details" } },
-            "DO" : [
-              { "mail_to_users_of_role" : {
-                  "roles" : { "value" : { "21" : "21", "29" : "29" } },
-                  "subject" : "[Vaxia] A Yellow strike has upgraded to a Red strike for [node:field-struck-player:name]",
-                  "message" : "A yellow strike has been issued against [node:field-struck-player:name].\\r\\n\\r\\nThey have received more than three yellow strikes within the last year, therefore a red strike has also been issued.\\r\\n\\r\\nIf you have more information to provide to the situation please contact [node:author] to add your documentation. Further questions, concerns, or challenges to this strike should also be directed to [node:author] and to the SH body as a whole.\\r\\n\\r\\n~~~~~~\\r\\nThis email was automatically generated by vaxia.org.\\r\\nYou are receiving this email as part of your membership at vaxia.org.\\r\\nDo not reply this this email, it is not a monitored account and messages will not be received by a human.\\r\\n~~~~~~ "
-                }
-              },
-              { "entity_create" : {
-                  "USING" : {
-                    "type" : "node",
-                    "param_type" : "strike",
-                    "param_title" : "Red strike - [node:field-struck-player:name]",
-                    "param_author" : [ "node:author" ]
-                  },
-                  "PROVIDE" : { "entity_created" : { "red_strike" : "Red strike" } }
-                }
-              },
-              { "data_set" : { "data" : [ "node:field-associated-record" ], "value" : [ "node" ] } },
-              { "data_set" : { "data" : [ "red-strike:field-date-of-incident" ], "value" : "now" } },
-              { "data_set" : {
-                  "data" : [ "red-strike:field-struck-player" ],
-                  "value" : [ "node:field-struck-player" ]
-                }
-              },
-              { "data_set" : { "data" : [ "red-strike:field-severity" ], "value" : "Red" } },
-              { "list_add" : {
-                  "list" : [ "node:field-associated-record:field-red-strike" ],
-                  "item" : [ "node:field-struck-player" ],
-                  "unique" : 1
-                }
-              },
-              { "list_add" : {
-                  "list" : [ "node:field-associated-record:field-results" ],
-                  "item" : "red",
-                  "unique" : 1
-                }
-              },
-              { "entity_save" : { "data" : [ "red-strike" ] } },
-              { "entity_save" : { "data" : [ "node:field-associated-record" ] } }
-            ]
           }
         }
       ]
