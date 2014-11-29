@@ -99,7 +99,13 @@ function calendar_feature_strongarm() {
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '5',
+          'weight' => '6',
+        ),
+        'locations' => array(
+          'weight' => '7',
+        ),
+        'badges' => array(
+          'weight' => '8',
         ),
       ),
       'display' => array(),
