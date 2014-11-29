@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Ban Players feature.
+ */
+
+include_once 'ban_players.features.inc';
