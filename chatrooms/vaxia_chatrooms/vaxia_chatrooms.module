@@ -1,0 +1,94 @@
+<?php
+/**
+ * @file
+ * Code for Vaxia chatrooms.
+ */
+
+/*
+ * Implements hook_node_view().
+ */
+function vaxia_chatrooms_node_view($node, $view_mode, $langcode) {
+  // If node is an RPG chatroom, add the js, css for additional behaviors for Vaxia specifically.
+  if ($node->type == 'rpg_chatroom') {
+    // Display warning alert for new characters.
+    // Check if the sheet has been finalized.
+    if (!_vaxia_chatrooms_check_mature($node)) {
+      drupal_set_message('You are not allowed to view this room. You are underage.');
+      drupal_goto('');
+    }
+
+    // Display warning alert for new characters.
+    // Check if the sheet has been finalized.
+    if (!_vaxia_chatrooms_check_locked($node)) {
+      drupal_set_message('You are not allowed to view this room. This room is locked.');
+      drupal_goto('');
+    }
+
+    drupal_add_js(drupal_get_path('module', 'vaxia_chatrooms') . '/js/vaxiaPullouts.js');
+    drupal_add_css(drupal_get_path('module', 'vaxia_chatrooms') . '/css/vaxiaPullouts.css');
+  }
+
+}
+
+/**
+ * Implements process suggestion for node theme. This allows us to override parts of the node form.
+ */
+function vaxia_chatrooms_process_node(&$variables) {
+  if (_rpg_chat_is_enabled($variables['node']->type)) {
+    $rpg_class = 'ic-room';
+    $limbo_room = variable_get('vaxia_limbo_room', array());
+    // Set narrative checkbox access and no access in limbo rooms.
+    if (!user_access('post in narrative format') || in_array($variables['node']->nid, $limbo_room)) {
+      $rpg_class = 'ooc-room';
+    }
+    $variables['classes'] .= ' ' . $rpg_class;
+  }
+}
+
+/**
+ * Helper function determine if removed.
+ */
+function _vaxia_chatrooms_check_mature($node) {
+  if (!isset($node->nid)) {
+    return FALSE;
+  }
+  if (!isset($node->character_sheet_system) || !isset($node->workflow)) {
+    $node = node_load($node->nid);
+  }
+  // Figure out the workflow for the node.
+  $is_room_18 = isset($node->field_mature_posting['und'][0]['value']) ? $node->field_mature_posting['und'][0]['value'] : 0;
+  if ($is_room_18) {
+    global $user;
+    $this_user = user_load($user->uid);
+    $is_user_18 = isset($this_user->field_mature['und'][0]['value']) ? $this_user->field_mature['und'][0]['value'] : 0;
+    if (!$is_user_18) {
+      return FALSE;
+    }
+  }
+  return TRUE;
+}
+
+/**
+ * Helper function determine if removed.
+ */
+function _vaxia_chatrooms_check_locked($node) {
+  if (!isset($node->nid)) {
+    return FALSE;
+  }
+  if (!isset($node->character_sheet_system) || !isset($node->workflow)) {
+    $node = node_load($node->nid);
+  }
+  // Figure out the workflow for the node.
+  $is_locked = isset($node->field_locked_to_users['und'][0]['value']) ? $node->field_locked_to_users['und'][0]['value'] : 0;
+  if ($is_locked) {
+    $room_users = isset($node->field_users['und']) ? $node->field_users['und'] : array();
+    global $user;
+    foreach ($room_users as $room_user) {
+      if ($room_user['uid'] == $user->uid) {
+        return TRUE;
+      }
+    } // End loop
+    return FALSE;
+  }
+  return TRUE;
+}

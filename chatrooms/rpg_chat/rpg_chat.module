@@ -88,10 +88,6 @@ function rpg_chat_permission() {
       'title' => t('View RPG chat'),
       'description' => t('View RPG chat conversations.'),
     ),
-    'view rpg mature chat' => array(
-      'title' => t('View RPG mature chat'),
-      'description' => t('View RPG mature chat conversations.'),
-    ),
   );
 }
 
@@ -133,10 +129,6 @@ function rpg_chat_node_load($nodes) {
       $room = _rpg_chat_get_room($node->nid);
       if ($room) {
         $nodes[$node->nid]->rpg_chat_min_refresh = $room->min_refresh;
-        $nodes[$node->nid]->rpg_chat_mature = $room->mature;
-        $nodes[$node->nid]->rpg_chat_locked = $room->locked;
-        $nodes[$node->nid]->rpg_chat_allowed_users = unserialize($room->allowed_users);
-        $nodes[$node->nid]->rpg_chat_banned_users = unserialize($room->banned_users);
         $nodes[$node->nid]->rpg_chat_current_users = _rpg_chat_get_room_users($node->nid);
       }
     }
@@ -351,79 +343,6 @@ function rpg_chat_form_alter(&$form, &$form_state, $form_id) {
       '#description' => t('How fast (in seconds) to allow users to refresh the room. This can impact performance.'),
       '#default_value' => isset($node->rpg_chat_min_refresh) ? $node->rpg_chat_min_refresh : 60,
     );
-    $form['rpg_chat']['mature'] = array(
-      '#type' => 'checkbox',
-      '#title' => t('Mature room?'),
-      '#description' => t('If "mature" this is a chatroom that will have mature content.'),
-      '#default_value' => isset($node->rpg_chat_mature) ? $node->rpg_chat_mature : FALSE,
-    );
-    $form['rpg_chat']['locked'] = array(
-      '#type' => 'checkbox',
-      '#title' => t('Locked room?'),
-      '#description' => t('If "locked" this chatroom will be allowed only for those with "administer rpg chat" rights.'),
-      '#default_value' => isset($node->rpg_chat_locked) ? $node->rpg_chat_locked : FALSE,
-    );
-    // TODO - eventually this should become a AJAX driven interface.
-    $allow_list = isset($node->rpg_chat_allowed_users) ? $node->rpg_chat_allowed_users : array();
-    $ban_list = isset($node->rpg_chat_banned_users) ? $node->rpg_chat_banned_users : array();
-    // Display allow / ban with list generated from default or form_state.
-    $allow_string = '';
-    foreach ($allow_list as $uid) {
-      $this_user = user_load($uid);
-      $allow_string .= $this_user->name . "\n";
-    }
-    $form['rpg_chat']['allow'] = array(
-      '#type' => 'textarea',
-      '#title' => t('Allowed users'),
-      '#description' => t('Enter usernames one per line. If left empty, any user with "view rpg chat" rights may use this room.'),
-      '#default_value' => $allow_string,
-    );
-    $ban_string = '';
-    foreach ($ban_list as $uid) {
-      $this_user = user_load($uid);
-      $ban_string .= $this_user->name . "\n";
-    }
-    $form['rpg_chat']['ban'] = array(
-      '#type' => 'textarea',
-      '#title' => t('Banned users'),
-      '#description' => t('Enter usernames one per line. Users listed may not use this room.'),
-      '#default_value' => $ban_string,
-    );
-    $form['#validate'][] = '_rpg_chat_add_room_validate';
-  }
-}
-
-/*
- * Form callback validation for _rpg_chat_node_forms.
- */
-function _rpg_chat_add_room_validate($form, $form_state) {
-  // Check all allowed usernames.
-  $allow = $form_state['values']['allow'];
-  $allow_list = explode("\n", $allow);
-  $error_list = array();
-  foreach ($allow_list as $name) {
-    $name = trim($name);
-    $count = db_query("SELECT COUNT(*) FROM {users} WHERE name = :name", array(':name' => $name))->fetchField();
-    if (intval($count) != 1) {
-      $error_list[] = $name;
-    }
-  }
-  if (!empty($error_list)) {
-    form_set_error('allow', t('Please enter valid usernames. Invalid names: %names', array('%names' => implode(', ', $error_list))));
-  }
-  // Check all banned usernames.
-  $ban = $form_state['values']['ban'];
-  $ban_list = explode("\n", $ban);
-  $error_list = array();
-  foreach ($ban_list as $name) {
-    $name = trim($name);
-    $count = db_query("SELECT COUNT(*) FROM {users} WHERE name = :name", array(':name' => $name))->fetchField();
-    if (intval($count) != 1) {
-      $error_list[] = $name;
-    }
-  }
-  if (!empty($error_list)) {
-    form_set_error('ban', t('Please enter valid usernames. Invalid names: %names', array('%names' => implode(', ', $error_list))));
   }
 }
 
@@ -445,32 +364,6 @@ function rpg_chat_node_update($node) {
     $variables = array();
     $variables['nid'] = $node->nid;
     $variables['min_refresh'] = isset($node->min_refresh) ? $node->min_refresh : 60;
-    $variables['mature'] = isset($node->mature) ? $node->mature : 0;
-    $variables['locked'] =isset($node->locked) ? $node->locked : 0;
-    // We're doing this as an allowed /banned userlist by username.
-    $allow = isset($node->allow) ? $node->allow : '';
-    $allow_list = explode("\n", $allow);
-    $allowed_users = array();
-    foreach ($allow_list as $name) {
-      $name = trim($name);
-      $uid = db_query("SELECT uid FROM {users} WHERE name = :name", array(':name' => $name))->fetchField();
-      if (intval($uid) == 1) {
-        $allowed_users[] = $uid;
-      }
-    }
-    $ban = isset($node->ban) ? $node->ban : '';
-    $ban_list = explode("\n", $ban);
-    $banned_users = array();
-    foreach ($ban_list as $name) {
-      $name = trim($name);
-      $uid = db_query("SELECT uid FROM {users} WHERE name = :name", array(':name' => $name))->fetchField();
-      if (intval($uid) == 1) {
-        $banned_users[] = $uid;
-      }
-    }
-    // And save the constructed array.
-    $variables['allowed_users'] = array_unique($allowed_users);
-    $variables['banned_users'] = array_unique($banned_users);
     _rpg_chat_set_room($node->nid, $variables);
   }
 }
@@ -481,25 +374,6 @@ function rpg_chat_node_update($node) {
 function _rpg_chat_node_access($node, $account) {
   // You you can't view it, and you're not an admin for chat or the site.
   if (!user_access('view rpg chat', $account) && !user_access('administer rpg chat', $account)) {
-    return FALSE;
-  }
-  // If this is flagged as a mature room and you're not mature. (Let's face it. No one is.)
-  if (!user_access('view rpg mature chat', $account) && isset($node->rpg_chat_mature) && $node->rpg_chat_mature) {
-    return FALSE;
-  }  
-  // If this is flagged as a locked room and you're not an admin.
-  if (!user_access('administer rpg chat', $account) && isset($node->rpg_chat_locked) && $node->rpg_chat_locked) {
-    return FALSE;
-  }
-  // Check user specific settings.
-  $allowed_users = isset($node->rpg_char_allowed_users) ? $node->rpg_char_allowed_users : array();
-  $banned_users = isset($node->rpg_chat_banned_users) ? $node->rpg_chat_banned_users : array();
-  // If you are on the banned users list, and not on the allowed users list.
-  if (in_array($account->uid, $banned_users) && !in_array($account->uid, $allowed_users)) {
-    return FALSE;
-  }
-  // If the allowed users list is set, and you are not on it.
-  if (count($allowed_users) > 0 && !in_array($account->uid, $allowed_users)) {
     return FALSE;
   }
   // Still good? Great. Go chat.
@@ -538,8 +412,8 @@ function _rpg_chat_get_rooms() {
  */
 function _rpg_chat_set_room($nid, $values) {
   // Prepare the user arrays for input.
-  $values['allowed_users'] = serialize($values['allowed_users']);
-  $values['banned_users'] = serialize($values['banned_users']);
+  $values['allowed_users'] = serialize(array());
+  $values['banned_users'] = serialize(array());
   $room = _rpg_chat_get_room($nid);
   if ($room) {
     drupal_write_record('rpg_chat_room', $values, 'nid');

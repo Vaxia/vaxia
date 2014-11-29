@@ -127,55 +127,26 @@ function vaxia_rules_event_info() {
 }
 
 /**
- * Implements hook_cron().
- */
-function vaxia_cron() {
-  _vaxia_cron_dblog_cleanup();
-}
-
-/**
- * Implements hook_cronapi().
- */
-function vaxia_cronapi($op, $job = NULL) {
-  $items['_vaxia_cron_dblog_cleanup'] = array(
-  	'description' => 'Vaxia: DBlog cleanup',
-  	'rule' => '0 4 * * *', // Once a day at 4 AM.
-  );
-  return $items;
-}
-
-/**
- * Cron job for cleaning up useless dblog entries.
- */
-function _vaxia_cron_dblog_cleanup() {
-  if (module_exists('dblog') && variable_get('vaxia_clean_dblog', TRUE)) {
-    // Severity levels to remove.
-    $severity_levels = array(
-//    WATCHDOG_EMERGENCY,
-//    WATCHDOG_ALERT,
-//    WATCHDOG_CRITICAL,
-//    WATCHDOG_ERROR,
-//    WATCHDOG_WARNING,
-      WATCHDOG_NOTICE,
-      WATCHDOG_INFO,
-      WATCHDOG_DEBUG,
-    );
-    // Cleanup.
-    foreach ($severity_levels as $severity_level) {
-      db_delete('watchdog')
-        ->condition('severity', $severity_level)
-        ->execute();
-    }
-  }
-}
-
-/**
  * Implements hook_entity_info_alter().
  */
 function vaxia_entity_info_alter(&$entity_info) {
   $entity_info['node']['view modes']['artwork'] = array(
     'label' => t('Secondary'),
     'custom settings' => TRUE,
+  );
+}
+
+/**
+ * Implements hook_theme().
+ *
+ * Register themes used by this module.
+ */
+function vaxia_theme($existing, $type, $theme, $path) {
+  return array(
+    'vaxia_dice_roller' => array(
+      'render element' => 'element',
+      'function' => 'theme_vaxia_dice_roller',
+    ),
   );
 }
 
@@ -290,100 +261,6 @@ function _vaxia_check_minmax_flags($node) {
   }
   // Return the messages.
   return $messages;
-}
-
-/*
- * Implements hook_node_view().
- */
-function vaxia_node_view($node, $view_mode, $langcode) {
-
-  // If node is a character sheet.
-  if (_character_sheet_is_enabled($node)) {
-    // Get current user.
-    global $user;
-
-    // Display warning alert for new characters.
-    // Check if the sheet has been finalized.
-    $has_xp = _character_sheet_get_xp($node->nid, 'xp');
-    if ( $user->uid == $node->uid || user_access('edit SH notes')) { // Owner or an SH.
-
-      if ( !isset($node->workflow) || // Current node has no workflow. (new)
-          ($node->workflow_state_name == 'draft' && $has_xp < 20) || // Is in draft and below HXP amounts.
-          ($node->workflow_state_name == 'submitted' && $has_xp < 20) // Submitted and below HXP amounts.
-      ) {
-        // Get warning messages.
-        $messages = _vaxia_check_minmax_flags($node);
-        // General warn.
-        if (!empty($messages)) {
-          $messages[] = t('This is a character design approach that is likely to be reviewed by our evaluation ' .
-            'staff as a potential min-maxed build. Please expect to be asked to revise.');
-          drupal_set_message(implode(' ', $messages), 'warning');
-        }
-      }
-
-      // Display a note re allowed revisions.
-      if (_character_sheet_is_playable($node) && $has_xp < 20) { // Approved and below HXP amounts.
-        drupal_set_message('This character is currently listed below 20 XP. You may request assistance from our Evaluation team to revise the character.');
-      }
-    }
-
-    // Display warning alert for new characters.
-    // Check if the sheet has been finalized.
-    if ($node->workflow_state_name == 'xp_transferred') {
-      drupal_set_message('This character is currently listed as transferred XP. ' .
-        'This character CANNOT be returned to play, because the player has already moved the XP to another character.');
-    }
-
-    // Disable the fields from viewing if you're not the owner or permissioned.
-    if (!($user->uid == $node->uid || user_access('edit SH notes'))) {
-      $display = array('field_description', 'field_age_app', 'field_sex', 'field_race',
-        'field_appearance', 'field_charisma', 'field_presence');
-      foreach ($node->content as $index => $value) {
-        if (strpos($index, '#') === FALSE && !in_array($index, $display)) {
-          unset($node->content[$index]);
-        }
-      }
-    }
-
-    // Disable the private note if you can't edit it or not your char.
-    if (!($user->uid == $node->uid || user_access('edit SH notes'))) {
-      unset($node->content['field_sh_notes']);
-    }
-
-    // Hide the private note if you can't edit it. Can't see your own.
-    if (!($user->uid != $node->uid && user_access('edit private SH notes'))) {
-      unset($node->content['field_sh_private_notes']);
-    }
-
-    // Hide the private note if you can't edit it.
-    if (!($user->uid == $node->uid || user_access('edit SH notes'))) {
-      unset($node->content['field_player_notes']);
-    }
-
-    // Hide the logs.
-    unset($node->content['character_sheet_log']);
-  }
-
-  // If node is an RPG chatroom, add the js, css for additional behaviors for Vaxia specifically.
-  if ($node->type == 'rpg_chatroom') {
-    drupal_add_js(drupal_get_path('module', 'vaxia') . '/js/vaxiaPullouts.js');
-    drupal_add_css(drupal_get_path('module', 'vaxia') . '/css/vaxiaPullouts.css');
-  }
-}
-
-/**
- * Implements process suggestion for node theme. This allows us to override parts of the node form.
- */
-function vaxia_process_node(&$variables) {
-  if (_rpg_chat_is_enabled($variables['node']->type)) {
-    $rpg_class = 'ic-room';
-    $limbo_room = variable_get('vaxia_limbo_room', array());
-    // Set narrative checkbox access and no access in limbo rooms.
-    if (!user_access('post in narrative format') || in_array($variables['node']->nid, $limbo_room)) {
-      $rpg_class = 'ooc-room';
-    }
-    $variables['classes'] .= ' ' . $rpg_class;
-  }
 }
 
 /**
@@ -585,20 +462,6 @@ function _vaxia_create_avatar_image_link($fid, $name, $alt = '') {
     );
     return $picture;
   }
-}
-
-/**
- * Implements hook_theme().
- *
- * Register themes used by this module.
- */
-function vaxia_theme($existing, $type, $theme, $path) {
-  return array(
-    'vaxia_dice_roller' => array(
-      'render element' => 'element',
-      'function' => 'theme_vaxia_dice_roller',
-    ),
-  );
 }
 
 /**
