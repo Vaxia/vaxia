@@ -56,6 +56,40 @@ function vaxia_field_default_fields() {
       'label' => 'Description',
       'required' => 0,
       'settings' => array(
+        'better_formats' => array(
+          'allowed_formats' => array(
+            'filtered_html' => 'filtered_html',
+            'full_html' => 'full_html',
+            'php_code' => 'php_code',
+            'plain_text' => 'plain_text',
+            'whiteboard' => 'whiteboard',
+            'wiki' => 'wiki',
+          ),
+          'allowed_formats_toggle' => 0,
+          'default_order_toggle' => 0,
+          'default_order_wrapper' => array(
+            'formats' => array(
+              'filtered_html' => array(
+                'weight' => '0',
+              ),
+              'full_html' => array(
+                'weight' => '1',
+              ),
+              'php_code' => array(
+                'weight' => '11',
+              ),
+              'plain_text' => array(
+                'weight' => '10',
+              ),
+              'whiteboard' => array(
+                'weight' => '0',
+              ),
+              'wiki' => array(
+                'weight' => '0',
+              ),
+            ),
+          ),
+        ),
         'text_processing' => '0',
         'user_register_form' => FALSE,
       ),
@@ -63,7 +97,7 @@ function vaxia_field_default_fields() {
         'active' => 1,
         'module' => 'text',
         'settings' => array(
-          'rows' => '5',
+          'rows' => '2',
         ),
         'type' => 'text_textarea',
         'weight' => '3',
@@ -194,6 +228,103 @@ function vaxia_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-character_sheet-field_achivements'.
+  $fields['node-character_sheet-field_achivements'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_achivements',
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'text',
+      'settings' => array(
+        'max_length' => '255',
+      ),
+      'translatable' => '0',
+      'type' => 'text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'character_sheet',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'IC achievements! Titles earned, championships won. Fun stuff!',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '20',
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_achivements',
+      'label' => 'Achivements',
+      'required' => 0,
+      'settings' => array(
+        'better_formats' => array(
+          'allowed_formats' => array(
+            'filtered_html' => 'filtered_html',
+            'full_html' => 'full_html',
+            'php_code' => 'php_code',
+            'plain_text' => 'plain_text',
+            'whiteboard' => 'whiteboard',
+            'wiki' => 'wiki',
+          ),
+          'allowed_formats_toggle' => 0,
+          'default_order_toggle' => 0,
+          'default_order_wrapper' => array(
+            'formats' => array(
+              'filtered_html' => array(
+                'weight' => '0',
+              ),
+              'full_html' => array(
+                'weight' => '1',
+              ),
+              'php_code' => array(
+                'weight' => '11',
+              ),
+              'plain_text' => array(
+                'weight' => '10',
+              ),
+              'whiteboard' => array(
+                'weight' => '0',
+              ),
+              'wiki' => array(
+                'weight' => '0',
+              ),
+            ),
+          ),
+        ),
+        'text_processing' => '0',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'size' => '60',
+        ),
+        'type' => 'text_textfield',
+        'weight' => '46',
+      ),
+    ),
+  );
+
   // Exported field: 'node-character_sheet-field_age_app'.
   $fields['node-character_sheet-field_age_app'] = array(
     'field_config' => array(
@@ -237,7 +368,7 @@ function vaxia_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '10',
+          'weight' => '11',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -309,7 +440,7 @@ function vaxia_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '9',
+          'weight' => '10',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -519,7 +650,7 @@ function vaxia_field_default_fields() {
             'image_style' => 'medium',
           ),
           'type' => 'image',
-          'weight' => '37',
+          'weight' => '0',
         ),
       ),
       'entity_type' => 'node',
@@ -544,13 +675,103 @@ function vaxia_field_default_fields() {
           'collapsible' => '2',
           'croparea' => '500x500',
           'enforce_minimum' => 0,
-          'enforce_ratio' => 1,
+          'enforce_ratio' => 0,
           'preview_image_style' => 'thumbnail',
           'progress_indicator' => 'throbber',
-          'resolution' => '200x200',
+          'resolution' => '',
         ),
         'type' => 'imagefield_crop_widget',
         'weight' => '37',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-character_sheet-field_associated_locations'.
+  $fields['node-character_sheet-field_associated_locations'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_associated_locations',
+      'foreign keys' => array(
+        'nid' => array(
+          'columns' => array(
+            'nid' => 'nid',
+          ),
+          'table' => 'node',
+        ),
+      ),
+      'indexes' => array(
+        'nid' => array(
+          0 => 'nid',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'node_reference',
+      'settings' => array(
+        'referenceable_types' => array(
+          'artwork' => 0,
+          'character_sheet' => 0,
+          'event' => 0,
+          'filedepot_folder' => 0,
+          'forum' => 0,
+          'items' => 0,
+          'long_answer' => 0,
+          'mass_contact' => 0,
+          'multichoice' => 0,
+          'notation' => 0,
+          'page' => 0,
+          'proposal' => 0,
+          'quiz' => 0,
+          'rpg_chatroom' => 0,
+          'scene' => 0,
+          'session_report' => 0,
+          'storyhost_application' => 0,
+          'strike' => 0,
+          'webform' => 0,
+          'wiki_page' => 'wiki_page',
+        ),
+        'view' => array(
+          'args' => array(),
+          'display_name' => '',
+          'view_name' => '',
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'node_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'character_sheet',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'If this is an Open NPC please associate the character with a room location if you know there is one the character will likely be found. That way other SHs can quickly pull up the commonly available NPCs for a location and make use of them during sessions and improvised sessions.',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'node_reference',
+          'settings' => array(),
+          'type' => 'node_reference_default',
+          'weight' => '5',
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_associated_locations',
+      'label' => 'Associated locations',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'node_reference',
+        'settings' => array(
+          'autocomplete_match' => 'contains',
+          'autocomplete_path' => 'node_reference/autocomplete',
+          'size' => '60',
+        ),
+        'type' => 'node_reference_autocomplete',
+        'weight' => '7',
       ),
     ),
   );
@@ -763,11 +984,7 @@ function vaxia_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'character_sheet',
-      'default_value' => array(
-        0 => array(
-          'value' => '555555',
-        ),
-      ),
+      'default_value' => NULL,
       'default_value_function' => '',
       'default_value_php' => '',
       'deleted' => '0',
@@ -777,12 +994,12 @@ function vaxia_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '12',
+          'weight' => '13',
         ),
       ),
       'entity_type' => 'node',
       'field_name' => 'field_background_color',
-      'label' => 'Background #',
+      'label' => 'Default Post Background',
       'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
@@ -792,7 +1009,7 @@ function vaxia_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '2',
+        'weight' => '3',
       ),
     ),
   );
@@ -839,7 +1056,7 @@ function vaxia_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '18',
+          'weight' => '19',
         ),
       ),
       'entity_type' => 'node',
@@ -891,7 +1108,7 @@ function vaxia_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '14',
+        'weight' => '45',
       ),
     ),
   );
@@ -985,8 +1202,8 @@ function vaxia_field_default_fields() {
         'allowed_values' => array(
           'vampire' => 'Vampire',
           'were' => 'Were',
-          'walker' => 'Walker',
-          'ghost' => 'Ghost',
+          'metalborn-digi' => 'Digital Metalborn',
+          'magical' => 'Active Magic or Psionic User (Sirian only)',
           'other' => 'Other',
         ),
         'allowed_values_function' => '',
@@ -1008,7 +1225,7 @@ function vaxia_field_default_fields() {
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => '7',
+          'weight' => '8',
         ),
       ),
       'entity_type' => 'node',
@@ -1097,6 +1314,73 @@ function vaxia_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-character_sheet-field_content_limits'.
+  $fields['node-character_sheet-field_content_limits'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_content_limits',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'character_limits',
+            'parent' => '0',
+          ),
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'character_sheet',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'Mark these topics as things your character is ok with if and ONLY if you are ok with the character experiencing them in play.
+</br><br/>
+This gives you a way to tell an A/SH in advance what sort of things are ok without you ever having to be put on the spot. If this is a special-occasion where you trust the A/SH involved and want to give them permission to cross these lines, please make sure to explicitly state that. If an A/SH crosses one of these lines without your permission, please tell our Social department as soon as you can.',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'taxonomy',
+          'settings' => array(),
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => '18',
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_content_limits',
+      'label' => 'Permissions',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_buttons',
+        'weight' => '44',
+      ),
+    ),
+  );
+
   // Exported field: 'node-character_sheet-field_description'.
   $fields['node-character_sheet-field_description'] = array(
     'field_config' => array(
@@ -1136,7 +1420,7 @@ function vaxia_field_default_fields() {
         ),
       ),
       'deleted' => '0',
-      'description' => '',
+      'description' => 'The first description listed will be used on your posts and for viewing by other players. You can add additional descriptions and sort them as needed if your character has more than one \'appearance\'.',
       'display' => array(
         'default' => array(
           'label' => 'above',
@@ -1154,7 +1438,7 @@ function vaxia_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_description',
-      'label' => 'Description',
+      'label' => 'Descriptions',
       'required' => 1,
       'settings' => array(
         'better_formats' => array(
@@ -1201,7 +1485,7 @@ function vaxia_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '4',
+        'weight' => '5',
       ),
     ),
   );
@@ -1619,7 +1903,7 @@ function vaxia_field_default_fields() {
           'display_label' => 1,
         ),
         'type' => 'options_onoff',
-        'weight' => '4',
+        'weight' => '5',
       ),
     ),
   );
@@ -1691,7 +1975,7 @@ function vaxia_field_default_fields() {
           'display_label' => 1,
         ),
         'type' => 'options_onoff',
-        'weight' => '5',
+        'weight' => '6',
       ),
     ),
   );
@@ -1754,7 +2038,7 @@ function vaxia_field_default_fields() {
           'display_label' => 1,
         ),
         'type' => 'options_onoff',
-        'weight' => '3',
+        'weight' => '4',
       ),
     ),
   );
@@ -1897,8 +2181,8 @@ function vaxia_field_default_fields() {
       'default_value' => NULL,
       'deleted' => '0',
       'description' => 'All characters get three languages at native proficiency by default on starting. List the three you\'re selecting here.<ul>
-<li><a href="http://vaxia.org/wiki/vaxia/popular-culture/language/world-languages">Languages of Vaxia</a></li>
-<li><a href="http://vaxia.org/wiki/sirian/popular-culture/languages">Languages of Sirian</a></li>
+<li><a href="http://vaxia.org/wiki/vaxia-languages">Languages of Vaxia</a></li>
+<li><a href="http://vaxia.org/wiki/sirian-languages">Languages of Sirian</a></li>
 </ul>
 Additional languages may be added through RP at the following # of posts indicating practice:<br>
 post worth 1XP - learner, you can recognize the language written or heard<br>
@@ -2009,7 +2293,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'inline',
+          'label' => 'above',
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
@@ -2406,7 +2690,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '13',
+        'weight' => '43',
       ),
     ),
   );
@@ -2442,11 +2726,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
     ),
     'field_instance' => array(
       'bundle' => 'character_sheet',
-      'default_value' => array(
-        0 => array(
-          'value' => '111111',
-        ),
-      ),
+      'default_value' => NULL,
       'deleted' => '0',
       'description' => 'Enter as a hex value such as "001100" or text such as "red".',
       'display' => array(
@@ -2454,12 +2734,12 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'label' => 'hidden',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '11',
+          'weight' => '12',
         ),
       ),
       'entity_type' => 'node',
       'field_name' => 'field_post_color',
-      'label' => 'Default Color #',
+      'label' => 'Default Post Color #',
       'required' => 0,
       'settings' => array(
         'better_formats' => array(
@@ -2506,7 +2786,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'size' => '6',
         ),
         'type' => 'text_textfield',
-        'weight' => '1',
+        'weight' => '2',
       ),
     ),
   );
@@ -2612,9 +2892,14 @@ Posting does not have to occur all at once, so feel free to spread it out across
     ),
     'field_instance' => array(
       'bundle' => 'character_sheet',
-      'default_value' => NULL,
+      'default_value' => array(
+        0 => array(
+          'value' => '',
+          'format' => 'plain_text',
+        ),
+      ),
       'deleted' => '0',
-      'description' => '',
+      'description' => 'For A/SHs - always feel free to add another property field to give each item a field.',
       'display' => array(
         'default' => array(
           'label' => 'hidden',
@@ -2637,6 +2922,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'settings' => array(
         'better_formats' => array(
           'allowed_formats' => array(
+            'filtered_html' => 0,
             'full_html' => 0,
             'php_code' => 0,
             'plain_text' => 'plain_text',
@@ -2647,6 +2933,9 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'default_order_toggle' => 0,
           'default_order_wrapper' => array(
             'formats' => array(
+              'filtered_html' => array(
+                'weight' => '0',
+              ),
               'full_html' => array(
                 'weight' => '1',
               ),
@@ -2672,7 +2961,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
         'active' => 1,
         'module' => 'text',
         'settings' => array(
-          'rows' => '5',
+          'rows' => '2',
         ),
         'type' => 'text_textarea',
         'weight' => '35',
@@ -2719,6 +3008,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'centaur' => 'Centaur',
           'merfolk' => 'Merfolk',
           'yeek' => 'Yeek',
+          'metalborn' => 'Metalborn',
           'other' => 'Other',
         ),
         'allowed_values_function' => '',
@@ -2744,7 +3034,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => '6',
+          'weight' => '7',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2815,7 +3105,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => '5',
+          'weight' => '6',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2953,7 +3243,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '8',
+          'weight' => '9',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -3111,7 +3401,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '10',
+        'weight' => '40',
       ),
     ),
   );
@@ -3211,7 +3501,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '12',
+        'weight' => '41',
       ),
     ),
   );
@@ -3228,7 +3518,11 @@ Posting does not have to occur all at once, so feel free to spread it out across
         'type' => '1',
       ),
       'foreign keys' => array(),
-      'indexes' => array(),
+      'indexes' => array(
+        'revision_id' => array(
+          0 => 'revision_id',
+        ),
+      ),
       'locked' => '0',
       'module' => 'field_collection',
       'settings' => array(
@@ -3326,12 +3620,12 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '9',
+          'weight' => '10',
         ),
       ),
       'entity_type' => 'node',
       'field_name' => 'field_skill_review',
-      'label' => 'Skill Review',
+      'label' => 'Skill Review (tmp)',
       'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
@@ -3341,7 +3635,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '11',
+        'weight' => '39',
       ),
     ),
   );
@@ -3523,7 +3817,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'inline',
+          'label' => 'above',
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
@@ -3558,11 +3852,12 @@ Posting does not have to occur all at once, so feel free to spread it out across
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('Achivements');
   t('Additional property');
   t('Agility');
   t('All characters get three languages at native proficiency by default on starting. List the three you\'re selecting here.<ul>
-<li><a href="http://vaxia.org/wiki/vaxia/popular-culture/language/world-languages">Languages of Vaxia</a></li>
-<li><a href="http://vaxia.org/wiki/sirian/popular-culture/languages">Languages of Sirian</a></li>
+<li><a href="http://vaxia.org/wiki/vaxia-languages">Languages of Vaxia</a></li>
+<li><a href="http://vaxia.org/wiki/sirian-languages">Languages of Sirian</a></li>
 </ul>
 Additional languages may be added through RP at the following # of posts indicating practice:<br>
 post worth 1XP - learner, you can recognize the language written or heard<br>
@@ -3574,9 +3869,9 @@ Posting does not have to occur all at once, so feel free to spread it out across
   t('Apparent Age');
   t('Apparent Gender');
   t('Appearance');
+  t('Associated locations');
   t('Awareness');
   t('Background');
-  t('Background #');
   t('Character Goals');
   t('Charisma');
   t('Check this box if the character is intended to be an NPC.');
@@ -3590,16 +3885,21 @@ Posting does not have to occur all at once, so feel free to spread it out across
   t('Contributes to Finesse and Awareness.');
   t('Contributes to Health and Constitution.');
   t('Contributes to Presence and Appearance.');
-  t('Default Color #');
+  t('Default Post Background');
+  t('Default Post Color #');
   t('Description');
+  t('Descriptions');
   t('Dexterity');
   t('Economy');
   t('Endurance');
   t('Enter as a hex value such as "001100" or text such as "red".');
   t('Finesse');
+  t('For A/SHs - always feel free to add another property field to give each item a field.');
   t('For character evaluation purposes - Sirian characters need to note their country or city of origin. We need to know political alliances (and what legal system your character may fall under) for Sirian plots.');
   t('Health');
+  t('IC achievements! Titles earned, championships won. Fun stuff!');
   t('If the species you want to play is not listed here, select \'Other\'. Other races *do* require oversight and approval from the Setting department. New players to our site are required to start play as one of the pre-approved species to get familiar with the setting and community before taking on the more complicated Other concepts.');
+  t('If this is an Open NPC please associate the character with a room location if you know there is one the character will likely be found. That way other SHs can quickly pull up the commonly available NPCs for a location and make use of them during sessions and improvised sessions.');
   t('If your character has any over-arching life goals. Things they want to do or see done that may require an A/SH to help achieve - make note of them here.');
   t('Image');
   t('Intelligence');
@@ -3608,12 +3908,16 @@ Posting does not have to occur all at once, so feel free to spread it out across
   t('Languages');
   t('Last Name');
   t('Life');
+  t('Mark these topics as things your character is ok with if and ONLY if you are ok with the character experiencing them in play.
+</br><br/>
+This gives you a way to tell an A/SH in advance what sort of things are ok without you ever having to be put on the spot. If this is a special-occasion where you trust the A/SH involved and want to give them permission to cross these lines, please make sure to explicitly state that. If an A/SH crosses one of these lines without your permission, please tell our Social department as soon as you can.');
   t('Mark this sheet as a storyteller sheet.');
   t('Most characters should start play with no conditions. Starting play with a condition requires oversight and approval from the World department. New players to our site are required to play for a bit as one of the pre-approved species to get familiar with the setting and community before taking on the more complicated Condition concepts.');
   t('NPC');
   t('Name');
   t('Occupation');
   t('Open NPC');
+  t('Permissions');
   t('Personality');
   t('Player Notes');
   t('Presence');
@@ -3622,11 +3926,12 @@ Posting does not have to occur all at once, so feel free to spread it out across
   t('Realm');
   t('SH Notes');
   t('Skill');
-  t('Skill Review');
+  t('Skill Review (tmp)');
   t('Species');
   t('Spirituality');
   t('Storyhost');
   t('Strength');
+  t('The first description listed will be used on your posts and for viewing by other players. You can add additional descriptions and sort them as needed if your character has more than one \'appearance\'.');
   t('This field is a *temporary* field to allow us to quickly identify character sheets that have not been reviewed as part of a site-wide effort to bring all characters up to spec for skills.');
   t('Titles');
   t('Value');

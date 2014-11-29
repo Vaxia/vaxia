@@ -28,9 +28,19 @@ function storyhost_duties_default_rules_configuration() {
             "op" : "\\u003C",
             "value" : "now"
           }
+        },
+        { "node_is_of_type" : {
+            "node" : [ "user:field-storyhost-character" ],
+            "type" : { "value" : { "character_sheet" : "character_sheet" } }
+          }
         }
       ],
       "DO" : [
+        { "data_set" : {
+            "data" : [ "user:field-storyhost-character:field-titles" ],
+            "value" : "SH (retired)"
+          }
+        },
         { "user_remove_role" : {
             "account" : [ "user" ],
             "roles" : { "value" : {
@@ -92,9 +102,19 @@ function storyhost_duties_default_rules_configuration() {
             "op" : "\\u003C",
             "value" : "-6 months"
           }
+        },
+        { "node_is_of_type" : {
+            "node" : [ "user:field-storyhost-character" ],
+            "type" : { "value" : { "character_sheet" : "character_sheet" } }
+          }
         }
       ],
       "DO" : [
+        { "data_set" : {
+            "data" : [ "user:field-storyhost-character:field-titles" ],
+            "value" : "SH (retired)"
+          }
+        },
         { "user_remove_role" : {
             "account" : [ "user" ],
             "roles" : { "value" : {
@@ -174,10 +194,7 @@ function storyhost_duties_default_rules_configuration() {
       "OWNER" : "rules",
       "TAGS" : [ "SH Duties" ],
       "REQUIRES" : [ "rules", "php" ],
-      "ON" : {
-        "node_update--session_report" : { "bundle" : "session_report" },
-        "node_insert--session_report" : { "bundle" : "session_report" }
-      },
+      "ON" : { "node_insert--session_report" : { "bundle" : "session_report" } },
       "IF" : [
         { "user_has_role" : { "account" : [ "node:author" ], "roles" : { "value" : { "9" : "9" } } } },
         { "data_is" : {
@@ -186,7 +203,6 @@ function storyhost_duties_default_rules_configuration() {
             "value" : "+3 months"
           }
         },
-        { "data_is" : { "data" : [ "node:created" ], "op" : "\\u003E", "value" : "-3 days" } },
         { "data_is" : { "data" : [ "node:author:uid" ], "value" : [ "site:current-user:uid" ] } },
         { "php_eval" : { "code" : "return sh_test_session_counts($node);" } }
       ],

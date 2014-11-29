@@ -27,6 +27,7 @@ function sh_test_views_default_views() {
   $handler->display->display_options['access']['type'] = 'none';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['query']['options']['distinct'] = TRUE;
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '35';
@@ -519,7 +520,7 @@ function sh_test_views_default_views() {
   $handler->display->display_options['defaults']['group_by'] = FALSE;
   $handler->display->display_options['group_by'] = TRUE;
   $handler->display->display_options['defaults']['access'] = FALSE;
-  $handler->display->display_options['access']['type'] = 'none';
+  $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['defaults']['query'] = FALSE;
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['defaults']['pager'] = FALSE;
@@ -535,12 +536,8 @@ function sh_test_views_default_views() {
     'access' => 'name',
     'title' => 'name',
     'value' => 'name',
-    'field_took_ash1' => 'field_took_ash1',
-    'field_took_ash2' => 'field_took_ash1',
-    'field_took_ash3' => 'field_took_ash1',
-    'field_took_eval_test' => 'field_took_ash1',
-    'field_became_evaluator' => 'field_took_ash1',
-    'field_became_sh' => 'field_took_ash1',
+    'field_became_evaluator' => 'field_became_evaluator',
+    'field_became_sh' => 'field_became_evaluator',
   );
   $handler->display->display_options['style_options']['default'] = 'title';
   $handler->display->display_options['style_options']['info'] = array(
@@ -559,7 +556,7 @@ function sh_test_views_default_views() {
       'empty_column' => 0,
     ),
     'name' => array(
-      'sortable' => 1,
+      'sortable' => 0,
       'default_sort_order' => 'desc',
       'align' => '',
       'separator' => '</br>',
@@ -593,39 +590,11 @@ function sh_test_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
-    'field_took_ash1' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '</br>',
-      'empty_column' => 0,
-    ),
-    'field_took_ash2' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_took_ash3' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_took_eval_test' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
     'field_became_evaluator' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',
-      'separator' => '',
+      'separator' => '</br>',
       'empty_column' => 0,
     ),
     'field_became_sh' => array(
@@ -644,8 +613,16 @@ function sh_test_views_default_views() {
   $handler->display->display_options['header']['area']['id'] = 'area';
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['content'] = 'This is a list of our Storyhosts and Apprentices over time. In case you were curious to know who ran all those sessions and keep our settings fresh and alive.';
+  $handler->display->display_options['header']['area']['content'] = '[b]This is a list of our Storyhosts and Apprentices over time. In case you were curious to know who ran all those sessions and keep our settings fresh and alive.[/b]';
   $handler->display->display_options['header']['area']['format'] = 'wiki';
+  $handler->display->display_options['defaults']['footer'] = FALSE;
+  /* Footer: Global: View area */
+  $handler->display->display_options['footer']['view']['id'] = 'view';
+  $handler->display->display_options['footer']['view']['table'] = 'views';
+  $handler->display->display_options['footer']['view']['field'] = 'view';
+  $handler->display->display_options['footer']['view']['label'] = 'Retired Storyhosts';
+  $handler->display->display_options['footer']['view']['empty'] = TRUE;
+  $handler->display->display_options['footer']['view']['view_to_insert'] = 'sessions:retired_shs';
   $handler->display->display_options['defaults']['relationships'] = FALSE;
   /* Relationship: Content: Author */
   $handler->display->display_options['relationships']['uid']['id'] = 'uid';
@@ -728,81 +705,28 @@ function sh_test_views_default_views() {
   $handler->display->display_options['fields']['value']['set_precision'] = TRUE;
   $handler->display->display_options['fields']['value']['precision'] = '2';
   $handler->display->display_options['fields']['value']['suffix'] = '%';
-  /* Field: User: Last Took ASH Test One */
-  $handler->display->display_options['fields']['field_took_ash1']['id'] = 'field_took_ash1';
-  $handler->display->display_options['fields']['field_took_ash1']['table'] = 'field_data_field_took_ash1';
-  $handler->display->display_options['fields']['field_took_ash1']['field'] = 'field_took_ash1';
-  $handler->display->display_options['fields']['field_took_ash1']['relationship'] = 'uid';
-  $handler->display->display_options['fields']['field_took_ash1']['label'] = 'Testing';
-  $handler->display->display_options['fields']['field_took_ash1']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['field_took_ash1']['alter']['text'] = '<i>Took ASH Test One:</i> [field_took_ash1]';
-  $handler->display->display_options['fields']['field_took_ash1']['settings'] = array(
+  /* Field: User: Became SH */
+  $handler->display->display_options['fields']['field_became_sh']['id'] = 'field_became_sh';
+  $handler->display->display_options['fields']['field_became_sh']['table'] = 'field_data_field_became_sh';
+  $handler->display->display_options['fields']['field_became_sh']['field'] = 'field_became_sh';
+  $handler->display->display_options['fields']['field_became_sh']['relationship'] = 'uid';
+  $handler->display->display_options['fields']['field_became_sh']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_became_sh']['alter']['text'] = '<i>Became Storyhost:</i> [field_became_sh]';
+  $handler->display->display_options['fields']['field_became_sh']['empty'] = 'Apprentice Storyhost';
+  $handler->display->display_options['fields']['field_became_sh']['settings'] = array(
     'format_type' => 'short',
     'fromto' => 'both',
     'multiple_number' => '',
     'multiple_from' => '',
     'multiple_to' => '',
     'show_repeat_rule' => 'show',
-  );
-  /* Field: User: Last Took ASH Test Two */
-  $handler->display->display_options['fields']['field_took_ash2']['id'] = 'field_took_ash2';
-  $handler->display->display_options['fields']['field_took_ash2']['table'] = 'field_data_field_took_ash2';
-  $handler->display->display_options['fields']['field_took_ash2']['field'] = 'field_took_ash2';
-  $handler->display->display_options['fields']['field_took_ash2']['relationship'] = 'uid';
-  $handler->display->display_options['fields']['field_took_ash2']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['field_took_ash2']['alter']['text'] = '<i>Took ASH Test Two:</i> [field_took_ash2]';
-  $handler->display->display_options['fields']['field_took_ash2']['settings'] = array(
-    'format_type' => 'short',
-    'fromto' => 'both',
-    'multiple_number' => '',
-    'multiple_from' => '',
-    'multiple_to' => '',
-    'show_repeat_rule' => 'show',
-  );
-  $handler->display->display_options['fields']['field_took_ash2']['group_columns'] = array(
-    'value' => 'value',
-  );
-  /* Field: User: Last Took ASH Test Three */
-  $handler->display->display_options['fields']['field_took_ash3']['id'] = 'field_took_ash3';
-  $handler->display->display_options['fields']['field_took_ash3']['table'] = 'field_data_field_took_ash3';
-  $handler->display->display_options['fields']['field_took_ash3']['field'] = 'field_took_ash3';
-  $handler->display->display_options['fields']['field_took_ash3']['relationship'] = 'uid';
-  $handler->display->display_options['fields']['field_took_ash3']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['field_took_ash3']['alter']['text'] = '<i>Took ASH Test Three:</i> [field_took_ash3]';
-  $handler->display->display_options['fields']['field_took_ash3']['settings'] = array(
-    'format_type' => 'short',
-    'fromto' => 'both',
-    'multiple_number' => '',
-    'multiple_from' => '',
-    'multiple_to' => '',
-    'show_repeat_rule' => 'show',
-  );
-  $handler->display->display_options['fields']['field_took_ash3']['group_columns'] = array(
-    'value' => 'value',
-  );
-  /* Field: User: Last Took Eval Test */
-  $handler->display->display_options['fields']['field_took_eval_test']['id'] = 'field_took_eval_test';
-  $handler->display->display_options['fields']['field_took_eval_test']['table'] = 'field_data_field_took_eval_test';
-  $handler->display->display_options['fields']['field_took_eval_test']['field'] = 'field_took_eval_test';
-  $handler->display->display_options['fields']['field_took_eval_test']['relationship'] = 'uid';
-  $handler->display->display_options['fields']['field_took_eval_test']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['field_took_eval_test']['alter']['text'] = '<i>Took Eval Test:</i> [field_took_eval_test]';
-  $handler->display->display_options['fields']['field_took_eval_test']['settings'] = array(
-    'format_type' => 'short',
-    'fromto' => 'both',
-    'multiple_number' => '',
-    'multiple_from' => '',
-    'multiple_to' => '',
-    'show_repeat_rule' => 'show',
-  );
-  $handler->display->display_options['fields']['field_took_eval_test']['group_columns'] = array(
-    'value' => 'value',
   );
   /* Field: User: Became Evaluator */
   $handler->display->display_options['fields']['field_became_evaluator']['id'] = 'field_became_evaluator';
   $handler->display->display_options['fields']['field_became_evaluator']['table'] = 'field_data_field_became_evaluator';
   $handler->display->display_options['fields']['field_became_evaluator']['field'] = 'field_became_evaluator';
   $handler->display->display_options['fields']['field_became_evaluator']['relationship'] = 'uid';
+  $handler->display->display_options['fields']['field_became_evaluator']['label'] = 'Since';
   $handler->display->display_options['fields']['field_became_evaluator']['alter']['alter_text'] = TRUE;
   $handler->display->display_options['fields']['field_became_evaluator']['alter']['text'] = '<i>Became Evaluator:</i> [field_became_evaluator]';
   $handler->display->display_options['fields']['field_became_evaluator']['settings'] = array(
@@ -813,27 +737,7 @@ function sh_test_views_default_views() {
     'multiple_to' => '',
     'show_repeat_rule' => 'show',
   );
-  /* Field: User: Became SH */
-  $handler->display->display_options['fields']['field_became_sh']['id'] = 'field_became_sh';
-  $handler->display->display_options['fields']['field_became_sh']['table'] = 'field_data_field_became_sh';
-  $handler->display->display_options['fields']['field_became_sh']['field'] = 'field_became_sh';
-  $handler->display->display_options['fields']['field_became_sh']['relationship'] = 'uid';
-  $handler->display->display_options['fields']['field_became_sh']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['field_became_sh']['alter']['text'] = '<i>Became Storyhost:</i> [field_became_sh]';
-  $handler->display->display_options['fields']['field_became_sh']['settings'] = array(
-    'format_type' => 'short',
-    'fromto' => 'both',
-    'multiple_number' => '',
-    'multiple_from' => '',
-    'multiple_to' => '',
-    'show_repeat_rule' => 'show',
-  );
   $handler->display->display_options['defaults']['sorts'] = FALSE;
-  /* Sort criterion: User: Name */
-  $handler->display->display_options['sorts']['name']['id'] = 'name';
-  $handler->display->display_options['sorts']['name']['table'] = 'users';
-  $handler->display->display_options['sorts']['name']['field'] = 'name';
-  $handler->display->display_options['sorts']['name']['relationship'] = 'uid';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
@@ -851,10 +755,255 @@ function sh_test_views_default_views() {
     'session_report' => 'session_report',
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
+  /* Filter criterion: User: Roles */
+  $handler->display->display_options['filters']['rid']['id'] = 'rid';
+  $handler->display->display_options['filters']['rid']['table'] = 'users_roles';
+  $handler->display->display_options['filters']['rid']['field'] = 'rid';
+  $handler->display->display_options['filters']['rid']['relationship'] = 'uid';
+  $handler->display->display_options['filters']['rid']['value'] = array(
+    9 => '9',
+    13 => '13',
+    10 => '10',
+    17 => '17',
+  );
+  $handler->display->display_options['filters']['rid']['reduce_duplicates'] = TRUE;
   $handler->display->display_options['path'] = 'sessions/storytellers-and-apprentices';
   $handler->display->display_options['menu']['type'] = 'tab';
   $handler->display->display_options['menu']['title'] = 'Storyhosts and Apprentices';
   $handler->display->display_options['menu']['description'] = 'Storyhosts and Apprentices';
+  $handler->display->display_options['menu']['weight'] = '0';
+  $handler->display->display_options['menu']['name'] = 'menu-vaxia';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
+
+  /* Display: Retired Storyhosts */
+  $handler = $view->new_display('page', 'Retired Storyhosts', 'retired_shs');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Retired Storyhosts and Apprentices';
+  $handler->display->display_options['display_description'] = 'A list of all storyhosts';
+  $handler->display->display_options['defaults']['group_by'] = FALSE;
+  $handler->display->display_options['group_by'] = TRUE;
+  $handler->display->display_options['defaults']['access'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['defaults']['query'] = FALSE;
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['defaults']['pager'] = FALSE;
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'table';
+  $handler->display->display_options['style_options']['columns'] = array(
+    'field_artwork_image' => 'field_artwork_image',
+    'field_titles' => 'field_titles',
+    'name' => 'name',
+    'title_1' => 'name',
+    'access' => 'name',
+    'title' => 'name',
+    'value' => 'name',
+    'field_became_evaluator' => 'field_became_evaluator',
+    'field_became_sh' => 'field_became_evaluator',
+  );
+  $handler->display->display_options['style_options']['default'] = 'title';
+  $handler->display->display_options['style_options']['info'] = array(
+    'field_artwork_image' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_titles' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'name' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'desc',
+      'align' => '',
+      'separator' => '</br>',
+      'empty_column' => 0,
+    ),
+    'title_1' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'access' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'title' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'desc',
+      'align' => '',
+      'separator' => '</br>',
+      'empty_column' => 0,
+    ),
+    'value' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_became_evaluator' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '</br>',
+      'empty_column' => 0,
+    ),
+    'field_became_sh' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+  );
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['content'] = '</br>
+[b]Our retired storyhosts and apprentices are no longer running on Vaxia... but their work lives on![/b]
+</br>';
+  $handler->display->display_options['header']['area']['format'] = 'wiki';
+  $handler->display->display_options['defaults']['footer'] = FALSE;
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Relationship: Content: Author */
+  $handler->display->display_options['relationships']['uid']['id'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['table'] = 'node';
+  $handler->display->display_options['relationships']['uid']['field'] = 'uid';
+  /* Relationship: Content: Votes */
+  $handler->display->display_options['relationships']['votingapi_vote']['id'] = 'votingapi_vote';
+  $handler->display->display_options['relationships']['votingapi_vote']['table'] = 'node';
+  $handler->display->display_options['relationships']['votingapi_vote']['field'] = 'votingapi_vote';
+  $handler->display->display_options['relationships']['votingapi_vote']['votingapi'] = array(
+    'value_type' => 'percent',
+    'tag' => 'good_session',
+  );
+  $handler->display->display_options['relationships']['votingapi_vote']['current_user'] = 0;
+  /* Relationship: User: Storyhost Character (field_storyhost_character) */
+  $handler->display->display_options['relationships']['field_storyhost_character_nid']['id'] = 'field_storyhost_character_nid';
+  $handler->display->display_options['relationships']['field_storyhost_character_nid']['table'] = 'field_data_field_storyhost_character';
+  $handler->display->display_options['relationships']['field_storyhost_character_nid']['field'] = 'field_storyhost_character_nid';
+  $handler->display->display_options['relationships']['field_storyhost_character_nid']['relationship'] = 'uid';
+  $handler->display->display_options['relationships']['field_storyhost_character_nid']['delta'] = '0';
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Field: Image */
+  $handler->display->display_options['fields']['field_artwork_image']['id'] = 'field_artwork_image';
+  $handler->display->display_options['fields']['field_artwork_image']['table'] = 'field_data_field_artwork_image';
+  $handler->display->display_options['fields']['field_artwork_image']['field'] = 'field_artwork_image';
+  $handler->display->display_options['fields']['field_artwork_image']['relationship'] = 'uid';
+  $handler->display->display_options['fields']['field_artwork_image']['empty_zero'] = TRUE;
+  $handler->display->display_options['fields']['field_artwork_image']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_artwork_image']['settings'] = array(
+    'image_style' => 'thumbnail',
+    'image_link' => '',
+  );
+  $handler->display->display_options['fields']['field_artwork_image']['group_column'] = 'entity_id';
+  /* Field: Content: Titles */
+  $handler->display->display_options['fields']['field_titles']['id'] = 'field_titles';
+  $handler->display->display_options['fields']['field_titles']['table'] = 'field_data_field_titles';
+  $handler->display->display_options['fields']['field_titles']['field'] = 'field_titles';
+  $handler->display->display_options['fields']['field_titles']['relationship'] = 'field_storyhost_character_nid';
+  $handler->display->display_options['fields']['field_titles']['exclude'] = TRUE;
+  /* Field: User: Name */
+  $handler->display->display_options['fields']['name']['id'] = 'name';
+  $handler->display->display_options['fields']['name']['table'] = 'users';
+  $handler->display->display_options['fields']['name']['field'] = 'name';
+  $handler->display->display_options['fields']['name']['relationship'] = 'uid';
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
+  $handler->display->display_options['fields']['title_1']['table'] = 'node';
+  $handler->display->display_options['fields']['title_1']['field'] = 'title';
+  $handler->display->display_options['fields']['title_1']['relationship'] = 'field_storyhost_character_nid';
+  $handler->display->display_options['fields']['title_1']['label'] = 'Storyhost';
+  $handler->display->display_options['fields']['title_1']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['title_1']['alter']['text'] = '[field_titles] [title_1]';
+  /* Field: User: Last access */
+  $handler->display->display_options['fields']['access']['id'] = 'access';
+  $handler->display->display_options['fields']['access']['table'] = 'users';
+  $handler->display->display_options['fields']['access']['field'] = 'access';
+  $handler->display->display_options['fields']['access']['relationship'] = 'uid';
+  $handler->display->display_options['fields']['access']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['access']['alter']['text'] = '<i>Last online:</i> [access]';
+  $handler->display->display_options['fields']['access']['date_format'] = 'time ago';
+  $handler->display->display_options['fields']['access']['second_date_format'] = 'privatemsg_current_day';
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['group_type'] = 'count_distinct';
+  $handler->display->display_options['fields']['title']['label'] = 'Sessions';
+  $handler->display->display_options['fields']['title']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['title']['alter']['text'] = '<i>Number of sessions:</i> [title]';
+  /* Field: Votes: Value */
+  $handler->display->display_options['fields']['value']['id'] = 'value';
+  $handler->display->display_options['fields']['value']['table'] = 'votingapi_vote';
+  $handler->display->display_options['fields']['value']['field'] = 'value';
+  $handler->display->display_options['fields']['value']['relationship'] = 'votingapi_vote';
+  $handler->display->display_options['fields']['value']['group_type'] = 'avg';
+  $handler->display->display_options['fields']['value']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['value']['alter']['text'] = '<i>Average approval:</i> [value]';
+  $handler->display->display_options['fields']['value']['empty'] = 'No votes.';
+  $handler->display->display_options['fields']['value']['empty_zero'] = TRUE;
+  $handler->display->display_options['fields']['value']['set_precision'] = TRUE;
+  $handler->display->display_options['fields']['value']['precision'] = '2';
+  $handler->display->display_options['fields']['value']['suffix'] = '%';
+  /* Field: Global: Custom text */
+  $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['table'] = 'views';
+  $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['label'] = 'Since';
+  $handler->display->display_options['fields']['nothing']['alter']['text'] = 'Retired';
+  $handler->display->display_options['defaults']['sorts'] = FALSE;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'session_report' => 'session_report',
+  );
+  $handler->display->display_options['filters']['type']['group'] = 1;
+  /* Filter criterion: User: Roles */
+  $handler->display->display_options['filters']['rid']['id'] = 'rid';
+  $handler->display->display_options['filters']['rid']['table'] = 'users_roles';
+  $handler->display->display_options['filters']['rid']['field'] = 'rid';
+  $handler->display->display_options['filters']['rid']['relationship'] = 'uid';
+  $handler->display->display_options['filters']['rid']['operator'] = 'not';
+  $handler->display->display_options['filters']['rid']['value'] = array(
+    9 => '9',
+    13 => '13',
+    10 => '10',
+    17 => '17',
+  );
+  $handler->display->display_options['filters']['rid']['reduce_duplicates'] = TRUE;
+  $handler->display->display_options['path'] = 'sessions/storytellers-and-apprentices/retired';
+  $handler->display->display_options['menu']['title'] = 'Storyhosts and Apprentices';
+  $handler->display->display_options['menu']['description'] = 'Retired Storyhosts and Apprentices';
   $handler->display->display_options['menu']['weight'] = '0';
   $handler->display->display_options['menu']['name'] = 'menu-vaxia';
   $handler->display->display_options['menu']['context'] = 0;

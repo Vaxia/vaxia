@@ -15,7 +15,7 @@ function sh_test_taxonomy_default_vocabularies() {
       'description' => 'Taxonomy for tests',
       'hierarchy' => '0',
       'module' => 'taxonomy',
-      'weight' => '0',
+      'weight' => '-9',
     ),
     'sagas' => array(
       'name' => 'Sagas',
@@ -23,7 +23,7 @@ function sh_test_taxonomy_default_vocabularies() {
       'description' => 'Saga labels for session reports.',
       'hierarchy' => '0',
       'module' => 'taxonomy',
-      'weight' => '0',
+      'weight' => '-8',
     ),
   );
 }

@@ -35,7 +35,7 @@ function sh_test_field_group_info() {
         'classes' => 'group-ash-dates field-group-fieldset',
         'description' => '',
       ),
-      'formatter' => 'collapsible',
+      'formatter' => 'collapsed',
     ),
   );
   $export['group_ash_dates|user|user|default'] = $field_group;
@@ -51,7 +51,7 @@ function sh_test_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Additional Information',
-    'weight' => '5',
+    'weight' => '7',
     'children' => array(
       0 => 'field_took_ash1',
       1 => 'field_took_ash2',
@@ -73,6 +73,16 @@ function sh_test_field_group_info() {
       17 => 'field_personal_folder',
       18 => 'field_donated',
       19 => 'field_terms_and_conditions',
+      20 => 'field_logged_in_today',
+      21 => 'field_characters_submitted',
+      22 => 'field_characters_minmax',
+      23 => 'field_banned_until',
+      24 => 'field_last_ip',
+      25 => 'field_latitude',
+      26 => 'field_longitude',
+      27 => 'field_banned_ip',
+      28 => 'field_reason_for_ban',
+      29 => 'field_account_created',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -98,20 +108,23 @@ function sh_test_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Storyhosting',
-    'weight' => '5',
+    'weight' => '7',
     'children' => array(
       0 => 'field_storyhost_character',
-      1 => 'group_ash_dates',
-      2 => 'group_sh_dates',
-      3 => 'group_latest_ash_3',
+      1 => 'field_storyhost_information',
+      2 => 'group_ash_dates',
+      3 => 'group_sh_dates',
+      4 => 'group_latest_ash_3',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
-      'formatter' => 'collapsible',
+      'label' => 'Storyhosting',
       'instance_settings' => array(
-        'description' => '',
         'classes' => 'group-storyhosting field-group-fieldset',
+        'description' => 'These are the details for your account on vaxia as a Storyhost. Here you\'ll find the listed Storyhost for a player, any additional information they want to provide about their techniques of running sessions and information on when they last received training as a Storyhost here on vaxia.org.
+<br><br>',
       ),
+      'formatter' => 'collapsible',
     ),
   );
   $export['group_storyhosting|user|user|default'] = $field_group;

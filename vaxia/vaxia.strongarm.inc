@@ -96,31 +96,31 @@ function vaxia_strongarm() {
     'extra_fields' => array(
       'form' => array(
         'title' => array(
-          'weight' => '0',
+          'weight' => '1',
         ),
         'path' => array(
-          'weight' => '13',
+          'weight' => '10',
         ),
         'workflow' => array(
-          'weight' => '14',
+          'weight' => '11',
         ),
         'locations' => array(
-          'weight' => '16',
+          'weight' => '13',
         ),
         'badges' => array(
-          'weight' => '15',
+          'weight' => '12',
         ),
       ),
       'display' => array(
         'workflow_current_state' => array(
           'default' => array(
-            'weight' => '8',
+            'weight' => '9',
             'visible' => FALSE,
           ),
         ),
         'workflow' => array(
           'default' => array(
-            'weight' => '10',
+            'weight' => '11',
             'visible' => FALSE,
           ),
         ),

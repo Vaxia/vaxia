@@ -18,6 +18,11 @@ function storyhost_renewal_default_rules_configuration() {
       "ON" : { "user_stats_day_older" : [] },
       "IF" : [
         { "user_has_role" : { "account" : [ "user" ], "roles" : { "value" : { "9" : "9" } } } },
+        { "node_is_of_type" : {
+            "node" : [ "user:field-storyhost-character" ],
+            "type" : { "value" : { "character_sheet" : "character_sheet" } }
+          }
+        },
         { "OR" : [
             { "data_is" : {
                 "data" : [ "user:field-took-ash1" ],
@@ -36,6 +41,11 @@ function storyhost_renewal_default_rules_configuration() {
       ],
       "DO" : [
         { "data_set" : { "data" : [ "user:field-powers-expire" ], "value" : "now" } },
+        { "data_set" : {
+            "data" : [ "user:field-storyhost-character:field-titles" ],
+            "value" : "SH (retired)"
+          }
+        },
         { "user_remove_role" : { "account" : [ "user" ], "roles" : { "value" : { "9" : "9" } } } },
         { "user_add_role" : { "account" : [ "user" ], "roles" : { "value" : { "15" : "15" } } } },
         { "mail" : {
@@ -64,22 +74,8 @@ function storyhost_renewal_default_rules_configuration() {
       "IF" : [
         { "user_has_role" : { "account" : [ "user" ], "roles" : { "value" : { "9" : "9" } } } },
         { "OR" : [
-            { "data_is" : {
-                "data" : [ "user:field-took-ash1" ],
-                "value" : {
-                  "select" : "site:current-date",
-                  "date_offset" : { "value" : -28512000 }
-                }
-              }
-            },
-            { "data_is" : {
-                "data" : [ "user:field-took-ash2" ],
-                "value" : {
-                  "select" : "site:current-date",
-                  "date_offset" : { "value" : -28512000 }
-                }
-              }
-            }
+            { "data_is" : { "data" : [ "user:field-took-ash1" ], "value" : "-11 months" } },
+            { "data_is" : { "data" : [ "user:field-took-ash2" ], "value" : "-11 months" } }
           ]
         },
         { "NOT user_is_blocked" : { "account" : [ "user" ] } }
@@ -116,6 +112,11 @@ function storyhost_renewal_default_rules_configuration() {
             "operation" : "OR"
           }
         },
+        { "node_is_of_type" : {
+            "node" : [ "user:field-storyhost-character" ],
+            "type" : { "value" : { "character_sheet" : "character_sheet" } }
+          }
+        },
         { "data_is" : {
             "data" : [ "user:field-took-ash1" ],
             "op" : "\\u003E",
@@ -136,6 +137,11 @@ function storyhost_renewal_default_rules_configuration() {
       ],
       "DO" : [
         { "data_set" : { "data" : [ "user:field-powers-expire" ], "value" : "+3 months" } },
+        { "data_set" : {
+            "data" : [ "user:field-storyhost-character:field-titles" ],
+            "value" : "SH"
+          }
+        },
         { "user_remove_role" : { "account" : [ "user" ], "roles" : { "value" : { "15" : "15" } } } },
         { "user_add_role" : { "account" : [ "user" ], "roles" : { "value" : { "9" : "9" } } } },
         { "mail" : {

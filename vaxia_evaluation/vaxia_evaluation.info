@@ -16,3 +16,4 @@ features[rules_config][] = items_notify_player_when_char_disapproved
 features[rules_config][] = rules_cap_of_characters_in_the_bin_at_the_same_time
 features[rules_config][] = rules_char_eval_other_and_conditions_under_hxp
 features[rules_config][] = vaxia_evaluation_notify_player_when_char_workflow
+mtime = 1411144882

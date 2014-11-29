@@ -82,9 +82,12 @@ function top_tens_views_default_views() {
   $handler->display->display_options['header']['area']['empty'] = TRUE;
   $handler->display->display_options['header']['area']['content'] = '<style>
 .view-content table{float:left;width:31%;margin-left:1em;}
+.view-content table:nth-child(4){clear:left;}
+.view-content table:nth-child(7){clear:left;}
 .view-content table tr td{height:45px;}
 .view-footer .view-filters{display:none;}
-</style>';
+</style>
+<p><b>Characters listed are in the top ten for the XP flavor, but are displayed in alphabetical order.</b></p>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
   /* Footer: Global: Text area */
   $handler->display->display_options['footer']['area']['id'] = 'area';
@@ -146,6 +149,12 @@ function top_tens_views_default_views() {
   $handler->display->display_options['sorts']['xp']['table'] = 'vaxia_xp_type_totals';
   $handler->display->display_options['sorts']['xp']['field'] = 'xp';
   $handler->display->display_options['sorts']['xp']['order'] = 'DESC';
+  /* Sort criterion: Global: PHP */
+  $handler->display->display_options['sorts']['php']['id'] = 'php';
+  $handler->display->display_options['sorts']['php']['table'] = 'views';
+  $handler->display->display_options['sorts']['php']['field'] = 'php';
+  $handler->display->display_options['sorts']['php']['use_php_setup'] = 0;
+  $handler->display->display_options['sorts']['php']['php_sort'] = 'return strcmp($row1->type . $row1->title, $row2->type . $row2->title);';
   /* Filter criterion: Content: Type */
   $handler->display->display_options['filters']['type_1']['id'] = 'type_1';
   $handler->display->display_options['filters']['type_1']['table'] = 'node';

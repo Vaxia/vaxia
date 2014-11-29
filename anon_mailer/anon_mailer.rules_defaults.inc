@@ -41,10 +41,11 @@ function anon_mailer_default_rules_configuration() {
       "IF" : [
         { "node_is_of_type" : { "node" : [ "node" ], "type" : { "value" : { "webform" : "webform" } } } },
         { "data_is" : { "data" : [ "node:nid" ], "value" : "9368" } },
-        { "php_eval" : { "code" : "$grievance = trim(\\u0022[data:grievance_request-value]\\u0022);\\r\\nwatchdog(\\u0027debug\\u0027, \\u0027.val.\\u0027.$grievance);\\r\\nreturn ($grievance == \\u0027This is a grievance request.\\u0027) ? TRUE: FALSE;" } }
+        { "php_eval" : { "code" : "$grievance = trim(\\u0022[data:grievance_request-value]\\u0022);\\r\\nreturn ($grievance == \\u0027This is a grievance request.\\u0027) ? TRUE: FALSE;" } },
+        { "php_eval" : { "code" : "$violation = trim(\\u0022[data:grievance_violation-value]\\u0022);\\r\\n$person = trim(\\u0022[data:grievance_names-value]\\u0022);\\r\\nif (empty($violation)) {\\r\\nreturn FALSE;\\r\\n}\\r\\nif (empty($person)) {\\r\\nreturn FALSE;\\r\\n}\\r\\nreturn TRUE;" } }
       ],
       "DO" : [
-        { "drupal_message" : { "message" : "Thank you, your grievance has been posted to the forums." } },
+        { "drupal_message" : { "message" : "Thank you, your grievance has been posted to the forums. Remember - a grievance is an impeachment process on this site and can be incredibly disruptive - do not open one unless you intend to see it through. We cannot guarantee that you will remain anonymous during the course of this grievance." } },
         { "entity_fetch" : {
             "USING" : { "type" : "user", "id" : "1" },
             "PROVIDE" : { "entity_fetched" : { "admin_user" : "Admin user" } }
@@ -67,6 +68,7 @@ function anon_mailer_default_rules_configuration() {
         },
         { "data_set" : { "data" : [ "entity-created:body:format" ], "value" : "plain_text" } },
         { "data_set" : { "data" : [ "entity-created:taxonomy-forums" ], "value" : "15" } },
+        { "data_set" : { "data" : [ "entity-created:comment" ], "value" : "0" } },
         { "entity_save" : { "data" : [ "entity-created" ] } }
       ]
     }
@@ -107,6 +109,7 @@ function anon_mailer_default_rules_configuration() {
         },
         { "data_set" : { "data" : [ "entity-created:body:format" ], "value" : "plain_text" } },
         { "data_set" : { "data" : [ "entity-created:taxonomy-forums" ], "value" : "15" } },
+        { "data_set" : { "data" : [ "entity-created:comment" ], "value" : "0" } },
         { "entity_save" : { "data" : [ "entity-created" ] } }
       ]
     }

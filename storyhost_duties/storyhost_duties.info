@@ -21,3 +21,4 @@ features[rules_config][] = rules_update_expire_on_session_creation
 features[rules_config][] = rules_update_expire_on_session_update
 features[rules_config][] = sh_test_update_expire_on_eval_item
 features[views_view][] = user_activity_totals
+mtime = 1411152041

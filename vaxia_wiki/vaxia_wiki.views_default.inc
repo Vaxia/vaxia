@@ -22,7 +22,7 @@ function vaxia_wiki_views_default_views() {
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Sirian Sessions';
+  $handler->display->display_options['title'] = 'Sirian sessions';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['cache']['type'] = 'time';
@@ -139,20 +139,6 @@ function vaxia_wiki_views_default_views() {
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
-  /* Contextual filter: Content: Realm (field_realm) */
-  $handler->display->display_options['arguments']['field_realm_value']['id'] = 'field_realm_value';
-  $handler->display->display_options['arguments']['field_realm_value']['table'] = 'field_data_field_realm';
-  $handler->display->display_options['arguments']['field_realm_value']['field'] = 'field_realm_value';
-  $handler->display->display_options['arguments']['field_realm_value']['default_action'] = 'default';
-  $handler->display->display_options['arguments']['field_realm_value']['default_argument_type'] = 'fixed';
-  $handler->display->display_options['arguments']['field_realm_value']['default_argument_options']['argument'] = 'Vaxia';
-  $handler->display->display_options['arguments']['field_realm_value']['summary']['number_of_records'] = '0';
-  $handler->display->display_options['arguments']['field_realm_value']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['field_realm_value']['summary_options']['items_per_page'] = '25';
-  $handler->display->display_options['arguments']['field_realm_value']['validate']['fail'] = 'ignore';
-  $handler->display->display_options['arguments']['field_realm_value']['limit'] = '0';
-  $handler->display->display_options['arguments']['field_realm_value']['case'] = 'ucfirst';
-  $handler->display->display_options['arguments']['field_realm_value']['transform_dash'] = TRUE;
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
@@ -167,15 +153,22 @@ function vaxia_wiki_views_default_views() {
   $handler->display->display_options['filters']['type']['value'] = array(
     'session_report' => 'session_report',
   );
+  /* Filter criterion: Content: Realm (field_realm) */
+  $handler->display->display_options['filters']['field_realm_value']['id'] = 'field_realm_value';
+  $handler->display->display_options['filters']['field_realm_value']['table'] = 'field_data_field_realm';
+  $handler->display->display_options['filters']['field_realm_value']['field'] = 'field_realm_value';
+  $handler->display->display_options['filters']['field_realm_value']['value'] = array(
+    'Vaxia' => 'Vaxia',
+  );
 
   /* Display: Vaxia Sessions */
   $handler = $view->new_display('page', 'Vaxia Sessions', 'wiki_vaxia_sessions');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Vaxia Sessions';
+  $handler->display->display_options['title'] = 'Vaxia sessions';
   $handler->display->display_options['display_description'] = 'A list of all sessions';
   $handler->display->display_options['path'] = 'wiki/vaxia/session-list';
   $handler->display->display_options['menu']['type'] = 'normal';
-  $handler->display->display_options['menu']['title'] = 'Vaxia Sessions';
+  $handler->display->display_options['menu']['title'] = 'Vaxia sessions';
   $handler->display->display_options['menu']['description'] = 'Sessions held in the Vaxia setting';
   $handler->display->display_options['menu']['weight'] = '0';
   $handler->display->display_options['menu']['name'] = 'menu-wiki-links';
@@ -186,43 +179,138 @@ function vaxia_wiki_views_default_views() {
   $handler = $view->new_display('page', 'Sirian Sessions', 'wiki_sirian_sessions');
   $handler->display->display_options['display_description'] = 'A list of all Sirian sessions';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
-  /* Contextual filter: Content: Realm (field_realm) */
-  $handler->display->display_options['arguments']['field_realm_value']['id'] = 'field_realm_value';
-  $handler->display->display_options['arguments']['field_realm_value']['table'] = 'field_data_field_realm';
-  $handler->display->display_options['arguments']['field_realm_value']['field'] = 'field_realm_value';
-  $handler->display->display_options['arguments']['field_realm_value']['default_action'] = 'default';
-  $handler->display->display_options['arguments']['field_realm_value']['default_argument_type'] = 'fixed';
-  $handler->display->display_options['arguments']['field_realm_value']['default_argument_options']['argument'] = 'Sirian';
-  $handler->display->display_options['arguments']['field_realm_value']['summary']['number_of_records'] = '0';
-  $handler->display->display_options['arguments']['field_realm_value']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['field_realm_value']['summary_options']['items_per_page'] = '25';
-  $handler->display->display_options['arguments']['field_realm_value']['validate']['fail'] = 'ignore';
-  $handler->display->display_options['arguments']['field_realm_value']['limit'] = '0';
-  $handler->display->display_options['arguments']['field_realm_value']['case'] = 'ucfirst';
-  $handler->display->display_options['arguments']['field_realm_value']['transform_dash'] = TRUE;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'session_report' => 'session_report',
+  );
+  /* Filter criterion: Content: Realm (field_realm) */
+  $handler->display->display_options['filters']['field_realm_value']['id'] = 'field_realm_value';
+  $handler->display->display_options['filters']['field_realm_value']['table'] = 'field_data_field_realm';
+  $handler->display->display_options['filters']['field_realm_value']['field'] = 'field_realm_value';
+  $handler->display->display_options['filters']['field_realm_value']['value'] = array(
+    'Sirian' => 'Sirian',
+  );
   $handler->display->display_options['path'] = 'wiki/sirian/session-list';
   $handler->display->display_options['menu']['type'] = 'normal';
-  $handler->display->display_options['menu']['title'] = 'Sirian Sessions';
+  $handler->display->display_options['menu']['title'] = 'Sirian sessions';
   $handler->display->display_options['menu']['description'] = 'Sessions held in the Sirian setting';
   $handler->display->display_options['menu']['weight'] = '0';
   $handler->display->display_options['menu']['name'] = 'menu-wiki-links';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
+
+  /* Display: Vaxia Sessions Calendar */
+  $handler = $view->new_display('feed', 'Vaxia Sessions Calendar', 'feed_1');
+  $handler->display->display_options['display_description'] = 'Vaxia Sessions Calendar';
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['style_plugin'] = 'date_ical';
+  $handler->display->display_options['style_options']['cal_name'] = 'Vaxia Sessions';
+  $handler->display->display_options['row_plugin'] = 'date_ical';
+  $handler->display->display_options['row_options']['date_field'] = 'field_data_field_session_held.field_session_held_value';
+  $handler->display->display_options['row_options']['summary_field'] = 'default_title';
+  $handler->display->display_options['row_options']['location_field'] = 'none';
+  $handler->display->display_options['defaults']['sorts'] = FALSE;
+  /* Sort criterion: Content: Session held (field_session_held) */
+  $handler->display->display_options['sorts']['field_session_held_value']['id'] = 'field_session_held_value';
+  $handler->display->display_options['sorts']['field_session_held_value']['table'] = 'field_data_field_session_held';
+  $handler->display->display_options['sorts']['field_session_held_value']['field'] = 'field_session_held_value';
+  $handler->display->display_options['sorts']['field_session_held_value']['order'] = 'DESC';
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'session_report' => 'session_report',
+  );
+  /* Filter criterion: Content: Realm (field_realm) */
+  $handler->display->display_options['filters']['field_realm_value']['id'] = 'field_realm_value';
+  $handler->display->display_options['filters']['field_realm_value']['table'] = 'field_data_field_realm';
+  $handler->display->display_options['filters']['field_realm_value']['field'] = 'field_realm_value';
+  $handler->display->display_options['filters']['field_realm_value']['value'] = array(
+    'Vaxia' => 'Vaxia',
+  );
+  $handler->display->display_options['path'] = 'sessions/calendar/vaxia';
+  $handler->display->display_options['sitename_title'] = 0;
+
+  /* Display: Sirian Sessions Calendar */
+  $handler = $view->new_display('feed', 'Sirian Sessions Calendar', 'feed_2');
+  $handler->display->display_options['display_description'] = 'Sirian Sessions Calendar';
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['style_plugin'] = 'date_ical';
+  $handler->display->display_options['style_options']['cal_name'] = 'Sirian Sessions';
+  $handler->display->display_options['row_plugin'] = 'date_ical';
+  $handler->display->display_options['row_options']['date_field'] = 'field_data_field_session_held.field_session_held_value';
+  $handler->display->display_options['row_options']['summary_field'] = 'default_title';
+  $handler->display->display_options['row_options']['location_field'] = 'none';
+  $handler->display->display_options['defaults']['sorts'] = FALSE;
+  /* Sort criterion: Content: Session held (field_session_held) */
+  $handler->display->display_options['sorts']['field_session_held_value']['id'] = 'field_session_held_value';
+  $handler->display->display_options['sorts']['field_session_held_value']['table'] = 'field_data_field_session_held';
+  $handler->display->display_options['sorts']['field_session_held_value']['field'] = 'field_session_held_value';
+  $handler->display->display_options['sorts']['field_session_held_value']['order'] = 'DESC';
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'session_report' => 'session_report',
+  );
+  $handler->display->display_options['filters']['type']['group'] = 1;
+  /* Filter criterion: Content: Realm (field_realm) */
+  $handler->display->display_options['filters']['field_realm_value']['id'] = 'field_realm_value';
+  $handler->display->display_options['filters']['field_realm_value']['table'] = 'field_data_field_realm';
+  $handler->display->display_options['filters']['field_realm_value']['field'] = 'field_realm_value';
+  $handler->display->display_options['filters']['field_realm_value']['value'] = array(
+    'Sirian' => 'Sirian',
+  );
+  $handler->display->display_options['path'] = 'sessions/calendar/sirian';
   $export['wiki_display_sessions'] = $view;
 
   $view = new view();
   $view->name = 'wiki_npcs_list';
-  $view->description = 'NPC master list for wiki display';
+  $view->description = 'Wiki NPCs list';
   $view->tag = 'Vaxia Wiki';
   $view->base_table = 'node';
-  $view->human_name = 'Vaxia wiki NPCs List';
+  $view->human_name = 'Wiki NPCs list';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'NPCs List';
+  $handler->display->display_options['title'] = 'Setting NPCs';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['cache']['type'] = 'none';
@@ -500,7 +588,7 @@ function vaxia_wiki_views_default_views() {
   $handler->display->display_options['fields']['field_race']['id'] = 'field_race';
   $handler->display->display_options['fields']['field_race']['table'] = 'field_data_field_race';
   $handler->display->display_options['fields']['field_race']['field'] = 'field_race';
-  /* Field: Content: Description */
+  /* Field: Content: Descriptions */
   $handler->display->display_options['fields']['field_description']['id'] = 'field_description';
   $handler->display->display_options['fields']['field_description']['table'] = 'field_data_field_description';
   $handler->display->display_options['fields']['field_description']['field'] = 'field_description';
@@ -611,6 +699,7 @@ function vaxia_wiki_views_default_views() {
   $handler->display->display_options['filters']['field_race_value']['table'] = 'field_data_field_race';
   $handler->display->display_options['filters']['field_race_value']['field'] = 'field_race_value';
   $handler->display->display_options['filters']['field_race_value']['value'] = array(
+    'all' => 'all',
     'human' => 'human',
     'elf' => 'elf',
     'half-elf' => 'half-elf',
@@ -623,23 +712,19 @@ function vaxia_wiki_views_default_views() {
     'neth' => 'neth',
     'half-neth' => 'half-neth',
     'lurai' => 'lurai',
+    'faerie' => 'faerie',
     'aratay' => 'aratay',
     'mojingan' => 'mojingan',
     'centaur' => 'centaur',
     'merfolk' => 'merfolk',
     'yeek' => 'yeek',
-    'human_clanspeople' => 'human_clanspeople',
-    'human_dalhan' => 'human_dalhan',
-    'human_mountainese' => 'human_mountainese',
-    'human_rohearn' => 'human_rohearn',
-    'human_gargorian' => 'human_gargorian',
-    'human_demi' => 'human_demi',
+    'metalborn' => 'metalborn',
     'other' => 'other',
   );
   $handler->display->display_options['filters']['field_race_value']['group'] = 1;
   $handler->display->display_options['filters']['field_race_value']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_race_value']['expose']['operator_id'] = 'field_race_value_op';
-  $handler->display->display_options['filters']['field_race_value']['expose']['label'] = 'Race';
+  $handler->display->display_options['filters']['field_race_value']['expose']['label'] = 'Species';
   $handler->display->display_options['filters']['field_race_value']['expose']['operator'] = 'field_race_value_op';
   $handler->display->display_options['filters']['field_race_value']['expose']['identifier'] = 'field_race_value';
   $handler->display->display_options['filters']['field_race_value']['expose']['remember'] = TRUE;
@@ -647,20 +732,31 @@ function vaxia_wiki_views_default_views() {
   $handler->display->display_options['filters']['field_race_value']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
+    3 => 0,
+    30 => 0,
     8 => 0,
+    9 => 0,
+    14 => 0,
+    21 => 0,
+    24 => 0,
+    26 => 0,
+    27 => 0,
     19 => 0,
+    28 => 0,
+    29 => 0,
     12 => 0,
+    25 => 0,
     13 => 0,
     10 => 0,
     17 => 0,
     15 => 0,
-    9 => 0,
     20 => 0,
-    14 => 0,
-    4 => 0,
-    3 => 0,
-    11 => 0,
+    22 => 0,
+    23 => 0,
+    31 => 0,
+    32 => 0,
   );
+  $handler->display->display_options['filters']['field_race_value']['expose']['reduce'] = TRUE;
   /* Filter criterion: User: Name */
   $handler->display->display_options['filters']['uid']['id'] = 'uid';
   $handler->display->display_options['filters']['uid']['table'] = 'users';
@@ -713,24 +809,33 @@ function vaxia_wiki_views_default_views() {
   $handler->display->display_options['filters']['title']['exposed'] = TRUE;
   $handler->display->display_options['filters']['title']['expose']['operator_id'] = 'title_op';
   $handler->display->display_options['filters']['title']['expose']['label'] = 'NPC Name';
-  $handler->display->display_options['filters']['title']['expose']['use_operator'] = TRUE;
   $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
   $handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
   $handler->display->display_options['filters']['title']['expose']['remember'] = TRUE;
   $handler->display->display_options['filters']['title']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
-    12 => 0,
+    3 => 0,
+    30 => 0,
     8 => 0,
+    9 => 0,
+    14 => 0,
+    21 => 0,
+    24 => 0,
+    26 => 0,
+    27 => 0,
+    19 => 0,
+    28 => 0,
+    29 => 0,
+    12 => 0,
+    25 => 0,
     13 => 0,
     10 => 0,
     17 => 0,
     15 => 0,
-    9 => 0,
-    14 => 0,
-    4 => 0,
-    3 => 0,
-    11 => 0,
+    20 => 0,
+    22 => 0,
+    23 => 0,
   );
   /* Filter criterion: Content: Open NPC (field_is_open_npc) */
   $handler->display->display_options['filters']['field_is_open_npc_value_1']['id'] = 'field_is_open_npc_value_1';
@@ -769,44 +874,45 @@ function vaxia_wiki_views_default_views() {
   $handler->display->display_options['filters']['field_background_value']['id'] = 'field_background_value';
   $handler->display->display_options['filters']['field_background_value']['table'] = 'field_data_field_background';
   $handler->display->display_options['filters']['field_background_value']['field'] = 'field_background_value';
+  $handler->display->display_options['filters']['field_background_value']['operator'] = 'contains';
   $handler->display->display_options['filters']['field_background_value']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_background_value']['expose']['operator_id'] = 'field_background_value_op';
   $handler->display->display_options['filters']['field_background_value']['expose']['label'] = 'Background';
-  $handler->display->display_options['filters']['field_background_value']['expose']['use_operator'] = TRUE;
   $handler->display->display_options['filters']['field_background_value']['expose']['operator'] = 'field_background_value_op';
   $handler->display->display_options['filters']['field_background_value']['expose']['identifier'] = 'field_background_value';
   $handler->display->display_options['filters']['field_background_value']['expose']['remember'] = TRUE;
   $handler->display->display_options['filters']['field_background_value']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
+    3 => 0,
+    30 => 0,
     8 => 0,
+    9 => 0,
+    14 => 0,
+    21 => 0,
+    24 => 0,
+    26 => 0,
+    27 => 0,
     19 => 0,
+    28 => 0,
+    29 => 0,
     12 => 0,
+    25 => 0,
     13 => 0,
     10 => 0,
     17 => 0,
     15 => 0,
-    9 => 0,
     20 => 0,
-    14 => 0,
-    25 => 0,
-    21 => 0,
-    3 => 0,
-    11 => 0,
     22 => 0,
     23 => 0,
-    24 => 0,
-    26 => 0,
-    27 => 0,
-    28 => 0,
   );
 
-  /* Display: NPCs List */
-  $handler = $view->new_display('page', 'NPCs List', 'npcs_list');
+  /* Display: Setting NPCs */
+  $handler = $view->new_display('page', 'Setting NPCs', 'npcs_list');
   $handler->display->display_options['display_description'] = 'List out available NPCs';
   $handler->display->display_options['path'] = 'wiki/npcs-list';
   $handler->display->display_options['menu']['type'] = 'normal';
-  $handler->display->display_options['menu']['title'] = 'Available NPC List';
+  $handler->display->display_options['menu']['title'] = 'NPCs by Setting';
   $handler->display->display_options['menu']['description'] = 'A list of all NPCs available in the wiki';
   $handler->display->display_options['menu']['weight'] = '0';
   $handler->display->display_options['menu']['name'] = 'menu-wiki-links';

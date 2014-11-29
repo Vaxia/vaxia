@@ -42,6 +42,7 @@ function storyhosts_default_rules_configuration() {
   $items['rules_remove_ash_title_on_lose_ash'] = entity_import('rules_config', '{ "rules_remove_ash_title_on_lose_ash" : {
       "LABEL" : "Remove ASH title on Lose ASH",
       "PLUGIN" : "reaction rule",
+      "ACTIVE" : false,
       "OWNER" : "rules",
       "TAGS" : [ "SH Titles" ],
       "REQUIRES" : [ "rules", "user_badges" ],
@@ -72,6 +73,7 @@ function storyhosts_default_rules_configuration() {
   $items['rules_remove_sh_title_on_lose_sh'] = entity_import('rules_config', '{ "rules_remove_sh_title_on_lose_sh" : {
       "LABEL" : "Remove SH title on Lose SH",
       "PLUGIN" : "reaction rule",
+      "ACTIVE" : false,
       "OWNER" : "rules",
       "TAGS" : [ "SH Titles" ],
       "REQUIRES" : [ "rules", "user_badges" ],
@@ -121,6 +123,7 @@ function storyhosts_default_rules_configuration() {
   $items['rules_set_ash_title_on_gain_ash'] = entity_import('rules_config', '{ "rules_set_ash_title_on_gain_ash" : {
       "LABEL" : "Set ASH title on Gain ASH",
       "PLUGIN" : "reaction rule",
+      "ACTIVE" : false,
       "OWNER" : "rules",
       "TAGS" : [ "SH Titles" ],
       "REQUIRES" : [ "rules", "user_badges" ],
@@ -179,6 +182,7 @@ function storyhosts_default_rules_configuration() {
   $items['rules_set_sh_title_on_gain_sh'] = entity_import('rules_config', '{ "rules_set_sh_title_on_gain_sh" : {
       "LABEL" : "Set SH title on Gain SH",
       "PLUGIN" : "reaction rule",
+      "ACTIVE" : false,
       "OWNER" : "rules",
       "TAGS" : [ "SH Titles" ],
       "REQUIRES" : [ "rules", "user_badges" ],

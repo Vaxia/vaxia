@@ -83,8 +83,13 @@ function vaxia_players_default_rules_configuration() {
       "IF" : [
         { "NOT user_is_blocked" : { "account" : [ "user" ] } },
         { "user_has_role" : { "account" : [ "user" ], "roles" : { "value" : { "8" : "8" } } } },
-        { "data_is" : { "data" : [ "user:created" ], "op" : "\\u003C", "value" : "-1 year" } },
-        { "data_is" : { "data" : [ "user:last-access" ], "op" : "\\u003C", "value" : "-1 year" } }
+        { "data_is" : { "data" : [ "user:created" ], "op" : "\\u003C", "value" : "-6 months" } },
+        { "data_is" : {
+            "data" : [ "user:last-access" ],
+            "op" : "\\u003C",
+            "value" : "-6 months"
+          }
+        }
       ],
       "DO" : [
         { "user_remove_role" : {
@@ -141,7 +146,7 @@ function vaxia_players_default_rules_configuration() {
       "LABEL" : "User is under minimal age",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "TAGS" : [ "Staff" ],
+      "TAGS" : [ "Players" ],
       "REQUIRES" : [ "rules" ],
       "ON" : { "user_insert" : [] },
       "IF" : [

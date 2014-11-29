@@ -209,9 +209,9 @@ function vaxia_departments_views_default_views() {
   );
   $handler->display->display_options['path'] = 'players/system-department';
   $handler->display->display_options['menu']['type'] = 'tab';
-  $handler->display->display_options['menu']['title'] = 'System Department';
+  $handler->display->display_options['menu']['title'] = 'System';
   $handler->display->display_options['menu']['description'] = 'System Department';
-  $handler->display->display_options['menu']['weight'] = '0';
+  $handler->display->display_options['menu']['weight'] = '10';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
 
@@ -242,9 +242,9 @@ function vaxia_departments_views_default_views() {
   );
   $handler->display->display_options['path'] = 'players/social-department';
   $handler->display->display_options['menu']['type'] = 'tab';
-  $handler->display->display_options['menu']['title'] = 'Social Department';
+  $handler->display->display_options['menu']['title'] = 'Social';
   $handler->display->display_options['menu']['description'] = 'Social Department';
-  $handler->display->display_options['menu']['weight'] = '0';
+  $handler->display->display_options['menu']['weight'] = '10';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
 
@@ -275,9 +275,9 @@ function vaxia_departments_views_default_views() {
   );
   $handler->display->display_options['path'] = 'players/setting-department';
   $handler->display->display_options['menu']['type'] = 'tab';
-  $handler->display->display_options['menu']['title'] = 'Setting Department';
+  $handler->display->display_options['menu']['title'] = 'Setting';
   $handler->display->display_options['menu']['description'] = 'Setting Department';
-  $handler->display->display_options['menu']['weight'] = '0';
+  $handler->display->display_options['menu']['weight'] = '10';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
   $export['users_with_system_knowledge'] = $view;

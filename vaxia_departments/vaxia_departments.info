@@ -16,3 +16,4 @@ features[rules_config][] = vaxia_staff_mark_passed_newbie_helper
 features[rules_config][] = vaxia_staff_mark_passed_setting_walkthrough
 features[rules_config][] = vaxia_staff_mark_passed_social_walkthrough
 features[views_view][] = users_with_system_knowledge
+mtime = 1411150204

@@ -21,6 +21,11 @@ function vaxia_donation_default_rules_configuration() {
             "payment" : [ "payment" ],
             "payment_statuses" : { "value" : { "payment_status_success" : "payment_status_success" } }
           }
+        },
+        { "payment_rules_condition_payment_method_comparison" : {
+            "payment_method" : [ "payment:method" ],
+            "pmids" : { "value" : { "6" : "6" } }
+          }
         }
       ],
       "DO" : [

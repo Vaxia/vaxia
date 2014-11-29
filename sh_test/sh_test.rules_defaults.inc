@@ -22,21 +22,26 @@ function sh_test_default_rules_configuration() {
             "type" : { "value" : { "storyhost_application" : "storyhost_application" } }
           }
         },
+        { "node_is_of_type" : {
+            "node" : [ "node:author:field-storyhost-character" ],
+            "type" : { "value" : { "character_sheet" : "character_sheet" } }
+          }
+        },
         { "node_is_webform" : { "node" : [ "node" ] } },
         { "user_has_role" : {
             "account" : [ "node:author" ],
             "roles" : { "value" : { "12" : "12", "8" : "8", "17" : "17" } }
           }
         },
-        { "php_eval" : { "code" : "return sh_test_check_ash_3_approvals($node-\\u003Enid);" } },
-        { "node_is_of_type" : {
-            "node" : [ "node:author:field-storyhost-character" ],
-            "type" : { "value" : { "character_sheet" : "character_sheet" } }
-          }
-        }
+        { "php_eval" : { "code" : "return sh_test_check_ash_3_approvals($node-\\u003Enid);" } }
       ],
       "DO" : [
         { "webform_close" : { "entity" : [ "node" ], "selected_webform" : { "value" : [] } } },
+        { "data_set" : {
+            "data" : [ "node:author:field-storyhost-character:field-titles" ],
+            "value" : "SH"
+          }
+        },
         { "user_remove_role" : { "account" : [ "node:author" ], "roles" : { "value" : { "17" : "17" } } } },
         { "user_add_role" : { "account" : [ "node:author" ], "roles" : { "value" : { "9" : "9" } } } },
         { "data_set" : { "data" : [ "node:author:field-took-ash1" ], "value" : "now" } },
@@ -102,7 +107,7 @@ function sh_test_default_rules_configuration() {
     }
   }');
   $items['rules_sh_test_1_expire'] = entity_import('rules_config', '{ "rules_sh_test_1_expire" : {
-      "LABEL" : "SH Test - ASH 1 Expire Warning",
+      "LABEL" : "SH Test - ASH 1 Expire",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
       "TAGS" : [ "SH Course" ],
@@ -117,10 +122,7 @@ function sh_test_default_rules_configuration() {
         { "data_is" : {
             "data" : [ "user:field-took-ash1" ],
             "op" : "\\u003C",
-            "value" : {
-              "select" : "site:current-date",
-              "date_offset" : { "value" : -15552000 }
-            }
+            "value" : "-6 months"
           }
         }
       ],
@@ -202,7 +204,7 @@ function sh_test_default_rules_configuration() {
     }
   }');
   $items['rules_sh_test_2_expire'] = entity_import('rules_config', '{ "rules_sh_test_2_expire" : {
-      "LABEL" : "SH Test - ASH 2 Expire Warning",
+      "LABEL" : "SH Test - ASH 2 Expire",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
       "TAGS" : [ "SH Course" ],
@@ -217,10 +219,7 @@ function sh_test_default_rules_configuration() {
         { "data_is" : {
             "data" : [ "user:field-took-ash2" ],
             "op" : "\\u003C",
-            "value" : {
-              "select" : "site:current-date",
-              "date_offset" : { "value" : -15552000 }
-            }
+            "value" : "-6 months"
           }
         }
       ],
@@ -670,14 +669,7 @@ function sh_test_default_rules_configuration() {
             "roles" : { "value" : { "8" : "8", "13" : "13", "12" : "12" } }
           }
         },
-        { "data_is" : {
-            "data" : [ "user:field-took-ash1" ],
-            "value" : {
-              "select" : "site:current-date",
-              "date_offset" : { "value" : -12960000 }
-            }
-          }
-        }
+        { "data_is" : { "data" : [ "user:field-took-ash1" ], "value" : "-5 months" } }
       ],
       "DO" : [
         { "mail" : {
@@ -703,14 +695,7 @@ function sh_test_default_rules_configuration() {
             "roles" : { "value" : { "8" : "8", "10" : "10", "12" : "12" } }
           }
         },
-        { "data_is" : {
-            "data" : [ "user:field-took-ash2" ],
-            "value" : {
-              "select" : "site:current-date",
-              "date_offset" : { "value" : -12960000 }
-            }
-          }
-        }
+        { "data_is" : { "data" : [ "user:field-took-ash2" ], "value" : "-5 months" } }
       ],
       "DO" : [
         { "mail" : {
