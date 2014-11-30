@@ -452,32 +452,6 @@ function sh_test_default_rules_configuration() {
       ]
     }
   }');
-  $items['rules_warn_at_sh_test_if_not_eligable'] = entity_import('rules_config', '{ "rules_warn_at_sh_test_if_not_eligable" : {
-      "LABEL" : "SH Test - Warn if not Eligable as SH",
-      "PLUGIN" : "reaction rule",
-      "OWNER" : "rules",
-      "TAGS" : [ "SH Course" ],
-      "REQUIRES" : [ "rules" ],
-      "ON" : { "node_view--quiz" : { "bundle" : "quiz" } },
-      "IF" : [
-        { "NOT user_has_role" : {
-            "account" : [ "site:current-user" ],
-            "roles" : { "value" : { "12" : "12" } }
-          }
-        },
-        { "OR" : [
-            { "data_is" : { "data" : [ "node:nid" ], "value" : "7037" } },
-            { "data_is" : { "data" : [ "node:nid" ], "value" : "7050" } },
-            { "data_is" : { "data" : [ "node:nid" ], "value" : "9359" } },
-            { "data_is" : { "data" : [ "node:nid" ], "value" : "7181" } }
-          ]
-        }
-      ],
-      "DO" : [
-        { "drupal_message" : { "message" : "You are not yet eligible to become a Storyhost. We want to make sure that potential Storyhosts have experience with the community and the system before they start running sessions. We measure that by keeping track of how much XP you\\u0027ve earned across all of your characters. You need 40 XP to become eligible to become a SH. You currently have [site:current-user:field-xp-over-time] recorded XP. You may still take this quiz as a practice run." } }
-      ]
-    }
-  }');
   $items['sh_test_get_session_feedback_for_ash'] = entity_import('rules_config', '{ "sh_test_get_session_feedback_for_ash" : {
       "LABEL" : "SH Test - Get ASH Feedback on Session",
       "PLUGIN" : "reaction rule",
@@ -767,66 +741,6 @@ function sh_test_default_rules_configuration() {
             "value" : "ASH"
           }
         }
-      ]
-    }
-  }');
-  $items['sh_test_warn_at_sh_test_2_if_not_eligable'] = entity_import('rules_config', '{ "sh_test_warn_at_sh_test_2_if_not_eligable" : {
-      "LABEL" : "SH Test - Warn if not Eligable as ASH 2",
-      "PLUGIN" : "reaction rule",
-      "OWNER" : "rules",
-      "TAGS" : [ "SH Course" ],
-      "REQUIRES" : [ "rules", "php" ],
-      "ON" : { "node_view--quiz" : { "bundle" : "quiz" } },
-      "IF" : [
-        { "data_is" : { "data" : [ "node:nid" ], "value" : "7050" } },
-        { "user_has_role" : {
-            "account" : [ "site:current-user" ],
-            "roles" : { "value" : { "12" : "12" } },
-            "operation" : "OR"
-          }
-        },
-        { "OR" : [
-            { "NOT user_has_role" : {
-                "account" : [ "site:current-user" ],
-                "roles" : { "value" : { "13" : "13" } }
-              }
-            },
-            { "NOT php_eval" : { "code" : "global $user;\\r\\nreturn sh_test_check_sessions_ran($user-\\u003Euid, 3);" } }
-          ]
-        }
-      ],
-      "DO" : [
-        { "drupal_message" : { "message" : "You are not eligible to pass ASH Test 2. You either are not currently in the ASH program as an ASH 1, or you have not run the required number of sessions yet. You may still take this quiz as a practice run." } }
-      ]
-    }
-  }');
-  $items['sh_test_warn_at_sh_test_3_if_not_eligable'] = entity_import('rules_config', '{ "sh_test_warn_at_sh_test_3_if_not_eligable" : {
-      "LABEL" : "SH Test - Warn if not Eligable as ASH 3",
-      "PLUGIN" : "reaction rule",
-      "OWNER" : "rules",
-      "TAGS" : [ "SH Course" ],
-      "REQUIRES" : [ "rules", "php" ],
-      "ON" : { "node_view--quiz" : { "bundle" : "quiz" } },
-      "IF" : [
-        { "data_is" : { "data" : [ "node:nid" ], "value" : "7181" } },
-        { "user_has_role" : {
-            "account" : [ "site:current-user" ],
-            "roles" : { "value" : { "12" : "12" } },
-            "operation" : "OR"
-          }
-        },
-        { "OR" : [
-            { "NOT user_has_role" : {
-                "account" : [ "site:current-user" ],
-                "roles" : { "value" : { "10" : "10" } }
-              }
-            },
-            { "NOT php_eval" : { "code" : "global $user;\\r\\nreturn sh_test_check_sessions_ran($user-\\u003Euid, 8);" } }
-          ]
-        }
-      ],
-      "DO" : [
-        { "drupal_message" : { "message" : "You are not eligible to pass ASH Test 3. You either are not currently in the ASH program as an ASH 2, or you have not run the required number of sessions yet. Because this quiz is a long format essay, you may begin answering questions at any time leading up to your qualification - so long as you qualify before you submit your last answers then the submission will be accepted. You may still take this quiz as a practice run." } }
       ]
     }
   }');
