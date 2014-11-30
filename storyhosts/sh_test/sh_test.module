@@ -107,6 +107,44 @@ function _sh_test_cron_check_overdue() {
  */
 function sh_test_node_view($node, $view_mode, $langcode) {
 
+  // Only override the displays for quizes.
+  if ($node->type == 'quiz') {
+    // Show results if any.
+    $sh_tests = array('7037', '7050', '9359', '7181');
+    global $user;
+    $this_user = user_load($user->uid);
+    $roles = $user->roles;
+    // General check.
+    if (in_array($node->nid, $sh_tests) && !in_array('eligible for SH', $user->roles)) {
+      drupal_set_message(t('You are not yet eligible to become a Storyhost. We want to make sure ' .
+        'that potential Storyhosts have experience with the community and the system before they ' .
+        'start running sessions. We measure that by keeping track of how much XP you\'ve earned ' .
+        'across all of your characters. You need 40 XP to become eligible to become a SH. You may ' .
+        'still take this quiz as a practice run.'));
+    }
+
+    // Make sure eligable as ASH 2.
+    if ($node->nid == '7050' && in_array('eligible for SH', $user->roles)) {
+      if (!in_array('storyteller-newbie', $user->roles) || sh_test_check_sessions_ran($user->uid, 3)) {
+        drupal_set_message(t('You are not eligible to pass ASH Test 2. You either are not currently ' .
+        'in the ASH program as an ASH 1, or you have not run the required number of sessions yet. ' .
+        'You may still take this quiz as a practice run.'));
+      }
+    }
+
+    // Make sure eligable as ASH 3.
+    if ($node->nid == '7181' && in_array('eligible for SH', $user->roles)) {
+      if (!in_array('storyteller-assistant', $user->roles) || sh_test_check_sessions_ran($user->uid, 8)) {
+        drupal_set_message(t('You are not eligible to pass ASH Test 3. You either are not currently ' .
+        'in the ASH program as an ASH 2, or you have not run the required number of sessions yet. ' .
+        'Because this quiz is a long format essay, you may begin answering questions at any time ' .
+        'leading up to your qualification - so long as you qualify before you submit your last ' .
+        'answers then the submission will be accepted. You may still take this quiz as a practice ' .
+        'run.'));
+      }
+    }
+  }
+
   // Only override the displays for proposals.
   if ($node->type == 'storyhost_application') {
     module_load_include('inc', 'webform', 'includes/webform.report');
@@ -119,7 +157,20 @@ function sh_test_node_view($node, $view_mode, $langcode) {
       );
     }
   }
-  
+
+  // Only override the displays for proposals.
+  if ($node->type == 'storyhost_application') {
+    module_load_include('inc', 'webform', 'includes/webform.report');
+    // Show results if any.
+    global $user;
+    if ($node->uid == $user->uid || user_access('view sh test results') || user_access('administrate sh test')) {
+      $node->content['application_results'] = array(
+        '#markup' => '<div class="application_result">' . webform_results_table($node) . '</div>',
+        '#weight' => 1003,
+      );
+    }
+  }
+
   // Display if this session report counts towards SH requirements.
   if ($node->type == 'session_report' && user_access('view session qualify')) {
     $message = t('This session report %display count towards session requirements on site.',
