@@ -128,7 +128,12 @@ function _items_admin_settings($form, &$form_state) {
       '#size' => 5,
       '#default_value' => variable_get('items_perc_' . $id, $perc),
     );
-  }  
+  }
+  $form['items_recalculate_values'] = array(
+    '#title' => t('Recalculate value on save'),
+    '#type' => 'checkbox',
+    '#default_value' => variable_get('items_recalculate_values', FALSE),
+  );
   return system_settings_form($form);
 }
 
@@ -230,6 +235,86 @@ function _items_change_ownership_form_submit($form, $form_state) {
     }
     node_save($node);
   }
+}
+
+/**
+ * Implements hook_node_presave().
+ */
+function items_node_presave($node) {
+  $recalc_value = variable_get('items_recalculate_values', FALSE);
+  if ($recalc_value) {
+    $lang = isset($node->language) ? $node->language : 'und';
+    // And figure out the true item value.
+    _items_node_save_value_item($node);
+  }
+}
+
+/**
+ * Helper function, get the true value of an item.
+ */
+function _items_node_save_value_item(&$node) {
+  // Set the currently declared value.
+  $curr_value = isset($node->field_value[$lang][0]['value']) ? $node->field_value[$lang][0]['value'] : 0;
+  // Per stats.
+  $stats = array('life', 'endurance', 'strength', 'dexterity', 'intelligence', 'spirituality', 'charisma');
+  $second_stats = array('health', 'constitution', 'agility', 'field_item_reflexes', 'awareness', 'presence', 'appearance');
+  // Get the benefits and penalties for item mods.
+  $primary = _items_value_stat_bonus($node, $stats);
+  $secondary = _items_value_stat_bonus($node, $second_stats);
+  $skill = _items_value_stat_bonus($node, array('skill'));
+  $bonus = ($primary) + ($secondary * 1.5) + ($skill * 0.75);
+  // Now we have the values of modifiers up and down for stat bonuses and skill bonuses.
+  $bonus_value = 0;
+  if ($bonus > 0) {
+    $bonus_value = 50;
+    $double = floor(($bonus - 1 ) / 5);
+    for ($i=0; $i<$double; $i++) {
+      $bonus_value = $bonus_value * 2; // 50, 100, 200, 400 etc.
+    }
+    $bonus_value = $bonus * $bonus_value; // And for each point.
+  }
+  // Get the overlap bonuses.
+  $primary = _items_value_stat_overlap($node, $stats);
+  $secondary = _items_value_stat_overlap($node, $second_stats);
+  $skill = _items_value_stat_overlap($node, array('skill'));
+  $overlap = ($primary) + ($secondary) + ($skill);
+  // Now we have the values of modifiers up and down for stat bonuses and skill overlaps.
+  $overlap_value = $overlap * 2; // Each overlap is 2 silver.
+  // Set the final values.
+  $real_value = $bonus_value + $overlap_value;
+  $node->field_value[$lang][0]['value'] = $real_value;
+  $node->field_declared_value[$lang][0]['value'] = (is_numeric($curr_value) && ($curr_value > 0))
+    ? $curr_value : $real_value;
+}
+
+/**
+ * Helper function, get the true value of an item.
+ */
+function _items_value_stat_bonus($node, $stats) {
+  $bonus = 0;
+  $lang = $node->language;
+  foreach ($stats as $stat) {
+    $field = 'field_item_' . $stat;
+    $field_ben = isset($node->{$field}[$lang][0]['value']) ? $node->{$field}[$lang][0]['value'] : 0;
+    // Penalties will be negative, so add.
+    $bonus = $bonus + $field_ben;
+  }
+  return $bonus;
+}
+
+/**
+ * Helper function, get the true value of an item.
+ */
+function _items_value_stat_overlap($node, $stats) {
+  $bonus = 0;
+  $lang = $node->language;
+  foreach ($stats as $stat) {
+    $field = 'field_item_over_' . $stat;
+    $field_ben = isset($node->{$field}[$lang][0]['value']) ? $node->{$field}[$lang][0]['value'] : 0;
+    // Penalties will be negative, so add.
+    $bonus = $bonus + $field_ben;
+  }
+  return $bonus;
 }
 
 /*
