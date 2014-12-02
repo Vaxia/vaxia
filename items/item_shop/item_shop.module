@@ -144,18 +144,18 @@ function _item_shop_sellback_form_submit($form, &$form_state) {
       	$item_nid = $item_nid['nid'];
         if ($item_nid == $item->nid) {
           drupal_set_message('Selling back item.');
-		  // Add silver to the owning character.
-		  _character_sheet_update_xp($character->nid, $value, 'silver');
-		  $message = t('@xp silver added by System on selling back @title by @user.',
-		    array('@xp' => $value, '@title' => $item->title, '@user' => $user->name));
-		  _character_sheet_update_log($character->nid, 'silver', $message, $variables = array());
-		  drupal_set_message(t('%value silver added to %title.', array('%value' => $value, '%title' => $character->title)));
+          // Add silver to the owning character.
+          _character_sheet_update_xp($character->nid, $value, 'silver');
+          $message = t('@xp silver added by System on selling back @title by @user.',
+            array('@xp' => $value, '@title' => $item->title, '@user' => $user->name));
+          _character_sheet_update_log($character->nid, 'silver', $message, $variables = array());
+          drupal_set_message(t('%value silver added to %title.', array('%value' => $value, '%title' => $character->title)));
           unset($character->field_items[$character->language][$index]);
-		  node_save($character);
-		  // Remove the sheet from the item.
-		  $item->uid = 1; // Revert to admin ownership of the item.
-		  unset($item->field_character_owner[$item->language][0]);
-		  node_save($item);
+          node_save($character);
+          // Remove the sheet from the item.
+          $item->uid = 1; // Revert to admin ownership of the item.
+          unset($item->field_character_owner[$item->language][0]);
+          node_save($item);
         }
       }
     }

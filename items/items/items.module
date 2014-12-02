@@ -26,15 +26,6 @@ function items_permission() {
  * Implements hook_menu().
  */
 function items_menu() {
-  $items['node/%node/transfer_items'] = array(
-    'title' => 'Ownership',
-    'type' => MENU_LOCAL_TASK,
-    'access callback' => '_items_menu_ownership_access_callback',
-    'access arguments' => array(1),
-    'page callback' => '_items_ownership',
-    'page arguments' => array(1),
-    'weight' => 3,
-  );
   $items['admin/vaxia/items'] = array(
     'title' => 'Item settings',
     'description' => 'Configure item types',
@@ -46,6 +37,14 @@ function items_menu() {
 }
 
 function _items_admin_settings($form, &$form_state) {
+  $workflow_options = _items_get_workflow_options();
+  $form['items_approved_workflow'] = array(
+    '#title' => 'Item approved',
+    '#description' => 'Workflow state for approved items.',
+    '#type' => 'select',
+    '#options' => $workflow_options,
+    '#default_value' => variable_get('items_approved_workflow', ''),
+  );
   $listed_item_types = array(
     'Utility Item' => 0,
     'One Use Item' => 0,
@@ -168,76 +167,6 @@ function _items_get_type_id($type) {
 }
 
 /**
- * Menu access callback.
- */
-function _items_menu_ownership_access_callback($node) {
-  if ($node->type == 'items') {
-    global $user;
-    if (user_access('change item owner') && ($user->uid == $node->uid && 
-        (user_access('edit any items content')
-          || user_access('edit own items content')))) {
-      return TRUE;
-    }
-    return FALSE;
-  }
-}
-
-/**
- * Menu callback, transfer ownership pages for items and artwork.
- */
-function _items_ownership($node) {
-  return drupal_get_form('_items_change_ownership_form', $node);
-}
-
-/*
- * Form callback function from nodeapi view, adds moderation form to node display.
- */
-function _items_change_ownership_form($form, &$form_state, $node) {
-  $context['owner_uid'] = $node->uid;
-  $form = node_assign_owner_action_form($context);
-  // From node.module, generate an ownership form.
-  $form['owner_name']['#title'] = t('Owner');
-  $form['nid'] = array(
-    '#type' => 'hidden',
-    '#value' => $node->nid,
-  );
-  $form['submit'] = array(
-    '#type' => 'submit',
-    '#value' => t('Update ownership'),
-  );
-  return $form;
-}
-
-/*
- * Form callback validation for _vaxia_change_ownership_form.
- */
-function _items_change_ownership_form_validate($form, $form_state) {
-  $count = db_query('SELECT COUNT(*) FROM {users} WHERE name = :name',
-    array(':name' => $form_state['values']['owner_name']))->fetchField();
-  if (intval($count) != 1) {
-    form_set_error('owner_name', t('Please enter a valid username.'));
-  }
-}
-
-/*
- * Form callback submission for _vaxia_change_ownership_form.
- */
-function _items_change_ownership_form_submit($form, $form_state) {
-  $values = $form_state['values'];
-  $node = node_load($values['nid']);
-  global $user;
-  if (!empty($node) && user_access('change item owner') || ($user->uid == $node->uid && 
-      (user_access('edit any items content') || user_access('edit own items content'))
-    )) {
-    $uid = db_query("SELECT uid from {users} WHERE name = :name", array(':name' => $values['owner_name']))->fetchField();
-    if (!empty($uid)) {
-      $node->uid = $uid;
-    }
-    node_save($node);
-  }
-}
-
-/**
  * Implements hook_node_presave().
  */
 function items_node_presave($node) {
@@ -280,8 +209,27 @@ function _items_node_save_value_item($node) {
   $overlap = ($primary) + ($secondary) + ($skill);
   // Now we have the values of modifiers up and down for stat bonuses and skill overlaps.
   $overlap_value = $overlap * 2; // Each overlap is 2 silver.
+  // Now to figure out the PP value.
+  $pp_value = 0;
+  $pp = isset($node->field_pp_created[$lang][0]['value']) ? $node->field_pp_created[$lang][0]['value'] : 0;
+  if ($pp > 0) {
+    $uses = isset($node->field_item_use_day[$lang][0]['value']) ? $node->field_item_use_day[$lang][0]['value'] : 'at_will';
+    $charges = isset($node->field_item_uses[$lang][0]['value']) ? $node->field_item_uses[$lang][0]['value'] : 1;
+    $use_val = 750;
+    switch ($uses) {
+      case 'once':
+        $use_val = 5;
+      case 'per_day':
+        $use_val = 250;
+      case 'at_will':
+      default;
+        $use_val = 750;
+        break;
+    }
+    $pp_value = ($pp * $use_val) * $charges; // Charge for use per day or individual one-shot item.
+  }
   // Set the final values.
-  $real_value = $bonus_value + $overlap_value;
+  $real_value = $bonus_value + $overlap_value + $pp_value;
   drupal_set_message(t('Value of @title calculated as @real_value.', array('@title' => $node->title, '@real_value' => $real_value)));
   $node->field_value[$lang][0]['value'] = $real_value;
   $node->field_declared_value[$lang][0]['value'] = (is_numeric($curr_value) && ($curr_value > 0))
@@ -468,4 +416,74 @@ function items_check_needs_oversight($node) {
     }
   }
   return $return_value;
+}
+
+/**
+ * Helper function.
+ */
+function _items_once_a_day_cron($cron, $time = '01:00:00') {
+  // Make sure we have the vaxia helper file included.
+  module_load_include('inc', 'vaxia', 'helper');
+  // Get all workflows ready for form output
+  return _vaxia_once_a_day_cron($cron, $time);
+}
+
+/**
+ * Helper function.
+ */
+function _items_get_workflow_options() {
+  // Make sure we have the vaxia helper file included.
+  module_load_include('inc', 'vaxia', 'helper');
+  // Get all workflows ready for form output
+  return _vaxia_get_workflow_options();
+}
+
+/**
+ * Helper function.
+ */
+function _items_get_field_value($node, $field, $default = '') {
+  // Make sure we have the vaxia helper file included.
+  module_load_include('inc', 'vaxia', 'helper');
+  // Get all item nids in workflows.
+  return _vaxia_get_field_value($node, $field, $default);
+}
+
+/**
+ * Helper function.
+ */
+function _items_get_field_node($node, $field, $default = '') {
+  // Make sure we have the vaxia helper file included.
+  module_load_include('inc', 'vaxia', 'helper');
+  // Get all item nids in workflows.
+  return _vaxia_get_field_node($node, $field, $default);
+}
+
+/**
+ * Helper function.
+ */
+function _items_set_field_value($node, $field, $value = '') {
+  // Make sure we have the vaxia helper file included.
+  module_load_include('inc', 'vaxia', 'helper');
+  // Get all item nids in workflows.
+  return _vaxia_set_field_value($node, $field, $value);
+}
+
+/**
+ * Helper function.
+ */
+function _items_get_in_workflows($workflows = array()) {
+  // Make sure we have the vaxia helper file included.
+  module_load_include('inc', 'vaxia', 'helper');
+  // Get all item nids in workflows.
+  return _vaxia_get_in_workflows('items', $workflows);
+}
+
+/**
+ * Helper function.
+ */
+function _items_check_workflow_in($node, $workflows = array()) {
+  // Make sure we have the vaxia helper file included.
+  module_load_include('inc', 'vaxia', 'helper');
+  // Check the workflow.
+  return _vaxia_check_workflow_in($node, $workflows);
 }

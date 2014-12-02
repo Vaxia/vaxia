@@ -21,6 +21,15 @@ function item_uses_permission() {
 }
 
 /**
+ * Implements hook_cron();
+ */
+function item_uses_cron() {
+  if (_items_once_a_day_cron('item_uses_daily_recharge', '01:00:00')) {
+    _item_uses_daily_recharge();
+  }
+}
+
+/**
  * Implements hook_menu().
  */
 function item_uses_menu() {
@@ -33,6 +42,7 @@ function item_uses_menu() {
   );
   return $items;
 }
+
 /**
  * Implementation of admin settings form.
  */
@@ -42,20 +52,20 @@ function _item_uses_admin_settings($form, &$form_state) {
     '#type' => 'checkbox',
     '#default_value' => variable_get('item_uses_active', TRUE),
   );
-  $workflow_options = array();
-  $workflows = workflow_get_workflows();
-  foreach ($workflows as $workflow) {
-    $states = workflow_get_workflow_states_by_wid($workflow->wid);
-    foreach ($states as $state) {
-      $workflow_options[$state->sid] = $workflow->name . ': ' . $state->state;
-    }
-  }
-  $form['item_uses_workflow'] = array(
-    '#title' => 'Item used up workflow',
-    '#description' => 'Workflow state items that have been used up end up in.',
+  $workflow_options = _items_get_workflow_options();
+  $form['item_uses_once_workflow'] = array(
+    '#title' => 'Item used up',
+    '#description' => 'Workflow state for items that need otbe recharged before they can be used again.',
     '#type' => 'select',
     '#options' => $workflow_options,
-    '#default_value' => variable_get('item_uses_workflow', ''),
+    '#default_value' => variable_get('item_uses_once_workflow', ''),
+  );
+  $form['item_uses_daily_workflow'] = array(
+    '#title' => 'Item used for day',
+    '#description' => 'Workflow state for items that need a reset day before they can be used again.',
+    '#type' => 'select',
+    '#options' => $workflow_options,
+    '#default_value' => variable_get('item_uses_daily_workflow', ''),
   );
   return system_settings_form($form);
 }
@@ -82,50 +92,75 @@ function item_uses_comment_insert($comment) {
  */
 function _item_uses_content_update($content) {
   // Allow for turning it all off.
-  if (variable_get('item_uses_active', TRUE) == FALSE) {
-    return;
-  }
-  // Use it as much as you want.
-  if (user_access('use items indefinately')) {
-    return;
-  }
-  // Check rolls exist.
-  if (empty($content->vaxia_rolls)) {
+  if (!variable_get('item_uses_active', TRUE) || user_access('use items indefinately') || empty($content->vaxia_rolls)) {
     return;
   }
   // Uses matter, so keep looping.
   $lang = $content->language;
-  // Gather the character information if it's set.
-  $character = '';
-  if (isset($content->field_comment_character[$lang][0]['nid'])) {
-    $character = node_load($content->field_comment_character[$lang][0]['nid']);
-  }
   // Check items against stats.
   if (isset($content->vaxia_rolls['items'])) {
+    // Gather the character information if it's set.
+    $character = _items_get_field_node($content, 'field_comment_character');
     // If character set, get the stats and items.
     if (!empty($character)) {
+      $once_workflow = variable_get('item_uses_once_workflow', '');
+      $daily_workflow = variable_get('item_uses_daily_workflow', '');
       // Loop for each item.
       foreach ($content->vaxia_rolls['items'] as $item) {
-        $item = node_load($item);
-        $uses = isset($item->field_item_uses[$lang][0]['value']) ? $item->field_item_uses[$lang][0]['value'] : -1;
-        if ($uses > -1) {
-          $uses--;
-          if ($uses == 0) {
-            // If we're out of uses, unpublish and remove from character.
-            $item->field_character_owner[$lang][0]['nid'] = 0;
-            $item->status = 0;
-            // Update item to removed from game.
-            $workflow = variable_get('item_uses_workflow', '');
-            workflow_execute_transition($item, $workflow, t('Item uses ran out, removed from game'), TRUE);
-          }
-          else {
-            // Reduce uses.
-            $item->field_item_uses[$lang][0]['value'] = $uses;
-          }
-          // Save changes.
-          node_save($item);
-        } // end if uses > -1
-      } // End forloop
-    } // end check for character existing.
-  } // End check for items existing.
+        _item_uses_check_item_use($item, $once_workflow, $daily_workflow);
+      }
+    }
+  }
+}
+
+/**
+ * Helper function, check the item use.
+ */
+function _item_uses_check_item_use($item, $once_workflow, $daily_workflow) {
+  $item = node_load($item);
+  $uses = _items_get_field_value($item, 'field_item_use_day', 'at_will');
+  $charges = _items_get_field_value($item, 'field_item_uses', 1);
+  $spent_charges = _items_get_field_value($item, 'field_item_spent_uses', 0);
+  // Only subtract from uses for items that are individual use.
+  if (in_array($uses, array('once', 'per_day')) && $charges > 0) {
+    // Reduce uses.
+    $spent_charges++;
+    _items_set_field_value($item, 'field_item_spent_uses', $spent_charges);
+    drupal_set_message(t('@title charge used, @charges charges remaining.',
+    array('@title' => $item->title, '@charges' => $charges - $spent_charges)));
+    // If the item is out - note it and remove from play.
+    if ($charges - $spent_charges <= 0) {
+      if ($uses == 'once') {
+        // For one time use.
+        drupal_set_message(t('@title is out of uses cannot be used again until recharged.', array('@title' => $item->title)));
+        workflow_execute_transition($item, $once_workflow, t('Item uses ran out, item temporarily removed from game.'), TRUE);
+      }
+      else {
+        // For daily recharge use.
+        drupal_set_message(t('@title is out of uses cannot be used again until tomorrow.', array('@title' => $item->title)));
+        workflow_execute_transition($item, $daily_workflow, t('Item uses ran out, item temporarily removed from game.'), TRUE);
+      }
+    }
+    // Save changes.
+    node_save($item);
+  } // end if $uses == 'once' uses > -1
+}
+
+/**
+ * Helper function, get the cron for this run.
+ */
+function _item_uses_daily_recharge() {
+  $items = _items_get_in_workflows(variable_get('item_uses_daily_workflow', ''));
+  foreach ($items as $item) {
+    $item = node_load($item->nid);
+    if ($item) {
+      $spent = _items_set_field_value($item, 'field_item_spent_uses', 0);
+      if ($spent > 0) {
+        _items_set_field_value($item, 'field_item_spent_uses', $spent_charges);
+        $workflow = variable_get('items_approved_workflow', ''); // Set back to approved.
+        workflow_execute_transition($item, $workflow, t('Item recharged daily.'), TRUE);
+        node_save($item);
+      }
+    }
+  }
 }

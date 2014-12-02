@@ -10,6 +10,8 @@ include_once('vaxia.dice.inc');
 
 include_once('vaxia.character_sheet.inc');
 
+include_once('vaxia.helper.inc');
+
 /**
  * Implements hook_permission().
  */
