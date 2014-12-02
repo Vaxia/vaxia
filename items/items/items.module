@@ -282,6 +282,7 @@ function _items_node_save_value_item($node) {
   $overlap_value = $overlap * 2; // Each overlap is 2 silver.
   // Set the final values.
   $real_value = $bonus_value + $overlap_value;
+  drupal_set_message(t('Value of @title calculated as @real_value.', array('@title' => $node->title, '@real_value' => $real_value)));
   $node->field_value[$lang][0]['value'] = $real_value;
   $node->field_declared_value[$lang][0]['value'] = (is_numeric($curr_value) && ($curr_value > 0))
     ? $curr_value : $real_value;
