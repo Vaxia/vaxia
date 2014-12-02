@@ -201,6 +201,8 @@ function _items_node_save_value_item($node) {
       $bonus_value = $bonus_value * 2; // 50, 100, 200, 400 etc.
     }
     $bonus_value = $bonus * $bonus_value; // And for each point.
+    drupal_set_message(t('Value of bonuses for %title calculated at @bonus_value silver.',
+      array('%title' => $node->title, '@bonus_value' => $bonus_value)));
   }
   // Get the overlap bonuses.
   $primary = _items_value_stat_overlap($node, $stats);
@@ -208,7 +210,12 @@ function _items_node_save_value_item($node) {
   $skill = _items_value_stat_overlap($node, array('skill'));
   $overlap = ($primary) + ($secondary) + ($skill);
   // Now we have the values of modifiers up and down for stat bonuses and skill overlaps.
-  $overlap_value = $overlap * 2; // Each overlap is 2 silver.
+  $overlap_value = 0;
+  if ($overlap > 0) {
+    $overlap_value = $overlap * 2; // Each overlap is 2 silver.
+    drupal_set_message(t('Value of overlapping bonuses for %title calculated at @overlap_value silver.',
+      array('%title' => $node->title, '@overlap_value' => $overlap_value)));
+  }
   // Now to figure out the PP value.
   $pp_value = 0;
   $pp = isset($node->field_pp_created[$lang][0]['value']) ? $node->field_pp_created[$lang][0]['value'] : 0;
@@ -227,10 +234,13 @@ function _items_node_save_value_item($node) {
         break;
     }
     $pp_value = ($pp * $use_val) * $charges; // Charge for use per day or individual one-shot item.
+    drupal_set_message(t('Value of PP effect for %title calculated at @pp_value silver.',
+      array('%title' => $node->title, '@pp_value' => $pp_value)));
   }
   // Set the final values.
   $real_value = $bonus_value + $overlap_value + $pp_value;
-  drupal_set_message(t('Value of @title calculated as @real_value.', array('@title' => $node->title, '@real_value' => $real_value)));
+  drupal_set_message(t('Overall value of %title calculated at @real_value silver.',
+    array('@title' => $node->title, '@real_value' => $real_value)));
   $node->field_value[$lang][0]['value'] = $real_value;
   $node->field_declared_value[$lang][0]['value'] = (is_numeric($curr_value) && ($curr_value > 0))
     ? $curr_value : $real_value;
