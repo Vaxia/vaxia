@@ -226,8 +226,10 @@ function _items_node_save_value_item($node) {
     switch ($uses) {
       case 'once':
         $use_val = 5;
+        break;
       case 'per_day':
         $use_val = 250;
+        break;
       case 'at_will':
       default;
         $use_val = 750;
