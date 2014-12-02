@@ -240,7 +240,7 @@ function _items_change_ownership_form_submit($form, $form_state) {
 /**
  * Implements hook_node_presave().
  */
-function items_node_presave(&$node) {
+function items_node_presave($node) {
   $recalc_value = variable_get('items_recalculate_values', FALSE);
   if ($recalc_value) {
     $lang = isset($node->language) ? $node->language : 'und';
@@ -252,7 +252,7 @@ function items_node_presave(&$node) {
 /**
  * Helper function, get the true value of an item.
  */
-function _items_node_save_value_item(&$node) {
+function _items_node_save_value_item($node) {
   // Set the currently declared value.
   $curr_value = isset($node->field_value[$lang][0]['value']) ? $node->field_value[$lang][0]['value'] : 0;
   // Per stats.
@@ -282,7 +282,6 @@ function _items_node_save_value_item(&$node) {
   $overlap_value = $overlap * 2; // Each overlap is 2 silver.
   // Set the final values.
   $real_value = $bonus_value + $overlap_value;
-  drupal_set_message('Updated node value to '.$real_value);
   $node->field_value[$lang][0]['value'] = $real_value;
   $node->field_declared_value[$lang][0]['value'] = (is_numeric($curr_value) && ($curr_value > 0))
     ? $curr_value : $real_value;
