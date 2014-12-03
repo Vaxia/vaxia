@@ -55,33 +55,11 @@ function proposal_rules_event_info() {
  * Implements hook_cron().
  */
 function proposal_cron() {
-  $last_run = variable_get('proposal_cron', 0);
-  $yesterday = strtotime('-1 day');
-  if ($last_run < $yesterday) {
-    $today = date('m/d/Y');
-    $today = strtotime($today . ' 00:00:01'); // We always want to plan to run just after midnight.
-    variable_set('proposal_cron', $today);
-    // Close the proposals.
-    _proposal_cron_proposal();
+  // Make sure we have the vaxia helper file included.
+  module_load_include('inc', 'vaxia', 'helper');
+  if (_vaxia_once_a_day_cron('proposal_cron', '00:01:00')) {
+    proposal_close_in_timeframe();
   }
-}
-
-/**
- * Implements hook_cronapi().
- */
-function proposal_cronapi($op, $job = NULL) {
-  $items['_proposal_cron_proposal'] = array(
-    'description' => 'Proposal: Close proposals',
-    'rule' => '1 0 * * *', // Once a day at 12:01 AM.
-  );
-  return $items;
-}
-
-/**
- * Cron worker.
- */
-function _proposal_cron_proposal() {
-  proposal_close_in_timeframe();
 }
 
 /**
