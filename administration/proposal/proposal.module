@@ -1198,7 +1198,7 @@ function proposal_check_posted_in_last_timeframe($uid) {
  */
 function proposal_close_in_timeframe() {
   $timeframe = strtotime(variable_get('proposal_open_timeframe', '2 weeks') . ' ago'); // 2 weeks ago based on now.
-  $timeframe = strtotime('+1 day', $timeframe); // One day early, so we get the stuff closing on the correct day.
+  //$timeframe = strtotime('+1 day', $timeframe); // One day early, so we get the stuff closing on the correct day.
   $timeframe = strtotime(date('m/d/Y 00:01:00', $timeframe)); // From one minute after midnight of that day.
   watchdog('proposal', 'Checking for proposals to close from ' . date('m/d/Y H:i:s', $timeframe) . ' (' . $timeframe . ').');
   // And get the correct timeframe assuming a start time of 2 weeks ago.
