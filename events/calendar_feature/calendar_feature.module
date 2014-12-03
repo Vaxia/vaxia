@@ -51,20 +51,7 @@ function calendar_feature_rules_event_info() {
  * Implements hook_cron().
  */
 function calendar_feature_cron() {
-  _calendar_feature_cron_calendar_feature();
-}
-
-/**
- * Cron worker.
- */
-function _calendar_feature_cron_calendar_feature() {
-  $last_run = variable_get('calendar_feature_cron', 0);
-  $yesterday = strtotime('-1 day');
-  if ($last_run < $yesterday) {
-    $today = date('m/d/Y');
-    $today = strtotime($today . ' 00:00:01');
-    variable_set('calendar_feature_cron', $today);
-    // Check for reminders.
+  if (_vaxia_once_a_day_cron('calendar_feature_send_reminders', '23:00:00')) {
     calendar_feature_send_reminders();
   }
 }
