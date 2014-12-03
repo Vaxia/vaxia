@@ -1200,7 +1200,7 @@ function proposal_close_in_timeframe() {
   $timeframe = strtotime(variable_get('proposal_open_timeframe', '2 weeks') . ' ago'); // 2 weeks ago based on now.
   $timeframe = strtotime('+1 day', $timeframe); // Add a day so we pick up the correct 'midnight'.
   $timeframe = strtotime('midnight', $timeframe); // 2 weeks ago just before midnight.
-  drupal_set_message('proposal', 'Checking for proposals to close from ' . date('m/d/Y H:i:s', $timeframe) . '.');
+  watchdog('proposal', 'Checking for proposals to close from ' . date('m/d/Y H:i:s', $timeframe) . '.');
   // And get the correct timeframe assuming a start time of 2 weeks ago.
   $proposals = db_query('SELECT n.nid FROM {node} n ' .
     'LEFT JOIN webform w ON n.nid = w.nid ' .
