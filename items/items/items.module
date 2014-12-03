@@ -291,7 +291,7 @@ function items_node_view($node, $view_mode, $langcode) {
     $lang = $node->language;
     if (!empty($node->field_items[$lang])) {
       foreach ($node->field_items[$lang] as $index => $this_item) {
-        $this_item = $this_item['node'];
+        $this_item = isset($this_item['node']) ? ($this_item['node']) : '';
         if (!isset($this_item->workflow_state_name) || $this_item->workflow_state_name != t('approved')) {
           // Remove this item from display.
           unset($node->content['field_items']['#items'][$index]);
