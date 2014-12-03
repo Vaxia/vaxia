@@ -51,6 +51,8 @@ function calendar_feature_rules_event_info() {
  * Implements hook_cron().
  */
 function calendar_feature_cron() {
+  // Make sure we have the vaxia helper file included.
+  module_load_include('inc', 'vaxia', 'helper');
   if (_vaxia_once_a_day_cron('calendar_feature_send_reminders', '23:00:00')) {
     calendar_feature_send_reminders();
   }
