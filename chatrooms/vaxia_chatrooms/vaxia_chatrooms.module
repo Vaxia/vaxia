@@ -9,7 +9,7 @@
  */
 function vaxia_chatrooms_node_view($node, $view_mode, $langcode) {
   // If node is an RPG chatroom, add the js, css for additional behaviors for Vaxia specifically.
-  if ($node->type == 'rpg_chatroom') {
+  if ($view_mode == 'full' && $node->type == 'rpg_chatroom') {
     // Display warning alert for new characters.
     // Check if the sheet has been finalized.
     if (!_vaxia_chatrooms_check_mature($node)) {
