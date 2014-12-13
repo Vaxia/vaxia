@@ -114,6 +114,12 @@ function vaxia_character_sheet_field_info() {
     //field_background
     //field_personality
     //field_occupation
+    //field_public_information
+    'field_sh_public_information' => array(
+      'permissions' => array(
+        'owner' => DISABLE_SHEET,
+      ),
+    ),
     //field_description
     //field_artwork_image
     'field_realm' => array(
@@ -614,6 +620,11 @@ function _vaxia_admin_settings() {
     '#title' => 'Allow items to stack for dice rolling.',
     '#type' => 'checkbox',
     '#default_value' => variable_get('vaxia_dice_roller_stacking', TRUE),
+  );
+  $form['settings']['vaxia_public_char_fields'] = array(
+    '#title' => 'Publicly visible character fields.',
+    '#type' => 'textarea',
+    '#default_value' => variable_get('vaxia_public_char_fields', ''),
   );
   $form['point_cost'] = array(
     '#title' => 'Point costs',

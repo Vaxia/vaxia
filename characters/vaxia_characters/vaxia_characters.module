@@ -82,8 +82,8 @@ function vaxia_characters_node_view($node, $view_mode, $langcode) {
 
     // Disable the fields from viewing if you're not the owner or permissioned.
     if (!($user->uid == $node->uid || user_access('edit SH notes'))) {
-      $display = array('field_description', 'field_age_app', 'field_sex', 'field_race',
-        'field_appearance', 'field_charisma', 'field_presence');
+      $display = variable_get('vaxia_public_char_fields', '');
+      $display = explode("\n", $display);
       foreach ($node->content as $index => $value) {
         if (strpos($index, '#') === FALSE && !in_array($index, $display)) {
           unset($node->content[$index]);
