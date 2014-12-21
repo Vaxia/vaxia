@@ -1,0 +1,142 @@
+<?php
+/**
+ * @file
+ * Code for the Play suggestions feature.
+ */
+
+/**
+ * Implements hook_node_view().
+ */
+function play_suggestions_node_view($node, $view_mode, $langcode) {
+  // If the node is a chatroom AND limbo, show search form.
+  if ($view_mode == 'full' && $node->type == 'rpg_chatroom') {
+    $limbo_room = variable_get('vaxia_limbo_room', array());
+    if (in_array($node->nid, $limbo_room)) {
+      $form = drupal_get_form('_play_suggestions_search', $node->nid);
+      $node->content['play_suggestions'] = $form;
+      $node->content['play_suggestions']['#weight'] = -100;
+    }
+  }
+}
+
+/**
+ * Search form.
+ */
+function _play_suggestions_search(&$form, $form_state, $nid) {
+  $form['lets_play'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('I\'m bored.'),
+  );
+  $form['lets_play']['nid'] = array(
+    '#type' => 'hidden',
+    '#value' => $nid,
+  );
+  $form['lets_play']['lets_play'] = array(
+    '#type' => 'submit',
+    '#value' => t('Let\'s Play'),
+  );
+}
+
+/**
+ * Submit handler.
+ */
+function _play_suggestions_search_submit(&$form, $form_state) {
+  $nid = $form_state['values']['nid'];
+  $suggestion = _play_suggestions_get_suggestion();
+  $realm = $suggestion['realm'];
+  $suggestion = $suggestion['suggestion'];
+  $location = $suggestion['location'];
+  $location = l($location->title, 'node/' . $location->nid);
+  $link = '[url=http://vaxia.org/content/play-suggestions]Click here.[/url]';
+  $post = t('In @realm, @suggestion at !location.',
+    array('@realm' => $realm, '@suggestion' => $suggestion, '!location' => $location));
+  $ooc = t('Want to add some suggestions? !link', array('!link' => $link));
+  // Programatically make a post as the BOT, narrative mode on.
+  $comment = (object) array(
+    'nid' => $nid,
+    'cid' => 0,
+    'pid' => 0,
+    'uid' => 1,
+    'mail' => '',
+    'is_anonymous' => 0,
+    'homepage' => '',
+    'status' => COMMENT_PUBLISHED,
+    'subject' => 'Play suggestion',
+    'language' => LANGUAGE_NONE,
+    'comment_body' => array(
+      LANGUAGE_NONE => array(
+        0 => array (
+          'value' => $post,
+          'format' => 'wiki',
+        ),
+      ),
+    ),
+    'field_ooc' => array(
+      LANGUAGE_NONE => array(
+        0 => array (
+          'value' => $post,
+          'format' => 'wiki',
+        ),
+      ),
+    ),
+    'field_comment_narrative' => array(
+      LANGUAGE_NONE => array(
+        0 => array (
+          'value' => 1,
+        ),
+      ),
+    ),
+  );
+  comment_submit($comment);
+  comment_save($comment);
+}
+
+/**
+ * Helper function, get a suggestion.
+ */
+function _play_suggestions_get_suggestion() {
+  $nid = '12011';
+  // Get a random suggestion within the nid.
+  $suggestion = _play_suggestions_random_submission($nid);
+  // Get a random location within the realm.
+  $suggestion['location'] = _play_suggestions_random_location($suggestion['realm']);
+  return $suggestion;
+}
+
+/**
+ * Helper function, get a random suggestion submission.
+ */
+function _play_suggestions_random_submission($nid) {
+  $count = db_query('SELECT COUNT(sid) FROM webform_submissions WHERE nid = :nid',
+    array(':nid' => $nid))->fetchField();
+  $random = rand(0, $count);
+  $sid = db_query('SELECT sid FROM webform_submissions WHERE nid = :nid LIMIT :start, 1',
+    array(':nid' => $nid, ':start' => $count))->fetchField();
+  $results = db_query('SELECT c.form_key, d.data FROM webform_submitted_data d ' .
+    'LEFT JOIN webform_component c ON c.cid = d.cid ' .
+    'WHERE d.sid = :sid',
+    array(':sid' => $sid));
+  $submission = array();
+  foreach ($results as $result) {
+    $submission[$result->form_key] = $result->data;
+  }
+  return $submission;
+}
+
+/**
+ * Helper function, get a random location node.
+ */
+function _play_suggestions_random_location($realm) {
+  $skip = 5;
+  $count = 10;
+  $results = db_query('SELECT DISTINCT(c.nid) FROM comment c ' .
+    'LEFT JOIN node n ON n.nid = c.nid ' .
+    'WHERE n.type=\'rpg_chatroom\' ' .
+    'ORDER BY c.cid LIMIT :skip, :count',
+    array(':skip' => $skip, ':count' => $count));
+  $nodes = array();
+  foreach ($results as $result) {
+    $nodes[] = $result->nid;
+  }
+  return node_load($nodes[rand(0,9)]);
+}

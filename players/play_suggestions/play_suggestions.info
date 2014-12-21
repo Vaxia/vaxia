@@ -1,0 +1,9 @@
+name = Play suggestions
+description = Play suggestions for casual RP.
+core = 7.x
+package = Vaxia
+version = 7.x-1.0
+project = play_suggestions
+dependencies[] = rpg_chat
+dependencies[] = vaxia
+dependencies[] = webform
