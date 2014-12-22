@@ -59,10 +59,12 @@ function _play_suggestions_search($form, &$form_state, $nid) {
 function _play_suggestions_search_submit(&$form, $form_state) {
   $nid = $form_state['values']['nid'];
   $suggestion = _play_suggestions_get_suggestion();
-  $realm = $suggestion['realm'];
-  $suggestion = $suggestion['suggestion'];
-  $location = $suggestion['location'];
-  $location = l($location->title, 'node/' . $location->nid);
+  $realm = !empty($suggestion['realm']) ? $suggestion['realm'] : '';
+  $suggestion = !empty($suggestion['suggestion']) ? $suggestion['suggestion'] : '';
+  $location = !empty($suggestion['location']) ? $suggestion['location'] : '';
+  if (empty($realm) || empty($suggestion) || empty($location)) {
+    return;
+  }
   $link = '[url=http://vaxia.org/content/play-suggestions]Click here.[/url]';
   $post = t('In @realm, @suggestion at !location.',
     array('@realm' => $realm, '@suggestion' => $suggestion, '!location' => $location));
@@ -115,7 +117,11 @@ function _play_suggestions_get_suggestion() {
   // Get a random suggestion within the nid.
   $suggestion = _play_suggestions_random_submission($nid);
   // Get a random location within the realm.
-  $suggestion['location'] = _play_suggestions_random_location($suggestion['realm']);
+  $nid = _play_suggestions_random_location($suggestion['realm']);
+  $node = node_load($nid);
+  if ($node) {
+    $suggestion['location'] =l($node->title, 'node/' . $node->nid);
+  }
   return $suggestion;
 }
 
@@ -156,5 +162,5 @@ function _play_suggestions_random_location($realm) {
   foreach ($results as $result) {
     $nodes[] = $result->nid;
   }
-  return node_load($nodes[rand(0,9)]);
+  return $nodes[rand(0,9)];
 }
