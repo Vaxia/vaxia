@@ -48,6 +48,7 @@ function _play_suggestions_search($form, &$form_state, $nid) {
     '#type' => 'submit',
     '#value' => t('Let\'s Play'),
   );
+  return $form;
 }
 
 /**
