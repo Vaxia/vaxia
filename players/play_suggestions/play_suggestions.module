@@ -126,7 +126,7 @@ function _play_suggestions_random_submission($nid) {
   $count = db_query('SELECT COUNT(sid) FROM webform_submissions WHERE nid = :nid',
     array(':nid' => $nid))->fetchField();
   $random = rand(0, $count);
-  $sid = db_query('SELECT sid FROM webform_submissions WHERE nid = :nid LIMIT ' . $start . ', 1',
+  $sid = db_query('SELECT sid FROM webform_submissions WHERE nid = :nid LIMIT ' . $random . ', 1',
     array(':nid' => $nid))->fetchField();
   $results = db_query('SELECT c.form_key, d.data FROM webform_submitted_data d ' .
     'LEFT JOIN webform_component c ON c.cid = d.cid ' .
