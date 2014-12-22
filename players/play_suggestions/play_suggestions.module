@@ -162,5 +162,6 @@ function _play_suggestions_random_location($realm) {
   foreach ($results as $result) {
     $nodes[] = $result->nid;
   }
-  return $nodes[rand(0,9)];
+  $random = rand(0,9);
+  return $nodes[$random];
 }
