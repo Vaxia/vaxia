@@ -158,8 +158,15 @@ function _play_suggestions_random_location($realm) {
   $results = db_query('SELECT DISTINCT(c.nid) FROM comment c ' .
     'LEFT JOIN node n ON n.nid = c.nid ' .
     'LEFT JOIN field_data_field_realm r ON r.entity_id = n.nid  AND r.revision_id = n.vid ' .
+    'LEFT JOIN field_data_field_private_room p ON p.entity_id = n.nid  AND p.revision_id = n.vid ' .
+    'LEFT JOIN field_data_field_mature_posting m ON m.entity_id = n.nid  AND m.revision_id = n.vid ' .
+    'LEFT JOIN field_data_field_locked_to_users l ON l.entity_id = n.nid  AND l.revision_id = n.vid ' .
+    // Where not private, mature, or locked.
     'WHERE n.type=\'rpg_chatroom\' AND n.status = 1 ' .
     'AND r.field_realm_value=:realm ' .
+    'AND p.field_private_room_value=0 ' .
+    'AND m.field_mature_posting_value=0 ' .
+    'AND l.field_locked_to_users_value=0 ' .
     'ORDER BY c.cid LIMIT ' . $skip . ', ' . $count . '',
     array(':realm' => $realm));
   $nodes = array();
