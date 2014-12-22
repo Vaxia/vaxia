@@ -22,7 +22,7 @@ function play_suggestions_block_info() {
 function play_suggestions_block_view($delta = '') {
   $nid = arg(1);
   $block = array();
-  if (!empty($nid) && is_numeric($nid))
+  if (!empty($nid) && is_numeric($nid)) {
     $block['subject'] = t('Play suggestions');
     $block['content'] = drupal_get_form('_play_suggestions_search', $nid);
   }
