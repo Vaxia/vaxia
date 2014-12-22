@@ -35,7 +35,7 @@ function play_suggestions_block_view($delta = '') {
 /**
  * Search form.
  */
-function _play_suggestions_search(&$form, $form_state, $nid) {
+function _play_suggestions_search($form, &$form_state, $nid) {
   $form['lets_play'] = array(
     '#type' => 'fieldset',
     '#title' => t('I\'m bored.'),
