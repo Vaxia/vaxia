@@ -93,7 +93,7 @@ function _play_suggestions_search_submit(&$form, $form_state) {
     'field_ooc' => array(
       LANGUAGE_NONE => array(
         0 => array (
-          'value' => $post,
+          'value' => $ooc,
           'format' => 'wiki',
         ),
       ),
