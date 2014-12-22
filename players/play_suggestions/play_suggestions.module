@@ -75,6 +75,7 @@ function _play_suggestions_search_submit(&$form, $form_state) {
     'cid' => 0,
     'pid' => 0,
     'uid' => 1,
+    'revision' => 1, // Required by comment_revisions.
     'mail' => '',
     'is_anonymous' => 0,
     'homepage' => '',
@@ -152,12 +153,12 @@ function _play_suggestions_random_submission($nid) {
  * Helper function, get a random location node.
  */
 function _play_suggestions_random_location($realm) {
-  $skip = 5;
+  $skip = 0;
   $count = 10;
   $results = db_query('SELECT DISTINCT(c.nid) FROM comment c ' .
     'LEFT JOIN node n ON n.nid = c.nid ' .
     'LEFT JOIN field_data_field_realm r ON r.entity_id = n.nid  AND r.revision_id = n.vid ' .
-    'WHERE n.type=\'rpg_chatroom\' ' .
+    'WHERE n.type=\'rpg_chatroom\' AND n.status = 1 ' .
     'AND r.field_realm_value=:realm ' .
     'ORDER BY c.cid LIMIT ' . $skip . ', ' . $count . '',
     array(':realm' => $realm));
