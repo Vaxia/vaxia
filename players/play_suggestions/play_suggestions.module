@@ -58,10 +58,10 @@ function _play_suggestions_search($form, &$form_state, $nid) {
  */
 function _play_suggestions_search_submit(&$form, $form_state) {
   $nid = $form_state['values']['nid'];
-  $suggestion = _play_suggestions_get_suggestion();
-  $realm = !empty($suggestion['realm']) ? $suggestion['realm'] : '';
-  $suggestion = !empty($suggestion['suggestion']) ? $suggestion['suggestion'] : '';
-  $location = !empty($suggestion['location']) ? $suggestion['location'] : '';
+  $play_suggestion = _play_suggestions_get_suggestion();
+  $realm = !empty($play_suggestion['realm']) ? $play_suggestion['realm'] : '';
+  $suggestion = !empty($play_suggestion['suggestion']) ? $play_suggestion['suggestion'] : '';
+  $location = !empty($play_suggestion['location']) ? $play_suggestion['location'] : '';
   if (empty($realm) || empty($suggestion) || empty($location)) {
     return;
   }
