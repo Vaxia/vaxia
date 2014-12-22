@@ -30,40 +30,21 @@ function play_suggestions_block_view($delta = '') {
 }
 
 /**
- * Implements hook_node_view().
-function play_suggestions_node_view($node, $view_mode, $langcode) {
-  // If the node is a chatroom AND limbo, show search form.
-  if ($view_mode == 'full' && $node->type == 'rpg_chatroom') {
-    $limbo_room = variable_get('vaxia_limbo_room', array());
-    if (in_array($node->nid, $limbo_room)) {
-      $form = drupal_get_form('_play_suggestions_search', $node->nid);
-      $node->content['play_suggestions'] = $form;
-      $node->content['play_suggestions']['#weight'] = -100;
-    }
-  }
-}
- */
-
-/**
  * Search form.
  */
 function _play_suggestions_search(&$form, $form_state, $nid) {
-  // If the node is a chatroom AND limbo, show search form.
-  $limbo_room = variable_get('vaxia_limbo_room', array());
-  if (in_array($nid, $limbo_room)) {
-    $form['lets_play'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('I\'m bored.'),
-    );
-    $form['lets_play']['nid'] = array(
-      '#type' => 'hidden',
-      '#value' => $nid,
-    );
-    $form['lets_play']['lets_play'] = array(
-      '#type' => 'submit',
-      '#value' => t('Let\'s Play'),
-    );
-  }
+  $form['lets_play'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('I\'m bored.'),
+  );
+  $form['lets_play']['nid'] = array(
+    '#type' => 'hidden',
+    '#value' => $nid,
+  );
+  $form['lets_play']['lets_play'] = array(
+    '#type' => 'submit',
+    '#value' => t('Let\'s Play'),
+  );
 }
 
 /**
