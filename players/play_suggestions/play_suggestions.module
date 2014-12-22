@@ -39,6 +39,8 @@ function _play_suggestions_search($form, &$form_state, $nid) {
   $form['lets_play'] = array(
     '#type' => 'fieldset',
     '#title' => t('I\'m bored.'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
   );
   $form['lets_play']['nid'] = array(
     '#type' => 'hidden',
@@ -124,8 +126,8 @@ function _play_suggestions_random_submission($nid) {
   $count = db_query('SELECT COUNT(sid) FROM webform_submissions WHERE nid = :nid',
     array(':nid' => $nid))->fetchField();
   $random = rand(0, $count);
-  $sid = db_query('SELECT sid FROM webform_submissions WHERE nid = :nid LIMIT :start, 1',
-    array(':nid' => $nid, ':start' => $count))->fetchField();
+  $sid = db_query('SELECT sid FROM webform_submissions WHERE nid = :nid LIMIT ' . $start . ', 1',
+    array(':nid' => $nid))->fetchField();
   $results = db_query('SELECT c.form_key, d.data FROM webform_submitted_data d ' .
     'LEFT JOIN webform_component c ON c.cid = d.cid ' .
     'WHERE d.sid = :sid',
@@ -145,9 +147,11 @@ function _play_suggestions_random_location($realm) {
   $count = 10;
   $results = db_query('SELECT DISTINCT(c.nid) FROM comment c ' .
     'LEFT JOIN node n ON n.nid = c.nid ' .
+    'LEFT JOIN field_data_field_realm r ON r.nid = n.nid  AND r.vid = n.vid ' .
     'WHERE n.type=\'rpg_chatroom\' ' .
-    'ORDER BY c.cid LIMIT :skip, :count',
-    array(':skip' => $skip, ':count' => $count));
+    'AND r.field_realm_value=:realm ' .
+    'ORDER BY c.cid LIMIT ' . $skip . ', ' . $count . '',
+    array(':realm' => $realm));
   $nodes = array();
   foreach ($results as $result) {
     $nodes[] = $result->nid;
