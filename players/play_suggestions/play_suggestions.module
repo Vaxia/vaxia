@@ -116,11 +116,14 @@ function _play_suggestions_get_suggestion() {
   $nid = '12011';
   // Get a random suggestion within the nid.
   $suggestion = _play_suggestions_random_submission($nid);
+  if (empty($suggestion['realm'])) {
+    return array();
+  }
   // Get a random location within the realm.
   $nid = _play_suggestions_random_location($suggestion['realm']);
   $node = node_load($nid);
   if ($node) {
-    $suggestion['location'] =l($node->title, 'node/' . $node->nid);
+    $suggestion['location'] = l($node->title, 'node/' . $node->nid);
   }
   return $suggestion;
 }
@@ -131,7 +134,7 @@ function _play_suggestions_get_suggestion() {
 function _play_suggestions_random_submission($nid) {
   $count = db_query('SELECT COUNT(sid) FROM webform_submissions WHERE nid = :nid',
     array(':nid' => $nid))->fetchField();
-  $random = rand(0, $count);
+  $random = rand(0, $count - 1);
   $sid = db_query('SELECT sid FROM webform_submissions WHERE nid = :nid LIMIT ' . $random . ', 1',
     array(':nid' => $nid))->fetchField();
   $results = db_query('SELECT c.form_key, d.data FROM webform_submitted_data d ' .
