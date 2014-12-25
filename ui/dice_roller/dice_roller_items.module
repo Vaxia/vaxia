@@ -1,0 +1,429 @@
+<?php
+/**
+ * @file
+ * Code for the Item in dice roller feature.
+ */
+
+/**
+ * Implements hook_vaxia_dice_form().
+ */
+function dice_roller_items_vaxia_dice_form($form, $form_state, $form_id) {
+  // module_load_include('inc', 'vaxia', 'vaxia.dice');
+  $character = _vaxia_dice_roller_get_selected_character($form, $form_state);
+  // If we have a character, figure out the rest of the display for it.
+  if ($character && $character != '_none' ) {
+    $character = node_load($character);
+    // Only add a form if the character really exists.
+    if (isset($character->title) && ($character->type == 'character_sheet')) {
+      // Display the items under the stat and skill row.
+      $items = _dice_roller_items_get_items($character);
+      $form['vaxia_rolls']['items'] = array(
+        '#title' => t('Using items'),
+        '#type' => 'select',
+        '#options' => _dice_roller_items_options($items),
+        '#size' => count($items),
+        '#multiple' => TRUE,
+      );
+      return $form;
+    }
+  }
+  return $form;
+}
+
+/**
+ * Implements hook_vaxia_dice_commands().
+ */
+function dice_roller_items_vaxia_dice_commands($rolls, $submitted_rolls, $character, $lang) {
+  // Check for items.
+  $items = array();
+  if (!empty($submitted_rolls['items'])) {
+    // This also accounts for item overlaps and stat fallthrus.
+    $items = _dice_roller_items_submit_rolls_items($submitted_rolls['items'], $character, $lang);
+    // If we have items but no rolls, we roll 1d1 for the die.
+    if (empty($rolls) && !empty($items)) {
+      $rolls = array(
+        'number' => 1,
+        'size' => 1,
+        'stat' => 'any',
+        'skill' => 0,
+      );
+    }
+  }
+  // Calculate the commands.
+  $commands = array();
+  if (!empty($rolls)) {
+    $commands = _dice_roller_items_submit_commands($rolls, $character, $items, $lang);
+  }
+  return $commands;
+}
+
+/**
+ * Get items from the submitted rolls.
+ */
+function _dice_roller_items_submit_rolls_items($submitted_items, $character, $lang) {
+  $stats = _vaxia_dice_roller_get_stats();
+  $relations = _vaxia_dice_roller_get_stats('relations');
+  $stats['skill'] = 'Skill';
+  // Check for items.
+  $items = array();
+  foreach ($submitted_items as $delta => $item) {
+    $item = node_load($item);
+    if (isset($item->nid) && _dice_roller_items_is_usable($item)) {
+      // Loop for all stats first.
+      foreach ($stats as $stat_key => $stat_name) {
+        // Get modifiers.
+        $items = _dice_roller_items_submit_modifiers($items, $item, $stat_key, $lang);
+        // Get overlaps.
+        $items = _dice_roller_items_submit_overlaps($items, $item, $stat_key, $lang);
+      }
+      // Get weapons.
+      $items = _dice_roller_items_submit_weapons($items, $item, $lang);
+      // Get uses.
+      $items = _dice_roller_items_submit_uses($items, $item, $lang);
+    } // End check if item exists.
+  } // End check all items loop.
+  return $items;
+}
+
+/**
+ * Helper function, get the overlap values.
+ */
+function _dice_roller_items_submit_modifiers($items, $item, $stat_key, $lang) {
+  $small_label = _vaxia_dice_roller_small_label($stat_key);
+  $field_name = 'field_item_' . $stat_key;
+  $modify = !empty($item->{$field_name}[$lang][0]['value']) ? $item->{$field_name}[$lang][0]['value'] : 0;
+  // If this overlap is larger than a previous one, set it.
+  if (!empty($modify)) {
+    $notes = $item->title .' (' . $small_label . ' ' . $modify . ')';
+    $item_modifier = array('modifies' => $modify, 'notes' => $notes);
+    // Set EITHER with overlap OR as additional set of items.
+    $items[$stat_key]['modifies'] = isset($items[$stat_key]['modifies']) ? $items[$stat_key]['modifies'] : array();
+    $items[$stat_key]['modifies'] = _dice_roller_items_submit_rolls_items_modifies($items[$stat_key]['modifies'], $item_modifier);
+    // If this is a primary key, half the bonus and apply to relations.
+    if (in_array($stat_key, array_keys($relations))) {
+      foreach ($relations[$stat_key] as $second_key) {
+        $second_small_label = _vaxia_dice_roller_small_label($second_key);
+        $second_modify = $modify / 2;
+        $second_notes = $item->title .' (' . $second_small_label . ' ' . $second_modify . ')';
+        $second_item_modifier = array('modifies' => $second_modify, 'notes' => $second_notes);
+        $items[$second_key]['modifies'] = isset($items[$second_key]['modifies']) ? $items[$second_key]['modifies'] : array();
+        $items[$second_key]['modifies'] = _dice_roller_items_submit_rolls_items_modifies($items[$second_key]['modifies'], $second_item_modifier);
+      }
+    }
+  }
+  return $items;
+}
+
+/**
+ * Get items from the submitted rolls.
+ */
+function _dice_roller_items_submit_rolls_items_modifies($current_mod, $new_mod) {
+  // Compare to existing or not.
+  if (FALSE) { // If we are only processing the TOP - no stacking.
+    $current_mod[0]['modifies'] = !empty($current_mod[0]['modifies']) ? $current_mod[0]['modifies'] : 0;
+    if ($new_mod['modifies'] > $current_mod[0]['modifies']) {
+      $current_mod[0] = $new_mod;
+    }
+  }
+  else {
+    $current_mod[] = $new_mod;
+  }
+  return $current_mod;
+}
+
+/**
+ * Helper function, get the overlap values.
+ */
+function _dice_roller_items_submit_overlaps($items, $item, $stat_key, $lang) {
+  $small_label = _vaxia_dice_roller_small_label($stat_key);
+  $field_name = 'field_item_over_' . $stat_key;
+  $overlap = !empty($item->{$field_name}[$lang][0]['value']) ? $item->{$field_name}[$lang][0]['value'] : 0;
+  // If this overlap is larger than a previous one, set it.
+  if (!empty($overlap)) {
+    $notes = $item->title .' (' . $small_label . ' ' . $overlap . ' flat)';
+    $items[$stat_key]['overlaps'] = !empty($items[$stat_key]['overlap']) ? $items[$stat_key]['overlap'] : 0;
+    if ($overlap > $items[$stat_key]['overlaps']) {
+      $items[$stat_key]['overlaps'] = $overlap;
+      $items[$stat_key]['notes'] = $notes;
+    }
+  }
+  return $items;
+}
+
+/**
+ * Get items from the submitted rolls.
+ */
+function _dice_roller_items_submit_weapons($items, $item, $lang) {
+  $label = _dice_roller_items_check_weapons($item);
+  if (!empty($label)) {
+    $notes = $item->title . ' ' . $label;
+    $items['any']['notes'] = $items['any']['notes'] . ' ' . $notes;
+  }
+  return $items;
+}
+
+/**
+ * Get items from the submitted rolls.
+ */
+function _dice_roller_items_submit_uses($items, $item, $lang) {
+  $label = _dice_roller_items_check_uses($item);
+  if (!empty($label)) {
+    $notes = $item->title . ' ' . $label;
+    $items['any']['notes'] = $items['any']['notes'] . ' ' . $notes;
+  }
+  return $items;
+}
+
+/**
+ * Create commands from the rolls.
+ */
+function _dice_roller_items_submit_commands($rolls, $character, $items, $lang) {
+  $commands = array();
+  foreach ($rolls as $delta => $roll) {
+    // Get some data before we start replacing values.
+    $this_stat = !empty($roll['stat']) ? $roll['stat'] : 'any';
+    $roll['note'] = array('');
+    // Get stat value from the character if it exists.
+    if (!empty($roll['stat'])) {
+      $small_label = _vaxia_dice_roller_small_label($this_stat);
+      $field_name = 'field_' . $this_stat;
+      $roll['stat'] = !empty($character->{$field_name}[$lang][0]['value']) ? $character->{$field_name}[$lang][0]['value'] : 0;
+      if (!empty($character->{$field_name}[$lang][0]['value'])) {
+        $roll['note'][] = $small_label . ' (' . $roll['stat'] . ')';
+      }
+    }
+    // Get skill value from the character if it exists.
+    if (!empty($roll['skill'])) {
+      $skill_details = field_collection_item_load($roll['skill']);
+      $value = !empty($skill_details->field_skill_value[$lang][0]['value']) ? $skill_details->field_skill_value[$lang][0]['value'] : 0;
+      if (!empty($skill_details->field_skill_value[$lang][0]['value'])) {
+        $name = !empty($skill_details->field_skill_name[$lang][0]['value']) ? $skill_details->field_skill_name[$lang][0]['value'] : t('Unk. skill');
+        $desc = !empty($skill_details->field_skill_desc[$lang][0]['value']) ? $skill_details->field_skill_desc[$lang][0]['value'] : '';
+        $roll['skill'] = $value;
+        $roll['note'][] = '<a title="' . $desc . '" href="#">' . $name . '</a> (' . $value . ')';
+      }
+    }
+    // Check for items against this stat.
+    $roll['item_notes'] = array();
+    $roll['item_mods'] = 0;
+    if (!empty($items[$this_stat])) {
+      $roll = _dice_roller_items_submit_command_items($roll, $items[$this_stat], $this_stat);
+    }
+    if (!empty($items['any'])) {
+      $roll = _dice_roller_items_submit_command_items($roll, $items['any'], 'any');
+    }
+    if (!empty($items['skill'])) {
+      $roll = _dice_roller_items_submit_command_items($roll, $items['skill'], 'skill');
+    }
+    if (!empty($roll['item_notes'])) {
+      $item_notes = !empty($roll['item_notes']) ? implode(' + ' , $roll['item_notes']) : '';
+      $item_mods = !empty($roll['item_mods']) ? ' (' . $roll['item_mods'] . ')' : '';
+      //$roll['note'][] = '<a title="' . $item_notes . '" href="#">Items</a>' . $item_mods;
+    }
+    // Add to the command.
+    $roll['might'] = $roll['stat'] + $roll['skill'];
+    $commands['commands'][] = $roll['number'] . 'd' . $roll['size'] . '+' . $roll['might'];
+    $commands['notes'][] = 'Roll '. $delta + 1 .' : roll(' . $roll['number'] . 'd' . $roll['size'] . ') ' . implode(' + ', $roll['note']);
+  }
+  return $commands;
+}
+
+/**
+ * Modify the command with the items.
+ */
+function _dice_roller_items_submit_command_items($roll, $items, $stat) {
+  // We're still keeping skills and stats separate at this point.
+  // But we could be addressing any stat, skill, or 'any' value.
+  // If skill keep it apart. If any keep it on the stat.
+  $mods = !in_array($stat, array('skill')) ? $stat : 'stat';
+  $roll['item_notes'] = !empty($roll['item_notes']) ? $roll['item_notes'] : array();
+  // Modify the stat by the item.
+  if (!empty($items)) {
+    $small_label = _vaxia_dice_roller_small_label($stat);
+    // Set overlap. ONLY one (the top) overlap is returned from items.
+    if (!empty($items['overlaps'])) {
+      $roll[$mods] = $items['overlaps'];
+    }
+    // Set modifiers. It is possible more than one is returned from items.
+    // But it will always return an arrray.
+    if (!empty($items['modifies'])) {
+      foreach ($items['modifies'] as $item_modifier) {
+        $roll[$mods] = $roll[$mods] + $item_modifier['modifies'];
+        $roll['item_mods'] = $roll['item_mods'] + $item_modifier['modifies'];
+        $roll['item_notes'][] = $item_modifier['notes'];
+      }
+    }
+    // Set overlap. ONLY one (the top) overlap is returned from items.
+    if (!empty($items['notes'])) {
+      $roll['item_notes'][] = $items['notes'];
+    }
+  }
+  return $roll;
+}
+
+/**
+ * Helper function, item is useable.
+ */
+function _dice_roller_items_is_usable($item) {
+  if (isset($item->workflow) && (isset($item->workflow_state_name)
+    && $item->workflow_state_name == t('approved'))) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+/**
+ * Helper function, list all items.
+ */
+function _dice_roller_items_get_items($character) {
+  $items = array();
+  if (isset($character->field_items[$character->language])) {
+    foreach ($character->field_items[$character->language] as $delta => $nid) {
+      $item = node_load($nid);
+      $items[$item->nid] = $item;  
+    }
+  }
+  return $items;
+}
+
+/**
+ * Generate the item options for display.
+ */
+function _dice_roller_items_options($items) {
+  // Process each item.
+  $item_options = array();
+  foreach ($items as $item_nid => $item) {
+    if (_dice_roller_items_is_usable($item)) {
+      $item_label = _dice_roller_items_option_label($item);
+      // And consolidate into one label if theres a label.
+      if (!empty($item_label)) {
+        $item_options[$item->nid] = $item_label;
+      }
+    }
+  }
+  return $item_options;
+}
+
+/**
+ * Figure out what an item can do.
+ */
+function _dice_roller_items_option_label($item) {
+  // Get the stats.
+  $stat_set = _vaxia_dice_roller_get_stats();
+  $stat_set['skill'] = 'Skill';
+  // Figure out the basic item label.
+  $item_labels = array();
+  foreach ($stat_set as $stat_key => $stat_name) {
+    // Get labels for this item and stat.
+    $modifies = _dice_roller_items_check_modifier($item, $stat_key);
+    $overlaps = _dice_roller_items_check_overlap($item, $stat_key);
+    if (!empty($overlaps)) {
+      $modifies = $overlaps;
+    }
+    if (!empty($modifies)) {
+      $item_labels[] = $modifies;
+    }
+  }
+  // Check for weapons if they exist.
+  $weapons = _dice_roller_items_check_weapons($item);
+  if (!empty($weapons)) {
+    $item_labels[] = $weapons;
+  }
+  // Check for uses if they exist.
+  if (module_exists('item_uses')) {
+    $uses = _dice_roller_items_check_uses($item);
+    if (!empty($uses)) {
+      $item_labels[] = $uses;
+    }
+  }
+  // Set the label if we have any mods.
+  $item_label = '';
+  if (!empty($item_labels)) {
+    $item_label = t('@name (@mods)', array('@name' => $item->title, '@mods' => implode(', ', $item_labels)));
+  }
+  return $item_label;
+}
+
+/**
+ * Check if the item provides a modifier.
+ */
+function _dice_roller_items_check_modifier($item, $stat) {
+  //  Get item mod.
+  $label = '';
+  $field_name = 'field_item_' . $stat;
+  $value = isset($item->{$field_name}[$item->language][0]['value']) ? $item->{$field_name}[$item->language][0]['value'] : 0;
+  // And set the labels for basic mods.
+  if ($value != 0) {
+    $small_label = _vaxia_dice_roller_small_label($stat);
+    $label = $small_label . ':' . $value;
+  }
+  return $label;
+}
+
+/**
+ * Check if the item provides a overlap.
+ */
+function _dice_roller_items_check_overlap($item, $stat) {
+  //  Get item mod.
+  $label = '';
+  $field_name = 'field_item_over_' . $stat;
+  $value = isset($item->{$field_name}[$item->language][0]['value']) ?
+    $item->{$field_name}[$item->language][0]['value'] : 0;
+  // And set the labels for overlap mods.
+  if ($value != 0) {
+    $small_label = _vaxia_dice_roller_small_label($stat);
+    $label = $small_label . ':' . number_format($value) . ' flat';
+  }
+  return $label;
+}
+
+/**
+ * Check if the item provides a weapon.
+ */
+function _dice_roller_items_check_weapons($item) {
+  //  Get item mod.
+  $label = '';
+  $weapon = isset($item->field_weapon_class[$item->language][0]['tid']) ?
+    $item->field_weapon_class[$item->language][0]['tid'] : '';
+  if (!empty($weapon)) {
+    $weapon = taxonomy_term_load($weapon);
+    if (!empty($weapon) && ($weapon->name != 'Unarmed (0% / 0)')) {
+      $name = $weapon->name;
+      $name = explode('(', $name);
+      $label = t('@name', array('@name' => $name[0] . t('Weapon')));
+    }
+  }
+  return $label;
+}
+
+/**
+ * Check if the item provides a use.
+ */
+function _dice_roller_items_check_uses($item) {
+  //  Get item mod.
+  $label = '';
+  $freq = isset($item->field_item_use_day[$item->language][0]['value']) ? $item->field_item_use_day[$item->language][0]['value'] : '';
+  $pp = isset($item->field_pp_created[$item->language][0]['value']) ? $item->field_pp_created[$item->language][0]['value'] : '';
+  $uses = isset($item->field_item_uses[$item->language][0]['value']) ? $item->field_item_uses[$item->language][0]['value'] : 0;
+  $spent_uses = isset($item->field_item_spent_uses[$item->language][0]['value']) ? $item->field_item_spent_uses[$item->language][0]['value'] : 0;
+  // Get all labels.
+  $labels = array();
+  if ($freq != 'at_will') {
+    if ($freq == 'per_day') {
+      $labels[] = 'Per Day';
+    }
+    else {
+      $labels[] = 'Once';
+    }
+  }
+  // Uses left.
+  $uses_left = $uses - $spent_uses;
+  if ($freq != 'at_will' && $uses_left > 0) {
+    $labels[] = $uses_left . ' uses';
+  }
+  // PP amount.
+  if ($pp > 0) {
+    $labels[] = $pp . ' PP';
+  }
+  return implode(', ', $labels);
+}
