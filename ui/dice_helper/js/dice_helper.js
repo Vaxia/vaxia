@@ -39,30 +39,30 @@ Drupal.behaviors.diceHelper = {
       $('#edit-vaxia-rolls-dice-1-size').val(100);
       $('#edit-vaxia-rolls-dice-2-number').val(1);
       $('#edit-vaxia-rolls-dice-2-size').val(100);
-      $('#edit-vaxia-rolls-dice-0-stat').val('field_dexterity');
-      $('#edit-vaxia-rolls-dice-1-stat').val('field_strength');
-      $('#edit-vaxia-rolls-dice-2-stat').val('field_endurance');
+      $('#edit-vaxia-rolls-dice-0-stat').val('dexterity');
+      $('#edit-vaxia-rolls-dice-1-stat').val('strength');
+      $('#edit-vaxia-rolls-dice-2-stat').val('endurance');
     } 
     if (type=='magic') {
        $('#edit-vaxia-rolls-dice-1-number').val(1);
        $('#edit-vaxia-rolls-dice-1-size').val(100);
+       $('#edit-vaxia-rolls-dice-0-stat').val('intelligence');
+       $('#edit-vaxia-rolls-dice-1-stat').val('spirituality');
        $('#edit-vaxia-rolls-dice-2-number').val(0);
-       $('#edit-vaxia-rolls-dice-0-stat').val('field_intelligence');
-       $('#edit-vaxia-rolls-dice-1-stat').val('field_spirituality');
        $('#edit-vaxia-rolls-dice-2-stat').val(-1);
     }
     if (type=='tech') {
        $('#edit-vaxia-rolls-dice-1-number').val(1);
        $('#edit-vaxia-rolls-dice-1-size').val(100);
+       $('#edit-vaxia-rolls-dice-0-stat').val('intelligence');
+       $('#edit-vaxia-rolls-dice-1-stat').val('dexterity');
        $('#edit-vaxia-rolls-dice-2-number').val(0);
-       $('#edit-vaxia-rolls-dice-0-stat').val('field_intelligence');
-       $('#edit-vaxia-rolls-dice-1-stat').val('field_dexterity');
        $('#edit-vaxia-rolls-dice-2-stat').val(-1);
     }
     if (type=='aware') {
+       $('#edit-vaxia-rolls-dice-0-stat').val('awareness');
        $('#edit-vaxia-rolls-dice-1-number').val(0);
        $('#edit-vaxia-rolls-dice-2-number').val(0);
-       $('#edit-vaxia-rolls-dice-0-stat').val('field_awareness');
        $('#edit-vaxia-rolls-dice-1-stat').val(-1);
        $('#edit-vaxia-rolls-dice-2-stat').val(-1);
     }
