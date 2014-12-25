@@ -60,23 +60,27 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
     return;
   }
   // Get details about this submission.
-  $lang = $content->language;
-  $character = isset($content->field_comment_character[$lang][0]['nid']) ?
-    node_load($content->field_comment_character[$lang][0]['nid']) : '';
-  global $user;
-  variable_set('vaxia_last_character_' . $user->uid, $character->nid);
-  // Get the command array.
-  $roll_commands = _vaxia_dice_roller_submit_rolls($content->vaxia_rolls, $character, $lang);
-  // Apply the set of rolls.
-  if (!empty($roll_commands)) {
-    // Get the notes and commands.
-    $roll_commands['commands'] = !empty($roll_commands['commands']) ? $roll_commands['commands'] : array();
-    $commands = implode(';', $roll_commands['commands']);
-    $roll_commands['notes'] = !empty($roll_commands['notes']) ? $roll_commands['notes'] : array();
-    $notes = '<br>' . implode('<br>', $roll_commands['notes']) . '<br>';
-    // Make the call.
-    module_load_include('inc', 'dice_roller', 'dice_roller.roller');
-    $dids = _dice_roller_parse_roll($commands, $notes, $content->cid, 'c');
+  if (!empty($content->vaxia_rolls)) {
+    $lang = $content->language;
+    $character = isset($content->field_comment_character[$lang][0]['nid']) ?
+      node_load($content->field_comment_character[$lang][0]['nid']) : '';
+    global $user;
+    if (!empty($character)) {
+      variable_set('vaxia_last_character_' . $user->uid, $character->nid);
+    }
+    // Get the command array.
+    $roll_commands = _vaxia_dice_roller_submit_rolls($content->vaxia_rolls, $character, $lang);
+    // Apply the set of rolls.
+    if (!empty($roll_commands)) {
+      // Get the notes and commands.
+      $roll_commands['commands'] = !empty($roll_commands['commands']) ? $roll_commands['commands'] : array();
+      $commands = implode(';', $roll_commands['commands']);
+      $roll_commands['notes'] = !empty($roll_commands['notes']) ? $roll_commands['notes'] : array();
+      $notes = '<br>' . implode('<br>', $roll_commands['notes']) . '<br>';
+      // Make the call.
+      module_load_include('inc', 'dice_roller', 'dice_roller.roller');
+      $dids = _dice_roller_parse_roll($commands, $notes, $content->cid, 'c');
+    }
   }
 }
 
@@ -84,19 +88,22 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
  * Get commands from the submitted rolls.
  */
 function _vaxia_dice_roller_submit_rolls($submitted_rolls, $character, $lang) {
-  // Check for roll formatting.
-  $rolls = array();
-  foreach ($submitted_rolls['dice'] as $delta => $roll) {
-    $number = !empty($roll['number']) ? $roll['number'] : 0;
-    if ($number > 0) {
-      $roll['size'] = !empty($roll['size']) ? $roll['size'] : 1;
-      $roll['stat'] = ($roll['stat'] != -1) ? $roll['stat'] : 'any';
-      $roll['skill'] = ($roll['skill'] != -1) ? $roll['skill'] : 0;
-      $rolls[] = $roll;
+  if (!empty($submitted_rolls['dice']) && is_array($submitted_rolls['dice'])) {
+    // Check for roll formatting.
+    $rolls = array();
+    foreach ($submitted_rolls['dice'] as $delta => $roll) {
+      $number = !empty($roll['number']) ? $roll['number'] : 0;
+      if ($number > 0) {
+        $roll['size'] = !empty($roll['size']) ? $roll['size'] : 1;
+        $roll['stat'] = ($roll['stat'] != -1) ? $roll['stat'] : 'any';
+        $roll['skill'] = ($roll['skill'] != -1) ? $roll['skill'] : 0;
+        $rolls[] = $roll;
+      }
     }
+    $commands = module_invoke_all('vaxia_dice_commands', $rolls, $submitted_rolls, $character, $lang);
+    return $commands;
   }
-  $commands = module_invoke_all('vaxia_dice_commands', $rolls, $submitted_rolls, $character, $lang);
-  return $commands;
+  return array();
 }
 
 /**
