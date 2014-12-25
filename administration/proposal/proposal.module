@@ -528,7 +528,12 @@ function proposal_node_view($node, $view_mode, $langcode) {
           // Prepare for rendering.
           if (isset($form['submitted'][$child]['#process'])) {
             foreach ($form['submitted'][$child]['#process'] as $process) {
-              $form['submitted'][$child] = $process($form['submitted'][$child]);
+              if ($process == 'ajax_process_form') {
+                $form['submitted'][$child] = $process($form['submitted'][$child], array());
+              }
+              else {
+                $form['submitted'][$child] = $process($form['submitted'][$child]);
+              }
             }
           }
           // Now that we have potentially expanded fields - disable as well.
