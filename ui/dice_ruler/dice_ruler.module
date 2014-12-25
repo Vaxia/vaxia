@@ -81,20 +81,6 @@ function _dice_ruler_admin_settings($form, &$form_state) {
     );
   }
 
-  // Toggle for turning DD on/off
-  $form['dynamic_difficulty'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Dynamic difficulty'),
-    '#collapsible' => TRUE,
-    '#collapsed' => TRUE,
-  );
-  $form['dynamic_difficulty']['dice_ruler_magic_dd'] = array(
-    '#title' => t('Dynamic difficulty'),
-    '#description' => t('Use dynamic diffulty on magic rolls.'),
-    '#type' => 'checkbox',
-    '#default_value' => variable_get('dice_ruler_magic_dd', TRUE),
-  );
-
   // Set percentage for extra action.
   $form['extra_actions'] = array(
     '#type' => 'fieldset',
@@ -116,15 +102,9 @@ function _dice_ruler_admin_settings($form, &$form_state) {
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
   );
-  $form['weapon_class']['dice_ruler_weapon_class'] = array(
-    '#title' => t('Weapon classes'),
-    '#description' => t('Use light/heavy weapon classes instead of direct weapon percentages.'),
-    '#type' => 'checkbox',
-    '#default_value' => variable_get('dice_ruler_weapon_class', FALSE),
-  );
   $form['weapon_class']['dice_ruler_weapon_class_classes'] = array(
     '#title' => t('Classes'),
-    '#description' => t('Use weapon classes to modify damage and attack penalties.'),
+    '#description' => t('Weapon classes to modify damage and attack penalties.'),
     '#type' => 'textarea',
     '#default_value' => variable_get('dice_ruler_weapon_class_classes', "Unarmed\nLight\nMedium\nHeavy"),
   );
@@ -135,12 +115,6 @@ function _dice_ruler_admin_settings($form, &$form_state) {
     '#title' => t('Weapon damage by class'),
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
-  );
-  $form['weapon_class_damage']['dice_ruler_weapon_class_damage'] = array(
-    '#title' => t('Weapon damage by class'),
-    '#description' => t('Use weapon classes instead of direct weapon percentages.'),
-    '#type' => 'checkbox',
-    '#default_value' => variable_get('dice_ruler_weapon_class_damage', FALSE),
   );
   $classes = explode("\n", variable_get('dice_ruler_weapon_class_classes', "Unarmed\nLight\nMedium\nHeavy"));
   foreach ($classes as $class) {
@@ -159,12 +133,6 @@ function _dice_ruler_admin_settings($form, &$form_state) {
     '#title' => t('Weapon multi-action penalties by class'),
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
-  );
-  $form['weapon_class_multi']['dice_ruler_weapon_class_multi'] = array(
-    '#title' => t('Weapon multi-action penalties by class'),
-    '#description' => t('Use weapon classes to modify multi-action values.'),
-    '#type' => 'checkbox',
-    '#default_value' => variable_get('dice_ruler_weapon_class_multi', FALSE),
   );
   foreach ($classes as $class) {
     $classname = str_replace(' ', '_', strtolower(trim($class)));
@@ -246,39 +214,27 @@ function _dice_ruler_player_assist_form($form, &$form_state) {
     '#required' => TRUE,
     '#size' => 5,
   );
-  $classes = variable_get('dice_ruler_weapon_class', TRUE);
-  if ($classes) {
-    $classes = explode("\n", variable_get('dice_ruler_weapon_class_classes', "Unarmed\nLight\nMedium\nHeavy"));
-    $options = array();
-    $first = '';
-    foreach ($classes as $class) {
-      $classname = str_replace(' ', '_', strtolower(trim($class)));
-      $first = empty($classname) ? : $first;
-      $options[$classname] = $class;
-    }
-    $form['multi_attack']['multi_attack_type'] = array(
-      '#title' => t('My weapon class is:'),
-      '#type' => 'select',
-      '#options' => $options,
-      '#required' => TRUE,
-      '#default_value' => $first,
-    );
-    $form['multi_attack']['multi_attack_perc'] = array(
-      '#title' => t('My added weapon percentage is:'),
-      '#type' => 'textfield',
-      '#default_value' => 0,
-      '#size' => 5,
-    );
+  $classes = explode("\n", variable_get('dice_ruler_weapon_class_classes', "Unarmed\nLight\nMedium\nHeavy"));
+  $options = array();
+  $first = '';
+  foreach ($classes as $class) {
+    $classname = str_replace(' ', '_', strtolower(trim($class)));
+    $first = empty($classname) ? : $first;
+    $options[$classname] = $class;
   }
-  else {
-    $form['multi_attack']['multi_attack_perc'] = array(
-      '#title' => t('My weapon percentage is:'),
-      '#type' => 'select',
-      '#options' => $options,
-      '#default_value' => 0,
-      '#size' => 5,
-    );
-  }
+  $form['multi_attack']['multi_attack_type'] = array(
+    '#title' => t('My weapon class is:'),
+    '#type' => 'select',
+    '#options' => $options,
+    '#required' => TRUE,
+    '#default_value' => $first,
+  );
+  $form['multi_attack']['multi_attack_perc'] = array(
+    '#title' => t('My added weapon percentage is:'),
+    '#type' => 'textfield',
+    '#default_value' => 0,
+    '#size' => 5,
+  );
   $form['multi_attack']['multi_attack_target_might'] = array(
     '#title' => t('My target\'s might is around:'),
     '#type' => 'textfield',
@@ -317,18 +273,11 @@ function _dice_ruler_dice_assist_multi_attack_results($form, $form_state) {
     $multi_attack_skill = trim($form_state['values']['multi_attack_skill']);
     $multi_attack_perc = !empty($form_state['values']['multi_attack_perc']) ? trim($form_state['values']['multi_attack_perc']) : 0;
     $penalty_base = variable_get('dice_ruler_extra_action_penalty', 20);
-    $classes = variable_get('dice_ruler_weapon_class', TRUE);
-    if ($classes) {
-      $multi_attack_type = trim($form_state['values']['multi_attack_type']);
-      if (variable_get('dice_ruler_weapon_class_damage', FALSE)) {
-        $multi_attack_perc = $multi_attack_perc + variable_get('dice_ruler_weapon_class_damage_' . $multi_attack_type, 0);
-      }
-      $multi_attack_perc = $multi_attack_perc/100;
-      $multi_attack_map_mod = 0;
-      if (variable_get('dice_ruler_weapon_class_multi', FALSE)) {
-        $multi_attack_map_mod = variable_get('dice_ruler_weapon_class_multi_' . $multi_attack_type, 0);
-      }
-    }
+    $multi_attack_type = trim($form_state['values']['multi_attack_type']);
+    $multi_attack_perc = $multi_attack_perc + variable_get('dice_ruler_weapon_class_damage_' . $multi_attack_type, 0);
+    $multi_attack_perc = $multi_attack_perc/100;
+    $multi_attack_map_mod = 0;
+    $multi_attack_map_mod = variable_get('dice_ruler_weapon_class_multi_' . $multi_attack_type, 0);
     $multi_attack_target_might = trim($form_state['values']['multi_attack_target_might']);
     $number_attacks = 0;
     $this_damage = 0;
@@ -390,36 +339,19 @@ function _dice_ruler_player_assist_multi_attack_form_ajax($form, $form_state) {
 function _dice_ruler_form_settings() {
   $settings = array();
   // Is Dynamic difficult on or off.
-  $toggle = variable_get('dice_ruler_magic_dd', TRUE) ? t('ON') : t('OFF');
-  $settings[] = t('Dynamic difficulty is %toggle.', array('%toggle' => $toggle));
   $multi_penalty = variable_get('dice_ruler_extra_action_penalty', 20);
   $settings[] = t('Extra actions is -%penalty.', array('%penalty' => $multi_penalty));
   $settings[] = t('Applies to might.');
-  // Are weapon classes in use?
-  $toggle = variable_get('dice_ruler_weapon_class', TRUE) ? t('ON') : t('OFF');
-  $settings[] = t('Weapon classes are %toggle.', array('%toggle' => $toggle));
-  if ($toggle == t('ON')) {
-    // Are weapon class damages in use?  
-    $toggle = variable_get('dice_ruler_weapon_class_damage', TRUE) ? t('ON') : t('OFF');
-    $settings[] = t('Class damage is %toggle.', array('%toggle' => $toggle));
-    if ($toggle == t('ON')) {
-	  $classes = explode("\n", variable_get('dice_ruler_weapon_class_classes', "Unarmed\nLight\nMedium\nHeavy"));
-      foreach ($classes as $class) {
-        $classname = str_replace(' ', '_', strtolower(trim($class)));
-        $settings[] = t('%class weapons is %damage%.',
-        array('%class' => $class, '%damage' => variable_get('dice_ruler_weapon_class_damage_' . $classname, 0)));
-      }
-    }
-    // Are weapon class multi-actions in use?
-    $toggle = variable_get('dice_ruler_weapon_class_multi', TRUE) ? t('ON') : t('OFF');
-    $settings[] = t('Class multi-action is %toggle.', array('%toggle' => $toggle));
-    if ($toggle == t('ON')) {
-      foreach ($classes as $class) {
-        $classname = str_replace(' ', '_', strtolower(trim($class)));
-        $settings[] = t('%class weapons is -%penalty.',
-          array('%class' => $class, '%penalty' => $multi_penalty + variable_get('dice_ruler_weapon_class_multi_' . $classname, 0)));
-      }
-    }
+  $classes = explode("\n", variable_get('dice_ruler_weapon_class_classes', "Unarmed\nLight\nMedium\nHeavy"));
+  foreach ($classes as $class) {
+    $classname = str_replace(' ', '_', strtolower(trim($class)));
+    $settings[] = t('%class weapons is %damage%.',
+    array('%class' => $class, '%damage' => variable_get('dice_ruler_weapon_class_damage_' . $classname, 0)));
+  }
+  foreach ($classes as $class) {
+    $classname = str_replace(' ', '_', strtolower(trim($class)));
+    $settings[] = t('%class weapons is -%penalty.',
+      array('%class' => $class, '%penalty' => $multi_penalty + variable_get('dice_ruler_weapon_class_multi_' . $classname, 0)));
   }
   $settings = theme('item_list', array('items' => $settings));
   // And now display the rest of the form.
@@ -719,35 +651,25 @@ function _dice_ruler_form_combat($i) {
     '#type' => 'fieldset',
     '#title' => t('Character A'),
   );
-  // Toggle between weapon percents and weapon categories.
-  if (variable_get('dice_ruler_weapon_class_damage', FALSE)) {
-    $weapon_class_options = array();
-    $classes = variable_get('dice_ruler_weapon_class_classes', "Unarmed\nLight\nMedium\nHeavy");
-    $classes = explode("\n", $classes);
-    foreach ($classes as $class) {
-      $classname = str_replace(' ', '_', strtolower(trim($class)));
-      $first = empty($first) ? $classname : $first;
-      $weapon_class_options[$classname] = t('@class', array('@class' => $class));
-    }
-    $form['a']['combat_weapon_a_' . $i] = array(
-      '#type' => 'radios',
-      '#title' => t('Weapon Class'),
-      '#options' => $weapon_class_options,
-      '#default_value' => $first,
-    );
-    $form['a']['combat_weapon_a_add_' . $i] = array(
-      '#type' => 'textfield',
-      '#title' => t('Added %'),
-      '#size' => 5,
-    );
+  $weapon_class_options = array();
+  $classes = variable_get('dice_ruler_weapon_class_classes', "Unarmed\nLight\nMedium\nHeavy");
+  $classes = explode("\n", $classes);
+  foreach ($classes as $class) {
+    $classname = str_replace(' ', '_', strtolower(trim($class)));
+    $first = empty($first) ? $classname : $first;
+    $weapon_class_options[$classname] = t('@class', array('@class' => $class));
   }
-  else {
-    $form['a']['combat_weapon_a_' . $i] = array(
-      '#type' => 'textfield',
-      '#title' => t('Weapon %'),
-      '#size' => 5,
-    );
-  }
+  $form['a']['combat_weapon_a_' . $i] = array(
+    '#type' => 'radios',
+    '#title' => t('Weapon Class'),
+    '#options' => $weapon_class_options,
+    '#default_value' => $first,
+  );
+  $form['a']['combat_weapon_a_add_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Added %'),
+    '#size' => 5,
+  );
   $form['a']['attack_a_'.$i]['dex'] = array(
     '#type' => 'fieldset',
     '#title' => t('Dexterity'),
@@ -818,46 +740,30 @@ function _dice_ruler_form_combat($i) {
   	'3' => t('Three actions'),
   	'4' => t('Four actions'),
   );
-  if (variable_get('dice_ruler_weapon_class_damage', FALSE)) {
-    $weapon_class_options = array();
-    foreach ($classes as $class) {
-      $classname = str_replace(' ', '_', strtolower(trim($class)));
-      $first = empty($first) ? $classname : $first;
-      $weapon_class_options[$classname] = t('@class', array('@class' => $class));
-    }
-    $form['b']['combat_weapon_b_' . $i] = array(
-      '#type' => 'radios',
-      '#title' => t('Weapon Class'),
-      '#options' => $weapon_class_options,
-      '#default_value' => $first,
-    );
-    $form['b']['combat_weapon_b_add_' . $i] = array(
-      '#type' => 'textfield',
-      '#title' => t('Added %'),
-      '#size' => 5,
-    );
-    $form['b']['number_actions_b_' . $i] = array(
-      '#type' => 'select',
-      '#title' => t('# Actions'),
-      '#options' => $number_actions_b,
-      '#default_value' => 1,
-      '#description' => t('Including defensive and non-combat actions.'),
-    );
+  $weapon_class_options = array();
+  foreach ($classes as $class) {
+    $classname = str_replace(' ', '_', strtolower(trim($class)));
+    $first = empty($first) ? $classname : $first;
+    $weapon_class_options[$classname] = t('@class', array('@class' => $class));
   }
-  else {
-    $form['b']['combat_weapon_b_' . $i] = array(
-      '#type' => 'textfield',
-      '#title' => t('Weapon %'),
-      '#size' => 5,
-    );
-    $form['b']['number_actions_b_' . $i] = array(
-      '#type' => 'select',
-      '#title' => t('# Actions'),
-      '#options' => $number_actions_b,
-      '#default_value' => 1,
-      '#description' => t('Including defensive and non-combat actions.'),
-    );
-  }
+  $form['b']['combat_weapon_b_' . $i] = array(
+    '#type' => 'radios',
+    '#title' => t('Weapon Class'),
+    '#options' => $weapon_class_options,
+    '#default_value' => $first,
+  );
+  $form['b']['combat_weapon_b_add_' . $i] = array(
+    '#type' => 'textfield',
+    '#title' => t('Added %'),
+    '#size' => 5,
+  );
+  $form['b']['number_actions_b_' . $i] = array(
+    '#type' => 'select',
+    '#title' => t('# Actions'),
+    '#options' => $number_actions_b,
+    '#default_value' => 1,
+    '#description' => t('Including defensive and non-combat actions.'),
+  );
   $form['b']['attack_'.$i]['dex'] = array(
     '#type' => 'fieldset',
     '#title' => t('Dexterity'),
@@ -1224,59 +1130,51 @@ function _dice_ruler_form_get_results_for_action($form, $form_state, $i, $number
         // If we use classes, look up and set the correct class based weapon value.
         $a_type = $form_state['values']['combat_weapon_a_' . $i];
         $b_type = $form_state['values']['combat_weapon_b_' . $i];
-        if (variable_get('dice_ruler_weapon_class_damage', FALSE)) {
-          $add_a = !empty($form_state['values']['combat_weapon_a_add_' . $i]) ? $form_state['values']['combat_weapon_a_add_' . $i] : 0;
-          $add_b = !empty($form_state['values']['combat_weapon_b_add_' . $i]) ? $form_state['values']['combat_weapon_b_add_' . $i] : 0;
-          $form_state['values']['combat_weapon_a_' . $i] = $add_a + variable_get('dice_ruler_weapon_class_damage_' . $a_type, 0);
-          $form_state['values']['combat_weapon_b_' . $i] = $add_b + variable_get('dice_ruler_weapon_class_damage_' . $b_type, 0);
-          if ($form_state['values']['combat_weapon_a_' . $i] != 0) {
-            $results .= '<div class="dice-ruler-dice-multi-action-alert">' . t('Character A, additional damage percent: %pen%',
-                array('%pen' => $form_state['values']['combat_weapon_a_' . $i])) . '</div>';
-          }
-          if ($form_state['values']['combat_weapon_b_' . $i] != 0) {
-            $results .= '<div class="dice-ruler-dice-multi-action-alert">' . t('Character B, additional damage percent: %pen%',
-                array('%pen' => $form_state['values']['combat_weapon_b_' . $i])) . '</div>';
-          }
+        $add_a = !empty($form_state['values']['combat_weapon_a_add_' . $i]) ? $form_state['values']['combat_weapon_a_add_' . $i] : 0;
+        $add_b = !empty($form_state['values']['combat_weapon_b_add_' . $i]) ? $form_state['values']['combat_weapon_b_add_' . $i] : 0;
+        $form_state['values']['combat_weapon_a_' . $i] = $add_a + variable_get('dice_ruler_weapon_class_damage_' . $a_type, 0);
+        $form_state['values']['combat_weapon_b_' . $i] = $add_b + variable_get('dice_ruler_weapon_class_damage_' . $b_type, 0);
+        if ($form_state['values']['combat_weapon_a_' . $i] != 0) {
+          $results .= '<div class="dice-ruler-dice-multi-action-alert">' . t('Character A, additional damage percent: %pen%',
+              array('%pen' => $form_state['values']['combat_weapon_a_' . $i])) . '</div>';
         }
-
-		// Figure out the penalties for character b.
+        if ($form_state['values']['combat_weapon_b_' . $i] != 0) {
+          $results .= '<div class="dice-ruler-dice-multi-action-alert">' . t('Character B, additional damage percent: %pen%',
+              array('%pen' => $form_state['values']['combat_weapon_b_' . $i])) . '</div>';
+        }
+        // Figure out the penalties for character b.
         $number_actions_b = !empty($form_state['values']['number_actions_b_' . $i]) ? trim($form_state['values']['number_actions_b_' . $i]) : 1;
-		$action_penalty_b = $penalty_base * ($number_actions_b - 1);
-		// Default mod is zero.
-		$mod_base_a = $mod_base_b = 0;
-        // If we modify the penalty based on weapon class, add that.
-        if ($number_actions > 1 && variable_get('dice_ruler_weapon_class_multi', FALSE)) {
-          // Based on the weapon, figure out the modifier for a and b.
-          $mod_base_a = variable_get('dice_ruler_weapon_class_multi_' . $a_type, 0);
-          // Display mod.
-          $penalty_base_str = array();
-          for ($this_attack = 1; $this_attack < $number_actions; $this_attack++) {
-            $penalty_base_str[] = $penalty_base * ($this_attack) + $mod_base_a;
-          }
-          $penalty_base_str = implode(' / ', $penalty_base_str);
-          $results .= '<div class="dice-ruler-dice-multi-action-alert">' .
-            t('Character A taking %num_actions actions is at multi action penalties for all actions: %penalty_base_str',
-              array('%num_actions' => $number_actions, '%penalty_base_str' => $penalty_base_str)) . '</div>';
-          // And recalculate the correct modifier to apply.
-          $action_penalty = $penalty_base * ($number_actions - 1) + $mod_base_a;
-        }
+        $action_penalty_b = $penalty_base * ($number_actions_b - 1);
+        // Default mod is zero.
+        $mod_base_a = $mod_base_b = 0;
 
-        // If we modify the penalty based on weapon class, add that.
-        if ($number_actions_b > 1 && variable_get('dice_ruler_weapon_class_multi', FALSE)) {
-          // Based on the weapon, figure out the modifier for a and b.
-          $mod_base_b = variable_get('dice_ruler_weapon_class_multi_' . $b_type, 0);
-          // Display mod.
-          $penalty_base_str = array();
-          for ($this_attack = 1; $this_attack < $number_actions_b; $this_attack++) {
-            $penalty_base_str[] = $penalty_base * ($this_attack) + $mod_base_b;
-          }
-          $penalty_base_str = implode(' / ', $penalty_base_str);
-          $results .= '<div class="dice-ruler-dice-multi-action-alert">' .
-            t('Character B taking %num_actions actions is at multi action penalties for all actions: %penalty_base_str',
-              array('%num_actions' => $number_actions_b, '%penalty_base_str' => $penalty_base_str)) . '</div>';
-          // And recalculate the correct modifier to apply.
-          $action_penalty_b = $penalty_base * ($number_actions_b - 1) + $mod_base_b;
+        // Based on the weapon, figure out the modifier for a and b.
+        $mod_base_a = variable_get('dice_ruler_weapon_class_multi_' . $a_type, 0);
+        // Display mod.
+        $penalty_base_str = array();
+        for ($this_attack = 1; $this_attack < $number_actions; $this_attack++) {
+          $penalty_base_str[] = $penalty_base * ($this_attack) + $mod_base_a;
         }
+        $penalty_base_str = implode(' / ', $penalty_base_str);
+        $results .= '<div class="dice-ruler-dice-multi-action-alert">' .
+          t('Character A taking %num_actions actions is at multi action penalties for all actions: %penalty_base_str',
+            array('%num_actions' => $number_actions, '%penalty_base_str' => $penalty_base_str)) . '</div>';
+        // And recalculate the correct modifier to apply.
+        $action_penalty = $penalty_base * ($number_actions - 1) + $mod_base_a;
+
+        // Based on the weapon, figure out the modifier for a and b.
+        $mod_base_b = variable_get('dice_ruler_weapon_class_multi_' . $b_type, 0);
+        // Display mod.
+        $penalty_base_str = array();
+        for ($this_attack = 1; $this_attack < $number_actions_b; $this_attack++) {
+          $penalty_base_str[] = $penalty_base * ($this_attack) + $mod_base_b;
+        }
+        $penalty_base_str = implode(' / ', $penalty_base_str);
+        $results .= '<div class="dice-ruler-dice-multi-action-alert">' .
+          t('Character B taking %num_actions actions is at multi action penalties for all actions: %penalty_base_str',
+            array('%num_actions' => $number_actions_b, '%penalty_base_str' => $penalty_base_str)) . '</div>';
+        // And recalculate the correct modifier to apply.
+        $action_penalty_b = $penalty_base * ($number_actions_b - 1) + $mod_base_b;
 
         // Character A.
         $new_might_dex = $form_state['values']['combat_might_a_dex_' . $i] - $action_penalty;
@@ -2023,14 +1921,9 @@ function _dice_ruler_magic(
     return t('Not all values given were numeric. We need numbers for math.');
   }
   // Set header.
-  $diff_header = t('Diff');
-  // Modify the title for diffs if DD is in place.
-  if (variable_get('dice_ruler_magic_dd', TRUE)) {
-    $diff_header = t('Diff w/ DD');
-  }
   $header = array(
     t('Might'),
-    $diff_header,
+    t('Diff'),
     t('Add diff.'),
     t('Rolled'),
     t('Roll needed'),
@@ -2093,18 +1986,6 @@ function _dice_ruler_make_magic_ruling(
   $magic_diff_b,
   $magic_add_diff_b,
   $magic_rolled_b) {
-  // Change difficulty for dynamic difs.
-  // Toggle added here as this may be a section of system to be removed.
-  if (variable_get('dice_ruler_magic_dd', TRUE)) {
-    $magic_diff_a = 2 * ($magic_diff_a + $magic_add_diff_a) - ($magic_might_a);
-    if ($magic_diff_a < 1) {
-      $magic_diff_a = 1;
-    }
-    $magic_diff_b = 2 * ($magic_diff_b + $magic_add_diff_b) - ($magic_might_b);
-    if ($magic_diff_b < 1) {
-      $magic_diff_b = 1;
-    }
-  }
   // Get results from our ruling function.
   $magic_a = _dice_ruler_make_ruling(
     $magic_might_a,
