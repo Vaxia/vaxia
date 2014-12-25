@@ -77,9 +77,9 @@ function _dice_roller_items_submit_rolls_items($submitted_items, $character, $la
         $items = _dice_roller_items_submit_overlaps($items, $item, $stat_key, $lang);
       }
       // Get weapons.
-      $items = _dice_roller_items_submit_weapons($items, $item, $lang);
+      $items = _dice_roller_items_submit_weapons($items, $item, $stat_key, $lang);
       // Get uses.
-      $items = _dice_roller_items_submit_uses($items, $item, $lang);
+      $items = _dice_roller_items_submit_uses($items, $item, $stat_key, $lang);
     } // End check if item exists.
   } // End check all items loop.
   return $items;
