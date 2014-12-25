@@ -64,14 +64,14 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
   $character = isset($content->field_comment_character[$lang][0]['nid']) ?
     node_load($content->field_comment_character[$lang][0]['nid']) : '';
   // Get the command array.
-  $commands = _vaxia_dice_roller_submit_rolls($content->vaxia_rolls, $character, $lang);
+  $roll_commands = _vaxia_dice_roller_submit_rolls($content->vaxia_rolls, $character, $lang);
   // Apply the set of rolls.
-  if (!empty($commands)) {
+  if (!empty($roll_commands)) {
     // Get the notes and commands.
-    $commands['notes'] = !empty($commands['notes']) ? $commands['notes'] : array();
-    $commands['commands'] = !empty($commands['commands']) ? $commands['commands'] : array();
-    $notes = '<br>' . implode('<br>', $commands['notes']) . '<br>';
-    $commands = implode(';', $commands['commands']);
+    $roll_commands['commands'] = !empty($roll_commands['commands']) ? $roll_commands['commands'] : array();
+    $commands = implode(';', $roll_commands['commands']);
+    $roll_commands['notes'] = !empty($roll_commands['notes']) ? $roll_commands['notes'] : array();
+    $notes = '<br>' . implode('<br>', $roll_commands['notes']) . '<br>';
     // Make the call.
     module_load_include('inc', 'dice_roller', 'dice_roller.roller');
     $dids = _dice_roller_parse_roll($commands, $notes, $content->cid, 'c');
