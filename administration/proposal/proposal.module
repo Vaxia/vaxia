@@ -529,7 +529,8 @@ function proposal_node_view($node, $view_mode, $langcode) {
           if (isset($form['submitted'][$child]['#process'])) {
             foreach ($form['submitted'][$child]['#process'] as $process) {
               if ($process == 'ajax_process_form') {
-                $form['submitted'][$child] = $process($form['submitted'][$child], array());
+                $form_state = array();
+                $form['submitted'][$child] = $process($form['submitted'][$child], $form_state);
               }
               else {
                 $form['submitted'][$child] = $process($form['submitted'][$child]);
