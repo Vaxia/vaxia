@@ -344,12 +344,12 @@ function _dice_ruler_form_settings() {
   $classes = _dice_ruler_weapon_classes();
   foreach ($classes as $tid => $perc) {
     $settings[] = t('%class weapons is %damage%.',
-      array('%class' => $class, '%damage' => $perc);
+      array('%class' => $class, '%damage' => $perc));
   }
   $classes = _dice_ruler_weapon_modifiers();
   foreach ($classes as $tid => $mod) {
     $settings[] = t('%class weapons is -%penalty.',
-      array('%class' => $class, '%penalty' => $multi_penalty + $mod);
+      array('%class' => $class, '%penalty' => $multi_penalty + $mod));
   }
   $settings = theme('item_list', array('items' => $settings));
   // And now display the rest of the form.
