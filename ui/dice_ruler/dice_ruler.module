@@ -46,8 +46,8 @@ function _dice_ruler_weapon_class_info() {
     $name = !empty($term->name) ? $term->name : 0;
     $name = explode('(', $name);
     $name = trim($name[0]);
-    $mods = !empty($term['field_multi_action_mod']['und'][0]['value']) ? $term['field_multi_action_mod']['und'][0]['value'] : 0;
-    $perc = !empty($term['field_percentage']['und'][0]['value']) ? $term['field_percentage']['und'][0]['value'] : 0;
+    $mods = !empty($term->field_multi_action_mod['und'][0]['value']) ? $term->field_multi_action_mod['und'][0]['value'] : 0;
+    $perc = !empty($term->field_percentage['und'][0]['value']) ? $term->field_percentage['und'][0]['value'] : 0;
     //  Set up the class.
     $weapon_classes[$tid] = array(
       'name' => $name,
