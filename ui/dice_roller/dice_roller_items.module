@@ -41,7 +41,7 @@ function dice_roller_items_vaxia_dice_commands($rolls, $submitted_rolls, $charac
     $items = _dice_roller_items_submit_rolls_items($submitted_rolls['items'], $character, $lang);
     // If we have items but no rolls, we roll 1d1 for the die.
     if (empty($rolls) && !empty($items)) {
-      $rolls = array(
+      $rolls[] = array(
         'number' => 1,
         'size' => 1,
         'stat' => 'any',
@@ -119,7 +119,7 @@ function _dice_roller_items_submit_modifiers($items, $item, $stat_key, $lang) {
  */
 function _dice_roller_items_submit_rolls_items_modifies($current_mod, $new_mod) {
   // Compare to existing or not.
-  if (FALSE) { // If we are only processing the TOP - no stacking.
+  if (TRUE) { // If we are only processing the TOP - no stacking.
     $current_mod[0]['modifies'] = !empty($current_mod[0]['modifies']) ? $current_mod[0]['modifies'] : 0;
     if ($new_mod['modifies'] > $current_mod[0]['modifies']) {
       $current_mod[0] = $new_mod;
@@ -153,10 +153,13 @@ function _dice_roller_items_submit_overlaps($items, $item, $stat_key, $lang) {
 /**
  * Get items from the submitted rolls.
  */
-function _dice_roller_items_submit_weapons($items, $item, $lang) {
+function _dice_roller_items_submit_weapons($items, $item, $stat_key, $lang) {
   $label = _dice_roller_items_check_weapons($item);
   if (!empty($label)) {
     $notes = $item->title . ' ' . $label;
+    $items[$stat_key]['general'] = isset($items[$stat_key]['general']) ? $items[$stat_key]['general'] : 0;
+    $items[$stat_key]['notes'] = $items[$stat_key]['notes'] . ' ' . $notes;
+    $items['any']['general'] = 0;
     $items['any']['notes'] = $items['any']['notes'] . ' ' . $notes;
   }
   return $items;
@@ -165,10 +168,13 @@ function _dice_roller_items_submit_weapons($items, $item, $lang) {
 /**
  * Get items from the submitted rolls.
  */
-function _dice_roller_items_submit_uses($items, $item, $lang) {
+function _dice_roller_items_submit_uses($items, $item, $stat_key, $lang) {
   $label = _dice_roller_items_check_uses($item);
   if (!empty($label)) {
     $notes = $item->title . ' ' . $label;
+    $items[$stat_key]['general'] = isset($items[$stat_key]['general']) ? $items[$stat_key]['general'] : 0;
+    $items[$stat_key]['notes'] = $items[$stat_key]['notes'] . ' ' . $notes;
+    $items['any']['general'] = 0;
     $items['any']['notes'] = $items['any']['notes'] . ' ' . $notes;
   }
   return $items;
@@ -209,16 +215,13 @@ function _dice_roller_items_submit_commands($rolls, $character, $items, $lang) {
     if (!empty($items[$this_stat])) {
       $roll = _dice_roller_items_submit_command_items($roll, $items[$this_stat], $this_stat);
     }
-    if (!empty($items['any'])) {
-      $roll = _dice_roller_items_submit_command_items($roll, $items['any'], 'any');
-    }
     if (!empty($items['skill'])) {
       $roll = _dice_roller_items_submit_command_items($roll, $items['skill'], 'skill');
     }
     if (!empty($roll['item_notes'])) {
       $item_notes = !empty($roll['item_notes']) ? implode(' + ' , $roll['item_notes']) : '';
       $item_mods = !empty($roll['item_mods']) ? ' (' . $roll['item_mods'] . ')' : '';
-      //$roll['note'][] = '<a title="' . $item_notes . '" href="#">Items</a>' . $item_mods;
+      $roll['note'][] = '<a title="' . $item_notes . '" href="#">Items</a>' . $item_mods;
     }
     // Add to the command.
     $roll['might'] = $roll['stat'] + $roll['skill'];
@@ -235,11 +238,10 @@ function _dice_roller_items_submit_command_items($roll, $items, $stat) {
   // We're still keeping skills and stats separate at this point.
   // But we could be addressing any stat, skill, or 'any' value.
   // If skill keep it apart. If any keep it on the stat.
-  $mods = !in_array($stat, array('skill')) ? $stat : 'stat';
+  $mods = ($stat != 'stat') ? 'skill' : 'stat';
   $roll['item_notes'] = !empty($roll['item_notes']) ? $roll['item_notes'] : array();
   // Modify the stat by the item.
   if (!empty($items)) {
-    $small_label = _vaxia_dice_roller_small_label($stat);
     // Set overlap. ONLY one (the top) overlap is returned from items.
     if (!empty($items['overlaps'])) {
       $roll[$mods] = $items['overlaps'];
@@ -252,6 +254,11 @@ function _dice_roller_items_submit_command_items($roll, $items, $stat) {
         $roll['item_mods'] = $roll['item_mods'] + $item_modifier['modifies'];
         $roll['item_notes'][] = $item_modifier['notes'];
       }
+    }
+    // Check the generic modifier.
+    if (!empty($items['general'])) {
+      $roll[$mods] = $roll[$mods] + $items['general'];
+      $roll['item_mods'] = $roll['item_mods'] + $items['general'];
     }
     // Set overlap. ONLY one (the top) overlap is returned from items.
     if (!empty($items['notes'])) {
