@@ -155,7 +155,7 @@ function _play_suggestions_random_submission($nid) {
 function _play_suggestions_random_location($realm) {
   $skip = 0;
   $count = 10;
-  $results = db_query('SELECT DISTINCT(c.nid) FROM comment c ' .
+  $sql = 'SELECT DISTINCT(c.nid) FROM comment c ' .
     'LEFT JOIN node n ON n.nid = c.nid ' .
     'LEFT JOIN field_data_field_realm r ON r.entity_id = n.nid  AND r.revision_id = n.vid ' .
     'LEFT JOIN field_data_field_private_room p ON p.entity_id = n.nid  AND p.revision_id = n.vid ' .
@@ -167,8 +167,8 @@ function _play_suggestions_random_location($realm) {
     'AND p.field_private_room_value=0 ' .
     'AND m.field_mature_posting_value=0 ' .
     'AND l.field_locked_to_users_value=0 ' .
-    'ORDER BY c.cid LIMIT ' . $skip . ', ' . $count . '',
-    array(':realm' => $realm));
+    'ORDER BY c.cid LIMIT ' . $skip . ', ' . $count . '';
+  $results = db_query($sql, array(':realm' => $realm));
   $nodes = array();
   foreach ($results as $result) {
     $nodes[] = $result->nid;
@@ -176,7 +176,8 @@ function _play_suggestions_random_location($realm) {
   if (!empty($nodes)) {
     $count = count($nodes);
     $random = rand(0, $count);
-    return $nodes[$random];
+    watchdog('debug', $sql . ' : ' . $realm);
+    return isset($nodes[$random]) ? $nodes[$random] : '';
   }
   return '';
 }
