@@ -173,10 +173,10 @@ function _play_suggestions_random_location($realm) {
   foreach ($results as $result) {
     $nodes[] = $result->nid;
   }
+    watchdog('debug', $sql . ' : ' . $realm);
   if (!empty($nodes)) {
     $count = count($nodes);
     $random = rand(0, $count);
-    watchdog('debug', $sql . ' : ' . $realm);
     return isset($nodes[$random]) ? $nodes[$random] : '';
   }
   return '';
