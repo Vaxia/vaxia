@@ -341,15 +341,14 @@ function _dice_ruler_form_settings() {
   // Is Dynamic difficult on or off.
   $multi_penalty = variable_get('dice_ruler_extra_action_penalty', 20);
   $settings[] = t('Extra actions is -%penalty.', array('%penalty' => $multi_penalty));
-  $classes = _dice_ruler_weapon_classes();
-  foreach ($classes as $tid => $perc) {
+  $classes = _dice_ruler_weapon_class_info();
+  foreach ($classes as $class_info) {
     $settings[] = t('%class weapons is %damage%.',
-      array('%class' => $class, '%damage' => $perc));
+      array('%class' => $class_info['name'], '%damage' => $class_info['perc']));
   }
-  $classes = _dice_ruler_weapon_modifiers();
-  foreach ($classes as $tid => $mod) {
+  foreach ($classes as $class_info) {
     $settings[] = t('%class weapons is -%penalty.',
-      array('%class' => $class, '%penalty' => $multi_penalty + $mod));
+      array('%class' => $class_info['name'], '%penalty' => $multi_penalty + $class_info['mods']));
   }
   $settings = theme('item_list', array('items' => $settings));
   // And now display the rest of the form.
