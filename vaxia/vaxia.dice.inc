@@ -63,6 +63,8 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
   $lang = $content->language;
   $character = isset($content->field_comment_character[$lang][0]['nid']) ?
     node_load($content->field_comment_character[$lang][0]['nid']) : '';
+  global $user;
+  variable_set('vaxia_last_character_' . $user->uid, $character->nid);
   // Get the command array.
   $roll_commands = _vaxia_dice_roller_submit_rolls($content->vaxia_rolls, $character, $lang);
   // Apply the set of rolls.
@@ -105,12 +107,16 @@ function _vaxia_dice_roller_get_selected_character(&$form, &$form_state) {
   global $user;
   $this_player = user_load($user->uid);
   $character = '_none';
+  $stored_character = variable_get('vaxia_last_character_' . $user->uid, -1);
   $lang = $form['language']['#value'];
   // Check character selected from form.
   if (isset($form_state['values'])) {
     if(isset($form_state['values']['field_comment_character'][$lang][0]['nid'])) {
       $character = $form_state['values']['field_comment_character'][$lang][0]['nid'];
     }
+  }
+  elseif ($stored_character != -1) {
+    $character = $stored_character;
   }
   elseif(!empty($form['field_comment_character'][$lang]['#default_value'])) {
     $character = $form['field_comment_character'][$lang]['#default_value'];
