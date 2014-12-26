@@ -27,7 +27,7 @@ Drupal.behaviors.diceRuler = {
         '<li class="dice-ruler-button dice-ruler-combat" type="combat" title="Make a Combat ruling with all available Str, Dex and End rolls."><a href="#">C</a></li>' +
         '<li class="dice-ruler-button dice-ruler-magic" type="magic" title="Make a Magic ruling with all available Int and Spi rolls."><a href="#">M</a></li>' +
         '<li class="dice-ruler-button dice-ruler-tech" type="tech" title="Make a Tech ruling with all available Int and Dex rolls."><a href="#">T</a></li>' +
-        '<li class="dice-ruler-button dice-ruler-combat dice-ruler-combat-vs" type="combat-two" title="Make a Combat ruling with all available Str, Dex and End rolls Second Party."><a href="#">Cv</a></li>' +
+        '<li class="dice-ruler-button dice-ruler-combat-two" type="combat-two" title="Make a Combat ruling with all available Str, Dex and End rolls Second Party."><a href="#">Cv</a></li>' +
          '</ul>';
       $('.dice_sets').after(rule_link);
       // Add a reset button.
@@ -186,6 +186,7 @@ Drupal.behaviors.diceRuler = {
             }
           });
           button_type = 'two_trait';
+        break;
         case 'combat-two':
           // Get all str, dex, end combinations.
           $(rolls).find('.dice_set').each(function() {
