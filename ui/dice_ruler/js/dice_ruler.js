@@ -21,8 +21,6 @@ Drupal.behaviors.diceRuler = {
         '<li class="dice-ruler-button dice-ruler-two-trait" type="two_trait" title="Make a Two Trait ruling with these rolls and the ones on the row below."><a href="#">2T</a></li>' +
         '<li class="dice-ruler-button dice-ruler-trait-vs" type="trait_vs" title="Make a One Trait Versus ruling with these rolls."><a href="#">TvT</a></li>' +
         '<li class="dice-ruler-button dice-ruler-two-trait-vs" type="two_trait_vs" title="Make a Two Trait Versus ruling with these rolls and the ones on the row below."><a href="#">2Tv</a></li>' +
-        '<li class="dice-ruler-button dice-ruler-trait-vs dice-ruler-trait-vs-vs" type="trait_vs" title="Make a One Trait Versus ruling with these rolls Second Party."><a href="#">TvT</a></li>' +
-        '<li class="dice-ruler-button dice-ruler-two-trait-vs dice-ruler-two-trait-vs-vs" type="two_trait_vs" title="Make a Two Trait Versus ruling with these rolls and the ones on the row below Second Party."><a href="#">2Tv</a></li>' +
         '</ul>';
       $('.dice_rolls .dice').prepend(rule_link);
       var rule_link = '<ul class="dice_rule dice-ruler-buttons dice-ruler-set-buttons"> ' +
