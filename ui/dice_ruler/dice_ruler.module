@@ -48,13 +48,16 @@ function _dice_ruler_weapon_class_info() {
     $name = trim($name[0]);
     $mods = !empty($term->field_multi_action_mod['und'][0]['value']) ? $term->field_multi_action_mod['und'][0]['value'] : 0;
     $perc = !empty($term->field_percentage['und'][0]['value']) ? $term->field_percentage['und'][0]['value'] : 0;
+    $weight = !empty($term->weight) ? $term->weight : $tid;
     //  Set up the class.
-    $weapon_classes[$tid] = array(
+    $weapon_classes[$weight] = array(
+      'tid' => $tid,
       'name' => $name,
       'mods' => $mods,
       'perc' => $perc,
     );
   }
+  ksort($weapon_classes);
   return $weapon_classes;
 }
 
@@ -64,7 +67,7 @@ function _dice_ruler_weapon_class_info() {
 function _dice_ruler_weapon_classes() {
   $classes = array();
   foreach (_dice_ruler_weapon_class_info() as $tid => $weapon_class) {
-    $classes[$tid] = $weapon_class['name'];
+    $classes[$weapon_class['tid']] = $weapon_class['name'];
   }
   return $classes;
 }
@@ -75,7 +78,7 @@ function _dice_ruler_weapon_classes() {
 function _dice_ruler_weapon_percentages() {
   $classes = array();
   foreach (_dice_ruler_weapon_class_info() as $tid => $weapon_class) {
-    $classes[$tid] = $weapon_class['perc'];
+    $classes[$weapon_class['tid']] = $weapon_class['perc'];
   }
   return $classes;
 }
@@ -86,7 +89,7 @@ function _dice_ruler_weapon_percentages() {
 function _dice_ruler_weapon_modifiers() {
   $classes = array();
   foreach (_dice_ruler_weapon_class_info() as $tid => $weapon_class) {
-    $classes[$tid] = $weapon_class['mods'];
+    $classes[$weapon_class['tid']] = $weapon_class['mods'];
   }
   return $classes;
 }
