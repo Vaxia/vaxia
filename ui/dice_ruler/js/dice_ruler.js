@@ -11,6 +11,7 @@ Drupal.behaviors.diceRuler = {
   $('document').ready(function() {
     // A variable to store the last slot we used or set.
     var last_slot = 0;
+    var vs_slot = 0;
     // On page load, inject the button into place in the DOM.
     var rules = $('.dice_rule').length;
     var current_value = $('#dice-ruler-form select[name="actions"]').val();
@@ -20,13 +21,16 @@ Drupal.behaviors.diceRuler = {
         '<li class="dice-ruler-button dice-ruler-two-trait" type="two_trait" title="Make a Two Trait ruling with these rolls and the ones on the row below."><a href="#">2T</a></li>' +
         '<li class="dice-ruler-button dice-ruler-trait-vs" type="trait_vs" title="Make a One Trait Versus ruling with these rolls."><a href="#">TvT</a></li>' +
         '<li class="dice-ruler-button dice-ruler-two-trait-vs" type="two_trait_vs" title="Make a Two Trait Versus ruling with these rolls and the ones on the row below."><a href="#">2Tv</a></li>' +
+        '<li class="dice-ruler-button dice-ruler-trait-vs dice-ruler-trait-vs-vs" type="trait_vs" title="Make a One Trait Versus ruling with these rolls Second Party."><a href="#">TvT</a></li>' +
+        '<li class="dice-ruler-button dice-ruler-two-trait-vs dice-ruler-two-trait-vs-vs" type="two_trait_vs" title="Make a Two Trait Versus ruling with these rolls and the ones on the row below Second Party."><a href="#">2Tv</a></li>' +
         '</ul>';
       $('.dice_rolls .dice').prepend(rule_link);
       var rule_link = '<ul class="dice_rule dice-ruler-buttons dice-ruler-set-buttons"> ' +
         '<li class="dice-ruler-button dice-ruler-combat" type="combat" title="Make a Combat ruling with all available Str, Dex and End rolls."><a href="#">C</a></li>' +
         '<li class="dice-ruler-button dice-ruler-magic" type="magic" title="Make a Magic ruling with all available Int and Spi rolls."><a href="#">M</a></li>' +
-        '<li class="dice-ruler-button dice-ruler-tech" type="tech" title="Make a Tech ruling with all available Itn and Dex rolls."><a href="#">T</a></li>' +
-        '</ul>';
+        '<li class="dice-ruler-button dice-ruler-tech" type="tech" title="Make a Tech ruling with all available Int and Dex rolls."><a href="#">T</a></li>' +
+        '<li class="dice-ruler-button dice-ruler-combat dice-ruler-combat-vs" type="combat-two" title="Make a Combat ruling with all available Str, Dex and End rolls Second Party."><a href="#">Cv</a></li>' +
+         '</ul>';
       $('.dice_sets').after(rule_link);
       // Add a reset button.
       var reset = $('#dice-ruler-reset').length;
@@ -184,6 +188,21 @@ Drupal.behaviors.diceRuler = {
             }
           });
           button_type = 'two_trait';
+        case 'combat-two':
+          // Get all str, dex, end combinations.
+          $(rolls).find('.dice_set').each(function() {
+            if ($(this).find('.dice_roll_str').length > 0 && $(this).find('.dice_roll_dex').length > 0) {
+              new_slot = new_slot + 1;
+              var new_form = $('#dice-ruler-form #edit-action-' + vs_slot);
+              $(new_form).find(':input[name^="combat_might_b_dex"]').val( $(this).find('.dice_roll_dex').attr('might') );
+              $(new_form).find(':input[name^="combat_might_b_str"]').val( $(this).find('.dice_roll_str').attr('might') );
+              $(new_form).find(':input[name^="combat_might_b_end"]').val( $(this).find('.dice_roll_end').attr('might') );
+              $(new_form).find(':input[name^="combat_rolled_b_dex"]').val( $(this).find('.dice_roll_dex').attr('roll') );
+              $(new_form).find(':input[name^="combat_rolled_b_str"]').val( $(this).find('.dice_roll_str').attr('roll') );
+              $(new_form).find(':input[name^="combat_rolled_b_end"]').val( $(this).find('.dice_roll_end').attr('roll') );
+            }
+          });
+          button_type = 'combat';
         break;
       }
       // Now set the new count.
