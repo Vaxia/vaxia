@@ -190,7 +190,7 @@ Drupal.behaviors.diceRuler = {
           // Get all str, dex, end combinations.
           $(rolls).find('.dice_set').each(function() {
             if ($(this).find('.dice_roll_str').length > 0 && $(this).find('.dice_roll_dex').length > 0) {
-              new_slot = new_slot + 1;
+              vs_slot = vs_slot + 1;
               var new_form = $('#dice-ruler-form #edit-action-' + vs_slot);
               $(new_form).find(':input[name^="combat_might_b_dex"]').val( $(this).find('.dice_roll_dex').attr('might') );
               $(new_form).find(':input[name^="combat_might_b_str"]').val( $(this).find('.dice_roll_str').attr('might') );
@@ -206,6 +206,7 @@ Drupal.behaviors.diceRuler = {
       // Now set the new count.
       if (new_slot > 3) {
         new_slot = 4;
+        vs_slot = 4;
       }
       // Set the actions.
       $('#dice-ruler-form select[name="actions"]').val(new_slot).trigger('change');
@@ -217,6 +218,7 @@ Drupal.behaviors.diceRuler = {
       // And done.
       if (last_slot > 3) {
         last_slot = 0;
+        vs_slot = 0;
       }
       return false; // Don't go anywhere.
     });
