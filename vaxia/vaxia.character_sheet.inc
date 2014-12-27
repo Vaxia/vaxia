@@ -1035,12 +1035,6 @@ function _vaxia_transfer_xp_autocomplete($character_name = '') {
  * Implements hook_form_FORMID_alter().
  */
 function vaxia_form__character_sheet_owner_form_alter(&$form, &$form_state) {
-  $form['change_ownership'] = array(
-    '#type' => 'fieldset',
-    '#title' => 'Change Ownership',
-    '#collapsible' => TRUE,
-    '#collapsed' => TRUE,
-  );
   if (isset($form['owner_name'])) {
      $form['change_ownership']['owner_name'] = $form['owner_name'];
     unset($form['owner_name']);
@@ -1214,7 +1208,7 @@ function add_silver_submit_form(&$form, &$form_state) {
   // If positive, add silver as per standard XP.
   if ($add_silver > 0) {
     _character_sheet_update_xp($nid, $add_silver, 'silver');
-    drupal_set_message(t('%add_silver silver has been added to this sheet.', array('%add_silver' => $add_silver)));
+    drupal_set_message(t('@add_silver silver has been added to this sheet.', array('@add_silver' => $add_silver)));
     $message = t('@xp silver added to @title by @user.',
       array('@xp' => $add_silver, '@title' => $character->title, '@user' => $user->name));
     _character_sheet_update_log($nid, 'silver', $message);
@@ -1257,9 +1251,9 @@ function _add_silver_submit_form_remove_silver($nid, $add_silver) {
         $node->field_economy[$node->language][0]['value'] : 0;
       $converted_silver = _vaxia_invest_calculate_cost_to_remove($economy);
       _character_sheet_update_xp($nid, $converted_silver, 'silver');
-      $message = t('Converted economy from level %economy to %less_economy, for %converted silver.',
-        array('%economy' => $economy, '%less_economy' => $economy - 1,
-        '%converted' => number_format($converted_silver, 2)));
+      $message = t('Converted economy from level @economy to @less_economy, for @converted silver.',
+        array('@economy' => $economy, '@less_economy' => $economy - 1,
+        '@converted' => number_format($converted_silver, 2)));
       _character_sheet_update_log($node->nid, 'silver', $message);
       drupal_set_message($message);
       // Remove econmy.
