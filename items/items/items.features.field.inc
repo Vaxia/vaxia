@@ -5898,7 +5898,7 @@ function items_field_default_fields() {
           'program' => 'Program',
           'misc' => 'Misc',
         ),
-        'allowed_values_function' => 'items_get_item_types',
+        'allowed_values_function' => '',
         'allowed_values_php' => '',
       ),
       'translatable' => '0',

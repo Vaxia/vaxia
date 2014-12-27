@@ -88,7 +88,7 @@ function item_uses_comment_insert($comment) {
 }
 
 /**
- * Implements hook_node_update().
+ * Called on hook_comment_insert().
  */
 function _item_uses_content_update($content) {
   // Allow for turning it all off.

@@ -500,19 +500,27 @@ function theme_vaxia_dice_roller($element) {
 function vaxia_form_workflow_tab_form_alter(&$form, &$form_state, $form_id) {
   global $user;
   $node = isset($form['node']['#value']) ? $form['node']['#value'] : '';
+  $controlled_types =_vaxia_helper_controlled_types();
   if (!empty($node) && $user->uid == $node->uid) {
-    if ($node->type == 'character_sheet') {
+    if (in_array($node->type, $controlled_types)) {
       $workflow_name = $form['#wf']->name;
       $options = $form['workflow'][$workflow_name]['#options'];
       $index = array_search('approved', $options);
       if ($index !== FALSE && $index != $node->workflow) {
-        drupal_set_message(t('You own this character, you cannot set it to approved. Currently: ' . $node->workflow_state_name));
+        drupal_set_message(t('You own this node, you cannot set it to approved. Currently: ' . $node->workflow_state_name));
         unset($options[$index]);
         $form['workflow'][$workflow_name]['#options'] = $options;
         $form['workflow'][$workflow_name]['#default_value'] = $node->workflow;
       }
     }
   }
+}
+
+/**
+ * Helper function, mark controlled types.
+ */
+function _vaxia_helper_controlled_types() {
+  return array('character_sheet', 'items');
 }
 
 /**
@@ -703,7 +711,8 @@ function vaxia_form_character_sheet_node_form_alter(&$form, &$form_state, $form_
           $form[$child]['#value'] = $form[$child]['#default_value'];
         }
       }
-      drupal_set_message('You are attempting to edit your Storyhost character sheet. Storyhosts are not playable characters - your options are limited for this sheet.');
+      drupal_set_message('You are attempting to edit your Storyhost character sheet. ' .
+        'Storyhosts are not playable characters, so your options are limited for this sheet.');
     }
   }
 }
