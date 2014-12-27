@@ -1151,6 +1151,7 @@ function _vaxia_invest_silver_submit($form, $form_state) {
   if (module_exists('entitycache')) {
     cache_clear_all($nid, 'cache_entity_node');
   }
+  global $user;
   if (is_numeric($invest) && $invest > 0 && $invest <= $available_silver) {
     // Figure out how many to add based on added silver.
     $cost = _vaxia_invest_calculate_cost_to_improve($node->field_economy[$node->language][0]['value']);
@@ -1170,9 +1171,16 @@ function _vaxia_invest_silver_submit($form, $form_state) {
         _character_sheet_update_xp($node->nid, $current_invest * -1, 'invest_silver');
         $silver_to_invest = 0;
         $silver_invested = 0;
+        $message = t('Economy improved through investment to @econ on @title by @user.',
+          array('@econ' => $node->field_economy[$node->language][0]['value'],
+          '@title' => $node->title, '@user' => $user->name));
+        _character_sheet_update_log($nid, 'invest', $message);
       }
     }
     _character_sheet_update_xp($node->nid, $silver_to_invest, 'invest_silver');
+    $message = t('@xp silver invested on @title by @user.',
+      array('@xp' => $silver_to_invest, '@title' => $node->title, '@user' => $user->name));
+    _character_sheet_update_log($nid, 'invest', $message);
   }
   // Flag to save the node if called for.
   if ($save_node) {
@@ -1221,7 +1229,7 @@ function add_silver_submit_form(&$form, &$form_state) {
       array('%add_silver' => $add_silver)));
     $message = t('@xp silver removed from @title by @user.',
       array('@xp' => $add_silver, '@title' => $character->title, '@user' => $user->name));
-    _character_sheet_update_log($character, 'silver', $message);
+    _character_sheet_update_log($nid, 'silver', $message);
   }
 }
 
