@@ -250,7 +250,6 @@ div.imagefield-crop-widget img {
 }
 
 /* Collected fixes. 03/07/14 */
-.node-type-rpg-chatroom #main #content .messages--status{display:none;}
 .node-type-rpg-chatroom #main{padding-top:0.5em;}
 .not-logged-in .rpg-chat-node #rpg-chat-wrapper{margin-left:0;}
 .node-type-rpg-chatroom #main #content .tabs-primary{clear:both;}
@@ -269,3 +268,63 @@ table td{padding-right:15px;}
   padding: 0.25em;
   text-shadow: 1px 1px 0 #FFFFFF;
 }
+
+/* Collected fixes. 12/29/14 */
+p{font-size:100%;}
+#vaxia-dice-roller table td{padding-right:0;}
+#vaxia-dice-roller .fieldset-description{float:right;font-size:10px;}
+article.node-wiki-page .links {float:right;}
+article.node-wiki-page .links li{display:inline;}
+.view-character-sheet-moderation-log .views-exposed-widgets div.views-exposed-widget{display:block;width:100%;margin-left:0;}
+.dice-ruler-set-buttons{clear:none;}
+#block-dice-ruler-dice-ruler-player-assist{float:left;margin:0;width:50%;}
+#block-dice-ruler-dice-ruler-player-assist label{display:inline-block;width:20em;}
+#block-dice-ruler-dice-ruler{clear:left;margin:0;}
+#views-exposed-form-rpg-chats-inroom-rpg-chats{margin-bottom:0.5em;}
+#filedepotmodule{color:black;}
+#filedepotmodule a{color:black;}
+article #edit-field-ooc-und-0-format{display:none;}
+#rpg-chat .comment .links{display:inline !important;float:right;margin:0;}
+#rpg-chat .comment .links li.comment-edit{display:inline;}
+#rpg-chat .comment .links li.comment-edit a{display:inline;}
+#rpg-chat .comment .links li.comment-edit a{-webkit-appearance:none;-moz-appearance:none;
+background: none;border: 0 none;color: #EEEEEE;float: right;margin: 0;padding: 0;
+margin-left:1em;text-shadow: 0 0 0;font-style: italic;font-size: 80%;}
+#rpg-chat .comment .links li.comment-revisions{display:inline;}
+#rpg-chat .comment .links li.comment-revisions a{display:inline;}
+#rpg-chat .comment .links li.comment-revisions a{-webkit-appearance:none;-moz-appearance:none;
+background: none;border: 0 none;color: #EEEEEE;float: right;margin: 0;padding: 0;
+margin-left:1em;text-shadow: 0 0 0;font-style: italic;font-size: 80%;}
+#rpg-chat .field-name-field-ooc{min-height:20px;height:auto;}
+.dice_rolls{clear:none;}
+.dice_rolls .dice{clear:none;}
+.dice-ruler-row-buttons{clear:none;display:inline;}
+#block-payment-donation-payment-donation{text-align:center;}
+#block-payment-donation-payment-donation form{padding-top:1em;}
+#block-payment-donation-payment-donation #edit-pay{padding-top:1em;}
+.bb-table tr{border-bottom:solid 1px #EEE;}
+.rpgchat-user-name{font-size:80%;}
+.rpg-chat-narrative header .rpgchat-user-name, .rpg-chat-narrative header .rpgchat-character-name{display:none !important;}
+div.view div.item-list{min-height:30px;}
+#rpg-chat article .links {position:relative;top:-15px;}
+#rpg-chat article .field-name-field-ooc p:empty{height:1px;margin:0;}
+#rpg-chat article .dice_rolls:empty{height:1px;margin:0;}
+#rpg-chat .field-name-field-ooc{min-height:1px;}
+.forum-post .links li.comment-revisions{display:inline;float:right;}
+#mass-contact-mail-page #edit-bcc-info{display:none;}
+#mass-contact-mail-page #edit-nodecc-notice{display:none;}
+form .field-multiple-table{width:100%;}
+.group-categories .form-field-type-taxonomy-term-reference{float:left;padding-right:1em;padding-top:1em;}
+div.imagefield-crop-widget img {max-width:none;}
+article.node-character-sheet .field-name-field-artwork-image{float:right;padding:1em;}
+article.ic-room #rpg-chat article.comment .field-name-comment-body img{display:none;}
+article.ooc-room #rpg-chat article.comment .field-name-comment-body img{max-width:400px;}
+.view-chat-archives article.comment .field-name-comment-body img{max-width:400px;}
+article.node-wiki-page .group-categories .field-type-taxonomy-term-reference{padding:0.5em;}
+article.node-wiki-page .group-categories .field-items{padding-left:0.5em;}
+article.node-wiki-page .group-categories .field-items .field-item{display:inline;padding-left:0.5em;}
+form.wiki-page-node-form #edit-field-additional-tagging{width:100%;}
+#character-sheet-node-form .filter-guidelines-item{display:none;}
+#character-sheet-node-form .filter-wrapper{display:none;}
+#block-play-suggestions-play-suggestions{float:left;width:40%;}
+table.views-table{width:95%;}
