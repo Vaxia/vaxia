@@ -49,7 +49,7 @@ Drupal.behaviors.themeVaxia = {
   });
 
   /* Hide standard display messags in chatrooms after they've posted. */
-  $('.node-type-rpg-chatroom .messages--status').delay('fast').hide();
+  $('.node-type-rpg-chatroom .messages--status').delay('fast').fadeOut();
 
   })(jQuery); }
 }
