@@ -114,9 +114,8 @@ function _play_suggestions_search_submit(&$form, $form_state) {
  * Helper function, get a suggestion.
  */
 function _play_suggestions_get_suggestion() {
-  $nid = '12011';
   // Get a random suggestion within the nid.
-  $suggestion = _play_suggestions_random_submission($nid);
+  $suggestion = _play_suggestions_random_submission();
   if (empty($suggestion['realm'])) {
     return array();
   }
@@ -132,21 +131,20 @@ function _play_suggestions_get_suggestion() {
 /**
  * Helper function, get a random suggestion submission.
  */
-function _play_suggestions_random_submission($nid) {
-  $count = db_query('SELECT COUNT(sid) FROM webform_submissions WHERE nid = :nid',
-    array(':nid' => $nid))->fetchField();
+function _play_suggestions_random_submission() {
+  $count = db_query('SELECT COUNT(n.nid) FROM {node} n WHERE n.type = \'play_suggestions\'')->fetchField();
   $random = rand(0, $count - 1);
-  $sid = db_query('SELECT sid FROM webform_submissions WHERE nid = :nid LIMIT ' . $random . ', 1',
-    array(':nid' => $nid))->fetchField();
-  $results = db_query('SELECT c.form_key, d.data FROM webform_submitted_data d ' .
-    'LEFT JOIN webform_component c ON c.cid = d.cid AND c.nid = d.nid ' .
-    'WHERE d.sid = :sid',
-    array(':sid' => $sid));
-  $submission = array();
+  $results = db_query('SELECT n.nid, n.title, r.field_realm_value FROM {node} n ' .
+    'LEFT JOIN {field_data_field_realm} r ON r.entity_id = n.nid AND r.revision_id = n.vid ' .
+    'WHERE n.type = \'play_suggestions\' LIMIT ' . $random . ', 1');
+  $suggestion = array();
   foreach ($results as $result) {
-    $submission[$result->form_key] = $result->data;
+    $suggestions[$result->nid] = array(
+      'suggestion' => $result->title,
+      'realm' => $result->field_realm_value,
+    );
   }
-  return $submission;
+  return $suggestion;
 }
 
 /**
@@ -155,12 +153,12 @@ function _play_suggestions_random_submission($nid) {
 function _play_suggestions_random_location($realm) {
   $skip = 0;
   $count = 10;
-  $sql = 'SELECT DISTINCT(c.nid) FROM comment c ' .
-    'LEFT JOIN node n ON n.nid = c.nid ' .
-    'LEFT JOIN field_data_field_realm r ON r.entity_id = n.nid  AND r.revision_id = n.vid ' .
-    'LEFT JOIN field_data_field_private_room p ON p.entity_id = n.nid  AND p.revision_id = n.vid ' .
-    'LEFT JOIN field_data_field_mature_posting m ON m.entity_id = n.nid  AND m.revision_id = n.vid ' .
-    'LEFT JOIN field_data_field_locked_to_users l ON l.entity_id = n.nid  AND l.revision_id = n.vid ' .
+  $sql = 'SELECT DISTINCT(c.nid) FROM {comment} c ' .
+    'LEFT JOIN {node} n ON n.nid = c.nid ' .
+    'LEFT JOIN {field_data_field_realm} r ON r.entity_id = n.nid  AND r.revision_id = n.vid ' .
+    'LEFT JOIN {field_data_field_private_room} p ON p.entity_id = n.nid  AND p.revision_id = n.vid ' .
+    'LEFT JOIN {field_data_field_mature_posting} m ON m.entity_id = n.nid  AND m.revision_id = n.vid ' .
+    'LEFT JOIN {field_data_field_locked_to_users} l ON l.entity_id = n.nid  AND l.revision_id = n.vid ' .
     // Where not private, mature, or locked.
     'WHERE n.type=\'rpg_chatroom\' AND n.status = 1 ' .
     'AND r.field_realm_value=:realm ' .
