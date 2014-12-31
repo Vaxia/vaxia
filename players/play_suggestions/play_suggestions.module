@@ -65,7 +65,7 @@ function _play_suggestions_search_submit(&$form, $form_state) {
   if (empty($realm) || empty($suggestion) || empty($location)) {
     return;
   }
-  $link = '[url=http://vaxia.org/content/play-suggestions]Click here.[/url]';
+  $link = '[url=http://vaxia.org/node/add/play-suggestions]Click here.[/url]';
   $post = t('In @realm, @suggestion at !location.',
     array('@realm' => $realm, '@suggestion' => $suggestion, '!location' => $location));
   $ooc = t('Want to add some suggestions? !link', array('!link' => $link));
