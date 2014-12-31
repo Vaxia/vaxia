@@ -140,7 +140,7 @@ function _play_suggestions_random_submission() {
     'WHERE n.type = \'play_suggestions\' LIMIT ' . $random . ', 1');
   $suggestion = array();
   foreach ($results as $result) {
-    $suggestions[$result->nid] = array(
+    $suggestion[$result->nid] = array(
       'suggestion' => $result->title,
       'realm' => $result->name,
     );
