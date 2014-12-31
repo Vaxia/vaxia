@@ -138,14 +138,14 @@ function _play_suggestions_random_submission() {
     'LEFT JOIN {field_data_field_tag_realm} t ON t.entity_id = n.nid AND t.revision_id = n.vid ' .
     'LEFT JOIN {taxonomy_term_data} r ON r.tid = t.field_tag_realm_tid ' .
     'WHERE n.type = \'play_suggestions\' LIMIT ' . $random . ', 1');
-  $suggestion = array();
+  // Return result.
   foreach ($results as $result) {
-    $suggestion[$result->nid] = array(
+    return array(
       'suggestion' => $result->title,
       'realm' => $result->name,
     );
   }
-  return $suggestion;
+  return array();
 }
 
 /**
