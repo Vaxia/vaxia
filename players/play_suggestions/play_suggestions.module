@@ -134,14 +134,15 @@ function _play_suggestions_get_suggestion() {
 function _play_suggestions_random_submission() {
   $count = db_query('SELECT COUNT(n.nid) FROM {node} n WHERE n.type = \'play_suggestions\'')->fetchField();
   $random = rand(0, $count - 1);
-  $results = db_query('SELECT n.nid, n.title, r.field_realm_value FROM {node} n ' .
-    'LEFT JOIN {field_data_field_realm} r ON r.entity_id = n.nid AND r.revision_id = n.vid ' .
+  $results = db_query('SELECT n.nid, n.title, r.name FROM {node} n ' .
+    'LEFT JOIN {field_data_field_tag_realm} t ON t.entity_id = n.nid AND t.revision_id = n.vid ' .
+    'LEFT JOIN {taxonomy_term_data} r ON r.tid = t.field_tag_realm_tid ' .
     'WHERE n.type = \'play_suggestions\' LIMIT ' . $random . ', 1');
   $suggestion = array();
   foreach ($results as $result) {
     $suggestions[$result->nid] = array(
       'suggestion' => $result->title,
-      'realm' => $result->field_realm_value,
+      'realm' => $result->name,
     );
   }
   return $suggestion;
