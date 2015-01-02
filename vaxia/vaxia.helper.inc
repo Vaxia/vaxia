@@ -10,13 +10,14 @@
  * Vaxia, generic workflow helper.
  */
 function _vaxia_once_a_day_cron($cron, $time = '01:00:00') {
-  watchdog('vaxia_cron', 'Calling ' . $cron . ' at ' . $time);
   // Things to run just once a day - always stored in timestamp format.
   // Get only items waiting for recharge.
   $last_ran = variable_get($cron, strtotime('-10 years'));
   $yesterday = strtotime('-1 day');
   // If it's been at least 24 hrs since last run, run the cron.
+  watchdog('vaxia_cron', 'Checking ' . $cron . ' at ' . $time);
   if ($last_ran < $yesterday) {
+    watchdog('vaxia_cron', 'Calling ' . $cron . ' at ' . $time);
     // And set the run.
     // Prevent slippage by setting to the same time each date. Default at 1am.
     variable_set($cron, strtotime(date('m/d/Y ' . $time)));
