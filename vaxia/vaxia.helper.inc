@@ -10,6 +10,7 @@
  * Vaxia, generic workflow helper.
  */
 function _vaxia_once_a_day_cron($cron, $time = '01:00:00') {
+  watchdog('vaxia_cron', 'Calling ' . $cron . ' at ' . $time);
   // Things to run just once a day - always stored in timestamp format.
   // Get only items waiting for recharge.
   $last_ran = variable_get($cron, strtotime('-10 years'));
@@ -24,6 +25,9 @@ function _vaxia_once_a_day_cron($cron, $time = '01:00:00') {
   return FALSE;
 }
 
+/**
+ * Vaxia, generic workflow helper.
+ */
 function _vaxia_get_workflow_options() {
   $workflow_options = array();
   $workflows = workflow_get_workflows();
@@ -36,6 +40,9 @@ function _vaxia_get_workflow_options() {
   return $workflow_options;
 }
 
+/**
+ * Vaxia, generic field helper.
+ */
 function _vaxia_get_field_value($node, $field, $default = '', $stored = 'value') {
   // Return no-pass if wrong workflow.
   if (empty($node->nid) || empty($field)) {
@@ -49,6 +56,9 @@ function _vaxia_get_field_value($node, $field, $default = '', $stored = 'value')
   return isset($node->{$field}[$lang][0][$stored]) ? $node->{$field}[$lang][0][$stored] : $default;
 }
 
+/**
+ * Vaxia, generic field helper.
+ */
 function _vaxia_get_field_node($node, $field, $default = '') {
   $nid = _vaxia_get_field_value($node, $field, $default, 'nid');
   if (!empty($nid)) {
@@ -57,10 +67,13 @@ function _vaxia_get_field_node($node, $field, $default = '') {
   return FALSE;
 }
 
+/**
+ * Vaxia, generic field helper.
+ */
 function _vaxia_set_field_value($node, $field, $value = '', $stored = 'value') {
   // Return no-pass if wrong workflow.
   if (empty($node->nid) || empty($field)) {
-    return $default;
+    return;
   }
   static $node_lang = array();
   if (empty($node_lang[$node->nid])) {
@@ -71,6 +84,9 @@ function _vaxia_set_field_value($node, $field, $value = '', $stored = 'value') {
   $node->{$field}[$lang][0][$stored] = $value;
 }
 
+/**
+ * Vaxia, generic workflow helper.
+ */
 function _vaxia_get_in_workflows($types = array(), $workflows = array()) {
   // Set defaults if not given.
   if (empty($types)) {
@@ -84,7 +100,8 @@ function _vaxia_get_in_workflows($types = array(), $workflows = array()) {
   $workflows = (array) $workflows;
   // Set values.
   $args = array(
-    ':state_names' => $workflows, ':state_values' => $workflows,
+    ':state_names' => $workflows,
+    ':state_values' => $workflows,
     ':types' => $types,
     );
   // Get all nids of type in workflows.
@@ -94,7 +111,7 @@ function _vaxia_get_in_workflows($types = array(), $workflows = array()) {
     'LEFT JOIN node n ON n.nid = wn.nid ' .
     'LEFT JOIN workflow_states ws ON ws.sid = wn.sid ' .
     'WHERE ' .
-    '(ws.state IN (:state_names) OR ws.sid IN (@state_values)) ' . // In state.
+    '(ws.state IN (:state_names) OR ws.sid IN (:state_values)) ' . // In state.
     'AND n.type IN (:types) ' . // In the right type.
     'AND n.status = 1 ', // Published.
     $args);
@@ -109,7 +126,7 @@ function _vaxia_get_in_workflows($types = array(), $workflows = array()) {
 /**
  * Vaxia, generic workflow helper.
  */
-function _vaxia_check_workflow_in($node, $workflows = array()) {
+function _vaxia_check_workflow_is($node, $workflows = array()) {
   // Make sure the workflows given are an array even if string.
   $workflows = (array) $workflows;
   // Return no-pass if wrong workflow.
@@ -135,6 +152,23 @@ function _vaxia_check_workflow_in($node, $workflows = array()) {
 /**
  * Vaxia, generic workflow helper.
  */
-function _vaxia_check_workflow_is($node, $workflow = '') {
-  return _vaxia_check_workflow_in($node, $workflow);
+function _vaxia_check_workflow_in($node, $workflow = '') {
+  return _vaxia_check_workflow_is($node, $workflow);
+}
+
+/**
+ * Check if the room is IC or OOC.
+ */
+function _vaxia_is_ic_room($node) {
+  if (!isset($node->nid)) {
+    return FALSE;
+  }
+  if (!isset($node->character_sheet_system) || !isset($node->workflow)) {
+    $node = node_load($node->nid);
+  }
+  $ooc_rooms = variable_get('vaxia_limbo_room', array());
+  if (in_array($node->nid, $ooc_rooms)) {
+    return TRUE;
+  }
+  return FALSE;
 }

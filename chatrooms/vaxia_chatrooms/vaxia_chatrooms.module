@@ -141,15 +141,8 @@ function _vaxia_chatrooms_is_on_lock_list($node, $user) {
  * Helper function determine if ooc.
  */
 function _vaxia_chatrooms_is_ooc($node) {
-  if (!isset($node->nid)) {
-    return FALSE;
-  }
-  if (!isset($node->character_sheet_system) || !isset($node->workflow)) {
-    $node = node_load($node->nid);
-  }
-  $ooc_rooms = variable_get('vaxia_limbo_room', array());
-  if (in_array($node->nid, $ooc_rooms)) {
-    return TRUE;
-  }
-  return FALSE;
+  // Make sure we have the vaxia helper file included.
+  module_load_include('inc', 'vaxia', 'helper');
+  // Check the workflow.
+  return _vaxia_is_ic_room($node);
 }

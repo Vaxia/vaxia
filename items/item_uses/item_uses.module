@@ -95,6 +95,10 @@ function _item_uses_content_update($content) {
   if (!variable_get('item_uses_active', TRUE) || user_access('use items indefinately') || empty($content->vaxia_rolls)) {
     return;
   }
+  $node = node_load($comment->nid);
+  if (!_items_is_ic_room($node)) {
+    return;
+  }
   // Uses matter, so keep looping.
   $lang = $content->language;
   // Check items against stats.
@@ -154,9 +158,9 @@ function _item_uses_daily_recharge() {
   foreach ($items as $item) {
     $item = node_load($item->nid);
     if ($item) {
-      $spent = _items_set_field_value($item, 'field_item_spent_uses', 0);
+      $spent = _items_get_field_value($item, 'field_item_spent_uses', 0);
       if ($spent > 0) {
-        _items_set_field_value($item, 'field_item_spent_uses', $spent_charges);
+        _items_set_field_value($item, 'field_item_spent_uses', 0);
         $workflow = variable_get('items_approved_workflow', ''); // Set back to approved.
         workflow_execute_transition($item, $workflow, t('Item recharged daily.'), TRUE);
         node_save($item);

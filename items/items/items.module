@@ -399,5 +399,15 @@ function _items_check_workflow_in($node, $workflows = array()) {
   // Make sure we have the vaxia helper file included.
   module_load_include('inc', 'vaxia', 'helper');
   // Check the workflow.
-  return _vaxia_check_workflow_in($node, $workflows);
+  return _vaxia_check_workflow_is($node, $workflows);
+}
+
+/**
+ * Check if a room is IC or not.
+ */
+function _items_is_ic_room($node) {
+  // Make sure we have the vaxia helper file included.
+  module_load_include('inc', 'vaxia', 'helper');
+  // Check the workflow.
+  return _vaxia_is_ic_room($node);
 }

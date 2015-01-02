@@ -287,7 +287,9 @@ function _dice_roller_items_get_items($character) {
   if (isset($character->field_items[$character->language])) {
     foreach ($character->field_items[$character->language] as $delta => $nid) {
       $item = node_load($nid);
-      $items[$item->nid] = $item;  
+      if ($item && !empty($item->nid)) {
+        $items[$item->nid] = $item;
+      }
     }
   }
   return $items;
