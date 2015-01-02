@@ -15,7 +15,6 @@ function _vaxia_once_a_day_cron($cron, $time = '01:00:00') {
   $last_ran = variable_get($cron, strtotime('-10 years'));
   $yesterday = strtotime('-1 day');
   // If it's been at least 24 hrs since last run, run the cron.
-  watchdog('vaxia_cron', 'Checking ' . $cron . ' at ' . $time);
   if ($last_ran < $yesterday) {
     watchdog('vaxia_cron', 'Calling ' . $cron . ' at ' . $time);
     // And set the run.
@@ -107,10 +106,10 @@ function _vaxia_get_in_workflows($types = array(), $workflows = array()) {
     );
   // Get all nids of type in workflows.
   $found_nodes = db_query('SELECT n.nid, n.vid, n.type, n.title, n.uid, n.status, n.created, n.changed, ' .
-    'ws.sid as workflow, ws.state as workflow_state_name' .
-    'FROM workflow_node wn ' .
-    'LEFT JOIN node n ON n.nid = wn.nid ' .
-    'LEFT JOIN workflow_states ws ON ws.sid = wn.sid ' .
+    'ws.sid as workflow, ws.state as workflow_state_name ' .
+    'FROM {workflow_node} wn ' .
+    'LEFT JOIN {node} n ON n.nid = wn.nid ' .
+    'LEFT JOIN {workflow_states} ws ON ws.sid = wn.sid ' .
     'WHERE ' .
     '(ws.state IN (:state_names) OR ws.sid IN (:state_values)) ' . // In state.
     'AND n.type IN (:types) ' . // In the right type.
