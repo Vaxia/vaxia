@@ -90,9 +90,9 @@ function item_uses_comment_insert($comment) {
 /**
  * Called on hook_comment_insert().
  */
-function _item_uses_content_update($content) {
+function _item_uses_content_update($comment) {
   // Allow for turning it all off.
-  if (!variable_get('item_uses_active', TRUE) || user_access('use items indefinately') || empty($content->vaxia_rolls)) {
+  if (!variable_get('item_uses_active', TRUE) || user_access('use items indefinately') || empty($comment->vaxia_rolls)) {
     return;
   }
   $node = node_load($comment->nid);
@@ -100,17 +100,17 @@ function _item_uses_content_update($content) {
     return;
   }
   // Uses matter, so keep looping.
-  $lang = $content->language;
+  $lang = $comment->language;
   // Check items against stats.
-  if (isset($content->vaxia_rolls['items'])) {
+  if (isset($comment->vaxia_rolls['items'])) {
     // Gather the character information if it's set.
-    $character = _items_get_field_node($content, 'field_comment_character');
+    $character = _items_get_field_node($comment, 'field_comment_character');
     // If character set, get the stats and items.
     if (!empty($character)) {
       $once_workflow = variable_get('item_uses_once_workflow', '');
       $daily_workflow = variable_get('item_uses_daily_workflow', '');
       // Loop for each item.
-      foreach ($content->vaxia_rolls['items'] as $item) {
+      foreach ($comment->vaxia_rolls['items'] as $item) {
         _item_uses_check_item_use($item, $once_workflow, $daily_workflow);
       }
     }
