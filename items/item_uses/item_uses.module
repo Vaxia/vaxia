@@ -154,12 +154,14 @@ function _item_uses_check_item_use($item, $once_workflow, $daily_workflow) {
  * Helper function, get the cron for this run.
  */
 function _item_uses_daily_recharge() {
+  watchdog('item_uses', 'Daily recharge started.');
   $items = _items_get_in_workflows(variable_get('item_uses_daily_workflow', ''));
   foreach ($items as $item) {
     $item = node_load($item->nid);
     if ($item) {
       $spent = _items_get_field_value($item, 'field_item_spent_uses', 0);
       if ($spent > 0) {
+        watchdog('item_uses', 'Daily recharge for item #' . $item->nid . '.');
         _items_set_field_value($item, 'field_item_spent_uses', 0);
         $workflow = variable_get('items_approved_workflow', ''); // Set back to approved.
         workflow_execute_transition($item, $workflow, t('Item recharged daily.'), TRUE);
