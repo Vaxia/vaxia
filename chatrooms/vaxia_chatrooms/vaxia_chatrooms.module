@@ -7,7 +7,7 @@
 /**
  * Implements hook_permission().
  */
-function rpg_chat_permission() {
+function vaxia_chatrooms_permission() {
   return array(
     'view vaxia ic chat' => array(
       'title' => t('View Vaxia IC chat'),
