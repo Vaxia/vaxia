@@ -268,7 +268,7 @@ function vaxia_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '20',
+          'weight' => '2',
         ),
       ),
       'entity_type' => 'node',
@@ -320,7 +320,7 @@ function vaxia_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '46',
+        'weight' => '0',
       ),
     ),
   );
@@ -891,7 +891,7 @@ function vaxia_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '3',
+          'weight' => '4',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -949,7 +949,7 @@ function vaxia_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '1',
+        'weight' => '2',
       ),
     ),
   );
@@ -994,7 +994,7 @@ function vaxia_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '13',
+          'weight' => '12',
         ),
       ),
       'entity_type' => 'node',
@@ -1056,7 +1056,7 @@ function vaxia_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '19',
+          'weight' => '18',
         ),
       ),
       'entity_type' => 'node',
@@ -1108,7 +1108,7 @@ function vaxia_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '45',
+        'weight' => '44',
       ),
     ),
   );
@@ -1361,7 +1361,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
           'module' => 'taxonomy',
           'settings' => array(),
           'type' => 'taxonomy_term_reference_link',
-          'weight' => '18',
+          'weight' => '21',
         ),
       ),
       'entity_type' => 'node',
@@ -1376,7 +1376,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '44',
+        'weight' => '46',
       ),
     ),
   );
@@ -1427,7 +1427,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '6',
+          'weight' => '7',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1485,7 +1485,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '5',
+        'weight' => '50',
       ),
     ),
   );
@@ -2297,7 +2297,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '2',
+          'weight' => '3',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2321,7 +2321,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '0',
+        'weight' => '1',
       ),
     ),
   );
@@ -2436,7 +2436,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '5',
+          'weight' => '6',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2490,7 +2490,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '3',
+        'weight' => '4',
       ),
     ),
   );
@@ -2536,7 +2536,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '4',
+          'weight' => '5',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -2590,7 +2590,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '2',
+        'weight' => '3',
       ),
     ),
   );
@@ -2734,7 +2734,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'label' => 'hidden',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '12',
+          'weight' => '11',
         ),
       ),
       'entity_type' => 'node',
@@ -2965,6 +2965,105 @@ Posting does not have to occur all at once, so feel free to spread it out across
         ),
         'type' => 'text_textarea',
         'weight' => '35',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-character_sheet-field_public_information'.
+  $fields['node-character_sheet-field_public_information'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_public_information',
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'text',
+      'settings' => array(),
+      'translatable' => '0',
+      'type' => 'text_long',
+    ),
+    'field_instance' => array(
+      'bundle' => 'character_sheet',
+      'default_value' => array(
+        0 => array(
+          'value' => '',
+        ),
+      ),
+      'deleted' => '0',
+      'description' => 'Include any public information other characters could easily find out about this character. For example: The information a chatty bartender, or a social media search would reveal.',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '7',
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_public_information',
+      'label' => 'Public information',
+      'required' => 0,
+      'settings' => array(
+        'better_formats' => array(
+          'allowed_formats' => array(
+            'filtered_html' => 0,
+            'full_html' => 0,
+            'php_code' => 0,
+            'plain_text' => 0,
+            'whiteboard' => 0,
+            'wiki' => 'wiki',
+          ),
+          'allowed_formats_toggle' => 1,
+          'default_order_toggle' => 0,
+          'default_order_wrapper' => array(
+            'formats' => array(
+              'filtered_html' => array(
+                'weight' => '0',
+              ),
+              'full_html' => array(
+                'weight' => '1',
+              ),
+              'php_code' => array(
+                'weight' => '11',
+              ),
+              'plain_text' => array(
+                'weight' => '10',
+              ),
+              'whiteboard' => array(
+                'weight' => '0',
+              ),
+              'wiki' => array(
+                'weight' => '0',
+              ),
+            ),
+          ),
+        ),
+        'text_processing' => '1',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'rows' => '5',
+        ),
+        'type' => 'text_textarea',
+        'weight' => '4',
       ),
     ),
   );
@@ -3347,7 +3446,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '15',
+          'weight' => '19',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -3447,7 +3546,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '16',
+          'weight' => '20',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -3502,6 +3601,105 @@ Posting does not have to occur all at once, so feel free to spread it out across
         ),
         'type' => 'text_textarea',
         'weight' => '41',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-character_sheet-field_sh_public_information'.
+  $fields['node-character_sheet-field_sh_public_information'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_sh_public_information',
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'text',
+      'settings' => array(),
+      'translatable' => '0',
+      'type' => 'text_long',
+    ),
+    'field_instance' => array(
+      'bundle' => 'character_sheet',
+      'default_value' => array(
+        0 => array(
+          'value' => '',
+        ),
+      ),
+      'deleted' => '0',
+      'description' => 'SH provided public information about your character.',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '8',
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_sh_public_information',
+      'label' => 'SH Public information',
+      'required' => 0,
+      'settings' => array(
+        'better_formats' => array(
+          'allowed_formats' => array(
+            'filtered_html' => 0,
+            'full_html' => 0,
+            'php_code' => 0,
+            'plain_text' => 0,
+            'whiteboard' => 0,
+            'wiki' => 'wiki',
+          ),
+          'allowed_formats_toggle' => 1,
+          'default_order_toggle' => 0,
+          'default_order_wrapper' => array(
+            'formats' => array(
+              'filtered_html' => array(
+                'weight' => '0',
+              ),
+              'full_html' => array(
+                'weight' => '1',
+              ),
+              'php_code' => array(
+                'weight' => '11',
+              ),
+              'plain_text' => array(
+                'weight' => '10',
+              ),
+              'whiteboard' => array(
+                'weight' => '0',
+              ),
+              'wiki' => array(
+                'weight' => '0',
+              ),
+            ),
+          ),
+        ),
+        'text_processing' => '1',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'rows' => '5',
+        ),
+        'type' => 'text_textarea',
+        'weight' => '5',
       ),
     ),
   );
@@ -3620,7 +3818,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '10',
+          'weight' => '9',
         ),
       ),
       'entity_type' => 'node',
@@ -3850,6 +4048,69 @@ Posting does not have to occur all at once, so feel free to spread it out across
     ),
   );
 
+  // Exported field: 'node-character_sheet-field_visibility'.
+  $fields['node-character_sheet-field_visibility'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_visibility',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => 'Private posts. This character will NOT show in the Power Search.',
+          1 => 'Public posts. This character will show in the Power Search.',
+        ),
+        'allowed_values_function' => '',
+      ),
+      'translatable' => '0',
+      'type' => 'list_boolean',
+    ),
+    'field_instance' => array(
+      'bundle' => 'character_sheet',
+      'default_value' => array(
+        0 => array(
+          'value' => 1,
+        ),
+      ),
+      'deleted' => '0',
+      'description' => 'Uncheck this box to hide this character\'s posts from the power search. This is useful if you are playing a character whose actions you want to keep private. Be aware, while this will hide the posts of this character from the search it will not hide the posts of other character\'s in a scene with you if they are not also set for private mode.',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => '22',
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_visibility',
+      'label' => 'Visibility',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(
+          'display_label' => 0,
+        ),
+        'type' => 'options_onoff',
+        'weight' => '45',
+      ),
+    ),
+  );
+
   // Translatables
   // Included for use with string extractors like potx.
   t('Achivements');
@@ -3902,6 +4163,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
   t('If this is an Open NPC please associate the character with a room location if you know there is one the character will likely be found. That way other SHs can quickly pull up the commonly available NPCs for a location and make use of them during sessions and improvised sessions.');
   t('If your character has any over-arching life goals. Things they want to do or see done that may require an A/SH to help achieve - make note of them here.');
   t('Image');
+  t('Include any public information other characters could easily find out about this character. For example: The information a chatty bartender, or a social media search would reveal.');
   t('Intelligence');
   t('Items');
   t('Items are added to characters from the Item form, not the Character Sheet form. If you need to add an item to this character, go to the item to set the IC owner.');
@@ -3922,9 +4184,12 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
   t('Player Notes');
   t('Presence');
   t('Private SH Notes');
+  t('Public information');
   t('Real Age');
   t('Realm');
   t('SH Notes');
+  t('SH Public information');
+  t('SH provided public information about your character.');
   t('Skill');
   t('Skill Review (tmp)');
   t('Species');
@@ -3934,7 +4199,9 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
   t('The first description listed will be used on your posts and for viewing by other players. You can add additional descriptions and sort them as needed if your character has more than one \'appearance\'.');
   t('This field is a *temporary* field to allow us to quickly identify character sheets that have not been reviewed as part of a site-wide effort to bring all characters up to spec for skills.');
   t('Titles');
+  t('Uncheck this box to hide this character\'s posts from the power search. This is useful if you are playing a character whose actions you want to keep private. Be aware, while this will hide the posts of this character from the search it will not hide the posts of other character\'s in a scene with you if they are not also set for private mode.');
   t('Value');
+  t('Visibility');
   t('You can invest silver instead on the Sheet tab.');
 
   return $fields;
