@@ -70,7 +70,7 @@ function strikes_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'comment_notation';
-  $strongarm->value = '1';
+  $strongarm->value = '2';
   $export['comment_notation'] = $strongarm;
 
   $strongarm = new stdClass();

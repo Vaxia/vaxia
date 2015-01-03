@@ -219,35 +219,13 @@ function rpg_chat_views_default_views() {
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
     'title' => 'title',
-    'comment_count' => 'comment_count',
-    'new_comments' => 'new_comments',
-    'last_comment_timestamp' => 'last_comment_timestamp',
     'field_parent' => 'field_parent',
   );
-  $handler->display->display_options['style_options']['default'] = 'last_comment_timestamp';
+  $handler->display->display_options['style_options']['default'] = 'title';
   $handler->display->display_options['style_options']['info'] = array(
     'title' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'comment_count' => array(
-      'sortable' => 1,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'new_comments' => array(
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'last_comment_timestamp' => array(
-      'sortable' => 1,
-      'default_sort_order' => 'desc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -263,12 +241,25 @@ function rpg_chat_views_default_views() {
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = 'Chatroom';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  /* Field: Content: Parent-locations */
+  $handler->display->display_options['fields']['field_parent']['id'] = 'field_parent';
+  $handler->display->display_options['fields']['field_parent']['table'] = 'field_data_field_parent';
+  $handler->display->display_options['fields']['field_parent']['field'] = 'field_parent';
+  $handler->display->display_options['fields']['field_parent']['label'] = 'Parent Room';
+  $handler->display->display_options['fields']['field_parent']['element_label_colon'] = FALSE;
   $handler->display->display_options['defaults']['sorts'] = FALSE;
-  /* Sort criterion: Content: Updated/commented date */
-  $handler->display->display_options['sorts']['last_updated']['id'] = 'last_updated';
-  $handler->display->display_options['sorts']['last_updated']['table'] = 'node_comment_statistics';
-  $handler->display->display_options['sorts']['last_updated']['field'] = 'last_updated';
-  $handler->display->display_options['sorts']['last_updated']['order'] = 'DESC';
+  /* Sort criterion: Content: Title */
+  $handler->display->display_options['sorts']['title']['id'] = 'title';
+  $handler->display->display_options['sorts']['title']['table'] = 'node';
+  $handler->display->display_options['sorts']['title']['field'] = 'title';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['filter_groups']['operator'] = 'OR';
@@ -344,6 +335,27 @@ function rpg_chat_views_default_views() {
     11 => 0,
   );
   $handler->display->display_options['filters']['field_realm_value']['expose']['reduce'] = TRUE;
+  /* Filter criterion: Content: Locked to users (field_locked_to_users) */
+  $handler->display->display_options['filters']['field_locked_to_users_value']['id'] = 'field_locked_to_users_value';
+  $handler->display->display_options['filters']['field_locked_to_users_value']['table'] = 'field_data_field_locked_to_users';
+  $handler->display->display_options['filters']['field_locked_to_users_value']['field'] = 'field_locked_to_users_value';
+  $handler->display->display_options['filters']['field_locked_to_users_value']['value'] = array(
+    0 => '0',
+  );
+  /* Filter criterion: Content: Mature posting (field_mature_posting) */
+  $handler->display->display_options['filters']['field_mature_posting_value']['id'] = 'field_mature_posting_value';
+  $handler->display->display_options['filters']['field_mature_posting_value']['table'] = 'field_data_field_mature_posting';
+  $handler->display->display_options['filters']['field_mature_posting_value']['field'] = 'field_mature_posting_value';
+  $handler->display->display_options['filters']['field_mature_posting_value']['value'] = array(
+    0 => '0',
+  );
+  /* Filter criterion: Content: Private room (field_private_room) */
+  $handler->display->display_options['filters']['field_private_room_value']['id'] = 'field_private_room_value';
+  $handler->display->display_options['filters']['field_private_room_value']['table'] = 'field_data_field_private_room';
+  $handler->display->display_options['filters']['field_private_room_value']['field'] = 'field_private_room_value';
+  $handler->display->display_options['filters']['field_private_room_value']['value'] = array(
+    1 => '1',
+  );
   $handler->display->display_options['path'] = 'rpg-chats';
   $handler->display->display_options['menu']['type'] = 'normal';
   $handler->display->display_options['menu']['title'] = 'Locations';

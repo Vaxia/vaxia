@@ -99,22 +99,22 @@ function items_strongarm() {
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '11',
+          'weight' => '10',
         ),
         'workflow' => array(
-          'weight' => '12',
+          'weight' => '11',
         ),
         'badges' => array(
-          'weight' => '30',
+          'weight' => '13',
         ),
         'locations' => array(
-          'weight' => '30',
+          'weight' => '12',
         ),
       ),
       'display' => array(
         'workflow_current_state' => array(
           'default' => array(
-            'weight' => '13',
+            'weight' => '53',
             'visible' => TRUE,
           ),
           'artwork' => array(
@@ -124,7 +124,7 @@ function items_strongarm() {
         ),
         'workflow' => array(
           'default' => array(
-            'weight' => '14',
+            'weight' => '9',
             'visible' => FALSE,
           ),
           'artwork' => array(

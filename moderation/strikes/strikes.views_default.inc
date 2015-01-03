@@ -122,11 +122,22 @@ function strikes_views_default_views() {
 .view-strikes ul{margin:0;padding-left:15px;}
 </style>
 <div>
-Players involved include all players in this interaction - victim(s) and aggressor(s). It is the job of Social to sort out which is which - the notation is NOT the point to make that decision.</br>
-Bystanders are any players who were involved witnesses or tried to get the situation to cool off but were not acting as members of the Social department. "Bystanders and witnesses" so to speak.</br>
-Social members are members of the social department that got involved.
+
+<center><b>Notations act as a record of Social and mediator behaviors so the site can detect abusive patterns by players OR mediators.</b></center>
+
+<center><b><i>The Social Department policy *requires* a note be put in when a player is officially contacted regardless of topic or intent.</i></b></center>
+
+If you have been contacted by Social and do NOT see a notation on this list covering what was discussed, please contact the Social leads to get a note put in as quickly as possible. These are important records to help players avoid double jeopardy - they keep our mediators coordinated. These also allow us to detect abuse of players by mediators. So please make sure you see a note if you\'ve been spoken with by Social about any topic.
 </div>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
+  /* Footer: Global: Text area */
+  $handler->display->display_options['footer']['area']['id'] = 'area';
+  $handler->display->display_options['footer']['area']['table'] = 'views';
+  $handler->display->display_options['footer']['area']['field'] = 'area';
+  $handler->display->display_options['footer']['area']['content'] = 'This log is provided in order to achieve transparency for our Social department. It is intended for players who may be friends of those affected, have heard about the interactions after the fact, or simply want to be able to confirm that social members are taking action as appropriate.
+
+If you have any questions about a specific incident, or about notations in general please ask on the Social forums or directly to the current Social leads.';
+  $handler->display->display_options['footer']['area']['format'] = 'full_html';
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['area']['id'] = 'area';
   $handler->display->display_options['empty']['area']['table'] = 'views';
@@ -134,7 +145,7 @@ Social members are members of the social department that got involved.
   $handler->display->display_options['empty']['area']['empty'] = TRUE;
   $handler->display->display_options['empty']['area']['content'] = 'No notations available.';
   $handler->display->display_options['empty']['area']['format'] = 'wiki';
-  /* Relationship: Content: Players Involved (field_players) */
+  /* Relationship: Content: Player (field_players) */
   $handler->display->display_options['relationships']['field_players_uid']['id'] = 'field_players_uid';
   $handler->display->display_options['relationships']['field_players_uid']['table'] = 'field_data_field_players';
   $handler->display->display_options['relationships']['field_players_uid']['field'] = 'field_players_uid';
@@ -182,11 +193,10 @@ Social members are members of the social department that got involved.
   $handler->display->display_options['fields']['field_category']['empty'] = 'See record';
   $handler->display->display_options['fields']['field_category']['delta_offset'] = '0';
   $handler->display->display_options['fields']['field_category']['multi_type'] = 'ul';
-  /* Field: Content: Players Involved */
+  /* Field: Content: Player */
   $handler->display->display_options['fields']['field_players']['id'] = 'field_players';
   $handler->display->display_options['fields']['field_players']['table'] = 'field_data_field_players';
   $handler->display->display_options['fields']['field_players']['field'] = 'field_players';
-  $handler->display->display_options['fields']['field_players']['label'] = 'Player(s) Involved';
   $handler->display->display_options['fields']['field_players']['delta_offset'] = '0';
   $handler->display->display_options['fields']['field_players']['multi_type'] = 'ul';
   /* Field: Content: Players Bystanding */
@@ -1074,6 +1084,354 @@ return FALSE;';
   $handler->display->display_options['menu']['description'] = 'All notations over time';
   $handler->display->display_options['menu']['weight'] = '1';
   $handler->display->display_options['menu']['name'] = 'menu-vaxia-sh';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
+  $handler->display->display_options['tab_options']['type'] = 'tab';
+  $handler->display->display_options['tab_options']['title'] = 'Notations';
+  $handler->display->display_options['tab_options']['description'] = 'Notations';
+  $handler->display->display_options['tab_options']['weight'] = '0';
+
+  /* Display: Notation log */
+  $handler = $view->new_display('page', 'Notation log', 'page_3');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Notation  log';
+  $handler->display->display_options['display_description'] = 'Notation log';
+  $handler->display->display_options['defaults']['access'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'role';
+  $handler->display->display_options['access']['role'] = array(
+    21 => '21',
+    29 => '29',
+    8 => '8',
+  );
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Date of Incident */
+  $handler->display->display_options['fields']['field_date_of_incident']['id'] = 'field_date_of_incident';
+  $handler->display->display_options['fields']['field_date_of_incident']['table'] = 'field_data_field_date_of_incident';
+  $handler->display->display_options['fields']['field_date_of_incident']['field'] = 'field_date_of_incident';
+  $handler->display->display_options['fields']['field_date_of_incident']['label'] = 'Occurred On';
+  $handler->display->display_options['fields']['field_date_of_incident']['settings'] = array(
+    'format_type' => 'short',
+    'fromto' => 'both',
+    'multiple_number' => '',
+    'multiple_from' => '',
+    'multiple_to' => '',
+    'show_repeat_rule' => 'show',
+  );
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = 'Details';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
+  /* Field: Content: Category */
+  $handler->display->display_options['fields']['field_category']['id'] = 'field_category';
+  $handler->display->display_options['fields']['field_category']['table'] = 'field_data_field_category';
+  $handler->display->display_options['fields']['field_category']['field'] = 'field_category';
+  $handler->display->display_options['fields']['field_category']['empty'] = 'See record';
+  $handler->display->display_options['fields']['field_category']['delta_offset'] = '0';
+  $handler->display->display_options['fields']['field_category']['multi_type'] = 'ul';
+  /* Field: Content: Player */
+  $handler->display->display_options['fields']['field_players']['id'] = 'field_players';
+  $handler->display->display_options['fields']['field_players']['table'] = 'field_data_field_players';
+  $handler->display->display_options['fields']['field_players']['field'] = 'field_players';
+  $handler->display->display_options['fields']['field_players']['delta_offset'] = '0';
+  $handler->display->display_options['fields']['field_players']['multi_type'] = 'ul';
+  /* Field: Content: Players Bystanding */
+  $handler->display->display_options['fields']['field_witnesses']['id'] = 'field_witnesses';
+  $handler->display->display_options['fields']['field_witnesses']['table'] = 'field_data_field_witnesses';
+  $handler->display->display_options['fields']['field_witnesses']['field'] = 'field_witnesses';
+  $handler->display->display_options['fields']['field_witnesses']['label'] = 'Player(s) Bystanding';
+  $handler->display->display_options['fields']['field_witnesses']['empty'] = 'No additional players affected.';
+  $handler->display->display_options['fields']['field_witnesses']['delta_offset'] = '0';
+  $handler->display->display_options['fields']['field_witnesses']['multi_type'] = 'ul';
+  /* Field: Content: Social Members */
+  $handler->display->display_options['fields']['field_social_members']['id'] = 'field_social_members';
+  $handler->display->display_options['fields']['field_social_members']['table'] = 'field_data_field_social_members';
+  $handler->display->display_options['fields']['field_social_members']['field'] = 'field_social_members';
+  $handler->display->display_options['fields']['field_social_members']['label'] = 'Social member(s)';
+  $handler->display->display_options['fields']['field_social_members']['delta_offset'] = '0';
+  $handler->display->display_options['fields']['field_social_members']['multi_type'] = 'ul';
+  /* Field: Content: Results */
+  $handler->display->display_options['fields']['field_results']['id'] = 'field_results';
+  $handler->display->display_options['fields']['field_results']['table'] = 'field_data_field_results';
+  $handler->display->display_options['fields']['field_results']['field'] = 'field_results';
+  $handler->display->display_options['fields']['field_results']['label'] = '';
+  $handler->display->display_options['fields']['field_results']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_results']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_results']['delta_offset'] = '0';
+  $handler->display->display_options['fields']['field_results']['multi_type'] = 'ul';
+  /* Field: Content: Yellow Strikes */
+  $handler->display->display_options['fields']['field_yellow_strike']['id'] = 'field_yellow_strike';
+  $handler->display->display_options['fields']['field_yellow_strike']['table'] = 'field_data_field_yellow_strike';
+  $handler->display->display_options['fields']['field_yellow_strike']['field'] = 'field_yellow_strike';
+  $handler->display->display_options['fields']['field_yellow_strike']['label'] = '';
+  $handler->display->display_options['fields']['field_yellow_strike']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_yellow_strike']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_yellow_strike']['empty'] = '<div class="item-list"><ul><li class="first last">No yellow strikes.</li></ul></div>';
+  $handler->display->display_options['fields']['field_yellow_strike']['delta_offset'] = '0';
+  $handler->display->display_options['fields']['field_yellow_strike']['multi_type'] = 'ul';
+  /* Field: Content: Red Strikes */
+  $handler->display->display_options['fields']['field_red_strike']['id'] = 'field_red_strike';
+  $handler->display->display_options['fields']['field_red_strike']['table'] = 'field_data_field_red_strike';
+  $handler->display->display_options['fields']['field_red_strike']['field'] = 'field_red_strike';
+  $handler->display->display_options['fields']['field_red_strike']['label'] = '';
+  $handler->display->display_options['fields']['field_red_strike']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_red_strike']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_red_strike']['empty'] = '<div class="item-list"><ul><li class="first last">No red strikes.</li></ul></div>';
+  $handler->display->display_options['fields']['field_red_strike']['delta_offset'] = '0';
+  $handler->display->display_options['fields']['field_red_strike']['multi_type'] = 'ul';
+  /* Field: Global: Custom text */
+  $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['table'] = 'views';
+  $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['label'] = 'Actions taken';
+  $handler->display->display_options['fields']['nothing']['alter']['text'] = '<b>Results:</b> [field_results]
+<b>Yellow Strikes:</b> [field_yellow_strike]
+<b>Red Strikes:</b> [field_red_strike]';
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = '1';
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Category (field_category) */
+  $handler->display->display_options['filters']['field_category_value']['id'] = 'field_category_value';
+  $handler->display->display_options['filters']['field_category_value']['table'] = 'field_data_field_category';
+  $handler->display->display_options['filters']['field_category_value']['field'] = 'field_category_value';
+  $handler->display->display_options['filters']['field_category_value']['group'] = 1;
+  $handler->display->display_options['filters']['field_category_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_category_value']['expose']['operator_id'] = 'field_category_value_op';
+  $handler->display->display_options['filters']['field_category_value']['expose']['label'] = 'Categories';
+  $handler->display->display_options['filters']['field_category_value']['expose']['operator'] = 'field_category_value_op';
+  $handler->display->display_options['filters']['field_category_value']['expose']['identifier'] = 'field_category_value';
+  $handler->display->display_options['filters']['field_category_value']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_category_value']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['field_category_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    8 => 0,
+    19 => 0,
+    12 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    9 => 0,
+    20 => 0,
+    14 => 0,
+    25 => 0,
+    21 => 0,
+    3 => 0,
+    11 => 0,
+    22 => 0,
+    23 => 0,
+    24 => 0,
+    26 => 0,
+    27 => 0,
+    28 => 0,
+    29 => 0,
+  );
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'notation' => 'notation',
+  );
+  $handler->display->display_options['filters']['type']['group'] = 1;
+  $handler->display->display_options['filters']['type']['expose']['operator_id'] = 'type_op';
+  $handler->display->display_options['filters']['type']['expose']['label'] = 'Type';
+  $handler->display->display_options['filters']['type']['expose']['operator'] = 'type_op';
+  $handler->display->display_options['filters']['type']['expose']['identifier'] = 'type';
+  $handler->display->display_options['filters']['type']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['type']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    8 => 0,
+    19 => 0,
+    12 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    9 => 0,
+    20 => 0,
+    14 => 0,
+    25 => 0,
+    21 => 0,
+    3 => 0,
+    11 => 0,
+    22 => 0,
+    23 => 0,
+    24 => 0,
+    26 => 0,
+    27 => 0,
+    28 => 0,
+    29 => 0,
+  );
+  $handler->display->display_options['filters']['type']['expose']['reduce'] = TRUE;
+  /* Filter criterion: Content: Post date */
+  $handler->display->display_options['filters']['created']['id'] = 'created';
+  $handler->display->display_options['filters']['created']['table'] = 'node';
+  $handler->display->display_options['filters']['created']['field'] = 'created';
+  $handler->display->display_options['filters']['created']['operator'] = 'between';
+  $handler->display->display_options['filters']['created']['value']['type'] = 'offset';
+  $handler->display->display_options['filters']['created']['group'] = 1;
+  $handler->display->display_options['filters']['created']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['created']['expose']['operator_id'] = 'created_op';
+  $handler->display->display_options['filters']['created']['expose']['label'] = 'Posted between';
+  $handler->display->display_options['filters']['created']['expose']['operator'] = 'created_op';
+  $handler->display->display_options['filters']['created']['expose']['identifier'] = 'created';
+  $handler->display->display_options['filters']['created']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['created']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    8 => 0,
+    19 => 0,
+    12 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    9 => 0,
+    20 => 0,
+    14 => 0,
+    25 => 0,
+    21 => 0,
+    3 => 0,
+    11 => 0,
+    22 => 0,
+    23 => 0,
+    24 => 0,
+    26 => 0,
+    27 => 0,
+    28 => 0,
+    29 => 0,
+  );
+  /* Filter criterion: User: Name */
+  $handler->display->display_options['filters']['uid']['id'] = 'uid';
+  $handler->display->display_options['filters']['uid']['table'] = 'users';
+  $handler->display->display_options['filters']['uid']['field'] = 'uid';
+  $handler->display->display_options['filters']['uid']['relationship'] = 'field_players_uid';
+  $handler->display->display_options['filters']['uid']['value'] = '';
+  $handler->display->display_options['filters']['uid']['group'] = 1;
+  $handler->display->display_options['filters']['uid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['uid']['expose']['operator_id'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['label'] = 'Player(s)';
+  $handler->display->display_options['filters']['uid']['expose']['operator'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['identifier'] = 'uid';
+  $handler->display->display_options['filters']['uid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['uid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    8 => 0,
+    19 => 0,
+    12 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    9 => 0,
+    20 => 0,
+    14 => 0,
+    25 => 0,
+    21 => 0,
+    3 => 0,
+    11 => 0,
+    22 => 0,
+    23 => 0,
+    24 => 0,
+    26 => 0,
+    27 => 0,
+    28 => 0,
+    29 => 0,
+  );
+  /* Filter criterion: User: Name */
+  $handler->display->display_options['filters']['uid_1']['id'] = 'uid_1';
+  $handler->display->display_options['filters']['uid_1']['table'] = 'users';
+  $handler->display->display_options['filters']['uid_1']['field'] = 'uid';
+  $handler->display->display_options['filters']['uid_1']['relationship'] = 'field_social_members_uid';
+  $handler->display->display_options['filters']['uid_1']['value'] = '';
+  $handler->display->display_options['filters']['uid_1']['group'] = 1;
+  $handler->display->display_options['filters']['uid_1']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['uid_1']['expose']['operator_id'] = 'uid_1_op';
+  $handler->display->display_options['filters']['uid_1']['expose']['label'] = 'Social Members(s)';
+  $handler->display->display_options['filters']['uid_1']['expose']['operator'] = 'uid_1_op';
+  $handler->display->display_options['filters']['uid_1']['expose']['identifier'] = 'uid_1';
+  $handler->display->display_options['filters']['uid_1']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['uid_1']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    8 => 0,
+    19 => 0,
+    12 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    9 => 0,
+    20 => 0,
+    14 => 0,
+    25 => 0,
+    21 => 0,
+    3 => 0,
+    11 => 0,
+    22 => 0,
+    23 => 0,
+    24 => 0,
+    26 => 0,
+    27 => 0,
+    28 => 0,
+    29 => 0,
+  );
+  /* Filter criterion: User: Name */
+  $handler->display->display_options['filters']['uid_2']['id'] = 'uid_2';
+  $handler->display->display_options['filters']['uid_2']['table'] = 'users';
+  $handler->display->display_options['filters']['uid_2']['field'] = 'uid';
+  $handler->display->display_options['filters']['uid_2']['relationship'] = 'field_witnesses_uid';
+  $handler->display->display_options['filters']['uid_2']['value'] = '';
+  $handler->display->display_options['filters']['uid_2']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['uid_2']['expose']['operator_id'] = 'uid_2_op';
+  $handler->display->display_options['filters']['uid_2']['expose']['label'] = 'Affected';
+  $handler->display->display_options['filters']['uid_2']['expose']['operator'] = 'uid_2_op';
+  $handler->display->display_options['filters']['uid_2']['expose']['identifier'] = 'uid_2';
+  $handler->display->display_options['filters']['uid_2']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['uid_2']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    8 => 0,
+    24 => 0,
+    26 => 0,
+    27 => 0,
+    19 => 0,
+    28 => 0,
+    29 => 0,
+    12 => 0,
+    25 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    9 => 0,
+    20 => 0,
+    14 => 0,
+    21 => 0,
+    3 => 0,
+    22 => 0,
+    23 => 0,
+  );
+  $handler->display->display_options['path'] = 'notation-log';
+  $handler->display->display_options['menu']['type'] = 'normal';
+  $handler->display->display_options['menu']['title'] = 'Notation log';
+  $handler->display->display_options['menu']['description'] = 'All notations over time';
+  $handler->display->display_options['menu']['weight'] = '1';
+  $handler->display->display_options['menu']['name'] = 'menu-vaxia';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
   $handler->display->display_options['tab_options']['type'] = 'tab';

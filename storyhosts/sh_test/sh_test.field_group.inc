@@ -83,6 +83,7 @@ function sh_test_field_group_info() {
       27 => 'field_banned_ip',
       28 => 'field_reason_for_ban',
       29 => 'field_account_created',
+      30 => 'field_sh_private_notes',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(

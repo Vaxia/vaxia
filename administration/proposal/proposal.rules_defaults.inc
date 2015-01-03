@@ -35,6 +35,7 @@ function proposal_default_rules_configuration() {
   $items['rpg_site_staff_update_voter_on_create_node'] = entity_import('rules_config', '{ "rpg_site_staff_update_voter_on_create_node" : {
       "LABEL" : "Update voter on create node",
       "PLUGIN" : "reaction rule",
+      "ACTIVE" : false,
       "OWNER" : "rules",
       "TAGS" : [ "Proposals" ],
       "REQUIRES" : [ "rules" ],
@@ -167,20 +168,17 @@ function proposal_default_rules_configuration() {
     }
   }');
   $items['vaxia_accounts_add_voting_player_node'] = entity_import('rules_config', '{ "vaxia_accounts_add_voting_player_node" : {
-      "LABEL" : "Add voter on create node",
+      "LABEL" : "Proposals - Add voter on create node",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
       "TAGS" : [ "Proposals" ],
       "REQUIRES" : [ "rules" ],
       "ON" : { "node_insert" : [] },
       "IF" : [
-        { "NOT user_is_blocked" : { "account" : [ "node:author" ] } },
-        { "user_has_role" : { "account" : [ "node:author" ], "roles" : { "value" : { "8" : "8" } } } },
-        { "NOT user_has_role" : { "account" : [ "node:author" ], "roles" : { "value" : { "19" : "19" } } } }
+        { "user_has_role" : { "account" : [ "node:author" ], "roles" : { "value" : { "8" : "8" } } } }
       ],
       "DO" : [
         { "user_add_role" : { "account" : [ "node:author" ], "roles" : { "value" : { "19" : "19" } } } },
-        { "data_set" : { "data" : [ "node:author:field-became-voter" ], "value" : "now" } },
         { "data_set" : { "data" : [ "node:author:field-voting-expire" ], "value" : "+6 months" } }
       ]
     }

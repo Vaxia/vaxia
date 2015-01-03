@@ -134,7 +134,7 @@ Social members are members of the social department that got involved.
   $handler->display->display_options['empty']['area']['empty'] = TRUE;
   $handler->display->display_options['empty']['area']['content'] = 'No notations available.';
   $handler->display->display_options['empty']['area']['format'] = 'wiki';
-  /* Relationship: Content: Players Involved (field_players) */
+  /* Relationship: Content: Player (field_players) */
   $handler->display->display_options['relationships']['field_players_uid']['id'] = 'field_players_uid';
   $handler->display->display_options['relationships']['field_players_uid']['table'] = 'field_data_field_players';
   $handler->display->display_options['relationships']['field_players_uid']['field'] = 'field_players_uid';

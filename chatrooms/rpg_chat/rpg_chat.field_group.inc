@@ -26,6 +26,7 @@ function rpg_chat_field_group_info() {
       0 => 'field_mature_posting',
       1 => 'field_locked_to_users',
       2 => 'field_users',
+      3 => 'field_private_room',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -50,7 +51,7 @@ function rpg_chat_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Description',
-    'weight' => '9',
+    'weight' => '2',
     'children' => array(
       0 => 'field_wiki_source',
       1 => 'field_npcs',
@@ -77,7 +78,7 @@ function rpg_chat_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Navigation',
-    'weight' => '0',
+    'weight' => '1',
     'children' => array(
       0 => 'field_parent',
       1 => 'field_children',

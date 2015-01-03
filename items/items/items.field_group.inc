@@ -40,6 +40,33 @@ function items_field_group_info() {
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
+  $field_group->identifier = 'group_details|node|items|default';
+  $field_group->group_name = 'group_details';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'items';
+  $field_group->mode = 'default';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Details',
+    'weight' => '2',
+    'children' => array(
+      0 => 'field_character_owner',
+      1 => 'field_realm',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'formatter' => 'collapsible',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => 'group-details field-group-fieldset',
+      ),
+    ),
+  );
+  $export['group_details|node|items|default'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
   $field_group->identifier = 'group_details|node|items|form';
   $field_group->group_name = 'group_details';
   $field_group->entity_type = 'node';
@@ -48,16 +75,10 @@ function items_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Details',
-    'weight' => '5',
+    'weight' => '3',
     'children' => array(
-      0 => 'field_value',
+      0 => 'field_character_owner',
       1 => 'field_realm',
-      2 => 'field_in_shop',
-      3 => 'field_base_item_template',
-      4 => 'field_type',
-      5 => 'field_item_uses',
-      6 => 'field_pp_created',
-      7 => 'group_percentages',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -123,7 +144,7 @@ function items_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Modifies',
-    'weight' => '6',
+    'weight' => '7',
     'children' => array(
       0 => 'field_item_agility',
       1 => 'field_item_appearance',
@@ -194,12 +215,13 @@ function items_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Notes',
-    'weight' => '12',
+    'weight' => '8',
     'children' => array(
       0 => 'field_player_notes',
       1 => 'field_sh_notes',
       2 => 'field_sh_private_notes',
-      3 => 'group_creation_history',
+      3 => 'workflow_current_state',
+      4 => 'group_creation_history',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -224,7 +246,7 @@ function items_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Notes',
-    'weight' => '10',
+    'weight' => '9',
     'children' => array(
       0 => 'field_player_notes',
       1 => 'field_sh_notes',
@@ -295,7 +317,7 @@ function items_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Overlaps',
-    'weight' => '9',
+    'weight' => '7',
     'children' => array(
       0 => 'field_item_over_agility',
       1 => 'field_item_over_appearance',
@@ -336,7 +358,7 @@ function items_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Overlaps',
-    'weight' => '7',
+    'weight' => '8',
     'children' => array(
       0 => 'field_item_over_agility',
       1 => 'field_item_over_appearance',
@@ -702,6 +724,63 @@ function items_field_group_info() {
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
+  $field_group->identifier = 'group_shop_details|node|items|default';
+  $field_group->group_name = 'group_shop_details';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'items';
+  $field_group->mode = 'default';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Shop details',
+    'weight' => '3',
+    'children' => array(
+      0 => 'field_value',
+      1 => 'field_in_shop',
+      2 => 'field_declared_value',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'formatter' => 'collapsible',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => 'group-shop-details field-group-fieldset',
+      ),
+    ),
+  );
+  $export['group_shop_details|node|items|default'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_shop_details|node|items|form';
+  $field_group->group_name = 'group_shop_details';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'items';
+  $field_group->mode = 'form';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Shop details',
+    'weight' => '4',
+    'children' => array(
+      0 => 'field_value',
+      1 => 'field_in_shop',
+      2 => 'field_declared_value',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'formatter' => 'collapsible',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => 'group-shop-details field-group-fieldset',
+        'required_fields' => 1,
+      ),
+    ),
+  );
+  $export['group_shop_details|node|items|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
   $field_group->identifier = 'group_stats|node|items|default';
   $field_group->group_name = 'group_stats';
   $field_group->entity_type = 'node';
@@ -710,7 +789,7 @@ function items_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Modifies',
-    'weight' => '8',
+    'weight' => '6',
     'children' => array(
       0 => 'field_item_agility',
       1 => 'field_item_appearance',
@@ -739,6 +818,69 @@ function items_field_group_info() {
     ),
   );
   $export['group_stats|node|items|default'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_uses|node|items|default';
+  $field_group->group_name = 'group_uses';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'items';
+  $field_group->mode = 'default';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Item Uses',
+    'weight' => '4',
+    'children' => array(
+      0 => 'field_item_uses',
+      1 => 'field_pp_created',
+      2 => 'field_item_use_day',
+      3 => 'field_item_spent_uses',
+      4 => 'field_item_type',
+      5 => 'field_weapon_class',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'formatter' => 'collapsible',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => 'group-uses field-group-fieldset',
+      ),
+    ),
+  );
+  $export['group_uses|node|items|default'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_uses|node|items|form';
+  $field_group->group_name = 'group_uses';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'items';
+  $field_group->mode = 'form';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Item Uses',
+    'weight' => '5',
+    'children' => array(
+      0 => 'field_item_uses',
+      1 => 'field_pp_created',
+      2 => 'field_item_use_day',
+      3 => 'field_item_spent_uses',
+      4 => 'field_item_type',
+      5 => 'field_weapon_class',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'formatter' => 'collapsible',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => 'group-uses field-group-fieldset',
+        'required_fields' => 1,
+      ),
+    ),
+  );
+  $export['group_uses|node|items|form'] = $field_group;
 
   return $export;
 }

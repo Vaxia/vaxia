@@ -151,21 +151,26 @@ function strikes_field_default_fields() {
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
-          'guiding_principles' => 'Violating site principles (3Fs, Transparency, Origin of Power)',
-          'cheating' => 'System rules',
-          'policy-violation' => 'Site policy',
-          'language' => 'Verbal abuse / Aggression',
-          'IC-harassment' => 'IC harassment',
-          'OOC-harassment' => 'OOC harassment',
-          'sexual' => 'Sexual harassment',
           'disruption' => 'Session disruption',
+          'language' => 'Verbal abuse and aggression',
           'griefing' => 'Player disturbance (griefing)',
           'manipulation' => 'Manipulation (overt aggression)',
-          'guilt-trip' => 'Manipulation (guilt-trip)',
+          'guilt-trip' => 'Manipulation (guilt-tripping)',
           'passive-aggro' => 'Manipulation (covert or passive aggression)',
           'baiting' => 'Manipulation (baiting / goading)',
+          'chaseme' => 'Manipulation (chase me behavior)',
+          'play-victim' => 'Manipulation (projecting blame)',
+          'hounding' => 'Hounding',
+          'slander' => 'Slander of another player',
+          'stalking' => 'Stalking / lurking on another player\'s RP',
           'noncompliance' => 'Not following site directives',
+          'OOC-harassment' => 'OOC harassment',
+          'IC-harassment' => 'IC harassment',
           'hacking' => 'Hacking / server or account attack',
+          'sexual' => 'Sexual harassment',
+          'guiding_principles' => 'Violating site principles',
+          'cheating' => 'System rules',
+          'policy-violation' => 'Site policy',
           'positive' => 'Positive feedback',
           'misc' => 'Misc',
         ),
@@ -395,7 +400,7 @@ function strikes_field_default_fields() {
   $fields['node-notation-field_players'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '-1',
+      'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_players',
@@ -439,7 +444,7 @@ function strikes_field_default_fields() {
           29 => 0,
           30 => 0,
           31 => 0,
-          1000 => 0,
+          32 => 0,
         ),
         'referenceable_status' => array(
           0 => 0,
@@ -458,7 +463,7 @@ function strikes_field_default_fields() {
       'bundle' => 'notation',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => 'Include all players in this interaction - victim(s) and aggressor(s). It is the job of Social to sort out which is which - the notation is NOT the point to make that decision at.',
+      'description' => '',
       'display' => array(
         'artwork' => array(
           'label' => 'above',
@@ -482,7 +487,7 @@ function strikes_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_players',
-      'label' => 'Players Involved',
+      'label' => 'Player',
       'required' => 1,
       'settings' => array(
         'user_register_form' => FALSE,
@@ -630,19 +635,20 @@ function strikes_field_default_fields() {
       'settings' => array(
         'allowed_values' => array(
           'na' => 'No additional actions taken',
-          'positive' => 'Positive feedback given to one or more Players',
-          'chill' => 'One or more Players requested to disengage in situation',
-          'training' => 'Training given to one or more Players',
-          'mediation' => 'Mediation between one or more Players',
-          'apology' => 'Private apology requested from one or more Players',
-          'apology-public' => 'Public apology requested from one or more Players',
-          'custody' => 'Alternate RP schedules arranged between one or more Players',
-          'break-1d' => 'One or more Players requested to take a break from the site (1 day)',
-          'break-3d' => 'One or more Players requested to take a break from the site (3 days)',
-          'break-1w' => 'One or more Players requested to take a break from the site (1 week)',
-          'yellow' => 'Yellow Strike given to one or more Players',
-          'red' => 'Red Strike given to one or more Players',
-          'site-ban' => 'Permanent site-ban given to one or more Players',
+          'positive' => 'Positive feedback given',
+          'chill' => 'Player requested to disengage in situation',
+          'training' => 'Training given',
+          'mediation' => 'Mediation between Player',
+          'contract' => 'A contract with Social was agreed on by Player',
+          'apology' => 'Private apology requested',
+          'apology-public' => 'Public apology requested',
+          'custody' => 'Alternate RP schedules arranged between Player',
+          'break-1d' => 'Player requested to take a break from the site (1 day)',
+          'break-3d' => 'Player requested to take a break from the site (3 days)',
+          'break-1w' => 'Player requested to take a break from the site (1 week)',
+          'yellow' => 'Yellow Strike given',
+          'red' => 'Red Strike given',
+          'site-ban' => 'Permanent site-ban given',
           'other' => 'Other action taken',
         ),
         'allowed_values_function' => '',
@@ -1424,12 +1430,10 @@ function strikes_field_default_fields() {
   t('Describe the situation, include players related to the event - and all documentary evidence as an attached file. THIS IS REQUIRED. We want documentation to be transparent so the next time an issue comes up the reviewing SH can see all prior data incase you yourself are no longer available for comment. Please leave a track record for others.');
   t('Details of Interaction');
   t('Documentation');
-  t('Include all players in this interaction - victim(s) and aggressor(s). It is the job of Social to sort out which is which - the notation is NOT the point to make that decision at.');
   t('Include any players who were involved witnesses or tried to get the situation to cool off but were not acting as members of the Social department. "Bystanders and witnesses" so to speak.');
   t('Members of the social department that got involved.');
   t('Player');
   t('Players Bystanding');
-  t('Players Involved');
   t('Red Strikes');
   t('Required - we must have a record of interaction. That record holds all the documentation for this strike.');
   t('Results');

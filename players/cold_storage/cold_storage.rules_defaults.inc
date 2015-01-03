@@ -10,7 +10,7 @@
 function cold_storage_default_rules_configuration() {
   $items = array();
   $items['rules_set_characters_active_if_moved_from_cold_storage'] = entity_import('rules_config', '{ "rules_set_characters_active_if_moved_from_cold_storage" : {
-      "LABEL" : "Move unlocked players from cold storage",
+      "LABEL" : "Cold storage - Move unlocked players from cold storage",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
       "TAGS" : [ "Cold storage" ],
@@ -26,6 +26,9 @@ function cold_storage_default_rules_configuration() {
         }
       ],
       "DO" : [
+        { "user_add_role" : { "account" : [ "account" ], "roles" : { "value" : { "8" : "8" } } } },
+        { "user_remove_role" : { "account" : [ "account" ], "roles" : { "value" : { "22" : "22" } } } },
+        { "entity_save" : { "data" : [ "account" ], "immediate" : 1 } },
         { "VIEW LOOP" : {
             "VIEW" : "vaxia_character_sheets",
             "DISPLAY" : "rules_chars_by_user",
@@ -38,13 +41,13 @@ function cold_storage_default_rules_configuration() {
                 }
               },
               { "node_publish" : { "node" : [ "entity-fetched" ] } },
-              { "entity_save" : { "data" : [ "entity-fetched" ], "immediate" : 1 } },
               { "workflow_rules_set_state" : {
                   "node" : [ "entity-fetched" ],
                   "workflow_state" : { "value" : { "2" : "2" } },
                   "workflow_comment" : "Characters from cold storage set to draft."
                 }
-              }
+              },
+              { "entity_save" : { "data" : [ "entity-fetched" ] } }
             ]
           }
         },
@@ -64,18 +67,16 @@ function cold_storage_default_rules_configuration() {
                   "workflow_state" : { "value" : { "3" : "3" } },
                   "workflow_comment" : "Re-submission of previously approved character by system. This is so that current eval may review characters from previous versions of the system to bring them up to date."
                 }
-              }
+              },
+              { "entity_save" : { "data" : [ "entity-fetched" ] } }
             ]
           }
-        },
-        { "user_add_role" : { "account" : [ "account" ], "roles" : { "value" : { "8" : "8" } } } },
-        { "user_remove_role" : { "account" : [ "account" ], "roles" : { "value" : { "22" : "22" } } } },
-        { "entity_save" : { "data" : [ "account" ], "immediate" : 1 } }
+        }
       ]
     }
   }');
   $items['rules_set_characters_inactive_if_moved_to_cold_storage'] = entity_import('rules_config', '{ "rules_set_characters_inactive_if_moved_to_cold_storage" : {
-      "LABEL" : "Set blocked players to cold storage",
+      "LABEL" : "Cold storage - Set blocked players to cold storage",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
       "TAGS" : [ "Cold storage" ],

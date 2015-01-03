@@ -47,7 +47,7 @@ function items_default_rules_configuration() {
         { "node_is_of_type" : { "node" : [ "node" ], "type" : { "value" : { "items" : "items" } } } },
         { "workflow_check_transition" : {
             "node" : [ "node" ],
-            "old_state" : { "value" : { "ANY" : "ANY" } },
+            "old_state" : { "value" : { "13" : "13", "14" : "14" } },
             "new_state" : { "value" : { "15" : "15" } }
           }
         },

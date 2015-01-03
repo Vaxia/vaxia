@@ -129,7 +129,7 @@ function rpg_chat_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '8',
+          'weight' => '7',
         ),
       ),
       'entity_type' => 'node',
@@ -144,7 +144,7 @@ function rpg_chat_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '2',
+        'weight' => '10',
       ),
     ),
   );
@@ -192,7 +192,7 @@ function rpg_chat_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '7',
+          'weight' => '6',
         ),
       ),
       'entity_type' => 'node',
@@ -207,7 +207,7 @@ function rpg_chat_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '1',
+        'weight' => '9',
       ),
     ),
   );
@@ -414,6 +414,69 @@ function rpg_chat_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-rpg_chatroom-field_private_room'.
+  $fields['node-rpg_chatroom-field_private_room'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_private_room',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => 'Posts in this room do NOT show in Power Search.',
+          1 => 'Posts in this room show in Power Search.',
+        ),
+        'allowed_values_function' => '',
+      ),
+      'translatable' => '0',
+      'type' => 'list_boolean',
+    ),
+    'field_instance' => array(
+      'bundle' => 'rpg_chatroom',
+      'default_value' => array(
+        0 => array(
+          'value' => 1,
+        ),
+      ),
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => '0',
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_private_room',
+      'label' => 'Private room',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(
+          'display_label' => 0,
+        ),
+        'type' => 'options_onoff',
+        'weight' => '8',
+      ),
+    ),
+  );
+
   // Exported field: 'node-rpg_chatroom-field_realm'.
   $fields['node-rpg_chatroom-field_realm'] = array(
     'field_config' => array(
@@ -458,7 +521,7 @@ function rpg_chat_field_default_fields() {
           'label' => 'hidden',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '6',
+          'weight' => '5',
         ),
       ),
       'entity_type' => 'node',
@@ -677,7 +740,7 @@ function rpg_chat_field_default_fields() {
           'label' => 'hidden',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '4',
+          'weight' => '3',
         ),
       ),
       'entity_type' => 'node',
@@ -767,7 +830,7 @@ function rpg_chat_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '9',
+          'weight' => '8',
         ),
       ),
       'entity_type' => 'node',
@@ -786,7 +849,7 @@ function rpg_chat_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'user_reference_autocomplete',
-        'weight' => '3',
+        'weight' => '11',
       ),
     ),
   );
@@ -894,6 +957,7 @@ function rpg_chat_field_default_fields() {
   t('Mature posting');
   t('NPCs');
   t('Parent-locations');
+  t('Private room');
   t('RL weather');
   t('Realm');
   t('Select the users to lock this room for. Only these users may post here.');

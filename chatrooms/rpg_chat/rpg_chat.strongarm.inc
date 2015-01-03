@@ -114,7 +114,7 @@ function rpg_chat_strongarm() {
       'display' => array(
         'dice_roller' => array(
           'default' => array(
-            'weight' => '5',
+            'weight' => '4',
             'visible' => FALSE,
           ),
         ),

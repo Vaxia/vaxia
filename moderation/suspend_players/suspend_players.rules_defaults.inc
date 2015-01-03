@@ -125,7 +125,7 @@ function suspend_players_default_rules_configuration() {
       "OWNER" : "rules",
       "TAGS" : [ "Suspend Players" ],
       "REQUIRES" : [ "rules", "views_rules" ],
-      "ON" : { "node_insert" : [] },
+      "ON" : { "node_insert--strike" : { "bundle" : "strike" } },
       "IF" : [
         { "node_is_of_type" : { "node" : [ "node" ], "type" : { "value" : { "strike" : "strike" } } } },
         { "data_is" : { "data" : [ "node:field-severity" ], "value" : "Red" } }
