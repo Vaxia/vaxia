@@ -683,8 +683,14 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
     );
     // Check workflow state and disable from changing IFF workflow approved. We don't want meddling after the fact.
     if (isset($form['#node']->workflow) && (isset($form['#node']->workflow_state_name) && $form['#node']->workflow_state_name == t('approved'))) {
-      unset($form['item_helper']['add_comments']);
-      $form['item_helper']['included_comments']['#disabled'] = TRUE;
+      global $user;
+      // If the creator or character owner, do not allow edit.
+      $this_character = isset($comment->field_comment_character[$comment->language][0]['nid']) ?
+        node_load($comment->field_comment_character[$comment->language][0]['nid']) : '';
+      if ($form['#node']->uid == $user->uid || (!empty($this_character) && $form['#node']->uid == $this_character->uid)) {
+        unset($form['item_helper']['add_comments']);
+        $form['item_helper']['included_comments']['#disabled'] = TRUE;
+      }
     }
     // Hide the field creation history elements. We don't want users meddling with those records.
     $form['field_creation_history']['#access'] = FALSE;
