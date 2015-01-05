@@ -63,10 +63,11 @@ function items_node_presave($node) {
   if ($node->type != 'items') {
     return;
   }
+  $lang = isset($node->language) ? $node->language : 'und';
+  $field_calc_value = isset($node->field_calc_value[$lang][0]['value']) ? $node->field_calc_value[$lang][0]['value'] : FALSE;
   $recalc_value = variable_get('items_recalculate_values', FALSE);
-  if ($recalc_value) {
+  if ($recalc_value || $field_calc_value) {
     // And figure out the true item value.
-    $lang = isset($node->language) ? $node->language : 'und';
     // Set the currently declared value.
     $curr_value = isset($node->field_value[$lang][0]['value']) ? $node->field_value[$lang][0]['value'] : 0;
     // Get the value.
