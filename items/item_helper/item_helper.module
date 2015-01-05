@@ -685,13 +685,13 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
     if (isset($form['#node']->workflow) && (isset($form['#node']->workflow_state_name) && $form['#node']->workflow_state_name == t('approved'))) {
       global $user;
       // If the creator or character owner, do not allow edit.
-      $this_character = isset($form['#node']->field_comment_character[$form['#node']->language][0]['nid']) ?
-        node_load($form['#node']->field_comment_character[$form['#node']->language][0]['nid']) : '';
+      $item = node_load($form['#node']->nid);
+      $this_character = isset($item->field_comment_character[$item->language][0]['nid']) ? node_load($item->field_comment_character[$item->language][0]['nid']) : '';
       if ($form['#node']->uid == $user->uid || (!empty($this_character) && $this_character->uid == $user->uid)) {
         if ($form['#node']->uid == $user->uid) {
           drupal_set_message('You own this item, you cannot edit the item assistant.');
         }
-        if (!empty($this_character) && $form['#node']->uid == $this_character->uid) {
+        if (!empty($this_character) && $this_character->uid == $user->uid) {
           drupal_set_message('Your character owns this item, you cannot edit the item assistant.');
         }
         unset($form['item_helper']['add_comments']);
