@@ -922,9 +922,16 @@ function _item_helper_calculate_results($found_comments) {
     }
     // Figure out how many points we've crafted at this diff so far.
     $points_built = $ongoing_PP;
+    $points_built_txt = '<b>Item PP generated for effect: ' . $points_built;
     if ($item_comment->difficulty != 25) {
       $pp_needed_per_point = (1 + (($item_comment->difficulty - 40) / 10) ) * 25;
-      $points_built = floor($ongoing_PP / $pp_needed_per_point);
+      $points_built_primary = floor($ongoing_PP / $pp_needed_per_point);
+      $points_built_secondary = floor($ongoing_PP / ($pp_needed_per_point * 1.5));
+      $points_built_skills= floor($ongoing_PP / ($pp_needed_per_point * 0.75));
+      $points_built_txt = 
+      '<b>Item bonus points for primary stats: ' . $points_built_primary . '</b></br>' .
+      '<b>Item bonus points for secondary stats: ' . $points_built_secondary . '</b></br>' .
+      '<b>Item bonus points for skills: ' . $points_built_skills . '</b>';
     }
     // Figure out comment display.
     $item_comment->results = t(
@@ -936,13 +943,13 @@ function _item_helper_calculate_results($found_comments) {
       '@prep Prep bonus / @diff Diff mod </br> ' .
       '<b><span style="color:green;">@critwin crit wins-by</span> / <span style="color:red;">@critfail crit fails-by</span></b></br>' .
       '<b>@PP PP / <span style="color:green;">@100 100s</span> / <span style="color:red;">@1 1s</span></b></br>' .
-      '<b>Item bonus points built: @points_built</b>',
+      '!points_built_txt',
       array('@diff_text' => $diff_txt, '@set_bonus_txt' => $set_bonus_txt, '%roll_txt' => $roll_txt,
         '@might1' => !empty($might_1) ? $might_1 : 0, '@might2' => !empty($might_2) ? $might_2 : 0,
         '@critwin' => $critwin_text, '@critfail' => $critfail_text,
         '@PP' => number_format($ongoing_PP),'@100' => $ongoing_100_text, '@1' => $ongoing_1_text,
         '@rp' => $rp_bonus, '@prep' => $ongoing_prep_bonus, '@diff' => $ongoing_prep_diff * -1,
-        '@points_built' => $points_built));
+        '!points_built_txt' => $points_built_txt));
   }
   return $found_comments;
 }
