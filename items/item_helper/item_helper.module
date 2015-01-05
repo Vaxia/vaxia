@@ -688,7 +688,12 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
       $this_character = isset($comment->field_comment_character[$comment->language][0]['nid']) ?
         node_load($comment->field_comment_character[$comment->language][0]['nid']) : '';
       if ($form['#node']->uid == $user->uid || (!empty($this_character) && $form['#node']->uid == $this_character->uid)) {
-        drupal_set_message('You own this item or your character owns this item, you cannot edit the item assistant.');
+        if ($form['#node']->uid == $user->uid) {
+          drupal_set_message('You own this item, you cannot edit the item assistant.');
+        }
+        if (!empty($this_character) && $form['#node']->uid == $this_character->uid) {
+          drupal_set_message('Your character owns this item, you cannot edit the item assistant.');
+        }
         unset($form['item_helper']['add_comments']);
         $form['item_helper']['included_comments']['#disabled'] = TRUE;
       }
