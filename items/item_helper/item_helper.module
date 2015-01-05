@@ -682,7 +682,8 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
       ),
     );
     // Check workflow state and disable from changing IFF workflow approved. We don't want meddling after the fact.
-    if (isset($form['#node']->workflow) && (isset($form['#node']->workflow_state_name) && $form['#node']->workflow_state_name == t('approved'))) {
+    if (_items_is_playable($form['#node'])) {
+      drupal_set_message('This item is in a playable state, editing the values may be limited.');
       global $user;
       // If the creator or character owner, do not allow edit.
       $item = node_load($form['#node']->nid);
