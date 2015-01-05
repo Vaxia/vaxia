@@ -394,11 +394,11 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
     // Collect the default difficulty from the last comment in the loop.
     // If you can't set the defaults in the form, then we wil need to pull from the dropdown.
     // But we should initially set the dropdown to be the value of the first comment.
-    $default_diff_value = !empty($set_comment) ? $set_comment->difficulty : 45;
+    $default_diff_value = !empty($set_comment) ? $set_comment->difficulty : 40;
     $default_diff_value = !empty($form_state['input']['general_difficulty']) ? $form_state['input']['general_difficulty'] : $default_diff_value;
     $default_diff_value = !empty($form_state['values']['general_difficulty']) ? $form_state['values']['general_difficulty'] : $default_diff_value;
     // Collect the default RP bonus from the last comment in the loop.
-    $default_rb_bon_value = !empty($set_comment) ? $set_comment->rp_bonus : 5;
+    $default_rb_bon_value = !empty($set_comment) ? $set_comment->rp_bonus : 10;
     $default_rb_bon_value = !empty($form_state['input']['general_rp_bonus']) ? $form_state['input']['general_rp_bonus'] : $default_rb_bon_value;
     $default_rb_bon_value = !empty($form_state['values']['general_rp_bonus']) ? $form_state['values']['general_rp_bonus'] : $default_rb_bon_value;
     // Set the diff generic field.
@@ -778,10 +778,10 @@ function _item_helper_calculate_results($found_comments) {
       $item_comment->might_2 = isset($item_comment->mights['might_2']) ? $item_comment->mights['might_2'] : $item_comment->mights['might_1'];
     }
     $item_comment->set_bonus = isset($item_comment->set_bonus) ? $item_comment->set_bonus : 0;
-    $item_comment->difficulty = isset($item_comment->difficulty) ? $item_comment->difficulty : 45;
+    $item_comment->difficulty = isset($item_comment->difficulty) ? $item_comment->difficulty : 40;
     $diff_txt = t('Difficulty @difficulty.', array('@difficulty' => $item_comment->difficulty));
-    $item_comment->rp_bonus = isset($item_comment->rp_bonus) ? $item_comment->rp_bonus : 5;
-    $rp_bonus = isset($item_comment->rp_bonus) ? $item_comment->rp_bonus : 5;
+    $item_comment->rp_bonus = isset($item_comment->rp_bonus) ? $item_comment->rp_bonus : 10;
+    $rp_bonus = isset($item_comment->rp_bonus) ? $item_comment->rp_bonus : 10;
     // Grab rolls and start calculations.
     $dice_rolls = _dice_roller_get_roll($cid, 'c');
     $set_bonus_txt = '';
