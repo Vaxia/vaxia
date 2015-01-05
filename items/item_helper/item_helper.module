@@ -80,8 +80,8 @@ function item_helper_node_update($node) {
         $item_comment->might_1 = isset($item_comment->mights['might_1']) ? $item_comment->mights['might_1'] : 0;
         $item_comment->might_2 = isset($item_comment->mights['might_2']) ? $item_comment->mights['might_2'] : 0;    
         $item_comment->set_bonus = isset($item_comment->set_bonus) ? $item_comment->set_bonus : 0;
-        $item_comment->difficulty = isset($item_comment->difficulty) ? $item_comment->difficulty : 45;
-        $item_comment->rp_bonus = isset($item_comment->rp_bonus) ? $item_comment->rp_bonus : 5;
+        $item_comment->difficulty = isset($item_comment->difficulty) ? $item_comment->difficulty : 40;
+        $item_comment->rp_bonus = isset($item_comment->rp_bonus) ? $item_comment->rp_bonus : 10;
         _item_helper_update_comment($item_comment);
       }
     }
@@ -406,29 +406,16 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
       '#title' => t('Difficulty for the item'),
       '#type' => 'select',
       '#options' => array(
-        '5' => t('Ridiculously easy (5)'),
-        '15' => t('Easy (15)'),
-        '25' => t('Normal (25)'),
-        '30' => t(' - (30)'),
-        '35' => t(' - (35)'),
-        '40' => t(' - (40)'),
-        '45' => t('Skilled (45)'),
-        '50' => t(' - (50)'),
-        '55' => t(' - (55)'),
-        '60' => t(' - (60)'),
-        '65' => t('Mastery (65)'),
-        '70' => t(' - (70)'),
-        '75' => t(' - (75)'),
-        '80' => t(' - (80)'),
-        '85' => t(' - (85)'),
-        '90' => t(' - (90)'),
-        '95' => t(' - (95)'),
-        '100' => t('Extremely Difficult (100)'),
-        '105' => t(' - (105)'),
-        '110' => t(' - (110)'),
-        '115' => t(' - (115)'),
-        '120' => t(' - (120)'),
-      ),
+        '25' => t('non-numeric bonus, 1PP per'),
+        '40' => t('1 - 5 points, 25PP per'),
+        '50' => t('6 - 10 points, 50PP per'),
+        '60' => t('11 - 15 points, 75PP per'),
+        '70' => t('16 - 20 points, 100PP per'),
+        '80' => t('21 - 25 points, 125PP per'),
+        '90' => t('26 - 30 points, 150PP per'),
+        '100' => t('31 - 35 points, 175PP per'),
+        '110' => t('36 - 40 points, 200PP per'),
+       ),
       '#default_value' => $default_diff_value,
       '#limit_validation_errors' => array(array('included_comments_table')),
       // DOUBLE ARRAY. Because drupal docs suck.
@@ -444,10 +431,8 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
       '#title' => t('RP Bonus for the scene'),
       '#type' => 'select',
       '#options' => array(
-        '0' => t('None (0)'),
-        '5' => t('Average (5)'),
-        '10' => t('Good (10)'),
-        '15' => t('Excellent (15)'),
+        '0' => t('No RP (0)'),
+        '10' => t('RP (10)'),
       ),
       '#default_value' => $default_rb_bon_value,
       '#limit_validation_errors' => array(array('included_comments_table')),
