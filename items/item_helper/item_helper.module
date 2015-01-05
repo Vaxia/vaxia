@@ -406,15 +406,15 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
       '#title' => t('Difficulty for the item'),
       '#type' => 'select',
       '#options' => array(
-        '25' => t('non-numeric bonus, 1PP per'),
-        '40' => t('1 - 5 points, 25PP per'),
-        '50' => t('6 - 10 points, 50PP per'),
-        '60' => t('11 - 15 points, 75PP per'),
-        '70' => t('16 - 20 points, 100PP per'),
-        '80' => t('21 - 25 points, 125PP per'),
-        '90' => t('26 - 30 points, 150PP per'),
-        '100' => t('31 - 35 points, 175PP per'),
-        '110' => t('36 - 40 points, 200PP per'),
+        '25' => t('25 diff - non-numeric bonus, 1PP per'),
+        '40' => t('40 diff - 1 to 5 points, 25PP per'),
+        '50' => t('50 diff - 6 to 10 points, 50PP per'),
+        '60' => t('60 diff - 11 to 15 points, 75PP per'),
+        '70' => t('70 diff - 16 to 20 points, 100PP per'),
+        '80' => t('80 diff - 21 to 25 points, 125PP per'),
+        '90' => t('90 diff - 26 to 30 points, 150PP per'),
+        '100' => t('100 diff - 31 to 35 points, 175PP per'),
+        '110' => t('110 diff - 36 to 40 points, 200PP per'),
        ),
       '#default_value' => $default_diff_value,
       '#limit_validation_errors' => array(array('included_comments_table')),
@@ -769,7 +769,7 @@ function _item_helper_calculate_results($found_comments) {
   $ongoing_1 = 0;
   $ongoing_prep_bonus = 0;
   $ongoing_prep_diff = 0;
-  $points_built = '';
+  $points_built = 0;
   foreach ($found_comments as $cid => $item_comment) {
     // Set defaults if not already set.
     $item_comment->roll_type = isset($item_comment->roll_type) ? $item_comment->roll_type : 'gen_pp';
@@ -913,7 +913,7 @@ function _item_helper_calculate_results($found_comments) {
     if ($item_comment->sdifficulty != 25) {
       $pp_needed_per_point = (1 + (($item_comment->sdifficulty - 40) / 10) ) * 25;
     }
-    $points_buis = floor($ongoing_PP / $pp_needed_per_point);
+    $points_built = floor($ongoing_PP / $pp_needed_per_point);
     // Figure out comment display.
     $item_comment->results = t(
       '%roll_txt' . $break_2 .
