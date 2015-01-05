@@ -683,13 +683,13 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
     );
     // Check workflow state and disable from changing IFF workflow approved. We don't want meddling after the fact.
     if (_items_is_playable($form['#node'])) {
-      drupal_set_message('This item is in a playable state, editing the values may be limited.');
       global $user;
       // If the creator or character owner, do not allow edit.
       $item = node_load($form['#node']->nid);
-      $this_character = isset($item->field_comment_character[$item->language][0]['nid']) ? node_load($item->field_comment_character[$item->language][0]['nid']) : '';
-      if ($form['#node']->uid == $user->uid || (!empty($this_character) && $this_character->uid == $user->uid)) {
-        if ($form['#node']->uid == $user->uid) {
+      $item_lang = !empty($item->language) ? $item->language : 'und';
+      $this_character = isset($item->field_character_owner[$item_lang][0]['nid']) ? node_load($item->field_character_owner[$item_lang][0]['nid']) : '';
+      if ($item->uid == $user->uid || (!empty($this_character) && $this_character->uid == $user->uid)) {
+        if ($item->uid == $user->uid) {
           drupal_set_message('You own this item, you cannot edit the item assistant.');
         }
         if (!empty($this_character) && $this_character->uid == $user->uid) {
