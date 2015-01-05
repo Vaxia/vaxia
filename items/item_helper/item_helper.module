@@ -921,11 +921,11 @@ function _item_helper_calculate_results($found_comments) {
       $ongoing_1_text = 'no';
     }
     // Figure out how many points we've crafted at this diff so far.
-    $pp_needed_per_point = 1;
+    $points_built = $ongoing_PP;
     if ($item_comment->sdifficulty != 25) {
       $pp_needed_per_point = (1 + (($item_comment->difficulty - 40) / 10) ) * 25;
+      $points_built = floor($ongoing_PP / $pp_needed_per_point);
     }
-    $points_built = floor($ongoing_PP / $pp_needed_per_point);
     // Figure out comment display.
     $item_comment->results = t(
       '%roll_txt' . $break_2 .
