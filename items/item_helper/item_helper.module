@@ -922,7 +922,7 @@ function _item_helper_calculate_results($found_comments) {
     }
     // Figure out how many points we've crafted at this diff so far.
     $points_built = $ongoing_PP;
-    if ($item_comment->sdifficulty != 25) {
+    if ($item_comment->difficulty != 25) {
       $pp_needed_per_point = (1 + (($item_comment->difficulty - 40) / 10) ) * 25;
       $points_built = floor($ongoing_PP / $pp_needed_per_point);
     }
