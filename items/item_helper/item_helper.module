@@ -923,19 +923,19 @@ function _item_helper_calculate_results($found_comments) {
     }
     // Figure out how many points we've crafted at this diff so far.
     $points_built = $ongoing_PP;
-    $points_built_txt = '<b>Item PP generated for enchanting one time use: ' . $points_built . '</b></br>' .
-      '<b>Item PP generated for enchanting 3 uses: ' . floor($points_built / 3) . '</b></br>' .
-      '<b>Item PP generated for enchanting once a day: ' . floor($points_built / 50) . '</b></br>' .
-      '<b>Item PP generated for enchanting at will: ' . floor($points_built / 150) . '</b>';
+    $points_built_txt = '<b>PP generated for enchanting one time use: ' . $points_built . '</b></br>' .
+      '<b>PP generated for enchanting 3 uses: ' . floor($points_built / 3) . '</b></br>' .
+      '<b>PP generated for enchanting once a day: ' . floor($points_built / 50) . '</b></br>' .
+      '<b>PP generated for enchanting at will: ' . floor($points_built / 150) . '</b>';
     if ($item_comment->difficulty != 25) {
       $pp_needed_per_point = (1 + (($item_comment->difficulty - 40) / 10) ) * 25;
       $points_built_primary = floor($ongoing_PP / $pp_needed_per_point);
       $points_built_secondary = floor($ongoing_PP / ($pp_needed_per_point * 1.5));
       $points_built_skills= floor($ongoing_PP / ($pp_needed_per_point * 0.75));
       $points_built_txt = 
-      '<b>Item bonus points for primary stats: ' . $points_built_primary . '</b></br>' .
-      '<b>Item bonus points for secondary stats: ' . $points_built_secondary . '</b></br>' .
-      '<b>Item bonus points for skills: ' . $points_built_skills . '</b>';
+      '<b>Bonus points for primary stats: ' . $points_built_primary . '</b></br>' .
+      '<b>Bonus points for secondary stats: ' . $points_built_secondary . '</b></br>' .
+      '<b>Bonus points for skills: ' . $points_built_skills . '</b>';
     }
     // Figure out comment display.
     $item_comment->results = t(
