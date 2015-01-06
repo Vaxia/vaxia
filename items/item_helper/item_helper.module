@@ -936,7 +936,8 @@ function _item_helper_calculate_results($found_comments) {
       $points_built_txt = '<b>Bonus points for primary stats: ' . $points_built_primary . '</b></br>' .
       '<b>Bonus points for secondary stats: ' . $points_built_secondary . '</b></br>' .
       '<b>Bonus points for skills: ' . $points_built_skills . '</b></br>' .
-      '<b>Max points at this difficulty: ' . $points_built_max . '</b></br>';
+      '<b>Max points at this difficulty: ' . $points_built_max . '</b></br>' .
+      '<b>PP worth effect or silver worth: ' . $points_built_primary . '</b></br>';
     }
     // Figure out comment display.
     $item_comment->results = t(
