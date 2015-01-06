@@ -80,8 +80,8 @@ function item_helper_node_update($node) {
         $item_comment->might_1 = isset($item_comment->mights['might_1']) ? $item_comment->mights['might_1'] : 0;
         $item_comment->might_2 = isset($item_comment->mights['might_2']) ? $item_comment->mights['might_2'] : 0;    
         $item_comment->set_bonus = isset($item_comment->set_bonus) ? $item_comment->set_bonus : 0;
-        $item_comment->difficulty = isset($item_comment->difficulty) ? $item_comment->difficulty : 45;
-        $item_comment->rp_bonus = isset($item_comment->rp_bonus) ? $item_comment->rp_bonus : 5;
+        $item_comment->difficulty = isset($item_comment->difficulty) ? $item_comment->difficulty : 40;
+        $item_comment->rp_bonus = isset($item_comment->rp_bonus) ? $item_comment->rp_bonus : 10;
         _item_helper_update_comment($item_comment);
       }
     }
@@ -394,11 +394,11 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
     // Collect the default difficulty from the last comment in the loop.
     // If you can't set the defaults in the form, then we wil need to pull from the dropdown.
     // But we should initially set the dropdown to be the value of the first comment.
-    $default_diff_value = !empty($set_comment) ? $set_comment->difficulty : 45;
+    $default_diff_value = !empty($set_comment) ? $set_comment->difficulty : 40;
     $default_diff_value = !empty($form_state['input']['general_difficulty']) ? $form_state['input']['general_difficulty'] : $default_diff_value;
     $default_diff_value = !empty($form_state['values']['general_difficulty']) ? $form_state['values']['general_difficulty'] : $default_diff_value;
     // Collect the default RP bonus from the last comment in the loop.
-    $default_rb_bon_value = !empty($set_comment) ? $set_comment->rp_bonus : 5;
+    $default_rb_bon_value = !empty($set_comment) ? $set_comment->rp_bonus : 10;
     $default_rb_bon_value = !empty($form_state['input']['general_rp_bonus']) ? $form_state['input']['general_rp_bonus'] : $default_rb_bon_value;
     $default_rb_bon_value = !empty($form_state['values']['general_rp_bonus']) ? $form_state['values']['general_rp_bonus'] : $default_rb_bon_value;
     // Set the diff generic field.
@@ -406,29 +406,16 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
       '#title' => t('Difficulty for the item'),
       '#type' => 'select',
       '#options' => array(
-        '5' => t('Ridiculously easy (5)'),
-        '15' => t('Easy (15)'),
-        '25' => t('Normal (25)'),
-        '30' => t(' - (30)'),
-        '35' => t(' - (35)'),
-        '40' => t(' - (40)'),
-        '45' => t('Skilled (45)'),
-        '50' => t(' - (50)'),
-        '55' => t(' - (55)'),
-        '60' => t(' - (60)'),
-        '65' => t('Mastery (65)'),
-        '70' => t(' - (70)'),
-        '75' => t(' - (75)'),
-        '80' => t(' - (80)'),
-        '85' => t(' - (85)'),
-        '90' => t(' - (90)'),
-        '95' => t(' - (95)'),
-        '100' => t('Extremely Difficult (100)'),
-        '105' => t(' - (105)'),
-        '110' => t(' - (110)'),
-        '115' => t(' - (115)'),
-        '120' => t(' - (120)'),
-      ),
+        '25' => t('25 diff - non-numeric bonus, 1PP per'),
+        '40' => t('40 diff - 1 to 5 points, 25PP per'),
+        '50' => t('50 diff - 6 to 10 points, 50PP per'),
+        '60' => t('60 diff - 11 to 15 points, 75PP per'),
+        '70' => t('70 diff - 16 to 20 points, 100PP per'),
+        '80' => t('80 diff - 21 to 25 points, 125PP per'),
+        '90' => t('90 diff - 26 to 30 points, 150PP per'),
+        '100' => t('100 diff - 31 to 35 points, 175PP per'),
+        '110' => t('110 diff - 36 to 40 points, 200PP per'),
+       ),
       '#default_value' => $default_diff_value,
       '#limit_validation_errors' => array(array('included_comments_table')),
       // DOUBLE ARRAY. Because drupal docs suck.
@@ -444,10 +431,8 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
       '#title' => t('RP Bonus for the scene'),
       '#type' => 'select',
       '#options' => array(
-        '0' => t('None (0)'),
-        '5' => t('Average (5)'),
-        '10' => t('Good (10)'),
-        '15' => t('Excellent (15)'),
+        '0' => t('No RP (0)'),
+        '10' => t('RP (10)'),
       ),
       '#default_value' => $default_rb_bon_value,
       '#limit_validation_errors' => array(array('included_comments_table')),
@@ -697,9 +682,22 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
       ),
     );
     // Check workflow state and disable from changing IFF workflow approved. We don't want meddling after the fact.
-    if (isset($form['#node']->workflow) && (isset($form['#node']->workflow_state_name) && $form['#node']->workflow_state_name == t('approved'))) {
-      unset($form['item_helper']['add_comments']);
-      $form['item_helper']['included_comments']['#disabled'] = TRUE;
+    if (_items_is_playable($form['#node'])) {
+      global $user;
+      // If the creator or character owner, do not allow edit.
+      $item = node_load($form['#node']->nid);
+      $item_lang = !empty($item->language) ? $item->language : 'und';
+      $this_character = isset($item->field_character_owner[$item_lang][0]['nid']) ? node_load($item->field_character_owner[$item_lang][0]['nid']) : '';
+      if ($item->uid == $user->uid || (!empty($this_character) && $this_character->uid == $user->uid)) {
+        if ($item->uid == $user->uid) {
+          drupal_set_message('You own this item, you cannot edit the item assistant.');
+        }
+        if (!empty($this_character) && $this_character->uid == $user->uid) {
+          drupal_set_message('Your character owns this item, you cannot edit the item assistant.');
+        }
+        unset($form['item_helper']['add_comments']);
+        $form['item_helper']['included_comments']['#disabled'] = TRUE;
+      }
     }
     // Hide the field creation history elements. We don't want users meddling with those records.
     $form['field_creation_history']['#access'] = FALSE;
@@ -784,6 +782,7 @@ function _item_helper_calculate_results($found_comments) {
   $ongoing_1 = 0;
   $ongoing_prep_bonus = 0;
   $ongoing_prep_diff = 0;
+  $points_built = 0;
   foreach ($found_comments as $cid => $item_comment) {
     // Set defaults if not already set.
     $item_comment->roll_type = isset($item_comment->roll_type) ? $item_comment->roll_type : 'gen_pp';
@@ -793,10 +792,10 @@ function _item_helper_calculate_results($found_comments) {
       $item_comment->might_2 = isset($item_comment->mights['might_2']) ? $item_comment->mights['might_2'] : $item_comment->mights['might_1'];
     }
     $item_comment->set_bonus = isset($item_comment->set_bonus) ? $item_comment->set_bonus : 0;
-    $item_comment->difficulty = isset($item_comment->difficulty) ? $item_comment->difficulty : 45;
+    $item_comment->difficulty = isset($item_comment->difficulty) ? $item_comment->difficulty : 40;
     $diff_txt = t('Difficulty @difficulty.', array('@difficulty' => $item_comment->difficulty));
-    $item_comment->rp_bonus = isset($item_comment->rp_bonus) ? $item_comment->rp_bonus : 5;
-    $rp_bonus = isset($item_comment->rp_bonus) ? $item_comment->rp_bonus : 5;
+    $item_comment->rp_bonus = isset($item_comment->rp_bonus) ? $item_comment->rp_bonus : 10;
+    $rp_bonus = isset($item_comment->rp_bonus) ? $item_comment->rp_bonus : 10;
     // Grab rolls and start calculations.
     $dice_rolls = _dice_roller_get_roll($cid, 'c');
     $set_bonus_txt = '';
@@ -922,6 +921,23 @@ function _item_helper_calculate_results($found_comments) {
     if ($ongoing_1 == 0) {
       $ongoing_1_text = 'no';
     }
+    // Figure out how many points we've crafted at this diff so far.
+    $points_built = $ongoing_PP;
+    $points_built_txt = '<b>PP generated for enchanting one time use: ' . $points_built . '</b></br>' .
+      '<b>PP generated for enchanting 3 uses: ' . floor($points_built / 3) . '</b></br>' .
+      '<b>PP generated for enchanting once a day: ' . floor($points_built / 50) . '</b></br>' .
+      '<b>PP generated for enchanting at will: ' . floor($points_built / 150) . '</b>';
+    if ($item_comment->difficulty != 25) {
+      $pp_needed_per_point = (1 + (($item_comment->difficulty - 40) / 10) ) * 25;
+      $points_built_primary = floor($ongoing_PP / $pp_needed_per_point);
+      $points_built_secondary = floor($ongoing_PP / ($pp_needed_per_point * 1.5));
+      $points_built_skills= floor($ongoing_PP / ($pp_needed_per_point * 0.75));
+      $points_built_txt = 
+      '<b>Bonus points for primary stats: ' . $points_built_primary . '</b></br>' .
+      '<b>Bonus points for secondary stats: ' . $points_built_secondary . '</b></br>' .
+      '<b>Bonus points for skills: ' . $points_built_skills . '</b>';
+    }
+    // Figure out comment display.
     $item_comment->results = t(
       '%roll_txt' . $break_2 .
       '@diff_text </br>' .
@@ -930,13 +946,14 @@ function _item_helper_calculate_results($found_comments) {
       '@rp RP bonus </br> ' .
       '@prep Prep bonus / @diff Diff mod </br> ' .
       '<b><span style="color:green;">@critwin crit wins-by</span> / <span style="color:red;">@critfail crit fails-by</span></b></br>' .
-      '<b>@PP PP / <span style="color:green;">@100 100s</span> / <span style="color:red;">@1 1s</span></b>' .
-      '',
+      '<b>@PP PP / <span style="color:green;">@100 100s</span> / <span style="color:red;">@1 1s</span></b></br>' .
+      '!points_built_txt',
       array('@diff_text' => $diff_txt, '@set_bonus_txt' => $set_bonus_txt, '%roll_txt' => $roll_txt,
         '@might1' => !empty($might_1) ? $might_1 : 0, '@might2' => !empty($might_2) ? $might_2 : 0,
         '@critwin' => $critwin_text, '@critfail' => $critfail_text,
         '@PP' => number_format($ongoing_PP),'@100' => $ongoing_100_text, '@1' => $ongoing_1_text,
-        '@rp' => $rp_bonus, '@prep' => $ongoing_prep_bonus, '@diff' => $ongoing_prep_diff * -1 ));
+        '@rp' => $rp_bonus, '@prep' => $ongoing_prep_bonus, '@diff' => $ongoing_prep_diff * -1,
+        '!points_built_txt' => $points_built_txt));
   }
   return $found_comments;
 }

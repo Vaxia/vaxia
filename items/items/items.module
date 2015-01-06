@@ -47,7 +47,7 @@ function items_node_view($node, $view_mode, $langcode) {
     if (!empty($node->field_items[$lang])) {
       foreach ($node->field_items[$lang] as $index => $this_item) {
         $this_item = isset($this_item['node']) ? ($this_item['node']) : '';
-        if (!isset($this_item->workflow_state_name) || $this_item->workflow_state_name != t('approved')) {
+        if (!isset($this_item->workflow_state_name) || !_items_is_playable($this_item)) {
           // Remove this item from display.
           unset($node->content['field_items']['#items'][$index]);
         }
@@ -63,10 +63,11 @@ function items_node_presave($node) {
   if ($node->type != 'items') {
     return;
   }
+  $lang = isset($node->language) ? $node->language : 'und';
+  $field_calc_value = isset($node->field_calc_value[$lang][0]['value']) ? $node->field_calc_value[$lang][0]['value'] : FALSE;
   $recalc_value = variable_get('items_recalculate_values', FALSE);
-  if ($recalc_value) {
+  if ($recalc_value || $field_calc_value) {
     // And figure out the true item value.
-    $lang = isset($node->language) ? $node->language : 'und';
     // Set the currently declared value.
     $curr_value = isset($node->field_value[$lang][0]['value']) ? $node->field_value[$lang][0]['value'] : 0;
     // Get the value.
@@ -110,7 +111,7 @@ function items_form_workflow_tab_form_alter(&$form, &$form_state, $form_id) {
 function items_form_items_node_form_alter(&$form, &$form_state, $form_id) {
   // Display message and disable form if item already approved.
   $node = isset($form['#node']) ? $form['#node'] : '';
-  if (empty($node->clone_from_original_nid) && isset($node->workflow) && $node->workflow == 4) {
+  if (empty($node->clone_from_original_nid) && _items_is_playable($node)) {
     $allowed_edit = array('field_item_desc', 'field_item_history', 'field_character_owner',
       'field_sh_notes', 'field_sh_private_notes', 'field_player_notes', 'field_creation_history');
     foreach (element_children($form) as $child) {
@@ -146,6 +147,20 @@ function _items_admin_settings($form, &$form_state) {
     '#default_value' => variable_get('items_recalculate_values', FALSE),
   );
   return system_settings_form($form);
+}
+
+/**
+ * Helper function for item existing.
+ */
+function _items_is_playable($item) {
+  if (isset($item->workflow)
+    && (isset($item->workflow_state_name) && $item->workflow_state_name == t('approved')) ) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+function _items_owned_by_user($item, $user) {
 }
 
 /**
