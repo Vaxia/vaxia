@@ -454,17 +454,6 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
       t('Result'),
       t('(X)'),
     );
-    if ($user_can_set_diffs) {
-      $headers =  array(
-        t('Item creation posts'),
-        t('Roll type'),
-        t('Flat modifier'),
-        '',
-        '',
-        t('Result'),
-        t('(X)'),
-      );
-    }
     // Setup table format.
     $form['item_helper']['included_comments']['included_comments_table'] = array(
       '#prefix' => '<div id="item-helper-included-comments-table">',
@@ -523,66 +512,6 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
         ? theme('dice_roller_results', array('dice_rolls' => $dice_rolls))
         : '</br>' . t('No rolls found');
       $mights['comment_text'] = $comment_display;
-      $mights['override_might'] = array(
-        '#type' => 'checkbox',
-        '#title' => t('Override mights'),
-        '#default_value' => isset($item_comment->override_might) ? $item_comment->override_might : FALSE,
-        '#return_value' => TRUE,
-        '#access' => $user_can_set_diffs,
-        '#limit_validation_errors' => array(array('included_comments_table')),
-        // DOUBLE ARRAY. Because drupal docs suck.
-        '#ajax' => array(
-          'callback' => '_item_helper_ajax_add_comments',
-          'wrapper' => 'item-helper-included-comments-table',
-          'method' => 'replace',
-          'effect' => 'fade',
-        ),
-      );
-      $mights['might_1'] = array(
-        '#prefix' => '<table class="item_helper_mights" style="margin:0;padding:0;">' .
-          '<tbody style="border:none;"><tr><td>',
-        '#suffix' => '</td>',
-        '#type' => 'textfield',
-        '#title' => t('First might'),
-        '#default_value' => $item_comment->might_1,
-        '#size' => 4,
-        '#states' => array(
-          'visible' => array(
-            ':input[name="included_comments_table[' . $item_comment->cid . '][mights][override_might]"]' => array('checked' => TRUE),
-          ),
-        ),
-        '#access' => $user_can_set_diffs,
-        '#limit_validation_errors' => array(array('included_comments_table')),
-        // DOUBLE ARRAY. Because drupal docs suck.
-        '#ajax' => array(
-          'callback' => '_item_helper_ajax_add_comments',
-          'wrapper' => 'item-helper-included-comments-table',
-          'method' => 'replace',
-          'effect' => 'fade',
-        ),
-      );
-      $mights['might_2'] = array(
-        '#prefix' => '<td style="padding-left:1em;">',
-        '#suffix' => '</td></tr></tbody></table>',
-        '#type' => 'textfield',
-        '#title' => t('Second might'),
-        '#default_value' => $item_comment->might_2,
-        '#size' => 4,
-        '#states' => array(
-          'visible' => array(
-            ':input[name="included_comments_table[' . $item_comment->cid . '][mights][override_might]"]' => array('checked' => TRUE),
-          ),
-        ),
-        '#access' => $user_can_set_diffs,
-        '#limit_validation_errors' => array(array('included_comments_table')),
-        // DOUBLE ARRAY. Because drupal docs suck.
-        '#ajax' => array(
-          'callback' => '_item_helper_ajax_add_comments',
-          'wrapper' => 'item-helper-included-comments-table',
-          'method' => 'replace',
-          'effect' => 'fade',
-        ),
-      );
       $roll_type = array(
         '#type' => 'radios',
         '#options' => array(
@@ -603,18 +532,8 @@ function item_helper_form_node_form_alter(&$form, &$form_state, $form_id) {
       );
       // Configure the set a flat bonus field.
       $set_bonus = array(
-        '#type' => 'textfield',
+        '#type' => 'hidden',
         '#default_value' => isset($item_comment->set_bonus) ? $item_comment->set_bonus : 0,
-        '#size' => 4,
-        '#access' => $user_can_set_diffs,
-        '#limit_validation_errors' => array(array('included_comments_table')),
-        // DOUBLE ARRAY. Because drupal docs suck.
-        '#ajax' => array(
-          'callback' => '_item_helper_ajax_add_comments',
-          'wrapper' => 'item-helper-included-comments-table',
-          'method' => 'replace',
-          'effect' => 'fade',
-        ),
       );
       // Add the default bonus to the table as a hidden value field.
       // That way the submission system still knows where to look for this in the end.
