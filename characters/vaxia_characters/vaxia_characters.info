@@ -1,6 +1,0 @@
-name = Vaxia Characters
-description = Vaxia specific character handling
-core = 7.x
-package = Vaxia
-version = 7.x-1.0
-project = vaxia_characters

@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the Vaxia Players feature.
- */
-
-include_once 'vaxia_players.features.inc';
