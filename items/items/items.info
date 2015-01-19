@@ -5,6 +5,7 @@ package = Vaxia
 php = 5.2.4
 version = 7.x-1.4
 project = items
+dependencies[] = vaxia
 dependencies[] = corresponding_node_references
 dependencies[] = ctools
 dependencies[] = entity

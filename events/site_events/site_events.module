@@ -1,0 +1,119 @@
+<?php
+/**
+ * @file
+ * Code for the Site Events feature feature.
+ */
+
+include_once 'site_events.features.inc';
+
+/**
+ * Implements hook_rules_event_info().
+ */
+function site_events_rules_event_info() {
+  $items = array(
+    'site_events_remind_organizer' => array(
+      'label' => t('Organizer event tomorrow'),
+      'group' => t('Site events'),
+      'variables' => array(
+        'user' => array(
+            'type' => 'user',
+            'label' => t('Organizer'),
+        ),
+        'node' => array(
+            'type' => 'node',
+            'label' => t('Event'),
+        ),
+      ),
+    ),
+    'site_events_remind_attendee' => array(
+      'label' => t('Attendee event tomorrow'),
+      'group' => t('Site events'),
+      'variables' => array(
+        'user' => array(
+            'type' => 'user',
+            'label' => t('Attendee'),
+        ),
+        'node' => array(
+            'type' => 'node',
+            'label' => t('Event'),
+        ),
+        'comment' => array(
+            'type' => 'comment',
+            'label' => t('Comment'),
+        ),
+      ),
+    ),
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_cron().
+ */
+function site_events_cron() {
+  // Make sure we have the vaxia helper file included.
+  module_load_include('inc', 'vaxia', 'helper');
+  // Do it at 11 pm server time.
+  if (_vaxia_once_a_day_cron('site_events_send_reminders', '23:00:00')) {
+    site_events_send_reminders();
+  }
+}
+
+/**
+ * Check for events in the next 24 hours and send reminders.
+ */
+function site_events_send_reminders() {
+  if (!function_exists('rules_invoke_event')) {
+    return; // Bail if we don't have rules.
+  }
+  // Check for events.
+  $events = _site_events_get_events();
+  foreach ($events as $event) {
+    $node = node_load($event->entity_id);
+    $organizer = user_load($node->uid);
+    rules_invoke_event('site_events_remind_organizer', $organizer, $node);
+    // And check for attendees.
+    $comments = _site_events_get_event_comments($event->entity_id);
+    $found_comments = array();
+    foreach ($comments as $comment) {
+      $comment = comment_load($comment->cid);
+      $found_comments[$comment->uid] = $comment; // Only grab the latest notice from the user.
+    }
+    // Send reminders.
+    foreach ($found_comments as $comment) {
+      $attendee = user_load($comment->uid);
+      rules_invoke_event('site_events_remind_attendee', $attendee, $node, $comment);
+    }
+  }
+}
+
+/**
+ * Get events within a timeframe from the database.
+ */
+function _site_events_get_events($start = '', $end = '') {
+  // If not set, default start is tomorrow, end is +24hrs.
+  if (empty($start)) {
+    $start = strtotime('+1 day');
+  }
+  if (empty($end)) {
+    $end = strtotime('+1 day', $start);
+  }
+  return db_query('SELECT w.entity_id from {field_data_field_when} w ' .
+    'LEFT JOIN {node} n ON w.entity_id = n.nid ' .
+    'WHERE n.status = 1 ' .
+    'AND w.field_when_value BETWEEN :now AND :tomorrow',
+    array(
+      ':now' => date('Y-m-d 00:00:00', $start),
+      ':tomorrow' => date('Y-m-d 00:00:00', $end)
+    ));
+}
+
+/**
+ * Get events within a timeframe from the database.
+ */
+function _site_events_get_event_comments($nid) {
+  return db_query('SELECT c.cid from {comment} c ' .
+    'WHERE c.status = 1 ' .
+    'AND c.nid = :nid',
+    array(':nid' => $nid));
+}
