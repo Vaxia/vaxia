@@ -133,7 +133,11 @@ function items_form_items_node_form_alter(&$form, &$form_state, $form_id) {
  * Menu callback.
  */
 function _items_admin_settings($form, &$form_state) {
-  $workflow_options = _items_get_workflow_options();
+  // Make sure we have the vaxia helper file included.
+  module_load_include('inc', 'vaxia', 'helper');
+  // Get all workflows ready for form output
+  $workflow_options = _vaxia_get_workflow_options();
+  // Set the state.
   $form['items_approved_workflow'] = array(
     '#title' => 'Item approved',
     '#description' => 'Workflow state for approved items.',
@@ -345,84 +349,4 @@ function _items_item_stats($mode = 'all') {
   return  array('life', 'health', 'endurance', 'constitution', 'strength', 'agility', 'dexterity',
       'reflexes', 'intelligence', 'awareness', 'spirituality', 'presence', 'charisma', 'appearance', 'skill',
     );
-}
-
-/**
- * Helper function.
- */
-function _items_once_a_day_cron($cron, $time = '01:00:00') {
-  // Make sure we have the vaxia helper file included.
-  module_load_include('inc', 'vaxia', 'helper');
-  // Get all workflows ready for form output
-  return _vaxia_once_a_day_cron($cron, $time);
-}
-
-/**
- * Helper function.
- */
-function _items_get_workflow_options() {
-  // Make sure we have the vaxia helper file included.
-  module_load_include('inc', 'vaxia', 'helper');
-  // Get all workflows ready for form output
-  return _vaxia_get_workflow_options();
-}
-
-/**
- * Helper function.
- */
-function _items_get_field_value($node, $field, $default = '') {
-  // Make sure we have the vaxia helper file included.
-  module_load_include('inc', 'vaxia', 'helper');
-  // Get all item nids in workflows.
-  return _vaxia_get_field_value($node, $field, $default);
-}
-
-/**
- * Helper function.
- */
-function _items_get_field_node($node, $field, $default = '') {
-  // Make sure we have the vaxia helper file included.
-  module_load_include('inc', 'vaxia', 'helper');
-  // Get all item nids in workflows.
-  return _vaxia_get_field_node($node, $field, $default);
-}
-
-/**
- * Helper function.
- */
-function _items_set_field_value($node, $field, $value = '') {
-  // Make sure we have the vaxia helper file included.
-  module_load_include('inc', 'vaxia', 'helper');
-  // Get all item nids in workflows.
-  return _vaxia_set_field_value($node, $field, $value);
-}
-
-/**
- * Helper function.
- */
-function _items_get_in_workflows($workflows = array()) {
-  // Make sure we have the vaxia helper file included.
-  module_load_include('inc', 'vaxia', 'helper');
-  // Get all item nids in workflows.
-  return _vaxia_get_in_workflows('items', $workflows);
-}
-
-/**
- * Helper function.
- */
-function _items_check_workflow_in($node, $workflows = array()) {
-  // Make sure we have the vaxia helper file included.
-  module_load_include('inc', 'vaxia', 'helper');
-  // Check the workflow.
-  return _vaxia_check_workflow_is($node, $workflows);
-}
-
-/**
- * Check if a room is IC or not.
- */
-function _items_is_ic_room($node) {
-  // Make sure we have the vaxia helper file included.
-  module_load_include('inc', 'vaxia', 'helper');
-  // Check the workflow.
-  return _vaxia_is_ic_room($node);
 }

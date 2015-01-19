@@ -24,7 +24,9 @@ function item_uses_permission() {
  * Implements hook_cron();
  */
 function item_uses_cron() {
-  if (_items_once_a_day_cron('item_uses_daily_recharge', '01:00:00')) {
+  // Make sure we have the vaxia helper file included.
+  module_load_include('inc', 'vaxia', 'helper');
+  if (_vaxia_once_a_day_cron('item_uses_daily_recharge', '01:00:00')) {
     _item_uses_daily_recharge();
   }
 }
@@ -52,7 +54,9 @@ function _item_uses_admin_settings($form, &$form_state) {
     '#type' => 'checkbox',
     '#default_value' => variable_get('item_uses_active', TRUE),
   );
-  $workflow_options = _items_get_workflow_options();
+  // Make sure we have the vaxia helper file included.
+  module_load_include('inc', 'vaxia', 'helper');
+  $workflow_options = _vaxia_get_workflow_options();
   $form['item_uses_once_workflow'] = array(
     '#title' => 'Item used up',
     '#description' => 'Workflow state for items that need otbe recharged before they can be used again.',
@@ -96,7 +100,9 @@ function _item_uses_content_update($comment) {
     return;
   }
   $node = node_load($comment->nid);
-  if (!_items_is_ic_room($node)) {
+  // Make sure we have the vaxia helper file included.
+  module_load_include('inc', 'vaxia', 'helper');
+  if (!_vaxia_is_ic_room($node)) {
     return;
   }
   // Uses matter, so keep looping.
@@ -104,7 +110,7 @@ function _item_uses_content_update($comment) {
   // Check items against stats.
   if (isset($comment->vaxia_rolls['items'])) {
     // Gather the character information if it's set.
-    $character = _items_get_field_node($comment, 'field_comment_character');
+    $character = _vaxia_get_field_node($comment, 'field_comment_character');
     // If character set, get the stats and items.
     if (!empty($character)) {
       $once_workflow = variable_get('item_uses_once_workflow', '');
@@ -122,14 +128,16 @@ function _item_uses_content_update($comment) {
  */
 function _item_uses_check_item_use($item, $once_workflow, $daily_workflow) {
   $item = node_load($item);
-  $uses = _items_get_field_value($item, 'field_item_use_day', 'at_will');
-  $charges = _items_get_field_value($item, 'field_item_uses', 1);
-  $spent_charges = _items_get_field_value($item, 'field_item_spent_uses', 0);
+  // Make sure we have the vaxia helper file included.
+  module_load_include('inc', 'vaxia', 'helper');
+  $uses = _vaxia_get_field_value($item, 'field_item_use_day', 'at_will');
+  $charges = _vaxia_get_field_value($item, 'field_item_uses', 1);
+  $spent_charges = _vaxia_get_field_value($item, 'field_item_spent_uses', 0);
   // Only subtract from uses for items that are individual use.
   if (in_array($uses, array('once', 'per_day')) && $charges > 0) {
     // Reduce uses.
     $spent_charges++;
-    _items_set_field_value($item, 'field_item_spent_uses', $spent_charges);
+    _vaxia_set_field_value($item, 'field_item_spent_uses', $spent_charges);
     drupal_set_message(t('@title charge used, @charges charges remaining.',
     array('@title' => $item->title, '@charges' => $charges - $spent_charges)));
     // If the item is out - note it and remove from play.
@@ -155,14 +163,16 @@ function _item_uses_check_item_use($item, $once_workflow, $daily_workflow) {
  */
 function _item_uses_daily_recharge() {
   watchdog('item_uses', 'Daily recharge started.');
-  $items = _items_get_in_workflows(variable_get('item_uses_daily_workflow', ''));
+  // Make sure we have the vaxia helper file included.
+  module_load_include('inc', 'vaxia', 'helper');
+  $items = _vaxia_get_in_workflows(variable_get('item_uses_daily_workflow', ''));
   foreach ($items as $item) {
     $item = node_load($item->nid);
     if ($item) {
-      $spent = _items_get_field_value($item, 'field_item_spent_uses', 0);
+      $spent = _vaxia_get_field_value($item, 'field_item_spent_uses', 0);
       if ($spent > 0) {
         watchdog('item_uses', 'Daily recharge for item #' . $item->nid . '.');
-        _items_set_field_value($item, 'field_item_spent_uses', 0);
+        _vaxia_set_field_value($item, 'field_item_spent_uses', 0);
         $workflow = variable_get('items_approved_workflow', ''); // Set back to approved.
         workflow_execute_transition($item, $workflow, t('Item recharged daily.'), TRUE);
         node_save($item);
