@@ -1,0 +1,128 @@
+<?php
+/**
+ * @file
+ * Code for Vaxia characters.
+ */
+
+
+/**
+ * Implements hook_permission().
+ */
+function vaxia_characters_permission() {
+  return array(
+    'view inactive sheets'=> array(
+      'title' => t('view inactive sheets'),
+      'description' => t('View inactive sheets.'),
+    ),
+  );
+}
+
+/**
+ * Helper function determine if removed.
+ */
+function _vaxia_characters_is_removed($node) {
+  if (!isset($node->nid)) {
+    return FALSE;
+  }
+  if (!isset($node->character_sheet_system) || !isset($node->workflow)) {
+    $node = node_load($node->nid);
+  }
+  // Figure out the workflow for the node.
+  if ($node->workflow_state_name == 'xp_transferred') {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+/*
+ * Implements hook_node_view().
+ */
+function vaxia_characters_node_view($node, $view_mode, $langcode) {
+
+  // If node is a character sheet.
+  if (_character_sheet_is_enabled($node)) {
+    // Get current user.
+    global $user;
+
+    // Display warning alert for new characters.
+    // Check if the sheet has been finalized.
+    if (_vaxia_characters_is_removed($node)) {
+      if (!user_access('view inactive sheets')) {
+        drupal_set_message('You are not allowed to view this sheet. It has been removed from play.');
+        drupal_goto('');
+      }
+      drupal_set_message('This character is currently listed as transferred XP. ' .
+        'This character CANNOT be returned to play, because the player has already moved the XP to another character.');
+    }
+
+    // Display warning alert for new characters.
+    // Check if the sheet has been finalized.
+    $has_xp = _character_sheet_get_xp($node->nid, 'xp');
+    if (!_vaxia_characters_is_sh_character($node) && ($user->uid == $node->uid || user_access('edit SH notes'))) {
+      // Owner or an SH. Not an SH character.
+      if ( !isset($node->workflow) || // Current node has no workflow. (new)
+          ($node->workflow_state_name == 'draft' && $has_xp < 20) || // Is in draft and below HXP amounts.
+          ($node->workflow_state_name == 'submitted' && $has_xp < 20) // Submitted and below HXP amounts.
+      ) {
+        // Get warning messages.
+        $messages = _vaxia_check_minmax_flags($node);
+        // General warn.
+        if (!empty($messages)) {
+          $messages[] = t('This is a character design approach that is likely to be reviewed by our evaluation ' .
+            'staff as a potential min-maxed build. Please expect to be asked to revise.');
+          drupal_set_message(implode(' ', $messages), 'warning');
+        }
+      }
+
+      // Display a note re allowed revisions.
+      if (_character_sheet_is_playable($node) && $has_xp < 20) { // Approved and below HXP amounts.
+        drupal_set_message('This character is currently listed below 20 XP. You may request assistance from ' .
+          'our Evaluation team to revise the character.');
+      }
+    }
+
+    // Disable the fields from viewing if you're not the owner or permissioned.
+    if (!($user->uid == $node->uid || user_access('edit SH notes'))) {
+      $display = variable_get('vaxia_public_char_fields', '');
+      $display = explode("\n", $display);
+      foreach ($display as $index => $value) {
+        $display[$index] = trim($value);
+      }
+      foreach ($node->content as $index => $value) {
+        if (strpos($index, '#') === FALSE && !in_array($index, $display)) {
+          unset($node->content[$index]);
+        }
+      }
+    }
+
+    // Disable the private note if you can't edit it or not your char.
+    if (!($user->uid == $node->uid || user_access('edit SH notes'))) {
+      unset($node->content['field_sh_notes']);
+    }
+
+    // Hide the private note if you can't edit it. Can't see your own.
+    if (!($user->uid != $node->uid && user_access('edit private SH notes'))) {
+      unset($node->content['field_sh_private_notes']);
+    }
+
+    // Hide the private note if you can't edit it.
+    if (!($user->uid == $node->uid || user_access('edit SH notes'))) {
+      unset($node->content['field_player_notes']);
+    }
+
+    // Hide the logs.
+    unset($node->content['character_sheet_log']);
+  }
+
+}
+
+/**
+ * Helper function, is storyhost
+ */
+function _vaxia_characters_is_sh_character($node) {
+  $lang = !empty($node->language) ? $node->language : 'und';
+  if (isset($node->field_is_storyteller[$lang][0]['value']) && $node->field_is_storyteller[$lang][0]['value'] == 1) {
+    return TRUE;
+  }
+  return FALSE;
+}

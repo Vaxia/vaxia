@@ -1,0 +1,6 @@
+name = Vaxia Chatrooms
+description = Vaxia specific chatroom handling
+core = 7.x
+package = Vaxia
+version = 7.x-1.0
+project = vaxia_chatrooms

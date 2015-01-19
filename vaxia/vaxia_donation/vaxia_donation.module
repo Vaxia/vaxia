@@ -1,0 +1,369 @@
+<?php
+/**
+ * @file
+ * Code for the Vaxia Donations module.
+ */
+
+include_once 'vaxia_donation.features.inc';
+
+/**
+ * Implements hook_permission().
+ */
+function vaxia_donation_permission() {
+  return array(
+    'make vaxia donation' => array(
+      'title' => t('make vaxia donation'),
+      'description' => t('Make donation with Character selected'),
+    ),
+    'administer vaxia donation' => array(
+      'title' => t('administer vaxia donation'),
+      'description' => t('Administer vaxia donation.'),
+    ),
+  );
+}
+
+
+/**
+ * Implements hook_cron().
+ */
+function vaxia_donation_cron() {
+  _vaxia_donation_cron();
+}
+
+/**
+ * Cron handler.
+ */
+function _vaxia_donation_cron() {
+  $last_run = variable_get('vaxia_donation_cron', 0);
+  $yesterday = strtotime('-1 day');
+  if ($last_run < $yesterday) {
+    $today = strtotime(date('m/d/Y') . ' 00:00:01'); // We always want to plan to run just after midnight.
+    variable_set('vaxia_donation_cron', $today);
+    // Is today the first of any month? Yes? Remove the cost from the amount in the kitty.
+    $today = date('j');
+    if ($today == 1) {
+      _vaxia_donation_cron_charge_month();
+      // Is it January first? If so - reset everyone's donation set.
+      $month = date('n');
+      if ($month == 1) {
+        _vaxia_donation_cron_clear_year();
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_cronapi().
+ */
+function vaxia_donation_cronapi($op, $job = NULL) {
+  $items['_vaxia_donation_cron_charge_month'] = array(
+  	'description' => 'Vaxia donation: Charge monthly',
+  	'rule' => '1 1 1 * *', // Once a month, on the 1st at 1:01 AM.
+  );
+  $items['_vaxia_donation_cron_clear_year'] = array(
+  	'description' => 'Vaxia donation: Reset year totals',
+  	'rule' => '1 1 1 1 *', // Once a year, on Jan 1st at 1:01 AM.
+  );
+  return $items;
+}
+
+/**
+ * Cron handler.
+ */
+function _vaxia_donation_cron_charge_month() {
+  watchdog('vax_don', 'Charged the cost for the month to the donation fund.');
+  $cost = variable_get('vaxia_donation_site_cost', 40);
+  $fund = variable_get('vaxia_donation_site_fund', 0);
+  $fund = $fund - $cost;
+  variable_set('vaxia_donation_site_fund', $fund);
+}
+
+/**
+ * Cron handler.
+ */
+function _vaxia_donation_cron_clear_year() {
+  watchdog('vax_don', 'Reset all donation records for all users.');
+  db_query('UPDATE {field_data_field_donated} SET field_donated_value = 0');
+  db_query('UPDATE {field_revision_field_donated} SET field_donated_value = 0');
+}
+
+/**
+ * Implements hook_menu().
+ */
+function vaxia_donation_menu() {
+  $items['admin/vaxia/vaxia_donation'] = array(
+    'title' => 'Donations configuration',
+    'description' => 'Configure Vaxia donations',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('_vaxia_donation_admin_settings'),
+    'access arguments' => array('administer vaxia donation'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  return $items;
+}
+
+/**
+ * Form callback for admin settings form.
+ */
+function _vaxia_donation_admin_settings($form, &$form_state) {
+  $form['vaxia_donation_yearly_cap'] = array(
+    '#title' => 'Donation yearly cap',
+    '#description' => 'The amount of donation XP a player may recieve for donations over a year.',
+    '#type' => 'textfield',
+    '#default_value' => variable_get('vaxia_donation_yearly_cap', 100),
+  );
+  $form['vaxia_donation_paypal'] = array(
+    '#title' => 'Paypal account',
+    '#description' => 'The account to donate the money to.',
+    '#type' => 'textfield',
+    '#default_value' => variable_get('vaxia_donation_paypal', 'vaxiauserone@gmail.com'),
+  );
+  $form['vaxia_donation_site_fund'] = array(
+    '#title' => 'Current funding',
+    '#description' => 'Current amount in fund.',
+    '#type' => 'textfield',
+    '#default_value' => variable_get('vaxia_donation_site_fund', 0),
+  );
+  $form['vaxia_donation_site_cost'] = array(
+    '#title' => 'Server cost',
+    '#description' => 'Cost of the server.',
+    '#type' => 'textfield',
+    '#default_value' => variable_get('vaxia_donation_site_cost', 40),
+  );
+  return system_settings_form($form);
+}
+
+/**
+ * Implements hook_node_delete().
+ */
+function vaxia_donation_node_delete($node) {
+  _vaxia_donation_delete_donations($node->nid);
+}
+
+/**
+ * Blocks helper function.
+ */
+function _vaxia_donation_piggybank() {
+  $in_account = variable_get('vaxia_donation_site_fund', 0);
+  $average_cost = variable_get('vaxia_donation_site_cost', 40);
+  $output = '';
+  if ($in_account >= $average_cost) {
+    $output .= '<div style="text-align:center;">Estimated in account: $' . $in_account . '</div>';
+    $estimated_months_left = floor($in_account / $average_cost);
+    $output .= '<div style="text-align:center;">Estimated months left: ' . $estimated_months_left . '</div>';
+  }
+  else {
+    $output .= '<div style="text-align:center;">Vaxia\'s donation account needs topping off. We have less than a month of funding left.</div>';
+  }
+  return $output;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function vaxia_donation_form_payment_donation_form_alter(&$form, &$form_state) {
+  // Make aesthetic changes first.
+  // Hide the payment method info - there's only one.
+  $form['payment_method']['#access'] = FALSE;
+  $form['amount']['#title'] = t('Donation amount');
+  $form['amount']['#prefix'] = '';
+  $form['pay']['#value'] = t('Donate');
+  $form['pay']['#type'] = 'image_button';
+  $form['pay']['#src'] = 'https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif';
+  $form['pay']['#weight'] = 100;
+  // Bail out if the user can't make a vaxia character donation.
+  // Aka: Not a player with a character.
+  if (!user_access('make vaxia donation')) {
+    return;
+  }
+  global $user;
+  $this_user = user_load($user->uid);
+  // Add the XP IIF user's yearly donation isn't over the cap.
+  $cap = variable_get('vaxia_donation_yearly_cap', 100);
+  $user_so_far = !empty($this_user->field_donated['und'][0]['value']) ? $this_user->field_donated['und'][0]['value'] : 0;
+  $donate_left = $cap - $user_so_far;
+  if ($donate_left <= 0) {
+    return;
+  }
+  // Add the character select IIF characters eligable for it.
+  $results = db_query('SELECT n.nid, n.title, u.name FROM {node} n ' .
+    'LEFT JOIN {users} u ON n.uid = u.uid ' .
+    'WHERE n.type LIKE \'character_sheet\' AND n.status = 1 ' .
+    'AND n.uid = :uid ' .
+    'AND n.nid NOT IN (' .
+    'SELECT npc.entity_id FROM {field_data_field_is_npc} npc WHERE npc.field_is_npc_value = 1' . // Not an NPC
+    ')'.
+    'AND n.nid NOT IN (' .
+    'SELECT onpc.entity_id FROM {field_data_field_is_open_npc} onpc WHERE onpc.field_is_open_npc_value = 1' . // Not an open NPC
+    ')'.
+    'AND n.nid NOT IN (' .
+    'SELECT st.entity_id FROM {field_data_field_is_storyteller} st WHERE st.field_is_storyteller_value = 1' . // Not a storyteller.
+    ')',
+    array(':uid' => $this_user->uid));
+  $characters = array();
+  foreach ($results as $result) {
+    $character_node = node_load($result->nid);
+    if (_character_sheet_is_enabled($character_node) && _character_sheet_is_playable($character_node)) {
+      $characters[$result->nid] = $result->title;
+    }
+  }
+  if (empty($characters)) {
+    return;
+  }
+  // Only add the character form and process as a donate form IFF there's a valid character.
+  // Add our submit handler to save the selected character.
+  // But we have to make sure it happens after payment_donation,
+  // but before payment, so that we can avoid getting caught in the
+  // redirect to paypal. So timing matters.
+  array_unshift($form['pay']['#submit'], '_vaxia_donation_submit');
+  $form['donation_target'] = array(
+    '#title' => t('Character'),
+    '#description' => t('Award XP from donations to this character.'),
+    '#type' => 'select',
+    '#options' => $characters,
+  );
+}
+
+/**
+ * Submit callback for transfering XP().
+ */
+function _vaxia_donation_submit(&$form, &$form_state) {
+  $nid = $form_state['values']['donation_target'];
+  $payment = $form_state['payment'];
+  entity_save('payment', $payment);
+  watchdog('vax_don', 'Saving donation #' . $payment->pid . ' for character #' . $nid);
+  // Save the character id for the payment id.
+  $data = array('pid' =>$payment->pid, 'nid' => $nid);
+  _vaxia_donation_insert_donation($data);
+}
+
+/**
+ * DB Functions.
+ */
+
+/**
+ * DB function, delete comment by item nid.
+ */
+function _vaxia_donation_delete_donations($nid) {
+  db_query('DELETE FROM {vaxia_donation} ' .
+    'WHERE nid = :nid',
+    array(':nid' => $nid));
+}
+
+/**
+ * CRUD function, get comment by item nid, pid.
+ */
+function _vaxia_donation_get_donation_by_pid($pid) {
+  $results = db_query('SELECT * FROM {vaxia_donation} ' .
+    'WHERE pid = :pid',
+    array(':pid' => $pid))->fetchAll();
+  return $results;
+}
+
+/**
+ * CRUD function, get comment by item nid, pid.
+ */
+function _vaxia_donation_get_donation($nid, $pid) {
+  $results = db_query('SELECT * FROM {vaxia_donation} ' .
+    'WHERE nid = :nid AND pid = :pid',
+    array(':nid' => $nid, ':pid' => $pid))->fetchAll();
+  return $results;
+}
+
+/**
+ * CRUD function, get comments by item nid.
+ */
+function _vaxia_donation_insert_donation($data) {
+  $data = (array) $data;
+  $result = _vaxia_donation_get_donation($data['nid'], $data['pid']);
+  if (!empty($result)) {
+    _vaxia_donation_update_donation($data);
+  }
+  drupal_write_record('vaxia_donation', $data);
+}
+
+/**
+ * CRUD function, get comments by item nid.
+ */
+function _vaxia_donation_update_donation($data) {
+  $data = (array) $data;
+  $result = _vaxia_donation_get_donation($data['nid'], $data['pid']);
+  if (empty($result)) {
+    _vaxia_donation_insert_donation($data);
+  }
+  drupal_write_record('vaxia_donation', $data, array('nid', 'pid'));
+}
+
+/**
+ * CRUD function, get comment by item nid, pid.
+ */
+function _vaxia_donation_delete_comment($nid, $pid) {
+  db_query('DELETE FROM {vaxia_donation} ' .
+    'WHERE nid = :nid AND pid = :pid',
+    array(':nid' => $nid, ':pid' => $pid));
+}
+
+/**
+ * Rules function.
+ */
+
+/**
+ * Rules helper function.
+ */
+function _vaxia_donation_save_donation_xp($pid, $donated_amount) {
+  // Set the amount for the site.
+  $site_fund = variable_get('vaxia_donation_site_fund', 0);
+  $site_fund = $site_fund + $donated_amount;
+  variable_set('vaxia_donation_site_fund', $site_fund);
+
+  // This function is called by anon.
+  // Proceed with the donation.
+  $donation = _vaxia_donation_get_donation_by_pid($pid);
+  if (!$donation) {
+    watchdog('vax_don', 'Unable to find node information from donation.');
+    return;
+  }
+  $donation = $donation[0];
+  $node = node_load($donation->nid);
+  if (!$node) {
+    watchdog('vax_don', 'Unable to find node information from donation.');
+    return;
+  }
+
+  // Add the XP IIF user's yearly donation isn't over the cap.
+  $this_user = user_load($node->uid);
+  $cap = variable_get('vaxia_donation_yearly_cap', 100);
+  $user_so_far = isset($this_user->field_donated['und'][0]['value']) ? $this_user->field_donated['und'][0]['value'] : 0;
+  $donate_left = $cap - $user_so_far;
+  // Add the amount to the user and site.
+  $this_user->field_donated['und'][0]['value'] = $user_so_far + $donated_amount;
+  user_save($this_user);
+  // Check if ok.
+  if ($donate_left <= 0) {
+    watchdog('vax_don', 'Unable to process donation for character - user already over limits.');
+    return;
+  }
+
+  // Set the amount you can donate left.
+  $amount = ($donate_left >= $donated_amount) ? $donated_amount : $donate_left;
+  // Record the update.
+  watchdog('vaxia', 'Donation site-award XP (@amount) for #@nid @title',
+    array('@amount' => $amount, '@nid' => $node->nid, '@title' => $node->title));
+  drupal_set_message(t('Donation site-award XP (@amount) for #@nid @title',
+    array('@amount' => $amount, '@nid' => $node->nid, '@title' => $node->title)));
+  // Mark the XP.
+  $new_spent = _character_sheet_get_xp($node->nid, 'spent_xp');
+  if ($new_spent > 5) { // 5 or under for spent xp limits for transfer.
+    // Put XP to banked.
+    _character_sheet_update_xp($node->nid, $amount, 'bxp');
+  }
+  else {
+    // If the character has no XP on it - go to xp.
+    _character_sheet_update_xp($node->nid, $amount, 'xp');
+  }
+  // Add to the character log.
+  global $user;
+  $message = t('@xp @type xp added to @title by system.',
+    array('@xp' => $amount, '@type' => 'site-award', '@title' => $node->title));
+  _character_sheet_update_log($node->nid, 'site-award', $message);
+}
