@@ -1,4 +1,4 @@
-name = Dice items
+name = Item dice
 description = Add dice items to the dice roller
 core = 7.x
 package = Vaxia
