@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * wiki_feature.field_group.inc
+ * site_wiki.field_group.inc
  */
 
 /**
  * Implements hook_field_group_info().
  */
-function wiki_feature_field_group_info() {
+function site_wiki_field_group_info() {
   $export = array();
 
   $field_group = new stdClass();

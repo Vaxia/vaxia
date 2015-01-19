@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * wiki_feature.features.menu_custom.inc
+ * site_wiki.features.menu_custom.inc
  */
 
 /**
  * Implements hook_menu_default_menu_custom().
  */
-function wiki_feature_menu_default_menu_custom() {
+function site_wiki_menu_default_menu_custom() {
   $menus = array();
 
   // Exported menu: menu-wiki-links.

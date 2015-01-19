@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * wiki_feature.features.inc
+ * site_wiki.features.inc
  */
 
 /**
  * Implements hook_ctools_plugin_api().
  */
-function wiki_feature_ctools_plugin_api() {
+function site_wiki_ctools_plugin_api() {
   list($module, $api) = func_get_args();
   if ($module == "field_group" && $api == "field_group") {
     return array("version" => "1");
@@ -21,14 +21,14 @@ function wiki_feature_ctools_plugin_api() {
 /**
  * Implements hook_views_api().
  */
-function wiki_feature_views_api() {
+function site_wiki_views_api() {
   return array("version" => "3.0");
 }
 
 /**
  * Implements hook_flag_default_flags().
  */
-function wiki_feature_flag_default_flags() {
+function site_wiki_flag_default_flags() {
   $flags = array();
   // Exported flag: "Delete".
   $flags['delete'] = array(
@@ -63,7 +63,7 @@ function wiki_feature_flag_default_flags() {
     'access_author' => '',
     'show_contextual_link' => FALSE,
     'i18n' => 0,
-    'module' => 'wiki_feature',
+    'module' => 'site_wiki',
     'locked' => array(
       0 => 'name',
     ),
@@ -102,7 +102,7 @@ function wiki_feature_flag_default_flags() {
     'access_author' => '',
     'show_contextual_link' => FALSE,
     'i18n' => 0,
-    'module' => 'wiki_feature',
+    'module' => 'site_wiki',
     'locked' => array(
       0 => 'name',
     ),
@@ -141,7 +141,7 @@ function wiki_feature_flag_default_flags() {
     'access_author' => '',
     'show_contextual_link' => FALSE,
     'i18n' => 0,
-    'module' => 'wiki_feature',
+    'module' => 'site_wiki',
     'locked' => array(
       0 => 'name',
     ),
@@ -154,7 +154,7 @@ function wiki_feature_flag_default_flags() {
 /**
  * Implements hook_node_info().
  */
-function wiki_feature_node_info() {
+function site_wiki_node_info() {
   $items = array(
     'wiki_page' => array(
       'name' => t('Wiki page'),
@@ -171,7 +171,7 @@ function wiki_feature_node_info() {
 /**
  * Implements hook_workflow_default_workflows().
  */
-function wiki_feature_workflow_default_workflows() {
+function site_wiki_workflow_default_workflows() {
   $workflows = array();
 
   // Exported workflow: Wiki workflow

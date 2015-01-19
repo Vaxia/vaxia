@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * wiki_feature.features.filter.inc
+ * site_wiki.features.filter.inc
  */
 
 /**
  * Implements hook_filter_default_formats().
  */
-function wiki_feature_filter_default_formats() {
+function site_wiki_filter_default_formats() {
   $formats = array();
 
   // Exported format: Wiki.

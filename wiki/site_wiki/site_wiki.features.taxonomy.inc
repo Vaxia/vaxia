@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * wiki_feature.features.taxonomy.inc
+ * site_wiki.features.taxonomy.inc
  */
 
 /**
  * Implements hook_taxonomy_default_vocabularies().
  */
-function wiki_feature_taxonomy_default_vocabularies() {
+function site_wiki_taxonomy_default_vocabularies() {
   return array(
     'department' => array(
       'name' => 'Department',

@@ -1,28 +1,28 @@
 <?php
 /**
  * @file
- * wiki_feature.views_default.inc
+ * site_wiki.views_default.inc
  */
 
 /**
  * Implements hook_views_default_views().
  */
-function wiki_feature_views_default_views() {
+function site_wiki_views_default_views() {
   $export = array();
 
   $view = new view();
-  $view->name = 'wiki_admin_content';
-  $view->description = 'Listings for wiki articles';
-  $view->tag = 'Wiki';
+  $view->name = 'site_wiki_admin';
+  $view->description = 'Site wiki listings for wiki articles';
+  $view->tag = 'Site Wiki';
   $view->base_table = 'node';
-  $view->human_name = 'Wiki articles';
+  $view->human_name = 'Site wiki articles';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Wiki search';
+  $handler->display->display_options['title'] = 'Site wiki search';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['access']['perm'] = 'administer nodes';
@@ -520,22 +520,22 @@ function wiki_feature_views_default_views() {
   $handler->display->display_options['filters']['field_tag_location_tid']['vocabulary'] = 'location_depth';
 
   /* Display: Wiki articles */
-  $handler = $view->new_display('page', 'Wiki articles', 'wiki_content');
+  $handler = $view->new_display('page', 'Site wiki articles', 'site_wiki_content');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Wiki articles';
+  $handler->display->display_options['title'] = 'Site wiki articles';
   $handler->display->display_options['display_description'] = 'The display of wiki entries on administrative content pages';
   $handler->display->display_options['path'] = 'admin/content/wiki-content';
   $handler->display->display_options['menu']['type'] = 'tab';
-  $handler->display->display_options['menu']['title'] = 'Wiki Content';
+  $handler->display->display_options['menu']['title'] = 'Site wiki content';
   $handler->display->display_options['menu']['weight'] = '0';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
 
   /* Display: Flagged articles */
-  $handler = $view->new_display('page', 'Flagged articles', 'wiki_flagged');
+  $handler = $view->new_display('page', 'Site wiki flagged articles', 'site_wiki_flagged');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Flagged articles';
-  $handler->display->display_options['display_description'] = 'Wiki articles flagged as needing attention';
+  $handler->display->display_options['title'] = 'Site wiki flagged articles';
+  $handler->display->display_options['display_description'] = 'Site wiki articles flagged as needing attention';
   $handler->display->display_options['defaults']['access'] = FALSE;
   $handler->display->display_options['access']['type'] = 'role';
   $handler->display->display_options['access']['role'] = array(
@@ -765,7 +765,7 @@ function wiki_feature_views_default_views() {
   );
   $handler->display->display_options['path'] = 'wiki/flagged-for-deletion';
   $handler->display->display_options['menu']['type'] = 'normal';
-  $handler->display->display_options['menu']['title'] = 'Flagged articles';
+  $handler->display->display_options['menu']['title'] = 'Site wiki flagged articles';
   $handler->display->display_options['menu']['description'] = 'Articles that have been flagged';
   $handler->display->display_options['menu']['weight'] = '100';
   $handler->display->display_options['menu']['name'] = 'menu-wiki-links';
@@ -773,8 +773,8 @@ function wiki_feature_views_default_views() {
   $handler->display->display_options['menu']['context_only_inline'] = 0;
 
   /* Display: Wiki search */
-  $handler = $view->new_display('block', 'Wiki search', 'wiki_search');
-  $handler->display->display_options['display_description'] = 'Wiki search';
+  $handler = $view->new_display('block', 'Site wiki search', 'site_wiki_search');
+  $handler->display->display_options['display_description'] = 'Site wiki search';
   $handler->display->display_options['defaults']['use_ajax'] = FALSE;
   $handler->display->display_options['use_ajax'] = TRUE;
   $handler->display->display_options['defaults']['access'] = FALSE;
@@ -846,7 +846,7 @@ Search for a wiki article by tag(s).';
   $handler->display->display_options['block_description'] = 'Wiki search';
 
   /* Display: Admin flagged articles */
-  $handler = $view->new_display('page', 'Admin flagged articles', 'page_1');
+  $handler = $view->new_display('page', 'Admin flagged articles', 'site_wiki_flagged_attention');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Wiki flagged';
   $handler->display->display_options['display_description'] = 'Wiki articles flagged as needing attention';
@@ -1254,26 +1254,26 @@ Search for a wiki article by tag(s).';
   );
   $handler->display->display_options['path'] = 'admin/content/wiki-flagged';
   $handler->display->display_options['menu']['type'] = 'tab';
-  $handler->display->display_options['menu']['title'] = 'Wiki flagged';
+  $handler->display->display_options['menu']['title'] = 'Site wiki flagged';
   $handler->display->display_options['menu']['description'] = 'Articles that have been flagged';
   $handler->display->display_options['menu']['weight'] = '100';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
-  $export['wiki_admin_content'] = $view;
+  $export['site_wiki_admin'] = $view;
 
   $view = new view();
-  $view->name = 'wiki_categories';
-  $view->description = 'Wiki categories block';
-  $view->tag = 'Wiki';
+  $view->name = 'site_wiki_categories';
+  $view->description = 'Site wiki categories block';
+  $view->tag = 'Site Wiki';
   $view->base_table = 'taxonomy_term_data';
-  $view->human_name = 'Wiki categories block';
+  $view->human_name = 'Site wiki categories block';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Wiki Categories';
+  $handler->display->display_options['title'] = 'Site wiki categories';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['cache']['type'] = 'none';
@@ -1294,7 +1294,7 @@ Search for a wiki article by tag(s).';
   $handler->display->display_options['header']['area']['id'] = 'area';
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['content'] = 'Wiki categories with 5 or more articles associated.';
+  $handler->display->display_options['header']['area']['content'] = 'Site wiki categories with 5 or more articles associated.';
   $handler->display->display_options['header']['area']['format'] = 'wiki';
   /* Field: Taxonomy term: Name */
   $handler->display->display_options['fields']['name']['id'] = 'name';
@@ -1324,18 +1324,18 @@ Search for a wiki article by tag(s).';
   $handler->display->display_options['filters']['php']['table'] = 'views';
   $handler->display->display_options['filters']['php']['field'] = 'php';
   $handler->display->display_options['filters']['php']['use_php_setup'] = 0;
-  $handler->display->display_options['filters']['php']['php_filter'] = 'return _wiki_feature_limit_categories_by_nodecount($row->tid);';
+  $handler->display->display_options['filters']['php']['php_filter'] = 'return _site_wiki_limit_categories_by_nodecount($row->tid);';
 
   /* Display: Wiki categories block */
-  $handler = $view->new_display('block', 'Wiki categories block', 'wiki_categories_block');
-  $handler->display->display_options['display_description'] = 'Wiki categories block';
-  $handler->display->display_options['block_description'] = 'Wiki Categories';
+  $handler = $view->new_display('block', 'Site wiki categories block', 'site_wiki_cat_block');
+  $handler->display->display_options['display_description'] = 'Site wiki categories block';
+  $handler->display->display_options['block_description'] = 'Site wiki Categories';
 
   /* Display: Wiki node categories block */
-  $handler = $view->new_display('block', 'Wiki node categories block', 'wiki_node_cat_block');
+  $handler = $view->new_display('block', 'Site wiki node categories block', 'site_wiki_node_cat_block');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Wiki node categories';
-  $handler->display->display_options['display_description'] = 'Wiki node categories block';
+  $handler->display->display_options['title'] = 'Site wiki node categories';
+  $handler->display->display_options['display_description'] = 'Site wiki node categories block';
   $handler->display->display_options['defaults']['pager'] = FALSE;
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '0';
@@ -1394,22 +1394,22 @@ Search for a wiki article by tag(s).';
     'setting_type' => 'setting_type',
     'location_depth' => 'location_depth',
   );
-  $handler->display->display_options['block_description'] = 'Wiki node categories';
-  $export['wiki_categories'] = $view;
+  $handler->display->display_options['block_description'] = 'Site wiki node categories';
+  $export['site_wiki_categories'] = $view;
 
   $view = new view();
-  $view->name = 'wiki_category';
-  $view->description = 'Wiki category';
-  $view->tag = 'Wiki';
+  $view->name = 'site_wiki_category';
+  $view->description = 'Site wiki category';
+  $view->tag = 'Site Wiki';
   $view->base_table = 'taxonomy_term_data';
-  $view->human_name = 'Wiki category';
+  $view->human_name = 'Site wiki category';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Wiki category';
+  $handler->display->display_options['title'] = 'Site wiki category';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['cache']['type'] = 'none';
@@ -1498,27 +1498,27 @@ Search for a wiki article by tag(s).';
   );
 
   /* Display: Wiki category */
-  $handler = $view->new_display('page', 'Wiki category', 'wiki_category');
-  $handler->display->display_options['display_description'] = 'Wiki category';
+  $handler = $view->new_display('page', 'Site wiki category', 'site_wiki_category');
+  $handler->display->display_options['display_description'] = 'Site wiki category';
   $handler->display->display_options['path'] = 'wiki/categories';
   $handler->display->display_options['menu']['type'] = 'normal';
   $handler->display->display_options['menu']['title'] = 'Categories';
   $handler->display->display_options['menu']['name'] = 'menu-wiki-links';
-  $export['wiki_category'] = $view;
+  $export['site_wiki_category'] = $view;
 
   $view = new view();
-  $view->name = 'wiki_category_pages';
-  $view->description = 'Wiki category articles';
-  $view->tag = 'Wiki';
+  $view->name = 'site_wiki_category_pages';
+  $view->description = 'Site wiki category articles';
+  $view->tag = 'Site Wiki';
   $view->base_table = 'node';
-  $view->human_name = 'Wiki category articles';
+  $view->human_name = 'Site wiki category articles';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Wiki category articles';
+  $handler->display->display_options['title'] = 'Site wiki category articles';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['cache']['type'] = 'none';
@@ -1613,7 +1613,7 @@ Search for a wiki article by tag(s).';
   $handler->display->display_options['arguments']['tid']['field'] = 'tid';
   $handler->display->display_options['arguments']['tid']['default_action'] = 'default';
   $handler->display->display_options['arguments']['tid']['title_enable'] = TRUE;
-  $handler->display->display_options['arguments']['tid']['title'] = 'Wiki pages in category: "%1"';
+  $handler->display->display_options['arguments']['tid']['title'] = 'Site wiki pages in category: "%1"';
   $handler->display->display_options['arguments']['tid']['default_argument_type'] = 'taxonomy_tid';
   $handler->display->display_options['arguments']['tid']['summary']['number_of_records'] = '0';
   $handler->display->display_options['arguments']['tid']['summary']['format'] = 'default_summary';
@@ -1644,24 +1644,24 @@ Search for a wiki article by tag(s).';
   );
 
   /* Display: Wiki category articles */
-  $handler = $view->new_display('page', 'Wiki category articles', 'wiki_category_articles');
+  $handler = $view->new_display('page', 'Site wiki category articles', 'site_wiki_category_articles');
   $handler->display->display_options['display_description'] = 'Wiki category articles';
   $handler->display->display_options['path'] = 'taxonomy/term/%';
-  $export['wiki_category_pages'] = $view;
+  $export['site_wiki_category_pages'] = $view;
 
   $view = new view();
-  $view->name = 'wiki_recently_editted';
-  $view->description = 'Recently edited wiki content';
-  $view->tag = 'Wiki';
+  $view->name = 'site_wiki_recently_editted';
+  $view->description = 'Site wiki recently edited wiki content';
+  $view->tag = 'Site Wiki';
   $view->base_table = 'node';
-  $view->human_name = 'Wiki recently edited';
+  $view->human_name = 'Site wiki recently edited';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Recently Editted';
+  $handler->display->display_options['title'] = 'Site wiki recently edited';
   $handler->display->display_options['use_more'] = TRUE;
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'perm';
@@ -1783,20 +1783,20 @@ Search for a wiki article by tag(s).';
   );
 
   /* Display: Recently edited */
-  $handler = $view->new_display('page', 'Recently edited', 'wiki_recently_edited');
-  $handler->display->display_options['display_description'] = 'Recently edited entries in the wiki';
+  $handler = $view->new_display('page', 'Site wiki recently edited', 'site_wiki_recent');
+  $handler->display->display_options['display_description'] = 'Site wiki recently edited entries in the wiki';
   $handler->display->display_options['path'] = 'wiki/recently-edited';
   $handler->display->display_options['menu']['type'] = 'normal';
-  $handler->display->display_options['menu']['title'] = 'Wiki Updates';
-  $handler->display->display_options['menu']['description'] = 'Wiki articles that have been recently edited';
+  $handler->display->display_options['menu']['title'] = 'Site wiki updates';
+  $handler->display->display_options['menu']['description'] = 'Site wiki articles that have been recently edited';
   $handler->display->display_options['menu']['weight'] = '0';
   $handler->display->display_options['menu']['name'] = 'menu-vaxia';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
 
   /* Display: Recently edited */
-  $handler = $view->new_display('block', 'Recently edited', 'wiki_recently_edited_block');
-  $handler->display->display_options['display_description'] = 'Recently edited';
+  $handler = $view->new_display('block', 'Site wiki recently edited', 'site_wiki_recent_block');
+  $handler->display->display_options['display_description'] = 'Site wiki recently edited';
   $handler->display->display_options['defaults']['access'] = FALSE;
   $handler->display->display_options['access']['type'] = 'role';
   $handler->display->display_options['access']['role'] = array(
@@ -1822,22 +1822,22 @@ Search for a wiki article by tag(s).';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
-  $handler->display->display_options['block_description'] = 'Updated Wiki Pages';
-  $export['wiki_recently_editted'] = $view;
+  $handler->display->display_options['block_description'] = 'Updated site wiki pages';
+  $export['site_wiki_recently_editted'] = $view;
 
   $view = new view();
-  $view->name = 'wiki_sub_pages';
-  $view->description = 'Wiki Sub-pages';
-  $view->tag = 'Wiki';
+  $view->name = 'site_wiki_sub_pages';
+  $view->description = 'Wiki sub-pages';
+  $view->tag = 'Site Wiki';
   $view->base_table = 'node';
-  $view->human_name = 'Wiki Sub-pages';
+  $view->human_name = 'Wiki sub-pages';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Wiki Sub-pages';
+  $handler->display->display_options['title'] = 'Site wiki sub-pages';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['cache']['type'] = 'none';
@@ -1884,10 +1884,10 @@ Search for a wiki article by tag(s).';
   );
 
   /* Display: Wiki Sub-pages */
-  $handler = $view->new_display('block', 'Wiki Sub-pages', 'wiki_subpages');
-  $handler->display->display_options['display_description'] = 'Wiki Sub-pages';
-  $handler->display->display_options['block_description'] = 'Wiki Sub-pages';
-  $export['wiki_sub_pages'] = $view;
+  $handler = $view->new_display('block', 'Site wiki sub-pages', 'site_wiki_subpages');
+  $handler->display->display_options['display_description'] = 'Site wiki sub-pages';
+  $handler->display->display_options['block_description'] = 'Site wiki sub-pages';
+  $export['site_wiki_sub_pages'] = $view;
 
   return $export;
 }

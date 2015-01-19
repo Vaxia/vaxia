@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * wiki_feature.features.field.inc
+ * site_wiki.features.field.inc
  */
 
 /**
  * Implements hook_field_default_fields().
  */
-function wiki_feature_field_default_fields() {
+function site_wiki_field_default_fields() {
   $fields = array();
 
   // Exported field: 'node-wiki_page-body'.
