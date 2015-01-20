@@ -278,6 +278,24 @@ function vaxia_node_update($node) {
 }
 
 /**
+ * Implements hook_comment_insert().
+ */
+function vaxia_comment_presave($comment) {
+  $node = node_load($comment->nid);
+  $lang = $comment->language;
+  if (_rpg_chat_is_enabled($node->type) && isset($comment->field_comment_character[$lang][0]['nid'])) {
+    $character = node_load($comment->field_comment_character[$lang][0]['nid']);
+    if (isset($character->nid)) {
+      // If we have a character, save the character's info to the comment info.
+      $comment->field_description[$lang][0] = isset($character->field_description[$lang][0]) ? $character->field_description[$lang][0] : '';
+      $comment->field_presence[$lang][0] = isset($character->field_presence[$lang][0]) ? $character->field_presence[$lang][0] : '';
+      $comment->field_charisma[$lang][0] = isset($character->field_charisma[$lang][0]) ? $character->field_charisma[$lang][0] : '';
+      $comment->field_appearance[$lang][0] = isset($character->field_appearance[$lang][0]) ? $character->field_appearance[$lang][0] : '';
+    }
+  }
+}
+
+/**
  * Implements hook_workflow().
  */
 function vaxia_workflow($op, $old_state, $new_state, $node, $force = FALSE) {
@@ -393,7 +411,7 @@ function vaxia_process_comment(&$variables) {
         $character_name .= ' ' . $character->field_last_name[$lang][0]['value'];
       }
       // Set character description.
-      $char_desc = isset($character->field_description[$lang][0]['value']) ? $character->field_description[$lang][0]['value'] : '';
+      $char_desc = isset($comment->field_description[$lang][0]['value']) ? $comment->field_description[$lang][0]['value'] : '';
       $char_desc = check_plain($char_desc);
       if (strlen($char_desc) > 595) {
         $char_desc = drupal_substr($char_desc, 0, 600) . '...';
@@ -408,10 +426,12 @@ function vaxia_process_comment(&$variables) {
           '!datetime' => $variables['created'])
         );
       // Now work on the character art display. Setup the link options for the character pic.
+      // Use the comment if available.
+      $field_presence = isset($comment->field_presence[$lang][0]['value']) ? $comment->field_presence[$lang][0]['value'] : '';
+      $field_charisma = isset($comment->field_charisma[$lang][0]['value']) ? $comment->field_charisma[$lang][0]['value'] : '';
+      $field_appearance = isset($comment->field_appearance[$lang][0]['value']) ? $comment->field_appearance[$lang][0]['value'] : '';
       $alt = t('Presence: @pre, Charisma: @char, Appearance: @app',
-        array('@pre' => $character->field_presence[$lang][0]['value'],
-          '@char' => $character->field_charisma[$lang][0]['value'],
-          '@app' => $character->field_appearance[$lang][0]['value']));
+        array('@pre' => $field_presence, '@char' => $field_charisma,'@app' => $field_appearance));
       $link_options = array('html' => TRUE, 'attributes' => array('target' => '_blank'));    
       // Set picture to the default value (vaxia logo) as the fallback if no other resource found.
       $variables['picture'] = l( _vaxia_create_avatar_image_link(-1, $character_name, $alt),
@@ -552,6 +572,13 @@ function vaxia_form_alter(&$form, &$form_state, $form_id) {
     // Set limits in limbo rooms.
     $lang = isset($form_state['values']['language']) ? $form_state['values']['language'] : 'und';
     $limbo_room = variable_get('vaxia_limbo_room', array());
+    // Set the access for descriptive elements.
+    $hidden_desc_fields = array('field_description', 'field_presence', 'field_charisma', 'field_appearance');
+    foreach ($hidden_desc_fields as $hidden_desc_field) {
+      $form[$hidden_desc_field][$lang]['#value'] = '';
+      $form[$hidden_desc_field][$lang]['#access'] = FALSE;
+      $form[$hidden_desc_field][$lang]['#type'] = 'hidden';
+    }
     // Set narrative checkbox access and no access in limbo rooms.
     if (!user_access('post in narrative format') || in_array($form['#node']->nid, $limbo_room)) {
       $form['field_comment_narrative'][$lang]['#value'] = 0;
