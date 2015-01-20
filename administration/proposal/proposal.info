@@ -5,7 +5,6 @@ package = RPG
 php = 5.2.4
 version = 7.x-1.2
 project = proposal
-dependencies[] = calendar_feature
 dependencies[] = comment
 dependencies[] = ctools
 dependencies[] = field_group

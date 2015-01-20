@@ -5,7 +5,6 @@ package = Vaxia
 php = 5.2.4
 version = 7.x-1.8
 project = sh_test
-dependencies[] = calendar_feature
 dependencies[] = date
 dependencies[] = features
 dependencies[] = field_group
