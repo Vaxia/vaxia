@@ -27,7 +27,7 @@ function item_dice_vaxia_dice_form($form, $form_state, $form_id) {
         '#title' => t('Using items'),
         '#type' => 'select',
         '#options' => _item_dice_options($items),
-        '#default' => $default_items,
+        '#default_value' => $default_items,
         '#size' => count($items),
         '#multiple' => TRUE,
       );
