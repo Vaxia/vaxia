@@ -18,7 +18,11 @@ function item_dice_vaxia_dice_form($form, $form_state, $form_id) {
       // Display the items under the stat and skill row.
       $items = _item_dice_get_items($character);
       $char_lang = isset($character->language) ? $character->language : 'und';
-      $default_items = isset($character->field_currently_wearing[$char_lang][0]['value']) ? $character->field_currently_wearing[$char_lang][0]['value'] : array();
+      $char_items = isset($character->field_currently_wearing[$char_lang]) ? $character->field_currently_wearing[$char_lang] : array();
+      $default_items = array();
+      foreach ($char_items as $char_item) {
+        $default_items[] = $char_item['nid'];
+      }
       $form['vaxia_rolls']['items'] = array(
         '#title' => t('Using items'),
         '#type' => 'select',
