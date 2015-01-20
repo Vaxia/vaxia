@@ -35,7 +35,6 @@ features[node][] = event
 features[rules_config][] = site_events_notify_attendees
 features[rules_config][] = site_events_notify_organizers
 features[taxonomy][] = content
-features[taxonomy][] = forums
 features[variable][] = comment_anonymous_event
 features[variable][] = comment_default_mode_event
 features[variable][] = comment_default_per_page_event

@@ -17,13 +17,5 @@ function site_events_taxonomy_default_vocabularies() {
       'module' => 'taxonomy',
       'weight' => '-1',
     ),
-    'forums' => array(
-      'name' => 'Forums',
-      'machine_name' => 'forums',
-      'description' => 'Forum navigation vocabulary',
-      'hierarchy' => '1',
-      'module' => 'forum',
-      'weight' => '-10',
-    ),
   );
 }
