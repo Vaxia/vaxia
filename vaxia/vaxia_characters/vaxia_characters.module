@@ -95,6 +95,15 @@ function vaxia_characters_node_view($node, $view_mode, $langcode) {
       }
     }
 
+    // Only show the latest description.
+    $items = $node->content['field_description']['#items'][0];
+    $node->content['field_description']['#items'] = array($items);
+    $field_description = $node->content['field_description'][0];
+    foreach (element_children($node->content['field_description']) as $child) {
+      unset($node->content['field_description'][$child]);
+    }
+    $node->content['field_description'][0] = $field_description;
+
     // Disable the private note if you can't edit it or not your char.
     if (!($user->uid == $node->uid || user_access('edit SH notes'))) {
       unset($node->content['field_sh_notes']);
