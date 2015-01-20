@@ -79,7 +79,7 @@ Drupal.behaviors.doPullouts = {
           var weather = $('.weather-pic').html();
           var moon = $('.moon-block').html();
           var rpg_weather = '' +
-            '<div id="rpg-chat-weather" style="float:right;>' +
+            '<div id="rpg-chat-weather" style="float:right;">' +
             '<div class="rpg-weather rpg-weather-img">' + weather + '</div>' +
             '<div class="rpg-weather rpg-moon-img moon-block">' + moon +'</div>' +
             '</div>';
