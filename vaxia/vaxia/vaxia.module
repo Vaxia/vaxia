@@ -288,9 +288,9 @@ function vaxia_comment_presave($comment) {
     if (isset($character->nid)) {
       // If we have a character, save the character's info to the comment info.
       $comment->field_description[$lang][0] = isset($character->field_description[$lang][0]) ? $character->field_description[$lang][0] : '';
-      $comment->field_comment_presence[$lang][0] = isset($character->field_comment_presence[$lang][0]) ? $character->field_comment_presence[$lang][0] : '';
+      $comment->field_comment_presence[$lang][0] = isset($character->field_presence[$lang][0]) ? $character->field_presence[$lang][0] : '';
       $comment->field_charisma[$lang][0] = isset($character->field_charisma[$lang][0]) ? $character->field_charisma[$lang][0] : '';
-      $comment->field_comment_appearance[$lang][0] = isset($character->field_comment_appearance[$lang][0]) ? $character->field_comment_appearance[$lang][0] : '';
+      $comment->field_comment_appearance[$lang][0] = isset($character->field_appearance[$lang][0]) ? $character->field_appearance[$lang][0] : '';
     }
   }
 }
