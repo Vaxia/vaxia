@@ -819,6 +819,9 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
   $econ[] = t('Your monthly disposable income is %income.', array('%income' => number_format($income, 2)));
   $pay = _vaxia_get_daily_pay($level);
   $econ[] = t('You get paid %pay a day.', array('%pay' => number_format($pay, 2)));
+  $worth = _vaxia_calculate_worth($economy);
+  $econ[] = t('Your total worth is %worth if you cashed in all of your econonmy levels.', array('%worth' => number_format($worth, 2)));
+  // Display info.
   $form['node_info']['economy'] = array(
     '#type' => 'item',
     '#title' => t('Economy'),
