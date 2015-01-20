@@ -75,6 +75,16 @@ Drupal.behaviors.doPullouts = {
           make_flap('Room Nav', 'extruderBarNav',
             'article.node-rpg-chatroom fieldset.group-navigation', '440px');
 
+          // Copy weather and moon back into display.
+          var weather = $('.weather-pic').html();
+          var moon = $('.moon-block').html();
+          var rpg_weather = '' +
+            '<div id="rpg-chat-weather" style="float:right;>' +
+            '<div class="rpg-weather rpg-weather-img">' + weather + '</div>' +
+            '<div class="rpg-weather rpg-moon-img moon-block">' + moon +'</div>' +
+            '</div>';
+          $('#rpg-chat-wrapper').before(rpg_weather);
+
           // Set listener for all flaps now that they've been created.
           $('.jsPulloutFlap a.jsPulloutFlapLabel').click(function() {
             toggle_flap( $(this).parent().attr('id') );
