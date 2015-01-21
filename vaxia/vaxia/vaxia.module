@@ -459,28 +459,6 @@ function vaxia_process_comment(&$variables) {
 }
 
 /**
- * Override image creation to catch the moon widget.
- * Executed on display of image.
- */
-function vaxia_preprocess_image(&$variables) {
-
-  // Only update images that are in the moon phases module.
-  if (!empty($variables['path']) && stripos($variables['path'], 'moon_phases') !== FALSE) {
-    $width = isset($variables['width']) ? $variables['width'] : 26;
-    $percent = floor($width / 26) * 100;
-    $percent = $percent . '%';
-    // Set the value.
-    if (!empty($variables['width'])) {
-      $variables['width'] = $percent;
-    }
-    if (!empty($variables['attributes']['width'])) {
-      $variables['attributes']['width'] = $percent;
-    }
-  }
-
-}
-
-/**
  * Helper function, given a fid return the image link.
  */
 function _vaxia_create_avatar_image_link($fid, $name, $alt = '') {
