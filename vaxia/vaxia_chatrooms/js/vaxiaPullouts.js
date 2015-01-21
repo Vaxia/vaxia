@@ -78,7 +78,7 @@ Drupal.behaviors.doPullouts = {
           // Tweak the display width for all moon displays.
           var moon_width = $('img.moon-overlay').attr('width');
           moon_width = (moon_width / 26) * 100;
-          moon_width = moon_width + '%';
+          //moon_width = moon_width + '%';
           $('img.moon-overlay').attr('width', moon_width);
 
           // Copy weather and moon back into display.
