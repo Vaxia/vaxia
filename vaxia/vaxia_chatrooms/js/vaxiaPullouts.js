@@ -76,10 +76,12 @@ Drupal.behaviors.doPullouts = {
             'article.node-rpg-chatroom fieldset.group-navigation', '440px');
 
           // Tweak the display width for all moon displays.
-          var moon_width = $('img.moon-overlay').attr('width');
-          moon_width = (moon_width / 26) * 100;
-          moon_width = '' + moon_width + '%';
-          $('img.moon-overlay').attr('width', moon_width);
+          $('img.moon-overlay').each(function() {
+            var moon_width = $(this).attr('width');
+            moon_width = (moon_width / 26) * 100;
+            moon_width = '' + moon_width + '%';
+            $(this).attr('width', moon_width).width(moon_width);
+          });
 
           // Copy weather and moon back into display.
           var weather = $('.weather-pic').html();
