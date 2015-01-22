@@ -17,10 +17,10 @@
  * @see book_admin_edit_submit()
  * @ingroup forms
  */
-function book_admin_edit($form, $form_state, $node) {
+function book_fork_admin_edit($form, $form_state, $node) {
   drupal_set_title($node->title);
   $form['#node'] = $node;
-  _book_admin_table($node, $form);
+  _book_fork_admin_table($node, $form);
   $form['save'] = array(
     '#type' => 'submit',
     '#value' => t('Save book pages'),
@@ -36,7 +36,7 @@ function book_admin_edit($form, $form_state, $node) {
  *
  * @see book_admin_edit_submit()
  */
-function book_admin_edit_validate($form, &$form_state) {
+function book_fork_admin_edit_validate($form, &$form_state) {
   if ($form_state['values']['tree_hash'] != $form_state['values']['tree_current_hash']) {
     form_set_error('', t('This book has been modified by another user, the changes could not be saved.'));
   }
@@ -51,7 +51,7 @@ function book_admin_edit_validate($form, &$form_state) {
  * @see book_admin_edit_validate()
  * @see menu_overview_form_submit()
  */
-function book_admin_edit_submit($form, &$form_state) {
+function book_fork_admin_edit_submit($form, &$form_state) {
   // Save elements in the same order as defined in post rather than the form.
   // This ensures parents are updated before their children, preventing orphans.
   $order = array_flip(array_keys($form_state['input']['table']));
@@ -97,7 +97,7 @@ function book_admin_edit_submit($form, &$form_state) {
  *
  * @see book_admin_edit()
  */
-function _book_admin_table($node, &$form) {
+function _book_fork_admin_table($node, &$form) {
   $form['table'] = array(
     '#theme' => 'book_admin_table',
     '#tree' => TRUE,
@@ -117,12 +117,12 @@ function _book_admin_table($node, &$form) {
       '#type' => 'value',
       '#value' => $hash,
     );
-    $count = _book_admin_table_tree_count($tree['below']);
+    $count = _book_fork_admin_table_tree_count($tree['below']);
     $form['tree_count'] = array(
       '#type' => 'value',
       '#value' => $count,
     );
-    _book_admin_table_tree($tree['below'], $form['table']);
+    _book_fork_admin_table_tree($tree['below'], $form['table']);
   }
 
 }
@@ -130,11 +130,11 @@ function _book_admin_table($node, &$form) {
 /**
  * Figure out how many leaves there are in this tree.
  */
-function _book_admin_table_tree_count($tree) {
+function _book_fork_admin_table_tree_count($tree) {
   $count = count($tree);
   foreach ($tree as $data) {
     if ($data['below']) {
-      $count = $count + _book_admin_table_tree_count();
+      $count = $count + _book_fork_admin_table_tree_count();
     }
   }
   return $count;
@@ -153,7 +153,7 @@ function _book_admin_table_tree_count($tree) {
  *
  * @see book_admin_edit()
  */
-function _book_admin_table_tree($tree, &$form, &$added = 0) {
+function _book_fork_admin_table_tree($tree, &$form, &$added = 0) {
   // The delta must be big enough to give each node a distinct value.
   $count = $form['tree_count']['#value'];
   $delta = ($count < 30) ? 15 : intval($count / 2) + 10;
@@ -187,59 +187,9 @@ function _book_admin_table_tree($tree, &$form, &$added = 0) {
       ),
     );
     if ($data['below']) {
-      _book_admin_table_tree($data['below'], $form);
+      _book_fork_admin_table_tree($data['below'], $form);
     }
   }
 
   return $form;
 }
-
-/**
- * Returns HTML for a book administration form.
- *
- * @param $variables
- *   An associative array containing:
- *   - form: A render element representing the form.
- *
- * @see book_admin_table()
- * @ingroup themeable
- *
-function theme_book_admin_table($variables) {
-  $form = $variables['form'];
-
-  drupal_add_tabledrag('book-outline', 'match', 'parent', 'book-plid', 'book-plid', 'book-mlid', TRUE, MENU_MAX_DEPTH - 2);
-  drupal_add_tabledrag('book-outline', 'order', 'sibling', 'book-weight');
-
-  $header = array(t('Title'), t('Weight'), t('Parent'), array('data' => t('Operations'), 'colspan' => '3'));
-
-  $rows = array();
-  $destination = drupal_get_destination();
-  $access = user_access('administer nodes');
-  foreach (element_children($form) as $key) {
-    $nid = $form[$key]['nid']['#value'];
-    $href = $form[$key]['href']['#value'];
-
-    // Add special classes to be used with tabledrag.js.
-    $form[$key]['plid']['#attributes']['class'] = array('book-plid');
-    $form[$key]['mlid']['#attributes']['class'] = array('book-mlid');
-    $form[$key]['weight']['#attributes']['class'] = array('book-weight');
-
-    $data = array(
-      theme('indentation', array('size' => $form[$key]['depth']['#value'] - 2)) . drupal_render($form[$key]['title']),
-      drupal_render($form[$key]['weight']),
-      drupal_render($form[$key]['plid']) . drupal_render($form[$key]['mlid']),
-      l(t('view'), $href),
-      $access ? l(t('edit'), 'node/' . $nid . '/edit', array('query' => $destination)) : '&nbsp;',
-      $access ? l(t('delete'), 'node/' . $nid . '/delete', array('query' => $destination) )  : '&nbsp;',
-    );
-    $row = array('data' => $data);
-    if (isset($form[$key]['#attributes'])) {
-      $row = array_merge($row, $form[$key]['#attributes']);
-    }
-    $row['class'][] = 'draggable';
-    $rows[] = $row;
-  }
-
-  return theme('table', array('header' => $header, 'rows' => $rows, 'attributes' => array('id' => 'book-outline'), 'empty' => t('No book content available.')));
-}
-*/
