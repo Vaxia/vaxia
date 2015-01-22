@@ -17,6 +17,8 @@ function book_fork_menu_alter(&$items) {
     'access callback' => '_book_outline_access',
     'access arguments' => array(3),
     'type' => MENU_CALLBACK,
+    'file' => 'book_fork.module',
+    'file path' => drupal_get_path('module', 'book_fork'),
   );
   return $items;
 }
@@ -39,7 +41,6 @@ function book_fork_menu_alter(&$items) {
  * @ingroup forms
  */
 function book_fork_admin_edit($form, $form_state, $node) {
-  drupal_set_message('Book fork.');
   drupal_set_title('Book fork | ' .$node->title);
   $form['#node'] = $node;
   _book_fork_admin_table($node, $form);
