@@ -15,10 +15,6 @@ function site_wiki_permission() {
       'title' => t('edit locked site wiki'),
       'description' => t('Edit a site wiki in a locked workflow state.'),
     ),
-    'consolidate site wiki rooms'=> array(
-      'title' => t('consolidate site wiki rooms'),
-      'description' => t('Consolidate site wiki rooms.'),
-    ),
     'administer site wiki'=> array(
       'title' => t('administer site wiki'),
       'description' => t('Administer site wiki settings.'),
@@ -37,12 +33,6 @@ function site_wiki_menu() {
     'page arguments' => array('_site_wiki_admin_settings'),
     'access arguments' => array('administer site wiki'),
   );
-  $items['admin/config/system/site_wiki/autocomplete/room'] = array(
-    'title' => 'Site wiki room lookup',
-    'type' => MENU_CALLBACK,
-    'page callback' => '_site_wiki_autocomplete_room',
-    'access arguments' => array('administer site wiki'),
-  );
   return $items;
 }
 
@@ -50,28 +40,6 @@ function site_wiki_menu() {
  * Implementation of admin settings form.
  */
 function _site_wiki_admin_settings($form, &$form_state) {
-  $form['site_wiki_root'] = array(
-    '#title' => t('Site wiki root room'),
-    '#type' => 'textfield',
-    '#default_value' => variable_get('site_wiki_root', ''),
-    '#autocomplete_path' => 'admin/config/system/site_wiki/autocomplete/room',
-  );
-  $form['site_wiki_link_depth'] = array(
-    '#title' => t('Site wiki children depth'),
-    '#description' => t('Set how many levels down should children links follow, at minimum 1.'),
-    '#type' => 'textfield',
-    '#default_value' => variable_get('site_wiki_link_depth', 1),
-  );
-  $form['site_wiki_subpage_block_label'] = array(
-    '#title' => t('Site wiki subpage block text'),
-    '#type' => 'textfield',
-    '#default_value' => variable_get('site_wiki_subpage_block_label', t('Subpages')),
-  );
-  $form['site_wiki_subpage_label'] = array(
-    '#title' => t('Site wiki subpage link text'),
-    '#type' => 'textfield',
-    '#default_value' => variable_get('site_wiki_subpage_label', t('Make a subpage of this page')),
-  );
   $form['site_wiki_templates'] = array(
     '#title' => t('Site wiki templates'),
     '#type' => 'fieldset',
@@ -115,59 +83,15 @@ function _site_wiki_admin_settings($form, &$form_state) {
 }
 
 /**
- * Autocomplete function, callback for room look up.
- */
-function _site_wiki_autocomplete_room($string = '') {
-  $matches = array();
-  if (!empty($string)) {
-    $results = db_query('SELECT n.nid, n.title FROM {node} n ' .
-      'WHERE n.title LIKE :title',
-      array(':title' => '%' . $string . '%'));
-    foreach ($results as $result) {
-      $label = $result->title . ' [nid:' . $result->nid . ']';
-      $matches[ check_plain($label) ] = check_plain($label);
-    }
-  }
-  drupal_json_output($matches);
-}
-
-/**
  * Implements hook_menu_alter().
  */
 function site_wiki_menu_alter($node, $op, $account) {
-  if ($op == 'update' && $node->type == 'wiki_page' && _site_wiki_locked($node)) {
+  if ($op == 'update' && $node->type == 'wiki_page' && _site_wiki_is_locked($node)) {
     return NODE_ACCESS_DENY;
   }
   return NODE_ACCESS_IGNORE;
 }
 
-/**
- * Implements hook_node_view().
- */
-function site_wiki_node_view($node, $view_mode, $langcode) {
-
-  // If node is a wiki page, give a link to make a new page.
-  if ($node->type == 'wiki_page' && $view_mode == 'full' && node_access('create', $node)) {
-    $subpage_label = variable_get('site_wiki_subpage_label', 'Make a subpage of this page');
-    $node->content['site_wiki_new_child'] = array(
-      '#markup' => '<div class="site_wiki_subpage_link" style="font-weight:bold;float:right;">'.
-         l(t('@page', array('@page' => $subpage_label)), 'node/add/wiki-page',
-           array('query' => array('edit[title]' => 'New Page'))) .
-        '</div>',
-      '#weight' => -1000,
-    );
-  }
-
-  // If node is a wiki page, give a button to convert to a room.
-  if ($node->type == 'wiki_page' && $view_mode == 'full' && user_access('consolidate site wiki rooms')) {
-    $this_form = drupal_get_form('_site_wiki_consolidate_child_rooms', $node);
-    $node->content['site_wiki_consolidate_child_rooms'] = array(
-      '#markup' => drupal_render($this_form),
-      '#weight' => 1000,
-    );
-  }
-
-}
 /**
  * Implements hook_node_presave().
  */
@@ -191,69 +115,6 @@ function site_wiki_node_presave($node) {
     $node->body[ $node->language ][0]['value'] = $body;
   }
   // And now proceed with the saving.
-}
-
-/**
- * Form to consolidate children rooms.
- */
-function _site_wiki_consolidate_child_rooms($form, &$form_state, $node) {
-  $form['nid'] = array(
-    '#type' => 'hidden',
-    '#value' => $node->nid,
-  );
-  $form['submit_button'] = array(
-    '#type' => 'submit',
-    '#value' => t('Consolidate children rooms'),
-  );
-  return $form;
-}
-
-/**
- * Form submit handler.
- */
-function _site_wiki_consolidate_child_rooms_submit($form, &$form_state) {
-  $node = node_load($form_state['values']['nid']);
-  if ($node) {
-    _site_wiki_merge_children($node);
-  }
-}
-
-/**
- * Recursively merge all rooms below this room into one article.
- */
-function _site_wiki_merge_children($node) {
-  if (empty($node)) {
-    return;
-  }
-  $output = $node->body[ $node->language ][0]['value'];
-  $path = drupal_get_path_alias('node/' . $node->nid);
-  $children = _site_wiki_get_child_paths($path);
-  foreach ($children as $child) {
-    $child = drupal_get_normal_path($child);
-    if (strpos($child, 'node/')  !== FALSE) {
-      $node_id = substr($child, 5);
-      if (is_numeric($node_id)) {
-        $child_node = node_load($node_id);
-        if ($child_node) {
-          // Merge everything below the child.
-          _site_wiki_merge_children($child_node);
-          // Then put the child into this node.
-          $output .= "\n\n";
-          $title_end = explode('/', $child_node->title);
-          $title_end = array_pop($title_end);
-          $output .= '[b]' . $title_end . '[/b]' . "\n\n";
-          $output .= $child_node->body[ $child_node->language ][0]['value'];
-          // And flag the child for delete.
-          $child_node->field_flag_for_deletion[ $child_node->language ][0]['value'] = 1;
-          node_save($child_node);
-          drupal_set_message('Children nodes flagged for deletion. They have not been deleted.');
-       }
-      }
-    }
-  }
-  // Save this node before returning upwards.
-  $node->body[ $node->language ][0]['value'] = $output;
-  node_save($node);
 }
 
 /**
@@ -281,6 +142,108 @@ function site_wiki_freelinking_alter(&$freelinking) {
     if ($plugin == 'nodetitle') {
       // Override the value for callback.
       $freelinking[$plugin]['callback'] = 'site_wiki_freelinking_nodetitle_callback';
+    }
+  }
+}
+
+/**
+ * Implements hook_freelink_alter().
+ */
+function site_wiki_freelink_alter(&$link, $target, $plugin_name, $plugin) {
+  // Trim title down to the last leaf for displaying the link.
+  $title = $link[0];
+  $title = explode('/', $title);
+  if (is_array($title)) {
+    $title = array_pop($title);
+  }
+  // And set it.
+  $link[0] = $title;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function site_wiki_block_view($delta = '') {
+  $block = array();
+  // Per delta, select an output.
+  switch ($delta) {
+    case 'site_wiki_templates':
+      $templates = variable_get('site_wiki_templates', array());
+      if (!empty($templates)) {
+        $items = array();
+        foreach ($templates as $index => $template_data) {
+          if (!empty($template_data['template_name'])) {
+            $items[] = '<span class="site_wiki_templates site_wiki_templates_' . $index . '">' .
+              '<span class="site_wiki_template_name"><a href="#">' . check_plain($template_data['template_name']) . '</a></span>' .
+              '<span class="site_wiki_template" style="display:none;">' . check_plain($template_data['template']) . '</span>' .
+            '</span>';
+          }
+        }
+        // Include the JS for this feature.
+        drupal_add_js(drupal_get_path('module', 'site_wiki') . '/js/site_wiki.js');
+        $block['subject'] = t('Wiki templates');
+        $block['content'] = theme('item_list', array('items' => $items));
+        $block['content'] .= '<div>' . t('These templates are provided to make it easier to quickly load a basic template for ' .
+          'wiki articles. If you already have information in the page, or are not using a template feel free to ignore these links.') .
+          '</div>';
+      }
+    break;
+    case 'site_wiki_disamb':
+      $block['subject'] = t('Wiki disambiguation');
+      $block['content'] = '';
+      // Find out if we have more than jsut this one node with the title.
+      $path_root = arg(0);
+      $nid = arg(1);
+      if ($path_root == 'node' && is_numeric($nid)) {
+        $node = node_load($nid);
+        if ($node->type == 'wiki_page') {
+          // Grab everything else with the same title and type.
+          $others = db_query('SELECT nid FROM {node} WHERE type = \'wiki_page\' AND title = :title AND nid != :nid',
+            array(':title' => $node->title, ':nid' => $node->nid));
+          $found_others = array();
+          foreach ($others as $other) {
+            $other_node = node_load($other->nid);
+            $sample = node_view($other_node,'teaser');
+            $sample = substr(strip_tags($sample['body'][0]['#markup']),0,255);
+            $found_others[] = t('Did you mean !link', array('!link' => l($other_node->title, 'node/' . $other_node->nid))) .
+              ': <span class="wiki-disamb-sample" style="font-size:80%;">' . $sample . '</span>';
+          }
+          // Set up the links.
+          if (!empty($found_others)) {
+            $block['content'] = t('Other wiki articles share the same title...') . theme('item_list', array('items' => $found_others));
+          }
+        }
+      }
+    break;
+    default:
+      /// Do nothing.
+    break;
+  }
+  // Include the css overall for addressing blocks as needed.
+  drupal_add_css(drupal_get_path('module', 'site_wiki') . '/css/site_wiki.css');
+  return $block;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function site_wiki_form_wiki_page_node_form_alter(&$form, &$form_state) {
+
+  // Save the old title so if it changes, we can update other wiki articles w/title.
+  $form['site_wiki_old_title'] = array(
+    '#type' => 'hidden',
+    '#value' => $form['#node']->title,
+  );
+
+  // Allow permissioned user to edit the wiki.
+  if (user_access('edit locked site wiki')) {
+    return;
+  }
+  // Else check for workflow state.
+  if (!empty($form['#node']->type) && $form['#node']->type == 'wiki_page' && _site_wiki_is_locked($form['#node'])) {
+    drupal_set_message(t('This wiki article is locked. You are not allowed to edit it.'));
+    foreach (element_children($form) as $child) {
+      unset($form[$child]);
     }
   }
 }
@@ -396,137 +359,13 @@ function site_wiki_freelinking_nodetitle_nid_from_title(&$target, $this_nid) {
 }
 
 /**
- * Implements hook_freelink_alter().
- */
-function site_wiki_freelink_alter(&$link, $target, $plugin_name, $plugin) {
-  // Trim title down to the last leaf for displaying the link.
-  $title = $link[0];
-  $title = explode('/', $title);
-  if (is_array($title)) {
-    $title = array_pop($title);
-  }
-  // And set it.
-  $link[0] = $title;
-}
-
-/**
- * Implements hook_block_view().
- */
-function site_wiki_block_view($delta = '') {
-  $block = array();
-  // Per delta, select an output.
-  switch ($delta) {
-    case 'site_wiki_templates':
-      $templates = variable_get('site_wiki_templates', array());
-      if (!empty($templates)) {
-        $items = array();
-        foreach ($templates as $index => $template_data) {
-          if (!empty($template_data['template_name'])) {
-            $items[] = '<span class="site_wiki_templates site_wiki_templates_' . $index . '">' .
-              '<span class="site_wiki_template_name"><a href="#">' . check_plain($template_data['template_name']) . '</a></span>' .
-              '<span class="site_wiki_template" style="display:none;">' . check_plain($template_data['template']) . '</span>' .
-            '</span>';
-          }
-        }
-        // Include the JS for this feature.
-        drupal_add_js(drupal_get_path('module', 'site_wiki') . '/js/site_wiki.js');
-        $block['subject'] = t('Wiki templates');
-        $block['content'] = theme('item_list', array('items' => $items));
-        $block['content'] .= '<div>' . t('These templates are provided to make it easier to quickly load a basic template for ' .
-          'wiki articles. If you already have information in the page, or are not using a template feel free to ignore these links.') .
-          '</div>';
-      }
-    break;
-    case 'site_wiki_disamb':
-      $block['subject'] = t('Wiki disambiguation');
-      $block['content'] = '';
-      // Find out if we have more than jsut this one node with the title.
-      $path_root = arg(0);
-      $nid = arg(1);
-      if ($path_root == 'node' && is_numeric($nid)) {
-        $node = node_load($nid);
-        if ($node->type == 'wiki_page') {
-          // Grab everything else with the same title and type.
-          $others = db_query('SELECT nid FROM {node} WHERE type = \'wiki_page\' AND title = :title AND nid != :nid',
-            array(':title' => $node->title, ':nid' => $node->nid));
-          $found_others = array();
-          foreach ($others as $other) {
-            $other_node = node_load($other->nid);
-            $sample = node_view($other_node,'teaser');
-            $sample = substr(strip_tags($sample['body'][0]['#markup']),0,255);
-            $found_others[] = t('Did you mean !link', array('!link' => l($other_node->title, 'node/' . $other_node->nid))) .
-              ': <span class="wiki-disamb-sample" style="font-size:80%;">' . $sample . '</span>';
-          }
-          // Set up the links.
-          if (!empty($found_others)) {
-            $block['content'] = t('Other wiki articles share the same title...') . theme('item_list', array('items' => $found_others));
-          }
-        }
-      }
-    break;
-    default:
-      /// Do nothing.
-    break;
-  }
-  // Include the css overall for addressing blocks as needed.
-  drupal_add_css(drupal_get_path('module', 'site_wiki') . '/css/site_wiki.css');
-  return $block;
-}
-
-/**
- * Implements hook_form_FORM_ID_alter().
- */
-function site_wiki_form_wiki_page_node_form_alter(&$form, &$form_state) {
-
-  // Save the old title so if it changes, we can update other wiki articles w/title.
-  $form['site_wiki_old_title'] = array(
-    '#type' => 'hidden',
-    '#value' => $form['#node']->title,
-  );
-
-  // Allow permissioned user to edit the wiki.
-  if (user_access('edit locked site wiki')) {
-    return;
-  }
-  // Else check for workflow state.
-  if (!empty($form['#node']->type) && $form['#node']->type == 'wiki_page' && _site_wiki_locked($form['#node'])) {
-    drupal_set_message(t('This wiki article is locked. You are not allowed to edit it.'));
-    foreach (element_children($form) as $child) {
-      unset($form[$child]);
-    }
-  }
-}
-
-/**
  * Helper function, determine if the wiki page is locked.
  */
-function _site_wiki_locked($node) {
+function _site_wiki_is_locked($node) {
   if (isset($node->nid) && $state = workflow_get_workflow_node_by_nid($node->nid)) {
     $state = workflow_get_workflow_states_by_sid($state->sid);
     if ($state->state == 'locked') {
       return TRUE;
-    }
-  }
-  return FALSE;
-}
-
-/**
- * Helper function, given a string retrieve any nid in the format [nid:XXX].
- * Or look for the node by title.
- */
-function _site_wiki_autocomplete_get_nid($room_selected) {
-  $result = preg_match('/\[nid:([0-9]+)\]$/', $room_selected, $matches);
-  if ($result > 0) {
-    $nid = $matches[$result];
-    $node = node_load($nid);
-    if (empty($node)) {
-      $nodes = node_load_multiple(array(), array('title' => $room_selected));
-      foreach ($nodes as $nid => $this_node) {
-        $node = $this_node;
-      }
-    }
-    if (!empty($node) && $node->status == 1) {
-      return $node->nid;
     }
   }
   return FALSE;
