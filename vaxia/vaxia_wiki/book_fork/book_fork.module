@@ -20,8 +20,6 @@ function book_fork_menu_alter(&$items) {
   return $items;
 }
 
-<?php
-
 /**
  * @file
  * Administration page callbacks for the Book module.
