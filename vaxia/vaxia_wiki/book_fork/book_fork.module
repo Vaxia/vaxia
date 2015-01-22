@@ -38,6 +38,7 @@ function book_fork_menu_alter(&$items) {
  * @ingroup forms
  */
 function book_fork_admin_edit($form, $form_state, $node) {
+  drupal_set_message('Book fork.');
   drupal_set_title($node->title);
   $form['#node'] = $node;
   _book_fork_admin_table($node, $form);
