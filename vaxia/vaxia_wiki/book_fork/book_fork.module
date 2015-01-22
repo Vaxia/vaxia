@@ -151,7 +151,7 @@ function _book_fork_admin_table($node, &$form) {
       '#value' => $hash,
     );
     $count = _book_fork_admin_table_tree_count($tree['below']);
-    _book_fork_admin_table_tree($tree['below'], $form['table'], $count);
+    _book_fork_admin_table_tree($tree['below'], $form['table'], 0, $count);
   }
 
 }
@@ -215,7 +215,7 @@ function _book_fork_admin_table_tree($tree, &$form, &$added = 0, $count = 50) {
       ),
     );
     if (!empty($data['below']) && $data['below']) {
-      _book_fork_admin_table_tree($data['below'], $form, $count);
+      _book_fork_admin_table_tree($data['below'], $form, 0, $count);
     }
   }
 
