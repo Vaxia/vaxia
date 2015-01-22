@@ -47,8 +47,18 @@ function book_fork_admin_edit($form, $form_state, $node) {
     '#type' => 'submit',
     '#value' => t('Save book pages'),
   );
-
   return $form;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function book_fork_theme() {
+  return array(
+    'book_fork_admin_table' => array(
+      'render element' => 'form',
+    ),
+  );
 }
 
 /**
@@ -121,7 +131,7 @@ function book_fork_admin_edit_submit($form, &$form_state) {
  */
 function _book_fork_admin_table($node, &$form) {
   $form['table'] = array(
-    '#theme' => 'book_admin_table',
+    '#theme' => 'book_fork_admin_table',
     '#tree' => TRUE,
   );
 
