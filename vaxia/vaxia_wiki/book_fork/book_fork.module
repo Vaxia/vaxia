@@ -13,7 +13,7 @@ function book_fork_menu_alter(&$items) {
   $items['admin/content/book/%node'] = array(
     'title' => 'Re-order book pages and change titles',
     'page callback' => 'drupal_get_form',
-    'page arguments' => array('book_form_admin_edit', 3),
+    'page arguments' => array('book_fork_admin_edit', 3),
     'access callback' => '_book_outline_access',
     'access arguments' => array(3),
     'type' => MENU_CALLBACK,
@@ -40,7 +40,7 @@ function book_fork_menu_alter(&$items) {
  */
 function book_fork_admin_edit($form, $form_state, $node) {
   drupal_set_message('Book fork.');
-  drupal_set_title($node->title);
+  drupal_set_title('Book fork | ' .$node->title);
   $form['#node'] = $node;
   _book_fork_admin_table($node, $form);
   $form['save'] = array(
