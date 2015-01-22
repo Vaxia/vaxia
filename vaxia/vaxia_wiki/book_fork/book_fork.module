@@ -1,0 +1,22 @@
+<?php
+
+/**
+ * @file
+ * Allows users to create and organize related content in an outline.
+ */
+
+/**
+ * Implements hook_menu_alter().
+ */
+function book_fork_menu_alter(&$items) {
+  $items['admin/content/book/%node'] = array(
+    'title' => 'Re-order book pages and change titles',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('book_admin_edit', 3),
+    'access callback' => '_book_outline_access',
+    'access arguments' => array(3),
+    'type' => MENU_CALLBACK,
+    'file' => 'book_fork.admin.inc',
+  );
+  return $items;
+}
