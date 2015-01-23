@@ -7,8 +7,8 @@
 /**
  * Implements hook_views_api().
  */
-function vaxia_wiki_views_api() {
-  return array("version" => "3.0");
+function vaxia_wiki_views_api($module = NULL, $api = NULL) {
+  return array("api" => "3.0");
 }
 
 /**
@@ -20,7 +20,7 @@ function vaxia_wiki_flag_default_flags() {
   $flags['delete'] = array(
     'entity_type' => 'node',
     'title' => 'Delete',
-    'global' => '1',
+    'global' => 1,
     'types' => array(
       0 => 'wiki_page',
     ),
@@ -59,7 +59,7 @@ function vaxia_wiki_flag_default_flags() {
   $flags['expand'] = array(
     'entity_type' => 'node',
     'title' => 'Expand',
-    'global' => '1',
+    'global' => 1,
     'types' => array(
       0 => 'wiki_page',
     ),
@@ -98,7 +98,7 @@ function vaxia_wiki_flag_default_flags() {
   $flags['rewrite'] = array(
     'entity_type' => 'node',
     'title' => 'Rewrite',
-    'global' => '1',
+    'global' => 1,
     'types' => array(
       0 => 'wiki_page',
     ),

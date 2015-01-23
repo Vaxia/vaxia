@@ -745,7 +745,7 @@ function vaxia_wiki_views_default_views() {
   $handler->display->display_options['fields']['field_race']['id'] = 'field_race';
   $handler->display->display_options['fields']['field_race']['table'] = 'field_data_field_race';
   $handler->display->display_options['fields']['field_race']['field'] = 'field_race';
-  /* Field: Field: Descriptions */
+  /* Field: Field: Description */
   $handler->display->display_options['fields']['field_description']['id'] = 'field_description';
   $handler->display->display_options['fields']['field_description']['table'] = 'field_data_field_description';
   $handler->display->display_options['fields']['field_description']['field'] = 'field_description';

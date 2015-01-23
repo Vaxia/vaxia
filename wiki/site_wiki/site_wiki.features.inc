@@ -7,8 +7,7 @@
 /**
  * Implements hook_ctools_plugin_api().
  */
-function site_wiki_ctools_plugin_api() {
-  list($module, $api) = func_get_args();
+function site_wiki_ctools_plugin_api($module = NULL, $api = NULL) {
   if ($module == "strongarm" && $api == "strongarm") {
     return array("version" => "1");
   }
@@ -17,8 +16,8 @@ function site_wiki_ctools_plugin_api() {
 /**
  * Implements hook_views_api().
  */
-function site_wiki_views_api() {
-  return array("version" => "3.0");
+function site_wiki_views_api($module = NULL, $api = NULL) {
+  return array("api" => "3.0");
 }
 
 /**
@@ -35,6 +34,7 @@ function site_wiki_node_info() {
       'help' => '',
     ),
   );
+  drupal_alter('node_info', $items);
   return $items;
 }
 
@@ -52,23 +52,23 @@ function site_wiki_workflow_default_workflows() {
     'states' => array(
       0 => array(
         'state' => '(creation)',
-        'weight' => '-50',
-        'sysid' => '1',
-        'status' => '1',
+        'weight' => -50,
+        'sysid' => 1,
+        'status' => 1,
         'name' => 'Wiki workflow',
       ),
       1 => array(
         'state' => 'open',
-        'weight' => '0',
-        'sysid' => '0',
-        'status' => '1',
+        'weight' => 0,
+        'sysid' => 0,
+        'status' => 1,
         'name' => 'Wiki workflow',
       ),
       2 => array(
         'state' => 'locked',
-        'weight' => '0',
-        'sysid' => '0',
-        'status' => '1',
+        'weight' => 0,
+        'sysid' => 0,
+        'status' => 1,
         'name' => 'Wiki workflow',
       ),
     ),
