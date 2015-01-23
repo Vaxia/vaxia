@@ -28,6 +28,7 @@ features_exclude[dependencies][strongarm] = strongarm
 features_exclude[dependencies][taxonomy] = taxonomy
 features_exclude[dependencies][views] = views
 features_exclude[dependencies][workflow] = workflow
+features_exclude[dependencies][vaxia_wiki] = vaxia_wiki
 features_exclude[field_base][body] = body
 features_exclude[field_base][field_additional_tagging] = field_additional_tagging
 features_exclude[field_base][field_wiki_images] = field_wiki_images
