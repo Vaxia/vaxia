@@ -29,6 +29,8 @@ function site_wiki_views_default_views() {
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'input_required';
+  $handler->display->display_options['exposed_form']['options']['reset_button'] = TRUE;
+  $handler->display->display_options['exposed_form']['options']['text_input_required_format'] = 'wiki';
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '35';
   $handler->display->display_options['style_plugin'] = 'table';
@@ -113,6 +115,20 @@ function site_wiki_views_default_views() {
       'override_label' => 0,
       'label' => '',
     ),
+    'action::workflow_vbo_given_state_action' => array(
+      'selected' => 0,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::workflow_vbo_next_state_action' => array(
+      'selected' => 0,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
     'action::clone_action_clone' => array(
       'selected' => 0,
       'postpone_processing' => 0,
@@ -135,6 +151,13 @@ function site_wiki_views_default_views() {
       'label' => '',
     ),
     'action::views_bulk_operations_script_action' => array(
+      'selected' => 0,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::flag_node_action' => array(
       'selected' => 0,
       'postpone_processing' => 0,
       'skip_confirmation' => 0,
@@ -168,6 +191,13 @@ function site_wiki_views_default_views() {
         ),
       ),
     ),
+    'action::views_bulk_operations_move_to_book_action' => array(
+      'selected' => 1,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
     'action::views_bulk_operations_argument_selector_action' => array(
       'selected' => 0,
       'skip_confirmation' => 0,
@@ -194,6 +224,19 @@ function site_wiki_views_default_views() {
     'action::node_unpromote_action' => array(
       'selected' => 0,
       'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::views_bulk_operations_remove_from_book_action' => array(
+      'selected' => 1,
+      'postpone_processing' => 0,
+      'skip_confirmation' => 0,
+      'override_label' => 0,
+      'label' => '',
+    ),
+    'action::mollom_action_unpublish_node' => array(
+      'selected' => 0,
       'skip_confirmation' => 0,
       'override_label' => 0,
       'label' => '',
@@ -266,27 +309,37 @@ function site_wiki_views_default_views() {
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = '1';
   $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['exposed'] = TRUE;
   $handler->display->display_options['filters']['status']['expose']['operator_id'] = '';
   $handler->display->display_options['filters']['status']['expose']['label'] = 'Published';
   $handler->display->display_options['filters']['status']['expose']['operator'] = 'status_op';
   $handler->display->display_options['filters']['status']['expose']['identifier'] = 'status';
-  $handler->display->display_options['filters']['status']['expose']['remember'] = TRUE;
   $handler->display->display_options['filters']['status']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
+    3 => 0,
+    30 => 0,
     8 => 0,
+    9 => 0,
+    14 => 0,
+    21 => 0,
+    24 => 0,
+    26 => 0,
+    27 => 0,
     19 => 0,
+    28 => 0,
+    29 => 0,
     12 => 0,
+    25 => 0,
     13 => 0,
     10 => 0,
     17 => 0,
     15 => 0,
-    9 => 0,
     20 => 0,
-    14 => 0,
-    4 => 0,
-    3 => 0,
-    11 => 0,
+    22 => 0,
+    23 => 0,
+    31 => 0,
+    32 => 0,
   );
   /* Filter criterion: Content: Type */
   $handler->display->display_options['filters']['type']['id'] = 'type';
@@ -341,6 +394,7 @@ function site_wiki_views_default_views() {
   $handler->display->display_options['filters']['field_additional_tagging_tid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_additional_tagging_tid']['expose']['operator_id'] = 'field_additional_tagging_tid_op';
   $handler->display->display_options['filters']['field_additional_tagging_tid']['expose']['label'] = 'Category';
+  $handler->display->display_options['filters']['field_additional_tagging_tid']['expose']['use_operator'] = TRUE;
   $handler->display->display_options['filters']['field_additional_tagging_tid']['expose']['operator'] = 'field_additional_tagging_tid_op';
   $handler->display->display_options['filters']['field_additional_tagging_tid']['expose']['identifier'] = 'field_additional_tagging_tid';
   $handler->display->display_options['filters']['field_additional_tagging_tid']['expose']['multiple'] = TRUE;
@@ -368,6 +422,8 @@ function site_wiki_views_default_views() {
     20 => 0,
     22 => 0,
     23 => 0,
+    31 => 0,
+    32 => 0,
   );
   $handler->display->display_options['filters']['field_additional_tagging_tid']['vocabulary'] = 'wiki_tags';
   /* Filter criterion: Content: Department (field_tag_department) */
@@ -378,6 +434,7 @@ function site_wiki_views_default_views() {
   $handler->display->display_options['filters']['field_tag_department_tid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_tag_department_tid']['expose']['operator_id'] = 'field_tag_department_tid_op';
   $handler->display->display_options['filters']['field_tag_department_tid']['expose']['label'] = 'Department';
+  $handler->display->display_options['filters']['field_tag_department_tid']['expose']['use_operator'] = TRUE;
   $handler->display->display_options['filters']['field_tag_department_tid']['expose']['operator'] = 'field_tag_department_tid_op';
   $handler->display->display_options['filters']['field_tag_department_tid']['expose']['identifier'] = 'field_tag_department_tid';
   $handler->display->display_options['filters']['field_tag_department_tid']['expose']['remember_roles'] = array(
@@ -404,6 +461,8 @@ function site_wiki_views_default_views() {
     20 => 0,
     22 => 0,
     23 => 0,
+    31 => 0,
+    32 => 0,
   );
   $handler->display->display_options['filters']['field_tag_department_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_tag_department_tid']['vocabulary'] = 'department';
@@ -415,6 +474,7 @@ function site_wiki_views_default_views() {
   $handler->display->display_options['filters']['field_tag_realm_tid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['operator_id'] = 'field_tag_realm_tid_op';
   $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['label'] = 'Realm';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['use_operator'] = TRUE;
   $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['operator'] = 'field_tag_realm_tid_op';
   $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['identifier'] = 'field_tag_realm_tid';
   $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['remember_roles'] = array(
@@ -441,6 +501,8 @@ function site_wiki_views_default_views() {
     20 => 0,
     22 => 0,
     23 => 0,
+    31 => 0,
+    32 => 0,
   );
   $handler->display->display_options['filters']['field_tag_realm_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_tag_realm_tid']['vocabulary'] = 'realm';
@@ -452,6 +514,7 @@ function site_wiki_views_default_views() {
   $handler->display->display_options['filters']['field_tag_type_tid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_tag_type_tid']['expose']['operator_id'] = 'field_tag_type_tid_op';
   $handler->display->display_options['filters']['field_tag_type_tid']['expose']['label'] = 'Type';
+  $handler->display->display_options['filters']['field_tag_type_tid']['expose']['use_operator'] = TRUE;
   $handler->display->display_options['filters']['field_tag_type_tid']['expose']['operator'] = 'field_tag_type_tid_op';
   $handler->display->display_options['filters']['field_tag_type_tid']['expose']['identifier'] = 'field_tag_type_tid';
   $handler->display->display_options['filters']['field_tag_type_tid']['expose']['remember_roles'] = array(
@@ -478,6 +541,8 @@ function site_wiki_views_default_views() {
     20 => 0,
     22 => 0,
     23 => 0,
+    31 => 0,
+    32 => 0,
   );
   $handler->display->display_options['filters']['field_tag_type_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_tag_type_tid']['vocabulary'] = 'setting_type';
@@ -489,6 +554,7 @@ function site_wiki_views_default_views() {
   $handler->display->display_options['filters']['field_tag_location_tid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_tag_location_tid']['expose']['operator_id'] = 'field_tag_location_tid_op';
   $handler->display->display_options['filters']['field_tag_location_tid']['expose']['label'] = 'Location';
+  $handler->display->display_options['filters']['field_tag_location_tid']['expose']['use_operator'] = TRUE;
   $handler->display->display_options['filters']['field_tag_location_tid']['expose']['operator'] = 'field_tag_location_tid_op';
   $handler->display->display_options['filters']['field_tag_location_tid']['expose']['identifier'] = 'field_tag_location_tid';
   $handler->display->display_options['filters']['field_tag_location_tid']['expose']['remember_roles'] = array(
@@ -515,11 +581,13 @@ function site_wiki_views_default_views() {
     20 => 0,
     22 => 0,
     23 => 0,
+    31 => 0,
+    32 => 0,
   );
   $handler->display->display_options['filters']['field_tag_location_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_tag_location_tid']['vocabulary'] = 'location_depth';
 
-  /* Display: Wiki articles */
+  /* Display: Site wiki articles */
   $handler = $view->new_display('page', 'Site wiki articles', 'site_wiki_content');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Site wiki articles';
@@ -531,7 +599,7 @@ function site_wiki_views_default_views() {
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
 
-  /* Display: Flagged articles */
+  /* Display: Site wiki flagged articles */
   $handler = $view->new_display('page', 'Site wiki flagged articles', 'site_wiki_flagged');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Site wiki flagged articles';
@@ -772,7 +840,7 @@ function site_wiki_views_default_views() {
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
 
-  /* Display: Wiki search */
+  /* Display: Site wiki search */
   $handler = $view->new_display('block', 'Site wiki search', 'site_wiki_search');
   $handler->display->display_options['display_description'] = 'Site wiki search';
   $handler->display->display_options['defaults']['use_ajax'] = FALSE;
@@ -1090,6 +1158,7 @@ Search for a wiki article by tag(s).';
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = '1';
   $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['exposed'] = TRUE;
   $handler->display->display_options['filters']['status']['expose']['operator_id'] = '';
   $handler->display->display_options['filters']['status']['expose']['label'] = 'Published';
   $handler->display->display_options['filters']['status']['expose']['operator'] = 'status_op';
@@ -1098,19 +1167,29 @@ Search for a wiki article by tag(s).';
   $handler->display->display_options['filters']['status']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
+    3 => 0,
+    30 => 0,
     8 => 0,
+    9 => 0,
+    14 => 0,
+    21 => 0,
+    24 => 0,
+    26 => 0,
+    27 => 0,
     19 => 0,
+    28 => 0,
+    29 => 0,
     12 => 0,
+    25 => 0,
     13 => 0,
     10 => 0,
     17 => 0,
     15 => 0,
-    9 => 0,
     20 => 0,
-    14 => 0,
-    4 => 0,
-    3 => 0,
-    11 => 0,
+    22 => 0,
+    23 => 0,
+    31 => 0,
+    32 => 0,
   );
   /* Filter criterion: Content: Title */
   $handler->display->display_options['filters']['title']['id'] = 'title';
@@ -1326,12 +1405,12 @@ Search for a wiki article by tag(s).';
   $handler->display->display_options['filters']['php']['use_php_setup'] = 0;
   $handler->display->display_options['filters']['php']['php_filter'] = 'return _site_wiki_limit_categories_by_nodecount($row->tid);';
 
-  /* Display: Wiki categories block */
+  /* Display: Site wiki categories block */
   $handler = $view->new_display('block', 'Site wiki categories block', 'site_wiki_cat_block');
   $handler->display->display_options['display_description'] = 'Site wiki categories block';
   $handler->display->display_options['block_description'] = 'Site wiki Categories';
 
-  /* Display: Wiki node categories block */
+  /* Display: Site wiki node categories block */
   $handler = $view->new_display('block', 'Site wiki node categories block', 'site_wiki_node_cat_block');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Site wiki node categories';
@@ -1497,7 +1576,7 @@ Search for a wiki article by tag(s).';
     'location_depth' => 'location_depth',
   );
 
-  /* Display: Wiki category */
+  /* Display: Site wiki category */
   $handler = $view->new_display('page', 'Site wiki category', 'site_wiki_category');
   $handler->display->display_options['display_description'] = 'Site wiki category';
   $handler->display->display_options['path'] = 'wiki/categories';
@@ -1643,7 +1722,7 @@ Search for a wiki article by tag(s).';
     'wiki_page' => 'wiki_page',
   );
 
-  /* Display: Wiki category articles */
+  /* Display: Site wiki category articles */
   $handler = $view->new_display('page', 'Site wiki category articles', 'site_wiki_category_articles');
   $handler->display->display_options['display_description'] = 'Wiki category articles';
   $handler->display->display_options['path'] = 'taxonomy/term/%';
@@ -1782,7 +1861,7 @@ Search for a wiki article by tag(s).';
     'wiki_page' => 'wiki_page',
   );
 
-  /* Display: Recently edited */
+  /* Display: Site wiki recently edited */
   $handler = $view->new_display('page', 'Site wiki recently edited', 'site_wiki_recent');
   $handler->display->display_options['display_description'] = 'Site wiki recently edited entries in the wiki';
   $handler->display->display_options['path'] = 'wiki/recently-edited';
@@ -1794,7 +1873,7 @@ Search for a wiki article by tag(s).';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
 
-  /* Display: Recently edited */
+  /* Display: Site wiki recently edited */
   $handler = $view->new_display('block', 'Site wiki recently edited', 'site_wiki_recent_block');
   $handler->display->display_options['display_description'] = 'Site wiki recently edited';
   $handler->display->display_options['defaults']['access'] = FALSE;
@@ -1883,7 +1962,7 @@ Search for a wiki article by tag(s).';
     'wiki_page' => 'wiki_page',
   );
 
-  /* Display: Wiki Sub-pages */
+  /* Display: Site wiki sub-pages */
   $handler = $view->new_display('block', 'Site wiki sub-pages', 'site_wiki_subpages');
   $handler->display->display_options['display_description'] = 'Site wiki sub-pages';
   $handler->display->display_options['block_description'] = 'Site wiki sub-pages';

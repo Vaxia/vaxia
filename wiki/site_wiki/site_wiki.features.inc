@@ -152,23 +152,6 @@ function site_wiki_flag_default_flags() {
 }
 
 /**
- * Implements hook_node_info().
- */
-function site_wiki_node_info() {
-  $items = array(
-    'wiki_page' => array(
-      'name' => t('Wiki page'),
-      'base' => 'node_content',
-      'description' => t('A page in the wiki'),
-      'has_title' => '1',
-      'title_label' => t('Title'),
-      'help' => '',
-    ),
-  );
-  return $items;
-}
-
-/**
  * Implements hook_workflow_default_workflows().
  */
 function site_wiki_workflow_default_workflows() {
