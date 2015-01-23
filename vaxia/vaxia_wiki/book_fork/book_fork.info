@@ -1,6 +1,0 @@
-name = Book Fork
-description = A fork of the book module - to try to fix the issues with admin large chapters.
-package = Vaxia
-version = 7.x-1.0
-core = 7.x
-dependencies[] = book
