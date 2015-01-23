@@ -354,6 +354,77 @@ function vaxia_wiki_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-wiki_page-field_tag_location'.
+  $fields['node-wiki_page-field_tag_location'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_tag_location',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'locked' => '0',
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'location_depth',
+            'parent' => '0',
+          ),
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'wiki_page',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'artwork' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'default' => array(
+          'label' => 'inline',
+          'module' => 'taxonomy',
+          'settings' => array(),
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => '9',
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_tag_location',
+      'label' => 'Location Type',
+      'required' => 1,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_buttons',
+        'weight' => '15',
+      ),
+    ),
+  );
+
   // Exported field: 'node-wiki_page-field_tag_realm'.
   $fields['node-wiki_page-field_tag_realm'] = array(
     'field_config' => array(
@@ -501,6 +572,7 @@ function vaxia_wiki_field_default_fields() {
   t('Associated Chat Rooms');
   t('Associated NPCs');
   t('Department');
+  t('Location Type');
   t('Organization Type');
   t('Realm');
   t('Type');
