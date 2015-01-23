@@ -219,6 +219,19 @@ function item_shop_views_default_views() {
   $handler->display->display_options['filters']['php_1']['field'] = 'php';
   $handler->display->display_options['filters']['php_1']['use_php_setup'] = 0;
   $handler->display->display_options['filters']['php_1']['php_filter'] = 'return item_shop_check_already_has($row->nid);';
+  /* Filter criterion: Global: PHP */
+  $handler->display->display_options['filters']['php_2']['id'] = 'php_2';
+  $handler->display->display_options['filters']['php_2']['table'] = 'views';
+  $handler->display->display_options['filters']['php_2']['field'] = 'php';
+  $handler->display->display_options['filters']['php_2']['use_php_setup'] = 0;
+  $handler->display->display_options['filters']['php_2']['php_filter'] = '$character_nid = arg(1);
+$character = node_load($character_nid);
+if ($character) {
+  if (!_character_sheet_is_playable($character)) {
+    return TRUE;
+  }
+}
+return FALSE;';
 
   /* Display: Item Shop */
   $handler = $view->new_display('page', 'Item Shop', 'item_shop');
