@@ -299,6 +299,163 @@ function vaxia_wiki_views_default_views() {
   $export['wiki_display_sessions'] = $view;
 
   $view = new view();
+  $view->name = 'wiki_governance';
+  $view->description = 'Wiki governance';
+  $view->tag = 'Vaxia Wiki';
+  $view->base_table = 'node';
+  $view->human_name = 'Wiki governance';
+  $view->core = 7;
+  $view->api_version = '3.0';
+  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Master */
+  $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['title'] = 'Wiki governance';
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['style_plugin'] = 'table';
+  $handler->display->display_options['style_options']['columns'] = array(
+    'title' => 'title',
+    'webform_form_body' => 'title',
+    'webform_results' => 'title',
+    'changed' => 'changed',
+    'webform_submission_count_node' => 'title',
+    'field_associated_files' => 'title',
+    'field_associated_forum_threads' => 'title',
+    'body' => 'title',
+  );
+  $handler->display->display_options['style_options']['default'] = '-1';
+  $handler->display->display_options['style_options']['info'] = array(
+    'title' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '</br>',
+      'empty_column' => 0,
+    ),
+    'webform_form_body' => array(
+      'align' => '',
+      'separator' => '</br>',
+      'empty_column' => 0,
+    ),
+    'webform_results' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'changed' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'webform_submission_count_node' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_associated_files' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_associated_forum_threads' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'body' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+  );
+  /* Field: Content: Updated date */
+  $handler->display->display_options['fields']['changed']['id'] = 'changed';
+  $handler->display->display_options['fields']['changed']['table'] = 'node';
+  $handler->display->display_options['fields']['changed']['field'] = 'changed';
+  $handler->display->display_options['fields']['changed']['label'] = 'Closed on date';
+  $handler->display->display_options['fields']['changed']['date_format'] = 'short';
+  $handler->display->display_options['fields']['changed']['second_date_format'] = 'privatemsg_current_day';
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = 'Governance Proposal';
+  $handler->display->display_options['fields']['title']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['title']['alter']['text'] = '<b>[title]</b>';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  /* Field: Content: Associated Files */
+  $handler->display->display_options['fields']['field_associated_files']['id'] = 'field_associated_files';
+  $handler->display->display_options['fields']['field_associated_files']['table'] = 'field_data_field_associated_files';
+  $handler->display->display_options['fields']['field_associated_files']['field'] = 'field_associated_files';
+  $handler->display->display_options['fields']['field_associated_files']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_associated_files']['delta_offset'] = '0';
+  /* Field: Content: Associated Forum Threads */
+  $handler->display->display_options['fields']['field_associated_forum_threads']['id'] = 'field_associated_forum_threads';
+  $handler->display->display_options['fields']['field_associated_forum_threads']['table'] = 'field_data_field_associated_forum_threads';
+  $handler->display->display_options['fields']['field_associated_forum_threads']['field'] = 'field_associated_forum_threads';
+  $handler->display->display_options['fields']['field_associated_forum_threads']['delta_offset'] = '0';
+  /* Field: Content: Body */
+  $handler->display->display_options['fields']['body']['id'] = 'body';
+  $handler->display->display_options['fields']['body']['table'] = 'field_data_body';
+  $handler->display->display_options['fields']['body']['field'] = 'body';
+  /* Field: Webform: Webform form body */
+  $handler->display->display_options['fields']['webform_form_body']['id'] = 'webform_form_body';
+  $handler->display->display_options['fields']['webform_form_body']['table'] = 'node';
+  $handler->display->display_options['fields']['webform_form_body']['field'] = 'webform_form_body';
+  /* Sort criterion: Content: Post date */
+  $handler->display->display_options['sorts']['created']['id'] = 'created';
+  $handler->display->display_options['sorts']['created']['table'] = 'node';
+  $handler->display->display_options['sorts']['created']['field'] = 'created';
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'proposal' => 'proposal',
+  );
+  /* Filter criterion: Content: Type (field_proposal_type) */
+  $handler->display->display_options['filters']['field_proposal_type_value']['id'] = 'field_proposal_type_value';
+  $handler->display->display_options['filters']['field_proposal_type_value']['table'] = 'field_data_field_proposal_type';
+  $handler->display->display_options['filters']['field_proposal_type_value']['field'] = 'field_proposal_type_value';
+  $handler->display->display_options['filters']['field_proposal_type_value']['value'] = array(
+    'amendment' => 'amendment',
+  );
+  /* Filter criterion: Webform: Status */
+  $handler->display->display_options['filters']['status_1']['id'] = 'status_1';
+  $handler->display->display_options['filters']['status_1']['table'] = 'webform';
+  $handler->display->display_options['filters']['status_1']['field'] = 'status';
+  $handler->display->display_options['filters']['status_1']['value'] = '0';
+
+  /* Display: Wiki governance list */
+  $handler = $view->new_display('page', 'Wiki governance list', 'page');
+  $handler->display->display_options['display_description'] = 'Wiki governance list';
+  $handler->display->display_options['path'] = 'wiki/site-governance';
+  $handler->display->display_options['menu']['type'] = 'normal';
+  $handler->display->display_options['menu']['title'] = 'Site governance';
+  $handler->display->display_options['menu']['weight'] = '0';
+  $handler->display->display_options['menu']['name'] = 'menu-wiki-links';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
+  $export['wiki_governance'] = $view;
+
+  $view = new view();
   $view->name = 'wiki_npcs_list';
   $view->description = 'Wiki NPCs list';
   $view->tag = 'Vaxia Wiki';
@@ -588,7 +745,7 @@ function vaxia_wiki_views_default_views() {
   $handler->display->display_options['fields']['field_race']['id'] = 'field_race';
   $handler->display->display_options['fields']['field_race']['table'] = 'field_data_field_race';
   $handler->display->display_options['fields']['field_race']['field'] = 'field_race';
-  /* Field: Content: Descriptions */
+  /* Field: Field: Descriptions */
   $handler->display->display_options['fields']['field_description']['id'] = 'field_description';
   $handler->display->display_options['fields']['field_description']['table'] = 'field_data_field_description';
   $handler->display->display_options['fields']['field_description']['field'] = 'field_description';
@@ -919,6 +1076,262 @@ function vaxia_wiki_views_default_views() {
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
   $export['wiki_npcs_list'] = $view;
+
+  $view = new view();
+  $view->name = 'wiki_organizations_list';
+  $view->description = 'Wiki NPCs list';
+  $view->tag = 'Vaxia Wiki';
+  $view->base_table = 'node';
+  $view->human_name = 'Wiki Organizations list';
+  $view->core = 7;
+  $view->api_version = '3.0';
+  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Master */
+  $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['title'] = 'Setting NPCs';
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['pager']['type'] = 'full';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '35';
+  $handler->display->display_options['style_plugin'] = 'table';
+  $handler->display->display_options['style_options']['columns'] = array(
+    'views_bulk_operations' => 'views_bulk_operations',
+    'title' => 'title',
+    'name' => 'name',
+    'field_realm' => 'field_realm',
+    'field_race' => 'field_race',
+    'field_description' => 'field_description',
+    'field_last_name' => 'title',
+    'field_titles' => 'title',
+  );
+  $handler->display->display_options['style_options']['default'] = 'title';
+  $handler->display->display_options['style_options']['info'] = array(
+    'views_bulk_operations' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'title' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => ' ',
+      'empty_column' => 0,
+    ),
+    'name' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_realm' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_race' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_description' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_last_name' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_titles' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+  );
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['label'] = 'Header text';
+  $handler->display->display_options['header']['area']['content'] = 'The following NPCs are recorded in our system. These NPCs are currently not in use, when claimed by a SH they will no longer be available on this display as they are currently in use for a saga or session.';
+  $handler->display->display_options['header']['area']['format'] = 'wiki';
+  /* Relationship: Content: Author */
+  $handler->display->display_options['relationships']['uid']['id'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['table'] = 'node';
+  $handler->display->display_options['relationships']['uid']['field'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['required'] = TRUE;
+  /* Relationship: Content: Type (field_tag_type) */
+  $handler->display->display_options['relationships']['field_tag_type_tid']['id'] = 'field_tag_type_tid';
+  $handler->display->display_options['relationships']['field_tag_type_tid']['table'] = 'field_data_field_tag_type';
+  $handler->display->display_options['relationships']['field_tag_type_tid']['field'] = 'field_tag_type_tid';
+  $handler->display->display_options['relationships']['field_tag_type_tid']['label'] = 'Type';
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  /* Field: Content: Realm */
+  $handler->display->display_options['fields']['field_tag_realm']['id'] = 'field_tag_realm';
+  $handler->display->display_options['fields']['field_tag_realm']['table'] = 'field_data_field_tag_realm';
+  $handler->display->display_options['fields']['field_tag_realm']['field'] = 'field_tag_realm';
+  $handler->display->display_options['fields']['field_tag_realm']['delta_offset'] = '0';
+  /* Field: Content: Organization Type */
+  $handler->display->display_options['fields']['field_organization_type']['id'] = 'field_organization_type';
+  $handler->display->display_options['fields']['field_organization_type']['table'] = 'field_data_field_organization_type';
+  $handler->display->display_options['fields']['field_organization_type']['field'] = 'field_organization_type';
+  $handler->display->display_options['fields']['field_organization_type']['delta_offset'] = '0';
+  /* Field: Content: Body */
+  $handler->display->display_options['fields']['body']['id'] = 'body';
+  $handler->display->display_options['fields']['body']['table'] = 'field_data_body';
+  $handler->display->display_options['fields']['body']['field'] = 'body';
+  $handler->display->display_options['fields']['body']['alter']['max_length'] = '200';
+  $handler->display->display_options['fields']['body']['alter']['strip_tags'] = TRUE;
+  $handler->display->display_options['fields']['body']['alter']['trim'] = TRUE;
+  /* Sort criterion: Content: Title */
+  $handler->display->display_options['sorts']['title']['id'] = 'title';
+  $handler->display->display_options['sorts']['title']['table'] = 'node';
+  $handler->display->display_options['sorts']['title']['field'] = 'title';
+  $handler->display->display_options['sorts']['title']['expose']['label'] = 'Title';
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator_id'] = '';
+  $handler->display->display_options['filters']['status']['expose']['label'] = 'Published';
+  $handler->display->display_options['filters']['status']['expose']['operator'] = 'status_op';
+  $handler->display->display_options['filters']['status']['expose']['identifier'] = 'status';
+  $handler->display->display_options['filters']['status']['expose']['required'] = TRUE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'wiki_page' => 'wiki_page',
+  );
+  $handler->display->display_options['filters']['type']['group'] = 1;
+  /* Filter criterion: Content: Type (field_tag_type) */
+  $handler->display->display_options['filters']['field_tag_type_tid']['id'] = 'field_tag_type_tid';
+  $handler->display->display_options['filters']['field_tag_type_tid']['table'] = 'field_data_field_tag_type';
+  $handler->display->display_options['filters']['field_tag_type_tid']['field'] = 'field_tag_type_tid';
+  $handler->display->display_options['filters']['field_tag_type_tid']['value'] = array(
+    0 => '729',
+  );
+  $handler->display->display_options['filters']['field_tag_type_tid']['group'] = 1;
+  $handler->display->display_options['filters']['field_tag_type_tid']['vocabulary'] = 'setting_type';
+  /* Filter criterion: Content: Title */
+  $handler->display->display_options['filters']['title']['id'] = 'title';
+  $handler->display->display_options['filters']['title']['table'] = 'node';
+  $handler->display->display_options['filters']['title']['field'] = 'title';
+  $handler->display->display_options['filters']['title']['operator'] = 'contains';
+  $handler->display->display_options['filters']['title']['group'] = 1;
+  $handler->display->display_options['filters']['title']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['title']['expose']['operator_id'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['label'] = 'NPC Name';
+  $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
+  $handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
+  $handler->display->display_options['filters']['title']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['title']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    30 => 0,
+    8 => 0,
+    9 => 0,
+    14 => 0,
+    21 => 0,
+    24 => 0,
+    26 => 0,
+    27 => 0,
+    19 => 0,
+    28 => 0,
+    29 => 0,
+    12 => 0,
+    25 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    20 => 0,
+    22 => 0,
+    23 => 0,
+  );
+  /* Filter criterion: Content: Realm (field_tag_realm) */
+  $handler->display->display_options['filters']['field_tag_realm_tid']['id'] = 'field_tag_realm_tid';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['table'] = 'field_data_field_tag_realm';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['field'] = 'field_tag_realm_tid';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['value'] = array(
+    727 => '727',
+    725 => '725',
+    726 => '726',
+  );
+  $handler->display->display_options['filters']['field_tag_realm_tid']['group'] = 1;
+  $handler->display->display_options['filters']['field_tag_realm_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['operator_id'] = 'field_tag_realm_tid_op';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['label'] = 'Realm';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['operator'] = 'field_tag_realm_tid_op';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['identifier'] = 'field_tag_realm_tid';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    30 => 0,
+    8 => 0,
+    9 => 0,
+    14 => 0,
+    21 => 0,
+    24 => 0,
+    26 => 0,
+    27 => 0,
+    19 => 0,
+    28 => 0,
+    29 => 0,
+    12 => 0,
+    25 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    20 => 0,
+    22 => 0,
+    23 => 0,
+    31 => 0,
+    1000 => 0,
+  );
+  $handler->display->display_options['filters']['field_tag_realm_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['vocabulary'] = 'realm';
+
+  /* Display: Setting NPCs */
+  $handler = $view->new_display('page', 'Setting NPCs', 'npcs_list');
+  $handler->display->display_options['display_description'] = 'List out available NPCs';
+  $handler->display->display_options['path'] = 'wiki/organizations-list';
+  $handler->display->display_options['menu']['type'] = 'normal';
+  $handler->display->display_options['menu']['title'] = 'Organizations by Setting';
+  $handler->display->display_options['menu']['description'] = 'A list of all Organizations available in the wiki';
+  $handler->display->display_options['menu']['weight'] = '0';
+  $handler->display->display_options['menu']['name'] = 'menu-wiki-links';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
+  $export['wiki_organizations_list'] = $view;
 
   return $export;
 }
