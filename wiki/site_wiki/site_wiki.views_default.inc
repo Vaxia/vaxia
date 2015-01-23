@@ -12,10 +12,10 @@ function site_wiki_views_default_views() {
 
   $view = new view();
   $view->name = 'site_wiki_admin';
-  $view->description = 'Site wiki listings for wiki articles';
+  $view->description = 'Site wiki content';
   $view->tag = 'Site Wiki';
   $view->base_table = 'node';
-  $view->human_name = 'Site wiki articles';
+  $view->human_name = 'Site wiki content';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
@@ -426,184 +426,25 @@ function site_wiki_views_default_views() {
     32 => 0,
   );
   $handler->display->display_options['filters']['field_additional_tagging_tid']['vocabulary'] = 'wiki_tags';
-  /* Filter criterion: Content: Department (field_tag_department) */
-  $handler->display->display_options['filters']['field_tag_department_tid']['id'] = 'field_tag_department_tid';
-  $handler->display->display_options['filters']['field_tag_department_tid']['table'] = 'field_data_field_tag_department';
-  $handler->display->display_options['filters']['field_tag_department_tid']['field'] = 'field_tag_department_tid';
-  $handler->display->display_options['filters']['field_tag_department_tid']['group'] = 1;
-  $handler->display->display_options['filters']['field_tag_department_tid']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['field_tag_department_tid']['expose']['operator_id'] = 'field_tag_department_tid_op';
-  $handler->display->display_options['filters']['field_tag_department_tid']['expose']['label'] = 'Department';
-  $handler->display->display_options['filters']['field_tag_department_tid']['expose']['use_operator'] = TRUE;
-  $handler->display->display_options['filters']['field_tag_department_tid']['expose']['operator'] = 'field_tag_department_tid_op';
-  $handler->display->display_options['filters']['field_tag_department_tid']['expose']['identifier'] = 'field_tag_department_tid';
-  $handler->display->display_options['filters']['field_tag_department_tid']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    3 => 0,
-    30 => 0,
-    8 => 0,
-    9 => 0,
-    14 => 0,
-    21 => 0,
-    24 => 0,
-    26 => 0,
-    27 => 0,
-    19 => 0,
-    28 => 0,
-    29 => 0,
-    12 => 0,
-    25 => 0,
-    13 => 0,
-    10 => 0,
-    17 => 0,
-    15 => 0,
-    20 => 0,
-    22 => 0,
-    23 => 0,
-    31 => 0,
-    32 => 0,
-  );
-  $handler->display->display_options['filters']['field_tag_department_tid']['type'] = 'select';
-  $handler->display->display_options['filters']['field_tag_department_tid']['vocabulary'] = 'department';
-  /* Filter criterion: Content: Realm (field_tag_realm) */
-  $handler->display->display_options['filters']['field_tag_realm_tid']['id'] = 'field_tag_realm_tid';
-  $handler->display->display_options['filters']['field_tag_realm_tid']['table'] = 'field_data_field_tag_realm';
-  $handler->display->display_options['filters']['field_tag_realm_tid']['field'] = 'field_tag_realm_tid';
-  $handler->display->display_options['filters']['field_tag_realm_tid']['group'] = 1;
-  $handler->display->display_options['filters']['field_tag_realm_tid']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['operator_id'] = 'field_tag_realm_tid_op';
-  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['label'] = 'Realm';
-  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['use_operator'] = TRUE;
-  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['operator'] = 'field_tag_realm_tid_op';
-  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['identifier'] = 'field_tag_realm_tid';
-  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    3 => 0,
-    30 => 0,
-    8 => 0,
-    9 => 0,
-    14 => 0,
-    21 => 0,
-    24 => 0,
-    26 => 0,
-    27 => 0,
-    19 => 0,
-    28 => 0,
-    29 => 0,
-    12 => 0,
-    25 => 0,
-    13 => 0,
-    10 => 0,
-    17 => 0,
-    15 => 0,
-    20 => 0,
-    22 => 0,
-    23 => 0,
-    31 => 0,
-    32 => 0,
-  );
-  $handler->display->display_options['filters']['field_tag_realm_tid']['type'] = 'select';
-  $handler->display->display_options['filters']['field_tag_realm_tid']['vocabulary'] = 'realm';
-  /* Filter criterion: Content: Type (field_tag_type) */
-  $handler->display->display_options['filters']['field_tag_type_tid']['id'] = 'field_tag_type_tid';
-  $handler->display->display_options['filters']['field_tag_type_tid']['table'] = 'field_data_field_tag_type';
-  $handler->display->display_options['filters']['field_tag_type_tid']['field'] = 'field_tag_type_tid';
-  $handler->display->display_options['filters']['field_tag_type_tid']['group'] = 1;
-  $handler->display->display_options['filters']['field_tag_type_tid']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['field_tag_type_tid']['expose']['operator_id'] = 'field_tag_type_tid_op';
-  $handler->display->display_options['filters']['field_tag_type_tid']['expose']['label'] = 'Type';
-  $handler->display->display_options['filters']['field_tag_type_tid']['expose']['use_operator'] = TRUE;
-  $handler->display->display_options['filters']['field_tag_type_tid']['expose']['operator'] = 'field_tag_type_tid_op';
-  $handler->display->display_options['filters']['field_tag_type_tid']['expose']['identifier'] = 'field_tag_type_tid';
-  $handler->display->display_options['filters']['field_tag_type_tid']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    3 => 0,
-    30 => 0,
-    8 => 0,
-    9 => 0,
-    14 => 0,
-    21 => 0,
-    24 => 0,
-    26 => 0,
-    27 => 0,
-    19 => 0,
-    28 => 0,
-    29 => 0,
-    12 => 0,
-    25 => 0,
-    13 => 0,
-    10 => 0,
-    17 => 0,
-    15 => 0,
-    20 => 0,
-    22 => 0,
-    23 => 0,
-    31 => 0,
-    32 => 0,
-  );
-  $handler->display->display_options['filters']['field_tag_type_tid']['type'] = 'select';
-  $handler->display->display_options['filters']['field_tag_type_tid']['vocabulary'] = 'setting_type';
-  /* Filter criterion: Content: Location Type (field_tag_location) */
-  $handler->display->display_options['filters']['field_tag_location_tid']['id'] = 'field_tag_location_tid';
-  $handler->display->display_options['filters']['field_tag_location_tid']['table'] = 'field_data_field_tag_location';
-  $handler->display->display_options['filters']['field_tag_location_tid']['field'] = 'field_tag_location_tid';
-  $handler->display->display_options['filters']['field_tag_location_tid']['group'] = 1;
-  $handler->display->display_options['filters']['field_tag_location_tid']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['field_tag_location_tid']['expose']['operator_id'] = 'field_tag_location_tid_op';
-  $handler->display->display_options['filters']['field_tag_location_tid']['expose']['label'] = 'Location';
-  $handler->display->display_options['filters']['field_tag_location_tid']['expose']['use_operator'] = TRUE;
-  $handler->display->display_options['filters']['field_tag_location_tid']['expose']['operator'] = 'field_tag_location_tid_op';
-  $handler->display->display_options['filters']['field_tag_location_tid']['expose']['identifier'] = 'field_tag_location_tid';
-  $handler->display->display_options['filters']['field_tag_location_tid']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    3 => 0,
-    30 => 0,
-    8 => 0,
-    9 => 0,
-    14 => 0,
-    21 => 0,
-    24 => 0,
-    26 => 0,
-    27 => 0,
-    19 => 0,
-    28 => 0,
-    29 => 0,
-    12 => 0,
-    25 => 0,
-    13 => 0,
-    10 => 0,
-    17 => 0,
-    15 => 0,
-    20 => 0,
-    22 => 0,
-    23 => 0,
-    31 => 0,
-    32 => 0,
-  );
-  $handler->display->display_options['filters']['field_tag_location_tid']['type'] = 'select';
-  $handler->display->display_options['filters']['field_tag_location_tid']['vocabulary'] = 'location_depth';
 
-  /* Display: Site wiki articles */
-  $handler = $view->new_display('page', 'Site wiki articles', 'site_wiki_content');
+  /* Display: Site wiki content */
+  $handler = $view->new_display('page', 'Site wiki content', 'site_wiki_content');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Site wiki articles';
-  $handler->display->display_options['display_description'] = 'The display of wiki entries on administrative content pages';
+  $handler->display->display_options['title'] = 'Site wiki content';
+  $handler->display->display_options['display_description'] = 'Site wiki content';
   $handler->display->display_options['path'] = 'admin/content/wiki-content';
   $handler->display->display_options['menu']['type'] = 'tab';
   $handler->display->display_options['menu']['title'] = 'Site wiki content';
+  $handler->display->display_options['menu']['description'] = 'Site wiki content';
   $handler->display->display_options['menu']['weight'] = '0';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
 
-  /* Display: Site wiki flagged articles */
-  $handler = $view->new_display('page', 'Site wiki flagged articles', 'site_wiki_flagged');
+  /* Display: Site wiki flagged */
+  $handler = $view->new_display('page', 'Site wiki flagged', 'site_wiki_flagged');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Site wiki flagged articles';
-  $handler->display->display_options['display_description'] = 'Site wiki articles flagged as needing attention';
+  $handler->display->display_options['title'] = 'Site wiki flagged';
+  $handler->display->display_options['display_description'] = 'Site wiki flagged';
   $handler->display->display_options['defaults']['access'] = FALSE;
   $handler->display->display_options['access']['type'] = 'role';
   $handler->display->display_options['access']['role'] = array(
@@ -833,8 +674,8 @@ function site_wiki_views_default_views() {
   );
   $handler->display->display_options['path'] = 'wiki/flagged-for-deletion';
   $handler->display->display_options['menu']['type'] = 'normal';
-  $handler->display->display_options['menu']['title'] = 'Site wiki flagged articles';
-  $handler->display->display_options['menu']['description'] = 'Articles that have been flagged';
+  $handler->display->display_options['menu']['title'] = 'Site wiki flagged';
+  $handler->display->display_options['menu']['description'] = 'Site wiki flagged';
   $handler->display->display_options['menu']['weight'] = '100';
   $handler->display->display_options['menu']['name'] = 'menu-wiki-links';
   $handler->display->display_options['menu']['context'] = 0;
@@ -911,13 +752,13 @@ Search for a wiki article by tag(s).';
   $handler->display->display_options['sorts']['changed']['table'] = 'node';
   $handler->display->display_options['sorts']['changed']['field'] = 'changed';
   $handler->display->display_options['sorts']['changed']['order'] = 'DESC';
-  $handler->display->display_options['block_description'] = 'Wiki search';
+  $handler->display->display_options['block_description'] = 'Site wiki search';
 
-  /* Display: Admin flagged articles */
-  $handler = $view->new_display('page', 'Admin flagged articles', 'site_wiki_flagged_attention');
+  /* Display: Site wiki flagged */
+  $handler = $view->new_display('page', 'Site wiki flagged', 'site_wiki_flagged_admin');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Wiki flagged';
-  $handler->display->display_options['display_description'] = 'Wiki articles flagged as needing attention';
+  $handler->display->display_options['title'] = 'Site wiki flagged';
+  $handler->display->display_options['display_description'] = 'Site wiki flagged';
   $handler->display->display_options['defaults']['access'] = FALSE;
   $handler->display->display_options['access']['type'] = 'role';
   $handler->display->display_options['access']['role'] = array(

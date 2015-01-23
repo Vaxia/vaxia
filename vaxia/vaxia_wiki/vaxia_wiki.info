@@ -28,6 +28,7 @@ features[taxonomy][] = location_depth
 features[taxonomy][] = organization_type
 features[taxonomy][] = realm
 features[taxonomy][] = setting_type
+features[views_view][] = vaxia_wiki_admin
 features[views_view][] = wiki_display_sessions
 features[views_view][] = wiki_governance
 features[views_view][] = wiki_npcs_list
