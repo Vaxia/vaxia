@@ -7,16 +7,13 @@
 /**
  * Implements hook_ctools_plugin_api().
  */
-function items_ctools_plugin_api() {
-  list($module, $api) = func_get_args();
+function items_ctools_plugin_api($module = NULL, $api = NULL) {
   if ($module == "corresponding_node_references" && $api == "default_corresponding_node_references_presets") {
     return array("version" => "1");
   }
-  list($module, $api) = func_get_args();
   if ($module == "field_group" && $api == "field_group") {
     return array("version" => "1");
   }
-  list($module, $api) = func_get_args();
   if ($module == "strongarm" && $api == "strongarm") {
     return array("version" => "1");
   }
@@ -25,8 +22,8 @@ function items_ctools_plugin_api() {
 /**
  * Implements hook_views_api().
  */
-function items_views_api() {
-  return array("version" => "3.0");
+function items_views_api($module = NULL, $api = NULL) {
+  return array("api" => "3.0");
 }
 
 /**
@@ -56,6 +53,7 @@ Step 4. Change workflow to submitted and and click \'save.\'
 Don\'t forget to look over the settings in the Item Build Assistant. Make sure the RP bonus is set properly and each roll is interpreted correctly at the right difficulty. When in doubt - you can always ask the player about the intent for a particular post.'),
     ),
   );
+  drupal_alter('node_info', $items);
   return $items;
 }
 
@@ -65,60 +63,67 @@ Don\'t forget to look over the settings in the Item Build Assistant. Make sure t
 function items_workflow_default_workflows() {
   $workflows = array();
 
-  // Exported workflow: Item evaluation workflow
-  $workflows['Item evaluation workflow'] = array(
-    'name' => 'Item evaluation workflow',
-    'tab_roles' => 'author,3,9,4',
-    'options' => 'a:4:{s:16:"comment_log_node";i:1;s:15:"comment_log_tab";i:1;s:13:"name_as_title";i:1;s:12:"watchdog_log";i:1;}',
+  // Exported workflow: Item evaluation
+  $workflows['Item evaluation'] = array(
+    'name' => 'Item evaluation',
+    'tab_roles' => 'author,3,9',
+    'options' => 'a:4:{s:16:"comment_log_node";s:1:"1";s:15:"comment_log_tab";s:1:"1";s:13:"name_as_title";s:1:"1";s:12:"watchdog_log";s:1:"1";}',
     'states' => array(
       0 => array(
         'state' => '(creation)',
-        'weight' => '-50',
-        'sysid' => '1',
-        'status' => '1',
-        'name' => 'Item evaluation workflow',
+        'weight' => -50,
+        'sysid' => 1,
+        'status' => 1,
+        'name' => 'Item evaluation',
       ),
       1 => array(
         'state' => 'draft',
-        'weight' => '-19',
-        'sysid' => '0',
-        'status' => '1',
-        'name' => 'Item evaluation workflow',
+        'weight' => -19,
+        'sysid' => 0,
+        'status' => 1,
+        'name' => 'Item evaluation',
       ),
       2 => array(
         'state' => 'submitted',
-        'weight' => '-18',
-        'sysid' => '0',
-        'status' => '1',
-        'name' => 'Item evaluation workflow',
+        'weight' => -18,
+        'sysid' => 0,
+        'status' => 1,
+        'name' => 'Item evaluation',
       ),
       3 => array(
         'state' => 'approved',
-        'weight' => '-17',
-        'sysid' => '0',
-        'status' => '1',
-        'name' => 'Item evaluation workflow',
+        'weight' => -17,
+        'sysid' => 0,
+        'status' => 1,
+        'name' => 'Item evaluation',
       ),
       4 => array(
         'state' => 'disapproved',
-        'weight' => '-16',
-        'sysid' => '0',
-        'status' => '1',
-        'name' => 'Item evaluation workflow',
+        'weight' => -16,
+        'sysid' => 0,
+        'status' => 1,
+        'name' => 'Item evaluation',
       ),
       5 => array(
-        'state' => 'moved to property tab',
-        'weight' => '-15',
-        'sysid' => '0',
-        'status' => '1',
-        'name' => 'Item evaluation workflow',
+        'state' => 'needs recharge',
+        'weight' => -15,
+        'sysid' => 0,
+        'status' => 1,
+        'name' => 'Item evaluation',
       ),
       6 => array(
+        'state' => 'needs daily refresh',
+        'weight' => -14,
+        'sysid' => 0,
+        'status' => 1,
+        'name' => 'Item evaluation',
+      ),
+      7 => array(
         'state' => 'removed from game',
-        'weight' => '-14',
-        'sysid' => '0',
-        'status' => '1',
-        'name' => 'Item evaluation workflow',
+        'weight' => -13,
+        'sysid' => 0,
+        'status' => 1,
+        'name' => 'Item evaluation',
       ),
     ),
     'transitions' => array(
@@ -165,7 +170,7 @@ function items_workflow_default_workflows() {
       8 => array(
         'roles' => 'administrator,evaluator',
         'state' => 'submitted',
-        'target_state' => 'moved to property tab',
+        'target_state' => 'needs recharge',
       ),
       9 => array(
         'roles' => 'administrator',
@@ -190,7 +195,7 @@ function items_workflow_default_workflows() {
       13 => array(
         'roles' => 'administrator,storyteller,evaluator',
         'state' => 'approved',
-        'target_state' => 'moved to property tab',
+        'target_state' => 'needs recharge',
       ),
       14 => array(
         'roles' => 'administrator,evaluator',
@@ -215,7 +220,7 @@ function items_workflow_default_workflows() {
       18 => array(
         'roles' => 'administrator',
         'state' => 'disapproved',
-        'target_state' => 'moved to property tab',
+        'target_state' => 'needs recharge',
       ),
       19 => array(
         'roles' => 'administrator',
@@ -224,27 +229,27 @@ function items_workflow_default_workflows() {
       ),
       20 => array(
         'roles' => 'administrator',
-        'state' => 'moved to property tab',
+        'state' => 'needs recharge',
         'target_state' => 'draft',
       ),
       21 => array(
         'roles' => 'administrator',
-        'state' => 'moved to property tab',
+        'state' => 'needs recharge',
         'target_state' => 'submitted',
       ),
       22 => array(
         'roles' => 'administrator',
-        'state' => 'moved to property tab',
+        'state' => 'needs recharge',
         'target_state' => 'approved',
       ),
       23 => array(
         'roles' => 'administrator',
-        'state' => 'moved to property tab',
+        'state' => 'needs recharge',
         'target_state' => 'disapproved',
       ),
       24 => array(
         'roles' => 'administrator',
-        'state' => 'moved to property tab',
+        'state' => 'needs recharge',
         'target_state' => 'removed from game',
       ),
       25 => array(
@@ -270,7 +275,7 @@ function items_workflow_default_workflows() {
       29 => array(
         'roles' => 'administrator',
         'state' => 'removed from game',
-        'target_state' => 'moved to property tab',
+        'target_state' => 'needs recharge',
       ),
     ),
     'node_types' => array(

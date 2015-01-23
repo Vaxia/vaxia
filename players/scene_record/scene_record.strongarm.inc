@@ -96,13 +96,35 @@ function scene_record_strongarm() {
     'extra_fields' => array(
       'form' => array(
         'title' => array(
-          'weight' => '-5',
+          'weight' => '0',
         ),
         'path' => array(
-          'weight' => '30',
+          'weight' => '3',
+        ),
+        'locations' => array(
+          'weight' => '2',
+        ),
+        'workflow' => array(
+          'weight' => '8',
+        ),
+        'badges' => array(
+          'weight' => '1',
         ),
       ),
-      'display' => array(),
+      'display' => array(
+        'workflow_current_state' => array(
+          'default' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
+        ),
+        'workflow' => array(
+          'default' => array(
+            'weight' => '5',
+            'visible' => TRUE,
+          ),
+        ),
+      ),
     ),
   );
   $export['field_bundle_settings_node__scene'] = $strongarm;

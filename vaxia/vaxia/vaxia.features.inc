@@ -7,12 +7,10 @@
 /**
  * Implements hook_ctools_plugin_api().
  */
-function vaxia_ctools_plugin_api() {
-  list($module, $api) = func_get_args();
+function vaxia_ctools_plugin_api($module = NULL, $api = NULL) {
   if ($module == "field_group" && $api == "field_group") {
     return array("version" => "1");
   }
-  list($module, $api) = func_get_args();
   if ($module == "strongarm" && $api == "strongarm") {
     return array("version" => "1");
   }
@@ -21,8 +19,8 @@ function vaxia_ctools_plugin_api() {
 /**
  * Implements hook_views_api().
  */
-function vaxia_views_api() {
-  return array("version" => "3.0");
+function vaxia_views_api($module = NULL, $api = NULL) {
+  return array("api" => "3.0");
 }
 
 /**
@@ -43,5 +41,6 @@ Step 2: Save, when ready to submit change the workflow to submitted.
 Things to remember: you get 300 points to allocate between stats and skills pre-play. Those points are flat. 30 points in a stat is 30 points from your pool, 20 points in a skill is 20 from the pool. It is only once in play, when you are spending XP, that the cost of higher values will scale.'),
     ),
   );
+  drupal_alter('node_info', $items);
   return $items;
 }

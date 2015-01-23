@@ -877,29 +877,21 @@ function items_views_default_views() {
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
-  /* Contextual filter: Content: Author uid */
-  $handler->display->display_options['arguments']['uid']['id'] = 'uid';
-  $handler->display->display_options['arguments']['uid']['table'] = 'node';
-  $handler->display->display_options['arguments']['uid']['field'] = 'uid';
-  $handler->display->display_options['arguments']['uid']['default_action'] = 'default';
-  $handler->display->display_options['arguments']['uid']['default_argument_type'] = 'php';
-  $handler->display->display_options['arguments']['uid']['default_argument_options']['code'] = '// Default use logged in user.
-global $user;
-$uid = $user->uid;
-// If this is a node display, char sheet type.
-$path = $_GET[\'q\'];
-$args = explode(\'/\', $path);
-if (!empty($args[1])) {
-  $nid = $args[1];
-  $node = node_load($nid);
-  if (!empty($node->nid) && $node->type == \'character_sheet\') {
-    $uid = $node->uid;
-  }
-}
-return $uid;';
-  $handler->display->display_options['arguments']['uid']['summary']['number_of_records'] = '0';
-  $handler->display->display_options['arguments']['uid']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['uid']['summary_options']['items_per_page'] = '25';
+  /* Contextual filter: Content: Character owner (field_character_owner) */
+  $handler->display->display_options['arguments']['field_character_owner_nid']['id'] = 'field_character_owner_nid';
+  $handler->display->display_options['arguments']['field_character_owner_nid']['table'] = 'field_data_field_character_owner';
+  $handler->display->display_options['arguments']['field_character_owner_nid']['field'] = 'field_character_owner_nid';
+  $handler->display->display_options['arguments']['field_character_owner_nid']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['field_character_owner_nid']['default_argument_type'] = 'node';
+  $handler->display->display_options['arguments']['field_character_owner_nid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_character_owner_nid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_character_owner_nid']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_character_owner_nid']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['field_character_owner_nid']['validate']['type'] = 'node';
+  $handler->display->display_options['arguments']['field_character_owner_nid']['validate_options']['types'] = array(
+    'character_sheet' => 'character_sheet',
+  );
+  $handler->display->display_options['arguments']['field_character_owner_nid']['validate_options']['access'] = TRUE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
@@ -1655,7 +1647,7 @@ return $uid;';
   $handler->display->display_options['filters']['field_awareness_value']['operator'] = '>';
   $handler->display->display_options['filters']['field_awareness_value']['value']['value'] = '70';
   $handler->display->display_options['filters']['field_awareness_value']['group'] = 2;
-  /* Filter criterion: Content: Charisma (field_charisma) */
+  /* Filter criterion: Field: Charisma (field_charisma) */
   $handler->display->display_options['filters']['field_charisma_value']['id'] = 'field_charisma_value';
   $handler->display->display_options['filters']['field_charisma_value']['table'] = 'field_data_field_charisma';
   $handler->display->display_options['filters']['field_charisma_value']['field'] = 'field_charisma_value';

@@ -7,8 +7,7 @@
 /**
  * Implements hook_ctools_plugin_api().
  */
-function scene_record_ctools_plugin_api() {
-  list($module, $api) = func_get_args();
+function scene_record_ctools_plugin_api($module = NULL, $api = NULL) {
   if ($module == "strongarm" && $api == "strongarm") {
     return array("version" => "1");
   }
@@ -17,8 +16,8 @@ function scene_record_ctools_plugin_api() {
 /**
  * Implements hook_views_api().
  */
-function scene_record_views_api() {
-  return array("version" => "3.0");
+function scene_record_views_api($module = NULL, $api = NULL) {
+  return array("api" => "3.0");
 }
 
 /**
@@ -37,5 +36,6 @@ function scene_record_node_info() {
 When you\'re ready for a Storyhost to evaluate your scene, set it to submitted and save the scene. Don\'t forget to save and submit if you want credit for the scene! With this system we no longer need you to link to the scene in the forums - which is useful for things you\'d rather keep private.'),
     ),
   );
+  drupal_alter('node_info', $items);
   return $items;
 }

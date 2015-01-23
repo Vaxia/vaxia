@@ -9,6 +9,41 @@
  */
 function items_default_rules_configuration() {
   $items = array();
+  $items['rules_creating_item_move_to_workflow'] = entity_import('rules_config', '{ "rules_creating_item_move_to_workflow" : {
+      "LABEL" : "Creating item move to workflow",
+      "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
+      "TAGS" : [ "Items" ],
+      "REQUIRES" : [ "rules" ],
+      "ON" : { "node_insert--items" : { "bundle" : "items" } },
+      "DO" : [
+        { "redirect" : { "url" : "node\\/[node:nid]\\/workflow" } },
+        { "drupal_message" : { "message" : "Don\\u0027t forget to set the item to submitted so that the evaluation team can review it." } }
+      ]
+    }
+  }');
+  $items['rules_item_removed_from_game'] = entity_import('rules_config', '{ "rules_item_removed_from_game" : {
+      "LABEL" : "Item removed from game",
+      "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
+      "TAGS" : [ "Items" ],
+      "REQUIRES" : [ "rules", "workflow_rules" ],
+      "ON" : { "workflow_state_changed" : [] },
+      "IF" : [
+        { "node_is_of_type" : { "node" : [ "node" ], "type" : { "value" : { "items" : "items" } } } },
+        { "workflow_check_state" : {
+            "node" : [ "node" ],
+            "workflow_state" : { "value" : { "16" : "16", "22" : "22" } }
+          }
+        }
+      ],
+      "DO" : [
+        { "data_set" : { "data" : [ "node:field-character-owner" ], "value" : [ "" ] } },
+        { "node_unpublish" : { "node" : [ "node" ] } },
+        { "entity_save" : { "data" : [ "node" ] } }
+      ]
+    }
+  }');
   $items['rules_notify_item_eval_re_new_item'] = entity_import('rules_config', '{ "rules_notify_item_eval_re_new_item" : {
       "LABEL" : "Notify item eval re: new item",
       "PLUGIN" : "reaction rule",

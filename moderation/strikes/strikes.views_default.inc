@@ -203,7 +203,7 @@ If you have any questions about a specific incident, or about notations in gener
   $handler->display->display_options['fields']['field_witnesses']['id'] = 'field_witnesses';
   $handler->display->display_options['fields']['field_witnesses']['table'] = 'field_data_field_witnesses';
   $handler->display->display_options['fields']['field_witnesses']['field'] = 'field_witnesses';
-  $handler->display->display_options['fields']['field_witnesses']['label'] = 'Player(s) Bystanding';
+  $handler->display->display_options['fields']['field_witnesses']['label'] = 'Affected Player(s)';
   $handler->display->display_options['fields']['field_witnesses']['empty'] = 'No additional players affected.';
   $handler->display->display_options['fields']['field_witnesses']['delta_offset'] = '0';
   $handler->display->display_options['fields']['field_witnesses']['multi_type'] = 'ul';
@@ -1142,7 +1142,7 @@ return FALSE;';
   $handler->display->display_options['fields']['field_witnesses']['id'] = 'field_witnesses';
   $handler->display->display_options['fields']['field_witnesses']['table'] = 'field_data_field_witnesses';
   $handler->display->display_options['fields']['field_witnesses']['field'] = 'field_witnesses';
-  $handler->display->display_options['fields']['field_witnesses']['label'] = 'Player(s) Bystanding';
+  $handler->display->display_options['fields']['field_witnesses']['label'] = 'Affected Player(s)';
   $handler->display->display_options['fields']['field_witnesses']['empty'] = 'No additional players affected.';
   $handler->display->display_options['fields']['field_witnesses']['delta_offset'] = '0';
   $handler->display->display_options['fields']['field_witnesses']['multi_type'] = 'ul';

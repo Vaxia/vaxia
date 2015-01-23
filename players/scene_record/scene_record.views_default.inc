@@ -79,12 +79,20 @@ function scene_record_views_default_views() {
   $handler->display->display_options['relationships']['uid']['id'] = 'uid';
   $handler->display->display_options['relationships']['uid']['table'] = 'node';
   $handler->display->display_options['relationships']['uid']['field'] = 'uid';
+  /* Field: Content: Character */
+  $handler->display->display_options['fields']['field_scene_character']['id'] = 'field_scene_character';
+  $handler->display->display_options['fields']['field_scene_character']['table'] = 'field_data_field_scene_character';
+  $handler->display->display_options['fields']['field_scene_character']['field'] = 'field_scene_character';
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  /* Field: Content: Attention To */
+  $handler->display->display_options['fields']['field_sh_attention_to']['id'] = 'field_sh_attention_to';
+  $handler->display->display_options['fields']['field_sh_attention_to']['table'] = 'field_data_field_sh_attention_to';
+  $handler->display->display_options['fields']['field_sh_attention_to']['field'] = 'field_sh_attention_to';
   /* Field: Content: Updated date */
   $handler->display->display_options['fields']['changed']['id'] = 'changed';
   $handler->display->display_options['fields']['changed']['table'] = 'node';
@@ -232,6 +240,15 @@ function scene_record_views_default_views() {
     32 => 0,
   );
   $handler->display->display_options['filters']['sid']['expose']['reduce'] = TRUE;
+  /* Filter criterion: Content: Character (field_scene_character) */
+  $handler->display->display_options['filters']['field_scene_character_nid']['id'] = 'field_scene_character_nid';
+  $handler->display->display_options['filters']['field_scene_character_nid']['table'] = 'field_data_field_scene_character';
+  $handler->display->display_options['filters']['field_scene_character_nid']['field'] = 'field_scene_character_nid';
+  $handler->display->display_options['filters']['field_scene_character_nid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_scene_character_nid']['expose']['operator_id'] = 'field_scene_character_nid_op';
+  $handler->display->display_options['filters']['field_scene_character_nid']['expose']['label'] = 'Character (field_scene_character)';
+  $handler->display->display_options['filters']['field_scene_character_nid']['expose']['operator'] = 'field_scene_character_nid_op';
+  $handler->display->display_options['filters']['field_scene_character_nid']['expose']['identifier'] = 'field_scene_character_nid';
   $handler->display->display_options['path'] = 'character-scenes/mine';
   $handler->display->display_options['menu']['type'] = 'default tab';
   $handler->display->display_options['menu']['title'] = 'My Scenes';
@@ -258,6 +275,10 @@ function scene_record_views_default_views() {
     9 => '9',
   );
   $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Character */
+  $handler->display->display_options['fields']['field_scene_character']['id'] = 'field_scene_character';
+  $handler->display->display_options['fields']['field_scene_character']['table'] = 'field_data_field_scene_character';
+  $handler->display->display_options['fields']['field_scene_character']['field'] = 'field_scene_character';
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -269,6 +290,10 @@ function scene_record_views_default_views() {
   $handler->display->display_options['fields']['name']['table'] = 'users';
   $handler->display->display_options['fields']['name']['field'] = 'name';
   $handler->display->display_options['fields']['name']['relationship'] = 'uid';
+  /* Field: Content: Attention To */
+  $handler->display->display_options['fields']['field_sh_attention_to']['id'] = 'field_sh_attention_to';
+  $handler->display->display_options['fields']['field_sh_attention_to']['table'] = 'field_data_field_sh_attention_to';
+  $handler->display->display_options['fields']['field_sh_attention_to']['field'] = 'field_sh_attention_to';
   /* Field: Content: Updated date */
   $handler->display->display_options['fields']['changed']['id'] = 'changed';
   $handler->display->display_options['fields']['changed']['table'] = 'node';
@@ -343,6 +368,52 @@ function scene_record_views_default_views() {
   $handler->display->display_options['menu']['type'] = 'tab';
   $handler->display->display_options['menu']['title'] = 'Scene Evaluation';
   $handler->display->display_options['menu']['description'] = 'Scene Evaluation';
+  $handler->display->display_options['menu']['weight'] = '0';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
+
+  /* Display: Scenes */
+  $handler = $view->new_display('page', 'Scenes', 'character_scenes');
+  $handler->display->display_options['display_description'] = 'Scenes';
+  $handler->display->display_options['defaults']['access'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'role';
+  $handler->display->display_options['access']['role'] = array(
+    8 => '8',
+  );
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  /* Relationship: Content: Author */
+  $handler->display->display_options['relationships']['uid']['id'] = 'uid';
+  $handler->display->display_options['relationships']['uid']['table'] = 'node';
+  $handler->display->display_options['relationships']['uid']['field'] = 'uid';
+  /* Relationship: Content: Character (field_scene_character) */
+  $handler->display->display_options['relationships']['field_scene_character_nid']['id'] = 'field_scene_character_nid';
+  $handler->display->display_options['relationships']['field_scene_character_nid']['table'] = 'field_data_field_scene_character';
+  $handler->display->display_options['relationships']['field_scene_character_nid']['field'] = 'field_scene_character_nid';
+  $handler->display->display_options['relationships']['field_scene_character_nid']['required'] = TRUE;
+  $handler->display->display_options['relationships']['field_scene_character_nid']['delta'] = '-1';
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Content: Nid */
+  $handler->display->display_options['arguments']['nid']['id'] = 'nid';
+  $handler->display->display_options['arguments']['nid']['table'] = 'node';
+  $handler->display->display_options['arguments']['nid']['field'] = 'nid';
+  $handler->display->display_options['arguments']['nid']['relationship'] = 'field_scene_character_nid';
+  $handler->display->display_options['arguments']['nid']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['nid']['default_argument_type'] = 'raw';
+  $handler->display->display_options['arguments']['nid']['default_argument_options']['index'] = '1';
+  $handler->display->display_options['arguments']['nid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['nid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['nid']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['nid']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['nid']['validate']['type'] = 'node';
+  $handler->display->display_options['arguments']['nid']['validate_options']['types'] = array(
+    'character_sheet' => 'character_sheet',
+  );
+  $handler->display->display_options['arguments']['nid']['validate_options']['access'] = TRUE;
+  $handler->display->display_options['arguments']['nid']['validate_options']['access_op'] = 'update';
+  $handler->display->display_options['path'] = 'node/%/scenes';
+  $handler->display->display_options['menu']['type'] = 'tab';
+  $handler->display->display_options['menu']['title'] = 'Scenes';
+  $handler->display->display_options['menu']['description'] = 'Scenes';
   $handler->display->display_options['menu']['weight'] = '0';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
