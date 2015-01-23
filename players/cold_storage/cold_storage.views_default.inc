@@ -135,6 +135,7 @@ function cold_storage_views_default_views() {
   $handler->display->display_options['header']['area']['id'] = 'area';
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['empty'] = TRUE;
   $handler->display->display_options['header']['area']['content'] = 'These players are in "cold storage". They were imported from an earlier version of the site, or have been deactivated as players for some reason. If the player returns, use this interface to find their account to reactivate it.';
   $handler->display->display_options['header']['area']['format'] = 'wiki';
   $handler->display->display_options['defaults']['fields'] = FALSE;

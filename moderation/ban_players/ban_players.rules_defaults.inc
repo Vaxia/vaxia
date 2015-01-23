@@ -10,7 +10,7 @@
 function ban_players_default_rules_configuration() {
   $items = array();
   $items['rules_add_ip_for_banned_user'] = entity_import('rules_config', '{ "rules_add_ip_for_banned_user" : {
-      "LABEL" : "Add IP for banned user",
+      "LABEL" : "Bans - Add IP for banned user",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
       "TAGS" : [ "Bans" ],
@@ -36,11 +36,11 @@ function ban_players_default_rules_configuration() {
     }
   }');
   $items['rules_alert_user_for_banned_ip'] = entity_import('rules_config', '{ "rules_alert_user_for_banned_ip" : {
-      "LABEL" : "Alert leads, user shares banned IP",
+      "LABEL" : "Bans - Alert leads, user shares banned IP",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
       "TAGS" : [ "Bans" ],
-      "REQUIRES" : [ "rules", "views_rules", "php" ],
+      "REQUIRES" : [ "rules", "views_rules" ],
       "ON" : { "user_login" : [] },
       "IF" : [
         { "NOT user_has_role" : {
@@ -90,7 +90,7 @@ function ban_players_default_rules_configuration() {
     }
   }');
   $items['rules_permanently_ban_user'] = entity_import('rules_config', '{ "rules_permanently_ban_user" : {
-      "LABEL" : "Permanently ban user",
+      "LABEL" : "Bans - Permanently ban user",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
       "TAGS" : [ "Bans" ],
@@ -173,10 +173,10 @@ function ban_players_default_rules_configuration() {
     }
   }');
   $items['rules_set_player_last_ip'] = entity_import('rules_config', '{ "rules_set_player_last_ip" : {
-      "LABEL" : "Set player last IP",
+      "LABEL" : "Bans - Set player last IP",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "TAGS" : [ "Players" ],
+      "TAGS" : [ "Bans" ],
       "REQUIRES" : [ "rules", "php", "user_stats" ],
       "ON" : { "user_stats_ip_address_insert" : [] },
       "IF" : [

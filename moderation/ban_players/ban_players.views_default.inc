@@ -164,6 +164,7 @@ function ban_players_views_default_views() {
   $handler->display->display_options['fields']['field_banned_until']['id'] = 'field_banned_until';
   $handler->display->display_options['fields']['field_banned_until']['table'] = 'field_data_field_banned_until';
   $handler->display->display_options['fields']['field_banned_until']['field'] = 'field_banned_until';
+  $handler->display->display_options['fields']['field_banned_until']['label'] = 'Banned thru';
   $handler->display->display_options['fields']['field_banned_until']['empty'] = 'PERMANENT';
   $handler->display->display_options['fields']['field_banned_until']['settings'] = array(
     'format_type' => 'long',
@@ -186,6 +187,7 @@ function ban_players_views_default_views() {
   $handler->display->display_options['filters']['rid']['field'] = 'rid';
   $handler->display->display_options['filters']['rid']['value'] = array(
     31 => '31',
+    32 => '32',
   );
   $handler->display->display_options['filters']['rid']['group'] = 1;
   /* Filter criterion: User: Name (raw) */
@@ -254,8 +256,8 @@ function ban_players_views_default_views() {
   );
   $handler->display->display_options['path'] = 'players/banned';
   $handler->display->display_options['menu']['type'] = 'tab';
-  $handler->display->display_options['menu']['title'] = 'Ban player';
-  $handler->display->display_options['menu']['description'] = 'Banned players';
+  $handler->display->display_options['menu']['title'] = 'Suspended';
+  $handler->display->display_options['menu']['description'] = 'Banned and suspended players';
   $handler->display->display_options['menu']['weight'] = '1001';
   $handler->display->display_options['menu']['name'] = 'menu-vaxia';
   $handler->display->display_options['menu']['context'] = 0;

@@ -314,20 +314,6 @@ Social members are members of the social department that got involved.
   $handler->display->display_options['fields']['nid']['field'] = 'nid';
   $handler->display->display_options['fields']['nid']['group_type'] = 'count';
   $handler->display->display_options['fields']['nid']['label'] = 'Number reds';
-  /* Field: User: Banned until */
-  $handler->display->display_options['fields']['field_banned_until']['id'] = 'field_banned_until';
-  $handler->display->display_options['fields']['field_banned_until']['table'] = 'field_data_field_banned_until';
-  $handler->display->display_options['fields']['field_banned_until']['field'] = 'field_banned_until';
-  $handler->display->display_options['fields']['field_banned_until']['relationship'] = 'field_struck_player_uid';
-  $handler->display->display_options['fields']['field_banned_until']['label'] = 'Currently banned';
-  $handler->display->display_options['fields']['field_banned_until']['settings'] = array(
-    'format_type' => 'short',
-    'fromto' => 'both',
-    'multiple_number' => '',
-    'multiple_from' => '',
-    'multiple_to' => '',
-    'show_repeat_rule' => 'show',
-  );
   /* Field: Global: Math expression */
   $handler->display->display_options['fields']['expression']['id'] = 'expression';
   $handler->display->display_options['fields']['expression']['table'] = 'views';
@@ -341,8 +327,7 @@ Social members are members of the social department that got involved.
   $handler->display->display_options['fields']['php']['field'] = 'php';
   $handler->display->display_options['fields']['php']['label'] = 'New Ban';
   $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
-  $handler->display->display_options['fields']['php']['php_value'] = '$ban = !empty($data->users_field_data_field_struck_player__field_data_field_banne)
-  ? $data->users_field_data_field_struck_player__field_data_field_banne : \'now\';
+  $handler->display->display_options['fields']['php']['php_value'] = '$ban = \'now\';
 $ban_for = ($row->nid > 1) ? ($row->nid - 1) * 3 : 1;
 $new_ban = strtotime(\'+\' . $ban_for . \' months\', strtotime($ban));
 return date(\'m/d/Y H:i:s\', $new_ban);
