@@ -222,7 +222,6 @@ function rpg_chat_form_comment_form_alter(&$form, &$form_state, $form_id) {
     }
     // Refresh this user's last login to this room.
     global $user;
-    global $user;
     if (function_exists('shadowban_is_banned_user') && !shadowban_is_banned_user($user)) {
       _rpg_chat_set_room_users($form['#node']->nid, $user->uid);
     }
