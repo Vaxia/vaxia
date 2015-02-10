@@ -233,7 +233,7 @@ function shadowban_node_load($nodes, $types) {
 /**
  * Implements hook_comment_load().
  */
-function shadowban_comment_load(&$comments) {
+function shadowban_comment_load($comments) {
   foreach ($comments as $cid => $comment) {
     $author = user_load($comment->uid);
     $comments[$cid]->shadowban = FALSE;
