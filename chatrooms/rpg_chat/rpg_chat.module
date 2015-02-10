@@ -221,8 +221,7 @@ function rpg_chat_form_comment_form_alter(&$form, &$form_state, $form_id) {
       }
     }
     // Refresh this user's last login to this room.
-    global $user;
-    _rpg_chat_set_room_users($form['#node']->nid, $user);
+    _rpg_chat_set_room_users($form['#node']->nid);
   }
 }
 
@@ -235,8 +234,7 @@ function rpg_chat_refresh($nid) {
     unset($_SESSION['messages']['status']);
   }
   // Refresh this user's last login to this room.
-  global $user;
-  _rpg_chat_set_room_users($nid, $user->uid);
+  _rpg_chat_set_room_users($nid);
   // And pull the room info with the updated room list.
   $node = node_load($nid);
   // Bail if we didn't find a node.
@@ -418,7 +416,11 @@ function _rpg_chat_get_room_users($nid) {
 /**
  * DB function. Set users recently viewing a room, clear out logouts.
  */
-function _rpg_chat_set_room_users($nid, $user) {
+function _rpg_chat_set_room_users($nid) {
+  global $user;
+  if (empty($user->uid)) {
+    return;
+  }
   // Clear out anything past a certain timeline / session for ALL ROOMS.
   db_query('DELETE FROM {rpg_chat_room_users} WHERE timestamp < :timestamp',
     array(':timestamp' => strtotime('-15 minutes') ));
