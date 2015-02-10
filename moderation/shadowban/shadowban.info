@@ -1,6 +1,11 @@
 name = Shadowban
-description = Shadowbanning users - like Cave
+description = Shadowbanning users
 core = 7.x
 package = Other
-version = 7.x-1.1
+version = 7.x-1.0
 project = shadowban
+dependencies[] = entity
+dependencies[] = rules
+features[features_api][] = api:1
+features[rules_config][] = rules_shadowban_ban_user
+features[rules_config][] = rules_shadowban_unban_user
