@@ -159,6 +159,9 @@ function shadowban_user_load($users) {
  * Implements hook_node_access().
  */
 function shadowban_node_access($node, $op, $account) {
+  if (empty($node->uid)) {
+    return NODE_ACCESS_IGNORE;
+  }
   // Check the author.
   $author = user_load($node->uid);
   if (shadowban_is_banned_user($author)) {
