@@ -351,11 +351,11 @@ function vaxia_form_node_form_alter(&$form, &$form_state, $form_id) {
           $form['field_skill'][$lang][$delta]['field_skill_value'][$lang][0]['value']['#options'] = $options;
         }
       }
-      // Condition change.
+      // Other and Condition change.
       $min_hxp = variable_get('vaxia_other_min_hxp', 1);
       $user = user_load($user->uid);
       $hxp = $user->field_xp_over_time['und'][0]['value'];
-      if ($hxp < $min_hxp) {
+      if ( $hxp < $min_hxp || (function_exists('shadowban_is_banned_user') && shadowban_is_banned_user($user)) ) {
           $options = $form['field_race'][$lang]['#options'];
           unset($form['field_race'][$lang]['#options']['other']);
           $form['field_conditions']['#disabled'] = TRUE;

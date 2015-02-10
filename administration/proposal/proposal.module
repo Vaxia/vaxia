@@ -500,6 +500,13 @@ function proposal_node_view($node, $view_mode, $langcode) {
     $date = date('l, F j, Y', $date);
     // Show messages.
     if ($view_mode == 'full') {
+      // Check if this is a shadowbanned user who shouldn't get to vote.
+      if (function_exists('shadowban_is_banned_user')) {
+        global $user;
+        if (shadowban_is_banned_user($user)) {
+          $node->webform['status'] == FALSE;
+        }
+      }
       // Figure out the message to show.
       if ($node->webform['status'] == TRUE) {
         drupal_set_message(t('This proposal will stay open for two weeks since it was last updated. It is set to close on @date.',
@@ -1077,6 +1084,16 @@ function _proposal_webform_set_users($eligable, $not_eligable, $nid) {
     $role_users = db_query('SELECT uid FROM {users_roles} WHERE rid = :rid', array(':rid' => $rid));
     foreach ($role_users as $role_user) {
       unset($users[$role_user->uid]);
+    }
+  }
+  // Check if this is a shadowbanned user who shouldn't get to vote.
+  if (function_exists('shadowban_is_banned_user')) {
+    foreach ($users as $uid) {
+      // If the user is shadowbanned, out they go.
+      $user = user_load($uid);
+      if (shadowban_is_banned_user($user)) {
+        unset($users[$uid]);
+      }
     }
   }
   // Clear the old voters.

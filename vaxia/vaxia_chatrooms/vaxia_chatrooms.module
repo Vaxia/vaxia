@@ -42,6 +42,13 @@ function vaxia_chatrooms_node_view($node, $view_mode, $langcode) {
       drupal_goto();
     }
 
+    if (function_exists('shadowban_is_banned_user') && !shadowban_is_banned_user($user)) {
+      if (_vaxia_chatrooms_is_mature($node) || _vaxia_chatrooms_is_locked($node)) {
+        drupal_set_message('You are not allowed to view this room. This room is locked to other users.');
+        drupal_goto();
+      }
+    }
+
     // If node is an RPG chatroom, add the js, css for additional behaviors for Vaxia specifically.
     drupal_add_js(drupal_get_path('module', 'vaxia_chatrooms') . '/js/vaxiaPullouts.js');
     drupal_add_css(drupal_get_path('module', 'vaxia_chatrooms') . '/css/vaxiaPullouts.css');
