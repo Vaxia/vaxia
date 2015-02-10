@@ -1,0 +1,307 @@
+<?php
+/**
+ * @file
+ * Provide a vacation button for users to temp remove roles.
+ */
+
+/**
+ * Implements hook_permission().
+ */
+function shadowban_permission() {
+  return array(
+    'shadowban posts' => array(
+      'title' => t('shadowban banned'),
+      'description' => t('Shadow ban user.'),
+    ),
+    'view shadowban posts' => array(
+      'title' => t('view shadowban posts'),
+      'description' => t('View banned user posts.'),
+    ),
+  );
+}
+
+/**
+ * This integrates with rules to get rules up to date.
+ */
+
+/**
+ * Implements hook_rules_condition_info().
+ */
+function shadowban_rules_condition_info() {
+  return array(
+    'shadowban_rules_is_banned' => array(
+      'label' => t('Is shadowbanned user'), 
+      'parameter' => array(
+        'user' => array(
+          'type' => 'user', 
+          'label' => t('Specify the user that should be checked.'),
+        ), 
+      ), 
+      'group' => t('Shadowban'),
+    ),
+  );
+}
+
+/**
+ * Handler for hook_rules_condition_info().
+ */
+function shadowban_rules_is_banned($this_user) {
+  // Check for bad data.
+  if (empty($this_user->uid)) {
+    return FALSE;
+  }
+  // Check the user.
+  if (!empty($this_user->shadowban)) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+/**
+ * Implements hook_rules_action_info().
+ */
+function shadowban_rules_action_info() {
+  return array(
+    'shadowban_rules_update_nodes' => array(
+      'label' => t('Update node access for shadowban'), 
+      'parameter' => array(
+        'user' => array(
+          'type' => 'user',
+          'label' => t('User'),
+        ),
+      ), 
+      'group' => t('Shadowban'), 
+    ),
+  );
+}
+
+/**
+ * Handler for hook_rules_action_info().
+ */
+function shadowban_rules_update_nodes($this_user) {
+  // Flush Entity Cache record.
+  if (module_exists('entitycache')) {
+    cache_clear_all('*', 'cache_entity_node', TRUE);
+  }
+  // Check for bad data.
+  if (empty($this_user->uid)) {
+    return FALSE;
+  }
+  // Update all nodes owned by this user.
+  $nodes = node_load_multiple(array(), array('uid' => $this_user->uid));
+  $updated = 0;
+  foreach ($nodes as $node) {
+    node_save($node);
+    $updated++;
+  }
+  drupal_set_message('Updated @updated nodes owned by this user.', array('@updated' => $updated));
+  return FALSE;
+}
+
+/**
+ * Implements hook_mail_alter().
+ */
+function shadowban_mail_alter(&$message) {
+  // Flush Entity Cache record.
+  if (module_exists('entitycache')) {
+    cache_clear_all('*', 'cache_entity_node', TRUE);
+  }
+  // Intercept messages from private messages.
+  if ($message['id'] == 'pm_email_notify') {
+    $pm = $message['params']['message'];
+    if (shadowban_is_banned_user($pm->author)) {
+      // Don't send the email.
+      $message['send'] = FALSE;
+      // Auto-matically delete from the reciever's list.
+      if (function_exists('privatemsg_thread_change_delete')) {
+        foreach ($pm->recipients as $recipient) {
+          if ($recipient->uid != $pm->author->uid) {
+            $reciever = user_load($recipient->uid);
+            privatemsg_thread_change_delete($pm->thread_id, 1, $reciever);
+          }
+        }
+      }
+      // And done.
+      return;
+    }
+  }
+  // Intercept all other communication from the site.
+  if ($message['id'] != 'pm_email_notify') {
+    $message['to'] = _shadowban_filter_banned_email($message['to']);
+    if (empty($message['to'])) {
+      // Don't send the email if we're empty.
+      $message['send'] = FALSE;
+    }
+  }
+  
+}
+
+/**
+ * This piece marks user accounts as banned or not.
+ */
+
+/**
+ * Implements hook_user_load().
+ */
+function shadowban_user_load($users) {
+  foreach ($users as $uid => $user) {
+    if (shadowban_is_banned_user($user)) {
+      $users[$uid]->shadowban = TRUE;
+    }
+  }
+}
+
+/**
+ * This piece removes nodes from being shown and accesses.
+ */
+
+/**
+ * Implements hook_node_access().
+ */
+function shadowban_node_access($node, $op, $account) {
+  // Check the author.
+  $author = user_load($node->uid);
+  if (shadowban_is_banned_user($author)) {
+    global $user;
+    if (!shadowban_is_banned_user($user)) {
+      $node->shadowban = TRUE;
+      return NODE_ACCESS_DENY;
+    }
+  }
+  return NODE_ACCESS_IGNORE;
+}
+
+/**
+ * Implements hook_node_access_records().
+ */
+function shadowban_node_access_records($node) {
+  // The hook_node_access_records() function is responsible for populating the node_access table.
+  // It does this whenever a nodes is saved, or if the node permissions are rebuilt.
+  // Hence the associated rule for thie module, to re-save all owned nodes by the user on
+  // shadow ban or shadow un-ban.
+  $grants = array();
+  $this_user = user_load($node->uid);
+  if (shadowban_is_banned_user($this_user)) {
+    // For the owner let them view always.
+    $grants[] = array(
+      'realm' => 'shadowban_banned',
+      'gid' => 1,
+      'grant_view' => 1,
+      'grant_update' => 1,
+      'grant_delete' => 0,
+      'priority' => 100,
+    );
+    // For anyone else, hide.
+    $grants[] = array(
+      'realm' => 'shadowban_banned',
+      'gid' => 0, // 0 is for all non banned users.
+      'grant_view' => 0,
+      'grant_update' => 0,
+      'grant_delete' => 0,
+      'priority' => 100,
+    );
+  }
+  return $grants;
+}
+
+/**
+ * Implements hook_node_grants().
+ */
+function shadowban_node_grants($account, $op) {
+  $banned = shadowban_is_banned_user($account) ? 1 : 0;
+  $grants['shadowban_banned'] = array($banned);
+  return $grants;
+}
+
+/**
+ * Implements hook_node_load().
+ */
+function shadowban_node_load($nodes, $types) {
+  foreach ($nodes as $nid => $node) {
+    $author = user_load($node->uid);
+    if (shadowban_is_banned_user($author)) {
+      $node->shadowban = TRUE;
+    }
+  }
+}
+
+/**
+ * This piece removes comments from being shown on nodes.
+ * Note: It may make for irregular lengths in your comment thread results.
+ */
+
+/**
+ * Implements hook_comment_load().
+ */
+function shadowban_comment_load(&$comments) {
+  foreach ($comments as $cid => $comment) {
+    $author = user_load($comment->uid);
+    $comments[$cid]->shadowban = FALSE;
+    if (shadowban_is_banned_user($author)) {
+      $comments[$cid]->shadowban = TRUE;
+    }
+  }
+}
+
+/**
+ * Implements hook_comment_view_alter().
+ */
+function shadowban_comment_view_alter(&$build) {
+  $author = user_load($build['#comment']->uid);
+  if (shadowban_is_banned_user($author)) {
+    global $user;
+    if (!shadowban_is_banned_user($user)) {
+      $build = NULL;
+    }
+  }
+}
+
+/**
+ * Helper function, check for shadowban.
+ */
+function shadowban_is_banned_user($this_user) {
+  // Can't ban user one.
+  if (empty($this_user) || $this_user->uid == 1) {
+    return FALSE;
+  }
+  // Reset the user access cache since we might be mid-save here.
+  // So we want to make sure we pull from the freshest permissions.
+  drupal_static_reset('user_access');
+  // Is this user in the banned perms?
+  if (user_access('shadowban posts', $this_user)) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+/**
+ * Helper function, check for shadowban.
+ */
+function _shadowban_is_banned_email($mail) {
+  // Can't ban user one.
+  $this_user = user_load_by_mail($mail);
+  if (empty($this_user) || $this_user->uid == 1) {
+    return FALSE;
+  }
+  // Is this user in the banned perms?
+  if (shadowban_is_banned_user($this_user)) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+/**
+ * Helper function, check for shadowban.
+ */
+function _shadowban_filter_banned_email($email_list) {
+  // Get each email individually.
+  preg_match_all("/[\._a-zA-Z0-9-]+@[\._a-zA-Z0-9-]+/i", $email_list, $matches);
+  $email_list = $matches[0];
+  $good_emails = array();
+  foreach ($email_list as $mail) {
+    if (!_shadowban_is_banned_email($mail)) {
+      $good_emails[] = $mail;
+    }
+  }
+  return implode(',', $good_emails);
+}
