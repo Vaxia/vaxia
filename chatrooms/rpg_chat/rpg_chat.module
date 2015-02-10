@@ -96,7 +96,7 @@ function rpg_chat_permission() {
  */
 function rpg_chat_node_access($node, $op, $account) {
   // This is a chat type and you're not allowed.
-  if (_rpg_chat_is_enabled($node->type) && !_rpg_chat_node_access($node, $account)) {
+  if (!empty($node->type) && _rpg_chat_is_enabled($node->type) && !_rpg_chat_node_access($node, $account)) {
     return NODE_ACCESS_DENY;
   }
   return NODE_ACCESS_IGNORE;
