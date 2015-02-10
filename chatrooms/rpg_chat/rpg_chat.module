@@ -222,12 +222,7 @@ function rpg_chat_form_comment_form_alter(&$form, &$form_state, $form_id) {
     }
     // Refresh this user's last login to this room.
     global $user;
-    if (function_exists('shadowban_is_banned_user') && !shadowban_is_banned_user($user)) {
-      _rpg_chat_set_room_users($form['#node']->nid, $user->uid);
-    }
-    else {
-      _rpg_chat_set_room_users($form['#node']->nid, $user->uid);
-    }
+    _rpg_chat_set_room_users($form['#node']->nid, $user);
   }
 }
 
@@ -241,12 +236,7 @@ function rpg_chat_refresh($nid) {
   }
   // Refresh this user's last login to this room.
   global $user;
-  if (function_exists('shadowban_is_banned_user') && !shadowban_is_banned_user($user)) {
-    _rpg_chat_set_room_users($nid, $user->uid);
-  }
-  else {
-    _rpg_chat_set_room_users($nid, $user->uid);
-  }
+  _rpg_chat_set_room_users($nid, $user->uid);
   // And pull the room info with the updated room list.
   $node = node_load($nid);
   // Bail if we didn't find a node.
@@ -428,16 +418,20 @@ function _rpg_chat_get_room_users($nid) {
 /**
  * DB function. Set users recently viewing a room, clear out logouts.
  */
-function _rpg_chat_set_room_users($nid, $uid) {
+function _rpg_chat_set_room_users($nid, $user) {
   // Clear out anything past a certain timeline / session for ALL ROOMS.
   db_query('DELETE FROM {rpg_chat_room_users} WHERE timestamp < :timestamp',
     array(':timestamp' => strtotime('-15 minutes') ));
   // Clear out this user and nid connection.
   db_query('DELETE FROM {rpg_chat_room_users} WHERE nid = :nid AND uid = :uid',
-    array(':nid' => $nid, ':uid' => $uid));
+    array(':nid' => $nid, ':uid' => $user->uid));
+  // Bail if this is a shadowed user.
+  if (function_exists('shadowban_is_banned_user') && shadowban_is_banned_user($user)) {
+    return;
+  }
   // Mark the timestamp for the nid/uid combination.
   $record = array(
-    ':uid' => $uid,
+    ':uid' => $user->uid,
     ':nid' => $nid,
     ':timestamp' => strtotime('now'),
   );
