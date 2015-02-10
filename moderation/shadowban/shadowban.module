@@ -166,7 +166,7 @@ function shadowban_node_access($node, $op, $account) {
   $author = user_load($node->uid);
   if (shadowban_is_banned_user($author)) {
     global $user;
-    if (!shadowban_is_banned_user($user)) {
+    if (!user_access('view shadowban posts') && !shadowban_is_banned_user($user)) {
       $node->shadowban = TRUE;
       return NODE_ACCESS_DENY;
     }
@@ -213,6 +213,9 @@ function shadowban_node_access_records($node) {
 function shadowban_node_grants($account, $op) {
   $banned = shadowban_is_banned_user($account) ? 1 : 0;
   $grants['shadowban_banned'] = array($banned);
+  if (user_access('view shadowban posts')) {
+    $grants['shadowban_banned'] = array(0, 1); 
+  }
   return $grants;
 }
 
@@ -253,7 +256,7 @@ function shadowban_comment_view_alter(&$build) {
   $author = user_load($build['#comment']->uid);
   if (shadowban_is_banned_user($author)) {
     global $user;
-    if (!shadowban_is_banned_user($user)) {
+    if (!user_access('view shadowban posts') && !shadowban_is_banned_user($user)) {
       $build = NULL;
     }
   }
