@@ -189,6 +189,10 @@ function vacation_form_user_profile_form_alter(&$form, &$form_state) {
       break;
     }
   }
+  // Bail early if the user doesn't have any extra roles.
+  if (!$has_extra) {
+    return array();
+  }
   // Display the form.
   $form['vacation'] = array(
     '#type' => 'fieldset',
