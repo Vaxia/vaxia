@@ -287,6 +287,11 @@ function vaxia_character_sheet_field_info() {
         'owner' => DISABLE_SHEET,
       ),
     ),
+    'field_needs_work' => array(
+      'permissions' => array(
+        'owner' => DISABLE_SHEET,
+      ),
+    ),
     //field_player_notes
     // Temporary hide.
     'field_skill_review' => array(
