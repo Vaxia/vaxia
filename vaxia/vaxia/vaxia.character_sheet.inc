@@ -805,6 +805,7 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
     '#markup' => theme('item_list', array('items' => _vaxia_xp_display_types($node))),
   );
 
+  global $user;
   // Add additional options for xp IIF allowed.
   if (isset($form['add_xp']) && $node->field_is_storyteller[$node->language][0]['value'] == 0 
     && $node->field_is_npc[$node->language][0]['value'] == 0 && $node->field_is_open_npc[$node->language][0]['value'] == 0) {
