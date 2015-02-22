@@ -128,12 +128,15 @@ function rpg_rep_form__character_sheet_xp_form_alter(&$form, $form_state) {
   // Add a display for the rep.
   $node = node_load($form['node_info']['nid']['#value']);
   if (user_access('view reputation xp') || ($comment->uid == $user->uid && user_access('view own reputation xp'))) {
-    $form['node_info']['rpg_rep'] = array(
-      '#type' => 'item',
-      '#title' => t('Reputation details'),
-      '#markup' => theme('item_list', array('items' => _rpg_rep_display($node))),
-      '#weight' => 20,
-    );
+    $reps = _rpg_rep_display($node);
+    if (!empty($reps)) {
+      $form['node_info']['rpg_rep'] = array(
+        '#type' => 'item',
+        '#title' => t('Reputation details'),
+        '#markup' => theme('item_list', array('items' => $reps)),
+        '#weight' => 20,
+      );
+    }
   }
   // Add additional options for xp IIF allowed.
   if (user_access('give reputation xp') && _rpg_rep_is_pc($node)) {
