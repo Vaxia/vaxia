@@ -138,17 +138,22 @@ function silver_form__character_sheet_xp_form_alter(&$form, $form_state) {
 
   global $user;
   if ($user->uid == $node->uid) {
+    $form['invest_silver'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Invest silver'),
+      '#collapsible' => TRUE,
+      );
     if ($available_silver >= 1) {
       $available_silver = floor($available_silver);
       $invest = 0;
       // Figure out how many given current silver you can add.
-      $form['node_info']['invest_silver'] = array(
+      $form['invest_silver']['invest_silver'] = array(
         '#title' => t('Invest silver'),
         '#type' => 'textfield',
         '#description' => $desc,
         '#size' => 15,
       );
-      $form['node_info']['submit_economy'] = array(
+      $form['invest_silver']['submit_economy'] = array(
         '#type' => 'submit',
         '#value' => t('Invest silver'),
         '#validate' => array(),
@@ -156,7 +161,7 @@ function silver_form__character_sheet_xp_form_alter(&$form, $form_state) {
       );
     }
     else {
-      $form['node_info']['invest_silver'] = array(
+      $form['invest_silver']['invest_silver'] = array(
         '#type' => 'item',
         '#value' => t('You currectly have no silver available to invest.'),
         '#description' => $desc,
