@@ -101,7 +101,7 @@ function _silver_character_daily_silver($node_data) {
 /**
  * Implements hook_form_FORMID_alter().
  */
-function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
+function silver_form__character_sheet_xp_form_alter(&$form, $form_state) {
   // Load.
   $node = node_load($form['node_info']['nid']['#value']);
   // Add the economy form for owned forms.
@@ -122,8 +122,9 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
   // Display info.
   $form['node_info']['economy'] = array(
     '#type' => 'item',
-    '#title' => t('Economy'),
+    '#title' => t('Economy details'),
     '#markup' => theme('item_list', array('items' => $econ)),
+    '#weight' => 10,
   );
   $silver = _character_sheet_get_xp($node->nid, 'silver');
   $silver_spent = _character_sheet_get_xp($node->nid, 'spent_silver');
