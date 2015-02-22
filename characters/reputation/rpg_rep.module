@@ -89,20 +89,24 @@ function rpg_rep_comment_view($comment) {
   if (user_access('view dice rolls')) {
     if (!empty($comment->field_comment_character[$comment->language][0]['nid'])) {
       $node = node_load($comment->field_comment_character[$comment->language][0]['nid']);
-      $element = array(
-        '#type' => 'fieldset',
-        '#title' => t('Reputation'),
-        '#collapsible' => TRUE,
-        '#collapsed' => TRUE,
-      );
-      $element['amounts'] = array(
-        '#type' => 'markup',
-        '#item' => theme('items_list', array('items' => _rpg_rep_display($node))),
-      );
-      $comment->content['rpg_rep'] = array(
-        '#weight' => !empty($weight) ? $weight : 90,
-        '#markup' => drupal_render($element),
-      );
+      $reps = _rpg_rep_display($node);
+      if (!empty($reps)) {
+        $element = array(
+          '#type' => 'fieldset',
+          '#title' => t('Reputation'),
+          '#collapsible' => TRUE,
+          '#collapsed' => TRUE,
+        );
+        $element['amounts'] = array(
+          //'#type' => 'markup',
+          '#markup' => theme('item_list', array('items' => $reps)),
+        );
+        // Add to comment content.
+        $comment->content['rpg_rep'] = array(
+          '#weight' => !empty($weight) ? $weight : 90,
+          '#markup' => drupal_render($element),
+        );
+      }
     }
   }
 }
