@@ -118,7 +118,7 @@ function silver_form__character_sheet_xp_form_alter(&$form, $form_state) {
   $pay = _silver_get_daily_pay($level);
   $econ[] = t('You get paid %pay a day.', array('%pay' => number_format($pay, 2)));
   $worth = _silver_calculate_worth($level);
-  $econ[] = t('Your total worth is %worth if you cashed in all of your econonmy levels.', array('%worth' => number_format($worth, 2)));
+  $econ[] = t('Your total worth is %worth if you cashed in all of your economy levels.', array('%worth' => number_format($worth, 2)));
   // Display info.
   $form['node_info']['economy'] = array(
     '#type' => 'item',
@@ -168,13 +168,18 @@ function silver_form__character_sheet_xp_form_alter(&$form, $form_state) {
   if (isset($form['add_xp']) && $node->field_is_storyteller[$node->language][0]['value'] == 0 
     && $node->field_is_npc[$node->language][0]['value'] == 0 && $node->field_is_open_npc[$node->language][0]['value'] == 0) {
     // Add a form to handle silver on it's own.
-    $form['add_xp']['add_silver'] = array(
+    $form['add_silver'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Add silver'),
+      '#collapsible' => TRUE,
+    );
+    $form['add_silver']['add_silver'] = array(
       '#type' => 'textfield',
       '#title' => t('Add silver'),
       '#size' => 6,
       '#description' => t('Adding a negative value will subtract silver. First from available silver, then from the economy level, reducing economy.'),
     );
-    $form['add_xp']['add_silver_submit'] = array(
+    $form['add_silver']['add_silver_submit'] = array(
       '#type' => 'submit',
       '#value' => t('Add silver'),
       '#validate' => array('_silver_add_validation_form'),

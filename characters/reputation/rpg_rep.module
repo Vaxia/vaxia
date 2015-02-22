@@ -24,7 +24,6 @@ function rpg_rep_cron() {
 /**
  * Process the reputation crons.
  */
- //rpg_rep
 function _rpg_rep_cron() {
   // Run queries for each setting.
   $settings = variable_get('rpg_rep_settings', array('Vaxia', 'Sirian'));
@@ -90,9 +89,19 @@ function rpg_rep_comment_view($comment) {
   if (user_access('view dice rolls')) {
     if (!empty($comment->field_comment_character[$comment->language][0]['nid'])) {
       $node = node_load($comment->field_comment_character[$comment->language][0]['nid']);
+      $element = array(
+        '#type' => 'fieldset',
+        '#title' => t('Reputation'),
+        '#collapsible' => TRUE,
+        '#collapsed' => TRUE,
+      );
+      $element['amounts'] = array(
+        '#type' => 'markup',
+        '#item' => theme('items_list', array('items' => _rpg_rep_display($node))),
+      );
       $comment->content['rpg_rep'] = array(
         '#weight' => !empty($weight) ? $weight : 90,
-        '#markup' => drupal_render(_rpg_rep_display($node)),
+        '#markup' => drupal_render($element),
       );
     }
   }
@@ -104,28 +113,38 @@ function rpg_rep_comment_view($comment) {
 function rpg_rep_form__character_sheet_xp_form_alter(&$form, $form_state) {
   // Add a display for the rep.
   $node = node_load($form['node_info']['nid']['#value']);
-  $form['node_info']['rpg_rep'] = _rpg_rep_display($node);
+  $form['node_info']['rpg_rep'] = array(
+    '#type' => 'item',
+    '#title' => t('Reputation details'),
+    '#markup' => theme('item_list', array('items' => _rpg_rep_display($node))),
+    '#weight' => 20,
+  );
   // Add additional options for xp IIF allowed.
   if (isset($form['add_xp']) && _rpg_rep_is_pc($node)) {
     // Add the UI for the rep.
     $groups = array();
-    foreach (_rpg_rep_get_groups($node->field_realm[$node->language][0]['value']) as $gid => $group_info) {
-      $groups[$gid] = $group_info['name'];
+    foreach (_rpg_rep_get_groups($node->field_realm[$node->language][0]['value']) as $gid => $group_name) {
+      $groups[$gid] = $group_name;
     }
     // Add a form to handle reputation on it's own.
-    $form['add_xp']['rpg_rep_amount'] = array(
+    $form['add_rpg_rep'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Add reputation'),
+      '#collapsible' => TRUE,
+    );
+    $form['add_rpg_rep']['rpg_rep_amount'] = array(
       '#type' => 'textfield',
       '#title' => t('Add reputation'),
       '#size' => 6,
       '#description' => t('Adding a negative value will subtract reputation.'),
     );
-    $form['add_xp']['rpg_rep_group'] = array(
+    $form['add_rpg_rep']['rpg_rep_group'] = array(
       '#type' => 'select',
       '#options' => $groups,
       '#title' => t('For group'),
       '#description' => t('Select the group to add reputation for.'),
     );
-    $form['add_xp']['add_rpg_rep_submit'] = array(
+    $form['add_rpg_rep']['add_rpg_rep_submit'] = array(
       '#type' => 'submit',
       '#value' => t('Add reputation'),
       '#validate' => array('_rpg_rep_add_validation_form'),
@@ -157,23 +176,19 @@ function _rpg_rep_add_submit_form(&$form, &$form_state) {
   $xp = $form_state['values']['rpg_rep_amount'];
   $gid = $form_state['values']['rpg_rep_group'];
   $groups = _rpg_rep_get_groups($node->field_realm[$node->language][0]['value']);
-  $group = $groups[$gid]['name'];
+  $group = $groups[$gid];
   // Clear the cache if need be.
   if (module_exists('entitycache')) {
     cache_clear_all($nid, 'cache_entity_node');
   }
   // Make sure we don't go over or under 25.
-  $cap = variable_get('rpg_rep_cap', 25);
   $current = _character_sheet_get_xp($nid, 'rep_' . $gid);
   // If positive, add as per standard XP.
   if ($xp > 0) {
     $new = $xp + $current;
-    // Cap award at 25.
-    if ($new > $current) {
-      $xp = $xp - ($new - $cap);
-    }
     _character_sheet_update_xp($nid, $xp, 'rep_' . $gid);
-    drupal_set_message(t('@xp reputation for @group has been added to this sheet.', array('@xp' => $xp, '@group' => $group)));
+    drupal_set_message(t('@xp reputation for @group has been added to this sheet.',
+      array('@xp' => $xp, '@group' => $group)));
     $message = t('@xp reputation for @group added to @title by @user.',
       array('@xp' => $xp, '@group' => $group, '@title' => $character->title, '@user' => $user->name));
     _character_sheet_update_log($nid, 'rep_' . $gid, $message);
@@ -181,13 +196,9 @@ function _rpg_rep_add_submit_form(&$form, &$form_state) {
   }
   // If positive, remove as per standard XP.
   if ($xp < 0) {
-    $new = $current - $xp;
-    // Cap award at -25.
-    if ($new < ($current * -1) ) {
-      $xp = $xp + (($new + $cap) * -1);
-    }
     _character_sheet_update_xp($nid, $xp, 'rep_' . $gid);
-    drupal_set_message(t('@xp reputation for @group  has been removed from this sheet.', array('@xp' => $xp, '@group' => $group)));
+    drupal_set_message(t('@xp reputation for @group  has been removed from this sheet.',
+      array('@xp' => $xp, '@group' => $group)));
     $message = t('@xp reputation for @group added to @title by @user.',
       array('@xp' => $xp, '@group' => $group, '@title' => $character->title, '@user' => $user->name));
     _character_sheet_update_log($nid, 'rep_' . $gid, $message);
@@ -196,26 +207,35 @@ function _rpg_rep_add_submit_form(&$form, &$form_state) {
 }
 
 function _rpg_rep_display($node) {
+  // Cache reps early in case we can use them.
+  static $reps = array();
+  if (!empty($node->nid)) {
+    if (!empty($reps[$node->nid])) {
+      return $reps[$node->nid];
+    }
+  }
+  // Nope? Ok look it up and save it then.
   if (!is_object($node)) {
     $node = node_load($node);
   }
   $groups = _rpg_rep_get_groups($node->field_realm[$node->language][0]['value']);
-  $reps = array();
-  foreach ($groups as $gid => $group_info) {
+  $char_reps = array();
+  foreach ($groups as $gid => $group_name) {
     $gxp = _character_sheet_get_xp($node->nid, 'rep_' . $gid);
-    $reps = t('@group_name (@amount)', array('@group_name' => $group_info['name'], '@amount' => $gxp));
+    if ($gxp != 0) {
+      $bonus = $gxp;
+      // You can only get up to a cap in bonus.
+      $cap = variable_get('rpg_rep_cap', 25);
+      if (abs($gxp) > $cap) {
+        $bonus = ($gxp > 0) ? $cap : $cap * -1;
+      }
+      $char_reps[$gid] = t('@group_name: @gxp rep for a modifier of @bonus to rolls.',
+        array('@group_name' => $group_name, '@gxp' => $gxp, '@bonus' => $bonus));
+    }
   }
-  $element = array(
-    '#type' => 'fieldset',
-    '#title' => t('Reputation'),
-    '#collapsible' => TRUE,
-    '#collapsed' => TRUE,
-  );
-  $element['amounts'] = array(
-    '#type' => 'markup',
-    '#item' => theme('items_list', array('items' => $reps)),
-  );
-  return $element;
+  // Save it so we don't reload this info on every request.
+  $reps[$node->nid] = $char_reps;
+  return $reps[$node->nid];
 }
 
 function _rpg_rep_get_groups($realm) {
@@ -237,6 +257,7 @@ function _rpg_rep_get_groups($realm) {
   foreach ($results as $result) {
     $groups[$result->entity_id] = $result->title;
   }
+  return $groups;
 }
 
 function _rpg_rep_is_pc($node) {

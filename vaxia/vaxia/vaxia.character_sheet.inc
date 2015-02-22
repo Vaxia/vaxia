@@ -965,12 +965,11 @@ function _vaxia_transfer_xp_autocomplete($character_name = '') {
  * Implements hook_form_FORMID_alter().
  */
 function vaxia_form__character_sheet_owner_form_alter(&$form, &$form_state) {
+  // Remove features we don't want to use with vaxia.
   if (isset($form['owner_name'])) {
-     $form['change_ownership']['owner_name'] = $form['owner_name'];
     unset($form['owner_name']);
   }
   if (isset($form['submit'])) {
-    $form['change_ownership']['submit'] = $form['submit'];
     unset($form['submit']);
   }
   if (isset($form['character_sheet_log'])) {
