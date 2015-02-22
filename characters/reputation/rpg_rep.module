@@ -1,0 +1,253 @@
+<?php
+/**
+ * @file
+ * Code for Reputations.
+ */
+
+// Once a month lower the reputation XP for everyone.
+
+/**
+ * Implements hook_cron().
+ */
+function rpg_rep_cron() {
+  $last_run = variable_get('rpg_rep_sheet_cron', 0);
+  $yesterday = strtotime('-1 day');
+  if ($last_run < $yesterday) {
+    variable_set('rpg_rep_sheet_cron', strtotime('now'));
+    // Check if this is the first of the month.
+    $day = date('j');
+    if ($day == '1') {
+      _rpg_rep_cron();
+    }
+  }
+}
+/**
+ * Process the reputation crons.
+ */
+ //rpg_rep
+function _rpg_rep_cron() {
+  // Run queries for each setting.
+  $settings = variable_get('rpg_rep_settings', array('Vaxia', 'Sirian'));
+  foreach ($settings as $setting) {
+    $reps = array();
+    foreach(_rpg_rep_get_groups($setting) as $gid => $group) {
+      $reps[] = 'rep_' . $gid;
+    }
+    // Get all PCs with reps type.
+    // Lower reps for those with positive.
+    $sheets = db_query('UPDATE {character_sheet_xp} x ' . // With an XP score
+      'SET x.xp = (x.xp - 1) ' . // For all reputations over 0, reduce by 1.
+      'WHERE x.type IN (:rep) '.  // YES we want to do this to inactive PCs as well. So don't check status.
+      'AND x.xp > 0 '. // Only for those greater than 1.
+      'AND x.nid NOT IN ( ' .
+      'SELECT npc.entity_id FROM {field_data_field_is_npc} npc WHERE npc.field_is_npc_value = 1 ' . // Not an NPC
+      ') '.
+      'AND x.nid NOT IN ( ' .
+      'SELECT onpc.entity_id FROM {field_data_field_is_open_npc} onpc WHERE onpc.field_is_open_npc_value = 1 ' . // Not an open NPC
+      ') '.
+      'AND x.nid NOT IN ( ' .
+      'SELECT st.entity_id FROM {field_data_field_is_storyteller} st WHERE st.field_is_storyteller_value = 1 ' . // Not a storyteller.
+      ')', array(':rep' => $rep));
+    // Increase reps for those with negative.
+    $sheets = db_query('UPDATE {character_sheet_xp} x ' . // With an XP score
+      'SET x.xp = (x.xp + 1) ' . // For all reputations under 0, add by 1.
+      'WHERE x.type IN (:rep) '.  // YES we want to do this to inactive PCs as well. So don't check status.
+      'AND x.xp < 0 '. // Only for those less than 1.
+      'AND x.nid NOT IN ( ' .
+      'SELECT npc.entity_id FROM {field_data_field_is_npc} npc WHERE npc.field_is_npc_value = 1 ' . // Not an NPC
+      ') '.
+      'AND x.nid NOT IN ( ' .
+      'SELECT onpc.entity_id FROM {field_data_field_is_open_npc} onpc WHERE onpc.field_is_open_npc_value = 1 ' . // Not an open NPC
+      ') '.
+      'AND x.nid NOT IN ( ' .
+      'SELECT st.entity_id FROM {field_data_field_is_storyteller} st WHERE st.field_is_storyteller_value = 1 ' . // Not a storyteller.
+      ')', array(':rep' => $rep));
+    // Done - do the next setting.
+  }
+}
+
+/**
+ * Implements hook_permission().
+ */
+function rpg_rep_permission() {
+  return array(
+    'give reputation xp' => array(
+      'title' => t('give reputation xp'),
+      'description' => t('Give reputation xp.'),
+    ),
+    'admin reputation xp' => array(
+      'title' => t('admin reputation xp'),
+      'description' => t('Administrate reputation xp.'),
+    ),
+  );
+}
+
+
+/**
+ * Implements hook_comment_view().
+ */
+function rpg_rep_comment_view($comment) {
+  if (user_access('view dice rolls')) {
+    if (!empty($comment->field_comment_character[$comment->language][0]['nid'])) {
+      $node = node_load($comment->field_comment_character[$comment->language][0]['nid']);
+      $comment->content['rpg_rep'] = array(
+        '#weight' => !empty($weight) ? $weight : 90,
+        '#markup' => drupal_render(_rpg_rep_display($node)),
+      );
+    }
+  }
+}
+
+/**
+ * Implements hook_form_FORMID_alter().
+ */
+function rpg_rep_form__character_sheet_xp_form_alter(&$form, $form_state) {
+  // Add a display for the rep.
+  $node = node_load($form['node_info']['nid']['#value']);
+  $form['node_info']['rpg_rep'] = _rpg_rep_display($node);
+  // Add additional options for xp IIF allowed.
+  if (isset($form['add_xp']) && _rpg_rep_is_pc($node)) {
+    // Add the UI for the rep.
+    $groups = array();
+    foreach (_rpg_rep_get_groups($node->field_realm[$node->language][0]['value']) as $gid => $group_info) {
+      $groups[$gid] = $group_info['name'];
+    }
+    // Add a form to handle reputation on it's own.
+    $form['add_xp']['rpg_rep_amount'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Add reputation'),
+      '#size' => 6,
+      '#description' => t('Adding a negative value will subtract reputation.'),
+    );
+    $form['add_xp']['rpg_rep_group'] = array(
+      '#type' => 'select',
+      '#options' => $groups,
+      '#title' => t('For group'),
+      '#description' => t('Select the group to add reputation for.'),
+    );
+    $form['add_xp']['add_rpg_rep_submit'] = array(
+      '#type' => 'submit',
+      '#value' => t('Add reputation'),
+      '#validate' => array('_rpg_rep_add_validation_form'),
+      '#submit' => array('_rpg_rep_add_submit_form'),
+    );
+  }
+}
+
+/**
+ * Form validation handler.
+ */
+function _rpg_rep_add_validation_form(&$form, &$form_state) {
+  $rpg_rep_amount = $form_state['values']['rpg_rep_amount'];
+  if (empty($rpg_rep_amount)) {
+    form_set_error('rpg_rep_amount', t('Empty value given for reputation.'));
+  }
+  if (!is_numeric($rpg_rep_amount)) {
+    form_set_error('rpg_rep_amount', t('Reputation given is not a numeric value'));
+  }
+}
+
+/**
+ * Form submit handler for reputation.
+ */
+function _rpg_rep_add_submit_form(&$form, &$form_state) {
+  global $user;
+  $nid = $form_state['values']['nid'];
+  $node = node_load($form_state['values']['nid']);
+  $xp = $form_state['values']['rpg_rep_amount'];
+  $gid = $form_state['values']['rpg_rep_group'];
+  $groups = _rpg_rep_get_groups($node->field_realm[$node->language][0]['value']);
+  $group = $groups[$gid]['name'];
+  // Clear the cache if need be.
+  if (module_exists('entitycache')) {
+    cache_clear_all($nid, 'cache_entity_node');
+  }
+  // Make sure we don't go over or under 25.
+  $cap = variable_get('rpg_rep_cap', 25);
+  $current = _character_sheet_get_xp($nid, 'rep_' . $gid);
+  // If positive, add as per standard XP.
+  if ($xp > 0) {
+    $new = $xp + $current;
+    // Cap award at 25.
+    if ($new > $current) {
+      $xp = $xp - ($new - $cap);
+    }
+    _character_sheet_update_xp($nid, $xp, 'rep_' . $gid);
+    drupal_set_message(t('@xp reputation for @group has been added to this sheet.', array('@xp' => $xp, '@group' => $group)));
+    $message = t('@xp reputation for @group added to @title by @user.',
+      array('@xp' => $xp, '@group' => $group, '@title' => $character->title, '@user' => $user->name));
+    _character_sheet_update_log($nid, 'rep_' . $gid, $message);
+    return;
+  }
+  // If positive, remove as per standard XP.
+  if ($xp < 0) {
+    $new = $current - $xp;
+    // Cap award at -25.
+    if ($new < ($current * -1) ) {
+      $xp = $xp + (($new + $cap) * -1);
+    }
+    _character_sheet_update_xp($nid, $xp, 'rep_' . $gid);
+    drupal_set_message(t('@xp reputation for @group  has been removed from this sheet.', array('@xp' => $xp, '@group' => $group)));
+    $message = t('@xp reputation for @group added to @title by @user.',
+      array('@xp' => $xp, '@group' => $group, '@title' => $character->title, '@user' => $user->name));
+    _character_sheet_update_log($nid, 'rep_' . $gid, $message);
+    return;
+  }
+}
+
+function _rpg_rep_display($node) {
+  if (!is_object($node)) {
+    $node = node_load($node);
+  }
+  $groups = _rpg_rep_get_groups($node->field_realm[$node->language][0]['value']);
+  $reps = array();
+  foreach ($groups as $gid => $group_info) {
+    $gxp = _character_sheet_get_xp($node->nid, 'rep_' . $gid);
+    $reps = t('@group_name (@amount)', array('@group_name' => $group_info['name'], '@amount' => $gxp));
+  }
+  $element = array(
+    '#type' => 'fieldset',
+    '#title' => t('Reputation'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  $element['amounts'] = array(
+    '#type' => 'markup',
+    '#item' => theme('items_list', array('items' => $reps)),
+  );
+  return $element;
+}
+
+function _rpg_rep_get_groups($realm) {
+  // Check for empty realms and trim.
+  $groups = array();
+  $realm = trim($realm);
+  if (empty($realm)) {
+    return $groups;
+  }
+  // Filter return by matching realm for the character.
+  // Get all group ids where the group is in the realm AND flagged.
+  $results = db_query('SELECT n.title, f.entity_id ' .
+    'FROM {field_data_field_provides_reputation} f ' .
+    'LEFT JOIN {node} n ON n.nid = f.entity_id ' .
+    'LEFT JOIN {field_data_field_tag_realm} r ON r.entity_id = f.entity_id ' .
+    'LEFT JOIN {taxonomy_term_data} t ON t.tid = r.field_tag_realm_tid ' .
+    'WHERE f.field_provides_reputation_value = 1 ' .
+    'AND t.name LIKE :realm', array(':realm' => $realm));
+  foreach ($results as $result) {
+    $groups[$result->entity_id] = $result->title;
+  }
+}
+
+function _rpg_rep_is_pc($node) {
+  if (!is_object($node)) {
+    $node = node_load($node);
+  }
+  if ($node->field_is_storyteller[$node->language][0]['value'] == 0 &&
+    $node->field_is_npc[$node->language][0]['value'] == 0 &&
+    $node->field_is_open_npc[$node->language][0]['value'] == 0) {
+    return TRUE;
+  }
+  return FALSE;
+}
+

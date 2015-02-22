@@ -92,7 +92,7 @@ class item_shop_field_handler_add_item extends views_handler_field {
     $available_silver = $silver - ($silver_spent + $silver_invested);
     // Available economy.
     $economy = isset($node->field_economy[$lang][0]['value']) ? $node->field_economy[$lang][0]['value'] : 0;
-    $worth = _vaxia_calculate_worth($economy);
+    $worth = _silver_calculate_worth($economy);
     // Grand total available.
     $total_worth = $available_silver + $worth;
     $silver = isset($total_worth) ? $total_worth : 0;

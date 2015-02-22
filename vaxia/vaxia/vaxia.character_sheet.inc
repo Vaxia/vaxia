@@ -6,20 +6,9 @@
 
 /* 
  * Implements hook_character_sheet_register_systems().
- * Given format of array of system information organized as follows:
-  return array(
-    'system_name' => array(
-    'name' => 'Vaxia character sheet', // Human name.
-    'description' => 'Vaxia system featuring a XP tracker for attribute and skill fields.',
-    'admin_callback' => '_vaxia_admin_settings', // Admin function.
-    'xp' => array(
-      'types' => '', // Registered types of XP.
-      'add_callback' => '_vaxia_add_xp',
-    ),
-  );
  */
 function vaxia_character_sheet_register_systems() {
-  $xp_types = array('xp', 'silver');
+  $xp_types = array('xp');
   foreach ($xp_types as $key => $type) {
     $xp_types[$key] = trim($type);
   }
@@ -816,60 +805,6 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
     '#markup' => theme('item_list', array('items' => _vaxia_xp_display_types($node))),
   );
 
-  // Add the economy form for owned forms.
-  global $user;
-  $level = isset($node->field_economy[$node->language][0]['value']) ? $node->field_economy[$node->language][0]['value'] : 0;
-  $econ[] = t('Your current economy level is %level.', array('%level' => $level));
-  $income = (float) _vaxia_get_month_income($level);
-  $econ[] = t('Your monthly disposable income is %income.', array('%income' => number_format($income, 2)));
-  $pay = _vaxia_get_daily_pay($level);
-  $econ[] = t('You get paid %pay a day.', array('%pay' => number_format($pay, 2)));
-  $worth = _vaxia_calculate_worth($level);
-  $econ[] = t('Your total worth is %worth if you cashed in all of your econonmy levels.', array('%worth' => number_format($worth, 2)));
-  // Display info.
-  $form['node_info']['economy'] = array(
-    '#type' => 'item',
-    '#title' => t('Economy'),
-    '#markup' => theme('item_list', array('items' => $econ)),
-  );
-  $silver = _character_sheet_get_xp($node->nid, 'silver');
-  $silver_spent = _character_sheet_get_xp($node->nid, 'spent_silver');
-  $silver_invested = _character_sheet_get_xp($node->nid, 'invest_silver');
-  $available_silver = $silver - ($silver_spent + $silver_invested);
-  $cost = _vaxia_invest_calculate_cost_to_improve($level);
-  $invest = $cost - $silver_invested;
-  // Invested silver is spent_silver, adjusted to show the difference between spent and the cost of the current economy level.
-  $desc = t('You have %available silver available to invest. You need to invest %invest more silver before you will reach %level economy. Invested so far %so_far.',
-    array('%available' => floor($available_silver), '%invest' => ceil($invest), '%level' => $level + 1, '%so_far' => $silver_invested));
-
-  global $user;
-  if ($user->uid == $node->uid) {
-    if ($available_silver >= 1) {
-      $available_silver = floor($available_silver);
-      $invest = 0;
-      // Figure out how many given current silver you can add.
-      $form['node_info']['invest_silver'] = array(
-        '#title' => t('Invest silver'),
-        '#type' => 'textfield',
-        '#description' => $desc,
-        '#size' => 15,
-      );
-      $form['node_info']['submit_economy'] = array(
-        '#type' => 'submit',
-        '#value' => t('Invest silver'),
-        '#validate' => array(),
-        '#submit' => array('_vaxia_invest_silver_submit'),
-      );
-    }
-    else {
-      $form['node_info']['invest_silver'] = array(
-        '#type' => 'item',
-        '#value' => t('You currectly have no silver available to invest.'),
-        '#description' => $desc,
-      );
-    }
-  }
-
   // Add additional options for xp IIF allowed.
   if (isset($form['add_xp']) && $node->field_is_storyteller[$node->language][0]['value'] == 0 
     && $node->field_is_npc[$node->language][0]['value'] == 0 && $node->field_is_open_npc[$node->language][0]['value'] == 0) {
@@ -879,22 +814,9 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
       $type = trim($type);
       $xp_types[$type] = $type;
     }
+    // Add set flavor types.
     $form['add_xp']['type']['#options'] = array_merge($xp_types, $form['add_xp']['type']['#options']);
-    $form['add_xp']['type']['#options'] = array_diff($form['add_xp']['type']['#options'], array('silver'));
     $form['add_xp']['type']['#default_value'] = 'xp';
-    // Add silver as it's own thing.
-    $form['add_xp']['add_silver'] = array(
-      '#type' => 'textfield',
-      '#title' => t('Add silver'),
-      '#size' => 6,
-      '#description' => t('Adding a negative value will subtract silver. First from available silver, then from the economy level, reducing economy.'),
-    );
-    $form['add_xp']['add_silver_submit'] = array(
-      '#type' => 'submit',
-      '#value' => t('Add silver'),
-      '#validate' => array('add_silver_validation_form'),
-      '#submit' => array('add_silver_submit_form'),
-    );
   }
   else {
     $form['add_xp']['#access'] = FALSE;
@@ -1071,12 +993,6 @@ function _vaxia_xp_display($node) {
   $xps['rxp'] = t('Roleplayed %roleplayed rxp.', array('%roleplayed' => $roleplayed));
   $posted = _character_sheet_get_xp($node->nid, 'kxp');
   $xps['kxp'] = t('Posted %posted kxp.', array('%posted' => $posted));
-  // Figure out silver math.
-  $silver = _character_sheet_get_xp($node->nid, 'silver');
-  $silver_spent = _character_sheet_get_xp($node->nid, 'spent_silver');
-  $silver_invested = _character_sheet_get_xp($node->nid, 'invest_silver');
-  $available_silver = $silver - ($silver_spent + $silver_invested);
-  $xps['available_silver'] = t('Have %posted silver.', array('%posted' => number_format($available_silver, 2)));
   return $xps;
 }
 
@@ -1093,196 +1009,6 @@ function _vaxia_xp_display_types($node) {
   }
   return $xp_types;
 }
-
-/**
- * Helper function, figure out how much it costs to improve economy by one.
- */
-function _vaxia_invest_calculate_cost_to_improve($economy) {
-  // Given an economy value, figure out how much silver it would take to increase it by one.
-  $total_worth = _vaxia_calculate_worth($economy);
-  $economy++;
-  $new_worth = _vaxia_calculate_worth($economy);
-  return $new_worth - $total_worth;
-}
-
-/**
- * Helper function, figure out how much it costs to remove economy by one.
- */
-function _vaxia_invest_calculate_cost_to_remove($economy) {
-  // Given an economy value, figure out how much silver it would take to increase it by one.
-  $total_worth = _vaxia_calculate_worth($economy);
-  $economy--;
-  $new_worth = _vaxia_calculate_worth($economy);
-  return $total_worth - $new_worth;
-}
-
-/**
- * Helepr function, given an economy level, figure out how much income in a month.
- */
-function _vaxia_get_month_income($economy) {
-  $total_worth = _vaxia_calculate_worth($economy);
-  $income = (($total_worth) * (3.5 / 100)) + (0.05);
-  return $income;
-}
-
-/**
- * Helepr function, given an economy level, figure out how much income in a day.
- */
-function _vaxia_get_daily_pay($economy) {
-  $monthly = _vaxia_get_month_income($economy);
-  $daily = $monthly / 30;
-  return $daily;
-}
-
-/**
- * Helper function, figure out how much you're worth in silver.
- */
-function _vaxia_calculate_worth($economy) {
-  $power = (0.04 * $economy) + 1.853 + (-4 * ( 1 / ($economy + 1) ));
-  return pow(10, $power) + (0.5);
-}
-
-/**
- * Submit callback for investing silver.
- */
-function _vaxia_invest_silver_submit($form, $form_state) {
-  $nid = $form_state['values']['nid'];
-  $invest = $form_state['values']['invest_silver'];
-  $node = node_load($nid);
-  $silver = _character_sheet_get_xp($node->nid, 'silver');
-  $silver_spent = _character_sheet_get_xp($node->nid, 'spent_silver');
-  $silver_invested = _character_sheet_get_xp($node->nid, 'invest_silver');
-  $available_silver = $silver - ($silver_spent + $silver_invested);
-  // Act.
-  $save_node = FALSE;
-  // Clear the cache if need be.
-  if (module_exists('entitycache')) {
-    cache_clear_all($nid, 'cache_entity_node');
-  }
-  global $user;
-  if (is_numeric($invest) && $invest > 0 && $invest <= $available_silver) {
-    // Figure out how many to add based on added silver.
-    $cost = _vaxia_invest_calculate_cost_to_improve($node->field_economy[$node->language][0]['value']);
-    $silver_invested = _character_sheet_get_xp($node->nid, 'invest_silver');
-    $silver_to_invest = 0;
-    while ($invest > 0) {
-      $invest--;
-      $silver_invested++;
-      $silver_to_invest++;
-      if ($silver_invested >= $cost ) {
-        // Pay the investment.
-        $node->field_economy[$node->language][0]['value']++;
-        $save_node = TRUE;
-        _character_sheet_update_xp($node->nid, $silver_invested, 'spent_silver');
-        // Remove silver invested - back to zero.
-        $current_invest = _character_sheet_get_xp($node->nid, 'invest_silver');
-        _character_sheet_update_xp($node->nid, $current_invest * -1, 'invest_silver');
-        $silver_to_invest = 0;
-        $silver_invested = 0;
-        $message = t('Economy improved through investment to @econ on @title by @user.',
-          array('@econ' => $node->field_economy[$node->language][0]['value'],
-          '@title' => $node->title, '@user' => $user->name));
-        _character_sheet_update_log($nid, 'invest', $message);
-      }
-    }
-    _character_sheet_update_xp($node->nid, $silver_to_invest, 'invest_silver');
-    $message = t('@xp silver invested on @title by @user.',
-      array('@xp' => $silver_to_invest, '@title' => $node->title, '@user' => $user->name));
-    _character_sheet_update_log($nid, 'invest', $message);
-  }
-  // Flag to save the node if called for.
-  if ($save_node) {
-    node_save($node);
-  }
-}
-
-/**
- * Form validation handler for silver.
- */
-function add_silver_validation_form(&$form, &$form_state) {
-  $add_silver = $form_state['values']['add_silver'];
-  if (empty($add_silver)) {
-    form_set_error('add_silver', t('Empty value given for silver.'));
-  }
-  if (!is_numeric($add_silver)) {
-    form_set_error('add_silver', t('Silver given is not a numeric value'));
-  }
-}
-
-/**
- * Form submit handler for silver.
- */
-function add_silver_submit_form(&$form, &$form_state) {
-  global $user;
-  $nid = $form_state['values']['nid'];
-  $character = node_load($nid);
-  $add_silver = $form_state['values']['add_silver'];
-  // Clear the cache if need be.
-  if (module_exists('entitycache')) {
-    cache_clear_all($nid, 'cache_entity_node');
-  }
-  // If positive, add silver as per standard XP.
-  if ($add_silver > 0) {
-    _character_sheet_update_xp($nid, $add_silver, 'silver');
-    drupal_set_message(t('@add_silver silver has been added to this sheet.', array('@add_silver' => $add_silver)));
-    $message = t('@xp silver added to @title by @user.',
-      array('@xp' => $add_silver, '@title' => $character->title, '@user' => $user->name));
-    _character_sheet_update_log($nid, 'silver', $message);
-    return;
-  }
-  // If negative. First check if we can just subtract off of given XP.
-  if ($add_silver < 0) {
-    _add_silver_submit_form_remove_silver($nid, $add_silver);
-    drupal_set_message(t('%add_silver silver has been removed from this sheet.',
-      array('%add_silver' => $add_silver)));
-    $message = t('@xp silver removed from @title by @user.',
-      array('@xp' => $add_silver, '@title' => $character->title, '@user' => $user->name));
-    _character_sheet_update_log($nid, 'silver', $message);
-  }
-}
-
-/**
- * Recursive call to convert silver down.
- */
-function _add_silver_submit_form_remove_silver($nid, $add_silver) {
-  $silver = _character_sheet_get_xp($nid, 'silver');
-  $silver_spent = _character_sheet_get_xp($nid, 'spent_silver');
-  $silver_invested = _character_sheet_get_xp($nid, 'invest_silver');
-  $available_silver = $silver - ($silver_spent + $silver_invested);
-  //If yes, do so.
-  if ($available_silver >= -1 * $add_silver) {
-    _character_sheet_update_xp($nid, $add_silver, 'silver');
-    return;
-  }
-  // If not, subtract to zero and start digging into the economy.
-  if ($available_silver <  -1 * $add_silver) {
-    _character_sheet_update_xp($nid, $available_silver * -1, 'silver');
-    // Subtract the silver you've accounted for already.
-    $add_silver += $available_silver;
-    // Then convert one economy level and subtract until all silver is removed.
-    if ($add_silver < 0) {
-      // Convert a level, and add to silver.
-      $node = node_load($nid);
-      $economy = isset($node->field_economy[$node->language][0]['value']) ?
-        $node->field_economy[$node->language][0]['value'] : 0;
-      $converted_silver = _vaxia_invest_calculate_cost_to_remove($economy);
-      _character_sheet_update_xp($nid, $converted_silver, 'silver');
-      $message = t('Converted economy from level @economy to @less_economy, for @converted silver.',
-        array('@economy' => $economy, '@less_economy' => $economy - 1,
-        '@converted' => number_format($converted_silver, 2)));
-      _character_sheet_update_log($node->nid, 'silver', $message);
-      drupal_set_message($message);
-      // Remove econmy.
-      $economy--;
-      $node->field_economy[$node->language][0]['value'] = $economy;
-      node_save($node);
-      // And repeat for the next debt.
-      // NOTE: RECURSION.
-      _add_silver_submit_form_remove_silver($nid, $add_silver);
-    }
-  }
-}
-
 
 /**
  * Validate callback for transfering XP().
@@ -1494,7 +1220,7 @@ function _vaxia_get_field_value_flat($node, $field_key, $field_info, $nodes_seen
  * Helper function, list meaningful types for Vaxia.
  */
 function _vaxia_meaningful_xp_types() {
-  return array('xp', 'bxp', 'rxp', 'kxp', 'silver');
+  return array('xp', 'bxp', 'rxp', 'kxp');
 }
 
 /**
@@ -1586,15 +1312,6 @@ function _vaxia_add_xp($nid, $xp, $type) {
         $player = user_load($node->uid);
         rules_invoke_event('vaxia_gain_xp', $player, $node, $xp, $type);
       }
-    break;
-    case 'silver':
-      $message = t('@xp @ype added to @title by @user.',
-        array('@xp' => $xp, '@type' => $type, '@title' => $node->title, '@user' => $user->name));
-      _character_sheet_update_log($nid, 'silver', $message);
-      // Silver is just added directly.
-      _character_sheet_update_xp($nid, $xp, 'silver');
-      // Echo log message to user.
-      drupal_set_message($message);
     break;
     case 'xp':
     default:

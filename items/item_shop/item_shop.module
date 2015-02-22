@@ -263,7 +263,7 @@ function item_shop_check_can_afford($nid) {
   $available_silver = $silver - ($silver_spent + $silver_invested);
   // Available economy.
   $economy = isset($character->field_economy[$lang][0]['value']) ? $character->field_economy[$lang][0]['value'] : 0;
-  $worth = _vaxia_calculate_worth($economy);
+  $worth = _silver_calculate_worth($economy);
   // Grand total available.
   $total_worth = $available_silver + $worth;
   $silver = isset($total_worth) ? $total_worth : 0;
@@ -335,7 +335,7 @@ function _item_shop_show_footer() {
     $silver_invested = _character_sheet_get_xp($node->nid, 'invest_silver');
     $available_silver = $silver - ($silver_spent + $silver_invested);
     // Available economy.
-    $worth = _vaxia_calculate_worth($economy);
+    $worth = _silver_calculate_worth($economy);
     // Grand total available.
     $total_worth = $available_silver + $worth;
     // Display.

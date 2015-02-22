@@ -1,0 +1,7 @@
+name = RPG Reputation
+description = Use xp to track reputation of PCs with groups
+core = 7.x
+package = RPG
+version = 7.x-1.0
+project = rpg_rep
+dependencies[] = character_sheet
