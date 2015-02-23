@@ -127,7 +127,7 @@ function rpg_rep_comment_view($comment) {
 function rpg_rep_form__character_sheet_xp_form_alter(&$form, $form_state) {
   // Add a display for the rep.
   $node = node_load($form['node_info']['nid']['#value']);
-  if (user_access('view reputation xp') || ($comment->uid == $user->uid && user_access('view own reputation xp'))) {
+  if (user_access('view reputation xp') || ($node->uid == $user->uid && user_access('view own reputation xp'))) {
     $reps = _rpg_rep_display($node);
     if (!empty($reps)) {
       $form['node_info']['rpg_rep'] = array(
@@ -138,8 +138,10 @@ function rpg_rep_form__character_sheet_xp_form_alter(&$form, $form_state) {
       );
     }
   }
+  global $user;
   // Add additional options for xp IIF allowed.
-  if (user_access('give reputation xp') && _rpg_rep_is_pc($node)) {
+  // If not your own character.
+  if (user_access('give reputation xp') && _rpg_rep_is_pc($node) && $node->uid != $user->uid) {
     // Add the UI for the rep.
     $groups = array();
     foreach (_rpg_rep_get_groups($node->field_realm[$node->language][0]['value']) as $gid => $group_name) {
