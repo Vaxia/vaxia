@@ -488,11 +488,11 @@ function vaxia_character_sheet_validate_sheet($node, $old_node, $form, $form_sta
               foreach ($skill_data as $skills) {
                 foreach ($skills as $delta => $skill_data) {
                   // Max sills.
-                  if ($skill_data['field_skill_value'][$lang][0]['value'] >= $high_skill) {
+                  if (!empty($skill_data['field_skill_value'][$lang][0]['value']) && $skill_data['field_skill_value'][$lang][0]['value'] >= $high_skill) {
                     $maxed_values++;
                   }
                   // Zero skills.
-                  if (is_array($skill_data) && $skill_data['field_skill_value'][$lang][0]['value'] == 0) {
+                  if (is_array($skill_data) && !empty($skill_data['field_skill_value'][$lang][0]['value']) && $skill_data['field_skill_value'][$lang][0]['value'] == 0) {
                     $zero_skills++;
                   }
                 }
