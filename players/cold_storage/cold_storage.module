@@ -48,7 +48,7 @@ function cold_storage_rules_unpub_nodes($this_user) {
 /**
  * Rules action handler.
  */
-function cold_storage_rules_unpub_nodes($this_user) {
+function cold_storage_rules_pub_nodes($this_user) {
   db_query('UPDATE {node} SET status=1 WHERE uid = :uid', array(':uid' => $this_user->uid));
   // Flush Entity Cache record.
   if (module_exists('entitycache')) {
