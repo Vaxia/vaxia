@@ -12,7 +12,7 @@ include_once('cold_storage.features.inc');
 function cold_storage_rules_action_info() {
   return array(
     'cold_storage_rules_unpub_nodes' => array(
-      'label' => t('Unpublish nuser nodes'), 
+      'label' => t('Unpublish user nodes'), 
       'parameter' => array(
         'user' => array(
           'type' => 'user',
