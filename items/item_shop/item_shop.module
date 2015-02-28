@@ -103,13 +103,13 @@ function item_shop_form_views_form_item_shop_item_shop_alter(&$form, &$form_stat
  */
 function item_shop_form_items_node_form_alter(&$form, &$form_state, $form_id) {
   if (!user_access('set item for shop')) {
-    $form['field_in_shop']['#access'] = FALSE;
+    $form['field_sellback']['#disabled'] = TRUE;
     $form['field_in_shop']['#value'] = isset($form['field_in_shop']['#default_value']) ? $form['field_in_shop']['#default_value'] : 0;
   }
   global $user;
   $node = $form['#node'];
   if ($user->uid == $node->uid) {
-    $form['field_sellback']['#access'] = FALSE;
+    $form['field_sellback']['#disabled'] = TRUE;
     $form['field_sellback']['#value'] = isset($form['field_sellback']['#default_value']) ? $form['field_sellback']['#default_value'] : 0;
   }
 }
