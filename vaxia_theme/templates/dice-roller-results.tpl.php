@@ -61,6 +61,8 @@
           }
         }
         else {
+          // Filter out zero's on non-might rolls.
+          $rolls = array_diff($results, array(0));
           $rolls = trim(implode(', ', $results));
           $str_rolls .= '<div class="dice' . $first . $last . $even_odd . '">' . $note . ' => <b>' . t('Roll') . ':</b> ' . $rolls . '</div>' . "\n";
         }
@@ -71,7 +73,7 @@
     }
     // We now know all the stats involved in this roll and have the rolls collected into a sorted array.
     foreach ($rolls_found as $index => $roll_set) {
-	  $str_rolls .= '  <span class="dice_set dice_set_' . $index . '" set="' . $index . '">'. "\n";
+      $str_rolls .= '  <span class="dice_set dice_set_' . $index . '" set="' . $index . '">'. "\n";
       $dice_roll = 0;
       foreach ($roll_set as $stat => $roll) {
         $str_rolls .= '    ' .
