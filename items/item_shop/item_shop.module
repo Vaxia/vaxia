@@ -108,7 +108,7 @@ function item_shop_form_items_node_form_alter(&$form, &$form_state, $form_id) {
   }
   global $user;
   $node = $form['#node'];
-  if ($user->uid != $node->uid) {
+  if ($user->uid == $node->uid) {
     $form['field_sellback']['#access'] = FALSE;
     $form['field_sellback']['#value'] = isset($form['field_sellback']['#default_value']) ? $form['field_sellback']['#default_value'] : 0;
   }
