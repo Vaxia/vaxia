@@ -44,7 +44,7 @@
         foreach ($results as $index => $value) {
           $results[$index] = trim($value);
           if ($value == '0') {
-            results($index[$index]);
+            unset($results[$index]);
           }
         }
         // The the first rolls are the rolls. The very last one is the might.
