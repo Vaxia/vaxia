@@ -41,6 +41,12 @@
         $results = trim($results[0]);
         // New format "66, 25, 22, 99". Where 99 is the might.
         $results =  explode(',', $results);
+        foreach ($results as $index => $value) {
+          $results[$index] = trim($value);
+          if ($value == '0') {
+            results($index[$index]);
+          }
+        }
         // The the first rolls are the rolls. The very last one is the might.
         // If there is no might, leave it empty. For 1-dice rolls.
         $first = ($index == 0) ? ' first ' : '';
@@ -49,7 +55,6 @@
         if (!empty($stat)) {
           $might = count($results) > 1 ? trim(array_pop($results)) : '';
           // Filter out zero's on non-might rolls.
-          $rolls = array_diff($results, array(0));
           $rolls = trim(implode(', ', $results));
           $str_rolls .= '<div class="dice' . $first . $last . $even_odd . '" dice_row="' . $index . '">' . $note . ' =>' .
             ' <b>' . t('Might') . ':</b> ' . $might .
@@ -64,7 +69,6 @@
         }
         else {
           // Filter out zero's on non-might rolls.
-          $rolls = array_diff($results, array(0));
           $rolls = trim(implode(', ', $results));
           $str_rolls .= '<div class="dice' . $first . $last . $even_odd . '">' . $note . ' => <b>' . t('Roll') . ':</b> ' . $rolls . '</div>' . "\n";
         }
