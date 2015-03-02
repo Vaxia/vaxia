@@ -56,6 +56,7 @@ function vaxia_permission() {
  * Implements hook_menu().
  */
 function vaxia_menu() {
+  // Autocompletes.
   $items['vaxia/transfer_xp'] = array(
     'title' => 'Transfer XP autocomplete',
     'type' => MENU_CALLBACK,
@@ -72,7 +73,25 @@ function vaxia_menu() {
     'file' => 'system.admin.inc',
     'file path' => drupal_get_path('module', 'system'),
   );
+  $items['admin/vaxia/vaxia'] = array(
+    'title' => 'Vaxia',
+    'description' => 'Administer Vaxia settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('_vaxia_admin_settings_form'),
+    'access arguments' => array('admin vaxia settings'),
+  );
   return $items;
+}
+
+/**
+ * Menu callback.
+ */
+function _vaxia_admin_settings_form($form, &$form_state) {
+  // Character sheet is already included.
+  if (function_exists('_vaxia_admin_settings')) {
+    $form = array_merge($form, _vaxia_admin_settings());
+  }
+  return system_settings_form($form);
 }
 
 /**
