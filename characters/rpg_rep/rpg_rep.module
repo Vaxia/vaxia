@@ -125,6 +125,7 @@ function rpg_rep_comment_view($comment) {
  * Implements hook_form_FORMID_alter().
  */
 function rpg_rep_form__character_sheet_xp_form_alter(&$form, $form_state) {
+  global $user;
   // Add a display for the rep.
   $node = node_load($form['node_info']['nid']['#value']);
   if (user_access('view reputation xp') || ($node->uid == $user->uid && user_access('view own reputation xp'))) {
@@ -138,7 +139,6 @@ function rpg_rep_form__character_sheet_xp_form_alter(&$form, $form_state) {
       );
     }
   }
-  global $user;
   // Add additional options for xp IIF allowed.
   // If not your own character.
   if (user_access('give reputation xp') && _rpg_rep_is_pc($node) && $node->uid != $user->uid) {
