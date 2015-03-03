@@ -13,7 +13,25 @@ function personal_rooms_permission() {
       'title' => t('Edit personal_rooms'),
       'description' => t('Edit personal_rooms.'),
     ),
+    'admin personal_rooms' => array(
+      'title' => t('Admin personal_rooms'),
+      'description' => t('Admin personal_rooms.'),
+    ),
   );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function personal_rooms_menu() {
+  // Autocompletes.
+  $items['admin/vaxia/personal_rooms'] = array(
+    'title' => 'Administer personal rooms',
+    'type' => MENU_CALLBACK,
+    'access arguments' => array('admin personal_rooms'),
+    'page callback' => '_personal_rooms_settings',
+  );
+  return $items;
 }
 
 /**
@@ -33,7 +51,7 @@ function _personal_rooms_edit_access($op, $node) {
   // we don't really want to give full edit access, we're
   // just going to use the edit page as a already-available
   // form to allow users to make the changes for their rooms.
-  if (user_access('edit personal_rooms')) {
+  if ($node->type == 'rpg_chatroom' && user_access('edit personal_rooms')) {
      $character = _personal_rooms_character_owner($node);
      if (!empty($character)) {
        global $user;
@@ -42,7 +60,7 @@ function _personal_rooms_edit_access($op, $node) {
        }
      }
   }
-  // Else return the node_access call.
+  // Else return the normal node_access call.
   module_load_include('inc', 'node', 'node.pages');
   return node_access($op, $node);
 }
@@ -51,16 +69,23 @@ function _personal_rooms_edit_access($op, $node) {
  * Implements hook_form_FORM_ID_alter().
  */
 function personal_rooms_form_rpg_chatroom_node_form_alter(&$form, &$form_state, $form_id) {
-  $node = $form['#node'];
-  // Check for normal access.
-  // If you don't have normal access, then you're here for a room edit.
-  if (!node_access('update', $node)) {
-    // Change the title, and fields for mature posting and access only.
-    // We'll get the description in here on pass two.
-    $allowed_edit = array('title', 'field_mature_posting', 'field_locked_to_users', 'field_users');
-    foreach (element_children($form) as $child) {
-      if ((strpos($child, 'field_') === 0 || $child == 'title') && !in_array($child, $allowed_edit)) {
-        $form[$child]['#access'] = FALSE;
+  // Only for rpg chatrooms.
+  if ($node->type == 'rpg_chatroom' && user_access('edit personal_rooms')) {
+    // Get node.
+    $node = node_load($form['#node']->nid);
+    // Check for normal access. If you don't have normal access, then you're here for a room edit.
+    if (!node_access('update', $node)) {
+      // Change the title, and fields for mature posting and access only.
+      $allowed_edit = variable_get('personal_rooms_fields_edit', "title\nfield_locked_to_users\nfield_users");
+      $allowed_edit = explode("\n", $allowed_edit);
+      foreach ($allowed_edit as $index => $value) {
+        $allowed_edit[$index] = trim($value);
+      }
+      // Set access limits.
+      foreach (element_children($form) as $child) {
+        if ((strpos($child, 'field_') === 0 || $child == 'title') && !in_array($child, $allowed_edit)) {
+          $form[$child]['#access'] = FALSE;
+        }
       }
     }
   }
@@ -76,4 +101,17 @@ function _personal_rooms_character_owner($node) {
   foreach ($found as $nid) {
     return node_load($nid->entity_id);
   }
+}
+
+/**
+ * Menu callback form for admin settings.
+ */
+function _personal_rooms_settings($form, &$form_state) {
+  $form['personal_rooms_fields_edit'] = array(
+    '#title' => 'Personal room fields',
+    '#description' => t('Room fields that can be edited by the player of the owning character.'),
+    '#type' => 'textarea',
+    '#default_value' => variable_get('personal_rooms_fields_edit', "title\nfield_locked_to_users\nfield_users"),
+  );
+  return system_settings_form($form);
 }
