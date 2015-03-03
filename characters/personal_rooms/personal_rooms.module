@@ -39,7 +39,6 @@ function personal_rooms_menu() {
  */
 function personal_rooms_menu_alter(&$items) {
   $items['node/%node/edit']['access callback'] = '_personal_rooms_edit_access';
-  unset($items['node/%node/edit']['file']);
   return $items;
 }
 
