@@ -544,12 +544,8 @@ function _vaxia_admin_settings() {
   $form['settings'] = array(
     '#title' => 'Settings',
     '#type' => 'fieldset',
-  );
-  $form['settings']['vaxia_clean_dblog'] = array(
-    '#title' => 'Clear watchdog',
-    '#description' => 'Clear non-essential watchdog logs (notice and below) on every cron run.',
-    '#type' => 'checkbox',
-    '#default_value' => variable_get('vaxia_clean_dblog', TRUE),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
   );
   $form['settings']['vaxia_starting_points'] = array(
     '#title' => 'Starting points',
@@ -568,12 +564,6 @@ function _vaxia_admin_settings() {
     '#description' => 'The ratio of kxp to xp.',
     '#type' => 'textfield',
     '#default_value' => variable_get('vaxia_kxp_ratio', 70),
-  );
-  $form['settings']['vaxia_kxp_per_words'] = array(
-    '#title' => 'Words to KXP ratio',
-    '#description' => 'The ratio of comment word count to kxp.',
-    '#type' => 'textfield',
-    '#default_value' => variable_get('vaxia_kxp_per_words', 20),
   );
   $form['settings']['vaxia_max_kxp_post'] = array(
     '#title' => 'Max KXP per post',
@@ -623,6 +613,8 @@ function _vaxia_admin_settings() {
   $form['point_cost'] = array(
     '#title' => 'Point costs',
     '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
   );
   $form['point_cost']['vaxia_attribute_cost'] = array(
     '#title' => 'Attribute cost multiplier',
@@ -689,9 +681,16 @@ function _vaxia_admin_settings() {
     '#title' => 'Character creation rules',
     '#type' => 'fieldset',
   );
+  $form['char_rules']['info'] = array(
+    '#title' => 'Character creation limits',
+    '#type' => 'item',
+    '#markup' => t('These settings control the allowed min and max values on character creation.'),
+  );
   $form['char_rules']['warn'] = array(
     '#title' => 'Warn creation',
     '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
   );
   $form['char_rules']['warn']['vaxia_pc_skill_warn'] = array(
     '#title' => 'Skill min warn',
@@ -726,6 +725,8 @@ function _vaxia_admin_settings() {
   $form['char_rules']['block'] = array(
     '#title' => 'Block creation',
     '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
   );
   $form['char_rules']['block']['vaxia_pc_skill_min'] = array(
     '#title' => 'Skill min',

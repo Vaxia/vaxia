@@ -703,7 +703,6 @@ function _vaxia_comment_add_kxp_submit($form, $form_state) {
 function _vaxia_figure_kxp($text) {
   $wordcount = strlen($text);
   if (is_numeric($wordcount)) {
-    //$kxp = floor( $wordcount / variable_get('vaxia_kxp_per_words', 20) );
     $kxp = (81.6) * ( exp( (0.00008) * ($wordcount)) - 1 );
     $kxp = substr($kxp, 0, 4);
     $max_kxp = variable_get('vaxia_max_kxp_post', 10);
