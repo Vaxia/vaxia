@@ -1,0 +1,8 @@
+name = Personal Rooms
+description = Add a personal room for a player character
+core = 7.x
+package = RPG
+version = 7.x-1.0
+project = personal_rooms
+dependencies[] = character_sheet
+dependencies[] = rpg_chat

@@ -1,0 +1,79 @@
+<?php
+/**
+ * @file
+ * Code for Personal Rooms.
+ */
+
+/**
+ * Implements hook_permission().
+ */
+function personal_rooms_permission() {
+  return array(
+    'edit personal_rooms' => array(
+      'title' => t('Edit personal_rooms'),
+      'description' => t('Edit personal_rooms.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu_alter().
+ */
+function personal_rooms_menu_alter(&$items) {
+  $items['node/%node/edit']['access callback'] = '_personal_rooms_edit_access';
+  unset($items['node/%node/edit']['file']);
+  return $items;
+}
+
+/**
+ * Menu access permission.
+ */
+function _personal_rooms_edit_access($op, $node) {
+  // Not using the normal access pages here because
+  // we don't really want to give full edit access, we're
+  // just going to use the edit page as a already-available
+  // form to allow users to make the changes for their rooms.
+  if (user_access('edit personal_rooms')) {
+     $character = _personal_rooms_character_owner($node);
+     if (!empty($character)) {
+       global $user;
+       if ($character->uid == $user->uid) {
+         return TRUE;
+       }
+     }
+  }
+  // Else return the node_access call.
+  module_load_include('inc', 'node', 'node.pages');
+  return node_access($op, $node);
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function personal_rooms_form_rpg_chatroom_node_form_alter(&$form, &$form_state, $form_id) {
+  $node = $form['#node'];
+  // Check for normal access.
+  // If you don't have normal access, then you're here for a room edit.
+  if (!node_access('update', $node)) {
+    // Change the title, and fields for mature posting and access only.
+    // We'll get the description in here on pass two.
+    $allowed_edit = array('title', 'field_mature_posting', 'field_locked_to_users', 'field_users');
+    foreach (element_children($form) as $child) {
+      if ((strpos($child, 'field_') === 0 || $child == 'title') && !in_array($child, $allowed_edit)) {
+        $form[$child]['#access'] = FALSE;
+      }
+    }
+  }
+}
+
+/**
+ * Get player who owns room.
+ */
+function _personal_rooms_character_owner($node) {
+  $found = db_query('SELECT entity_id FROM {field_data_field_personal_room} ' .
+    'WHERE field_personal_room_nid = :nid',
+    array(':nid' => $node->nid));
+  foreach ($found as $nid) {
+    return node_load($nid->entity_id);
+  }
+}
