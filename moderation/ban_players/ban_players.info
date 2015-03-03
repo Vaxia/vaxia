@@ -15,7 +15,4 @@ features[rules_config][] = rules_set_player_last_ip
 features[rules_config][] = rules_set_player_last_ip_on_login_access
 features[user_role][] = banned user
 features[views_view][] = ban_player
-features_exclude[dependencies][php] = php
-features_exclude[dependencies][user_stats] = user_stats
-features_exclude[dependencies][views] = views
-features_exclude[dependencies][workflow_rules] = workflow_rules
+

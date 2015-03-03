@@ -13,6 +13,4 @@ features[rules_config][] = strikes_strikes_third_yellow_strike
 features[rules_config][] = strikes_suspend_player
 features[user_role][] = suspended user
 features[views_view][] = suspensions
-features_exclude[dependencies][rules] = rules
-features_exclude[dependencies][user_stats] = user_stats
-features_exclude[dependencies][views] = views
+

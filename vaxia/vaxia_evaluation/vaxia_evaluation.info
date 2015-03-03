@@ -13,7 +13,4 @@ features[rules_config][] = rules_cap_of_characters_in_the_bin_at_the_same_time
 features[rules_config][] = rules_catch_too_many_min_max_characters
 features[rules_config][] = rules_char_eval_other_and_conditions_under_hxp
 features[rules_config][] = vaxia_evaluation_notify_player_when_char_workflow
-features_exclude[dependencies][entity] = entity
-features_exclude[dependencies][php] = php
-features_exclude[dependencies][rules] = rules
-features_exclude[dependencies][workflow_rules] = workflow_rules
+
