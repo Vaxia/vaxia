@@ -82,12 +82,15 @@ function personal_rooms_form_rpg_chatroom_node_form_alter(&$form, &$form_state, 
       $allowed_view = _personal_rooms_prep_setting_list($allowed_view);
       // Set access limits.
       foreach (element_children($form) as $child) {
-        if ((strpos($child, 'field_') === 0 || $child == 'title') && !in_array($child, $allowed_view)) {
-          $form[$child]['#disabled'] = TRUE;
-          $form[$child]['#value'] = isset($form[$child]['#value']) ? $form[$child]['#value'] : $form[$child]['#default_value'];
-        }
+        // Initially remove from the form.
         if ((strpos($child, 'field_') === 0 || $child == 'title') && !in_array($child, $allowed_edit)) {
           $form[$child]['#access'] = FALSE;
+        }
+        // But enable viewing the current setting if allowed.
+        if ((strpos($child, 'field_') === 0 || $child == 'title') && in_array($child, $allowed_view)) {
+          $form[$child]['#access'] = TRUE;
+          $form[$child]['#disabled'] = TRUE;
+          $form[$child]['#value'] = isset($form[$child]['#value']) ? $form[$child]['#value'] : $form[$child]['#default_value'];
         }
       }
     }
