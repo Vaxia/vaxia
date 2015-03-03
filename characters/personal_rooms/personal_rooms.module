@@ -26,10 +26,11 @@ function personal_rooms_permission() {
 function personal_rooms_menu() {
   // Autocompletes.
   $items['admin/vaxia/personal_rooms'] = array(
-    'title' => 'Administer personal rooms',
-    'type' => MENU_CALLBACK,
+    'title' => 'Personal rooms',
+    'description' => 'Administer personal rooms',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('_personal_rooms_settings'),
     'access arguments' => array('admin personal_rooms'),
-    'page callback' => '_personal_rooms_settings',
   );
   return $items;
 }
@@ -75,19 +76,33 @@ function personal_rooms_form_rpg_chatroom_node_form_alter(&$form, &$form_state, 
     // Check for normal access. If you don't have normal access, then you're here for a room edit.
     if (!node_access('update', $node)) {
       // Change the title, and fields for mature posting and access only.
-      $allowed_edit = variable_get('personal_rooms_fields_edit', "title\nfield_locked_to_users\nfield_users");
-      $allowed_edit = explode("\n", $allowed_edit);
-      foreach ($allowed_edit as $index => $value) {
-        $allowed_edit[$index] = trim($value);
-      }
+      $allowed_edit = variable_get('personal_rooms_fields_edit', '');
+      $allowed_edit = _personal_rooms_prep_setting_list($allowed_edit);
+      $allowed_view = variable_get('personal_rooms_fields_view', '');
+      $allowed_view = _personal_rooms_prep_setting_list($allowed_view);
       // Set access limits.
       foreach (element_children($form) as $child) {
+        if ((strpos($child, 'field_') === 0 || $child == 'title') && !in_array($child, $allowed_view)) {
+          $form[$child]['#disabled'] = TRUE;
+          $form[$child]['#value'] = isset($form[$child]['#value']) ? $form[$child]['#value'] : $form[$child]['#default_value'];
+        }
         if ((strpos($child, 'field_') === 0 || $child == 'title') && !in_array($child, $allowed_edit)) {
           $form[$child]['#access'] = FALSE;
         }
       }
     }
   }
+}
+
+/**
+ * Helper function, prep a list of values from settings.
+ */
+function _personal_rooms_prep_setting_list($string) {
+  $string = explode("\n", $string);
+  foreach ($string as $index => $value) {
+    $string[$index] = trim($value);
+  }
+  return $string;
 }
 
 /**
@@ -107,10 +122,16 @@ function _personal_rooms_character_owner($node) {
  */
 function _personal_rooms_settings($form, &$form_state) {
   $form['personal_rooms_fields_edit'] = array(
-    '#title' => 'Personal room fields',
+    '#title' => 'Edit room fields',
     '#description' => t('Room fields that can be edited by the player of the owning character.'),
     '#type' => 'textarea',
-    '#default_value' => variable_get('personal_rooms_fields_edit', "title\nfield_locked_to_users\nfield_users"),
+    '#default_value' => variable_get('personal_rooms_fields_edit', ''),
+  );
+  $form['personal_rooms_fields_view'] = array(
+    '#title' => 'View room fields',
+    '#description' => t('Room fields that can be viewed in edit by the player of the owning character.'),
+    '#type' => 'textarea',
+    '#default_value' => variable_get('personal_rooms_fields_view', ''),
   );
   return system_settings_form($form);
 }
