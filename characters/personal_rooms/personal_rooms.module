@@ -70,7 +70,7 @@ function _personal_rooms_edit_access($op, $node) {
  */
 function personal_rooms_form_rpg_chatroom_node_form_alter(&$form, &$form_state, $form_id) {
   // Only for rpg chatrooms.
-  if ($node->type == 'rpg_chatroom' && user_access('edit personal_rooms')) {
+  if ($form['#node']->type == 'rpg_chatroom' && user_access('edit personal_rooms')) {
     // Get node.
     $node = node_load($form['#node']->nid);
     // Check for normal access. If you don't have normal access, then you're here for a room edit.
