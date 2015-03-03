@@ -90,6 +90,7 @@ function personal_rooms_form_rpg_chatroom_node_form_alter(&$form, &$form_state, 
         if ((strpos($child, 'field_') === 0 || $child == 'title') && in_array($child, $allowed_view)) {
           $form[$child]['#access'] = TRUE;
           $form[$child]['#disabled'] = TRUE;
+          $form[$child]['#default_value'] = isset($form[$child]['#default_value']) ? $form[$child]['#default_value'] : '';
           $form[$child]['#value'] = isset($form[$child]['#value']) ? $form[$child]['#value'] : $form[$child]['#default_value'];
         }
       }
