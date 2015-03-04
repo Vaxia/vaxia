@@ -1,4 +1,0 @@
-name = Favorites
-description = Allows users to add paths on a site to their list of favorites.
-core = 7.x
-files[] = favorites.module
