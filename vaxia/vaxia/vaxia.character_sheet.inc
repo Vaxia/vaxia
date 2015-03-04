@@ -807,17 +807,17 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
     '#markup' => theme('item_list', array('items' => _vaxia_xp_display_types($node))),
   );
   // Add xp.
-   _vaxia_add_xp($form, $form_state);
+   _vaxia_add_xp_form($form, $form_state);
   // And add the SH transfer options.
-  _vaxia_transfer_rxp($form, $form_state);
+  _vaxia_transfer_rxp_form($form, $form_state);
   // And add the transfer options.
-  _vaxia_transfer_hxp($form, $form_state);
+  _vaxia_transfer_hxp_form($form, $form_state);
 }
 
 /**
  * Helper functions, add mode form features.
  */
-function _vaxia_add_xp(&$form, $form_state) {
+function _vaxia_add_xp_form(&$form, $form_state) {
   global $user;
   // Add additional options for xp IIF allowed.
   if (isset($form['add_xp']) && $node->field_is_storyteller[$node->language][0]['value'] == 0 
@@ -840,7 +840,7 @@ function _vaxia_add_xp(&$form, $form_state) {
 /**
  * Helper functions, add mode form features.
  */
-function _vaxia_transfer_rxp(&$form, $form_state) {
+function _vaxia_transfer_rxp_form(&$form, $form_state) {
   global $user;
   // And add the SH transfer options.
   $rxp = _character_sheet_get_xp($node->nid, 'rxp');
@@ -882,7 +882,7 @@ function _vaxia_transfer_rxp(&$form, $form_state) {
 /**
  * Helper functions, add mode form features.
  */
-function _vaxia_transfer_hxp(&$form, $form_state) {
+function _vaxia_transfer_hxp_form(&$form, $form_state) {
   global $user;
   // And add the transfer options.
   $setting = variable_get('vaxia_transfer_workflow', '');
