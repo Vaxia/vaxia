@@ -356,7 +356,7 @@ function filedepot_get_group_entity_query($grpid=0) {
         ->entityCondition('entity_id', $grpid);
     } else {
       $efq = $query->entityCondition('entity_type', 'node')
-        ->entityCondition('entity_id', $grpcontext)
+        ->entityCondition('entity_id', $grpid)
         ->fieldCondition(OG_GROUP_FIELD, 'value', 1, '=');
     }
   } else {
@@ -415,7 +415,7 @@ function filedepot_build_notification_distribution($id, $type = 1) {
   $filedepot = filedepot_filedepot();
 
   $target_users = array();
-  if ($type == FILEDEPOT_NOTIFY_NEWFILE OR $type == FILEDEPOT_NOTIFY_APPROVED) {
+  if ($type == FILEDEPOT_NOTIFY_NEWFILE OR $type == FILEDEPOT_NOTIFY_APPROVED OR $type == FILEDEPOT_BROADCAST_MESSAGE) {
     $sql = "SELECT file.cid,file.submitter,category.name FROM {filedepot_files} file, "
       . "{filedepot_categories} category WHERE file.cid=category.cid and file.fid=:fid";
     $query = db_query($sql, array(':fid' => $id));
@@ -510,11 +510,11 @@ function filedepot_build_notification_distribution($id, $type = 1) {
     }
   }
    elseif ($type == FILEDEPOT_BROADCAST_MESSAGE) {
-
+    // Nov 2014: Added check that user also has view access to the folder from where broadcast was issued from
     if (variable_get('filedepot_default_allow_broadcasts', 1) == 1) { // Site default set to allow broadcast enabled
       $uquery = db_query("SELECT uid FROM {users} WHERE uid > 0 AND status = 1");
       while ( $A = $uquery->fetchObject()) {
-        if ($A->uid != $user->uid) {
+        if ($A->uid != $user->uid && $filedepot->checkPermission($cid, 'view', $A->uid)) {
           if (db_query("SELECT allow_broadcasts FROM {filedepot_usersettings} WHERE uid=:uid",
             array(':uid' => $A->uid))->fetchField() == 0) {
             $personal_setting = FALSE; // Found user setting to not be notified
@@ -522,8 +522,8 @@ function filedepot_build_notification_distribution($id, $type = 1) {
           else {
             $personal_setting = TRUE;
           }
-          // Only want to notify users that don't have setting disabled or exception record
-          if ($personal_setting == TRUE) {
+          // Only want to notify users that don't have setting disabled or exception record and folder view access
+          if ($personal_setting == TRUE AND $filedepot->checkPermission($cid, 'view', $A->uid)) {
             $target_users[] = $A->uid;
           }
         }
@@ -534,7 +534,7 @@ function filedepot_build_notification_distribution($id, $type = 1) {
       . "WHERE a.allow_broadcasts=1 and b.status=1";
       $uquery = db_query($sql);
       while ($B  = $uquery->fetchObject()) {
-        if ($user->uid != $B->uid) {
+        if ($user->uid != $B->uid && $filedepot->checkPermission($cid, 'view', $B->uid)) {
           $target_users[] = $B->uid;
         }
       }

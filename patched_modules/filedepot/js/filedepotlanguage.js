@@ -50,6 +50,7 @@ var NEXLANG_errormsg6 = Drupal.t('Unexpected result ');
 var NEXLANG_errormsg7 = Drupal.t('Error retrieving permissions');
 var NEXLANG_errormsg8 = Drupal.t('Notifications Disabled');
 var NEXLANG_errormsg9 = Drupal.t('No users with Notifications Enabled');
+var NEXLANG_errormsg10 = Drupal.t('You need to enter your search terms');
 
 var NEXLANG_intelfolder1 = Drupal.t('Reports');
 var NEXLANG_intelfolder2 = Drupal.t('Recent Folders');

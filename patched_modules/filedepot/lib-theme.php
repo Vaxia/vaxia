@@ -180,9 +180,17 @@ function template_preprocess_filedepot_activefolder(&$variables) {
 
   if ($filedepot->cid == 0) {
     if (in_array($filedepot->activeview, $filedepot->validReportingModes)) {
-      $variables['report_heading'] = t("@active", array(
+      if ($filedepot->activeview == 'search') {
+        $variables['report_heading'] = t("@active returned %count records", array(
+            "@active" => $filedepot->activeview,
+            "%count" => $filedepot->recordCount
+          ));
+      }
+      else {
+        $variables['report_heading'] = t("@active", array(
             "@active" => $filedepot->activeview
           ));
+      }
       $variables['show_reportmodeheader'] = '';
     }
   }
@@ -529,7 +537,7 @@ function template_preprocess_filedepot_filedetail(&$variables) {
   $variables['LANG_lastupated'] = t('Last Updated');
   $variables['show_statusmsg'] = 'none';
   $limit = FALSE;
-  
+
   if ($variables['reportmode'] == 'approvals') {
     $sql = "SELECT file.cid,file.title,file.fname,file.date,file.version,file.size, ";
     $sql .= "file.description,file.submitter,file.status,file.version_note as notes,tags ";
@@ -558,7 +566,7 @@ function template_preprocess_filedepot_filedetail(&$variables) {
   else {
     $query = db_query($sql, array(':fid' => $fid));
   }
-  
+
   $A = $query->fetchAssoc();
   if ($A != NULL) {
     list($cid, $title, $fname, $date, $cur_version, $size, $description, $submitter, $status, $cur_notes, $tags) = array_values($A);
@@ -620,7 +628,7 @@ function template_preprocess_filedepot_filedetail(&$variables) {
         }
       }
     }
-    
+
     $clean_urls_on = variable_get('clean_url', 0);
     if ($clean_urls_on == 1) {
       $url_separator = "/";
@@ -628,7 +636,7 @@ function template_preprocess_filedepot_filedetail(&$variables) {
     else {
       $url_separator = "?q=";
     }
-    
+
     if (isset($urlprefix) AND !empty($urlprefix)) {
       $variables['download_url'] = base_path() . "index.php{$url_separator}{$urlprefix}/filedepot&cid=$cid&fid=$fid";
     }

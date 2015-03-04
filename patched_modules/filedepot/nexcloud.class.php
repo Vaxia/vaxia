@@ -386,7 +386,7 @@ class nexcloud {
           db_query("INSERT INTO {nextag_items} (itemid,type) VALUES (:item,:type)", array(':item' => $itemid, ':type' => $this->_type));
         }
         // Need to build list of tagid's for these tag words and if tagword does not yet exist then add it
-        $tagwords = explode(',', $this->_newtags);
+        $tagwords = preg_split("/[\s,]+/", $this->_newtags, NULL, PREG_SPLIT_NO_EMPTY);
         $tags = array();
         foreach ($tagwords as $word) {
           $word = trim(strip_tags($word));

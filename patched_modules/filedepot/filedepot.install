@@ -290,6 +290,7 @@ function filedepot_uninstall() {
   variable_del('comment_filedepot_folder');
   variable_del('filedepot_auto_create_group_rootfolder_enabled');
   variable_del('filedepot_organic_group_mode_enabled');
+  variable_del('filedepot_displayorder_filesfirst');
   variable_del('filedepot_email_to');
 }
 

@@ -117,7 +117,6 @@ class filedepot
     if (isset($permsdata['group'])) {
       unset($permsdata['group']); // It has now been assigned to defGroupRights variable
     }
-
     $this->defRoleRights = $permsdata;  // Remaining permissions are the role assignments
     // Is og enabled?
     if (module_exists('og') AND module_exists('og_access')) {
@@ -240,7 +239,9 @@ class filedepot
       $uid = $userid;
     }
 
-    if (user_access('administer filedepot', $user) === TRUE) {
+    $account = user_load($uid);
+
+    if (user_access('administer filedepot', $account) === TRUE) {
       return filedepot_permission_object::createFullPermissionObject($cid);
     }
     else {
@@ -261,7 +262,7 @@ class filedepot
 
       if ($this->ogenabled) {
         // Retrieve all the Organic Groups this user is a member of
-        $groupids = $this->get_user_groups();
+        $groupids = $this->get_user_groups($uid);
         foreach ($groupids as $gid) {
           $sql   = "SELECT view,upload,upload_direct,upload_ver,approval,admin from {filedepot_access} WHERE catid=:cid AND permtype='group' AND permid=:gid";
           $query = db_query($sql, array(':cid' => $cid, ':gid' => $gid));
@@ -273,7 +274,7 @@ class filedepot
       }
 
       // For each role that the user is a member of - check if they have the right
-      foreach ($user->roles as $rid => $role) {
+      foreach ($account->roles as $rid => $role) {
         $sql   = "SELECT view,upload,upload_direct,upload_ver,approval,admin from {filedepot_access} WHERE catid=:cid AND permtype='role' AND permid=:uid";
         $query = db_query($sql, array('cid' => $cid, 'uid' => $rid));
         while ($rec  = $query->fetchAssoc()) {
@@ -282,9 +283,7 @@ class filedepot
         }
       }
 
-      if (!empty($uid) && !empty($cid) && !empty($po)) {
-        self::$_permission_objects[$uid][$cid] = $po;
-      }
+      self::$_permission_objects[$uid][$cid] = $po;
       return $po;
     }
   }
@@ -295,11 +294,12 @@ class filedepot
    *
    * @param        string          $cid            Category to check user access for
    * @param        string|array    $rights         Rights to check (admin,view,upload,upload_dir,upload_ver,approval)
+   * @param        integer         $uid            Optional uid to check permissions for, default is current user
    * @param        Boolean         $adminOverRide  Set to FALSE, to ignore if user is in the Admin group and check for absolute perms
    * @return       Boolean                         Returns TRUE if user has one of the requested access rights else FALSE
    */
 
-  function checkPermission($cid, $rights, $userid = 0, $adminOverRide = TRUE) {
+  function checkPermission($cid, $rights, $uid = 0, $adminOverRide = TRUE) {
     global $user;
 
     if (intval($cid) < 1) {
@@ -307,23 +307,16 @@ class filedepot
     }
 
     // If user is an admin - they should have access to all rights on all categories
-    if ($userid == 0) {
-      if (empty($user->uid) OR $user->uid == 0) {
-        $uid = 0;
-      }
-      else {
-        $uid = $user->uid;
-      }
-    }
-    else {
-      $uid = $userid;
-    }
-    if ($adminOverRide AND user_access('administer filedepot', $user) AND $userid == 0) {
+    if ($adminOverRide AND $uid == 0 AND user_access('administer filedepot', $user)) {
       return TRUE;
     }
     else {
+      if ($uid == 0 AND !empty($user->uid)) {
+        $uid = $user->uid;
+      }
+
       // This modification allows the caching of permission objects to save database queries
-      $obj = $this->getPermissionObject($cid, $userid);
+      $obj = $this->getPermissionObject($cid, $uid);
       if (is_array($rights)) {
         foreach ($rights as $key) {
           if ($obj->hasPermission($key)) {
@@ -334,69 +327,10 @@ class filedepot
       else {
         return $obj->hasPermission($rights);
       }
-
-      return FALSE;
-
-      // Check user access records
-      $sql   = "SELECT view,upload,upload_direct,upload_ver,approval,admin from {filedepot_access} WHERE catid=:cid AND permtype='user' AND permid=:uid";
-      $query = db_query($sql, array('cid' => $cid, 'uid' => $uid));
-      while ($rec  = $query->fetchAssoc()) {
-        list($view, $upload, $upload_dir, $upload_ver, $approval, $admin) = array_values($rec);
-        if (is_array($rights)) {
-          foreach ($rights as $key) { // Field name above needs to match access right name
-            if ($$key == 1) {
-              return TRUE;
-            }
-          }
-        }
-        elseif ($$rights == 1) {
-          return TRUE;
-        }
-      }
-
-      if ($this->ogenabled) {
-        // Retrieve all the Organic Groups this user is a member of
-        $groupids = $this->get_user_groups();
-        foreach ($groupids as $gid) {
-          $sql   = "SELECT view,upload,upload_direct,upload_ver,approval,admin from {filedepot_access} WHERE catid=:cid AND permtype='group' AND permid=:gid";
-          $query = db_query($sql, array(':cid' => $cid, ':gid' => $gid));
-          while ($rec   = $query->fetchAssoc()) {
-            list($view, $upload, $upload_dir, $upload_ver, $approval, $admin) = array_values($rec);
-            if (is_array($rights)) {
-              foreach ($rights as $key) { // Field name above needs to match access right name
-                if ($$key == 1) {
-                  return TRUE;
-                }
-              }
-            }
-            elseif ($$rights == 1) {
-              return TRUE;
-            }
-          }
-        }
-      }
-
-      // For each role that the user is a member of - check if they have the right
-      foreach ($user->roles as $rid => $role) {
-        $sql   = "SELECT view,upload,upload_direct,upload_ver,approval,admin from {filedepot_access} WHERE catid=:cid AND permtype='role' AND permid=:uid";
-        $query = db_query($sql, array('cid' => $cid, 'uid' => $rid));
-        while ($rec  = $query->fetchAssoc()) {
-          list($view, $upload, $upload_dir, $upload_ver, $approval, $admin) = array_values($rec);
-          if (is_array($rights)) {
-            // If any of the required permissions set - return TRUE
-            foreach ($rights as $key) {
-              if ($$key == 1) { // Field name above needs to match access right name
-                return TRUE;
-              }
-            }
-          }
-          elseif ($$rights == 1) {
-            return TRUE;
-          }
-        }
-      }
     }
+
     return FALSE;
+
   }
 
   /**
@@ -528,11 +462,18 @@ class filedepot
     return $list;
   }
 
-  public function get_user_groups() {
+  public function get_user_groups($uid = FALSE) {
     global $user;
 
+    if ($uid) {
+      $account = user_load($uid);
+    }
+    else {
+      $account = $user;
+    }
+
     $retval = array();
-    $groups = og_get_entity_groups('user', $user);
+    $groups = og_get_entity_groups('user', $account);
     if (is_array($groups) AND count($groups) > 0) {
       if (function_exists('og_get_group')) {
         $retval = $groups;
@@ -893,7 +834,7 @@ class filedepot
       'nid' => $node->nid,
     ));
 
-    $query = db_query("SELECT max(folderorder) FROM {filedepot_categories} WHERE pid=:pid", array(':pid'     => $node->parentfolder));
+    $query = db_query("SELECT max(folderorder) FROM {filedepot_categories} WHERE pid=:pid", array('pid'     => $node->parentfolder));
     $maxorder = $query->fetchField() + 10;
 
     // Only used for top level OG folders
@@ -997,7 +938,7 @@ class filedepot
       }
       else {
 
-        if ($node->gid > 0 AND $this->ogmode_enabled) {
+        if ($node->gid > 0 AND $this->ogenabled) {
           // Create default permissions record for the group
           $this->updatePerms($cid, $this->defGroupRights, '', $node->gid);
         }
@@ -1094,7 +1035,7 @@ class filedepot
         while ($A     = $query->fetchAssoc()) {
           $file = file_load($A['drupal_fid']);
           file_usage_delete($file, 'filedepot');
-          
+
           if (file_exists($file->uri)) {
             file_delete($file);
           }
@@ -1267,7 +1208,7 @@ class filedepot
         if ($newcid !== intval($orginalCid)) {
 
           /* Need to move the file */
-          $query2 = db_query("SELECT fname, version FROM {filedepot_fileversions} WHERE fid=:fid", array('fid' => $fid));
+          $query2 = db_query("SELECT fname, drupal_fid, version FROM {filedepot_fileversions} WHERE fid=:fid", array('fid' => $fid));
           while ($A    = $query2->fetchAssoc()) {
             $fname      = stripslashes($A['fname']);
             $sourcefile = $this->root_storage_path . "{$orginalCid}/{$fname}";
@@ -1277,7 +1218,7 @@ class filedepot
             // Best to call file_prepare_directory() - even if you believe directory exists
             file_prepare_directory($private_destination, FILE_CREATE_DIRECTORY);
 
-            $file           = file_load($dfid);
+            $file           = file_load($A['drupal_fid']);
             $private_uri    = $private_destination . $fname;
             $file           = file_move($file, $private_uri, FILE_EXISTS_RENAME);
             $file->display  = 1;
@@ -1357,7 +1298,7 @@ class filedepot
           // Retrieve most current version on record
           $q3 = db_query("SELECT fname,version,date FROM {filedepot_fileversions} WHERE fid=:fid ORDER BY version DESC", array(':fid' => $fid), 0, 1);
           list($fname, $version, $date) = array_values($q3->fetchAssoc());
-          db_query("UPDATE {$filedepot_files} SET fname=:fname,version=:version, date=:time WHERE fid=:fid", array(
+          db_query("UPDATE {filedepot_files} SET fname=:fname,version=:version, date=:time WHERE fid=:fid", array(
             ':fname'   => $fname,
             ':version' => $version,
             ':time'    => time(),
@@ -1454,7 +1395,7 @@ class filedepot
       $query->execute();
 
       if (!empty($rec->tags) AND $this->checkPermission($rec->cid, 'view', 0, FALSE)) {
-        $nexcloud->update_tags($fid, $rec->tags);
+        $nexcloud->update_tags($newfid, $rec->tags);
       }
     }
 

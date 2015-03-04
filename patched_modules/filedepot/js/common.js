@@ -1,4 +1,3 @@
-
 /*
  * @file common.js
  * Common or main libray of javascript functions for the drupal filedepot module
@@ -20,12 +19,12 @@ Global_checkedItemsDict = {
  * Checked items manager class
  */
 NxFiledepot.checkedItemsManager = function() {
-  
+
 };
 
 /**
  * Create a checked item object from the parameters passed
- * 
+ *
  * @param id            ID of the folder or file
  * @param ischecked     Boolean true or false to indicate if checked or nots
  * @param pid           Parent ID
@@ -40,7 +39,7 @@ NxFiledepot.checkedItemsManager.createCheckedItemObject = function(id, ischecked
 
 /**
  * Add a new checked folder item to the list
- * 
+ *
  * @param checkedItemObj          Object with parameters: { id : "folder_id", checked : "boolean" }
  */
 NxFiledepot.checkedItemsManager.setFolder = function(checkedItemObj) {
@@ -49,7 +48,7 @@ NxFiledepot.checkedItemsManager.setFolder = function(checkedItemObj) {
 
 /**
  * Add a new checked file item to the list
- * 
+ *
  * @param checkedItemObj          Object with parameters: { id : "file_id", checked : "boolean" }
  */
 NxFiledepot.checkedItemsManager.setFile = function(checkedItemObj) {
@@ -79,7 +78,7 @@ NxFiledepot.checkedItemsManager.exportFolders = function() {
 
 NxFiledepot.checkedItemsManager.areFilesSelected = function() {
   var selected = false;
-  
+
   for(var key in Global_checkedItemsDict.files) {
     if (Global_checkedItemsDict.files[key].id == undefined) {
       continue;
@@ -94,11 +93,11 @@ NxFiledepot.checkedItemsManager.areFilesSelected = function() {
         }
       }
     }
-    
+
     selected = true;
     break;
   }
-  
+
   return selected;
 };
 
@@ -712,11 +711,22 @@ function checkMultiAction(selectoption) {
     YAHOO.util.Connect.asyncRequest('POST', surl, callback, postdata);
     return false;
 
-  } else if ((selectoption == "download") || (selectoption == "archive")) {    
+  } else if ((selectoption == "download") || (selectoption == "archive")) {
     document.frmtoolbar.multiaction.selectedIndex=0;
     var ltoken = document.getElementById("flistingltoken").value;
-    var postdata = '&ltoken=' + ltoken + '&checked_files=' + encodeURIComponent(NxFiledepot.checkedItemsManager.exportFiles()) + '&checked_folders=' + encodeURIComponent(NxFiledepot.checkedItemsManager.exportFolders());
-    var surl = ajax_post_handler_url + '/archive' + postdata;
+    var urlargs = 'ltoken=' + ltoken + '&checked_files=' + encodeURIComponent(NxFiledepot.checkedItemsManager.exportFiles()) + '&checked_folders=' + encodeURIComponent(NxFiledepot.checkedItemsManager.exportFolders());
+    var surl = ajax_post_handler_url + '/archive';
+    
+    // Are clean URLs enabled?
+    if (surl.indexOf('?') != -1) { 
+      // not enabled
+      surl += '&' + urlargs;
+    }
+    else {
+      // enabled
+      surl += '?' + urlargs;
+    }
+    
     jQuery('input[name=chkfolder]').attr('checked', false);
     resetCheckedItems();
     enable_multiaction('','');
@@ -1597,45 +1607,48 @@ function moveIncomingFile() {
 
 
 function makeAJAXSearch(form) {
-  if (document.fsearch.query.value == '' || document.fsearch.query.value == searchprompt) return;
-  clearAjaxActivity();
-  if (!blockui)  {
-    blockui=true;
-    jQuery.blockUI();
-  }
-  timeDiff.setStartTime();    // Reset Timer
-  Dom.setStyle('showactivetags','display','none');
-  YAHOO.container.tagspanel.hide();
-  var surl = ajax_post_handler_url + '/search';
-  var postdata = '&query=' + document.fsearch.query.value;
-  var callback = {
-    success: function(o) {
-      var json = o.responseText.substring(o.responseText.indexOf('{'), o.responseText.lastIndexOf('}') + 1);
-      var oResults = eval('(' + json + ')');
-      if (blockui)  {
-        setTimeout('jQuery.unblockUI()',200);
-        blockui = false;
-      }
-      if (oResults.retcode == 200) {
-        Dom.get('activefolder_container').innerHTML = oResults.activefolder;
-        Dom.get('filelistingheader').innerHTML = oResults.header;
-        renderFileListing(oResults);
-        updateAjaxStatus(NEXLANG_refreshmsg + timeDiff.getDiff() + 'ms');
+  if (document.fsearch.query.value == '' || document.fsearch.query.value == searchprompt) {
+    alert(NEXLANG_errormsg10);
+  } else {
+    clearAjaxActivity();
+    if (!blockui)  {
+      blockui=true;
+      jQuery.blockUI();
+    }
+    timeDiff.setStartTime();    // Reset Timer
+    Dom.setStyle('showactivetags','display','none');
+    YAHOO.container.tagspanel.hide();
+    var surl = ajax_post_handler_url + '/search';
+    var postdata = '&query=' + document.fsearch.query.value;
+    var callback = {
+      success: function(o) {
+        var json = o.responseText.substring(o.responseText.indexOf('{'), o.responseText.lastIndexOf('}') + 1);
+        var oResults = eval('(' + json + ')');
+        if (blockui)  {
+          setTimeout('jQuery.unblockUI()',200);
+          blockui = false;
+        }
+        if (oResults.retcode == 200) {
+          Dom.get('activefolder_container').innerHTML = oResults.activefolder;
+          Dom.get('filelistingheader').innerHTML = oResults.header;
+          renderFileListing(oResults);
+          updateAjaxStatus(NEXLANG_refreshmsg + timeDiff.getDiff() + 'ms');
 
-      } else {
-        alert(NEXLANG_errormsg5);
-        updateAjaxStatus();
-      }
+        } else {
+          alert(NEXLANG_errormsg5);
+          updateAjaxStatus();
+        }
 
-    },
-    failure: function(o) {
-      YAHOO.log(NEXLANG_ajaxerror + o.status);
-    },
-    argument: {},
-    timeout:55000
+      },
+      failure: function(o) {
+        YAHOO.log(NEXLANG_ajaxerror + o.status);
+      },
+      argument: {},
+      timeout:55000
+    }
+    updateAjaxStatus(NEXLANG_activity);
+    YAHOO.util.Connect.asyncRequest('POST', surl, callback, postdata);
   }
-  updateAjaxStatus(NEXLANG_activity);
-  YAHOO.util.Connect.asyncRequest('POST', surl, callback, postdata);
 }
 
 function makeAJAXBroadcastNotification () {
@@ -1928,7 +1941,7 @@ function updateCheckedItems(obj,type) {
     } else {
       field.value = field.value.replace(obj.value + ',', '');
     }
-    
+
     NxFiledepot.checkedItemsManager.setFile(NxFiledepot.checkedItemsManager.createCheckedItemObject(obj.value, false, 0));
   }
   // Remove any leading comma
@@ -1937,7 +1950,7 @@ function updateCheckedItems(obj,type) {
 }
 
 /**
- * Resets the checked items fields 
+ * Resets the checked items fields
  */
 function resetCheckedItems() {
   document.frmtoolbar.checkeditems.value = "";
@@ -1962,7 +1975,7 @@ function toggleCheckedItems(obj,files) {
     selectedFoldersField.value = '';
     // Need to test if only 1 checkbox exists on page or multiple
     NxFiledepot.checkedItemsManager.clearAll();
-    
+
     try {
       if (document.frmfilelisting.chkfile.length) {
         for (i=0; i<document.frmfilelisting.chkfile.length; i++) {
@@ -1981,7 +1994,7 @@ function toggleCheckedItems(obj,files) {
         if (document.frmfilelisting.chkfolder) {
           for (i=0; i<document.frmfilelisting.chkfolder.length; i++) {
             document.frmfilelisting.chkfolder[i].checked = obj.checked ? true : false;
-            var itemvalue = document.frmfilelisting.chkfolder[i].value;            
+            var itemvalue = document.frmfilelisting.chkfolder[i].value;
             if (obj.checked) {
               selectedFoldersField.value = selectedFoldersField.value + itemvalue + ',';
                NxFiledepot.checkedItemsManager.setFolder(NxFiledepot.checkedItemsManager.createCheckedItemObject(itemvalue, true, 0));
@@ -2056,7 +2069,7 @@ function toggleCheckedItems(obj,files) {
     selectedFilesField.value = '';
     selectedFoldersField.value = '';
     NxFiledepot.checkedItemsManager.clearAll();
-    
+
     // Need to test if only 1 checkbox exists on page or multiple
     try {
       if (document.frmfilelisting.chkfile.length) {

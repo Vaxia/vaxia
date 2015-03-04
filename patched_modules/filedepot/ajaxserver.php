@@ -17,7 +17,7 @@ define('FILEDEPOT_TOKEN_LISTING', 'filedepot_token_listing');
 
 function filedepot_dispatcher($action) {
   global $user;
-  
+
   $filedepot = filedepot_filedepot();
   $nexcloud = filedepot_nexcloud();
   module_load_include('php', 'filedepot', 'lib-theme');
@@ -28,7 +28,7 @@ function filedepot_dispatcher($action) {
     timer_start('filedepot_timer');
   }
   firelogmsg("AJAX Server code executing - action: $action");
-  
+
   switch ($action) {
     case 'archive':
       if ((isset($_GET['checked_files'])) && (isset($_GET['checked_folders']))) {
@@ -246,7 +246,7 @@ function filedepot_dispatcher($action) {
             if ($_POST['direction'] == 'down') {
               $sql  = "SELECT folderorder FROM {filedepot_categories} WHERE pid=:pid ";
               $sql .= "AND folderorder > :folderorder ORDER BY folderorder ASC ";
-              
+
               $nextorder = db_query_range($sql, 0, 1, array(':pid' => $A['pid'], ':folderorder' => $A['folderorder']))->fetchField();
               if ($nextorder > $A['folderorder']) {
                 $folderorder = $nextorder + 5;
@@ -829,21 +829,25 @@ function filedepot_dispatcher($action) {
        $data['error'] = t('Error subscribing');
       }
       else {
+        global $base_url;
         $data['error'] = '';
         $data['fid'] = $fid;
         $ret = filedepotAjaxServer_updateFileSubscription($fid, 'toggle');
+        // @TODO: Notifyicon does not appear to be implemented
         if ($ret['retcode'] === TRUE) {
           $data['retcode'] = 200;
           if ($ret['subscribed'] === TRUE) {
             $data['subscribed'] = TRUE;
             $data['message'] = 'You will be notified of any new versions of this file';
-            $data['notifyicon'] = "{$_CONF['site_url']}/filedepot3/images/email-green.gif";
+            $path = drupal_get_path('module', 'filedepot') . '/css/images/email-green.gif';
+            $data['notifyicon'] = $base_url . '/' . $path;
             $data['notifymsg'] = 'Notification Enabled - Click to change';
           }
           elseif ($ret['subscribed'] === FALSE) {
             $data['subscribed'] = FALSE;
             $data['message'] = 'You will not be notified of any new versions of this file';
-            $data['notifyicon'] = "{$_CONF['site_url']}/filedepot3/images/email-regular.gif";
+            $path = drupal_get_path('module', 'filedepot') . '/css/images/email-regular.gif';
+            $data['notifyicon'] = $base_url . '/' . $path;
             $data['notifymsg'] = 'Notification Disabled - Click to change';
           }
         }
@@ -909,14 +913,14 @@ function filedepot_dispatcher($action) {
         $folderitems = check_plain($_POST['checkedfolders']);
         $filedepot->cid = intval($_POST['cid']);
         $filedepot->activeview = check_plain($_POST['reportmode']);
-        
+
         if (!empty($fileitems)) {
           $files = explode(',', $fileitems);
           foreach ($files as $fid) {
             filedepotAjaxServer_updateFileSubscription($fid, 'add');
           }
         }
-        
+
         if (!empty($folderitems)) {
           $folders = explode(',', $folderitems);
           foreach ($folders as $cid) {
@@ -934,7 +938,7 @@ function filedepot_dispatcher($action) {
             }
           }
         }
-        
+
         $data['retcode'] = 200;
         $data = filedepotAjaxServer_generateLeftSideNavigation($data);
         $data['displayhtml'] = filedepot_displayFolderListing($filedepot->cid);
@@ -1134,8 +1138,7 @@ function filedepot_dispatcher($action) {
       if (($token == NULL) || (!drupal_valid_token($token, FILEDEPOT_TOKEN_FOLDERMGMT))) {
        $data['retcode'] = 403; // forbidden
       }
-      else
-      {
+      else {
         $fid = db_query("SELECT drupal_fid FROM {filedepot_import_queue} WHERE id=:id", array(':id' => $id))->fetchField();
         if ($fid > 0) {
           $filepath = db_query("SELECT filepath FROM {files} WHERE fid=:fid", array(':fid' => $fid))->fetchField();
@@ -1162,6 +1165,7 @@ function filedepot_dispatcher($action) {
       $id = intval($_POST['id']);
       $filedepot->activeview = 'incoming';
       $data = array();
+      $token = isset($_POST['token']) ? $_POST['token'] : NULL;
 
       if (($token == NULL) || (!drupal_valid_token($token, FILEDEPOT_TOKEN_FOLDERMGMT))) {
        $data['retcode'] = 403; // forbidden

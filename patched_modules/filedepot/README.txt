@@ -124,7 +124,8 @@ YUI Javascript Libraries
     You can find YUI 2.7.x version of the complete library on github: https://github.com/yui/yui2/tree/2.7.0
     Link to download complete archive: https://github.com/yui/yui2/archive/2.7.0.zip
 
-    Hosting the YUI libraries locally is required if you need to use https
+    For a SSL (https) supported implementation, you can host the YUI libraries locally or
+    review this issue: https://drupal.org/node/2014523 for more details on using a CDN
 
 How to setup to use locally hosted YUI libraries or to load from another server
     Download the complete YUI 2.7.0 library from YUI libraries from http://yuilibrary.com/downloads/#yui2

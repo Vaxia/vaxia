@@ -1,4 +1,3 @@
-
 /*
  * @file initapplication.js
  * Main Initialization Javascript for the drupal filedepot module
@@ -60,7 +59,7 @@ var init_filedepot = function() {
 
   var oSearchButton = new YAHOO.widget.Button("searchbutton");
 
-  <!-- File Tags Panel -->
+  // File Tags Panel
   YAHOO.container.tagspanel = new YAHOO.widget.Panel("tagspanel",
   { width:"320px",
     visible:false,
@@ -69,7 +68,7 @@ var init_filedepot = function() {
   });
   YAHOO.container.tagspanel.render();
 
-  <!-- File Details Dialogs -->
+  // File Details Dialogs
   Dom.setStyle('filedetails', 'display', 'block');
   YAHOO.container.filedetails = new YAHOO.widget.Panel("filedetails",
   { width : "670px",
@@ -86,7 +85,7 @@ var init_filedepot = function() {
   var closeEl = Dom.getElementsByClassName("container-close", null, 'filedetails')[0];
   Event.on(closeEl, 'click', function(e){ YAHOO.container.menuBar.cfg.setProperty("visible",false); });
 
-  <!-- Folder Perms Panel -->
+  // Folder Perms Panel
   Dom.setStyle('folderperms', 'display', 'block');
   YAHOO.container.folderperms = new YAHOO.widget.Panel("folderperms",
   { width : "750px",

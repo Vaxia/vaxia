@@ -11,7 +11,7 @@
   if (!isset($base_url)) $base_url = '';
   if (!isset($report_option)) $report_option = '';
 ?>
-<div style="float:left;padding-left:0px;">
+<div style="float:left;padding-left:0px;margin-top:-2px">
   <form name="frmtoolbar" action="#" method="post" style="margin:0px;">
     <input type="hidden" name="checkeditems" value="">
     <input type="hidden" name="checkedfolders" value="">

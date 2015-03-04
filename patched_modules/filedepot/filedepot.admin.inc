@@ -18,34 +18,34 @@ function _filedepot_get_permission_name_array() {
     'upload_dir' => 'upload_direct',
     'upload_ver' => 'upload_versions'
   );
-  
+
   return $s;
 }
 
 /**
  * Convert a permission string (upload, approval) to the display names and back again
- * @param string  $perm_string           
+ * @param string  $perm_string
  * @param boolean $convert_to_display            True to convert from machine name to display name, false to convert from display name to machine name
  */
 function _filedepot_convert_permission_string($perm_string, $convert_to_display = TRUE) {
   $perm_names = _filedepot_get_permission_name_array();
   $perm_array = explode(',', $perm_string);
-  
+
   if ($convert_to_display === FALSE) {
     $perm_names = array_flip($perm_names);
   }
 
   for($i = 0; $i < count($perm_array); $i++) {
     $perm_array[$i] = $perm_names[trim($perm_array[$i])];
-  }    
-  
+  }
+
   $replaced_perm_string = implode(', ', $perm_array);
   return $replaced_perm_string;
 }
 
 /**
  * Convert a multi-line (user: permissions) permission string (upload, approval) to the display names and back again
- * @param string  $perm_string           
+ * @param string  $perm_string
  * @param boolean $convert_to_display            True to convert from machine name to display name, false to convert from display name to machine name
  */
 function _filedepot_convert_permission_string_lines($perm_string, $convert_to_display = TRUE) {
@@ -57,7 +57,7 @@ function _filedepot_convert_permission_string_lines($perm_string, $convert_to_di
       $lines[$i] = implode(": ", $split_line);
     }
   }
-  
+
   return implode("\n", $lines);
 }
 
@@ -198,14 +198,14 @@ function filedepot_admin_settings() {
     '#default_value' => variable_get('filedepot_show_recent_folders', 1),
     '#description' => t('If enabled, the display will show the recent folders entry in the left navigation panel of Filedepot.'),
   );
-  
-  $form['options'][FILEDEPOT_VAR_DISPLAYORDER_FILESFIRST] = array(
+
+  $form['options']['filedepot_displayorder_filesfirst'] = array(
     '#type' => 'checkbox',
     '#title' => t('Display files before folders'),
-    '#default_value' => variable_get(FILEDEPOT_VAR_DISPLAYORDER_FILESFIRST, 1),
+    '#default_value' => variable_get('filedepot_displayorder_filesfirst', 1),
     '#description' => t('If enabled, the display will show files before folders in Filedepot. If disabled, will show folders first.'),
   );
-  
+
   $form['options']['filedepot_override_folderorder'] = array(
     '#type' => 'checkbox',
     '#title' => t('Use alphabetic ordering instead of the default settings'),
@@ -243,9 +243,9 @@ function filedepot_admin_settings() {
     '#description' => t('This is a comma sepearated list of file type to icon image files. This is used in the filelisting logic to associate an icon to file type uploaded. We don\'t want to assume that all icons will be in gif format.'),
     '#wysiwyg' => FALSE,
   );
- 
+
   $perm_names = _filedepot_get_permission_name_array();
-  
+
   $form['permissions'] = array(
     '#type' => 'fieldset',
     '#title' => t('Default Permissions'),
@@ -279,10 +279,10 @@ function filedepot_admin_settings() {
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
   );
-  
+
   $perm_string = variable_get('filedepot_default_owner', 'view, admin, upload_dir, upload_ver, approval');
   $replaced_perm_string = _filedepot_convert_permission_string($perm_string, TRUE);
-  
+
   $form['permissions']['filedepot_default_owner'] = array(
     '#type' => 'textarea',
     '#title' => t('Default Owner Permissions'),
@@ -292,7 +292,7 @@ function filedepot_admin_settings() {
     '#description' => t('When a site member creates a new folder, list the default user based permissions the folder should be setup with.'),
     '#wysiwyg' => FALSE,
   );
-  
+
   $perm_string = variable_get('filedepot_default_group', 'view, upload_dir');
   $replaced_perm_string = _filedepot_convert_permission_string($perm_string, TRUE);
 
@@ -306,7 +306,7 @@ function filedepot_admin_settings() {
   t('When a new group is created and OG mode is enabled, list the default user based permissions the folder should be setup with.'),
   '#wysiwyg' => FALSE,
   );
-  
+
   $perm_string = variable_get('filedepot_default_roles', 'authenticated user: view, upload');
   $replaced_perm_string = _filedepot_convert_permission_string_lines($perm_string, TRUE);
 

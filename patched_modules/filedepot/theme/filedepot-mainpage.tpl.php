@@ -134,7 +134,7 @@
             <input type="hidden" name="tags" value="">
             <table>
               <tr>
-                <td width="50%"><input type="text" size="20" name="query" id="searchquery" class="form-text" style="height:12px;padding:3px 3px 5px 3px;" value="<?php print $search_query ?>" onClick="this.value='';"></td>
+                <td width="50%"><input type="text" size="20" name="query" id="searchquery" class="form-text" style="margin-top:-2px;padding:3px 3px 5px 3px;" value="<?php print $search_query ?>" onClick="this.value='';"></td>
                 <td width="50%" style="text-align:right;"><input type="button" id="searchbutton" value="<?php print t('Search') ?>"></td>
               </tr>
             </table>
