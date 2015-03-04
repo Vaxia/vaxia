@@ -785,6 +785,7 @@ function _vaxia_admin_settings() {
 function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
   // Load the node.
   $node = node_load($form['node_info']['nid']['#value']);
+  // Display xp.
   $xp = _character_sheet_get_xp($node->nid, 'xp');
   $spent_xp = _character_sheet_get_xp($node->nid, 'spent_xp');
   $xp_totals = array(t('You have %xp xp available to spend.',
@@ -805,7 +806,18 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
     '#title' => t('XP types'),
     '#markup' => theme('item_list', array('items' => _vaxia_xp_display_types($node))),
   );
+  // Add xp.
+   _vaxia_add_xp($form, $form_state);
+  // And add the SH transfer options.
+  _vaxia_transfer_rxp($form, $form_state);
+  // And add the transfer options.
+  _vaxia_transfer_hxp($form, $form_state);
+}
 
+/**
+ * Helper functions, add mode form features.
+ */
+function _vaxia_add_xp(&$form, $form_state) {
   global $user;
   // Add additional options for xp IIF allowed.
   if (isset($form['add_xp']) && $node->field_is_storyteller[$node->language][0]['value'] == 0 
@@ -823,8 +835,14 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
   else {
     $form['add_xp']['#access'] = FALSE;
   }
+}
 
-  // And add the transfer options. But only if this sheet is a storyteller sheet.
+/**
+ * Helper functions, add mode form features.
+ */
+function _vaxia_transfer_rxp(&$form, $form_state) {
+  global $user;
+  // And add the SH transfer options.
   $rxp = _character_sheet_get_xp($node->nid, 'rxp');
   if ($rxp > 0 &&
     ($node->field_is_storyteller[$node->language][0]['value'] == 1 || $node->field_is_npc[$node->language][0]['value'] == 1 ||
@@ -859,7 +877,13 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
       '#submit' => array('_vaxia_transfer_rxp_submit'),
     );
   }
+}
 
+/**
+ * Helper functions, add mode form features.
+ */
+function _vaxia_transfer_hxp(&$form, $form_state) {
+  global $user;
   // And add the transfer options.
   $setting = variable_get('vaxia_transfer_workflow', '');
   if (!empty($setting) && ($node->uid == $user->uid || user_access('transfer others sheets')) ) {
@@ -931,6 +955,38 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
 }
 
 /**
+ * Helper function, gather xp type records for display.
+ */
+function _vaxia_xp_display_types($node) {
+  // Get specific info for vaxia to display in markup.
+  // Display types of xp.
+  $xp_types = array();
+  $types = _vaxia_get_type_tracking_by_nid($node->nid);
+  foreach ($types as $type) {
+    $xp_types[] = t('Earned %xp %type XP.', array('%xp' => $type->xp, '%type' => $type->type));
+  }
+  return $xp_types;
+}
+
+/**
+ * Helper function, gather xp for display.
+ */
+function _vaxia_xp_display($node) {
+  $historical = _character_sheet_get_xp($node->nid, 'xp');
+  $spent = _character_sheet_get_xp($node->nid, 'spent_xp');
+  $xps['historical_xp'] = t('Earned %historical historical xp.', array('%historical' => $spent));
+  $spent = _character_sheet_get_xp($node->nid, 'spent_xp');
+  $xps['spent_xp'] = t('Spent %spent out of %xp xp.', array('%spent' => $spent, '%xp' => $historical));
+  $banked = _character_sheet_get_xp($node->nid, 'bxp');
+  $xps['bxp'] = t('Banked %banked bxp.', array('%banked' => $banked));
+  $roleplayed = _character_sheet_get_xp($node->nid, 'rxp');
+  $xps['rxp'] = t('Roleplayed %roleplayed rxp.', array('%roleplayed' => $roleplayed));
+  $posted = _character_sheet_get_xp($node->nid, 'kxp');
+  $xps['kxp'] = t('Posted %posted kxp.', array('%posted' => $posted));
+  return $xps;
+}
+
+/**
  * Menu callback handler for autocomplete.
  */
 function _vaxia_transfer_xp_autocomplete($character_name = '') {
@@ -977,38 +1033,6 @@ function vaxia_form__character_sheet_owner_form_alter(&$form, &$form_state) {
   if (isset($form['character_sheet_log'])) {
     unset($form['character_sheet_log']);
   }
-}
-
-/**
- * Helper function, gather xp for display.
- */
-function _vaxia_xp_display($node) {
-  $historical = _character_sheet_get_xp($node->nid, 'xp');
-  $spent = _character_sheet_get_xp($node->nid, 'spent_xp');
-  $xps['historical_xp'] = t('Earned %historical historical xp.', array('%historical' => $spent));
-  $spent = _character_sheet_get_xp($node->nid, 'spent_xp');
-  $xps['spent_xp'] = t('Spent %spent out of %xp xp.', array('%spent' => $spent, '%xp' => $historical));
-  $banked = _character_sheet_get_xp($node->nid, 'bxp');
-  $xps['bxp'] = t('Banked %banked bxp.', array('%banked' => $banked));
-  $roleplayed = _character_sheet_get_xp($node->nid, 'rxp');
-  $xps['rxp'] = t('Roleplayed %roleplayed rxp.', array('%roleplayed' => $roleplayed));
-  $posted = _character_sheet_get_xp($node->nid, 'kxp');
-  $xps['kxp'] = t('Posted %posted kxp.', array('%posted' => $posted));
-  return $xps;
-}
-
-/**
- * Helper function, gather xp type records for display.
- */
-function _vaxia_xp_display_types($node) {
-  // Get specific info for vaxia to display in markup.
-  // Display types of xp.
-  $xp_types = array();
-  $types = _vaxia_get_type_tracking_by_nid($node->nid);
-  foreach ($types as $type) {
-    $xp_types[] = t('Earned %xp %type XP.', array('%xp' => $type->xp, '%type' => $type->type));
-  }
-  return $xp_types;
 }
 
 /**
