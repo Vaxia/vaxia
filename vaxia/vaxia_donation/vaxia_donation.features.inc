@@ -7,8 +7,8 @@
 /**
  * Implements hook_views_api().
  */
-function vaxia_donation_views_api() {
-  return array("version" => "3.0");
+function vaxia_donation_views_api($module = NULL, $api = NULL) {
+  return array("api" => "3.0");
 }
 
 /**
@@ -16,15 +16,6 @@ function vaxia_donation_views_api() {
  */
 function vaxia_donation_default_payment_method() {
   $items = array();
-  $items['payment_method_unavailable'] = entity_import('payment_method', '{
-    "controller_data" : [],
-    "enabled" : false,
-    "name" : "payment_method_unavailable",
-    "title_specific" : "Unavailable",
-    "title_generic" : "Unavailable",
-    "uid" : 0,
-    "controller_class_name" : "PaymentMethodControllerUnavailable"
-  }');
   $items['paypal_vaxia_fund'] = entity_import('payment_method', '{
     "controller_data" : {
       "capture" : "0",
