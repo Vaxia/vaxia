@@ -79,7 +79,7 @@ function _site_wiki_process($text, $filter, $format, $langcode, $cache, $cache_i
     // For now this may be an acceptable risk.
     $title = str_replace('|', '', trim($title));
     // Add slashes to the title when we set the pattern up.
-    $pattern = '|[ \n\]]' . preg_quote($title) . '[ \n\[\.\?\:]|i';
+    $pattern = '|[ \n]' . preg_quote($title) . '[ \n\.\?\:]|i';
     //$replacement = ' ' . l($title, 'node/' . $nid, array('attributes' => array('class' => 'site-wiki-link'))) . ' ';
     $replacement = ' ' . l($title, 'node/' . $nid) . ' ';
     if (!empty($pattern) && !empty($replacement)) {
