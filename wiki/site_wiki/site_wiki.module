@@ -78,10 +78,12 @@ function _site_wiki_process($text, $filter, $format, $langcode, $cache, $cache_i
     // But how do we make sure NOT to next URL links in cases of say A B C, and B links?
     // For now this may be an acceptable risk.
     $patterns[] = '/ ' . $title . ' /';
-    $replacements[] = l($title, 'node/' . $nid);
+    $replacements[] = l($title, 'node/' . $nid, array('attributes' => array('class' => 'site-wiki-link')));
   }
   // Replace and return.
-  $text = preg_replace($patterns, $replacements, $text, 1);
+  if (!empty($patterns)) {
+    $text = preg_replace($patterns, $replacements, $text, 1);
+  }
   return $text;
 }
 
