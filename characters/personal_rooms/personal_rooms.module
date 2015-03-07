@@ -1,8 +1,10 @@
 <?php
 /**
  * @file
- * Code for Personal Rooms.
+ * Code for the Personal Rooms feature.
  */
+
+include_once 'personal_rooms.features.inc';
 
 /**
  * Implements hook_permission().

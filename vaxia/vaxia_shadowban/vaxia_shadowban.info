@@ -1,0 +1,13 @@
+name = Vaxia Shadowban
+description = Vaxia rules and reactions to Shadowbanned users
+core = 7.x
+package = Vaxia
+version = 7.x-1.0
+project = vaxia_shadowban
+features[features_api][] = api:2
+features[rules_config][] = rules_shadowban_auto_approve_character
+features[rules_config][] = rules_vaxia_shadowban_auto_approve_item
+features[rules_config][] = rules_vaxia_shadowban_auto_approve_scene
+features[rules_config][] = rules_vaxia_shadowban_unban_user
+features[rules_config][] = rules_vaxia_shadowban_user
+features[user_role][] = shadowbanned user
