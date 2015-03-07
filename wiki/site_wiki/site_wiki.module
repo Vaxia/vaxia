@@ -70,13 +70,18 @@ function _site_wiki_process($text, $filter, $format, $langcode, $cache, $cache_i
   if (empty($titles)) {
     $titles = _site_wiki_get_titles();
   }
+  $patterns = array();
+  $replacements = array();
   foreach ($titles as $title => $nid) {
     // Limited to 1 replace, only replace the first in the page.
     // Look for spaces on either side of the link so we don't hit the url filter.
-    $text = preg_replace('/ ' . $title . ' /', l($title, 'node/' . $nid), $text, 1);
     // But how do we make sure NOT to next URL links in cases of say A B C, and B links?
     // For now this may be an acceptable risk.
+    $patterns[] = '/ ' . $title . ' /';
+    $replacements[] = l($title, 'node/' . $nid);
   }
+  // Replace and return.
+  $text = preg_replace($patterns, $replacements, $text, 1);
   return $text;
 }
 
