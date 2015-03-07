@@ -81,7 +81,7 @@ function _site_wiki_process($text, $filter, $format, $langcode, $cache, $cache_i
     $pattern = '| ' . $title . ' |i';
     //$replacement = ' ' . l($title, 'node/' . $nid, array('attributes' => array('class' => 'site-wiki-link'))) . ' ';
     $replacement = ' ' . l($title, 'node/' . $nid) . ' ';
-    if (!empty($pattern) && !empty($replacements)) {
+    if (!empty($pattern) && !empty($replacement)) {
       $patterns[] = $pattern;
       $replacements[] = $replacement;
     }
