@@ -48,9 +48,6 @@ function site_wiki_menu() {
 // There may be a performance concern here with the list of wiki titles?
 // But it's what? One SQL query and then a loop? So let's see how it goes first.
 //
-function _site_wiki_get_titles() {
-  $results = db_query('SELECT n.nid, n.title FROM {node} n WHERE type=\'wiki_page\'');
-}
 
 /**
  * Implements hook_filter_info().
@@ -60,31 +57,44 @@ function site_wiki_filter_info() {
   $filters['site_wiki'] = array(
     'title' => t('Site wiki format'),
     'description' => t('Auto adds links to text for wiki content.'),
-    'prepare callback' => '_site_wiki_prepare',
     'process callback' => '_site_wiki_process',
-    'tips callback' => '_site_wiki_tips',
   );
   return $filters;
 }
 
 /**
- * Implements filter prepare callback.
- */
-function _site_wiki_prepare() {
-}
-
-/**
  * Implements filter process callback.
  */
-function _site_wiki_process() {
+function _site_wiki_process($text, $filter, $format, $langcode, $cache, $cache_id) {
+  static $titles = array();
+  if (empty($titles)) {
+    $titles = _site_wiki_get_titles();
+  }
+  foreach ($titles as $title => $nid) {
+    // Limited to 1 replace, only replace the first in the page.
+    // Look for spaces on either side of the link so we don't hit the url filter.
+    $text = preg_replace('/ ' . $title . ' /', l($title, 'node/' . $nid), $text, 1);
+    // But how do we make sure NOT to next URL links in cases of say A B C, and B links?
+    // For now this may be an acceptable risk.
+  }
+  return $text;
 }
 
 /**
- * Implements filter tips callback.
+ * Helper function, get the wiki titles.
  */
-function _site_wiki_tips() {
+function _site_wiki_get_titles() {
+  $results = db_query('SELECT n.nid, n.title FROM {node} n ' .
+    'WHERE type=\'wiki_page\' ' .
+    'ORDER BY CHAR_LENGTH(title) DESC');
+  $found = array();
+  foreach ($results as $result) {
+    // This ensures even if we have duplicated titles, we only grab one of them.
+    // This is why we have disambiguation code.
+    $found[$result->title] = $result->nid;
+  }
+  return $found;
 }
-
 
 /**
  * Implementation of admin settings form.
