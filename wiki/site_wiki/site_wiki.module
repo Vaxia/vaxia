@@ -87,9 +87,6 @@ function _site_wiki_process($text, $filter, $format, $langcode, $cache, $cache_i
       if (!empty($new_text)) {
         $text = $new_text;
       }
-      else {
-        watchdog('site_wiki', "Can't replace $pattern to $replacement .");
-      }
     }
     else {
       watchdog('site_wiki', "Can't link $pattern to $replacement .");
