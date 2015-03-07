@@ -204,15 +204,17 @@ function vaxia_field_default_field_bases() {
         'multichoice' => 0,
         'notation' => 0,
         'page' => 0,
+        'play_suggestions' => 0,
         'proposal' => 0,
         'quiz' => 0,
-        'rpg_chatroom' => 0,
+        'rpg_chatroom' => 'rpg_chatroom',
         'scene' => 0,
         'session_report' => 0,
         'storyhost_application' => 0,
         'strike' => 0,
+        'timeline_event' => 0,
         'webform' => 0,
-        'wiki_page' => 'wiki_page',
+        'wiki_page' => 0,
       ),
       'view' => array(
         'args' => array(),
@@ -364,7 +366,7 @@ function vaxia_field_default_field_bases() {
   // Exported field_base: 'field_conditions'
   $field_bases['field_conditions'] = array(
     'active' => 1,
-    'cardinality' => 1,
+    'cardinality' => -1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_conditions',
@@ -378,10 +380,12 @@ function vaxia_field_default_field_bases() {
     'module' => 'list',
     'settings' => array(
       'allowed_values' => array(
-        'vampire' => 'Vampire',
-        'were' => 'Were',
-        'metalborn-digi' => 'Digital Metalborn',
+        'vampire' => 'Vampire (Vaxia only)',
+        'were' => 'Were-beast (Vaxia only)',
+        'metalborn-digi' => 'Digital Metalborn (Sirian only)',
         'magical' => 'Active Magic or Psionic User (Sirian only)',
+        'mental' => 'Restricted Mental Disorder',
+        'underage' => 'Underage or Looks Underage',
         'other' => 'Other',
       ),
       'allowed_values_function' => '',
@@ -879,6 +883,32 @@ function vaxia_field_default_field_bases() {
     'type' => 'number_integer',
   );
 
+  // Exported field_base: 'field_needs_work'
+  $field_bases['field_needs_work'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_needs_work',
+    'foreign keys' => array(),
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        0 => 'This character is complete.',
+        1 => 'There is more information needed for this character even though it is in play.',
+      ),
+      'allowed_values_function' => '',
+    ),
+    'translatable' => 0,
+    'type' => 'list_boolean',
+  );
+
   // Exported field_base: 'field_occupation'
   $field_bases['field_occupation'] = array(
     'active' => 1,
@@ -907,6 +937,90 @@ function vaxia_field_default_field_bases() {
     'settings' => array(),
     'translatable' => 0,
     'type' => 'text_long',
+  );
+
+  // Exported field_base: 'field_other_species'
+  $field_bases['field_other_species'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_other_species',
+    'foreign keys' => array(),
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        'npc' => 'NPC Species',
+        'playtest' => 'Playtest Species (Requires Approval)',
+        'custom' => 'One-off Species (Requires Approval)',
+      ),
+      'allowed_values_function' => '',
+    ),
+    'translatable' => 0,
+    'type' => 'list_text',
+  );
+
+  // Exported field_base: 'field_personal_room'
+  $field_bases['field_personal_room'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_personal_room',
+    'foreign keys' => array(
+      'nid' => array(
+        'columns' => array(
+          'nid' => 'nid',
+        ),
+        'table' => 'node',
+      ),
+    ),
+    'indexes' => array(
+      'nid' => array(
+        0 => 'nid',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'node_reference',
+    'settings' => array(
+      'referenceable_types' => array(
+        'artwork' => 0,
+        'character_sheet' => 0,
+        'event' => 0,
+        'filedepot_folder' => 0,
+        'forum' => 0,
+        'items' => 0,
+        'long_answer' => 0,
+        'mass_contact' => 0,
+        'multichoice' => 0,
+        'notation' => 0,
+        'page' => 0,
+        'play_suggestions' => 0,
+        'proposal' => 0,
+        'quiz' => 0,
+        'rpg_chatroom' => 'rpg_chatroom',
+        'scene' => 0,
+        'session_report' => 0,
+        'storyhost_application' => 0,
+        'strike' => 0,
+        'timeline_event' => 0,
+        'webform' => 0,
+        'wiki_page' => 0,
+      ),
+      'view' => array(
+        'args' => array(),
+        'display_name' => '',
+        'view_name' => '',
+      ),
+    ),
+    'translatable' => 0,
+    'type' => 'node_reference',
   );
 
   // Exported field_base: 'field_personality'
@@ -1113,21 +1227,18 @@ function vaxia_field_default_field_bases() {
         'half-elf' => 'Half-elf',
         'dwarf' => 'Dwarf',
         'gnome' => 'Gnome',
-        'halfling' => 'Halfling',
+        'halfling' => 'Halfling (Tmp Requires Approval)',
         'orc' => 'Orc',
         'half-orc' => 'Half-orc',
         'goblin' => 'Goblin',
         'neth' => 'Neth',
         'half-neth' => 'Half-neth',
+        'letai' => 'Letai',
         'lurai' => 'Lurai',
+        'aratay' => 'Aratay (Tmp Requires Approval)',
+        'mojingan' => 'Mojingan (Tmp Requires Approval)',
         'faerie' => 'Faerie',
-        'aratay' => 'Aratay',
-        'mojingan' => 'Mojingan',
-        'centaur' => 'Centaur',
-        'merfolk' => 'Merfolk',
-        'yeek' => 'Yeek',
-        'metalborn' => 'Metalborn',
-        'other' => 'Other',
+        'other' => 'Other (Requires Approval)',
       ),
       'allowed_values_function' => '',
       'allowed_values_php' => '',
@@ -1286,6 +1397,33 @@ function vaxia_field_default_field_bases() {
     'settings' => array(),
     'translatable' => 0,
     'type' => 'text_long',
+  );
+
+  // Exported field_base: 'field_sirian_species'
+  $field_bases['field_sirian_species'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_sirian_species',
+    'foreign keys' => array(),
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        'human' => 'Human',
+        'metalborn' => 'Metalborn',
+        'other' => 'Other (Requires Approval)',
+      ),
+      'allowed_values_function' => '',
+    ),
+    'translatable' => 0,
+    'type' => 'list_text',
   );
 
   // Exported field_base: 'field_skill'

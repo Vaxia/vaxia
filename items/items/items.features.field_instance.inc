@@ -33,6 +33,12 @@ function items_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 58,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
     ),
     'entity_type' => 'node',
     'field_name' => 'field_calc_value',
@@ -71,6 +77,12 @@ function items_field_default_field_instances() {
         'settings' => array(),
         'type' => 'node_reference_default',
         'weight' => 3,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
     ),
     'entity_type' => 'node',
@@ -116,6 +128,12 @@ function items_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 59,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
     ),
     'entity_type' => 'node',
     'field_name' => 'field_created_for_silver',
@@ -154,6 +172,12 @@ function items_field_default_field_instances() {
         'settings' => array(),
         'type' => 'text_default',
         'weight' => 14,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
     ),
     'entity_type' => 'node',
@@ -231,7 +255,13 @@ function items_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 13,
+        'weight' => 9,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
     ),
     'entity_type' => 'node',
@@ -283,7 +313,7 @@ function items_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 15,
+      'weight' => 16,
     ),
   );
 
@@ -310,6 +340,12 @@ function items_field_default_field_instances() {
         'settings' => array(),
         'type' => 'list_default',
         'weight' => 7,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
     ),
     'entity_type' => 'node',
@@ -360,6 +396,12 @@ function items_field_default_field_instances() {
         ),
         'type' => 'number_decimal',
         'weight' => 7,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -419,6 +461,12 @@ function items_field_default_field_instances() {
         'type' => 'number_decimal',
         'weight' => 15,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -476,6 +524,12 @@ function items_field_default_field_instances() {
         ),
         'type' => 'number_decimal',
         'weight' => 11,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -535,6 +589,12 @@ function items_field_default_field_instances() {
         'type' => 'number_decimal',
         'weight' => 14,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -593,6 +653,12 @@ function items_field_default_field_instances() {
         'type' => 'number_decimal',
         'weight' => 5,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -639,6 +705,12 @@ function items_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
+        'weight' => 0,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
         'weight' => 0,
       ),
       'teaser' => array(
@@ -724,6 +796,12 @@ function items_field_default_field_instances() {
         'type' => 'number_decimal',
         'weight' => 8,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -780,6 +858,12 @@ function items_field_default_field_instances() {
         'type' => 'number_integer',
         'weight' => 58,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
     ),
     'entity_type' => 'node',
     'field_name' => 'field_item_difficulty',
@@ -831,6 +915,12 @@ function items_field_default_field_instances() {
         ),
         'type' => 'number_decimal',
         'weight' => 4,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -890,6 +980,12 @@ function items_field_default_field_instances() {
         'type' => 'number_decimal',
         'weight' => 3,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -937,6 +1033,12 @@ function items_field_default_field_instances() {
         'settings' => array(),
         'type' => 'text_default',
         'weight' => 1,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1021,6 +1123,12 @@ function items_field_default_field_instances() {
         'type' => 'number_decimal',
         'weight' => 10,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -1078,6 +1186,12 @@ function items_field_default_field_instances() {
         ),
         'type' => 'number_decimal',
         'weight' => 2,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1137,6 +1251,12 @@ function items_field_default_field_instances() {
         'type' => 'number_decimal',
         'weight' => 12,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -1194,6 +1314,12 @@ function items_field_default_field_instances() {
         ),
         'type' => 'number_decimal',
         'weight' => 20,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1253,6 +1379,12 @@ function items_field_default_field_instances() {
         'type' => 'number_decimal',
         'weight' => 16,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -1310,6 +1442,12 @@ function items_field_default_field_instances() {
         ),
         'type' => 'number_decimal',
         'weight' => 19,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1369,6 +1507,12 @@ function items_field_default_field_instances() {
         'type' => 'number_decimal',
         'weight' => 10,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -1426,6 +1570,12 @@ function items_field_default_field_instances() {
         ),
         'type' => 'number_decimal',
         'weight' => 13,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1485,6 +1635,12 @@ function items_field_default_field_instances() {
         'type' => 'number_decimal',
         'weight' => 9,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -1542,6 +1698,12 @@ function items_field_default_field_instances() {
         ),
         'type' => 'number_decimal',
         'weight' => 8,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1601,6 +1763,12 @@ function items_field_default_field_instances() {
         'type' => 'number_decimal',
         'weight' => 15,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -1658,6 +1826,12 @@ function items_field_default_field_instances() {
         ),
         'type' => 'number_decimal',
         'weight' => 7,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1717,6 +1891,12 @@ function items_field_default_field_instances() {
         'type' => 'number_decimal',
         'weight' => 18,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -1774,6 +1954,12 @@ function items_field_default_field_instances() {
         ),
         'type' => 'number_decimal',
         'weight' => 14,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1833,6 +2019,12 @@ function items_field_default_field_instances() {
         'type' => 'number_decimal',
         'weight' => 21,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -1890,6 +2082,12 @@ function items_field_default_field_instances() {
         ),
         'type' => 'number_decimal',
         'weight' => 17,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1949,6 +2147,12 @@ function items_field_default_field_instances() {
         'type' => 'number_decimal',
         'weight' => 11,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -2006,6 +2210,12 @@ function items_field_default_field_instances() {
         ),
         'type' => 'number_decimal',
         'weight' => 13,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -2065,6 +2275,12 @@ function items_field_default_field_instances() {
         'type' => 'number_decimal',
         'weight' => 9,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -2123,6 +2339,12 @@ function items_field_default_field_instances() {
         'type' => 'number_decimal',
         'weight' => 16,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -2179,6 +2401,12 @@ function items_field_default_field_instances() {
         'type' => 'number_integer',
         'weight' => 57,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
     ),
     'entity_type' => 'node',
     'field_name' => 'field_item_spent_uses',
@@ -2230,6 +2458,12 @@ function items_field_default_field_instances() {
         ),
         'type' => 'number_decimal',
         'weight' => 12,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -2289,6 +2523,12 @@ function items_field_default_field_instances() {
         'type' => 'number_decimal',
         'weight' => 6,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -2340,6 +2580,12 @@ function items_field_default_field_instances() {
         'type' => 'taxonomy_term_reference_link',
         'weight' => 52,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
     ),
     'entity_type' => 'node',
     'field_name' => 'field_item_type',
@@ -2380,6 +2626,12 @@ function items_field_default_field_instances() {
         'settings' => array(),
         'type' => 'list_default',
         'weight' => 54,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
     ),
     'entity_type' => 'node',
@@ -2427,6 +2679,12 @@ function items_field_default_field_instances() {
         'type' => 'number_integer',
         'weight' => 56,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
     ),
     'entity_type' => 'node',
     'field_name' => 'field_item_uses',
@@ -2468,6 +2726,12 @@ function items_field_default_field_instances() {
         'settings' => array(),
         'type' => 'text_default',
         'weight' => 51,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -2550,6 +2814,12 @@ function items_field_default_field_instances() {
         'type' => 'number_integer',
         'weight' => 55,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
     ),
     'entity_type' => 'node',
     'field_name' => 'field_pp_created',
@@ -2595,6 +2865,12 @@ function items_field_default_field_instances() {
         'type' => 'list_default',
         'weight' => 2,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
     ),
     'entity_type' => 'node',
     'field_name' => 'field_realm',
@@ -2609,6 +2885,55 @@ function items_field_default_field_instances() {
       'settings' => array(),
       'type' => 'options_select',
       'weight' => 2,
+    ),
+  );
+
+  // Exported field_instance: 'node-items-field_sellback'
+  $field_instances['node-items-field_sellback'] = array(
+    'bundle' => 'items',
+    'default_value' => array(
+      0 => array(
+        'value' => 0,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => 'Check this box if this item can be sold back to the item shop for coin.',
+    'display' => array(
+      'artwork' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 8,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_sellback',
+    'label' => 'Sellback',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(
+        'display_label' => 0,
+      ),
+      'type' => 'options_onoff',
+      'weight' => 15,
     ),
   );
 
@@ -2632,6 +2957,12 @@ function items_field_default_field_instances() {
         'settings' => array(),
         'type' => 'text_default',
         'weight' => 49,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -2705,6 +3036,12 @@ function items_field_default_field_instances() {
         'settings' => array(),
         'type' => 'text_default',
         'weight' => 50,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -2780,7 +3117,13 @@ function items_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 14,
+        'weight' => 10,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -2838,7 +3181,7 @@ function items_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 16,
+      'weight' => 17,
     ),
   );
 
@@ -2865,6 +3208,12 @@ function items_field_default_field_instances() {
         'settings' => array(),
         'type' => 'taxonomy_term_reference_link',
         'weight' => 53,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
     ),
     'entity_type' => 'node',
@@ -2981,6 +3330,7 @@ function items_field_default_field_instances() {
   t('Character owner');
   t('Charges');
   t('Charisma');
+  t('Check this box if this item can be sold back to the item shop for coin.');
   t('Constitution');
   t('Created for silver');
   t('Creation History');
@@ -3013,6 +3363,7 @@ function items_field_default_field_instances() {
   t('Realm');
   t('Recalculate the value of this item based on changes in stats.');
   t('SH Notes');
+  t('Sellback');
   t('Skill');
   t('Spent Charges');
   t('Spirituality');

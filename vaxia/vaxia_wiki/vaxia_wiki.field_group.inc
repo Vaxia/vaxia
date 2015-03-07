@@ -61,6 +61,7 @@ function vaxia_wiki_field_group_info() {
       3 => 'field_tag_type',
       4 => 'field_tag_location',
       5 => 'field_organization_type',
+      6 => 'field_provides_reputation',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -114,7 +115,7 @@ function vaxia_wiki_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Navigation',
-    'weight' => '2',
+    'weight' => '3',
     'children' => array(
       0 => 'field_referencing_chat_rooms',
       1 => 'field_associated_npcs',

@@ -9,12 +9,39 @@
  */
 function cold_storage_default_rules_configuration() {
   $items = array();
+  $items['rules_cold_storage_set_workflow_unpub_chars'] = entity_import('rules_config', '{ "rules_cold_storage_set_workflow_unpub_chars" : {
+      "LABEL" : "Cold storage - set workflow unpub chars",
+      "PLUGIN" : "reaction rule",
+      "ACTIVE" : false,
+      "OWNER" : "rules",
+      "TAGS" : [ "Cold storage" ],
+      "REQUIRES" : [ "rules", "workflow_rules" ],
+      "ON" : { "node_update--character_sheet" : { "bundle" : "character_sheet" } },
+      "IF" : [
+        { "NOT node_is_published" : { "node" : [ "node" ] } },
+        { "node_is_published" : { "node" : [ "node-unchanged" ] } },
+        { "workflow_check_state" : {
+            "node" : [ "node" ],
+            "workflow_state" : { "value" : { "3" : "3", "4" : "4" } }
+          }
+        }
+      ],
+      "DO" : [
+        { "workflow_rules_set_state" : {
+            "node" : [ "node" ],
+            "workflow_state" : { "value" : { "2" : "2" } },
+            "workflow_comment" : "Character moved to draft when player moved to cold storage."
+          }
+        }
+      ]
+    }
+  }');
   $items['rules_set_characters_active_if_moved_from_cold_storage'] = entity_import('rules_config', '{ "rules_set_characters_active_if_moved_from_cold_storage" : {
       "LABEL" : "Cold storage - Move unlocked players from cold storage",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
       "TAGS" : [ "Cold storage" ],
-      "REQUIRES" : [ "rules", "views_rules", "workflow_rules", "rules_block_user" ],
+      "REQUIRES" : [ "rules", "cold_storage", "rules_block_user" ],
       "ON" : { "user_was_unblocked" : [] },
       "IF" : [
         { "user_has_role" : { "account" : [ "account" ], "roles" : { "value" : { "22" : "22" } } } },
@@ -28,50 +55,7 @@ function cold_storage_default_rules_configuration() {
       "DO" : [
         { "user_add_role" : { "account" : [ "account" ], "roles" : { "value" : { "8" : "8" } } } },
         { "user_remove_role" : { "account" : [ "account" ], "roles" : { "value" : { "22" : "22" } } } },
-        { "entity_save" : { "data" : [ "account" ], "immediate" : 1 } },
-        { "VIEW LOOP" : {
-            "VIEW" : "vaxia_character_sheets",
-            "DISPLAY" : "rules_chars_by_user",
-            "USING" : { "uid" : [ "account:uid" ] },
-            "ROW VARIABLES" : { "nid" : { "nid" : "Nid" } },
-            "DO" : [
-              { "entity_fetch" : {
-                  "USING" : { "type" : "node", "id" : [ "nid" ] },
-                  "PROVIDE" : { "entity_fetched" : { "entity_fetched" : "Fetched entity" } }
-                }
-              },
-              { "node_publish" : { "node" : [ "entity-fetched" ] } },
-              { "workflow_rules_set_state" : {
-                  "node" : [ "entity-fetched" ],
-                  "workflow_state" : { "value" : { "2" : "2" } },
-                  "workflow_comment" : "Characters from cold storage set to draft."
-                }
-              },
-              { "entity_save" : { "data" : [ "entity-fetched" ] } }
-            ]
-          }
-        },
-        { "VIEW LOOP" : {
-            "VIEW" : "vaxia_character_sheets",
-            "DISPLAY" : "views_rules_1",
-            "USING" : { "uid" : [ "account:uid" ] },
-            "ROW VARIABLES" : { "nid" : { "nid" : "Nid" } },
-            "DO" : [
-              { "entity_fetch" : {
-                  "USING" : { "type" : "node", "id" : [ "nid" ] },
-                  "PROVIDE" : { "entity_fetched" : { "entity_fetched" : "Fetched entity" } }
-                }
-              },
-              { "workflow_rules_set_state" : {
-                  "node" : [ "entity-fetched" ],
-                  "workflow_state" : { "value" : { "3" : "3" } },
-                  "workflow_comment" : "Re-submission of previously approved character by system. This is so that current eval may review characters from previous versions of the system to bring them up to date."
-                }
-              },
-              { "entity_save" : { "data" : [ "entity-fetched" ] } }
-            ]
-          }
-        }
+        { "cold_storage_rules_pub_nodes" : { "user" : [ "account" ] } }
       ]
     }
   }');
@@ -80,7 +64,7 @@ function cold_storage_default_rules_configuration() {
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
       "TAGS" : [ "Cold storage" ],
-      "REQUIRES" : [ "rules", "views_rules", "workflow_rules", "rules_block_user" ],
+      "REQUIRES" : [ "rules", "cold_storage", "rules_block_user" ],
       "ON" : { "user_was_blocked" : [] },
       "IF" : [
         { "user_has_role" : { "account" : [ "account" ], "roles" : { "value" : { "8" : "8" } } } },
@@ -92,6 +76,13 @@ function cold_storage_default_rules_configuration() {
         }
       ],
       "DO" : [
+        { "mail" : {
+            "to" : "[account:mail]",
+            "subject" : "[Vaxia] Account [user:name] deactivated due to inactivity",
+            "message" : "The following user account has been set inactive.\\r\\n\\r\\n[user:name]\\r\\n\\r\\nWe noticed you\\u0027ve been away from us for a while. In order to keep our listings up to date, we have deactivated your account. Your characters are still in the system - they\\u0027re just in cold storage.\\r\\n\\r\\nWe\\u0027d love to see you back one day, so if you return just head to this page http:\\/\\/vaxia.org\\/content\\/returning-player to get started on reactivating your account. \\r\\n\\r\\n~~~~~~\\r\\nThis email was automatically generated by vaxia.org.\\r\\nYou are receiving this email as part of your membership at vaxia.org.\\r\\nDo not reply this this email, it is not a monitored account and messages will\\r\\nnot be received by a human.\\r\\n~~~~~~",
+            "language" : [ "" ]
+          }
+        },
         { "user_add_role" : { "account" : [ "account" ], "roles" : { "value" : { "22" : "22" } } } },
         { "user_remove_role" : {
             "account" : [ "account" ],
@@ -117,28 +108,7 @@ function cold_storage_default_rules_configuration() {
             }
           }
         },
-        { "entity_save" : { "data" : [ "account" ], "immediate" : 1 } },
-        { "VIEW LOOP" : {
-            "VIEW" : "vaxia_character_sheets",
-            "DISPLAY" : "rules_chars_by_user",
-            "USING" : { "uid" : [ "account:uid" ] },
-            "ROW VARIABLES" : { "nid" : { "nid" : "Nid" } },
-            "DO" : [
-              { "entity_fetch" : {
-                  "USING" : { "type" : "node", "id" : [ "nid" ] },
-                  "PROVIDE" : { "entity_fetched" : { "entity_fetched" : "Fetched entity" } }
-                }
-              },
-              { "node_unpublish" : { "node" : [ "entity-fetched" ] } },
-              { "workflow_rules_set_state" : {
-                  "node" : [ "entity-fetched" ],
-                  "workflow_state" : { "value" : { "2" : "2" } },
-                  "workflow_comment" : "Set to draft after player moved to cold storage."
-                }
-              }
-            ]
-          }
-        }
+        { "cold_storage_rules_unpub_nodes" : { "user" : [ "account" ] } }
       ]
     }
   }');

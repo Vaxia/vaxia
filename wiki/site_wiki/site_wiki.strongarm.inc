@@ -56,7 +56,7 @@ function site_wiki_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'comment_wiki_page';
-  $strongarm->value = '2';
+  $strongarm->value = '1';
   $export['comment_wiki_page'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -92,6 +92,9 @@ function site_wiki_strongarm() {
       'artwork' => array(
         'custom_settings' => TRUE,
       ),
+      'print' => array(
+        'custom_settings' => FALSE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(
@@ -99,7 +102,7 @@ function site_wiki_strongarm() {
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '5',
+          'weight' => '6',
         ),
         'workflow' => array(
           'weight' => '6',

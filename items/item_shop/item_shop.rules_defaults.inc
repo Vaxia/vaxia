@@ -24,7 +24,8 @@ function item_shop_default_rules_configuration() {
             "new_state" : { "value" : { "15" : "15" } }
           }
         },
-        { "data_is" : { "data" : [ "node:field-in-shop" ], "value" : 1 } }
+        { "data_is" : { "data" : [ "node:field-in-shop" ], "value" : 1 } },
+        { "NOT data_is" : { "data" : [ "site:current-user:uid" ], "value" : "1" } }
       ],
       "DO" : [
         { "clone_action_node_clone" : {
@@ -44,6 +45,16 @@ function item_shop_default_rules_configuration() {
         { "entity_save" : { "data" : [ "node" ] } },
         { "drupal_message" : { "message" : "A new item [shop-item:title] with item ID #[shop-item:nid] has been created from your item ID #[node:nid] and added to the item shop." } }
       ]
+    }
+  }');
+  $items['rules_item_shop_created_item_not_for_resell'] = entity_import('rules_config', '{ "rules_item_shop_created_item_not_for_resell" : {
+      "LABEL" : "Item shop - Created item not for resell",
+      "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
+      "TAGS" : [ "Item shop" ],
+      "REQUIRES" : [ "workflow_rules" ],
+      "ON" : { "workflow_state_changed" : [] },
+      "DO" : []
     }
   }');
   return $items;

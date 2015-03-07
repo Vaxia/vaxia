@@ -27,6 +27,8 @@ function rpg_chat_field_group_info() {
       1 => 'field_locked_to_users',
       2 => 'field_users',
       3 => 'field_private_room',
+      4 => 'field_is_personal_room',
+      5 => 'field_room_description',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -54,7 +56,7 @@ function rpg_chat_field_group_info() {
     'weight' => '2',
     'children' => array(
       0 => 'field_wiki_source',
-      1 => 'field_npcs',
+      1 => 'field_room_description',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -109,7 +111,6 @@ function rpg_chat_field_group_info() {
     'children' => array(
       0 => 'field_rl_weather',
       1 => 'field_realm',
-      2 => 'field_npcs',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(

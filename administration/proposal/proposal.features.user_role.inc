@@ -13,7 +13,7 @@ function proposal_user_default_roles() {
   // Exported role: voter.
   $roles['voter'] = array(
     'name' => 'voter',
-    'weight' => '11',
+    'weight' => 11,
   );
 
   return $roles;

@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * calendar_feature.strongarm.inc
+ * site_events.strongarm.inc
  */
 
 /**
  * Implements hook_strongarm().
  */
-function calendar_feature_strongarm() {
+function site_events_strongarm() {
   $export = array();
 
   $strongarm = new stdClass();

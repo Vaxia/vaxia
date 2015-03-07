@@ -1274,10 +1274,11 @@ Don\'t hesitate to contact the System lead(s) or another evaller for a second op
   $handler->display->display_options['fields']['field_realm']['id'] = 'field_realm';
   $handler->display->display_options['fields']['field_realm']['table'] = 'field_data_field_realm';
   $handler->display->display_options['fields']['field_realm']['field'] = 'field_realm';
-  /* Field: Content: Species */
+  /* Field: Content: Vaxia Species */
   $handler->display->display_options['fields']['field_race']['id'] = 'field_race';
   $handler->display->display_options['fields']['field_race']['table'] = 'field_data_field_race';
   $handler->display->display_options['fields']['field_race']['field'] = 'field_race';
+  $handler->display->display_options['fields']['field_race']['label'] = 'Species';
   /* Field: Content: Post date */
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'node';
@@ -1421,16 +1422,6 @@ Don\'t hesitate to contact the System lead(s) or another evaller for a second op
     'character_sheet' => 'character_sheet',
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
-  /* Filter criterion: Workflow: Current state */
-  $handler->display->display_options['filters']['sid']['id'] = 'sid';
-  $handler->display->display_options['filters']['sid']['table'] = 'workflow_node';
-  $handler->display->display_options['filters']['sid']['field'] = 'sid';
-  $handler->display->display_options['filters']['sid']['value'] = array(
-    2 => '2',
-    3 => '3',
-    4 => '4',
-  );
-  $handler->display->display_options['filters']['sid']['group'] = 1;
   /* Filter criterion: Content: NPC (field_is_npc) */
   $handler->display->display_options['filters']['field_is_npc_value']['id'] = 'field_is_npc_value';
   $handler->display->display_options['filters']['field_is_npc_value']['table'] = 'field_data_field_is_npc';

@@ -23,6 +23,12 @@ function rpg_chat_field_default_field_instances() {
         'type' => 'nodereferrer_default',
         'weight' => 2,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
     ),
     'entity_type' => 'node',
     'field_name' => 'field_children',
@@ -38,7 +44,49 @@ function rpg_chat_field_default_field_instances() {
       'module' => 'nodereferrer',
       'settings' => array(),
       'type' => 'nodereferrer_list',
-      'weight' => 6,
+      'weight' => 7,
+    ),
+  );
+
+  // Exported field_instance: 'node-rpg_chatroom-field_is_personal_room'
+  $field_instances['node-rpg_chatroom-field_is_personal_room'] = array(
+    'bundle' => 'rpg_chatroom',
+    'default_value' => array(
+      0 => array(
+        'value' => 0,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 3,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_is_personal_room',
+    'label' => 'Personal room',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(
+        'display_label' => 0,
+      ),
+      'type' => 'options_onoff',
+      'weight' => 12,
     ),
   );
 
@@ -59,7 +107,13 @@ function rpg_chat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 7,
+        'weight' => 8,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
     ),
     'entity_type' => 'node',
@@ -74,7 +128,7 @@ function rpg_chat_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 10,
+      'weight' => 17,
     ),
   );
 
@@ -95,7 +149,13 @@ function rpg_chat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 6,
+        'weight' => 7,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
     ),
     'entity_type' => 'node',
@@ -110,42 +170,7 @@ function rpg_chat_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 9,
-    ),
-  );
-
-  // Exported field_instance: 'node-rpg_chatroom-field_npcs'
-  $field_instances['node-rpg_chatroom-field_npcs'] = array(
-    'bundle' => 'rpg_chatroom',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => 'Make a note of NPCs commonly found in this  location.',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'node_reference',
-        'settings' => array(),
-        'type' => 'node_reference_default',
-        'weight' => 4,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_npcs',
-    'label' => 'NPCs',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'node_reference',
-      'settings' => array(
-        'autocomplete_match' => 'contains',
-        'autocomplete_path' => 'node_reference/autocomplete',
-        'size' => 60,
-      ),
-      'type' => 'node_reference_autocomplete',
-      'weight' => 5,
+      'weight' => 16,
     ),
   );
 
@@ -168,6 +193,12 @@ function rpg_chat_field_default_field_instances() {
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 1,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'rss' => array(
         'label' => 'hidden',
@@ -211,7 +242,7 @@ function rpg_chat_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'node_reference_autocomplete',
-      'weight' => 5,
+      'weight' => 6,
     ),
   );
 
@@ -233,6 +264,12 @@ function rpg_chat_field_default_field_instances() {
         'type' => 'list_default',
         'weight' => 0,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
     ),
     'entity_type' => 'node',
     'field_name' => 'field_private_room',
@@ -248,7 +285,7 @@ function rpg_chat_field_default_field_instances() {
         'display_label' => 0,
       ),
       'type' => 'options_onoff',
-      'weight' => 8,
+      'weight' => 15,
     ),
   );
 
@@ -267,7 +304,13 @@ function rpg_chat_field_default_field_instances() {
         'label' => 'hidden',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 5,
+        'weight' => 6,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
     ),
     'entity_type' => 'node',
@@ -398,7 +441,13 @@ function rpg_chat_field_default_field_instances() {
         'label' => 'hidden',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 3,
+        'weight' => 4,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
     ),
     'entity_type' => 'node',
@@ -417,18 +466,99 @@ function rpg_chat_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-rpg_chatroom-field_room_description'
+  $field_instances['node-rpg_chatroom-field_room_description'] = array(
+    'bundle' => 'rpg_chatroom',
+    'default_value' => array(
+      0 => array(
+        'value' => '',
+        'format' => 'wiki',
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 5,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_room_description',
+    'label' => 'Room Description',
+    'required' => 0,
+    'settings' => array(
+      'better_formats' => array(
+        'allowed_formats' => array(
+          'filtered_html' => 0,
+          'full_html' => 0,
+          'php_code' => 0,
+          'plain_text' => 0,
+          'wiki' => 'wiki',
+        ),
+        'allowed_formats_toggle' => 1,
+        'default_order_toggle' => 0,
+        'default_order_wrapper' => array(
+          'formats' => array(
+            'filtered_html' => array(
+              'weight' => 0,
+            ),
+            'full_html' => array(
+              'weight' => 1,
+            ),
+            'php_code' => array(
+              'weight' => 11,
+            ),
+            'plain_text' => array(
+              'weight' => 10,
+            ),
+            'wiki' => array(
+              'weight' => 0,
+            ),
+          ),
+        ),
+      ),
+      'text_processing' => 1,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 5,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 14,
+    ),
+  );
+
   // Exported field_instance: 'node-rpg_chatroom-field_users'
   $field_instances['node-rpg_chatroom-field_users'] = array(
     'bundle' => 'rpg_chatroom',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Select the users to lock this room for. Only these users may post here.',
+    'description' => 'Select the users to lock this room for. Only these users may post here. If you own this room - be SURE to put yourself on this list or you risk locking yourself out!',
     'display' => array(
       'default' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 8,
+        'weight' => 9,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
     ),
     'entity_type' => 'node',
@@ -447,7 +577,7 @@ function rpg_chat_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'user_reference_autocomplete',
-      'weight' => 11,
+      'weight' => 18,
     ),
   );
 
@@ -466,6 +596,12 @@ function rpg_chat_field_default_field_instances() {
         ),
         'type' => 'node_reference_node',
         'weight' => 3,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
     ),
     'entity_type' => 'node',
@@ -491,14 +627,14 @@ function rpg_chat_field_default_field_instances() {
   // Translatables
   // Included for use with string extractors like potx.
   t('Locked to users');
-  t('Make a note of NPCs commonly found in this  location.');
   t('Mature posting');
-  t('NPCs');
   t('Parent-locations');
+  t('Personal room');
   t('Private room');
   t('RL weather');
   t('Realm');
-  t('Select the users to lock this room for. Only these users may post here.');
+  t('Room Description');
+  t('Select the users to lock this room for. Only these users may post here. If you own this room - be SURE to put yourself on this list or you risk locking yourself out!');
   t('Sub-locations');
   t('Users');
   t('Wiki source');

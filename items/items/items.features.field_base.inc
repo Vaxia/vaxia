@@ -985,36 +985,6 @@ function items_field_default_field_bases() {
     'type' => 'number_integer',
   );
 
-  // Exported field_base: 'field_player_notes'
-  $field_bases['field_player_notes'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_player_notes',
-    'field_permissions' => array(
-      'type' => 1,
-    ),
-    'foreign keys' => array(
-      'format' => array(
-        'columns' => array(
-          'format' => 'format',
-        ),
-        'table' => 'filter_format',
-      ),
-    ),
-    'indexes' => array(
-      'format' => array(
-        0 => 'format',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'text',
-    'settings' => array(),
-    'translatable' => 0,
-    'type' => 'text_long',
-  );
-
   // Exported field_base: 'field_pp_created'
   $field_bases['field_pp_created'] = array(
     'active' => 1,
@@ -1031,64 +1001,30 @@ function items_field_default_field_bases() {
     'type' => 'number_integer',
   );
 
-  // Exported field_base: 'field_sh_notes'
-  $field_bases['field_sh_notes'] = array(
+  // Exported field_base: 'field_sellback'
+  $field_bases['field_sellback'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
-    'field_name' => 'field_sh_notes',
-    'field_permissions' => array(
-      'type' => 1,
-    ),
-    'foreign keys' => array(
-      'format' => array(
-        'columns' => array(
-          'format' => 'format',
-        ),
-        'table' => 'filter_format',
-      ),
-    ),
+    'field_name' => 'field_sellback',
+    'foreign keys' => array(),
     'indexes' => array(
-      'format' => array(
-        0 => 'format',
+      'value' => array(
+        0 => 'value',
       ),
     ),
     'locked' => 0,
-    'module' => 'text',
-    'settings' => array(),
-    'translatable' => 0,
-    'type' => 'text_long',
-  );
-
-  // Exported field_base: 'field_sh_private_notes'
-  $field_bases['field_sh_private_notes'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_sh_private_notes',
-    'field_permissions' => array(
-      'type' => 2,
-    ),
-    'foreign keys' => array(
-      'format' => array(
-        'columns' => array(
-          'format' => 'format',
-        ),
-        'table' => 'filter_format',
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        0 => 'Item can NOT be sold back to the item shop.',
+        1 => 'Item can be sold back to the item shop.',
       ),
+      'allowed_values_function' => '',
     ),
-    'indexes' => array(
-      'format' => array(
-        0 => 'format',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'text',
-    'settings' => array(),
     'translatable' => 0,
-    'type' => 'text_long',
+    'type' => 'list_boolean',
   );
 
   // Exported field_base: 'field_value'

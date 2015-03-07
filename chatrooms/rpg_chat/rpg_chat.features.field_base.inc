@@ -54,6 +54,32 @@ function rpg_chat_field_default_field_bases() {
     'type' => 'nodereferrer',
   );
 
+  // Exported field_base: 'field_is_personal_room'
+  $field_bases['field_is_personal_room'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_is_personal_room',
+    'foreign keys' => array(),
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        0 => 'This is NOT a personal room owned by a character.',
+        1 => 'This is a personal room owned by a character.',
+      ),
+      'allowed_values_function' => '',
+    ),
+    'translatable' => 0,
+    'type' => 'list_boolean',
+  );
+
   // Exported field_base: 'field_locked_to_users'
   $field_bases['field_locked_to_users'] = array(
     'active' => 1,
@@ -106,61 +132,6 @@ function rpg_chat_field_default_field_bases() {
     ),
     'translatable' => 0,
     'type' => 'list_boolean',
-  );
-
-  // Exported field_base: 'field_npcs'
-  $field_bases['field_npcs'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_npcs',
-    'foreign keys' => array(
-      'nid' => array(
-        'columns' => array(
-          'nid' => 'nid',
-        ),
-        'table' => 'node',
-      ),
-    ),
-    'indexes' => array(
-      'nid' => array(
-        0 => 'nid',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'node_reference',
-    'settings' => array(
-      'referenceable_types' => array(
-        'article' => 0,
-        'artwork' => 0,
-        'character_sheet' => 'character_sheet',
-        'event' => 0,
-        'filedepot_folder' => 0,
-        'forum' => 0,
-        'items' => 0,
-        'long_answer' => 0,
-        'mass_contact' => 0,
-        'multichoice' => 0,
-        'page' => 0,
-        'proposal' => 0,
-        'quiz' => 0,
-        'rpg_chatroom' => 0,
-        'scene' => 0,
-        'session_report' => 0,
-        'storyhost_application' => 0,
-        'strike' => 0,
-        'webform' => 0,
-        'wiki_page' => 0,
-      ),
-      'view' => array(
-        'args' => array(),
-        'display_name' => 'references_1',
-        'view_name' => 'room_npcs',
-      ),
-    ),
-    'translatable' => 0,
-    'type' => 'node_reference',
   );
 
   // Exported field_base: 'field_parent'
@@ -353,6 +324,33 @@ function rpg_chat_field_default_field_bases() {
     'type' => 'location',
   );
 
+  // Exported field_base: 'field_room_description'
+  $field_bases['field_room_description'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_room_description',
+    'foreign keys' => array(
+      'format' => array(
+        'columns' => array(
+          'format' => 'format',
+        ),
+        'table' => 'filter_format',
+      ),
+    ),
+    'indexes' => array(
+      'format' => array(
+        0 => 'format',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'text',
+    'settings' => array(),
+    'translatable' => 0,
+    'type' => 'text_long',
+  );
+
   // Exported field_base: 'field_users'
   $field_bases['field_users'] = array(
     'active' => 1,
@@ -398,6 +396,10 @@ function rpg_chat_field_default_field_bases() {
         27 => 0,
         28 => 0,
         29 => 0,
+        30 => 0,
+        31 => 0,
+        32 => 0,
+        33 => 0,
       ),
       'referenceable_status' => array(
         0 => 0,

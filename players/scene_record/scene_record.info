@@ -1,4 +1,4 @@
-name = Scene record
+name = Scene
 description = Inline assist for recording scenes for long term storage or doc
 core = 7.x
 package = RPG
@@ -10,6 +10,7 @@ dependencies[] = node_reference
 dependencies[] = options
 dependencies[] = strongarm
 dependencies[] = taxonomy
+dependencies[] = text
 dependencies[] = vaxia
 dependencies[] = views
 features[ctools][] = strongarm:strongarm:1

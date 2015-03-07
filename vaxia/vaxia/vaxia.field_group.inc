@@ -145,7 +145,9 @@ function vaxia_field_group_info() {
       6 => 'field_sex',
       7 => 'field_is_storyteller',
       8 => 'field_conditions',
-      9 => 'field_associated_locations',
+      9 => 'field_other_species',
+      10 => 'field_sirian_species',
+      11 => 'field_associated_locations',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -177,6 +179,8 @@ function vaxia_field_group_info() {
       3 => 'field_realm',
       4 => 'field_sex',
       5 => 'field_conditions',
+      6 => 'field_other_species',
+      7 => 'field_sirian_species',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -234,6 +238,7 @@ function vaxia_field_group_info() {
       0 => 'field_economy',
       1 => 'field_items',
       2 => 'field_property',
+      3 => 'field_currently_wearing',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -264,6 +269,7 @@ function vaxia_field_group_info() {
       1 => 'field_character_goals',
       2 => 'field_content_limits',
       3 => 'field_visibility',
+      4 => 'field_personal_room',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -293,6 +299,7 @@ function vaxia_field_group_info() {
       1 => 'field_character_goals',
       2 => 'field_content_limits',
       3 => 'field_visibility',
+      4 => 'field_personal_room',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -441,6 +448,7 @@ function vaxia_field_group_info() {
     'children' => array(
       0 => 'field_sh_notes',
       1 => 'field_sh_private_notes',
+      2 => 'field_needs_work',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -469,6 +477,7 @@ function vaxia_field_group_info() {
       0 => 'field_sh_notes',
       1 => 'field_sh_private_notes',
       2 => 'field_skill_review',
+      3 => 'field_needs_work',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(

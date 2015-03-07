@@ -49,7 +49,7 @@ function site_wiki_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Assoc. Files',
-    'weight' => '4',
+    'weight' => '5',
     'children' => array(
       0 => 'field_wiki_images',
       1 => 'field_wiki_files',
@@ -117,6 +117,7 @@ function site_wiki_field_group_info() {
       3 => 'field_tag_type',
       4 => 'field_tag_location',
       5 => 'field_organization_type',
+      6 => 'field_provides_reputation',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(

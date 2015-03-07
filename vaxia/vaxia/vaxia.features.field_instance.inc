@@ -170,6 +170,12 @@ function vaxia_field_default_field_instances() {
         'type' => 'text_default',
         'weight' => 2,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
     ),
     'entity_type' => 'node',
     'field_name' => 'field_achivements',
@@ -236,7 +242,13 @@ function vaxia_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 11,
+        'weight' => 13,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -260,7 +272,7 @@ function vaxia_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 23,
+      'weight' => 25,
     ),
   );
 
@@ -276,7 +288,13 @@ function vaxia_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 10,
+        'weight' => 12,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -300,7 +318,7 @@ function vaxia_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 22,
+      'weight' => 24,
     ),
   );
 
@@ -316,6 +334,12 @@ function vaxia_field_default_field_instances() {
         'settings' => array(),
         'type' => 'computed_field_plain',
         'weight' => 15,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -352,6 +376,12 @@ function vaxia_field_default_field_instances() {
         'settings' => array(),
         'type' => 'computed_field_plain',
         'weight' => 23,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -392,6 +422,12 @@ function vaxia_field_default_field_instances() {
         'type' => 'image',
         'weight' => 0,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
     ),
     'entity_type' => 'node',
     'field_name' => 'field_artwork_image',
@@ -430,14 +466,20 @@ function vaxia_field_default_field_instances() {
     'bundle' => 'character_sheet',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'If this is an Open NPC please associate the character with a room location if you know there is one the character will likely be found. That way other SHs can quickly pull up the commonly available NPCs for a location and make use of them during sessions and improvised sessions.',
+    'description' => '',
     'display' => array(
       'default' => array(
         'label' => 'above',
         'module' => 'node_reference',
         'settings' => array(),
         'type' => 'node_reference_default',
-        'weight' => 5,
+        'weight' => 43,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
     ),
     'entity_type' => 'node',
@@ -449,13 +491,9 @@ function vaxia_field_default_field_instances() {
     ),
     'widget' => array(
       'active' => 1,
-      'module' => 'node_reference',
-      'settings' => array(
-        'autocomplete_match' => 'contains',
-        'autocomplete_path' => 'node_reference/autocomplete',
-        'size' => 60,
-      ),
-      'type' => 'node_reference_autocomplete',
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
       'weight' => 7,
     ),
   );
@@ -472,6 +510,12 @@ function vaxia_field_default_field_instances() {
         'settings' => array(),
         'type' => 'computed_field_plain',
         'weight' => 19,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -514,6 +558,12 @@ function vaxia_field_default_field_instances() {
         'settings' => array(),
         'type' => 'text_default',
         'weight' => 4,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -590,6 +640,12 @@ function vaxia_field_default_field_instances() {
         'type' => 'hidden',
         'weight' => 13,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
     ),
     'entity_type' => 'node',
     'field_name' => 'field_background_color',
@@ -623,7 +679,13 @@ function vaxia_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 18,
+        'weight' => 39,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
     ),
     'entity_type' => 'node',
@@ -675,7 +737,7 @@ function vaxia_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 45,
+      'weight' => 44,
     ),
   );
 
@@ -701,6 +763,12 @@ function vaxia_field_default_field_instances() {
         ),
         'type' => 'number_integer',
         'weight' => 22,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -736,14 +804,20 @@ function vaxia_field_default_field_instances() {
     'default_value_function' => '',
     'default_value_php' => '',
     'deleted' => 0,
-    'description' => 'Most characters should start play with no conditions. Starting play with a condition requires oversight and approval from the World department. New players to our site are required to play for a bit as one of the pre-approved species to get familiar with the setting and community before taking on the more complicated Condition concepts.',
+    'description' => 'Most characters should start play with no conditions. Starting play with a \'Condition\' requires approval from the Setting department. (Setting approval is never guaranteed.) Please take a look here for more information about <a href="http://vaxia.org/wiki/setting-approval-conditions">getting Setting approval for Conditions</a>.',
     'display' => array(
       'default' => array(
         'label' => 'inline',
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 8,
+        'weight' => 10,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
     ),
     'entity_type' => 'node',
@@ -758,7 +832,7 @@ function vaxia_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 20,
+      'weight' => 22,
     ),
   );
 
@@ -774,6 +848,12 @@ function vaxia_field_default_field_instances() {
         'settings' => array(),
         'type' => 'computed_field_plain',
         'weight' => 13,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -812,7 +892,13 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
         'module' => 'taxonomy',
         'settings' => array(),
         'type' => 'taxonomy_term_reference_link',
-        'weight' => 21,
+        'weight' => 40,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
     ),
     'entity_type' => 'node',
@@ -827,7 +913,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 47,
+      'weight' => 46,
     ),
   );
 
@@ -843,6 +929,12 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 8,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
     ),
     'entity_type' => 'node',
@@ -879,6 +971,12 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
         'settings' => array(),
         'type' => 'text_default',
         'weight' => 7,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -963,6 +1061,12 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
         'type' => 'number_integer',
         'weight' => 16,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -1012,6 +1116,12 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
         ),
         'type' => 'number_integer',
         'weight' => 34,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1063,6 +1173,12 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
         'type' => 'number_integer',
         'weight' => 12,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -1102,6 +1218,12 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
         'settings' => array(),
         'type' => 'computed_field_plain',
         'weight' => 11,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1149,6 +1271,12 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
         'type' => 'number_integer',
         'weight' => 18,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -1194,6 +1322,12 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
         'type' => 'list_default',
         'weight' => 3,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -1236,6 +1370,12 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
         'settings' => array(),
         'type' => 'list_default',
         'weight' => 4,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1280,6 +1420,12 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
         'type' => 'list_default',
         'weight' => 2,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
     ),
     'entity_type' => 'node',
     'field_name' => 'field_is_storyteller',
@@ -1314,6 +1460,12 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
         ),
         'type' => 'node_reference_node',
         'weight' => 35,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1365,6 +1517,12 @@ Posting does not have to occur all at once, so feel free to spread it out across
         'settings' => array(),
         'type' => 'text_default',
         'weight' => 14,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
     ),
     'entity_type' => 'node',
@@ -1434,6 +1592,12 @@ Posting does not have to occur all at once, so feel free to spread it out across
         'type' => 'text_default',
         'weight' => 3,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -1483,6 +1647,12 @@ Posting does not have to occur all at once, so feel free to spread it out across
         'type' => 'number_integer',
         'weight' => 10,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -1510,6 +1680,49 @@ Posting does not have to occur all at once, so feel free to spread it out across
     ),
   );
 
+  // Exported field_instance: 'node-character_sheet-field_needs_work'
+  $field_instances['node-character_sheet-field_needs_work'] = array(
+    'bundle' => 'character_sheet',
+    'default_value' => array(
+      0 => array(
+        'value' => 0,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => 'Flag this character for a follow-up if some aspect of the character needs to be filled in with additional details.',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 21,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_needs_work',
+    'label' => 'Needs work',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(
+        'display_label' => 0,
+      ),
+      'type' => 'options_onoff',
+      'weight' => 42,
+    ),
+  );
+
   // Exported field_instance: 'node-character_sheet-field_occupation'
   $field_instances['node-character_sheet-field_occupation'] = array(
     'bundle' => 'character_sheet',
@@ -1523,6 +1736,12 @@ Posting does not have to occur all at once, so feel free to spread it out across
         'settings' => array(),
         'type' => 'text_default',
         'weight' => 6,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1580,6 +1799,84 @@ Posting does not have to occur all at once, so feel free to spread it out across
     ),
   );
 
+  // Exported field_instance: 'node-character_sheet-field_other_species'
+  $field_instances['node-character_sheet-field_other_species'] = array(
+    'bundle' => 'character_sheet',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'If you have selected "Other" for your species you MUST select an option here to clarify what sort of \'Other\' species this character is. If this is not an NPC expect to need to get Setting approval. (Setting approval is never guaranteed.) Please take a look here for more information about <a href=http://vaxia.org/wiki/setting-approval-pcs>getting Setting approval for PCs</a>.',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 9,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_other_species',
+    'label' => 'Other Species',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 21,
+    ),
+  );
+
+  // Exported field_instance: 'node-character_sheet-field_personal_room'
+  $field_instances['node-character_sheet-field_personal_room'] = array(
+    'bundle' => 'character_sheet',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'A personal room is intended for a character to roleplay crafting and personal scenes in. It is automatically set to be NOT displayed on the public search. Posts in these rooms will NOT be archived.',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'node_reference',
+        'settings' => array(),
+        'type' => 'node_reference_default',
+        'weight' => 42,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_personal_room',
+    'label' => 'Personal room',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'node_reference',
+      'settings' => array(
+        'autocomplete_match' => 'contains',
+        'autocomplete_path' => 'node_reference/autocomplete',
+        'size' => 60,
+      ),
+      'type' => 'node_reference_autocomplete',
+      'weight' => 47,
+    ),
+  );
+
   // Exported field_instance: 'node-character_sheet-field_personality'
   $field_instances['node-character_sheet-field_personality'] = array(
     'bundle' => 'character_sheet',
@@ -1593,6 +1890,12 @@ Posting does not have to occur all at once, so feel free to spread it out across
         'settings' => array(),
         'type' => 'text_default',
         'weight' => 5,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1662,7 +1965,13 @@ Posting does not have to occur all at once, so feel free to spread it out across
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 17,
+        'weight' => 38,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1733,6 +2042,12 @@ Posting does not have to occur all at once, so feel free to spread it out across
         'type' => 'hidden',
         'weight' => 12,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
     ),
     'entity_type' => 'node',
     'field_name' => 'field_post_color',
@@ -1800,6 +2115,12 @@ Posting does not have to occur all at once, so feel free to spread it out across
         'type' => 'computed_field_plain',
         'weight' => 21,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -1841,6 +2162,12 @@ Posting does not have to occur all at once, so feel free to spread it out across
         'settings' => array(),
         'type' => 'text_default',
         'weight' => 36,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -1920,6 +2247,12 @@ Posting does not have to occur all at once, so feel free to spread it out across
         'type' => 'text_default',
         'weight' => 7,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
     ),
     'entity_type' => 'node',
     'field_name' => 'field_public_information',
@@ -1985,7 +2318,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
     'default_value_function' => '',
     'default_value_php' => '',
     'deleted' => 0,
-    'description' => 'If the species you want to play is not listed here, select \'Other\'. Other races *do* require oversight and approval from the Setting department. New players to our site are required to start play as one of the pre-approved species to get familiar with the setting and community before taking on the more complicated Other concepts.',
+    'description' => 'If the species you want to play is not listed here, select \'Other\'. (Setting approval is never guaranteed.) Please take a look here for more information about <a href=http://vaxia.org/wiki/setting-approval-pcs>getting Setting approval for PCs</a>.',
     'display' => array(
       'default' => array(
         'label' => 'inline',
@@ -1993,6 +2326,12 @@ Posting does not have to occur all at once, so feel free to spread it out across
         'settings' => array(),
         'type' => 'list_default',
         'weight' => 7,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -2003,8 +2342,8 @@ Posting does not have to occur all at once, so feel free to spread it out across
     ),
     'entity_type' => 'node',
     'field_name' => 'field_race',
-    'label' => 'Species',
-    'required' => 1,
+    'label' => 'Vaxia Species',
+    'required' => 0,
     'settings' => array(
       'user_register_form' => FALSE,
     ),
@@ -2034,6 +2373,12 @@ Posting does not have to occur all at once, so feel free to spread it out across
         'settings' => array(),
         'type' => 'list_default',
         'weight' => 6,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -2071,6 +2416,12 @@ Posting does not have to occur all at once, so feel free to spread it out across
         'type' => 'computed_field_plain',
         'weight' => 17,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -2106,7 +2457,13 @@ Posting does not have to occur all at once, so feel free to spread it out across
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 9,
+        'weight' => 11,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -2164,7 +2521,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 21,
+      'weight' => 23,
     ),
   );
 
@@ -2181,6 +2538,12 @@ Posting does not have to occur all at once, so feel free to spread it out across
         'settings' => array(),
         'type' => 'text_default',
         'weight' => 19,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -2251,6 +2614,12 @@ Posting does not have to occur all at once, so feel free to spread it out across
         'settings' => array(),
         'type' => 'text_default',
         'weight' => 20,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -2326,6 +2695,12 @@ Posting does not have to occur all at once, so feel free to spread it out across
         'type' => 'text_default',
         'weight' => 8,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
     ),
     'entity_type' => 'node',
     'field_name' => 'field_sh_public_information',
@@ -2380,6 +2755,47 @@ Posting does not have to occur all at once, so feel free to spread it out across
     ),
   );
 
+  // Exported field_instance: 'node-character_sheet-field_sirian_species'
+  $field_instances['node-character_sheet-field_sirian_species'] = array(
+    'bundle' => 'character_sheet',
+    'default_value' => array(
+      0 => array(
+        'value' => 'human',
+      ),
+    ),
+    'deleted' => 0,
+    'description' => 'If the species you want to play is not listed here, select \'Other\'. (Setting approval is never guaranteed.) Please take a look here for more information about <a href=http://vaxia.org/wiki/setting-approval-pcs>getting Setting approval for PCs</a>.',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 8,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_sirian_species',
+    'label' => 'Sirian Species',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 20,
+    ),
+  );
+
   // Exported field_instance: 'node-character_sheet-field_skill'
   $field_instances['node-character_sheet-field_skill'] = array(
     'bundle' => 'character_sheet',
@@ -2400,6 +2816,12 @@ Posting does not have to occur all at once, so feel free to spread it out across
         ),
         'type' => 'field_collection_table_view',
         'weight' => 13,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -2443,6 +2865,12 @@ Posting does not have to occur all at once, so feel free to spread it out across
         'type' => 'hidden',
         'weight' => 10,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
     ),
     'entity_type' => 'node',
     'field_name' => 'field_skill_review',
@@ -2482,6 +2910,12 @@ Posting does not have to occur all at once, so feel free to spread it out across
         ),
         'type' => 'number_integer',
         'weight' => 20,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
       'teaser' => array(
         'label' => 'above',
@@ -2533,6 +2967,12 @@ Posting does not have to occur all at once, so feel free to spread it out across
         'type' => 'number_integer',
         'weight' => 14,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -2574,6 +3014,12 @@ Posting does not have to occur all at once, so feel free to spread it out across
         'type' => 'text_default',
         'weight' => 1,
       ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
       'teaser' => array(
         'label' => 'above',
         'settings' => array(),
@@ -2612,11 +3058,17 @@ Posting does not have to occur all at once, so feel free to spread it out across
     'description' => 'Uncheck this box to hide this character\'s posts from the power search. This is useful if you are playing a character whose actions you want to keep private. Be aware, while this will hide the posts of this character from the search it will not hide the posts of other character\'s in a scene with you if they are not also set for private mode.',
     'display' => array(
       'default' => array(
-        'label' => 'above',
+        'label' => 'inline',
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 22,
+        'weight' => 41,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
       ),
     ),
     'entity_type' => 'node',
@@ -2633,12 +3085,13 @@ Posting does not have to occur all at once, so feel free to spread it out across
         'display_label' => 0,
       ),
       'type' => 'options_onoff',
-      'weight' => 46,
+      'weight' => 45,
     ),
   );
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('A personal room is intended for a character to roleplay crafting and personal scenes in. It is automatically set to be NOT displayed on the public search. Posts in these rooms will NOT be archived.');
   t('Achivements');
   t('Additional property');
   t('Agility');
@@ -2682,12 +3135,13 @@ Posting does not have to occur all at once, so feel free to spread it out across
   t('Endurance');
   t('Enter as a hex value such as "001100" or text such as "red".');
   t('Finesse');
+  t('Flag this character for a follow-up if some aspect of the character needs to be filled in with additional details.');
   t('For A/SHs - always feel free to add another property field to give each item a field.');
   t('For character evaluation purposes - Sirian characters need to note their country or city of origin. We need to know political alliances (and what legal system your character may fall under) for Sirian plots.');
   t('Health');
   t('IC achievements! Titles earned, championships won. Fun stuff!');
-  t('If the species you want to play is not listed here, select \'Other\'. Other races *do* require oversight and approval from the Setting department. New players to our site are required to start play as one of the pre-approved species to get familiar with the setting and community before taking on the more complicated Other concepts.');
-  t('If this is an Open NPC please associate the character with a room location if you know there is one the character will likely be found. That way other SHs can quickly pull up the commonly available NPCs for a location and make use of them during sessions and improvised sessions.');
+  t('If the species you want to play is not listed here, select \'Other\'. (Setting approval is never guaranteed.) Please take a look here for more information about <a href=http://vaxia.org/wiki/setting-approval-pcs>getting Setting approval for PCs</a>.');
+  t('If you have selected "Other" for your species you MUST select an option here to clarify what sort of \'Other\' species this character is. If this is not an NPC expect to need to get Setting approval. (Setting approval is never guaranteed.) Please take a look here for more information about <a href=http://vaxia.org/wiki/setting-approval-pcs>getting Setting approval for PCs</a>.');
   t('If your character has any over-arching life goals. Things they want to do or see done that may require an A/SH to help achieve - make note of them here.');
   t('Image');
   t('Include any public information other characters could easily find out about this character. For example: The information a chatty bartender, or a social media search would reveal.');
@@ -2702,12 +3156,15 @@ Posting does not have to occur all at once, so feel free to spread it out across
 </br><br/>
 This gives you a way to tell an A/SH in advance what sort of things are ok without you ever having to be put on the spot. If this is a special-occasion where you trust the A/SH involved and want to give them permission to cross these lines, please make sure to explicitly state that. If an A/SH crosses one of these lines without your permission, please tell our Social department as soon as you can.');
   t('Mark this sheet as a storyteller sheet.');
-  t('Most characters should start play with no conditions. Starting play with a condition requires oversight and approval from the World department. New players to our site are required to play for a bit as one of the pre-approved species to get familiar with the setting and community before taking on the more complicated Condition concepts.');
+  t('Most characters should start play with no conditions. Starting play with a \'Condition\' requires approval from the Setting department. (Setting approval is never guaranteed.) Please take a look here for more information about <a href="http://vaxia.org/wiki/setting-approval-conditions">getting Setting approval for Conditions</a>.');
   t('NPC');
   t('Name');
+  t('Needs work');
   t('Occupation');
   t('Open NPC');
+  t('Other Species');
   t('Permissions');
+  t('Personal room');
   t('Personality');
   t('Player Notes');
   t('Presence');
@@ -2718,9 +3175,9 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
   t('SH Notes');
   t('SH Public information');
   t('SH provided public information about your character.');
+  t('Sirian Species');
   t('Skill');
   t('Skill Review (tmp)');
-  t('Species');
   t('Spirituality');
   t('Storyhost');
   t('Strength');
@@ -2729,6 +3186,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
   t('Titles');
   t('Uncheck this box to hide this character\'s posts from the power search. This is useful if you are playing a character whose actions you want to keep private. Be aware, while this will hide the posts of this character from the search it will not hide the posts of other character\'s in a scene with you if they are not also set for private mode.');
   t('Value');
+  t('Vaxia Species');
   t('Visibility');
   t('You can invest silver instead on the Sheet tab.');
 

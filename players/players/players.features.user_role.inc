@@ -13,7 +13,7 @@ function players_user_default_roles() {
   // Exported role: player.
   $roles['player'] = array(
     'name' => 'player',
-    'weight' => '4',
+    'weight' => 4,
   );
 
   return $roles;

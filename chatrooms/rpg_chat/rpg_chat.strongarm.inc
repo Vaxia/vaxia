@@ -92,6 +92,12 @@ function rpg_chat_strongarm() {
       'artwork' => array(
         'custom_settings' => FALSE,
       ),
+      'question' => array(
+        'custom_settings' => TRUE,
+      ),
+      'print' => array(
+        'custom_settings' => FALSE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(
@@ -114,7 +120,7 @@ function rpg_chat_strongarm() {
       'display' => array(
         'dice_roller' => array(
           'default' => array(
-            'weight' => '4',
+            'weight' => '5',
             'visible' => FALSE,
           ),
         ),

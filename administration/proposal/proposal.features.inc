@@ -7,12 +7,10 @@
 /**
  * Implements hook_ctools_plugin_api().
  */
-function proposal_ctools_plugin_api() {
-  list($module, $api) = func_get_args();
+function proposal_ctools_plugin_api($module = NULL, $api = NULL) {
   if ($module == "field_group" && $api == "field_group") {
     return array("version" => "1");
   }
-  list($module, $api) = func_get_args();
   if ($module == "strongarm" && $api == "strongarm") {
     return array("version" => "1");
   }
@@ -21,8 +19,8 @@ function proposal_ctools_plugin_api() {
 /**
  * Implements hook_views_api().
  */
-function proposal_views_api() {
-  return array("version" => "3.0");
+function proposal_views_api($module = NULL, $api = NULL) {
+  return array("api" => "3.0");
 }
 
 /**
@@ -52,5 +50,6 @@ Once the proposal closes, the results will be posted publicly for all to see. Na
 Creating a proposal is a TWO-STEP process. Fill out the information here, and on saving it - the system will take you to part two to set up your form.'),
     ),
   );
+  drupal_alter('node_info', $items);
   return $items;
 }

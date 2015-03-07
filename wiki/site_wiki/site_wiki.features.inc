@@ -94,9 +94,6 @@ function site_wiki_workflow_default_workflows() {
         'target_state' => 'open',
       ),
     ),
-    'node_types' => array(
-      0 => 'wiki_page',
-    ),
   );
 
   return $workflows;

@@ -119,6 +119,8 @@ function item_shop_views_default_views() {
   $handler->display->display_options['fields']['field_value']['label'] = 'Cost';
   $handler->display->display_options['fields']['field_value']['alter']['alter_text'] = TRUE;
   $handler->display->display_options['fields']['field_value']['alter']['text'] = '[field_value] silver';
+  $handler->display->display_options['fields']['field_value']['empty'] = 'Free (Lifestyle)';
+  $handler->display->display_options['fields']['field_value']['empty_zero'] = TRUE;
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
@@ -232,6 +234,55 @@ if ($character) {
   }
 }
 return FALSE;';
+  /* Filter criterion: Content: Item type (field_item_type) */
+  $handler->display->display_options['filters']['field_item_type_tid']['id'] = 'field_item_type_tid';
+  $handler->display->display_options['filters']['field_item_type_tid']['table'] = 'field_data_field_item_type';
+  $handler->display->display_options['filters']['field_item_type_tid']['field'] = 'field_item_type_tid';
+  $handler->display->display_options['filters']['field_item_type_tid']['value'] = array(
+    909 => '909',
+    910 => '910',
+    911 => '911',
+    907 => '907',
+    908 => '908',
+    914 => '914',
+  );
+  $handler->display->display_options['filters']['field_item_type_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_item_type_tid']['expose']['operator_id'] = 'field_item_type_tid_op';
+  $handler->display->display_options['filters']['field_item_type_tid']['expose']['label'] = 'Item type';
+  $handler->display->display_options['filters']['field_item_type_tid']['expose']['operator'] = 'field_item_type_tid_op';
+  $handler->display->display_options['filters']['field_item_type_tid']['expose']['identifier'] = 'field_item_type_tid';
+  $handler->display->display_options['filters']['field_item_type_tid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_item_type_tid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['field_item_type_tid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    30 => 0,
+    8 => 0,
+    9 => 0,
+    14 => 0,
+    21 => 0,
+    24 => 0,
+    26 => 0,
+    27 => 0,
+    19 => 0,
+    28 => 0,
+    29 => 0,
+    12 => 0,
+    25 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    20 => 0,
+    22 => 0,
+    23 => 0,
+    31 => 0,
+    32 => 0,
+  );
+  $handler->display->display_options['filters']['field_item_type_tid']['expose']['reduce'] = TRUE;
+  $handler->display->display_options['filters']['field_item_type_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['field_item_type_tid']['vocabulary'] = 'item_type';
 
   /* Display: Item Shop */
   $handler = $view->new_display('page', 'Item Shop', 'item_shop');
@@ -425,16 +476,12 @@ return FALSE;';
   $handler->display->display_options['fields']['field_value']['label'] = 'Cost';
   $handler->display->display_options['fields']['field_value']['alter']['alter_text'] = TRUE;
   $handler->display->display_options['fields']['field_value']['alter']['text'] = '[field_value] silver';
+  $handler->display->display_options['fields']['field_value']['empty'] = 'Free (Lifestyle)';
+  $handler->display->display_options['fields']['field_value']['empty_zero'] = TRUE;
   /* Field: Content: Realm */
   $handler->display->display_options['fields']['field_realm']['id'] = 'field_realm';
   $handler->display->display_options['fields']['field_realm']['table'] = 'field_data_field_realm';
   $handler->display->display_options['fields']['field_realm']['field'] = 'field_realm';
-  /* Field: Content: Title */
-  $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
-  $handler->display->display_options['fields']['title_1']['table'] = 'node';
-  $handler->display->display_options['fields']['title_1']['field'] = 'title';
-  $handler->display->display_options['fields']['title_1']['relationship'] = 'field_character_owner_nid';
-  $handler->display->display_options['fields']['title_1']['label'] = 'Character Owner';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
