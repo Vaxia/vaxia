@@ -1,5 +1,5 @@
-name = Play suggestions
-description = Play suggestions for casual RP.
+name = Play Suggestions
+description = Play suggestions for automatic suggestions for players.
 core = 7.x
 package = Vaxia
 version = 7.x-1.0
@@ -7,3 +7,8 @@ project = play_suggestions
 dependencies[] = rpg_chat
 dependencies[] = vaxia
 dependencies[] = webform
+features[ctools][] = strongarm:strongarm:1
+features[ctools][] = views:views_default:3.0
+features[features_api][] = api:2
+features[node][] = play_suggestions
+features[views_view][] = play_suggestions

@@ -1,9 +1,10 @@
 <?php
 /**
  * @file
- * Code for the Play suggestions feature.
+ * Code for the Play Suggestions feature.
  */
 
+include_once 'play_suggestions.features.inc';
 
 /**
  * Implements hook_block_info().
