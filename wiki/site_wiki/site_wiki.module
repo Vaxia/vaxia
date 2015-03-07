@@ -82,16 +82,11 @@ function _site_wiki_process($text, $filter, $format, $langcode, $cache, $cache_i
     //$replacement = ' ' . l($title, 'node/' . $nid, array('attributes' => array('class' => 'site-wiki-link'))) . ' ';
     $replacement = ' ' . l($title, 'node/' . $nid) . ' ';
     if (!empty($pattern) && !empty($replacement)) {
-      $patterns[] = $pattern;
-      $replacements[] = $replacement;
-    }
-    
-  }
-  // Replace and return.
-  if (!empty($patterns)) {
-    $new_text = preg_replace($patterns, $replacements, $text, 1);
-    if (!empty($new_text)) {
-      $text = $new_text;
+      $new_text = preg_replace($pattern, $replacement, $text, 1);
+      // Replace only if we have content. If failure, this is empty.
+      if (!empty($new_text)) {
+        $text = $new_text;
+      }
     }
   }
   return $text;
