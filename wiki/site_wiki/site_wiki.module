@@ -77,12 +77,15 @@ function _site_wiki_process($text, $filter, $format, $langcode, $cache, $cache_i
     // Look for spaces on either side of the link so we don't hit the url filter.
     // But how do we make sure NOT to next URL links in cases of say A B C, and B links?
     // For now this may be an acceptable risk.
-    $patterns[] = '/ ' . $title . ' /';
-    $replacements[] = l($title, 'node/' . $nid, array('attributes' => array('class' => 'site-wiki-link')));
+    $patterns[] = '/ ' . $title . ' /i';
+    $replacements[] = ' ' . l($title, 'node/' . $nid, array('attributes' => array('class' => 'site-wiki-link'))) . ' ';
   }
   // Replace and return.
   if (!empty($patterns)) {
-    $text = preg_replace($patterns, $replacements, $text, 1);
+    $new_text = preg_replace($patterns, $replacements, $text, 1);
+    if (!empty($new_text)) {
+      $text = $new_text;
+    }
   }
   return $text;
 }
