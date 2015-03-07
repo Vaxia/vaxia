@@ -98,6 +98,7 @@ function _site_wiki_process($text, $filter, $format, $langcode, $cache, $cache_i
 function _site_wiki_get_titles() {
   $results = db_query('SELECT n.nid, n.title FROM {node} n ' .
     'WHERE type=\'wiki_page\' ' .
+    'AND status=1 '.
     'ORDER BY CHAR_LENGTH(title) DESC');
   $found = array();
   foreach ($results as $result) {
