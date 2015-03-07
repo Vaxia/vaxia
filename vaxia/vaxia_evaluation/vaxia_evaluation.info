@@ -1,9 +1,12 @@
-name = Vaxia evaluation
+name = Vaxia Evaluation
 description = Vaxia evaluation rules
 core = 7.x
 package = Vaxia
 version = 7.x-1.1
 project = vaxia_evaluation
+dependencies[] = php
+dependencies[] = workflow_rules
+features[ctools][] = views:views_default:3.0
 features[features_api][] = api:2
 features[rules_config][] = items_notify_char_eval_re_new_char
 features[rules_config][] = items_notify_player_when_char_approved
@@ -13,4 +16,5 @@ features[rules_config][] = rules_cap_of_characters_in_the_bin_at_the_same_time
 features[rules_config][] = rules_catch_too_many_min_max_characters
 features[rules_config][] = rules_char_eval_other_and_conditions_under_hxp
 features[rules_config][] = vaxia_evaluation_notify_player_when_char_workflow
+features[views_view][] = storyhost_evaluation
 
