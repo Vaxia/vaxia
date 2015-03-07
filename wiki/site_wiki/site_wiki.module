@@ -36,6 +36,56 @@ function site_wiki_menu() {
   return $items;
 }
 
+// New approach to handling wiki links.
+// Since we're trying to put wiki's in place and not have a deep
+// restructure all the time when we change file names.
+// And we're using Book to provide a top-over-all map of wiki content.
+// Let's use a display filter to add links throughout the "wiki" and strip
+// the use of [[links]] instead of trying to keep them all sorted out.
+// That means a display filter.
+// And we'll use a list of all titles of wiki type nodes, ordered by desc length.
+// That way we'll prioritize links for [[A B C]] over [[A B]] and etc.
+// There may be a performance concern here with the list of wiki titles?
+// But it's what? One SQL query and then a loop? So let's see how it goes first.
+//
+function _site_wiki_get_titles() {
+  $results = db_query('SELECT n.nid, n.title FROM {node} n WHERE type=\'wiki_page\'');
+}
+
+/**
+ * Implements hook_filter_info().
+ */
+function site_wiki_filter_info() {
+  $filters = array();
+  $filters['site_wiki'] = array(
+    'title' => t('Site wiki format'),
+    'description' => t('Auto adds links to text for wiki content.'),
+    'prepare callback' => '_site_wiki_prepare',
+    'process callback' => '_site_wiki_process',
+    'tips callback' => '_site_wiki_tips',
+  );
+  return $filters;
+}
+
+/**
+ * Implements filter prepare callback.
+ */
+function _site_wiki_prepare() {
+}
+
+/**
+ * Implements filter process callback.
+ */
+function _site_wiki_process() {
+}
+
+/**
+ * Implements filter tips callback.
+ */
+function _site_wiki_tips() {
+}
+
+
 /**
  * Implementation of admin settings form.
  */
@@ -93,31 +143,6 @@ function site_wiki_menu_alter($node, $op, $account) {
 }
 
 /**
- * Implements hook_node_presave().
- */
-function site_wiki_node_presave($node) {
-  // TMP removing this as a feature, pending correcting for double-nested links.
-  return;
-  // If node is a wiki page, add obvious links for cross linking..
-  if ($node->type == 'wiki_page') {
-    $body = $node->body[ $node->language ][0]['value'];
-    // Get array of matches.
-    $nodes = db_query('SELECT title, nid FROM {node} WHERE type = \'wiki_page\'');
-    $replacements = array();
-    foreach ($nodes as $values) {
-      $replacements[' ' . $values->title . ' ' ] = ' [[' . $values->title . ']] ';
-      $replacements[' ' . $values->title . '.' ] = ' [[' . $values->title . ']].';
-      $replacements[' ' . $values->title . ',' ] = ' [[' . $values->title . ']],';
-    }
-    // Replace.
-    $body = strtr($body, $replacements);
-    // Put output back in.x
-    $node->body[ $node->language ][0]['value'] = $body;
-  }
-  // And now proceed with the saving.
-}
-
-/**
  * Implements hook_block_info().
  */
 function site_wiki_block_info() {
@@ -131,33 +156,6 @@ function site_wiki_block_info() {
     'cache' => DRUPAL_CACHE_PER_ROLE,
   );
   return $blocks;
-}
-
-/**
- * Implements hook_freelinking_alter().
- */
-function site_wiki_freelinking_alter(&$freelinking) {
-  foreach ($freelinking as $plugin => $details) {
-    // Only change for the nodetitle default freelink module.
-    if ($plugin == 'nodetitle') {
-      // Override the value for callback.
-      $freelinking[$plugin]['callback'] = 'site_wiki_freelinking_nodetitle_callback';
-    }
-  }
-}
-
-/**
- * Implements hook_freelink_alter().
- */
-function site_wiki_freelink_alter(&$link, $target, $plugin_name, $plugin) {
-  // Trim title down to the last leaf for displaying the link.
-  $title = $link[0];
-  $title = explode('/', $title);
-  if (is_array($title)) {
-    $title = array_pop($title);
-  }
-  // And set it.
-  $link[0] = $title;
 }
 
 /**
@@ -249,7 +247,33 @@ function site_wiki_form_wiki_page_node_form_alter(&$form, &$form_state) {
 }
 
 /**
- * Replacement callback for nodetitle plugin
+ * Implements hook_freelinking_alter().
+ */
+function site_wiki_freelinking_alter(&$freelinking) {
+  foreach ($freelinking as $plugin => $details) {
+    // Only change for the nodetitle default freelink module.
+    if ($plugin == 'nodetitle') {
+      // Override the value for callback.
+      $freelinking[$plugin]['callback'] = 'site_wiki_freelinking_nodetitle_callback';
+    }
+  }
+}
+
+/**
+ * Implements hook_freelink_alter().
+ */
+function site_wiki_freelink_alter(&$link, $target, $plugin_name, $plugin) {
+  // Trim title down to the last leaf for displaying the link.
+  $title = $link[0];
+  $title = explode('/', $title);
+  if (is_array($title)) {
+    $title = array_pop($title);
+  }
+  // And set it.
+  $link[0] = $title;
+}
+
+/** Replacement callback for nodetitle plugin
  */
 function site_wiki_freelinking_nodetitle_callback($target, $plugin) {
   $this_node = node_load(arg(1));
