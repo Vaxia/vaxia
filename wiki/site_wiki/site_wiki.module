@@ -78,12 +78,17 @@ function _site_wiki_process($text, $filter, $format, $langcode, $cache, $cache_i
     // But how do we make sure NOT to next URL links in cases of say A B C, and B links?
     // For now this may be an acceptable risk.
     $title = str_replace('|', '', trim($title));
-    // Add slashes to the title when we set the pattern up.
-    $pattern = '|[ \n]' . preg_quote($title) . '[ \n\.\?\:]|i';
-    //$replacement = ' ' . l($title, 'node/' . $nid, array('attributes' => array('class' => 'site-wiki-link'))) . ' ';
     $replacement = ' ' . l($title, 'node/' . $nid) . ' ';
-    if (!empty($pattern) && !empty($replacement)) {
-      $new_text = preg_replace($pattern, $replacement, $text, 1);
+    if (!empty($replacement)) {
+      // Add slashes to the title when we set the pattern up.
+      $title = preg_quote($title);
+      $search_replace = array(
+        '|[ \n]' . $title . '[ \n]|i' => $replacement,
+        '|[\]]' . $title . '[ \n]|i' => ']' . $replacement,
+        '|[ \n]' . $title . '[\[]|i' => $replacement . '[',
+        '|[\]]' . $title . '[\[]|i' => ']' . $replacement . '[',
+      );
+      $new_text = preg_replace(array_keys($search_replace), array_values($search_replace), $text, 1);
       // Replace only if we have content. If failure, this is empty.
       if (!empty($new_text)) {
         $text = $new_text;
