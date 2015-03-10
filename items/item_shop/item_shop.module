@@ -376,8 +376,11 @@ function _item_shop_allow_sellback($node) {
   else {
     // Check character owner.
     $character = node_load($node->field_character_owner[$node->language][0]['nid']);
+    if (empty($character)) {
+      return FALSE;
+    }
     global $user;
-    if (!empty($character) && $character->uid != $user->uid) {
+    if ($character->uid != $user->uid) {
       return FALSE;
     }
   }
