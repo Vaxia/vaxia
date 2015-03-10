@@ -268,12 +268,11 @@ function _proposal_webform_components_form_rows($node, $cid, $component, $level,
   $description = isset($rendered['#description']) ? $rendered['#description'] : '';
   $title = isset($rendered['#title']) ? $rendered['#title'] : '';
   // Disable the element.
-  $rendered['#disabled'] = TRUE;
+  _proposal_disable_form($rendered);
   $rendered['#description'] = '';
   if (!empty($description)) {
     $rendered['#title'] = '';
   }
-  $rendered['#attributes']['disabled'] = TRUE;
   // Set a default value.
   $rendered['#value'] = !empty($component['value']) ? $component['value'] : t('Ipsum lorem...');
   $rendered['#value'] = !empty($rendered['#options']) ? array_shift(array_keys($rendered['#options'])) : $rendered['#value'];
@@ -520,36 +519,11 @@ function proposal_node_view($node, $view_mode, $langcode) {
       // If the webform is not active.
       if ($node->webform['status'] == FALSE) {
         $form = drupal_get_form('webform_client_form_' . $node->nid, $node, array(), FALSE);
-        unset($form['actions']);
+        _proposal_disable_form($form);
         $form['help_done'] = array(
           '#markup' => '</br><div class="proposal_done_message"><b>' .
             t('This webform is no longer accepting submissions.') . '</b></div>',
         );
-        $form['submitted']['#disabled'] = TRUE;
-        $form['submitted']['#attributes']['disabled'] = TRUE;
-        // Disable all expanded child elements if possible.
-        foreach (element_children($form['submitted']) as $child) {
-          // Mark as disabled.
-          $form['submitted'][$child]['#disabled'] = TRUE;
-          $form['submitted'][$child]['#attributes']['disabled'] = TRUE;
-          // Prepare for rendering.
-          if (isset($form['submitted'][$child]['#process'])) {
-            foreach ($form['submitted'][$child]['#process'] as $process) {
-              if ($process == 'ajax_process_form') {
-                $form_state = array();
-                $form['submitted'][$child] = $process($form['submitted'][$child], $form_state);
-              }
-              else {
-                $form['submitted'][$child] = $process($form['submitted'][$child]);
-              }
-            }
-          }
-          // Now that we have potentially expanded fields - disable as well.
-          foreach (element_children($form['submitted'][$child]) as $grandchild) {
-            $form['submitted'][$child][$grandchild]['#disabled'] = TRUE;
-            $form['submitted'][$child][$grandchild]['#attributes']['disabled'] = TRUE;
-          }
-        }
         // Add to display.
         $node->content['webform_done_view'] = array(
           '#markup' => drupal_render($form),
@@ -770,7 +744,7 @@ function proposal_form_webform_components_form_alter(&$form, &$form_state, $form
     else {
       drupal_set_message(t('This proposal has already been voted on and closed. It cannot be modified after closing.'), 'error');
       foreach (element_children($form) as $child_name) {
-        $form['#disabled'] = TRUE;
+        _proposal_disable_form($form);
       }
     }
   }
@@ -1043,7 +1017,7 @@ function proposal_form_alter(&$form, &$form_state, $form_id) {
       if (!$eligable) {
         drupal_set_message('You are not eligible to vote on this issue. Either you do not have the correct site permissions to vote, ' .
           'or you gained them after the proposal was opened for voting.', 'warning');
-        $form['#disabled'] = TRUE;
+        _proposal_disable_form($form);
       }
     }
     // Adjust the description location for all form elements.
@@ -1256,4 +1230,15 @@ function _proposal_closes_on_value($created) {
   $date = strtotime($timeframe, $created); // Two weeks from now.
   $date = date('l, F j, Y', $date);
   return $date;
+}
+
+/**
+ * Helper function, mark element as disabled, and all child elements.
+ */
+function _proposal_disable_form(&$element) {
+  $element['#disabled'] = TRUE;
+  $element['#attributes']['disabled'] = TRUE;
+  foreach(element_children($element) as $child) {
+    _proposal_disable_form($element[$child]);
+  }
 }
