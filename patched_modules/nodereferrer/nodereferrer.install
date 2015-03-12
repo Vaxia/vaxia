@@ -1,8 +1,0 @@
-<?php
-
-/**
- * Implements hook_update_N().
- *
-function nodereferrer_update_7000() {
-  //
-}*/
