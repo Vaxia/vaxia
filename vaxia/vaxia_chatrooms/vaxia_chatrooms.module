@@ -13,6 +13,10 @@ function vaxia_chatrooms_permission() {
       'title' => t('View Vaxia IC chat'),
       'description' => t('View Vaxia IC chat conversations.'),
     ),
+    'bypass vaxia ic chat' => array(
+      'title' => t('Bypass Vaxia IC chat limits'),
+      'description' => t('View Vaxia IC chat conversations even if not normally allowed.'),
+    ),
   );
 }
 
@@ -25,24 +29,24 @@ function vaxia_chatrooms_node_view($node, $view_mode, $langcode) {
 
     // Check permissions.
     global $user;
-    if (_vaxia_chatrooms_is_mature($node) && !_vaxia_chatrooms_is_user_mature($user)) {
+    if (!user_access('bypass vaxia ic chat') && _vaxia_chatrooms_is_mature($node) && !_vaxia_chatrooms_is_user_mature($user)) {
       drupal_set_message('You are not allowed to view this room. You are underage.');
       watchdog('vaxia_room', 'Underage user forwarded to front page.');
       drupal_goto();
     }
 
-    if (_vaxia_chatrooms_is_locked($node) && !_vaxia_chatrooms_is_on_lock_list($node, $user)) {
+    if (!user_access('bypass vaxia ic chat') && _vaxia_chatrooms_is_locked($node) && !_vaxia_chatrooms_is_on_lock_list($node, $user)) {
       drupal_set_message('You are not allowed to view this room. This room is locked.');
       watchdog('vaxia_room', 'Not on private list user forwarded to front page.');
       drupal_goto();
     }
 
-    if (!_vaxia_chatrooms_is_ooc($node) && !user_access('view vaxia ic chat')) {
+    if (!user_access('bypass vaxia ic chat') && !_vaxia_chatrooms_is_ooc($node) && !user_access('view vaxia ic chat')) {
       drupal_set_message('You are not allowed to view this room. This room is locked to anonymous users.');
       drupal_goto();
     }
 
-    if (function_exists('shadowban_is_banned_user') && shadowban_is_banned_user($user)) {
+    if (!user_access('bypass vaxia ic chat') && function_exists('shadowban_is_banned_user') && shadowban_is_banned_user($user)) {
       if (_vaxia_chatrooms_is_mature($node) || _vaxia_chatrooms_is_locked($node)) {
         drupal_set_message('You are not allowed to view this room. This room is locked to other users.');
         drupal_goto();
