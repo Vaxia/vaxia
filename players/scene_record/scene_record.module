@@ -15,10 +15,6 @@ function scene_record_permission() {
       'title' => t('use scene helper'),
       'description' => t('Use scene helper.'),
     ),
-    'administer scene helper' => array(
-      'title' => t('administer scene helper'),
-      'description' => t('Administer scene helper.'),
-    ),
   );
 }
 
@@ -32,586 +28,331 @@ function scene_record_menu() {
     'page callback' => '_scene_record_autocomplete_room',
     'access arguments' => array('use scene helper'),
   );
-  $items['admin/vaxia/scene_record'] = array(
-    'title' => 'Scene record settings',
-    'description' => 'Configure content type association settings for scene records.',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('_scene_record_admin_settings'),
-    'access arguments' => array('administer scene helper'),
-  );
   return $items;
 }
 
 /**
- * Implements hook_node_insert().
+ * Implements hook_node_view().
  */
-function scene_record_node_insert($node) {
-  scene_record_node_update($node);
-}
-
-/**
- * Implements hook_node_update().
- */
-function scene_record_node_update($node) {
-  $scene_type = variable_get('scene_record_scene_type', '');
-  if (!empty($scene_type) && $scene_type == $node->type) {  
-    $nid = $node->nid;
-    // Collect content info.
-    $save_comments = !empty($node->included_comments_table)
-      ? $node->included_comments_table : array();
-    // Save each one to the nid.
-    if (empty($save_comments)) {
-      return;
-    }
-    foreach ($save_comments as $cid => $comment) {
-      // If marked, and not already in the list, add it.
-      $this_comment = (object) $comment;
-      $this_comment->nid = $nid;
-      $this_comment->cid = $cid;
-      $save_comments[$cid] = $this_comment;
-    }
-    foreach ($save_comments as $cid => $scene_comment) {
-      // Don't save what's marked for removal.
-      if ($scene_comment->remove == 0) {
-        _scene_record_update_comment($scene_comment);
-      }
-    }
-    // If a table with states, grab and render the info as a table.
-    // And save it to our record fields to disconnect the record from comment.
-    $set_comments = _scene_record_get_comments($node->nid);
-    if (!empty($set_comments)) {
-      // This function sets the value of headers and rows.
-      _scene_record_view_table($headers, $rows, $node, $set_comments, TRUE);
-      $table['value'] = theme('table', array('header' => $headers, 'rows' => $rows));
-      $table['format'] = 'full_html';
-      $node->field_scene[$node->language][0] = $table;
-      field_attach_update('node', $node);
+function scene_record_node_view($node, $view_mode, $langcode) {
+  if ($view_mode == 'full' && !empty($scene_type) && !empty($node->type) && $node->type == 'scene') {
+    // Get comments.
+    $comments = !empty($node->field_rp_posts[$node->language]) ? $node->field_rp_posts[$node->language] : array();
+    $goal = !empty($node->field_goal[$node->language][0]['value']) ? $node->field_goal[$node->language][0]['value'] : 'misc';
+    // Put together the posts for display.
+    if (!empty($comments)) {
+      // Loop over each post and create the table display.
+      $rows = _scene_record_view_table($comments, $goal);
+      $headers = array(
+        t('Scene posts'),
+        t('Results'),
+      );
+      unset($node->content['field_rp_posts']['#theme']);
+      $node->content['field_rp_posts']['#markup'] = theme('table', array('headers' => $headers, 'rows' => $rows));
     }
   }
-}
-
-/**
- * Implements hook_node_delete().
- */
-function scene_record_node_delete($node) {
-  _scene_record_delete_comments($node->nid);
-}
-
-/**
- * Implements hook_comment_delete().
- */
-function scene_record_comment_delete($comment) {
-  _scene_record_delete_comment($comment->nid, $comment->cid);
 }
 
 /**
  * Return a display of the info as a renderable form.
  */
-function _scene_record_view_table(&$headers, &$rows, $node, $set_comments, $full_text = FALSE) {
-  $headers = array(
-    t('Scene posts'),
-    t('Results'),
-  );
-  $rows = array();
-  // Create table data.
-  $found_comments = array();
-  foreach ($set_comments as $set_comment) {
-    $found_comments[$set_comment->cid] = $set_comment;
+function _scene_record_view_table($found_comments = array(), $goal) {
+  $comments = array();
+  foreach ($found_comments as $comment) {
+    $comments[ $comment['target_id']] = $comment['entity'];
   }
-  // One last organization of all of these by cid.
-  ksort($found_comments);
   // Get values.
-  $found_comments = _scene_record_calculate_results($found_comments);
+  $comments = _scene_record_calculate_results($comments, $goal);
   // Loop for display.
-  foreach ($found_comments as $cid => $scene_comment) {
+  foreach ($comments as $cid => $comment) {
     // Get comment display.
-    $comment = comment_load($cid);
     $comment_display = t('Unable to load comment - it has been deleted and may be in archive.');
     if (is_object($comment) && !empty($comment->cid)) {
       $comment_uri = comment_uri($comment);
-      if ($full_text) {
-        $character = !empty($comment->field_comment_character[$comment->language][0]['nid']) ?
-          node_load($comment->field_comment_character[$comment->language][0]['nid']) : '';
-        if (empty($character)) {
-          $user = user_load($comment->uid);
-          $comment_by = $user->name;
-        }
-        else {
-         $comment_by = $character->title;
-        }
-        $comment_display = check_markup($comment->comment_body[$comment->language][0]['value'], $comment->comment_body[$comment->language][0]['format']);
-        if (!empty($comment->field_ooc[$comment->language][0]['value'])) {
-          $comment_ooc = check_markup($comment->field_ooc[$comment->language][0]['value'], $comment->field_ooc[$comment->language][0]['format']);
-          $comment_display .= 'OOC: ' . $comment_ooc;
-        }
+      $character = !empty($comment->field_comment_character[$comment->language][0]['nid']) ?
+        node_load($comment->field_comment_character[$comment->language][0]['nid']) : '';
+      if (empty($character)) {
+        $user = user_load($comment->uid);
+        $comment_by = $user->name;
+      }
+      else {
+       $comment_by = $character->title;
+      }
+      $comment_display = check_markup($comment->comment_body[$comment->language][0]['value'], $comment->comment_body[$comment->language][0]['format']);
+      if (!empty($comment->field_ooc[$comment->language][0]['value'])) {
+        $comment_ooc = check_markup($comment->field_ooc[$comment->language][0]['value'], $comment->field_ooc[$comment->language][0]['format']);
+        $comment_display .= 'OOC: ' . $comment_ooc;
       }
       // Get dice display.
       $dice_rolls = _dice_roller_get_roll($cid, 'c');
       $comment_display .= !empty($dice_rolls) ? theme('dice_roller_results', array('dice_rolls' => $dice_rolls)) : '';
-    }
-    // Add to rows.
-    $rows[] = array(
-      $comment_display,
-      array(
-      'data' => $scene_comment->results,
-      'nowrap' => array('nowrap'),
-      ),
-    );
-  }
-}
-
-/**
- * Implements hook_form_BASE_FORM_ID_alter().
- */
-function scene_record_form_node_form_alter(&$form, &$form_state, $form_id) {
-  $scene_type = variable_get('scene_record_scene_type', '');
-  if (!empty($scene_type) && !empty($form['#node']->type) && $scene_type == $form['#node']->type) {
-    // Collapsible interface.
-    $form['scene_record'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Scene Assistant'),
-      '#description' => t('Use this assistant to attach scene posts.'),
-      '#collapsible' => TRUE,
-    );
-    // Part one, add more comments.
-    $form['scene_record']['add_comments'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Add new posts'),
-      '#description' => t('Search for posts by room. Select the posts to save for this scene.'),
-      '#collapsible' => TRUE,
-    );
-    $form['scene_record']['add_comments']['search_room'] = array(
-      '#title' => t('Posts from room'),
-      '#type' => 'textfield',
-      '#autocomplete_path' => 'vaxia/scene_record/autocomplete/room',
-      '#ajax' => array(
-        'callback' => '_scene_record_ajax_load_room_comments',
-        'wrapper' => 'scene-record-add-comments-table',
-        'method' => 'replace',
-        'effect' => 'fade',
-      ),
-    );
-    $room = !empty($form_state['values']['search_room']) ? $form_state['values']['search_room'] : '';
-    $options = array();
-    if (!empty($room)) {
-      $room_nid = _scene_record_autocomplete_get_nid($room);
-      if ($room_nid != FALSE) {
-        $found_comments = _scene_record_get_comments_by_room($room_nid);
-        foreach ($found_comments as $found_comment) {
-          $comment = comment_load($found_comment->cid);
-          $comment_uri = comment_uri($comment);
-          // Get the full text.
-          $comment_text = '';
-          if (!empty($comment->comment_body[$comment->language][0]['value'])) {
-            $comment_text = check_markup($comment->comment_body[$comment->language][0]['value'], $comment->comment_body[$comment->language][0]['format']);
-          }
-          $comment_ooc = '';
-          if (!empty($comment->field_ooc[$comment->language][0]['value'])) {
-            $comment_ooc = check_markup($comment->field_ooc[$comment->language][0]['value'], $comment->field_ooc[$comment->language][0]['format']);
-          }
-          // Strip HTML - we can't use it in title overheads.
-          $comment_text = strip_tags($comment_text);
-          $comment_ooc = strip_tags($comment_ooc);
-          $comment_title = check_plain($comment_text);
-          if (!empty($comment_ooc)) {
-            $comment_title .= "\n" . 'OOC: ' . check_plain($comment_ooc);
-          }
-          // Put together.
-          $comment_display = '<a href="/' . $comment_uri['path'] . '#' . $comment_uri['options']['fragment'] . '" title="' . $comment_title . '">' .
-            check_plain($comment->subject) . '</a>';
-          // Get the rest.
-          $character = !empty($comment->field_comment_character[$comment->language][0]['nid']) ?
-            $comment->field_comment_character[$comment->language][0]['nid'] : '';
-          $character = node_load($character);
-          $character_name = !empty($character->title) ? $character->title : '';
-          $dice_rolls = _dice_roller_get_roll($found_comment->cid, 'c');
-          $dice_rolls = !empty($dice_rolls)
-            ? theme('dice_roller_results', array('dice_rolls' => $dice_rolls))
-            : t('No rolls found');
-          $options[$found_comment->cid] = array(
-            $comment_display,
-            check_plain($character_name),
-            check_plain($comment->name),
-            date('m/d/Y H:i:s', $comment->changed),
-          );
-        }
-      }
-    }
-    $form['scene_record']['add_comments']['add_comments_table'] = array(
-      '#prefix' => '<div id="scene-record-add-comments-table">',
-      '#suffix' => '</div>',
-      '#type' => 'tableselect',
-      '#header' => array(
-        t('Posts'),
-        t('Character'),
-        t('Player'),
-        t('Date'),
-      ),
-      '#options' => $options,
-      '#js_select' => FALSE,
-      '#multiple' => TRUE,
-      '#empty' => t('No posts found.'),
-    );
-    $form['scene_record']['add_comments']['add'] = array(
-      '#type' => 'button',
-      '#value' => t('Add Posts'),
-      '#limit_validation_errors' => array(array('add_comments_table'), array('included_comments_table')),
-      // DOUBLE ARRAY. Because drupal docs suck.
-      '#ajax' => array(
-        'callback' => '_scene_record_ajax_add_comments',
-        'wrapper' => 'scene-record-included-comments-table',
-        'method' => 'replace',
-        'effect' => 'fade',
-      ),
-    );
-    // Part two, included comment.
-    $form['scene_record']['included_comments'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Included posts'),
-      '#collapsible' => TRUE,
-    );
-    // Setup table format.
-    $form['scene_record']['included_comments']['included_comments_table'] = array(
-      '#prefix' => '<div id="scene-record-included-comments-table">',
-      '#suffix' => '</div>',
-      '#theme' => 'table',
-      '#header' => array(
-        t('Scene posts'),
-        t('Results'),
-        t('(X)'),
-      ),
-      '#rows' => array(),
-      '#attributes' => array('id' => 'scene_record_included_comments_table'),
-      '#empty' => t('No posts found.'),
-      '#tree' => TRUE, // So can be picked up later.
-    );
-    // Gather comments for display from various sources.
-    $found_comments = array();
-    // Check for comments still saved on the node.
-    if (!empty($form['#node']->nid)) {
-      $set_comments = _scene_record_get_comments($form['#node']->nid);
-      foreach ($set_comments as $set_comment) {
-        $found_comments[$set_comment->cid] = $set_comment;
-      }
-    }
-    // Gather comments existing under AJAX.
-    $exist_comments_table = !empty($form_state['values']['included_comments_table'])
-      ? $form_state['values']['included_comments_table'] : array();
-    foreach ($exist_comments_table as $existing_cid => $existing_comment) { 
-      // If marked add it.
-      if ($existing_comment['remove'] == 0) {
-        $this_comment = (object) $existing_comment;
-        $this_comment->cid = $existing_cid;
-        $found_comments[$existing_cid] = $this_comment;
-      }
-      if ($existing_comment['remove'] == 1) {
-        // Delete it as much as possible from the system.
-        unset($form_state['values']['included_comments_table'][$existing_cid]);
-        unset($found_comments[$existing_cid]);
-        if (!empty($form['#node']->nid)) {
-          _scene_record_delete_comment($form['#node']->nid, $existing_cid);
-        }
-      }
-    }
-    // Gather comments added via AJAX.
-    $add_comments_table = !empty($form_state['values']['add_comments_table']) ? $form_state['values']['add_comments_table'] : array();
-    // Reverse the order to match posting order.
-    $add_comments_table = array_reverse($add_comments_table, TRUE);
-    foreach ($add_comments_table as $add_comment => $added) {
-      // If marked, and not already in the list, add it.
-      if ($added && !in_array($add_comment, array_keys($found_comments))) {
-        $this_comment->cid = $add_comment;
-        $found_comments[$add_comment] = $this_comment;
-      }
-    }
-    // One last organization of all of these by cid.
-    ksort($found_comments);
-    // Calculate the results for the set
-    $found_comments = _scene_record_calculate_results($found_comments);
-    // Add the comments.
-    foreach ($found_comments as $cid => $scene_comment) {
-      $comment = comment_load($cid);
-      $comment_display = t('Unable to load comment - it has been deleted and may be in archive.');
-      if (is_object($comment) && !empty($comment->cid)) {
-        $comment_uri = comment_uri($comment);
-        // Get the full text.
-        $comment_text = '';
-        if (!empty($comment->comment_body[$comment->language][0]['value'])) {
-          $comment_text = check_markup($comment->comment_body[$comment->language][0]['value'], $comment->comment_body[$comment->language][0]['format']);
-        }
-        $comment_ooc = '';
-        if (!empty($comment->field_ooc[$comment->language][0]['value'])) {
-          $comment_ooc = check_markup($comment->field_ooc[$comment->language][0]['value'], $comment->field_ooc[$comment->language][0]['format']);
-        }
-          // Strip HTML - we can't use it in title overheads.
-          $comment_text = strip_tags($comment_text);
-          $comment_ooc = strip_tags($comment_ooc);
-          $comment_title = check_plain($comment_text);
-          if (!empty($comment_ooc)) {
-          $comment_title .= "\n" . 'OOC: ' . check_plain($comment_ooc);
-          }
-          // Put together.
-          $comment_display = '<a href="/' . $comment_uri['path'] . '#' . $comment_uri['options']['fragment'] . '" title="' . $comment_title . '">' .
-          check_plain($comment->subject) . '</a>';
-          // Add dice rolls if there are any.
-          $dice_rolls = _dice_roller_get_roll($cid, 'c');
-          $comment_display .= !empty($dice_rolls) ? theme('dice_roller_results', array('dice_rolls' => $dice_rolls)) : '';
-      }
-      // Set in form.
-      $comment_display = array(
-        '#type' => 'item',
-        '#markup' => $comment_display,
+      // Add to rows.
+      $rows[] = array(
+        $comment_display,
+        array(
+        'data' => $comment->results,
+        'nowrap' => array('nowrap'),
+        ),
       );
-      $results = array(
-        '#type' => 'item',
-        '#markup' => $scene_comment->results,
-      );
-      $remove = array(
-        '#type' => 'checkbox',
-        '#return_value' => 1,
-        '#default_value' => 0,
-      );
-      $form['scene_record']['included_comments']['included_comments_table'][$cid] = array(
-        'mights' => &$comment_display,
-        'remove' => &$remove,
-      );
-      $form['scene_record']['included_comments']['included_comments_table']['#rows'][] = array(
-        'class' => array('draggable'),
-        'data' => array(
-          array('data' => &$comment_display),
-          array('data' => &$results),
-          array('data' => &$remove),
-        )
-      );
-      unset($comment_display);
-      unset($results);
-      unset($remove);
-    }
-    // Add calculate button.
-    $form['scene_record']['included_comments']['recalculate'] = array(
-      '#type' => 'button',
-      '#value' => t('Calculate KXP'),
-      '#limit_validation_errors' => array(array('included_comments_table')),
-      // DOUBLE ARRAY. Because drupal docs suck.
-      '#ajax' => array(
-        'callback' => '_scene_record_ajax_add_comments',
-        'wrapper' => 'scene-record-included-comments-table',
-        'method' => 'replace',
-        'effect' => 'fade',
-      ),
-    );
-    // Hide the field creation history elements. We don't want users meddling with those.
-    $form['field_scene']['#access'] = FALSE;
-  }
-}
-
-/**
- * AJAX function, callback for load comments after room selected.
- */
-function _scene_record_ajax_load_room_comments($form, $form_state) {
-  return $form['scene_record']['add_comments']['add_comments_table'];
-}
-
-/**
- * AJAX function, callback for load comments after room selected.
- */
-function _scene_record_ajax_add_comments($form, $form_state) {
-  return !empty($form['scene_record']['included_comments']['included_comments_table']) ?
-    $form['scene_record']['included_comments']['included_comments_table'] : '';
-}
-
-/**
- * Autocomplete function, callback for room look up.
- */
-function _scene_record_autocomplete_room($string = '') {
-  $matches = array();
-  $room_type = variable_get('scene_record_room_type', '');
-  if (!empty($string) && !empty($room_type)) {
-    $results = db_query('SELECT n.nid, n.title FROM {node} n ' .
-      'WHERE n.type LIKE :type ' .
-      'AND n.title LIKE :title',
-      array(':type' => $room_type, ':title' => '%' . $string . '%'));
-    foreach ($results as $result) {
-      $label = $result->title . ' [nid:' . $result->nid . ']';
-      $matches[ check_plain($label) ] = check_plain($label);
     }
   }
-  drupal_json_output($matches);
-}
-
-/**
- * Implementation of admin settings form.
- */
-function _scene_record_admin_settings($form, &$form_state) {
-  // Setting for workflow to drop the NPCs into on being claimed.
-  $content_types = node_type_get_types();
-  $types = array();
-  foreach ($content_types as $type_id => $content_type) {
-    $types[$type_id] = $content_type->name;
-  }
-  $form['scene_record_scene_type'] = array(
-    '#title' => t('Scene content type'),
-    '#description' => t('Content type for scenes.'),
-    '#type' => 'select',
-    '#options' => $types,
-    '#default_value' => variable_get('scene_record_scene_type', ''),
-  );
-  $form['scene_record_room_type'] = array(
-    '#title' => t('Room content type'),
-    '#description' => t('Content type for rooms.'),
-    '#type' => 'select',
-    '#options' => $types,
-    '#default_value' => variable_get('scene_record_room_type', ''),
-  );
-  $form['scene_record_num_posts'] = array(
-    '#title' => t('Number of posts'),
-    '#description' => t('Number of posts to display in interface.'),
-    '#type' => 'textfield',
-    '#default_value' => variable_get('scene_record_num_posts', 50),
-  );
-  return system_settings_form($form);
+  // Return the rows.
+  return $rows;
 }
 
 /**
  * Helper function, given a set of partial or full comments, calculate results.
  */
-function _scene_record_calculate_results($found_comments) {
-  $total_kxp = 0;
-  $character_kxp = array();
+function _scene_record_calculate_results($comments, $goal) {
+  // Loop over all comments for values.
   $kxp_ratio = variable_get('vaxia_kxp_ratio', 70);
-  foreach ($found_comments as $cid => $scene_comment) {
-    $message_items = array();
+  foreach ($comments as $cid => $comment) {
     // Set defaults if not already set.
-    $comment = comment_load($cid);
     if (is_object($comment) && !empty($comment->cid)) {
-      $kxp = _vaxia_figure_kxp($comment->comment_body[$comment->language][0]['value']);
-      $total_kxp = $total_kxp + $kxp;
-      // Figure out how much overall XP for this scene.
-      $total_xp = 0;
-      if ($total_kxp >= $kxp_ratio) {
-        $total_xp = floor($total_kxp / $kxp_ratio);
+      // Set defaults if not already set.
+      $comment->roll_type = isset($comment->roll_type) ? $comment->roll_type : 'gen_pp';
+      $comment->set_bonus = isset($comment->set_bonus) ? $comment->set_bonus : 0;
+      $comment->difficulty = isset($comment->difficulty) ? $comment->difficulty : 40;
+      // Get message.
+      $message_items = array(
+        '_all' => _scene_record_calculate_results_all($comment, $context),
+        'item' => _scene_record_calculate_results_item($comment, $context),
+        'silver' => _scene_record_calculate_results_silver($comment, $context),
+        'fame' => _scene_record_calculate_results_fame($comment, $context),
+      );
+      
+    }
+    // Display.
+    $comment->results = theme('item_list', array('items' => $message_items['_all']));
+    if (!empty($message_items[$goal])) {
+      $comment->results .= theme('item_list', array('items' => $message_items[$goal]));
+    }
+  }
+  return $comments;
+}
+
+function _scene_record_calculate_results_all(&$comment, &$context) {
+  // Set defaults.
+  $context['total_kxp'] = !empty($context['total_kxp']) ? $context['total_kxp'] : 0;
+  $context['character_kxp'] = !empty($context['character_kxp']) ? $context['character_kxp'] : array();
+  // Get message info.
+  $kxp = _vaxia_figure_kxp($comment->comment_body[$comment->language][0]['value']);
+  $context['total_kxp'] = $context['total_kxp'] + $kxp;
+  // Figure out how much overall XP for this scene.
+  $total_xp = 0;
+  if ($context['total_kxp'] >= $kxp_ratio) {
+    $total_xp = floor($context['total_kxp'] / $kxp_ratio);
+  }
+  $character = !empty($comment->field_comment_character[$comment->language][0]['nid']) ?
+    node_load($comment->field_comment_character[$comment->language][0]['nid']) : '';
+  if (!empty($character)) {
+    $context['character_kxp'][$character->title] = isset($context['character_kxp'][$character->title]) ?
+      $context['character_kxp'][$character->title] + $kxp : $kxp;
+  }
+  // Set the overall post results.
+  $message_items[] = t('KXP: :kxp', array(':kxp' => $kxp));
+  $message_items[] = t('Total KXP: :total_kxp', array(':total_kxp' => $context['total_kxp']));
+  $message_items[] = t('Total XP: :total_xp', array(':total_xp' => $total_xp));
+  // Set the results per character.
+  foreach ($context['character_kxp'] as $name => $total_char_kxp) {
+    // Figure out how much overall XP for this scene.
+    $total_xp = 0;
+    if ($total_char_kxp >= $kxp_ratio) {
+      $total_xp = floor($total_char_kxp / $kxp_ratio);
+    }
+    $message_items[] = t('Total :name KXP: :total_char_kxp', array(':name' => $name, ':total_char_kxp' => $total_char_kxp));
+    $message_items[] = t('Total :name XP: :total_xp', array(':name' => $name, ':total_xp' => $total_xp));
+  }
+  return $message_items;
+}
+
+function _scene_record_calculate_results_item(&$comment, &$context) {
+  // Set defaults.
+  $context['points_built'] = !empty($context['points_built']) ? $context['points_built'] : 0;
+  $context['critwin'] = !empty($context['critwin']) ? $context['critwin'] : 0;
+  $context['critfail'] = !empty($context['critfail']) ? $context['critfail'] : 0;
+  $context['ongoing_100'] = !empty($context['ongoing_100']) ? $context['ongoing_100'] : 0;
+  $context['ongoing_1'] = !empty($context['ongoing_1']) ? $context['ongoing_1'] : 0;
+  $context['ongoing_prep_bonus'] = !empty($context['ongoing_prep_bonus']) ? $context['ongoing_prep_bonus'] : 0;
+  $context['ongoing_prep_diff'] = !empty($context['ongoing_prep_diff']) ? $context['ongoing_prep_diff'] : 0;
+  // Get the info.
+  $diff_txt = t('Difficulty @difficulty.', array('@difficulty' => $comment->difficulty));
+  $comment->rp_bonus = isset($comment->rp_bonus) ? $comment->rp_bonus : 10;
+  $rp_bonus = isset($comment->rp_bonus) ? $comment->rp_bonus : 10;
+  // Grab rolls and start calculations.
+  $dice_rolls = _dice_roller_get_roll($comment->cid, 'c');
+  if (!empty($dice_rolls)) {
+    $set_bonus_txt = '';
+    $no_roll_txt = '';
+    if (!empty($comment->set_bonus)) {
+      $context['ongoing_prep_bonus'] += $comment->set_bonus;
+      $set_bonus_txt = t('Add @set_bonus flat circumstance bonus.', array('@set_bonus' => $comment->set_bonus));
+    }
+    $mights = array();
+    $rolls = array();
+    foreach ($dice_rolls as $index => $dice_roll) {
+      $results = explode(',', $dice_rolls[$index]['roll_result']);
+      $might = array_pop($results);
+      $might = explode('=', $might);
+      $mights[] = isset($might[0]) ? trim($might[0]) : 0;
+      $rolls[] = isset($results[0]) ? trim($results[0]) : 0;
+    }
+    $roll_ruling = array();
+    if (count($mights) == 1) {
+      $roll_ruling = _dice_ruler_make_ruling(
+        $mights[0] + $rp_bonus + $context['ongoing_prep_bonus'],
+        $comment->difficulty - $context['ongoing_prep_diff'],
+        0,
+        $rolls[0]
+      );
+      if ($rolls[0] == 1) {
+        $context['ongoing_1']++;
       }
-      $character = !empty($comment->field_comment_character[$comment->language][0]['nid']) ?
-        node_load($comment->field_comment_character[$comment->language][0]['nid']) : '';
-      if (!empty($character)) {
-        $character_kxp[$character->title] = isset($character_kxp[$character->title])
-        ? $character_kxp[$character->title] + $kxp : $kxp;
+      if ($rolls[0] == 100) {
+        $context['ongoing_100']++;
       }
-      // Set the overall post results.
-      $message_items[] = t('KXP: :kxp', array(':kxp' => $kxp));
-      $message_items[] = t('Total KXP: :total_kxp', array(':total_kxp' => $total_kxp));
-      $message_items[] = t('Total XP: :total_xp', array(':total_xp' => $total_xp));
-      // Set the results per character.
-      foreach ($character_kxp as $name => $total_char_kxp) {
-        // Figure out how much overall XP for this scene.
-        $total_xp = 0;
-        if ($total_char_kxp >= $kxp_ratio) {
-        $total_xp = floor($total_char_kxp / $kxp_ratio);
+    }
+    if (count($mights) > 1) {
+      $roll_ruling = _dice_ruler_make_two_trait_ruling(
+        $mights[0] + $rp_bonus + $context['ongoing_prep_bonus'],
+        $comment->difficulty - $context['ongoing_prep_diff'],
+        0,
+        $rolls[0],
+        $mights[1] + $rp_bonus + $context['ongoing_prep_bonus'],
+        $comment->difficulty - $context['ongoing_prep_diff'],
+        0,
+        $rolls[1]
+      );
+      if ($rolls[0] == 1) {
+        $context['ongoing_1']++;
+      }
+      if ($rolls[0] == 100) {
+        $context['ongoing_100']++;
+      }
+      if ($rolls[1] == 1) {
+        $context['ongoing_1']++;
+      }
+      if ($rolls[1] == 100) {
+        $context['ongoing_100']++;
+      }
+    }
+    if (!empty($roll_ruling)) {
+      $winsby_generated = $roll_ruling[6];
+      $PP_generated = $roll_ruling[7];
+      if ($winsby_generated < 0 && $comment->roll_type == 'gen_pp') { // If just gen_add, then add.
+        $lost_PP = floor( $context['points_built'] * (($winsby_generated * -1) / 100) );
+        $roll_txt = t('Roll lost ' . number_format($lost_PP, 2) . 'PP, ' . number_format($winsby_generated, 2) . ' winsby.');
+        $context['points_built'] -= $lost_PP;
+        if ($winsby_generated <= -25) {
+          $context['critfail']++;
         }
-        $message_items[] = t('Total :name KXP: :total_char_kxp', array(':name' => $name, ':total_char_kxp' => $total_char_kxp));
-        $message_items[] = t('Total :name XP: :total_xp', array(':name' => $name, ':total_xp' => $total_xp));
+      }
+      if ($winsby_generated >= 0 && $comment->roll_type == 'gen_pp') { // If just gen_add, then add.
+        $roll_txt = t('Roll generated ' . number_format($PP_generated, 2) . ' PP, ' . number_format($winsby_generated, 2) . ' winsby.');
+        $context['points_built'] += $PP_generated;
+        if ($winsby_generated >= 25) {
+          $context['critwin']++;
+        }
+      }
+      if ($comment->roll_type == 'prep_diff') { // If prep_diff, divide, add.
+        $roll_txt = t('Roll did not change diff for future rolls.');
+        $new_prep_diff += floor($PP_generated / 7);
+        if ($new_prep_diff > $context['ongoing_prep_diff']) {
+          $roll_txt = t('Roll reduces diff for future rolls.');
+          $context['ongoing_prep_diff'] = $new_prep_diff; // Only apply if the bonus is greater.
+        }
+      }
+      if ($comment->roll_type == 'prep_bon') { // If prep_bonus, divide, add.
+        $roll_txt = t('Roll did not add bonus for future rolls.');
+        $new_prep_bonus += floor($PP_generated / 7);
+        if ($new_prep_bonus > $context['ongoing_prep_bonus']) {
+          $roll_txt = t('Roll added bonus for future rolls.');
+          $context['ongoing_prep_bonus'] = $new_prep_bonus; // Only apply if the bonus is greater.
+        }
+      }
+      if ($comment->roll_type == 'no_calcs') { // If just set_bonus, then add.
+        $roll_txt = t('No roll on this post.');
       }
     }
-    $message = theme('item_list', array('items' => $message_items));
-    $scene_comment->results = $message;
-  }
-  return $found_comments;
-}
-
-/**
- * Helper function, given a string retrieve any nid in the format [nid:XXX].
- * Or look for the node by title.
- */
-function _scene_record_autocomplete_get_nid($room_selected) {
-  $result = preg_match('/\[nid:([0-9]+)\]$/', $room_selected, $matches);
-  if ($result > 0) {
-    $nid = $matches[$result];
-    $node = node_load($nid);
-    if (empty($node)) {
-      $nodes = node_load_multiple(array(), array('title' => $room_selected));
-      foreach ($nodes as $nid => $this_node) {
-        $node = $this_node;
-      }
+    $might_1 = empty($mights[0]) ? '' : $mights[0];
+    $might_2 = empty($mights[1]) ? '' : '/ ' . $mights[1];
+    $break_1 = empty($set_bonus_txt) ? '' : '</br>';
+    $break_2 = empty($roll_txt) ? '' : '</br>';
+    $critwin_text = $context['critwin'];
+    if ($context['critwin'] == 0) {
+      $critwin_text = 'no';
     }
-    $room_type = variable_get('scene_record_room_type', '');
-    if (!empty($node) && $node->type == $room_type && $node->status == 1) {
-      return $node->nid;
+    $critfail_text = $context['critfail'];
+    if ($context['critfail'] == 0) {
+      $critfail_text = 'no';
+    }
+    $ongoing_100_text = $context['ongoing_100'];
+    if ($context['ongoing_100'] == 0) {
+      $ongoing_100_text = 'no';
+    }
+    $ongoing_1_text = $context['ongoing_1'];
+    if ($context['ongoing_1'] == 0) {
+      $ongoing_1_text = 'no';
+    }
+    // Set item values.
+    if ($comment->difficulty != 25) {
+      $pp_needed_per_point = (1 + (($comment->difficulty - 40) / 10) ) * 25;
+      $points_built_max = (1 + (($comment->difficulty - 40) / 10) ) * 5;
+      $points_built_primary = floor($context['points_built'] / $pp_needed_per_point);
+      $points_built_secondary = floor($context['points_built'] / ($pp_needed_per_point * 1.5));
+      $points_built_skills= floor($context['points_built'] / ($pp_needed_per_point * 0.75));
+    }
+    // Figure out comment display.
+    $message_items[] = t('%roll_txt' . $break_2, array('%roll_txt' => $roll_txt));
+    $message_items[] = t('@diff_text', array('@diff_text' => $diff_txt));
+    $message_items[] = t('Mights @might1 @might2',
+      array('@might1' => !empty($might_1) ? $might_1 : 0, '@might2' => !empty($might_2) ? $might_2 : 0));
+    $message_items[] = t('@set_bonus_txt' . $break_1 . '@rp RP bonus',
+      array('@set_bonus_txt' => $set_bonus_txt, '@rp' => $rp_bonus));
+    $message_items[] = t('@prep Prep bonus / @diff Diff mod',
+      array('@prep' => $context['ongoing_prep_bonus'], '@diff' => $context['ongoing_prep_diff'] * -1));
+    $message_items[] = t('<b><span style="color:green;">@critwin crit wins-by</span> / <span style="color:red;">@critfail crit fails-by</span></b>',
+      array('@critwin' => $critwin_text, '@critfail' => $critfail_text));
+    $message_items[] = t('<b>@PP PP / <span style="color:green;">@100 100s</span> / <span style="color:red;">@1 1s</span></b>',
+      array('@PP' => number_format($context['points_built']),'@100' => $ongoing_100_text, '@1' => $ongoing_1_text));
+    // More messages.
+    if ($comment->difficulty != 25) {
+      $message_items[] = '<b>Bonus points for primary stats: ' . $points_built_primary . '</b>';
+      $message_items[] = '<b>Bonus points for secondary stats: ' . $points_built_secondary . '</b>';
+      $message_items[] = '<b>Bonus points for skills: ' . $points_built_skills . '</b>';
+      $message_items[] = '<b>Max points at this difficulty: ' . $points_built_max . '</b>';
+      $message_items[] = '<b>PP effect: ' . number_format($context['points_built'], 2) . '</b>';
+    }
+    else {
+      $message_items[] = '<b>PP generated for enchanting one time use: ' . number_format($context['points_built'], 2) . '</b>';
+      $message_items[] = '<b>PP generated for enchanting 3 uses: ' . floor($context['points_built'] / 3) . '</b>';
+      $message_items[] = '<b>PP generated for enchanting once a day: ' . floor($context['points_built'] / 50) . '</b>';
+      $message_items[] = '<b>PP generated for enchanting at will: ' . floor($context['points_built'] / 150) . '</b>';
     }
   }
-  return FALSE;
-}
-
-/**
- * DB function, get comments per room.
- */
-function _scene_record_get_comments_by_room($nid) {
-  $post_limit = variable_get('scene_record_num_posts', 50);
-  $results = db_query('SELECT * FROM {comment} ' .
-    'WHERE nid = :nid ' .
-    'ORDER BY created DESC LIMIT 0, ' . $post_limit,
-    array(':nid' => $nid))->fetchAll();
-  return $results;
-}
-
-/**
- * DB function, get comments by nid.
- */
-function _scene_record_get_comments($nid) {
-  $results = db_query('SELECT * FROM {scene_record_comments} ' .
-    'WHERE nid = :nid ' .
-    'ORDER BY cid ASC',
-    array(':nid' => $nid))->fetchAll();
-  return $results;
-}
-
-/**
- * DB function, delete comment by nid.
- */
-function _scene_record_delete_comments($nid) {
-  db_query('DELETE FROM {scene_record_comments} ' .
-    'WHERE nid = :nid',
-    array(':nid' => $nid));
-}
-
-/**
- * CRUD function, get comment by nid, cid.
- */
-function _scene_record_get_comment($nid, $cid) {
-  $results = db_query('SELECT * FROM {scene_record_comments} ' .
-    'WHERE nid = :nid AND cid = :cid',
-    array(':nid' => $nid, ':cid' => $cid))->fetchAll();
-  return $results;
-}
-
-/**
- * CRUD function, get comments by nid.
- */
-function _scene_record_insert_comment($data) {
-  $data = (array) $data;
-  $result = _scene_record_get_comment($data['nid'], $data['cid']);
-  if (!empty($result)) {
-    _scene_record_update_comment($data);
+  else {
+    $roll_txt = t('No roll on this post.');
+    // Figure out comment display.
+    $message_items[] = t('%roll_txt' . $break_2, array('%roll_txt' => $roll_txt));
   }
-  drupal_write_record('scene_record_comments', $data);
+  return $message_items;
 }
 
-/**
- * CRUD function, get comments by nid.
- */
-function _scene_record_update_comment($data) {
-  $data = (array) $data;
-  $result = _scene_record_get_comment($data['nid'], $data['cid']);
-  if (empty($result)) {
-    _scene_record_insert_comment($data);
+function _scene_record_calculate_results_silver(&$comment, &$context) {
+  // Set defaults.
+  $context['points_built'] = !empty($context['points_built']) ? $context['points_built'] : 0;
+  // Set silver XP amount.
+  $message_items[] = '<b>Up to ' . number_format($context['points_built'], 2) . ' silver.</b>';
+  return $message_items;
+}
+
+function _scene_record_calculate_results_fame(&$comment, &$context) {
+  // Set defaults.
+  $context['posts'] = !empty($context['posts']) ? $context['posts'] : 0;
+  if (strlen($comment->comment_body[$comment->language][0]['value']) > 100) {
+    $context['posts']++;
   }
-  drupal_write_record('scene_record_comments', $data, array('nid', 'cid'));
-}
-
-/**
- * CRUD function, get comment by nid, cid.
- */
-function _scene_record_delete_comment($nid, $cid) {
-  db_query('DELETE FROM {scene_record_comments} ' .
-    'WHERE nid = :nid AND cid = :cid',
-    array(':nid' => $nid, ':cid' => $cid));
+  // Set silver XP amount.
+  $message_items[] = '<b>Up to ' . floor($context['posts'] / 2) . ' reputation.</b>';
+  return $message_items;
 }

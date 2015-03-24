@@ -92,6 +92,12 @@ function scene_record_strongarm() {
       'token' => array(
         'custom_settings' => FALSE,
       ),
+      'question' => array(
+        'custom_settings' => TRUE,
+      ),
+      'print' => array(
+        'custom_settings' => FALSE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(
@@ -99,16 +105,16 @@ function scene_record_strongarm() {
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '3',
+          'weight' => '4',
         ),
         'locations' => array(
-          'weight' => '2',
+          'weight' => '3',
         ),
         'workflow' => array(
-          'weight' => '8',
+          'weight' => '10',
         ),
         'badges' => array(
-          'weight' => '1',
+          'weight' => '2',
         ),
       ),
       'display' => array(
@@ -120,7 +126,7 @@ function scene_record_strongarm() {
         ),
         'workflow' => array(
           'default' => array(
-            'weight' => '5',
+            'weight' => '7',
             'visible' => TRUE,
           ),
         ),
