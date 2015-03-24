@@ -1,6 +1,0 @@
-name = Item helper
-description = Inline assist for creating items aimed for player creators
-package = Vaxia
-core = 7.x
-dependencies[] = dice_ruler
-version = 7.x-1.0

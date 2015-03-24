@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the Vaxia scene feature.
- */
-
-include_once 'vaxia_scene.features.inc';
