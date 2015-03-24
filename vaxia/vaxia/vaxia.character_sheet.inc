@@ -123,6 +123,7 @@ function vaxia_character_sheet_field_info() {
       ),
     ),
     //field_age_real
+    //field_birthday
     //field_age_app
     'field_life' => array(
       'permissions' => array(
@@ -286,6 +287,12 @@ function vaxia_character_sheet_field_info() {
     'field_skill_review' => array(
       'permissions' => array(
         'owner' => DISABLE_SHEET,
+      ),
+    ),
+    'field_personal_room'  => array(
+      'permissions' => array(
+        'owner' => DISABLE_SHEET, // Disabled for all, we're a rule to handle this.
+        'other' => DISABLE_SHEET, // So we don't want this value getting meddled with.
       ),
     ),
   );
