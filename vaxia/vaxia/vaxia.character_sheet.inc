@@ -23,11 +23,443 @@ function vaxia_character_sheet_register_systems() {
   );
   return $system;
 }
- 
+
+function _vaxia_helper_form_table($headers, $rows) {
+  $element = array(
+    '#theme' => 'table',
+    '#header' => $headers,
+    '#rows' => array(),
+    '#tree' => TRUE, // So can be picked up later.
+  );
+  foreach ($rows as $row_id => $row) {
+    // Add the field to the data rows.
+    $data_row = array(
+      'class' => array('draggable'),
+      'data' => array(),
+    );
+    // Add the field to the data rows.
+    foreach ($row as $field_id => $field) {
+      // Add to form structure.
+      $this_field = $field;
+      $element[$row_id][$field_id] = &$this_field;
+      // Add to table row display.
+      $data_row['data'][] = array('data' => &$this_field);
+      unset($this_field);
+    }
+    $element['#rows'][] = $data_row;
+  }
+  return $element;
+}
+
+/**
+ * Callback for admin settings page for character sheets.
+ */
+function _vaxia_admin_settings() {
+  $form['fields'] = array(
+    '#title' => 'Field settings',
+    '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  $permissions = array(
+    '' => t('No limits'),
+    DISABLE_SHEET => t('Disable edit'),
+    LIMIT_SHEET => t('Limited edit'),
+  );
+  $headers = array(
+    t('Field'),
+    t('Player permissions'),
+    t('Storyhost permissions'),
+    t('Can xp be spent?'),
+    t('XP cost ratio'),
+  );
+  $defaults = array(
+    'field_is_npc' => array(
+        'owner' => DISABLE_SHEET,
+    ),
+    'field_is_open_npc' => array(
+        'owner' => DISABLE_SHEET,
+    ),
+    'field_is_storyteller' => array(
+        'owner' => DISABLE_SHEET,
+    ),
+    'field_sh_public_information' => array(
+        'owner' => DISABLE_SHEET,
+    ),
+    'field_realm' => array(
+        'owner' => DISABLE_SHEET,
+    ),
+    'field_race' => array(
+        'owner' => DISABLE_SHEET,
+    ),
+    'field_life' => array(
+        'owner' => LIMIT_SHEET,
+        'has_cost' => 1,
+        'cost' => variable_get('vaxia_attribute_cost', 1),
+    ),
+    'field_endurance' => array(
+        'owner' => LIMIT_SHEET,
+        'has_cost' => 1,
+        'cost' => variable_get('vaxia_attribute_cost', 1),
+    ),
+    'field_strength' => array(
+        'owner' => LIMIT_SHEET,
+        'has_cost' => 1,
+        'cost' => variable_get('vaxia_attribute_cost', 1),
+    ),
+    'field_dexterity' => array(
+        'owner' => LIMIT_SHEET,
+        'has_cost' => 1,
+        'cost' => variable_get('vaxia_attribute_cost', 1),
+    ),
+    'field_intelligence' => array(
+        'owner' => LIMIT_SHEET,
+        'has_cost' => 1,
+        'cost' => variable_get('vaxia_attribute_cost', 1),
+    ),
+    'field_spirituality' => array(
+        'owner' => LIMIT_SHEET,
+        'has_cost' => 1,
+        'cost' => variable_get('vaxia_attribute_cost', 1),
+    ),
+    'field_charisma' => array(
+        'owner' => LIMIT_SHEET,
+        'has_cost' => 1,
+        'cost' => variable_get('vaxia_attribute_cost', 1),
+    ),
+    'field_skill_value' => array(
+        'owner' => LIMIT_SHEET,
+        'has_cost' => 1,
+        'cost' => variable_get('vaxia_skill_cost', 0.75),
+    ),
+    'field_skill_name' => array(
+        'owner' => DISABLE_SHEET,
+    ),
+    'field_skill_desc' => array(
+        'owner' => DISABLE_SHEET,
+    ),
+    'field_economy' => array(
+        'owner' => DISABLE_SHEET,
+    ),
+    'field_items' => array(
+        'owner' => DISABLE_SHEET, // Disabled for all, we're using the CNR module to handle this.
+        'other' => DISABLE_SHEET, // So we don't want this value getting meddled with.
+    ),
+    'field_languages' => array(
+        'owner' => DISABLE_SHEET,
+    ),
+    'field_property' => array(
+        'owner' => DISABLE_SHEET,
+    ),
+    'field_npcs' => array(
+        'owner' => DISABLE_SHEET,
+    ),
+    'field_achivements' => array(
+        'owner' => DISABLE_SHEET,
+    ),
+    'field_sh_notes' => array(
+        'owner' => DISABLE_SHEET,
+    ),
+    'field_sh_private_notes' => array(
+        'owner' => DISABLE_SHEET,
+    ),
+    'field_needs_work' => array(
+        'owner' => DISABLE_SHEET,
+    ),
+    'field_skill_review' => array(
+        'owner' => DISABLE_SHEET,
+    ),
+    'field_personal_room'  => array(
+        'owner' => DISABLE_SHEET, // Disabled for all, we're a rule to handle this.
+        'other' => DISABLE_SHEET, // So we don't want this value getting meddled with.
+    ),
+  );
+
+  $rows = array();
+  // This is divided by field type for a REASON.
+  // Variables can't hold huge huge amounts of data, so we split it
+  // for each given type of character sheet.
+  $default_values = variable_get('vaxia_field_settings', array());
+  foreach (field_info_instances() as $bundle) {
+    foreach ($bundle as $field_name => $field) {
+      $rows[$field_name] = array(
+        'field' => array(
+          '#type' => 'item',
+          '#markup' => $field_name,
+        ),
+        'owner' => array(
+          '#type' => 'select',
+          '#options' => $permissions,
+          '#default_value' => isset($default_values[$field_name]['owner']) ? $default_values[$field_name]['owner'] : $defaults[$field_name]['owner'],
+        ),
+        'other' => array(
+          '#type' => 'select',
+          '#options' => $permissions,
+          '#default_value' => isset($default_values[$field_name]['other']) ? $default_values[$field_name]['other'] : $defaults[$field_name]['other'],
+        ),
+        'has_cost' => array(
+          '#type' => 'checkbox',
+          '#return_value' => 1,
+          '#default_value' => isset($default_values[$field_name]['has_cost']) ? $default_values[$field_name]['has_cost'] : $defaults[$field_name]['has_cost'],
+        ),
+        'cost' => array(
+          '#type' => 'textfield',
+          '#default_value' => isset($default_values[$field_name]['cost']) ? $default_values[$field_name]['cost'] : $defaults[$field_name]['cost'],
+        ),
+      );
+    }
+  }
+  $form['fields']['vaxia_field_settings'] = _vaxia_helper_form_table($headers, $rows);
+
+  drupal_set_message(print_r(vaxia_character_sheet_field_info(),1));
+  drupal_set_message(print_r($defaults,1));
+  
+  $form['settings'] = array(
+    '#title' => 'Settings',
+    '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  $form['settings']['vaxia_starting_points'] = array(
+    '#title' => 'Starting points',
+    '#description' => 'The starting points for a new character.',
+    '#type' => 'textfield',
+    '#default_value' => variable_get('vaxia_starting_points', 300),
+  );
+  $form['settings']['vaxia_starting_econ'] = array(
+    '#title' => 'Starting Economy level',
+    '#description' => 'The starting Economy level for a new character.',
+    '#type' => 'textfield',
+    '#default_value' => variable_get('vaxia_starting_econ', 25),
+  );
+  $form['settings']['vaxia_kxp_ratio'] = array(
+    '#title' => 'KXP to XP ratio',
+    '#description' => 'The ratio of kxp to xp.',
+    '#type' => 'textfield',
+    '#default_value' => variable_get('vaxia_kxp_ratio', 70),
+  );
+  $form['settings']['vaxia_max_kxp_post'] = array(
+    '#title' => 'Max KXP per post',
+    '#description' => 'The maximum amount of kxp to be awarded per post.',
+    '#type' => 'textfield',
+    '#default_value' => variable_get('vaxia_max_kxp_post', 10),
+  );
+  $form['settings']['vaxia_xp_types'] = array(
+    '#title' => 'XP types',
+    '#description' => t('Available XP sub-types. The following types used by the system and will ' .
+      'be ignored if added here: @types',
+      array('@types' => implode(', ' , _vaxia_meaningful_xp_types()))),
+    '#type' => 'textarea',
+    '#default_value' => variable_get('vaxia_xp_types',
+      "good\nevil\nsmart\ncharismatic\nwarrior\nmage\nrogue"),
+  );
+  $rooms = _rpg_chat_get_rooms();
+  $options = array();
+  foreach ($rooms as $room) {
+    $options[$room->nid] = $room->title;
+  }
+  $form['settings']['vaxia_limbo_room'] = array(
+    '#title' => 'Limbo room',
+    '#description' => t('In this room, posts made do not gain XP.'),
+    '#type' => 'select',
+    '#options' => $options,
+    '#multiple' => TRUE,
+    '#size' => 15,
+    '#default_value' => variable_get('vaxia_limbo_room', array()),
+  );
+  $form['settings']['vaxia_display_dice'] = array(
+    '#title' => 'Dice rows to show',
+    '#description' => 'The number of dicerows to show in dice interface.',
+    '#type' => 'textfield',
+    '#default_value' => variable_get('vaxia_display_dice', 6),
+  );
+  $form['settings']['vaxia_dice_roller_stacking'] = array(
+    '#title' => 'Allow items to stack for dice rolling.',
+    '#type' => 'checkbox',
+    '#default_value' => variable_get('vaxia_dice_roller_stacking', TRUE),
+  );
+  $form['settings']['vaxia_public_char_fields'] = array(
+    '#title' => 'Publicly visible character fields.',
+    '#type' => 'textarea',
+    '#default_value' => variable_get('vaxia_public_char_fields', ''),
+  );
+  $form['point_cost'] = array(
+    '#title' => 'Point costs',
+    '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  $form['point_cost']['vaxia_attribute_cost'] = array(
+    '#title' => 'Attribute cost multiplier',
+    '#description' => 'Attribute cost is calculated as (current/10) * multiplier.',
+    '#type' => 'textfield',
+    '#default_value' => variable_get('vaxia_attribute_cost', 1),
+  );
+  $form['point_cost']['vaxia_skill_cost'] = array(
+    '#title' => 'Skill cost multiplier',
+    '#description' => 'Skill cost is calculated as (current/10) * multiplier.',
+    '#type' => 'textfield',
+    '#default_value' => variable_get('vaxia_skill_cost', 0.75),
+  );
+  $form['point_cost']['vaxia_economy_cost'] = array(
+    '#title' => 'Economy cost',
+    '#description' => 'Economy cost is calculated as (current/10) * multiplier.',
+    '#type' => 'textfield',
+    '#default_value' => variable_get('vaxia_economy_cost', 1),
+  );
+  $form['point_cost']['vaxia_transfer_percentage'] = array(
+    '#title' => 'Percent of XP',
+    '#description' => 'Percent of XP when transferred that goes to XP.',
+    '#type' => 'textfield',
+    '#default_value' => variable_get('vaxia_transfer_percentage', 0.75),
+  );
+  $form['point_cost']['vaxia_transfer_cap_on'] = array(
+    '#title' => 'Cap XP to be transferred?',
+    '#type' => 'checkbox',
+    '#default_value' => variable_get('vaxia_transfer_cap_on', TRUE),
+  );
+  $form['point_cost']['vaxia_transfer_cap'] = array(
+    '#title' => 'Cap of XP',
+    '#description' => 'Amount of total XP that can be transferred, anything more is lost.',
+    '#type' => 'textfield',
+    '#default_value' => variable_get('vaxia_transfer_cap', 300),
+  );
+  $form['workflows'] = array(
+    '#title' => 'Workflow states',
+    '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  $workflow_options = array();
+  $workflows = workflow_get_workflows();
+  foreach ($workflows as $workflow) {
+    $states = workflow_get_workflow_states_by_wid($workflow->wid);
+    foreach ($states as $state) {
+      $workflow_options[$state->sid] = $workflow->name . ':' . $state->state;
+    }
+  }
+  $form['workflows']['vaxia_transfer_workflow'] = array(
+    '#title' => 'Transfer workflow',
+    '#description' => 'Workflow state characters who are transferred from end up in.',
+    '#type' => 'select',
+    '#options' => $workflow_options,
+    '#default_value' => variable_get('vaxia_transfer_workflow', ''),
+  );
+  $form['workflows']['vaxia_draft_workflow'] = array(
+    '#title' => 'Draft workflow',
+    '#description' => 'Workflow state for characters in creation.',
+    '#type' => 'select',
+    '#options' => $workflow_options,
+    '#default_value' => variable_get('vaxia_draft_workflow', ''),
+  );
+  $form['char_rules'] = array(
+    '#title' => 'Character creation rules',
+    '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  $form['char_rules']['info'] = array(
+    '#title' => 'Character creation limits',
+    '#type' => 'item',
+    '#markup' => t('These settings control the allowed min and max values on character creation.'),
+  );
+  $form['char_rules']['warn'] = array(
+    '#title' => 'Warn creation',
+    '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  $form['char_rules']['warn']['vaxia_pc_skill_warn'] = array(
+    '#title' => 'Skill min warn',
+    '#description' => 'Warning on min skill value for a PC.',
+    '#type' => 'textfield',
+    '#default_value' =>  variable_get('vaxia_pc_skill_warn', 10),
+  );
+  $form['char_rules']['warn']['vaxia_pc_stat_spend_warn'] = array(
+    '#title' => 'Stat spending warn',
+    '#description' => 'Warning spent on stats for a PC.',
+    '#type' => 'textfield',
+    '#default_value' => variable_get('vaxia_pc_stat_spend_warn', 210),
+  );
+  $form['char_rules']['warn']['vaxia_pc_stat_high_warn'] = array(
+    '#title' => 'Max caps warn',
+    '#description' => 'Warning on number of allowed max values for a PC.',
+    '#type' => 'textfield',
+    '#default_value' => variable_get('vaxia_pc_stat_high_warn', 3),
+  );
+  $form['char_rules']['warn']['vaxia_pc_stat_min_warn'] = array(
+    '#title' => 'Max mins warn',
+    '#description' => 'Warning on number of allowed min values for a PC.',
+    '#type' => 'textfield',
+    '#default_value' => variable_get('vaxia_pc_stat_min_warn', 2),
+  );
+  $form['char_rules']['warn']['vaxia_pc_skill_ave_warn'] = array(
+    '#title' => 'Skill average warn',
+    '#description' => 'Warning on average skill values for a PC.',
+    '#type' => 'textfield',
+    '#default_value' => variable_get('vaxia_pc_skill_ave_warn', 20),
+  );
+  $form['char_rules']['block'] = array(
+    '#title' => 'Block creation',
+    '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  $form['char_rules']['block']['vaxia_pc_skill_min'] = array(
+    '#title' => 'Skill min',
+    '#description' => 'Minimum allowed skill value for a PC.',
+    '#type' => 'textfield',
+    '#default_value' =>  variable_get('vaxia_pc_skill_min', 5),
+  );
+  $form['char_rules']['block']['vaxia_pc_skill_max'] = array(
+    '#title' => 'Skill min',
+    '#description' => 'Minimum allowed skill value for a PC.',
+    '#type' => 'textfield',
+    '#default_value' => variable_get('vaxia_pc_skill_max', 40),
+  );
+  $form['char_rules']['block']['vaxia_pc_stat_min'] = array(
+    '#title' => 'Stat min',
+    '#description' => 'Minimum allowed stat value for a PC.',
+    '#type' => 'textfield',
+    '#default_value' =>  variable_get('vaxia_pc_stat_min', 10),
+  );
+  $form['char_rules']['block']['vaxia_pc_stat_max'] = array(
+    '#title' => 'Stat min',
+    '#description' => 'Minimum allowed stat value for a PC.',
+    '#type' => 'textfield',
+    '#default_value' => variable_get('vaxia_pc_stat_max', 40),
+  );
+  $form['char_rules']['block']['vaxia_pc_stat_spend_cap'] = array(
+    '#title' => 'Stat spending cap',
+    '#description' => 'Maximum allowed to be spent on stats for a PC.',
+    '#type' => 'textfield',
+    '#default_value' => variable_get('vaxia_pc_stat_spend_cap', 225),
+  );
+  $form['char_rules']['block']['vaxia_pc_stat_high_cap'] = array(
+    '#title' => 'Max caps',
+    '#description' => 'Maximum number of allowed max values for a PC.',
+    '#type' => 'textfield',
+    '#default_value' => variable_get('vaxia_pc_stat_high_cap', 4),
+  );
+  $form['char_rules']['block']['vaxia_pc_stat_zero_cap'] = array(
+    '#title' => 'Zero caps',
+    '#description' => 'Maximum number of zero skills for a PC.',
+    '#type' => 'textfield',
+    '#default_value' => variable_get('vaxia_pc_stat_zero_cap', 1),
+  );
+  $form['char_rules']['block']['vaxia_other_min_hxp'] = array(
+    '#title' => 'Min HXP for others',
+    '#description' => 'Min HXP to be able to select Other and Conditions.',
+    '#type' => 'textfield',
+    '#default_value' => variable_get('vaxia_other_min_hxp', 1),
+  );
+  return $form;
+}
+
 /**
  * Value callback for determining costs. Modified from _character_sheet_calculate_field_value().
  */
-function _vaxia_calculate_attribute_field_value($field_info, $value) {
+function _vaxia_calculate_field_value($field_info, $value) {
   if (!isset($value)) { return 0; }
   if (isset($field_info['costs']['cost_mode']) && $field_info['costs']['cost_mode'] == 'flat') {
     $total = $value * $field_info['costs']['cost'];
@@ -73,12 +505,41 @@ function _vaxia_calculate_attribute_field_value($field_info, $value) {
       ),
     ),
   );
- */
+*/
 
 /**
  * Implements hook_character_sheet_field_info().
  */
 function vaxia_character_sheet_field_info() {
+// Loop over each type and declare settings.
+  $settings = array();
+  // Limit changing the character name.
+  $settings['title'] = array(
+    'permissions' => array(
+      'owner' => DISABLE_SHEET,
+    ),
+  );
+  // Limit all listed fields.
+  $default_values = variable_get('vaxia_field_settings', array());
+  foreach ($default_values as $field_name => $field_info) {
+    if (!empty($field_info['owner'])) {
+      $settings['title']['permissions']['owner'] = $field_info['owner'];
+    }
+    if (!empty($field_info['other'])) {
+      $settings['title']['permissions']['other'] = $field_info['other'];
+    }
+    if (!empty($settings['title']['permissions'])) {
+      if (!empty($field_info['has_cost']) && !empty($field_info['cost']) && is_numeric(trim($field_info['cost']))) {
+        $settings['title']['costs'] = array(
+          'xp_type' => 'xp',
+          'cost' => trim($field_info['cost']),
+          'step' => 1,
+          'value_callback' => '_vaxia_calculate_field_value',
+        );
+      }
+    }
+  }
+  return $settings;
   return array(
     'title' => array(
       'permissions' => array(
@@ -133,7 +594,7 @@ function vaxia_character_sheet_field_info() {
         'xp_type' => 'xp',
         'cost' => variable_get('vaxia_attribute_cost', 1),
         'step' => 1,
-        'value_callback' => '_vaxia_calculate_attribute_field_value',
+        'value_callback' => '_vaxia_calculate_field_value',
       ),
     ),
     'field_endurance' => array(
@@ -144,7 +605,7 @@ function vaxia_character_sheet_field_info() {
         'xp_type' => 'xp',
         'cost' => variable_get('vaxia_attribute_cost', 1),
         'step' => 1,
-        'value_callback' => '_vaxia_calculate_attribute_field_value',
+        'value_callback' => '_vaxia_calculate_field_value',
       ),
     ),
     'field_strength' => array(
@@ -155,7 +616,7 @@ function vaxia_character_sheet_field_info() {
         'xp_type' => 'xp',
         'cost' => variable_get('vaxia_attribute_cost', 1),
         'step' => 1,
-        'value_callback' => '_vaxia_calculate_attribute_field_value',
+        'value_callback' => '_vaxia_calculate_field_value',
       ),
     ),
     'field_dexterity' => array(
@@ -166,7 +627,7 @@ function vaxia_character_sheet_field_info() {
         'xp_type' => 'xp',
         'cost' => variable_get('vaxia_attribute_cost', 1),
         'step' => 1,
-        'value_callback' => '_vaxia_calculate_attribute_field_value',
+        'value_callback' => '_vaxia_calculate_field_value',
       ),
     ),
     'field_intelligence' => array(
@@ -177,7 +638,7 @@ function vaxia_character_sheet_field_info() {
         'xp_type' => 'xp',
         'cost' => variable_get('vaxia_attribute_cost', 1),
         'step' => 1,
-        'value_callback' => '_vaxia_calculate_attribute_field_value',
+        'value_callback' => '_vaxia_calculate_field_value',
       ),
     ),
     'field_spirituality' => array(
@@ -188,7 +649,7 @@ function vaxia_character_sheet_field_info() {
         'xp_type' => 'xp',
         'cost' => variable_get('vaxia_attribute_cost', 1),
         'step' => 1,
-        'value_callback' => '_vaxia_calculate_attribute_field_value',
+        'value_callback' => '_vaxia_calculate_field_value',
       ),
     ),
     'field_charisma' => array(
@@ -199,7 +660,7 @@ function vaxia_character_sheet_field_info() {
         'xp_type' => 'xp',
         'cost' => variable_get('vaxia_attribute_cost', 1),
         'step' => 1,
-        'value_callback' => '_vaxia_calculate_attribute_field_value',
+        'value_callback' => '_vaxia_calculate_field_value',
       ),
     ),
     //field_health
@@ -214,10 +675,10 @@ function vaxia_character_sheet_field_info() {
         'owner' => LIMIT_SHEET,
       ),
       'costs' => array(
-        'xp_type' => 'xp',        
+        'xp_type' => 'xp',
         'cost' => variable_get('vaxia_skill_cost', 0.75),
         'step' => 1,
-        'value_callback' => '_vaxia_calculate_attribute_field_value',
+        'value_callback' => '_vaxia_calculate_field_value',
       ),
     ),
     'field_skill_name' => array(
@@ -234,12 +695,6 @@ function vaxia_character_sheet_field_info() {
       'permissions' => array(
         'owner' => DISABLE_SHEET,
       ),
-//      'costs' => array(
-//        'xp_type' => 'xp',
-//        'cost' => variable_get('vaxia_economy_cost', 1),
-//        'step' => 1,
-//        'value_callback' => '_vaxia_calculate_attribute_field_value',
-//      ),
     ),
     'field_items' => array(
       'permissions' => array(
@@ -542,248 +997,6 @@ function vaxia_character_sheet_validate_sheet($node, $old_node, $form, $form_sta
     }
   }
   return FALSE;
-}
-
-/**
- * Callback for admin settings page for character sheets.
- */
-function _vaxia_admin_settings() {
-  $form['settings'] = array(
-    '#title' => 'Settings',
-    '#type' => 'fieldset',
-    '#collapsible' => TRUE,
-    '#collapsed' => TRUE,
-  );
-  $form['settings']['vaxia_starting_points'] = array(
-    '#title' => 'Starting points',
-    '#description' => 'The starting points for a new character.',
-    '#type' => 'textfield',
-    '#default_value' => variable_get('vaxia_starting_points', 300),
-  );
-  $form['settings']['vaxia_starting_econ'] = array(
-    '#title' => 'Starting Economy level',
-    '#description' => 'The starting Economy level for a new character.',
-    '#type' => 'textfield',
-    '#default_value' => variable_get('vaxia_starting_econ', 25),
-  );
-  $form['settings']['vaxia_kxp_ratio'] = array(
-    '#title' => 'KXP to XP ratio',
-    '#description' => 'The ratio of kxp to xp.',
-    '#type' => 'textfield',
-    '#default_value' => variable_get('vaxia_kxp_ratio', 70),
-  );
-  $form['settings']['vaxia_max_kxp_post'] = array(
-    '#title' => 'Max KXP per post',
-    '#description' => 'The maximum amount of kxp to be awarded per post.',
-    '#type' => 'textfield',
-    '#default_value' => variable_get('vaxia_max_kxp_post', 10),
-  );
-  $form['settings']['vaxia_xp_types'] = array(
-    '#title' => 'XP types',
-    '#description' => t('Available XP sub-types. The following types used by the system and will ' .
-      'be ignored if added here: @types',
-      array('@types' => implode(', ' , _vaxia_meaningful_xp_types()))),
-    '#type' => 'textarea',
-    '#default_value' => variable_get('vaxia_xp_types',
-      "good\nevil\nsmart\ncharismatic\nwarrior\nmage\nrogue"),
-  );
-  $rooms = _rpg_chat_get_rooms();
-  $options = array();
-  foreach ($rooms as $room) {
-    $options[$room->nid] = $room->title;
-  }
-  $form['settings']['vaxia_limbo_room'] = array(
-    '#title' => 'Limbo room',
-    '#description' => t('In this room, posts made do not gain XP.'),
-    '#type' => 'select',
-    '#options' => $options,
-    '#multiple' => TRUE,
-    '#size' => 15,
-    '#default_value' => variable_get('vaxia_limbo_room', array()),
-  );
-  $form['settings']['vaxia_display_dice'] = array(
-    '#title' => 'Dice rows to show',
-    '#description' => 'The number of dicerows to show in dice interface.',
-    '#type' => 'textfield',
-    '#default_value' => variable_get('vaxia_display_dice', 6),
-  );
-  $form['settings']['vaxia_dice_roller_stacking'] = array(
-    '#title' => 'Allow items to stack for dice rolling.',
-    '#type' => 'checkbox',
-    '#default_value' => variable_get('vaxia_dice_roller_stacking', TRUE),
-  );
-  $form['settings']['vaxia_public_char_fields'] = array(
-    '#title' => 'Publicly visible character fields.',
-    '#type' => 'textarea',
-    '#default_value' => variable_get('vaxia_public_char_fields', ''),
-  );
-  $form['point_cost'] = array(
-    '#title' => 'Point costs',
-    '#type' => 'fieldset',
-    '#collapsible' => TRUE,
-    '#collapsed' => TRUE,
-  );
-  $form['point_cost']['vaxia_attribute_cost'] = array(
-    '#title' => 'Attribute cost multiplier',
-    '#description' => 'Attribute cost is calculated as (current/10) * multiplier.',
-    '#type' => 'textfield',
-    '#default_value' => variable_get('vaxia_attribute_cost', 1),
-  );
-  $form['point_cost']['vaxia_skill_cost'] = array(
-    '#title' => 'Skill cost multiplier',
-    '#description' => 'Skill cost is calculated as (current/10) * multiplier.',
-    '#type' => 'textfield',
-    '#default_value' => variable_get('vaxia_skill_cost', 0.75),
-  );
-  $form['point_cost']['vaxia_economy_cost'] = array(
-    '#title' => 'Economy cost',
-    '#description' => 'Economy cost is calculated as (current/10) * multiplier.',
-    '#type' => 'textfield',
-    '#default_value' => variable_get('vaxia_economy_cost', 1),
-  );
-  $form['point_cost']['vaxia_transfer_percentage'] = array(
-    '#title' => 'Percent of XP',
-    '#description' => 'Percent of XP when transferred that goes to XP.',
-    '#type' => 'textfield',
-    '#default_value' => variable_get('vaxia_transfer_percentage', 0.75),
-  );
-  $form['point_cost']['vaxia_transfer_cap_on'] = array(
-    '#title' => 'Cap XP to be transferred?',
-    '#type' => 'checkbox',
-    '#default_value' => variable_get('vaxia_transfer_cap_on', TRUE),
-  );
-  $form['point_cost']['vaxia_transfer_cap'] = array(
-    '#title' => 'Cap of XP',
-    '#description' => 'Amount of total XP that can be transferred, anything more is lost.',
-    '#type' => 'textfield',
-    '#default_value' => variable_get('vaxia_transfer_cap', 300),
-  );
-  $form['workflows'] = array(
-    '#title' => 'Workflow states',
-    '#type' => 'fieldset',
-  );
-  $workflow_options = array();
-  $workflows = workflow_get_workflows();
-  foreach ($workflows as $workflow) {
-    $states = workflow_get_workflow_states_by_wid($workflow->wid);
-    foreach ($states as $state) {
-      $workflow_options[$state->sid] = $workflow->name . ':' . $state->state;
-    }
-  }
-  $form['workflows']['vaxia_transfer_workflow'] = array(
-    '#title' => 'Transfer workflow',
-    '#description' => 'Workflow state characters who are transferred from end up in.',
-    '#type' => 'select',
-    '#options' => $workflow_options,
-    '#default_value' => variable_get('vaxia_transfer_workflow', ''),
-  );
-  $form['workflows']['vaxia_draft_workflow'] = array(
-    '#title' => 'Draft workflow',
-    '#description' => 'Workflow state for characters in creation.',
-    '#type' => 'select',
-    '#options' => $workflow_options,
-    '#default_value' => variable_get('vaxia_draft_workflow', ''),
-  );
-  $form['char_rules'] = array(
-    '#title' => 'Character creation rules',
-    '#type' => 'fieldset',
-  );
-  $form['char_rules']['info'] = array(
-    '#title' => 'Character creation limits',
-    '#type' => 'item',
-    '#markup' => t('These settings control the allowed min and max values on character creation.'),
-  );
-  $form['char_rules']['warn'] = array(
-    '#title' => 'Warn creation',
-    '#type' => 'fieldset',
-    '#collapsible' => TRUE,
-    '#collapsed' => TRUE,
-  );
-  $form['char_rules']['warn']['vaxia_pc_skill_warn'] = array(
-    '#title' => 'Skill min warn',
-    '#description' => 'Warning on min skill value for a PC.',
-    '#type' => 'textfield',
-    '#default_value' =>  variable_get('vaxia_pc_skill_warn', 10),
-  );
-  $form['char_rules']['warn']['vaxia_pc_stat_spend_warn'] = array(
-    '#title' => 'Stat spending warn',
-    '#description' => 'Warning spent on stats for a PC.',
-    '#type' => 'textfield',
-    '#default_value' => variable_get('vaxia_pc_stat_spend_warn', 210),
-  );
-  $form['char_rules']['warn']['vaxia_pc_stat_high_warn'] = array(
-    '#title' => 'Max caps warn',
-    '#description' => 'Warning on number of allowed max values for a PC.',
-    '#type' => 'textfield',
-    '#default_value' => variable_get('vaxia_pc_stat_high_warn', 3),
-  );
-  $form['char_rules']['warn']['vaxia_pc_stat_min_warn'] = array(
-    '#title' => 'Max mins warn',
-    '#description' => 'Warning on number of allowed min values for a PC.',
-    '#type' => 'textfield',
-    '#default_value' => variable_get('vaxia_pc_stat_min_warn', 2),
-  );
-  $form['char_rules']['warn']['vaxia_pc_skill_ave_warn'] = array(
-    '#title' => 'Skill average warn',
-    '#description' => 'Warning on average skill values for a PC.',
-    '#type' => 'textfield',
-    '#default_value' => variable_get('vaxia_pc_skill_ave_warn', 20),
-  );
-  $form['char_rules']['block'] = array(
-    '#title' => 'Block creation',
-    '#type' => 'fieldset',
-    '#collapsible' => TRUE,
-    '#collapsed' => TRUE,
-  );
-  $form['char_rules']['block']['vaxia_pc_skill_min'] = array(
-    '#title' => 'Skill min',
-    '#description' => 'Minimum allowed skill value for a PC.',
-    '#type' => 'textfield',
-    '#default_value' =>  variable_get('vaxia_pc_skill_min', 5),
-  );
-  $form['char_rules']['block']['vaxia_pc_skill_max'] = array(
-    '#title' => 'Skill min',
-    '#description' => 'Minimum allowed skill value for a PC.',
-    '#type' => 'textfield',
-    '#default_value' => variable_get('vaxia_pc_skill_max', 40),
-  );
-  $form['char_rules']['block']['vaxia_pc_stat_min'] = array(
-    '#title' => 'Stat min',
-    '#description' => 'Minimum allowed stat value for a PC.',
-    '#type' => 'textfield',
-    '#default_value' =>  variable_get('vaxia_pc_stat_min', 10),
-  );
-  $form['char_rules']['block']['vaxia_pc_stat_max'] = array(
-    '#title' => 'Stat min',
-    '#description' => 'Minimum allowed stat value for a PC.',
-    '#type' => 'textfield',
-    '#default_value' => variable_get('vaxia_pc_stat_max', 40),
-  );
-  $form['char_rules']['block']['vaxia_pc_stat_spend_cap'] = array(
-    '#title' => 'Stat spending cap',
-    '#description' => 'Maximum allowed to be spent on stats for a PC.',
-    '#type' => 'textfield',
-    '#default_value' => variable_get('vaxia_pc_stat_spend_cap', 225),
-  );
-  $form['char_rules']['block']['vaxia_pc_stat_high_cap'] = array(
-    '#title' => 'Max caps',
-    '#description' => 'Maximum number of allowed max values for a PC.',
-    '#type' => 'textfield',
-    '#default_value' => variable_get('vaxia_pc_stat_high_cap', 4),
-  );
-  $form['char_rules']['block']['vaxia_pc_stat_zero_cap'] = array(
-    '#title' => 'Zero caps',
-    '#description' => 'Maximum number of zero skills for a PC.',
-    '#type' => 'textfield',
-    '#default_value' => variable_get('vaxia_pc_stat_zero_cap', 1),
-  );
-  $form['char_rules']['block']['vaxia_other_min_hxp'] = array(
-    '#title' => 'Min HXP for others',
-    '#description' => 'Min HXP to be able to select Other and Conditions.',
-    '#type' => 'textfield',
-    '#default_value' => variable_get('vaxia_other_min_hxp', 1),
-  );
-  return $form;
 }
 
 /**
