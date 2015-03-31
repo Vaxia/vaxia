@@ -69,6 +69,12 @@ function scene_record_node_view($node, $view_mode, $langcode) {
       $goal = !empty($node->field_goal[$node->language][0]['value']) ? $node->field_goal[$node->language][0]['value'] : 'misc';
       // Put together the posts for display.
       if (!empty($comments)) {
+        $new_order = array();
+        foreach ($comments as $comment) {
+          $new_order[$comment->cid] = $comment;
+        }
+        asort($new_order);
+        $comments = array_values($new_order);
         // Loop over each post and create the table display.
         $rows = _scene_record_view_table($comments, $goal);
         $headers = array(
