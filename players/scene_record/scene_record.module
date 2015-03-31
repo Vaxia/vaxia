@@ -15,6 +15,14 @@ function scene_record_permission() {
       'title' => t('use scene helper'),
       'description' => t('Use scene helper.'),
     ),
+    'view own scenes' => array(
+      'title' => t('use scene helper'),
+      'description' => t('Use scene helper.'),
+    ),
+    'view all scenes' => array(
+      'title' => t('use scene helper'),
+      'description' => t('Use scene helper.'),
+    ),
   );
 }
 
@@ -32,23 +40,48 @@ function scene_record_menu() {
 }
 
 /**
+ * Implements hook_node_presave().
+ */
+function scene_record_node_presave($node) {
+  if ($view_mode == 'full' && !empty($node->type) && $node->type == 'scene') {
+    // Just put the comments in the right order.
+    $comments = !empty($node->field_rp_posts[$node->language]) ? $node->field_rp_posts[$node->language] : array();
+    if (!empty($comments)) {
+      $new_order = array();
+      foreach ($comments as $comment) {
+        $new_order[$comment->cid] = $comment;
+      }
+      asort($new_order);
+      $node->field_rp_posts[$node->language] = array_values($new_order);
+    }
+  }
+}
+
+/**
  * Implements hook_node_view().
  */
 function scene_record_node_view($node, $view_mode, $langcode) {
   if ($view_mode == 'full' && !empty($node->type) && $node->type == 'scene') {
-    // Get comments.
-    $comments = !empty($node->field_rp_posts[$node->language]) ? $node->field_rp_posts[$node->language] : array();
-    $goal = !empty($node->field_goal[$node->language][0]['value']) ? $node->field_goal[$node->language][0]['value'] : 'misc';
-    // Put together the posts for display.
-    if (!empty($comments)) {
-      // Loop over each post and create the table display.
-      $rows = _scene_record_view_table($comments, $goal);
-      $headers = array(
-        t('Scene posts'),
-        t('Results'),
-      );
-      unset($node->content['field_rp_posts']['#theme']);
-      $node->content['field_rp_posts']['#markup'] = theme('table', array('headers' => $headers, 'rows' => $rows));
+    global $user;
+    if (user_access('view all scenes', $user) || ($user->uid == $node->uid && user_access('view own scenes', $user))) {
+      // Get comments.
+      $comments = !empty($node->field_rp_posts[$node->language]) ? $node->field_rp_posts[$node->language] : array();
+      $goal = !empty($node->field_goal[$node->language][0]['value']) ? $node->field_goal[$node->language][0]['value'] : 'misc';
+      // Put together the posts for display.
+      if (!empty($comments)) {
+        // Loop over each post and create the table display.
+        $rows = _scene_record_view_table($comments, $goal);
+        $headers = array(
+          t('Scene posts'),
+          t('Results'),
+        );
+        unset($node->content['field_rp_posts']['#theme']);
+        $node->content['field_rp_posts']['#markup'] = theme('table', array('headers' => $headers, 'rows' => $rows));
+      }
+    }
+    else {
+      drupal_set_message('This is not your scene or you are not able to see other\'s scenes.');
+      drupal_goto('/');
     }
   }
 }
