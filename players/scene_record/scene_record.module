@@ -16,12 +16,12 @@ function scene_record_permission() {
       'description' => t('Use scene helper.'),
     ),
     'view own scenes' => array(
-      'title' => t('use scene helper'),
-      'description' => t('Use scene helper.'),
+      'title' => t('view own scenes'),
+      'description' => t('View own scenes.'),
     ),
     'view all scenes' => array(
-      'title' => t('use scene helper'),
-      'description' => t('Use scene helper.'),
+      'title' => t('view all scenes'),
+      'description' => t('View all scenes.'),
     ),
   );
 }
