@@ -13,6 +13,5 @@ dependencies[] = views
 dependencies[] = webform_rules
 features[ctools][] = views:views_default:3.0
 features[features_api][] = api:2
-features[rules_config][] = rules_returning_player_request_access
 features[user_role][] = player
 features[views_view][] = players

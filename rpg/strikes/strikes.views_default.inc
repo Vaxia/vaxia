@@ -150,7 +150,7 @@ If you have any questions about a specific incident, or about notations in gener
   $handler->display->display_options['relationships']['field_players_uid']['table'] = 'field_data_field_players';
   $handler->display->display_options['relationships']['field_players_uid']['field'] = 'field_players_uid';
   $handler->display->display_options['relationships']['field_players_uid']['delta'] = '-1';
-  /* Relationship: Content: Players Bystanding (field_witnesses) */
+  /* Relationship: Content: Bystanding (field_witnesses) */
   $handler->display->display_options['relationships']['field_witnesses_uid']['id'] = 'field_witnesses_uid';
   $handler->display->display_options['relationships']['field_witnesses_uid']['table'] = 'field_data_field_witnesses';
   $handler->display->display_options['relationships']['field_witnesses_uid']['field'] = 'field_witnesses_uid';
@@ -199,7 +199,7 @@ If you have any questions about a specific incident, or about notations in gener
   $handler->display->display_options['fields']['field_players']['field'] = 'field_players';
   $handler->display->display_options['fields']['field_players']['delta_offset'] = '0';
   $handler->display->display_options['fields']['field_players']['multi_type'] = 'ul';
-  /* Field: Content: Players Bystanding */
+  /* Field: Content: Bystanding */
   $handler->display->display_options['fields']['field_witnesses']['id'] = 'field_witnesses';
   $handler->display->display_options['fields']['field_witnesses']['table'] = 'field_data_field_witnesses';
   $handler->display->display_options['fields']['field_witnesses']['field'] = 'field_witnesses';
@@ -409,7 +409,6 @@ return FALSE;';
   $handler->display->display_options['menu']['title'] = 'Notations';
   $handler->display->display_options['menu']['description'] = 'Notations';
   $handler->display->display_options['menu']['weight'] = '98';
-  $handler->display->display_options['menu']['name'] = 'features';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
 
@@ -663,7 +662,6 @@ return FALSE;';
   $handler->display->display_options['menu']['title'] = 'Social Notations (NEW)';
   $handler->display->display_options['menu']['description'] = 'All notations over time';
   $handler->display->display_options['menu']['weight'] = '99';
-  $handler->display->display_options['menu']['name'] = 'menu-vaxia-sh';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
   $handler->display->display_options['tab_options']['type'] = 'tab';
@@ -1083,7 +1081,6 @@ return FALSE;';
   $handler->display->display_options['menu']['title'] = 'Notations';
   $handler->display->display_options['menu']['description'] = 'All notations over time';
   $handler->display->display_options['menu']['weight'] = '1';
-  $handler->display->display_options['menu']['name'] = 'menu-vaxia-sh';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
   $handler->display->display_options['tab_options']['type'] = 'tab';
@@ -1138,7 +1135,7 @@ return FALSE;';
   $handler->display->display_options['fields']['field_players']['field'] = 'field_players';
   $handler->display->display_options['fields']['field_players']['delta_offset'] = '0';
   $handler->display->display_options['fields']['field_players']['multi_type'] = 'ul';
-  /* Field: Content: Players Bystanding */
+  /* Field: Content: Bystanding */
   $handler->display->display_options['fields']['field_witnesses']['id'] = 'field_witnesses';
   $handler->display->display_options['fields']['field_witnesses']['table'] = 'field_data_field_witnesses';
   $handler->display->display_options['fields']['field_witnesses']['field'] = 'field_witnesses';
@@ -1431,7 +1428,6 @@ return FALSE;';
   $handler->display->display_options['menu']['title'] = 'Notation log';
   $handler->display->display_options['menu']['description'] = 'All notations over time';
   $handler->display->display_options['menu']['weight'] = '1';
-  $handler->display->display_options['menu']['name'] = 'menu-vaxia';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
   $handler->display->display_options['tab_options']['type'] = 'tab';

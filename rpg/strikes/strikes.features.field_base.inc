@@ -22,14 +22,6 @@ function strikes_field_default_field_bases() {
     'field_permissions' => array(
       'type' => 0,
     ),
-    'foreign keys' => array(
-      'format' => array(
-        'columns' => array(
-          'format' => 'format',
-        ),
-        'table' => 'filter_format',
-      ),
-    ),
     'indexes' => array(
       'format' => array(
         0 => 'format',
@@ -49,14 +41,6 @@ function strikes_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_associated_record',
-    'foreign keys' => array(
-      'nid' => array(
-        'columns' => array(
-          'nid' => 'nid',
-        ),
-        'table' => 'node',
-      ),
-    ),
     'indexes' => array(
       'nid' => array(
         0 => 'nid',
@@ -105,7 +89,6 @@ function strikes_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_category',
-    'foreign keys' => array(),
     'indexes' => array(
       'value' => array(
         0 => 'value',
@@ -115,25 +98,31 @@ function strikes_field_default_field_bases() {
     'module' => 'list',
     'settings' => array(
       'allowed_values' => array(
-        'disruption' => 'Session disruption',
-        'language' => 'Verbal abuse and aggression',
+        'language' => 'Attacking other players (verbal abuse)',
+        'slander' => 'Attacking other players (slander)',
+        'threats' => 'Attacking other players (threats)',
+        'sexual' => 'Harassing other players (sexual)',
+        'hounding' => 'Harassing other players (hounding)',
+        'stalking' => 'Harassing other players (IC stalking / lurking after asked not to)',
+        'disruption' => 'OOC Session disruption',
+        'consent' => 'Ignoring consent of other player',
         'griefing' => 'Player disturbance (griefing)',
+        'extortion' => 'Player disturbance (extortion)',
         'manipulation' => 'Emotional manipulation (overt aggression)',
         'guilt-trip' => 'Emotional manipulation (guilt-tripping)',
-        'passive-aggro' => 'Emotional manipulation (covert or passive aggression)',
+        'passive-aggro' => 'Emotional manipulation (covert / passive aggression)',
         'baiting' => 'Emotional manipulation (baiting / goading)',
         'chaseme' => 'Emotional manipulation (chase me behavior)',
         'play-victim' => 'Emotional manipulation (projecting blame)',
-        'hounding' => 'Hounding',
-        'slander' => 'Slander of another player',
-        'stalking' => 'Stalking / lurking on another player\'s RP against their stated request',
-        'noncompliance' => 'Not following site directives',
-        'OOC-harassment' => 'OOC harassment',
-        'IC-harassment' => 'IC harassment',
-        'hacking' => 'Hacking / server or account attack',
-        'sexual' => 'Sexual harassment',
-        'guiding_principles' => 'Violating site principles',
-        'cheating' => 'System rules',
+        'xxxpost' => 'Posting in public room (sexual)',
+        'bigotpost' => 'Posting in public room (racist or bigoted)',
+        'violentpost' => 'Posting in public room (extremely violent)',
+        'noncompliance' => 'Not following directions of site staff',
+        'impersonation' => 'Impersonation of site staff / moderation staff',
+        'cheating' => 'Deliberate violation of System rules or Setting limits',
+        'hacking' => 'Unauthorized access of server or account',
+        'multiaccounts' => 'Multiple accounts without permission',
+        'guiding_principles' => 'Violating site guiding principles',
         'policy-violation' => 'Site policy',
         'positive' => 'Positive feedback',
         'misc' => 'Misc',
@@ -152,7 +141,6 @@ function strikes_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_date_of_incident',
-    'foreign keys' => array(),
     'indexes' => array(),
     'locked' => 0,
     'module' => 'date',
@@ -183,14 +171,6 @@ function strikes_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_documentation',
-    'foreign keys' => array(
-      'fid' => array(
-        'columns' => array(
-          'fid' => 'fid',
-        ),
-        'table' => 'file_managed',
-      ),
-    ),
     'indexes' => array(
       'fid' => array(
         0 => 'fid',
@@ -214,14 +194,6 @@ function strikes_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_players',
-    'foreign keys' => array(
-      'uid' => array(
-        'columns' => array(
-          'uid' => 'uid',
-        ),
-        'table' => 'users',
-      ),
-    ),
     'indexes' => array(
       'uid' => array(
         0 => 'uid',
@@ -277,14 +249,6 @@ function strikes_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_red_strike',
-    'foreign keys' => array(
-      'uid' => array(
-        'columns' => array(
-          'uid' => 'uid',
-        ),
-        'table' => 'users',
-      ),
-    ),
     'indexes' => array(
       'uid' => array(
         0 => 'uid',
@@ -340,7 +304,6 @@ function strikes_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_results',
-    'foreign keys' => array(),
     'indexes' => array(
       'value' => array(
         0 => 'value',
@@ -380,7 +343,6 @@ function strikes_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_severity',
-    'foreign keys' => array(),
     'indexes' => array(
       'value' => array(
         0 => 'value',
@@ -407,14 +369,6 @@ function strikes_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_social_members',
-    'foreign keys' => array(
-      'uid' => array(
-        'columns' => array(
-          'uid' => 'uid',
-        ),
-        'table' => 'users',
-      ),
-    ),
     'indexes' => array(
       'uid' => array(
         0 => 'uid',
@@ -470,14 +424,6 @@ function strikes_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_struck_player',
-    'foreign keys' => array(
-      'uid' => array(
-        'columns' => array(
-          'uid' => 'uid',
-        ),
-        'table' => 'users',
-      ),
-    ),
     'indexes' => array(
       'uid' => array(
         0 => 'uid',
@@ -533,14 +479,6 @@ function strikes_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_witnesses',
-    'foreign keys' => array(
-      'uid' => array(
-        'columns' => array(
-          'uid' => 'uid',
-        ),
-        'table' => 'users',
-      ),
-    ),
     'indexes' => array(
       'uid' => array(
         0 => 'uid',
@@ -573,7 +511,8 @@ function strikes_field_default_field_bases() {
         29 => 0,
         30 => 0,
         31 => 0,
-        1000 => 0,
+        32 => 0,
+        33 => 0,
       ),
       'referenceable_status' => array(
         0 => 0,
@@ -596,14 +535,6 @@ function strikes_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_yellow_strike',
-    'foreign keys' => array(
-      'uid' => array(
-        'columns' => array(
-          'uid' => 'uid',
-        ),
-        'table' => 'users',
-      ),
-    ),
     'indexes' => array(
       'uid' => array(
         0 => 'uid',

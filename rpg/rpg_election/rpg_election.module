@@ -24,8 +24,8 @@ function rpg_election_permission() {
  * Implements hook_menu().
  */
 function rpg_election_menu() {
-  $items['admin/vaxia/election'] = array(
-    'title' => 'Election settings',
+  $items['admin/config/rpg_election'] = array(
+    'title' => 'RPG Election settings',
     'description' => 'Elections for administration.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('_election_admin_settings'),

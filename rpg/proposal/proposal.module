@@ -55,9 +55,16 @@ function proposal_rules_event_info() {
  * Implements hook_cron().
  */
 function proposal_cron() {
-  // Make sure we have the vaxia helper file included.
-  module_load_include('inc', 'vaxia', 'helper');
-  if (_vaxia_once_a_day_cron('proposal_cron', '00:01:00')) {
+  // Things to run just once a day - always stored in timestamp format.
+  // Get only items waiting for recharge.
+  $last_ran = variable_get('proposal_cron', strtotime('-10 years'));
+  $yesterday = strtotime('-1 day');
+  // If it's been at least 24 hrs since last run, run the cron.
+  if ($last_ran < $yesterday) {
+    watchdog('proposal_cron', 'Calling Proposal Cron at 00:01:00.');
+    // And set the run.
+    // Prevent slippage by setting to the same time each date. Default at 1am.
+    variable_set('proposal_cron', strtotime(date('m/d/Y 00:01:00')));
     proposal_close_in_timeframe();
   }
 }
@@ -66,7 +73,7 @@ function proposal_cron() {
  * Implements hook_menu().
  */
 function proposal_menu() {
-  $items['admin/vaxia/proposal'] = array(
+  $items['admin/config/proposal'] = array(
     'title' => 'Proposal system',
     'description' => 'Site voting and administrative proposals.',
     'type' => MENU_NORMAL_ITEM,
@@ -82,6 +89,12 @@ function proposal_menu() {
  */
 function proposal_admin_form($form, &$form_state) {
   $form = array();
+  $form['proposal_node_help'] = array(
+    '#title' => t('Node help'),
+    '#description' => t('Help information to display on the proposal node.'),
+    '#type' => 'textarea',
+    '#default_value' => variable_get('proposal_node_help', ''),
+  );
   $form['proposal_open_timeframe'] = array(
     '#title' => t('Open timeframe'),
     '#description' => t('Timeframe to keep proposals open for. Use the same strings as date().'),
@@ -900,6 +913,11 @@ function _proposal_form_extra_items_options_validate($element, &$form_state) {
  * Implements hook_form_FORM_ID_alter().
  */
 function proposal_form_proposal_node_form_alter(&$form, &$form_state, $form_id) {
+  // Show the help for the proposal at the top of the form.
+  $form['proposal_help'] = array(
+    '#markup' => variable_get('proposal_node_help', ''),
+    '#weight' => -1000,
+  );
   // Since this is specifically on the proposal node form, no need to bail out.
   // Insert our submit call before webforms call to make sure we complete properly.
   // Since webform doesn't allow us to mark the content type as a primary.

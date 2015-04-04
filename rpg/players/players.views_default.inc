@@ -149,14 +149,12 @@ function players_views_default_views() {
   $handler->display->display_options['menu']['title'] = 'Players';
   $handler->display->display_options['menu']['description'] = 'Players';
   $handler->display->display_options['menu']['weight'] = '0';
-  $handler->display->display_options['menu']['name'] = 'menu-vaxia';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
   $handler->display->display_options['tab_options']['type'] = 'normal';
   $handler->display->display_options['tab_options']['title'] = 'Players';
   $handler->display->display_options['tab_options']['description'] = 'Players';
   $handler->display->display_options['tab_options']['weight'] = '0';
-  $handler->display->display_options['tab_options']['name'] = 'menu-vaxia';
   $export['players'] = $view;
 
   return $export;

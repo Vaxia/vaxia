@@ -1,4 +1,4 @@
-name = RPG Site Election
+name = RPG Election
 description = Site election handling
 core = 7.x
 package = RPG

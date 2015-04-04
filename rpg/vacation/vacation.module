@@ -24,7 +24,7 @@ function vacation_permission() {
  * Implements hook_menu().
  */
 function vacation_menu() {
-  $items['admin/vaxia/vacation'] = array(
+  $items['admin/config/vacation'] = array(
     'title' => 'Vacation configurations',
     'description' => 'Vacation configurations',
     'type' => MENU_NORMAL_ITEM,

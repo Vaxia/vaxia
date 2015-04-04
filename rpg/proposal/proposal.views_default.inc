@@ -93,17 +93,13 @@ function proposal_views_default_views() {
   $handler->display->display_options['header']['area']['id'] = 'area';
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['content'] = '"It is wrong to assume that Vaxia is the product of one person, or even one group of people. In different degrees, every single Vaxian is responsible for Vaxia; its creator and owner at once." - <a href="http://vaxia.org/wiki/about-vaxia">SH Moon</a>
-
-We use proposals because while a forum thread may give you a rough feel for the mood of the site on a topic, it doesn\'t account for players who - for one reason or another - do not speak out on a forum thread. Silence does not at all indicate agreement, so we need to explicitly ask for a site vote when the topic is important, otherwise we risk leaving people out of getting a chance to contribute their opinions. 
-
-For more information about proposals and how to make one yourself, <a href="http://vaxia.org/wiki/help/i-have-seen-site-proposals-how-can-i-make-one-my-own">see the wiki article</a>.';
+  $handler->display->display_options['header']['area']['content'] = '"We use proposals because while a forum thread may give you a rough feel for the mood of the site on a topic, it doesn\'t account for players who - for one reason or another - do not speak out on a forum thread. Silence does not at all indicate agreement, so we need to explicitly ask for a site vote when the topic is important, otherwise we risk leaving people out of getting a chance to contribute their opinions.';
   $handler->display->display_options['header']['area']['format'] = 'wiki';
   /* Footer: Global: Text area */
   $handler->display->display_options['footer']['area']['id'] = 'area';
   $handler->display->display_options['footer']['area']['table'] = 'views';
   $handler->display->display_options['footer']['area']['field'] = 'area';
-  $handler->display->display_options['footer']['area']['content'] = 'These proposals are currently under site consideration or have recently come to a final vote within the last month. See the <a href="http://vaxia.org/node/add/proposal">proposals</a> page for all proposals.';
+  $handler->display->display_options['footer']['area']['content'] = 'These proposals are currently under site consideration or have recently come to a final vote within the last month.';
   $handler->display->display_options['footer']['area']['format'] = 'wiki';
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
@@ -183,11 +179,7 @@ For more information about proposals and how to make one yourself, <a href="http
   $handler->display->display_options['header']['area']['id'] = 'area';
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['content'] = '<blockquote><i>"It is wrong to assume that Vaxia is the product of one person, or even one group of people. In different degrees, every single Vaxian is responsible for Vaxia; its creator and owner at once."</i> - <a href="http://vaxia.org/wiki/about-vaxia"><b>SH Moon</b></a></blockquote>
-
-We use proposals because while a forum thread may give you a rough feel for the mood of the site on a topic, it doesn\'t account for players who - for one reason or another - do not speak out on a forum thread. Silence does not at all indicate agreement, so we need to explicitly ask for a site vote when the topic is important, otherwise we risk leaving people out of getting a chance to contribute their opinions. 
-
-For more information about proposals and how to make one yourself, <a href="http://vaxia.org/wiki/help/i-have-seen-site-proposals-how-can-i-make-one-my-own">see the wiki article</a>.';
+  $handler->display->display_options['header']['area']['content'] = 'We use proposals because while a forum thread may give you a rough feel for the mood of the site on a topic, it doesn\'t account for players who - for one reason or another - do not speak out on a forum thread. Silence does not at all indicate agreement, so we need to explicitly ask for a site vote when the topic is important, otherwise we risk leaving people out of getting a chance to contribute their opinions. ';
   $handler->display->display_options['header']['area']['format'] = 'wiki';
   $handler->display->display_options['defaults']['footer'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
@@ -260,7 +252,6 @@ For more information about proposals and how to make one yourself, <a href="http
   $handler->display->display_options['menu']['title'] = 'Proposals';
   $handler->display->display_options['menu']['description'] = 'Proposals';
   $handler->display->display_options['menu']['weight'] = '0';
-  $handler->display->display_options['menu']['name'] = 'menu-vaxia';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
 
@@ -443,7 +434,6 @@ For more information about proposals and how to make one yourself, <a href="http
   $handler->display->display_options['menu']['title'] = 'Proposals';
   $handler->display->display_options['menu']['description'] = 'Proposals';
   $handler->display->display_options['menu']['weight'] = '0';
-  $handler->display->display_options['menu']['name'] = 'menu-vaxia';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
   $export['proposals'] = $view;

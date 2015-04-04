@@ -1,36 +1,7 @@
 <?php
 /**
  * @file
- * Drupal needs this blank file.
+ * Code for the Players feature.
  */
 
-include_once('players.features.inc');
-
-/**
- * Implements hook_permission().
- */
-function players_permission() {
-  return array(
-    'view hidden player fields'=> array(
-      'title' => t('View hidden player fields'),
-      'description' => t('View hidden player fields.'),
-    ),
-  );
-}
-
-/**
- * Implements hook_form_FORM_ID_alter().
- */
-function players_form_user_profile_form_alter(&$form, &$form_state, $form_id) {
-  // Hide anything in the hidden fieldgroup on user accounts.
-  // UNLESS you're an admin and can see them.
-  if (user_access('view hidden player fields')) {
-    return;
-  }
-  $form['#fieldgroups']['group_hidden']->format_type='hidden';
-  foreach ($form['#group_children'] as $field => $group) {
-    if ($group == 'group_hidden') {
-      $form[$field]['#access'] = FALSE;
-    }
-  }
-}
+include_once 'players.features.inc';

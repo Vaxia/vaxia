@@ -363,7 +363,6 @@ function cold_storage_views_default_views() {
   $handler->display->display_options['menu']['title'] = 'Cold storage';
   $handler->display->display_options['menu']['description'] = 'Players in cold storage';
   $handler->display->display_options['menu']['weight'] = '1000';
-  $handler->display->display_options['menu']['name'] = 'menu-vaxia';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
 

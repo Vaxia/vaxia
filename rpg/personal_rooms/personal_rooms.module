@@ -27,7 +27,7 @@ function personal_rooms_permission() {
  */
 function personal_rooms_menu() {
   // Autocompletes.
-  $items['admin/vaxia/personal_rooms'] = array(
+  $items['admin/config/personal_rooms'] = array(
     'title' => 'Personal rooms',
     'description' => 'Administer personal rooms',
     'page callback' => 'drupal_get_form',

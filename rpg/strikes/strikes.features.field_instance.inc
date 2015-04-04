@@ -494,7 +494,7 @@ function strikes_field_default_field_instances() {
     'bundle' => 'notation',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Include any players who were involved witnesses or tried to get the situation to cool off but were not acting as members of the Social department. "Bystanders and witnesses" so to speak.',
+    'description' => 'Players involved, bystanders, witnesses, or otherwise in a need-to-know position for this incident. This includes members of Social who were not acting as members of the Social department for this incident.',
     'display' => array(
       'artwork' => array(
         'label' => 'above',
@@ -524,7 +524,7 @@ function strikes_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_witnesses',
-    'label' => 'Players Bystanding',
+    'label' => 'Bystanding',
     'required' => 0,
     'settings' => array(
       'user_register_form' => FALSE,
@@ -644,7 +644,7 @@ function strikes_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'node_reference_autocomplete',
-      'weight' => 5,
+      'weight' => 4,
     ),
   );
 
@@ -770,7 +770,7 @@ function strikes_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 4,
+      'weight' => 3,
     ),
   );
 
@@ -834,16 +834,16 @@ function strikes_field_default_field_instances() {
 * Multiple yellow warnings can be upgraded to a red: 3 yellows within the last year automatically results in a red.
 * Multiple red warnings can be upgraded to a permanent ban, as needed for the health of the site.');
   t('Associated Record');
+  t('Bystanding');
   t('Category');
   t('Check all actions taken as a result of this. Be sure to include the names of players below to give strikes to if needed.');
   t('Date of Incident');
   t('Describe the situation, include players related to the event - and all documentary evidence as an attached file. THIS IS REQUIRED. We want documentation to be transparent so the next time an issue comes up the reviewing SH can see all prior data incase you yourself are no longer available for comment. Please leave a track record for others.');
   t('Details of Interaction');
   t('Documentation');
-  t('Include any players who were involved witnesses or tried to get the situation to cool off but were not acting as members of the Social department. "Bystanders and witnesses" so to speak.');
   t('Members of the social department that got involved.');
   t('Player');
-  t('Players Bystanding');
+  t('Players involved, bystanders, witnesses, or otherwise in a need-to-know position for this incident. This includes members of Social who were not acting as members of the Social department for this incident.');
   t('Red Strikes');
   t('Required - we must have a record of interaction. That record holds all the documentation for this strike.');
   t('Results');

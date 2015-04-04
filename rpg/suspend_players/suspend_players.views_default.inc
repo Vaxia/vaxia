@@ -139,7 +139,7 @@ Social members are members of the social department that got involved.
   $handler->display->display_options['relationships']['field_players_uid']['table'] = 'field_data_field_players';
   $handler->display->display_options['relationships']['field_players_uid']['field'] = 'field_players_uid';
   $handler->display->display_options['relationships']['field_players_uid']['delta'] = '-1';
-  /* Relationship: Content: Players Bystanding (field_witnesses) */
+  /* Relationship: Content: Bystanding (field_witnesses) */
   $handler->display->display_options['relationships']['field_witnesses_uid']['id'] = 'field_witnesses_uid';
   $handler->display->display_options['relationships']['field_witnesses_uid']['table'] = 'field_data_field_witnesses';
   $handler->display->display_options['relationships']['field_witnesses_uid']['field'] = 'field_witnesses_uid';

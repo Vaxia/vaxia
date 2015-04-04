@@ -31,9 +31,7 @@ function scene_record_node_info() {
       'description' => t('A scene to record.'),
       'has_title' => '1',
       'title_label' => t('Title'),
-      'help' => t('Need help using this? We have a help page! Check it: <a href="http://vaxia.org/wiki/scene-creation-guide" target="_blank">Scene Creation Guide</a>.
-
-When you\'re ready for a Storyhost to evaluate your scene, set it to submitted and save the scene. Don\'t forget to save and submit if you want credit for the scene! With this system we no longer need you to link to the scene in the forums - which is useful for things you\'d rather keep private.'),
+      'help' => t('When you\'re ready for a Storyhost to evaluate your scene, set it to submitted and save the scene. Don\'t forget to save and submit if you want credit for the scene! With this system we no longer need you to link to the scene in the forums - which is useful for things you\'d rather keep private.'),
     ),
   );
   drupal_alter('node_info', $items);

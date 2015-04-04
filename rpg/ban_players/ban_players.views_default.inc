@@ -259,7 +259,6 @@ function ban_players_views_default_views() {
   $handler->display->display_options['menu']['title'] = 'Suspended';
   $handler->display->display_options['menu']['description'] = 'Banned and suspended players';
   $handler->display->display_options['menu']['weight'] = '1001';
-  $handler->display->display_options['menu']['name'] = 'menu-vaxia';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
 

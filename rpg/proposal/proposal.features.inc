@@ -34,12 +34,7 @@ function proposal_node_info() {
       'description' => t('The proposal system allows you to build a form out of a collection of form pieces to put questions to site votes.'),
       'has_title' => '1',
       'title_label' => t('Title'),
-      'help' => t('<blockquote><i>"It is wrong to assume that Vaxia is the product of one person, or even one group of people. In different degrees, every single Vaxian is responsible for Vaxia; its creator and owner at once."</i><a href="http://vaxia.org/wiki/about-vaxia"><b> - SH Moon</b></a></blockquote>
-We use proposals because while a forum thread may give you a rough feel for the mood of the site on a topic, it doesn\'t account for players who - for one reason or another - do not speak out on a forum thread. Silence does not at all indicate agreement, so we need to explicitly ask for a site vote when the topic is important, otherwise we risk leaving people out of getting a chance to contribute their opinions.
-</br></br>
-If you haven\'t looked over our recommendations for <a href="http://vaxia.org/wiki/help/i-have-seen-site-proposals-how-can-i-make-one-my-own">how to start a proposal you can find that in the wiki.</a> There\'s some good information in there about how to make sure your proposal takes into account multiple view points and recommended preparation for it, so if this is your first one you should start there.
-</br></br>
-The form will be open for two weeks, then it will automatically close. If you edit it in that timespan the timer will re-set. This is to make sure everyone can get a chance to weigh in, or update their vote if they change their mind.
+      'help' => t('The form will be open for two weeks, then it will automatically close. If you edit it in that timespan the timer will re-set. This is to make sure everyone can get a chance to weigh in, or update their vote if they change their mind.
 </br></br>
 Not all site members will be able to vote in this proposal - only those currently active when it was created. This is to avoid ballot stuffing or swoop-ins from long absent players.
 </br></br>

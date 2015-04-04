@@ -202,7 +202,6 @@ function personal_rooms_views_default_views() {
   $handler->display->display_options['menu']['title'] = 'Personal rooms';
   $handler->display->display_options['menu']['description'] = 'Personal rooms';
   $handler->display->display_options['menu']['weight'] = '0';
-  $handler->display->display_options['menu']['name'] = 'menu-vaxia-sh';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
   $export['personal_rooms'] = $view;

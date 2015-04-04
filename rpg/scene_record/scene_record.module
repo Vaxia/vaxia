@@ -27,19 +27,6 @@ function scene_record_permission() {
 }
 
 /**
- * Implements hook_menu().
- */
-function scene_record_menu() {
-  $items['vaxia/scene_record/autocomplete/room'] = array(
-    'title' => 'Scene record assist room lookup',
-    'type' => MENU_CALLBACK,
-    'page callback' => '_scene_record_autocomplete_room',
-    'access arguments' => array('use scene helper'),
-  );
-  return $items;
-}
-
-/**
  * Implements hook_node_presave().
  */
 function scene_record_node_presave($node) {

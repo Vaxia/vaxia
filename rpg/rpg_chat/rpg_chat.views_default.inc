@@ -362,7 +362,6 @@ function rpg_chat_views_default_views() {
   $handler->display->display_options['menu']['title'] = 'Locations';
   $handler->display->display_options['menu']['description'] = 'Locations';
   $handler->display->display_options['menu']['weight'] = '0';
-  $handler->display->display_options['menu']['name'] = 'menu-vaxia';
 
   /* Display: Search RPG Chats */
   $handler = $view->new_display('block', 'Search RPG Chats', 'search_rpg_chats');
