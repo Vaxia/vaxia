@@ -35,17 +35,6 @@ function archives_cron() {
 }
 
 /**
- * Implements hook_cronapi().
- */
-function archives_cronapi($op, $job = NULL) {
-  $items['_archives_cron'] = array(
-  	'description' => 'Archives: Move posts to archive',
-  	'rule' => '4 0 * * *', // Once a day at 4 AM.
-  );
-  return $items;
-}
-
-/**
  * Cron handler.
  */
 function _archives_cron() {

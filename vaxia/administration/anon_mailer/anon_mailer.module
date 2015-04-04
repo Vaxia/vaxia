@@ -1,0 +1,207 @@
+<?php
+/**
+ * @file
+ * Drupal needs this blank file.
+ */
+
+include_once 'anon_mailer.features.inc';
+
+/**
+ * Implements hook_permission().
+ */
+function anon_mailer_permission() {
+  return array(
+    'administrate anon mailer' => array(
+      'title' => t('administrate anon mailer'),
+      'description' => t('Administrate anon mailer.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function anon_mailer_menu() {
+  // Autocompletes.
+  $items['admin/vaxia/anon_mailer'] = array(
+    'title' => 'Anon Mailer',
+    'description' => 'Administrate the settings for the Anon Mailer.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('_anon_mailer_settings_form'),
+    'access arguments' => array('administrate anon mailer'),
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_rules_condition_info().
+ */
+function anon_mailer_rules_condition_info() {
+  return array(
+    '_anon_mailer_is_mailer' => array(
+      'label' => t('Webform is Anon Mailer'), 
+      'parameter' => array(
+        'webform' => array(
+          'type' => 'node',
+          'label' => t('Webform'),
+        ),
+      ), 
+      'group' => t('Anon mailer'),
+    ),
+    '_anon_mailer_is_grievance' => array(
+      'label' => t('Anon Mail is Grievance'), 
+      'parameter' => array(
+        'setting' => array(
+          'type' => 'text',
+          'label' => t('Grievance value'),
+        ),
+        'match' => array(
+          'type' => 'text',
+          'label' => t('Text to match'),
+        ),
+      ), 
+      'group' => t('Anon mailer'),
+    ),
+    '_anon_mailer_is_complete_grievance' => array(
+      'label' => t('Anon Mail is Complete Grievance'), 
+      'parameter' => array(
+        'violation' => array(
+          'type' => 'text',
+          'label' => t('Grievance violation'),
+        ),
+        'names' => array(
+          'type' => 'text',
+          'label' => t('Grievance names'),
+        ),
+      ),
+      'group' => t('Anon mailer'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_rules_action_info().
+ */
+function anon_mailer_rules_action_info() {
+  return array(
+    '_anon_mailer_make_post' => array(
+      'label' => t('Post Anon Mailer to Forum'), 
+      'parameter' => array(
+        'title' => array(
+          'type' => 'text',
+          'label' => t('Title'),
+        ),
+        'message' => array(
+          'type' => 'text',
+          'label' => t('Message'),
+        ),
+      ), 
+      'group' => t('Anon mailer'),
+    ),
+  );
+}
+
+/**
+ * Rules condition handler.
+ */
+function _anon_mailer_is_mailer($webform) {
+  $anon = variable_get('anon_mailer_webform', '');
+  if ($webform->nid == $anon) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+/**
+ * Rules condition handler.
+ */
+function _anon_mailer_is_grievance($value, $match) {
+  $match = !empty($match) ? trim($match) : 'This is a grievance request.';
+  $grievance = trim($value);
+  return ($grievance == $match) ? TRUE: FALSE;
+}
+
+/**
+ * Rules condition handler.
+ */
+function _anon_mailer_is_complete_grievance($violation, $names) {
+  $violation = trim($violation);
+  $names = trim($names);
+  if (empty($violation)) {
+    return FALSE;
+  }
+  if (empty($names)) {
+    return FALSE;
+  }
+  return TRUE;
+}
+
+/**
+ * Form to select webform for the anon mailer.
+ */
+function _anon_mailer_settings_form($form, &$form_state) {
+  $webforms = _anon_mailer_get_webforms();
+  $forums = _anon_mailer_get_forums();
+  $form['anon_mailer_webform'] = array(
+    '#title' => t('Mailer Webform'),
+    '#description' => t('Select the webform to associate with the anon. mailer feature.'),
+    '#type' => 'select',
+    '#options' => $webforms,
+    '#default_value' => variable_get('anon_mailer_webform', ''),
+  );
+  $form['anon_mailer_form'] = array(
+    '#title' => t('Mailer Forum'),
+    '#description' => t('Select the forum to post mailer posts to'),
+    '#type' => 'select',
+    '#options' => $forums,
+    '#default_value' => variable_get('anon_mailer_form', ''),
+  );
+  return system_settings_form($form);
+}
+
+/**
+ * Helper function to get webforms.
+ */
+function _anon_mailer_get_webforms() {
+  $nodes = array();
+  $results = db_query('SELECT w.nid, n.title FROM webform w LEFT JOIN node n ON n.nid = w.nid');
+  foreach ($results as $result) {
+    $nodes[$result->nid] = $result->title;
+  }
+  return $nodes;
+}
+
+/**
+ * Helper function to get forum terms.
+ */
+function _anon_mailer_get_forums() {
+  $vid = variable_get('forum_nav_vocabulary', 0);
+  $forums = array();
+  foreach (taxonomy_get_tree($vid) as $term) {
+    $forums[$term->tid] = $term->name;
+  }
+  return $forums;
+}
+
+/**
+ * Helper function to create a forum post.
+ */
+function _anon_mailer_make_forum_post($title, $message, $tid = 0, $format = 1) {
+  $tid = variable_get('anon_mailer_form', '');
+  $node = new stdClass();
+  $node->title = $title;
+  $node->body = $message;
+  $node->type = 'forum'; // Your specified content type
+  $node->created = time();
+  $node->changed = $node->created;
+  $node->status = 1; // To have published, else use 0
+  $node->promote = 0; // If you want promoted to front page use 1
+  $node->sticky = 0;
+  $node->format = $format; // Filtered HTML
+  $node->uid = 1; // UID of content owner
+  $node->language = LANGUAGE_NONE;
+  // Set the forum to post to.
+  $node->taxonomy_forums = $tid;
+  // Save the node.
+  node_save($node);
+}
