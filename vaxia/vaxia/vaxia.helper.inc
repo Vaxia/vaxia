@@ -28,13 +28,15 @@ function _vaxia_once_a_day_cron($cron, $time = '01:00:00') {
 /**
  * Vaxia, generic workflow helper.
  */
-function _vaxia_get_workflow_options() {
+function _vaxia_get_workflow_options($this_wf = 'all') {
   $workflow_options = array();
   $workflows = workflow_get_workflows();
   foreach ($workflows as $workflow) {
-    $states = workflow_get_workflow_states_by_wid($workflow->wid);
-    foreach ($states as $state) {
-      $workflow_options[$state->sid] = $workflow->name . ': ' . $state->state;
+    if ($this_wf == 'all' || $this_wf == $workflow->name || $this_wf == $workflow->wid) {
+      $states = workflow_get_workflow_states_by_wid($workflow->wid);
+      foreach ($states as $state) {
+        $workflow_options[$state->sid] = $workflow->name . ': ' . $state->state;
+      }
     }
   }
   return $workflow_options;
@@ -171,4 +173,18 @@ function _vaxia_is_ic_room($node) {
     return TRUE;
   }
   return FALSE;
+}
+
+/**
+ * Get a given player's characters.
+ */
+function _vaxia_player_characters($account) {
+  $pcs = array();
+  $nodes = node_load_multiple(array(), array('uid' => $account->uid, 'type' => 'character_sheet'));
+  foreach ($nodes as $node) {
+    if (_character_sheet_is_enabled($node) && _character_sheet_is_playable($node)) {
+      $pcs[ $node->nid ] = $node;
+    }
+  }
+  return $pcs;
 }

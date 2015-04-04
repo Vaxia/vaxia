@@ -5,3 +5,127 @@
  */
 
 include_once 'vaxia_players.features.inc';
+
+/**
+ * Implements hook_permission().
+ */
+function vaxia_players_permission() {
+  return array(
+    'email others characters'=> array(
+      'title' => t('email others characters'),
+      'description' => t('Email others characters.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_user_view().
+ */
+function vaxia_players_user_view($account, $view_mode, $langcode) {
+  if ($view_mode == 'full') {
+    // If an active player in good standing OR permissioned user.
+    global $user;
+    if (($user->uid == $account->uid) || user_access('email others characters')) {
+      $this_form = drupal_get_form('_vaxia_players_email_characters', $account);
+      $account->content['vaxia_players_email'] = array(
+        '#markup' => '<div class="vaxia_players_email">' . drupal_render($this_form) . '</div>',
+        '#weight' => 1000,
+      );
+    }
+  }
+}
+
+/**
+ * Form to allow characters for a player to be emailed easily.
+ */
+function _vaxia_players_email_characters($form, &$form_state, $account) {
+  // Include help file.
+  module_load_include('inc', 'vaxia', 'vaxia.helper');
+  // Make form.
+  if (!function_exists('_vaxia_player_characters')) {
+    return $form;
+  }
+  $characters = _vaxia_player_characters($account);
+  $pcs = array();
+  foreach ($characters as $character) {
+    $pcs[ $character->nid ] = $character->title;
+  }
+  if (empty($pcs)) {
+    return $form;
+  }
+  $form['vaxia_players_email'] = array(
+    '#type' => 'fieldset',
+    '#title' => 'Email Characters',
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  // Still here? Ok - make the button.
+  $form['vaxia_players_email']['help'] = array(
+    '#markup' => '<div class="vaxia_players_email">' .
+      t('Clicking this button will send an email summary of the following characters ' .
+        'to the email associated with this account: %pcs' .
+       '</div>',
+      array('%pcs' => $pcs)),
+  );
+  $form['vaxia_players_email']['player_uid'] = array(
+    '#type' => 'hidden',
+    '#value' => $node->nid,
+  );
+  $submit = t('Send Me My Characters');
+  global $user;
+  if ($user->uid != $account->uid) {
+    $submit = t('Send @name Their Characters', array('@name' => $account->name));
+  }
+  $form['vaxia_players_email']['send'] = array(
+    '#type' => 'submit',
+    '#value' => $submit,
+  );
+  return $form;
+}
+
+/**
+ * Submit handler.
+ */
+function _vaxia_players_email_characters_submit($form, &$form_state) {
+  // Include help file.
+  module_load_include('inc', 'vaxia', 'vaxia.helper');
+  // Make form.
+  if (!function_exists('_vaxia_player_characters')) {
+    drupal_set_message(t('Unable to send email - vaxia helper not available.'));
+    return;
+  }
+  $account = user_load($form_state['values']['player_uid']);
+  if (empty($account->mail)) {
+    drupal_set_message(t('Unable to send email - no email found for this account.'));
+    return;
+  }
+  if (!valid_email_address($account->mail)) {
+    drupal_set_message(t('Unable to send email - invalid email found for this account.'));
+    return;
+  }
+  // And execute the email.
+  $characters = _vaxia_player_characters($account);
+  $message = '';
+  foreach ($characters as $character) {
+    // See: https://api.drupal.org/api/drupal/modules!book!book.module/function/book_node_export/7
+    // Wanting to get a text friendly format for this.
+    $message[] = '<div><h3>' . $character->title . '</h3>';
+    $build = node_view($character, 'full', user_preferred_language($account));
+    $message[] = '<div>' . drupal_render($build) . '</div>';
+    $message[] = '</div><hr />';
+  }
+  $message = implode("\n", $message);
+  $subject = t('Player Characters for @name', array('@name' => $account->name));
+  // Send it.
+  $message = drupal_mail(
+    'vaxia_players',
+    'email_pcs',
+    $account->mail,
+    user_preferred_language($account),
+    array(
+      'body' => $message,
+      'subject' => $subject,
+//      'headers' => array('Content-Type' => 'text/html; charset=UTF-8;'),
+    )
+  );
+}

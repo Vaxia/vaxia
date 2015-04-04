@@ -38,7 +38,7 @@ function cold_storage_rules_action_info() {
  * Rules action handler.
  */
 function cold_storage_rules_unpub_nodes($this_user) {
-  $nodes = node_load_multiple(array(), array('uid' => $this_user->uid, 'type' => 'character-sheet'));
+  $nodes = node_load_multiple(array(), array('uid' => $this_user->uid, 'type' => 'character_sheet'));
   foreach ($nodes as $node) {
     $node->status = 0;
     node_save($node);
@@ -53,7 +53,7 @@ function cold_storage_rules_unpub_nodes($this_user) {
  * Rules action handler.
  */
 function cold_storage_rules_pub_nodes($this_user) {
-  $nodes = node_load_multiple(array(), array('uid' => $this_user->uid, 'type' => 'character-sheet'));
+  $nodes = node_load_multiple(array(), array('uid' => $this_user->uid, 'type' => 'character_sheet'));
   foreach ($nodes as $node) {
     $node->status = 1;
     node_save($node);
