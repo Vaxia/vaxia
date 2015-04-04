@@ -35,17 +35,6 @@ function room_cleanup_cron() {
 }
 
 /**
- * Implements hook_cronapi().
- */
-function room_cleanup_cronapi($op, $job = NULL) {
-  $items['_room_cleanup_cron'] = array(
-  	'description' => 'Room cleanup: Remove spare rooms',
-  	'rule' => '5 0 * * *', // Once a day at 5 AM.
-  );
-  return $items;
-}
-
-/**
  * Cron handler.
  */
 function _room_cleanup_cron() {

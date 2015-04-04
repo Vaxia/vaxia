@@ -33,17 +33,6 @@ function rpg_chat_cron() {
 }
 
 /**
- * Implements hook_cronapi().
- */
-function rpg_chat_cronapi($op, $job = NULL) {
-  $items['_rpg_chat_cron'] = array(
-    'description' => 'RPG Chat: Clear users in room',
-    'rule' => '*/15 * * * *', // Every 15 minutes.
-  );
-  return $items;
-}
-
-/**
  * Cron handler.
  */
 function _rpg_chat_cron() {

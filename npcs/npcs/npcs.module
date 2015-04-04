@@ -140,21 +140,6 @@ function npcs_cron() {
 }
 
 /**
- * Implements hook_cronapi().
- */
-function npcs_cronapi($op, $job = NULL) {
-  $items['_vaxia_cron_pullback_npcs'] = array(
-  	'description' => 'NPCs: Move unused NPCs to inactive',
-  	'rule' => '1 1 * * *', // Once a day at 1:01 AM.
-  );
-  $items['_vaxia_cron_delete_inactive_no_post_npcs'] = array(
-  	'description' => 'NPCs: Delete unused NPCs moved to wiki',
-  	'rule' => '1 1 * * *', // Once a day at 1:01 AM.
-  );
-  return $items;
-}
-
-/**
  * Cron handler.
  */
 function _vaxia_cron_delete_inactive_no_post_npcs() {

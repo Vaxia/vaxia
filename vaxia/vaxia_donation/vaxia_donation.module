@@ -53,21 +53,6 @@ function _vaxia_donation_cron() {
 }
 
 /**
- * Implements hook_cronapi().
- */
-function vaxia_donation_cronapi($op, $job = NULL) {
-  $items['_vaxia_donation_cron_charge_month'] = array(
-  	'description' => 'Vaxia donation: Charge monthly',
-  	'rule' => '1 1 1 * *', // Once a month, on the 1st at 1:01 AM.
-  );
-  $items['_vaxia_donation_cron_clear_year'] = array(
-  	'description' => 'Vaxia donation: Reset year totals',
-  	'rule' => '1 1 1 1 *', // Once a year, on Jan 1st at 1:01 AM.
-  );
-  return $items;
-}
-
-/**
  * Cron handler.
  */
 function _vaxia_donation_cron_charge_month() {

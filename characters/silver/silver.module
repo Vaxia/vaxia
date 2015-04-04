@@ -29,17 +29,6 @@ function silver_cron() {
 }
 
 /**
- * Implements hook_cronapi().
- */
-function silver_cronapi($op, $job = NULL) {
-  $items['_silver_cron_silver'] = array(
-    'description' => 'Silver: Set up silver cronqueue',
-    'rule' => '1 2 * * *', // Once a day at 1:01 AM.
-  );
-  return $items;
-}
-
-/**
  * Cron handler.
  */
 function _silver_cron_silver() {

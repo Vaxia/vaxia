@@ -159,17 +159,6 @@ function rpg_election_cron() {
 }
 
 /**
- * Implements hook_cronapi().
- */
-function rpg_election_cronapi($op, $job = NULL) {
-  $items['_election_cron_election'] = array(
-  	'description' => 'Election: Check rpg_election day',
-  	'rule' => '1 0 * * *', // Once every day at 12:01 AM.
-  );
-  return $items;
-}
-
-/**
  * Cron handler for rpg_elections.
  */
 function _election_cron_election() {

@@ -18,6 +18,7 @@ function rpg_rep_cron() {
     $day = date('j');
     if ($day == '1') {
       _rpg_rep_cron();
+      watchdog('rpg_rep', 'Ran rpg rep updates.');
     }
   }
 }
@@ -125,6 +126,14 @@ function rpg_rep_comment_view($comment) {
  * Implements hook_form_FORMID_alter().
  */
 function rpg_rep_form__character_sheet_xp_form_alter(&$form, $form_state) {
+  // Inject the rep form unto the character sheet XP form.
+  return _rpg_rep_add_form(&$form, $form_state);
+}
+
+/**
+ * Form for reputation.
+ */
+function _rpg_rep_add_form(&$form, $form_state) {
   global $user;
   // Add a display for the rep.
   $node = node_load($form['node_info']['nid']['#value']);
@@ -168,16 +177,17 @@ function rpg_rep_form__character_sheet_xp_form_alter(&$form, $form_state) {
     $form['add_rpg_rep']['add_rpg_rep_submit'] = array(
       '#type' => 'submit',
       '#value' => t('Add reputation'),
-      '#validate' => array('_rpg_rep_add_validation_form'),
-      '#submit' => array('_rpg_rep_add_submit_form'),
+      '#validate' => array('_rpg_rep_add_validate'),
+      '#submit' => array('_rpg_rep_add_submit'),
     );
   }
+  return $form;
 }
 
 /**
  * Form validation handler.
  */
-function _rpg_rep_add_validation_form(&$form, &$form_state) {
+function _rpg_rep_add_validate(&$form, &$form_state) {
   $rpg_rep_amount = $form_state['values']['rpg_rep_amount'];
   if (empty($rpg_rep_amount)) {
     form_set_error('rpg_rep_amount', t('Empty value given for reputation.'));
@@ -190,7 +200,7 @@ function _rpg_rep_add_validation_form(&$form, &$form_state) {
 /**
  * Form submit handler for reputation.
  */
-function _rpg_rep_add_submit_form(&$form, &$form_state) {
+function _rpg_rep_add_submit(&$form, &$form_state) {
   global $user;
   $nid = $form_state['values']['nid'];
   $node = node_load($form_state['values']['nid']);

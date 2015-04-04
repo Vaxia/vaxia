@@ -69,20 +69,6 @@ function sh_test_cron() {
 }
 
 /**
- * Implements hook_cronapi().
- */
-function sh_test_cronapi($op, $job = NULL) {
-  if (!function_exists('rules_invoke_event')) {
-    return; // Bail out if no rules.
-  }
-  $items['_sh_test_cron_check_overdue'] = array(
-  	'description' => 'SH Test: Check overdue applications',
-  	'rule' => '1 1 * * *', // Once every day at 1:01 AM.
-  );
-  return $items;
-}
-
-/**
  * Cron handler for overdue applications.
  */
 function _sh_test_cron_check_overdue() {
