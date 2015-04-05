@@ -26,7 +26,7 @@ function role_app_default_rules_configuration() {
         { "role_app_approved_app" : { "webform" : [ "node" ] } }
       ],
       "DO" : [
-        { "application_set_role" : { "user" : [ "user" ], "rid" : "[node:field-applied-role-id]" } }
+        { "role_app_set_role" : { "user" : [ "user" ], "rid" : "[node:field-applied-role-id]" } }
       ]
     }
   }');
@@ -37,9 +37,9 @@ function role_app_default_rules_configuration() {
       "TAGS" : [ "Role App" ],
       "REQUIRES" : [ "role_app", "quiz_rules" ],
       "ON" : { "quiz_rules_quiz_passed" : [] },
-      "IF" : [ { "application_is_app_quiz" : { "quiz" : [ "node" ] } } ],
+      "IF" : [ { "role_app_is_app_quiz" : { "quiz" : [ "node" ] } } ],
       "DO" : [
-        { "application_create_app" : { "user" : [ "user" ], "quiz" : [ "node" ] } }
+        { "role_app_create_app" : { "user" : [ "user" ], "quiz" : [ "node" ] } }
       ]
     }
   }');

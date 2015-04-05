@@ -41,7 +41,6 @@ function role_app_menu() {
  * Implements hook_node_view().
  */
 function role_app_node_view($node, $view_mode, $langcode) {
-
   // Only override the displays for role_apps.
   if ($node->type == 'application') {
     module_load_include('inc', 'webform', 'includes/webform.report');
@@ -54,7 +53,124 @@ function role_app_node_view($node, $view_mode, $langcode) {
       );
     }
   }
+}
 
+/**
+ * Implements hook_cron().
+ */
+function role_app_cron() {
+  if (!function_exists('rules_invoke_event')) {
+    return; // Bail out if no rules.
+  }
+  $last_run = variable_get('role_app_cron', 0);
+  $yesterday = strtotime('-1 day');
+  if ($last_run < $yesterday) {
+    variable_set('role_app_cron', strtotime('now'));
+    _role_app_cron_check_overdue();
+  }
+}
+
+/**
+ * Implements hook_rules_event_info().
+ */
+function role_app_rules_event_info() {
+  $items = array(
+    'role_app_is_overdue' => array(
+      'label' => t('Application is overdue'),
+      'group' => t('Application'),
+      'variables' => array(
+        'node' => array(
+            'type' => 'node',
+            'label' => t('Application'),
+        ),
+      ),
+    ),
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_rules_condition_info.
+ */
+function role_app_rules_condition_info() {
+  return array(
+    'role_app_is_app_quiz' => array(
+      'label' => t('Quiz is for application'), 
+      'parameter' => array(
+        'quiz' => array(
+          'label' => t('Quiz'),
+          'type' => 'node',
+        ),
+      ),
+      'group' => t('Application roles'),
+    ),
+    'role_app_approved_app' => array(
+      'label' => t('Check for approval'), 
+      'parameter' => array(
+        'webform' => array(
+          'label' => t('Webform'),
+          'type' => 'node',
+        ),
+      ),
+      'group' => t('Application roles'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_rules_action_info.
+ */
+function role_app_rules_action_info() {
+  return array(
+    'role_app_create_app' => array(
+      'label' => t('Create application'), 
+      'parameter' => array(
+        'user' => array(
+          'type' => 'user',
+          'label' => t('User'),
+        ),
+        'quiz' => array(
+          'type' => 'node',
+          'label' => t('Quiz'),
+        ),
+      ), 
+      'group' => t('Application roles'),
+    ),
+    'role_app_set_role' => array(
+      'label' => t('Set application role'), 
+      'parameter' => array(
+        'user' => array(
+          'type' => 'user',
+          'label' => t('User'),
+        ),
+        'rid' => array(
+          'type' => 'text',
+          'label' => t('Role ID'),
+        ),
+      ), 
+      'group' => t('Application roles'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function role_app_form_alter(&$form, &$form_state, $form_id) {
+  // If we're viewing a webform.
+  // Why hook_form_alter and not hook_form_FORM_ID_alter? Because webform's form id varies: webform_client_form_NID.
+  if (strstr($form_id, 'webform_client_form') !== FALSE) {
+    $node = $form['#node'];
+    // If we're not looking at a proposal, bail out with the normal view.
+    if ($node->type != 'application') {
+      return; // Use defaults.
+    }
+    // Check for ownership. If the owner made this role_app, they can't vote on it.
+    global $user;
+    if ($user->uid == $node->uid) {
+      $form['#access'] = FALSE;
+    }
+  }
 }
 
 /**
@@ -119,79 +235,23 @@ function _role_app_admin_settings($form, &$form_state) {
 }
 
 /**
- * Helper function to get quizzes.
+ * Helper function, Cron handler for overdue role_apps.
  */
-function _role_app_get_quizzes() {
-  $nodes = array();
-  $results = db_query('SELECT n.nid, n.title FROM node n WHERE n.type = \'quiz\'');
-  foreach ($results as $result) {
-    $nodes[$result->nid] = $result->title;
+function _role_app_cron_check_overdue() {
+  $timeframe = strtotime('-1 week');
+  $applications = db_query('SELECT n.nid FROM {node} n ' .
+    'LEFT JOIN {webform} w ON w.nid = n.nid ' .
+    'WHERE w.status = 1 '. // Where the webform is still open.
+    'AND n.type = \'application\' ' . // And it's an role_app.
+    'AND n.changed < :timeframe', // And it's been open for more than a week.
+     array(':timeframe' => $timeframe));
+  // Now that we have a list of role_apps that might qualify.
+  $today = strtotime('now');
+  foreach ($applications as $application) {
+    $node = node_load($application->nid);
+    // Execute the rule.
+    rules_invoke_event('role_app_is_overdue', $node);
   }
-  return $nodes;
-}
-
-/**
- * Implements hook_rules_condition_info.
- */
-function role_app_rules_condition_info() {
-  return array(
-    'application_is_app_quiz' => array(
-      'label' => t('Quiz is for application'), 
-      'parameter' => array(
-        'quiz' => array(
-          'label' => t('Quiz'),
-          'type' => 'node',
-        ),
-      ),
-      'group' => t('Application roles'),
-    ),
-    'role_app_approved_app' => array(
-      'label' => t('Check for approval'), 
-      'parameter' => array(
-        'webform' => array(
-          'label' => t('Webform'),
-          'type' => 'node',
-        ),
-      ),
-      'group' => t('Application roles'),
-    ),
-  );
-}
-
-/**
- * Implements hook_rules_action_info.
- */
-function role_app_rules_action_info() {
-  return array(
-    'application_create_app' => array(
-      'label' => t('Create application'), 
-      'parameter' => array(
-        'user' => array(
-          'type' => 'user',
-          'label' => t('User'),
-        ),
-        'quiz' => array(
-          'type' => 'node',
-          'label' => t('Quiz'),
-        ),
-      ), 
-      'group' => t('Application roles'),
-    ),
-    'application_set_role' => array(
-      'label' => t('Set application role'), 
-      'parameter' => array(
-        'user' => array(
-          'type' => 'user',
-          'label' => t('User'),
-        ),
-        'rid' => array(
-          'type' => 'text',
-          'label' => t('Role ID'),
-        ),
-      ), 
-      'group' => t('Application roles'),
-    ),
-  );
 }
 
 /**
@@ -325,7 +385,19 @@ function application_set_role($user, $rid) {
 }
 
 /**
- * Get role associated with quiz.
+ * Helper function to get quizzes.
+ */
+function _role_app_get_quizzes() {
+  $nodes = array();
+  $results = db_query('SELECT n.nid, n.title FROM node n WHERE n.type = \'quiz\'');
+  foreach ($results as $result) {
+    $nodes[$result->nid] = $result->title;
+  }
+  return $nodes;
+}
+
+/**
+ * Helper function, Get role associated with quiz.
  */
 function role_app_get_quiz_role($quiz) {
   $application_roles = (array) variable_get('application_roles', array());
