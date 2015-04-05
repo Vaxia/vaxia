@@ -380,7 +380,8 @@ function role_app_create_app($user, $quiz) {
 /**
  * Rules action handler.
  */
-function application_set_role($user, $rid) {
+function role_app_set_role($user, $rid) {
+  $rid = trim($rid);
   user_multiple_role_edit(array($user->uid), 'add_role', $rid);
 }
 
