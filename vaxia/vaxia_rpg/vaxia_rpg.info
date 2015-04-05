@@ -19,6 +19,7 @@ features[rules_config][] = players_vaxia_returning_player_request_access
 features[rules_config][] = proposal_proposal_vaxia_email_owner_on_close
 features[rules_config][] = rules_alert_user_for_banned_ip
 features[rules_config][] = rules_notation_email
+features[rules_config][] = rules_permanently_ban_user
 features[rules_config][] = rules_proposal_reciept
 features[rules_config][] = rules_red_strike
 features[rules_config][] = rules_yellow_strike

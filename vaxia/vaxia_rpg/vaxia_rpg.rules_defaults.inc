@@ -150,6 +150,89 @@ function vaxia_rpg_default_rules_configuration() {
       ]
     }
   }');
+  $items['rules_permanently_ban_user'] = entity_import('rules_config', '{ "rules_permanently_ban_user" : {
+      "LABEL" : "Vaxia - Bans - Permanently ban user",
+      "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
+      "TAGS" : [ "Vaxia Bans" ],
+      "REQUIRES" : [ "rules", "views_rules", "workflow_rules" ],
+      "ON" : { "user_logout" : [] },
+      "IF" : [
+        { "user_has_role" : { "account" : [ "account" ], "roles" : { "value" : { "31" : "31" } } } }
+      ],
+      "DO" : [
+        { "VIEW LOOP" : {
+            "VIEW" : "vaxia_character_sheets",
+            "DISPLAY" : "rules_chars_by_user",
+            "USING" : { "uid" : [ "account:uid" ] },
+            "ROW VARIABLES" : { "nid" : { "char_nid" : "Character nid" } },
+            "DO" : [
+              { "entity_fetch" : {
+                  "USING" : { "type" : "node", "id" : [ "char-nid" ] },
+                  "PROVIDE" : { "entity_fetched" : { "character" : "Character" } }
+                }
+              },
+              { "workflow_rules_set_state" : {
+                  "node" : [ "character" ],
+                  "workflow_state" : { "value" : { "24" : "24" } },
+                  "workflow_comment" : "Removed as part of permaban."
+                }
+              },
+              { "entity_query" : {
+                  "USING" : {
+                    "type" : "node",
+                    "property" : "field_character_owner",
+                    "value" : [ "character" ],
+                    "limit" : "1000"
+                  },
+                  "PROVIDE" : { "entity_fetched" : { "char_items" : "Char items" } }
+                }
+              },
+              { "VIEW LOOP" : {
+                  "VIEW" : "character_items",
+                  "DISPLAY" : "char_items",
+                  "USING" : { "field_character_owner_nid" : [ "char-nid" ] },
+                  "ROW VARIABLES" : { "nid" : { "item_nid" : "Item nid" } },
+                  "DO" : [
+                    { "entity_fetch" : {
+                        "USING" : { "type" : "node", "id" : [ "item-nid" ] },
+                        "PROVIDE" : { "entity_fetched" : { "item" : "Item" } }
+                      }
+                    },
+                    { "workflow_rules_set_state" : {
+                        "node" : [ "item" ],
+                        "workflow_state" : { "value" : { "22" : "22" } },
+                        "workflow_comment" : "Removed as part of permaban."
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        { "VIEW LOOP" : {
+            "VIEW" : "artwork",
+            "DISPLAY" : "views_rules_1",
+            "ROW VARIABLES" : { "nid" : { "art_nid" : "Art nid" } },
+            "DO" : [
+              { "entity_fetch" : {
+                  "USING" : { "type" : "node", "id" : [ "art-nid" ] },
+                  "PROVIDE" : { "entity_fetched" : { "art" : "Art" } }
+                }
+              },
+              { "workflow_rules_set_state" : {
+                  "node" : [ "art" ],
+                  "workflow_state" : { "value" : { "17" : "17" } },
+                  "workflow_comment" : "Removed as part of permaban."
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }');
   $items['rules_proposal_reciept'] = entity_import('rules_config', '{ "rules_proposal_reciept" : {
       "LABEL" : "Vaxia - Proposal - Send proposal receipt",
       "PLUGIN" : "reaction rule",
