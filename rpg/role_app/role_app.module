@@ -77,13 +77,13 @@ function role_app_rules_event_info() {
   $items = array(
     'role_app_is_overdue' => array(
       'label' => t('Application is overdue'),
-      'group' => t('Application'),
       'variables' => array(
         'node' => array(
             'type' => 'node',
             'label' => t('Application'),
         ),
       ),
+      'group' => t('Role Application'),
     ),
   );
   return $items;
@@ -102,7 +102,7 @@ function role_app_rules_condition_info() {
           'type' => 'node',
         ),
       ),
-      'group' => t('Application roles'),
+      'group' => t('Role Application'),
     ),
     'role_app_approved_app' => array(
       'label' => t('Check for approval'), 
@@ -112,7 +112,7 @@ function role_app_rules_condition_info() {
           'type' => 'node',
         ),
       ),
-      'group' => t('Application roles'),
+      'group' => t('Role Application'),
     ),
   );
 }
@@ -134,7 +134,7 @@ function role_app_rules_action_info() {
           'label' => t('Quiz'),
         ),
       ), 
-      'group' => t('Application roles'),
+      'group' => t('Role Application'),
     ),
     'role_app_set_role' => array(
       'label' => t('Set application role'), 
@@ -148,7 +148,7 @@ function role_app_rules_action_info() {
           'label' => t('Role ID'),
         ),
       ), 
-      'group' => t('Application roles'),
+      'group' => t('Role Application'),
     ),
   );
 }
@@ -314,7 +314,7 @@ function role_app_create_app($user, $quiz) {
   }
   // Create new role_app node.
   $node = new stdClass();
-  $node->title = t('Application: @name for @role', array('@name' => $user->name, '@role' => $this_role->name));
+  $node->title = t('@name for @role', array('@name' => $user->name, '@role' => $this_role->name));
   $node->type = 'application';
   $node->created = time();
   $node->changed = $node->created;
