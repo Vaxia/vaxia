@@ -300,20 +300,19 @@ function role_app_approved_app($webform) {
  * Rules action handler.
  */
 function role_app_create_app($user, $quiz) {
-  watchdog('debug', 'Attempting to create application for user #'.$user->uid.' on quiz#'.$quiz->nid.'');
   $role = role_app_get_quiz_role($quiz);
   if (empty($role)) {
     drupal_set_message(t('No role found for this quiz, the application was not created.', array('@role' => $role)));
     return;
   }
-  watchdog('debug', 'role found');
   // Check eligible.
+  watchdog('debug', 'User ' . print_r($user,1));
   $eligible = variable_get('role_app_eligible_' . $role, '');
   if (!in_array($eligible, array_values($user->roles))) {
     drupal_set_message(t('You are not eligable for @role, the application was not created.', array('@role' => $role)));
     return;
   }
-  watchdog('debug', 'eligable found');
+  watchdog('debug', 'Attempting to create application for user #'.$user->uid.' on quiz#' . $quiz->nid . '.');
   $this_role = user_role_load($role);
   // Create new role_app node.
   $node = new stdClass();
