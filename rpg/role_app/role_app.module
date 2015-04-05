@@ -409,13 +409,10 @@ function _role_app_get_quizzes() {
  */
 function role_app_get_quiz_role($quiz) {
   $roles = (array) variable_get('role_app_roles', array());
-watchdog('debug', 'Checkeding '. print_r($roles,1));
   foreach ($roles as $role) {
     $quizzes = variable_get('role_app_quiz_' . $role, '');
-watchdog('debug', 'Checkeding found quiz '.print_r($quizzes,1).'');
     if (!empty($quizzes) && in_array($quiz->nid, $quizzes)) {
-watchdog('debug', 'Match '.$quiz->nid.'');
-      return $application_role;
+      return $role;
     }
   }
   return '';
