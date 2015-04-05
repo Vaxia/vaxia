@@ -9,6 +9,23 @@
 include_once('rpg_chat.features.inc');
 
 /**
+ * Implements hook_permission().
+ */
+
+function rpg_chat_permission() {
+  return array(
+    'administer rpg chat' => array(
+      'title' => t('Administer RPG chat'),
+      'description' => t('Administer RPG chat configurations.'),
+    ),
+    'view rpg chat' => array(
+      'title' => t('View RPG chat'),
+      'description' => t('View RPG chat conversations.'),
+    ),
+  );
+}
+
+/**
  * Implements hook_menu().
  */
 function rpg_chat_menu() {
@@ -21,6 +38,16 @@ function rpg_chat_menu() {
     'page callback' => 'rpg_chat_refresh',
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
+  );
+  // Menu items that are basically just menu blocks.
+  $items['admin/rpg'] = array(
+    'title' => 'RPG',
+    'description' => 'Administer RPG settings',
+    'position' => 'right',
+    'page callback' => 'system_admin_menu_block_page',
+    'access arguments' => array('administer rpg settings'),
+    'file' => 'system.admin.inc',
+    'file path' => drupal_get_path('module', 'system'),
   );
   return $items;
 }
@@ -62,22 +89,6 @@ function rpg_chat_form_node_type_form_alter(&$form, &$form_state) {
         'for your users with this content type.'),
     );
   }
-}
-
-/**
- * Implements hook_permission().
- */
-function rpg_chat_permission() {
-  return array(
-    'administer rpg chat' => array(
-      'title' => t('Administer RPG chat'),
-      'description' => t('Administer RPG chat configurations.'),
-    ),
-    'view rpg chat' => array(
-      'title' => t('View RPG chat'),
-      'description' => t('View RPG chat conversations.'),
-    ),
-  );
 }
 
 /**

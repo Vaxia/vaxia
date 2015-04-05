@@ -73,7 +73,7 @@ function proposal_cron() {
  * Implements hook_menu().
  */
 function proposal_menu() {
-  $items['admin/config/proposal'] = array(
+  $items['admin/rpg/proposal'] = array(
     'title' => 'Proposal system',
     'description' => 'Site voting and administrative proposals.',
     'type' => MENU_NORMAL_ITEM,

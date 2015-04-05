@@ -22,7 +22,7 @@ function department_permission() {
  * Implements hook_menu().
  */
 function department_menu() {
-  $items['admin/config/departments'] = array(
+  $items['admin/rpg/departments'] = array(
     'title' => 'Department settings',
     'description' => 'Department for administration.',
     'page callback' => 'drupal_get_form',
