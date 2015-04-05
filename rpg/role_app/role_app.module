@@ -271,11 +271,11 @@ function role_app_is_app_quiz($quiz) {
 /**
  * Rules condition handler.
  */
-function role_app_approved_app($webform) {
+function role_app_approved_app($node) {
   $results = db_query("SELECT wd.data FROM {webform_submitted_data} wd " .
     "WHERE wd.nid = :nid " .
     "AND wd.cid = 1", // There is only the one form element.
-    array(':nid' => $webform->nid,));
+    array(':nid' => $node->nid,));
   $count = 0;
   foreach ($results as $result) {
     if ($result->data == 'approve') {
@@ -284,13 +284,11 @@ function role_app_approved_app($webform) {
   }
   // Total eligable SH evals.
   $role = !empty($node->field_applied_role_id['und'][0]['value']) ? trim($node->field_applied_role_id['und'][0]['value']) : '_na';
-watchdog('debug', 'role : ' . print_r($role,1));
   $approving = variable_get('role_app_approve_' . $role, '');
-watchdog('debug', 'approving : ' . print_r($approving,1));
-  $approvers = _role_app_get_possible_approvers($webform->uid, $approving);
+  $approvers = _role_app_get_possible_approvers($node->uid, $approving);
   $approvers = count($approvers);
   $percentage = ($count / $approvers) * 100 ; // Leave with decimals, cause that's valid. Math is like that.
-  watchdog('role_app', 'Checking approve count for #' . $webform->nid . ', ' . $count . ' in out of possible ' . $approvers . ' reviewers.');
+  watchdog('role_app', 'Checking approve count for #' . $node->nid . ', ' . $count . ' in out of possible ' . $approvers . ' reviewers.');
   // Do we have quorum?
   if ($percentage >= variable_get('application_approval_min', '75')) {
     return TRUE;
