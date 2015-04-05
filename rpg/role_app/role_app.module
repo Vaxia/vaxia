@@ -1,0 +1,399 @@
+<?php
+/**
+ * @file
+ * Drupal needs this blank file.
+ */
+
+include_once 'role_app.features.inc';
+
+/**
+ * Implements hook_permission().
+ */
+function role_app_permission() {
+  return array(
+    'view role application'=> array(
+      'title' => t('view role application'),
+      'description' => t('View role application.'),
+    ),
+    'administrate role application'=> array(
+      'title' => t('administrate role application'),
+      'description' => t('Administrate role application.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function role_app_menu() {
+  $items['admin/rpg/role_app'] = array(
+    'title' => 'Application settings',
+    'description' => 'Settings for application approval for roles.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('_role_app_admin_settings'),
+    'access arguments' => array('administrate role application'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_node_view().
+ */
+function role_app_node_view($node, $view_mode, $langcode) {
+
+  // Only override the displays for role_apps.
+  if ($node->type == 'application') {
+    module_load_include('inc', 'webform', 'includes/webform.report');
+    // Show results if any.
+    global $user;
+    if ($node->uid == $user->uid || user_access('view role application') || user_access('administrate role application')) {
+      $node->content['application_results'] = array(
+        '#markup' => '<div class="application_result">' . webform_results_table($node) . '</div>',
+        '#weight' => 1003,
+      );
+    }
+  }
+
+}
+
+/**
+ * Menu callback, admin form.
+ */
+function _role_app_admin_settings($form, &$form_state) {
+  // Match roles to webform tests.
+  $roles = user_roles(TRUE); // All roles except anon.
+  $form['role_app_roles'] = array(
+    '#type' => 'select',
+    '#title' => t('Application roles'),
+    '#description' => t('Select all roles that role_apps apply to.'),
+    '#options' => $roles,
+    '#multiple' => TRUE,
+    '#default_value' => variable_get('role_app_roles', ''),
+  );
+  $quizzes = _role_app_get_quizzes();
+  $application_roles = variable_get('role_app_roles', array());
+  foreach ($application_roles as $application_role) {
+    // Set the webform that matches for creating an role_app,
+    // As well as additional configurations as needed for approvals.
+    $form['role_app_settings'][$application_role] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Role specific settings'),
+      '#description' => t('Configure the settings for each role role_app.'),
+    );
+    // Returns node ids.
+    $form['role_app_settings'][$application_role]['role_app_quiz_' . $application_role] = array(
+      '#type' => 'select',
+      '#title' => t('Application quiz'),
+      '#description' => t('Select the quiz for this application.'),
+      '#options' => $quizzes,
+      '#multiple' => TRUE,
+      '#default_value' => variable_get('role_app_quiz_' . $application_role, ''),
+    );
+    // Returns role ids.
+    $form['role_app_settings'][$application_role]['role_app_eligible_' . $application_role] = array(
+      '#type' => 'select',
+      '#title' => t('Application eligable role'),
+      '#description' => t('Select the eligible role for this application.'),
+      '#options' => $roles,
+      '#default_value' => variable_get('role_app_eligible_' . $application_role, ''),
+    );
+    $form['role_app_settings'][$application_role]['role_app_view_' . $application_role] = array(
+      '#type' => 'select',
+      '#title' => t('Application viewing role'),
+      '#description' => t('Select the viewing role for this application.'),
+      '#options' => $roles,
+      '#multiple' => TRUE,
+      '#default_value' => variable_get('role_app_view_' . $application_role, ''),
+    );
+    $form['role_app_settings'][$application_role]['role_app_approve_' . $application_role] = array(
+      '#type' => 'select',
+      '#title' => t('Application approving role'),
+      '#description' => t('Select the approving role for this application.'),
+      '#options' => $roles,
+      '#multiple' => TRUE,
+      '#default_value' => variable_get('role_app_approve_' . $application_role, ''),
+    );
+  }
+  return system_settings_form($form);
+}
+
+/**
+ * Helper function to get quizzes.
+ */
+function _role_app_get_quizzes() {
+  $nodes = array();
+  $results = db_query('SELECT n.nid, n.title FROM node n WHERE n.type = \'quiz\'');
+  foreach ($results as $result) {
+    $nodes[$result->nid] = $result->title;
+  }
+  return $nodes;
+}
+
+/**
+ * Implements hook_rules_condition_info.
+ */
+function role_app_rules_condition_info() {
+  return array(
+    'application_is_app_quiz' => array(
+      'label' => t('Quiz is for application'), 
+      'parameter' => array(
+        'quiz' => array(
+          'label' => t('Quiz'),
+          'type' => 'node',
+        ),
+      ),
+      'group' => t('Application roles'),
+    ),
+    'role_app_approved_app' => array(
+      'label' => t('Check for approval'), 
+      'parameter' => array(
+        'webform' => array(
+          'label' => t('Webform'),
+          'type' => 'node',
+        ),
+      ),
+      'group' => t('Application roles'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_rules_action_info.
+ */
+function role_app_rules_action_info() {
+  return array(
+    'application_create_app' => array(
+      'label' => t('Create application'), 
+      'parameter' => array(
+        'user' => array(
+          'type' => 'user',
+          'label' => t('User'),
+        ),
+        'quiz' => array(
+          'type' => 'node',
+          'label' => t('Quiz'),
+        ),
+      ), 
+      'group' => t('Application roles'),
+    ),
+    'application_set_role' => array(
+      'label' => t('Set application role'), 
+      'parameter' => array(
+        'user' => array(
+          'type' => 'user',
+          'label' => t('User'),
+        ),
+        'rid' => array(
+          'type' => 'text',
+          'label' => t('Role ID'),
+        ),
+      ), 
+      'group' => t('Application roles'),
+    ),
+  );
+}
+
+/**
+ * Rules condition handler.
+ */
+function role_app_is_app_quiz($quiz) {
+  $quizzes = (array) _role_app_get_app_quizzes();
+  if (in_array($quiz->nid, $quizzes)) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+/**
+ * Rules condition handler.
+ */
+function role_app_approved_app($webform) {
+  $results = db_query("SELECT wd.data FROM {webform_submitted_data} wd " .
+    "WHERE wd.nid = :nid " .
+    "AND wd.cid = 1", // There is only the one form element.
+    array(':nid' => $webform->nid,));
+  $count = 0;
+  foreach ($results as $result) {
+    if ($result->data == 'approve') {
+      $count++;
+    }
+  }
+  // Total eligable SH evals.
+  $role = !empty($node->field_applied_role_id['und'][0]['value']) ? trim($node->field_applied_role_id['und'][0]['value']) : '_na';
+  $approving = (array) variable_get('role_app_approve_' . $role, '');
+  $approvers = _role_app_get_possible_approvers($webform->uid, $approving);
+  $approvers = count($approvers);
+  $percentage = ($count / $approvers) * 100 ; // Leave with decimals, cause that's valid. Math is like that.
+  watchdog('application', 'Checking approve count for #' . $webform->nid . ', ' . $count . ' in out of possible ' . $approvers . ' reviewers.');
+  // Do we have quorum?
+  if ($percentage > variable_get('application_approval_min', '75')) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+/**
+ * Rules action handler.
+ */
+function role_app_create_app($user, $quiz) {
+  $role = role_app_get_quiz_role($quiz);
+  if (empty($role)) {
+    drupal_set_message(t('No role found for this quiz, the application was not created.', array('@role' => $role)));
+    return;
+  }
+  // Check eligible.
+  $eligible = variable_get('role_app_eligible_' . $role, '');
+  if (!in_array($eligible, array_values($user->roles))) {
+    drupal_set_message(t('You are not eligable for @role, the application was not created.', array('@role' => $role)));
+    return;
+  }
+  $this_role = user_role_load($role);
+  // Create new role_app node.
+  $tid = variable_get('anon_mailer_form', '');
+  $node = new stdClass();
+  $node->title = t('Application: @name for @role', array('@name' => $user->name, '@role' => $this_role->name));
+  $node->body = role_app_get_answers($user, $quiz);
+  $node->type = 'application'; // Your specified content type
+  $node->created = time();
+  $node->changed = $node->created;
+  $node->status = 1; // To have published, else use 0
+  $node->promote = 0; // If you want promoted to front page use 1
+  $node->sticky = 0;
+  $node->format = $format; // Filtered HTML
+  $node->uid = 1; // UID of content owner
+  $node->language = LANGUAGE_NONE;
+  // Mark the role we're applying for.
+  $node->field_applied_role_id['und'][0]['value'] = $role;
+  // Set the forum to post to.
+  $node->taxonomy_forums = $tid;
+  // Save the node.
+  node_save($node);
+  // Add the webform.
+  $node->webform['confirmation'] = t('Thank you!');
+  $node->webform['confirmation_format'] = 'plain_text';
+  $node->webform['submit_limit'] = 1;
+  // Save the node
+  node_save($node);
+  // Set approving roles for users.
+  $record = db_query('DELETE FROM {webform_roles} WHERE nid = :nid', array(':nid' => $node->nid));
+  $approving = (array) variable_get('role_app_approve_' . $role, '');
+  foreach ($approving as $role_name) {
+    $this_role = user_role_load_by_name($role_name);
+    if (!empty($this_role->rid)) {
+      db_insert('webform_roles')->fields(array('nid' => $node->nid, 'rid' => $this_role->rid))->execute();
+    }
+  }
+  // Include the webform module that allows components to be created.
+  module_load_include('inc', 'webform', 'includes/webform.components');
+  // Create the standard webform field for approval.
+  $items = 'approve|' .  t('Yes. I approve this candidate for @role.', array('@role' => $this_role->name)) . "\n" .
+    'disapprove|' . t('No. I would like to see some improvements and have included the details below.');
+  $component = array();
+  $component['nid'] = $node->nid;
+  $component['pid'] = 0;
+  $component['form_key'] = 'approval';
+  $component['name'] = t('Approve');
+  $component['type'] = 'select';
+  $component['mandatory'] = 1;
+  $component['extra'] = array(
+    'description' => '',
+    'items' => $items,
+    'multiple' => '0',
+    'aslist' => '1',
+    );
+  $component['weight'] = 0;
+  webform_component_insert($component);
+  $component = array();
+  $component['nid'] = $node->nid;
+  $component['pid'] = 0;
+  $component['form_key'] = 'comments';
+  $component['name'] = t('Comments');
+  $component['type'] = 'textarea';
+  $component['mandatory'] = 1;
+  $component['extra'] = array(
+    );
+  $component['weight'] = 1;
+  webform_component_insert($component);
+}
+
+/**
+ * Rules action handler.
+ */
+function application_set_role($user, $rid) {
+  user_multiple_role_edit(array($user->uid), 'add_role', $rid);
+}
+
+/**
+ * Get role associated with quiz.
+ */
+function role_app_get_quiz_role($quiz) {
+  $application_roles = (array) variable_get('application_roles', array());
+  foreach ($application_roles as $application_role) {
+    $quizzes = (array) variable_get('role_app_quiz_' . $application_role, '');
+    if (in_array($quiz->nid, $quizzes)) {
+      return $application_role;
+    }
+  }
+  return '';
+}
+
+/**
+ * Helper for rules. Given data, gather the quiz output.
+ */
+function role_app_get_answers($user, $node) {
+  // Find the result ID for this test taken.
+  $uid = $user->uid;
+  $nid = $node->nid;
+  $vid = $node->vid;
+  $results = db_query("SELECT r.result_id FROM {quiz_node_results} r " .
+    "WHERE r.uid = :uid " .
+    "AND r.nid = :nid " .
+    "AND r.vid = :vid " .
+    "ORDER BY r.time_end DESC LIMIT 0,1 ",
+    array(
+    ':uid' => $uid,
+    ':nid' => $nid,
+    ':vid' => $vid,
+    ));
+  $rid = '';
+  foreach ($results as $result) {
+    $rid = $result->result_id;
+  }
+  if (empty($rid)) {
+    drupal_set_message(t('An error was encountered, no result ID able to be found.'));
+    return '';
+  }
+  // Now get the printed out set of answers.
+  $questions = _quiz_get_answers($node, $rid);
+  ksort($questions);
+  $output = '';
+  foreach ($questions as $question_nid => $question) {
+    $q_title = $question->title;
+    $full_question = node_load($question_nid);
+    $q = $full_question->body[$full_question->language][0]['value'];
+    $a = $question->answers[0]['answer'];
+    $output .= '<h3><b>' . $q_title . '</b></h3><p><b>'. $q . '</b></p><p>' . $a . '</p><hr><br/>';
+  }
+  return $output;
+}
+
+/**
+ * Helper function, get possible approvers.
+ */
+function _role_app_get_possible_approvers($applicant, $approving) {
+  $approvers = array();
+  foreach ($approving as $role_name) {
+    $this_role = user_role_load_by_name($role_name);
+    if (!empty($this_role->rid)) {
+      $users = db_query('SELECT uid FROM {users_roles} WHERE rid = :rid', array('rid' => $this_role->rid));
+      foreach ($users as $user) {
+        if ($user->uid != $applicant) { // Don't count the self.
+          $approvers[$user->uid] = $user->uid;
+        }
+      }
+    }
+  }
+  watchdog('application', 'Found ' . count($approvers) . ' approvers.');
+  return $approvers;
+}

@@ -1,0 +1,47 @@
+<?php
+/**
+ * @file
+ * role_app.rules_defaults.inc
+ */
+
+/**
+ * Implements hook_default_rules_configuration().
+ */
+function role_app_default_rules_configuration() {
+  $items = array();
+  $items['rules_role_app_check_webform_submission'] = entity_import('rules_config', '{ "rules_role_app_check_webform_submission" : {
+      "LABEL" : "Role App - Check webform submission",
+      "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
+      "TAGS" : [ "Role App" ],
+      "REQUIRES" : [ "rules", "role_app", "webform_rules" ],
+      "ON" : { "webform_rules_submit" : [] },
+      "IF" : [
+        { "node_is_of_type" : {
+            "node" : [ "node" ],
+            "type" : { "value" : { "application" : "application" } }
+          }
+        },
+        { "NOT data_is_empty" : { "data" : [ "node:field-applied-role-id" ] } },
+        { "role_app_approved_app" : { "webform" : [ "node" ] } }
+      ],
+      "DO" : [
+        { "application_set_role" : { "user" : [ "user" ], "rid" : "[node:field-applied-role-id]" } }
+      ]
+    }
+  }');
+  $items['rules_role_app_create_application'] = entity_import('rules_config', '{ "rules_role_app_create_application" : {
+      "LABEL" : "Role App - Create application",
+      "PLUGIN" : "reaction rule",
+      "OWNER" : "rules",
+      "TAGS" : [ "Role App" ],
+      "REQUIRES" : [ "role_app", "quiz_rules" ],
+      "ON" : { "quiz_rules_quiz_passed" : [] },
+      "IF" : [ { "application_is_app_quiz" : { "quiz" : [ "node" ] } } ],
+      "DO" : [
+        { "application_create_app" : { "user" : [ "user" ], "quiz" : [ "node" ] } }
+      ]
+    }
+  }');
+  return $items;
+}
