@@ -306,26 +306,23 @@ function role_app_create_app($user, $quiz) {
     return;
   }
   // Check eligible.
-  watchdog('debug', 'User ' . print_r($user,1));
-  $eligible = variable_get('role_app_eligible_' . $role, '');
-  if (!in_array($eligible, array_values($user->roles))) {
-    drupal_set_message(t('You are not eligable for @role, the application was not created.', array('@role' => $role)));
+  $this_role = user_role_load($role);
+  if (!in_array($eligible, array_keys($user->roles))) {
+    drupal_set_message(t('You are not eligable for @role, the application was not created.', array('@role' => $this_role->name)));
     return;
   }
-  watchdog('debug', 'Attempting to create application for user #'.$user->uid.' on quiz#' . $quiz->nid . '.');
-  $this_role = user_role_load($role);
   // Create new role_app node.
   $node = new stdClass();
   $node->title = t('Application: @name for @role', array('@name' => $user->name, '@role' => $this_role->name));
   $node->body = role_app_get_answers($user, $quiz);
-  $node->type = 'application'; // Your specified content type
+  $node->type = 'application';
   $node->created = time();
   $node->changed = $node->created;
-  $node->status = 1; // To have published, else use 0
-  $node->promote = 0; // If you want promoted to front page use 1
+  $node->status = 1;
+  $node->promote = 0;
   $node->sticky = 0;
-  $node->format = $format; // Filtered HTML
-  $node->uid = 1; // UID of content owner
+  $node->format = 'wiki';
+  $node->uid = 1;
   $node->language = LANGUAGE_NONE;
   // Mark the role we're applying for.
   $node->field_applied_role_id['und'][0]['value'] = $role;
