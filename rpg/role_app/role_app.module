@@ -307,7 +307,8 @@ function role_app_create_app($user, $quiz) {
   }
   // Check eligible.
   $this_role = user_role_load($role);
-  if (!in_array($eligible, array_keys($user->roles))) {
+  $eligible = variable_get('role_app_eligible_' . $role, '');
+  if (empty($eligible) || !in_array($eligible, array_keys($user->roles))) {
     drupal_set_message(t('You are not eligable for @role, the application was not created.', array('@role' => $this_role->name)));
     return;
   }
