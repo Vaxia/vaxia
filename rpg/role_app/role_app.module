@@ -300,6 +300,7 @@ function role_app_approved_app($webform) {
  * Rules action handler.
  */
 function role_app_create_app($user, $quiz) {
+  watchdog('role_app', 'Attempting to create application for user #'.$user->uid.' on quiz#'.$quiz->nid.'');
   $role = role_app_get_quiz_role($quiz);
   if (empty($role)) {
     drupal_set_message(t('No role found for this quiz, the application was not created.', array('@role' => $role)));
