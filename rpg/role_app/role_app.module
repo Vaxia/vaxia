@@ -288,7 +288,7 @@ function role_app_approved_app($webform) {
   $approvers = _role_app_get_possible_approvers($webform->uid, $approving);
   $approvers = count($approvers);
   $percentage = ($count / $approvers) * 100 ; // Leave with decimals, cause that's valid. Math is like that.
-  watchdog('application', 'Checking approve count for #' . $webform->nid . ', ' . $count . ' in out of possible ' . $approvers . ' reviewers.');
+  watchdog('role_app', 'Checking approve count for #' . $webform->nid . ', ' . $count . ' in out of possible ' . $approvers . ' reviewers.');
   // Do we have quorum?
   if ($percentage > variable_get('application_approval_min', '75')) {
     return TRUE;
@@ -315,7 +315,6 @@ function role_app_create_app($user, $quiz) {
   // Create new role_app node.
   $node = new stdClass();
   $node->title = t('Application: @name for @role', array('@name' => $user->name, '@role' => $this_role->name));
-  $node->body = role_app_get_answers($user, $quiz);
   $node->type = 'application';
   $node->created = time();
   $node->changed = $node->created;
@@ -325,31 +324,28 @@ function role_app_create_app($user, $quiz) {
   $node->format = 'wiki';
   $node->uid = 1;
   $node->language = LANGUAGE_NONE;
-  // Mark the role we're applying for.
-  $node->field_applied_role_id['und'][0]['value'] = $role;
+  // Mark the values we're applying for.
+  $node->body[$node->language][0]['value'] = role_app_get_answers($user, $quiz);
+  $node->body[$node->language][0]['format'] = 'wiki';
+  $node->field_applied_role_id[$node->language][0]['value'] = $role;
   // Save the node.
   node_save($node);
-  watchdog('debug', 'node made');
   // Add the webform.
   $node->webform['confirmation'] = t('Thank you!');
   $node->webform['confirmation_format'] = 'plain_text';
   $node->webform['submit_limit'] = 1;
   // Save the node
   node_save($node);
-  watchdog('debug', 'wf node made');
   // Set approving roles for users.
   $record = db_query('DELETE FROM {webform_roles} WHERE nid = :nid', array(':nid' => $node->nid));
-  $approving = (array) variable_get('role_app_approve_' . $role, '');
-  foreach ($approving as $role_name) {
-    $this_role = user_role_load_by_name($role_name);
-    if (!empty($this_role->rid)) {
-      db_insert('webform_roles')->fields(array('nid' => $node->nid, 'rid' => $this_role->rid))->execute();
+  $approving = variable_get('role_app_approve_' . $role, '');
+  foreach ($approving as $rid) {
+    if (!empty($rid)) {
+      db_insert('webform_roles')->fields(array('nid' => $node->nid, 'rid' => $rid))->execute();
     }
   }
-  watchdog('debug', 'rolls set made');
   // Include the webform module that allows components to be created.
   module_load_include('inc', 'webform', 'includes/webform.components');
-  watchdog('debug', 'wf include made');
   // Create the standard webform field for approval.
   $items = 'approve|' .  t('Yes. I approve this candidate for @role.', array('@role' => $this_role->name)) . "\n" .
     'disapprove|' . t('No. I would like to see some improvements and have included the details below.');
@@ -379,7 +375,6 @@ function role_app_create_app($user, $quiz) {
     );
   $component['weight'] = 1;
   webform_component_insert($component);
-  watchdog('debug', 'wf componsends made');
 }
 
 /**
@@ -471,6 +466,6 @@ function _role_app_get_possible_approvers($applicant, $approving) {
       }
     }
   }
-  watchdog('application', 'Found ' . count($approvers) . ' approvers.');
+  watchdog('role_app', 'Found ' . count($approvers) . ' approvers.');
   return $approvers;
 }
