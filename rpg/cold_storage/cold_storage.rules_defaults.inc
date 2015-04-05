@@ -49,7 +49,7 @@ function cold_storage_default_rules_configuration() {
                   "USING" : { "list" : [ "found-account" ] },
                   "ITEM" : { "account" : "Account" },
                   "DO" : [
-                    { "drupal_message" : { "message" : "Found account \\u0022[account:name]\\u0022 ... The account has been re-activated and a welcome email sent to the last email address associated with the account. Please check your spam and junk folders if you don\\u0027t see that email within the next 30 minutes! If you no longer have access to the old email address or can\\u0027t remember what the address was - please contact us at: http:\\/\\/vaxia.org\\/contact" } },
+                    { "drupal_message" : { "message" : "Found account \\u0022[account:name]\\u0022 ... The account has been re-activated and a welcome email sent to the last email address associated with the account. Please check your spam and junk folders if you don\\u0027t see that email within the next 30 minutes! If you no longer have access to the old email address or can\\u0027t remember what the address was - please contact us directly." } },
                     { "user_unblock" : { "account" : [ "account" ] } }
                   ]
                 }
