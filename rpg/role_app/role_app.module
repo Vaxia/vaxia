@@ -284,8 +284,9 @@ function role_app_approved_app($webform) {
   }
   // Total eligable SH evals.
   $role = !empty($node->field_applied_role_id['und'][0]['value']) ? trim($node->field_applied_role_id['und'][0]['value']) : '_na';
+watchdog('debug', 'role : ' . print_r($role,1));
   $approving = variable_get('role_app_approve_' . $role, '');
-watchdog('debug', print_r($approving,1).' : apprve');
+watchdog('debug', 'approving : ' . print_r($approving,1));
   $approvers = _role_app_get_possible_approvers($webform->uid, $approving);
   $approvers = count($approvers);
   $percentage = ($count / $approvers) * 100 ; // Leave with decimals, cause that's valid. Math is like that.
