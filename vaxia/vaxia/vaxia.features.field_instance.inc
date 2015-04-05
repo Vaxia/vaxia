@@ -242,7 +242,7 @@ function vaxia_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 13,
+        'weight' => 11,
       ),
       'question' => array(
         'label' => 'above',
@@ -272,7 +272,7 @@ function vaxia_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 25,
+      'weight' => 24,
     ),
   );
 
@@ -285,9 +285,8 @@ function vaxia_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'inline',
-        'module' => 'text',
         'settings' => array(),
-        'type' => 'text_default',
+        'type' => 'hidden',
         'weight' => 12,
       ),
       'question' => array(
@@ -318,7 +317,7 @@ function vaxia_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 24,
+      'weight' => 25,
     ),
   );
 
@@ -473,7 +472,7 @@ function vaxia_field_default_field_instances() {
         'module' => 'node_reference',
         'settings' => array(),
         'type' => 'node_reference_default',
-        'weight' => 43,
+        'weight' => 14,
       ),
       'question' => array(
         'label' => 'above',
@@ -663,6 +662,61 @@ function vaxia_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-character_sheet-field_birthday'
+  $field_instances['node-character_sheet-field_birthday'] = array(
+    'bundle' => 'character_sheet',
+    'deleted' => 0,
+    'description' => 'Set the character\'s date of birth (in real world terms) to track the age of the character on the site. Our settings are time-locked to the real life passage of time, if you\'re curious please take a look at the Time article in the wiki for more details.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'date',
+        'settings' => array(
+          'format_type' => 'long',
+          'fromto' => 'both',
+          'multiple_from' => '',
+          'multiple_number' => '',
+          'multiple_to' => '',
+          'show_repeat_rule' => 'show',
+        ),
+        'type' => 'date_default',
+        'weight' => 43,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_birthday',
+    'label' => 'Date of Birth',
+    'required' => 0,
+    'settings' => array(
+      'default_value' => 'strtotime',
+      'default_value2' => 'same',
+      'default_value_code' => '-18 years',
+      'default_value_code2' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'date',
+      'settings' => array(
+        'increment' => 15,
+        'input_format' => 'm/d/Y - g:i:sa',
+        'input_format_custom' => '',
+        'label_position' => 'above',
+        'repeat_collapsed' => 0,
+        'text_parts' => array(),
+        'year_range' => '-3:+3',
+      ),
+      'type' => 'date_text',
+      'weight' => 26,
+    ),
+  );
+
   // Exported field_instance: 'node-character_sheet-field_character_goals'
   $field_instances['node-character_sheet-field_character_goals'] = array(
     'bundle' => 'character_sheet',
@@ -811,7 +865,7 @@ function vaxia_field_default_field_instances() {
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 10,
+        'weight' => 9,
       ),
       'question' => array(
         'label' => 'above',
@@ -1811,7 +1865,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 9,
+        'weight' => 8,
       ),
       'question' => array(
         'label' => 'above',
@@ -1841,7 +1895,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
     'bundle' => 'character_sheet',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'A personal room is intended for a character to roleplay crafting and personal scenes in. It is automatically set to be NOT displayed on the public search. Posts in these rooms will NOT be archived.',
+    'description' => 'A personal room is intended for a character to roleplay crafting and personal scenes in. It is automatically set to be NOT displayed on the public search. Posts in these rooms will NOT be archived. Personal rooms are automatically created once the character is approved.',
     'display' => array(
       'default' => array(
         'label' => 'inline',
@@ -1873,7 +1927,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
         'size' => 60,
       ),
       'type' => 'node_reference_autocomplete',
-      'weight' => 47,
+      'weight' => 27,
     ),
   );
 
@@ -2325,7 +2379,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 7,
+        'weight' => 6,
       ),
       'question' => array(
         'label' => 'above',
@@ -2372,7 +2426,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 6,
+        'weight' => 5,
       ),
       'question' => array(
         'label' => 'above',
@@ -2457,7 +2511,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 11,
+        'weight' => 10,
       ),
       'question' => array(
         'label' => 'above',
@@ -2771,7 +2825,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 8,
+        'weight' => 7,
       ),
       'question' => array(
         'label' => 'above',
@@ -3091,7 +3145,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('A personal room is intended for a character to roleplay crafting and personal scenes in. It is automatically set to be NOT displayed on the public search. Posts in these rooms will NOT be archived.');
+  t('A personal room is intended for a character to roleplay crafting and personal scenes in. It is automatically set to be NOT displayed on the public search. Posts in these rooms will NOT be archived. Personal rooms are automatically created once the character is approved.');
   t('Achivements');
   t('Additional property');
   t('Agility');
@@ -3126,6 +3180,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
   t('Contributes to Health and Constitution.');
   t('Contributes to Presence and Appearance.');
   t('Currently wearing');
+  t('Date of Birth');
   t('Default Post Background');
   t('Default Post Color #');
   t('Description');
@@ -3175,6 +3230,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
   t('SH Notes');
   t('SH Public information');
   t('SH provided public information about your character.');
+  t('Set the character\'s date of birth (in real world terms) to track the age of the character on the site. Our settings are time-locked to the real life passage of time, if you\'re curious please take a look at the Time article in the wiki for more details.');
   t('Sirian Species');
   t('Skill');
   t('Skill Review (tmp)');

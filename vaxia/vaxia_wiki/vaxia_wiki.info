@@ -13,6 +13,7 @@ dependencies[] = flag
 dependencies[] = nodereferrer
 dependencies[] = options
 dependencies[] = rules
+dependencies[] = site_wiki
 dependencies[] = taxonomy
 dependencies[] = views
 features[ctools][] = field_group:field_group:1

@@ -36,51 +36,16 @@ function sh_test_views_default_views() {
   $handler->display->display_options['pager']['options']['quantity'] = '9';
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
-    'field_titles' => 'field_titles',
     'name' => 'name',
-    'title_1' => 'name',
-    'field_artwork_image' => 'name',
-    'access' => 'access',
     'title' => 'title',
-    'value' => 'title',
-    'field_took_ash1' => 'field_took_ash1',
-    'field_took_ash2' => 'field_took_ash1',
-    'field_took_ash3' => 'field_took_ash1',
-    'field_took_eval_test' => 'field_took_ash1',
-    'field_became_evaluator' => 'field_took_ash1',
-    'field_became_sh' => 'field_took_ash1',
+    'field_session_held' => 'field_session_held',
+    'field_characters_involved' => 'field_characters_involved',
+    'body' => 'body',
+    'field_rate_session' => 'field_rate_session',
   );
-  $handler->display->display_options['style_options']['default'] = 'name';
+  $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
-    'field_titles' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
     'name' => array(
-      'sortable' => 1,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '</br>',
-      'empty_column' => 0,
-    ),
-    'title_1' => array(
-      'sortable' => 1,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_artwork_image' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'access' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -94,49 +59,26 @@ function sh_test_views_default_views() {
       'separator' => '</br>',
       'empty_column' => 0,
     ),
-    'value' => array(
+    'field_session_held' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_characters_involved' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'body' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
-    'field_took_ash1' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '</br>',
-      'empty_column' => 0,
-    ),
-    'field_took_ash2' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_took_ash3' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_took_eval_test' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_became_evaluator' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_became_sh' => array(
+    'field_rate_session' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',

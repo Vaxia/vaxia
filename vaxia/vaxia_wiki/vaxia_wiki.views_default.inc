@@ -1770,23 +1770,23 @@ function vaxia_wiki_views_default_views() {
 
   $view = new view();
   $view->name = 'vaxia_wiki_search';
-  $view->description = 'Site wiki listings for wiki articles';
-  $view->tag = 'Vaxia Wiki';
+  $view->description = 'Wiki search';
+  $view->tag = 'Wiki';
   $view->base_table = 'node';
-  $view->human_name = 'Vaxia wiki search';
+  $view->human_name = 'Wiki search';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Vaxia wiki search';
+  $handler->display->display_options['title'] = 'Wiki search';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'perm';
-  $handler->display->display_options['access']['perm'] = 'administer nodes';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'input_required';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Search';
   $handler->display->display_options['exposed_form']['options']['reset_button'] = TRUE;
   $handler->display->display_options['exposed_form']['options']['text_input_required'] = '';
   $handler->display->display_options['exposed_form']['options']['text_input_required_format'] = 'wiki';
@@ -1856,6 +1856,19 @@ function vaxia_wiki_views_default_views() {
       'empty_column' => 0,
     ),
   );
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['empty'] = TRUE;
+  $handler->display->display_options['header']['area']['content'] = '<style>
+.view-display-id-wiki_search {border:1px solid;padding:0.5em}
+.view-display-id-wiki_search .views-exposed-widget{float:left;}
+.view-display-id-wiki_search .views-exposed-widget input.form-text{width:80px;}
+.view-display-id-wiki_search .views-submit-button{clear:left;}
+</style>
+Search for a wiki article by tag(s).';
+  $handler->display->display_options['header']['area']['format'] = 'full_html';
   /* Relationship: Book: Top level book */
   $handler->display->display_options['relationships']['bid']['id'] = 'bid';
   $handler->display->display_options['relationships']['bid']['table'] = 'book';
@@ -2072,7 +2085,6 @@ function vaxia_wiki_views_default_views() {
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = '1';
   $handler->display->display_options['filters']['status']['group'] = 1;
-  $handler->display->display_options['filters']['status']['exposed'] = TRUE;
   $handler->display->display_options['filters']['status']['expose']['operator_id'] = '';
   $handler->display->display_options['filters']['status']['expose']['label'] = 'Published';
   $handler->display->display_options['filters']['status']['expose']['operator'] = 'status_op';
@@ -2148,6 +2160,46 @@ function vaxia_wiki_views_default_views() {
     22 => 0,
     23 => 0,
   );
+  /* Filter criterion: Content: Body (body) */
+  $handler->display->display_options['filters']['body_value']['id'] = 'body_value';
+  $handler->display->display_options['filters']['body_value']['table'] = 'field_data_body';
+  $handler->display->display_options['filters']['body_value']['field'] = 'body_value';
+  $handler->display->display_options['filters']['body_value']['operator'] = 'contains';
+  $handler->display->display_options['filters']['body_value']['group'] = 1;
+  $handler->display->display_options['filters']['body_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['body_value']['expose']['operator_id'] = 'body_value_op';
+  $handler->display->display_options['filters']['body_value']['expose']['label'] = 'Content';
+  $handler->display->display_options['filters']['body_value']['expose']['operator'] = 'body_value_op';
+  $handler->display->display_options['filters']['body_value']['expose']['identifier'] = 'body_value';
+  $handler->display->display_options['filters']['body_value']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['body_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    30 => 0,
+    8 => 0,
+    9 => 0,
+    14 => 0,
+    21 => 0,
+    24 => 0,
+    26 => 0,
+    27 => 0,
+    19 => 0,
+    28 => 0,
+    29 => 0,
+    12 => 0,
+    25 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    20 => 0,
+    22 => 0,
+    23 => 0,
+    31 => 0,
+    32 => 0,
+    33 => 0,
+  );
   /* Filter criterion: Content: Categories (field_additional_tagging) */
   $handler->display->display_options['filters']['field_additional_tagging_tid']['id'] = 'field_additional_tagging_tid';
   $handler->display->display_options['filters']['field_additional_tagging_tid']['table'] = 'field_data_field_additional_tagging';
@@ -2157,9 +2209,9 @@ function vaxia_wiki_views_default_views() {
   $handler->display->display_options['filters']['field_additional_tagging_tid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_additional_tagging_tid']['expose']['operator_id'] = 'field_additional_tagging_tid_op';
   $handler->display->display_options['filters']['field_additional_tagging_tid']['expose']['label'] = 'Category';
-  $handler->display->display_options['filters']['field_additional_tagging_tid']['expose']['use_operator'] = TRUE;
   $handler->display->display_options['filters']['field_additional_tagging_tid']['expose']['operator'] = 'field_additional_tagging_tid_op';
   $handler->display->display_options['filters']['field_additional_tagging_tid']['expose']['identifier'] = 'field_additional_tagging_tid';
+  $handler->display->display_options['filters']['field_additional_tagging_tid']['expose']['remember'] = TRUE;
   $handler->display->display_options['filters']['field_additional_tagging_tid']['expose']['multiple'] = TRUE;
   $handler->display->display_options['filters']['field_additional_tagging_tid']['expose']['remember_roles'] = array(
     2 => '2',
@@ -2187,8 +2239,10 @@ function vaxia_wiki_views_default_views() {
     23 => 0,
     31 => 0,
     32 => 0,
+    33 => 0,
   );
   $handler->display->display_options['filters']['field_additional_tagging_tid']['vocabulary'] = 'wiki_tags';
+  $handler->display->display_options['filters']['field_additional_tagging_tid']['error_message'] = FALSE;
   /* Filter criterion: Content: Department (field_tag_department) */
   $handler->display->display_options['filters']['field_tag_department_tid']['id'] = 'field_tag_department_tid';
   $handler->display->display_options['filters']['field_tag_department_tid']['table'] = 'field_data_field_tag_department';
@@ -2197,9 +2251,9 @@ function vaxia_wiki_views_default_views() {
   $handler->display->display_options['filters']['field_tag_department_tid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_tag_department_tid']['expose']['operator_id'] = 'field_tag_department_tid_op';
   $handler->display->display_options['filters']['field_tag_department_tid']['expose']['label'] = 'Department';
-  $handler->display->display_options['filters']['field_tag_department_tid']['expose']['use_operator'] = TRUE;
   $handler->display->display_options['filters']['field_tag_department_tid']['expose']['operator'] = 'field_tag_department_tid_op';
   $handler->display->display_options['filters']['field_tag_department_tid']['expose']['identifier'] = 'field_tag_department_tid';
+  $handler->display->display_options['filters']['field_tag_department_tid']['expose']['remember'] = TRUE;
   $handler->display->display_options['filters']['field_tag_department_tid']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -2226,9 +2280,11 @@ function vaxia_wiki_views_default_views() {
     23 => 0,
     31 => 0,
     32 => 0,
+    33 => 0,
   );
   $handler->display->display_options['filters']['field_tag_department_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_tag_department_tid']['vocabulary'] = 'department';
+  $handler->display->display_options['filters']['field_tag_department_tid']['error_message'] = FALSE;
   /* Filter criterion: Content: Realm (field_tag_realm) */
   $handler->display->display_options['filters']['field_tag_realm_tid']['id'] = 'field_tag_realm_tid';
   $handler->display->display_options['filters']['field_tag_realm_tid']['table'] = 'field_data_field_tag_realm';
@@ -2237,9 +2293,9 @@ function vaxia_wiki_views_default_views() {
   $handler->display->display_options['filters']['field_tag_realm_tid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['operator_id'] = 'field_tag_realm_tid_op';
   $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['label'] = 'Realm';
-  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['use_operator'] = TRUE;
   $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['operator'] = 'field_tag_realm_tid_op';
   $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['identifier'] = 'field_tag_realm_tid';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['remember'] = TRUE;
   $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -2266,9 +2322,11 @@ function vaxia_wiki_views_default_views() {
     23 => 0,
     31 => 0,
     32 => 0,
+    33 => 0,
   );
   $handler->display->display_options['filters']['field_tag_realm_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_tag_realm_tid']['vocabulary'] = 'realm';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['error_message'] = FALSE;
   /* Filter criterion: Content: Type (field_tag_type) */
   $handler->display->display_options['filters']['field_tag_type_tid']['id'] = 'field_tag_type_tid';
   $handler->display->display_options['filters']['field_tag_type_tid']['table'] = 'field_data_field_tag_type';
@@ -2277,9 +2335,9 @@ function vaxia_wiki_views_default_views() {
   $handler->display->display_options['filters']['field_tag_type_tid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_tag_type_tid']['expose']['operator_id'] = 'field_tag_type_tid_op';
   $handler->display->display_options['filters']['field_tag_type_tid']['expose']['label'] = 'Type';
-  $handler->display->display_options['filters']['field_tag_type_tid']['expose']['use_operator'] = TRUE;
   $handler->display->display_options['filters']['field_tag_type_tid']['expose']['operator'] = 'field_tag_type_tid_op';
   $handler->display->display_options['filters']['field_tag_type_tid']['expose']['identifier'] = 'field_tag_type_tid';
+  $handler->display->display_options['filters']['field_tag_type_tid']['expose']['remember'] = TRUE;
   $handler->display->display_options['filters']['field_tag_type_tid']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -2306,9 +2364,11 @@ function vaxia_wiki_views_default_views() {
     23 => 0,
     31 => 0,
     32 => 0,
+    33 => 0,
   );
   $handler->display->display_options['filters']['field_tag_type_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_tag_type_tid']['vocabulary'] = 'setting_type';
+  $handler->display->display_options['filters']['field_tag_type_tid']['error_message'] = FALSE;
   /* Filter criterion: Content: Location Type (field_tag_location) */
   $handler->display->display_options['filters']['field_tag_location_tid']['id'] = 'field_tag_location_tid';
   $handler->display->display_options['filters']['field_tag_location_tid']['table'] = 'field_data_field_tag_location';
@@ -2317,9 +2377,9 @@ function vaxia_wiki_views_default_views() {
   $handler->display->display_options['filters']['field_tag_location_tid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_tag_location_tid']['expose']['operator_id'] = 'field_tag_location_tid_op';
   $handler->display->display_options['filters']['field_tag_location_tid']['expose']['label'] = 'Location';
-  $handler->display->display_options['filters']['field_tag_location_tid']['expose']['use_operator'] = TRUE;
   $handler->display->display_options['filters']['field_tag_location_tid']['expose']['operator'] = 'field_tag_location_tid_op';
   $handler->display->display_options['filters']['field_tag_location_tid']['expose']['identifier'] = 'field_tag_location_tid';
+  $handler->display->display_options['filters']['field_tag_location_tid']['expose']['remember'] = TRUE;
   $handler->display->display_options['filters']['field_tag_location_tid']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -2346,52 +2406,15 @@ function vaxia_wiki_views_default_views() {
     23 => 0,
     31 => 0,
     32 => 0,
+    33 => 0,
   );
   $handler->display->display_options['filters']['field_tag_location_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_tag_location_tid']['vocabulary'] = 'location_depth';
-  /* Filter criterion: Content: Title */
-  $handler->display->display_options['filters']['title_1']['id'] = 'title_1';
-  $handler->display->display_options['filters']['title_1']['table'] = 'node';
-  $handler->display->display_options['filters']['title_1']['field'] = 'title';
-  $handler->display->display_options['filters']['title_1']['relationship'] = 'bid';
-  $handler->display->display_options['filters']['title_1']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['title_1']['expose']['operator_id'] = 'title_1_op';
-  $handler->display->display_options['filters']['title_1']['expose']['label'] = 'In book';
-  $handler->display->display_options['filters']['title_1']['expose']['use_operator'] = TRUE;
-  $handler->display->display_options['filters']['title_1']['expose']['operator'] = 'title_1_op';
-  $handler->display->display_options['filters']['title_1']['expose']['identifier'] = 'title_1';
-  $handler->display->display_options['filters']['title_1']['expose']['remember'] = TRUE;
-  $handler->display->display_options['filters']['title_1']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    3 => 0,
-    30 => 0,
-    8 => 0,
-    9 => 0,
-    14 => 0,
-    21 => 0,
-    24 => 0,
-    26 => 0,
-    27 => 0,
-    19 => 0,
-    28 => 0,
-    29 => 0,
-    12 => 0,
-    25 => 0,
-    13 => 0,
-    10 => 0,
-    17 => 0,
-    15 => 0,
-    20 => 0,
-    22 => 0,
-    23 => 0,
-    31 => 0,
-    32 => 0,
-  );
+  $handler->display->display_options['filters']['field_tag_location_tid']['error_message'] = FALSE;
 
-  /* Display: Vaxia wiki search */
-  $handler = $view->new_display('block', 'Vaxia wiki search', 'vaxia_wiki_search');
-  $handler->display->display_options['display_description'] = 'Vaxia wiki search';
+  /* Display: Wiki search block */
+  $handler = $view->new_display('block', 'Wiki search block', 'wiki_search_block');
+  $handler->display->display_options['display_description'] = 'Wiki search block';
   $handler->display->display_options['defaults']['use_ajax'] = FALSE;
   $handler->display->display_options['use_ajax'] = TRUE;
   $handler->display->display_options['defaults']['access'] = FALSE;
@@ -2401,6 +2424,8 @@ function vaxia_wiki_views_default_views() {
   $handler->display->display_options['query']['options']['distinct'] = TRUE;
   $handler->display->display_options['defaults']['exposed_form'] = FALSE;
   $handler->display->display_options['exposed_form']['type'] = 'input_required';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Search';
+  $handler->display->display_options['exposed_form']['options']['reset_button'] = TRUE;
   $handler->display->display_options['exposed_form']['options']['expose_sort_order'] = FALSE;
   $handler->display->display_options['exposed_form']['options']['text_input_required'] = '';
   $handler->display->display_options['exposed_form']['options']['text_input_required_format'] = 'wiki';
@@ -2415,19 +2440,6 @@ function vaxia_wiki_views_default_views() {
   );
   $handler->display->display_options['row_options']['separator'] = ' - ';
   $handler->display->display_options['defaults']['row_options'] = FALSE;
-  $handler->display->display_options['defaults']['header'] = FALSE;
-  /* Header: Global: Text area */
-  $handler->display->display_options['header']['area']['id'] = 'area';
-  $handler->display->display_options['header']['area']['table'] = 'views';
-  $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['empty'] = TRUE;
-  $handler->display->display_options['header']['area']['content'] = '<style>
-#block-views-wiki-admin-content-wiki-search .view-wiki-admin-content{border:1px solid;padding:0.5em}
-#views-exposed-form-wiki-admin-content-wiki-search .views-exposed-widgets .views-exposed-widget{float:left;}
-#views-exposed-form-wiki-admin-content-wiki-search .views-exposed-widgets .views-exposed-widget input.form-text{width:80px;}
-</style>
-Search for a wiki article by tag(s).';
-  $handler->display->display_options['header']['area']['format'] = 'full_html';
   $handler->display->display_options['defaults']['empty'] = FALSE;
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['area']['id'] = 'area';
@@ -2460,7 +2472,18 @@ Search for a wiki article by tag(s).';
   $handler->display->display_options['sorts']['changed']['table'] = 'node';
   $handler->display->display_options['sorts']['changed']['field'] = 'changed';
   $handler->display->display_options['sorts']['changed']['order'] = 'DESC';
-  $handler->display->display_options['block_description'] = 'Vaxia wiki search';
+  $handler->display->display_options['block_description'] = 'Wiki search';
+
+  /* Display: Wiki search */
+  $handler = $view->new_display('page', 'Wiki search', 'wiki_search');
+  $handler->display->display_options['display_description'] = 'Wiki search';
+  $handler->display->display_options['path'] = 'search/wiki';
+  $handler->display->display_options['menu']['type'] = 'tab';
+  $handler->display->display_options['menu']['title'] = 'Wiki search';
+  $handler->display->display_options['menu']['description'] = 'Wiki search';
+  $handler->display->display_options['menu']['weight'] = '10';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
   $export['vaxia_wiki_search'] = $view;
 
   $view = new view();
@@ -2484,6 +2507,7 @@ Search for a wiki article by tag(s).';
   $handler->display->display_options['cache']['output_lifespan'] = '3600';
   $handler->display->display_options['cache']['output_lifespan_custom'] = '0';
   $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['query']['options']['disable_sql_rewrite'] = TRUE;
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '100';

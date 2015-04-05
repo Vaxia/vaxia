@@ -12,10 +12,10 @@ function vaxia_players_views_default_views() {
 
   $view = new view();
   $view->name = 'tolex_power_search';
-  $view->description = 'Power Search for RP on site';
-  $view->tag = 'Vaxia Players';
+  $view->description = 'Power search';
+  $view->tag = 'Power search';
   $view->base_table = 'comment';
-  $view->human_name = 'Tolex Power Search';
+  $view->human_name = 'Power search';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
@@ -24,14 +24,12 @@ function vaxia_players_views_default_views() {
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['title'] = 'Tolex Power Search';
   $handler->display->display_options['use_more_always'] = FALSE;
-  $handler->display->display_options['access']['type'] = 'role';
-  $handler->display->display_options['access']['role'] = array(
-    8 => '8',
-  );
+  $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['query']['options']['disable_sql_rewrite'] = TRUE;
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Search';
   $handler->display->display_options['exposed_form']['options']['reset_button'] = TRUE;
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '35';
@@ -93,8 +91,21 @@ function vaxia_players_views_default_views() {
   $handler->display->display_options['header']['area']['id'] = 'area';
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['content'] = 'This search feature does NOT include posts from rooms that are set to private or mature.';
-  $handler->display->display_options['header']['area']['format'] = 'wiki';
+  $handler->display->display_options['header']['area']['empty'] = TRUE;
+  $handler->display->display_options['header']['area']['content'] = '<style>
+.view-tolex-power-search .views-exposed-form{border:1px solid;padding:0.5em}
+.view-tolex-power-search .views-exposed-widget{float:left;}
+.view-tolex-power-search .views-exposed-widget input.form-text{width:80px;}
+.view-tolex-power-search .views-submit-button{clear:left;}
+</style>';
+  $handler->display->display_options['header']['area']['format'] = 'full_html';
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area_1']['id'] = 'area_1';
+  $handler->display->display_options['header']['area_1']['table'] = 'views';
+  $handler->display->display_options['header']['area_1']['field'] = 'area';
+  $handler->display->display_options['header']['area_1']['empty'] = TRUE;
+  $handler->display->display_options['header']['area_1']['content'] = 'This search feature does NOT include posts from rooms that are set to private or mature.';
+  $handler->display->display_options['header']['area_1']['format'] = 'plain_text';
   /* Relationship: Comment: Content */
   $handler->display->display_options['relationships']['nid']['id'] = 'nid';
   $handler->display->display_options['relationships']['nid']['table'] = 'comment';
@@ -256,7 +267,6 @@ function vaxia_players_views_default_views() {
   $handler->display->display_options['filters']['title_1']['exposed'] = TRUE;
   $handler->display->display_options['filters']['title_1']['expose']['operator_id'] = 'title_1_op';
   $handler->display->display_options['filters']['title_1']['expose']['label'] = 'Character';
-  $handler->display->display_options['filters']['title_1']['expose']['use_operator'] = TRUE;
   $handler->display->display_options['filters']['title_1']['expose']['operator'] = 'title_1_op';
   $handler->display->display_options['filters']['title_1']['expose']['identifier'] = 'title_1';
   $handler->display->display_options['filters']['title_1']['expose']['remember'] = TRUE;
@@ -264,12 +274,69 @@ function vaxia_players_views_default_views() {
     2 => '2',
     1 => 0,
     3 => 0,
+    30 => 0,
     8 => 0,
     9 => 0,
+    14 => 0,
+    21 => 0,
+    24 => 0,
+    26 => 0,
+    27 => 0,
+    19 => 0,
+    28 => 0,
+    29 => 0,
+    12 => 0,
+    25 => 0,
+    13 => 0,
     10 => 0,
-    7 => 0,
-    4 => 0,
-    11 => 0,
+    17 => 0,
+    15 => 0,
+    20 => 0,
+    22 => 0,
+    23 => 0,
+    31 => 0,
+    32 => 0,
+    33 => 0,
+  );
+  /* Filter criterion: Comment: Comment (comment_body) */
+  $handler->display->display_options['filters']['comment_body_value']['id'] = 'comment_body_value';
+  $handler->display->display_options['filters']['comment_body_value']['table'] = 'field_data_comment_body';
+  $handler->display->display_options['filters']['comment_body_value']['field'] = 'comment_body_value';
+  $handler->display->display_options['filters']['comment_body_value']['operator'] = 'contains';
+  $handler->display->display_options['filters']['comment_body_value']['group'] = 1;
+  $handler->display->display_options['filters']['comment_body_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['comment_body_value']['expose']['operator_id'] = 'comment_body_value_op';
+  $handler->display->display_options['filters']['comment_body_value']['expose']['label'] = 'Content';
+  $handler->display->display_options['filters']['comment_body_value']['expose']['operator'] = 'comment_body_value_op';
+  $handler->display->display_options['filters']['comment_body_value']['expose']['identifier'] = 'comment_body_value';
+  $handler->display->display_options['filters']['comment_body_value']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['comment_body_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    30 => 0,
+    8 => 0,
+    9 => 0,
+    14 => 0,
+    21 => 0,
+    24 => 0,
+    26 => 0,
+    27 => 0,
+    19 => 0,
+    28 => 0,
+    29 => 0,
+    12 => 0,
+    25 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    20 => 0,
+    22 => 0,
+    23 => 0,
+    31 => 0,
+    32 => 0,
+    33 => 0,
   );
   /* Filter criterion: User: Name */
   $handler->display->display_options['filters']['uid']['id'] = 'uid';
@@ -347,38 +414,14 @@ function vaxia_players_views_default_views() {
     23 => 0,
     31 => 0,
   );
-  /* Filter criterion: Comment: Comment (comment_body) */
-  $handler->display->display_options['filters']['comment_body_value']['id'] = 'comment_body_value';
-  $handler->display->display_options['filters']['comment_body_value']['table'] = 'field_data_comment_body';
-  $handler->display->display_options['filters']['comment_body_value']['field'] = 'comment_body_value';
-  $handler->display->display_options['filters']['comment_body_value']['operator'] = 'contains';
-  $handler->display->display_options['filters']['comment_body_value']['group'] = 1;
-  $handler->display->display_options['filters']['comment_body_value']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['comment_body_value']['expose']['operator_id'] = 'comment_body_value_op';
-  $handler->display->display_options['filters']['comment_body_value']['expose']['label'] = 'Comment text contains';
-  $handler->display->display_options['filters']['comment_body_value']['expose']['operator'] = 'comment_body_value_op';
-  $handler->display->display_options['filters']['comment_body_value']['expose']['identifier'] = 'comment_body_value';
-  $handler->display->display_options['filters']['comment_body_value']['expose']['remember'] = TRUE;
-  $handler->display->display_options['filters']['comment_body_value']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    3 => 0,
-    8 => 0,
-    9 => 0,
-    10 => 0,
-    6 => 0,
-    7 => 0,
-    5 => 0,
-    4 => 0,
-  );
 
   /* Display: Power Search */
-  $handler = $view->new_display('page', 'Power Search', 'power_search');
-  $handler->display->display_options['path'] = 'power-search-archive/search';
+  $handler = $view->new_display('page', 'Power Search', 'search');
+  $handler->display->display_options['path'] = 'search/search';
   $handler->display->display_options['menu']['type'] = 'default tab';
   $handler->display->display_options['menu']['title'] = 'Power search';
   $handler->display->display_options['menu']['description'] = 'Power search';
-  $handler->display->display_options['menu']['weight'] = '100';
+  $handler->display->display_options['menu']['weight'] = '0';
   $handler->display->display_options['menu']['name'] = 'menu-vaxia';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
@@ -401,8 +444,22 @@ function vaxia_players_views_default_views() {
   $handler->display->display_options['header']['area']['id'] = 'area';
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['content'] = 'This search page is the UNFILTERED lead only search so we can monitor all posts.';
-  $handler->display->display_options['header']['area']['format'] = 'wiki';
+  $handler->display->display_options['header']['area']['empty'] = TRUE;
+  $handler->display->display_options['header']['area']['content'] = '<style>
+.view-tolex-power-search .views-exposed-form{border:1px solid;padding:0.5em}
+.view-tolex-power-search .views-exposed-widget{float:left;}
+.view-tolex-power-search .views-exposed-widget input.form-text{width:80px;}
+.view-tolex-power-search .views-submit-button{clear:left;}
+</style>';
+  $handler->display->display_options['header']['area']['format'] = 'full_html';
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area_1']['id'] = 'area_1';
+  $handler->display->display_options['header']['area_1']['table'] = 'views';
+  $handler->display->display_options['header']['area_1']['field'] = 'area';
+  $handler->display->display_options['header']['area_1']['empty'] = TRUE;
+  $handler->display->display_options['header']['area_1']['content'] = 'This search page is the UNFILTERED lead only search so we can monitor all posts.';
+  $handler->display->display_options['header']['area_1']['format'] = 'wiki';
+  $handler->display->display_options['defaults']['footer'] = FALSE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Comment: Approved */
@@ -481,7 +538,6 @@ function vaxia_players_views_default_views() {
   $handler->display->display_options['filters']['title_1']['exposed'] = TRUE;
   $handler->display->display_options['filters']['title_1']['expose']['operator_id'] = 'title_1_op';
   $handler->display->display_options['filters']['title_1']['expose']['label'] = 'Character';
-  $handler->display->display_options['filters']['title_1']['expose']['use_operator'] = TRUE;
   $handler->display->display_options['filters']['title_1']['expose']['operator'] = 'title_1_op';
   $handler->display->display_options['filters']['title_1']['expose']['identifier'] = 'title_1';
   $handler->display->display_options['filters']['title_1']['expose']['remember'] = TRUE;
@@ -489,30 +545,7 @@ function vaxia_players_views_default_views() {
     2 => '2',
     1 => 0,
     3 => 0,
-    8 => 0,
-    9 => 0,
-    10 => 0,
-    7 => 0,
-    4 => 0,
-    11 => 0,
-  );
-  /* Filter criterion: User: Name */
-  $handler->display->display_options['filters']['uid']['id'] = 'uid';
-  $handler->display->display_options['filters']['uid']['table'] = 'users';
-  $handler->display->display_options['filters']['uid']['field'] = 'uid';
-  $handler->display->display_options['filters']['uid']['relationship'] = 'uid';
-  $handler->display->display_options['filters']['uid']['value'] = '';
-  $handler->display->display_options['filters']['uid']['group'] = 1;
-  $handler->display->display_options['filters']['uid']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['uid']['expose']['operator_id'] = 'uid_op';
-  $handler->display->display_options['filters']['uid']['expose']['label'] = 'Player';
-  $handler->display->display_options['filters']['uid']['expose']['operator'] = 'uid_op';
-  $handler->display->display_options['filters']['uid']['expose']['identifier'] = 'uid';
-  $handler->display->display_options['filters']['uid']['expose']['remember'] = TRUE;
-  $handler->display->display_options['filters']['uid']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    3 => 0,
+    30 => 0,
     8 => 0,
     9 => 0,
     14 => 0,
@@ -532,6 +565,91 @@ function vaxia_players_views_default_views() {
     20 => 0,
     22 => 0,
     23 => 0,
+    31 => 0,
+    32 => 0,
+    33 => 0,
+  );
+  /* Filter criterion: Comment: Comment (comment_body) */
+  $handler->display->display_options['filters']['comment_body_value']['id'] = 'comment_body_value';
+  $handler->display->display_options['filters']['comment_body_value']['table'] = 'field_data_comment_body';
+  $handler->display->display_options['filters']['comment_body_value']['field'] = 'comment_body_value';
+  $handler->display->display_options['filters']['comment_body_value']['operator'] = 'contains';
+  $handler->display->display_options['filters']['comment_body_value']['group'] = 1;
+  $handler->display->display_options['filters']['comment_body_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['comment_body_value']['expose']['operator_id'] = 'comment_body_value_op';
+  $handler->display->display_options['filters']['comment_body_value']['expose']['label'] = 'Content';
+  $handler->display->display_options['filters']['comment_body_value']['expose']['operator'] = 'comment_body_value_op';
+  $handler->display->display_options['filters']['comment_body_value']['expose']['identifier'] = 'comment_body_value';
+  $handler->display->display_options['filters']['comment_body_value']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['comment_body_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    30 => 0,
+    8 => 0,
+    9 => 0,
+    14 => 0,
+    21 => 0,
+    24 => 0,
+    26 => 0,
+    27 => 0,
+    19 => 0,
+    28 => 0,
+    29 => 0,
+    12 => 0,
+    25 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    20 => 0,
+    22 => 0,
+    23 => 0,
+    31 => 0,
+    32 => 0,
+    33 => 0,
+  );
+  /* Filter criterion: User: Name */
+  $handler->display->display_options['filters']['uid']['id'] = 'uid';
+  $handler->display->display_options['filters']['uid']['table'] = 'users';
+  $handler->display->display_options['filters']['uid']['field'] = 'uid';
+  $handler->display->display_options['filters']['uid']['relationship'] = 'uid';
+  $handler->display->display_options['filters']['uid']['value'] = '';
+  $handler->display->display_options['filters']['uid']['group'] = 1;
+  $handler->display->display_options['filters']['uid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['uid']['expose']['operator_id'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['label'] = 'Player';
+  $handler->display->display_options['filters']['uid']['expose']['description'] = ' ';
+  $handler->display->display_options['filters']['uid']['expose']['operator'] = 'uid_op';
+  $handler->display->display_options['filters']['uid']['expose']['identifier'] = 'uid';
+  $handler->display->display_options['filters']['uid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['uid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    30 => 0,
+    8 => 0,
+    9 => 0,
+    14 => 0,
+    21 => 0,
+    24 => 0,
+    26 => 0,
+    27 => 0,
+    19 => 0,
+    28 => 0,
+    29 => 0,
+    12 => 0,
+    25 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    20 => 0,
+    22 => 0,
+    23 => 0,
+    31 => 0,
+    32 => 0,
+    33 => 0,
   );
   /* Filter criterion: Comment: Post date */
   $handler->display->display_options['filters']['created']['id'] = 'created';
@@ -572,31 +690,7 @@ function vaxia_players_views_default_views() {
     23 => 0,
     31 => 0,
   );
-  /* Filter criterion: Comment: Comment (comment_body) */
-  $handler->display->display_options['filters']['comment_body_value']['id'] = 'comment_body_value';
-  $handler->display->display_options['filters']['comment_body_value']['table'] = 'field_data_comment_body';
-  $handler->display->display_options['filters']['comment_body_value']['field'] = 'comment_body_value';
-  $handler->display->display_options['filters']['comment_body_value']['operator'] = 'contains';
-  $handler->display->display_options['filters']['comment_body_value']['group'] = 1;
-  $handler->display->display_options['filters']['comment_body_value']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['comment_body_value']['expose']['operator_id'] = 'comment_body_value_op';
-  $handler->display->display_options['filters']['comment_body_value']['expose']['label'] = 'Comment text contains';
-  $handler->display->display_options['filters']['comment_body_value']['expose']['operator'] = 'comment_body_value_op';
-  $handler->display->display_options['filters']['comment_body_value']['expose']['identifier'] = 'comment_body_value';
-  $handler->display->display_options['filters']['comment_body_value']['expose']['remember'] = TRUE;
-  $handler->display->display_options['filters']['comment_body_value']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    3 => 0,
-    8 => 0,
-    9 => 0,
-    10 => 0,
-    6 => 0,
-    7 => 0,
-    5 => 0,
-    4 => 0,
-  );
-  $handler->display->display_options['path'] = 'power-search-archive/unfiltered';
+  $handler->display->display_options['path'] = 'search/unfiltered';
   $handler->display->display_options['menu']['type'] = 'tab';
   $handler->display->display_options['menu']['title'] = 'Unfiltered search';
   $handler->display->display_options['menu']['description'] = 'Unfiltered search';
