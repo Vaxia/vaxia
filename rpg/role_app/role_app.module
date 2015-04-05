@@ -290,7 +290,7 @@ function role_app_approved_app($webform) {
   $percentage = ($count / $approvers) * 100 ; // Leave with decimals, cause that's valid. Math is like that.
   watchdog('role_app', 'Checking approve count for #' . $webform->nid . ', ' . $count . ' in out of possible ' . $approvers . ' reviewers.');
   // Do we have quorum?
-  if ($percentage > variable_get('application_approval_min', '75')) {
+  if ($percentage >= variable_get('application_approval_min', '75')) {
     return TRUE;
   }
   return FALSE;
@@ -455,10 +455,9 @@ function role_app_get_answers($user, $node) {
  */
 function _role_app_get_possible_approvers($applicant, $approving) {
   $approvers = array();
-  foreach ($approving as $role_name) {
-    $this_role = user_role_load_by_name($role_name);
-    if (!empty($this_role->rid)) {
-      $users = db_query('SELECT uid FROM {users_roles} WHERE rid = :rid', array('rid' => $this_role->rid));
+  foreach ($approving as $rid) {
+    if (!empty($rid)) {
+      $users = db_query('SELECT uid FROM {users_roles} WHERE rid = :rid', array('rid' => $rid));
       foreach ($users as $user) {
         if ($user->uid != $applicant) { // Don't count the self.
           $approvers[$user->uid] = $user->uid;
