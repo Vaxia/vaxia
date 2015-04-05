@@ -804,7 +804,7 @@ function proposal_form_webform_component_edit_form_alter(&$form, &$form_state, $
     $node = node_load(arg(1));
     if ($node->type != 'proposal') {
       // @todo - Figure out why otherwise this breaks for selects.
-      // return; // Hide the tokens from view.
+      return; // Hide the tokens from view.
     }
   }
   // Add help display.
