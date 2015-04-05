@@ -261,13 +261,10 @@ function _role_app_cron_check_overdue() {
  * Rules condition handler.
  */
 function role_app_is_app_quiz($quiz) {
-  watchdog('debug', 'Checking app to create app');
-  $quizzes = (array) _role_app_get_app_quizzes();
-  if (in_array($quiz->nid, $quizzes)) {
-  watchdog('debug', 'IS app quiz');
+  $role = role_app_get_quiz_role($quiz);
+  if (!empty($role)) {
     return TRUE;
   }
-  watchdog('debug', 'is NOT app quiz');
   return FALSE;
 }
 
@@ -411,10 +408,13 @@ function _role_app_get_quizzes() {
  * Helper function, Get role associated with quiz.
  */
 function role_app_get_quiz_role($quiz) {
-  $application_roles = (array) variable_get('application_roles', array());
-  foreach ($application_roles as $application_role) {
-    $quizzes = (array) variable_get('role_app_quiz_' . $application_role, '');
-    if (in_array($quiz->nid, $quizzes)) {
+  $roles = (array) variable_get('application_roles', array());
+watchdog('debug', 'Checkeding '. print_r($roles,1));
+  foreach ($roles as $role) {
+    $quizzes = variable_get('role_app_quiz_' . $role, '');
+watchdog('debug', 'Checkeding found quiz '.print_r($quizzes,1).'');
+    if (!empty($quizzes) && in_array($quiz->nid, $quizzes)) {
+watchdog('debug', 'Match '.$quiz->nid.'');
       return $application_role;
     }
   }
