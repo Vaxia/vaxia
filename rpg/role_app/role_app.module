@@ -313,7 +313,6 @@ function role_app_create_app($user, $quiz) {
   }
   $this_role = user_role_load($role);
   // Create new role_app node.
-  $tid = variable_get('anon_mailer_form', '');
   $node = new stdClass();
   $node->title = t('Application: @name for @role', array('@name' => $user->name, '@role' => $this_role->name));
   $node->body = role_app_get_answers($user, $quiz);
@@ -328,8 +327,6 @@ function role_app_create_app($user, $quiz) {
   $node->language = LANGUAGE_NONE;
   // Mark the role we're applying for.
   $node->field_applied_role_id['und'][0]['value'] = $role;
-  // Set the forum to post to.
-  $node->taxonomy_forums = $tid;
   // Save the node.
   node_save($node);
   // Add the webform.
