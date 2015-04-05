@@ -127,7 +127,7 @@ function rpg_rep_comment_view($comment) {
  */
 function rpg_rep_form__character_sheet_xp_form_alter(&$form, $form_state) {
   // Inject the rep form unto the character sheet XP form.
-  return _rpg_rep_add_form(&$form, $form_state);
+  return _rpg_rep_add_form($form, $form_state);
 }
 
 /**
