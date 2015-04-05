@@ -190,12 +190,15 @@ function _role_app_admin_settings($form, &$form_state) {
   $quizzes = _role_app_get_quizzes();
   $application_roles = variable_get('role_app_roles', array());
   foreach ($application_roles as $application_role) {
+    $this_role = user_role_load($application_role);
     // Set the webform that matches for creating an role_app,
     // As well as additional configurations as needed for approvals.
     $form['role_app_settings'][$application_role] = array(
       '#type' => 'fieldset',
-      '#title' => t('Role specific settings'),
+      '#title' => t('Settings for @role', array('@role' => $this_role->name)),
       '#description' => t('Configure the settings for each role role_app.'),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
     );
     // Returns node ids.
     $form['role_app_settings'][$application_role]['role_app_quiz_' . $application_role] = array(
