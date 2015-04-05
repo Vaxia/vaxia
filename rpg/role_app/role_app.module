@@ -408,7 +408,7 @@ function _role_app_get_quizzes() {
  * Helper function, Get role associated with quiz.
  */
 function role_app_get_quiz_role($quiz) {
-  $roles = (array) variable_get('application_roles', array());
+  $roles = (array) variable_get('role_app_roles', array());
 watchdog('debug', 'Checkeding '. print_r($roles,1));
   foreach ($roles as $role) {
     $quizzes = variable_get('role_app_quiz_' . $role, '');
