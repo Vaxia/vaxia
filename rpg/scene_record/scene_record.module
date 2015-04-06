@@ -131,7 +131,8 @@ function _scene_record_view_table($found_comments = array(), $goal) {
  * Helper function, given a set of partial or full comments, calculate results.
  */
 function _scene_record_calculate_results($comments, $goal) {
-  // Loop over all comments for values.  foreach ($comments as $cid => $comment) {
+  // Loop over all comments for values.
+  foreach ($comments as $cid => $comment) {
     // Set defaults if not already set.
     if (is_object($comment) && !empty($comment->cid)) {
       // Set defaults if not already set.
