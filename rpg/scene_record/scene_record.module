@@ -131,9 +131,7 @@ function _scene_record_view_table($found_comments = array(), $goal) {
  * Helper function, given a set of partial or full comments, calculate results.
  */
 function _scene_record_calculate_results($comments, $goal) {
-  // Loop over all comments for values.
-  $kxp_ratio = variable_get('vaxia_kxp_ratio', 70);
-  foreach ($comments as $cid => $comment) {
+  // Loop over all comments for values.  foreach ($comments as $cid => $comment) {
     // Set defaults if not already set.
     if (is_object($comment) && !empty($comment->cid)) {
       // Set defaults if not already set.
@@ -159,6 +157,7 @@ function _scene_record_calculate_results($comments, $goal) {
 }
 
 function _scene_record_calculate_results_all(&$comment, &$context) {
+  $kxp_ratio = variable_get('vaxia_kxp_ratio', 70);
   // Set defaults.
   $context['total_kxp'] = !empty($context['total_kxp']) ? $context['total_kxp'] : 0;
   $context['character_kxp'] = !empty($context['character_kxp']) ? $context['character_kxp'] : array();
@@ -380,6 +379,6 @@ function _scene_record_calculate_results_fame(&$comment, &$context) {
     $context['posts']++;
   }
   // Set silver XP amount.
-  $message_items[] = '<b>Up to ' . floor($context['posts'] / 2) . ' reputation.</b>';
+  $message_items[] = '<b>Up to ' . floor($context['posts'] / 2) . ' total reputation across all posters.</b>';
   return $message_items;
 }
