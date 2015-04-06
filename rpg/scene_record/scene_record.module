@@ -156,8 +156,8 @@ function _scene_record_calculate_results($comments, $goal) {
       // Get message.
       foreach ($callbacks as $callback) {
         if (function_exists($callback)) {
-          $new_items = $callback($comment, $context);
-          $message_items[] = array_merge($message_items, (array) $new_items);
+          $new_items = (array) $callback($comment, $context);
+          $message_items = array_merge($message_items, $new_items);
         }
       }
       // Display.
@@ -197,6 +197,7 @@ function scene_record_scene_record_goal_info() {
 }
 
 function _scene_record_calculate_results_all($comment, &$context) {
+  $message_items = array();
   $kxp_ratio = variable_get('vaxia_kxp_ratio', 70);
   // Set defaults.
   $context['total_kxp'] = !empty($context['total_kxp']) ? $context['total_kxp'] : 0;
@@ -233,6 +234,7 @@ function _scene_record_calculate_results_all($comment, &$context) {
 }
 
 function _scene_record_calculate_results_item($comment, &$context) {
+  $message_items = array();
   // Set defaults if not already set.
   $comment->roll_type = isset($comment->roll_type) ? $comment->roll_type : 'gen_pp';
   $comment->set_bonus = isset($comment->set_bonus) ? $comment->set_bonus : 0;
@@ -409,6 +411,7 @@ function _scene_record_calculate_results_item($comment, &$context) {
 }
 
 function _scene_record_calculate_results_silver($comment, &$context) {
+  $message_items = array();
   // Set defaults.
   $context['points_built'] = !empty($context['points_built']) ? $context['points_built'] : 0;
   // Set silver XP amount.
@@ -417,6 +420,7 @@ function _scene_record_calculate_results_silver($comment, &$context) {
 }
 
 function _scene_record_calculate_results_fame($comment, &$context) {
+  $message_items = array();
   // Set defaults.
   $context['posts'] = !empty($context['posts']) ? $context['posts'] : 0;
   if (strlen($comment->comment_body[$comment->language][0]['value']) > 100) {
