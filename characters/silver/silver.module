@@ -57,6 +57,18 @@ function _silver_cron_silver() {
 }
 
 /**
+ * Implements hook_scene_record_goal_info.
+ */
+function silver_scene_record_goal_info() {
+  return array(
+    '_silver_scene_calculate_silver' => array(
+      'label'  => 'A running total for silver.',
+      'type' => array('silver'),
+    ),
+  );
+}
+
+/**
  * Helper function, calculate money for economy on cron.
  */
 function _silver_character_daily_silver($node_data) {
@@ -371,4 +383,16 @@ function _silver_invest_silver_submit($form, $form_state) {
   if ($save_node) {
     node_save($node);
   }
+}
+
+/**
+ * Scene results callback handler.
+ */
+function _silver_scene_calculate_silver($comment, &$context) {
+  $message_items = array();
+  // Set defaults.
+  $context['points_built'] = !empty($context['points_built']) ? $context['points_built'] : 0;
+  // Set silver XP amount.
+  $message_items[] = '<b>Up to ' . number_format($context['points_built'], 2) . ' silver.</b>';
+  return $message_items;
 }

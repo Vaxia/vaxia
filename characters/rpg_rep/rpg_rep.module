@@ -123,6 +123,18 @@ function rpg_rep_comment_view($comment) {
 }
 
 /**
+ * Implements hook_scene_record_goal_info.
+ */
+function rpg_rep_scene_record_goal_info() {
+  return array(
+    '_rpg_rep_calculate_results' => array(
+      'label'  => 'A running total for reputation.',
+      'type' => array('fame'),
+    ),
+  );
+}
+
+/**
  * Implements hook_form_FORMID_alter().
  */
 function rpg_rep_form__character_sheet_xp_form_alter(&$form, $form_state) {
@@ -302,5 +314,20 @@ function _rpg_rep_is_pc($node) {
     return TRUE;
   }
   return FALSE;
+}
+
+/**
+ * Scene result handler.
+ */
+function _rpg_rep_calculate_results($comment, &$context) {
+  $message_items = array();
+  // Set defaults.
+  $context['posts'] = !empty($context['posts']) ? $context['posts'] : 0;
+  if (strlen($comment->comment_body[$comment->language][0]['value']) > 100) {
+    $context['posts']++;
+  }
+  // Set silver XP amount.
+  $message_items[] = '<b>Up to ' . floor($context['posts'] / 2) . ' total reputation across all posters.</b>';
+  return $message_items;
 }
 
