@@ -159,10 +159,10 @@ function _scene_record_calculate_results($comments, $goal) {
             $message_items[] = $callback($comment, $context);
         }
       }
-    }
-    // Display.
-    if (!empty($message_items)) {
-      $comment->results .= theme('item_list', array('items' => $message_items));
+      // Display.
+      if (!empty($message_items)) {
+        $comment->results .= theme('item_list', array('items' => $message_items));
+      }
     }
   }
   return $comments;
