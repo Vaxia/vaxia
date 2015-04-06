@@ -50,20 +50,34 @@ function scene_record_node_presave($node) {
 function scene_record_node_view($node, $view_mode, $langcode) {
   if ($view_mode == 'full' && !empty($node->type) && $node->type == 'scene') {
     global $user;
-    if (user_access('view all scenes', $user) || ($user->uid == $node->uid && user_access('view own scenes', $user))) {
-      // Get comments.
-      $comments = !empty($node->field_rp_posts[$node->language]) ? $node->field_rp_posts[$node->language] : array();
+    $has_character = FALSE;
+    // Process comments initially to get values.
+    $comments = !empty($node->field_rp_posts[$node->language]) ? $node->field_rp_posts[$node->language] : array();
+    $new_order = array();
+    if (!empty($comments)) {
+      foreach ($comments as $comment) {
+        $new_order[ $comment['target_id'] ] = $comment;
+      }
+      asort($new_order);
+      $comments = array_values($new_order);
+    }
+    $owns_scene = ($user->uid == $node->uid && user_access('view own scenes', $account));
+    $characters = _scene_record_has_characters($comments);
+    $has_character = FALSE;
+    foreach ($characters as $character) {
+      if ($user->uid == $character->uid) {
+        $has_character = TRUE;
+      }
+    }
+    // If we can view all scenes, or made the scene, or has a character in the scene allow view.
+    if (user_access('view all scenes', $user) || $owns_scene || $has_character) {
+      // Get additional display results.
       $goal = !empty($node->field_goal[$node->language][0]['value']) ? $node->field_goal[$node->language][0]['value'] : 'misc';
       // Put together the posts for display.
       if (!empty($comments)) {
-        $new_order = array();
-        foreach ($comments as $comment) {
-          $new_order[ $comment['target_id'] ] = $comment;
-        }
-        asort($new_order);
-        $comments = array_values($new_order);
-        // Loop over each post and create the table display.
+        // Loop over each post and create the table display rows.
         $rows = _scene_record_view_table($comments, $goal);
+        // And render it.
         $headers = array(
           t('Scene posts'),
           t('Results'),
@@ -82,15 +96,10 @@ function scene_record_node_view($node, $view_mode, $langcode) {
 /**
  * Return a display of the info as a renderable form.
  */
-function _scene_record_view_table($found_comments = array(), $goal) {
-  $comments = array();
-  foreach ($found_comments as $comment) {
-    $comments[ $comment['target_id']] = $comment['entity'];
-  }
-  asort($comments);
-  // Get values.
+function _scene_record_view_table($comments = array(), $goal) {
+  // Get values from the sub modules for results.
   $comments = _scene_record_calculate_results($comments, $goal);
-  // Loop for display.
+  // Loop for display to get the display of the comment as well as result.
   foreach ($comments as $cid => $comment) {
     // Get comment display.
     $comment_display = t('Unable to load comment - it has been deleted and may be in archive.');
@@ -131,33 +140,62 @@ function _scene_record_view_table($found_comments = array(), $goal) {
  * Helper function, given a set of partial or full comments, calculate results.
  */
 function _scene_record_calculate_results($comments, $goal) {
-  // Loop over all comments for values.
+  $results = '';
+  // Get a list of callbacks implemented.
+  $callbacks = array();
+  foreach (module_invoke_all('scene_record_goal_info') as $callback => $callback_info) {
+    if ($callback_info['type'] == 'all' || $callback_info['type'] == $goal) {
+      $callbacks[] = $callback;
+    }
+  }
+  // Loop over all comments for values by the filters callbacks.
   foreach ($comments as $cid => $comment) {
-    // Set defaults if not already set.
+    // Run through each callback for the goal and return.
+    $message_items = array();
     if (is_object($comment) && !empty($comment->cid)) {
-      // Set defaults if not already set.
-      $comment->roll_type = isset($comment->roll_type) ? $comment->roll_type : 'gen_pp';
-      $comment->set_bonus = isset($comment->set_bonus) ? $comment->set_bonus : 0;
-      $comment->difficulty = isset($comment->difficulty) ? $comment->difficulty : 40;
       // Get message.
-      $message_items = array(
-        '_all' => _scene_record_calculate_results_all($comment, $context),
-        'item' => _scene_record_calculate_results_item($comment, $context),
-        'silver' => _scene_record_calculate_results_silver($comment, $context),
-        'fame' => _scene_record_calculate_results_fame($comment, $context),
-      );
-      
+      foreach ($callbacks as $callback) {
+        if (function_exists($callback)) {
+            $message_items[] = $callback($comment, $context);
+        }
+      }
     }
     // Display.
-    $comment->results = theme('item_list', array('items' => $message_items['_all']));
-    if (!empty($message_items[$goal])) {
-      $comment->results .= theme('item_list', array('items' => $message_items[$goal]));
+    if (!empty($message_items)) {
+      $comment->results .= theme('item_list', array('items' => $message_items));
     }
   }
   return $comments;
 }
 
-function _scene_record_calculate_results_all(&$comment, &$context) {
+/**
+ * Implements hook_scene_record_goal_info.
+ */
+function scene_record_scene_record_goal_info() {
+  // @todo - make this not a hard coded thing, maybe use taxonomy or something.
+  // Or a function return instead of the standard select dropdown.
+  // Goal options: misc, item, silver, fame.
+  return array(
+    '_scene_record_calculate_results_all' => array(
+      'label'  => 'A running total of all results.',
+      'type' => array('all'),
+    ),
+    '_scene_record_calculate_results_item' => array(
+      'label'  => 'A running total for item creation.',
+      'type' => array('item'),
+    ),
+    '_scene_record_calculate_results_silver' => array(
+      'label'  => 'A running total for silver.',
+      'type' => array('silver'),
+    ),
+    '_scene_record_calculate_results_fame' => array(
+      'label'  => 'A running total for reputation.',
+      'type' => array('fame'),
+    ),
+  );
+}
+
+function _scene_record_calculate_results_all($comment, &$context) {
   $kxp_ratio = variable_get('vaxia_kxp_ratio', 70);
   // Set defaults.
   $context['total_kxp'] = !empty($context['total_kxp']) ? $context['total_kxp'] : 0;
@@ -193,7 +231,11 @@ function _scene_record_calculate_results_all(&$comment, &$context) {
   return $message_items;
 }
 
-function _scene_record_calculate_results_item(&$comment, &$context) {
+function _scene_record_calculate_results_item($comment, &$context) {
+  // Set defaults if not already set.
+  $comment->roll_type = isset($comment->roll_type) ? $comment->roll_type : 'gen_pp';
+  $comment->set_bonus = isset($comment->set_bonus) ? $comment->set_bonus : 0;
+  $comment->difficulty = isset($comment->difficulty) ? $comment->difficulty : 40;
   // Set defaults.
   $context['points_built'] = !empty($context['points_built']) ? $context['points_built'] : 0;
   $context['critwin'] = !empty($context['critwin']) ? $context['critwin'] : 0;
@@ -365,7 +407,7 @@ function _scene_record_calculate_results_item(&$comment, &$context) {
   return $message_items;
 }
 
-function _scene_record_calculate_results_silver(&$comment, &$context) {
+function _scene_record_calculate_results_silver($comment, &$context) {
   // Set defaults.
   $context['points_built'] = !empty($context['points_built']) ? $context['points_built'] : 0;
   // Set silver XP amount.
@@ -373,7 +415,7 @@ function _scene_record_calculate_results_silver(&$comment, &$context) {
   return $message_items;
 }
 
-function _scene_record_calculate_results_fame(&$comment, &$context) {
+function _scene_record_calculate_results_fame($comment, &$context) {
   // Set defaults.
   $context['posts'] = !empty($context['posts']) ? $context['posts'] : 0;
   if (strlen($comment->comment_body[$comment->language][0]['value']) > 100) {
@@ -383,3 +425,20 @@ function _scene_record_calculate_results_fame(&$comment, &$context) {
   $message_items[] = '<b>Up to ' . floor($context['posts'] / 2) . ' total reputation across all posters.</b>';
   return $message_items;
 }
+
+
+/**
+ * Helper function, get characters in the comments.
+ */
+function _scene_record_has_characters($comments) {
+  $characters = array();
+  foreach ($comments as $comment) {
+    $character = !empty($comment->field_comment_character[$comment->language][0]['nid']) ?
+      node_load($comment->field_comment_character[$comment->language][0]['nid']) : '';
+    if (!empty($character)) {
+      $characters[] = $character;
+    }
+  }
+  return $characters;
+}
+
