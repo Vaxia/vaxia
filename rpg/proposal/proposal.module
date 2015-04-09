@@ -1262,9 +1262,9 @@ function _proposal_disable_form(&$element) {
   }
   // Remove the submit functions.
   if (!empty($element['actions']['submit']['#submit'])) {
-    $element['actions']['submit']['#submit'] = array();
+    unset($element['actions']['submit']['#submit']);
   }
   if (!empty($element['#submit'])) {
-    $element['#submit'] = array();
+    unset($element['#submit']);
   }
 }
