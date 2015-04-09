@@ -30,7 +30,7 @@ function scene_record_permission() {
  * Implements hook_node_presave().
  */
 function scene_record_node_presave($node) {
-  if ($view_mode == 'full' && !empty($node->type) && $node->type == 'scene') {
+  if (!empty($node->type) && $node->type == 'scene') {
     // Just put the comments in the right order.
     $comments = !empty($node->field_rp_posts[$node->language]) ? $node->field_rp_posts[$node->language] : array();
     if (!empty($comments)) {
@@ -61,7 +61,7 @@ function scene_record_node_view($node, $view_mode, $langcode) {
       asort($new_order);
       $comments = array_values($new_order);
     }
-    $owns_scene = ($user->uid == $node->uid && user_access('view own scenes', $account));
+    $owns_scene = ($user->uid == $node->uid && user_access('view own scenes'));
     $characters = _scene_record_has_characters($comments);
     $has_character = FALSE;
     foreach ($characters as $character) {
