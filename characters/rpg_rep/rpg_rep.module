@@ -297,7 +297,8 @@ function _rpg_rep_get_groups($realm) {
     'LEFT JOIN {field_data_field_tag_realm} r ON r.entity_id = f.entity_id ' .
     'LEFT JOIN {taxonomy_term_data} t ON t.tid = r.field_tag_realm_tid ' .
     'WHERE f.field_provides_reputation_value = 1 ' .
-    'AND t.name LIKE :realm', array(':realm' => $realm));
+    'AND t.name LIKE :realm ' .
+    'ORDER BY n.title', array(':realm' => $realm));
   foreach ($results as $result) {
     $groups[$result->entity_id] = $result->title;
   }
