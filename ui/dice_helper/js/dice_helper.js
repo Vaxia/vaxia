@@ -181,7 +181,7 @@ Drupal.behaviors.diceHelper = {
       setImageAssist();
     });
     //  One time bindings, changing the character pic dropdown.
-    $('##vaxia-dice-roller').ready(function() {
+    $('#vaxia-dice-roller').ready(function() {
       setDiceHelper();
     });
     // Inject buttons.
