@@ -103,8 +103,6 @@ Drupal.behaviors.diceHelper = {
     if (typeof pic !== 'undefined' && pic.length > 0) {
       $('body select.form-select-image').msDropDown().data('dd').setIndexByValue(pic);
     }
-    // Set the image on display.
-    setImageAssist();
 
     // Clicking a quick pick button, trigger auto selects.
     $('.dice-helper-button').click(function() {
@@ -150,15 +148,6 @@ Drupal.behaviors.diceHelper = {
         '<input type="checkbox" id="same-skill-for-all" class="dice-helper-select"> Same skill?' +
         '</div>'
       );
-      // Check the cookie against the helper value to set pic and color.
-      var narr = getCookie('vaxia_dice_helper_narrative');
-      if (typeof narr !== 'undefined' && narr.length > 0 && narr == 'true') {
-        $('#edit-field-comment-narrative-und').attr('checked','checked');
-      }
-      // Check the dice helper on load.
-      setDiceHelper();
-      // Set the image on display.
-      setImageAssist();
     }
   }
 
@@ -176,16 +165,17 @@ Drupal.behaviors.diceHelper = {
   });
 
   // React when a new character selected, after ajax complete!
-  $('form.comment-form').ajaxStop(function() {
+  //$('form.comment-form').ajaxStop(function() {
       if (in_ajax) {
         in_ajax = false;
         setDiceHelper();
       }
-  });
+  //});
 
   // Changing the character dropdown.
   $('#edit-field-comment-character-und').change(function() {
-      in_ajax = true;
+    in_ajax = true;
+    setImageAssist();
   });
 
   // Changing the character pic dropdown.
@@ -196,6 +186,15 @@ Drupal.behaviors.diceHelper = {
   // Called on load.
   $('#vaxia-dice-roller').once(function() {
     setupButtons();
+    // Check the cookie against the helper value to set pic and color.
+    var narr = getCookie('vaxia_dice_helper_narrative');
+    if (typeof narr !== 'undefined' && narr.length > 0 && narr == 'true') {
+      $('#edit-field-comment-narrative-und').attr('checked','checked');
+    }
+    // Check the dice helper on load.
+    setDiceHelper();
+    // Set the image on display.
+    setImageAssist();
   });
 
   })(jQuery); }
