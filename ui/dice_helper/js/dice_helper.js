@@ -100,16 +100,6 @@ Drupal.behaviors.diceHelper = {
     if (typeof pic !== 'undefined' && pic.length > 0) {
       $('body select.form-select-image').msDropDown().data('dd').setIndexByValue(pic);
     }
-
-    // Clicking a quick pick button, trigger auto selects.
-    $('.dice-helper-button').unbind('click').click(function() {
-      quickPick($(this).val().toLowerCase());
-    });
-
-    // Changing a skill, check for all skill setting.
-    $('.dice-skill').unbind('change').change(function() {
-      sameSkillCheck($(this).attr('id'), $(this).val());
-    });
   }
 
   // When the image is changed, rotate that in the display.
@@ -170,11 +160,16 @@ Drupal.behaviors.diceHelper = {
     setCookie('vaxia_dice_helper_narrative', narr, 30);
   });
 
-    //  One time bindings, changing the character pic dropdown.
-    $('#vaxia-dice-roller').ajaxStop(function() {
-      setDiceHelper();
-    });
-    
+  // Clicking a quick pick button, trigger auto selects.
+  $('.dice-helper-button').unbind('click').click(function() {
+    quickPick($(this).val().toLowerCase());
+  });
+
+  // Changing a skill, check for all skill setting.
+  $('.dice-skill').unbind('change').change(function() {
+    sameSkillCheck($(this).attr('id'), $(this).val());
+  });
+
   // Called on load but only the once.
   $('#comment-form').once(function() {
     // One time bindings, changing the character dropdown.
