@@ -180,10 +180,6 @@ function _item_dice_submit_weapons($items, $item, $stat_key, $lang) {
     else {
       $items[$stat_key]['notes'] .= ' ' . $item->title .' (' . _item_dice_check_weapons($item, FALSE) . ')';
     }
-    // Set the general notes.
-    $items['any']['general'] = 0;
-    $items['any']['notes'] = isset($items['any']['notes']) ? $items['any']['notes'] : '';
-    $items['any']['notes'] .= ' ' . $item->title .' (' . _item_dice_check_weapons($item, FALSE) . ')';
   }
   return $items;
 }
