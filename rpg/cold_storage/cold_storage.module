@@ -34,11 +34,19 @@ function cold_storage_rules_action_info() {
   );
   // Add workflow rules.
   if (module_exists('workflow_rules')) {
+    $actions['cold_storage_rules_unpub_nodes']['parameter']['current_state'] = array(
+      'type' => 'list<integer>',
+      'label' => t('Current workflow state'),
+      'options list' => '_workflow_rules_action_select',
+      'description' => t('The workflow state to set (select only one).'),
+      'optional' => TRUE,
+    );
     $actions['cold_storage_rules_unpub_nodes']['parameter']['workflow_state'] = array(
       'type' => 'list<integer>',
       'label' => t('New workflow state'),
       'options list' => '_workflow_rules_action_select',
       'description' => t('The workflow state to set (select only one).'),
+      'optional' => TRUE,
     );
     $actions['cold_storage_rules_unpub_nodes']['parameter']['workflow_comment'] = array(
       'type' => 'text',
@@ -46,11 +54,19 @@ function cold_storage_rules_action_info() {
       'description' => t('The workflow comment to set.'),
       'optional' => TRUE,
     );
+    $actions['cold_storage_rules_pub_nodes']['parameter']['current_state'] = array(
+      'type' => 'list<integer>',
+      'label' => t('Current workflow state'),
+      'options list' => '_workflow_rules_action_select',
+      'description' => t('The workflow state to set (select only one).'),
+      'optional' => TRUE,
+    );
     $actions['cold_storage_rules_pub_nodes']['parameter']['workflow_state'] = array(
       'type' => 'list<integer>',
       'label' => t('New workflow state'),
       'options list' => '_workflow_rules_action_select',
       'description' => t('The workflow state to set (select only one).'),
+      'optional' => TRUE,
     );
     $actions['cold_storage_rules_pub_nodes']['parameter']['workflow_comment'] = array(
       'type' => 'text',
@@ -65,13 +81,17 @@ function cold_storage_rules_action_info() {
 /**
  * Rules action handler.
  */
-function cold_storage_rules_unpub_nodes($this_user, $workflow = NULL, $workflow_comment = NULL) {
+function cold_storage_rules_unpub_nodes($this_user, $current = NULL, $new = NULL, $workflow_comment = NULL) {
   $nodes = node_load_multiple(array(), array('uid' => $this_user->uid, 'type' => 'character_sheet'));
   foreach ($nodes as $node) {
     $node->status = 0;
     // Update the node workflow too.
-    if (module_exists('workflow_rules') && !empty($workflow)) {
-      workflow_rules_set_state($node, $workflow, $workflow_comment);
+    if (module_exists('workflow_rules') && !empty($new)) {
+      $node_current_state = (array) workflow_node_current_state($node);
+      $allowed = in_array($node_current_state, $current); 
+      if (empty($current) || $allowed) {
+        workflow_rules_set_state($node, $new, $workflow_comment);
+      }
     }
     node_save($node);
   }
@@ -84,13 +104,17 @@ function cold_storage_rules_unpub_nodes($this_user, $workflow = NULL, $workflow_
 /**
  * Rules action handler.
  */
-function cold_storage_rules_pub_nodes($this_user, $workflow = NULL, $workflow_comment = NULL) {
+function cold_storage_rules_pub_nodes($this_user, $current = NULL, $new = NULL, $workflow_comment = NULL) {
   $nodes = node_load_multiple(array(), array('uid' => $this_user->uid, 'type' => 'character_sheet'));
   foreach ($nodes as $node) {
     $node->status = 1;
     // Update the node workflow too.
-    if (module_exists('workflow_rules') && !empty($workflow)) {
-      workflow_rules_set_state($node, $workflow, $workflow_comment);
+    if (module_exists('workflow_rules') && !empty($new)) {
+      $node_current_state = (array) workflow_node_current_state($node);
+      $allowed = in_array($node_current_state, $current); 
+      if (empty($current) || $allowed) {
+        workflow_rules_set_state($node, $new, $workflow_comment);
+      }
     }
     node_save($node);
   }
