@@ -32,39 +32,39 @@ Drupal.behaviors.diceHelper = {
 
   // Set quickly picked values.
   function quickPick(type) {
-    $('#edit-vaxia-rolls-dice-0-number').val(1);
-    $('#edit-vaxia-rolls-dice-0-size').val(100);
+    $('.form-item-vaxia-rolls-dice-0-number').val(1);
+    $('.form-item-vaxia-rolls-dice-0-size').val(100);
     if (type=='attack') {
-      $('#edit-vaxia-rolls-dice-1-number').val(1);
-      $('#edit-vaxia-rolls-dice-1-size').val(100);
-      $('#edit-vaxia-rolls-dice-2-number').val(1);
-      $('#edit-vaxia-rolls-dice-2-size').val(100);
-      $('#edit-vaxia-rolls-dice-0-stat').val('dexterity');
-      $('#edit-vaxia-rolls-dice-1-stat').val('strength');
-      $('#edit-vaxia-rolls-dice-2-stat').val('endurance');
+      $('.form-item-vaxia-rolls-dice-1-number').val(1);
+      $('.form-item-vaxia-rolls-dice-1-size').val(100);
+      $('.form-item-vaxia-rolls-dice-2-number').val(1);
+      $('.form-item-vaxia-rolls-dice-2-size').val(100);
+      $('.form-item-vaxia-rolls-dice-0-stat').val('dexterity');
+      $('.form-item-vaxia-rolls-dice-1-stat').val('strength');
+      $('.form-item-vaxia-rolls-dice-2-stat').val('endurance');
     } 
     if (type=='magic') {
-       $('#edit-vaxia-rolls-dice-1-number').val(1);
-       $('#edit-vaxia-rolls-dice-1-size').val(100);
-       $('#edit-vaxia-rolls-dice-0-stat').val('intelligence');
-       $('#edit-vaxia-rolls-dice-1-stat').val('spirituality');
-       $('#edit-vaxia-rolls-dice-2-number').val(0);
-       $('#edit-vaxia-rolls-dice-2-stat').val(-1);
+       $('.form-item-vaxia-rolls-dice-1-number').val(1);
+       $('.form-item-vaxia-rolls-dice-1-size').val(100);
+       $('.form-item-vaxia-rolls-dice-0-stat').val('intelligence');
+       $('.form-item-vaxia-rolls-dice-1-stat').val('spirituality');
+       $('.form-item-vaxia-rolls-dice-2-number').val(0);
+       $('.form-item-vaxia-rolls-dice-2-stat').val(-1);
     }
     if (type=='tech') {
-       $('#edit-vaxia-rolls-dice-1-number').val(1);
-       $('#edit-vaxia-rolls-dice-1-size').val(100);
-       $('#edit-vaxia-rolls-dice-0-stat').val('intelligence');
-       $('#edit-vaxia-rolls-dice-1-stat').val('dexterity');
-       $('#edit-vaxia-rolls-dice-2-number').val(0);
-       $('#edit-vaxia-rolls-dice-2-stat').val(-1);
+       $('.form-item-vaxia-rolls-dice-1-number').val(1);
+       $('.form-item-vaxia-rolls-dice-1-size').val(100);
+       $('.form-item-vaxia-rolls-dice-0-stat').val('intelligence');
+       $('.form-item-vaxia-rolls-dice-1-stat').val('dexterity');
+       $('.form-item-vaxia-rolls-dice-2-number').val(0);
+       $('.form-item-vaxia-rolls-dice-2-stat').val(-1);
     }
     if (type=='aware') {
-       $('#edit-vaxia-rolls-dice-0-stat').val('awareness');
-       $('#edit-vaxia-rolls-dice-1-number').val(0);
-       $('#edit-vaxia-rolls-dice-2-number').val(0);
-       $('#edit-vaxia-rolls-dice-1-stat').val(-1);
-       $('#edit-vaxia-rolls-dice-2-stat').val(-1);
+       $('.form-item-vaxia-rolls-dice-0-stat').val('awareness');
+       $('.form-item-vaxia-rolls-dice-1-number').val(0);
+       $('.form-item-vaxia-rolls-dice-2-number').val(0);
+       $('.form-item-vaxia-rolls-dice-1-stat').val(-1);
+       $('.form-item-vaxia-rolls-dice-2-stat').val(-1);
     }
   }
 
@@ -160,29 +160,30 @@ Drupal.behaviors.diceHelper = {
     setCookie('vaxia_dice_helper_narrative', narr, 30);
   });
 
-  // Called on load but only the once.
-  $('#comment-form').once(function() {
-    // One time bindings, changing the character dropdown.
-    $('#edit-field-comment-character-und').change(function() {
-      setImageAssist();
-    });
-    //  One time bindings, changing the character pic dropdown.
-    $('#edit-field-artwork-und').change(function() {
-      setImageAssist();
-    });
-    // Inject buttons.
-    setupButtons();
+  // On ready: This is called at the end of ever ajax done.
+  // Hence why we include the unbinds and rebinds.
 
-    // Clicking a quick pick button, trigger auto selects.
-    $('.dice-helper-button').unbind('click').click(function() {
-      quickPick($(this).val().toLowerCase());
-    });
+  // Inject buttons.
+  setupButtons();
 
-    // Changing a skill, check for all skill setting.
-    $('.dice-skill').unbind('change').change(function() {
-      sameSkillCheck($(this).attr('id'), $(this).val());
-    });
+  // Changing the character dropdown.
+  $('#edit-field-comment-character-und').unbind('change').change(function() {
+    setImageAssist();
+  });
 
+  //  Changing the character pic dropdown.
+  $('#edit-field-artwork-und').unbind('change').change(function() {
+    setImageAssist();
+  });
+
+  // Clicking a quick pick button, trigger auto selects.
+  $('.dice-helper-button').unbind('click').click(function() {
+    quickPick($(this).val().toLowerCase());
+  });
+
+  // Changing a skill, check for all skill setting.
+  $('.dice-skill').unbind('change').change(function() {
+    sameSkillCheck($(this).attr('id'), $(this).val());
   });
 
   })(jQuery); }
