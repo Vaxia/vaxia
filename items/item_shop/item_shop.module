@@ -140,11 +140,7 @@ function _item_shop_sellback_form($form, &$form_state, $node) {
     return $form;
   }
   // Check if the item was created to be transformed into silver.
-  $for_silver = isset($node->field_created_for_silver[$node->language][0]['value']) ? TRUE : FALSE;
-  $percentage = 100;
-  if (!$for_silver) {
-    $percentage = variable_get('item_shop_sellback_percentage', 75);
-  }
+  $percentage = variable_get('item_shop_sellback_percentage', 75);
   $value = $node->field_value[$node->language][0]['value'];
   $value = $value * ($percentage / 100);
   $form['item_shop_sellback_help'] = array(
