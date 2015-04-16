@@ -8,9 +8,6 @@
 Drupal.behaviors.diceHelper = {
   attach: function(context) { (function($) {
 
-  // Track when we're refreshing users.
-  var in_ajax = false;
-
   // Cookie handling, set cookie.
   function setCookie(c_name, value, exdays) {
     var exdate=new Date();
@@ -172,19 +169,17 @@ Drupal.behaviors.diceHelper = {
       }
   //});
 
-  // Changing the character dropdown.
-  $('#edit-field-comment-character-und').change(function() {
-    in_ajax = true;
-    setImageAssist();
-  });
-
-  // Changing the character pic dropdown.
-  $('#edit-field-artwork-und').change(function() {
-    setImageAssist();
-  });
-
-  // Called on load.
+  // Called on load but only the once.
   $('#vaxia-dice-roller').once(function() {
+    // One time bindings, changing the character dropdown.
+    $('#edit-field-comment-character-und').change(function() {
+      setImageAssist();
+    });
+    //  One time bindings, changing the character pic dropdown.
+    $('#edit-field-artwork-und').change(function() {
+      setImageAssist();
+    });
+    // Inject buttons.
     setupButtons();
     // Check the cookie against the helper value to set pic and color.
     var narr = getCookie('vaxia_dice_helper_narrative');
