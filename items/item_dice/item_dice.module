@@ -233,7 +233,7 @@ function _item_dice_submit_commands($rolls, $character, $items, $lang) {
     $roll['item_notes'] = array();
     $roll['item_mods'] = 0;
     if (!empty($items[$this_stat])) {
-      $roll = _item_dice_submit_command_items($roll, $items[$this_stat], $this_stat);
+      $roll = _item_dice_submit_command_items($roll, $items[$this_stat], 'stat');
     }
     if (!empty($items['skill'])) {
       $roll = _item_dice_submit_command_items($roll, $items['skill'], 'skill');
@@ -254,11 +254,10 @@ function _item_dice_submit_commands($rolls, $character, $items, $lang) {
 /**
  * Modify the command with the items.
  */
-function _item_dice_submit_command_items($roll, $items, $stat) {
+function _item_dice_submit_command_items($roll, $items, $mods) {
   // We're still keeping skills and stats separate at this point.
   // But we could be addressing any stat, skill, or 'any' value.
   // If skill keep it apart. If any keep it on the stat.
-  $mods = ($stat != 'stat') ? 'skill' : 'stat';
   $roll['item_notes'] = !empty($roll['item_notes']) ? $roll['item_notes'] : array();
   // Modify the stat by the item.
   if (!empty($items)) {
@@ -267,6 +266,7 @@ function _item_dice_submit_command_items($roll, $items, $stat) {
       $roll[$mods] = $items['overlaps'];
     }
     // Set modifiers. It is possible more than one is returned from items.
+    $roll[$mods] = isset($roll[$mods]) ? $roll[$mods] : 0;
     // But it will always return an arrray.
     if (!empty($items['modifies'])) {
       foreach ($items['modifies'] as $item_modifier) {
