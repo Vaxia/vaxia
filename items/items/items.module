@@ -11,9 +11,13 @@ include_once 'items.features.inc';
  */
 function items_permission() {
   return array(
-    'change item owner'=> array(
+    'change item owner' => array(
       'title' => t('change item owner'),
       'description' => t('Change the owner of an item.'),
+    ),
+    'edit playable item' => array(
+      'title' => t('edit playable item'),
+      'description' => t('Edit an item in play.'),
     ),
     'administer item settings' => array(
       'title' => t('administer item settings'),
@@ -111,7 +115,7 @@ function items_form_workflow_tab_form_alter(&$form, &$form_state, $form_id) {
 function items_form_items_node_form_alter(&$form, &$form_state, $form_id) {
   // Display message and disable form if item already approved.
   $node = isset($form['#node']) ? $form['#node'] : '';
-  if (empty($node->clone_from_original_nid) && _items_is_playable($node)) {
+  if (!user_access('edit playable item') && empty($node->clone_from_original_nid) && _items_is_playable($node)) {
     $allowed_edit = array('field_item_desc', 'field_item_history', 'field_character_owner',
       'field_sh_notes', 'field_sh_private_notes', 'field_player_notes', 'field_creation_history');
     foreach (element_children($form) as $child) {
