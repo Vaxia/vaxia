@@ -163,6 +163,17 @@ function _item_dice_submit_overlaps($items, $item, $stat_key, $lang) {
 function _item_dice_submit_weapons($items, $item, $stat_key, $lang) {
   $label = _item_dice_check_weapons($item);
   if (!empty($label)) {
+    // Get the fixed strength for the weapon.
+    $fixed_str = !empty($item->field_fixed_strength[$lang][0]['value']) ? $item->field_fixed_strength[$lang][0]['value'] : '';
+    if (!empty($fixed_str)) {
+      // Set the overlap for this stat based on the weapon fixed.
+      $items[$stat_key]['overlaps'] = !empty($items[$stat_key]['overlap']) ? $items[$stat_key]['overlap'] : 0;
+      // Unless something else already overlaps at a greater value.
+      if ($overlap > $items['strength']['overlaps']) {
+        $items['strength']['overlaps'] = $overlap;
+      }
+    }
+    // Get the noted for the weapon.
     $notes = $item->title . ' ' . $label;
     $items[$stat_key]['general'] = isset($items[$stat_key]['general']) ? $items[$stat_key]['general'] : 0;
     $items[$stat_key]['notes'] = $items[$stat_key]['notes'] . ' ' . $notes;
@@ -399,18 +410,26 @@ function _item_dice_check_overlap($item, $stat) {
  */
 function _item_dice_check_weapons($item) {
   //  Get item mod.
-  $label = '';
-  $weapon = isset($item->field_weapon_class[$item->language][0]['tid']) ?
+  $weapon_labels = array();
+  // Weapon class.
+  $weapon_class = isset($item->field_weapon_class[$item->language][0]['tid']) ?
     $item->field_weapon_class[$item->language][0]['tid'] : '';
-  if (!empty($weapon)) {
-    $weapon = taxonomy_term_load($weapon);
-    if (!empty($weapon) && ($weapon->name != 'Unarmed (0% / 0)')) {
-      $name = $weapon->name;
+  if (!empty($weapon_class)) {
+    $weapon_class = taxonomy_term_load($weapon_class);
+    if (!empty($weapon_class) && ($weapon_class->name != 'Unarmed (0% / 0)')) {
+      $name = $weapon_class->name;
       $name = explode('(', $name);
-      $label = t('@name', array('@name' => $name[0] . t('Weapon')));
+      $weapon_labels[] = t('@name', array('@name' => $name[0] . t('Weapon')));
     }
   }
-  return $label;
+  // Fixed type.
+  $weapon_fix = isset($item->field_fixed_strength[$item->language][0]['value']) ?
+    $item->field_fixed_strength[$item->language][0]['value'] : '';
+  if (!empty($weapon_fix)) {
+    $weapon_labels[] = t('(str @value)', array('@value' => $weapon_fix));
+  }
+  // Return the imploded set of labels.
+  return implode(' ', $weapon_labels);
 }
 
 /**
