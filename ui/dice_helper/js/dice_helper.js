@@ -8,6 +8,9 @@
 Drupal.behaviors.diceHelper = {
   attach: function(context) { (function($) {
 
+  // Track when we're refreshing users.
+  var in_ajax = false;
+
   // Cookie handling, set cookie.
   function setCookie(c_name, value, exdays) {
     var exdate=new Date();
@@ -172,10 +175,17 @@ Drupal.behaviors.diceHelper = {
     setCookie('vaxia_dice_helper_narrative', narr, 30);
   });
 
-  // React when a new character is selected.
+  // React when a new character selected, after ajax complete!
   $('form.comment-form').ajaxStop(function() {
-      // But only after ajax complete!
-      setDiceHelper();
+      if (in_ajax) {
+        in_ajax = false;
+        setDiceHelper();
+      }
+  });
+
+  // Changing the character dropdown.
+  $('#edit-field-comment-character-und').change(function() {
+      in_ajax = true;
   });
 
   // Changing the character pic dropdown.
