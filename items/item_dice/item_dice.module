@@ -178,10 +178,12 @@ function _item_dice_submit_weapons($items, $item, $stat_key, $lang) {
       }
     }
     else {
-      $items['any']['general'] = 0;
-      $items['any']['notes'] = isset($items['any']['notes']) ? $items['any']['notes'] : '';
-      $items['any']['notes'] .= ' ' . $item->title .' (' . _item_dice_check_weapons($item, FALSE) . ')';
+      $items[$stat_key]['notes'] .= ' ' . $item->title .' (' . _item_dice_check_weapons($item, FALSE) . ')';
     }
+    // Set the general notes.
+    $items['any']['general'] = 0;
+    $items['any']['notes'] = isset($items['any']['notes']) ? $items['any']['notes'] : '';
+    $items['any']['notes'] .= ' ' . $item->title .' (' . _item_dice_check_weapons($item, FALSE) . ')';
   }
   return $items;
 }
@@ -195,10 +197,10 @@ function _item_dice_submit_uses($items, $item, $stat_key, $lang) {
     $notes = $item->title . ' ' . $label;
     $items[$stat_key]['general'] = isset($items[$stat_key]['general']) ? $items[$stat_key]['general'] : 0;
     $items[$stat_key]['notes'] = isset($items[$stat_key]['notes']) ? $items[$stat_key]['notes'] : '';
-    $items[$stat_key]['notes'] = $items[$stat_key]['notes'] . ' ' . $notes;
+    $items[$stat_key]['notes'] .= ' ' . $notes;
     $items['any']['general'] = 0;
     $items['any']['notes'] = isset($items['any']['notes']) ? $items['any']['notes'] : '';
-    $items['any']['notes'] = $items['any']['notes'] . ' ' . $notes;
+    $items['any']['notes'] .= ' ' . $notes;
   }
   return $items;
 }
