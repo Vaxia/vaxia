@@ -163,6 +163,14 @@ function _item_dice_submit_overlaps($items, $item, $stat_key, $lang) {
 function _item_dice_submit_weapons($items, $item, $stat_key, $lang) {
   $label = _item_dice_check_weapons($item);
   if (!empty($label)) {
+    // Get the noted for the weapon.
+    $notes = $item->title . ' (weapon ' . _item_dice_check_weapons($item, FALSE) . ')';
+    // Set the general notes for the item.
+    $items[$stat_key]['general'] = isset($items[$stat_key]['general']) ? $items[$stat_key]['general'] : 0;
+    $items[$stat_key]['notes'] = $items[$stat_key]['notes'] . ' ' . $notes;
+    $items['any']['general'] = 0;
+    $items['any']['notes'] = isset($items['any']['notes']) ? $items['any']['notes'] : '';
+    $items['any']['notes'] .= ' ' . $notes;
     // Get the fixed strength for the weapon.
     $fixed_str = !empty($item->field_fixed_strength[$lang][0]['value']) ? $item->field_fixed_strength[$lang][0]['value'] : '';
     if (!empty($fixed_str)) {
@@ -174,17 +182,6 @@ function _item_dice_submit_weapons($items, $item, $stat_key, $lang) {
         $items['strength']['notes'] = $item->title .' (weapon ' . $label . ')';
       }
     }
-    else {
-    // Get the noted for the weapon.
-      $label = _item_dice_check_weapons($item, FALSE);
-      $notes = $item->title . ' (weapon ' . $label . ')';
-    }
-    // Set the general notes for the item.
-    $items[$stat_key]['general'] = isset($items[$stat_key]['general']) ? $items[$stat_key]['general'] : 0;
-    $items[$stat_key]['notes'] = $items[$stat_key]['notes'] . ' ' . $notes;
-    $items['any']['general'] = 0;
-    $items['any']['notes'] = isset($items['any']['notes']) ? $items['any']['notes'] : '';
-    $items['any']['notes'] .= ' ' . $notes;
   }
   return $items;
 }
