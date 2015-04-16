@@ -82,11 +82,11 @@ function _item_dice_submit_rolls_items($submitted_items, $character, $lang) {
         $items = _item_dice_submit_modifiers($items, $item, $stat_key, $lang);
         // Get overlaps.
         $items = _item_dice_submit_overlaps($items, $item, $stat_key, $lang);
+        // Get weapons.
+        $items = _item_dice_submit_weapons($items, $item, $stat_key, $lang);
+        // Get uses.
+        $items = _item_dice_submit_uses($items, $item, $stat_key, $lang);
       }
-      // Get weapons.
-      $items = _item_dice_submit_weapons($items, $item, $stat_key, $lang);
-      // Get uses.
-      $items = _item_dice_submit_uses($items, $item, $stat_key, $lang);
     } // End check if item exists.
   } // End check all items loop.
   return $items;
