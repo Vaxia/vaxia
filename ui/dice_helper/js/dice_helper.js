@@ -32,39 +32,39 @@ Drupal.behaviors.diceHelper = {
 
   // Set quickly picked values.
   function quickPick(type) {
-    $('.form-item-vaxia-rolls-dice-0-number').val(1);
-    $('.form-item-vaxia-rolls-dice-0-size').val(100);
+    $('.form-item-vaxia-rolls-dice-0-number select').val(1);
+    $('.form-item-vaxia-rolls-dice-0-size select').val(100);
     if (type=='attack') {
-      $('.form-item-vaxia-rolls-dice-1-number').val(1);
-      $('.form-item-vaxia-rolls-dice-1-size').val(100);
-      $('.form-item-vaxia-rolls-dice-2-number').val(1);
-      $('.form-item-vaxia-rolls-dice-2-size').val(100);
-      $('.form-item-vaxia-rolls-dice-0-stat').val('dexterity');
-      $('.form-item-vaxia-rolls-dice-1-stat').val('strength');
-      $('.form-item-vaxia-rolls-dice-2-stat').val('endurance');
+      $('.form-item-vaxia-rolls-dice-1-number select').val(1);
+      $('.form-item-vaxia-rolls-dice-1-size select').val(100);
+      $('.form-item-vaxia-rolls-dice-2-number select').val(1);
+      $('.form-item-vaxia-rolls-dice-2-size select').val(100);
+      $('.form-item-vaxia-rolls-dice-0-stat select').val('dexterity');
+      $('.form-item-vaxia-rolls-dice-1-stat select').val('strength');
+      $('.form-item-vaxia-rolls-dice-2-stat select').val('endurance');
     } 
     if (type=='magic') {
-       $('.form-item-vaxia-rolls-dice-1-number').val(1);
-       $('.form-item-vaxia-rolls-dice-1-size').val(100);
-       $('.form-item-vaxia-rolls-dice-0-stat').val('intelligence');
-       $('.form-item-vaxia-rolls-dice-1-stat').val('spirituality');
-       $('.form-item-vaxia-rolls-dice-2-number').val(0);
-       $('.form-item-vaxia-rolls-dice-2-stat').val(-1);
+       $('.form-item-vaxia-rolls-dice-1-number select').val(1);
+       $('.form-item-vaxia-rolls-dice-1-size select').val(100);
+       $('.form-item-vaxia-rolls-dice-0-stat select').val('intelligence');
+       $('.form-item-vaxia-rolls-dice-1-stat select').val('spirituality');
+       $('.form-item-vaxia-rolls-dice-2-number select').val(0);
+       $('.form-item-vaxia-rolls-dice-2-stat select').val(-1);
     }
     if (type=='tech') {
-       $('.form-item-vaxia-rolls-dice-1-number').val(1);
-       $('.form-item-vaxia-rolls-dice-1-size').val(100);
-       $('.form-item-vaxia-rolls-dice-0-stat').val('intelligence');
-       $('.form-item-vaxia-rolls-dice-1-stat').val('dexterity');
-       $('.form-item-vaxia-rolls-dice-2-number').val(0);
-       $('.form-item-vaxia-rolls-dice-2-stat').val(-1);
+       $('.form-item-vaxia-rolls-dice-1-number select').val(1);
+       $('.form-item-vaxia-rolls-dice-1-size select').val(100);
+       $('.form-item-vaxia-rolls-dice-0-stat select').val('intelligence');
+       $('.form-item-vaxia-rolls-dice-1-stat select').val('dexterity');
+       $('.form-item-vaxia-rolls-dice-2-number select').val(0);
+       $('.form-item-vaxia-rolls-dice-2-stat select').val(-1);
     }
     if (type=='aware') {
-       $('.form-item-vaxia-rolls-dice-0-stat').val('awareness');
-       $('.form-item-vaxia-rolls-dice-1-number').val(0);
-       $('.form-item-vaxia-rolls-dice-2-number').val(0);
-       $('.form-item-vaxia-rolls-dice-1-stat').val(-1);
-       $('.form-item-vaxia-rolls-dice-2-stat').val(-1);
+       $('.form-item-vaxia-rolls-dice-0-stat select').val('awareness');
+       $('.form-item-vaxia-rolls-dice-1-number select').val(0);
+       $('.form-item-vaxia-rolls-dice-2-number select').val(0);
+       $('.form-item-vaxia-rolls-dice-1-stat select').val(-1);
+       $('.form-item-vaxia-rolls-dice-2-stat select').val(-1);
     }
   }
 
