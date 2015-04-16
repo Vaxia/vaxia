@@ -147,11 +147,11 @@ function _item_dice_submit_overlaps($items, $item, $stat_key, $lang) {
   $overlap = !empty($item->{$field_name}[$lang][0]['value']) ? $item->{$field_name}[$lang][0]['value'] : 0;
   // If this overlap is larger than a previous one, set it.
   if (!empty($overlap)) {
-    $notes = $item->title .' (' . $small_label . ' ' . $overlap . ' flat)';
-    $items[$stat_key]['overlaps'] = !empty($items[$stat_key]['overlap']) ? $items[$stat_key]['overlap'] : 0;
+    $items[$stat_key]['overlaps'] = !empty($items[$stat_key]['overlaps']) ? $items[$stat_key]['overlaps'] : 0;
+    // Unless something else already overlaps at a greater value.
     if ($overlap > $items[$stat_key]['overlaps']) {
       $items[$stat_key]['overlaps'] = $overlap;
-      $items[$stat_key]['notes'] = $notes;
+      $items[$stat_key]['notes'] = $item->title .' (' . $small_label . ' ' . $overlap . ' flat)';
     }
   }
   return $items;
@@ -167,7 +167,7 @@ function _item_dice_submit_weapons($items, $item, $stat_key, $lang) {
     $fixed_str = !empty($item->field_fixed_strength[$lang][0]['value']) ? $item->field_fixed_strength[$lang][0]['value'] : '';
     if (!empty($fixed_str)) {
       // Set the overlap for this stat based on the weapon fixed.
-      $items[$stat_key]['overlaps'] = !empty($items[$stat_key]['overlap']) ? $items[$stat_key]['overlap'] : 0;
+      $items['strength']['overlaps'] = !empty($items['strength']['overlaps']) ? $items['strength']['overlaps'] : 0;
       // Unless something else already overlaps at a greater value.
       if ($overlap > $items['strength']['overlaps']) {
         $items['strength']['overlaps'] = $overlap;
@@ -426,7 +426,7 @@ function _item_dice_check_weapons($item) {
   $weapon_fix = isset($item->field_fixed_strength[$item->language][0]['value']) ?
     $item->field_fixed_strength[$item->language][0]['value'] : '';
   if (!empty($weapon_fix)) {
-    $weapon_labels[] = t('(str @value)', array('@value' => $weapon_fix));
+    $weapon_labels[] = t('(fixed @value)', array('@value' => $weapon_fix));
   }
   // Return the imploded set of labels.
   return implode(' ', $weapon_labels);
