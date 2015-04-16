@@ -173,8 +173,8 @@ Drupal.behaviors.diceHelper = {
   });
 
   // React when a new character is selected.
-  $('#edit-field-comment-character-und').change(function() {
-      // Check the dice helper on character selection.
+  $('form.comment-form').ajaxStop(function() {
+      // But only after ajax complete!
       setDiceHelper();
   });
 
