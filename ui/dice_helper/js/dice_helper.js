@@ -102,6 +102,16 @@ Drupal.behaviors.diceHelper = {
     }
     // Set the image on display.
     setImageAssist();
+
+    // Clicking a quick pick button, trigger auto selects.
+    $('.dice-helper-button').click(function() {
+      quickPick($(this).val().toLowerCase());
+    });
+
+    // Changing a skill, check for all skill setting.
+    $('.dice-skill').change(function() {
+      sameSkillCheck($(this).attr('id'), $(this).val());
+    });
   }
 
   // When the image is changed, rotate that in the display.
@@ -115,8 +125,7 @@ Drupal.behaviors.diceHelper = {
   }
 
   // Add toggle buttons, but only the once.
-  // Called on load.
-  $('#vaxia-dice-roller').once(function() {
+  function setupButtons() {
     helper = $('#dice-helper');
     if (helper.length == 0) {
       // On page load, inject the buttons into place in the DOM.
@@ -148,13 +157,7 @@ Drupal.behaviors.diceHelper = {
       // Set the image on display.
       setImageAssist();
     }
-  });
-
-  // React when a new character is selected.
-  $('#edit-field-comment-character-und').change(function() {
-      // Check the dice helper on character selection.
-      setDiceHelper();
-  });
+  }
 
   // Save the color and pic on post.
   $('#edit-submit, #edit-1').click(function() {
@@ -169,19 +172,20 @@ Drupal.behaviors.diceHelper = {
     setCookie('vaxia_dice_helper_narrative', narr, 30);
   });
 
-  // Clicking a quick pick button, trigger auto selects.
-  $('.dice-helper-button').click(function() {
-    quickPick($(this).val().toLowerCase());
-  });
-
-  // Changing a skill, check for all skill setting.
-  $('.dice-skill').change(function() {
-    sameSkillCheck($(this).attr('id'), $(this).val());
+  // React when a new character is selected.
+  $('#edit-field-comment-character-und').change(function() {
+      // Check the dice helper on character selection.
+      setDiceHelper();
   });
 
   // Changing the character pic dropdown.
   $('#edit-field-artwork-und').change(function() {
     setImageAssist();
+  });
+
+  // Called on load.
+  $('#vaxia-dice-roller').once(function() {
+    setupButtons();
   });
 
   })(jQuery); }
