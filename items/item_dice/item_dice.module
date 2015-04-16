@@ -226,20 +226,23 @@ function _item_dice_submit_commands($rolls, $character, $items, $lang) {
     // Get skill value from the character if it exists.
     if (!empty($roll['skill'])) {
       $skill_details = field_collection_item_load($roll['skill']);
-      $value = !empty($skill_details->field_skill_value[$lang][0]['value']) ? $skill_details->field_skill_value[$lang][0]['value'] : 0;
       if (!empty($skill_details->field_skill_value[$lang][0]['value'])) {
+        $value = !empty($skill_details->field_skill_value[$lang][0]['value']) ? $skill_details->field_skill_value[$lang][0]['value'] : 0;
         $name = !empty($skill_details->field_skill_name[$lang][0]['value']) ? $skill_details->field_skill_name[$lang][0]['value'] : t('Unk. skill');
         $desc = !empty($skill_details->field_skill_desc[$lang][0]['value']) ? $skill_details->field_skill_desc[$lang][0]['value'] : '';
         // Add aspects to display.
         $aspects = array();
-        if (!empty($skill_details->field_aspect_one[$lang][0]['value'])) {
-          $aspects[] = $skill_details->field_aspect_one[$lang][0]['value'];
+        if (!empty($skill_details->field_aspect_one[$lang][0]['tid'])) {
+          $weapon_class = taxonomy_term_load($skill_details->field_aspect_one[$lang][0]['tid']);
+          $aspects[] = $aspect->name;
         }
-        if (!empty($skill_details->field_aspect_two[$lang][0]['value'])) {
-          $aspects[] = $skill_details->field_aspect_two[$lang][0]['value'];
+        if (!empty($skill_details->field_aspect_two[$lang][0]['tid'])) {
+          $weapon_class = taxonomy_term_load($skill_details->field_aspect_two[$lang][0]['tid']);
+          $aspects[] = $aspect->name;
         }
-        if (!empty($skill_details->field_aspect_three[$lang][0]['value'])) {
-          $aspects[] = $skill_details->field_aspect_three[$lang][0]['value'];
+        if (!empty($skill_details->field_aspect_three[$lang][0]['tid'])) {
+          $weapon_class = taxonomy_term_load($skill_details->field_aspect_three[$lang][0]['tid']);
+          $aspects[] = $aspect->name;
         }
         if (!empty($aspects)) {
           $desc .= ' (' . implode(', ', $aspects) . ')';
