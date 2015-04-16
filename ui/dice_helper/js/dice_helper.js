@@ -171,7 +171,7 @@ Drupal.behaviors.diceHelper = {
   });
 
     //  One time bindings, changing the character pic dropdown.
-    $('#vaxia-dice-roller').ready(function() {
+    $('#vaxia-dice-roller').ajaxComplete(function() {
       setDiceHelper();
     });
     
