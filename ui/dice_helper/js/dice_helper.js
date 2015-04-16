@@ -167,12 +167,12 @@ Drupal.behaviors.diceHelper = {
   setupButtons();
 
   // Changing the character dropdown.
-  $('#edit-field-comment-character-und').unbind('change').change(function() {
-    setImageAssist();
+  $('#edit-field-comment-character-und').change(function() {
+    setDiceHelper();
   });
 
   //  Changing the character pic dropdown.
-  $('#edit-field-artwork-und').unbind('change').change(function() {
+  $('#edit-field-artwork-und').change(function() {
     setImageAssist();
   });
 
