@@ -230,6 +230,21 @@ function _item_dice_submit_commands($rolls, $character, $items, $lang) {
       if (!empty($skill_details->field_skill_value[$lang][0]['value'])) {
         $name = !empty($skill_details->field_skill_name[$lang][0]['value']) ? $skill_details->field_skill_name[$lang][0]['value'] : t('Unk. skill');
         $desc = !empty($skill_details->field_skill_desc[$lang][0]['value']) ? $skill_details->field_skill_desc[$lang][0]['value'] : '';
+        // Add aspects to display.
+        $aspects = array();
+        if (!empty($skill_details->field_aspect_one[$lang][0]['value'])) {
+          $aspects[] = $skill_details->field_aspect_one[$lang][0]['value'];
+        }
+        if (!empty($skill_details->field_aspect_two[$lang][0]['value'])) {
+          $aspects[] = $skill_details->field_aspect_two[$lang][0]['value'];
+        }
+        if (!empty($skill_details->field_aspect_three[$lang][0]['value'])) {
+          $aspects[] = $skill_details->field_aspect_three[$lang][0]['value'];
+        }
+        if (!empty($aspects)) {
+          $desc .= ' (' . implode(', ', $aspects) . ')';
+        }
+        // Set display.
         $roll['skill'] = $value;
         $roll['note'][] = '<a title="' . $desc . '" href="#">' . $name . '</a> (' . $value . ')';
       }
