@@ -181,7 +181,7 @@ function _item_dice_submit_weapons($items, $item, $stat_key, $lang) {
       $label = _item_dice_check_weapons($item, FALSE);
     }
     // If we have a label add it.
-    if (empty($label)) {
+    if (!empty($label)) {
       $items[$stat_key]['notes'] .= ' ' . $item->title .' (' . $label . ')';
     }
   }
