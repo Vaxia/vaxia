@@ -145,6 +145,15 @@ Drupal.behaviors.diceHelper = {
         '<input type="checkbox" id="same-skill-for-all" class="dice-helper-select"> Same skill?' +
         '</div>'
       );
+      // Check the cookie against the helper value to set pic and color.
+      var narr = getCookie('vaxia_dice_helper_narrative');
+      if (typeof narr !== 'undefined' && narr.length > 0 && narr == 'true') {
+        $('#edit-field-comment-narrative-und').attr('checked','checked');
+      }
+      // Check the dice helper on load.
+      setDiceHelper();
+      // Set the image on display.
+      setImageAssist();
     }
   }
 
@@ -171,17 +180,12 @@ Drupal.behaviors.diceHelper = {
     $('#edit-field-artwork-und').change(function() {
       setImageAssist();
     });
+    //  One time bindings, changing the character pic dropdown.
+    $('##vaxia-dice-roller').ready(function() {
+      setDiceHelper();
+    });
     // Inject buttons.
     setupButtons();
-    // Check the cookie against the helper value to set pic and color.
-    var narr = getCookie('vaxia_dice_helper_narrative');
-    if (typeof narr !== 'undefined' && narr.length > 0 && narr == 'true') {
-      $('#edit-field-comment-narrative-und').attr('checked','checked');
-    }
-    // Check the dice helper on load.
-    setDiceHelper();
-    // Set the image on display.
-    setImageAssist();
   });
 
   })(jQuery); }
