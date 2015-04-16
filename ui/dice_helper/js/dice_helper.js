@@ -163,10 +163,10 @@ Drupal.behaviors.diceHelper = {
 
   // React when a new character selected, after ajax complete!
   //$('form.comment-form').ajaxStop(function() {
-      if (in_ajax) {
-        in_ajax = false;
+  //    if (in_ajax) {
+ //       in_ajax = false;
         setDiceHelper();
-      }
+  //    }
   //});
 
   // Called on load but only the once.
