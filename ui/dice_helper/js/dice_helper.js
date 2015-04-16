@@ -102,12 +102,12 @@ Drupal.behaviors.diceHelper = {
     }
 
     // Clicking a quick pick button, trigger auto selects.
-    $('.dice-helper-button').click(function() {
+    $('.dice-helper-button').unbind('click').click(function() {
       quickPick($(this).val().toLowerCase());
     });
 
     // Changing a skill, check for all skill setting.
-    $('.dice-skill').change(function() {
+    $('.dice-skill').unbind('change').change(function() {
       sameSkillCheck($(this).attr('id'), $(this).val());
     });
   }
@@ -160,14 +160,6 @@ Drupal.behaviors.diceHelper = {
     var narr = $('#edit-field-comment-narrative-und').is(':checked');
     setCookie('vaxia_dice_helper_narrative', narr, 30);
   });
-
-  // React when a new character selected, after ajax complete!
-  //$('form.comment-form').ajaxStop(function() {
-  //    if (in_ajax) {
- //       in_ajax = false;
-        setDiceHelper();
-  //    }
-  //});
 
   // Called on load but only the once.
   $('#comment-form').once(function() {
