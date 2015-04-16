@@ -180,8 +180,8 @@ function _item_dice_submit_weapons($items, $item, $stat_key, $lang) {
       // Grab the non-fixed str label.
       $label = _item_dice_check_weapons($item, FALSE);
     }
-    // If we have a label add it.
-    if (!empty($label)) {
+    // If we have a label add it only the once.
+    if (!empty($label) && $stat_key != 'skill') {
       $items[$stat_key]['notes'] .= ' ' . $item->title .' (' . $label . ')';
     }
   }
