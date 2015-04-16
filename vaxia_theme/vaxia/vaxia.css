@@ -86,7 +86,7 @@ article #comment-body-add-more-wrapper #edit-comment-body-und-0-format{display:n
 .rpg-chat-node .links{display:none;}
 .rpg-chat-node .links a{display:none;}
 .rpg-chat-node .form-type-item{display:none;}
-#edit-vaxia-rolls{font-size:80%;}
+#vaxia-dice-roller fieldset{font-size:80%;}
 article.node-rpg-chatroom.clearfix:after, article.node-rpg-chatroom .field-type-node-reference.clearfix:after{clear:none;}
 #block-views-rpg-chats-rpg-chats-children {float:right;clear:right;padding-left:2em;}
 /* .rpg-chat-narrative header{display:none;} */
