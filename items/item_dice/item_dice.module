@@ -233,15 +233,15 @@ function _item_dice_submit_commands($rolls, $character, $items, $lang) {
         // Add aspects to display.
         $aspects = array();
         if (!empty($skill_details->field_aspect_one[$lang][0]['tid'])) {
-          $weapon_class = taxonomy_term_load($skill_details->field_aspect_one[$lang][0]['tid']);
+          $aspect = taxonomy_term_load($skill_details->field_aspect_one[$lang][0]['tid']);
           $aspects[] = $aspect->name;
         }
         if (!empty($skill_details->field_aspect_two[$lang][0]['tid'])) {
-          $weapon_class = taxonomy_term_load($skill_details->field_aspect_two[$lang][0]['tid']);
+          $aspect = taxonomy_term_load($skill_details->field_aspect_two[$lang][0]['tid']);
           $aspects[] = $aspect->name;
         }
         if (!empty($skill_details->field_aspect_three[$lang][0]['tid'])) {
-          $weapon_class = taxonomy_term_load($skill_details->field_aspect_three[$lang][0]['tid']);
+          $aspect = taxonomy_term_load($skill_details->field_aspect_three[$lang][0]['tid']);
           $aspects[] = $aspect->name;
         }
         if (!empty($aspects)) {
