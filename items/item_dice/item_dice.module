@@ -163,8 +163,6 @@ function _item_dice_submit_overlaps($items, $item, $stat_key, $lang) {
 function _item_dice_submit_weapons($items, $item, $stat_key, $lang) {
   $label = _item_dice_check_weapons($item);
   if (!empty($label)) {
-    // Get the noted for the weapon.
-    $notes = $item->title .' (' . $label . ')';
     // Set the general notes for the item.
     $items[$stat_key]['general'] = isset($items[$stat_key]['general']) ? $items[$stat_key]['general'] : 0;
     $items[$stat_key]['notes'] = isset($items[$stat_key]['notes']) ? $items[$stat_key]['notes'] : '';
@@ -176,8 +174,13 @@ function _item_dice_submit_weapons($items, $item, $stat_key, $lang) {
       // Unless something else already overlaps at a greater value.
       if ($fixed_str > $items[$stat_key]['overlaps']) {
         $items[$stat_key]['overlaps'] = $fixed_str;
-        $items[$stat_key]['notes'] .= ' ' . $notes;
+        $items[$stat_key]['notes'] .= ' ' . $item->title .' (' . $label . ')';
       }
+    }
+    else {
+      $items['any']['general'] = 0;
+      $items['any']['notes'] = isset($items['any']['notes']) ? $items['any']['notes'] : '';
+      $items['any']['notes'] .= ' ' . $item->title .' (' . _item_dice_check_weapons($item, FALSE) . ')';
     }
   }
   return $items;
@@ -191,8 +194,10 @@ function _item_dice_submit_uses($items, $item, $stat_key, $lang) {
   if (!empty($label)) {
     $notes = $item->title . ' ' . $label;
     $items[$stat_key]['general'] = isset($items[$stat_key]['general']) ? $items[$stat_key]['general'] : 0;
+    $items[$stat_key]['notes'] = isset($items[$stat_key]['notes']) ? $items[$stat_key]['notes'] : '';
     $items[$stat_key]['notes'] = $items[$stat_key]['notes'] . ' ' . $notes;
     $items['any']['general'] = 0;
+    $items['any']['notes'] = isset($items['any']['notes']) ? $items['any']['notes'] : '';
     $items['any']['notes'] = $items['any']['notes'] . ' ' . $notes;
   }
   return $items;
