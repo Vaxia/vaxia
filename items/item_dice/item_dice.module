@@ -164,7 +164,7 @@ function _item_dice_submit_weapons($items, $item, $stat_key, $lang) {
   $label = _item_dice_check_weapons($item);
   if (!empty($label)) {
     // Get the noted for the weapon.
-    $notes = $item->title . ' (weapon ' . _item_dice_check_weapons($item, FALSE) . ')';
+    $notes = $item->title .' (' . $label . ')';
     // Set the general notes for the item.
     $items[$stat_key]['general'] = isset($items[$stat_key]['general']) ? $items[$stat_key]['general'] : 0;
     $items[$stat_key]['notes'] = $items[$stat_key]['notes'] . ' ' . $notes;
@@ -173,13 +173,12 @@ function _item_dice_submit_weapons($items, $item, $stat_key, $lang) {
     $items['any']['notes'] .= ' ' . $notes;
     // Get the fixed strength for the weapon.
     $fixed_str = !empty($item->field_fixed_strength[$lang][0]['value']) ? $item->field_fixed_strength[$lang][0]['value'] : '';
-    if (!empty($fixed_str)) {
+    if ($stat_key == 'strength' && !empty($fixed_str)) {
       // Set the overlap for this stat based on the weapon fixed.
-      $items['strength']['overlaps'] = !empty($items['strength']['overlaps']) ? $items['strength']['overlaps'] : 0;
+      $items[$stat_key]['overlaps'] = !empty($items[$stat_key]['overlaps']) ? $items[$stat_key]['overlaps'] : 0;
       // Unless something else already overlaps at a greater value.
-      if ($fixed_str > $items['strength']['overlaps']) {
-        $items['strength']['overlaps'] = $fixed_str;
-        $items['strength']['notes'] = $item->title .' (weapon ' . $label . ')';
+      if ($fixed_str > $items[$stat_key]['overlaps']) {
+        $items[$stat_key]['overlaps'] = $fixed_str;
       }
     }
   }
