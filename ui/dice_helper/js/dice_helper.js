@@ -170,6 +170,11 @@ Drupal.behaviors.diceHelper = {
     setCookie('vaxia_dice_helper_narrative', narr, 30);
   });
 
+    //  One time bindings, changing the character pic dropdown.
+    $('#vaxia-dice-roller').ready(function() {
+      setDiceHelper();
+    });
+    
   // Called on load but only the once.
   $('#comment-form').once(function() {
     // One time bindings, changing the character dropdown.
@@ -179,10 +184,6 @@ Drupal.behaviors.diceHelper = {
     //  One time bindings, changing the character pic dropdown.
     $('#edit-field-artwork-und').change(function() {
       setImageAssist();
-    });
-    //  One time bindings, changing the character pic dropdown.
-    $('#vaxia-dice-roller').ready(function() {
-      setDiceHelper();
     });
     // Inject buttons.
     setupButtons();
