@@ -170,7 +170,7 @@ Drupal.behaviors.diceHelper = {
   //});
 
   // Called on load but only the once.
-  $('#vaxia-dice-roller').once(function() {
+  $('#comment-form').once(function() {
     // One time bindings, changing the character dropdown.
     $('#edit-field-comment-character-und').change(function() {
       setImageAssist();
