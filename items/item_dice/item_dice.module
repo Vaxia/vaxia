@@ -171,7 +171,7 @@ function _item_dice_submit_weapons($items, $item, $stat_key, $lang) {
       // Unless something else already overlaps at a greater value.
       if ($fixed_str > $items['strength']['overlaps']) {
         $items['strength']['overlaps'] = $fixed_str;
-        $items['strength']['notes'] = $item->title .' (' . $all_labels . ')';
+        $items['strength']['notes'] = $item->title .' (weapon ' . $label . ')';
       }
     }
     else {
