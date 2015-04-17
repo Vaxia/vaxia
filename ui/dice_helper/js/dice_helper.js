@@ -10,20 +10,20 @@ Drupal.behaviors.diceHelper = {
 
   // Cookie handling, set cookie.
   function setCookie(c_name, value, exdays) {
-    var exdate=new Date();
+    var exdate = new Date();
     exdate.setDate(exdate.getDate() + exdays);
-    var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
-    document.cookie=c_name + "=" + c_value;
+    var c_value = escape(value) + ((exdays == null) ? '' : '; expires=' + exdate.toUTCString());
+    document.cookie = c_name + '=' + c_value;
   }
 
   // Cookie handling, get cookie.
   function getCookie(c_name) {
-    var i,x,y,ARRcookies=document.cookie.split(";");
-    for (i=0;i<ARRcookies.length;i++) {
-      x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
-      y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
-      x=x.replace(/^\s+|\s+$/g,"");
-      if (x==c_name){
+    var i, x, y, ARRcookies = document.cookie.split(';');
+    for (i=0; i < ARRcookies.length; i++) {
+      x = ARRcookies[i].substr(0, ARRcookies[i].indexOf('='));
+      y = ARRcookies[i].substr(ARRcookies[i].indexOf('=') + 1);
+      x = x.replace(/^\s+|\s+$/g, '');
+      if (x == c_name) {
         return unescape(y);
       }
     }
@@ -34,7 +34,7 @@ Drupal.behaviors.diceHelper = {
   function quickPick(type) {
     $('.form-item-vaxia-rolls-dice-0-number select').val(1);
     $('.form-item-vaxia-rolls-dice-0-size select').val(100);
-    if (type=='attack') {
+    if (type == 'attack') {
       $('.form-item-vaxia-rolls-dice-1-number select').val(1);
       $('.form-item-vaxia-rolls-dice-1-size select').val(100);
       $('.form-item-vaxia-rolls-dice-2-number select').val(1);
@@ -42,8 +42,8 @@ Drupal.behaviors.diceHelper = {
       $('.form-item-vaxia-rolls-dice-0-stat select').val('dexterity');
       $('.form-item-vaxia-rolls-dice-1-stat select').val('strength');
       $('.form-item-vaxia-rolls-dice-2-stat select').val('endurance');
-    } 
-    if (type=='magic') {
+    }
+    if (type == 'magic') {
        $('.form-item-vaxia-rolls-dice-1-number select').val(1);
        $('.form-item-vaxia-rolls-dice-1-size select').val(100);
        $('.form-item-vaxia-rolls-dice-0-stat select').val('intelligence');
@@ -51,7 +51,7 @@ Drupal.behaviors.diceHelper = {
        $('.form-item-vaxia-rolls-dice-2-number select').val(0);
        $('.form-item-vaxia-rolls-dice-2-stat select').val(-1);
     }
-    if (type=='tech') {
+    if (type == 'tech') {
        $('.form-item-vaxia-rolls-dice-1-number select').val(1);
        $('.form-item-vaxia-rolls-dice-1-size select').val(100);
        $('.form-item-vaxia-rolls-dice-0-stat select').val('intelligence');
@@ -59,7 +59,7 @@ Drupal.behaviors.diceHelper = {
        $('.form-item-vaxia-rolls-dice-2-number select').val(0);
        $('.form-item-vaxia-rolls-dice-2-stat select').val(-1);
     }
-    if (type=='aware') {
+    if (type == 'aware') {
        $('.form-item-vaxia-rolls-dice-0-stat select').val('awareness');
        $('.form-item-vaxia-rolls-dice-1-number select').val(0);
        $('.form-item-vaxia-rolls-dice-2-number select').val(0);
