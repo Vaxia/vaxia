@@ -34,10 +34,11 @@
 #dice-ruler-form .secondary-help{width:210px;}
 /* Format the rpg-chat button display. */
 .dice-ruler-buttons{padding:0px;margin:0px;height:20px;}
-.dice-ruler-button{float:left;height:20px;width:20px;background:#111;border:solid 1px #eee;list-style-type:none;}
-.dice-ruler-button{font-weight:bold;text-align:center;margin-right:5px;}
+.dice-ruler-label, .dice-ruler-button{float:left;height:20px;width:20px;list-style-type:none;margin-right:5px;text-align:center;font-weight:bold;}
+.dice-ruler-button{background:#111;border:solid 1px #eee;}
 .dice-ruler-button a{text-decoration:none;line-height:20px;}
-.dice-ruler-trait-vs, .dice-ruler-two-trait-vs, .dice-ruler-combat-two{font-size:9px;}
+.dice-ruler-trait-vs, .dice-ruler-two-trait-vs{font-size:9px;}
+.dice-ruler-combat-two{margin-left:27px;}
 .dice_rolls .dice{margin-top:10px;}
 .dice-ruler-row-buttons{float:left;}
 .dice-ruler-set-buttons{clear:left;margin-top:10px;}
@@ -45,3 +46,8 @@
 .dice_rolls .last .dice-ruler-two-trait{display:none;}
 .dice_rolls .last .dice-ruler-trait-vs{margin-right:32px;}
 .dice_rolls .last .dice-ruler-two-trait-vs{display:none;}
+.dice-ruler-b{border:1px solid #A00;}
+.dice_rolls .first{margin-top:0;}
+.dice_rolls .dice_ruler_label{font-size:8px;font-weight:bold;margin-left:2px;}
+.dice_rolls .dice_ruler_label_b{margin-left:88px;}
+article.comment .dice_rolls{margin-top:0.5em;}
