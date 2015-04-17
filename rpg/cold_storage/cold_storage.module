@@ -18,6 +18,12 @@ function cold_storage_rules_action_info() {
           'type' => 'user',
           'label' => t('User'),
         ),
+        'node_type' => array(
+          'type' => 'list<text>',
+          'label' => t('Node type'),
+          'options list' => '_cold_storage_type_select',
+          'description' => t('The type of nodes to apply this to.'),
+        ),
       ), 
       'group' => t('Cold storage'), 
     ),
@@ -28,6 +34,12 @@ function cold_storage_rules_action_info() {
           'type' => 'user',
           'label' => t('User'),
         ),
+        'node_type' => array(
+          'type' => 'list<text>',
+          'label' => t('Node type'),
+          'options list' => '_cold_storage_type_select',
+          'description' => t('The type of nodes to apply this to.'),
+        ),
       ), 
       'group' => t('Cold storage'), 
     ),
@@ -37,16 +49,14 @@ function cold_storage_rules_action_info() {
     $actions['cold_storage_rules_unpub_nodes']['parameter']['current_state'] = array(
       'type' => 'list<integer>',
       'label' => t('Current workflow state'),
-      'options list' => '_workflow_rules_action_select',
-      'description' => t('The workflow state to set (select only one).'),
-      'optional' => TRUE,
+      'options list' => '_cold_storage_workflow_select',
+      'description' => t('The workflow state to set or none to ignore.'),
     );
     $actions['cold_storage_rules_unpub_nodes']['parameter']['workflow_state'] = array(
       'type' => 'list<integer>',
       'label' => t('New workflow state'),
-      'options list' => '_workflow_rules_action_select',
-      'description' => t('The workflow state to set (select only one).'),
-      'optional' => TRUE,
+      'options list' => '_cold_storage_workflow_select',
+      'description' => t('The workflow state to set or none to ignore.'),
     );
     $actions['cold_storage_rules_unpub_nodes']['parameter']['workflow_comment'] = array(
       'type' => 'text',
@@ -57,16 +67,14 @@ function cold_storage_rules_action_info() {
     $actions['cold_storage_rules_pub_nodes']['parameter']['current_state'] = array(
       'type' => 'list<integer>',
       'label' => t('Current workflow state'),
-      'options list' => '_workflow_rules_action_select',
-      'description' => t('The workflow state to set (select only one).'),
-      'optional' => TRUE,
+      'options list' => '_cold_storage_workflow_select',
+      'description' => t('The workflow state to set or none to ignore.'),
     );
     $actions['cold_storage_rules_pub_nodes']['parameter']['workflow_state'] = array(
       'type' => 'list<integer>',
       'label' => t('New workflow state'),
-      'options list' => '_workflow_rules_action_select',
-      'description' => t('The workflow state to set (select only one).'),
-      'optional' => TRUE,
+      'options list' => '_cold_storage_workflow_select',
+      'description' => t('The workflow state to set or none to ignore.'),
     );
     $actions['cold_storage_rules_pub_nodes']['parameter']['workflow_comment'] = array(
       'type' => 'text',
@@ -79,20 +87,52 @@ function cold_storage_rules_action_info() {
 }
 
 /**
+ * Wrapper around states select options, add the workflow none.
+ */
+function _cold_storage_workflow_select() {
+  $options['_NA'] = t('None selected');
+  if (module_exists('workflow_rules')) {
+    $options['_ANY'] = t('Any workflow');
+    $options = $options + _workflow_rules_action_select();
+  }
+  return $options;
+}
+
+/**
+ * Wrapper around states select options, add the workflow none.
+ */
+function _cold_storage_type_select() {
+  $options = array()
+  foreach (node_type_get_types() as $type => $type_def) {
+    $options[$type] = $type_def->name;
+  }
+  return $options;
+}
+
+/**
  * Rules action handler.
  */
-function cold_storage_rules_unpub_nodes($this_user, $current = NULL, $new = NULL, $workflow_comment = NULL) {
-  $nodes = node_load_multiple(array(), array('uid' => $this_user->uid, 'type' => 'character_sheet'));
+function cold_storage_rules_unpub_nodes($this_user, $types, $currents = NULL, $news = NULL, $comment = NULL) {
+  // Get all nodes for the given types.
+  $nodes = array();
+  foreach ($types as $type) {
+    $nodes = $nodes + node_load_multiple(array(), array('uid' => $this_user->uid, 'type' => $type));
+  }
+  // For each node.
   foreach ($nodes as $node) {
-    $node->status = 0;
     // Update the node workflow too.
-    if (module_exists('workflow_rules') && !empty($new)) {
-      $node_current_state = (array) workflow_node_current_state($node);
-      $allowed = in_array($node_current_state, $current); 
-      if (empty($current) || $allowed) {
-        workflow_rules_set_state($node, $new, $workflow_comment);
+    if (module_exists('workflow_rules')) {
+      // If new is not set to no-state or any state.
+      if (!in_array('_NA', $news) && !in_array('_ANY', $news)) {
+        $this_state = workflow_node_current_state($node);
+        // If current is not set OR is set to include the current.
+        if (in_array('_NA', $currents) || in_array('_ANY', $currents) || in_array($this_state, $currents)) {
+          workflow_rules_set_state($node, $news, $comment);
+        }
       }
     }
+    // Update the state.
+    $node->status = 0;
     node_save($node);
   }
   // Flush Entity Cache record.
@@ -104,18 +144,27 @@ function cold_storage_rules_unpub_nodes($this_user, $current = NULL, $new = NULL
 /**
  * Rules action handler.
  */
-function cold_storage_rules_pub_nodes($this_user, $current = NULL, $new = NULL, $workflow_comment = NULL) {
-  $nodes = node_load_multiple(array(), array('uid' => $this_user->uid, 'type' => 'character_sheet'));
+function cold_storage_rules_pub_nodes($this_user, $types, $currents = NULL, $news = NULL, $comment = NULL) {
+  // Get all nodes for the given types.
+  $nodes = array();
+  foreach ($types as $type) {
+    $nodes = $nodes + node_load_multiple(array(), array('uid' => $this_user->uid, 'type' => $type));
+  }
+  // For each node.
   foreach ($nodes as $node) {
-    $node->status = 1;
     // Update the node workflow too.
-    if (module_exists('workflow_rules') && !empty($new)) {
-      $node_current_state = (array) workflow_node_current_state($node);
-      $allowed = in_array($node_current_state, $current); 
-      if (empty($current) || $allowed) {
-        workflow_rules_set_state($node, $new, $workflow_comment);
+    if (module_exists('workflow_rules')) {
+      // If new is not set to no-state or any state.
+      if (!in_array('_NA', $news) && !in_array('_ANY', $news)) {
+        $this_state = workflow_node_current_state($node);
+        // If current is not set OR is set to include the current.
+        if (in_array('_NA', $currents) || in_array('_ANY', $currents) || in_array($this_state, $currents)) {
+          workflow_rules_set_state($node, $news, $comment);
+        }
       }
     }
+    // Update the state.
+    $node->status = 1;
     node_save($node);
   }
   // Flush Entity Cache record.
