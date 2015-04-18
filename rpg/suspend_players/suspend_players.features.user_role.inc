@@ -13,7 +13,7 @@ function suspend_players_user_default_roles() {
   // Exported role: suspended user.
   $roles['suspended user'] = array(
     'name' => 'suspended user',
-    'weight' => 24,
+    'weight' => 26,
   );
 
   return $roles;

@@ -19,13 +19,18 @@ function site_wiki_filter_default_formats() {
     'weight' => 0,
     'filters' => array(
       'filter_html' => array(
-        'weight' => -49,
+        'weight' => -50,
         'status' => 1,
         'settings' => array(
           'allowed_html' => '<p> <br /> <br> <a> <em> <strong> <cite> <blockquote> <code> <ul> <ol> <li> <dl> <dt> <dd> <b> <i> <h1> <h2> <h3> <hr>',
           'filter_html_help' => 0,
           'filter_html_nofollow' => 0,
         ),
+      ),
+      'site_wiki' => array(
+        'weight' => -49,
+        'status' => 1,
+        'settings' => array(),
       ),
       'spoiler' => array(
         'weight' => -48,
@@ -50,13 +55,8 @@ function site_wiki_filter_default_formats() {
           'filter_url_length' => 72,
         ),
       ),
-      'freelinking' => array(
-        'weight' => -45,
-        'status' => 1,
-        'settings' => array(),
-      ),
       'filter_htmlcorrector' => array(
-        'weight' => -40,
+        'weight' => -44,
         'status' => 1,
         'settings' => array(),
       ),

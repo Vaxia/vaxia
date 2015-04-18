@@ -13,7 +13,7 @@ function ban_players_user_default_roles() {
   // Exported role: banned user.
   $roles['banned user'] = array(
     'name' => 'banned user',
-    'weight' => 23,
+    'weight' => 25,
   );
 
   return $roles;

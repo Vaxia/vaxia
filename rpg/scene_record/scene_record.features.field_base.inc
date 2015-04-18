@@ -74,10 +74,29 @@ function scene_record_field_default_field_bases() {
     'type' => 'entityreference',
   );
 
+  // Exported field_base: 'field_scene'
+  $field_bases['field_scene'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_scene',
+    'indexes' => array(
+      'format' => array(
+        0 => 'format',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'text',
+    'settings' => array(),
+    'translatable' => 0,
+    'type' => 'text_long',
+  );
+
   // Exported field_base: 'field_scene_character'
   $field_bases['field_scene_character'] = array(
     'active' => 1,
-    'cardinality' => 1,
+    'cardinality' => -1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_scene_character',
@@ -90,6 +109,7 @@ function scene_record_field_default_field_bases() {
     'module' => 'node_reference',
     'settings' => array(
       'referenceable_types' => array(
+        'application' => 0,
         'artwork' => 0,
         'character_sheet' => 'character_sheet',
         'event' => 0,
@@ -109,6 +129,7 @@ function scene_record_field_default_field_bases() {
         'session_report' => 0,
         'storyhost_application' => 0,
         'strike' => 0,
+        'timeline_event' => 0,
         'webform' => 0,
         'wiki_page' => 0,
       ),

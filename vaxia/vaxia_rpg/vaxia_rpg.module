@@ -1,5 +1,7 @@
 <?php
 /**
  * @file
- * Drupal needs this blank file.
+ * Code for the Vaxia RPG feature.
  */
+
+include_once 'vaxia_rpg.features.inc';

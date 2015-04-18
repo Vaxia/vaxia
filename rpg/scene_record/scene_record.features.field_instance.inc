@@ -122,6 +122,96 @@ function scene_record_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-scene-field_scene'
+  $field_instances['node-scene-field_scene'] = array(
+    'bundle' => 'scene',
+    'default_value' => array(
+      0 => array(
+        'value' => '',
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'artwork' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 5,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_scene',
+    'label' => 'Scene',
+    'required' => 0,
+    'settings' => array(
+      'better_formats' => array(
+        'allowed_formats' => array(
+          'filtered_html' => 0,
+          'full_html' => 'full_html',
+          'php_code' => 0,
+          'plain_text' => 0,
+          'whiteboard' => 0,
+          'wiki' => 0,
+        ),
+        'allowed_formats_toggle' => 1,
+        'default_order_toggle' => 0,
+        'default_order_wrapper' => array(
+          'formats' => array(
+            'filtered_html' => array(
+              'weight' => 0,
+            ),
+            'full_html' => array(
+              'weight' => 1,
+            ),
+            'php_code' => array(
+              'weight' => 11,
+            ),
+            'plain_text' => array(
+              'weight' => 10,
+            ),
+            'whiteboard' => array(
+              'weight' => 0,
+            ),
+            'wiki' => array(
+              'weight' => 0,
+            ),
+          ),
+        ),
+      ),
+      'text_processing' => 1,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 5,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 8,
+    ),
+  );
+
   // Exported field_instance: 'node-scene-field_scene_character'
   $field_instances['node-scene-field_scene_character'] = array(
     'bundle' => 'scene',
@@ -416,6 +506,7 @@ function scene_record_field_default_field_instances() {
   t('List the related Saga or A/SH to bring this scene to the attention of if the scene is tied to a specific Saga or Storyhost. If there isn\'t one - leave it at "any A/SH" for open ruling.');
   t('Notes');
   t('RP Posts');
+  t('Scene');
   t('Which character this scene is put in for.');
 
   return $field_instances;

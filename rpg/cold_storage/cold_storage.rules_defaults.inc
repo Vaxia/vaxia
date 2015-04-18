@@ -80,7 +80,13 @@ function cold_storage_default_rules_configuration() {
       "DO" : [
         { "user_add_role" : { "account" : [ "account" ], "roles" : { "value" : { "8" : "8" } } } },
         { "user_remove_role" : { "account" : [ "account" ], "roles" : { "value" : { "22" : "22" } } } },
-        { "cold_storage_rules_pub_nodes" : { "user" : [ "account" ] } }
+        { "cold_storage_rules_pub_nodes" : {
+            "user" : [ "account" ],
+            "node_type" : { "value" : { "character_sheet" : "character_sheet" } },
+            "current_state" : { "value" : { "_NA" : "_NA" } },
+            "workflow_state" : { "value" : { "_NA" : "_NA" } }
+          }
+        }
       ]
     }
   }');
@@ -126,7 +132,14 @@ function cold_storage_default_rules_configuration() {
             }
           }
         },
-        { "cold_storage_rules_unpub_nodes" : { "user" : [ "account" ] } }
+        { "cold_storage_rules_unpub_nodes" : {
+            "user" : [ "account" ],
+            "node_type" : { "value" : { "character_sheet" : "character_sheet" } },
+            "current_state" : { "value" : { "4" : "4" } },
+            "workflow_state" : { "value" : { "2" : "2" } },
+            "workflow_comment" : "Set to draft on player moving to storage."
+          }
+        }
       ]
     }
   }');

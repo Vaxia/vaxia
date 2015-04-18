@@ -26,7 +26,9 @@ function role_app_default_rules_configuration() {
         { "role_app_approved_app" : { "webform" : [ "node" ] } }
       ],
       "DO" : [
-        { "role_app_set_role" : { "user" : [ "user" ], "rid" : "[node:field-applied-role-id]" } }
+        { "role_app_set_role" : { "user" : [ "node:author" ], "rid" : "[node:field-applied-role-id]" } },
+        { "drupal_message" : { "message" : "Approval for [node:author:name] has been granted! Thanks!" } },
+        { "webform_close" : { "entity" : [ "node" ], "selected_webform" : { "value" : [] } } }
       ]
     }
   }');

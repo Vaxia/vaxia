@@ -1,4 +1,4 @@
-name = Storyhost course
+name = Storyhost Course
 description = Storyhost course configurations
 core = 7.x
 package = Vaxia
