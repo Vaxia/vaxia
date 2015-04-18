@@ -24,10 +24,7 @@ function artwork_default_rules_configuration() {
           }
         }
       ],
-      "DO" : [
-        { "node_unpublish" : { "node" : [ "node" ] } },
-        { "entity_save" : { "data" : [ "node" ] } }
-      ]
+      "DO" : [ { "entity_save" : { "data" : [ "node" ] } } ]
     }
   }');
   return $items;

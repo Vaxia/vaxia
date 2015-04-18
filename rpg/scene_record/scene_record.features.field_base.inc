@@ -30,6 +30,7 @@ function scene_record_field_default_field_bases() {
         'item' => 'Crafting an item',
         'silver' => 'Making some silver',
         'fame' => 'Gain reputation',
+        'priv' => 'Private record',
       ),
       'allowed_values_function' => '',
     ),

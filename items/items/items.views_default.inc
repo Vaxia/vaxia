@@ -363,6 +363,14 @@ function items_views_default_views() {
     3 => 0,
     11 => 0,
   );
+  /* Filter criterion: Workflow: Current state */
+  $handler->display->display_options['filters']['sid_1']['id'] = 'sid_1';
+  $handler->display->display_options['filters']['sid_1']['table'] = 'workflow_node';
+  $handler->display->display_options['filters']['sid_1']['field'] = 'sid';
+  $handler->display->display_options['filters']['sid_1']['relationship'] = 'field_character_owner_nid';
+  $handler->display->display_options['filters']['sid_1']['value'] = array(
+    4 => '4',
+  );
 
   /* Display: Character items */
   $handler = $view->new_display('page', 'Character items', 'character_items');
@@ -588,6 +596,14 @@ function items_views_default_views() {
     3 => 0,
     11 => 0,
   );
+  /* Filter criterion: Workflow: Current state */
+  $handler->display->display_options['filters']['sid_1']['id'] = 'sid_1';
+  $handler->display->display_options['filters']['sid_1']['table'] = 'workflow_node';
+  $handler->display->display_options['filters']['sid_1']['field'] = 'sid';
+  $handler->display->display_options['filters']['sid_1']['relationship'] = 'field_character_owner_nid';
+  $handler->display->display_options['filters']['sid_1']['value'] = array(
+    4 => '4',
+  );
   $handler->display->display_options['path'] = 'character-items/all';
   $handler->display->display_options['menu']['type'] = 'default tab';
   $handler->display->display_options['menu']['title'] = 'Character items';
@@ -648,198 +664,6 @@ function items_views_default_views() {
   $handler->display->display_options['fields']['changed']['label'] = 'Updated';
   $handler->display->display_options['fields']['changed']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['changed']['date_format'] = 'short';
-  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
-  $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Content: Published */
-  $handler->display->display_options['filters']['status']['id'] = 'status';
-  $handler->display->display_options['filters']['status']['table'] = 'node';
-  $handler->display->display_options['filters']['status']['field'] = 'status';
-  $handler->display->display_options['filters']['status']['value'] = 1;
-  $handler->display->display_options['filters']['status']['group'] = 1;
-  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Content: Type */
-  $handler->display->display_options['filters']['type']['id'] = 'type';
-  $handler->display->display_options['filters']['type']['table'] = 'node';
-  $handler->display->display_options['filters']['type']['field'] = 'type';
-  $handler->display->display_options['filters']['type']['value'] = array(
-    'items' => 'items',
-  );
-  $handler->display->display_options['filters']['type']['group'] = 1;
-  /* Filter criterion: User: Current */
-  $handler->display->display_options['filters']['uid_current']['id'] = 'uid_current';
-  $handler->display->display_options['filters']['uid_current']['table'] = 'users';
-  $handler->display->display_options['filters']['uid_current']['field'] = 'uid_current';
-  $handler->display->display_options['filters']['uid_current']['relationship'] = 'uid';
-  $handler->display->display_options['filters']['uid_current']['value'] = '1';
-  $handler->display->display_options['filters']['uid_current']['group'] = 1;
-  /* Filter criterion: Workflow: Current state */
-  $handler->display->display_options['filters']['sid']['id'] = 'sid';
-  $handler->display->display_options['filters']['sid']['table'] = 'workflow_node';
-  $handler->display->display_options['filters']['sid']['field'] = 'sid';
-  $handler->display->display_options['filters']['sid']['value'] = array(
-    13 => '13',
-    14 => '14',
-    15 => '15',
-  );
-  $handler->display->display_options['filters']['sid']['group'] = 1;
-  $handler->display->display_options['filters']['sid']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['sid']['expose']['operator_id'] = 'sid_op';
-  $handler->display->display_options['filters']['sid']['expose']['label'] = 'Current state';
-  $handler->display->display_options['filters']['sid']['expose']['operator'] = 'sid_op';
-  $handler->display->display_options['filters']['sid']['expose']['identifier'] = 'sid';
-  $handler->display->display_options['filters']['sid']['expose']['remember'] = TRUE;
-  $handler->display->display_options['filters']['sid']['expose']['multiple'] = TRUE;
-  $handler->display->display_options['filters']['sid']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    8 => 0,
-    19 => 0,
-    12 => 0,
-    13 => 0,
-    10 => 0,
-    17 => 0,
-    15 => 0,
-    9 => 0,
-    20 => 0,
-    14 => 0,
-    25 => 0,
-    21 => 0,
-    3 => 0,
-    11 => 0,
-    22 => 0,
-    23 => 0,
-    24 => 0,
-    26 => 0,
-    27 => 0,
-  );
-  $handler->display->display_options['filters']['sid']['expose']['reduce'] = TRUE;
-  /* Filter criterion: Content: Title */
-  $handler->display->display_options['filters']['title']['id'] = 'title';
-  $handler->display->display_options['filters']['title']['table'] = 'node';
-  $handler->display->display_options['filters']['title']['field'] = 'title';
-  $handler->display->display_options['filters']['title']['operator'] = 'contains';
-  $handler->display->display_options['filters']['title']['group'] = 1;
-  $handler->display->display_options['filters']['title']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['title']['expose']['operator_id'] = 'title_op';
-  $handler->display->display_options['filters']['title']['expose']['label'] = 'Item Name';
-  $handler->display->display_options['filters']['title']['expose']['use_operator'] = TRUE;
-  $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
-  $handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
-  $handler->display->display_options['filters']['title']['expose']['remember'] = TRUE;
-  $handler->display->display_options['filters']['title']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    8 => 0,
-    19 => 0,
-    12 => 0,
-    13 => 0,
-    10 => 0,
-    17 => 0,
-    15 => 0,
-    9 => 0,
-    20 => 0,
-    14 => 0,
-    21 => 0,
-    3 => 0,
-    11 => 0,
-    22 => 0,
-    23 => 0,
-    24 => 0,
-  );
-  /* Filter criterion: Content: Title */
-  $handler->display->display_options['filters']['title_1']['id'] = 'title_1';
-  $handler->display->display_options['filters']['title_1']['table'] = 'node';
-  $handler->display->display_options['filters']['title_1']['field'] = 'title';
-  $handler->display->display_options['filters']['title_1']['relationship'] = 'field_character_owner_nid';
-  $handler->display->display_options['filters']['title_1']['operator'] = 'contains';
-  $handler->display->display_options['filters']['title_1']['group'] = 1;
-  $handler->display->display_options['filters']['title_1']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['title_1']['expose']['operator_id'] = 'title_1_op';
-  $handler->display->display_options['filters']['title_1']['expose']['label'] = 'Character';
-  $handler->display->display_options['filters']['title_1']['expose']['use_operator'] = TRUE;
-  $handler->display->display_options['filters']['title_1']['expose']['operator'] = 'title_1_op';
-  $handler->display->display_options['filters']['title_1']['expose']['identifier'] = 'title_1';
-  $handler->display->display_options['filters']['title_1']['expose']['remember'] = TRUE;
-  $handler->display->display_options['filters']['title_1']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    8 => 0,
-    19 => 0,
-    12 => 0,
-    13 => 0,
-    10 => 0,
-    17 => 0,
-    15 => 0,
-    9 => 0,
-    20 => 0,
-    14 => 0,
-    21 => 0,
-    3 => 0,
-    11 => 0,
-    22 => 0,
-    23 => 0,
-    24 => 0,
-  );
-  /* Filter criterion: User: Name */
-  $handler->display->display_options['filters']['uid_1']['id'] = 'uid_1';
-  $handler->display->display_options['filters']['uid_1']['table'] = 'users';
-  $handler->display->display_options['filters']['uid_1']['field'] = 'uid';
-  $handler->display->display_options['filters']['uid_1']['relationship'] = 'uid_2';
-  $handler->display->display_options['filters']['uid_1']['value'] = '';
-  $handler->display->display_options['filters']['uid_1']['group'] = 1;
-  $handler->display->display_options['filters']['uid_1']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['uid_1']['expose']['operator_id'] = 'uid_1_op';
-  $handler->display->display_options['filters']['uid_1']['expose']['label'] = 'Player';
-  $handler->display->display_options['filters']['uid_1']['expose']['operator'] = 'uid_1_op';
-  $handler->display->display_options['filters']['uid_1']['expose']['identifier'] = 'uid_1';
-  $handler->display->display_options['filters']['uid_1']['expose']['remember'] = TRUE;
-  $handler->display->display_options['filters']['uid_1']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    8 => 0,
-    19 => 0,
-    12 => 0,
-    13 => 0,
-    10 => 0,
-    17 => 0,
-    15 => 0,
-    9 => 0,
-    20 => 0,
-    14 => 0,
-    4 => 0,
-    3 => 0,
-    11 => 0,
-  );
-  /* Filter criterion: User: Name */
-  $handler->display->display_options['filters']['uid']['id'] = 'uid';
-  $handler->display->display_options['filters']['uid']['table'] = 'users';
-  $handler->display->display_options['filters']['uid']['field'] = 'uid';
-  $handler->display->display_options['filters']['uid']['relationship'] = 'uid';
-  $handler->display->display_options['filters']['uid']['value'] = '';
-  $handler->display->display_options['filters']['uid']['group'] = 1;
-  $handler->display->display_options['filters']['uid']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['uid']['expose']['operator_id'] = 'uid_op';
-  $handler->display->display_options['filters']['uid']['expose']['label'] = 'Creator';
-  $handler->display->display_options['filters']['uid']['expose']['operator'] = 'uid_op';
-  $handler->display->display_options['filters']['uid']['expose']['identifier'] = 'uid';
-  $handler->display->display_options['filters']['uid']['expose']['remember'] = TRUE;
-  $handler->display->display_options['filters']['uid']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    8 => 0,
-    19 => 0,
-    12 => 0,
-    13 => 0,
-    10 => 0,
-    17 => 0,
-    15 => 0,
-    9 => 0,
-    20 => 0,
-    14 => 0,
-    4 => 0,
-    3 => 0,
-    11 => 0,
-  );
   $handler->display->display_options['path'] = 'character-items/my-items';
   $handler->display->display_options['menu']['type'] = 'tab';
   $handler->display->display_options['menu']['title'] = 'My items';
@@ -1167,7 +991,6 @@ function items_views_default_views() {
     13 => '13',
     14 => '14',
     15 => '15',
-    16 => '16',
     21 => '21',
   );
   $handler->display->display_options['filters']['sid']['group'] = 1;
@@ -1180,25 +1003,32 @@ function items_views_default_views() {
   $handler->display->display_options['filters']['sid']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
+    3 => 0,
+    30 => 0,
     8 => 0,
+    9 => 0,
+    14 => 0,
+    21 => 0,
+    24 => 0,
+    26 => 0,
+    27 => 0,
     19 => 0,
+    28 => 0,
+    29 => 0,
     12 => 0,
+    34 => 0,
+    35 => 0,
+    25 => 0,
     13 => 0,
     10 => 0,
     17 => 0,
     15 => 0,
-    9 => 0,
     20 => 0,
-    14 => 0,
-    25 => 0,
-    21 => 0,
-    3 => 0,
-    11 => 0,
     22 => 0,
     23 => 0,
-    24 => 0,
-    26 => 0,
-    27 => 0,
+    31 => 0,
+    32 => 0,
+    33 => 0,
   );
   $handler->display->display_options['filters']['sid']['expose']['reduce'] = TRUE;
   /* Filter criterion: Content: Title */
@@ -1321,6 +1151,14 @@ function items_views_default_views() {
     4 => 0,
     3 => 0,
     11 => 0,
+  );
+  /* Filter criterion: Workflow: Current state */
+  $handler->display->display_options['filters']['sid_1']['id'] = 'sid_1';
+  $handler->display->display_options['filters']['sid_1']['table'] = 'workflow_node';
+  $handler->display->display_options['filters']['sid_1']['field'] = 'sid';
+  $handler->display->display_options['filters']['sid_1']['relationship'] = 'field_character_owner_nid';
+  $handler->display->display_options['filters']['sid_1']['value'] = array(
+    4 => '4',
   );
   $handler->display->display_options['path'] = 'character-items/evaluate';
   $handler->display->display_options['menu']['type'] = 'tab';

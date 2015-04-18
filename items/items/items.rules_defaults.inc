@@ -39,7 +39,6 @@ function items_default_rules_configuration() {
       ],
       "DO" : [
         { "data_set" : { "data" : [ "node:field-character-owner" ], "value" : [ "" ] } },
-        { "node_unpublish" : { "node" : [ "node" ] } },
         { "entity_save" : { "data" : [ "node" ] } }
       ]
     }
