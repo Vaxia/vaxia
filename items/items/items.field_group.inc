@@ -18,14 +18,14 @@ function items_field_group_info() {
   $field_group->entity_type = 'node';
   $field_group->bundle = 'items';
   $field_group->mode = 'default';
-  $field_group->parent_name = 'group_notes';
+  $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Creation History',
-    'weight' => '52',
+    'weight' => '8',
     'children' => array(
       0 => 'field_creation_history',
     ),
-    'format_type' => 'fieldset',
+    'format_type' => 'hidden',
     'format_settings' => array(
       'label' => 'Creation History',
       'instance_settings' => array(
@@ -144,7 +144,7 @@ function items_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Modifies',
-    'weight' => '7',
+    'weight' => '6',
     'children' => array(
       0 => 'field_item_agility',
       1 => 'field_item_appearance',
@@ -186,7 +186,7 @@ function items_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Notes',
-    'weight' => '7',
+    'weight' => '6',
     'children' => array(
       0 => 'field_player_notes',
       1 => 'field_sh_notes',
@@ -215,13 +215,12 @@ function items_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Notes',
-    'weight' => '8',
+    'weight' => '7',
     'children' => array(
       0 => 'field_player_notes',
       1 => 'field_sh_notes',
       2 => 'field_sh_private_notes',
       3 => 'workflow_current_state',
-      4 => 'group_creation_history',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -246,7 +245,7 @@ function items_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Notes',
-    'weight' => '9',
+    'weight' => '8',
     'children' => array(
       0 => 'field_player_notes',
       1 => 'field_sh_notes',
@@ -276,7 +275,7 @@ function items_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Overlaps',
-    'weight' => '4',
+    'weight' => '5',
     'children' => array(
       0 => 'field_item_over_agility',
       1 => 'field_item_over_appearance',
@@ -317,7 +316,7 @@ function items_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Overlaps',
-    'weight' => '7',
+    'weight' => '6',
     'children' => array(
       0 => 'field_item_over_agility',
       1 => 'field_item_over_appearance',
@@ -358,7 +357,7 @@ function items_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Overlaps',
-    'weight' => '8',
+    'weight' => '7',
     'children' => array(
       0 => 'field_item_over_agility',
       1 => 'field_item_over_appearance',
@@ -400,12 +399,11 @@ function items_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Shop details',
-    'weight' => '3',
+    'weight' => '4',
     'children' => array(
-      0 => 'field_value',
-      1 => 'field_in_shop',
-      2 => 'field_declared_value',
-      3 => 'field_sellback',
+      0 => 'field_in_shop',
+      1 => 'field_declared_value',
+      2 => 'field_sellback',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -429,14 +427,13 @@ function items_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Shop details',
-    'weight' => '4',
+    'weight' => '5',
     'children' => array(
       0 => 'field_value',
       1 => 'field_in_shop',
       2 => 'field_declared_value',
       3 => 'field_calc_value',
-      4 => 'field_created_for_silver',
-      5 => 'field_sellback',
+      4 => 'field_sellback',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -461,7 +458,7 @@ function items_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Modifies',
-    'weight' => '6',
+    'weight' => '5',
     'children' => array(
       0 => 'field_item_agility',
       1 => 'field_item_appearance',
@@ -494,15 +491,15 @@ function items_field_group_info() {
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
-  $field_group->identifier = 'group_uses|node|items|default';
+  $field_group->identifier = 'group_uses|node|items|artwork';
   $field_group->group_name = 'group_uses';
   $field_group->entity_type = 'node';
   $field_group->bundle = 'items';
-  $field_group->mode = 'default';
+  $field_group->mode = 'artwork';
   $field_group->parent_name = '';
   $field_group->data = array(
-    'label' => 'Item Uses',
-    'weight' => '4',
+    'label' => 'Item Type',
+    'weight' => '2',
     'children' => array(
       0 => 'field_item_uses',
       1 => 'field_pp_created',
@@ -511,14 +508,54 @@ function items_field_group_info() {
       4 => 'field_item_type',
       5 => 'field_weapon_class',
       6 => 'field_item_difficulty',
+      7 => 'field_armor_absorbs',
+      8 => 'field_armor_penalty',
+      9 => 'field_fixed_strength',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
-      'formatter' => 'collapsible',
+      'label' => 'Item Type',
       'instance_settings' => array(
-        'description' => '',
         'classes' => 'group-uses field-group-fieldset',
+        'description' => '',
       ),
+      'formatter' => 'collapsed',
+    ),
+  );
+  $export['group_uses|node|items|artwork'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_uses|node|items|default';
+  $field_group->group_name = 'group_uses';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'items';
+  $field_group->mode = 'default';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Item Type',
+    'weight' => '3',
+    'children' => array(
+      0 => 'field_item_uses',
+      1 => 'field_pp_created',
+      2 => 'field_item_use_day',
+      3 => 'field_item_spent_uses',
+      4 => 'field_item_type',
+      5 => 'field_weapon_class',
+      6 => 'field_item_difficulty',
+      7 => 'field_armor_absorbs',
+      8 => 'field_armor_penalty',
+      9 => 'field_fixed_strength',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'label' => 'Item Type',
+      'instance_settings' => array(
+        'classes' => 'group-uses field-group-fieldset',
+        'description' => '',
+      ),
+      'formatter' => 'collapsible',
     ),
   );
   $export['group_uses|node|items|default'] = $field_group;
@@ -533,8 +570,8 @@ function items_field_group_info() {
   $field_group->mode = 'form';
   $field_group->parent_name = '';
   $field_group->data = array(
-    'label' => 'Item Uses',
-    'weight' => '5',
+    'label' => 'Item Type',
+    'weight' => '4',
     'children' => array(
       0 => 'field_item_uses',
       1 => 'field_pp_created',
@@ -543,15 +580,19 @@ function items_field_group_info() {
       4 => 'field_item_type',
       5 => 'field_weapon_class',
       6 => 'field_item_difficulty',
+      7 => 'field_armor_absorbs',
+      8 => 'field_armor_penalty',
+      9 => 'field_fixed_strength',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
-      'formatter' => 'collapsible',
+      'label' => 'Item Type',
       'instance_settings' => array(
-        'description' => '',
-        'classes' => 'group-uses field-group-fieldset',
         'required_fields' => 1,
+        'classes' => 'group-uses field-group-fieldset',
+        'description' => '',
       ),
+      'formatter' => 'collapsible',
     ),
   );
   $export['group_uses|node|items|form'] = $field_group;

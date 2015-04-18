@@ -692,7 +692,7 @@ function npcs_views_default_views() {
   $handler->display->display_options['filters']['field_awareness_value']['operator'] = '>';
   $handler->display->display_options['filters']['field_awareness_value']['value']['value'] = '70';
   $handler->display->display_options['filters']['field_awareness_value']['group'] = 2;
-  /* Filter criterion: Content: Charisma (field_charisma) */
+  /* Filter criterion: Field: Charisma (field_charisma) */
   $handler->display->display_options['filters']['field_charisma_value']['id'] = 'field_charisma_value';
   $handler->display->display_options['filters']['field_charisma_value']['table'] = 'field_data_field_charisma';
   $handler->display->display_options['filters']['field_charisma_value']['field'] = 'field_charisma_value';

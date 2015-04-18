@@ -31,19 +31,19 @@ function sh_test_user_default_roles() {
   // Exported role: storyteller-assistant.
   $roles['storyteller-assistant'] = array(
     'name' => 'storyteller-assistant',
-    'weight' => 17,
+    'weight' => 19,
   );
 
   // Exported role: storyteller-candidate.
   $roles['storyteller-candidate'] = array(
     'name' => 'storyteller-candidate',
-    'weight' => 18,
+    'weight' => 20,
   );
 
   // Exported role: storyteller-newbie.
   $roles['storyteller-newbie'] = array(
     'name' => 'storyteller-newbie',
-    'weight' => 16,
+    'weight' => 18,
   );
 
   return $roles;

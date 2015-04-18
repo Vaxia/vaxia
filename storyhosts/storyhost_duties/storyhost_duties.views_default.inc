@@ -39,6 +39,7 @@ function storyhost_duties_views_default_views() {
     'php_2' => 'php_2',
     'php_3' => 'php_3',
     'php_4' => 'php_4',
+    'php_8' => 'php_8',
     'php' => 'php',
     'php_1' => 'php_1',
     'php_5' => 'php_5',
@@ -91,6 +92,13 @@ function storyhost_duties_views_default_views() {
       'empty_column' => 0,
     ),
     'php_4' => array(
+      'sortable' => 1,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'php_8' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -206,6 +214,15 @@ function storyhost_duties_views_default_views() {
   $handler->display->display_options['fields']['php_4']['php_value'] = 'return _storyhost_duties_prompt_eval_item_count_value($row->uid);';
   $handler->display->display_options['fields']['php_4']['use_php_click_sortable'] = '1';
   $handler->display->display_options['fields']['php_4']['php_click_sortable'] = '';
+  /* Field: Global: PHP */
+  $handler->display->display_options['fields']['php_8']['id'] = 'php_8';
+  $handler->display->display_options['fields']['php_8']['table'] = 'views';
+  $handler->display->display_options['fields']['php_8']['field'] = 'php';
+  $handler->display->display_options['fields']['php_8']['label'] = 'Scenes Eval';
+  $handler->display->display_options['fields']['php_8']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php_8']['php_value'] = 'return _storyhost_duties_prompt_eval_scenes_count_value($row->uid);';
+  $handler->display->display_options['fields']['php_8']['use_php_click_sortable'] = '1';
+  $handler->display->display_options['fields']['php_8']['php_click_sortable'] = '';
   /* Field: Global: PHP */
   $handler->display->display_options['fields']['php']['id'] = 'php';
   $handler->display->display_options['fields']['php']['table'] = 'views';

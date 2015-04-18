@@ -10,6 +10,36 @@
 function items_field_default_field_bases() {
   $field_bases = array();
 
+  // Exported field_base: 'field_armor_absorbs'
+  $field_bases['field_armor_absorbs'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_armor_absorbs',
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'number',
+    'settings' => array(),
+    'translatable' => 0,
+    'type' => 'number_integer',
+  );
+
+  // Exported field_base: 'field_armor_penalty'
+  $field_bases['field_armor_penalty'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_armor_penalty',
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'number',
+    'settings' => array(),
+    'translatable' => 0,
+    'type' => 'number_integer',
+  );
+
   // Exported field_base: 'field_calc_value'
   $field_bases['field_calc_value'] = array(
     'active' => 1,
@@ -82,31 +112,6 @@ function items_field_default_field_bases() {
     'type' => 'node_reference',
   );
 
-  // Exported field_base: 'field_created_for_silver'
-  $field_bases['field_created_for_silver'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_created_for_silver',
-    'indexes' => array(
-      'value' => array(
-        0 => 'value',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'list',
-    'settings' => array(
-      'allowed_values' => array(
-        0 => 'Item was NOT created for sale, to convert to silver.',
-        1 => 'Item was created for sale, to convert to silver.',
-      ),
-      'allowed_values_function' => '',
-    ),
-    'translatable' => 0,
-    'type' => 'list_boolean',
-  );
-
   // Exported field_base: 'field_creation_history'
   $field_bases['field_creation_history'] = array(
     'active' => 1,
@@ -145,6 +150,21 @@ function items_field_default_field_bases() {
     ),
     'translatable' => 0,
     'type' => 'text',
+  );
+
+  // Exported field_base: 'field_fixed_strength'
+  $field_bases['field_fixed_strength'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_fixed_strength',
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'number',
+    'settings' => array(),
+    'translatable' => 0,
+    'type' => 'number_integer',
   );
 
   // Exported field_base: 'field_in_shop'

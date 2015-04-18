@@ -153,7 +153,7 @@ function vaxia_wiki_views_default_views() {
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'node';
   $handler->display->display_options['fields']['created']['field'] = 'created';
-  $handler->display->display_options['fields']['created']['date_format'] = 'privatemsg_current_day';
+  $handler->display->display_options['fields']['created']['date_format'] = 'medium';
   $handler->display->display_options['fields']['created']['second_date_format'] = 'privatemsg_current_day';
   /* Field: User: Name */
   $handler->display->display_options['fields']['name_1']['id'] = 'name_1';
@@ -166,7 +166,7 @@ function vaxia_wiki_views_default_views() {
   $handler->display->display_options['fields']['last_updated']['table'] = 'node_comment_statistics';
   $handler->display->display_options['fields']['last_updated']['field'] = 'last_updated';
   $handler->display->display_options['fields']['last_updated']['label'] = 'Updated date';
-  $handler->display->display_options['fields']['last_updated']['date_format'] = 'privatemsg_current_day';
+  $handler->display->display_options['fields']['last_updated']['date_format'] = 'short';
   $handler->display->display_options['fields']['last_updated']['second_date_format'] = 'privatemsg_current_day';
   /* Field: Content: Categories */
   $handler->display->display_options['fields']['field_additional_tagging']['id'] = 'field_additional_tagging';
@@ -1862,7 +1862,7 @@ function vaxia_wiki_views_default_views() {
   $handler->display->display_options['header']['area']['field'] = 'area';
   $handler->display->display_options['header']['area']['empty'] = TRUE;
   $handler->display->display_options['header']['area']['content'] = '<style>
-.view-display-id-wiki_search {border:1px solid;padding:0.5em}
+.view-display-id-wiki_search .view-filters{border:1px solid;padding:0.5em}
 .view-display-id-wiki_search .views-exposed-widget{float:left;}
 .view-display-id-wiki_search .views-exposed-widget input.form-text{width:80px;}
 .view-display-id-wiki_search .views-submit-button{clear:left;}
@@ -2950,22 +2950,32 @@ Search for a wiki article by tag(s).';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Search';
+  $handler->display->display_options['exposed_form']['options']['reset_button'] = TRUE;
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '35';
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
     'views_bulk_operations' => 'views_bulk_operations',
+    'field_titles' => 'title',
     'title' => 'title',
+    'field_last_name' => 'title',
     'name' => 'name',
     'field_realm' => 'field_realm',
     'field_race' => 'field_race',
+    'field_sirian_species' => 'field_race',
     'field_description' => 'field_description',
-    'field_last_name' => 'title',
-    'field_titles' => 'title',
   );
   $handler->display->display_options['style_options']['default'] = 'title';
   $handler->display->display_options['style_options']['info'] = array(
     'views_bulk_operations' => array(
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_titles' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -2975,6 +2985,13 @@ Search for a wiki article by tag(s).';
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => ' ',
+      'empty_column' => 0,
+    ),
+    'field_last_name' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
       'empty_column' => 0,
     ),
     'name' => array(
@@ -2998,21 +3015,14 @@ Search for a wiki article by tag(s).';
       'separator' => '',
       'empty_column' => 0,
     ),
+    'field_sirian_species' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
     'field_description' => array(
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_last_name' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_titles' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -3023,177 +3033,19 @@ Search for a wiki article by tag(s).';
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
   $handler->display->display_options['header']['area']['label'] = 'Header text';
-  $handler->display->display_options['header']['area']['content'] = 'The following NPCs are recorded in our system. These NPCs are currently not in use, when claimed by a SH they will no longer be available on this display as they are currently in use for a saga or session.';
-  $handler->display->display_options['header']['area']['format'] = 'wiki';
+  $handler->display->display_options['header']['area']['content'] = '<style>
+.view-id-wiki_npcs_list .view-filters{border:1px solid;padding:0.5em}
+.view-id-wiki_npcs_list .views-exposed-widget{float:left;}
+.view-id-wiki_npcs_list .views-exposed-widget input.form-text{width:80px;}
+.view-id-wiki_npcs_list .views-submit-button{clear:left;}
+</style>
+Search for an NPC.';
+  $handler->display->display_options['header']['area']['format'] = 'full_html';
   /* Relationship: Content: Author */
   $handler->display->display_options['relationships']['uid']['id'] = 'uid';
   $handler->display->display_options['relationships']['uid']['table'] = 'node';
   $handler->display->display_options['relationships']['uid']['field'] = 'uid';
   $handler->display->display_options['relationships']['uid']['required'] = TRUE;
-  /* Field: Bulk operations: Content */
-  $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
-  $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'node';
-  $handler->display->display_options['fields']['views_bulk_operations']['field'] = 'views_bulk_operations';
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['display_type'] = '0';
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['enable_select_all_pages'] = 1;
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['force_single'] = 0;
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['entity_load_capacity'] = '10';
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_operations'] = array(
-    'action::node_assign_owner_action' => array(
-      'selected' => 0,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-    ),
-    'action::workflow_vbo_given_state_action' => array(
-      'selected' => 1,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-    ),
-    'action::workflow_vbo_next_state_action' => array(
-      'selected' => 0,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-    ),
-    'action::clone_action_clone' => array(
-      'selected' => 0,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-    ),
-    'action::views_bulk_operations_delete_item' => array(
-      'selected' => 0,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-    ),
-    'action::views_bulk_operations_delete_revision' => array(
-      'selected' => 0,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-    ),
-    'action::views_bulk_operations_script_action' => array(
-      'selected' => 0,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-    ),
-    'action::flag_node_action' => array(
-      'selected' => 0,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-    ),
-    'action::node_make_sticky_action' => array(
-      'selected' => 0,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-    ),
-    'action::node_make_unsticky_action' => array(
-      'selected' => 0,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-    ),
-    'action::views_bulk_operations_modify_action' => array(
-      'selected' => 1,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-      'settings' => array(
-        'show_all_tokens' => 1,
-        'display_values' => array(
-          '_all_' => '_all_',
-        ),
-      ),
-    ),
-    'action::views_bulk_operations_argument_selector_action' => array(
-      'selected' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-      'settings' => array(
-        'url' => '',
-      ),
-    ),
-    'action::node_promote_action' => array(
-      'selected' => 0,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-    ),
-    'action::node_publish_action' => array(
-      'selected' => 0,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-    ),
-    'action::node_unpromote_action' => array(
-      'selected' => 0,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-    ),
-    'action::mollom_action_unpublish_node' => array(
-      'selected' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-    ),
-    'action::node_save_action' => array(
-      'selected' => 0,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-    ),
-    'action::system_send_email_action' => array(
-      'selected' => 0,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-    ),
-    'action::node_unpublish_action' => array(
-      'selected' => 0,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-    ),
-    'action::node_unpublish_by_keyword_action' => array(
-      'selected' => 0,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-    ),
-    'action::pathauto_node_update_action' => array(
-      'selected' => 0,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-    ),
-  );
   /* Field: Content: Titles */
   $handler->display->display_options['fields']['field_titles']['id'] = 'field_titles';
   $handler->display->display_options['fields']['field_titles']['table'] = 'field_data_field_titles';
@@ -3222,7 +3074,12 @@ Search for a wiki article by tag(s).';
   $handler->display->display_options['fields']['field_race']['id'] = 'field_race';
   $handler->display->display_options['fields']['field_race']['table'] = 'field_data_field_race';
   $handler->display->display_options['fields']['field_race']['field'] = 'field_race';
-  /* Field: Field: Descriptions */
+  $handler->display->display_options['fields']['field_race']['label'] = 'Species';
+  /* Field: Content: Sirian Species */
+  $handler->display->display_options['fields']['field_sirian_species']['id'] = 'field_sirian_species';
+  $handler->display->display_options['fields']['field_sirian_species']['table'] = 'field_data_field_sirian_species';
+  $handler->display->display_options['fields']['field_sirian_species']['field'] = 'field_sirian_species';
+  /* Field: Field: Description */
   $handler->display->display_options['fields']['field_description']['id'] = 'field_description';
   $handler->display->display_options['fields']['field_description']['table'] = 'field_data_field_description';
   $handler->display->display_options['fields']['field_description']['field'] = 'field_description';
@@ -3267,7 +3124,6 @@ Search for a wiki article by tag(s).';
     6 => '6',
   );
   $handler->display->display_options['filters']['sid']['group'] = 1;
-  $handler->display->display_options['filters']['sid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['sid']['expose']['operator_id'] = 'sid_op';
   $handler->display->display_options['filters']['sid']['expose']['label'] = 'Current state';
   $handler->display->display_options['filters']['sid']['expose']['operator'] = 'sid_op';
@@ -3314,58 +3170,6 @@ Search for a wiki article by tag(s).';
   $handler->display->display_options['filters']['field_realm_value']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
-    8 => 0,
-    19 => 0,
-    12 => 0,
-    13 => 0,
-    10 => 0,
-    17 => 0,
-    15 => 0,
-    9 => 0,
-    20 => 0,
-    14 => 0,
-    4 => 0,
-    3 => 0,
-    11 => 0,
-  );
-  /* Filter criterion: Content: Vaxia Species (field_race) */
-  $handler->display->display_options['filters']['field_race_value']['id'] = 'field_race_value';
-  $handler->display->display_options['filters']['field_race_value']['table'] = 'field_data_field_race';
-  $handler->display->display_options['filters']['field_race_value']['field'] = 'field_race_value';
-  $handler->display->display_options['filters']['field_race_value']['value'] = array(
-    'all' => 'all',
-    'human' => 'human',
-    'elf' => 'elf',
-    'half-elf' => 'half-elf',
-    'dwarf' => 'dwarf',
-    'gnome' => 'gnome',
-    'halfling' => 'halfling',
-    'orc' => 'orc',
-    'half-orc' => 'half-orc',
-    'goblin' => 'goblin',
-    'neth' => 'neth',
-    'half-neth' => 'half-neth',
-    'lurai' => 'lurai',
-    'faerie' => 'faerie',
-    'aratay' => 'aratay',
-    'mojingan' => 'mojingan',
-    'centaur' => 'centaur',
-    'merfolk' => 'merfolk',
-    'yeek' => 'yeek',
-    'metalborn' => 'metalborn',
-    'other' => 'other',
-  );
-  $handler->display->display_options['filters']['field_race_value']['group'] = 1;
-  $handler->display->display_options['filters']['field_race_value']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['field_race_value']['expose']['operator_id'] = 'field_race_value_op';
-  $handler->display->display_options['filters']['field_race_value']['expose']['label'] = 'Species';
-  $handler->display->display_options['filters']['field_race_value']['expose']['operator'] = 'field_race_value_op';
-  $handler->display->display_options['filters']['field_race_value']['expose']['identifier'] = 'field_race_value';
-  $handler->display->display_options['filters']['field_race_value']['expose']['remember'] = TRUE;
-  $handler->display->display_options['filters']['field_race_value']['expose']['multiple'] = TRUE;
-  $handler->display->display_options['filters']['field_race_value']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
     3 => 0,
     30 => 0,
     8 => 0,
@@ -3379,6 +3183,8 @@ Search for a wiki article by tag(s).';
     28 => 0,
     29 => 0,
     12 => 0,
+    34 => 0,
+    35 => 0,
     25 => 0,
     13 => 0,
     10 => 0,
@@ -3389,35 +3195,9 @@ Search for a wiki article by tag(s).';
     23 => 0,
     31 => 0,
     32 => 0,
+    33 => 0,
   );
-  $handler->display->display_options['filters']['field_race_value']['expose']['reduce'] = TRUE;
-  /* Filter criterion: User: Name */
-  $handler->display->display_options['filters']['uid']['id'] = 'uid';
-  $handler->display->display_options['filters']['uid']['table'] = 'users';
-  $handler->display->display_options['filters']['uid']['field'] = 'uid';
-  $handler->display->display_options['filters']['uid']['relationship'] = 'uid';
-  $handler->display->display_options['filters']['uid']['value'] = '';
-  $handler->display->display_options['filters']['uid']['group'] = 1;
-  $handler->display->display_options['filters']['uid']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['uid']['expose']['operator_id'] = 'uid_op';
-  $handler->display->display_options['filters']['uid']['expose']['label'] = 'Storyhost Name';
-  $handler->display->display_options['filters']['uid']['expose']['operator'] = 'uid_op';
-  $handler->display->display_options['filters']['uid']['expose']['identifier'] = 'uid';
-  $handler->display->display_options['filters']['uid']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    12 => 0,
-    8 => 0,
-    13 => 0,
-    10 => 0,
-    17 => 0,
-    15 => 0,
-    9 => 0,
-    14 => 0,
-    4 => 0,
-    3 => 0,
-    11 => 0,
-  );
+  $handler->display->display_options['filters']['field_realm_value']['expose']['reduce'] = TRUE;
   /* Filter criterion: Content: Open NPC (field_is_open_npc) */
   $handler->display->display_options['filters']['field_is_open_npc_value']['id'] = 'field_is_open_npc_value';
   $handler->display->display_options['filters']['field_is_open_npc_value']['table'] = 'field_data_field_is_open_npc';
@@ -3572,26 +3352,20 @@ Search for a wiki article by tag(s).';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['exposed_form']['options']['submit_button'] = 'Search';
+  $handler->display->display_options['exposed_form']['options']['reset_button'] = TRUE;
   $handler->display->display_options['pager']['type'] = 'full';
   $handler->display->display_options['pager']['options']['items_per_page'] = '35';
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
-    'views_bulk_operations' => 'views_bulk_operations',
     'title' => 'title',
-    'name' => 'name',
-    'field_realm' => 'field_realm',
-    'field_race' => 'field_race',
-    'field_description' => 'field_description',
-    'field_last_name' => 'title',
-    'field_titles' => 'title',
+    'field_tag_realm' => 'field_tag_realm',
+    'field_organization_type' => 'field_organization_type',
+    'body' => 'body',
+    'field_provides_reputation' => 'field_provides_reputation',
   );
   $handler->display->display_options['style_options']['default'] = 'title';
   $handler->display->display_options['style_options']['info'] = array(
-    'views_bulk_operations' => array(
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
     'title' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
@@ -3599,41 +3373,29 @@ Search for a wiki article by tag(s).';
       'separator' => ' ',
       'empty_column' => 0,
     ),
-    'name' => array(
+    'field_tag_realm' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
-    'field_realm' => array(
+    'field_organization_type' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
-    'field_race' => array(
-      'sortable' => 1,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_description' => array(
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_last_name' => array(
+    'body' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
-    'field_titles' => array(
-      'sortable' => 0,
+    'field_provides_reputation' => array(
+      'sortable' => 1,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
@@ -3645,8 +3407,14 @@ Search for a wiki article by tag(s).';
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
   $handler->display->display_options['header']['area']['label'] = 'Header text';
-  $handler->display->display_options['header']['area']['content'] = 'The following NPCs are recorded in our system. These NPCs are currently not in use, when claimed by a SH they will no longer be available on this display as they are currently in use for a saga or session.';
-  $handler->display->display_options['header']['area']['format'] = 'wiki';
+  $handler->display->display_options['header']['area']['content'] = '<style>
+.view-id-wiki_organizations_list .view-filters{border:1px solid;padding:0.5em}
+.view-id-wiki_organizations_list .views-exposed-widget{float:left;}
+.view-id-wiki_organizations_list .views-exposed-widget input.form-text{width:80px;}
+.view-id-wiki_organizations_list .views-submit-button{clear:left;}
+</style>
+A list of all organizations in the system.';
+  $handler->display->display_options['header']['area']['format'] = 'full_html';
   /* Relationship: Content: Author */
   $handler->display->display_options['relationships']['uid']['id'] = 'uid';
   $handler->display->display_options['relationships']['uid']['table'] = 'node';

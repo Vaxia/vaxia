@@ -48,8 +48,9 @@ function item_shop_default_rules_configuration() {
     }
   }');
   $items['rules_item_shop_created_item_not_for_resell'] = entity_import('rules_config', '{ "rules_item_shop_created_item_not_for_resell" : {
-      "LABEL" : "Item shop - Created item not for resell",
+      "LABEL" : "REM Item shop - Created item not for resell",
       "PLUGIN" : "reaction rule",
+      "ACTIVE" : false,
       "OWNER" : "rules",
       "TAGS" : [ "Item shop" ],
       "REQUIRES" : [ "workflow_rules" ],

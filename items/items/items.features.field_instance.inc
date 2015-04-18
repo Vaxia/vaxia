@@ -10,6 +10,130 @@
 function items_field_default_field_instances() {
   $field_instances = array();
 
+  // Exported field_instance: 'node-items-field_armor_absorbs'
+  $field_instances['node-items-field_armor_absorbs'] = array(
+    'bundle' => 'items',
+    'default_value' => array(
+      0 => array(
+        'value' => 0,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'artwork' => array(
+        'label' => 'inline',
+        'module' => 'number',
+        'settings' => array(
+          'decimal_separator' => '.',
+          'prefix_suffix' => TRUE,
+          'scale' => 0,
+          'thousand_separator' => ' ',
+        ),
+        'type' => 'number_integer',
+        'weight' => 4,
+      ),
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'number',
+        'settings' => array(
+          'decimal_separator' => '.',
+          'prefix_suffix' => TRUE,
+          'scale' => 0,
+          'thousand_separator' => ' ',
+        ),
+        'type' => 'number_integer',
+        'weight' => 65,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_armor_absorbs',
+    'label' => 'Absorbs PP',
+    'required' => 0,
+    'settings' => array(
+      'max' => '',
+      'min' => 0,
+      'prefix' => '',
+      'suffix' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'number',
+      'settings' => array(),
+      'type' => 'number',
+      'weight' => 34,
+    ),
+  );
+
+  // Exported field_instance: 'node-items-field_armor_penalty'
+  $field_instances['node-items-field_armor_penalty'] = array(
+    'bundle' => 'items',
+    'default_value' => array(
+      0 => array(
+        'value' => 0,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'artwork' => array(
+        'label' => 'inline',
+        'module' => 'number',
+        'settings' => array(
+          'decimal_separator' => '.',
+          'prefix_suffix' => TRUE,
+          'scale' => 0,
+          'thousand_separator' => ' ',
+        ),
+        'type' => 'number_integer',
+        'weight' => 5,
+      ),
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'number',
+        'settings' => array(
+          'decimal_separator' => '.',
+          'prefix_suffix' => TRUE,
+          'scale' => 0,
+          'thousand_separator' => ' ',
+        ),
+        'type' => 'number_integer',
+        'weight' => 66,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_armor_penalty',
+    'label' => 'Offense Penalty',
+    'required' => 0,
+    'settings' => array(
+      'max' => '',
+      'min' => 0,
+      'prefix' => '',
+      'suffix' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'number',
+      'settings' => array(),
+      'type' => 'number',
+      'weight' => 35,
+    ),
+  );
+
   // Exported field_instance: 'node-items-field_calc_value'
   $field_instances['node-items-field_calc_value'] = array(
     'bundle' => 'items',
@@ -25,13 +149,13 @@ function items_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 7,
       ),
       'default' => array(
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 58,
+        'weight' => 10,
       ),
       'question' => array(
         'label' => 'above',
@@ -69,7 +193,7 @@ function items_field_default_field_instances() {
         'label' => 'hidden',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 10,
+        'weight' => 11,
       ),
       'default' => array(
         'label' => 'inline',
@@ -105,54 +229,6 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_created_for_silver'
-  $field_instances['node-items-field_created_for_silver'] = array(
-    'bundle' => 'items',
-    'default_value' => array(
-      0 => array(
-        'value' => 0,
-      ),
-    ),
-    'deleted' => 0,
-    'description' => 'If the item was created solely for the purpose of being sold for silver - check this box to make sure the value is converted by the item shop properly.',
-    'display' => array(
-      'artwork' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'default' => array(
-        'label' => 'hidden',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 59,
-      ),
-      'question' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_created_for_silver',
-    'label' => 'Created for silver',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'options',
-      'settings' => array(
-        'display_label' => 0,
-      ),
-      'type' => 'options_onoff',
-      'weight' => 19,
-    ),
-  );
-
   // Exported field_instance: 'node-items-field_creation_history'
   $field_instances['node-items-field_creation_history'] = array(
     'bundle' => 'items',
@@ -164,13 +240,12 @@ function items_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 8,
+        'weight' => 10,
       ),
       'default' => array(
         'label' => 'hidden',
-        'module' => 'text',
         'settings' => array(),
-        'type' => 'text_default',
+        'type' => 'hidden',
         'weight' => 14,
       ),
       'question' => array(
@@ -248,7 +323,7 @@ function items_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 9,
       ),
       'default' => array(
         'label' => 'inline',
@@ -314,6 +389,64 @@ function items_field_default_field_instances() {
       ),
       'type' => 'text_textfield',
       'weight' => 16,
+    ),
+  );
+
+  // Exported field_instance: 'node-items-field_fixed_strength'
+  $field_instances['node-items-field_fixed_strength'] = array(
+    'bundle' => 'items',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'artwork' => array(
+        'label' => 'inline',
+        'module' => 'number',
+        'settings' => array(
+          'decimal_separator' => '.',
+          'prefix_suffix' => TRUE,
+          'scale' => 0,
+          'thousand_separator' => ' ',
+        ),
+        'type' => 'number_integer',
+        'weight' => 3,
+      ),
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'number',
+        'settings' => array(
+          'decimal_separator' => '.',
+          'prefix_suffix' => TRUE,
+          'scale' => 0,
+          'thousand_separator' => ' ',
+        ),
+        'type' => 'number_integer',
+        'weight' => 64,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_fixed_strength',
+    'label' => 'Fixed Strength',
+    'required' => 0,
+    'settings' => array(
+      'max' => '',
+      'min' => 0,
+      'prefix' => '',
+      'suffix' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'number',
+      'settings' => array(),
+      'type' => 'number',
+      'weight' => 33,
     ),
   );
 
@@ -834,16 +967,22 @@ function items_field_default_field_instances() {
     'bundle' => 'items',
     'default_value' => array(
       0 => array(
-        'value' => 0,
+        'value' => 25,
       ),
     ),
     'deleted' => 0,
-    'description' => 'Make note of the difficulty this item was created at. This is used for purposes of defeating the item, in the case of item-resisted rolls such as locks vs lockpicking skills.',
+    'description' => 'This is used for purposes of breaking the item, or defeating in the case of item-resisted rolls such as locks vs lockpicking skills. Equal to the difficulty the item was created at.',
     'display' => array(
       'artwork' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
+        'label' => 'inline',
+        'module' => 'number',
+        'settings' => array(
+          'decimal_separator' => '.',
+          'prefix_suffix' => TRUE,
+          'scale' => 0,
+          'thousand_separator' => ' ',
+        ),
+        'type' => 'number_integer',
         'weight' => 0,
       ),
       'default' => array(
@@ -856,7 +995,7 @@ function items_field_default_field_instances() {
           'thousand_separator' => ' ',
         ),
         'type' => 'number_integer',
-        'weight' => 58,
+        'weight' => 61,
       ),
       'question' => array(
         'label' => 'above',
@@ -881,7 +1020,7 @@ function items_field_default_field_instances() {
       'module' => 'number',
       'settings' => array(),
       'type' => 'number',
-      'weight' => 27,
+      'weight' => 30,
     ),
   );
 
@@ -2384,10 +2523,16 @@ function items_field_default_field_instances() {
     'description' => 'The number of charges used so far for this item.',
     'display' => array(
       'artwork' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
+        'label' => 'inline',
+        'module' => 'number',
+        'settings' => array(
+          'decimal_separator' => '.',
+          'prefix_suffix' => TRUE,
+          'scale' => 0,
+          'thousand_separator' => ' ',
+        ),
+        'type' => 'number_integer',
+        'weight' => 9,
       ),
       'default' => array(
         'label' => 'inline',
@@ -2399,7 +2544,7 @@ function items_field_default_field_instances() {
           'thousand_separator' => ' ',
         ),
         'type' => 'number_integer',
-        'weight' => 57,
+        'weight' => 70,
       ),
       'question' => array(
         'label' => 'above',
@@ -2424,7 +2569,7 @@ function items_field_default_field_instances() {
       'module' => 'number',
       'settings' => array(),
       'type' => 'number',
-      'weight' => 26,
+      'weight' => 39,
     ),
   );
 
@@ -2565,20 +2710,21 @@ function items_field_default_field_instances() {
       ),
     ),
     'deleted' => 0,
-    'description' => 'The type of the item - default to Misc. (plz ignore: in dev)',
+    'description' => '',
     'display' => array(
       'artwork' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'default' => array(
-        'label' => 'above',
+        'label' => 'inline',
         'module' => 'taxonomy',
         'settings' => array(),
         'type' => 'taxonomy_term_reference_link',
-        'weight' => 52,
+        'weight' => 1,
+      ),
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_plain',
+        'weight' => 62,
       ),
       'question' => array(
         'label' => 'above',
@@ -2599,7 +2745,7 @@ function items_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 21,
+      'weight' => 31,
     ),
   );
 
@@ -2615,17 +2761,18 @@ function items_field_default_field_instances() {
     'description' => 'How many charges the item has per use. If you are creating a batch of items such as 5 health potions, select "Single use" and set the charges for number of potions. If you are creating an item that can be used three times a day, select "Per day" and set the charges for the number of uses per day.',
     'display' => array(
       'artwork' => array(
-        'label' => 'above',
+        'label' => 'inline',
+        'module' => 'list',
         'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
+        'type' => 'list_default',
+        'weight' => 6,
       ),
       'default' => array(
         'label' => 'inline',
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 54,
+        'weight' => 67,
       ),
       'question' => array(
         'label' => 'above',
@@ -2646,7 +2793,7 @@ function items_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 23,
+      'weight' => 37,
     ),
   );
 
@@ -2662,10 +2809,16 @@ function items_field_default_field_instances() {
     'description' => 'How many charges the item has per use. If you are creating a batch of items such as 5 health potions, select "Single use" and set the charges for number of potions. If you are creating an item that can be used three times a day, select "Per day" and set the charges for the number of uses per day.',
     'display' => array(
       'artwork' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
+        'label' => 'inline',
+        'module' => 'number',
+        'settings' => array(
+          'decimal_separator' => '.',
+          'prefix_suffix' => TRUE,
+          'scale' => 0,
+          'thousand_separator' => ' ',
+        ),
+        'type' => 'number_integer',
+        'weight' => 8,
       ),
       'default' => array(
         'label' => 'inline',
@@ -2677,7 +2830,7 @@ function items_field_default_field_instances() {
           'thousand_separator' => ' ',
         ),
         'type' => 'number_integer',
-        'weight' => 56,
+        'weight' => 69,
       ),
       'question' => array(
         'label' => 'above',
@@ -2702,7 +2855,7 @@ function items_field_default_field_instances() {
       'module' => 'number',
       'settings' => array(),
       'type' => 'number',
-      'weight' => 25,
+      'weight' => 38,
     ),
   );
 
@@ -2797,10 +2950,16 @@ function items_field_default_field_instances() {
     'description' => 'For items that are created with an effect in mind, such as spells, list the PP value for the effect.',
     'display' => array(
       'artwork' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
+        'label' => 'inline',
+        'module' => 'number',
+        'settings' => array(
+          'decimal_separator' => '.',
+          'prefix_suffix' => TRUE,
+          'scale' => 0,
+          'thousand_separator' => ' ',
+        ),
+        'type' => 'number_integer',
+        'weight' => 7,
       ),
       'default' => array(
         'label' => 'inline',
@@ -2812,7 +2971,7 @@ function items_field_default_field_instances() {
           'thousand_separator' => ' ',
         ),
         'type' => 'number_integer',
-        'weight' => 55,
+        'weight' => 68,
       ),
       'question' => array(
         'label' => 'above',
@@ -2837,7 +2996,7 @@ function items_field_default_field_instances() {
       'module' => 'number',
       'settings' => array(),
       'type' => 'number',
-      'weight' => 24,
+      'weight' => 36,
     ),
   );
 
@@ -2856,7 +3015,7 @@ function items_field_default_field_instances() {
         'label' => 'inline',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 11,
+        'weight' => 12,
       ),
       'default' => array(
         'label' => 'inline',
@@ -2903,10 +3062,10 @@ function items_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 0,
+        'weight' => 8,
       ),
       'default' => array(
-        'label' => 'above',
+        'label' => 'inline',
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
@@ -3114,10 +3273,9 @@ function items_field_default_field_instances() {
       ),
       'default' => array(
         'label' => 'inline',
-        'module' => 'text',
         'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 10,
+        'type' => 'hidden',
+        'weight' => 11,
       ),
       'question' => array(
         'label' => 'above',
@@ -3197,17 +3355,18 @@ function items_field_default_field_instances() {
     'description' => 'How does this weapon modify damage - if it does.',
     'display' => array(
       'artwork' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'default' => array(
-        'label' => 'above',
+        'label' => 'inline',
         'module' => 'taxonomy',
         'settings' => array(),
         'type' => 'taxonomy_term_reference_link',
-        'weight' => 53,
+        'weight' => 2,
+      ),
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_plain',
+        'weight' => 63,
       ),
       'question' => array(
         'label' => 'above',
@@ -3228,7 +3387,7 @@ function items_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 22,
+      'weight' => 32,
     ),
   );
 
@@ -3323,6 +3482,7 @@ function items_field_default_field_instances() {
   // Translatables
   // Included for use with string extractors like potx.
   t('A record of comment posts from when the item was created if comments were attached by item assistant on creation. The RP is recorded here to avoid dead links when the original comments are archived.');
+  t('Absorbs PP');
   t('Agility');
   t('Appearance');
   t('Awareness');
@@ -3332,7 +3492,6 @@ function items_field_default_field_instances() {
   t('Charisma');
   t('Check this box if this item can be sold back to the item shop for coin.');
   t('Constitution');
-  t('Created for silver');
   t('Creation History');
   t('Declared value');
   t('Description');
@@ -3340,21 +3499,21 @@ function items_field_default_field_instances() {
   t('Effect PP');
   t('Endurance');
   t('Finesse');
+  t('Fixed Strength');
   t('For items that are created with an effect in mind, such as spells, list the PP value for the effect.');
   t('Health');
   t('History');
   t('How does this weapon modify damage - if it does.');
   t('How many charges the item has per use. If you are creating a batch of items such as 5 health potions, select "Single use" and set the charges for number of potions. If you are creating an item that can be used three times a day, select "Per day" and set the charges for the number of uses per day.');
   t('If checked this item will be available in the player shop.');
-  t('If the item was created solely for the purpose of being sold for silver - check this box to make sure the value is converted by the item shop properly.');
   t('In shop');
   t('Intellegence');
   t('Intelligence');
   t('Item difficulty');
   t('Item type');
   t('Life');
-  t('Make note of the difficulty this item was created at. This is used for purposes of defeating the item, in the case of item-resisted rolls such as locks vs lockpicking skills.');
   t('Multi Action Mod');
+  t('Offense Penalty');
   t('Percentage');
   t('Player Notes');
   t('Presence');
@@ -3371,8 +3530,8 @@ function items_field_default_field_instances() {
   t('The multiple action modifier for the weapon.');
   t('The number of charges used so far for this item.');
   t('The percentage bonus for the weapon\'s damage calculations.');
-  t('The type of the item - default to Misc. (plz ignore: in dev)');
   t('The value as declared to the owner.');
+  t('This is used for purposes of breaking the item, or defeating in the case of item-resisted rolls such as locks vs lockpicking skills. Equal to the difficulty the item was created at.');
   t('Value');
   t('Weapon class');
 

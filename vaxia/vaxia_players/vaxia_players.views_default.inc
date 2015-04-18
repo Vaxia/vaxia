@@ -93,7 +93,7 @@ function vaxia_players_views_default_views() {
   $handler->display->display_options['header']['area']['field'] = 'area';
   $handler->display->display_options['header']['area']['empty'] = TRUE;
   $handler->display->display_options['header']['area']['content'] = '<style>
-.view-tolex-power-search .views-exposed-form{border:1px solid;padding:0.5em}
+.view-tolex-power-search .view-filters{border:1px solid;padding:0.5em}
 .view-tolex-power-search .views-exposed-widget{float:left;}
 .view-tolex-power-search .views-exposed-widget input.form-text{width:80px;}
 .view-tolex-power-search .views-submit-button{clear:left;}
@@ -446,7 +446,7 @@ function vaxia_players_views_default_views() {
   $handler->display->display_options['header']['area']['field'] = 'area';
   $handler->display->display_options['header']['area']['empty'] = TRUE;
   $handler->display->display_options['header']['area']['content'] = '<style>
-.view-tolex-power-search .views-exposed-form{border:1px solid;padding:0.5em}
+.view-tolex-power-search .view-filters{border:1px solid;padding:0.5em}
 .view-tolex-power-search .views-exposed-widget{float:left;}
 .view-tolex-power-search .views-exposed-widget input.form-text{width:80px;}
 .view-tolex-power-search .views-submit-button{clear:left;}

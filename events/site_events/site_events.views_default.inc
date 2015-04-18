@@ -214,6 +214,52 @@ function site_events_views_default_views() {
   $handler->display->display_options['filters']['field_when_value']['form_type'] = 'date_text';
   $handler->display->display_options['filters']['field_when_value']['default_date'] = '+1 month';
   $handler->display->display_options['filters']['field_when_value']['year_range'] = '-1:+3';
+  /* Filter criterion: Content: Realm (field_realm) */
+  $handler->display->display_options['filters']['field_realm_value']['id'] = 'field_realm_value';
+  $handler->display->display_options['filters']['field_realm_value']['table'] = 'field_data_field_realm';
+  $handler->display->display_options['filters']['field_realm_value']['field'] = 'field_realm_value';
+  $handler->display->display_options['filters']['field_realm_value']['value'] = array(
+    'Vaxia' => 'Vaxia',
+    'Sirian' => 'Sirian',
+  );
+  $handler->display->display_options['filters']['field_realm_value']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_realm_value']['expose']['operator_id'] = 'field_realm_value_op';
+  $handler->display->display_options['filters']['field_realm_value']['expose']['label'] = 'Realm';
+  $handler->display->display_options['filters']['field_realm_value']['expose']['operator'] = 'field_realm_value_op';
+  $handler->display->display_options['filters']['field_realm_value']['expose']['identifier'] = 'field_realm_value';
+  $handler->display->display_options['filters']['field_realm_value']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_realm_value']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['field_realm_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    30 => 0,
+    8 => 0,
+    9 => 0,
+    14 => 0,
+    21 => 0,
+    24 => 0,
+    26 => 0,
+    27 => 0,
+    19 => 0,
+    28 => 0,
+    29 => 0,
+    12 => 0,
+    34 => 0,
+    35 => 0,
+    25 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    20 => 0,
+    22 => 0,
+    23 => 0,
+    31 => 0,
+    32 => 0,
+    33 => 0,
+  );
+  $handler->display->display_options['filters']['field_realm_value']['expose']['reduce'] = TRUE;
 
   /* Display: Calendar Feed */
   $handler = $view->new_display('feed', 'Calendar Feed', 'calendar_feed');

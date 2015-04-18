@@ -10,6 +10,99 @@
 function vaxia_field_default_field_instances() {
   $field_instances = array();
 
+  // Exported field_instance: 'field_collection_item-field_skill-field_aspect_one'
+  $field_instances['field_collection_item-field_skill-field_aspect_one'] = array(
+    'bundle' => 'field_skill',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_plain',
+        'weight' => 3,
+      ),
+    ),
+    'entity_type' => 'field_collection_item',
+    'field_name' => 'field_aspect_one',
+    'label' => '1.',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 3,
+    ),
+  );
+
+  // Exported field_instance: 'field_collection_item-field_skill-field_aspect_three'
+  $field_instances['field_collection_item-field_skill-field_aspect_three'] = array(
+    'bundle' => 'field_skill',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_plain',
+        'weight' => 5,
+      ),
+    ),
+    'entity_type' => 'field_collection_item',
+    'field_name' => 'field_aspect_three',
+    'label' => '3.',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 5,
+    ),
+  );
+
+  // Exported field_instance: 'field_collection_item-field_skill-field_aspect_two'
+  $field_instances['field_collection_item-field_skill-field_aspect_two'] = array(
+    'bundle' => 'field_skill',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_plain',
+        'weight' => 4,
+      ),
+    ),
+    'entity_type' => 'field_collection_item',
+    'field_name' => 'field_aspect_two',
+    'label' => '2.',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 4,
+    ),
+  );
+
   // Exported field_instance: 'field_collection_item-field_skill-field_skill_desc'
   $field_instances['field_collection_item-field_skill-field_skill_desc'] = array(
     'bundle' => 'field_skill',
@@ -74,7 +167,7 @@ function vaxia_field_default_field_instances() {
         'rows' => 2,
       ),
       'type' => 'text_textarea',
-      'weight' => 3,
+      'weight' => 2,
     ),
   );
 
@@ -108,7 +201,7 @@ function vaxia_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 1,
+      'weight' => 0,
     ),
   );
 
@@ -152,7 +245,7 @@ function vaxia_field_default_field_instances() {
       'module' => 'number',
       'settings' => array(),
       'type' => 'number',
-      'weight' => 2,
+      'weight' => 1,
     ),
   );
 
@@ -549,7 +642,7 @@ function vaxia_field_default_field_instances() {
       ),
     ),
     'deleted' => 0,
-    'description' => 'For character evaluation purposes - Sirian characters need to note their country or city of origin. We need to know political alliances (and what legal system your character may fall under) for Sirian plots.',
+    'description' => 'For character evaluation purposes - Sirian characters <b>must</b> note their country or city of origin. We need to know political alliances (and what legal system your character may fall under) for Sirian plots.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -582,7 +675,6 @@ function vaxia_field_default_field_instances() {
           'full_html' => 0,
           'php_code' => 0,
           'plain_text' => 'plain_text',
-          'whiteboard' => 0,
           'wiki' => 0,
         ),
         'allowed_formats_toggle' => 1,
@@ -600,9 +692,6 @@ function vaxia_field_default_field_instances() {
             ),
             'plain_text' => array(
               'weight' => 10,
-            ),
-            'whiteboard' => array(
-              'weight' => 0,
             ),
             'wiki' => array(
               'weight' => 0,
@@ -3145,6 +3234,9 @@ Posting does not have to occur all at once, so feel free to spread it out across
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('1.');
+  t('2.');
+  t('3.');
   t('A personal room is intended for a character to roleplay crafting and personal scenes in. It is automatically set to be NOT displayed on the public search. Posts in these rooms will NOT be archived. Personal rooms are automatically created once the character is approved.');
   t('Achivements');
   t('Additional property');
@@ -3192,7 +3284,7 @@ Posting does not have to occur all at once, so feel free to spread it out across
   t('Finesse');
   t('Flag this character for a follow-up if some aspect of the character needs to be filled in with additional details.');
   t('For A/SHs - always feel free to add another property field to give each item a field.');
-  t('For character evaluation purposes - Sirian characters need to note their country or city of origin. We need to know political alliances (and what legal system your character may fall under) for Sirian plots.');
+  t('For character evaluation purposes - Sirian characters <b>must</b> note their country or city of origin. We need to know political alliances (and what legal system your character may fall under) for Sirian plots.');
   t('Health');
   t('IC achievements! Titles earned, championships won. Fun stuff!');
   t('If the species you want to play is not listed here, select \'Other\'. (Setting approval is never guaranteed.) Please take a look here for more information about <a href=http://vaxia.org/wiki/setting-approval-pcs>getting Setting approval for PCs</a>.');

@@ -17,5 +17,13 @@ function vaxia_taxonomy_default_vocabularies() {
       'module' => 'taxonomy',
       'weight' => 0,
     ),
+    'skill_verbs' => array(
+      'name' => 'Skill Verbs',
+      'machine_name' => 'skill_verbs',
+      'description' => 'For character sheets, the skill verbs that go with a sheet.',
+      'hierarchy' => 0,
+      'module' => 'taxonomy',
+      'weight' => 0,
+    ),
   );
 }
