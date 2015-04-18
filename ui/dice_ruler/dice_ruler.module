@@ -1142,9 +1142,16 @@ function _dice_ruler_form_get_results_for_action($form, $form_state, $i, $number
           $penalty_base_str[] = ($penalty_base + $mod_base_a) * ($this_attack);
         }
         $penalty_base_str = implode(' / ', $penalty_base_str);
-        $results .= '<div class="dice-ruler-dice-multi-action-alert">' .
-          t('Character A taking %num_actions actions is at multi action penalties for all actions: %penalty_base_str',
-            array('%num_actions' => $number_actions, '%penalty_base_str' => $penalty_base_str)) . '</div>';
+        if ($number_actions > 1) {
+          $results .= '<div class="dice-ruler-dice-multi-action-alert">' .
+            t('Character A taking %num_actions actions is at multi action penalties for all actions: %penalty_base_str',
+              array('%num_actions' => $number_actions, '%penalty_base_str' => $penalty_base_str)) . '</div>';
+        }
+        else {
+          $results .= '<div class="dice-ruler-dice-multi-action-alert">' .
+            t('Character A taking %num_actions actions and is at no penalty.',
+              array('%num_actions' => $number_actions) . '</div>';
+        }
         // And recalculate the correct modifier to apply.
         $action_penalty = ($penalty_base + $mod_base_a) * ($number_actions - 1);
 
@@ -1156,9 +1163,16 @@ function _dice_ruler_form_get_results_for_action($form, $form_state, $i, $number
           $penalty_base_str[] = ($penalty_base + $mod_base_b) * ($this_attack);
         }
         $penalty_base_str = implode(' / ', $penalty_base_str);
-        $results .= '<div class="dice-ruler-dice-multi-action-alert">' .
-          t('Character B taking %num_actions actions is at multi action penalties for all actions: %penalty_base_str',
-            array('%num_actions' => $number_actions_b, '%penalty_base_str' => $penalty_base_str)) . '</div>';
+        if ($number_actions_b > 1) {
+          $results .= '<div class="dice-ruler-dice-multi-action-alert">' .
+            t('Character B taking %num_actions actions is at multi action penalties for all actions: %penalty_base_str',
+              array('%num_actions' => $number_actions_b, '%penalty_base_str' => $penalty_base_str)) . '</div>';
+        }
+        else {
+          $results .= '<div class="dice-ruler-dice-multi-action-alert">' .
+            t('Character B taking %num_actions actions and is at no penalty.',
+              array('%num_actions' => $number_actions_b) . '</div>';
+        }
         // And recalculate the correct modifier to apply.
         $action_penalty_b = ($penalty_base + $mod_base_b) * ($number_actions_b - 1);
 
