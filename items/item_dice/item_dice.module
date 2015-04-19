@@ -110,7 +110,7 @@ function _item_dice_option_label($item) {
     }
   }
   // Get hooks.
-  $item_labels = module_invoke_all('item_dice_label', $item_labels, $item);
+  $item_labels = array_merge($item_labels, (array) module_invoke_all('item_dice_label', $item));
   // Set the label if we have any mods.
   $item_label = '';
   if (!empty($item_labels)) {

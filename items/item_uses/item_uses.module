@@ -143,13 +143,14 @@ function item_uses_item_dice_submit($roll_mods, $item, $stat_key, $lang) {
 /**
  * Implements hook_item_dice_label().
  */
-function item_uses_item_dice_label($item_labels, $item) {
+function item_uses_item_dice_label($item) {
   // Check for uses if they exist.
+  $labels = array();
   $uses = _item_uses_check($item);
   if (!empty($uses)) {
-    $item_labels[] = $uses;
+    $labels[] = $uses;
   }
-  return $item_labels;
+  return $labels;
 }
 
 /**
