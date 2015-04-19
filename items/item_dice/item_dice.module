@@ -82,7 +82,7 @@ function _item_dice_submit_rolls_items($submitted_items, $character, $lang) {
         $items = _item_dice_submit_modifiers($items, $item, $stat_key, $lang);
         $items = _item_dice_submit_overlaps($items, $item, $stat_key, $lang);
         // Get hooks.
-        $items = module_invoke_all('item_dice_submit', $items, $form, $form_state, $form_id);
+        $items = module_invoke_all('item_dice_submit', $items, $item, $stat_key, $lang);
         // Get uses.
         $items = _item_dice_submit_uses($items, $item, $stat_key, $lang);
       }

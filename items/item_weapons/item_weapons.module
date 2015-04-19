@@ -8,7 +8,7 @@
  * Implements hook_item_dice_submit().
  */
 function item_weapons_item_dice_submit($items, $item, $stat_key, $lang) {
-  $label = _item_dice_check_weapons($item);
+  $label = _item_weapons_check($item);
   if (!empty($label)) {
     // Set the general notes for the item.
     $items[$stat_key]['general'] = isset($items[$stat_key]['general']) ? $items[$stat_key]['general'] : 0;
@@ -25,7 +25,7 @@ function item_weapons_item_dice_submit($items, $item, $stat_key, $lang) {
     }
     else {
       // Grab the non-fixed str label.
-      $label = _item_dice_check_weapons($item, FALSE);
+      $label = _item_weapons_check($item, FALSE);
     }
     // If we have a label add it only the once.
     if (!empty($label) && $stat_key != 'skill') {
@@ -40,7 +40,7 @@ function item_weapons_item_dice_submit($items, $item, $stat_key, $lang) {
  */
 function item_weapons_item_dice_label($item_labels, $item) {
   // Check for weapons if they exist.
-  $weapons = _item_dice_check_weapons($item);
+  $weapons = _item_weapons_check($item);
   if (!empty($weapons)) {
     $item_labels[] = $weapons;
   }
@@ -50,7 +50,7 @@ function item_weapons_item_dice_label($item_labels, $item) {
 /**
  * Check if the item provides a weapon.
  */
-function _item_dice_check_weapons($item, $both = TRUE) {
+function _item_weapons_check($item, $both = TRUE) {
   //  Get item mod.
   $weapon_labels = array();
   // Weapon class.
