@@ -1,4 +1,4 @@
-name = Item Companion
+name = Item Companions
 description = Add companion and drone item handling to the dice roller
 core = 7.x
 package = Vaxia
