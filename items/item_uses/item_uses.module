@@ -127,7 +127,7 @@ function _item_uses_content_update($comment) {
  * Implements hook_item_dice_submit().
  */
 function item_uses_item_dice_submit($items, $item, $stat_key, $lang) {
-  $label = _item_dice_check_uses($item);
+  $label = _item_uses_check($item);
   if (!empty($label)) {
     $notes = $item->title . ' ' . $label;
     $items[$stat_key]['general'] = isset($items[$stat_key]['general']) ? $items[$stat_key]['general'] : 0;
@@ -145,7 +145,7 @@ function item_uses_item_dice_submit($items, $item, $stat_key, $lang) {
  */
 function item_uses_item_dice_label($item_labels, $item) {
   // Check for uses if they exist.
-  $uses = _item_dice_check_uses($item);
+  $uses = _item_uses_check($item);
   if (!empty($uses)) {
     $item_labels[] = $uses;
   }
@@ -155,7 +155,7 @@ function item_uses_item_dice_label($item_labels, $item) {
 /**
  * Check if the item provides a use.
  */
-function _item_dice_check_uses($item) {
+function _item_uses_check($item) {
   //  Get item mod.
   $label = '';
   $freq = isset($item->field_item_use_day[$item->language][0]['value']) ? $item->field_item_use_day[$item->language][0]['value'] : '';
