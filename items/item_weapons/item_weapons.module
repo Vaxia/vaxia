@@ -38,13 +38,13 @@ function item_weapons_item_dice_submit($roll_mods, $item, $stat_key, $lang) {
 /**
  * Implements hook_item_dice_label().
  */
-function item_weapons_item_dice_label($item_labels, $item) {
+function item_weapons_item_dice_label($labels, $item) {
   // Check for weapons if they exist.
   $weapons = _item_weapons_check($item);
   if (!empty($weapons)) {
-    $item_labels[] = $weapons;
+    $labels[] = $weapons;
   }
-  return $item_labels;
+  return $labels;
 }
 
 /**
