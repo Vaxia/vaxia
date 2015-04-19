@@ -124,9 +124,12 @@ function _item_uses_content_update($comment) {
 }
 
 /**
- * Implements hook_item_dice_submit().
+ * Implements hook_item_dice_submit_alter().
  */
-function item_uses_item_dice_submit($roll_mods, $item, $stat_key, $lang) {
+function item_uses_item_dice_submit_alter(&$roll_mods, $context) {
+  $lang = $context['lang'];
+  $stat_key = $context['stat_key'];
+  $item = $context['item'];
   $label = _item_uses_check($item);
   if (!empty($label)) {
     $notes = $item->title . ' ' . $label;

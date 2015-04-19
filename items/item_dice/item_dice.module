@@ -82,7 +82,12 @@ function _item_dice_submit_rolls_items($submitted_items, $character, $lang) {
         $roll_mods = _item_dice_submit_modifiers($roll_mods, $item, $stat_key, $lang);
         $roll_mods = _item_dice_submit_overlaps($roll_mods, $item, $stat_key, $lang);
         // Get hooks.
-        $roll_mods = module_invoke_all('item_dice_submit', $roll_mods, $item, $stat_key, $lang);
+        $context = array(
+          'lang' => $lang,
+          'stat_key' => $stat_key,
+          'item' => $item,
+        );
+        drupal_alter('item_dice_submit', $roll_mods, $context);
       }
     } // End check if item exists.
   } // End check all items loop.
