@@ -31,10 +31,9 @@ function vaxia_dice_roller_form($form, $form_state, $form_id) {
         t('On character !name', array('!name' => l($character->title, 'node/' . $character->nid))) .
         '</div>';
       // Get the items to display if we have any.
-      $skills = _vaxia_dice_roller_get_skills($character);
       $display_dice = variable_get('vaxia_display_dice', 6);
       for ($i = 0; $i < $display_dice; $i++) {
-        $form['vaxia_rolls']['dice'][$i] = _vaxia_dice_roller_character_row($skills);
+        $form['vaxia_rolls']['dice'][$i] = _vaxia_dice_roller_node_row($character);
       }
       $form = module_invoke_all('vaxia_dice_form', $form, $form_state, $form_id);
       return $form;
@@ -157,10 +156,11 @@ function _vaxia_dice_roller_get_selected_character(&$form, &$form_state) {
  * Helper function, create the row of dice rolling options.
  * For regular characters only, not SH characters.
  */
-function _vaxia_dice_roller_character_row($skills) {
+function _vaxia_dice_roller_node_row($node) {
   $dice_size = array(100,77,50,30,20,16,12,10,8,6,4,2);
   // Make sure the stat keys are set by field.
-  $stats = _vaxia_dice_roller_get_stats();
+  $stats = _vaxia_dice_roller_get_stats($node);
+  $skills = _vaxia_dice_roller_get_skills($node);
   // Set the dropdowns.
   $stats = _vaxia_dice_roller_get_dropdown($stats);
   $skills = _vaxia_dice_roller_get_dropdown($skills);
@@ -205,21 +205,9 @@ function _vaxia_dice_roller_get_dropdown($option_set) {
 /**
  * Helper function, list all stats.
  */
-function _vaxia_dice_roller_get_stats($mode = 'all') {
-  // Return the primary vs secondary relationship.
-  if ($mode == 'relations') {
-    return array(
-      'life' => array('appearance', 'health'), 
-      'endurance' => array('health', 'constitution'),
-      'strength' => array('constitution', 'agility'), 
-      'dexterity' => array('agility', 'reflexes'),
-      'intelligence' => array('reflexes', 'awareness'),
-      'spirituality' => array('awareness', 'presence'),
-      'charisma' => array('presence', 'appearance'),
-    );
-  }
+function _vaxia_dice_roller_get_stats($node = '') {
   // Return the list.
-  return array(
+  $list = array(
     'life' => 'Life', 
     'health' => 'Health', 
     'endurance' => 'Endurance', 
@@ -235,16 +223,42 @@ function _vaxia_dice_roller_get_stats($mode = 'all') {
     'charisma' => 'Charisma', 
     'appearance' => 'Appearance',
   );
+  // Use the character if available.
+  if (!empty($node)) {
+    $lang = !empty($node->language) ? $node->language : 'und';
+    foreach ($list as $key => $value) {
+      $field_name = 'field_' . $key;
+      $char_value = !empty($node->{$field_name}[$lang][0]['value']) ? $node->{$field_name}[$lang][0]['value'] : 0;
+      $list[$key] = $value . ' (' . $char_value . ')';
+    }
+  }
+  return $list;
 }
+
+/**
+ * Helper function, list all stats.
+ */
+function _vaxia_dice_roller_get_stat_relations() {
+  return array(
+    'life' => array('appearance', 'health'), 
+    'endurance' => array('health', 'constitution'),
+    'strength' => array('constitution', 'agility'), 
+    'dexterity' => array('agility', 'reflexes'),
+    'intelligence' => array('reflexes', 'awareness'),
+    'spirituality' => array('awareness', 'presence'),
+    'charisma' => array('presence', 'appearance'),
+  );
+}
+
 
 /**
  * Helper function, list all skills.
  */
-function _vaxia_dice_roller_get_skills($character) {
+function _vaxia_dice_roller_get_skills($node) {
   $skills = array();
-  $lang = !empty($character->language) ? $character->language : 'und';
-  if (isset($character->field_skill[$lang])) {
-    foreach ($character->field_skill[$lang] as $delta => $skill) {
+  $lang = !empty($node->language) ? $node->language : 'und';
+  if (isset($node->field_skill[$lang])) {
+    foreach ($node->field_skill[$lang] as $delta => $skill) {
       $this_skill = field_collection_item_load($skill['value']);
       if ($this_skill) {
         $id = $skill['value'];
