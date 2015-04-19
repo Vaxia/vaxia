@@ -83,8 +83,6 @@ function _item_dice_submit_rolls_items($submitted_items, $character, $lang) {
         $items = _item_dice_submit_overlaps($items, $item, $stat_key, $lang);
         // Get hooks.
         $items = module_invoke_all('item_dice_submit', $items, $item, $stat_key, $lang);
-        // Get uses.
-        $items = _item_dice_submit_uses($items, $item, $stat_key, $lang);
       }
     } // End check if item exists.
   } // End check all items loop.
@@ -113,13 +111,6 @@ function _item_dice_option_label($item) {
   }
   // Get hooks.
   $item_labels = module_invoke_all('item_dice_label', $item_labels, $item);
-  // Check for uses if they exist.
-  if (module_exists('item_uses')) {
-    $uses = _item_dice_check_uses($item);
-    if (!empty($uses)) {
-      $item_labels[] = $uses;
-    }
-  }
   // Set the label if we have any mods.
   $item_label = '';
   if (!empty($item_labels)) {
@@ -189,23 +180,6 @@ function _item_dice_submit_overlaps($items, $item, $stat_key, $lang) {
       $items[$stat_key]['overlaps'] = $overlap;
       $items[$stat_key]['notes'] = $item->title .' (' . $small_label . ' ' . $overlap . ' flat)';
     }
-  }
-  return $items;
-}
-
-/**
- * Get items from the submitted rolls.
- */
-function _item_dice_submit_uses($items, $item, $stat_key, $lang) {
-  $label = _item_dice_check_uses($item);
-  if (!empty($label)) {
-    $notes = $item->title . ' ' . $label;
-    $items[$stat_key]['general'] = isset($items[$stat_key]['general']) ? $items[$stat_key]['general'] : 0;
-    $items[$stat_key]['notes'] = isset($items[$stat_key]['notes']) ? $items[$stat_key]['notes'] : '';
-    $items[$stat_key]['notes'] .= ' ' . $notes;
-    $items['any']['general'] = 0;
-    $items['any']['notes'] = isset($items['any']['notes']) ? $items['any']['notes'] : '';
-    $items['any']['notes'] .= ' ' . $notes;
   }
   return $items;
 }
@@ -392,36 +366,4 @@ function _item_dice_check_overlap($item, $stat) {
     $label = $small_label . ':' . number_format($value) . ' flat';
   }
   return $label;
-}
-
-/**
- * Check if the item provides a use.
- */
-function _item_dice_check_uses($item) {
-  //  Get item mod.
-  $label = '';
-  $freq = isset($item->field_item_use_day[$item->language][0]['value']) ? $item->field_item_use_day[$item->language][0]['value'] : '';
-  $pp = isset($item->field_pp_created[$item->language][0]['value']) ? $item->field_pp_created[$item->language][0]['value'] : '';
-  $uses = isset($item->field_item_uses[$item->language][0]['value']) ? $item->field_item_uses[$item->language][0]['value'] : 0;
-  $spent_uses = isset($item->field_item_spent_uses[$item->language][0]['value']) ? $item->field_item_spent_uses[$item->language][0]['value'] : 0;
-  // Get all labels.
-  $labels = array();
-  if ($freq != 'at_will') {
-    if ($freq == 'per_day') {
-      $labels[] = 'Per Day';
-    }
-    else {
-      $labels[] = 'Once';
-    }
-  }
-  // Uses left.
-  $uses_left = $uses - $spent_uses;
-  if ($freq != 'at_will' && $uses_left > 0) {
-    $labels[] = $uses_left . ' uses';
-  }
-  // PP amount.
-  if ($pp > 0) {
-    $labels[] = $pp . ' PP';
-  }
-  return implode(', ', $labels);
 }

@@ -124,6 +124,67 @@ function _item_uses_content_update($comment) {
 }
 
 /**
+ * Implements hook_item_dice_submit().
+ */
+function item_uses_item_dice_submit($items, $item, $stat_key, $lang) {
+  $label = _item_dice_check_uses($item);
+  if (!empty($label)) {
+    $notes = $item->title . ' ' . $label;
+    $items[$stat_key]['general'] = isset($items[$stat_key]['general']) ? $items[$stat_key]['general'] : 0;
+    $items[$stat_key]['notes'] = isset($items[$stat_key]['notes']) ? $items[$stat_key]['notes'] : '';
+    $items[$stat_key]['notes'] .= ' ' . $notes;
+    $items['any']['general'] = 0;
+    $items['any']['notes'] = isset($items['any']['notes']) ? $items['any']['notes'] : '';
+    $items['any']['notes'] .= ' ' . $notes;
+  }
+  return $items;
+}
+
+/**
+ * Implements hook_item_dice_label().
+ */
+function item_uses_item_dice_label($item_labels, $item) {
+  // Check for uses if they exist.
+  $uses = _item_dice_check_uses($item);
+  if (!empty($uses)) {
+    $item_labels[] = $uses;
+  }
+  return $item_labels;
+}
+
+/**
+ * Check if the item provides a use.
+ */
+function _item_dice_check_uses($item) {
+  //  Get item mod.
+  $label = '';
+  $freq = isset($item->field_item_use_day[$item->language][0]['value']) ? $item->field_item_use_day[$item->language][0]['value'] : '';
+  $pp = isset($item->field_pp_created[$item->language][0]['value']) ? $item->field_pp_created[$item->language][0]['value'] : '';
+  $uses = isset($item->field_item_uses[$item->language][0]['value']) ? $item->field_item_uses[$item->language][0]['value'] : 0;
+  $spent_uses = isset($item->field_item_spent_uses[$item->language][0]['value']) ? $item->field_item_spent_uses[$item->language][0]['value'] : 0;
+  // Get all labels.
+  $labels = array();
+  if ($freq != 'at_will') {
+    if ($freq == 'per_day') {
+      $labels[] = 'Per Day';
+    }
+    else {
+      $labels[] = 'Once';
+    }
+  }
+  // Uses left.
+  $uses_left = $uses - $spent_uses;
+  if ($freq != 'at_will' && $uses_left > 0) {
+    $labels[] = $uses_left . ' uses';
+  }
+  // PP amount.
+  if ($pp > 0) {
+    $labels[] = $pp . ' PP';
+  }
+  return implode(', ', $labels);
+}
+
+/**
  * Helper function, check the item use.
  */
 function _item_uses_check_item_use($item, $once_workflow, $daily_workflow) {
