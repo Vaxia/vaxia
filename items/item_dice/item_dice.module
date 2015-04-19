@@ -78,18 +78,54 @@ function _item_dice_submit_rolls_items($submitted_items, $character, $lang) {
     if (isset($item->nid) && _item_dice_is_usable($item)) {
       // Loop for all stats first.
       foreach ($stats as $stat_key => $stat_name) {
-        // Get modifiers.
+        // Get modifiers and overlaps, build in to items.
         $items = _item_dice_submit_modifiers($items, $item, $stat_key, $lang);
-        // Get overlaps.
         $items = _item_dice_submit_overlaps($items, $item, $stat_key, $lang);
-        // Get weapons.
-        $items = _item_dice_submit_weapons($items, $item, $stat_key, $lang);
+        // Get hooks.
+        $items = module_invoke_all('item_dice_submit', $items, $form, $form_state, $form_id);
         // Get uses.
         $items = _item_dice_submit_uses($items, $item, $stat_key, $lang);
       }
     } // End check if item exists.
   } // End check all items loop.
   return $items;
+}
+
+/**
+ * Figure out what an item can do.
+ */
+function _item_dice_option_label($item) {
+  // Get the stats.
+  $stat_set = _vaxia_dice_roller_get_stats();
+  $stat_set['skill'] = 'Skill';
+  // Figure out the basic item label.
+  $item_labels = array();
+  foreach ($stat_set as $stat_key => $stat_name) {
+    // Get labels for this item and stat.
+    $modifies = _item_dice_check_modifier($item, $stat_key);
+    $overlaps = _item_dice_check_overlap($item, $stat_key);
+    if (!empty($overlaps)) {
+      $modifies = $overlaps;
+    }
+    if (!empty($modifies)) {
+      $item_labels[] = $modifies;
+    }
+  }
+  // Get hooks.
+  $item_labels = module_invoke_all('item_dice_label', $item_labels, $item);
+  // Check for uses if they exist.
+  if (module_exists('item_uses')) {
+    $uses = _item_dice_check_uses($item);
+    if (!empty($uses)) {
+      $item_labels[] = $uses;
+    }
+  }
+  // Set the label if we have any mods.
+  $item_label = '';
+  if (!empty($item_labels)) {
+    $item_label = t('@name (@mods)', array('@name' => $item->title, '@mods' => implode(', ', $item_labels)));
+  }
+  return $item_label;
 }
 
 /**
@@ -152,37 +188,6 @@ function _item_dice_submit_overlaps($items, $item, $stat_key, $lang) {
     if ($overlap > $items[$stat_key]['overlaps']) {
       $items[$stat_key]['overlaps'] = $overlap;
       $items[$stat_key]['notes'] = $item->title .' (' . $small_label . ' ' . $overlap . ' flat)';
-    }
-  }
-  return $items;
-}
-
-/**
- * Get items from the submitted rolls.
- */
-function _item_dice_submit_weapons($items, $item, $stat_key, $lang) {
-  $label = _item_dice_check_weapons($item);
-  if (!empty($label)) {
-    // Set the general notes for the item.
-    $items[$stat_key]['general'] = isset($items[$stat_key]['general']) ? $items[$stat_key]['general'] : 0;
-    $items[$stat_key]['notes'] = isset($items[$stat_key]['notes']) ? $items[$stat_key]['notes'] : '';
-    // Get the fixed strength for the weapon.
-    $fixed_str = !empty($item->field_fixed_strength[$lang][0]['value']) ? $item->field_fixed_strength[$lang][0]['value'] : '';
-    if ($stat_key == 'strength' && !empty($fixed_str)) {
-      // Set the overlap for this stat based on the weapon fixed.
-      $items[$stat_key]['overlaps'] = !empty($items[$stat_key]['overlaps']) ? $items[$stat_key]['overlaps'] : 0;
-      // Unless something else already overlaps at a greater value.
-      if ($fixed_str > $items[$stat_key]['overlaps']) {
-        $items[$stat_key]['overlaps'] = $fixed_str;
-      }
-    }
-    else {
-      // Grab the non-fixed str label.
-      $label = _item_dice_check_weapons($item, FALSE);
-    }
-    // If we have a label add it only the once.
-    if (!empty($label) && $stat_key != 'skill') {
-      $items[$stat_key]['notes'] .= ' ' . $item->title .' (' . $label . ')';
     }
   }
   return $items;
@@ -357,46 +362,6 @@ function _item_dice_options($items) {
 }
 
 /**
- * Figure out what an item can do.
- */
-function _item_dice_option_label($item) {
-  // Get the stats.
-  $stat_set = _vaxia_dice_roller_get_stats();
-  $stat_set['skill'] = 'Skill';
-  // Figure out the basic item label.
-  $item_labels = array();
-  foreach ($stat_set as $stat_key => $stat_name) {
-    // Get labels for this item and stat.
-    $modifies = _item_dice_check_modifier($item, $stat_key);
-    $overlaps = _item_dice_check_overlap($item, $stat_key);
-    if (!empty($overlaps)) {
-      $modifies = $overlaps;
-    }
-    if (!empty($modifies)) {
-      $item_labels[] = $modifies;
-    }
-  }
-  // Check for weapons if they exist.
-  $weapons = _item_dice_check_weapons($item);
-  if (!empty($weapons)) {
-    $item_labels[] = $weapons;
-  }
-  // Check for uses if they exist.
-  if (module_exists('item_uses')) {
-    $uses = _item_dice_check_uses($item);
-    if (!empty($uses)) {
-      $item_labels[] = $uses;
-    }
-  }
-  // Set the label if we have any mods.
-  $item_label = '';
-  if (!empty($item_labels)) {
-    $item_label = t('@name (@mods)', array('@name' => $item->title, '@mods' => implode(', ', $item_labels)));
-  }
-  return $item_label;
-}
-
-/**
  * Check if the item provides a modifier.
  */
 function _item_dice_check_modifier($item, $stat) {
@@ -427,33 +392,6 @@ function _item_dice_check_overlap($item, $stat) {
     $label = $small_label . ':' . number_format($value) . ' flat';
   }
   return $label;
-}
-
-/**
- * Check if the item provides a weapon.
- */
-function _item_dice_check_weapons($item, $both = TRUE) {
-  //  Get item mod.
-  $weapon_labels = array();
-  // Weapon class.
-  $weapon_class = isset($item->field_weapon_class[$item->language][0]['tid']) ?
-    $item->field_weapon_class[$item->language][0]['tid'] : '';
-  if (!empty($weapon_class)) {
-    $weapon_class = taxonomy_term_load($weapon_class);
-    if (!empty($weapon_class) && ($weapon_class->name != 'Unarmed (0% / 0)')) {
-      $name = $weapon_class->name;
-      $name = explode('(', $name);
-      $weapon_labels[] = t('@name', array('@name' => $name[0] . t('Weapon')));
-    }
-  }
-  // Fixed type.
-  $weapon_fix = isset($item->field_fixed_strength[$item->language][0]['value']) ?
-    $item->field_fixed_strength[$item->language][0]['value'] : '';
-  if ($both && !empty($weapon_fix)) {
-    $weapon_labels[] = t('fixed @value', array('@value' => $weapon_fix));
-  }
-  // Return the imploded set of labels.
-  return implode(' ', $weapon_labels);
 }
 
 /**
