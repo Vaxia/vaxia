@@ -1,0 +1,71 @@
+<?php
+/**
+ * @file
+ * Add companion and drone item handling to the dice roller.
+ */
+
+/**
+ * Implements hook_item_dice_submit().
+ */
+function item_companions_item_dice_submit($roll_mods, $item, $stat_key, $lang) {
+  $label = _item_companions_check($item);
+  if (!empty($label)) {
+    // This roll is Only for the roll as handled by the *character*.
+    // We need to give a way to add a second roll on top of this roll to
+    // Make sure that the companion's roll is also included in the set.
+    // So expanding the number of rolls and all.
+
+/*
+    // Set the general notes for the item.
+    $roll_mods[$stat_key]['general'] = isset($roll_mods[$stat_key]['general']) ? $roll_mods[$stat_key]['general'] : 0;
+    $roll_mods[$stat_key]['notes'] = isset($roll_mods[$stat_key]['notes']) ? $roll_mods[$stat_key]['notes'] : '';
+    // Get the fixed strength for the weapon.
+    $fixed_str = !empty($item->field_fixed_strength[$lang][0]['value']) ? $item->field_fixed_strength[$lang][0]['value'] : '';
+    if ($stat_key == 'strength' && !empty($fixed_str)) {
+      // Set the overlap for this stat based on the weapon fixed.
+      $roll_mods[$stat_key]['overlaps'] = !empty($roll_mods[$stat_key]['overlaps']) ? $roll_mods[$stat_key]['overlaps'] : 0;
+      // Unless something else already overlaps at a greater value.
+      if ($fixed_str > $roll_mods[$stat_key]['overlaps']) {
+        $roll_mods[$stat_key]['overlaps'] = $fixed_str;
+      }
+    }
+*/
+    // If we have a label add it only the once.
+    if (!empty($label) && $stat_key != 'skill') {
+      $roll_mods[$stat_key]['notes'] .= ' ' . $item->title .' (' . $label . ')';
+    }
+  }
+  return $roll_mods;
+}
+
+/**
+ * Implements hook_item_dice_label().
+ */
+function item_companions_item_dice_label($item_labels, $item) {
+  // Check for weapons if they exist.
+  $companions = _item_companions_check($item);
+  if (!empty($companions)) {
+    $item_labels[] = $companions;
+  }
+  return $item_labels;
+}
+
+/**
+ * Check if the item provides a weapon.
+ */
+function _item_companions_check($item, $both = TRUE) {
+  //  Get item mod.
+  $labels = array();
+  // Weapon class.
+  $item_type = isset($item->field_item_type[$item->language][0]['tid']) ?
+    $item->field_item_type[$item->language][0]['tid'] : '';
+  if (!empty($item_type)) {
+    $item_type = taxonomy_term_load($item_type);
+    // If this is listed as a companion / drone.
+    if (!empty($item_type) && ($item_type->name == 'Companion/Drone')) {
+      $labels[] = t('Companion');
+    }
+  }
+  // Return the imploded set of labels.
+  return implode(' ', $labels);
+}

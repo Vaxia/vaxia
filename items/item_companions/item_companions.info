@@ -1,0 +1,8 @@
+name = Item Companion
+description = Add companion and drone item handling to the dice roller
+core = 7.x
+package = Vaxia
+php = 5.2.4
+version = 7.x-1.0
+dependencies[] = vaxia
+dependencies[] = items
