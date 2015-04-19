@@ -1,4 +1,4 @@
-name = Item weapons
+name = Item Weapons
 description = Add weapon item handling to the dice roller
 core = 7.x
 package = Vaxia
@@ -6,4 +6,3 @@ php = 5.2.4
 version = 7.x-1.0
 dependencies[] = vaxia
 dependencies[] = items
-dependencies[] = item_dice

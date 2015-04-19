@@ -72,21 +72,21 @@ function _item_dice_submit_rolls_items($submitted_items, $character, $lang) {
   $relations = _vaxia_dice_roller_get_stat_relations();
   $stats['skill'] = 'Skill';
   // Check for items.
-  $items = array();
+  $roll_mods = array();
   foreach ($submitted_items as $delta => $item) {
     $item = node_load($item);
     if (isset($item->nid) && _item_dice_is_usable($item)) {
       // Loop for all stats first.
       foreach ($stats as $stat_key => $stat_name) {
         // Get modifiers and overlaps, build in to items.
-        $items = _item_dice_submit_modifiers($items, $item, $stat_key, $lang);
-        $items = _item_dice_submit_overlaps($items, $item, $stat_key, $lang);
+        $roll_mods = _item_dice_submit_modifiers($roll_mods, $item, $stat_key, $lang);
+        $roll_mods = _item_dice_submit_overlaps($roll_mods, $item, $stat_key, $lang);
         // Get hooks.
-        $items = module_invoke_all('item_dice_submit', $items, $item, $stat_key, $lang);
+        $roll_mods = module_invoke_all('item_dice_submit', $roll_mods, $item, $stat_key, $lang);
       }
     } // End check if item exists.
   } // End check all items loop.
-  return $items;
+  return $roll_mods;
 }
 
 /**

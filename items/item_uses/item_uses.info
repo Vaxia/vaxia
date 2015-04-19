@@ -1,4 +1,4 @@
-name = Item uses
+name = Item Uses
 description = Allow for items to have charged uses
 core = 7.x
 package = Vaxia

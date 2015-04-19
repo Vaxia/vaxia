@@ -126,18 +126,18 @@ function _item_uses_content_update($comment) {
 /**
  * Implements hook_item_dice_submit().
  */
-function item_uses_item_dice_submit($items, $item, $stat_key, $lang) {
+function item_uses_item_dice_submit($roll_mods, $item, $stat_key, $lang) {
   $label = _item_uses_check($item);
   if (!empty($label)) {
     $notes = $item->title . ' ' . $label;
-    $items[$stat_key]['general'] = isset($items[$stat_key]['general']) ? $items[$stat_key]['general'] : 0;
-    $items[$stat_key]['notes'] = isset($items[$stat_key]['notes']) ? $items[$stat_key]['notes'] : '';
-    $items[$stat_key]['notes'] .= ' ' . $notes;
-    $items['any']['general'] = 0;
-    $items['any']['notes'] = isset($items['any']['notes']) ? $items['any']['notes'] : '';
-    $items['any']['notes'] .= ' ' . $notes;
+    $roll_mods[$stat_key]['general'] = isset($roll_mods[$stat_key]['general']) ? $roll_mods[$stat_key]['general'] : 0;
+    $roll_mods[$stat_key]['notes'] = isset($roll_mods[$stat_key]['notes']) ? $roll_mods[$stat_key]['notes'] : '';
+    $roll_mods[$stat_key]['notes'] .= ' ' . $notes;
+    $roll_mods['any']['general'] = 0;
+    $roll_mods['any']['notes'] = isset($roll_mods['any']['notes']) ? $roll_mods['any']['notes'] : '';
+    $roll_mods['any']['notes'] .= ' ' . $notes;
   }
-  return $items;
+  return $roll_mods;
 }
 
 /**
