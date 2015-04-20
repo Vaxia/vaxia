@@ -119,12 +119,15 @@ function _vaxia_dice_roller_submit_rolls($submitted_rolls, $character, $lang) {
       'lang' => $lang,
     );
     drupal_alter('vaxia_dice_commands', $rolls, $context);
+drupal_set_message(print_r($rolls,1),'error');
     // Figure out the exact command set.
+    $commands = array();
     foreach ($rolls as $delta => $roll) {
       $roll['might'] = $roll['stat'] + $roll['skill'];
       $commands['commands'][] = $roll['number'] . 'd' . $roll['size'] . '+' . $roll['might'];
       $commands['notes'][] = 'Roll '. $delta + 1 .' : roll(' . $roll['number'] . 'd' . $roll['size'] . ') ' . implode(' + ', $roll['note']);
     }
+drupal_set_message(print_r($commands,1),'error');
     return $commands;
   }
   return array();
@@ -138,6 +141,7 @@ function _vaxia_dice_roller_prep_rolls($rolls, $character, $lang) {
   foreach ($rolls as $delta => $roll) {
     // Get some data before we start replacing values.
     $this_stat = !empty($roll['stat']) ? $roll['stat'] : 'any';
+    $roll['stat_name'] = $this_stat;
     $roll['note'] = array('');
     // Get stat value from the character if it exists.
     if (!empty($roll['stat'])) {
@@ -177,6 +181,7 @@ function _vaxia_dice_roller_prep_rolls($rolls, $character, $lang) {
         $roll['note'][] = '<a title="' . $desc . '" href="#">' . $name . '</a> (' . $value . ')';
       }
     }
+    $rolls[$delta] = $roll;
   }
   return $rolls;
 }

@@ -61,19 +61,22 @@ function item_dice_vaxia_dice_commands_alter(&$rolls, $context) {
   if (!empty($rolls)) {
     // Check for items against this stat.
     foreach ($rolls as $delta => $roll) {
-      $rolls[$delta]['item_notes'] = array();
-      $rolls[$delta]['item_mods'] = 0;
+      $roll['item_notes'] = array();
+      $roll['item_mods'] = 0;
+      $this_stat = !empty($roll['stat_name']) ? $roll['stat_name'] : 'any';
       if (!empty($items[$this_stat])) {
-        $rolls[$delta] = _item_dice_submit_command_items($roll, $items[$this_stat], 'stat');
+        $roll = _item_dice_submit_command_items($roll, $items[$this_stat], 'stat');
       }
       if (!empty($items['skill'])) {
-        $rolls[$delta] = _item_dice_submit_command_items($roll, $items['skill'], 'skill');
+        $roll = _item_dice_submit_command_items($roll, $items['skill'], 'skill');
       }
-      if (!empty($rolls[$delta]['item_notes'])) {
-        $item_notes = !empty($rolls[$delta]['item_notes']) ? implode(' + ' , $rolls[$delta]['item_notes']) : '';
-        $item_mods = !empty($rolls[$delta]['item_mods']) ? ' (' . $rolls[$delta]['item_mods'] . ')' : '';
-        $rolls[$delta]['note'][] = '<a title="' . $item_notes . '" href="#">Items</a>' . $item_mods;
+      if (!empty($roll['item_notes'])) {
+        $item_notes = !empty($roll['item_notes']) ? implode(' + ' , $roll['item_notes']) : '';
+        $item_mods = !empty($roll['item_mods']) ? ' (' . $roll['item_mods'] . ')' : '';
+        $roll['note'][] = '<a title="' . $item_notes . '" href="#">Items</a>' . $item_mods;
       }
+      // Save it.
+      $rolls[$delta] = $roll;
     }
   }
 }
