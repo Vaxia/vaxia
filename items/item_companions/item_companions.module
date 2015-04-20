@@ -5,9 +5,9 @@
  */
 
 /**
- * Implements hook_vaxia_dice_form().
+ * Implements hook_vaxia_dice_form_alter().
  */
-function item_companions_vaxia_dice_form($form, $form_state, $form_id) {
+function item_companions_vaxia_dice_form_alter(&$form, $form_state, $form_id) {
   // module_load_include('inc', 'vaxia', 'vaxia.dice');
   $character = _vaxia_dice_roller_get_selected_character($form, $form_state);
   // If we have a character, figure out the rest of the display for it.
@@ -36,12 +36,10 @@ function item_companions_vaxia_dice_form($form, $form_state, $form_id) {
         );
         // Add companion dice roller.
         $companion = _item_companions_get_selected_companion($form, $form_state);
-        $form['vaxia_rolls']['companions'] = _vaxia_dice_roller_dice_form($companion);
+        $form['vaxia_rolls']['companions'] = _vaxia_dice_roller_dice_form($companion, 'companion');
       }
-      return $form;
     }
   }
-  return $form;
 }
 
 /**

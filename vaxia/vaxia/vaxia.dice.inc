@@ -11,8 +11,21 @@ function vaxia_dice_roller_form($form, $form_state, $form_id) {
   // Get the character to work with for items
   // Set the available characters for the form dropdown.
   $character = _vaxia_dice_roller_get_selected_character($form, $form_state);
-  $form['vaxia_rolls'] = _vaxia_dice_roller_dice_form($character);
-  $form = module_invoke_all('vaxia_dice_form', $form, $form_state, $form_id);
+  // No character? Return blank.
+  $form['vaxia_rolls'] = array(
+    '#type' => 'item',
+    '#theme' => 'vaxia_dice_roller',
+    '#markup' => '',
+    '#prefix' => '<div id="vaxia-dice-character">',
+    '#suffix' => '</div>',
+    '#weight' => 10,
+    '#tree' => TRUE, // This is important, this allows the deltas below to function.
+  );
+  // If you have the character set the dice form.
+  if ($character && $character != '_none' ) {
+    $form['vaxia_rolls'] = _vaxia_dice_roller_dice_form($character, 'character');
+    drupal_alter('vaxia_dice_form', $form, $form_state, $form_id);
+  }
   return $form;
 }
 
@@ -20,12 +33,11 @@ function vaxia_dice_roller_form($form, $form_state, $form_id) {
  * Element creation form for dice roller configurations.
  */
 function _vaxia_dice_roller_dice_form($node, $type = 'character') {
-  // Pass additional data from user profile configuration.
   // Create roller fieldset.
   $element = array(
     '#type' => 'fieldset',
     '#theme' => 'vaxia_dice_roller',
-    '#prefix' => '<div id="vaxia-dice-roller" class="vaxia-dice-roller">',
+    '#prefix' => '<div id="vaxia-dice-' . $type . '">',
     '#suffix' => '</div>',
     '#weight' => 10,
     '#tree' => TRUE, // This is important, this allows the deltas below to function.
@@ -36,7 +48,7 @@ function _vaxia_dice_roller_dice_form($node, $type = 'character') {
     // Only add a form if the character really exists.
     if (isset($node->title)) {
       // Mark character you're on.
-      $element['#description'] = '<div class="vaxia-dice-roller-node vaxia-dice-roller-' . $type . '">' .
+      $element['#description'] = '<div class="vaxia-dice-roller-node">' .
         t('On ' . $type . ' !name', array('!name' => l($node->title, 'node/' . $node->nid))) .
         '</div>';
       // Get the items to display if we have any.
@@ -44,19 +56,8 @@ function _vaxia_dice_roller_dice_form($node, $type = 'character') {
       for ($i = 0; $i < $display_dice; $i++) {
         $element['dice'][$i] = _vaxia_dice_roller_node_row($node);
       }
-      return $element;
     }
   }
-  // No character? Return blank.
-  $element = array(
-    '#type' => 'item',
-    '#theme' => 'vaxia_dice_roller',
-    '#markup' => '',
-    '#prefix' => '<div id="vaxia-dice-roller" class="vaxia-dice-roller">',
-    '#suffix' => '</div>',
-    '#weight' => 10,
-    '#tree' => TRUE, // This is important, this allows the deltas below to function.
-  );
   // Return element.
   return $element;
 }

@@ -5,9 +5,9 @@
  */
 
 /**
- * Implements hook_vaxia_dice_form().
+ * Implements hook_vaxia_dice_form_alter().
  */
-function item_dice_vaxia_dice_form($form, $form_state, $form_id) {
+function item_dice_vaxia_dice_form_alter(&$form, $form_state, $form_id) {
   // module_load_include('inc', 'vaxia', 'vaxia.dice');
   $character = _vaxia_dice_roller_get_selected_character($form, $form_state);
   // If we have a character, figure out the rest of the display for it.
@@ -31,10 +31,8 @@ function item_dice_vaxia_dice_form($form, $form_state, $form_id) {
         '#size' => count($items),
         '#multiple' => TRUE,
       );
-      return $form;
     }
   }
-  return $form;
 }
 
 /**
