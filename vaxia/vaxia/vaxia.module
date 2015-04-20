@@ -618,7 +618,7 @@ function vaxia_form_alter(&$form, &$form_state, $form_id) {
     // Set up diceroller callbacks on character selection.
     $form['field_comment_character'][$lang]['#ajax'] = array(
       'callback' => '_vaxia_character_pick',
-      'wrapper' => 'vaxia-dice-roller',
+      'wrapper' => 'vaxia-dice-character',
       'method' => 'replace',
       'effect' => 'fade',
     );
