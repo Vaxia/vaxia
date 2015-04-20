@@ -8,7 +8,7 @@
  * Implements hook_vaxia_dice_form_alter().
  */
 function item_companions_vaxia_dice_form_alter(&$form, $form_state, $form_id) {
-  // module_load_include('inc', 'vaxia', 'vaxia.dice');
+  // Get characters.
   $character = _vaxia_dice_roller_get_selected_character($form, $form_state);
   // If we have a character, figure out the rest of the display for it.
   if ($character && $character != '_none' ) {
@@ -23,23 +23,38 @@ function item_companions_vaxia_dice_form_alter(&$form, $form_state, $form_id) {
         foreach ($form['vaxia_rolls']['items']['#options'] as $nid => $item) {
           if (in_array($nid, array_keys($companions))) {
             unset($form['vaxia_rolls']['items']['#options'][$nid]);
-            $companion_options[$nid] = $item;
+            if (!empty($companions[$nid]->title)) {
+              $companion_options[$nid] = $companions[$nid]->title;
+            }
           }
         }
-        // Add companion.
-        // @todo - make this a state based thing, only show the roller
-        // when we have a companion selected. But that's all for later.
+        // Add option for selecting the character.
         $form['vaxia_rolls']['as_companion'] = array(
-          '#type' => 'select',
           '#title' => t('As companion'),
+          '#type' => 'select',
           '#options' => $companion_options,
+          '#ajax' => array(
+            'callback' => '_item_companions_pick',
+            'wrapper' => 'vaxia-dice-companion',
+            'method' => 'replace',
+            'effect' => 'fade',
+          ),
         );
         // Add companion dice roller.
         $companion = _item_companions_get_selected_companion($form, $form_state);
-        $form['vaxia_rolls']['companions'] = _vaxia_dice_roller_dice_form($companion, 'companion');
+        if (!empty($companion)) {
+          $form['vaxia_rolls']['companions'] = _vaxia_dice_roller_dice_form($companion, 'companion');
+        }
       }
     }
   }
+}
+
+/**
+ * Ajax callback for character selection.
+ */
+function _item_companions_pick($form, $form_state) {
+  return isset($form['vaxia_rolls']['companions']) ? $form['vaxia_rolls']['companions'] : array();
 }
 
 /**
@@ -130,12 +145,16 @@ function _item_companions_check($item, $both = TRUE) {
  * Helper function, get the companion items.
  */
 function _item_companions_get_companions($character) {
-  $items = _item_dice_get_items($character);
   $companions = array();
-  foreach ($items as $nid => $item) {
-    $label = _item_companions_check($companion);
-    if (!empty($label)) {
-      $companions[$nid] = $item;
+  if (isset($character->field_items[$character->language])) {
+    foreach ($character->field_items[$character->language] as $delta => $nid) {
+      $item = node_load($nid['nid']);
+      if ($item && !empty($item->nid)) {
+        $label = _item_companions_check($item);
+        if (!empty($label)) {
+          $companions[$item->nid] = $item;
+        }
+      }
     }
   }
   return $companions;
