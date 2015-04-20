@@ -42,7 +42,6 @@ function item_companions_vaxia_dice_form_alter(&$form, $form_state, $form_id) {
           ),
         );
         // Add companion dice roller.
-        $companion = _item_companions_get_selected_companion($form, $form_state);
         $form['vaxia_rolls']['companions'] = array(
           '#type' => 'fieldset',
           '#theme' => 'vaxia_dice_roller',
@@ -51,6 +50,7 @@ function item_companions_vaxia_dice_form_alter(&$form, $form_state, $form_id) {
           '#weight' => 10,
           '#tree' => TRUE, // This is important, this allows the deltas below to function.
         );
+        $companion = _item_companions_get_selected_companion($form, $form_state);
         if (!empty($companion)) {
           $form['vaxia_rolls']['companions'] = _vaxia_dice_roller_dice_form($companion, 'companion');
         }
@@ -174,14 +174,10 @@ function _item_companions_get_companions($character) {
  * Helper function get the selected companion.
  */
 function _item_companions_get_selected_companion($form, $form_state) {
-  // Get user info.
-  global $user;
-  $this_player = user_load($user->uid);
   $companion = '_none';
-  $lang = $form['language']['#value'];
   // Check character selected from form.
-  if(!empty($form['vaxia_rolls']['as_companion'])) {
-    $companion = $form['vaxia_rolls']['as_companion'];
+  if(!empty($form_state['values']['vaxia_rolls']['as_companion'])) {
+    $companion = $form_state['values']['vaxia_rolls']['as_companion'];
   }
-  return $character;
+  return $companion;
 }
