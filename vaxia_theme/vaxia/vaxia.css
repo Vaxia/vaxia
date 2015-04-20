@@ -273,6 +273,7 @@ table td{padding-right:15px;}
 p{font-size:100%;}
 .vaxia-dice-roller table td{padding-right:0;}
 .vaxia-dice-roller .fieldset-description{float:right;font-size:10px;}
+.vaxia-dice-roller-hidden{display:none !important;}
 article.node-wiki-page .links {float:right;}
 article.node-wiki-page .links li{display:inline;}
 .view-character-sheet-moderation-log .views-exposed-widgets div.views-exposed-widget{display:block;width:100%;margin-left:0;}
