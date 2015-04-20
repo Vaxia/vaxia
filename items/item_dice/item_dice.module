@@ -40,7 +40,10 @@ function item_dice_vaxia_dice_form($form, $form_state, $form_id) {
 /**
  * Implements hook_vaxia_dice_commands().
  */
-function item_dice_vaxia_dice_commands($rolls, $submitted_rolls, $character, $lang) {
+function item_dice_vaxia_dice_commands_alter(&$rolls, $context) {
+  $submitted_rolls = $context['submitted_rolls'];
+  $character = $context['character'];
+  $lang = $context['lang'];
   // Check for items.
   $items = array();
   if (!empty($submitted_rolls['items'])) {
@@ -56,12 +59,25 @@ function item_dice_vaxia_dice_commands($rolls, $submitted_rolls, $character, $la
       );
     }
   }
-  // Calculate the commands.
-  $commands = array();
+  // Calculate the impact of items on rolls.
   if (!empty($rolls)) {
-    $commands = _item_dice_submit_commands($rolls, $character, $items, $lang);
+    // Check for items against this stat.
+    foreach ($rolls as $delta => $roll) {
+      $rolls[$delta]['item_notes'] = array();
+      $rolls[$delta]['item_mods'] = 0;
+      if (!empty($items[$this_stat])) {
+        $rolls[$delta] = _item_dice_submit_command_items($roll, $items[$this_stat], 'stat');
+      }
+      if (!empty($items['skill'])) {
+        $rolls[$delta] = _item_dice_submit_command_items($roll, $items['skill'], 'skill');
+      }
+      if (!empty($rolls[$delta]['item_notes'])) {
+        $item_notes = !empty($rolls[$delta]['item_notes']) ? implode(' + ' , $rolls[$delta]['item_notes']) : '';
+        $item_mods = !empty($rolls[$delta]['item_mods']) ? ' (' . $rolls[$delta]['item_mods'] . ')' : '';
+        $rolls[$delta]['note'][] = '<a title="' . $item_notes . '" href="#">Items</a>' . $item_mods;
+      }
+    }
   }
-  return $commands;
 }
 
 /**
@@ -187,75 +203,6 @@ function _item_dice_submit_overlaps($items, $item, $stat_key, $lang) {
     }
   }
   return $items;
-}
-
-/**
- * Create commands from the rolls.
- */
-function _item_dice_submit_commands($rolls, $character, $items, $lang) {
-  $commands = array();
-  foreach ($rolls as $delta => $roll) {
-    // Get some data before we start replacing values.
-    $this_stat = !empty($roll['stat']) ? $roll['stat'] : 'any';
-    $roll['note'] = array('');
-    // Get stat value from the character if it exists.
-    if (!empty($roll['stat'])) {
-      $small_label = _vaxia_dice_roller_small_label($this_stat);
-      $field_name = 'field_' . $this_stat;
-      $roll['stat'] = !empty($character->{$field_name}[$lang][0]['value']) ? $character->{$field_name}[$lang][0]['value'] : 0;
-      if (!empty($character->{$field_name}[$lang][0]['value'])) {
-        $roll['note'][] = $small_label . ' (' . $roll['stat'] . ')';
-      }
-    }
-    // Get skill value from the character if it exists.
-    if (!empty($roll['skill'])) {
-      $skill_details = field_collection_item_load($roll['skill']);
-      if (!empty($skill_details->field_skill_value[$lang][0]['value'])) {
-        $value = !empty($skill_details->field_skill_value[$lang][0]['value']) ? $skill_details->field_skill_value[$lang][0]['value'] : 0;
-        $name = !empty($skill_details->field_skill_name[$lang][0]['value']) ? $skill_details->field_skill_name[$lang][0]['value'] : t('Unk. skill');
-        $desc = !empty($skill_details->field_skill_desc[$lang][0]['value']) ? $skill_details->field_skill_desc[$lang][0]['value'] : '';
-        // Add aspects to display.
-        $aspects = array();
-        if (!empty($skill_details->field_aspect_one[$lang][0]['tid'])) {
-          $aspect = taxonomy_term_load($skill_details->field_aspect_one[$lang][0]['tid']);
-          $aspects[] = $aspect->name;
-        }
-        if (!empty($skill_details->field_aspect_two[$lang][0]['tid'])) {
-          $aspect = taxonomy_term_load($skill_details->field_aspect_two[$lang][0]['tid']);
-          $aspects[] = $aspect->name;
-        }
-        if (!empty($skill_details->field_aspect_three[$lang][0]['tid'])) {
-          $aspect = taxonomy_term_load($skill_details->field_aspect_three[$lang][0]['tid']);
-          $aspects[] = $aspect->name;
-        }
-        if (!empty($aspects)) {
-          $desc .= ' (' . implode(', ', $aspects) . ')';
-        }
-        // Set display.
-        $roll['skill'] = $value;
-        $roll['note'][] = '<a title="' . $desc . '" href="#">' . $name . '</a> (' . $value . ')';
-      }
-    }
-    // Check for items against this stat.
-    $roll['item_notes'] = array();
-    $roll['item_mods'] = 0;
-    if (!empty($items[$this_stat])) {
-      $roll = _item_dice_submit_command_items($roll, $items[$this_stat], 'stat');
-    }
-    if (!empty($items['skill'])) {
-      $roll = _item_dice_submit_command_items($roll, $items['skill'], 'skill');
-    }
-    if (!empty($roll['item_notes'])) {
-      $item_notes = !empty($roll['item_notes']) ? implode(' + ' , $roll['item_notes']) : '';
-      $item_mods = !empty($roll['item_mods']) ? ' (' . $roll['item_mods'] . ')' : '';
-      $roll['note'][] = '<a title="' . $item_notes . '" href="#">Items</a>' . $item_mods;
-    }
-    // Add to the command.
-    $roll['might'] = $roll['stat'] + $roll['skill'];
-    $commands['commands'][] = $roll['number'] . 'd' . $roll['size'] . '+' . $roll['might'];
-    $commands['notes'][] = 'Roll '. $delta + 1 .' : roll(' . $roll['number'] . 'd' . $roll['size'] . ') ' . implode(' + ', $roll['note']);
-  }
-  return $commands;
 }
 
 /**
