@@ -140,7 +140,8 @@ function _vaxia_dice_roller_prep_rolls($rolls, $character, $lang) {
     // Get some data before we start replacing values.
     $this_stat = !empty($roll['stat']) ? $roll['stat'] : 'any';
     $roll['stat_name'] = $this_stat;
-    $roll['note'] = array('');
+    // Add an initial value to the note array so we get a leading '+' on display.
+    $roll['note'] = !empty($roll['note']) ? $roll['note'] : array('');
     // Get stat value from the character if it exists.
     if (!empty($roll['stat'])) {
       $small_label = _vaxia_dice_roller_small_label($this_stat);

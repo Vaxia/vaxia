@@ -91,31 +91,13 @@ function item_companions_vaxia_dice_commands_alter(&$rolls, $context) {
       }
     }
     // Calculate the companion roll preps.
-    $rolls = array_merge($rolls, (array) _vaxia_dice_roller_prep_rolls($companion_rolls, $companion, $lang));
-  }
-}
-
-/**
- * Implements hook_item_dice_submit_alter().
- */
-function item_companions_item_dice_submit_alter(&$roll_mods, $context) {
-/*
-  $lang = $context['lang'];
-  $stat_key = $context['stat_key'];
-  $item = $context['item'];
-  $label = _item_companions_check($item);
-  if (!empty($label)) {
-    // This roll is Only for the roll as handled by the *character*.
-    // Companions never modify the roll for the character, but we should add
-    // them as an item note so that it's obvious the Companion is involved.
-    // If we have a label add it only the once.
-    // @todo - or skip the label at all.
-    if (!empty($label) && $stat_key != 'skill') {
-      $roll_mods[$stat_key]['notes'] .= ' ' . $item->title .' (' . $label . ')';
+    $prepped_rolls = _vaxia_dice_roller_prep_rolls($companion_rolls, $companion, $lang);
+    foreach ($prepped_rolls as $index => $roll) {
+      $roll['note'][] = '<a title="' . $companion->title . '" href="#">Companion</a>';
+      $prepped_rolls[$index] = $roll;
     }
+    $rolls = array_merge($rolls, $prepped_rolls);
   }
-*/
-  return $roll_mods;
 }
 
 /**
