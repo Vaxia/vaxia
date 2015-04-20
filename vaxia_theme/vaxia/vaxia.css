@@ -86,7 +86,7 @@ article #comment-body-add-more-wrapper #edit-comment-body-und-0-format{display:n
 .rpg-chat-node .links{display:none;}
 .rpg-chat-node .links a{display:none;}
 .rpg-chat-node .form-type-item{display:none;}
-#vaxia-dice-roller fieldset{font-size:80%;}
+.vaxia-dice-roller fieldset{font-size:80%;}
 article.node-rpg-chatroom.clearfix:after, article.node-rpg-chatroom .field-type-node-reference.clearfix:after{clear:none;}
 #block-views-rpg-chats-rpg-chats-children {float:right;clear:right;padding-left:2em;}
 /* .rpg-chat-narrative header{display:none;} */
@@ -97,11 +97,11 @@ article.node-rpg-chatroom.clearfix:after, article.node-rpg-chatroom .field-type-
 .rpg-chat-node #rpg-chat-userlist{float:none;clear:none;width:auto;}
 .rpg-chat-node #comment-form{clear:none;}
 .rpg-chat-node #rpg-chat{float:none;clear:none;width:auto;}
-.rpg-chat-node #vaxia-dice-roller .form-select{width:90px;}
-.rpg-chat-node #vaxia-dice-roller .dice-number{width:auto;}
-.rpg-chat-node #vaxia-dice-roller .dice-size{width:auto;}
-.rpg-chat-node #vaxia-dice-roller .dice-skill{width:180px;}
-.rpg-chat-node #vaxia-dice-roller #edit-vaxia-rolls-items{width:380px;}
+.rpg-chat-node .vaxia-dice-roller .form-select{width:90px;}
+.rpg-chat-node .vaxia-dice-roller .dice-number{width:auto;}
+.rpg-chat-node .vaxia-dice-roller .dice-size{width:auto;}
+.rpg-chat-node .vaxia-dice-roller .dice-skill{width:180px;}
+.rpg-chat-node .vaxia-dice-roller #edit-vaxia-rolls-items{width:380px;}
 .rpg-chat-node #comment-form{float:left;clear:left;width:400px;}
 .rpg-chat-node #rpg-chat-wrapper{float:none;margin-left:410px;position:relative;top:-25px;}
 
@@ -194,7 +194,7 @@ div.quiz-report .dt{background:transparent;}
 .messages{border:1px solid;padding:0.5em;font-weight:bold;}
 .messages--status{background-color:#0A0;}
 .messages--error{background-color:#A00;}
-.rpg-chat-node #vaxia-dice-roller .form-item-vaxia-rolls-items .form-select{width:100%;}
+.rpg-chat-node .vaxia-dice-roller .form-item-vaxia-rolls-items .form-select{width:100%;}
 .rpg-chat-node article.rpg-chat-narrative .field-name-comment-body{min-height:10px !important;}
 #edit-subscriptions-notify .description{display:none;}
 .wiki-category-tag{display:inline;padding-right:1em;}
@@ -271,8 +271,8 @@ table td{padding-right:15px;}
 
 /* Collected fixes. 12/29/14 */
 p{font-size:100%;}
-#vaxia-dice-roller table td{padding-right:0;}
-#vaxia-dice-roller .fieldset-description{float:right;font-size:10px;}
+.vaxia-dice-roller table td{padding-right:0;}
+.vaxia-dice-roller .fieldset-description{float:right;font-size:10px;}
 article.node-wiki-page .links {float:right;}
 article.node-wiki-page .links li{display:inline;}
 .view-character-sheet-moderation-log .views-exposed-widgets div.views-exposed-widget{display:block;width:100%;margin-left:0;}
@@ -328,3 +328,32 @@ form.wiki-page-node-form #edit-field-additional-tagging{width:100%;}
 #character-sheet-node-form .filter-wrapper{display:none;}
 #block-play-suggestions-play-suggestions{float:left;width:40%;}
 table.views-table{width:95%;}
+
+/* Collected 04/20/2015 */
+th.views-field{padding-left:0.25em;padding-right:0.25em;}
+#block-moon-phases-moons .moon-block{width:150px;float:right;position:relative;top:-7px;}
+.moon-block .moon{width:30px;height:30px;background-color:transparent;border-radius:30px;-moz-border-radius:30px;-webkit-border-radius:30px;}
+.moon-block .moon .moonmask{width:30px;height:30px;border-radius:30px;-moz-border-radius:30px;-webkit-border-radius:30px;}
+.moon-block .moon .moonmask .overlay{width:15px;height:30px;}
+.moon-block h5{display:none;}
+#rpg-chat-weather{float:right;position:relative;top:-2.2em;}
+#rpg-chat-weather img{height:30px;}
+#rpg-chat-weather .rpg-weather-img img{width:30px;}
+#rpg-chat-weather .moon{padding:0px;margin:0px;}
+#rpg-chat-userlist{margin-right:32px;}
+#rpg-chat-userlist h3{margin:0;}
+#rpg-chat-userlist ul{margin:0;}
+.form-field-name-field-provides-reputation{float: left;padding-top: 1em;}
+#forum .forum-node-create-links .forum-add-node{display:none;}
+#forum .forum-node-create-links .forum-add-forum{display:block;}
+.page-forum-879 #forum .forum-node-create-links .forum-add-event{display:block;}
+.page-forum-16 #forum .forum-node-create-links .forum-add-proposal{display:block;}
+.page-forum-707 #forum .forum-node-create-links .forum-add-proposal{display:block;}
+.page-forum-709 #forum .forum-node-create-links .forum-add-proposal{display:block;}
+.page-forum-708 #forum .forum-node-create-links .forum-add-proposal{display:block;}
+.page-forum-13 #forum .forum-node-create-links .forum-add-session_report{display:block;}
+.page-forum-14 #forum .forum-node-create-links .forum-add-session_report{display:block;}
+fieldset.group-aspects div.field-type-taxonomy-term-reference{width:30%;float:left;}
+fieldset.group-aspects div.field-type-taxonomy-term-reference label{display:none;}
+.page-node-add .filter-wrapper, .page-node-edit .filter-wrapper{display:none;}
+
