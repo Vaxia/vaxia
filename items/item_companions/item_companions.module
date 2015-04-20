@@ -91,9 +91,7 @@ function item_companions_vaxia_dice_commands_alter(&$rolls, $context) {
       }
     }
     // Calculate the companion roll preps.
-    $companion_rolls = _vaxia_dice_roller_prep_rolls($companion_rolls, $companion, $lang);
-    // Add the new rolls to the current rolls.
-    $rolls = $rolls + $companion_rolls;
+    $rolls = array_merge($rolls, (array) _vaxia_dice_roller_prep_rolls($companion_rolls, $companion, $lang));
   }
 }
 
