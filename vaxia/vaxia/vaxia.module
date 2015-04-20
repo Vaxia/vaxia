@@ -570,7 +570,7 @@ function vaxia_form_alter(&$form, &$form_state, $form_id) {
   // If we're viewing a comment form, allow for user profile to set RPG chat additional fields.
   if (substr($form_id, 0, 7) == 'comment' && isset($form['#node'])) {
     // Eject if this is not a chat room type.
-    $type = $form['#node']->type;
+    $type = !empty($form['#node']) ? $form['#node']->type : '';
     if (!_rpg_chat_is_enabled($type)) {
       return;
     }
