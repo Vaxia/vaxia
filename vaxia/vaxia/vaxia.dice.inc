@@ -119,7 +119,6 @@ function _vaxia_dice_roller_submit_rolls($submitted_rolls, $character, $lang) {
       'lang' => $lang,
     );
     drupal_alter('vaxia_dice_commands', $rolls, $context);
-drupal_set_message(print_r($rolls,1),'error');
     // Figure out the exact command set.
     $commands = array();
     foreach ($rolls as $delta => $roll) {
@@ -127,7 +126,6 @@ drupal_set_message(print_r($rolls,1),'error');
       $commands['commands'][] = $roll['number'] . 'd' . $roll['size'] . '+' . $roll['might'];
       $commands['notes'][] = 'Roll '. $delta + 1 .' : roll(' . $roll['number'] . 'd' . $roll['size'] . ') ' . implode(' + ', $roll['note']);
     }
-drupal_set_message(print_r($commands,1),'error');
     return $commands;
   }
   return array();
