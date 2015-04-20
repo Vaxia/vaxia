@@ -1,0 +1,18 @@
+<?php
+/**
+ * @file
+ * Installation code for the item_companions feature.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function item_companions_install() {
+  // Bump the weight down to make sure we can modify forms after webform.
+  db_query("UPDATE {system} SET weight = 10 WHERE name = 'item_companions'");
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function item_companions_uninstall() {}
