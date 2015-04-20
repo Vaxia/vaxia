@@ -13,10 +13,9 @@ function vaxia_dice_roller_form($form, $form_state, $form_id) {
   $character = _vaxia_dice_roller_get_selected_character($form, $form_state);
   // No character? Return blank.
   $form['vaxia_rolls'] = array(
-    '#type' => 'item',
+    '#type' => 'fieldset',
     '#theme' => 'vaxia_dice_roller',
-    '#markup' => '',
-    '#prefix' => '<div id="vaxia-dice-character" class="vaxia-dice-roller">',
+    '#prefix' => '<div id="vaxia-dice-character" class="vaxia-dice-roller" style="display:none;">',
     '#suffix' => '</div>',
     '#weight' => 10,
     '#tree' => TRUE, // This is important, this allows the deltas below to function.
