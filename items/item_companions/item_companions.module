@@ -30,9 +30,10 @@ function item_companions_vaxia_dice_form_alter(&$form, $form_state, $form_id) {
         }
         // Add option for selecting the character.
         $form['vaxia_rolls']['as_companion'] = array(
-          '#title' => t('As companion'),
+          '#title' => t('Using companion'),
           '#type' => 'select',
           '#options' => $companion_options,
+          '#default_value' => '_none',
           '#ajax' => array(
             'callback' => '_item_companions_pick',
             'wrapper' => 'vaxia-dice-companion',
@@ -42,9 +43,18 @@ function item_companions_vaxia_dice_form_alter(&$form, $form_state, $form_id) {
         );
         // Add companion dice roller.
         $companion = _item_companions_get_selected_companion($form, $form_state);
+        $form['vaxia_rolls']['companions'] = array(
+          '#type' => 'fieldset',
+          '#theme' => 'vaxia_dice_roller',
+          '#prefix' => '<div id="vaxia-dice-companion" class="vaxia-dice-roller" style="display:none;">',
+          '#suffix' => '</div>',
+          '#weight' => 10,
+          '#tree' => TRUE, // This is important, this allows the deltas below to function.
+        );
         if (!empty($companion)) {
           $form['vaxia_rolls']['companions'] = _vaxia_dice_roller_dice_form($companion, 'companion');
         }
+        // Done.
       }
     }
   }
