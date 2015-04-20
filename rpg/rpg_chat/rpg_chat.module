@@ -193,7 +193,7 @@ function rpg_chat_node_view_alter(&$build) {
  */
 function rpg_chat_form_comment_form_alter(&$form, &$form_state, $form_id) {
   // Check to see if this node type is a rpg chatroom.
-  if (_rpg_chat_is_enabled($form['#node']->type) ) {
+  if (!empty($form['#node']) && _rpg_chat_is_enabled($form['#node']->type) ) {
     // Display the refresh submit.
     $form['actions']['refresh_chat'] = array(
       '#type' => 'submit',
