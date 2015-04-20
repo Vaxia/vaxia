@@ -15,7 +15,7 @@ function vaxia_dice_roller_form($form, $form_state, $form_id) {
   $form['vaxia_rolls'] = array(
     '#type' => 'fieldset',
     '#theme' => 'vaxia_dice_roller',
-    '#prefix' => '<div id="vaxia-dice-character" class="vaxia-dice-roller" style="display:none;">',
+    '#prefix' => '<div id="vaxia-dice-character" class="vaxia-dice-roller vaxia-dice-roller-hidden">',
     '#suffix' => '</div>',
     '#weight' => 10,
     '#tree' => TRUE, // This is important, this allows the deltas below to function.
