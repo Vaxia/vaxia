@@ -5,6 +5,76 @@
  */
 
 /**
+ * Implements hook_vaxia_dice_form().
+ */
+function item_companions_vaxia_dice_form($form, $form_state, $form_id) {
+  // module_load_include('inc', 'vaxia', 'vaxia.dice');
+  $character = _vaxia_dice_roller_get_selected_character($form, $form_state);
+  // If we have a character, figure out the rest of the display for it.
+  if ($character && $character != '_none' ) {
+    $character = node_load($character);
+    // Only add a form if the character really exists.
+    if (isset($character->title) && ($character->type == 'character_sheet')) {
+      // Display the items under the stat and skill row.
+      $companions = _item_companions_get_companions($character);
+      if (!empty($companions)) {
+        // Filter companions out of the item list.
+        $companion_options = array('_none' => t('- None -'));
+        foreach ($form['vaxia_rolls']['items']['#options'] as $nid => $item) {
+          if (in_array($nid, array_keys($companions))) {
+            unset($form['vaxia_rolls']['items']['#options'][$nid]);
+            $companion_options[$nid] = $item;
+          }
+        }
+        // Add companion.
+        // @todo - make this a state based thing, only show the roller
+        // when we have a companion selected. But that's all for later.
+        $form['vaxia_rolls']['as_companion'] = array(
+          '#type' => 'select',
+          '#title' => t('As companion'),
+          '#options' => $companion_options,
+        );
+        // Add companion dice roller.
+        $companion = _item_companions_get_selected_companion($form, $form_state);
+        $form['vaxia_rolls']['companions'] = _vaxia_dice_roller_dice_form($companion);
+      }
+      return $form;
+    }
+  }
+  return $form;
+}
+
+/**
+ * Implements hook_vaxia_dice_commands().
+ */
+function item_companions_vaxia_dice_commands_alter(&$rolls, $context) {
+  $submitted_rolls = $context['submitted_rolls'];
+  $character = $context['character'];
+  $lang = $context['lang'];
+  $companion_rolls = array();
+  // Check for items.
+  if (!empty($submitted_rolls['as_companion']) && !empty($submitted_rolls['companions'])) {
+    // Make sure that the companion's roll is also included in the set.
+    // So expanding the number of rolls and all.
+    $companion = node_load($submitted_rolls['as_companion']);
+    // Add rolls for the companion.
+    foreach ($submitted_rolls['companions']['dice'] as $delta => $roll) {
+      $number = !empty($roll['number']) ? $roll['number'] : 0;
+      if ($number > 0) {
+        $roll['size'] = !empty($roll['size']) ? $roll['size'] : 1;
+        $roll['stat'] = ($roll['stat'] != -1) ? $roll['stat'] : 'any';
+        $roll['skill'] = ($roll['skill'] != -1) ? $roll['skill'] : 0;
+        $companion_rolls[] = $roll;
+      }
+    }
+    // Calculate the companion roll preps.
+    $companion_rolls = _vaxia_dice_roller_prep_rolls($companion_rolls, $companion, $lang);
+    // Add the new rolls to the current rolls.
+    $rolls = $rolls + $companion_rolls;
+  }
+}
+
+/**
  * Implements hook_item_dice_submit_alter().
  */
 function item_companions_item_dice_submit_alter(&$roll_mods, $context) {
@@ -14,26 +84,10 @@ function item_companions_item_dice_submit_alter(&$roll_mods, $context) {
   $label = _item_companions_check($item);
   if (!empty($label)) {
     // This roll is Only for the roll as handled by the *character*.
-    // We need to give a way to add a second roll on top of this roll to
-    // Make sure that the companion's roll is also included in the set.
-    // So expanding the number of rolls and all.
-
-/*
-    // Set the general notes for the item.
-    $roll_mods[$stat_key]['general'] = isset($roll_mods[$stat_key]['general']) ? $roll_mods[$stat_key]['general'] : 0;
-    $roll_mods[$stat_key]['notes'] = isset($roll_mods[$stat_key]['notes']) ? $roll_mods[$stat_key]['notes'] : '';
-    // Get the fixed strength for the weapon.
-    $fixed_str = !empty($item->field_fixed_strength[$lang][0]['value']) ? $item->field_fixed_strength[$lang][0]['value'] : '';
-    if ($stat_key == 'strength' && !empty($fixed_str)) {
-      // Set the overlap for this stat based on the weapon fixed.
-      $roll_mods[$stat_key]['overlaps'] = !empty($roll_mods[$stat_key]['overlaps']) ? $roll_mods[$stat_key]['overlaps'] : 0;
-      // Unless something else already overlaps at a greater value.
-      if ($fixed_str > $roll_mods[$stat_key]['overlaps']) {
-        $roll_mods[$stat_key]['overlaps'] = $fixed_str;
-      }
-    }
-*/
+    // Companions never modify the roll for the character, but we should add
+    // them as an item note so that it's obvious the Companion is involved.
     // If we have a label add it only the once.
+    // @todo - or skip the label at all.
     if (!empty($label) && $stat_key != 'skill') {
       $roll_mods[$stat_key]['notes'] .= ' ' . $item->title .' (' . $label . ')';
     }
@@ -72,4 +126,35 @@ function _item_companions_check($item, $both = TRUE) {
   }
   // Return the imploded set of labels.
   return implode(' ', $labels);
+}
+
+/**
+ * Helper function, get the companion items.
+ */
+function _item_companions_get_companions($character) {
+  $items = _item_dice_get_items($character);
+  $companions = array();
+  foreach ($items as $nid => $item) {
+    $label = _item_companions_check($companion);
+    if (!empty($label)) {
+      $companions[$nid] = $item;
+    }
+  }
+  return $companions;
+}
+
+/**
+ * Helper function get the selected companion.
+ */
+function _item_companions_get_selected_companion($form, $form_state) {
+  // Get user info.
+  global $user;
+  $this_player = user_load($user->uid);
+  $companion = '_none';
+  $lang = $form['language']['#value'];
+  // Check character selected from form.
+  if(!empty($form['vaxia_rolls']['as_companion'])) {
+    $companion = $form['vaxia_rolls']['as_companion'];
+  }
+  return $character;
 }
