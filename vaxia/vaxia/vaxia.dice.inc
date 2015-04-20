@@ -16,7 +16,7 @@ function vaxia_dice_roller_form($form, $form_state, $form_id) {
     '#type' => 'item',
     '#theme' => 'vaxia_dice_roller',
     '#markup' => '',
-    '#prefix' => '<div id="vaxia-dice-character">',
+    '#prefix' => '<div id="vaxia-dice-character" class="vaxia-dice-roller">',
     '#suffix' => '</div>',
     '#weight' => 10,
     '#tree' => TRUE, // This is important, this allows the deltas below to function.
@@ -37,7 +37,7 @@ function _vaxia_dice_roller_dice_form($node, $type = 'character') {
   $element = array(
     '#type' => 'fieldset',
     '#theme' => 'vaxia_dice_roller',
-    '#prefix' => '<div id="vaxia-dice-' . $type . '">',
+    '#prefix' => '<div id="vaxia-dice-' . $type . '" class="vaxia-dice-roller">',
     '#suffix' => '</div>',
     '#weight' => 10,
     '#tree' => TRUE, // This is important, this allows the deltas below to function.
