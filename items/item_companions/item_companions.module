@@ -44,6 +44,7 @@ function item_companions_vaxia_dice_form_alter(&$form, $form_state, $form_id) {
         // Add companion dice roller.
         $form['vaxia_rolls']['companions'] = array(
           '#type' => 'fieldset',
+          '#description' => t('Remember to roll your companion control skill for issuing a command.'),
           '#theme' => 'vaxia_dice_roller',
           '#prefix' => '<div id="vaxia-dice-companion" class="vaxia-dice-roller vaxia-dice-roller-hidden">',
           '#suffix' => '</div>',
