@@ -126,7 +126,7 @@ Drupal.behaviors.diceHelper = {
         '<div id="dice-helper-image" style="">' +
         '</div>'
       );
-      $('#vaxia-dice-roller').before('' +
+      $('#vaxia-dice-character').before('' +
         '<div id="dice-helper" style="">' +
         '<input type="button" value="Attack" class="dice-helper-button">' +
         '<input type="button" value="Magic" class="dice-helper-button">' +
