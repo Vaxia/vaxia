@@ -8,46 +8,57 @@
  * Implementation of hook_dice_roller_form(), which returns a form for handling basic style rolls.
  */
 function vaxia_dice_roller_form($form, $form_state, $form_id) {
+  // Get the character to work with for items
+  // Set the available characters for the form dropdown.
+  $character = _vaxia_dice_roller_get_selected_character($form, $form_state);
+  $form['vaxia_rolls'] = _vaxia_dice_roller_dice_form($character);
+  $form = module_invoke_all('vaxia_dice_form', $form, $form_state, $form_id);
+  return $form;
+}
+
+/**
+ * Element creation form for dice roller configurations.
+ */
+function _vaxia_dice_roller_dice_form($node, $type = 'character') {
   // Pass additional data from user profile configuration.
   // Create roller fieldset.
-  $form['vaxia_rolls'] = array(
+  $element = array(
     '#type' => 'fieldset',
     '#theme' => 'vaxia_dice_roller',
-    '#prefix' => '<div id="vaxia-dice-roller">',
+    '#prefix' => '<div id="vaxia-dice-roller" class="vaxia-dice-roller">',
     '#suffix' => '</div>',
     '#weight' => 10,
     '#tree' => TRUE, // This is important, this allows the deltas below to function.
   );
-  // Get the character to work with for items
-  // Set the available characters for the form dropdown.
-  $character = _vaxia_dice_roller_get_selected_character($form, $form_state);
   // If we have a character, figure out the rest of the display for it.
-  if ($character && $character != '_none' ) {
-    $character = node_load($character);
+  if ($node && $node != '_none' ) {
+    $node = node_load($node);
     // Only add a form if the character really exists.
-    if (isset($character->title) && ($character->type == 'character_sheet')) {
+    if (isset($node->title)) {
       // Mark character you're on.
-      $form['vaxia_rolls']['#description'] = '<div class="vaxia-dice-roller-character">' .
-        t('On character !name', array('!name' => l($character->title, 'node/' . $character->nid))) .
+      $element['#description'] = '<div class="vaxia-dice-roller-node vaxia-dice-roller-' . $type . '">' .
+        t('On ' . $type . ' !name', array('!name' => l($node->title, 'node/' . $node->nid))) .
         '</div>';
       // Get the items to display if we have any.
       $display_dice = variable_get('vaxia_display_dice', 6);
       for ($i = 0; $i < $display_dice; $i++) {
-        $form['vaxia_rolls']['dice'][$i] = _vaxia_dice_roller_node_row($character);
+        $element['dice'][$i] = _vaxia_dice_roller_node_row($node);
       }
-      $form = module_invoke_all('vaxia_dice_form', $form, $form_state, $form_id);
-      return $form;
+      return $element;
     }
   }
   // No character? Return blank.
-  $form['vaxia_rolls'] = array(
+  $element = array(
     '#type' => 'item',
     '#theme' => 'vaxia_dice_roller',
     '#markup' => '',
-    '#prefix' => '<div id="vaxia-dice-roller">',
+    '#prefix' => '<div id="vaxia-dice-roller" class="vaxia-dice-roller">',
     '#suffix' => '</div>',
+    '#weight' => 10,
+    '#tree' => TRUE, // This is important, this allows the deltas below to function.
   );
-  return $form;
+  // Return element.
+  return $element;
 }
 
 /**
@@ -99,10 +110,75 @@ function _vaxia_dice_roller_submit_rolls($submitted_rolls, $character, $lang) {
         $rolls[] = $roll;
       }
     }
-    $commands = module_invoke_all('vaxia_dice_commands', $rolls, $submitted_rolls, $character, $lang);
+    // Get initial rolls.
+    $rolls = _vaxia_dice_roller_prep_rolls($rolls, $character, $lang);
+    // Allow other modules to affect the rolls.
+    $context = array(
+      'submitted_rolls' => $submitted_rolls,
+      'character' => $character,
+      'lang' => $lang,
+    );
+    drupal_alter('vaxia_dice_commands', $rolls, $context);
+    // Figure out the exact command set.
+    foreach ($rolls as $delta => $roll) {
+      $roll['might'] = $roll['stat'] + $roll['skill'];
+      $commands['commands'][] = $roll['number'] . 'd' . $roll['size'] . '+' . $roll['might'];
+      $commands['notes'][] = 'Roll '. $delta + 1 .' : roll(' . $roll['number'] . 'd' . $roll['size'] . ') ' . implode(' + ', $roll['note']);
+    }
     return $commands;
   }
   return array();
+}
+
+/**
+ * Helper function, prepare rolls.
+ */
+function _vaxia_dice_roller_prep_rolls($rolls, $character, $lang) {
+  // Figure out the stat and skill.
+  foreach ($rolls as $delta => $roll) {
+    // Get some data before we start replacing values.
+    $this_stat = !empty($roll['stat']) ? $roll['stat'] : 'any';
+    $roll['note'] = array('');
+    // Get stat value from the character if it exists.
+    if (!empty($roll['stat'])) {
+      $small_label = _vaxia_dice_roller_small_label($this_stat);
+      $field_name = 'field_' . $this_stat;
+      $roll['stat'] = !empty($character->{$field_name}[$lang][0]['value']) ? $character->{$field_name}[$lang][0]['value'] : 0;
+      if (!empty($character->{$field_name}[$lang][0]['value'])) {
+        $roll['note'][] = $small_label . ' (' . $roll['stat'] . ')';
+      }
+    }
+    // Get skill value from the character if it exists.
+    if (!empty($roll['skill'])) {
+      $skill_details = field_collection_item_load($roll['skill']);
+      if (!empty($skill_details->field_skill_value[$lang][0]['value'])) {
+        $value = !empty($skill_details->field_skill_value[$lang][0]['value']) ? $skill_details->field_skill_value[$lang][0]['value'] : 0;
+        $name = !empty($skill_details->field_skill_name[$lang][0]['value']) ? $skill_details->field_skill_name[$lang][0]['value'] : t('Unk. skill');
+        $desc = !empty($skill_details->field_skill_desc[$lang][0]['value']) ? $skill_details->field_skill_desc[$lang][0]['value'] : '';
+        // Add aspects to display.
+        $aspects = array();
+        if (!empty($skill_details->field_aspect_one[$lang][0]['tid'])) {
+          $aspect = taxonomy_term_load($skill_details->field_aspect_one[$lang][0]['tid']);
+          $aspects[] = $aspect->name;
+        }
+        if (!empty($skill_details->field_aspect_two[$lang][0]['tid'])) {
+          $aspect = taxonomy_term_load($skill_details->field_aspect_two[$lang][0]['tid']);
+          $aspects[] = $aspect->name;
+        }
+        if (!empty($skill_details->field_aspect_three[$lang][0]['tid'])) {
+          $aspect = taxonomy_term_load($skill_details->field_aspect_three[$lang][0]['tid']);
+          $aspects[] = $aspect->name;
+        }
+        if (!empty($aspects)) {
+          $desc .= ' (' . implode(', ', $aspects) . ')';
+        }
+        // Set display.
+        $roll['skill'] = $value;
+        $roll['note'][] = '<a title="' . $desc . '" href="#">' . $name . '</a> (' . $value . ')';
+      }
+    }
+  }
+  return $rolls;
 }
 
 /**
