@@ -647,8 +647,7 @@ function vaxia_form_alter(&$form, &$form_state, $form_id) {
  * Ajax callback for character selection.
  */
 function _vaxia_character_pick($form, $form_state) {
-  $roll_form = $form['vaxia_rolls'];
-  return $roll_form;
+  return isset($form['vaxia_rolls']) ? $form['vaxia_rolls'] : array();
 }
 
 /** 
