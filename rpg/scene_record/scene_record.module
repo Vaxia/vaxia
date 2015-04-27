@@ -189,7 +189,8 @@ function scene_record_scene_record_goal_info() {
  */
 function _scene_record_calculate_results_all($comment, &$context) {
   $message_items = array();
-  $message_items[] = '<b>' . l('Link', 'node/' . $comment->nid, array('fragment' => 'comment-' . $comment->cid)) . '</b>';
+  $message_items[] = '<b>' . l('Link to post',
+    'node/' . $comment->nid, array('fragment' => 'comment-' . $comment->cid)) . '</b>';
   $kxp_ratio = variable_get('vaxia_kxp_ratio', 70);
   // Set defaults.
   $context['total_kxp'] = !empty($context['total_kxp']) ? $context['total_kxp'] : 0;
