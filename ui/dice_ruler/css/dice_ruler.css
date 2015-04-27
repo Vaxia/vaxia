@@ -32,7 +32,7 @@
 #dice-ruler-form #dice_ruler_dice_help{width:210px;}
 #dice-ruler-form .secondary-help{float:right;clear:right;}
 #dice-ruler-form .secondary-help{width:210px;}
-/* Format the rpg-chat button display. */
+/* Format the button display. */
 .dice-ruler-buttons{padding:0px;margin:0px;height:20px;}
 .dice-ruler-label, .dice-ruler-button{float:left;height:20px;width:20px;list-style-type:none;margin-right:5px;text-align:center;font-weight:bold;}
 .dice-ruler-button{background:#111;border:solid 1px #eee;}
@@ -50,4 +50,4 @@
 .dice_rolls .first{margin-top:0;}
 .dice_rolls .dice_ruler_label{font-size:8px;font-weight:bold;margin-left:2px;}
 .dice_rolls .dice_ruler_label_b{margin-left:88px;}
-article.comment .dice_rolls{margin-top:0.5em;}
+.dice_rolls{margin-top:0.5em;}

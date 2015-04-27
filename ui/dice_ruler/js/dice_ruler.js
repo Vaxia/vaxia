@@ -1,8 +1,6 @@
 /**
  * @file
- * Javascript for RPG chat UI.
- *
- * Refreshes the AJAX comments on a regular refresh.
+ * Injects dice ruling buttons into the UI.
  */
 Drupal.behaviors.diceRuler = {
   attach: function(context) { (function($) {
@@ -16,7 +14,8 @@ Drupal.behaviors.diceRuler = {
     // On page load, inject the buttons into place in the DOM.
     var rule_buttons = '<span class="dice_ruler_label dice_ruler_label_a">As A</span>' +
       '<span class="dice_ruler_label dice_ruler_label_b">As B</span>';
-    $('article.comment .dice_ruled').prepend(rule_buttons);
+    $('.dice_ruled').prepend(rule_buttons);
+
     var rule_buttons = '<ul class="dice_rule dice-ruler-buttons dice-ruler-row-buttons"> ' +
       '<li class="dice-ruler-button dice-ruler-a dice-ruler-one-trait" type="one_trait" ' +
       'title="Make a One Trait ruling with these rolls."><a href="#">1T</a></li>' +
@@ -26,13 +25,13 @@ Drupal.behaviors.diceRuler = {
       'title="Make a One Trait Versus ruling with these rolls."><a href="#">TvT</a></li>' +
       '<li class="dice-ruler-button dice-ruler-a dice-ruler-two-trait-vs" type="two_trait_vs" ' +
       'title="Make a Two Trait Versus ruling with these rolls and the ones on the row below."><a href="#">2Tv</a></li>' +
-
       '<li class="dice-ruler-button dice-ruler-b dice-ruler-trait-vs" type="trait_vs_b" ' +
       'title="Make a One Trait Versus ruling with these rolls. Second Party."><a href="#">TvT</a></li>' +
       '<li class="dice-ruler-button dice-ruler-b dice-ruler-two-trait-vs" type="two_trait_vs_b" ' +
       'title="Make a Two Trait Versus ruling with these rolls and the ones on the row below. Second Party."><a href="#">2Tv</a></li>' +
       '</ul>';
-    $('article.comment .dice_ruled .dice').prepend(rule_buttons);
+    $('.dice_ruled .dice').prepend(rule_buttons);
+
     var rule_buttons = '<ul class="dice_rule dice-ruler-buttons dice-ruler-set-buttons"> ' +
       '<li class="dice-ruler-button dice-ruler-a dice-ruler-combat" type="combat" ' +
       'title="Make a Combat ruling with all available Str, Dex and End rolls."><a href="#">C</a></li>' +
@@ -43,7 +42,8 @@ Drupal.behaviors.diceRuler = {
       '<li class="dice-ruler-button dice-ruler-b dice-ruler-combat-two" type="combat_b" ' +
       'title="Make a Combat ruling with all available Str, Dex and End rolls. Second Party."><a href="#">C</a></li>' +
        '</ul>';
-    $('article.comment .dice_ruled .dice_sets').after(rule_buttons);
+    $('.dice_ruled .dice_sets').after(rule_buttons);
+
     // Add a reset button to the ruling form.
     var reset = $('.dice_ruler_reset').length;
     if (reset == 0) {
@@ -272,51 +272,42 @@ Drupal.behaviors.diceRuler = {
 
   // Once, on page load, add the pause button to the interface.
   $('document').ready(function() {
-
     // Stuff for running ones.
     if ($('.dice_rule').length == 0 && $('.dice_ruled').length > 0) {
-
       // Set up the form for us.
       setupRuler();
-
       // Show or hide the reset button based on the actions selected.
       $('#dice-ruler-form select[name="actions"]').change(function() {
         if ($(this).val() == 'hidden') {
           clearRuler();
         }
       });
-
       // Add click listener for the ruler.
       $('.dice_ruler_reset').click(function() {
         clearRuler();
         return false;
       });
-
       // Load up just this row when clicked on.
       $('.dice-ruler-row-buttons .dice-ruler-a a').click(function() {
         clickRowButton(this);
         return false;
       });
-
       // Vs only for the two vs settings.
       $('.dice-ruler-row-buttons .dice-ruler-b a').click(function() {
         clickRowButtonB(this);
         return false;
       });
-
       // Load it all up when clicked on.
       $('.dice-ruler-set-buttons .dice-ruler-a a').click(function() {
         clickSetButton(this);
         return false;
       });
-
       // Vs only for the combat vs settings.
       $('.dice-ruler-set-buttons .dice-ruler-b a').click(function() {
         clickSetButtonB(this);
         return false;
       });
     }
-
   });
 
   })(jQuery); }
