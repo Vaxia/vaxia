@@ -123,8 +123,9 @@ function _scene_record_view_table($comments = array(), $goal) {
       $dice_rolls = _dice_roller_get_roll($cid, 'c');
       $comment_display .= !empty($dice_rolls) ? theme('dice_roller_results', array('dice_rolls' => $dice_rolls)) : '';
       // Add to rows.
+      $link = l('Link', 'node/' . $comment->nid, array('fragment' => 'comment-' . $comment->cid));
       $rows[] = array(
-        $comment_display,
+        $link . '</br>' . $comment_display,
         array(
         'data' => $comment->results,
         'nowrap' => array('nowrap'),
