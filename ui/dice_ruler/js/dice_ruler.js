@@ -11,11 +11,13 @@ Drupal.behaviors.diceRuler = {
 
   // Setup the ruler as needed.
   function setupRuler() {
-    // On page load, inject the buttons into place in the DOM.
+    // Show the dice ruler.
+    $('#dice-ruler-form').show();
+    // On page load, inject the label into place in the DOM.
     var rule_buttons = '<span class="dice_ruler_label dice_ruler_label_a">As A</span>' +
       '<span class="dice_ruler_label dice_ruler_label_b">As B</span>';
     $('.dice_ruled').prepend(rule_buttons);
-
+    // First set of buttons.
     var rule_buttons = '<ul class="dice_rule dice-ruler-buttons dice-ruler-row-buttons"> ' +
       '<li class="dice-ruler-button dice-ruler-a dice-ruler-one-trait" type="one_trait" ' +
       'title="Make a One Trait ruling with these rolls."><a href="#">1T</a></li>' +
@@ -31,7 +33,7 @@ Drupal.behaviors.diceRuler = {
       'title="Make a Two Trait Versus ruling with these rolls and the ones on the row below. Second Party."><a href="#">2Tv</a></li>' +
       '</ul>';
     $('.dice_ruled .dice').prepend(rule_buttons);
-
+    // Second set of buttons.
     var rule_buttons = '<ul class="dice_rule dice-ruler-buttons dice-ruler-set-buttons"> ' +
       '<li class="dice-ruler-button dice-ruler-a dice-ruler-combat" type="combat" ' +
       'title="Make a Combat ruling with all available Str, Dex and End rolls."><a href="#">C</a></li>' +
@@ -43,7 +45,6 @@ Drupal.behaviors.diceRuler = {
       'title="Make a Combat ruling with all available Str, Dex and End rolls. Second Party."><a href="#">C</a></li>' +
        '</ul>';
     $('.dice_ruled .dice_sets').after(rule_buttons);
-
     // Add a reset button to the ruling form.
     var reset = $('.dice_ruler_reset').length;
     if (reset == 0) {
