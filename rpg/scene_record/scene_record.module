@@ -123,9 +123,8 @@ function _scene_record_view_table($comments = array(), $goal) {
       $dice_rolls = _dice_roller_get_roll($cid, 'c');
       $comment_display .= !empty($dice_rolls) ? theme('dice_roller_results', array('dice_rolls' => $dice_rolls)) : '';
       // Add to rows.
-      $link = l('Link', 'node/' . $comment->nid, array('fragment' => 'comment-' . $comment->cid));
       $rows[] = array(
-        $link . '</br>' . $comment_display,
+        $comment_display,
         array(
         'data' => $comment->results,
         'nowrap' => array('nowrap'),
@@ -185,8 +184,12 @@ function scene_record_scene_record_goal_info() {
   );
 }
 
+/**
+ * Scene results callback function.
+ */
 function _scene_record_calculate_results_all($comment, &$context) {
   $message_items = array();
+  $message_items[] = '<b>' . l('Link', 'node/' . $comment->nid, array('fragment' => 'comment-' . $comment->cid)) . '</b>';
   $kxp_ratio = variable_get('vaxia_kxp_ratio', 70);
   // Set defaults.
   $context['total_kxp'] = !empty($context['total_kxp']) ? $context['total_kxp'] : 0;
