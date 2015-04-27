@@ -1,5 +1,5 @@
 /* Default hide the form, show by jquery if dice avail to rule. */
-#dice-ruler-form{display:none}
+#dice-ruler-form{display:none;}
 /* General form elements. */
 #dice-ruler-form table{margin-top:0px;}
 #dice-ruler-form .form-type-textfield{float:left;margin-left:1em;margin-top:0;margin-bottom:0;}
