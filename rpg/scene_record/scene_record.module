@@ -97,6 +97,15 @@ function scene_record_node_view($node, $view_mode, $langcode) {
  * Return a display of the info as a renderable form.
  */
 function _scene_record_view_table($comments = array(), $goal) {
+  // Make sure in right order.
+  $new_order = array();
+  if (!empty($comments)) {
+    foreach ($comments as $comment) {
+      $new_order[ $comment->cid ] = $comment;
+    }
+    asort($new_order);
+    $comments = $new_order;
+  }
   // Get values from the sub modules for results.
   $comments = _scene_record_calculate_results($comments, $goal);
   // Loop for display to get the display of the comment as well as result.
