@@ -200,7 +200,7 @@ function _scene_record_calculate_results($node, $comments, $goal) {
       // The first item is Always the link back to the item.
       $message_items[] = '<b>' . l(t('Link to post'), 'node/' . $comment->nid,
         array('fragment' => 'comment-' . $comment->cid)) . '</b>';
-      if (!empty($context['roll_set'])) {
+      if (!empty($context['roll_set']['rolls'])) {
         $message_items[]  = '<b>' . t('Diff @difficulty / RP bonus @rp_bonus', array('@difficulty' => $difficulty, '@rp_bonus' => $rp_bonus)) . '</b>';
         $pp_verb = 'lost';
         $by_verb = 'fails';
