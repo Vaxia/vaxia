@@ -2200,13 +2200,13 @@ function _dice_ruler_read_dice($dice_rolls, $difficulty = 25, $bonus = 0) {
       $PP_generated = $result[7];
       if ($by_generated < 0) {
         $PP_generated = floor( $PP_generated * (($by_generated * -1) / 100) );
-        $roll_ruling['success'] = TRUE;
+        $roll_ruling['success'] = FALSE;
         if ($by_generated <= -25) {
           $roll_ruling['crit_fails']++;
         }
       }
       if ($by_generated >= 0) {
-        $roll_ruling['success'] = FALSE;
+        $roll_ruling['success'] = TRUE;
         if ($by_generated >= 25) {
           $roll_ruling['crit_wins']++;
         }
