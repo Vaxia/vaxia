@@ -2157,7 +2157,7 @@ function _dice_ruler_read_dice($dice_rolls, $difficulty = 25, $bonus = 0) {
     // Figure out if this is a 1 trait roll.
     if (count($roll_ruling['mights']) == 1) {
       $result = _dice_ruler_make_ruling(
-        $roll_ruling['mights'][0] + $roll_ruling['bonus'] + $roll_ruling['bonus'],
+        $roll_ruling['mights'][0] + $roll_ruling['bonus'],
         $roll_ruling['diff'],
         0,
         $roll_ruling['rolls'][0]
@@ -2172,11 +2172,11 @@ function _dice_ruler_read_dice($dice_rolls, $difficulty = 25, $bonus = 0) {
     // Figure out if this is a 2 trait roll.
     if (count($roll_ruling['mights']) == 2) {
       $result = _dice_ruler_make_two_trait_ruling(
-        $roll_ruling['mights'][0] + $roll_ruling['bonus'] + $roll_ruling['bonus'],
+        $roll_ruling['mights'][0] + $roll_ruling['bonus'],
         $roll_ruling['diff'],
         0,
         $roll_ruling['rolls'][0],
-        $roll_ruling['mights'][1] + $roll_ruling['bonus'] + $roll_ruling['bonus'],
+        $roll_ruling['mights'][1] + $roll_ruling['bonus'],
         $roll_ruling['diff'],
         0,
         $roll_ruling['rolls'][1]
