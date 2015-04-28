@@ -210,8 +210,8 @@ function _scene_record_calculate_results($node, $comments, $goal) {
             $by_verb = 'wins';
           }
           $message_items[] = '<b>' . t('Roll @by_verb by @bys, @pp_verb @pps PP.', array(
-              '@by_verb' => $by_verb, '@bys' =>  number_format($context['roll_set']['by'], 2),
-              '@pp_verb' => $pp_verb, '@pps' =>  number_format($context['roll_set']['PPs'], 2),
+              '@by_verb' => $by_verb, '@bys' =>  number_format($context['roll_set']['by']),
+              '@pp_verb' => $pp_verb, '@pps' =>  number_format($context['roll_set']['PPs']),
             ))  . '</b>';;
         }
         // And mark for feedback.
