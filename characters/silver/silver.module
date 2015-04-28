@@ -171,7 +171,7 @@ function silver_form__character_sheet_xp_form_alter(&$form, $form_state) {
   }
 
   // Add additional options for xp IIF allowed.
-  if (isset($form['add_xp']) && $node->field_is_storyteller[$node->language][0]['value'] == 0 
+  if (isset($form['add_xp']) && $node->field_is_storyteller[$node->language][0]['value'] == 0
     && $node->field_is_npc[$node->language][0]['value'] == 0 && $node->field_is_open_npc[$node->language][0]['value'] == 0) {
     // Add a form to handle silver on it's own.
     $form['add_silver'] = array(
@@ -389,56 +389,22 @@ function _silver_invest_silver_submit($form, $form_state) {
  * Scene results callback handler.
  */
 function _silver_scene_calculate_silver($comment, &$context) {
-  $message_items = array();
   // Set defaults if not already set.
-  $context['silver'] = !empty($context['silver']) ? $context['silver'] : 0;
-  $rp_bonus = isset($comment->rp_bonus) ? $comment->rp_bonus : 10;
-  // Grab rolls and start calculations.
-  $dice_rolls = _dice_roller_get_roll($comment->cid, 'c');
-  if (!empty($dice_rolls)) {
-    $mights = array();
-    $rolls = array();
-    foreach ($dice_rolls as $index => $dice_roll) {
-      $results = explode(',', $dice_rolls[$index]['roll_result']);
-      $might = array_pop($results);
-      $might = explode('=', $might);
-      $mights[] = isset($might[0]) ? trim($might[0]) : 0;
-      $rolls[] = isset($results[0]) ? trim($results[0]) : 0;
-    }
-    $roll_ruling = array();
-    if (count($mights) == 1) {
-      $roll_ruling = _dice_ruler_make_ruling(
-        $mights[0] + $rp_bonus,
-        25, // Difficulty
-        0,
-        $rolls[0]
-      );
-    }
-    if (count($mights) > 1) {
-      $roll_ruling = _dice_ruler_make_two_trait_ruling(
-        $mights[0] + $rp_bonus,
-        25, // Difficulty
-        0,
-        $rolls[0],
-        $mights[1] + $rp_bonus,
-        25, // Difficulty
-        0,
-        $rolls[1]
-      );
-    }
-    if (!empty($roll_ruling)) {
-      $winsby_generated = $roll_ruling[6];
-      $PP_generated = $roll_ruling[7];
-      if ($winsby_generated < 0) { // If just gen_add, then add.
-        $lost_PP = floor( $context['silver'] * (($winsby_generated * -1) / 100) );
-        $context['silver'] -= $lost_PP;
-      }
-      if ($winsby_generated >= 0) { // If just gen_add, then add.
-        $context['silver'] += $PP_generated;
-      }
-    }
+  $message_items = array();
+  // Silver by character.
+  $context['ongoing']['silver']['all'] = !empty($context['ongoing']['silver']['all']) ?
+    $context['ongoing']['silver']['all'] : array();
+  $character = !empty($context['character']) ? $context['character'] : 0;
+  if (!empty($character)) {
+    $context['ongoing']['_ruling']['PPs'] = !empty($context['ongoing']['_ruling']['PPs']) ?
+      $context['ongoing']['_ruling']['PPs'] : 0;
+    $context['ongoing']['silver']['all'][$character->title] = isset($context['ongoing']['silver']['all'][$character->title]) ?
+      $context['ongoing']['silver']['all'][$character->title] : 0;
+    $context['ongoing']['silver']['all'][$character->title] += $context['ongoing']['_ruling']['PPs'];
   }
-  // Set silver XP amount.
-  $message_items[] = '<b>Up to ' . number_format($context['silver'], 2) . ' silver.</b>';
+  // Show amount.
+  foreach ($context['ongoing']['silver']['all'] as $name => $count) {
+    $message_items[] = '<b>Up to ' . number_format($count, 2) . ' silver for ' . $name . '.</b>';
+  }
   return $message_items;
 }

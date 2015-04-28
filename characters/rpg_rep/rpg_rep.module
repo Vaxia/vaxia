@@ -323,12 +323,18 @@ function _rpg_rep_is_pc($node) {
 function _rpg_rep_calculate_results($comment, &$context) {
   $message_items = array();
   // Set defaults.
-  $context['posts'] = !empty($context['posts']) ? $context['posts'] : 0;
-  if (strlen($comment->comment_body[$comment->language][0]['value']) > 100) {
-    $context['posts']++;
+  $context['ongoing']['rpg_rep']['all'] = !empty($context['ongoing']['rpg_rep']['all']) ?
+    $context['ongoing']['rpg_rep']['all'] : array();
+  $character = !empty($context['character']) ? $context['character'] : 0;
+  if (!empty($character) && strlen($comment->comment_body[$comment->language][0]['value']) > 100) {
+    $context['ongoing']['rpg_rep']['all'][$character->title] = isset($context['ongoing']['rpg_rep']['all'][$character->title]) ?
+      $context['ongoing']['rpg_rep']['all'][$character->title] : 0;
+    $context['ongoing']['rpg_rep']['all'][$character->title]++;
   }
-  // Set silver XP amount.
-  $message_items[] = '<b>Up to ' . floor($context['posts'] / 2) . ' total reputation across all posters.</b>';
+  // Show amount.
+  foreach ($context['ongoing']['rpg_rep']['all'] as $name => $count) {
+    $message_items[] = '<b>Up to ' . floor($count / 2) . ' reputation for ' . $name . '.</b>';
+  }
   return $message_items;
 }
 
