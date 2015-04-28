@@ -202,16 +202,18 @@ function _scene_record_calculate_results($node, $comments, $goal) {
         array('fragment' => 'comment-' . $comment->cid)) . '</b>';
       if (!empty($context['roll_set']['rolls'])) {
         $message_items[]  = '<b>' . t('Diff @difficulty / RP bonus @rp_bonus', array('@difficulty' => $difficulty, '@rp_bonus' => $rp_bonus)) . '</b>';
-        $pp_verb = 'lost';
-        $by_verb = 'fails';
-        if ($context['roll_set']['success']) {
-          $pp_verb = 'gained';
-          $by_verb = 'wins';
+        if ($context['roll_set']['by'] != 0) {
+          $pp_verb = 'lost';
+          $by_verb = 'fails';
+          if ($context['roll_set']['success']) {
+            $pp_verb = 'gained';
+            $by_verb = 'wins';
+          }
+          $message_items[] = '<b>' . t('Roll @by_verb by @bys, @pp_verb @pps PP.', array(
+              '@by_verb' => $by_verb, '@bys' =>  number_format($context['roll_set']['by'], 2),
+              '@pp_verb' => $pp_verb, '@pps' =>  number_format($context['roll_set']['PPs'], 2),
+            ))  . '</b>';;
         }
-        $message_items[] = '<b>' . t('Roll @by_verb by @bys, @pp_verb @pps PP.', array(
-            '@by_verb' => $by_verb, '@bys' =>  number_format($context['roll_set']['by'], 2),
-            '@pp_verb' => $pp_verb, '@pps' =>  number_format($context['roll_set']['PPs'], 2),
-          ))  . '</b>';;
         // And mark for feedback.
         $message_items[] = t('<b><span style="color:green;">@critwin crit wins-by</span> /' .
           ' <span style="color:red;">@critfail crit fails-by</span></b>', array(
