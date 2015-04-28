@@ -203,10 +203,10 @@ function _scene_record_calculate_results($node, $comments, $goal) {
       if (!empty($context['roll_set'])) {
         $message_items[]  = '<b>' . t('Diff @difficulty / RP bonus @rp_bonus', array('@difficulty' => $difficulty, '@rp_bonus' => $rp_bonus)) . '</b>';
         $pp_verb = 'lost';
-        $by_verb = 'wins';
+        $by_verb = 'fails';
         if ($context['roll_set']['success']) {
           $pp_verb = 'gained';
-          $by_verb = 'fails';
+          $by_verb = 'wins';
         }
         $message_items[] = '<b>' . t('Roll @by_verb by @bys, @pp_verb @pps PP.', array(
             '@by_verb' => $by_verb, '@bys' =>  number_format($context['roll_set']['by'], 2),
