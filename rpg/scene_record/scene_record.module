@@ -227,6 +227,9 @@ function _scene_record_calculate_results($node, $comments, $goal) {
             '@1' => $context['ongoing']['_ruling']['1s']
           ));
       }
+      else {
+        $message_items[] = '<b>' . t('No roll found to evaluate. <span style="color:red;">Skipped!</span>') . '</b>';
+      }
       // Do the initial dice rolls.
       foreach ($callbacks as $callback) {
         if (function_exists($callback)) {
