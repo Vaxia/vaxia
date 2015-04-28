@@ -63,8 +63,8 @@ Drupal.behaviors.diceRuler = {
     $('#dice-ruler-form').find('input[name*="number_actions_b"]').val(1);
     // Set the diff default.
     $('#dice-ruler-form').find('input[name*="one_trait_diff"]').val(25);
-    $('#dice-ruler-form').find('input[name*="two_trait_diff"]').val(1);
-    $('#dice-ruler-form').find('input[name*="magic_diff"]').val(1);
+    $('#dice-ruler-form').find('input[name*="two_trait_diff"]').val(25);
+    $('#dice-ruler-form').find('input[name*="magic_diff"]').val(25);
     // Change the dropdown.
     $('#dice-ruler-form').find('.form-type-select select[name*="roll_type"]').val('one_trait').trigger('change');
     if ($('#dice-ruler-form select[name="actions"]').val() != 'hidden') {
