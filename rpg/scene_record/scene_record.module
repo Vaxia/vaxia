@@ -200,30 +200,31 @@ function _scene_record_calculate_results($comments, $goal) {
       // The first item is Always the link back to the item.
       $message_items[] = '<b>' . l(t('Link to post'), 'node/' . $comment->nid,
         array('fragment' => 'comment-' . $comment->cid)) . '</b>';
-      $message_items[]  = t('Difficulty @difficulty.', array('@difficulty' => $difficulty));
-      $message_items[]  = t('RP bonus @rp_bonus.', array('@rp_bonus' => $rp_bonus));
-      $pp_verb = 'lost';
-      $by_verb = 'Wins';
-      if ($context['roll_set']['success']) {
-        $pp_verb = 'gained';
-        $by_verb = 'Fails';
+      if (!empty($context['roll_set'])) {
+        $message_items[]  = '<b>' . t('Diff @difficulty / RP bonus @rp_bonus', array('@difficulty' => $difficulty, '@rp_bonus' => $rp_bonus)) . '</b>';
+        $pp_verb = 'lost';
+        $by_verb = 'wins';
+        if ($context['roll_set']['success']) {
+          $pp_verb = 'gained';
+          $by_verb = 'fails';
+        }
+        $message_items[] = '<b>' . t('Roll @by_verb by @bys, @pp_verb @pps PP.', array(
+            '@by_verb' => $by_verb, '@bys' =>  number_format($context['roll_set']['by'], 2),
+            '@pp_verb' => $pp_verb, '@pps' =>  number_format($context['roll_set']['PPs'], 2),
+          ))  . '</b>';;
+        // And mark for feedback.
+        $message_items[] = t('<b><span style="color:green;">@critwin crit wins-by</span> /' .
+          ' <span style="color:red;">@critfail crit fails-by</span></b>', array(
+            '@critwin' => $context['ongoing']['_ruling']['crit_wins'],
+            '@critfail' => $context['ongoing']['_ruling']['crit_fails']
+          ));
+        $message_items[] = t('<b>@PP PP / <span style="color:green;">@100 100s</span> /' .
+          ' <span style="color:red;">@1 1s</span></b>', array(
+            '@PP' => number_format($context['ongoing']['_ruling']['PPs']),
+            '@100' => $context['ongoing']['_ruling']['100s'],
+            '@1' => $context['ongoing']['_ruling']['1s']
+          ));
       }
-      $message_items[] = t('Roll @by_verb by @bys, @pp_verb @pps PP.', array(
-          '@by_verb' => $by_verb, '@bys' =>  number_format($context['roll_set']['by'], 2),
-          '@pp_verb' => $pp_verb, '@pps' =>  number_format($context['roll_set']['PPs'], 2),
-        ));
-      // And mark for feedback.
-      $message_items[] = t('<b><span style="color:green;">@critwin crit wins-by</span> /' .
-        ' <span style="color:red;">@critfail crit fails-by</span></b>', array(
-          '@critwin' => $context['ongoing']['_ruling']['crit_wins'],
-          '@critfail' => $context['ongoing']['_ruling']['crit_fails']
-        ));
-      $message_items[] = t('<b>@PP PP / <span style="color:green;">@100 100s</span> /' .
-        ' <span style="color:red;">@1 1s</span></b>', array(
-          '@PP' => number_format($context['ongoing']['_ruling']['PPs']),
-          '@100' => $context['ongoing']['_ruling']['100s'],
-          '@1' => $context['ongoing']['_ruling']['1s']
-        ));
       // Do the initial dice rolls.
       foreach ($callbacks as $callback) {
         if (function_exists($callback)) {
@@ -273,22 +274,22 @@ function _scene_record_calculate_results_all($comment, &$context) {
     $context['ongoing']['scene_record']['all'][$character->title] = isset($context['ongoing']['scene_record']['all'][$character->title]) ?
       $context['ongoing']['scene_record']['all'][$character->title] : 0;
     $kxp = _vaxia_figure_kxp($comment->comment_body[$comment->language][0]['value']);
-    $message_items[] = t('KXP: @kxp', array('@kxp' => $kxp));
+    $message_items[] = t('@kxp KXP in this post.', array('@kxp' => $kxp));
     $context['ongoing']['scene_record']['all'][$character->title] += $kxp;
   }
   // Show amount.
   $total_kxp = $total_xp = 0;
   foreach ($context['ongoing']['scene_record']['all'] as $name => $kxp) {
-    $message_items[] = t('Total !name KXP: @total_char_kxp', array('!name' => $name, '@total_char_kxp' => $kxp));
+    $message_items[] = t('Total @kxp KXP for !name.', array('!name' => $name, '@kxp' => $kxp));
     if ($kxp >= $kxp_ratio) {
       $xp = floor($kxp / $kxp_ratio);
     }
-    $message_items[] = t('Total !name XP: @xp', array('!name' => $name, '@xp' => $xp));
+    $message_items[] = t('Total @xp XP for !name', array('!name' => $name, '@xp' => $xp));
     $total_kxp += $kxp;
     $total_xp += $xp;
   }
-  $message_items[] = t('Total KXP: @total_kxp', array('@total_kxp' => $total_kxp));
-  $message_items[] = t('Total XP: @total_xp', array('@total_xp' => $total_xp));
+  $message_items[] = t('Total @total_kxp KXP for all.', array('@total_kxp' => $total_kxp));
+  $message_items[] = t('Total @total_xp XP for all.', array('@total_xp' => $total_xp));
   return $message_items;
 }
 

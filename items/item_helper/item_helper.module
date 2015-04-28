@@ -34,17 +34,17 @@ function _item_helper_calculate_results($comment, &$context) {
     }
     // More messages.
     if ($diff != 25) {
-      $message_items[] = '<b>Bonus points for primary stats: ' . $points_built_primary . '</b>';
-      $message_items[] = '<b>Bonus points for secondary stats: ' . $points_built_secondary . '</b>';
-      $message_items[] = '<b>Bonus points for skills: ' . $points_built_skills . '</b>';
-      $message_items[] = '<b>Max points at this difficulty: ' . $points_built_max . '</b>';
-      $message_items[] = '<b>PP effect: ' . number_format($context['ongoing']['_ruling']['PPs'], 2) . '</b>';
+      $message_items[] = t('Bonus points for primary stats: @points_built_primary', array('@points_built_primary' => $points_built_primary));
+      $message_items[] = t('Bonus points for secondary stats: @points_built_secondary.', array('@points_built_secondary' => $points_built_secondary));
+      $message_items[] = t('Bonus points for skills: @points_built_skills.', array('@points_built_skills' => $points_built_skills));
+      $message_items[] = t('Max points at this difficulty: @points_built_max.', array('@points_built_max' => $points_built_max));
+      $message_items[] = t('PP effect: @pp_effect.', array('@pp_effect' => number_format($context['ongoing']['_ruling']['PPs'], 2)));
     }
     else {
-      $message_items[] = '<b>PP generated for enchanting one time use: ' . number_format($context['ongoing']['_ruling']['PPs'], 2) . '</b>';
-      $message_items[] = '<b>PP generated for enchanting 3 uses: ' . floor($context['ongoing']['_ruling']['PPs'] / 3) . '</b>';
-      $message_items[] = '<b>PP generated for enchanting once a day: ' . floor($context['ongoing']['_ruling']['PPs'] / 50) . '</b>';
-      $message_items[] = '<b>PP generated for enchanting at will: ' . floor($context['ongoing']['_ruling']['PPs'] / 150) . '</b>';
+      $message_items[] = t('PP generated for enchanting one time use: @pp_use.', array('@pp_use' => number_format($context['ongoing']['_ruling']['PPs'], 2)));
+      $message_items[] = t('PP generated for enchanting 3 uses: @pp_use.', array('@pp_use' => floor($context['ongoing']['_ruling']['PPs'] / 3)));
+      $message_items[] = t('PP generated for enchanting once a day: @pp_use.', array('@pp_use' => floor($context['ongoing']['_ruling']['PPs'] / 50)));
+      $message_items[] = t('PP generated for enchanting at will: @pp_use.', array('@pp_use' => floor($context['ongoing']['_ruling']['PPs'] / 150)));
     }
   }
   return $message_items;

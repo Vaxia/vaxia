@@ -333,7 +333,7 @@ function _rpg_rep_calculate_results($comment, &$context) {
   }
   // Show amount.
   foreach ($context['ongoing']['rpg_rep']['all'] as $name => $count) {
-    $message_items[] = '<b>Up to ' . floor($count / 2) . ' reputation for ' . $name . '.</b>';
+    $message_items[] = t('Up to @amount reputation for !name.', array('@amount' => floor($count / 2), '!name' => $name));
   }
   return $message_items;
 }
