@@ -2139,69 +2139,65 @@ function _dice_ruler_read_dice($dice_rolls, $difficulty = 25, $bonus = 0) {
   $roll_ruling = array();
   $roll_ruling['diff'] = $difficulty;
   $roll_ruling['bonus'] = $bonus;
+  $roll_ruling['mights'] = $roll_ruling['rolls'] = array();
   $roll_ruling['1s'] = $roll_ruling['100s'] = 0;
   $roll_ruling['by'] = $roll_ruling['PPs'] = 0;
   $roll_ruling['crit_fails'] = $roll_ruling['crit_wins'] = 0;
   $roll_ruling['success'] = FALSE;
   // Figure out the dice rolls from here.
   if (!empty($dice_rolls)) {
-    $mights = $rolls = array();
     // Break all dice up looking for the rolls that got with them.
     foreach ($dice_rolls as $index => $dice_roll) {
-      $roll = array();
       $results = explode(',', $dice_rolls[$index]['roll_result']);
       $might = array_pop($results);
       $might = explode('=', $might);
-      $mights[] = isset($might[0]) ? trim($might[0]) : 0;
-      $rolls[] = isset($results[0]) ? trim($results[0]) : 0;
+      $roll_ruling['mights'][] = isset($might[0]) ? trim($might[0]) : 0;
+      $roll_ruling['rolls'][] = isset($results[0]) ? trim($results[0]) : 0;
     }
-    // Save the mights and rolls to the ruling array.
-    $roll_ruling['mights'] = $mights;
-    $roll_ruling['rolls'] = $rolls;
     // Figure out if this is a 1 trait roll.
-    if (count($mights) == 1) {
-      $roll_ruling = _dice_ruler_make_ruling(
-        $mights[0] + $rp_bonus + $roll_ruling['bonus'],
+    if (count($roll_ruling['mights']) == 1) {
+      $result = _dice_ruler_make_ruling(
+        $roll_ruling['mights'][0] + $rp_bonus + $roll_ruling['bonus'],
         $roll_ruling['diff'],
         0,
-        $rolls[0]
+        $roll_ruling['rolls'][0]
       );
-      if ($rolls[0] == 1) {
+      if ($roll_ruling['rolls'][0] == 1) {
         $roll_ruling['1s']++;
       }
-      if ($rolls[0] == 100) {
+      if ($roll_ruling['rolls'][0] == 100) {
         $roll_ruling['100s']++;
       }
     }
     // Figure out if this is a 2 trait roll.
-    if (count($mights) > 1) {
-      $roll_ruling = _dice_ruler_make_two_trait_ruling(
-        $mights[0] + $rp_bonus + $roll_ruling['bonus'],
+    if (count($roll_ruling['mights']) > 1) {
+      $result = _dice_ruler_make_two_trait_ruling(
+        $roll_ruling['mights'][0] + $rp_bonus + $roll_ruling['bonus'],
         $roll_ruling['diff'],
         0,
-        $rolls[0],
-        $mights[1] + $rp_bonus + $roll_ruling['bonus'],
+        $roll_ruling['rolls'][0],
+        $roll_ruling['mights'][1] + $rp_bonus + $roll_ruling['bonus'],
         $roll_ruling['diff'],
         0,
-        $rolls[1]
+        $roll_ruling['rolls'][1]
       );
-      if ($rolls[0] == 1) {
+      if ($roll_ruling['rolls'][0] == 1) {
         $roll_ruling['1s']++;
       }
-      if ($rolls[0] == 100) {
+      if ($roll_ruling['rolls'][0] == 100) {
         $roll_ruling['100s']++;
       }
-      if ($rolls[1] == 1) {
+      if ($roll_ruling['rolls'][1] == 1) {
         $roll_ruling['1s']++;
       }
-      if ($rolls[1] == 100) {
+      if ($roll_ruling['rolls'][1] == 100) {
         $roll_ruling['100s']++;
       }
     }
     // Now, if we have a ruling, let's get some info out of it too.
-    if (!empty($roll_ruling)) {
-      $by_generated = $roll_ruling[6];
-      $PP_generated = $roll_ruling[7];
+    if (!empty($result)) {
+      $by_generated = $result[6];
+      $PP_generated = $result[7];
       if ($by_generated < 0) {
         $PP_generated = floor( $PP_generated * (($by_generated * -1) / 100) );
         $roll_ruling['success'] = TRUE;
