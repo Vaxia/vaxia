@@ -202,10 +202,6 @@ function _scene_record_calculate_results($comments, $goal) {
         array('fragment' => 'comment-' . $comment->cid)) . '</b>';
       $message_items[]  = t('Difficulty @difficulty.', array('@difficulty' => $difficulty));
       $message_items[]  = t('RP bonus @rp_bonus.', array('@rp_bonus' => $rp_bonus));
-      $message_items[] = t('Mights @might1 @might2', array(
-        '@might1' => !empty($context['roll_set']['mights'][0]) ? $context['roll_set']['mights'][0] : 0,
-        '@might2' => !empty($context['roll_set']['mights'][1]) ? $context['roll_set']['mights'][1] : 0
-        ));
       $pp_verb = 'lost';
       $by_verb = 'Wins';
       if ($context['roll_set']['success']) {
