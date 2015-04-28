@@ -289,8 +289,11 @@ function _scene_record_calculate_results_all($comment, &$context) {
     $total_kxp += $kxp;
     $total_xp += $xp;
   }
-  $message_items[] = t('Total @total_kxp KXP for all.', array('@total_kxp' => $total_kxp));
-  $message_items[] = t('Total @total_xp XP for all.', array('@total_xp' => $total_xp));
+  // Show the total for all if we have more than one poster.
+  if (count($context['ongoing']['scene_record']['all'] ) > 1) {
+    $message_items[] = t('Total @total_kxp KXP for all.', array('@total_kxp' => $total_kxp));
+    $message_items[] = t('Total @total_xp XP for all.', array('@total_xp' => $total_xp));
+  }
   return $message_items;
 }
 
