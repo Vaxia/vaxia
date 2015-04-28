@@ -280,11 +280,12 @@ function _scene_record_calculate_results_all($comment, &$context) {
   // Show amount.
   $total_kxp = $total_xp = 0;
   foreach ($context['ongoing']['scene_record']['all'] as $name => $kxp) {
-    $message_items[] = t('Total @kxp KXP for !name.', array('!name' => $name, '@kxp' => $kxp));
+    $message_items[] = t('Total @kxp KXP for %name.', array('%name' => $name, '@kxp' => $kxp));
+    $xp = 0;
     if ($kxp >= $kxp_ratio) {
       $xp = floor($kxp / $kxp_ratio);
     }
-    $message_items[] = t('Total @xp XP for !name', array('!name' => $name, '@xp' => $xp));
+    $message_items[] = t('Total @xp XP for %name', array('%name' => $name, '@xp' => $xp));
     $total_kxp += $kxp;
     $total_xp += $xp;
   }

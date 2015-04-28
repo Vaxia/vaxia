@@ -404,7 +404,7 @@ function _silver_scene_calculate_silver($comment, &$context) {
   }
   // Show amount.
   foreach ($context['ongoing']['silver']['all'] as $name => $count) {
-    $message_items[] = t('Up to @amount silver for !name.', array('@amount' => number_format($count, 2) , '!name' => $name));
+    $message_items[] = t('Up to @amount silver for %name.', array('@amount' => number_format($count, 2) , '%name' => $name));
   }
   return $message_items;
 }
