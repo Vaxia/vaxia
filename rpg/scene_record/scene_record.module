@@ -109,7 +109,7 @@ function _scene_record_view_table($node, $comments = array(), $goal) {
     $comments = $new_order;
   }
   // Get values from the sub modules for results.
-  $comments = _scene_record_calculate_results($comments, $goal);
+  $comments = _scene_record_calculate_results($node, $comments, $goal);
   // Loop for display to get the display of the comment as well as result.
   foreach ($comments as $cid => $comment) {
     // Get comment display.
@@ -149,7 +149,7 @@ function _scene_record_view_table($node, $comments = array(), $goal) {
 /**
  * Helper function, given a set of partial or full comments, calculate results.
  */
-function _scene_record_calculate_results($comments, $goal) {
+function _scene_record_calculate_results($node, $comments, $goal) {
   $results = '';
   // Get a list of callbacks implemented.
   $callbacks = array();
