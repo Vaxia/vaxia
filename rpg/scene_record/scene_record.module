@@ -72,11 +72,11 @@ function scene_record_node_view($node, $view_mode, $langcode) {
     // If we can view all scenes, or made the scene, or has a character in the scene allow view.
     if (user_access('view all scenes', $user) || $owns_scene || $has_character) {
       // Get additional display results.
-      $goal = !empty($node->field_goal[$node->language][0]['value']) ? $node->field_goal[$node->language][0]['value'] : 'misc';
+      $goals = !empty($node->field_goal[$node->language]) ? $node->field_goal[$node->language] : array('0' => array('value' => 'misc'));
       // Put together the posts for display.
       if (!empty($comments)) {
         // Loop over each post and create the table display rows.
-        $rows = _scene_record_view_table($node, $comments, $goal);
+        $rows = _scene_record_view_table($node, $comments, $goals);
         // And render it.
         $headers = array(
           t('Scene posts'),
@@ -98,7 +98,7 @@ function scene_record_node_view($node, $view_mode, $langcode) {
 /**
  * Return a display of the info as a renderable form.
  */
-function _scene_record_view_table($node, $comments = array(), $goal) {
+function _scene_record_view_table($node, $comments = array(), $goals) {
   // Make sure in right order.
   $new_order = array();
   if (!empty($comments)) {
@@ -109,7 +109,7 @@ function _scene_record_view_table($node, $comments = array(), $goal) {
     $comments = $new_order;
   }
   // Get values from the sub modules for results.
-  $comments = _scene_record_calculate_results($node, $comments, $goal);
+  $comments = _scene_record_calculate_results($node, $comments, $goals);
   // Loop for display to get the display of the comment as well as result.
   foreach ($comments as $cid => $comment) {
     // Get comment display.
@@ -149,13 +149,16 @@ function _scene_record_view_table($node, $comments = array(), $goal) {
 /**
  * Helper function, given a set of partial or full comments, calculate results.
  */
-function _scene_record_calculate_results($node, $comments, $goal) {
+function _scene_record_calculate_results($node, $comments, $goals) {
   $results = '';
   // Get a list of callbacks implemented.
   $callbacks = array();
   foreach (module_invoke_all('scene_record_goal_info') as $callback => $callback_info) {
-    if (in_array('all', (array) $callback_info['type']) || in_array($goal, (array) $callback_info['type'])) {
-      $callbacks[] = $callback;
+    foreach ($goals as $delta => $value) {
+      $goal = $value['value'];
+      if (in_array('all', (array) $callback_info['type']) || in_array($goal, (array) $callback_info['type'])) {
+        $callbacks[] = $callback;
+      }
     }
   }
   // We can always adjust on the fly on the next round, but in the meantime we
