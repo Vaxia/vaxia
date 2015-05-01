@@ -76,16 +76,8 @@ function scene_record_node_view($node, $view_mode, $langcode) {
       // Put together the posts for display.
       if (!empty($comments)) {
         // Loop over each post and create the table display rows.
-        $rows = _scene_record_view_table($node, $comments, $goals);
-        // And render it.
-        $headers = array(
-          t('Scene posts'),
-          t('Results'),
-        );
         unset($node->content['field_rp_posts']['#theme']);
-        $node->content['field_rp_posts']['#markup'] = theme('table', array(
-          'headers' => $headers, 'rows' => $rows,
-        ));
+        $node->content['field_rp_posts']['#markup'] = _scene_record_view_table($node, $comments, $goals);
       }
     }
     else {
@@ -93,6 +85,74 @@ function scene_record_node_view($node, $view_mode, $langcode) {
       drupal_goto('/');
     }
   }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function scene_record_form_scene_node_form_alter(&$form, &$form_state, $form_id) {
+  // Get node.
+  $node = isset($form['#node']) ? $form['#node'] : '';
+  if (!empty($node)) {
+    // Get comments! From form value first if possible.
+    $comments = !empty($form_state['values']['field_rp_posts'][$node->language]) ?
+      $form_state['values']['field_rp_posts'][$node->language] : array();
+    // Empty? Ok, fallback to node.
+    if (empty($comments)) {
+      $comments = !empty($node->field_rp_posts[$node->language]) ? $node->field_rp_posts[$node->language] : array();
+    }
+    // And put the comments together.
+    $new_order = array();
+    if (!empty($comments)) {
+      foreach ($comments as $comment) {
+        if (!empty($comment['target_id'])) {
+          $new_order[ $comment['target_id'] ] = comment_load($comment['target_id']);
+        }
+      }
+      ksort($new_order);
+      $comments = array_values($new_order);
+      $goals = !empty($node->field_goal[$node->language]) ? $node->field_goal[$node->language] : array('0' => array('value' => 'misc'));
+      $scene = _scene_record_view_table($node, $comments, $goals);
+    }
+  }
+  // Add to the form.
+  $form['scene_record_assist'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Scene assistant'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#weight' => 8.5,
+  );
+  $form['scene_record_assist']['scene_record_erfresh'] = array(
+    '#type' => 'button',
+    '#value' => t('Refresh scene'),
+    '#ajax' => array(
+      'callback' => '_scene_record_form_ajax',
+      'wrapper' => 'scene-record-form-display',
+    ),
+  );
+  $form['scene_record_assist']['scene_record_display'] = array(
+    '#prefix' => '<div id="scene-record-form-display">',
+    '#suffix' => '</div>',
+    '#type' => 'item',
+    '#markup' => $scene,
+  );
+  $form['scene_record_assist']['scene_record_erfresh2'] = array(
+    '#type' => 'button',
+    '#value' => t('Refresh scene'),
+    '#ajax' => array(
+      'callback' => '_scene_record_form_ajax',
+      'wrapper' => 'scene-record-form-display',
+    ),
+  );
+}
+
+/**
+ * Handles ajax callback.
+ */
+function _scene_record_form_ajax($form, $form_state) {
+  // Otherwise return our own.
+  return $form['scene_record_assist']['scene_record_display'];
 }
 
 /**
@@ -142,8 +202,13 @@ function _scene_record_view_table($node, $comments = array(), $goals) {
       );
     }
   }
-  // Return the rows.
-  return $rows;
+  // Return the table.
+  // And render it.
+  $headers = array(
+    t('Scene posts'),
+    t('Results'),
+  );
+  return theme('table', array('headers' => $headers, 'rows' => $rows));
 }
 
 /**
