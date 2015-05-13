@@ -473,7 +473,7 @@ function role_app_get_answers($user, $node) {
     $full_question = node_load($question_nid);
     $q = $full_question->body[$full_question->language][0]['value'];
     $a = $question->answers[0]['answer'];
-    $output .= '<h3><b>' . $q_title . '</b></h3><p><b>'. $q . '</b></p><p>' . $a . '</p><hr><br/>';
+    $output .= '<h3><b>' . $q_title . '</b></h3><p><strong>'. $q . '</strong></p><p>---</p><p>' . $a . '</p><hr><br/>';
   }
   return $output;
 }
