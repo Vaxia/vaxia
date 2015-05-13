@@ -108,7 +108,7 @@ function role_app_rules_condition_info() {
       'label' => t('Check for approval'), 
       'parameter' => array(
         'webform' => array(
-          'label' => t('Webform'),
+          'label' => t('Application Webform'),
           'type' => 'node',
         ),
       ),
@@ -186,6 +186,12 @@ function _role_app_admin_settings($form, &$form_state) {
     '#options' => $roles,
     '#multiple' => TRUE,
     '#default_value' => variable_get('role_app_roles', ''),
+  );
+  $form['application_approval_min'] = array(
+    '#type' => 'text',
+    '#title' => t('Approval percentage'),
+    '#description' => t('Greater than or equal to percentage of possible approvers required to approve.'),
+    '#default_value' => variable_get('application_approval_min', '75'),
   );
   $quizzes = _role_app_get_quizzes();
   $application_roles = variable_get('role_app_roles', array());
