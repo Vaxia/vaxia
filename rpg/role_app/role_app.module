@@ -70,7 +70,7 @@ function role_app_node_view($node, $view_mode, $langcode) {
       $percentage = ($count / $approvers) * 100 ; // Leave with decimals, cause that's valid. Math is like that.
       $node->content['application_sums'] = array(
         '#markup' => t('@count out of @approvers (@percentage %) have responded to this application.',
-          array('@count' => $count, '@approvers' => $approvers, '@percentage' => $percentage)),
+          array('@count' => $count, '@approvers' => $approvers, '@percentage' => number_format($percentage))),
         '#weight' => 1004,
       );
     }
