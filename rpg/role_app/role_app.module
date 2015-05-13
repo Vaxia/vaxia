@@ -169,6 +169,8 @@ function role_app_form_alter(&$form, &$form_state, $form_id) {
     global $user;
     if ($user->uid == $node->uid) {
       $form['#access'] = FALSE;
+      $form['#submit'] = array();
+      unset($form['actions']);
     }
   }
 }
