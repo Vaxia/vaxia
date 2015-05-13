@@ -320,7 +320,7 @@ function role_app_create_app($user, $quiz) {
   }
   // Create new role_app node.
   $node = new stdClass();
-  $node->title = t('@name for @role', array('@name' => $user->name, '@role' => ucwords($this_role->name)));
+  $node->title = t('@role Application (@name)', array('@name' => $user->name, '@role' => ucwords($this_role->name)));
   $node->type = 'application';
   $node->created = time();
   $node->changed = $node->created;
