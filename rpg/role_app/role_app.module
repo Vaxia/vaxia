@@ -169,8 +169,6 @@ function role_app_form_alter(&$form, &$form_state, $form_id) {
     global $user;
     if ($user->uid == $node->uid) {
       $form['#access'] = FALSE;
-      $form['#submit'] = array();
-      unset($form['actions']);
     }
   }
 }
@@ -322,7 +320,7 @@ function role_app_create_app($user, $quiz) {
   }
   // Create new role_app node.
   $node = new stdClass();
-  $node->title = t('@name for @role', array('@name' => $user->name, '@role' => $this_role->name));
+  $node->title = t('@name for @role', array('@name' => $user->name, '@role' => ucwords($this_role->name)));
   $node->type = 'application';
   $node->created = time();
   $node->changed = $node->created;
@@ -330,7 +328,7 @@ function role_app_create_app($user, $quiz) {
   $node->promote = 0;
   $node->sticky = 0;
   $node->format = 'wiki';
-  $node->uid = 1;
+  $node->uid = $user->uid;
   $node->language = LANGUAGE_NONE;
   // Mark the values we're applying for.
   $node->body[$node->language][0]['value'] = role_app_get_answers($user, $quiz);
