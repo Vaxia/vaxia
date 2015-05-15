@@ -306,8 +306,8 @@ function _scene_record_calculate_results($node, $comments, $goals) {
         if (function_exists($callback)) {
           // After each call, the context should be updated as needed on the
           // Internal context for the calling system.
-          $new_items = (array) $callback($comment, $context);
-          $message_items = array_merge($message_items, $new_items);
+          $new_items = $callback($comment, $context);
+          $message_items = array_merge($message_items, (array) $new_items);
         }
       }
       // Allow for last second alter.

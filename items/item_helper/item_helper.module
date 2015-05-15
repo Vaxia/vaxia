@@ -22,33 +22,31 @@ function item_helper_scene_record_goal_info() {
 function _item_helper_calculate_results($comment, &$context) {
   $message_items = array();
   // Grab rolls and start calculations.
-  if (!empty($dice_rolls)) {
-    $difficulty = !empty($context['diff']) ? $context['diff'] : 25;
-    // Set item values.
-    if ($diff != 25) {
-      $pp_needed_per_point = (1 + (($diff - 40) / 10) ) * 25;
-      $points_built_max = (1 + (($diff - 40) / 10) ) * 5;
-      $points_built_primary = floor($context['ongoing']['_ruling']['PPs'] / $pp_needed_per_point);
-      $points_built_secondary = floor($context['ongoing']['_ruling']['PPs'] / ($pp_needed_per_point * 1.5));
-      $points_built_skills= floor($context['ongoing']['_ruling']['PPs'] / ($pp_needed_per_point * 0.75));
-    }
-    // More messages.
-    if ($diff != 25) {
-      $message_items[] = t('Max points at this difficulty: @points_built_max.', array('@points_built_max' => $points_built_max));
-      $display_primary = ($points_built_max < $points_built_primary) ? $points_built_max : $points_built_primary;
-      $message_items[] = t('Bonus points for primary stats: @points_built_primary', array('@points_built_primary' => $display_primary));
-      $display_secondary = ($points_built_max < $points_built_secondary) ? $points_built_max : $points_built_secondary;
-      $message_items[] = t('Bonus points for secondary stats: @points_built_secondary.', array('@points_built_secondary' => $display_secondary));
-      $display_skills = ($points_built_max < $points_built_skills) ? $points_built_max : $points_built_skills;
-      $message_items[] = t('Bonus points for skills: @points_built_skills.', array('@points_built_skills' => $display_skills));
-      $message_items[] = t('PP effect: @pp_effect.', array('@pp_effect' => number_format($context['ongoing']['_ruling']['PPs'], 2)));
-    }
-    else {
-      $message_items[] = t('PP generated for enchanting one time use: @pp_use.', array('@pp_use' => number_format($context['ongoing']['_ruling']['PPs'], 2)));
-      $message_items[] = t('PP generated for enchanting 3 uses: @pp_use.', array('@pp_use' => floor($context['ongoing']['_ruling']['PPs'] / 3)));
-      $message_items[] = t('PP generated for enchanting once a day: @pp_use.', array('@pp_use' => floor($context['ongoing']['_ruling']['PPs'] / 50)));
-      $message_items[] = t('PP generated for enchanting at will: @pp_use.', array('@pp_use' => floor($context['ongoing']['_ruling']['PPs'] / 150)));
-    }
+  $difficulty = !empty($context['diff']) ? $context['diff'] : 25;
+  // Set item values.
+  if ($diff != 25) {
+    $pp_needed_per_point = (1 + (($diff - 40) / 10) ) * 25;
+    $points_built_max = (1 + (($diff - 40) / 10) ) * 5;
+    $points_built_primary = floor($context['ongoing']['_ruling']['PPs'] / $pp_needed_per_point);
+    $points_built_secondary = floor($context['ongoing']['_ruling']['PPs'] / ($pp_needed_per_point * 1.5));
+    $points_built_skills= floor($context['ongoing']['_ruling']['PPs'] / ($pp_needed_per_point * 0.75));
+  }
+  // More messages.
+  if ($diff != 25) {
+    $message_items[] = t('Max points at this difficulty: @points_built_max.', array('@points_built_max' => $points_built_max));
+    $display_primary = ($points_built_max < $points_built_primary) ? $points_built_max : $points_built_primary;
+    $message_items[] = t('Bonus points for primary stats: @points_built_primary', array('@points_built_primary' => $display_primary));
+    $display_secondary = ($points_built_max < $points_built_secondary) ? $points_built_max : $points_built_secondary;
+    $message_items[] = t('Bonus points for secondary stats: @points_built_secondary.', array('@points_built_secondary' => $display_secondary));
+    $display_skills = ($points_built_max < $points_built_skills) ? $points_built_max : $points_built_skills;
+    $message_items[] = t('Bonus points for skills: @points_built_skills.', array('@points_built_skills' => $display_skills));
+    $message_items[] = t('PP effect: @pp_effect.', array('@pp_effect' => number_format($context['ongoing']['_ruling']['PPs'], 2)));
+  }
+  else {
+    $message_items[] = t('PP generated for enchanting one time use: @pp_use.', array('@pp_use' => number_format($context['ongoing']['_ruling']['PPs'], 2)));
+    $message_items[] = t('PP generated for enchanting 3 uses: @pp_use.', array('@pp_use' => floor($context['ongoing']['_ruling']['PPs'] / 3)));
+    $message_items[] = t('PP generated for enchanting once a day: @pp_use.', array('@pp_use' => floor($context['ongoing']['_ruling']['PPs'] / 50)));
+    $message_items[] = t('PP generated for enchanting at will: @pp_use.', array('@pp_use' => floor($context['ongoing']['_ruling']['PPs'] / 150)));
   }
   return $message_items;
 }

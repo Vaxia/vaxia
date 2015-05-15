@@ -22,6 +22,7 @@ function rpg_rep_cron() {
     }
   }
 }
+
 /**
  * Process the reputation crons.
  */
@@ -89,7 +90,6 @@ function rpg_rep_permission() {
     ),
   );
 }
-
 
 /**
  * Implements hook_comment_view().
