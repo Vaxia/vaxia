@@ -22,17 +22,15 @@ function item_helper_scene_record_goal_info() {
 function _item_helper_calculate_results($comment, &$context) {
   $message_items = array();
   // Grab rolls and start calculations.
-  $difficulty = !empty($context['diff']) ? $context['diff'] : 25;
-  // Set item values.
-  if ($diff != 25) {
+  $diff = !empty($context['diff']) ? $context['diff'] : 25;
+  // More messages.
+  if ($diff > 25) {
     $pp_needed_per_point = (1 + (($diff - 40) / 10) ) * 25;
     $points_built_max = (1 + (($diff - 40) / 10) ) * 5;
     $points_built_primary = floor($context['ongoing']['_ruling']['PPs'] / $pp_needed_per_point);
     $points_built_secondary = floor($context['ongoing']['_ruling']['PPs'] / ($pp_needed_per_point * 1.5));
     $points_built_skills= floor($context['ongoing']['_ruling']['PPs'] / ($pp_needed_per_point * 0.75));
-  }
-  // More messages.
-  if ($diff != 25) {
+    // Messages.
     $message_items[] = t('Max points at this difficulty: @points_built_max.', array('@points_built_max' => $points_built_max));
     $display_primary = ($points_built_max < $points_built_primary) ? $points_built_max : $points_built_primary;
     $message_items[] = t('Bonus points for primary stats: @points_built_primary', array('@points_built_primary' => $display_primary));
