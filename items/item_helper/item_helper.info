@@ -1,4 +1,4 @@
-name = Item helper for scenes
+name = Item scenes
 description = Add dice items to the scene calculations
 core = 7.x
 package = Vaxia
