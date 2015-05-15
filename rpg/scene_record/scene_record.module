@@ -249,7 +249,7 @@ function _scene_record_calculate_results($node, $comments, $goals) {
       $dice_rolls = _dice_roller_get_roll($comment->cid, 'c');
       $context['roll_set'] = _dice_ruler_read_dice($dice_rolls, $context['diff'], $context['bonus']);
       $context['character'] = _scene_record_get_character($comment);
-      $comment->results_character = $context['character']->title;
+      $comment->results_character = '<b>' . l($context['character']->title, 'node/' . $context['character']->nid) . '</b>';
       // Save some ongoing settings.
       $context['ongoing']['_ruling']['PPs'] = isset($context['ongoing']['_ruling']['PPs']) ?
         $context['ongoing']['_ruling']['PPs'] : 0;
