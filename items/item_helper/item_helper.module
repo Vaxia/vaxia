@@ -32,11 +32,11 @@ function _item_helper_calculate_results($comment, &$context) {
     $points_built_skills= floor($context['ongoing']['_ruling']['PPs'] / ($pp_needed_per_point * 0.75));
     // Messages.
     $message_items[] = t('Max points at this difficulty: @points_built_max.', array('@points_built_max' => $points_built_max));
-    $display_primary = ($points_built_max < $points_built_primary) ? $points_built_max . ' (max)' : $points_built_primary;
+    $display_primary = ($points_built_max <= $points_built_primary) ? $points_built_max . ' (max)' : $points_built_primary;
     $message_items[] = t('Bonus points for primary stats: @points_built_primary', array('@points_built_primary' => $display_primary));
-    $display_secondary = ($points_built_max < $points_built_secondary) ? $points_built_max . ' (max)'  : $points_built_secondary;
+    $display_secondary = ($points_built_max <= $points_built_secondary) ? $points_built_max . ' (max)'  : $points_built_secondary;
     $message_items[] = t('Bonus points for secondary stats: @points_built_secondary.', array('@points_built_secondary' => $display_secondary));
-    $display_skills = ($points_built_max < $points_built_skills) ? $points_built_max . ' (max)'  : $points_built_skills;
+    $display_skills = ($points_built_max <= $points_built_skills) ? $points_built_max . ' (max)'  : $points_built_skills;
     $message_items[] = t('Bonus points for skills: @points_built_skills.', array('@points_built_skills' => $display_skills));
     $message_items[] = t('PP effect: @pp_effect.', array('@pp_effect' => number_format($context['ongoing']['_ruling']['PPs'], 2)));
   }
