@@ -51,6 +51,28 @@ function role_app_node_view($node, $view_mode, $langcode) {
         '#markup' => '<div class="application_result">' . webform_results_table($node) . '</div>',
         '#weight' => 1003,
       );
+      // Check for the feedback settings for viewing results.
+      $results = db_query("SELECT wd.data FROM {webform_submitted_data} wd " .
+        "WHERE wd.nid = :nid " .
+        "AND wd.cid = 1", // There is only the one form element.
+        array(':nid' => $node->nid,));
+      $count = 0;
+      foreach ($results as $result) {
+        if ($result->data == 'approve') {
+          $count++;
+        }
+      }
+      // Total eligable SH evals.
+      $role = !empty($node->field_applied_role_id['und'][0]['value']) ? trim($node->field_applied_role_id['und'][0]['value']) : '_na';
+      $approving = variable_get('role_app_approve_' . $role, '');
+      $approvers = _role_app_get_possible_approvers($node->uid, $approving);
+      $approvers = count($approvers);
+      $percentage = ($count / $approvers) * 100 ; // Leave with decimals, cause that's valid. Math is like that.
+      $node->content['application_sums'] = array(
+        '#markup' => t('@count out of @approvers (@percentage %) have responded to this application.',
+          array('@count' => $count, '@approvers' => $approvers, '@percentage' => number_format($percentage))),
+        '#weight' => 1004,
+      );
     }
   }
 }
@@ -108,7 +130,7 @@ function role_app_rules_condition_info() {
       'label' => t('Check for approval'), 
       'parameter' => array(
         'webform' => array(
-          'label' => t('Webform'),
+          'label' => t('Application Webform'),
           'type' => 'node',
         ),
       ),
@@ -186,6 +208,12 @@ function _role_app_admin_settings($form, &$form_state) {
     '#options' => $roles,
     '#multiple' => TRUE,
     '#default_value' => variable_get('role_app_roles', ''),
+  );
+  $form['application_approval_min'] = array(
+    '#type' => 'text',
+    '#title' => t('Approval percentage'),
+    '#description' => t('Greater than or equal to percentage of possible approvers required to approve.'),
+    '#default_value' => variable_get('application_approval_min', '75'),
   );
   $quizzes = _role_app_get_quizzes();
   $application_roles = variable_get('role_app_roles', array());
@@ -288,7 +316,6 @@ function role_app_approved_app($node) {
   $approvers = _role_app_get_possible_approvers($node->uid, $approving);
   $approvers = count($approvers);
   $percentage = ($count / $approvers) * 100 ; // Leave with decimals, cause that's valid. Math is like that.
-  watchdog('role_app', 'Checking approve count for #' . $node->nid . ', ' . $count . ' in out of possible ' . $approvers . ' reviewers.');
   // Do we have quorum?
   if ($percentage >= variable_get('application_approval_min', '75')) {
     return TRUE;
@@ -314,7 +341,7 @@ function role_app_create_app($user, $quiz) {
   }
   // Create new role_app node.
   $node = new stdClass();
-  $node->title = t('@name for @role', array('@name' => $user->name, '@role' => $this_role->name));
+  $node->title = t('@role Application (@name)', array('@name' => $user->name, '@role' => ucwords($this_role->name)));
   $node->type = 'application';
   $node->created = time();
   $node->changed = $node->created;
@@ -322,7 +349,7 @@ function role_app_create_app($user, $quiz) {
   $node->promote = 0;
   $node->sticky = 0;
   $node->format = 'wiki';
-  $node->uid = 1;
+  $node->uid = $user->uid;
   $node->language = LANGUAGE_NONE;
   // Mark the values we're applying for.
   $node->body[$node->language][0]['value'] = role_app_get_answers($user, $quiz);
@@ -446,7 +473,7 @@ function role_app_get_answers($user, $node) {
     $full_question = node_load($question_nid);
     $q = $full_question->body[$full_question->language][0]['value'];
     $a = $question->answers[0]['answer'];
-    $output .= '<h3><b>' . $q_title . '</b></h3><p><b>'. $q . '</b></p><p>' . $a . '</p><hr><br/>';
+    $output .= '<h3><b>' . $q_title . '</b></h3><p><strong>'. $q . '</strong></p><p>---</p><p>' . $a . '</p><hr><br/>';
   }
   return $output;
 }
