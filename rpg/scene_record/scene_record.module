@@ -194,9 +194,10 @@ function _scene_record_view_table($node, $comments = array(), $goals) {
       $comment_display .= !empty($dice_rolls) ? theme('dice_roller_results', array('dice_rolls' => $dice_rolls)) : '';
       // Add to rows.
       $rows[] = array(
+        $comment->results_character,
         $comment_display,
         array(
-        'data' => $comment->results,
+        'data' => $comment->results_messages,
         'nowrap' => array('nowrap'),
         ),
       );
@@ -205,6 +206,7 @@ function _scene_record_view_table($node, $comments = array(), $goals) {
   // Return the table.
   // And render it.
   $headers = array(
+    t('Character'),
     t('Scene posts'),
     t('Results'),
   );
@@ -247,6 +249,7 @@ function _scene_record_calculate_results($node, $comments, $goals) {
       $dice_rolls = _dice_roller_get_roll($comment->cid, 'c');
       $context['roll_set'] = _dice_ruler_read_dice($dice_rolls, $context['diff'], $context['bonus']);
       $context['character'] = _scene_record_get_character($comment);
+      $comment->results_character = $context['character']->title;
       // Save some ongoing settings.
       $context['ongoing']['_ruling']['PPs'] = isset($context['ongoing']['_ruling']['PPs']) ?
         $context['ongoing']['_ruling']['PPs'] : 0;
@@ -311,7 +314,7 @@ function _scene_record_calculate_results($node, $comments, $goals) {
       drupal_alter('scene_record_goal_info', $message_items, $context);
       // Display.
       if (!empty($message_items)) {
-        $comment->results .= theme('item_list', array('items' => $message_items));
+        $comment->results_messages .= theme('item_list', array('items' => $message_items));
       }
     }
   }
