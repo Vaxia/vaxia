@@ -631,7 +631,7 @@ function _vaxia_admin_settings() {
   $form['player_ui']['vaxia_disabled_user_fields'] = array(
     '#title' => 'Disabled user fields.',
     '#type' => 'textarea',
-    '#default_value' => variable_get('vaxia_editable_user_fields', ''),
+    '#default_value' => variable_get('vaxia_disabled_user_fields', ''),
   );
   $form['point_cost'] = array(
     '#title' => 'Point costs',

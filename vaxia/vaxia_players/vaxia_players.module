@@ -62,7 +62,7 @@ function vaxia_players_form_user_profile_form_alter(&$form, &$form_state, $form_
   // If this is the owner of the account disallow access to specific fields.
   if ($user->uid == $node->uid) {
     $hidden = variable_get('vaxia_disabled_user_fields', '');
-    $hidden = explode("\n", $allowed);
+    $hidden = explode("\n", $hidden);
     foreach ($hidden as $index => $value) {
       $field_name = trim($value);
       $form[$field_name]['#access'] = FALSE;
