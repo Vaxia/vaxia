@@ -347,7 +347,7 @@ function _items_item_stats($mode = 'all') {
     return array('life', 'endurance', 'strength', 'dexterity', 'intelligence', 'spirituality', 'charisma');
   }
   if ($mode == 'secondary') {
-    return array('health', 'constitution', 'agility', 'field_item_reflexes', 'awareness', 'presence', 'appearance');
+    return array('health', 'constitution', 'agility', 'reflexes', 'awareness', 'presence', 'appearance');
   }
   // Else, return all.
   return  array('life', 'health', 'endurance', 'constitution', 'strength', 'agility', 'dexterity',
