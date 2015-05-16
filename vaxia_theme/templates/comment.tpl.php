@@ -63,7 +63,7 @@
  * @see theme_comment()
  */
 ?>
-<article class="<?php print $classes; ?> clearfix" <?php print $attributes; ?>" style="background-color:<?php print $comment_background_color?>">
+<article class="<?php print $classes; ?> clearfix" <?php print $attributes; ?> style="background-color:<?php print $comment_background_color?>">
 
   <header>
     <p class="submitted">
