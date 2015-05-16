@@ -612,10 +612,26 @@ function _vaxia_admin_settings() {
     '#type' => 'checkbox',
     '#default_value' => variable_get('vaxia_dice_roller_stacking', TRUE),
   );
-  $form['settings']['vaxia_public_char_fields'] = array(
+  $form['player_ui'] = array(
+    '#title' => 'Player UI Settings',
+    '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  $form['player_ui']['vaxia_public_char_fields'] = array(
     '#title' => 'Publicly visible character fields.',
     '#type' => 'textarea',
     '#default_value' => variable_get('vaxia_public_char_fields', ''),
+  );
+  $form['player_ui']['vaxia_public_user_fields'] = array(
+    '#title' => 'Publicly visible user fields.',
+    '#type' => 'textarea',
+    '#default_value' => variable_get('vaxia_public_user_fields', ''),
+  );
+  $form['player_ui']['vaxia_disabled_user_fields'] = array(
+    '#title' => 'Disabled user fields.',
+    '#type' => 'textarea',
+    '#default_value' => variable_get('vaxia_editable_user_fields', ''),
   );
   $form['point_cost'] = array(
     '#title' => 'Point costs',
@@ -661,6 +677,8 @@ function _vaxia_admin_settings() {
   $form['workflows'] = array(
     '#title' => 'Workflow states',
     '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
   );
   $workflow_options = array();
   $workflows = workflow_get_workflows();

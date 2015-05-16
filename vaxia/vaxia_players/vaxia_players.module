@@ -23,14 +23,56 @@ function vaxia_players_permission() {
  */
 function vaxia_players_user_view($account, $view_mode, $langcode) {
   if ($view_mode == 'full') {
-    // If an active player in good standing OR permissioned user.
     global $user;
+
+    // If an active player in good standing OR permissioned user allow to email.
     if (($user->uid == $account->uid) || user_access('email others characters')) {
       $this_form = drupal_get_form('_vaxia_players_email_characters', $account);
       $account->content['vaxia_players_email'] = array(
         '#markup' => '<div class="vaxia_players_email">' . drupal_render($this_form) . '</div>',
         '#weight' => 1000,
       );
+    }
+
+    // Disable the fields from viewing if you're not the owner or permissioned.
+    if (!($user->uid == $node->uid || user_access('edit SH notes'))) {
+      $display = variable_get('vaxia_public_user_fields', '');
+      $display = explode("\n", $display);
+      foreach ($display as $index => $value) {
+        $display[$index] = trim($value);
+      }
+      foreach ($node->content as $index => $value) {
+        if (strpos($index, '#') === FALSE && !in_array($index, $display)) {
+          unset($node->content[$index]);
+        }
+      }
+    }
+
+  }
+}
+
+/**
+ * Implelents node_form_alter for nodes.
+ * Character sheet, field level controls for players and moderators according to character sheet defs.
+ */
+function vaxia_players_form_user_profile_form_alter(&$form, &$form_state, $form_id) {
+  global $user;
+  $node = $form['#node'];
+  $lang = $form['language']['#value'];
+  // If this is the owner of the account disallow access to specific fields.
+  if ($user->uid == $node->uid) {
+    $hidden = variable_get('vaxia_disabled_user_fields', '');
+    $hidden = explode("\n", $allowed);
+    foreach ($hidden as $index => $value) {
+      $field_name = trim($value);
+      $form[$field_name]['#access'] = FALSE;
+      $form[$field_name][$lang][0]['#access'] = FALSE;
+      if (isset($form[$field_name][$lang][0]['#default_value'])) {
+        $form[$field_name][$lang][0]['#value'] = $form[$field_name][$lang][0]['#default_value'];
+      }
+      if (isset($form[$field_name][$lang]['add_more'])) {
+        $form[$field_name][$lang]['add_more']['#access'] = FALSE;
+      }
     }
   }
 }
