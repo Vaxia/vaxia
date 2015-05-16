@@ -149,6 +149,31 @@ function _items_admin_settings($form, &$form_state) {
     '#options' => $workflow_options,
     '#default_value' => variable_get('items_approved_workflow', ''),
   );
+  $form['items_primary_value'] = array(
+    '#title' => t('Value modifier for primary stats'),
+    '#type' => 'text',
+    '#default_value' => variable_get('items_primary_value', 1),
+  );
+  $form['items_secondary_value'] = array(
+    '#title' => t('Value modifier for secondary stats'),
+    '#type' => 'text',
+    '#default_value' => variable_get('items_secondary_value', 1.5),
+  );
+  $form['items_skills_value'] = array(
+    '#title' => t('Value modifier for skills'),
+    '#type' => 'text',
+    '#default_value' => variable_get('items_skills_value', 0.75),
+  );
+  $form['items_bonus_value'] = array(
+    '#title' => t('Silver value per bonus'),
+    '#type' => 'text',
+    '#default_value' => variable_get('items_bonus_value', 50),
+  );
+  $form['items_overlap_value'] = array(
+    '#title' => t('Silver value per overlap'),
+    '#type' => 'text',
+    '#default_value' => variable_get('items_overlap_value', 2),
+  );
   $form['items_recalculate_values'] = array(
     '#title' => t('Recalculate value on save'),
     '#type' => 'checkbox',
@@ -225,11 +250,14 @@ function _items_get_item_value($node) {
   $primary = _items_value_stat_bonus($node, $stats);
   $secondary = _items_value_stat_bonus($node, $second_stats);
   $skill = _items_value_stat_bonus($node, array('skill'));
-  $bonus = ($primary) + ($secondary * 1.5) + ($skill * 0.75);
+  $items_primary_value = variable_get('items_primary_value', 1);
+  $items_secondary_value = variable_get('items_secondary_value', 1.5);
+  $items_skills_value = variable_get('items_skills_value', 0.75);
+  $bonus = ($primary * $items_primary_value) + ($secondary * $items_secondary_value) + ($skill * $items_skills_value);
   // Now we have the values of modifiers up and down for stat bonuses and skill bonuses.
   $bonus_value = 0;
   if ($bonus > 0) {
-    $bonus_value = 50;
+    $bonus_value = variable_get('items_bonus_value', 50);
     $double = floor(($bonus - 1 ) / 5);
     for ($i=0; $i<$double; $i++) {
       $bonus_value = $bonus_value * 2; // 50, 100, 200, 400 etc.
@@ -246,7 +274,8 @@ function _items_get_item_value($node) {
   // Now we have the values of modifiers up and down for stat bonuses and skill overlaps.
   $overlap_value = 0;
   if ($overlap > 0) {
-    $overlap_value = $overlap * 2; // Each overlap is 2 silver.
+    $overlap_silver_value = variable_get('items_overlap_value', 2);
+    $overlap_value = $overlap * $overlap_silver_value; // Each overlap is 2 silver.
     drupal_set_message(t('Value of overlapping bonuses for %title calculated at @overlap_value silver.',
       array('%title' => $node->title, '@overlap_value' => $overlap_value)));
   }
