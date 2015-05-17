@@ -243,7 +243,7 @@ function _items_node_form_workflow_after_build($form, $form_state) {
 function _items_get_item_value($node) {
   $lang = isset($node->language) ? $node->language : 'und';
   $real_value = 0;
-  // Per stats.
+  // Price the benefits for items stats.
   $stats = _items_item_stats('primary');
   $second_stats = _items_item_stats('secondary');
   // Get the benefits and penalties for item mods.
@@ -254,7 +254,6 @@ function _items_get_item_value($node) {
   $items_secondary_value = variable_get('items_secondary_value', 1.5);
   $items_skills_value = variable_get('items_skills_value', 0.75);
   $bonus = ($primary * $items_primary_value) + ($secondary * $items_secondary_value) + ($skill * $items_skills_value);
-  // Now we have the values of modifiers up and down for stat bonuses and skill bonuses.
   $bonus_value = 0;
   if ($bonus > 0) {
     $bonus_value = variable_get('items_bonus_value', 50);
@@ -263,47 +262,80 @@ function _items_get_item_value($node) {
       $bonus_value = $bonus_value * 2; // 50, 100, 200, 400 etc.
     }
     $bonus_value = $bonus * $bonus_value; // And for each point.
-    drupal_set_message(t('Value of bonuses for %title calculated at @bonus_value silver.',
+    drupal_set_message(t('Value of stat modifiers for %title calculated at @bonus_value silver.',
       array('%title' => $node->title, '@bonus_value' => $bonus_value)));
   }
-  // Get the overlap bonuses.
+  // Figure out what the overlap stats bonuses are for the stats.
   $primary = _items_value_stat_overlap($node, $stats);
   $secondary = _items_value_stat_overlap($node, $second_stats);
   $skill = _items_value_stat_overlap($node, array('skill'));
   $overlap = ($primary) + ($secondary) + ($skill);
-  // Now we have the values of modifiers up and down for stat bonuses and skill overlaps.
   $overlap_value = 0;
   if ($overlap > 0) {
     $overlap_silver_value = variable_get('items_overlap_value', 2);
     $overlap_value = $overlap * $overlap_silver_value; // Each overlap is 2 silver.
-    drupal_set_message(t('Value of overlapping bonuses for %title calculated at @overlap_value silver.',
+    drupal_set_message(t('Value of overlapping stats for %title calculated at @overlap_value silver.',
       array('%title' => $node->title, '@overlap_value' => $overlap_value)));
   }
-  // Now to figure out the PP value.
+  // Calculate the value for the PP casting items - at base difficulty.
   $pp_value = 0;
   $pp = isset($node->field_pp_created[$lang][0]['value']) ? $node->field_pp_created[$lang][0]['value'] : 0;
   if ($pp > 0) {
     $uses = isset($node->field_item_use_day[$lang][0]['value']) ? $node->field_item_use_day[$lang][0]['value'] : 'at_will';
     $charges = isset($node->field_item_uses[$lang][0]['value']) ? $node->field_item_uses[$lang][0]['value'] : 1;
-    $use_val = 750;
+    // Values per.
     switch ($uses) {
       case 'once':
-        $use_val = 5;
+        $use_val = variable_get('items_once_value', 5);
         break;
       case 'per_day':
-        $use_val = 250;
+        $use_val = variable_get('items_daily_value', 250);
         break;
       case 'at_will':
       default;
-        $use_val = 750;
+        $use_val = variable_get('items_at_will_value', 750);
         break;
     }
-    $pp_value = ($pp * $use_val) * $charges; // Charge for use per day or individual one-shot item.
-    drupal_set_message(t('Value of PP effect for %title calculated at @pp_value silver.',
+    // Account for difficulty, for example an invisiblty potion at diff 25 vs one at diff 35...
+    $base_diff = variable_get('items_at_will_value', 25);
+    $item_diff = isset($node->field_item_difficulty[$lang][0]['value']) ? $node->field_item_difficulty[$lang][0]['value'] : 25;
+    // Can't go below the base for an item, no underpowered item.
+    if ($item_diff < $base_diff) {
+      $item_diff = $base_diff;
+    }
+    $diff = $item_diff / $base_diff;
+    $pp_value = ($pp * $use_val * $diff) * $charges; // Charge for use per day or individual one-shot item.
+    drupal_set_message(t('Value of PP base effect for %title calculated at @pp_value silver.',
       array('%title' => $node->title, '@pp_value' => $pp_value)));
   }
+  // Calculate the value for armor types.
+  $def_value = 0;
+  $absorbs = isset($node->field_armor_absorbs[$lang][0]['value']) ? $node->field_armor_absorbs[$lang][0]['value'] : 0;
+  if ($absorbs > 0) {
+    $abs_type = isset($node->field_item_use_day[$lang][0]['value']) ? $node->field_item_use_day[$lang][0]['value'] : 'armor';
+    switch ($abs_type) {
+      case 'shield':
+        $abs_val = variable_get('items_shield_value', 25);
+        break;
+      case 'armor':
+      default;
+        $abs_val = variable_get('items_absorb_value', 50);
+        break;
+    }
+    $def_value = $absorbs * $abs_vals; // Figure out value by type.
+    drupal_set_message(t('Value of defense for %title calculated at @def_value silver.',
+      array('%title' => $node->title, '@def_value' => $def_value)));
+  }
+  // Calculate the value for armor types.
+  $comp_value = 0;
+  $build_pts = isset($node->field_build_points[$lang][0]['value']) ? $node->field_build_points[$lang][0]['value'] : 0;
+  if ($build_pts > 0) {
+    $comp_value = $build_pts * variable_get('items_companion_value', 2); // Figure out value by build pts.
+    drupal_set_message(t('Value of companion build points for %title calculated at @comp_value silver.',
+      array('%title' => $node->title, '@comp_value' => $comp_value)));
+  }
   // Set the final values.
-  $real_value = $bonus_value + $overlap_value + $pp_value;
+  $real_value = $bonus_value + $overlap_value + $pp_value + $def_value + $comp_value;
   drupal_set_message(t('Overall value of %title calculated at @real_value silver.',
     array('%title' => $node->title, '@real_value' => $real_value)));
   return $real_value;
