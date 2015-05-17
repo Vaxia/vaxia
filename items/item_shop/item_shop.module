@@ -231,9 +231,12 @@ function _item_shop_access_callback($options = array()) {
 /**
  * Helper for views. Check if this character can afford this item.
  */
-function item_shop_check_can_afford($nid) {
+function item_shop_check_can_afford($nid, $char_nid = '') {
   // Get argument - character node.
-  $character = node_load(arg(1));
+  if (empty($char_nid)) {
+    $char_nid = arg(1);
+  }
+  $character = node_load($char_nid);
   $lang = $character->language;
   // Get char from argument.
   $char = isset($character->nid) ? $character->nid : '';
@@ -286,9 +289,12 @@ function item_shop_check_can_afford($nid) {
 /**
  * Helper for views. Check if this character can afford this item.
  */
-function item_shop_check_already_has($nid) {
+function item_shop_check_already_has($nid, $char_nid = '') {
   // Get argument - character node.
-  $character = node_load(arg(1));
+  if (empty($char_nid)) {
+    $char_nid = arg(1);
+  }
+  $character = node_load($char_nid);
   $lang = $character->language;
   // Get items from character.
   $has_items = array();
@@ -310,10 +316,14 @@ function item_shop_check_already_has($nid) {
 /**
  * Helper for views.
  */
-function _item_shop_show_footer() {
+function _item_shop_show_footer($char_nid = '') {
+  // Get argument - character node.
+  if (empty($char_nid)) {
+    $char_nid = arg(1);
+  }
+  $node = node_load($char_nid);
   // Get arguments.
   global $user;
-  $node = node_load(arg(1));
   $output  = '';
   if ($user->uid == $node->uid) {
     // Grab the view, and load it with correct arguments.
