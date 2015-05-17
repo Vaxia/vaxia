@@ -312,7 +312,7 @@ function _items_get_item_value($node) {
   $def_value = 0;
   $absorbs = isset($node->field_armor_absorbs[$lang][0]['value']) ? $node->field_armor_absorbs[$lang][0]['value'] : 0;
   if ($absorbs > 0) {
-    $abs_type = isset($node->field_item_use_day[$lang][0]['value']) ? $node->field_item_use_day[$lang][0]['value'] : 'armor';
+    $abs_type = isset($node->field_absorb_type[$lang][0]['value']) ? $node->field_absorb_type[$lang][0]['value'] : 'armor';
     switch ($abs_type) {
       case 'shield':
         $abs_val = variable_get('items_shield_value', 25);
@@ -322,7 +322,7 @@ function _items_get_item_value($node) {
         $abs_val = variable_get('items_absorb_value', 50);
         break;
     }
-    $def_value = $absorbs * $abs_vals; // Figure out value by type.
+    $def_value = $absorbs * $abs_val; // Figure out value by type.
     drupal_set_message(t('Value of defense for %title calculated at @def_value silver.',
       array('%title' => $node->title, '@def_value' => $def_value)));
   }
