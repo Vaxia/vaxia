@@ -650,11 +650,6 @@ function _dice_ruler_form_combat($i) {
     '#title' => t('Weapon Class'),
     '#options' => _dice_ruler_weapon_classes(),
   );
-  $form['a']['combat_weapon_a_add_' . $i] = array(
-    '#type' => 'textfield',
-    '#title' => t('Added %'),
-    '#size' => 5,
-  );
   $form['a']['attack_a_'.$i]['dex'] = array(
     '#type' => 'fieldset',
     '#title' => t('Dexterity'),
@@ -729,11 +724,6 @@ function _dice_ruler_form_combat($i) {
     '#type' => 'radios',
     '#title' => t('Weapon Class'),
     '#options' => _dice_ruler_weapon_classes(),
-  );
-  $form['b']['combat_weapon_b_add_' . $i] = array(
-    '#type' => 'textfield',
-    '#title' => t('Added %'),
-    '#size' => 5,
   );
   $form['b']['number_actions_b_' . $i] = array(
     '#type' => 'select',
@@ -1108,8 +1098,8 @@ function _dice_ruler_form_get_results_for_action($form, $form_state, $i, $number
         // If we use classes, look up and set the correct class based weapon value.
         $a_type = $form_state['values']['combat_weapon_a_' . $i];
         $b_type = $form_state['values']['combat_weapon_b_' . $i];
-        $add_a = !empty($form_state['values']['combat_weapon_a_add_' . $i]) ? $form_state['values']['combat_weapon_a_add_' . $i] : 0;
-        $add_b = !empty($form_state['values']['combat_weapon_b_add_' . $i]) ? $form_state['values']['combat_weapon_b_add_' . $i] : 0;
+        $add_a = 0;
+        $add_b = 0;
         $percs = _dice_ruler_weapon_percentages();
         $form_state['values']['combat_weapon_a_' . $i] = $add_a + $percs[$a_type];
         $form_state['values']['combat_weapon_b_' . $i] = $add_b + $percs[$b_type];

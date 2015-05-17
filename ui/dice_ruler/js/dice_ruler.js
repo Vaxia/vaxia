@@ -59,7 +59,6 @@ Drupal.behaviors.diceRuler = {
     last_slot = 0;
     vs_slot = 0;
     $('#dice-ruler-form').find('input[type="text"]').val('');
-    $('#dice-ruler-form').find('input[name*="combat_weapon"]').val(0);
     $('#dice-ruler-form').find('input[name*="number_actions_b"]').val(1);
     // Set the diff default.
     $('#dice-ruler-form').find('input[name*="one_trait_diff"]').val(25);
