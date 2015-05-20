@@ -6,7 +6,7 @@
  * Complete documentation for this file is available online.
  * @see https://drupal.org/node/1728164
  */
-$realm = !empty($node->field_realm[$node->language][0]['value']) ? $node->field_realm[$node->language][0]['value'] : 'storyhost';
+$realm = !empty($node->field_realm[$node->language][0]['value']) ? strtolower($node->field_realm[$node->language][0]['value']) : 'storyhost';
 ?>
 <article class="node-<?php print $node->nid; ?> <?php print $classes; ?> realm-<?php print $realm; ?> clearfix"<?php print $attributes; ?>>
 
