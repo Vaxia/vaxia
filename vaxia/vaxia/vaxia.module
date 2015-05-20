@@ -747,7 +747,7 @@ function vaxia_form_character_sheet_node_form_alter(&$form, &$form_state, $form_
   if (_character_sheet_is_enabled($node) && _character_sheet_is_playable($node)) {
     $user_sh = _vaxia_get_SH_characters($node->uid);
     global $user;
-    $realm = !empty($node->field_realm[$node->languages][0]['value']) ? strtolower($node->field_realm[$node->languages][0]['value']) : 'storyhost';
+    $realm = !empty($node->field_realm[$node->language][0]['value']) ? strtolower($node->field_realm[$node->language][0]['value']) : 'storyhost';
     $form['#attributes']['class'][] = 'realm-' . $realm;
     if (!empty($node) && !empty($user) && !empty($user_sh) && $node->uid == $user->uid && $node->nid == $user_sh->nid) {
       $allowed_edit = array('field_personality', 'field_description', 'field_post_color',
