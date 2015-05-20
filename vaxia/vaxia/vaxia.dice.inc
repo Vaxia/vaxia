@@ -175,6 +175,19 @@ function _vaxia_dice_roller_prep_rolls($rolls, $character, $lang) {
         if (!empty($aspects)) {
           $desc .= ' (' . implode(', ', $aspects) . ')';
         }
+        // Add tech to display.
+        foreach ($skill_details->field_tech_languages[$lang] as $delta => $tech_id) {
+          $techs = array();
+          $tech_details = field_collection_item_load($tech_id['value']);
+          if (!empty($tech_details->field_tech_language[$lang][0]['tid'])) {
+            $tech = taxonomy_term_load($tech_details->field_tech_language[$lang][0]['tid']);
+            $tech_desc = !empty($tech_details->field_tech_proficiency[$lang][0]['value']) ? $tech_details->field_tech_proficiency[$lang][0]['value'] : 'Unfamiliar';
+            $techs[] = $tech->name . ' ' . $tech_desc;
+          }
+          if (!empty($tech)) {
+            $desc .= ' (' . implode(', ', $techs) . ')';
+          }
+        }
         // Set display.
         $roll['skill'] = $value;
         $roll['note'][] = '<a title="' . $desc . '" href="#">' . $name . '</a> (' . $value . ')';
