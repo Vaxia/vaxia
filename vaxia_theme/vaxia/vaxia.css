@@ -358,3 +358,41 @@ fieldset.group-aspects div.field-type-taxonomy-term-reference{width:30%;float:le
 fieldset.group-aspects div.field-type-taxonomy-term-reference label{display:none;}
 .page-node-add .filter-wrapper, .page-node-edit .filter-wrapper{display:none;}
 
+/* Collected 05/19/2015 */
+th.views-field{padding-left:0.25em;padding-right:0.25em;}
+#block-moon-phases-moons .moon-block{width:150px;float:right;position:relative;top:-7px;}
+.moon-block .moon{width:30px;height:30px;background-color:transparent;border-radius:30px;-moz-border-radius:30px;-webkit-border-radius:30px;}
+.moon-block .moon .moonmask{width:30px;height:30px;border-radius:30px;-moz-border-radius:30px;-webkit-border-radius:30px;}
+.moon-block .moon .moonmask .overlay{width:15px;height:30px;}
+.moon-block h5{display:none;}
+#rpg-chat-weather{float:right;position:relative;top:-2.2em;}
+#rpg-chat-weather img{height:30px;}
+#rpg-chat-weather .rpg-weather-img img{width:30px;}
+#rpg-chat-weather .moon{padding:0px;margin:0px;}
+#rpg-chat-userlist{margin-right:32px;}
+#rpg-chat-userlist h3{margin:0;}
+#rpg-chat-userlist ul{margin:0;}
+.form-field-name-field-provides-reputation{float: left;padding-top: 1em;}
+#forum .forum-node-create-links .forum-add-node{display:none;}
+#forum .forum-node-create-links .forum-add-forum{display:block;}
+.page-forum-879 #forum .forum-node-create-links .forum-add-event{display:block;}
+.page-forum-16 #forum .forum-node-create-links .forum-add-proposal{display:block;}
+.page-forum-707 #forum .forum-node-create-links .forum-add-proposal{display:block;}
+.page-forum-709 #forum .forum-node-create-links .forum-add-proposal{display:block;}
+.page-forum-708 #forum .forum-node-create-links .forum-add-proposal{display:block;}
+.page-forum-13 #forum .forum-node-create-links .forum-add-session_report{display:block;}
+.page-forum-14 #forum .forum-node-create-links .forum-add-session_report{display:block;}
+fieldset.group-aspects div.field-type-taxonomy-term-reference{float:left;margin-right:2em;width:auto;}
+fieldset.group-aspects .field-multiple-table tbody label{display:none;}
+fieldset.group-tech-lang div.field-type-taxonomy-term-reference{float:left;margin-right:2em;width:auto;}
+fieldset.group-tech-lang .field-multiple-table tbody label{display:none;}
+.page-node-add .filter-wrapper, .page-node-edit .filter-wrapper{display:none;}
+.page-comment-add .filter-wrapper, .page-comment-edit .filter-wrapper{display:none;}
+#block-views-proposals-proposals-closing{border:1px solid #EEE;padding-left:1em;padding-right:1em;background:rgba(100, 100, 100, 0.3)}
+article.node-items .field-type-taxonomy-term-reference{display:block;}
+.node-character_sheet-form #edit-field-language-skills .field-name-field-language{float:left;margin-right: 2em}
+.vaxia-realm-vaxia fieldset.group-tech-lang{display:none;}
+.vaxia-owner #edit-field-language-skills .description{display:none;}
+.vaxia-owner #edit-field-language-skills .clearfix{display:none;}
+.vaxia-owner #edit-field-language-skills .form-submit{display:none;}
+
