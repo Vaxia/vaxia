@@ -162,15 +162,15 @@ function _vaxia_dice_roller_prep_rolls($rolls, $character, $lang) {
         $aspects = array();
         if (!empty($skill_details->field_aspect_one[$lang][0]['tid'])) {
           $aspect = taxonomy_term_load($skill_details->field_aspect_one[$lang][0]['tid']);
-          $aspects[] = $aspect->name;
+          $aspects[] = strtolower($aspect->name);
         }
         if (!empty($skill_details->field_aspect_two[$lang][0]['tid'])) {
           $aspect = taxonomy_term_load($skill_details->field_aspect_two[$lang][0]['tid']);
-          $aspects[] = $aspect->name;
+          $aspects[] = strtolower($aspect->name);
         }
         if (!empty($skill_details->field_aspect_three[$lang][0]['tid'])) {
           $aspect = taxonomy_term_load($skill_details->field_aspect_three[$lang][0]['tid']);
-          $aspects[] = $aspect->name;
+          $aspects[] = strtolower($aspect->name);
         }
         if (!empty($aspects)) {
           $desc .= ' (' . implode(', ', $aspects) . ')';
@@ -182,7 +182,7 @@ function _vaxia_dice_roller_prep_rolls($rolls, $character, $lang) {
           if (!empty($tech_details->field_tech_language[$lang][0]['tid'])) {
             $tech = taxonomy_term_load($tech_details->field_tech_language[$lang][0]['tid']);
             $tech_desc = !empty($tech_details->field_tech_proficiency[$lang][0]['value']) ? $tech_details->field_tech_proficiency[$lang][0]['value'] : 'Unfamiliar';
-            $techs[] = $tech->name . ' ' . $tech_desc;
+            $techs[] = $tech->name . ': ' . strtolower($tech_desc);
           }
           if (!empty($tech)) {
             $desc .= ' (' . implode(', ', $techs) . ')';
