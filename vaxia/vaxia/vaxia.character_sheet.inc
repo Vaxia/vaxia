@@ -247,7 +247,12 @@ function vaxia_character_sheet_field_info() {
         'other' => DISABLE_SHEET, // So we don't want this value getting meddled with.
       ),
     ),
-    'field_languages' => array(
+    'field_languages' => array( // TMP till removed
+      'permissions' => array(
+        'owner' => DISABLE_SHEET,
+      ),
+    ),
+    'field_language' => array(
       'permissions' => array(
         'owner' => DISABLE_SHEET,
       ),
