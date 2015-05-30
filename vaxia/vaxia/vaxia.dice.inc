@@ -359,7 +359,9 @@ function _vaxia_dice_roller_get_skills($node) {
           ? $this_skill->field_skill_name[$lang][0]['value'] : t('Unk. skill');
         $value = !empty($this_skill->field_skill_value[$lang][0]['value'])
           ? $this_skill->field_skill_value[$lang][0]['value'] : '';
-        $skills[$id] = t('@name (@value)', array('@name' => $name, '@value' => $value));
+        if (!empty($value)) {
+          $skills[$id] = t('@name (@value)', array('@name' => $name, '@value' => $value));
+        }
       }
     }
   }
