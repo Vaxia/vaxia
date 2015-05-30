@@ -103,6 +103,7 @@ if (isset($dice_rolls) && is_array($dice_rolls)) {
   }
 }
 // Echo the rows.
-print '<div class="clearfix"></div><div class="dice_rolls ' . $ruled . '">' . $str_rolls . '</div>';
+//print '<div class="clearfix"></div>';
+print '<div class="dice_rolls ' . $ruled . '">' . $str_rolls . '</div>';
 
 // BP: no end.
