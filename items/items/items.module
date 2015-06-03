@@ -11,10 +11,6 @@ include_once 'items.features.inc';
  */
 function items_permission() {
   return array(
-    'change item owner' => array(
-      'title' => t('change item owner'),
-      'description' => t('Change the owner of an item.'),
-    ),
     'edit playable item' => array(
       'title' => t('edit playable item'),
       'description' => t('Edit an item in play.'),
@@ -71,8 +67,7 @@ function items_node_presave($node) {
   $field_calc_value = isset($node->field_calc_value[$lang][0]['value']) ? $node->field_calc_value[$lang][0]['value'] : FALSE;
   $recalc_value = variable_get('items_recalculate_values', FALSE);
   if ($recalc_value || $field_calc_value) {
-    // And figure out the true item value.
-    // Set the currently declared value.
+    // And figure out the true item value. Set the currently declared value.
     $curr_value = isset($node->field_value[$lang][0]['value']) ? $node->field_value[$lang][0]['value'] : 0;
     // Get the value.
     $real_value = _items_get_item_value($node);
@@ -93,13 +88,28 @@ function items_form_workflow_tab_form_alter(&$form, &$form_state, $form_id) {
     $lang = $node->language;
     $character_owner = isset($node->field_character_owner[$lang][0]['nid'])
       ? node_load($node->field_character_owner[$lang][0]['nid']) : FALSE;
+    // If you own the item.
+    if (!empty($form['#wf']->name) && !empty($node) && $user->uid == $node->uid) {
+      $workflow_name = $form['#wf']->name;
+      $options = $form['workflow'][$workflow_name]['#options'];
+      $index = array_search('approved', $options);
+      if ($index !== FALSE && $index != $node->workflow) {
+        drupal_set_message(t('You own this item, you cannot set it to approved. Currently: @state',
+          array('@state' => $node->workflow_state_name)));
+        unset($options[$index]);
+        unset($form['workflow'][$workflow_name][$index]);
+        $form['workflow'][$workflow_name]['#options'] = $options;
+        $form['workflow'][$workflow_name]['#default_value'] = $node->workflow;
+      }
+    }
+    // If you own the character owner.
     if ($character_owner && !empty($form['#wf']->name) && !empty($node) && $user->uid == $character_owner->uid) {
       $workflow_name = $form['#wf']->name;
       $options = $form['workflow'][$workflow_name]['#options'];
       $index = array_search('approved', $options);
       if ($index !== FALSE && $index != $node->workflow) {
-        drupal_set_message(t('You own the character that owns this item, you cannot set it to approved. ' .
-          'Currently: ' . $node->workflow_state_name));
+        drupal_set_message(t('You own the character that owns this item, you cannot set it to approved. Currently: @state',
+          array('@state' => $node->workflow_state_name)));
         unset($options[$index]);
         unset($form['workflow'][$workflow_name][$index]);
         $form['workflow'][$workflow_name]['#options'] = $options;
@@ -110,27 +120,57 @@ function items_form_workflow_tab_form_alter(&$form, &$form_state, $form_id) {
 }
 
 /**
+ * Implements form after build.
+ */
+function _items_node_form_workflow_after_build($form, $form_state) {
+  global $user;
+  $node = isset($form['#node']) ? $form['#node'] : '';
+  // You own the item.
+  if (!empty($form['#wf']->name) && !empty($node) && $user->uid == $node->uid && $node->type == 'items') {
+    $workflow_name = $form['#wf']->name;
+    $options = $form['workflow'][$workflow_name]['#options'];
+    $index = array_search('approved', $options);
+    if ($index !== FALSE && $index != $node->workflow) {
+      drupal_set_message(t('You own this item, you cannot set it to approved. Currently: @state',
+        array('@state' => $node->workflow_state_name)));
+      unset($options[$index]);
+      unset($form['workflow'][$workflow_name][$index]);
+      $form['workflow'][$workflow_name]['#options'] = $options;
+      $form['workflow'][$workflow_name]['#default_value'] = $node->workflow;
+    }
+  }
+  // You own the character that owns the item.
+  if ($node->type == 'items') {
+    $lang = $node->language;
+    $character_owner = isset($node->field_character_owner[$lang][0]['nid'])
+      ? node_load($node->field_character_owner[$lang][0]['nid']) : FALSE;
+    if ($character_owner && !empty($form['#wf']->name) && !empty($node) && $user->uid == $character_owner->uid) {
+      $workflow_name = $form['#wf']->name;
+      $options = $form['workflow'][$workflow_name]['#options'];
+      $index = array_search('approved', $options);
+      if ($index !== FALSE && $index != $node->workflow) {
+        drupal_set_message(t('You own the character that owns this item, you cannot set it to approved. Currently: @state',
+          array('@state' => $node->workflow_state_name)));
+        unset($options[$index]);
+        unset($form['workflow'][$workflow_name][$index]);
+        $form['workflow'][$workflow_name]['#options'] = $options;
+        $form['workflow'][$workflow_name]['#default_value'] = $node->workflow;
+      }
+    }
+  }
+  return $form;
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  */
 function items_form_items_node_form_alter(&$form, &$form_state, $form_id) {
   // Display message and disable form if item already approved.
   $node = isset($form['#node']) ? $form['#node'] : '';
-  if (!user_access('edit playable item') && empty($node->clone_from_original_nid) && _items_is_playable($node)) {
-    $allowed_edit = array('field_item_desc', 'field_item_history', 'field_character_owner',
-      'field_sh_notes', 'field_sh_private_notes', 'field_player_notes', 'field_creation_history');
-    foreach (element_children($form) as $child) {
-      if ((strpos($child, 'field_') === 0 || $child == 'title') && !in_array($child, $allowed_edit)) {
-        $form[$child]['#disabled'] = TRUE;
-      }
-    }
-    // Display value of item.
-    _items_get_item_value($node);
-    // Display alert.
-    drupal_set_message('You are attempting to edit an Item that has already been approved for play. Item numbers cannot be further edited ' .
-      'after approval. Please revert this Item to draft, and take it through the approval process again if you need to update numbers.');
+  if (empty($node->clone_from_original_nid) && _items_is_playable($node)) {
+    drupal_set_message('You are editing an Item that has already been approved for play. ' .
+      'Editing this item will invalidate the approval and return it to submission.', 'warning');
   }
-  // Disable workflow form in afterbuild if item is owned by player.
-  $form['#after_build'][] = '_items_node_form_workflow_after_build';
 }
 
 /**
@@ -149,35 +189,52 @@ function _items_admin_settings($form, &$form_state) {
     '#options' => $workflow_options,
     '#default_value' => variable_get('items_approved_workflow', ''),
   );
-  $form['items_primary_value'] = array(
+  $form['silver'] = array(
+    '#title' => t('Item values'),
+    '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,s
+  );
+  $form['silver']['items_primary_value'] = array(
     '#title' => t('Value modifier for primary stats'),
     '#type' => 'textfield',
     '#default_value' => variable_get('items_primary_value', 1),
   );
-  $form['items_secondary_value'] = array(
+  $form['silver']['items_secondary_value'] = array(
     '#title' => t('Value modifier for secondary stats'),
     '#type' => 'textfield',
     '#default_value' => variable_get('items_secondary_value', 1.5),
   );
-  $form['items_skills_value'] = array(
+  $form['silver']['items_skills_value'] = array(
     '#title' => t('Value modifier for skills'),
     '#type' => 'textfield',
     '#default_value' => variable_get('items_skills_value', 0.75),
   );
-  $form['items_bonus_value'] = array(
+  $form['silver']['items_bonus_value'] = array(
     '#title' => t('Silver value per bonus'),
     '#type' => 'textfield',
     '#default_value' => variable_get('items_bonus_value', 50),
   );
-  $form['items_overlap_value'] = array(
+  $form['silver']['items_overlap_value'] = array(
     '#title' => t('Silver value per overlap'),
     '#type' => 'textfield',
     '#default_value' => variable_get('items_overlap_value', 2),
   );
-  $form['items_recalculate_values'] = array(
+  $form['silver']['items_recalculate_values'] = array(
     '#title' => t('Recalculate value on save'),
     '#type' => 'checkbox',
     '#default_value' => variable_get('items_recalculate_values', FALSE),
+  );
+  $form['oversight'] = array(
+    '#title' => t('Item oversight'),
+    '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,s
+  );
+  $form['oversight']['oversight_limit'] = array(
+    '#title' => t('Stat value requiring oversight'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('oversight_limit', 7),
   );
   return system_settings_form($form);
 }
@@ -186,55 +243,11 @@ function _items_admin_settings($form, &$form_state) {
  * Helper function for item existing.
  */
 function _items_is_playable($item) {
-  if (isset($item->workflow)
-    && (isset($item->workflow_state_name) && $item->workflow_state_name == t('approved')) ) {
+  $approved = variable_get('items_approved_workflow', '');
+  if (isset($item->workflow) && $item->workflow == $approved) {
     return TRUE;
   }
   return FALSE;
-}
-
-function _items_owned_by_user($item, $user) {
-}
-
-/**
- * Implements form after build.
- */
-function _items_node_form_workflow_after_build($form, $form_state) {
-  global $user;
-  $node = isset($form['#node']) ? $form['#node'] : '';
-  // You own the item.
-  if (!empty($form['#wf']->name) && !empty($node) && $user->uid == $node->uid && $node->type == 'items') {
-    $workflow_name = $form['#wf']->name;
-    $options = $form['workflow'][$workflow_name]['#options'];
-    $index = array_search('approved', $options);
-    if ($index !== FALSE && $index != $node->workflow) {
-      drupal_set_message(t('You own this item, you cannot set it to approved. Currently: ' . $node->workflow_state_name));
-      unset($options[$index]);
-      unset($form['workflow'][$workflow_name][$index]);
-      $form['workflow'][$workflow_name]['#options'] = $options;
-      $form['workflow'][$workflow_name]['#default_value'] = $node->workflow;
-    }
-  }
-  // You own the character that owns the item.
-  if ($node->type == 'items') {
-    $lang = $node->language;
-    $character_owner = isset($node->field_character_owner[$lang][0]['nid'])
-      ? node_load($node->field_character_owner[$lang][0]['nid']) : FALSE;
-    if ($character_owner && !empty($form['#wf']->name) && !empty($node) && $user->uid == $character_owner->uid) {
-      $workflow_name = $form['#wf']->name;
-      $options = $form['workflow'][$workflow_name]['#options'];
-      $index = array_search('approved', $options);
-      if ($index !== FALSE && $index != $node->workflow) {
-        drupal_set_message(t('You own the character that owns this item, you cannot set it to approved. ' .
-          'Currently: ' . $node->workflow_state_name));
-        unset($options[$index]);
-        unset($form['workflow'][$workflow_name][$index]);
-        $form['workflow'][$workflow_name]['#options'] = $options;
-        $form['workflow'][$workflow_name]['#default_value'] = $node->workflow;
-      }
-    }
-  }
-  return $form;
 }
 
 /**
@@ -375,7 +388,7 @@ function _items_value_stat_overlap($node, $stats) {
  * Helper for rules. Check if the item is over limits.
  */
 function items_check_needs_oversight($node) {
-  $limit = 7;
+  $limit = variable_get('oversight_limit', 7);
   $return_value = FALSE;
   $lang = $node->language;
   // Check each stat.
