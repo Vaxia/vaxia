@@ -123,8 +123,8 @@ function _vaxia_dice_roller_submit_rolls($submitted_rolls, $character, $lang) {
     $commands = array();
     foreach ($rolls as $delta => $roll) {
       // Double check the roll info.s
-      $roll['stat'] = (is_int($roll['stat']) && $roll['stat'] > 0) ? $roll['stat'] : 0;
-      $roll['skill'] = (is_int($roll['skill']) && $roll['skill'] > 0) ? $roll['skill'] : 0;
+     // $roll['stat'] = (is_int($roll['stat']) && $roll['stat'] > 0) ? $roll['stat'] : 0;
+     // $roll['skill'] = (is_int($roll['skill']) && $roll['skill'] > 0) ? $roll['skill'] : 0;
      // $roll['number'] = (is_int($roll['number']) && $roll['number'] > 0) ? $roll['number'] : 1;
      // $roll['size'] = (is_int($roll['size']) && $roll['size'] > 0) ? $roll['size'] : 1;
       // Set roll.
