@@ -58,7 +58,7 @@ function vaxia_players_user_view($account, $view_mode, $langcode) {
 function vaxia_players_form_user_profile_form_alter(&$form, &$form_state, $form_id) {
   global $user;
   $this_user = $form['#user'];
-  $lang = $form['language']['#value'];
+  $lang = !empty($form['language']['#value']) ? $form['language']['#value'] : 'und';
   // If this is the owner of the account disallow access to specific fields.
   if ($user->uid == $this_user->uid) {
     $hidden = variable_get('vaxia_disabled_user_fields', '');
