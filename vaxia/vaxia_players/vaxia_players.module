@@ -35,16 +35,16 @@ function vaxia_players_user_view($account, $view_mode, $langcode) {
     }
 
     // Disable the fields from viewing if you're not the owner or permissioned.
-    if (!($user->uid == $node->uid || user_access('edit SH notes'))) {
+    if (!($user->uid == $account->uid || user_access('edit SH notes'))) {
       $display = variable_get('vaxia_public_user_fields', '');
       $display = explode("\n", $display);
       foreach ($display as $index => $value) {
         $display[$index] = trim($value);
       }
-      if (is_array($node->content)) {
-        foreach ($node->content as $index => $value) {
+      if (!empty($account->content) && is_array($account->content)) {
+        foreach ($account->content as $index => $value) {
           if (strpos($index, '#') === FALSE && !in_array($index, $display)) {
-            unset($node->content[$index]);
+            unset($account->content[$index]);
           }
         }
       }
