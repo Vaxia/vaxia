@@ -88,7 +88,10 @@ function cold_storage_rules_update_nodes($this_user, $types, $currents = NULL, $
       $this_state = workflow_node_current_state($node);
       // If current is not set OR is set to include the current.
       if (in_array('_NA', $currents) || in_array('_ANY', $currents) || in_array($this_state, $currents)) {
-        workflow_rules_set_state($node, $news, $comment);
+        module_load_include('inc', 'workflow_rules', 'workflow_rules.rules');
+        if (function_exists('workflow_rules_set_state')) {
+          workflow_rules_set_state($node, $news, $comment);
+        }
       }
     }
     // Update the node.
