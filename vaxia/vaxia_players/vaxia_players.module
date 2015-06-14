@@ -41,9 +41,11 @@ function vaxia_players_user_view($account, $view_mode, $langcode) {
       foreach ($display as $index => $value) {
         $display[$index] = trim($value);
       }
-      foreach ($node->content as $index => $value) {
-        if (strpos($index, '#') === FALSE && !in_array($index, $display)) {
-          unset($node->content[$index]);
+      if (is_array($node->content)) {
+        foreach ($node->content as $index => $value) {
+          if (strpos($index, '#') === FALSE && !in_array($index, $display)) {
+            unset($node->content[$index]);
+          }
         }
       }
     }
