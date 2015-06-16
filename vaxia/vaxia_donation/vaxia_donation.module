@@ -150,12 +150,12 @@ function vaxia_donation_form_payment_donation_form_alter(&$form, &$form_state) {
   // Make aesthetic changes first.
   // Hide the payment method info - there's only one.
   $form['payment_method']['#access'] = FALSE;
-  $form['amount']['#title'] = t('Donation amount');
-  $form['amount']['#prefix'] = '';
-  $form['pay']['#value'] = t('Donate');
-  $form['pay']['#type'] = 'image_button';
-  $form['pay']['#src'] = 'https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif';
-  $form['pay']['#weight'] = 100;
+  $form['payment_donation_amount']['#title'] = t('Donation amount');
+  $form['payment_donation_amount']['#prefix'] = '';
+  $form['actions']['payment_donation_pay']['#value'] = t('Donate');
+  $form['actions']['payment_donation_pay']['#type'] = 'image_button';
+  $form['actions']['payment_donation_pay']['#src'] = 'https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif';
+  $form['actions']['payment_donation_pay']['#weight'] = 100;
   // Bail out if the user can't make a vaxia character donation.
   // Aka: Not a player with a character.
   if (!user_access('make vaxia donation')) {
@@ -192,23 +192,25 @@ function vaxia_donation_form_payment_donation_form_alter(&$form, &$form_state) {
       $characters[$result->nid] = $result->title;
     }
   }
-  if (empty($characters)) {
+  if (!empty($characters)) {
     return;
   }
   // Only add the character form and process as a donate form IFF there's a valid character.
-  // Add our submit handler to save the selected character.
-  // But we have to make sure it happens after payment_donation,
-  // but before payment, so that we can avoid getting caught in the
-  // redirect to paypal. So timing matters.
-  $form['pay']['#submit'] = !empty($form['pay']['#submit']) ? $form['pay']['#submit'] : '';
-  $form['pay']['#submit'] = (array) $form['pay']['#submit'];
-  array_unshift($form['pay']['#submit'], '_vaxia_donation_submit');
   $form['donation_target'] = array(
     '#title' => t('Character'),
     '#description' => t('Award XP from donations to this character.'),
     '#type' => 'select',
     '#options' => $characters,
   );
+  // Add our submit handler to save the selected character.
+  $form['actions']['payment_donation_pay']['#submit'] = !empty($form['actions']['payment_donation_pay']['#submit'])
+    ? $form['actions']['payment_donation_pay']['#submit'] : '';
+  $form['actions']['payment_donation_pay']['#submit'] = (array) $form['actions']['payment_donation_pay']['#submit'];
+  // But we have to make sure it happens after payment_donation,
+  // but before payment, so that we can avoid getting caught in the
+  // redirect to paypal. So timing matters. Add the donation to end.
+  array_unshift($form['actions']['payment_donation_pay']['#submit'], '_vaxia_donation_submit');
+
 }
 
 /**
@@ -220,7 +222,7 @@ function _vaxia_donation_submit(&$form, &$form_state) {
   entity_save('payment', $payment);
   watchdog('vax_don', 'Saving donation #' . $payment->pid . ' for character #' . $nid);
   // Save the character id for the payment id.
-  $data = array('pid' =>$payment->pid, 'nid' => $nid);
+  $data = array('pid' => $payment->pid, 'nid' => $nid);
   _vaxia_donation_insert_donation($data);
 }
 
