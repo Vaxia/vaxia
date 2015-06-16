@@ -31,7 +31,7 @@ function comment_revisions_diff_admin_paths_alter(&$paths) {
  */
 function comment_revisions_diff_menu_alter(&$items) {
   $items['comment/%comment/revisions'] = array(
-    'title' => 'List revisions',
+    'title' => 'Revisions',
     'page callback' => 'comment_revisions_overview',
     'page arguments' => array(1),
     'access callback' => 'comment_revisions_diff_revision_access',
@@ -46,7 +46,6 @@ function comment_revisions_diff_menu_alter(&$items) {
     'access callback' => 'comment_revisions_diff_revision_access',
     'access arguments' => array(1),
     'type' => MENU_LOCAL_TASK,
-    'weight' => 2,
   );
   $items['comment/%comment/revisions/view'] = array(
     'title' => 'Compare revisions',
@@ -55,7 +54,6 @@ function comment_revisions_diff_menu_alter(&$items) {
     'access callback' => 'comment_revisions_diff_revision_access',
     'access arguments' => array(1),
     'type' => MENU_LOCAL_TASK,
-    'weight' => 2,
   );
 }
 
