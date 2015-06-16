@@ -58,6 +58,9 @@ Drupal.behaviors.rpgChat = {
           return false;
         }
       });
+
+      // Make note of the title for updates.
+      $('body').attr('chat_title', document.title);
     }
 
     // On page load, start the chat running.
@@ -82,6 +85,25 @@ Drupal.behaviors.rpgChat = {
   })
   .ajaxStop(function() {
     in_ajax = false;
+  });
+
+  // Set new title whenever the form refreshes.
+  $('form.node-form, form.comment-form').ajaxStop(function(){
+    if (!document.hasFocus()) {
+      var title = $('body').attr('chat_title');
+      if (title.length > 0 ) {
+        document.title = title;
+      }
+      document.title = title + ' (!)';
+    }
+  });
+
+  // Revert title when we have focus.
+  $(window).on('focus', function() {
+    var title = $('body').attr('chat_title');
+    if (title.length > 0 ) {
+      document.title = title;
+    }
   });
 
   })(jQuery); }
