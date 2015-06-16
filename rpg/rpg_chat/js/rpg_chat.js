@@ -62,7 +62,7 @@ Drupal.behaviors.rpgChat = {
       // Make note of the title for updates.
       $('body').attr('chat_title', document.title);
       // Make note of the current first chat message.
-      var last_mess = $('#rpg-chat a').first().id();
+      var last_mess = $('#rpg-chat a').filter(':first').attr('id');
       $('body').attr('last_mess', last_mess);
 
     }
@@ -93,7 +93,7 @@ Drupal.behaviors.rpgChat = {
 
   // Set new title whenever the form refreshes.
   $('form.node-form, form.comment-form').ajaxStop(function(){
-    var curr_mess = $('#rpg-chat a').first().id();
+    var curr_mess = $('#rpg-chat a').filter(':first').attr('id');
     var last_mess = $('body').attr('last_mess');
     if (!document.hasFocus() && curr_mess != last_mess) {
       $('body').attr('last_mess', curr_mess);
