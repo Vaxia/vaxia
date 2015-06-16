@@ -1,0 +1,485 @@
+<?php
+/**
+ * @file
+ * Enables comment revision diff.
+ */
+
+/**
+ * Implements hook_permission().
+ */
+function comment_revisions_diff_permission() {
+  return array(
+    'view comment revisions diffs' => array(
+      'title' => t('View revision diffs'),
+      'restrict access' => TRUE,
+    ),
+  );
+}
+
+/**
+ * Implements hook_admin_paths_alter().
+ */
+function comment_revisions_diff_admin_paths_alter(&$paths) {
+  // By default, treat all diff pages as administrative.
+  if (variable_get('comment_revisions_diff_admin_path_comment', 1)) {
+    $paths['comment/*/revisions/view/*/*'] = TRUE;
+  }
+}
+
+/**
+ * Implements hook_menu_alter().
+ */
+function comment_revisions_diff_menu_alter(&$items) {
+  $items['comment/%comment/revisions'] = array(
+    'title' => 'List revisions',
+    'page callback' => 'comment_revisions_overview',
+    'page arguments' => array(1),
+    'access callback' => 'comment_revisions_diff_revision_access',
+    'access arguments' => array(1),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 2,
+  );
+  $items['comment/%comment/revisions/list'] = array(
+    'title' => 'List revisions',
+    'page callback' => 'comment_revisions_overview',
+    'page arguments' => array(1),
+    'access callback' => 'comment_revisions_diff_revision_access',
+    'access arguments' => array(1),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 2,
+  );
+  $items['comment/%comment/revisions/view'] = array(
+    'title' => 'Compare revisions',
+    'page callback' => 'comment_revisions_diff_show',
+    'page arguments' => array(1, 4, 5, 6),
+    'access callback' => 'comment_revisions_diff_revision_access',
+    'access arguments' => array(1),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 2,
+  );
+}
+
+/**
+ * Access callback for the comment revisions page.
+ */
+function comment_revisions_diff_revision_access($comment) {
+return TRUE;
+  $may_revision_this_type = user_access('view comment revisions diffs') || user_access('administer nodes');
+  return $may_revision_this_type;
+}
+
+/**
+ * Implements hook_entity_diff().
+ */
+function comment_revisions_diff_entity_diff($old_comment, $new_comment, $context) {
+
+  $result = array();
+  if ($context['entity_type'] == 'comment') {
+    $result['title'] = array(
+      '#name' => 'Comment',
+      '#states' => array(),
+      '#weight' => -5,
+      '#settings' => array(
+        'show_header' => variable_get('diff_show_header_comment', 1),
+      ),
+    );
+    foreach ($context['states'] as $state) {
+      switch ($state) {
+        case 'rendered':
+          $result['title']['#states'][$state] = array(
+            '#old' => l($old_comment->subject, 'comment/' . $old_comment->subject),
+            '#new' => l($new_comment->subject, 'comment/' . $new_comment->subject),
+          );
+          break;
+
+        // We specify a default so that the title is allows compared.
+        case 'raw':
+        default:
+          $result['title']['#states'][$state] = array(
+            '#old' => array($old_comment->subject),
+            '#new' => array($new_comment->subject),
+          );
+          break;
+      }
+    }
+  }
+  return $result;
+}
+
+
+/**
+ * Call wrappers for diffs.
+ */
+function comment_revisions_overview($comment) {  drupal_set_title(t('Revisions for %title', array('%title' => $comment->subject)), PASS_THROUGH);
+  return drupal_get_form('comment_revisions_diff_comment_revisions', $comment);
+}
+
+/**
+ * List the comment revisions for comparing.
+ */
+function comment_revisions_diff_comment_revisions($form, $form_state, $comment) {
+  // Include the diff page.
+  module_load_include('inc', 'diff', 'diff.pages');
+  $form['#theme'] = 'diff_node_revisions';
+  $form['cid'] = array(
+    '#type' => 'hidden', 
+    '#value' => $comment->cid,
+  );
+
+  $revision_list = comment_revisions_list($comment);
+
+  if (count($revision_list) > REVISION_LIST_SIZE) {
+    // If the list of revisions is longer than the number shown on one page
+    // split the array.
+    $page = isset($_GET['page']) ? $_GET['page'] : '0';
+    $revision_chunks = array_chunk(comment_revisions_list($comment), REVISION_LIST_SIZE);
+    $revisions = $revision_chunks[$page];
+    // Set up global pager variables as would 'pager_query' do.
+    // These variables are then used in the theme('pager') call later.
+    global $pager_page_array, $pager_total, $pager_total_items;
+    $pager_total_items[0] = count($revision_list);
+    $pager_total[0] = ceil(count($revision_list) / REVISION_LIST_SIZE);
+    $pager_page_array[0] = max(0, min($page, ((int) $pager_total[0]) - 1));
+  }
+  else {
+    $revisions = $revision_list;
+  }
+
+  $revert_permission = FALSE;
+  if ((user_access('revert comment revisions') || user_access('administer nodes'))) {
+    $revert_permission = TRUE;
+  }
+  $delete_permission = FALSE;
+  if ((user_access('delete comment revisions') || user_access('administer nodes'))) {
+    $delete_permission = TRUE;
+  }
+
+  foreach ($revisions as $revision) {
+    $operations = array();
+    $revision_ids[$revision->vid] = '';
+
+    $revision_log = ($revision->log != '') ? '<p class="revision-log">' . filter_xss($revision->log) . '</p>' : '';
+    if ($revision->current_vid > 0) {
+      $form['info'][$revision->vid] = array(
+        '#markup' => t('!date by !username', array(
+          '!date' => l(format_date($revision->timestamp, 'small'), "comment/$comment->cid"), 
+          '!username' => theme('username', array('account' => $revision)),
+        )) . $revision_log,
+      );
+    }
+    else {
+      $diff_date = l(format_date($revision->timestamp, 'small'), "comment/$comment->cid/revisions/$revision->vid/view");
+      $form['info'][$revision->vid] = array(
+        '#markup' => t('!date by !username', array(
+          '!date' => $diff_date, 
+          '!username' => theme('username', array('account' => $revision)),
+        )
+        ) . $revision_log,
+      );
+      if ($revert_permission) {
+        $operations[] = array(
+          '#markup' => l(t('Revert'), "comment/$comment->cid/revisions/$revision->vid/revert"),
+        );
+      }
+      if ($delete_permission) {
+        $operations[] = array(
+          '#markup' => l(t('Delete'), "comment/$comment->cid/revisions/$revision->vid/delete"),
+        );
+      }
+      // Set a dummy, even if the user has no permission for the other
+      // operations, so that we can check if the operations array is
+      // empty to know if the row denotes the current revision.
+      $operations[] = array();
+    }
+    $form['operations'][$revision->vid] = $operations;
+
+  }
+  $new_vid = key($revision_ids);
+  next($revision_ids);
+  $old_vid = key($revision_ids);
+  $form['diff']['old'] = array(
+    '#type' => 'radios', 
+    '#options' => $revision_ids, 
+    '#default_value' => $old_vid,
+  );
+  $form['diff']['new'] = array(
+    '#type' => 'radios', 
+    '#options' => $revision_ids, 
+    '#default_value' => $new_vid,
+  );
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Compare'),
+  );
+
+  if (count($revision_list) > REVISION_LIST_SIZE) {
+    $form['#suffix'] = theme('pager');
+  }
+  $form['#attached'] = diff_build_attachments(TRUE);
+  return $form;
+}
+
+function comment_revisions_diff_comment_revisions_validate($form, &$form_state) {
+  $old_vid = $form_state['values']['old'];
+  $new_vid = $form_state['values']['new'];
+  if ($old_vid == $new_vid || !$old_vid || !$new_vid) {
+    form_set_error('diff', t('Select different revisions to compare.'));
+  }
+}
+
+function comment_revisions_diff_comment_revisions_submit($form, &$form_state) {
+  // The ids are ordered so the old revision is always on the left.
+  $old_vid = min($form_state['values']['old'], $form_state['values']['new']);
+  $new_vid = max($form_state['values']['old'], $form_state['values']['new']);
+  $form_state['redirect'] = 'comment/' . $form_state['values']['cid'] . '/revisions/view/' . $old_vid . '/' . $new_vid;
+}
+
+/**
+ * Call wrappers for diffs.
+ */
+function comment_revisions_diff_show($comment, $old_vid, $new_vid, $state = NULL) {
+  // Include the diff page.
+  module_load_include('inc', 'diff', 'diff.pages');
+
+  // Attaches the CSS.
+  // From diff.module.
+  $build['#attached'] = diff_build_attachments();
+
+  $default_state = variable_get('diff_default_state_comment', 'raw');
+  if (empty($state)) {
+    $state = $default_state;
+  }
+
+  $state = str_replace('-', '_', $state);
+  if (!array_key_exists($state, diff_available_states())) {
+    $state = $default_state;
+  }
+
+  // From comment_revisions.module.
+  $node = node_load($comment->nid);
+  $comment_revisions = comment_revisions_list($comment);
+
+  $old_comment = comment_revisions_load($comment->cid, $old_vid);
+  $new_comment = comment_revisions_load($comment->cid, $new_vid);
+
+  // Generate table header (date, username, log message).
+  $old_header = t('!date by !username', array(
+    '!date' => l(format_date($old_comment->revision_timestamp), "comment/$comment->nid/revisions/$old_comment->vid/view", array('absolute' => 1)),
+    '!username' => theme('username', array('account' => $comment_revisions[$old_vid])),
+  ));
+  $new_header = t('!date by !username', array(
+    '!date' => l(format_date($new_comment->revision_timestamp), "comment/$comment->nid/revisions/$new_comment->vid/view", array('absolute' => 1)),
+    '!username' => theme('username', array('account' => $comment_revisions[$new_vid])),
+  ));
+
+  $old_log = ($old_comment->log != '') ? '<p class="revision-log">' . filter_xss($old_comment->log) . '</p>' : '';
+  $new_log = ($new_comment->log != '') ? '<p class="revision-log">' . filter_xss($new_comment->log) . '</p>' : '';
+
+  // Generate previous diff/next diff links.
+  $nav_suffix = ($default_state != $state) ? '/' . str_replace('_', '-', $state) : '';
+  $next_vid = _diff_get_next_vid($comment_revisions, $new_vid);
+  if ($next_vid) {
+    $next_link = l(t('Next difference >'), 'comment/' . $comment->cid . '/revisions/view/' . $new_vid . '/' . $next_vid . $nav_suffix, array('absolute' => 1));
+  }
+  else {
+    $next_link = '';
+  }
+  $prev_vid = _diff_get_previous_vid($comment_revisions, $old_vid);
+  if ($prev_vid) {
+    $prev_link = l(t('< Previous difference'), 'comment/' . $comment->cid . '/revisions/view/' . $prev_vid . '/' . $old_vid . $nav_suffix, array('absolute' => 1));
+  }
+  else {
+    $prev_link = '';
+  }
+
+  $header = _diff_default_header($old_header, $new_header);
+  $rows = array();
+  if ($old_log || $new_log) {
+    $rows['logs'] = array(
+      array(
+        'data' => $old_log,
+        'colspan' => 2,
+      ),
+      array(
+        'data' => $new_log,
+        'colspan' => 2,
+      ),
+    );
+  }
+  $rows['navigation'] = array(
+    array(
+      'data' => $prev_link,
+      'class' => array('diff-prevlink'),
+      'colspan' => 2,
+    ),
+    array(
+      'data' => $next_link,
+      'class' => array('diff-nextlink'),
+      'colspan' => 2,
+    ),
+  );
+
+  $links = array();
+  foreach (diff_available_states('comment') as $alternative_state => $label) {
+    if ($alternative_state == $state) {
+      // @todo: Should we show both or just alternatives?
+    }
+    $links[$alternative_state] = array(
+      'title' => $label,
+      'href' => "comment/{$comment->cid}/revisions/view/{$old_vid}/{$new_vid}" . ($alternative_state == $default_state ? '' : '/' . str_replace('_', '-', $alternative_state)),
+    );
+  }
+
+  if (count($links) > 1) {
+    $state_links = theme('links', array(
+      'links' => $links,
+      'attributes' => array('class' => array('links', 'inline')),
+    ));
+    $rows['states'] = array(
+      array(
+        'data' => $state_links,
+        'class' => 'diff-links',
+        'colspan' => 4,
+      ),
+    );
+  }
+
+  $rows = array_merge($rows, _comment_revisions_diff_body_rows($old_comment, $new_comment, $state));
+
+  $build['diff_table'] = array(
+    '#theme' => 'table__diff__standard',
+    '#header' => $header,
+    '#rows' => $rows,
+    '#attributes' => array('class' => array('diff')),
+    '#colgroups' => _diff_default_cols(),
+    '#sticky' => FALSE,
+  );
+
+  // Allow users to hide or set the display mode of the preview.
+  $header = '';
+  if ($comment->vid == $new_vid) {
+    $header .= '<div class="diff-section-title">' . t('Current revision:') . '</div>';
+  }
+  else {
+    $header .= '<div class="diff-section-title">' . t('Revision of @new_date:', array('@new_date' => format_date($new_comment->revision_timestamp))) . '</div>';
+  }
+  $build['diff_preview']['header']['#markup'] = $header;
+  // Don't include comment links when viewing the diff.
+  $build['diff_preview']['content'] = comment_view($new_comment, $view_mode);
+  if (isset($build['diff_preview']['content']['links'])) {
+    unset($build['diff_preview']['content']['links']);
+  }
+  if (isset($build['diff_preview']['content']['comments'])) {
+    unset($build['diff_preview']['content']['comments']);
+  }
+
+  return $build;
+}
+
+function _comment_revisions_diff_body_rows($old_comment, $new_comment, $state = 'raw') {
+  // Include the diff page.
+  module_load_include('inc', 'diff', 'diff.pages');
+
+  // This is an unique index only, so no need for drupal_static().
+  static $table_row_counter = 0;
+
+  if ($theme = variable_get('diff_theme', 'default')) {
+    drupal_add_css(drupal_get_path('module', 'diff') . "/css/diff.{$theme}.css");
+  }
+
+  $rows = array();
+  $any_visible_change = FALSE;
+  $context = array(
+    'entity_type' => 'comment', 
+    'states' => array($state), 
+    'view_mode' => 'diff_standard',
+  );
+
+  $comment_diffs = diff_compare_entities($old_comment, $new_comment, $context);
+
+  // Track line numbers between multiple diffs.
+  $line_stats = array(
+    'counter' => array(
+      'x' => 0,
+      'y' => 0,
+    ), 
+    'offset' => array(
+      'x' => 0,
+      'y' => 0,
+    ),
+  );
+
+  // Render diffs for each.
+  foreach ($comment_diffs as $comment_diff) {
+    $show_header = !empty($comment_diff['#name']);
+    // These are field level settings.
+    if ($show_header && isset($comment_diff['#settings']['show_header'])) {
+      $show_header = $show_header && $comment_diff['#settings']['show_header'];
+    }
+
+    // Line counting and line header options.
+    if (empty($comment_diff['#settings']['line_counter'])) {
+      $line_counter = FALSE;
+    }
+    else {
+      $line_counter = $comment_diff['#settings']['line_counter'];
+    }
+    // Every call to 'line' resets the counters.
+    if ($line_counter) {
+      $line_stats['counter']['x'] = 0;
+      $line_stats['counter']['y'] = 0;
+      if ($line_counter == 'line' && 0) {
+        $line_stats['offset']['x'] = 0;
+        $line_stats['offset']['y'] = 0;
+      }
+      $line_stats_ref = $line_stats;
+    }
+    else {
+      $line_stats_ref = NULL;
+    }
+
+    list($old, $new) = diff_extract_state($comment_diff, $state);
+    if ($comment_diff_rows = diff_get_rows($old, $new, $line_counter && $line_counter != 'hidden', $line_stats_ref)) {
+      if ($line_counter && $line_counter != 'line') {
+        $line_stats['offset']['x'] += $line_stats_ref['counter']['x'];
+        $line_stats['offset']['y'] += $line_stats_ref['counter']['y'];
+      }
+      if ($show_header) {
+        $rows['diff-header-' . $table_row_counter++] = array(
+          array(
+            'data' => t('Changes to %name', array('%name' => $comment_diff['#name'])), 
+            'class' => 'diff-section-title', 
+            'colspan' => 4,
+          ),
+        );
+      }
+      // To avoid passing counter to the Diff engine, index rows manually here
+      // to allow modules to interact with the table. i.e. no array_merge().
+      foreach ($comment_diff_rows as $row) {
+        $rows['diff-row-' . $table_row_counter++] = $row;
+      }
+      $any_visible_change = TRUE;
+    }
+  }
+  if (!$any_visible_change) {
+    $rows['diff-empty-' . $table_row_counter++] = array(
+      array(
+        'data' => t('No visible changes'), 
+        'class' => 'diff-section-title', 
+        'colspan' => 4,
+      ),
+    );
+    // @todo: revise this.
+    // Needed to keep safari happy.
+    $rows['diff-empty-' . $table_row_counter++] = array(
+      array('data' => ''),
+      array('data' => ''),
+      array('data' => ''),
+      array('data' => ''),
+    );
+  }
+
+  return $rows;
+}
+
