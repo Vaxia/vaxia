@@ -185,7 +185,7 @@ function _item_shop_sellback_form_submit($form, &$form_state) {
           _character_sheet_update_xp($character->nid, $value, 'silver');
           $message = t('@xp silver added by System on selling back @title by @user.',
             array('@xp' => $value, '@title' => $item->title, '@user' => $user->name));
-          _character_sheet_update_log($character->nid, 'silver', $message, $variables = array());
+          _character_sheet_update_log($character->nid, 'silver', $message);
           drupal_set_message(t('%value silver added to %title.', array('%value' => $value, '%title' => $character->title)));
           unset($character->field_items[$character->language][$index]);
           node_save($character);

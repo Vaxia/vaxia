@@ -4,6 +4,7 @@
    * A Views' field handler for the player item shop.
    */
 class item_shop_field_handler_add_item extends views_handler_field {
+
   function construct() {
     parent::construct();
     $this->additional_fields['nid'] = 'nid';
@@ -149,6 +150,11 @@ class item_shop_field_handler_add_item extends views_handler_field {
         }
 
         if(!$error) {
+          // Charge silver.
+          _silver_add_submit_form_remove_silver($char, -1 * $this_value);
+          $message = t('@xp silver removed by System to purchase @title by @user.',
+            array('@xp' => $this_value, '@title' => $node->title, '@user' => $user->name));
+          _character_sheet_update_log($char, 'item_shop', $message);
           // Create new node for the player, and character.
           $new_node = clone $node;
           unset($new_node->nid);
@@ -163,22 +169,18 @@ class item_shop_field_handler_add_item extends views_handler_field {
             $states = workflow_get_workflow_states_by_wid($workflow->wid);
             foreach ($states as $state) {
               if ($state->state == 'approved') {
-                workflow_execute_transition($new_node, $state->sid, t('This item has been added and approved from the Item Shop.'), TRUE);
+                workflow_execute_transition($new_node, $state->sid,
+                  t('This item has been added and approved from the Item Shop.'), TRUE);
                 break;
               }
             }
           }
-          // Charge silver.
-          _add_silver_submit_form_remove_silver($char, -1 * $this_value);
-          $message = t('@xp silver removed by System to purchase @title by @user.',
-            array('@xp' => $this_value, '@title' => $node->title, '@user' => $user->name));
-          _character_sheet_update_log($char, 'silver', $message, $variables = array());
           // Display message.
           drupal_set_message(t(':title has been added to this character. :silver silver charged.',
             array(':title' => $new_node->title, ':silver' => $this_value)));
           drupal_set_message(t('It can take a few minutes for our cache systems to catch up with this change, ' .
-          	'do NOT purchase a copy of the item if it doesn\'t immediately appear on the sheet. (In general, ' .
-          	'you only need to purchase one of any item in the shop. You can always come back and pick up another one later.'));
+            'do NOT purchase a copy of the item if it doesn\'t immediately appear on the sheet. (In general, ' .
+            'you only need to purchase one of any item in the shop. You can always come back and pick up another one later.'));
           // Flush Entity Cache record.
           if (module_exists('entitycache')) {
             cache_clear_all('*', 'cache_entity_node', TRUE);
