@@ -180,16 +180,28 @@ function _item_shop_sellback_form_submit($form, &$form_state) {
       foreach ($items as $index => $item_nid) {
       	$item_nid = $item_nid['nid'];
         if ($item_nid == $item->nid) {
-          drupal_set_message('Selling back item.');
+          drupal_set_message('Selling back item...');
           // Add silver to the owning character.
           _character_sheet_update_xp($character->nid, $value, 'silver');
           $message = t('@xp silver added by System on selling back @title by @user.',
             array('@xp' => $value, '@title' => $item->title, '@user' => $user->name));
-          _character_sheet_update_log($character->nid, 'silver', $message);
+          _character_sheet_update_log($character->nid, 'item_shop', $message);
           drupal_set_message(t('%value silver added to %title.', array('%value' => $value, '%title' => $character->title)));
           unset($character->field_items[$character->language][$index]);
           node_save($character);
-          // Remove the sheet from the item.
+          // Transition to removed from game.
+          $workflow = workflow_get_workflow_type_map_by_type($item->type);
+          if ($workflow) {
+            $states = workflow_get_workflow_states_by_wid($workflow->wid);
+            foreach ($states as $state) {
+              if ($state->state == 'removed from game') {
+                workflow_execute_transition($item, $state->sid,
+                  t('This item has been sold back to the Item Shop.'), TRUE);
+                break;
+              }
+            }
+          }
+          // Done with workflow.
           $item->uid = 1; // Revert to admin ownership of the item.
           unset($item->field_character_owner[$item->language][0]);
           node_save($item);
