@@ -357,12 +357,12 @@ function _item_shop_allow_sellback($node) {
   if (!variable_get('item_shop_sellback', TRUE)) {
     return FALSE;
   }
-  // Check type.
-  if ($node->type != 'items' && user_access('sellback item shop')) {
-    return FALSE;
-  }
   // Check user access.
   if (!user_access('sellback item shop')) {
+    return FALSE;
+  }
+  // Check type.
+  if ($node->type != 'items') {
     return FALSE;
   }
   // Check allowed to sellback.
@@ -390,4 +390,5 @@ function _item_shop_allow_sellback($node) {
       return FALSE;
     }
   }
+  return TRUE;
 }
