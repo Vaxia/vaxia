@@ -111,7 +111,7 @@ function vaxia_character_sheet_field_info() {
     ),
     //field_description
     //field_artwork_image
-    'field_realm' => array(
+    'field_tag_realm' => array(
       'permissions' => array(
         'owner' => DISABLE_SHEET,
       ),

@@ -845,7 +845,7 @@ function _vaxia_filter_characters_by_room($nid) {
 /**
  * Helper function get the realm from the node.
  */
-function _vaxia_get_realm($node, $field = 'field_realm') {
+function _vaxia_get_realm($node, $field = 'field_tag_realm') {
   $realm = 'storyhost';
   if (!empty($node->{$field}[$node->language][0]['tid'])) {
     $realm_term = taxonomy_term_load($node->{$field}[$node->language][0]['tid']);

@@ -219,7 +219,8 @@ function _rpg_rep_add_submit(&$form, &$form_state) {
   $node = node_load($form_state['values']['nid']);
   $xp = $form_state['values']['rpg_rep_amount'];
   $gid = $form_state['values']['rpg_rep_group'];
-  $groups = _rpg_rep_get_groups($node->field_realm[$node->language][0]['value']);
+  $realm = _vaxia_get_realm($node);
+  $groups = _rpg_rep_get_groups($realm);
   $group = $groups[$gid];
   // Clear the cache if need be.
   if (module_exists('entitycache')) {
@@ -263,7 +264,8 @@ function _rpg_rep_display($node) {
   if (!is_object($node)) {
     $node = node_load($node);
   }
-  $groups = _rpg_rep_get_groups($node->field_realm[$node->language][0]['value']);
+  $realm = _vaxia_get_realm($node);
+  $groups = _rpg_rep_get_groups($realm);
   $char_reps = array();
   foreach ($groups as $gid => $group_name) {
     $gxp = _character_sheet_get_xp($node->nid, 'rep_' . $gid);

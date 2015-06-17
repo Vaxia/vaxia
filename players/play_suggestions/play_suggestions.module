@@ -135,15 +135,14 @@ function _play_suggestions_get_suggestion() {
 function _play_suggestions_random_submission() {
   $count = db_query('SELECT COUNT(n.nid) FROM {node} n WHERE n.type = \'play_suggestions\'')->fetchField();
   $random = rand(0, $count - 1);
-  $results = db_query('SELECT n.nid, n.title, r.name FROM {node} n ' .
+  $results = db_query('SELECT n.nid, n.title, t.field_tag_realm_tid FROM {node} n ' .
     'LEFT JOIN {field_data_field_tag_realm} t ON t.entity_id = n.nid AND t.revision_id = n.vid ' .
-    'LEFT JOIN {taxonomy_term_data} r ON r.tid = t.field_tag_realm_tid ' .
     'WHERE n.type = \'play_suggestions\' LIMIT ' . $random . ', 1');
   // Return result.
   foreach ($results as $result) {
     return array(
       'suggestion' => $result->title,
-      'realm' => $result->name,
+      'realm' => $result->field_tag_realm_tid,
     );
   }
   return array();
@@ -157,13 +156,13 @@ function _play_suggestions_random_location($realm) {
   $count = 10;
   $sql = 'SELECT DISTINCT(c.nid) FROM {comment} c ' .
     'LEFT JOIN {node} n ON n.nid = c.nid ' .
-    'LEFT JOIN {field_data_field_realm} r ON r.entity_id = n.nid  AND r.revision_id = n.vid ' .
+    'LEFT JOIN {field_data_field_tag_realm} r ON r.entity_id = n.nid  AND r.revision_id = n.vid ' .
     'LEFT JOIN {field_data_field_private_room} p ON p.entity_id = n.nid  AND p.revision_id = n.vid ' .
     'LEFT JOIN {field_data_field_mature_posting} m ON m.entity_id = n.nid  AND m.revision_id = n.vid ' .
     'LEFT JOIN {field_data_field_locked_to_users} l ON l.entity_id = n.nid  AND l.revision_id = n.vid ' .
     // Where not private, mature, or locked.
     'WHERE n.type=\'rpg_chatroom\' AND n.status = 1 ' .
-    'AND r.field_realm_value=:realm ' .
+    'AND r.field_tag_realm_tid=:realm ' .
     'AND p.field_private_room_value=1 ' .
     'AND m.field_mature_posting_value=0 ' .
     'AND l.field_locked_to_users_value=0 ' .

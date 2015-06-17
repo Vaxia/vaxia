@@ -7,7 +7,7 @@
  * @see https://drupal.org/node/1728164
  */
 $realm = 'storyhost';
-$field = 'field_realm';
+$field = 'field_tag_realm';
 if (!empty($node->{$field}[$node->language][0]['tid'])) {
   $realm_term = taxonomy_term_load($node->{$field}[$node->language][0]['tid']);
   $realm = !empty($realm_term->name) ? strtolower($realm_term->name) : $realm;
