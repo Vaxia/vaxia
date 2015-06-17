@@ -15,6 +15,10 @@ function vaxia_players_permission() {
       'title' => t('email others characters'),
       'description' => t('Email others characters.'),
     ),
+    'view others accounts'=> array(
+      'title' => t('view others accounts'),
+      'description' => t('View others accounts.'),
+    ),
   );
 }
 
@@ -35,7 +39,7 @@ function vaxia_players_user_view($account, $view_mode, $langcode) {
     }
 
     // Disable the fields from viewing if you're not the owner or permissioned.
-    if (!($user->uid == $account->uid || user_access('edit SH notes'))) {
+    if (!($user->uid == $account->uid || user_access('view others accounts'))) {
       $display = variable_get('vaxia_public_user_fields', '');
       $display = explode("\n", $display);
       foreach ($display as $index => $value) {
