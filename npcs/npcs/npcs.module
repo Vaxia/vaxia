@@ -410,11 +410,10 @@ function _npcs_wiki_form_submit($form, $form_state) {
   $wiki->language = 'und';
   global $user;
   $wiki->uid = $user->uid;
-  $realm = isset($node->field_realm[$lang][0]['value']) ? $node->field_realm[$lang][0]['value'] : '';
   $last_name = isset($node->field_last_name[$lang][0]['value']) ? ' ' . $node->field_last_name[$lang][0]['value'] : '';
-  $wiki->title = ucwords($realm) . '/Notable Characters and NPCs/' . $wiki->title . $last_name; // Set up default title.  $body = '';
+  $wiki->title = $wiki->title . $last_name; // Set up default title.  $body = '';
   $body .= '[b]Realm:[/b] ';
-  $body .= isset($node->field_realm[$lang][0]['value']) ? $node->field_realm[$lang][0]['value'] : '';
+  $body .= _vaxia_get_realm($node);
   $body .= "\n" . '[b]Titles:[/b] ';
   $body .= isset($node->field_titles[$lang][0]['value']) ? $node->field_titles[$lang][0]['value'] : 'none';
   $body .= "\n" . '[b]Race:[/b] ';

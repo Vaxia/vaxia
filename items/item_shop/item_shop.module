@@ -257,7 +257,7 @@ function item_shop_check_can_afford($nid, $char_nid = '') {
     return TRUE;
   }
   // Get realm from argument.
-  $realm = isset($character->field_realm[$lang][0]['value']) ? $character->field_realm[$lang][0]['value'] : 'Vaxia';
+  $realm = _vaxia_get_realm($character);
   // Check values are ok.
   if (empty($realm)) {
     return TRUE;
@@ -291,7 +291,7 @@ function item_shop_check_can_afford($nid, $char_nid = '') {
   if ($silver < $this_value) {
     return TRUE;
   }
-  $this_realm = isset($item->field_realm[$lang][0]['value']) ? $item->field_realm[$lang][0]['value'] : 'Vaxia';
+  $this_realm = _vaxia_get_realm($item);
   if ($realm != $this_realm) {
     return TRUE;
   }
@@ -340,7 +340,7 @@ function _item_shop_show_footer($char_nid = '') {
   if ($user->uid == $node->uid) {
     // Grab the view, and load it with correct arguments.
     $lang = $node->language;
-    $realm = isset($node->field_realm[$lang][0]['value']) ? $node->field_realm[$lang][0]['value'] : 'Vaxia';
+    $realm = _vaxia_get_realm($node);
     $economy = isset($node->field_economy[$lang][0]['value']) ? $node->field_economy[$lang][0]['value'] : 0;
     // Figure out the players silver and economic values.
     $silver = _character_sheet_get_xp($node->nid, 'silver');

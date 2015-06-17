@@ -79,7 +79,7 @@ class item_shop_field_handler_add_item extends views_handler_field {
     }
 
     // Get realm from argument.
-    $realm = isset($node->field_realm[$lang][0]['value']) ? $node->field_realm[$lang][0]['value'] : 'Vaxia';
+    $realm = _vaxia_get_realm($node);
     // Check values are ok.
     if (empty($realm)) {
       drupal_set_message(t('No realm found for this purchase.'));
@@ -125,7 +125,7 @@ class item_shop_field_handler_add_item extends views_handler_field {
     foreach($nodes as $nid => $node) {
       $lang = $node->language;
       if (!empty($char)) {
-        $this_realm = $node->field_realm[$lang][0]['value'];
+        $this_realm = _vaxia_get_realm($node);
         $this_value = $node->field_value[$lang][0]['value'];
         $this_value = str_replace(',', '', $this_value);
         $this_value = str_replace('.', '', $this_value);

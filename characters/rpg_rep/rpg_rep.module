@@ -165,7 +165,8 @@ function _rpg_rep_add_form(&$form, $form_state) {
   if (user_access('give reputation xp') && _rpg_rep_is_pc($node) && $node->uid != $user->uid) {
     // Add the UI for the rep.
     $groups = array();
-    foreach (_rpg_rep_get_groups($node->field_realm[$node->language][0]['value']) as $gid => $group_name) {
+    $realm = _vaxia_get_realm($node);
+    foreach (_rpg_rep_get_groups($realm) as $gid => $group_name) {
       $groups[$gid] = $group_name;
     }
     // Add a form to handle reputation on it's own.

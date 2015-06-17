@@ -5,3 +5,4 @@ package = RPG
 version = 7.x-1.0
 project = rpg_rep
 dependencies[] = character_sheet
+dependencies[] = vaxia

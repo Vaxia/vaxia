@@ -6,7 +6,12 @@
  * Complete documentation for this file is available online.
  * @see https://drupal.org/node/1728164
  */
-$realm = !empty($node->field_realm[$node->language][0]['value']) ? strtolower($node->field_realm[$node->language][0]['value']) : 'storyhost';
+$realm = 'storyhost';
+$field = 'field_realm';
+if (!empty($node->{$field}[$node->language][0]['tid'])) {
+  $realm_term = taxonomy_term_load($node->{$field}[$node->language][0]['tid']);
+  $realm = !empty($realm_term->name) ? strtolower($realm_term->name) : $realm;
+}
 ?>
 <article class="node-<?php print $node->nid; ?> <?php print $classes; ?> realm-<?php print $realm; ?> clearfix"<?php print $attributes; ?>>
 

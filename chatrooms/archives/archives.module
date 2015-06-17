@@ -351,12 +351,9 @@ function _archives_get_comments($type, $category, $begin, $end, $include_node = 
         $location = _archives_prepare_string($node->title);
         $player = trim($players[$cid]->name);
         // Get additional location info.
-        $realm = '';
-        if (!empty($node->field_realm[$node->language][0]['value'])) {
-          $realm = trim($node->field_realm[$node->language][0]['value']);
-          if (!empty($realm)) {
-            $realm .= '-';
-          }
+        $realm = _vaxia_get_realm($node);
+        if (!empty($realm)) {
+          $realm .= '-';
         }
         $parent = '';
         $parent = isset($node->field_parent[$node->language][0]['nid']) ? node_load($node->field_parent[$node->language][0]['nid']) : '';

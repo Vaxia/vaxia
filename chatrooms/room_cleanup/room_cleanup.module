@@ -93,11 +93,7 @@ function room_cleanup_make_room_from_wiki_submit($form, &$form_state) {
   $room->uid = $user->uid;
   $room->status = 1;
   $room->comment = 2;
-  $realm = 'Vaxia';
-  if (strpos($wiki->title, 'Sirian') !== FALSE) {
-    $realm = 'Sirian';
-  }
-  $room->field_realm[$room->language][0]['value'] = $realm;
+  $room->field_realm = $wiki->field_realm;
   $parent_nodes = node_load_multiple(array(), array('title' => trim(array_pop($title_breadcrumb))));
   foreach ($parent_nodes as $nid => $this_node) {
     $parent_room = $this_node;

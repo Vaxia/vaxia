@@ -747,7 +747,7 @@ function vaxia_form_character_sheet_node_form_alter(&$form, &$form_state, $form_
   if (_character_sheet_is_enabled($node) && _character_sheet_is_playable($node)) {
     $user_sh = _vaxia_get_SH_characters($node->uid);
     global $user;
-    $realm = !empty($node->field_realm[$node->language][0]['value']) ? strtolower($node->field_realm[$node->language][0]['value']) : 'storyhost';
+    $realm = _vaxia_get_realm($node);
     $form['#attributes']['class'][] = 'vaxia-realm-' . $realm;
     if ($node->uid == $user->uid) {
       $form['#attributes']['class'][] = 'vaxia-owner';
@@ -834,10 +834,22 @@ function _vaxia_get_character_ref_types($nid) {
 function _vaxia_filter_characters_by_room($nid) {
   $room = node_load(arg(1));
   if ($room) {
-    $realm = isset($room->field_realm[$room->language][0]['value']) ? $room->field_realm[$room->language][0]['value'] : '';
+    $realm = _vaxia_get_realm($node);
     if (!empty($realm) && strtolower($realm) != 'storyhost') {
       return $realm . '+storyhost+Storyhost';
     }
   }
   return 'all';
+}
+
+/**
+ * Helper function get the realm from the node.
+ */
+function _vaxia_get_realm($node, $field = 'field_realm') {
+  $realm = 'storyhost';
+  if (!empty($node->{$field}[$node->language][0]['tid'])) {
+    $realm_term = taxonomy_term_load($node->{$field}[$node->language][0]['tid']);
+    $realm = !empty($realm_term->name) ? strtolower($realm_term->name) : $realm;
+  }
+  return $realm;
 }
