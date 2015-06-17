@@ -832,8 +832,8 @@ function _vaxia_get_character_ref_types($nid) {
  * Rules helper function.
  */
 function _vaxia_filter_characters_by_room($nid) {
-  $room = node_load(arg(1));
-  if ($room) {
+  $node = node_load(arg(1));
+  if ($node) {
     $realm = _vaxia_get_realm($node);
     if (!empty($realm) && strtolower($realm) != 'storyhost') {
       return $realm . '+storyhost+Storyhost';
