@@ -833,8 +833,8 @@ function _vaxia_get_character_ref_types($nid) {
  */
 function _vaxia_filter_characters_by_room($nid) {
   $node = node_load(arg(1));
-  if (!empty($node->field_tag_realm[$node->language][0]['tid'])) {
-    $sh_tid = 1004;
+  $sh_tid = 1004;
+  if (!empty($node->field_tag_realm[$node->language][0]['tid']) && ($node->field_tag_realm[$node->language][0]['tid'] != $sh_tid)) {
     return $node->field_tag_realm[$node->language][0]['tid'] . '+' . $sh_tid;
   }
   return 'all';
