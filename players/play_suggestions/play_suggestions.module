@@ -117,11 +117,14 @@ function _play_suggestions_search_submit(&$form, $form_state) {
 function _play_suggestions_get_suggestion() {
   // Get a random suggestion within the nid.
   $suggestion = _play_suggestions_random_submission();
-  if (empty($suggestion['realm'])) {
+  if (empty($suggestion['tid'])) {
     return array();
   }
+  // Get realm name.
+  $realm_term = taxonomy_term_load($suggestion['tid']);
+  $suggestion['realm'] = !empty($realm_term->name) ? $realm_term->name : $realm;
   // Get a random location within the realm.
-  $nid = _play_suggestions_random_location($suggestion['realm']);
+  $nid = _play_suggestions_random_location($suggestion['tid']);
   $node = node_load($nid);
   if ($node) {
     $suggestion['location'] = l($node->title, 'node/' . $node->nid);
@@ -142,7 +145,7 @@ function _play_suggestions_random_submission() {
   foreach ($results as $result) {
     return array(
       'suggestion' => $result->title,
-      'realm' => $result->field_tag_realm_tid,
+      'tid' => $result->field_tag_realm_tid,
     );
   }
   return array();
