@@ -34,35 +34,37 @@ function _rpg_rep_cron() {
     foreach(_rpg_rep_get_groups($setting) as $gid => $group) {
       $reps[] = 'rep_' . $gid;
     }
-    // Get all PCs with reps type.
-    // Lower reps for those with positive.
-    $sheets = db_query('UPDATE {character_sheet_xp} x ' . // With an XP score
-      'SET x.xp = (x.xp - 1) ' . // For all reputations over 0, reduce by 1.
-      'WHERE x.type IN (:rep) '.  // YES we want to do this to inactive PCs as well. So don't check status.
-      'AND x.xp > 0 '. // Only for those greater than 1.
-      'AND x.nid NOT IN ( ' .
-      'SELECT npc.entity_id FROM {field_data_field_is_npc} npc WHERE npc.field_is_npc_value = 1 ' . // Not an NPC
-      ') '.
-      'AND x.nid NOT IN ( ' .
-      'SELECT onpc.entity_id FROM {field_data_field_is_open_npc} onpc WHERE onpc.field_is_open_npc_value = 1 ' . // Not an open NPC
-      ') '.
-      'AND x.nid NOT IN ( ' .
-      'SELECT st.entity_id FROM {field_data_field_is_storyteller} st WHERE st.field_is_storyteller_value = 1 ' . // Not a storyteller.
-      ')', array(':rep' => $rep));
-    // Increase reps for those with negative.
-    $sheets = db_query('UPDATE {character_sheet_xp} x ' . // With an XP score
-      'SET x.xp = (x.xp + 1) ' . // For all reputations under 0, add by 1.
-      'WHERE x.type IN (:rep) '.  // YES we want to do this to inactive PCs as well. So don't check status.
-      'AND x.xp < 0 '. // Only for those less than 1.
-      'AND x.nid NOT IN ( ' .
-      'SELECT npc.entity_id FROM {field_data_field_is_npc} npc WHERE npc.field_is_npc_value = 1 ' . // Not an NPC
-      ') '.
-      'AND x.nid NOT IN ( ' .
-      'SELECT onpc.entity_id FROM {field_data_field_is_open_npc} onpc WHERE onpc.field_is_open_npc_value = 1 ' . // Not an open NPC
-      ') '.
-      'AND x.nid NOT IN ( ' .
-      'SELECT st.entity_id FROM {field_data_field_is_storyteller} st WHERE st.field_is_storyteller_value = 1 ' . // Not a storyteller.
-      ')', array(':rep' => $rep));
+    if (!empty($reps)) {
+      // Get all PCs with reps type.
+      // Lower reps for those with positive.
+      $sheets = db_query('UPDATE {character_sheet_xp} x ' . // With an XP score
+        'SET x.xp = (x.xp - 1) ' . // For all reputations over 0, reduce by 1.
+        'WHERE x.type IN (:reps) '.  // YES we want to do this to inactive PCs as well. So don't check status.
+        'AND x.xp > 0 '. // Only for those greater than 1.
+        'AND x.nid NOT IN ( ' .
+        'SELECT npc.entity_id FROM {field_data_field_is_npc} npc WHERE npc.field_is_npc_value = 1 ' . // Not an NPC
+        ') '.
+        'AND x.nid NOT IN ( ' .
+        'SELECT onpc.entity_id FROM {field_data_field_is_open_npc} onpc WHERE onpc.field_is_open_npc_value = 1 ' . // Not an open NPC
+        ') '.
+        'AND x.nid NOT IN ( ' .
+        'SELECT st.entity_id FROM {field_data_field_is_storyteller} st WHERE st.field_is_storyteller_value = 1 ' . // Not a storyteller.
+        ')', array(':reps' => $reps));
+      // Increase reps for those with negative.
+      $sheets = db_query('UPDATE {character_sheet_xp} x ' . // With an XP score
+        'SET x.xp = (x.xp + 1) ' . // For all reputations under 0, add by 1.
+        'WHERE x.type IN (:reps) '.  // YES we want to do this to inactive PCs as well. So don't check status.
+        'AND x.xp < 0 '. // Only for those less than 1.
+        'AND x.nid NOT IN ( ' .
+        'SELECT npc.entity_id FROM {field_data_field_is_npc} npc WHERE npc.field_is_npc_value = 1 ' . // Not an NPC
+        ') '.
+        'AND x.nid NOT IN ( ' .
+        'SELECT onpc.entity_id FROM {field_data_field_is_open_npc} onpc WHERE onpc.field_is_open_npc_value = 1 ' . // Not an open NPC
+        ') '.
+        'AND x.nid NOT IN ( ' .
+        'SELECT st.entity_id FROM {field_data_field_is_storyteller} st WHERE st.field_is_storyteller_value = 1 ' . // Not a storyteller.
+        ')', array(':reps' => $reps));
+    }
     // Done - do the next setting.
   }
 }
