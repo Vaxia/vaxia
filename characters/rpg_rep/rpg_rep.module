@@ -35,6 +35,8 @@ function _rpg_rep_cron() {
       $reps[] = 'rep_' . $gid;
     }
     if (!empty($reps)) {
+      watchdog('rpg_rep', 'Running reputation processing.');
+/*
       // Get all PCs with reps type.
       // Lower reps for those with positive.
       $sheets = db_query('UPDATE {character_sheet_xp} x ' . // With an XP score
@@ -64,8 +66,8 @@ function _rpg_rep_cron() {
         'AND x.nid NOT IN ( ' .
         'SELECT st.entity_id FROM {field_data_field_is_storyteller} st WHERE st.field_is_storyteller_value = 1 ' . // Not a storyteller.
         ')', array(':reps' => $reps));
+*/
     }
-    // Done - do the next setting.
   }
 }
 
