@@ -173,14 +173,16 @@ function _vaxia_players_send_characters($account) {
     'These characters may or may not be currently active, and their inclusion in this email is not ' .
     'an indication that the character will be reactived if it was deactivated for a specific reason. ' .
     'This email is being sent to you because you, or a site admin or lead wanted to make sure you had ' .
-    'a copy of all of your characters on vaxia.'
+    'a copy of all of your characters on vaxia.' .
     "\n\n---\n\n\n";
   foreach ($characters as $character) {
     // See: https://api.drupal.org/api/drupal/modules!book!book.module/function/book_node_export/7
     // Wanting to get a text friendly format for this.
-    $message[] = $character->title;
+    $message[] = $character->title . "\n";
     $build = node_view($character, 'full', user_preferred_language($account));
-    $message[] = drupal_html_to_text( drupal_render($build) );
+    $build = drupal_render($build);
+    $build = str_replace('<td>', '<td> ', $build);
+    $message[] = drupal_html_to_text($build);
     $message[] = "\n---\n";
   }
   $message[] = "\n\n" .
