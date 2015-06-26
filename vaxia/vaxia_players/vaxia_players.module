@@ -180,7 +180,10 @@ function _vaxia_players_send_characters($account) {
     // Wanting to get a text friendly format for this.
     $build = node_view($character, 'full', user_preferred_language($account));
     $build = drupal_render($build);
+    $build = str_replace('<th class', ' <th class', $build);
     $build = str_replace('<td class', ' <td class', $build);
+    $build = str_replace('<legend', "\n" . '<legend', $build);
+    $build = str_replace('</legend>', '</legend>' . "\n----------\n", $build);
     $build = str_replace('inline clearfix">', 'inline clearfix">' . "\n", $build);
 
     
