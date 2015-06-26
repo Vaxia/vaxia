@@ -212,4 +212,5 @@ function _vaxia_players_send_characters($account) {
       'subject' => $subject,
     )
   );
+  drupal_set_message(t('Characters have been sent to the email associated with this player account.'));
 }
