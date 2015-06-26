@@ -101,7 +101,7 @@ function _vaxia_players_email_characters($form, &$form_state, $account) {
   if (!function_exists('_vaxia_player_characters')) {
     return $form;
   }
-  $characters = _vaxia_player_characters($account);
+  $characters = _vaxia_player_characters($account, TRUE);
   $pcs = array();
   foreach ($characters as $character) {
     $pcs[ $character->nid ] = $character->title;
@@ -159,8 +159,15 @@ function _vaxia_players_email_characters_submit($form, &$form_state) {
     drupal_set_message(t('Unable to send email - invalid email found for this account.'));
     return;
   }
+  _vaxia_players_send_characters($account);
+}
+
+/**
+ * Helper function, send characters.
+ */
+function _vaxia_players_send_characters($account) {
   // And execute the email.
-  $characters = _vaxia_player_characters($account);
+  $characters = _vaxia_player_characters($account, TRUE);
   $message = '';
   foreach ($characters as $character) {
     // See: https://api.drupal.org/api/drupal/modules!book!book.module/function/book_node_export/7
@@ -176,7 +183,7 @@ function _vaxia_players_email_characters_submit($form, &$form_state) {
   $message = drupal_mail(
     'vaxia_players',
     'email_pcs',
-    'bastlynn@gmail.com',//$account->mail,
+    $account->mail,
     user_preferred_language($account),
     array(
       'body' => $message,

@@ -178,11 +178,11 @@ function _vaxia_is_ic_room($node) {
 /**
  * Get a given player's characters.
  */
-function _vaxia_player_characters($account) {
+function _vaxia_player_characters($account, $all = FALSE) {
   $pcs = array();
   $nodes = node_load_multiple(array(), array('uid' => $account->uid, 'type' => 'character_sheet'));
   foreach ($nodes as $node) {
-    if (_character_sheet_is_enabled($node) && _character_sheet_is_playable($node)) {
+    if ($all || _character_sheet_is_enabled($node) && _character_sheet_is_playable($node)) {
       $pcs[ $node->nid ] = $node;
     }
   }
