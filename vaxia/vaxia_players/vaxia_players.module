@@ -182,6 +182,9 @@ function _vaxia_players_send_characters($account) {
     $build = node_view($character, 'full', user_preferred_language($account));
     $build = drupal_render($build);
     $build = str_replace('<td>', '<td> ', $build);
+    $build = str_replace('inline clearfix">', 'inline clearfix">' . "\n", $build);
+
+    
     $message[] = drupal_html_to_text($build);
     $message[] = "\n---\n";
   }
