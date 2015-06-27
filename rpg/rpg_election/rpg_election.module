@@ -3,6 +3,8 @@
  * @file
  * Code for Elections.
  */
+  // @todo - add a api call to proposal to create components for proposals programatically.
+  // @todo - put elections under by department limits for programatically.
 
 /**
  * Implements hook_permission().
@@ -26,9 +28,9 @@ function rpg_election_permission() {
 function rpg_election_menu() {
   $items['admin/rpg/rpg_election'] = array(
     'title' => 'RPG Election settings',
-    'description' => 'Elections for administration.',
+    'description' => 'Elections for administration positions.',
     'page callback' => 'drupal_get_form',
-    'page arguments' => array('_election_admin_settings'),
+    'page arguments' => array('_rpg_election_admin_settings'),
     'access arguments' => array('administrate rpg_elections'),
     'type' => MENU_NORMAL_ITEM,
   );
@@ -66,13 +68,9 @@ function rpg_election_rules_event_info() {
             'type' => 'list<text>',
             'label' => t('Winner strings'),
         ),
-        'ties' => array(
-            'type' => 'list<text>',
-            'label' => t('Ties'),
-        ),
       ),
     ),
-    'open_runoff_election' => array(
+    'runoff_election' => array(
       'label' => t('Election runoff'),
       'group' => t('Proposal'),
       'variables' => array(
@@ -87,10 +85,6 @@ function rpg_election_rules_event_info() {
         'winner_strings' => array(
             'type' => 'list<text>',
             'label' => t('Winner strings'),
-        ),
-        'ties' => array(
-            'type' => 'list<text>',
-            'label' => t('Ties'),
         ),
       ),
     ),
@@ -108,29 +102,13 @@ function rpg_election_rules_event_info() {
   return $items;
 }
 
-/** 
- * Helper function, Given an array_keys modify the data for display in rules.
- */
-function _election_rules_prepare_winner_strings($this_array) {
-  // Cast to the right data type.
-  $this_array = (array) $this_array;
-  // Prepare array of strings.
-  $ret_array = array();
-  foreach ($this_array as $key => $value) {
-    $user = user_load($key);
-    $position = get_field_human_name($value);
-    $ret_array[] = t('@user has been elected to @position.', array('@user' => $user->name, '@position' => $position));
-  }
-  return $ret_array;
-}
-
 /**
  * Implements hook_node_delete().
  */
 function rpg_election_node_delete($node) {
   // Delete an rpg_election associated with a proposal if we delete the node.
   if ($node->type == 'proposal') {
-    _election_delete_election_by_nid($node->nid);
+    _rpg_election_delete_election_by_nid($node->nid);
   }
 }
 
@@ -140,7 +118,7 @@ function rpg_election_node_delete($node) {
 function rpg_election_node_update($node) {
   // Check a proposal for an rpg_election value.
   if ($node->type == 'proposal') {
-    _election_election_check_close($node);
+    _rpg_election_election_check_close($node);
   }
 }
 
@@ -154,15 +132,15 @@ function rpg_election_cron() {
     $today = date('m/d/Y');
     $today = strtotime($today . ' 00:00:01'); // We always want to plan to run just after midnight.
     variable_set('election_cron', $today);
-    _election_cron_election();
+    _rpg_election_cron_election();
   }
 }
 
 /**
  * Cron handler for rpg_elections.
  */
-function _election_cron_election() {
-  $election_day = _election_check_election_day();
+function _rpg_election_cron_election() {
+  $election_day = _rpg_election_check_election_day();
   if ($election_day) {
     // This is an official rpg_election! Time to get things sorted out.
     // First remove current heads from positions, put admin in for anon mailer.
@@ -172,14 +150,14 @@ function _election_cron_election() {
     $data = array('uid' => 1, 'rid' => $role);
     drupal_write_record('users_roles', $data);
     // And start the rpg_election.
-    _election_trigger_election();
+    _rpg_election_trigger_election();
   }
 }
 
 /**
  * Helper function. Check if today is rpg_election day.
  */
-function _election_check_election_day() {
+function _rpg_election_check_election_day() {
   // Grab the info about the last rpg_election and when / how to run it.
   $last_held = variable_get('election_day', '5/1/2013');
   $rate = variable_get('election_rate', '1 year');
@@ -219,7 +197,8 @@ function rpg_election_form_user_profile_form_alter(&$form, &$form_state, $form_i
 /**
  * Menu callback, admin form.
  */
-function _election_admin_settings($form, &$form_state) {
+function _rpg_election_admin_settings($form, &$form_state) {
+
   $form['election_day'] = array(
     '#title' => t('Last rpg_election day'),
     '#description' => t('The last-held rpg_election day for calculating further rpg_elections.'),
@@ -228,85 +207,29 @@ function _election_admin_settings($form, &$form_state) {
     '#default_value' => variable_get('election_day', '5/1/2013'),
     '#value' => variable_get('election_day', '5/1/2013'),
   );
-  $form['election_rate'] = array(
-    '#title' => t('Election rate'),
-    '#description' => t('How often to hold rpg_elections. Use timeframe formats strtotime will recognize.'),
-    '#type' => 'textfield',
-    '#default_value' => variable_get('election_rate', '1 year'),
-  );
-  $form['election_term_limits'] = array(
-    '#title' => t('Term limits'),
-    '#description' => t('Use term limits when calculating eligable users for positions.'),
-    '#type' => 'checkbox',
-    '#default_value' => variable_get('election_term_limits', TRUE),
-  );
-  $form['election_term_limit_limits'] = array(
-    '#title' => t('Term limit'),
-    '#description' => t('How many consecutive (not lifetime) terms can a user serve in the same position.'),
-    '#type' => 'textfield',
-    '#default_value' => variable_get('election_term_limit_limits', 2),
-  );
-  $form['election_run_roles'] = array(
-    '#title' => t('Election run role'),
-    '#description' => t('These roles are allowed to run.'),
-    '#type' => 'select',
-    '#multiple' => TRUE,
-    '#options' =>  user_roles(),
-    '#default_value' => variable_get('election_run_roles', array()),
-  );
-  $form['election_role'] = array(
-    '#title' => t('Elected role'),
-    '#description' => t('This role is considered the elected role. Election winners automatically recieve this role.'),
-    '#type' => 'select',
-    '#options' =>  user_roles(),
-    '#default_value' => variable_get('election_role', ''),
-  );
-  $vid = variable_get('forum_nav_vocabulary', 0);
-  $options = array();
-  if ($terms = taxonomy_get_tree($vid)) {
-    foreach ($terms as $term) {
-      $options[$term->tid] = str_repeat('-', $term->depth) . $term->name;
-    }
-  }
-  $form['election_default_forum'] = array(
-    '#title' => t('Election forum'),
-    '#description' => t('The default forum to post the rpg_election proposal in.'),
-    '#type' => 'select',
-    '#options' => $options,
-    '#default_value' => variable_get('election_default_forum', ''),
-  );
-  $intro_text = t('Each year we have an rpg_election for key positions on our site. ' .
-    'This is so that we can always be sure that the current leadership is connected to ' .
-    'and trusted by our players.');
-  $form['election_election_intro'] = array(
-    '#title' => t('Election intro'),
-    '#description' => t('Election introduction text.'),
-    '#type' => 'textarea',
-    '#default_value' => variable_get('election_election_intro', $intro_text),
-  );
-  $positions = _election_get_positions();
+  $positions = _rpg_election_get_positions();
   $available = implode("\n", $positions);
   if (empty($positions)) {
     $available = implode("\n", array('Setting Lead', 'System Lead', 'Social Lead') );
   }
-  $form['election_positions'] = array(
+  $form['election_position_details'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Election positions'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+  $form['election_position_details']['election_positions'] = array(
     '#title' => t('Available positions'),
     '#description' => t('List postitions available on the site, one per row.'),
     '#type' => 'textarea',
     '#default_value' => $available,
-  );
-  $form['election_position_details'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Additional position details'),
-    '#collapsible' => TRUE,
-    '#collapsed' => FALSE,
   );
   foreach ($positions as $key => $human_name) {
     $form['election_position_details']['details_' . $key] = array(
       '#type' => 'fieldset',
       '#title' => $human_name,
       '#collapsible' => TRUE,
-      '#collapsed' => FALSE,
+      '#collapsed' => TRUE,
     );
     $form['election_position_details']['details_' . $key]['election_position_count_' . $key] = array(
       '#type' => 'select',
@@ -320,24 +243,142 @@ function _election_admin_settings($form, &$form_state) {
       '#default_value' => variable_get('election_position_desc_' . $key, ''),
     );
   }
-  $form['election_open_submit'] = array(
-    '#type' => 'submit',
-    '#value' => t('Hold an rpg_election off-cycle'),
-    '#submit' => array('_election_open_submit'),
+  $form['election_times'] = array(
+    '#title' => t('Election times'),
+    '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
   );
-  $form['election_close_election'] = array(
-    '#type' => 'submit',
-    '#value' => t('Close open rpg_elections'),
-    '#submit' => array('_election_close_submit'),
+  $form['election_times']['election_rate'] = array(
+    '#title' => t('Election rate'),
+    '#description' => t('How often to hold rpg_elections. Use timeframe formats strtotime will recognize.'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('election_rate', '1 year'),
   );
-  $form['#submit'][] = '_election_positions_submit';
+  $form['election_times']['election_term_limits'] = array(
+    '#title' => t('Term limits'),
+    '#description' => t('Use term limits when calculating eligable users for positions.'),
+    '#type' => 'checkbox',
+    '#default_value' => variable_get('election_term_limits', TRUE),
+  );
+  $form['election_times']['election_term_limit_limits'] = array(
+    '#title' => t('Term limit'),
+    '#description' => t('How many consecutive (not lifetime) terms can a user serve in the same position.'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get('election_term_limit_limits', 2),
+  );
+  $form['election_roles'] = array(
+    '#title' => t('Election roles'),
+    '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  $form['election_roles']['election_run_roles'] = array(
+    '#title' => t('Election run role'),
+    '#description' => t('These roles are allowed to run.'),
+    '#type' => 'select',
+    '#multiple' => TRUE,
+    '#options' =>  user_roles(),
+    '#default_value' => variable_get('election_run_roles', array()),
+  );
+  $form['election_roles']['election_role'] = array(
+    '#title' => t('Elected role'),
+    '#description' => t('This role is considered the elected role. Election winners automatically recieve this role.'),
+    '#type' => 'select',
+    '#options' =>  user_roles(),
+    '#default_value' => variable_get('election_role', ''),
+  );
+  $form['election_setup'] = array(
+    '#title' => t('Election setup'),
+    '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  $vid = variable_get('forum_nav_vocabulary', 0);
+  $options = array();
+  if ($terms = taxonomy_get_tree($vid)) {
+    foreach ($terms as $term) {
+      $options[$term->tid] = str_repeat('-', $term->depth) . $term->name;
+    }
+  }
+  $form['election_setup']['election_default_forum'] = array(
+    '#title' => t('Election forum'),
+    '#description' => t('The default forum to post the rpg_election proposal in.'),
+    '#type' => 'select',
+    '#options' => $options,
+    '#default_value' => variable_get('election_default_forum', ''),
+  );
+  $intro_text = t('Each year we have an rpg_election for key positions on our site. ' .
+    'This is so that we can always be sure that the current leadership is connected to ' .
+    'and trusted by our players.');
+  $form['election_setup']['election_election_intro'] = array(
+    '#title' => t('Election intro'),
+    '#description' => t('Election introduction text.'),
+    '#type' => 'textarea',
+    '#default_value' => variable_get('election_election_intro', $intro_text),
+  );
+  $form['election_counting'] = array(
+    '#title' => t('Election counting'),
+    '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  $form['election_counting']['election_min_numb'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Use a minimum number of votes for voting.'),
+    '#default_value' => variable_get('election_min_numb', TRUE),
+  );
+  $form['election_counting']['election_min_numb_val'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Min vote%'),
+    '#description' => t('Minimum number of votes to even be considered for position.'),
+    '#default_value' => variable_get('election_min_numb_val', '2'),
+  );
+  $form['election_counting']['election_min_perc'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Use a minimum percentage of votes for voting.'),
+    '#default_value' => variable_get('election_min_perc', TRUE),
+  );
+  $form['election_counting']['election_min_perc_val'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Min vote%'),
+    '#description' => t('Minimum percentage of votes to even be considered for position.'),
+    '#default_value' => variable_get('election_min_perc_val', '50'),
+  );
+  $form['election_counting']['election_runoff'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Automatically run run-offs.'),
+    '#default_value' => variable_get('election_runoff', TRUE),
+  );
+  $form['election_actions'] = array(
+    '#title' => t('Election actions'),
+    '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+  $form['election_actions']['election_open_submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Hold an election off-cycle'),
+    '#submit' => array('_rpg_election_open_submit'),
+  );
+  $form['election_actions']['election_close_election'] = array(
+    '#type' => 'submit',
+    '#value' => t('Close open elections'),
+    '#submit' => array('_rpg_election_close_submit'),
+  );
+  $form['election_actions']['election_check_election'] = array(
+    '#type' => 'submit',
+    '#value' => t('Check open election votes'),
+    '#submit' => array('_rpg_election_check_votes'),
+  );
+  $form['#submit'][] = '_rpg_election_positions_submit';
   return system_settings_form($form);
 }
 
 /**
  * Submit callback, close open rpg_elections.
  */
-function _election_close_submit($form, &$form_state) {
+function _rpg_election_close_submit($form, &$form_state) {
   // And get the correct timeframe assuming a start time of 2 weeks ago.
   $proposals = db_query('SELECT n.nid FROM {node} n ' .
     'LEFT JOIN webform w ON n.nid = w.nid ' .
@@ -346,7 +387,7 @@ function _election_close_submit($form, &$form_state) {
     'AND w.status = 1 ');
   // Trigger event.
   foreach ($proposals as $proposal) {
-    $election = _election_get_election_by_nid($proposal->nid);
+    $election = _rpg_election_get_election_by_nid($proposal->nid);
     if ($election) {
       if (function_exists('rules_invoke_event')) {
         $node = node_load($proposal->nid);
@@ -364,9 +405,53 @@ function _election_close_submit($form, &$form_state) {
 }
 
 /**
+ * Submit callback, close open rpg_elections.
+ */
+function _rpg_election_check_votes() {
+  // And get the correct timeframe assuming a start time of 2 weeks ago.
+  $proposals = db_query('SELECT n.nid FROM {node} n ' .
+    'LEFT JOIN webform w ON n.nid = w.nid ' .
+    'WHERE n.type = \'proposal\' ' .
+    'AND n.status = 1 ' .
+    'AND w.status = 1 ');
+  foreach ($proposals as $proposal) {
+    $node = node_load($proposal->nid);
+    if ($node) {
+      $results = _rpg_election_get_results($node);
+      drupal_set_message('Results:');
+      $votes = array();
+      foreach ($results as $submission) {
+        foreach ($submission as $position => $uids) {
+          foreach ($uids as $uid) {
+            $votes[$position][$uid] = !empty($votes[$position][$uid])
+              ? $votes[$position][$uid] + 1 : 1;
+          }
+        }
+      }
+      foreach ($votes as $position => $users) {
+        drupal_set_message(t('Votes for position %position.', array('%position' => $position)));
+        foreach ($users as $uid => $votes) {
+          $user = user_load($uid);
+          drupal_set_message(t('@votes votes for @user.', array('@votes' => $votes,'@user' => $user->name)));
+        }
+      }
+      drupal_set_message('Winners:');
+      $all_winners = _rpg_election_get_winners($node, $results);
+      foreach ($all_winners as $position => $winners) {
+        foreach ($winners as $winner) {
+          $user = user_load($winner);
+          drupal_set_message(t('@user for position @position.',
+            array('@user' => $user->name, '@position' => $position)));
+        }
+      }
+    }
+  }
+}
+
+/**
  * Submit callback, add user fields for each defined position.
  */
-function _election_open_submit($form, &$form_state) {
+function _rpg_election_open_submit($form, &$form_state) {
   // This is an official rpg_election! Time to get things sorted out.
   // First remove current heads from positions, put admin in for anon mailer.
   $elected_role = variable_get('election_role', '');
@@ -379,13 +464,13 @@ function _election_open_submit($form, &$form_state) {
   drupal_write_record('users_roles', $data);
   // And start the rpg_election.
   variable_set('election_day', date('m/d/Y'));
-  _election_trigger_election();
+  _rpg_election_trigger_election();
 }
 
 /**
  * Submit callback, add user fields for each defined position.
  */
-function _election_positions_submit($form, &$form_state) {
+function _rpg_election_positions_submit($form, &$form_state) {
   // Grab the old positions.
   // TODO: For now, leave it to the admin to delete the old ones.
   // Grab the new positions from the settings.
@@ -413,16 +498,15 @@ function _election_positions_submit($form, &$form_state) {
  * Postions optional, can be set to override defaults in for example runoffs.
  * Election is the rpg_election object for tracking the cycle - for runoffs.
  */
-function _election_trigger_election($title = '', $positions = array(), $election = array(), $runoff = FALSE) {
+function _rpg_election_trigger_election($title = '', $positions = array(), $election = array(), $runoff = FALSE) {
   // Make sure we have the right positions in place.
   create_election_position_fields();
   // Create the node.
-  $title = !empty($title) ? $title : t('Site Election');
+  $title = !empty($title) ? $title : t('Site Election: @date', array('@date' => date('Y')));
   $node->title = date('m/d/Y') . ' ' . $title;
   $node->type = 'proposal';
   $node->uid = 1;
   $node->language = 'und';
-  // node_save($node);
   // Post to the correct forum.
   $tid = variable_get('election_default_forum', '');
   $node->taxonomy_forums[ $node->language ][0]['tid'] = !empty($tid) ? $tid : '';
@@ -431,7 +515,7 @@ function _election_trigger_election($title = '', $positions = array(), $election
   // Check that the node was properly created.
   if (!empty($node)) {
     // Ok, set up the webform elements for this rpg_election.
-    _election_setup_election_proposal($node, $positions, $election);
+    _rpg_election_setup_election_proposal($node, $positions, $election);
   }
   // If we have rules, trigger it.
   // We're starting a new rpg_election cycle.
@@ -443,13 +527,12 @@ function _election_trigger_election($title = '', $positions = array(), $election
 /**
  * Helper function. Create an rpg_election webform with the right settings.
  */
-function _election_setup_election_proposal($new_election, $positions = array(), $election = array()) {
-
+function _rpg_election_setup_election_proposal($new_election, $positions = array(), $election = array()) {
   // Figure out the positions.
   // If we were passed positions for this rpg_election, use those. (Probably a runoff.)
   if (empty($positions)) {
     // Otherwise load the list from the stored variable.
-    $positions = _election_get_positions();
+    $positions = _rpg_election_get_positions();
   }
 
   // Trim up for possible bad input.
@@ -511,10 +594,10 @@ function _election_setup_election_proposal($new_election, $positions = array(), 
     // It's a runoff rpg_election, new node, but same cycle, same positions.
     unset($election_data['eid']);
   }
-  $election_data = _election_update_election($election_data);
+  $election_data = _rpg_election_update_election($election_data);
 
   // And now the fun part: set the components for the form.
-  _election_setup_election_proposal_components($new_election, $positions, $election_data);
+  _rpg_election_setup_election_proposal_components($new_election, $positions, $election_data);
 
   // And set a message to our user.
   drupal_set_message(t('A new rpg_election has been created at !link.',
@@ -524,7 +607,7 @@ function _election_setup_election_proposal($new_election, $positions = array(), 
 /**
  * Helper function. Create the components for an rpg_election form.
  */
-function _election_setup_election_proposal_components($new_election, $positions, $election_data) {
+function _rpg_election_setup_election_proposal_components($new_election, $positions, $election_data) {
   // Include the webform module that allows components to be created.
   module_load_include('inc', 'webform', 'includes/webform.components');
   // Create the webform fields for possible elected.
@@ -533,7 +616,7 @@ function _election_setup_election_proposal_components($new_election, $positions,
   $alphabet =   array('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z');
   foreach ($positions as $position) {
     // Get the key to use.
-    $field_key_name = get_field_key_name($position);
+    $field_key_name = _rpg_election_field_key_name($position);
     if ($field_key_name) {
       // Gather the user info.
       $run_roles = variable_get('election_run_roles', array());
@@ -560,7 +643,7 @@ function _election_setup_election_proposal_components($new_election, $positions,
         $eligable = TRUE;
         if ($term_limits) {
           // Check for this position key if the user has the ok or if they need to lay off for a bit.
-          $eligable = !_election_is_at_term_limit( $candidate->uid, $term_limits_limit, $field_key_name);
+          $eligable = !_rpg_election_is_at_term_limit( $candidate->uid, $term_limits_limit, $field_key_name);
         }
         // If we're still ok, add em.
         if($eligable) {
@@ -594,17 +677,19 @@ function _election_setup_election_proposal_components($new_election, $positions,
         $slots = variable_get('election_position_count_' . $field_key_name, 2);
         // For every slot we have, where we do not already have someone locked in.
         // Then we run the rpg_election for that slot.
-        $currently_held = _election_get_current_holders($field_key_name, $election_data->cycle);
+        $currently_held = _rpg_election_get_current_holders($field_key_name, $election_data->cycle);
         for ($i = 0; $i < $slots; $i++) {
           if ($i < count($currently_held)) {
             $component = array();
             $component['nid'] = $new_election->nid;
             $component['pid'] = 0;
-            $component['form_key'] = $field_key_name . '_' . $alphabet[$i] . '_not_position'; // Use the position fieldname as the key.
+            $component['form_key'] = $field_key_name . '_' . $alphabet[$i] .
+              '_not_position'; // Use the position fieldname as the key.
             $component['name'] = $position . ' ' . strtoupper($alphabet[$i]);
             $component['type'] = 'markup';
             $component['mandatory'] = 0;
-            $component['value'] = $position . ' ' . strtoupper($alphabet[$i]) . ': '. t('is currently held by ' . $currently_held[$i]->name . '.');
+            $component['value'] = $position . ' ' . strtoupper($alphabet[$i]) . ': '.
+              t('is currently held by ' . $currently_held[$i]->name . '.');
             $component['extra'] = array(
               'format' => 'filtered_html',
               'private' => 0,
@@ -642,7 +727,8 @@ function _election_setup_election_proposal_components($new_election, $positions,
         $component['name'] = $position;
         $component['type'] = 'markup';
         $component['mandatory'] = 0;
-        $component['value'] = $position . ' ' . strtoupper($alphabet[$i]) . ': '. t('There are no eligable candidates for ' . $position . '.');
+        $component['value'] = $position . ' ' . strtoupper($alphabet[$i]) . ': '.
+          t('There are no eligable candidates for ' . $position . '.');
         $component['extra'] = array(
           'format' => 'filtered_html',
           'private' => 0,
@@ -667,8 +753,10 @@ function _election_setup_election_proposal_components($new_election, $positions,
     $new_election->title .= ' ' . t('(Cancelled)');
     $new_election->status = 0; // TMP hiden from view.
     $new_election->webform['status'] = FALSE;
-    watchdog('election', 'This rpg_election has no candidates for ANY position. It has been automatically closed without runoff.');
-    drupal_set_message(t('This rpg_election has no candidates for ANY position. It has been automatically closed without runoff.'), 'error');
+    watchdog('election', 'This rpg_election has no candidates for ANY position. ' .
+      'It has been automatically closed without runoff.');
+    drupal_set_message(t('This rpg_election has no candidates for ANY position. ' .
+      'It has been automatically closed without runoff.'), 'error');
     node_save($new_election);
     // And set rule to trigger in case of a cancelled rpg_election.
     if (function_exists('rules_invoke_event')) {
@@ -693,8 +781,8 @@ function _election_setup_election_proposal_components($new_election, $positions,
 /**
  * Handle when we close an rpg_election. Called on proposal close.
  */
-function _election_election_check_close($node) {
-  $election = _election_get_election_by_nid($node->nid);
+function _rpg_election_election_check_close($node) {
+  $election = _rpg_election_get_election_by_nid($node->nid);
   // Check if we are closed. If we aren't an rpg_election this returns nothing.
   if ($election && $election->closed == -1 && $node->webform['status'] == FALSE) {
 
@@ -703,52 +791,42 @@ function _election_election_check_close($node) {
     $election->winners = array();
     $elected_role = variable_get('election_role', '');
     // And save this rpg_election as done.
-    _election_update_election($election);
+    _rpg_election_update_election($election);
     // Read the results into a readable array.
     // These are merged results, to get the top winners from all positions given.
-    $results = _election_get_results($node);
+    $results = _rpg_election_get_results($node);
+    $all_winners = _rpg_election_get_winners($node, $results); // Return as assoc array.
+
     // Gather winners and set them up.
-    $winners = _election_get_winners($node, $results); // Return as assoc array.
-	if (!empty($winners)) {
+    if (!empty($all_winners)) {
       // User one is no longer required to operated as a temporary position.
       db_query('DELETE FROM {users_roles} WHERE uid = :uid AND rid = :rid',
         array(':uid' => 1, ':rid' => $elected_role));
       // Now process the winners, marking them for terms etc as needed.
-      foreach ($winners as $winner => $position) {
-        // Add the winner to the heads role.
-        db_query('DELETE FROM {users_roles} WHERE uid = :uid AND rid = :rid',
-          array(':uid' => $winner, ':rid' => $elected_role));
-        $data = array('uid' => $winner, 'rid' => $elected_role);
-        drupal_write_record('users_roles', $data);
-        // And for each winner, mark that they've been assigned for this cycle to this position.
-        $this_winner = _election_mark_winner(array(
-          'uid' => $winner,
-          'cycle' => $election->cycle,
-          'position' => $position,
-        ));
+      foreach ($all_winners as $position => $winners) {
+        foreach ($winners as $winner) {
+          // Add the winner to the heads role.
+          db_query('DELETE FROM {users_roles} WHERE uid = :uid AND rid = :rid',
+            array(':uid' => $winner, ':rid' => $elected_role));
+          $data = array('uid' => $winner, 'rid' => $elected_role);
+          drupal_write_record('users_roles', $data);
+          // And for each winner, mark that they've been assigned for this cycle to this position.
+          $this_winner = _rpg_election_mark_winner(array(
+            'uid' => $winner,
+            'cycle' => $election->cycle,
+            'position' => $position,
+          ));
+        }
       }
       // Add to the rpg_election information recorded so far.
       $election->winners = $winners;
     }
 
-    // Gather ties and set up a runoff.
-    $ties = _election_get_ties($node, $results, $winners); // Return as assoc array.
-	if (!empty($ties)) {
-      // We need to run a tie breaker rpg_election with JUST these postions.
-      // So we open ANOTHER rpg_election, not the same one.
-      // Technically this could go on forever.
-      _election_trigger_election(t('Site Run-off Election'), $ties, $election, TRUE);
-      // If we have rules, trigger it.
-      if (function_exists('rules_invoke_event')) {
-        rules_invoke_event('open_runoff_election', $node, array_keys($winners), _election_rules_prepare_winner_strings($winners), $ties);
-      }
-    }
-
     // And save this rpg_election as done.
-    _election_update_election($election);
+    _rpg_election_update_election($election);
     // If we have rules, trigger it.
     if (function_exists('rules_invoke_event')) {
-      rules_invoke_event('close_election', $node, array_keys($winners), _election_rules_prepare_winner_strings($winners), $ties);
+      rules_invoke_event('close_election', $node, array_keys($winners), $wins);
     }
   }
 }
@@ -756,174 +834,101 @@ function _election_election_check_close($node) {
 /**
  * Helper function, given an rpg_election node figure out who the winners are.
  */
-function _election_get_winners($node, $results) {
-  $election_data = _election_get_election_by_nid($node->nid);
-  // Get position information.
-  // Easiest to look it up now, so we don't have to keep looking it up.
-  if (empty($positions)) {
-    foreach ($results as $vote => $positions) {
-      foreach ($positions as $position => $candidates) {
-        $slot_count = variable_get('election_position_count_' . $position, 2);
-        $currently_held = _election_get_current_holders($position, $election_data->cycle);
-        $positions[$position] = $slot_count - count($currently_held);
+function _rpg_election_get_winners($node, $results) {
+  // Get election information.
+  $candidates = array();
+  $votes = array();
+  $election_data = _rpg_election_get_election_by_nid($node->nid);
+
+  // Loop over each result to start counting for positions.
+  foreach ($results as $positions) {
+    foreach ($positions as $position => $votes) {
+      foreach ($votes as $uid) {
+        // Sun up the votes for position for user by submission.
+        $candidates[$position][$uid] = (!empty($candidates[$position][$uid]))
+          ? $candidates[$position][$uid] + 1 : 1;
       }
     }
-    // And organize the positions by slot value. So we can do them in order.
-    asort($positions); // Low to high.
   }
 
-  // And now do the recursion to figure out who wins out in which position.
-  // It is possible to return more winners than we have positions.
-  // In which case we'll need to have a run-off.
-  $winners = _election_get_winners_by_position($results, $positions);
-
-  // NOTE: THIS IS A SIMPLE ELECTION MECHANIC. (yes. I know.)
-  // Aka, he with the most votes wins.
-  // This does NOT require minimum # of voters to participate. Or min % of the vote
-  // for the winner to be marked with the lead position and ready to go.
-  // This is not nessecarily ideal! So we should ABSOLUTELY allow for hook overrides here.
-  // So that more than one voting winner may be determined.
-  // To modify the rpg_election results, call hook_election_winners_alter(&$winners, $results, $node);
-  return $winners;
-}
-
-/**
- * Helper function, given an rpg_election node figure out who the winners are.
- */
-function _election_get_ties($node, $results, $winners) {
-  $election_data = _election_get_election_by_nid($node->nid);
-  // Get position information.
-  // Easiest to look it up now, so we don't have to keep looking it up.
-  foreach ($results as $vote => $positions) {
-    foreach ($positions as $position => $candidates) {
-      $slot_count = variable_get('election_position_count_' . $position, 2);
-      $currently_held = _election_get_current_holders($position, $election_data->cycle);
-      $current_winners = array_keys($winners, $position);
-      $positions[$position] = $slot_count - count($currently_held) + count($current_winners);
+  // Are we filtering results by a minimum number of votes?
+  if (variable_get('election_min_numb', TRUE)) {
+    $min = variable_get('election_min_numb_val', '2');
+    if (is_numeric($min) && ($min > 0)) {
+      foreach ($candidates as $position => $positions) {
+        foreach ($positions as $uid => $votes) {
+          if ($votes < $min) {
+            unset($candidates[$position][$uid]);
+          }
+        }
+      }
     }
+  }
+
+  // Are we filtering results by a minimum percentage of votes?
+  if (variable_get('election_min_perc', TRUE)) {
+    $min = variable_get('election_min_perc_val', '50');
+    if (is_numeric($min) && ($min > 0)) {
+      $min = floor(count($results) * ($min / 100));
+      foreach ($candidates as $position => $positions) {
+        foreach ($positions as $uid => $votes) {
+          if ($votes < $min) {
+            unset($candidates[$position][$uid]);
+          }
+        }
+      }
+    }
+  }
+
+  // Put all winners in position by votes given.
+  $votes = array();
+  foreach ($candidates as $position => $positions) {
+    foreach ($positions as $uid => $vote) {
+      $votes[$vote][$position][] = $uid;
+    }
+  }
+  asort($votes);
+
+  // Ok, now that we have our list of winners. You can't hold more than
+  // one position at a time. So we need to narrow this down even more.
+  // Get positions.
+  $positions = _rpg_election_get_positions();
+  $election = _rpg_election_get_election_by_nid($node->nid);
+  foreach ($positions as $position => $name) {
+    $slot_count = variable_get('election_position_count_' . $position, 2);
+    // In case this is a runoff, clear out slots already held 
+    $currently_held = _rpg_election_get_current_holders($position, $election->cycle);
+    $positions[$position] = $slot_count - count($currently_held);
   }
   // And organize the positions by slot value. So we can do them in order.
-  asort($positions); // Low to high.
+  asort($positions);
 
-  // Map components to head positions.
-  $ties = array();
-  foreach ($positions as $position => $slot_count) {
-    $position_winners = array_keys($winners, $position);
-    // If the position has more winners or less winners than it needs.
-    // We will have runoffs if don't have EXACTLY the numbers we need. 
-    if ($slot_count != count($position_winners)) {
-      $hn_position = get_field_human_name($position);
-      if ($hn_position) {
-        $ties[] = $hn_position; // ALL candidates go up for the re-election vote, no need to set values here.
-        watchdog('election', 'This rpg_election has a TIE for ' . $hn_position . '. Another follow-up should be run.');
-        drupal_set_message(t('This rpg_election has a TIE for ' . $hn_position . '. Another follow-up should be run.'));
+  // Now last step is to make some winner recommendations. Loop over results from top down.
+  $found = array();
+  $users = array();
+  // We're going from the clearest set of votes down to plug people where the site wants most.
+  foreach ($votes as $count => $user_positions) {
+    foreach ($positions as $position => $slot_count) {
+      foreach ($user_positions[$position] as $uid) {
+        // Check for an open slot. If we have one, use it.
+        $used_slots = !empty($winners[$position]) ? count($winners[$position]) : 0;
+        if ($used_slots < $slot_count && !in_array($uid, $users)) {
+          // At this point we should have our round of picks, put them all in the bin.
+          $winners[$position][] = $uid;
+        }
+      } // End loop for each user.
+    } // End loop for positions.
+    // At end of the loop, mark each user assigned.
+    foreach ($positions as $position => $slot_count) {
+      foreach ($user_positions[$position] as $uid) {
+        $users[$uid] = $uid;
       }
     }
-  }
-  return $ties;
-}
+  } // End loop for votes by top.
 
-/**
- * Recursive function, determine who the winner is.
- */
-function _election_get_winners_by_position($results, $positions, $winners = array()) {
-  // If we're out of results to process, then we're done. Return.
-  if (empty($results)) {
-    return array();
-  }
-
-  // Winners keeps track of when and where we processed a row, so we can eventually
-  // Lock in any known positions based on available slots. It starts as an empty array.
-  // Winners is an assoc array (position -> people).
-  if (empty($winners)) {
-    $winners = array();
-  }
-
-  // Now we start assigning positions from the top vote down.
-  // We only process ONE vote assignment at a time, and it's possible to not have any
-  // winners for this loop. We'll be 'eating' through them though.
-  $top_vote = array_shift($results); // TOP votes. This shrinks the results array as well.
-  $added_this_round = array();
-  // Starting with the smallest set of slots available - prioritze.
-  foreach ($positions as $position => $slot_count) {
-    // If we still have open slots for this position.
-    $won_slot = count(array_keys($winners, $position));
-
-    if ($won_slot < $slot_count) {
-      // Now we check to see if there are any candidates in the position we're checking.
-      if (!empty($top_vote[$position])) {
-        // Process each position winner for this position.
-        // Grab each winner and put them in the position.
-        // If this makes us run over the slot, that's ok.
-        // If we note that we're running over, mark them for the waitlist.
-        foreach ($top_vote[$position] as $winner) {
-          // Place the winner in position if the winner isn't already set.
-          // The winner may later be moved to a different position,
-          // Or this position may actually be in a tie situation.
-          if (empty($winners[$winner])) {
-            $winners[$winner] = $position;
-            $added_this_round[$winner] = $position;
-          }
-          else {
-            // Only place this user in position if the other position is over full.
-            // Cause that way they can get off the waitlist and get into a position.
-            $old_position = $winners[$winner];     
-            $old_won_slot = count(array_keys($winners, $old_position));
-            if ($old_won_slot > $positions[$old_position]) {
-              $winners[$winner] = $position;
-              $added_this_round[$winner] = $position;
-            }
-          }
-          // Remove the winner from all voting positions Lower than this one in votes.
-          // So anything where the winner is still in $results.
-          foreach ($results as $result_vote => $result_positions) {
-            foreach ($result_positions as $result_position => $result_candidates) {
-              // Remove our winning candidate from the positions.
-              if (!empty($results[$result_vote][$result_position][$winner])) {
-                unset($results[$result_vote][$result_position][$winner]);
-              }
-              // No more candidate on this position, remove this.
-              if (empty($results[$result_vote][$result_position])) {
-                unset($results[$result_vote][$result_position]);
-              }
-            }
-            // No more positions, remove this.
-            if (empty($results[$result_vote])) {
-              unset($results[$result_vote]);
-            }
-          } // End looking over all results to yank lower wins.
-          // Now that we've cleared out any sub values, back to the top!
-        } // End processing of this position.
-      } // End if (!empty($top_vote[$position])).
-    } // End if ($won_slot < $slot_count).
-    // Else we're all full up for this position already, so we can skip it.
-  } // End checking each position by smallest to largest.
-
-  // If we still have anything in results, do it again.
-  // Pass winners down in a complete form, so any sub-votes are properly reviewed.
-  if (!empty($results)) {
-    $sub_winners = _election_get_winners_by_position($results, $positions, $winners);
-    $winners = array_replace($winners, $sub_winners);
-  }
-
-  // But before we pass it back up.
-  // Check each position again, to see if we just added more people than the slot can
-  // hold. If we did, we need to yank them back out.
-  // Starting with the smallest set of slots available - prioritze.
-  foreach ($positions as $position => $slot_count) {
-    // If we have more won slots than open slots for this position.
-    $curr_winners = array_keys($winners, $position);
-    $won_slot = count($curr_winners);
-    if ($won_slot > $slot_count) {
-      // We have to (sadly) remove the winners from the positions.
-      $tied_winners = array_keys($added_this_round, $position);
-      foreach ($tied_winners as $tied_winner) {
-        unset($winners[$tied_winner]);
-      }
-    }
-  }
-
-  // Ok, at this point we have clipped and consolidated as much of the results as we can.
+  // Then get the winners based on the positions we have.
+  // Allow other modules to modify if they want to.
+  drupal_alter('election_winners', $winners, $results, $node);
   return $winners;
 }
 
@@ -932,90 +937,42 @@ function _election_get_winners_by_position($results, $positions, $winners = arra
  * We're going to return results in the following order:
  * [VOTE-COUNT][POSITION][USER] where position is sorted by slot size. Small to large.
  */
-function _election_get_results($node) {
-  // Include the webform file we need.
-  module_load_include('inc', 'webform', 'includes/webform.submissions');
+function _rpg_election_get_results($node) {
   // Local cache of looked up users by name.
-  $users = array();
-  // Get submission results and put into a format for review.
-  $submissions = webform_get_submissions($node->nid);
   $results = array();
-  // Find out if we're doing doubles or not.
-  $doubles = variable_get('election_positions_redundant', TRUE);
-  if (!empty($submissions)) {
-    // And process the submissions for results.
-    // If we are in doublemode we put both sets of results in the 
-    // same bucket so that the top two elected from both A and B win.
-    foreach ($submissions as $sid => $submission) {
-      // Process each submission.
-      // Track positions for winners for each submission.
-      // This way we can avoid someone stuffing extra votes for the same person.
-      $these_position_winners = array();
-      foreach ($submission->data as $cid => $submission_answer) {
-        // Process each position for each compontent.
-        $component = $node->webform['components'][$cid];
-        if ($component['form_key'] != 'additional_comments' && strpos($component['form_key'], '_not_position') === FALSE) {
-          // Get the position key name.
-          // If we're in double mode here, this will return a '_X' value.
-          $position = ($doubles) ? substr( $component['form_key'], 0, -2) : $component['form_key'];
-          // Get the user. NOTE this is the user's name, not uid.
-          $voted_for = $submission_answer['value'][0];
-          // Check if the user already voted for this candidate for this position. No ballot stuffing.
-          if (empty($these_position_winners[$position][$voted_for])) { 
-            $user = isset($users[$voted_for]) ? $users[$voted_for] : user_load_by_name($voted_for);
-            $users[$voted_for] = $user; // Save the user so we don't look them up repeatedly.
-            // Add to the results table.
-            $results[$position][$user->uid] = !empty($results[$position][$user->uid]) ?
-              $results[$position][$user->uid] + 1 : 1;
-            // And mark this submission set this person for this position.
-            $these_position_winners[$position][$voted_for] = $voted_for;
+  $users = array();
+  $multi_slots = variable_get('election_positions_redundant', TRUE);
+
+  // Get submission results and put into a format for review.
+  module_load_include('inc', 'webform', 'includes/webform.submissions');
+  $submissions = webform_get_submissions($node->nid);
+  // No submissions, no returns.
+  if (empty($submissions)) {
+    return array();
+  }
+
+  // And process the submissions for results.
+  foreach ($submissions as $sid => $submission) {
+    // Track positions for each submission.
+    foreach ($submission->data as $cid => $selected) {
+      // Process each position for each compontent.
+      $component = $node->webform['components'][$cid];
+      if ($component['form_key'] != 'additional_comments' && strpos($component['form_key'], '_not_position') === FALSE) {
+        // Get the position key name, accounting for merging multi slots together.
+        $position = ($multi_slots) ? substr( $component['form_key'], 0, -2) : $component['form_key'];
+        // Get the user. NOTE this is the user's name, not uid.
+        $voted_for = $selected['value'][0];
+        if (!empty($voted_for)) {
+          $voted_for = user_load_by_name($voted_for);
+          if (!in_array($voted_for->uid, $results[$sid][$position])) {
+            $results[$sid][$position][$voted_for->uid] = $voted_for->uid;
           }
         }
       }
-    }
-  }
-  else {
-    // No submissions yet. So enter zero for everyone.
-    foreach ($node->webform['components'] as $cid => $component) {
-      // If this is a position component, not additional or a markup saying non available.
-      if ($component['form_key'] != 'additional_comments' && strpos($component['form_key'], '_not_position') === FALSE) {
-        // Get the position key name.
-        // If we're in double mode here, this will return a '_X' value.
-        $position = ($doubles) ? substr( $component['form_key'], 0, -2) : $component['form_key'];
-        // Enter a zero vote for user 1 to make sure position is available.
-        $results[$position] = array();
-      }
-    }
-  }
+    } // End this component.
+  } // End this submission.
 
-  // And make sure each user who got a vote anywhere, is marked as having a value
-  // In this table, even if it's just a zero.
-  foreach ($results as $position => $candidates) {
-    foreach ($users as $user) {
-      if (empty($candidates[$user->uid])) {
-        $candidates[$user->uid] = 0;
-      }
-    }
-  }
-  // Remove the non-vote candidate early.
-  foreach ($results as $position => $candidates) {
-    if (isset($results[$position][0])) {
-      unset($results[$position][0]); // Candidate 'zero' is no-vote-cast.
-    }
-  }
-
-  // Reprocess the voting to get the results in the format we want.
-  $final_results = array();
-  foreach ($results as $position => $candidates) {
-    // Make sure the position exists.
-    $final_results[0][$position] = array();
-    foreach ($candidates as $uid => $votes) {
-      $final_results[$votes][$position][$uid] = $uid;
-    }
-  }
-  // And order the votes top to least.
-  krsort($final_results);
-  return $final_results;
+  return $results;
 }
 
 /**
@@ -1023,7 +980,7 @@ function _election_get_results($node) {
  */
 function create_election_position_fields() {
   // Add the new position.
-  $positions = _election_get_positions();
+  $positions = _rpg_election_get_positions();
   foreach ($positions as $field_key_name => $position) {
     $existing_field = field_info_field('field_staff_' . $field_key_name);
     if (empty($existing_field)) {
@@ -1109,7 +1066,7 @@ function create_election_position_fields() {
 /**
  * Helper function. Return an array of positions on site, assoc (form_key => human name).
  */
-function _election_get_positions() {
+function _rpg_election_get_positions() {
   $saved_positions = variable_get('election_positions', '');
   $saved_positions = explode("\n", $saved_positions);
   $positions = array();
@@ -1127,8 +1084,8 @@ function _election_get_positions() {
 /**
  * Helper function, translate a human name into a key for field names.
  */
-function get_field_key_name($position) {
-  $positions = _election_get_positions();
+function _rpg_election_field_key_name($position) {
+  $positions = _rpg_election_get_positions();
   $key = array_keys($positions, trim($position));
   return !empty($key) ? $key[0] : FALSE;
 }
@@ -1137,19 +1094,19 @@ function get_field_key_name($position) {
  * Helper function, translate a key into a human name for output.
  */
 function get_field_human_name($key) {
-  $positions = _election_get_positions();
+  $positions = _rpg_election_get_positions();
   return !empty($positions[$key]) ? $positions[$key] : FALSE;
 }
 
 /**
  * CRUD function. Set or create rpg_election info for a node.
  */
-function _election_update_election($election) {
+function _rpg_election_update_election($election) {
   $data = (array) $election;
   if (!isset($data['nid'])) {
     return FALSE; // We must have a nid for this rpg_election data.
   }
-  $old_data = _election_get_election_by_nid($data['nid']);
+  $old_data = _rpg_election_get_election_by_nid($data['nid']);
   if ($old_data) {
     $data = array_merge( (array) $old_data, $data);
     $data['positions'] = serialize($data['positions']);
@@ -1158,7 +1115,7 @@ function _election_update_election($election) {
   }
   else {
     // New rpg_election post. Set the new cycle and open time.
-    $cycle = _election_get_last_cycle();
+    $cycle = _rpg_election_get_last_cycle();
     $cycle++;
     $data['cycle'] = !empty($data['cycle']) ? $data['cycle'] : $cycle;
     $data['opened'] = strtotime('now');
@@ -1173,10 +1130,26 @@ function _election_update_election($election) {
   return (object) $data;
 }
 
+/** 
+ * Helper function, Given an array_keys modify the data for display in rules.
+ */
+function _rpg_election_rules_prepare_winner_strings($this_array) {
+  // Cast to the right data type.
+  $this_array = (array) $this_array;
+  // Prepare array of strings.
+  $ret_array = array();
+  foreach ($this_array as $key => $value) {
+    $user = user_load($key);
+    $position = get_field_human_name($value);
+    $ret_array[] = t('@user has been elected to @position.', array('@user' => $user->name, '@position' => $position));
+  }
+  return $ret_array;
+}
+
 /**
  * CRUD function. Get rpg_election info for an rpg_election.
  */
-function _election_get_election($eid) {
+function _rpg_election_get_election($eid) {
   if (empty($eid)) {
     return FALSE; // Bail if error.
   }
@@ -1193,7 +1166,7 @@ function _election_get_election($eid) {
 /**
  * CRUD function. Get rpg_election info for a node.
  */
-function _election_get_election_by_nid($nid) {
+function _rpg_election_get_election_by_nid($nid) {
   if (empty($nid)) {
     return FALSE; // Bail if error.
   }
@@ -1214,7 +1187,7 @@ function _election_get_election_by_nid($nid) {
 /**
  * CRUD function. Delete rpg_election info for a node.
  */
-function _election_delete_election($eid) {
+function _rpg_election_delete_election($eid) {
   if (empty($eid)) {
     return FALSE; // Bail if error.
   }
@@ -1225,7 +1198,7 @@ function _election_delete_election($eid) {
 /**
  * CRUD function. Delete rpg_election info for a node.
  */
-function _election_delete_election_by_nid($nid) {
+function _rpg_election_delete_election_by_nid($nid) {
   if (empty($nid)) {
     return FALSE; // Bail if error.
   }
@@ -1236,7 +1209,7 @@ function _election_delete_election_by_nid($nid) {
 /**
  * DB function. Get the current max cycle.
  */
-function _election_get_last_cycle() {
+function _rpg_election_get_last_cycle() {
   $cycle = db_query('SELECT MAX(cycle) FROM {rpg_election_winners}')->fetchField();
   return !empty($cycle) ? $cycle : 1;
 }
@@ -1244,7 +1217,7 @@ function _election_get_last_cycle() {
 /**
  * CRUD function. Set or create rpg_election info for a node.
  */
-function _election_mark_winner($winner) {
+function _rpg_election_mark_winner($winner) {
   $data = (array) $winner;
   if (empty($data['uid']) || empty($data['cycle']) || empty($data['position'])) {
     return FALSE; // We must have data for this rpg_election data.
@@ -1259,8 +1232,8 @@ function _election_mark_winner($winner) {
 /**
  * DB function. Set or create rpg_election info for a node.
  */
-function _election_get_current_winners($position) {
-  $current_cycle = _election_get_last_cycle();
+function _rpg_election_get_current_winners($position) {
+  $current_cycle = _rpg_election_get_last_cycle();
   $winners = db_query('SELECT uid FROM {rpg_election_winners} ' .
     'WHERE position = :position ' .
     'AND cycle = :cycle',
@@ -1275,7 +1248,7 @@ function _election_get_current_winners($position) {
 /**
  * DB function. Set or create rpg_election info for a node.
  */
-function _election_get_current_holders($position, $cycle) {
+function _rpg_election_get_current_holders($position, $cycle) {
   $winners = db_query('SELECT uid FROM {rpg_election_winners} ' .
     'WHERE position = :position ' .
     'AND cycle = :cycle',
@@ -1290,8 +1263,8 @@ function _election_get_current_holders($position, $cycle) {
 /**
  * DB function. Figure out if this user is at term limit.
  */
-function _election_is_at_term_limit($uid, $term_limit, $position) {
-  $current_cycle = _election_get_last_cycle();
+function _rpg_election_is_at_term_limit($uid, $term_limit, $position) {
+  $current_cycle = _rpg_election_get_last_cycle();
   $cycle_limit = $current_cycle - $term_limit;
   $times_held = db_query('SELECT COUNT(uid) AS held FROM {rpg_election_winners} ' .
     'WHERE uid = :uid ' . 
