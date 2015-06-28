@@ -169,8 +169,10 @@ function _rpg_election_check_election_day() {
   // Do they match? Mark today in the variables.
   if ($today == $next_election) {
     variable_set('election_day', date('m/d/Y'));
+    watchdog('rpg_election', 'Election day.');
     return TRUE;
   }
+  watchdog('rpg_election', 'Not election day.');
   return FALSE;
 }
 
