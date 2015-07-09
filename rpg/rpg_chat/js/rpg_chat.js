@@ -7,110 +7,126 @@
 Drupal.behaviors.rpgChat = {
   attach: function(context) { (function($) {
 
-  // Grab the refresh rate from the user settings.
-  var refreshRate = Drupal.settings.rpg_chat['refreshRate'];
-  var paused = false;
-  var in_ajax = false;
-  var timer;
+  // Store the rpgChatTimer.
+  var rpgChatTimer;
 
-  // Function to refresh the chatroom by clicking submit.
-  function refreshChat() {
-    if (paused == false) {
-      $("#edit-refresh-chat").triggerHandler("click");
-    }
-  }
+  // Function to inject buttons on page load and init.
+  function rpgChatInit() {
 
-  // Once, on page load, add the pause button to the interface.
-  $('document').ready(function() {
+    // Set up for the first refresh after load.
+    rpgChatTimer = setTimeout(rpgChatRefresh, 60 * 1000);
 
-    // If we already have the buttons, don't do anything.
-    if (!$('#edit-pause').length) {
-      // On page load, inject the buttons into place in the DOM.
-      $('.rpg-chat-node #edit-actions').prepend('<input type="button" id="edit-pause" class="toggle-rpg-chat-pause form-submit" value="Pause">');
-      $('.rpg-chat-node #edit-0').before('<input type="button" id="edit-2" class="toggle-rpg-chat-pause form-submit" value="Pause">');
-      $('.toggle-rpg-chat-pause').css('font-weight', '').css('color', 'graytext');
+    // On page load, inject the buttons into place in the DOM.
+    $('.rpg-chat-node #edit-actions').prepend('<input type="button" id="edit-pause"' +
+      ' class="toggle-rpg-chat-pause form-submit" value="Pause" paused="not-paused">');
+    $('.rpg-chat-node #edit-0').before('<input type="button" id="edit-2"' +
+      ' class="toggle-rpg-chat-pause form-submit" value="Pause" paused="not-paused">');
+    $('.toggle-rpg-chat-pause').css('font-weight', '').css('color', 'graytext');
 
-      // And the listener only after we have the button in place.
-      $('.toggle-rpg-chat-pause').click(function() {
-        if (paused == false) {
-          paused = true;
-          $('.toggle-rpg-chat-pause').css('font-weight', 'bold').css('color', 'red');
-        }
-        else {
-          paused = false;
-          $('.toggle-rpg-chat-pause').css('font-weight', '').css('color', 'graytext');
-          $("#edit-refresh-chat").triggerHandler("click");
-        }
-        // Otherwise do nothing.
-        return false;
-      });
+    // Set the ajax value on init.
+    $('body').attr('ajax', 'not-ajax');
 
-      // Listen for submits, bail out as needed.
-      $('form.node-form, form.comment-form').submit(function() {
-        if (in_ajax == true) {
-          return false;
-        }
-      });
+    // Make note of the title and messages for updates.
+    $('body').attr('chat_title', document.title);
+    $('body').attr('chat_mess', $('#rpg-chat a').filter(':first').attr('id'));
 
-      // Listen for clicks, bail out as needed.
-      $('a').click(function() {
-        if (in_ajax == true) {
-          return false;
-        }
-      });
+    // Add the listener for the pause click.
+    $('.toggle-rpg-chat-pause').click(function() {
+      rpgChatPause();
+    });
 
-      // Make note of the title for updates.
-      $('body').attr('chat_title', document.title);
-      // Make note of the current first chat message.
-      var last_mess = $('#rpg-chat a').filter(':first').attr('id');
-      $('body').attr('last_mess', last_mess);
-
-    }
-
-    // On page load, start the chat running.
-    // On each ajax reload (as triggered by refreshChat) the ready is re-triggered.
-    timer = setTimeout(refreshChat, refreshRate * 1000);
-
-  });
-
-  // Prevent form submission while in an AJAX event.
-  $('form.node-form, form.comment-form').ajaxStart(function(){
-    in_ajax = true;
-    $('form.node-form #edit-1, form.comment-form #edit-1, form.node-form #edit-submit, form.comment-form #edit-submit').css('color', 'graytext');
-  })
-  .ajaxStop(function() {
-    in_ajax = false;
-    $('form.node-form #edit-1, form.comment-form #edit-1, form.node-form #edit-submit, form.comment-form #edit-submit').css('color', 'black');
-  });
-
-  // Prevent anchor clicks while in an AJAX event.
-  $('a').ajaxStart(function(){
-    in_ajax = true;
-  })
-  .ajaxStop(function() {
-    in_ajax = false;
-  });
-
-  // Set new title whenever the form refreshes.
-  $('form.node-form, form.comment-form').ajaxStop(function(){
-    var curr_mess = $('#rpg-chat a').filter(':first').attr('id');
-    var last_mess = $('body').attr('last_mess');
-    if (!document.hasFocus() && curr_mess != last_mess) {
-      $('body').attr('last_mess', curr_mess);
+    // Revert title when we have focus.
+    $(window).on('focus', function() {
+      // Revert the title.
       var title = $('body').attr('chat_title');
       if (title.length > 0 ) {
         document.title = title;
       }
-      document.title = title + ' (!)';
-    }
-  });
+      // Update the saved message when refocused.
+      $('body').attr('chat_mess', $('#rpg-chat a').filter(':first').attr('id'));
+    });
 
-  // Revert title when we have focus.
-  $(window).on('focus', function() {
-    var title = $('body').attr('chat_title');
-    if (title.length > 0 ) {
-      document.title = title;
+    // Add listener for when we're in AJAX event.
+    $(document).ajaxStart(function(){
+      $('body').attr('ajax', 'ajax');
+      // Grey out submission buttons when in ajax.
+      $('form.node-form #edit-1, form.comment-form #edit-1, ' +
+        'form.node-form #edit-submit, form.comment-form #edit-submit').css('color', 'graytext');
+    })
+    .ajaxStop(function() {
+      $('body').attr('ajax', 'not-ajax');
+      // Reenable the button and reset the color.
+      $('form.node-form #edit-1, form.comment-form #edit-1, ' +
+        'form.node-form #edit-submit, form.comment-form #edit-submit').css('color', 'black');
+      // On each ajax reload (as triggered by rpgChatRefresh) the ready is re-triggered.
+      rpgChatTimer = setTimeout(rpgChatRefresh, 60 * 1000);
+      // Check for new messages.
+      rpgChatCheckNew();
+    });
+
+  }
+
+  // Function to refresh the chatroom by clicking submit.
+  function rpgChatRefresh() {
+    if ($('.toggle-rpg-chat-pause').attr('paused') == 'not-paused') {
+      $('#edit-refresh-chat').triggerHandler('click');
     }
+    else {
+      rpgChatTimer = setTimeout(rpgChatRefresh, 60 * 1000);
+    }
+  }
+
+  // Function to toggle pause button.
+  function rpgChatPause() {
+    if ($('.toggle-rpg-chat-pause').attr('paused') == 'not-paused') {
+      $('.toggle-rpg-chat-pause').attr('paused', 'paused');
+      $('.toggle-rpg-chat-pause').css('font-weight', 'bold').css('color', 'red');
+    }
+    else {
+      $('.toggle-rpg-chat-pause').attr('paused', 'not-paused');
+      $('.toggle-rpg-chat-pause').css('font-weight', '').css('color', 'graytext');
+      $('#edit-refresh-chat').triggerHandler('click');
+    }
+    // Otherwise do nothing.
+    return false;
+  }
+
+  // Function to update the title for the page.
+  function rpgChatCheckNew() {
+    var curr_mess = $('#rpg-chat a').filter(':first').attr('id');
+    var chat_mess = $('body').attr('chat_mess');
+    if (!document.hasFocus() && curr_mess != chat_mess) {
+      $('body').attr('chat_mess', curr_mess);
+      var title = $('body').attr('chat_title');
+      if (title.length > 0 ) {
+        document.title = title;
+      }
+      document.title = title + ' *';
+    }
+  }
+
+  // Once, on inital page load, add the pause button to the interface.
+  $('document').ready(function() {
+
+    // If we already have the buttons, don't do anything.
+    if (!$('#edit-pause').length) {
+      rpgChatInit();
+    }
+
+    // Listen for submits, bail out as needed, allow for rebind on ready.
+    $('form.node-form, form.comment-form').submit(function() {
+      if ($('body').attr('ajax') == 'ajax') {
+        return false;
+      }
+    });
+
+    // Listen for clicks, bail out as needed, allow for rebind on ready.
+    $('a').click(function() {
+      if ($('body').attr('ajax') == 'ajax') {
+        return false;
+      }
+    });
+
   });
 
   })(jQuery); }
