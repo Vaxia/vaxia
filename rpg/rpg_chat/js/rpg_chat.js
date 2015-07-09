@@ -59,6 +59,7 @@ Drupal.behaviors.rpgChat = {
       $('form.node-form #edit-1, form.comment-form #edit-1, ' +
         'form.node-form #edit-submit, form.comment-form #edit-submit').css('color', 'black');
       // On each ajax reload (as triggered by rpgChatRefresh) the ready is re-triggered.
+      clearTimeout(rpgChatTimer);
       rpgChatTimer = setTimeout(rpgChatRefresh, 60 * 1000);
       // Check for new messages.
       rpgChatCheckNew();
@@ -72,6 +73,7 @@ Drupal.behaviors.rpgChat = {
       $('#edit-refresh-chat').triggerHandler('click');
     }
     else {
+      clearTimeout(rpgChatTimer);
       rpgChatTimer = setTimeout(rpgChatRefresh, 60 * 1000);
     }
   }
