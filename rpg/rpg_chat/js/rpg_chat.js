@@ -80,14 +80,16 @@ Drupal.behaviors.rpgChat = {
 
   // Function to toggle pause button.
   function rpgChatPause() {
-    if ($('.toggle-rpg-chat-pause').attr('paused') == 'not-paused') {
-      $('.toggle-rpg-chat-pause').attr('paused', 'paused');
-      $('.toggle-rpg-chat-pause').css('font-weight', 'bold').css('color', 'red');
-    }
-    else {
-      $('.toggle-rpg-chat-pause').attr('paused', 'not-paused');
-      $('.toggle-rpg-chat-pause').css('font-weight', '').css('color', 'graytext');
-      $('#edit-refresh-chat').triggerHandler('click');
+    if ($('body').attr('ajax') == 'not-ajax') {
+      if ($('.toggle-rpg-chat-pause').attr('paused') == 'not-paused') {
+        $('.toggle-rpg-chat-pause').attr('paused', 'paused');
+        $('.toggle-rpg-chat-pause').css('font-weight', 'bold').css('color', 'red');
+      }
+      else {
+        $('.toggle-rpg-chat-pause').attr('paused', 'not-paused');
+        $('.toggle-rpg-chat-pause').css('font-weight', '').css('color', 'graytext');
+        $('#edit-refresh-chat').triggerHandler('click');
+      }
     }
     // Otherwise do nothing.
     return false;
