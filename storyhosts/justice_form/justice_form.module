@@ -47,7 +47,6 @@ function justice_form_menu() {
  */
 function _justice_form_admin_settings($form, &$form_state) {
   // Loop over each form and get the settings.
-  $tiers = array('justice_form_tiers', 5);
   $form['tiers'] = array(
     '#type' => 'fieldset',
     '#title' => t('Tier Settings'),
@@ -58,16 +57,257 @@ function _justice_form_admin_settings($form, &$form_state) {
     '#header' => array(),
     '#rows' => array(),
   );
+    $form['justice_form_base_pp'] = array(
+      '#type' => 'text',
+      '#title' => t('Base PP'),
+      '#required' => TRUE,
+      '#default' => variable_get('justice_form_base_pp', 25),
+    );
   // Loop over each.
+  $tiers = variable_get('justice_form_tiers', 5);
   for ($tier = 0, $tier < $tiers, $tier++) {
+    $form['tiers']['justice_form_silver_' . $tier] = array(
+      '#type' => 'text',
+      '#title' => t('Silver for Tier @tier', array('@tier' => $tier)),
+      '#default' => variable_get('justice_form_silver_' . $tier, 10),
+    );
+    $form['tiers']['justice_form_time_' . $tier] = array(
+      '#type' => 'text',
+      '#title' => t('Time amount for Tier @tier', array('@tier' => $tier)),
+      '#default' => variable_get('justice_form_time_' . $tier, 1),
+    );
+    $form['tiers']['justice_form_timeunit_' . $tier] = array(
+      '#type' => 'select',
+      '#title' => t('Time unit for Tier @tier', array('@tier' => $tier)),
+      '#options' => array(
+        ' days' => t('Days'),
+        ' weeks' => t('Weeks'),
+        ' months' => t('Months'),
+      ),
+      '#default' => variable_get('justice_form_timeunit_' . $tier, 'days'),
+    );
   }
   return system_settings_form($form);
 }
+/*
+$silver_mod = variable_get('justice_form_silver_' . $tier, '10');
+$time_mod = variable_get('justice_form_time_' . $tier, '1');
+$time_unit = variable_get('justice_form_timeunit_' . $tier, 'day(s)');
+*/
 
 /**
  * Menu callback, justice form.
  */
 function _justice_form($form, &$form_state) {
+  // The circumstances.
+  $form['setup'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Setup values'),
+  );
+  $tiers = variable_get('justice_form_tiers', 5);
+  $form['setup']['tier'] = array(
+    '#type' => 'select',
+    '#title' => t('Hostility level'),
+    '#options' => range(0, $tiers),
+    '#description' => t('Set the hostility of the court.'),
+    '#required' => TRUE,
+  );
+  $form['setup']['pp'] = array(
+    '#type' => 'text',
+    '#title' => t('PP Required'),
+    '#description' => t('Set the PP according to the Punishment table.'),
+    '#required' => TRUE,
+  );
+  $form['setup']['rep'] = array(
+    '#type' => 'text',
+    '#title' => t('Player reputation'),
+    '#description' => t('Reputation score with the local government.'),
+    '#required' => TRUE,
+  );
+  // The rolls.
+  $form['rolls'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Player rolls'),
+  );
+  // Roll 1.
+  $form['rolls']['roll_1'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Roll 1'),
+  );
+  $form['rolls']['roll_1']['might_1_1'] = array(
+    '#type' => 'text',
+    '#title' => t('Might 1'),
+    '#required' => TRUE,
+  );
+  $form['rolls']['roll_1']['might_1_2'] = array(
+    '#type' => 'text',
+    '#title' => t('Might 2'),
+    '#required' => TRUE,
+  );
+  $form['rolls']['roll_1']['roll_1_1'] = array(
+    '#type' => 'text',
+    '#title' => t('Roll 1'),
+    '#required' => TRUE,
+  );
+  $form['rolls']['roll_1']['roll_1_2'] = array(
+    '#type' => 'text',
+    '#title' => t('Roll 2'),
+    '#required' => TRUE,
+  );
+  // Roll 2.
+  $form['rolls']['roll_2'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Roll 2'),
+  );
+  $form['rolls']['roll_2']['might_2_1'] = array(
+    '#type' => 'text',
+    '#title' => t('Might 1'),
+    '#required' => TRUE,
+  );
+  $form['rolls']['roll_2']['might_2_2'] = array(
+    '#type' => 'text',
+    '#title' => t('Might 2'),
+    '#required' => TRUE,
+  );
+  $form['rolls']['roll_2']['roll_2_1'] = array(
+    '#type' => 'text',
+    '#title' => t('Roll 1'),
+    '#required' => TRUE,
+  );
+  $form['rolls']['roll_2']['roll_2_2'] = array(
+    '#type' => 'text',
+    '#title' => t('Roll 2'),
+    '#required' => TRUE,
+  );
+  // Roll 3.
+  $form['rolls']['roll_3'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Roll 3'),
+  );
+  $form['rolls']['roll_3']['might_3_1'] = array(
+    '#type' => 'text',
+    '#title' => t('Might 1'),
+    '#required' => TRUE,
+  );
+  $form['rolls']['roll_3']['might_3_2'] = array(
+    '#type' => 'text',
+    '#title' => t('Might 2'),
+    '#required' => TRUE,
+  );
+  $form['rolls']['roll_3']['roll_3_1'] = array(
+    '#type' => 'text',
+    '#title' => t('Roll 1'),
+    '#required' => TRUE,
+  );
+  $form['rolls']['roll_3']['roll_3_2'] = array(
+    '#type' => 'text',
+    '#title' => t('Roll 2'),
+    '#required' => TRUE,
+  );
+  // The output.
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Calculate results'),
+    '#ajax' => array(
+      'callback' => '_justice_form_ajax',
+      'wrapper' => 'justice_results',
+      'method' => 'replace',
+      'effect' => 'fade',
+    ),
+  );
+  $results = t('No results.');
+  $form['results'] = array(
+    '#type' => 'item',
+    '#markup' => _justice_form_submit_results($form, $form_state),
+    '#title' => t('Results'),
+    '#prefix' => '<div id="justice_results" style="padding-top:0.5em;">',
+    '#suffix' => '</div>',
+  );
+  // Tables.
+  $punishment_table = '';
+  $form['setup'] = array(
+    '#type' => 'item',
+    '#markup' => $punishment_table,
+    '#title' => t('Punishment Table'),
+  );
+  $reputation_table = '';
+  $form['setup'] = array(
+    '#type' => 'item',
+    '#markup' => $reputation_table,
+    '#title' => t('Reputation Table'),
+  );
+  return $form;
+}
+
+/**
+ * AJAX form callback.
+ */
+function _justice_form_ajax($form, $form_state) {
+  return $form['results'];
+}
+
+function _justice_form_submit_results($form, $form_state) {
+  $results = '';
+  // Check the output results.
+  if (!empty($form_state['values']['roll_3_2'])) {
+    $base_pp = variable_get('justice_form_base_pp', 25);
+    // Get the setup.
+    $tier = $form_state['values']['tier'];
+    if ($tier == 0) {
+      return '';
+    }
+    $pp = $form_state['values']['pp'];
+    $rep = $form_state['values']['rep'];
+    // Adjust the rep.
+    if ($rep < 16) {
+      $results .= t('A bad reputation raised the Tier level.') . '</br>';
+      $tier--;
+    }
+    if ($rep > 16) {
+      $results .= t('A good reputation lowered the Tier level.') . '</br>';
+      $tier++;
+    }
+    $diff = $base_pp * $tier;
+    // Update result info.
+    $results .= t('Rolls at Tier @tier, @diff difficulty to reduce @pp PP to zero.',
+      array('@tier' => $tier, '@diff' => $diff, '@pp' => $pp)) . '</br>';
+    // Get the rolls.
+    foreach ($i = 1, $i < 4; $i++) {
+      $might_1 = $form_state['values']['might_' . $i . '_1'];
+      $might_2 = $form_state['values']['might_' . $i . '_2'];
+      $roll_1 = $form_state['values']['roll_' . $i . '_1'];
+      $roll_2 = $form_state['values']['roll_' . $i . '_2'];
+      // Make the roll.
+      $this_ruling = _dice_ruler_make_two_trait_ruling(
+        $might_1,
+        $diff, // Target.
+        0,
+        $roll_1,
+        $might_2,
+        $diff, // Target.
+        0,
+        $roll_2
+      );
+      // Get generated PP.
+      $this_pp = $this_ruling[7];
+      $results .= t('Roll #@i generated @this_pp towards reducing the crime PP.',
+        array('@i' => $i, '@this_pp' => $this_pp)) . '</br>';
+      $pp = $pp - $this_pp;
+    }
+    // And leftover PP.
+    $results .= t('Crime PP leftover: @pp',
+      array('@pp' => $pp)) . '</br>';
+    // Calculate the punishment leftover.
+    $silver_mod = variable_get('justice_form_silver_' . $tier, '10');
+    $silver_pun = $tier * $silver_mod * $pp;
+    $service_pun = $tier * 0.1 * $pp;
+    $time_mod = variable_get('justice_form_time_' . $tier, '1');
+    $time_unit = variable_get('justice_form_timeunit_' . $tier, 'day(s)');
+    $time_pun = $time_mod * $pp;
+    $results .= t('Punishment due: @silver_pun silver OR @service_pun service RP OR @time_pun time.',
+      array('@silver_pun' => $silver_pun, '@service_pun' => $service_pun, '@time_pun' => $time_pun)) . '</br>';
+  }
+  return $results;
 }
 
 /**
