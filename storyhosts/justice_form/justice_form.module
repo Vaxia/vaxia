@@ -255,7 +255,7 @@ function _justice_form_ajax($form, $form_state) {
 function _justice_form_submit_results($form, $form_state) {
   // Check the output results.
   $results = t('No results');
-  if (!empty($form_state['values']['tier'])) {v
+  if (!empty($form_state['values']['tier'])) {
     $results = '';
     $base_pp = variable_get('justice_form_base_pp', 25);
     // Get the setup.
