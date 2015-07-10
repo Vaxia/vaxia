@@ -53,12 +53,12 @@ function _justice_form_admin_settings($form, &$form_state) {
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
   );
-    $form['justice_form_base_pp'] = array(
-      '#type' => 'textfield',
-      '#title' => t('Base PP'),
-      '#required' => TRUE,
-      '#default_value' => variable_get('justice_form_base_pp', 25),
-    );
+  $form['justice_form_base_pp'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Base PP'),
+    '#required' => TRUE,
+    '#default_value' => variable_get('justice_form_base_pp', 25),
+  );
   // Loop over each.
   $tiers = variable_get('justice_form_tiers', 5);
   for ($tier = 1; $tier <= $tiers; $tier++) {
@@ -83,13 +83,21 @@ function _justice_form_admin_settings($form, &$form_state) {
       '#default_value' => variable_get('justice_form_timeunit_' . $tier, 'days'),
     );
   }
+  // And extra settings.  
+  $form['justice_form_punishments'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Punishment table'),
+    '#required' => TRUE,
+    '#default_value' => variable_get('justice_form_punishments', ''),
+  );
+  $form['justice_form_reputations'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Punishment table'),
+    '#required' => TRUE,
+    '#default_value' => variable_get('justice_form_reputations', ''),
+  );
   return system_settings_form($form);
 }
-/*
-$silver_mod = variable_get('justice_form_silver_' . $tier, '10');
-$time_mod = variable_get('justice_form_time_' . $tier, '1');
-$time_unit = variable_get('justice_form_timeunit_' . $tier, 'day(s)');
-*/
 
 /**
  * Menu callback, justice form.
@@ -215,7 +223,6 @@ function _justice_form($form, &$form_state) {
       'effect' => 'fade',
     ),
   );
-  $results = t('No results.');
   $form['results'] = array(
     '#type' => 'item',
     '#markup' => _justice_form_submit_results($form, $form_state),
@@ -227,13 +234,12 @@ function _justice_form($form, &$form_state) {
   $punishment_table = '';
   $form['punishment'] = array(
     '#type' => 'item',
-    '#markup' => $punishment_table,
+    '#markup' => variable_get('justice_form_punishments', ''),
     '#title' => t('Punishment Table'),
   );
-  $reputation_table = '';
   $form['reputation'] = array(
     '#type' => 'item',
-    '#markup' => $reputation_table,
+    '#markup' => variable_get('justice_form_reputations', ''),
     '#title' => t('Reputation Table'),
   );
   return $form;
