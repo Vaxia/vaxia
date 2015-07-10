@@ -61,7 +61,7 @@ function _justice_form_admin_settings($form, &$form_state) {
     );
   // Loop over each.
   $tiers = variable_get('justice_form_tiers', 5);
-  for ($tier = 0; $tier < $tiers; $tier++) {
+  for ($tier = 1; $tier <= $tiers; $tier++) {
     $form['tiers']['justice_form_silver_' . $tier] = array(
       '#type' => 'textfield',
       '#title' => t('Silver for Tier @tier', array('@tier' => $tier)),
@@ -101,10 +101,14 @@ function _justice_form($form, &$form_state) {
     '#title' => t('Setup values'),
   );
   $tiers = variable_get('justice_form_tiers', 5);
+  $tier_options = array();
+  for ($tier = 1; $tier <= $tiers; $tier++) {
+    $tier_options[$tiers] = $tier;
+  }
   $form['setup']['tier'] = array(
     '#type' => 'select',
     '#title' => t('Hostility level'),
-    '#options' => range(0, $tiers),
+    '#options' => $tier_options,
     '#description' => t('Set the hostility of the court.'),
     '#required' => TRUE,
   );
