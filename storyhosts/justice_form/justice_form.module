@@ -103,7 +103,7 @@ function _justice_form($form, &$form_state) {
   $tiers = variable_get('justice_form_tiers', 5);
   $tier_options = array();
   for ($tier = 1; $tier <= $tiers; $tier++) {
-    $tier_options[$tiers] = $tier;
+    $tier_options[$tier] = $tier;
   }
   $form['setup']['tier'] = array(
     '#type' => 'select',
