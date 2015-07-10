@@ -54,7 +54,7 @@ function _justice_form_admin_settings($form, &$form_state) {
     '#collapsed' => TRUE,
   );
     $form['justice_form_base_pp'] = array(
-      '#type' => 'text',
+      '#type' => 'textfield',
       '#title' => t('Base PP'),
       '#required' => TRUE,
       '#default' => variable_get('justice_form_base_pp', 25),
@@ -63,12 +63,12 @@ function _justice_form_admin_settings($form, &$form_state) {
   $tiers = variable_get('justice_form_tiers', 5);
   for ($tier = 0; $tier < $tiers; $tier++) {
     $form['tiers']['justice_form_silver_' . $tier] = array(
-      '#type' => 'text',
+      '#type' => 'textfield',
       '#title' => t('Silver for Tier @tier', array('@tier' => $tier)),
       '#default' => variable_get('justice_form_silver_' . $tier, 10),
     );
     $form['tiers']['justice_form_time_' . $tier] = array(
-      '#type' => 'text',
+      '#type' => 'textfield',
       '#title' => t('Time amount for Tier @tier', array('@tier' => $tier)),
       '#default' => variable_get('justice_form_time_' . $tier, 1),
     );
@@ -109,13 +109,13 @@ function _justice_form($form, &$form_state) {
     '#required' => TRUE,
   );
   $form['setup']['pp'] = array(
-    '#type' => 'text',
+    '#type' => 'textfield',
     '#title' => t('PP Required'),
     '#description' => t('Set the PP according to the Punishment table.'),
     '#required' => TRUE,
   );
   $form['setup']['rep'] = array(
-    '#type' => 'text',
+    '#type' => 'textfield',
     '#title' => t('Player reputation'),
     '#description' => t('Reputation score with the local government.'),
     '#required' => TRUE,
@@ -131,22 +131,22 @@ function _justice_form($form, &$form_state) {
     '#title' => t('Roll 1'),
   );
   $form['rolls']['roll_1']['might_1_1'] = array(
-    '#type' => 'text',
+    '#type' => 'textfield',
     '#title' => t('Might 1'),
     '#required' => TRUE,
   );
   $form['rolls']['roll_1']['might_1_2'] = array(
-    '#type' => 'text',
+    '#type' => 'textfield',
     '#title' => t('Might 2'),
     '#required' => TRUE,
   );
   $form['rolls']['roll_1']['roll_1_1'] = array(
-    '#type' => 'text',
+    '#type' => 'textfield',
     '#title' => t('Roll 1'),
     '#required' => TRUE,
   );
   $form['rolls']['roll_1']['roll_1_2'] = array(
-    '#type' => 'text',
+    '#type' => 'textfield',
     '#title' => t('Roll 2'),
     '#required' => TRUE,
   );
@@ -156,22 +156,22 @@ function _justice_form($form, &$form_state) {
     '#title' => t('Roll 2'),
   );
   $form['rolls']['roll_2']['might_2_1'] = array(
-    '#type' => 'text',
+    '#type' => 'textfield',
     '#title' => t('Might 1'),
     '#required' => TRUE,
   );
   $form['rolls']['roll_2']['might_2_2'] = array(
-    '#type' => 'text',
+    '#type' => 'textfield',
     '#title' => t('Might 2'),
     '#required' => TRUE,
   );
   $form['rolls']['roll_2']['roll_2_1'] = array(
-    '#type' => 'text',
+    '#type' => 'textfield',
     '#title' => t('Roll 1'),
     '#required' => TRUE,
   );
   $form['rolls']['roll_2']['roll_2_2'] = array(
-    '#type' => 'text',
+    '#type' => 'textfield',
     '#title' => t('Roll 2'),
     '#required' => TRUE,
   );
@@ -181,22 +181,22 @@ function _justice_form($form, &$form_state) {
     '#title' => t('Roll 3'),
   );
   $form['rolls']['roll_3']['might_3_1'] = array(
-    '#type' => 'text',
+    '#type' => 'textfield',
     '#title' => t('Might 1'),
     '#required' => TRUE,
   );
   $form['rolls']['roll_3']['might_3_2'] = array(
-    '#type' => 'text',
+    '#type' => 'textfield',
     '#title' => t('Might 2'),
     '#required' => TRUE,
   );
   $form['rolls']['roll_3']['roll_3_1'] = array(
-    '#type' => 'text',
+    '#type' => 'textfield',
     '#title' => t('Roll 1'),
     '#required' => TRUE,
   );
   $form['rolls']['roll_3']['roll_3_2'] = array(
-    '#type' => 'text',
+    '#type' => 'textfield',
     '#title' => t('Roll 2'),
     '#required' => TRUE,
   );
