@@ -143,7 +143,7 @@ function _justice_form($form, &$form_state) {
       '#type' => 'fieldset',
       '#title' => t('Roll ' . $i),
     );
-    $form['rolls']['roll_' . $i]['might_' . $i . 's_1'] = array(
+    $form['rolls']['roll_' . $i]['might_' . $i . '_1'] = array(
       '#type' => 'textfield',
       '#title' => t('Might 1'),
       '#required' => TRUE,
