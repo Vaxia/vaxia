@@ -65,7 +65,7 @@ function _justice_form_admin_settings($form, &$form_state) {
     );
   // Loop over each.
   $tiers = variable_get('justice_form_tiers', 5);
-  for ($tier = 0, $tier < $tiers, $tier++) {
+  for ($tier = 0; $tier < $tiers; $tier++) {
     $form['tiers']['justice_form_silver_' . $tier] = array(
       '#type' => 'text',
       '#title' => t('Silver for Tier @tier', array('@tier' => $tier)),
@@ -272,7 +272,7 @@ function _justice_form_submit_results($form, $form_state) {
     $results .= t('Rolls at Tier @tier, @diff difficulty to reduce @pp PP to zero.',
       array('@tier' => $tier, '@diff' => $diff, '@pp' => $pp)) . '</br>';
     // Get the rolls.
-    foreach ($i = 1, $i < 4; $i++) {
+    foreach ($i = 1; $i < 4; $i++) {
       $might_1 = $form_state['values']['might_' . $i . '_1'];
       $might_2 = $form_state['values']['might_' . $i . '_2'];
       $roll_1 = $form_state['values']['roll_' . $i . '_1'];
