@@ -332,59 +332,6 @@ function strikes_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-notation-field_red_strike'
-  $field_instances['node-notation-field_red_strike'] = array(
-    'bundle' => 'notation',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => 'Select users to receive a red strike.',
-    'display' => array(
-      'artwork' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'default' => array(
-        'label' => 'above',
-        'module' => 'user_reference',
-        'settings' => array(),
-        'type' => 'user_reference_default',
-        'weight' => 8,
-      ),
-      'question' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_red_strike',
-    'label' => 'Red Strikes',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'user_reference',
-      'settings' => array(
-        'autocomplete_match' => 'contains',
-        'autocomplete_path' => 'user_reference/autocomplete',
-        'size' => 60,
-      ),
-      'type' => 'user_reference_autocomplete',
-      'weight' => 8,
-    ),
-  );
-
   // Exported field_instance: 'node-notation-field_results'
   $field_instances['node-notation-field_results'] = array(
     'bundle' => 'notation',
@@ -392,7 +339,7 @@ function strikes_field_default_field_instances() {
     'default_value_function' => '',
     'default_value_php' => '',
     'deleted' => 0,
-    'description' => 'Check all actions taken as a result of this. Be sure to include the names of players below to give strikes to if needed.',
+    'description' => 'Check all actions taken as a result of this. If you would like to recommend that a player receive a strikes please mark that here. The strike will not be granted until this notation is approved.',
     'display' => array(
       'artwork' => array(
         'label' => 'above',
@@ -542,59 +489,6 @@ function strikes_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-notation-field_yellow_strike'
-  $field_instances['node-notation-field_yellow_strike'] = array(
-    'bundle' => 'notation',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => 'Select users to receive a yellow strike. (If this is a third yellow - make the yellow. A red will be auto-generated.)',
-    'display' => array(
-      'artwork' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'default' => array(
-        'label' => 'above',
-        'module' => 'user_reference',
-        'settings' => array(),
-        'type' => 'user_reference_default',
-        'weight' => 7,
-      ),
-      'question' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_yellow_strike',
-    'label' => 'Yellow Strikes',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'user_reference',
-      'settings' => array(
-        'autocomplete_match' => 'contains',
-        'autocomplete_path' => 'user_reference/autocomplete',
-        'size' => 60,
-      ),
-      'type' => 'user_reference_autocomplete',
-      'weight' => 7,
-    ),
-  );
-
   // Exported field_instance: 'node-strike-field_associated_record'
   $field_instances['node-strike-field_associated_record'] = array(
     'bundle' => 'strike',
@@ -712,6 +606,88 @@ function strikes_field_default_field_instances() {
       ),
       'type' => 'date_popup',
       'weight' => 1,
+    ),
+  );
+
+  // Exported field_instance: 'node-strike-field_details'
+  $field_instances['node-strike-field_details'] = array(
+    'bundle' => 'strike',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'artwork' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 6,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_details',
+    'label' => 'Details',
+    'required' => 0,
+    'settings' => array(
+      'better_formats' => array(
+        'allowed_formats' => array(
+          'filtered_html' => 'filtered_html',
+          'full_html' => 'full_html',
+          'php_code' => 'php_code',
+          'plain_text' => 'plain_text',
+          'wiki' => 'wiki',
+        ),
+        'allowed_formats_toggle' => 0,
+        'default_order_toggle' => 0,
+        'default_order_wrapper' => array(
+          'formats' => array(
+            'filtered_html' => array(
+              'weight' => 0,
+            ),
+            'full_html' => array(
+              'weight' => 1,
+            ),
+            'php_code' => array(
+              'weight' => 11,
+            ),
+            'plain_text' => array(
+              'weight' => 10,
+            ),
+            'wiki' => array(
+              'weight' => 0,
+            ),
+          ),
+        ),
+      ),
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 5,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 5,
     ),
   );
 
@@ -836,24 +812,21 @@ function strikes_field_default_field_instances() {
   t('Associated Record');
   t('Bystanding');
   t('Category');
-  t('Check all actions taken as a result of this. Be sure to include the names of players below to give strikes to if needed.');
+  t('Check all actions taken as a result of this. If you would like to recommend that a player receive a strikes please mark that here. The strike will not be granted until this notation is approved.');
   t('Date of Incident');
   t('Describe the situation, include players related to the event - and all documentary evidence as an attached file. THIS IS REQUIRED. We want documentation to be transparent so the next time an issue comes up the reviewing SH can see all prior data incase you yourself are no longer available for comment. Please leave a track record for others.');
+  t('Details');
   t('Details of Interaction');
   t('Documentation');
   t('Members of the social department that got involved.');
   t('Player');
   t('Players involved, bystanders, witnesses, or otherwise in a need-to-know position for this incident. This includes members of Social who were not acting as members of the Social department for this incident.');
-  t('Red Strikes');
   t('Required - we must have a record of interaction. That record holds all the documentation for this strike.');
   t('Results');
   t('Screenshots, interviews, and other documentary evidence of misconduct. Please include this information as part of the case for the strike so that if a pattern emerges other SHs have all documentation on hand as needed if you are not available at the time. Remember we clear out comments to the archives over time.');
-  t('Select users to receive a red strike.');
-  t('Select users to receive a yellow strike. (If this is a third yellow - make the yellow. A red will be auto-generated.)');
   t('Severity');
   t('Social Members');
   t('When did the original incident occur (may be different from when the notation was added to the system).');
-  t('Yellow Strikes');
 
   return $field_instances;
 }

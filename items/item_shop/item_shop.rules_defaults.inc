@@ -10,7 +10,7 @@
 function item_shop_default_rules_configuration() {
   $items = array();
   $items['rules_item_shop_clone_approved_item'] = entity_import('rules_config', '{ "rules_item_shop_clone_approved_item" : {
-      "LABEL" : "Item shop - Clone approved item",
+      "LABEL" : "Item shop - Clone owned item for shop",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
       "TAGS" : [ "Item shop" ],
@@ -25,7 +25,8 @@ function item_shop_default_rules_configuration() {
           }
         },
         { "data_is" : { "data" : [ "node:field-in-shop" ], "value" : 1 } },
-        { "NOT data_is" : { "data" : [ "site:current-user:uid" ], "value" : "1" } }
+        { "NOT data_is" : { "data" : [ "site:current-user:uid" ], "value" : "1" } },
+        { "NOT data_is_empty" : { "data" : [ "node:field-character-owner" ] } }
       ],
       "DO" : [
         { "clone_action_node_clone" : {

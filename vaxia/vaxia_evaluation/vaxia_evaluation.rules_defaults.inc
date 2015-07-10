@@ -176,7 +176,12 @@ function vaxia_evaluation_default_rules_configuration() {
                   "workflow_comment" : "This character has been returned to draft by the system. Players are limited to submitting only as many characters to the submission bin as there are evaluators available."
                 }
               },
-              { "php_eval" : { "code" : "db_query(\\u0027UPDATE {workflow_node_history} h \\u0027 .\\r\\n\\u0027SET h.stamp = h.stamp + 1 \\u0027 .\\r\\n\\u0027WHERE h.nid = :nid \\u0027 .\\r\\n\\u0027ORDER BY hid DESC LIMIT 1\\u0027,\\r\\narray(\\u0027:nid\\u0027 =\\u003E $node-\\u003Enid));" } }
+              { "php_eval" : { "code" : "db_query(\\u0027UPDATE {workflow_node_history} h \\u0027 .\\r\\n\\u0027SET h.stamp = h.stamp + 1 \\u0027 .\\r\\n\\u0027WHERE h.nid = :nid \\u0027 .\\r\\n\\u0027ORDER BY hid DESC LIMIT 1\\u0027,\\r\\narray(\\u0027:nid\\u0027 =\\u003E $node-\\u003Enid));" } },
+              { "drupal_message" : {
+                  "message" : "You already have as many characters in the eval bin as we currently have evaluators. To avoid overwhelming the evaluation staff your character has been returned to draft. Once you get one of your other characters approved you can resubmit this character to be evaluated.",
+                  "type" : "warning"
+                }
+              }
             ]
           }
         }
@@ -245,7 +250,12 @@ function vaxia_evaluation_default_rules_configuration() {
             }
           }
         },
-        { "php_eval" : { "code" : "db_query(\\u0027UPDATE {workflow_node_history} h \\u0027 .\\r\\n\\u0027SET h.stamp = h.stamp + 1 \\u0027 .\\r\\n\\u0027WHERE h.nid = :nid \\u0027 .\\r\\n\\u0027ORDER BY hid DESC LIMIT 1\\u0027,\\r\\narray(\\u0027:nid\\u0027 =\\u003E $node-\\u003Enid));" } }
+        { "php_eval" : { "code" : "db_query(\\u0027UPDATE {workflow_node_history} h \\u0027 .\\r\\n\\u0027SET h.stamp = h.stamp + 1 \\u0027 .\\r\\n\\u0027WHERE h.nid = :nid \\u0027 .\\r\\n\\u0027ORDER BY hid DESC LIMIT 1\\u0027,\\r\\narray(\\u0027:nid\\u0027 =\\u003E $node-\\u003Enid));" } },
+        { "drupal_message" : {
+            "message" : "More than half of your character submissions to date have been flagged under the min-max rules. In order to keep things fair for other players on the site, we will no longer accept min-max builds from your account until you have put in some non-min-maxed builds.",
+            "type" : "error"
+          }
+        }
       ]
     }
   }');
@@ -291,7 +301,12 @@ function vaxia_evaluation_default_rules_configuration() {
             "workflow_comment" : "This character has been returned to draft by the system. The player is under the HXP requirement for playing characters with Species - Other, or Conditions."
           }
         },
-        { "php_eval" : { "code" : "db_query(\\u0027UPDATE {workflow_node_history} h \\u0027 .\\r\\n\\u0027SET h.stamp = h.stamp + 1 \\u0027 .\\r\\n\\u0027WHERE h.nid = :nid \\u0027 .\\r\\n\\u0027ORDER BY hid DESC LIMIT 1\\u0027,\\r\\narray(\\u0027:nid\\u0027 =\\u003E $node-\\u003Enid));" } }
+        { "php_eval" : { "code" : "db_query(\\u0027UPDATE {workflow_node_history} h \\u0027 .\\r\\n\\u0027SET h.stamp = h.stamp + 1 \\u0027 .\\r\\n\\u0027WHERE h.nid = :nid \\u0027 .\\r\\n\\u0027ORDER BY hid DESC LIMIT 1\\u0027,\\r\\narray(\\u0027:nid\\u0027 =\\u003E $node-\\u003Enid));" } },
+        { "drupal_message" : {
+            "message" : "This character has a race set to Other or a Condition. These are character concepts that are limited to players with a minimum of 40 HXP. This is to make sure that the player is familiar enough with the community here and the settings they may be playing in to not require too much additional instruction when playing the concept. You do not yet have 40 HXP so we cannot approve this concept yet. Please submit the character when you have hit 40 HXP. You can check your current HXP total on your account information page.",
+            "type" : "error"
+          }
+        }
       ]
     }
   }');

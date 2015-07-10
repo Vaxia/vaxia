@@ -120,11 +120,11 @@ function items_strongarm() {
       'display' => array(
         'workflow_current_state' => array(
           'default' => array(
-            'weight' => '53',
+            'weight' => '8',
             'visible' => TRUE,
           ),
           'artwork' => array(
-            'weight' => '15',
+            'weight' => '16',
             'visible' => FALSE,
           ),
         ),
@@ -134,7 +134,7 @@ function items_strongarm() {
             'visible' => FALSE,
           ),
           'artwork' => array(
-            'weight' => '16',
+            'weight' => '17',
             'visible' => FALSE,
           ),
         ),

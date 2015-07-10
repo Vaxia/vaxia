@@ -26,6 +26,8 @@ function vaxia_views_default_views() {
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'role';
   $handler->display->display_options['access']['role'] = array(
+    3 => '3',
+    1 => '1',
     30 => '30',
     8 => '8',
   );
@@ -122,10 +124,6 @@ function vaxia_views_default_views() {
   $handler->display->display_options['fields']['name']['relationship'] = 'uid';
   $handler->display->display_options['fields']['name']['label'] = 'Player';
   $handler->display->display_options['fields']['name']['hide_alter_empty'] = FALSE;
-  /* Field: Content: Realm */
-  $handler->display->display_options['fields']['field_realm']['id'] = 'field_realm';
-  $handler->display->display_options['fields']['field_realm']['table'] = 'field_data_field_realm';
-  $handler->display->display_options['fields']['field_realm']['field'] = 'field_realm';
   /* Field: Content: Post date */
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'node';
@@ -270,41 +268,6 @@ function vaxia_views_default_views() {
     5 => 0,
     4 => 0,
   );
-  /* Filter criterion: Content: Realm (field_realm) */
-  $handler->display->display_options['filters']['field_realm_value']['id'] = 'field_realm_value';
-  $handler->display->display_options['filters']['field_realm_value']['table'] = 'field_data_field_realm';
-  $handler->display->display_options['filters']['field_realm_value']['field'] = 'field_realm_value';
-  $handler->display->display_options['filters']['field_realm_value']['value'] = array(
-    'Vaxia' => 'Vaxia',
-    'Sirian' => 'Sirian',
-  );
-  $handler->display->display_options['filters']['field_realm_value']['group'] = 1;
-  $handler->display->display_options['filters']['field_realm_value']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['field_realm_value']['expose']['operator_id'] = 'field_realm_value_op';
-  $handler->display->display_options['filters']['field_realm_value']['expose']['label'] = 'Realm';
-  $handler->display->display_options['filters']['field_realm_value']['expose']['use_operator'] = TRUE;
-  $handler->display->display_options['filters']['field_realm_value']['expose']['operator'] = 'field_realm_value_op';
-  $handler->display->display_options['filters']['field_realm_value']['expose']['identifier'] = 'field_realm_value';
-  $handler->display->display_options['filters']['field_realm_value']['expose']['remember'] = TRUE;
-  $handler->display->display_options['filters']['field_realm_value']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    8 => 0,
-    19 => 0,
-    12 => 0,
-    13 => 0,
-    10 => 0,
-    17 => 0,
-    15 => 0,
-    9 => 0,
-    20 => 0,
-    14 => 0,
-    21 => 0,
-    22 => 0,
-    4 => 0,
-    3 => 0,
-    11 => 0,
-  );
   $handler->display->display_options['path'] = 'character-sheets/all';
   $handler->display->display_options['menu']['type'] = 'default tab';
   $handler->display->display_options['menu']['title'] = 'Characters';
@@ -411,10 +374,11 @@ function vaxia_views_default_views() {
   $handler->display->display_options['fields']['name']['relationship'] = 'uid';
   $handler->display->display_options['fields']['name']['label'] = 'Player';
   $handler->display->display_options['fields']['name']['hide_alter_empty'] = FALSE;
-  /* Field: Content: Realm */
-  $handler->display->display_options['fields']['field_realm']['id'] = 'field_realm';
-  $handler->display->display_options['fields']['field_realm']['table'] = 'field_data_field_realm';
-  $handler->display->display_options['fields']['field_realm']['field'] = 'field_realm';
+  /* Field: Field: Realm */
+  $handler->display->display_options['fields']['field_tag_realm']['id'] = 'field_tag_realm';
+  $handler->display->display_options['fields']['field_tag_realm']['table'] = 'field_data_field_tag_realm';
+  $handler->display->display_options['fields']['field_tag_realm']['field'] = 'field_tag_realm';
+  $handler->display->display_options['fields']['field_tag_realm']['type'] = 'taxonomy_term_reference_plain';
   /* Field: Content: Post date */
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'node';
@@ -587,10 +551,11 @@ function vaxia_views_default_views() {
   $handler->display->display_options['fields']['name']['relationship'] = 'uid';
   $handler->display->display_options['fields']['name']['label'] = 'Player';
   $handler->display->display_options['fields']['name']['hide_alter_empty'] = FALSE;
-  /* Field: Content: Realm */
-  $handler->display->display_options['fields']['field_realm']['id'] = 'field_realm';
-  $handler->display->display_options['fields']['field_realm']['table'] = 'field_data_field_realm';
-  $handler->display->display_options['fields']['field_realm']['field'] = 'field_realm';
+  /* Field: Field: Realm */
+  $handler->display->display_options['fields']['field_tag_realm']['id'] = 'field_tag_realm';
+  $handler->display->display_options['fields']['field_tag_realm']['table'] = 'field_data_field_tag_realm';
+  $handler->display->display_options['fields']['field_tag_realm']['field'] = 'field_tag_realm';
+  $handler->display->display_options['fields']['field_tag_realm']['type'] = 'taxonomy_term_reference_plain';
   /* Field: Content: Post date */
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'node';
@@ -822,18 +787,24 @@ function vaxia_views_default_views() {
   $handler->display->display_options['sorts']['title']['table'] = 'node';
   $handler->display->display_options['sorts']['title']['field'] = 'title';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
-  /* Contextual filter: Content: Realm (field_realm) */
-  $handler->display->display_options['arguments']['field_realm_value']['id'] = 'field_realm_value';
-  $handler->display->display_options['arguments']['field_realm_value']['table'] = 'field_data_field_realm';
-  $handler->display->display_options['arguments']['field_realm_value']['field'] = 'field_realm_value';
-  $handler->display->display_options['arguments']['field_realm_value']['default_action'] = 'default';
-  $handler->display->display_options['arguments']['field_realm_value']['default_argument_type'] = 'php';
-  $handler->display->display_options['arguments']['field_realm_value']['default_argument_options']['code'] = 'return _vaxia_filter_characters_by_room(arg(1));';
-  $handler->display->display_options['arguments']['field_realm_value']['summary']['number_of_records'] = '0';
-  $handler->display->display_options['arguments']['field_realm_value']['summary']['format'] = 'default_summary';
-  $handler->display->display_options['arguments']['field_realm_value']['summary_options']['items_per_page'] = '25';
-  $handler->display->display_options['arguments']['field_realm_value']['limit'] = '0';
-  $handler->display->display_options['arguments']['field_realm_value']['break_phrase'] = TRUE;
+  /* Contextual filter: Field: Realm (field_tag_realm) */
+  $handler->display->display_options['arguments']['field_tag_realm_tid']['id'] = 'field_tag_realm_tid';
+  $handler->display->display_options['arguments']['field_tag_realm_tid']['table'] = 'field_data_field_tag_realm';
+  $handler->display->display_options['arguments']['field_tag_realm_tid']['field'] = 'field_tag_realm_tid';
+  $handler->display->display_options['arguments']['field_tag_realm_tid']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['field_tag_realm_tid']['default_argument_type'] = 'php';
+  $handler->display->display_options['arguments']['field_tag_realm_tid']['default_argument_options']['code'] = 'return _vaxia_filter_characters_by_room(arg(1));';
+  $handler->display->display_options['arguments']['field_tag_realm_tid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_tag_realm_tid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_tag_realm_tid']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['field_tag_realm_tid']['specify_validation'] = TRUE;
+  $handler->display->display_options['arguments']['field_tag_realm_tid']['validate']['type'] = 'taxonomy_term';
+  $handler->display->display_options['arguments']['field_tag_realm_tid']['validate_options']['vocabularies'] = array(
+    'realm' => 'realm',
+  );
+  $handler->display->display_options['arguments']['field_tag_realm_tid']['validate_options']['type'] = 'tids';
+  $handler->display->display_options['arguments']['field_tag_realm_tid']['validate']['fail'] = 'ignore';
+  $handler->display->display_options['arguments']['field_tag_realm_tid']['break_phrase'] = TRUE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['filter_groups']['operator'] = 'OR';
   $handler->display->display_options['filter_groups']['groups'] = array(
@@ -1111,14 +1082,11 @@ return !( user_access(\'use NPCs\') || $row->uid == $user->uid );';
   $handler->display->display_options['fields']['title_1']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title_1']['hide_alter_empty'] = FALSE;
   $handler->display->display_options['fields']['title_1']['link_to_node'] = FALSE;
-  /* Field: Content: Realm */
-  $handler->display->display_options['fields']['field_realm']['id'] = 'field_realm';
-  $handler->display->display_options['fields']['field_realm']['table'] = 'field_data_field_realm';
-  $handler->display->display_options['fields']['field_realm']['field'] = 'field_realm';
-  $handler->display->display_options['fields']['field_realm']['label'] = '';
-  $handler->display->display_options['fields']['field_realm']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['field_realm']['alter']['text'] = '[[field_realm]]';
-  $handler->display->display_options['fields']['field_realm']['element_label_colon'] = FALSE;
+  /* Field: Field: Realm */
+  $handler->display->display_options['fields']['field_tag_realm']['id'] = 'field_tag_realm';
+  $handler->display->display_options['fields']['field_tag_realm']['table'] = 'field_data_field_tag_realm';
+  $handler->display->display_options['fields']['field_tag_realm']['field'] = 'field_tag_realm';
+  $handler->display->display_options['fields']['field_tag_realm']['type'] = 'taxonomy_term_reference_plain';
   /* Field: User: Name */
   $handler->display->display_options['fields']['name']['id'] = 'name';
   $handler->display->display_options['fields']['name']['table'] = 'users';
@@ -1269,15 +1237,6 @@ Don\'t hesitate to contact the System lead(s) or another evaller for a second op
   $handler->display->display_options['fields']['name']['relationship'] = 'uid';
   $handler->display->display_options['fields']['name']['label'] = 'Player';
   $handler->display->display_options['fields']['name']['hide_alter_empty'] = FALSE;
-  /* Field: Content: Realm */
-  $handler->display->display_options['fields']['field_realm']['id'] = 'field_realm';
-  $handler->display->display_options['fields']['field_realm']['table'] = 'field_data_field_realm';
-  $handler->display->display_options['fields']['field_realm']['field'] = 'field_realm';
-  /* Field: Content: Vaxia Species */
-  $handler->display->display_options['fields']['field_race']['id'] = 'field_race';
-  $handler->display->display_options['fields']['field_race']['table'] = 'field_data_field_race';
-  $handler->display->display_options['fields']['field_race']['field'] = 'field_race';
-  $handler->display->display_options['fields']['field_race']['label'] = 'Species';
   /* Field: Content: Post date */
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'node';
@@ -1617,6 +1576,61 @@ return ($has_xp < 1);';
       'type' => 'text',
       'label' => 'Name',
       'name' => 'title_1',
+    ),
+  );
+
+  /* Display: Rules: Character Birthdays */
+  $handler = $view->new_display('views_rules', 'Rules: Character Birthdays', 'views_character_bdays');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Rules: Character Birthdays';
+  $handler->display->display_options['display_description'] = 'Rules: Character Birthdays';
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Nid */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'node';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['defaults']['sorts'] = FALSE;
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'character_sheet' => 'character_sheet',
+  );
+  $handler->display->display_options['filters']['type']['group'] = 1;
+  /* Filter criterion: Global: PHP */
+  $handler->display->display_options['filters']['php']['id'] = 'php';
+  $handler->display->display_options['filters']['php']['table'] = 'views';
+  $handler->display->display_options['filters']['php']['field'] = 'php';
+  $handler->display->display_options['filters']['php']['group'] = 1;
+  $handler->display->display_options['filters']['php']['use_php_setup'] = 0;
+  $handler->display->display_options['filters']['php']['php_filter'] = '$day = (int) date(\'d\');
+$month = (int) date(\'m\');
+$node = node_load( (int) $row->nid );
+$char_day = (int) $node->field_birth_day[\'und\'][0][\'value\'];
+$char_month = (int) $node->field_birth_month[\'und\'][0][\'value\'];
+return !($day == $char_day && $month == $char_month);';
+  $handler->display->display_options['rules_parameter'] = array(
+    'uid' => array(
+      'enabled' => 1,
+      'type' => 'integer',
+      'label' => 'Content: Author uid',
+      'name' => 'uid',
+    ),
+  );
+  $handler->display->display_options['rules_variables'] = array(
+    'nid' => array(
+      'enabled' => 1,
+      'rendered' => 0,
+      'type' => 'integer',
+      'label' => 'Nid',
+      'name' => 'nid',
     ),
   );
   $export['vaxia_character_sheets'] = $view;

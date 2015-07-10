@@ -10,6 +10,59 @@
 function scene_record_field_default_field_instances() {
   $field_instances = array();
 
+  // Exported field_instance: 'node-scene-field_difficulty'
+  $field_instances['node-scene-field_difficulty'] = array(
+    'bundle' => 'scene',
+    'default_value' => array(
+      0 => array(
+        'value' => 25,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => 'Set the difficulty for the scene. For most scenes that difficulty is a 25.',
+    'display' => array(
+      'artwork' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 7,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_difficulty',
+    'label' => 'Difficulty',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 8,
+    ),
+  );
+
   // Exported field_instance: 'node-scene-field_goal'
   $field_instances['node-scene-field_goal'] = array(
     'bundle' => 'scene',
@@ -19,7 +72,8 @@ function scene_record_field_default_field_instances() {
       ),
     ),
     'deleted' => 0,
-    'description' => 'Let us know what you\'re looking for with this scene. If you\'re looking for silver, need an item ruled, or want to gain reputation. If you\'re not sure, leave this as \'generic\' and explain in the notes.',
+    'description' => '<b>Let us know what you\'re looking for with this scene!</b><br>
+If you\'re looking for silver, need an item ruled, or want to gain reputation select those goals to match. If you are submitting a scene as evidence of maintaining a character or other situation. For example, vampiric feeding or other "Maintenance required" conditions, select maintenance as your goal. IF you\'re looking to setup a character save point if your character encounters a death situation, select that. If you\'re not sure, leave this as \'generic\' and explain in the notes.',
     'display' => array(
       'artwork' => array(
         'label' => 'above',
@@ -28,11 +82,11 @@ function scene_record_field_default_field_instances() {
         'weight' => 0,
       ),
       'default' => array(
-        'label' => 'above',
+        'label' => 'inline',
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 4,
+        'weight' => 8,
       ),
       'question' => array(
         'label' => 'above',
@@ -63,6 +117,61 @@ function scene_record_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-scene-field_rp_bonus'
+  $field_instances['node-scene-field_rp_bonus'] = array(
+    'bundle' => 'scene',
+    'default_value' => array(
+      0 => array(
+        'value' => 1,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => 'Is there RP in this scene? If so the submission qualifies for the RP Bonus. Note: RP means you need at least a few relevant sentences to your action per post. One liner sentences rarely qualify as enough RP to gain this bonus.',
+    'display' => array(
+      'artwork' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 6,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_rp_bonus',
+    'label' => 'RP Bonus',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(
+        'display_label' => 1,
+      ),
+      'type' => 'options_onoff',
+      'weight' => 9,
+    ),
+  );
+
   // Exported field_instance: 'node-scene-field_rp_posts'
   $field_instances['node-scene-field_rp_posts'] = array(
     'bundle' => 'scene',
@@ -83,7 +192,7 @@ function scene_record_field_default_field_instances() {
           'view_mode' => 'full',
         ),
         'type' => 'entityreference_entity_view',
-        'weight' => 5,
+        'weight' => 2,
       ),
       'question' => array(
         'label' => 'above',
@@ -101,7 +210,7 @@ function scene_record_field_default_field_instances() {
     'entity_type' => 'node',
     'field_name' => 'field_rp_posts',
     'label' => 'RP Posts',
-    'required' => 1,
+    'required' => 0,
     'settings' => array(
       'user_register_form' => FALSE,
     ),
@@ -118,7 +227,7 @@ function scene_record_field_default_field_instances() {
         'view_mode' => 'full',
       ),
       'type' => 'entityreference_view_widget',
-      'weight' => 8,
+      'weight' => 10,
     ),
   );
 
@@ -144,7 +253,7 @@ function scene_record_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 5,
+        'weight' => 3,
       ),
       'question' => array(
         'label' => 'above',
@@ -208,7 +317,7 @@ function scene_record_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 8,
+      'weight' => 12,
     ),
   );
 
@@ -226,11 +335,11 @@ function scene_record_field_default_field_instances() {
         'weight' => 0,
       ),
       'default' => array(
-        'label' => 'above',
+        'label' => 'inline',
         'module' => 'node_reference',
         'settings' => array(),
         'type' => 'node_reference_default',
-        'weight' => 3,
+        'weight' => 5,
       ),
       'question' => array(
         'label' => 'above',
@@ -283,7 +392,7 @@ function scene_record_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 6,
+        'weight' => 9,
       ),
       'question' => array(
         'label' => 'above',
@@ -347,7 +456,7 @@ function scene_record_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 9,
+      'weight' => 11,
     ),
   );
 
@@ -369,11 +478,11 @@ function scene_record_field_default_field_instances() {
         'weight' => 0,
       ),
       'default' => array(
-        'label' => 'above',
+        'label' => 'inline',
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 2,
+        'weight' => 4,
       ),
       'question' => array(
         'label' => 'above',
@@ -496,17 +605,22 @@ function scene_record_field_default_field_instances() {
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('<b>Let us know what you\'re looking for with this scene!</b><br>
+If you\'re looking for silver, need an item ruled, or want to gain reputation select those goals to match. If you are submitting a scene as evidence of maintaining a character or other situation. For example, vampiric feeding or other "Maintenance required" conditions, select maintenance as your goal. IF you\'re looking to setup a character save point if your character encounters a death situation, select that. If you\'re not sure, leave this as \'generic\' and explain in the notes.');
   t('Add the posts for your scene here.');
   t('Attention To');
   t('Character');
+  t('Difficulty');
   t('Extra information for the reviewer.');
   t('Forums');
   t('Goal');
-  t('Let us know what you\'re looking for with this scene. If you\'re looking for silver, need an item ruled, or want to gain reputation. If you\'re not sure, leave this as \'generic\' and explain in the notes.');
+  t('Is there RP in this scene? If so the submission qualifies for the RP Bonus. Note: RP means you need at least a few relevant sentences to your action per post. One liner sentences rarely qualify as enough RP to gain this bonus.');
   t('List the related Saga or A/SH to bring this scene to the attention of if the scene is tied to a specific Saga or Storyhost. If there isn\'t one - leave it at "any A/SH" for open ruling.');
   t('Notes');
+  t('RP Bonus');
   t('RP Posts');
   t('Scene');
+  t('Set the difficulty for the scene. For most scenes that difficulty is a 25.');
   t('Which character this scene is put in for.');
 
   return $field_instances;

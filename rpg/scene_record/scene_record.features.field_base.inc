@@ -10,10 +10,40 @@
 function scene_record_field_default_field_bases() {
   $field_bases = array();
 
+  // Exported field_base: 'field_difficulty'
+  $field_bases['field_difficulty'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_difficulty',
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        25 => '25: Most rolls, gaining silver',
+        40 => '40: 1-5 Build Points, 25PP per',
+        50 => '50: 6-10 Build Points, 50PP per',
+        60 => '60: 11-15 Build Points, 75PP per',
+        70 => '70: 16-20 Build Points, 100PP per',
+        80 => '80: 21 - 25 Build Points, 125PP per',
+        90 => '90: 26 - 30 Build Points, 150PP per',
+      ),
+      'allowed_values_function' => '',
+    ),
+    'translatable' => 0,
+    'type' => 'list_integer',
+  );
+
   // Exported field_base: 'field_goal'
   $field_bases['field_goal'] = array(
     'active' => 1,
-    'cardinality' => 1,
+    'cardinality' => -1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_goal',
@@ -30,12 +60,39 @@ function scene_record_field_default_field_bases() {
         'item' => 'Crafting an item',
         'silver' => 'Making some silver',
         'fame' => 'Gain reputation',
+        'maint' => 'Maintenance',
+        'save_point' => 'Save point',
         'priv' => 'Private record',
       ),
       'allowed_values_function' => '',
     ),
     'translatable' => 0,
     'type' => 'list_text',
+  );
+
+  // Exported field_base: 'field_rp_bonus'
+  $field_bases['field_rp_bonus'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_rp_bonus',
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        0 => 'No',
+        1 => 'Yes',
+      ),
+      'allowed_values_function' => '',
+    ),
+    'translatable' => 0,
+    'type' => 'list_boolean',
   );
 
   // Exported field_base: 'field_rp_posts'

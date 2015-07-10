@@ -67,6 +67,7 @@ function storyhost_renewal_default_rules_configuration() {
   $items['rules_sh_general_expire_warning'] = entity_import('rules_config', '{ "rules_sh_general_expire_warning" : {
       "LABEL" : "SH Renewal - Expire Storyhost Warning",
       "PLUGIN" : "reaction rule",
+      "ACTIVE" : false,
       "OWNER" : "rules",
       "TAGS" : [ "SH Renewal" ],
       "REQUIRES" : [ "rules", "php", "user_stats" ],
@@ -161,9 +162,10 @@ function storyhost_renewal_default_rules_configuration() {
     }
   }');
   $items['sh_test_evaluator_renewal'] = entity_import('rules_config', '{ "sh_test_evaluator_renewal" : {
-      "LABEL" : "SH Renewal - Renew Evaluator",
+      "LABEL" : "REM: SH Renewal - Renew Evaluator",
       "PLUGIN" : "reaction rule",
       "WEIGHT" : "1",
+      "ACTIVE" : false,
       "OWNER" : "rules",
       "TAGS" : [ "SH Renewal" ],
       "REQUIRES" : [ "rules", "quiz_rules" ],
@@ -198,8 +200,9 @@ function storyhost_renewal_default_rules_configuration() {
     }
   }');
   $items['vaxia_accounts_sh_eval_expire'] = entity_import('rules_config', '{ "vaxia_accounts_sh_eval_expire" : {
-      "LABEL" : "SH Renewal - Expire Evaluator",
+      "LABEL" : "REM: SH Renewal - Expire Evaluator",
       "PLUGIN" : "reaction rule",
+      "ACTIVE" : false,
       "OWNER" : "rules",
       "TAGS" : [ "SH Renewal" ],
       "REQUIRES" : [ "rules", "user_stats" ],
@@ -234,8 +237,9 @@ function storyhost_renewal_default_rules_configuration() {
     }
   }');
   $items['vaxia_accounts_sh_eval_expire_warning'] = entity_import('rules_config', '{ "vaxia_accounts_sh_eval_expire_warning" : {
-      "LABEL" : "SH Renewal - Expire Evaluator Warning",
+      "LABEL" : "REM: SH Renewal - Expire Evaluator Warning",
       "PLUGIN" : "reaction rule",
+      "ACTIVE" : false,
       "OWNER" : "rules",
       "TAGS" : [ "SH Renewal" ],
       "REQUIRES" : [ "rules", "php", "user_stats" ],

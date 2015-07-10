@@ -60,7 +60,7 @@ function site_events_views_default_views() {
     'multiple_to' => '',
     'show_repeat_rule' => 'show',
   );
-  /* Field: Content: Realm */
+  /* Field: Broken/missing handler */
   $handler->display->display_options['fields']['field_realm']['id'] = 'field_realm';
   $handler->display->display_options['fields']['field_realm']['table'] = 'field_data_field_realm';
   $handler->display->display_options['fields']['field_realm']['field'] = 'field_realm';
@@ -134,20 +134,18 @@ function site_events_views_default_views() {
   $handler->display->display_options['relationships']['uid']['id'] = 'uid';
   $handler->display->display_options['relationships']['uid']['table'] = 'node';
   $handler->display->display_options['relationships']['uid']['field'] = 'uid';
-  /* Field: Content: Realm */
-  $handler->display->display_options['fields']['field_realm']['id'] = 'field_realm';
-  $handler->display->display_options['fields']['field_realm']['table'] = 'field_data_field_realm';
-  $handler->display->display_options['fields']['field_realm']['field'] = 'field_realm';
-  $handler->display->display_options['fields']['field_realm']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['field_realm']['alter']['text'] = ' ([field_realm])';
-  $handler->display->display_options['fields']['field_realm']['empty'] = ' ';
+  /* Field: Field: Realm */
+  $handler->display->display_options['fields']['field_tag_realm']['id'] = 'field_tag_realm';
+  $handler->display->display_options['fields']['field_tag_realm']['table'] = 'field_data_field_tag_realm';
+  $handler->display->display_options['fields']['field_tag_realm']['field'] = 'field_tag_realm';
+  $handler->display->display_options['fields']['field_tag_realm']['type'] = 'taxonomy_term_reference_plain';
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['label'] = '';
   $handler->display->display_options['fields']['title']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['title']['alter']['text'] = '[title][field_realm]  ';
+  $handler->display->display_options['fields']['title']['alter']['text'] = '[title][field_tag_realm]  ';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
@@ -214,29 +212,29 @@ function site_events_views_default_views() {
   $handler->display->display_options['filters']['field_when_value']['form_type'] = 'date_text';
   $handler->display->display_options['filters']['field_when_value']['default_date'] = '+1 month';
   $handler->display->display_options['filters']['field_when_value']['year_range'] = '-1:+3';
-  /* Filter criterion: Content: Realm (field_realm) */
-  $handler->display->display_options['filters']['field_realm_value']['id'] = 'field_realm_value';
-  $handler->display->display_options['filters']['field_realm_value']['table'] = 'field_data_field_realm';
-  $handler->display->display_options['filters']['field_realm_value']['field'] = 'field_realm_value';
-  $handler->display->display_options['filters']['field_realm_value']['value'] = array(
-    'Vaxia' => 'Vaxia',
-    'Sirian' => 'Sirian',
+  /* Filter criterion: Field: Realm (field_tag_realm) */
+  $handler->display->display_options['filters']['field_tag_realm_tid']['id'] = 'field_tag_realm_tid';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['table'] = 'field_data_field_tag_realm';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['field'] = 'field_tag_realm_tid';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['value'] = array(
+    1004 => '1004',
+    725 => '725',
+    726 => '726',
   );
-  $handler->display->display_options['filters']['field_realm_value']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['field_realm_value']['expose']['operator_id'] = 'field_realm_value_op';
-  $handler->display->display_options['filters']['field_realm_value']['expose']['label'] = 'Realm';
-  $handler->display->display_options['filters']['field_realm_value']['expose']['operator'] = 'field_realm_value_op';
-  $handler->display->display_options['filters']['field_realm_value']['expose']['identifier'] = 'field_realm_value';
-  $handler->display->display_options['filters']['field_realm_value']['expose']['remember'] = TRUE;
-  $handler->display->display_options['filters']['field_realm_value']['expose']['multiple'] = TRUE;
-  $handler->display->display_options['filters']['field_realm_value']['expose']['remember_roles'] = array(
+  $handler->display->display_options['filters']['field_tag_realm_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['operator_id'] = 'field_tag_realm_tid_op';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['label'] = 'Realm';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['operator'] = 'field_tag_realm_tid_op';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['identifier'] = 'field_tag_realm_tid';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
     3 => 0,
     30 => 0,
     8 => 0,
     9 => 0,
-    14 => 0,
     21 => 0,
     24 => 0,
     26 => 0,
@@ -252,14 +250,15 @@ function site_events_views_default_views() {
     10 => 0,
     17 => 0,
     15 => 0,
-    20 => 0,
     22 => 0,
     23 => 0,
     31 => 0,
     32 => 0,
-    33 => 0,
   );
-  $handler->display->display_options['filters']['field_realm_value']['expose']['reduce'] = TRUE;
+  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['reduce'] = TRUE;
+  $handler->display->display_options['filters']['field_tag_realm_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['vocabulary'] = 'realm';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['hierarchy'] = 1;
 
   /* Display: Calendar Feed */
   $handler = $view->new_display('feed', 'Calendar Feed', 'calendar_feed');
@@ -279,19 +278,18 @@ function site_events_views_default_views() {
   $handler = $view->new_display('page', 'Calendar Event List', 'calendar_event_list');
   $handler->display->display_options['display_description'] = 'Calendar Event List';
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Content: Realm */
-  $handler->display->display_options['fields']['field_realm']['id'] = 'field_realm';
-  $handler->display->display_options['fields']['field_realm']['table'] = 'field_data_field_realm';
-  $handler->display->display_options['fields']['field_realm']['field'] = 'field_realm';
-  $handler->display->display_options['fields']['field_realm']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['field_realm']['alter']['text'] = ' ([field_realm])';
+  /* Field: Field: Realm */
+  $handler->display->display_options['fields']['field_tag_realm']['id'] = 'field_tag_realm';
+  $handler->display->display_options['fields']['field_tag_realm']['table'] = 'field_data_field_tag_realm';
+  $handler->display->display_options['fields']['field_tag_realm']['field'] = 'field_tag_realm';
+  $handler->display->display_options['fields']['field_tag_realm']['type'] = 'taxonomy_term_reference_plain';
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['label'] = '';
   $handler->display->display_options['fields']['title']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['title']['alter']['text'] = '[title][field_realm]';
+  $handler->display->display_options['fields']['title']['alter']['text'] = '[title][field_tag_realm]';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
@@ -355,12 +353,11 @@ function site_events_views_default_views() {
 To add this calendar to your own Google calendar or other software, use this URL: <a href="http://vaxia.org/?q=calendar/ical">http://vaxia.org/?q=calendar/ical</a>.';
   $handler->display->display_options['footer']['area']['format'] = 'wiki';
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Content: Realm */
-  $handler->display->display_options['fields']['field_realm']['id'] = 'field_realm';
-  $handler->display->display_options['fields']['field_realm']['table'] = 'field_data_field_realm';
-  $handler->display->display_options['fields']['field_realm']['field'] = 'field_realm';
-  $handler->display->display_options['fields']['field_realm']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['field_realm']['alter']['text'] = ' ([field_realm])';
+  /* Field: Field: Realm */
+  $handler->display->display_options['fields']['field_tag_realm']['id'] = 'field_tag_realm';
+  $handler->display->display_options['fields']['field_tag_realm']['table'] = 'field_data_field_tag_realm';
+  $handler->display->display_options['fields']['field_tag_realm']['field'] = 'field_tag_realm';
+  $handler->display->display_options['fields']['field_tag_realm']['type'] = 'taxonomy_term_reference_plain';
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -413,7 +410,7 @@ To add this calendar to your own Google calendar or other software, use this URL
   $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
   $handler->display->display_options['fields']['nothing']['label'] = '';
   $handler->display->display_options['fields']['nothing']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['nothing']['alter']['text'] = '[title] - A/SH [name] ([field_when]) [field_realm]';
+  $handler->display->display_options['fields']['nothing']['alter']['text'] = '[title] - A/SH [name] ([field_when]) [field_tag_realm]';
   $handler->display->display_options['fields']['nothing']['element_label_colon'] = FALSE;
   $handler->display->display_options['path'] = 'calendar';
   $handler->display->display_options['menu']['type'] = 'normal';

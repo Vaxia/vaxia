@@ -34,6 +34,18 @@ function rpg_chat_views_default_views() {
   $handler->display->display_options['style_options']['row_class'] = 'rpg-chat-node';
   $handler->display->display_options['row_plugin'] = 'comment';
   $handler->display->display_options['row_options']['links'] = FALSE;
+  /* Header: Global: PHP */
+  $handler->display->display_options['header']['php']['id'] = 'php';
+  $handler->display->display_options['header']['php']['table'] = 'views';
+  $handler->display->display_options['header']['php']['field'] = 'php';
+  $handler->display->display_options['header']['php']['label'] = 'Update User List';
+  $handler->display->display_options['header']['php']['empty'] = TRUE;
+  $handler->display->display_options['header']['php']['php_output'] = '<?php
+$nid = arg(1);
+if (!empty($nid) && is_numeric($nid) && function_exists(\'_rpg_chat_set_room_users\')) {
+  _rpg_chat_set_room_users($nid);
+}
+?>';
   /* Relationship: Comment: Content */
   $handler->display->display_options['relationships']['nid']['id'] = 'nid';
   $handler->display->display_options['relationships']['nid']['table'] = 'comment';
@@ -46,11 +58,11 @@ function rpg_chat_views_default_views() {
   $handler->display->display_options['fields']['subject']['label'] = '';
   $handler->display->display_options['fields']['subject']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['subject']['alter']['ellipsis'] = FALSE;
-  /* Sort criterion: Comment: Post date */
-  $handler->display->display_options['sorts']['created']['id'] = 'created';
-  $handler->display->display_options['sorts']['created']['table'] = 'comment';
-  $handler->display->display_options['sorts']['created']['field'] = 'created';
-  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
+  /* Sort criterion: Comment: ID */
+  $handler->display->display_options['sorts']['cid']['id'] = 'cid';
+  $handler->display->display_options['sorts']['cid']['table'] = 'comment';
+  $handler->display->display_options['sorts']['cid']['field'] = 'cid';
+  $handler->display->display_options['sorts']['cid']['order'] = 'DESC';
   /* Contextual filter: Content: Nid */
   $handler->display->display_options['arguments']['nid']['id'] = 'nid';
   $handler->display->display_options['arguments']['nid']['table'] = 'node';
@@ -285,6 +297,7 @@ function rpg_chat_views_default_views() {
   $handler->display->display_options['filters']['title']['table'] = 'node';
   $handler->display->display_options['filters']['title']['field'] = 'title';
   $handler->display->display_options['filters']['title']['operator'] = 'contains';
+  $handler->display->display_options['filters']['title']['group'] = 1;
   $handler->display->display_options['filters']['title']['exposed'] = TRUE;
   $handler->display->display_options['filters']['title']['expose']['operator_id'] = 'title_op';
   $handler->display->display_options['filters']['title']['expose']['label'] = 'Title';
@@ -303,39 +316,48 @@ function rpg_chat_views_default_views() {
     5 => 0,
     4 => 0,
   );
-  /* Filter criterion: Content: Realm (field_realm) */
-  $handler->display->display_options['filters']['field_realm_value']['id'] = 'field_realm_value';
-  $handler->display->display_options['filters']['field_realm_value']['table'] = 'field_data_field_realm';
-  $handler->display->display_options['filters']['field_realm_value']['field'] = 'field_realm_value';
-  $handler->display->display_options['filters']['field_realm_value']['value'] = array(
-    'Vaxia' => 'Vaxia',
-    'Sirian' => 'Sirian',
-  );
-  $handler->display->display_options['filters']['field_realm_value']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['field_realm_value']['expose']['operator_id'] = 'field_realm_value_op';
-  $handler->display->display_options['filters']['field_realm_value']['expose']['label'] = 'Realm';
-  $handler->display->display_options['filters']['field_realm_value']['expose']['operator'] = 'field_realm_value_op';
-  $handler->display->display_options['filters']['field_realm_value']['expose']['identifier'] = 'field_realm_value';
-  $handler->display->display_options['filters']['field_realm_value']['expose']['remember'] = TRUE;
-  $handler->display->display_options['filters']['field_realm_value']['expose']['multiple'] = TRUE;
-  $handler->display->display_options['filters']['field_realm_value']['expose']['remember_roles'] = array(
+  /* Filter criterion: Field: Realm (field_tag_realm) */
+  $handler->display->display_options['filters']['field_tag_realm_tid']['id'] = 'field_tag_realm_tid';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['table'] = 'field_data_field_tag_realm';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['field'] = 'field_tag_realm_tid';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['group'] = 1;
+  $handler->display->display_options['filters']['field_tag_realm_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['operator_id'] = 'field_tag_realm_tid_op';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['label'] = 'Realm';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['operator'] = 'field_tag_realm_tid_op';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['identifier'] = 'field_tag_realm_tid';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
+    3 => 0,
+    30 => 0,
     8 => 0,
+    9 => 0,
+    21 => 0,
+    24 => 0,
+    26 => 0,
+    27 => 0,
     19 => 0,
+    28 => 0,
+    29 => 0,
     12 => 0,
+    34 => 0,
+    35 => 0,
+    25 => 0,
     13 => 0,
     10 => 0,
     17 => 0,
     15 => 0,
-    9 => 0,
-    20 => 0,
-    14 => 0,
-    4 => 0,
-    3 => 0,
-    11 => 0,
+    22 => 0,
+    23 => 0,
+    31 => 0,
+    32 => 0,
   );
-  $handler->display->display_options['filters']['field_realm_value']['expose']['reduce'] = TRUE;
+  $handler->display->display_options['filters']['field_tag_realm_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['vocabulary'] = 'realm';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['hierarchy'] = 1;
   /* Filter criterion: Content: Locked to users (field_locked_to_users) */
   $handler->display->display_options['filters']['field_locked_to_users_value']['id'] = 'field_locked_to_users_value';
   $handler->display->display_options['filters']['field_locked_to_users_value']['table'] = 'field_data_field_locked_to_users';
@@ -343,6 +365,7 @@ function rpg_chat_views_default_views() {
   $handler->display->display_options['filters']['field_locked_to_users_value']['value'] = array(
     0 => '0',
   );
+  $handler->display->display_options['filters']['field_locked_to_users_value']['group'] = 1;
   /* Filter criterion: Content: Mature posting (field_mature_posting) */
   $handler->display->display_options['filters']['field_mature_posting_value']['id'] = 'field_mature_posting_value';
   $handler->display->display_options['filters']['field_mature_posting_value']['table'] = 'field_data_field_mature_posting';
@@ -350,6 +373,7 @@ function rpg_chat_views_default_views() {
   $handler->display->display_options['filters']['field_mature_posting_value']['value'] = array(
     0 => '0',
   );
+  $handler->display->display_options['filters']['field_mature_posting_value']['group'] = 1;
   /* Filter criterion: Content: Private room (field_private_room) */
   $handler->display->display_options['filters']['field_private_room_value']['id'] = 'field_private_room_value';
   $handler->display->display_options['filters']['field_private_room_value']['table'] = 'field_data_field_private_room';
@@ -357,6 +381,7 @@ function rpg_chat_views_default_views() {
   $handler->display->display_options['filters']['field_private_room_value']['value'] = array(
     1 => '1',
   );
+  $handler->display->display_options['filters']['field_private_room_value']['group'] = 1;
   $handler->display->display_options['path'] = 'rpg-chats';
   $handler->display->display_options['menu']['type'] = 'normal';
   $handler->display->display_options['menu']['title'] = 'Locations';
@@ -447,11 +472,11 @@ function rpg_chat_views_default_views() {
   $handler->display->display_options['filters']['title']['table'] = 'node';
   $handler->display->display_options['filters']['title']['field'] = 'title';
   $handler->display->display_options['filters']['title']['operator'] = 'contains';
+  $handler->display->display_options['filters']['title']['group'] = 1;
   $handler->display->display_options['filters']['title']['exposed'] = TRUE;
   $handler->display->display_options['filters']['title']['expose']['operator_id'] = 'title_op';
   $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
   $handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
-  $handler->display->display_options['filters']['title']['expose']['remember'] = TRUE;
   $handler->display->display_options['filters']['title']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -459,7 +484,6 @@ function rpg_chat_views_default_views() {
     30 => 0,
     8 => 0,
     9 => 0,
-    14 => 0,
     21 => 0,
     24 => 0,
     26 => 0,
@@ -468,46 +492,83 @@ function rpg_chat_views_default_views() {
     28 => 0,
     29 => 0,
     12 => 0,
+    34 => 0,
+    35 => 0,
     25 => 0,
     13 => 0,
     10 => 0,
     17 => 0,
     15 => 0,
-    20 => 0,
     22 => 0,
     23 => 0,
+    31 => 0,
+    32 => 0,
   );
-  /* Filter criterion: Content: Realm (field_realm) */
-  $handler->display->display_options['filters']['field_realm_value']['id'] = 'field_realm_value';
-  $handler->display->display_options['filters']['field_realm_value']['table'] = 'field_data_field_realm';
-  $handler->display->display_options['filters']['field_realm_value']['field'] = 'field_realm_value';
-  $handler->display->display_options['filters']['field_realm_value']['value'] = array(
-    'Vaxia' => 'Vaxia',
-    'Sirian' => 'Sirian',
-  );
-  $handler->display->display_options['filters']['field_realm_value']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['field_realm_value']['expose']['operator_id'] = 'field_realm_value_op';
-  $handler->display->display_options['filters']['field_realm_value']['expose']['operator'] = 'field_realm_value_op';
-  $handler->display->display_options['filters']['field_realm_value']['expose']['identifier'] = 'field_realm_value';
-  $handler->display->display_options['filters']['field_realm_value']['expose']['remember'] = TRUE;
-  $handler->display->display_options['filters']['field_realm_value']['expose']['remember_roles'] = array(
+  /* Filter criterion: Field: Realm (field_tag_realm) */
+  $handler->display->display_options['filters']['field_tag_realm_tid']['id'] = 'field_tag_realm_tid';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['table'] = 'field_data_field_tag_realm';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['field'] = 'field_tag_realm_tid';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['group'] = 1;
+  $handler->display->display_options['filters']['field_tag_realm_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['operator_id'] = 'field_tag_realm_tid_op';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['label'] = 'Realm';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['operator'] = 'field_tag_realm_tid_op';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['identifier'] = 'field_tag_realm_tid';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
+    3 => 0,
+    30 => 0,
     8 => 0,
+    9 => 0,
+    21 => 0,
+    24 => 0,
+    26 => 0,
+    27 => 0,
     19 => 0,
+    28 => 0,
+    29 => 0,
     12 => 0,
+    34 => 0,
+    35 => 0,
+    25 => 0,
     13 => 0,
     10 => 0,
     17 => 0,
     15 => 0,
-    9 => 0,
-    20 => 0,
-    14 => 0,
-    4 => 0,
-    3 => 0,
-    11 => 0,
+    22 => 0,
+    23 => 0,
+    31 => 0,
+    32 => 0,
   );
-  $handler->display->display_options['filters']['field_realm_value']['expose']['reduce'] = TRUE;
+  $handler->display->display_options['filters']['field_tag_realm_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['vocabulary'] = 'realm';
+  /* Filter criterion: Content: Locked to users (field_locked_to_users) */
+  $handler->display->display_options['filters']['field_locked_to_users_value']['id'] = 'field_locked_to_users_value';
+  $handler->display->display_options['filters']['field_locked_to_users_value']['table'] = 'field_data_field_locked_to_users';
+  $handler->display->display_options['filters']['field_locked_to_users_value']['field'] = 'field_locked_to_users_value';
+  $handler->display->display_options['filters']['field_locked_to_users_value']['value'] = array(
+    0 => '0',
+  );
+  $handler->display->display_options['filters']['field_locked_to_users_value']['group'] = 1;
+  /* Filter criterion: Content: Mature posting (field_mature_posting) */
+  $handler->display->display_options['filters']['field_mature_posting_value']['id'] = 'field_mature_posting_value';
+  $handler->display->display_options['filters']['field_mature_posting_value']['table'] = 'field_data_field_mature_posting';
+  $handler->display->display_options['filters']['field_mature_posting_value']['field'] = 'field_mature_posting_value';
+  $handler->display->display_options['filters']['field_mature_posting_value']['value'] = array(
+    0 => '0',
+  );
+  $handler->display->display_options['filters']['field_mature_posting_value']['group'] = 1;
+  /* Filter criterion: Content: Private room (field_private_room) */
+  $handler->display->display_options['filters']['field_private_room_value']['id'] = 'field_private_room_value';
+  $handler->display->display_options['filters']['field_private_room_value']['table'] = 'field_data_field_private_room';
+  $handler->display->display_options['filters']['field_private_room_value']['field'] = 'field_private_room_value';
+  $handler->display->display_options['filters']['field_private_room_value']['value'] = array(
+    1 => '1',
+  );
+  $handler->display->display_options['filters']['field_private_room_value']['group'] = 1;
   $handler->display->display_options['block_description'] = 'Search RPG Chats';
 
   /* Display: In-Room Search RPG Chats */
@@ -537,7 +598,7 @@ function rpg_chat_views_default_views() {
   $handler->display->display_options['row_plugin'] = 'fields';
   $handler->display->display_options['row_options']['inline'] = array(
     'title' => 'title',
-    'field_realm' => 'field_realm',
+    'field_tag_realm' => 'field_tag_realm',
   );
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['header'] = FALSE;
@@ -574,14 +635,11 @@ function rpg_chat_views_default_views() {
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title']['hide_alter_empty'] = FALSE;
-  /* Field: Content: Realm */
-  $handler->display->display_options['fields']['field_realm']['id'] = 'field_realm';
-  $handler->display->display_options['fields']['field_realm']['table'] = 'field_data_field_realm';
-  $handler->display->display_options['fields']['field_realm']['field'] = 'field_realm';
-  $handler->display->display_options['fields']['field_realm']['label'] = '';
-  $handler->display->display_options['fields']['field_realm']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['field_realm']['alter']['text'] = ' ([field_realm])';
-  $handler->display->display_options['fields']['field_realm']['element_label_colon'] = FALSE;
+  /* Field: Field: Realm */
+  $handler->display->display_options['fields']['field_tag_realm']['id'] = 'field_tag_realm';
+  $handler->display->display_options['fields']['field_tag_realm']['table'] = 'field_data_field_tag_realm';
+  $handler->display->display_options['fields']['field_tag_realm']['field'] = 'field_tag_realm';
+  $handler->display->display_options['fields']['field_tag_realm']['type'] = 'taxonomy_term_reference_plain';
   $handler->display->display_options['defaults']['sorts'] = FALSE;
   /* Sort criterion: Content: Last comment time */
   $handler->display->display_options['sorts']['last_comment_timestamp']['id'] = 'last_comment_timestamp';
@@ -633,6 +691,27 @@ function rpg_chat_views_default_views() {
     4 => 0,
     3 => 0,
     11 => 0,
+  );
+  /* Filter criterion: Content: Locked to users (field_locked_to_users) */
+  $handler->display->display_options['filters']['field_locked_to_users_value']['id'] = 'field_locked_to_users_value';
+  $handler->display->display_options['filters']['field_locked_to_users_value']['table'] = 'field_data_field_locked_to_users';
+  $handler->display->display_options['filters']['field_locked_to_users_value']['field'] = 'field_locked_to_users_value';
+  $handler->display->display_options['filters']['field_locked_to_users_value']['value'] = array(
+    0 => '0',
+  );
+  /* Filter criterion: Content: Mature posting (field_mature_posting) */
+  $handler->display->display_options['filters']['field_mature_posting_value']['id'] = 'field_mature_posting_value';
+  $handler->display->display_options['filters']['field_mature_posting_value']['table'] = 'field_data_field_mature_posting';
+  $handler->display->display_options['filters']['field_mature_posting_value']['field'] = 'field_mature_posting_value';
+  $handler->display->display_options['filters']['field_mature_posting_value']['value'] = array(
+    0 => '0',
+  );
+  /* Filter criterion: Content: Private room (field_private_room) */
+  $handler->display->display_options['filters']['field_private_room_value']['id'] = 'field_private_room_value';
+  $handler->display->display_options['filters']['field_private_room_value']['table'] = 'field_data_field_private_room';
+  $handler->display->display_options['filters']['field_private_room_value']['field'] = 'field_private_room_value';
+  $handler->display->display_options['filters']['field_private_room_value']['value'] = array(
+    1 => '1',
   );
   $handler->display->display_options['block_description'] = 'In-Room Search RPG Chats';
   $export['rpg_chats'] = $view;

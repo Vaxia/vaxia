@@ -111,6 +111,7 @@ function rpg_chat_field_group_info() {
     'children' => array(
       0 => 'field_rl_weather',
       1 => 'field_realm',
+      2 => 'field_tag_realm',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(

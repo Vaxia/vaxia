@@ -105,28 +105,28 @@ function vaxia_strongarm() {
           'weight' => '1',
         ),
         'path' => array(
-          'weight' => '11',
-        ),
-        'workflow' => array(
           'weight' => '12',
         ),
+        'workflow' => array(
+          'weight' => '13',
+        ),
         'locations' => array(
-          'weight' => '14',
+          'weight' => '15',
         ),
         'badges' => array(
-          'weight' => '13',
+          'weight' => '14',
         ),
       ),
       'display' => array(
         'workflow_current_state' => array(
           'default' => array(
-            'weight' => '9',
+            'weight' => '12',
             'visible' => FALSE,
           ),
         ),
         'workflow' => array(
           'default' => array(
-            'weight' => '11',
+            'weight' => '13',
             'visible' => FALSE,
           ),
         ),

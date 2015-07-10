@@ -10,7 +10,7 @@
 function department_default_rules_configuration() {
   $items = array();
   $items['rules_demote_temporary_lead'] = entity_import('rules_config', '{ "rules_demote_temporary_lead" : {
-      "LABEL" : "Demote temporary lead",
+      "LABEL" : "Department - Demote temporary lead",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
       "TAGS" : [ "Department" ],
@@ -22,7 +22,7 @@ function department_default_rules_configuration() {
     }
   }');
   $items['rules_promote_temporary_lead'] = entity_import('rules_config', '{ "rules_promote_temporary_lead" : {
-      "LABEL" : "Promote temporary lead",
+      "LABEL" : "Department - Promote temporary lead",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
       "TAGS" : [ "Department" ],

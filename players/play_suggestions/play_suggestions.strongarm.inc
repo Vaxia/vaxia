@@ -1,71 +1,74 @@
 <?php
 /**
  * @file
- * scene_record.strongarm.inc
+ * play_suggestions.strongarm.inc
  */
 
 /**
  * Implements hook_strongarm().
  */
-function scene_record_strongarm() {
+function play_suggestions_strongarm() {
   $export = array();
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'comment_anonymous_scene';
+  $strongarm->name = 'comment_anonymous_play_suggestions';
   $strongarm->value = 0;
-  $export['comment_anonymous_scene'] = $strongarm;
+  $export['comment_anonymous_play_suggestions'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'comment_default_mode_scene';
-  $strongarm->value = 0;
-  $export['comment_default_mode_scene'] = $strongarm;
+  $strongarm->name = 'comment_default_mode_play_suggestions';
+  $strongarm->value = 1;
+  $export['comment_default_mode_play_suggestions'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'comment_default_per_page_scene';
+  $strongarm->name = 'comment_default_per_page_play_suggestions';
   $strongarm->value = '50';
-  $export['comment_default_per_page_scene'] = $strongarm;
+  $export['comment_default_per_page_play_suggestions'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'comment_form_location_scene';
+  $strongarm->name = 'comment_form_location_play_suggestions';
   $strongarm->value = 1;
-  $export['comment_form_location_scene'] = $strongarm;
+  $export['comment_form_location_play_suggestions'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'comment_preview_scene';
+  $strongarm->name = 'comment_play_suggestions';
   $strongarm->value = '1';
-  $export['comment_preview_scene'] = $strongarm;
+  $export['comment_play_suggestions'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'comment_scene';
-  $strongarm->value = '2';
-  $export['comment_scene'] = $strongarm;
+  $strongarm->name = 'comment_preview_play_suggestions';
+  $strongarm->value = '1';
+  $export['comment_preview_play_suggestions'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'comment_subject_field_scene';
+  $strongarm->name = 'comment_subject_field_play_suggestions';
   $strongarm->value = 1;
-  $export['comment_subject_field_scene'] = $strongarm;
+  $export['comment_subject_field_play_suggestions'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'field_bundle_settings_node__scene';
+  $strongarm->name = 'field_bundle_settings_node__play_suggestions';
   $strongarm->value = array(
     'view_modes' => array(
       'teaser' => array(
+        'custom_settings' => TRUE,
+      ),
+      'question' => array(
         'custom_settings' => TRUE,
       ),
       'artwork' => array(
@@ -77,10 +80,7 @@ function scene_record_strongarm() {
       'rss' => array(
         'custom_settings' => FALSE,
       ),
-      'search_index' => array(
-        'custom_settings' => FALSE,
-      ),
-      'search_result' => array(
+      'print' => array(
         'custom_settings' => FALSE,
       ),
       'ical' => array(
@@ -92,86 +92,63 @@ function scene_record_strongarm() {
       'token' => array(
         'custom_settings' => FALSE,
       ),
-      'question' => array(
-        'custom_settings' => TRUE,
-      ),
-      'print' => array(
-        'custom_settings' => FALSE,
-      ),
     ),
     'extra_fields' => array(
       'form' => array(
-        'title' => array(
-          'weight' => '0',
-        ),
-        'path' => array(
-          'weight' => '4',
-        ),
         'locations' => array(
           'weight' => '3',
         ),
-        'workflow' => array(
-          'weight' => '13',
+        'title' => array(
+          'weight' => '1',
         ),
-        'badges' => array(
+        'path' => array(
           'weight' => '2',
         ),
-      ),
-      'display' => array(
-        'workflow_current_state' => array(
-          'default' => array(
-            'weight' => '0',
-            'visible' => TRUE,
-          ),
-        ),
-        'workflow' => array(
-          'default' => array(
-            'weight' => '10',
-            'visible' => TRUE,
-          ),
+        'badges' => array(
+          'weight' => '4',
         ),
       ),
+      'display' => array(),
     ),
   );
-  $export['field_bundle_settings_node__scene'] = $strongarm;
+  $export['field_bundle_settings_node__play_suggestions'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'menu_options_scene';
+  $strongarm->name = 'menu_options_play_suggestions';
   $strongarm->value = array();
-  $export['menu_options_scene'] = $strongarm;
+  $export['menu_options_play_suggestions'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'menu_parent_scene';
+  $strongarm->name = 'menu_parent_play_suggestions';
   $strongarm->value = 'main-menu:0';
-  $export['menu_parent_scene'] = $strongarm;
+  $export['menu_parent_play_suggestions'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'node_options_scene';
+  $strongarm->name = 'node_options_play_suggestions';
   $strongarm->value = array(
     0 => 'status',
-    1 => 'revision',
   );
-  $export['node_options_scene'] = $strongarm;
+  $export['node_options_play_suggestions'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'node_preview_scene';
-  $strongarm->value = '1';
-  $export['node_preview_scene'] = $strongarm;
+  $strongarm->name = 'node_preview_play_suggestions';
+  $strongarm->value = '0';
+  $export['node_preview_play_suggestions'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'node_submitted_scene';
-  $strongarm->value = 1;
-  $export['node_submitted_scene'] = $strongarm;
+  $strongarm->name = 'node_submitted_play_suggestions';
+  $strongarm->value = 0;
+  $export['node_submitted_play_suggestions'] = $strongarm;
 
   return $export;
 }

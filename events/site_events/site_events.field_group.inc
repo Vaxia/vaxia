@@ -13,6 +13,37 @@ function site_events_field_group_info() {
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
+  $field_group->identifier = 'group_what|node|event|default';
+  $field_group->group_name = 'group_what';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'event';
+  $field_group->mode = 'default';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Details',
+    'weight' => '3',
+    'children' => array(
+      0 => 'field_when',
+      1 => 'field_max_seating',
+      2 => 'field_content_warnings',
+      3 => 'field_tag_realm',
+      4 => 'field_format',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'label' => 'Details',
+      'instance_settings' => array(
+        'classes' => 'group-what field-group-fieldset',
+        'description' => '',
+      ),
+      'formatter' => 'collapsible',
+    ),
+  );
+  $export['group_what|node|event|default'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
   $field_group->identifier = 'group_what|node|event|form';
   $field_group->group_name = 'group_what';
   $field_group->entity_type = 'node';
@@ -20,20 +51,23 @@ function site_events_field_group_info() {
   $field_group->mode = 'form';
   $field_group->parent_name = '';
   $field_group->data = array(
-    'label' => 'What',
-    'weight' => '3',
+    'label' => 'Details',
+    'weight' => '4',
     'children' => array(
-      0 => 'body',
+      0 => 'field_max_seating',
       1 => 'field_content_warnings',
+      2 => 'field_tag_realm',
+      3 => 'field_format',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
-      'formatter' => 'collapsible',
+      'label' => 'Details',
       'instance_settings' => array(
-        'description' => '',
-        'classes' => 'group-what field-group-fieldset',
         'required_fields' => 1,
+        'classes' => 'group-what field-group-fieldset',
+        'description' => '',
       ),
+      'formatter' => 'collapsible',
     ),
   );
   $export['group_what|node|event|form'] = $field_group;

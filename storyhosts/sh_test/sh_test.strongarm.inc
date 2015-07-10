@@ -148,7 +148,13 @@ function sh_test_strongarm() {
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '9',
+          'weight' => '10',
+        ),
+        'locations' => array(
+          'weight' => '11',
+        ),
+        'badges' => array(
+          'weight' => '12',
         ),
       ),
       'display' => array(),

@@ -49,6 +49,7 @@ function proposal_field_default_field_bases() {
     'module' => 'node_reference',
     'settings' => array(
       'referenceable_types' => array(
+        'application' => 0,
         'artwork' => 0,
         'character_sheet' => 0,
         'event' => 0,
@@ -60,6 +61,7 @@ function proposal_field_default_field_bases() {
         'multichoice' => 0,
         'notation' => 0,
         'page' => 0,
+        'play_suggestions' => 0,
         'proposal' => 0,
         'quiz' => 0,
         'rpg_chatroom' => 0,
@@ -67,6 +69,7 @@ function proposal_field_default_field_bases() {
         'session_report' => 0,
         'storyhost_application' => 0,
         'strike' => 0,
+        'timeline_event' => 0,
         'webform' => 0,
         'wiki_page' => 0,
       ),

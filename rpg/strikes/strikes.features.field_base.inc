@@ -105,7 +105,7 @@ function strikes_field_default_field_bases() {
         'hounding' => 'Harassing other players (hounding)',
         'stalking' => 'Harassing other players (IC stalking / lurking after asked not to)',
         'disruption' => 'OOC Session disruption',
-        'consent' => 'Ignoring consent of other player',
+        'consent' => 'Ignoring consent of other player (IC / OOC)',
         'griefing' => 'Player disturbance (griefing)',
         'extortion' => 'Player disturbance (extortion)',
         'manipulation' => 'Emotional manipulation (overt aggression)',
@@ -114,17 +114,22 @@ function strikes_field_default_field_bases() {
         'baiting' => 'Emotional manipulation (baiting / goading)',
         'chaseme' => 'Emotional manipulation (chase me behavior)',
         'play-victim' => 'Emotional manipulation (projecting blame)',
+        'gaslighting' => 'Emotional manipulation (gaslighting)',
         'xxxpost' => 'Posting in public room (sexual)',
         'bigotpost' => 'Posting in public room (racist or bigoted)',
         'violentpost' => 'Posting in public room (extremely violent)',
         'noncompliance' => 'Not following directions of site staff',
-        'impersonation' => 'Impersonation of site staff / moderation staff',
+        'contract' => 'Breaking terms of social contract',
         'cheating' => 'Deliberate violation of System rules or Setting limits',
+        'impersonation' => 'Impersonation of site staff / moderation staff',
         'hacking' => 'Unauthorized access of server or account',
-        'multiaccounts' => 'Multiple accounts without permission',
+        'multiaccounts' => 'Operating multiple accounts without permission',
         'guiding_principles' => 'Violating site guiding principles',
-        'policy-violation' => 'Site policy',
-        'positive' => 'Positive feedback',
+        'policy-violation' => 'Site policy: General player policy',
+        'policy-social' => 'Site policy: Social dept. policy',
+        'policy-setting' => 'Site policy: Setting dept. policy',
+        'policy-system' => 'Site policy: System dept. policy',
+        'positive' => 'Positive feedback / Check-in',
         'misc' => 'Misc',
       ),
       'allowed_values_function' => '',
@@ -162,6 +167,25 @@ function strikes_field_default_field_bases() {
     ),
     'translatable' => 0,
     'type' => 'datetime',
+  );
+
+  // Exported field_base: 'field_details'
+  $field_bases['field_details'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_details',
+    'indexes' => array(
+      'format' => array(
+        0 => 'format',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'text',
+    'settings' => array(),
+    'translatable' => 0,
+    'type' => 'text_long',
   );
 
   // Exported field_base: 'field_documentation'
@@ -242,61 +266,6 @@ function strikes_field_default_field_bases() {
     'type' => 'user_reference',
   );
 
-  // Exported field_base: 'field_red_strike'
-  $field_bases['field_red_strike'] = array(
-    'active' => 1,
-    'cardinality' => -1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_red_strike',
-    'indexes' => array(
-      'uid' => array(
-        0 => 'uid',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'user_reference',
-    'settings' => array(
-      'referenceable_roles' => array(
-        2 => 2,
-        3 => 0,
-        8 => 0,
-        9 => 0,
-        10 => 0,
-        12 => 0,
-        13 => 0,
-        14 => 0,
-        15 => 0,
-        17 => 0,
-        19 => 0,
-        20 => 0,
-        21 => 0,
-        22 => 0,
-        23 => 0,
-        24 => 0,
-        25 => 0,
-        26 => 0,
-        27 => 0,
-        28 => 0,
-        29 => 0,
-        30 => 0,
-        31 => 0,
-        1000 => 0,
-      ),
-      'referenceable_status' => array(
-        0 => 0,
-        1 => 0,
-      ),
-      'view' => array(
-        'args' => array(),
-        'display_name' => '',
-        'view_name' => '',
-      ),
-    ),
-    'translatable' => 0,
-    'type' => 'user_reference',
-  );
-
   // Exported field_base: 'field_results'
   $field_bases['field_results'] = array(
     'active' => 1,
@@ -324,9 +293,10 @@ function strikes_field_default_field_bases() {
         'break-1d' => 'Player requested to take a break from the site (1 day)',
         'break-3d' => 'Player requested to take a break from the site (3 days)',
         'break-1w' => 'Player requested to take a break from the site (1 week)',
-        'yellow' => 'Yellow Strike given',
-        'red' => 'Red Strike given',
-        'site-ban' => 'Permanent site-ban given',
+        'yellow' => 'Yellow Strike recommended',
+        'red-upgrade' => 'Yellow upgraded to Red, 3rd Yellow w/in year',
+        'red' => 'Red Strike recommended',
+        'site-ban' => 'Permanent site-ban recommended',
         'other' => 'Other action taken',
       ),
       'allowed_values_function' => '',
@@ -513,61 +483,6 @@ function strikes_field_default_field_bases() {
         31 => 0,
         32 => 0,
         33 => 0,
-      ),
-      'referenceable_status' => array(
-        0 => 0,
-        1 => 0,
-      ),
-      'view' => array(
-        'args' => array(),
-        'display_name' => '',
-        'view_name' => '',
-      ),
-    ),
-    'translatable' => 0,
-    'type' => 'user_reference',
-  );
-
-  // Exported field_base: 'field_yellow_strike'
-  $field_bases['field_yellow_strike'] = array(
-    'active' => 1,
-    'cardinality' => -1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_yellow_strike',
-    'indexes' => array(
-      'uid' => array(
-        0 => 'uid',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'user_reference',
-    'settings' => array(
-      'referenceable_roles' => array(
-        2 => 2,
-        3 => 0,
-        8 => 0,
-        9 => 0,
-        10 => 0,
-        12 => 0,
-        13 => 0,
-        14 => 0,
-        15 => 0,
-        17 => 0,
-        19 => 0,
-        20 => 0,
-        21 => 0,
-        22 => 0,
-        23 => 0,
-        24 => 0,
-        25 => 0,
-        26 => 0,
-        27 => 0,
-        28 => 0,
-        29 => 0,
-        30 => 0,
-        31 => 0,
-        1000 => 0,
       ),
       'referenceable_status' => array(
         0 => 0,

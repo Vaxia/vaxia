@@ -47,7 +47,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Art',
-    'weight' => '5',
+    'weight' => '6',
     'children' => array(
       0 => 'field_artwork_image',
     ),
@@ -102,7 +102,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Aspects',
-    'weight' => '5',
+    'weight' => '3',
     'children' => array(
       0 => 'field_aspect_one',
       1 => 'field_aspect_two',
@@ -132,7 +132,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Basics',
-    'weight' => '0',
+    'weight' => '1',
     'children' => array(
       0 => 'field_is_npc',
       1 => 'field_is_open_npc',
@@ -165,7 +165,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Descriptions',
-    'weight' => '3',
+    'weight' => '4',
     'children' => array(
       0 => 'field_description',
     ),
@@ -198,14 +198,14 @@ function vaxia_field_group_info() {
       1 => 'field_is_npc',
       2 => 'field_is_open_npc',
       3 => 'field_race',
-      4 => 'field_realm',
-      5 => 'field_sex',
-      6 => 'field_is_storyteller',
-      7 => 'field_conditions',
-      8 => 'field_other_species',
-      9 => 'field_sirian_species',
-      10 => 'field_associated_locations',
-      11 => 'field_birthday',
+      4 => 'field_sex',
+      5 => 'field_is_storyteller',
+      6 => 'field_conditions',
+      7 => 'field_other_species',
+      8 => 'field_sirian_species',
+      9 => 'field_personal_room',
+      10 => 'field_tag_realm',
+      11 => 'field_age',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -229,18 +229,20 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Details',
-    'weight' => '4',
+    'weight' => '5',
     'children' => array(
       0 => 'field_age_app',
-      1 => 'field_age_real',
-      2 => 'field_race',
-      3 => 'field_realm',
-      4 => 'field_sex',
-      5 => 'field_conditions',
-      6 => 'field_other_species',
-      7 => 'field_sirian_species',
-      8 => 'field_personal_room',
-      9 => 'field_birthday',
+      1 => 'field_race',
+      2 => 'field_sex',
+      3 => 'field_conditions',
+      4 => 'field_other_species',
+      5 => 'field_sirian_species',
+      6 => 'field_personal_room',
+      7 => 'field_real_age',
+      8 => 'field_birth_month',
+      9 => 'field_birth_day',
+      10 => 'field_tag_realm',
+      11 => 'field_age',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -293,7 +295,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Items',
-    'weight' => '8',
+    'weight' => '9',
     'children' => array(
       0 => 'field_economy',
       1 => 'field_items',
@@ -329,7 +331,6 @@ function vaxia_field_group_info() {
       1 => 'field_character_goals',
       2 => 'field_content_limits',
       3 => 'field_visibility',
-      4 => 'field_personal_room',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -353,7 +354,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Notes',
-    'weight' => '9',
+    'weight' => '10',
     'children' => array(
       0 => 'field_player_notes',
       1 => 'field_character_goals',
@@ -416,7 +417,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Personal',
-    'weight' => '1',
+    'weight' => '2',
     'children' => array(
       0 => 'field_background',
       1 => 'field_last_name',
@@ -475,7 +476,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Public information',
-    'weight' => '2',
+    'weight' => '3',
     'children' => array(
       0 => 'field_public_information',
       1 => 'field_sh_public_information',
@@ -507,7 +508,8 @@ function vaxia_field_group_info() {
     'children' => array(
       0 => 'field_sh_notes',
       1 => 'field_sh_private_notes',
-      2 => 'field_needs_work',
+      2 => 'field_skill_review',
+      3 => 'field_item_shop',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -531,12 +533,11 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'SH Notes',
-    'weight' => '10',
+    'weight' => '11',
     'children' => array(
       0 => 'field_sh_notes',
       1 => 'field_sh_private_notes',
-      2 => 'field_skill_review',
-      3 => 'field_needs_work',
+      2 => 'field_item_shop',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -565,6 +566,7 @@ function vaxia_field_group_info() {
     'children' => array(
       0 => 'field_skill',
       1 => 'field_languages',
+      2 => 'field_language_skills',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -588,10 +590,11 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Skills',
-    'weight' => '7',
+    'weight' => '8',
     'children' => array(
       0 => 'field_skill',
       1 => 'field_languages',
+      2 => 'field_language_skills',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -655,7 +658,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Stats',
-    'weight' => '6',
+    'weight' => '7',
     'children' => array(
       0 => 'field_agility',
       1 => 'field_appearance',
@@ -684,6 +687,60 @@ function vaxia_field_group_info() {
     ),
   );
   $export['group_stats|node|character_sheet|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_tech_lang|field_collection_item|field_skill|default';
+  $field_group->group_name = 'group_tech_lang';
+  $field_group->entity_type = 'field_collection_item';
+  $field_group->bundle = 'field_skill';
+  $field_group->mode = 'default';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Tech Languages',
+    'weight' => '12',
+    'children' => array(
+      0 => 'field_tech_languages',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'formatter' => 'collapsible',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => 'group-tech-lang field-group-fieldset',
+      ),
+    ),
+  );
+  $export['group_tech_lang|field_collection_item|field_skill|default'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_tech_lang|field_collection_item|field_skill|form';
+  $field_group->group_name = 'group_tech_lang';
+  $field_group->entity_type = 'field_collection_item';
+  $field_group->bundle = 'field_skill';
+  $field_group->mode = 'form';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Tech languages',
+    'weight' => '4',
+    'children' => array(
+      0 => 'field_tech_languages',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'label' => 'Tech languages',
+      'instance_settings' => array(
+        'required_fields' => 1,
+        'classes' => 'group-tech-lang field-group-fieldset',
+        'description' => 'If this is a Sirian tech skill, select two technical languages to be familiar with. Skills start with two languages by default.',
+      ),
+      'formatter' => 'collapsed',
+    ),
+  );
+  $export['group_tech_lang|field_collection_item|field_skill|form'] = $field_group;
 
   return $export;
 }

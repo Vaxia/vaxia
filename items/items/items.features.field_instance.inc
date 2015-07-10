@@ -10,6 +10,243 @@
 function items_field_default_field_instances() {
   $field_instances = array();
 
+  // Exported field_instance:
+  // 'field_collection_item-field_skill-field_tech_languages'
+  $field_instances['field_collection_item-field_skill-field_tech_languages'] = array(
+    'bundle' => 'field_skill',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'field_collection_table',
+        'settings' => array(
+          'add' => '',
+          'delete' => '',
+          'description' => 0,
+          'edit' => '',
+          'empty' => 1,
+          'view_mode' => 'full',
+        ),
+        'type' => 'field_collection_table_view',
+        'weight' => 6,
+      ),
+    ),
+    'entity_type' => 'field_collection_item',
+    'field_name' => 'field_tech_languages',
+    'label' => 'Tech languages',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'field_collection',
+      'settings' => array(),
+      'type' => 'field_collection_embed',
+      'weight' => 6,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'field_collection_item-field_tech_languages-field_tech_language'
+  $field_instances['field_collection_item-field_tech_languages-field_tech_language'] = array(
+    'bundle' => 'field_tech_languages',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_link',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'field_collection_item',
+    'field_name' => 'field_tech_language',
+    'label' => 'Tech language',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 1,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'field_collection_item-field_tech_languages-field_tech_proficiency'
+  $field_instances['field_collection_item-field_tech_languages-field_tech_proficiency'] = array(
+    'bundle' => 'field_tech_languages',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 1,
+      ),
+    ),
+    'entity_type' => 'field_collection_item',
+    'field_name' => 'field_tech_proficiency',
+    'label' => 'Proficiency',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 2,
+    ),
+  );
+
+  // Exported field_instance: 'node-items-field_absorb_type'
+  $field_instances['node-items-field_absorb_type'] = array(
+    'bundle' => 'items',
+    'default_value' => array(
+      0 => array(
+        'value' => 'armor',
+      ),
+    ),
+    'deleted' => 0,
+    'description' => 'Select the type of defensive bonus. Armors apply all the time, shields only when blocking.',
+    'display' => array(
+      'artwork' => array(
+        'label' => 'inline',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 9,
+      ),
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 67,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_absorb_type',
+    'label' => 'Absorb type',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 36,
+    ),
+  );
+
+  // Exported field_instance: 'node-items-field_agility'
+  $field_instances['node-items-field_agility'] = array(
+    'bundle' => 'items',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'artwork' => array(
+        'label' => 'inline',
+        'module' => 'computed_field',
+        'settings' => array(),
+        'type' => 'computed_field_unsanitized',
+        'weight' => 9,
+      ),
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'computed_field',
+        'settings' => array(),
+        'type' => 'computed_field_plain',
+        'weight' => 29,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_agility',
+    'label' => 'Agility',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'computed_field',
+      'settings' => array(),
+      'type' => 'computed',
+      'weight' => 141,
+    ),
+  );
+
+  // Exported field_instance: 'node-items-field_appearance'
+  $field_instances['node-items-field_appearance'] = array(
+    'bundle' => 'items',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'artwork' => array(
+        'label' => 'inline',
+        'module' => 'computed_field',
+        'settings' => array(),
+        'type' => 'computed_field_unsanitized',
+        'weight' => 17,
+      ),
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'computed_field',
+        'settings' => array(),
+        'type' => 'computed_field_plain',
+        'weight' => 37,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_appearance',
+    'label' => 'Appearance',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'computed_field',
+      'settings' => array(),
+      'type' => 'computed',
+      'weight' => 149,
+    ),
+  );
+
   // Exported field_instance: 'node-items-field_armor_absorbs'
   $field_instances['node-items-field_armor_absorbs'] = array(
     'bundle' => 'items',
@@ -19,7 +256,7 @@ function items_field_default_field_instances() {
       ),
     ),
     'deleted' => 0,
-    'description' => '',
+    'description' => 'How much PP damage this armor or shield absorbs when the character is hit.',
     'display' => array(
       'artwork' => array(
         'label' => 'inline',
@@ -31,7 +268,7 @@ function items_field_default_field_instances() {
           'thousand_separator' => ' ',
         ),
         'type' => 'number_integer',
-        'weight' => 4,
+        'weight' => 10,
       ),
       'default' => array(
         'label' => 'inline',
@@ -43,7 +280,7 @@ function items_field_default_field_instances() {
           'thousand_separator' => ' ',
         ),
         'type' => 'number_integer',
-        'weight' => 65,
+        'weight' => 66,
       ),
       'question' => array(
         'label' => 'above',
@@ -68,7 +305,7 @@ function items_field_default_field_instances() {
       'module' => 'number',
       'settings' => array(),
       'type' => 'number',
-      'weight' => 34,
+      'weight' => 35,
     ),
   );
 
@@ -81,7 +318,7 @@ function items_field_default_field_instances() {
       ),
     ),
     'deleted' => 0,
-    'description' => '',
+    'description' => 'How much the wearer\'s PP damage is reduced by the armor he is wearing.',
     'display' => array(
       'artwork' => array(
         'label' => 'inline',
@@ -93,7 +330,7 @@ function items_field_default_field_instances() {
           'thousand_separator' => ' ',
         ),
         'type' => 'number_integer',
-        'weight' => 5,
+        'weight' => 11,
       ),
       'default' => array(
         'label' => 'inline',
@@ -105,7 +342,7 @@ function items_field_default_field_instances() {
           'thousand_separator' => ' ',
         ),
         'type' => 'number_integer',
-        'weight' => 66,
+        'weight' => 68,
       ),
       'question' => array(
         'label' => 'above',
@@ -130,7 +367,112 @@ function items_field_default_field_instances() {
       'module' => 'number',
       'settings' => array(),
       'type' => 'number',
-      'weight' => 35,
+      'weight' => 37,
+    ),
+  );
+
+  // Exported field_instance: 'node-items-field_awareness'
+  $field_instances['node-items-field_awareness'] = array(
+    'bundle' => 'items',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'artwork' => array(
+        'label' => 'inline',
+        'module' => 'computed_field',
+        'settings' => array(),
+        'type' => 'computed_field_unsanitized',
+        'weight' => 13,
+      ),
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'computed_field',
+        'settings' => array(),
+        'type' => 'computed_field_plain',
+        'weight' => 33,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_awareness',
+    'label' => 'Awareness',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'computed_field',
+      'settings' => array(),
+      'type' => 'computed',
+      'weight' => 145,
+    ),
+  );
+
+  // Exported field_instance: 'node-items-field_build_points'
+  $field_instances['node-items-field_build_points'] = array(
+    'bundle' => 'items',
+    'default_value' => array(
+      0 => array(
+        'value' => 0,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => 'How many build points this companion was created with - default companions start with 150 pts.',
+    'display' => array(
+      'artwork' => array(
+        'label' => 'inline',
+        'module' => 'number',
+        'settings' => array(
+          'decimal_separator' => '.',
+          'prefix_suffix' => TRUE,
+          'scale' => 0,
+          'thousand_separator' => ' ',
+        ),
+        'type' => 'number_integer',
+        'weight' => 12,
+      ),
+      'default' => array(
+        'label' => 'above',
+        'module' => 'number',
+        'settings' => array(
+          'decimal_separator' => '.',
+          'prefix_suffix' => TRUE,
+          'scale' => 0,
+          'thousand_separator' => ' ',
+        ),
+        'type' => 'number_integer',
+        'weight' => 73,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_build_points',
+    'label' => 'Build points',
+    'required' => 0,
+    'settings' => array(
+      'max' => '',
+      'min' => 0,
+      'prefix' => '',
+      'suffix' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'number',
+      'settings' => array(),
+      'type' => 'number',
+      'weight' => 42,
     ),
   );
 
@@ -225,7 +567,108 @@ function items_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'node_reference_autocomplete',
-      'weight' => 3,
+      'weight' => 4,
+    ),
+  );
+
+  // Exported field_instance: 'node-items-field_charisma'
+  $field_instances['node-items-field_charisma'] = array(
+    'bundle' => 'items',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'artwork' => array(
+        'label' => 'inline',
+        'module' => 'number',
+        'settings' => array(
+          'decimal_separator' => '.',
+          'prefix_suffix' => TRUE,
+          'scale' => 0,
+          'thousand_separator' => ' ',
+        ),
+        'type' => 'number_integer',
+        'weight' => 16,
+      ),
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'number',
+        'settings' => array(
+          'decimal_separator' => '.',
+          'prefix_suffix' => TRUE,
+          'scale' => 0,
+          'thousand_separator' => ' ',
+        ),
+        'type' => 'number_integer',
+        'weight' => 36,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_charisma',
+    'label' => 'Charisma',
+    'required' => 0,
+    'settings' => array(
+      'max' => '',
+      'min' => '',
+      'prefix' => '',
+      'suffix' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'number',
+      'settings' => array(),
+      'type' => 'number',
+      'weight' => 148,
+    ),
+  );
+
+  // Exported field_instance: 'node-items-field_constitution'
+  $field_instances['node-items-field_constitution'] = array(
+    'bundle' => 'items',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'artwork' => array(
+        'label' => 'inline',
+        'module' => 'computed_field',
+        'settings' => array(),
+        'type' => 'computed_field_unsanitized',
+        'weight' => 7,
+      ),
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'computed_field',
+        'settings' => array(),
+        'type' => 'computed_field_plain',
+        'weight' => 27,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_constitution',
+    'label' => 'Constitution',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'computed_field',
+      'settings' => array(),
+      'type' => 'computed',
+      'weight' => 139,
     ),
   );
 
@@ -246,7 +689,7 @@ function items_field_default_field_instances() {
         'label' => 'hidden',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 14,
+        'weight' => 12,
       ),
       'question' => array(
         'label' => 'above',
@@ -392,6 +835,122 @@ function items_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-items-field_dexterity'
+  $field_instances['node-items-field_dexterity'] = array(
+    'bundle' => 'items',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'artwork' => array(
+        'label' => 'inline',
+        'module' => 'number',
+        'settings' => array(
+          'decimal_separator' => '.',
+          'prefix_suffix' => TRUE,
+          'scale' => 0,
+          'thousand_separator' => ' ',
+        ),
+        'type' => 'number_integer',
+        'weight' => 10,
+      ),
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'number',
+        'settings' => array(
+          'decimal_separator' => '.',
+          'prefix_suffix' => TRUE,
+          'scale' => 0,
+          'thousand_separator' => ' ',
+        ),
+        'type' => 'number_integer',
+        'weight' => 30,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_dexterity',
+    'label' => 'Dexterity',
+    'required' => 0,
+    'settings' => array(
+      'max' => '',
+      'min' => '',
+      'prefix' => '',
+      'suffix' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'number',
+      'settings' => array(),
+      'type' => 'number',
+      'weight' => 142,
+    ),
+  );
+
+  // Exported field_instance: 'node-items-field_endurance'
+  $field_instances['node-items-field_endurance'] = array(
+    'bundle' => 'items',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'artwork' => array(
+        'label' => 'inline',
+        'module' => 'number',
+        'settings' => array(
+          'decimal_separator' => '.',
+          'prefix_suffix' => TRUE,
+          'scale' => 0,
+          'thousand_separator' => ' ',
+        ),
+        'type' => 'number_integer',
+        'weight' => 6,
+      ),
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'number',
+        'settings' => array(
+          'decimal_separator' => '.',
+          'prefix_suffix' => TRUE,
+          'scale' => 0,
+          'thousand_separator' => ' ',
+        ),
+        'type' => 'number_integer',
+        'weight' => 26,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_endurance',
+    'label' => 'Endurance',
+    'required' => 0,
+    'settings' => array(
+      'max' => '',
+      'min' => '',
+      'prefix' => '',
+      'suffix' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'number',
+      'settings' => array(),
+      'type' => 'number',
+      'weight' => 138,
+    ),
+  );
+
   // Exported field_instance: 'node-items-field_fixed_strength'
   $field_instances['node-items-field_fixed_strength'] = array(
     'bundle' => 'items',
@@ -409,7 +968,7 @@ function items_field_default_field_instances() {
           'thousand_separator' => ' ',
         ),
         'type' => 'number_integer',
-        'weight' => 3,
+        'weight' => 8,
       ),
       'default' => array(
         'label' => 'inline',
@@ -421,7 +980,7 @@ function items_field_default_field_instances() {
           'thousand_separator' => ' ',
         ),
         'type' => 'number_integer',
-        'weight' => 64,
+        'weight' => 65,
       ),
       'question' => array(
         'label' => 'above',
@@ -446,7 +1005,50 @@ function items_field_default_field_instances() {
       'module' => 'number',
       'settings' => array(),
       'type' => 'number',
-      'weight' => 33,
+      'weight' => 34,
+    ),
+  );
+
+  // Exported field_instance: 'node-items-field_health'
+  $field_instances['node-items-field_health'] = array(
+    'bundle' => 'items',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'artwork' => array(
+        'label' => 'inline',
+        'module' => 'computed_field',
+        'settings' => array(),
+        'type' => 'computed_field_unsanitized',
+        'weight' => 5,
+      ),
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'computed_field',
+        'settings' => array(),
+        'type' => 'computed_field_plain',
+        'weight' => 25,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_health',
+    'label' => 'Health',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'computed_field',
+      'settings' => array(),
+      'type' => 'computed',
+      'weight' => 137,
     ),
   );
 
@@ -465,7 +1067,7 @@ function items_field_default_field_instances() {
         'label' => 'inline',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 14,
+        'weight' => 15,
       ),
       'default' => array(
         'label' => 'inline',
@@ -496,6 +1098,64 @@ function items_field_default_field_instances() {
       ),
       'type' => 'options_onoff',
       'weight' => 14,
+    ),
+  );
+
+  // Exported field_instance: 'node-items-field_intelligence'
+  $field_instances['node-items-field_intelligence'] = array(
+    'bundle' => 'items',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'artwork' => array(
+        'label' => 'inline',
+        'module' => 'number',
+        'settings' => array(
+          'decimal_separator' => '.',
+          'prefix_suffix' => TRUE,
+          'scale' => 0,
+          'thousand_separator' => ' ',
+        ),
+        'type' => 'number_integer',
+        'weight' => 12,
+      ),
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'number',
+        'settings' => array(
+          'decimal_separator' => '.',
+          'prefix_suffix' => TRUE,
+          'scale' => 0,
+          'thousand_separator' => ' ',
+        ),
+        'type' => 'number_integer',
+        'weight' => 32,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_intelligence',
+    'label' => 'Intelligence',
+    'required' => 0,
+    'settings' => array(
+      'max' => '',
+      'min' => '',
+      'prefix' => '',
+      'suffix' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'number',
+      'settings' => array(),
+      'type' => 'number',
+      'weight' => 144,
     ),
   );
 
@@ -827,7 +1487,7 @@ function items_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'artwork' => array(
-        'label' => 'above',
+        'label' => 'hidden',
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
@@ -1160,7 +1820,7 @@ function items_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'artwork' => array(
-        'label' => 'above',
+        'label' => 'hidden',
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
@@ -2237,7 +2897,7 @@ function items_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_item_over_spirituality',
-    'label' => 'Spirituality',
+    'label' => 'Spirit',
     'required' => 0,
     'settings' => array(
       'max' => '',
@@ -2532,7 +3192,7 @@ function items_field_default_field_instances() {
           'thousand_separator' => ' ',
         ),
         'type' => 'number_integer',
-        'weight' => 9,
+        'weight' => 5,
       ),
       'default' => array(
         'label' => 'inline',
@@ -2544,7 +3204,7 @@ function items_field_default_field_instances() {
           'thousand_separator' => ' ',
         ),
         'type' => 'number_integer',
-        'weight' => 70,
+        'weight' => 72,
       ),
       'question' => array(
         'label' => 'above',
@@ -2569,7 +3229,7 @@ function items_field_default_field_instances() {
       'module' => 'number',
       'settings' => array(),
       'type' => 'number',
-      'weight' => 39,
+      'weight' => 41,
     ),
   );
 
@@ -2717,7 +3377,7 @@ function items_field_default_field_instances() {
         'module' => 'taxonomy',
         'settings' => array(),
         'type' => 'taxonomy_term_reference_link',
-        'weight' => 1,
+        'weight' => 2,
       ),
       'default' => array(
         'label' => 'inline',
@@ -2765,14 +3425,14 @@ function items_field_default_field_instances() {
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 6,
+        'weight' => 3,
       ),
       'default' => array(
         'label' => 'inline',
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 67,
+        'weight' => 69,
       ),
       'question' => array(
         'label' => 'above',
@@ -2793,7 +3453,7 @@ function items_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 37,
+      'weight' => 39,
     ),
   );
 
@@ -2818,7 +3478,7 @@ function items_field_default_field_instances() {
           'thousand_separator' => ' ',
         ),
         'type' => 'number_integer',
-        'weight' => 8,
+        'weight' => 4,
       ),
       'default' => array(
         'label' => 'inline',
@@ -2830,7 +3490,7 @@ function items_field_default_field_instances() {
           'thousand_separator' => ' ',
         ),
         'type' => 'number_integer',
-        'weight' => 69,
+        'weight' => 71,
       ),
       'question' => array(
         'label' => 'above',
@@ -2855,7 +3515,65 @@ function items_field_default_field_instances() {
       'module' => 'number',
       'settings' => array(),
       'type' => 'number',
-      'weight' => 38,
+      'weight' => 40,
+    ),
+  );
+
+  // Exported field_instance: 'node-items-field_life'
+  $field_instances['node-items-field_life'] = array(
+    'bundle' => 'items',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'artwork' => array(
+        'label' => 'inline',
+        'module' => 'number',
+        'settings' => array(
+          'decimal_separator' => '.',
+          'prefix_suffix' => TRUE,
+          'scale' => 0,
+          'thousand_separator' => ' ',
+        ),
+        'type' => 'number_integer',
+        'weight' => 4,
+      ),
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'number',
+        'settings' => array(
+          'decimal_separator' => '.',
+          'prefix_suffix' => TRUE,
+          'scale' => 0,
+          'thousand_separator' => ' ',
+        ),
+        'type' => 'number_integer',
+        'weight' => 24,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_life',
+    'label' => 'Life',
+    'required' => 0,
+    'settings' => array(
+      'max' => '',
+      'min' => '',
+      'prefix' => '',
+      'suffix' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'number',
+      'settings' => array(),
+      'type' => 'number',
+      'weight' => 136,
     ),
   );
 
@@ -2959,7 +3677,7 @@ function items_field_default_field_instances() {
           'thousand_separator' => ' ',
         ),
         'type' => 'number_integer',
-        'weight' => 7,
+        'weight' => 1,
       ),
       'default' => array(
         'label' => 'inline',
@@ -2971,7 +3689,7 @@ function items_field_default_field_instances() {
           'thousand_separator' => ' ',
         ),
         'type' => 'number_integer',
-        'weight' => 68,
+        'weight' => 70,
       ),
       'question' => array(
         'label' => 'above',
@@ -2996,33 +3714,29 @@ function items_field_default_field_instances() {
       'module' => 'number',
       'settings' => array(),
       'type' => 'number',
-      'weight' => 36,
+      'weight' => 38,
     ),
   );
 
-  // Exported field_instance: 'node-items-field_realm'
-  $field_instances['node-items-field_realm'] = array(
+  // Exported field_instance: 'node-items-field_presence'
+  $field_instances['node-items-field_presence'] = array(
     'bundle' => 'items',
-    'default_value' => array(
-      0 => array(
-        'value' => 'Vaxia',
-      ),
-    ),
     'deleted' => 0,
     'description' => '',
     'display' => array(
       'artwork' => array(
         'label' => 'inline',
+        'module' => 'computed_field',
         'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 12,
+        'type' => 'computed_field_unsanitized',
+        'weight' => 15,
       ),
       'default' => array(
         'label' => 'inline',
-        'module' => 'list',
+        'module' => 'computed_field',
         'settings' => array(),
-        'type' => 'list_default',
-        'weight' => 2,
+        'type' => 'computed_field_plain',
+        'weight' => 35,
       ),
       'question' => array(
         'label' => 'above',
@@ -3032,18 +3746,61 @@ function items_field_default_field_instances() {
       ),
     ),
     'entity_type' => 'node',
-    'field_name' => 'field_realm',
-    'label' => 'Realm',
+    'field_name' => 'field_presence',
+    'label' => 'Presence',
     'required' => 0,
     'settings' => array(
       'user_register_form' => FALSE,
     ),
     'widget' => array(
-      'active' => 1,
-      'module' => 'options',
+      'active' => 0,
+      'module' => 'computed_field',
       'settings' => array(),
-      'type' => 'options_select',
-      'weight' => 2,
+      'type' => 'computed',
+      'weight' => 147,
+    ),
+  );
+
+  // Exported field_instance: 'node-items-field_reflexes'
+  $field_instances['node-items-field_reflexes'] = array(
+    'bundle' => 'items',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'artwork' => array(
+        'label' => 'inline',
+        'module' => 'computed_field',
+        'settings' => array(),
+        'type' => 'computed_field_unsanitized',
+        'weight' => 11,
+      ),
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'computed_field',
+        'settings' => array(),
+        'type' => 'computed_field_plain',
+        'weight' => 31,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_reflexes',
+    'label' => 'Finesse',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'computed_field',
+      'settings' => array(),
+      'type' => 'computed',
+      'weight' => 143,
     ),
   );
 
@@ -3254,6 +4011,225 @@ function items_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-items-field_skill'
+  $field_instances['node-items-field_skill'] = array(
+    'bundle' => 'items',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Animal companions and drones may have skills associated with them! Use this field to fill in the companion skill information.',
+    'display' => array(
+      'artwork' => array(
+        'label' => 'hidden',
+        'module' => 'field_collection',
+        'settings' => array(
+          'add' => 'Add',
+          'delete' => 'Delete',
+          'description' => TRUE,
+          'edit' => 'Edit',
+        ),
+        'type' => 'field_collection_list',
+        'weight' => 0,
+      ),
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'field_collection_table',
+        'settings' => array(
+          'add' => '',
+          'delete' => '',
+          'description' => 0,
+          'edit' => '',
+          'empty' => 1,
+          'view_mode' => 'full',
+        ),
+        'type' => 'field_collection_table_view',
+        'weight' => 12,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_skill',
+    'label' => 'Skill',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'field_collection',
+      'settings' => array(),
+      'type' => 'field_collection_embed',
+      'weight' => 132,
+    ),
+  );
+
+  // Exported field_instance: 'node-items-field_spirituality'
+  $field_instances['node-items-field_spirituality'] = array(
+    'bundle' => 'items',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'artwork' => array(
+        'label' => 'inline',
+        'module' => 'number',
+        'settings' => array(
+          'decimal_separator' => '.',
+          'prefix_suffix' => TRUE,
+          'scale' => 0,
+          'thousand_separator' => ' ',
+        ),
+        'type' => 'number_integer',
+        'weight' => 14,
+      ),
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'number',
+        'settings' => array(
+          'decimal_separator' => '.',
+          'prefix_suffix' => TRUE,
+          'scale' => 0,
+          'thousand_separator' => ' ',
+        ),
+        'type' => 'number_integer',
+        'weight' => 34,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_spirituality',
+    'label' => 'Spirituality',
+    'required' => 0,
+    'settings' => array(
+      'max' => '',
+      'min' => '',
+      'prefix' => '',
+      'suffix' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'number',
+      'settings' => array(),
+      'type' => 'number',
+      'weight' => 146,
+    ),
+  );
+
+  // Exported field_instance: 'node-items-field_strength'
+  $field_instances['node-items-field_strength'] = array(
+    'bundle' => 'items',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'artwork' => array(
+        'label' => 'inline',
+        'module' => 'number',
+        'settings' => array(
+          'decimal_separator' => '.',
+          'prefix_suffix' => TRUE,
+          'scale' => 0,
+          'thousand_separator' => ' ',
+        ),
+        'type' => 'number_integer',
+        'weight' => 8,
+      ),
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'number',
+        'settings' => array(
+          'decimal_separator' => '.',
+          'prefix_suffix' => TRUE,
+          'scale' => 0,
+          'thousand_separator' => ' ',
+        ),
+        'type' => 'number_integer',
+        'weight' => 28,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_strength',
+    'label' => 'Strength',
+    'required' => 0,
+    'settings' => array(
+      'max' => '',
+      'min' => '',
+      'prefix' => '',
+      'suffix' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'number',
+      'settings' => array(),
+      'type' => 'number',
+      'weight' => 140,
+    ),
+  );
+
+  // Exported field_instance: 'node-items-field_tag_realm'
+  $field_instances['node-items-field_tag_realm'] = array(
+    'bundle' => 'items',
+    'default_value' => array(
+      0 => array(
+        'tid' => 725,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'artwork' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'default' => array(
+        'label' => 'above',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_link',
+        'weight' => 74,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_tag_realm',
+    'label' => 'Realm',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 3,
+    ),
+  );
+
   // Exported field_instance: 'node-items-field_value'
   $field_instances['node-items-field_value'] = array(
     'bundle' => 'items',
@@ -3269,7 +4245,7 @@ function items_field_default_field_instances() {
         'label' => 'inline',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 13,
+        'weight' => 14,
       ),
       'default' => array(
         'label' => 'inline',
@@ -3359,7 +4335,7 @@ function items_field_default_field_instances() {
         'module' => 'taxonomy',
         'settings' => array(),
         'type' => 'taxonomy_term_reference_link',
-        'weight' => 2,
+        'weight' => 6,
       ),
       'default' => array(
         'label' => 'inline',
@@ -3391,7 +4367,52 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'taxonomy_term-weapon_category-field_multi_action_mod'
+  // Exported field_instance: 'node-items-field_weapon_sub_type'
+  $field_instances['node-items-field_weapon_sub_type'] = array(
+    'bundle' => 'items',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'Select the generic category for this weapon, skills that cover this category make use this weapon.',
+    'display' => array(
+      'artwork' => array(
+        'label' => 'inline',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_link',
+        'weight' => 7,
+      ),
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_plain',
+        'weight' => 64,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_weapon_sub_type',
+    'label' => 'Weapon Sub-type',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 33,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'taxonomy_term-weapon_category-field_multi_action_mod'
   $field_instances['taxonomy_term-weapon_category-field_multi_action_mod'] = array(
     'bundle' => 'weapon_category',
     'default_value' => array(
@@ -3482,10 +4503,13 @@ function items_field_default_field_instances() {
   // Translatables
   // Included for use with string extractors like potx.
   t('A record of comment posts from when the item was created if comments were attached by item assistant on creation. The RP is recorded here to avoid dead links when the original comments are archived.');
+  t('Absorb type');
   t('Absorbs PP');
   t('Agility');
+  t('Animal companions and drones may have skills associated with them! Use this field to fill in the companion skill information.');
   t('Appearance');
   t('Awareness');
+  t('Build points');
   t('Calculate value');
   t('Character owner');
   t('Charges');
@@ -3504,7 +4528,10 @@ function items_field_default_field_instances() {
   t('Health');
   t('History');
   t('How does this weapon modify damage - if it does.');
+  t('How many build points this companion was created with - default companions start with 150 pts.');
   t('How many charges the item has per use. If you are creating a batch of items such as 5 health potions, select "Single use" and set the charges for number of potions. If you are creating an item that can be used three times a day, select "Per day" and set the charges for the number of uses per day.');
+  t('How much PP damage this armor or shield absorbs when the character is hit.');
+  t('How much the wearer\'s PP damage is reduced by the armor he is wearing.');
   t('If checked this item will be available in the player shop.');
   t('In shop');
   t('Intellegence');
@@ -3518,21 +4545,28 @@ function items_field_default_field_instances() {
   t('Player Notes');
   t('Presence');
   t('Private SH Notes');
+  t('Proficiency');
   t('Rate of Use');
   t('Realm');
   t('Recalculate the value of this item based on changes in stats.');
   t('SH Notes');
+  t('Select the generic category for this weapon, skills that cover this category make use this weapon.');
+  t('Select the type of defensive bonus. Armors apply all the time, shields only when blocking.');
   t('Sellback');
   t('Skill');
   t('Spent Charges');
+  t('Spirit');
   t('Spirituality');
   t('Strength');
+  t('Tech language');
+  t('Tech languages');
   t('The multiple action modifier for the weapon.');
   t('The number of charges used so far for this item.');
   t('The percentage bonus for the weapon\'s damage calculations.');
   t('The value as declared to the owner.');
   t('This is used for purposes of breaking the item, or defeating in the case of item-resisted rolls such as locks vs lockpicking skills. Equal to the difficulty the item was created at.');
   t('Value');
+  t('Weapon Sub-type');
   t('Weapon class');
 
   return $field_instances;

@@ -31,6 +31,46 @@ function vaxia_field_default_field_bases() {
     'type' => 'text',
   );
 
+  // Exported field_base: 'field_age'
+  $field_bases['field_age'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_age',
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'computed_field',
+    'settings' => array(
+      'code' => '$age = array_pop(array_pop(field_get_items($entity_type, $entity, \'field_real_age\')));
+$month = array_pop(array_pop(field_get_items($entity_type, $entity, \'field_birth_month\')));
+$day = array_pop(array_pop(field_get_items($entity_type, $entity, \'field_birth_day\')));
+$age = !empty($age) ? $age : 18;
+$month =  !empty($month) ? $month : \'01\';
+$day =  !empty($day) ? $day: \'01\';
+$year = date(\'Y\');
+$year = $year - $age;
+$entity_field[0][\'value\'] = $month. \'/\' .  $day . \'/\' . $year;',
+      'database' => array(
+        'data_default' => '',
+        'data_index' => 0,
+        'data_length' => 32,
+        'data_not_NULL' => 0,
+        'data_precision' => 10,
+        'data_scale' => 2,
+        'data_size' => 'normal',
+        'data_type' => 'varchar',
+      ),
+      'display_format' => '$born = new DateTime($entity_field_item[\'value\']);
+$now = new DateTime(\'now\');
+$interval = $now->diff($born);
+$display_output = $born->format(\'F jS, Y\') . \', \' . $interval->format(\'%y years\') . \' ago\';',
+      'store' => 1,
+    ),
+    'translatable' => 0,
+    'type' => 'computed',
+  );
+
   // Exported field_base: 'field_age_app'
   $field_bases['field_age_app'] = array(
     'active' => 1,
@@ -40,30 +80,6 @@ function vaxia_field_default_field_bases() {
     'field_name' => 'field_age_app',
     'field_permissions' => array(
       'type' => 0,
-    ),
-    'indexes' => array(
-      'format' => array(
-        0 => 'format',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'text',
-    'settings' => array(
-      'max_length' => 255,
-    ),
-    'translatable' => 0,
-    'type' => 'text',
-  );
-
-  // Exported field_base: 'field_age_real'
-  $field_bases['field_age_real'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_age_real',
-    'field_permissions' => array(
-      'type' => 1,
     ),
     'indexes' => array(
       'format' => array(
@@ -93,7 +109,10 @@ function vaxia_field_default_field_bases() {
     'locked' => 0,
     'module' => 'computed_field',
     'settings' => array(
-      'code' => '$entity_field[0][\'value\'] =  ($entity->field_strength[$entity->language][0][\'value\'] + $entity->field_dexterity[$entity->language][0][\'value\']) / 2;',
+      'code' => '$this_value =  ($entity->field_strength[$entity->language][0][\'value\'] + $entity->field_dexterity[$entity->language][0][\'value\']) / 2;
+if (!empty($this_value)) {
+$entity_field[0][\'value\'] = $this_value;
+}',
       'database' => array(
         'data_default' => 0,
         'data_index' => 0,
@@ -125,7 +144,10 @@ function vaxia_field_default_field_bases() {
     'locked' => 0,
     'module' => 'computed_field',
     'settings' => array(
-      'code' => '$entity_field[0][\'value\'] =  ($entity->field_charisma[$entity->language][0][\'value\'] + $entity->field_life[$entity->language][0][\'value\']) / 2;',
+      'code' => '$this_value =  ($entity->field_charisma[$entity->language][0][\'value\'] + $entity->field_life[$entity->language][0][\'value\']) / 2;
+if (!empty($this_value)) {
+$entity_field[0][\'value\'] = $this_value;
+}',
       'database' => array(
         'data_default' => 0,
         'data_index' => 0,
@@ -284,7 +306,10 @@ function vaxia_field_default_field_bases() {
     'locked' => 0,
     'module' => 'computed_field',
     'settings' => array(
-      'code' => '$entity_field[0][\'value\'] =  ($entity->field_intelligence[$entity->language][0][\'value\'] + $entity->field_spirituality[$entity->language][0][\'value\']) / 2;',
+      'code' => '$this_value =  ($entity->field_intelligence[$entity->language][0][\'value\'] + $entity->field_spirituality[$entity->language][0][\'value\']) / 2;
+if (!empty($this_value)) {
+$entity_field[0][\'value\'] = $this_value;
+}',
       'database' => array(
         'data_default' => 0,
         'data_index' => 0,
@@ -351,34 +376,54 @@ function vaxia_field_default_field_bases() {
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'field_birthday'
-  $field_bases['field_birthday'] = array(
+  // Exported field_base: 'field_birth_day'
+  $field_bases['field_birth_day'] = array(
     'active' => 1,
     'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
-    'field_name' => 'field_birthday',
+    'field_name' => 'field_birth_day',
     'indexes' => array(),
     'locked' => 0,
-    'module' => 'date',
-    'settings' => array(
-      'cache_count' => 4,
-      'cache_enabled' => 0,
-      'granularity' => array(
-        'day' => 'day',
-        'hour' => 0,
-        'minute' => 0,
-        'month' => 'month',
-        'second' => 0,
-        'year' => 'year',
+    'module' => 'number',
+    'settings' => array(),
+    'translatable' => 0,
+    'type' => 'number_integer',
+  );
+
+  // Exported field_base: 'field_birth_month'
+  $field_bases['field_birth_month'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_birth_month',
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
       ),
-      'repeat' => 0,
-      'timezone_db' => '',
-      'todate' => '',
-      'tz_handling' => 'none',
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        '01' => 'Jan',
+        '02' => 'Feb',
+        '03' => 'Mar',
+        '04' => 'Apr',
+        '05' => 'May',
+        '06' => 'Jun',
+        '07' => 'Jul',
+        '08' => 'Aug',
+        '09' => 'Sep',
+        10 => 'Oct',
+        11 => 'Nov',
+        12 => 'Dec',
+      ),
+      'allowed_values_function' => '',
     ),
     'translatable' => 0,
-    'type' => 'datetime',
+    'type' => 'list_text',
   );
 
   // Exported field_base: 'field_character_goals'
@@ -463,7 +508,10 @@ function vaxia_field_default_field_bases() {
     'locked' => 0,
     'module' => 'computed_field',
     'settings' => array(
-      'code' => '$entity_field[0][\'value\'] =  ($entity->field_endurance[$entity->language][0][\'value\'] + $entity->field_strength[$entity->language][0][\'value\']) / 2;',
+      'code' => '$this_value =  ($entity->field_endurance[$entity->language][0][\'value\'] + $entity->field_strength[$entity->language][0][\'value\']) / 2;
+if (!empty($this_value)) {
+$entity_field[0][\'value\'] = $this_value;
+}',
       'database' => array(
         'data_default' => 0,
         'data_index' => 0,
@@ -645,8 +693,10 @@ function vaxia_field_default_field_bases() {
     'locked' => 0,
     'module' => 'computed_field',
     'settings' => array(
-      'code' => '$entity_field[0][\'value\'] = ($entity->field_life[$entity->language][0][\'value\'] + $entity->field_endurance[$entity->language][0][\'value\']) / 2;
-',
+      'code' => '$this_value = ($entity->field_life[$entity->language][0][\'value\'] + $entity->field_endurance[$entity->language][0][\'value\']) / 2;
+if (!empty($this_value)) {
+$entity_field[0][\'value\'] = $this_value;
+}',
       'database' => array(
         'data_default' => 0,
         'data_index' => 0,
@@ -763,6 +813,31 @@ function vaxia_field_default_field_bases() {
     'type' => 'list_boolean',
   );
 
+  // Exported field_base: 'field_item_shop'
+  $field_bases['field_item_shop'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_item_shop',
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        0 => 'Character can NOT use the item shop',
+        1 => 'Character can use the item shop',
+      ),
+      'allowed_values_function' => '',
+    ),
+    'translatable' => 0,
+    'type' => 'list_boolean',
+  );
+
   // Exported field_base: 'field_items'
   $field_bases['field_items'] = array(
     'active' => 1,
@@ -814,6 +889,62 @@ function vaxia_field_default_field_bases() {
     ),
     'translatable' => 0,
     'type' => 'node_reference',
+  );
+
+  // Exported field_base: 'field_language'
+  $field_bases['field_language'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_language',
+    'indexes' => array(
+      'target_id' => array(
+        0 => 'target_id',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'entityreference',
+    'settings' => array(
+      'handler' => 'views',
+      'handler_settings' => array(
+        'behaviors' => array(
+          'views-select-list' => array(
+            'status' => 1,
+          ),
+        ),
+        'view' => array(
+          'args' => array(),
+          'display_name' => 'char_langs',
+          'view_name' => 'character_languages',
+        ),
+      ),
+      'target_type' => 'taxonomy_term',
+    ),
+    'translatable' => 0,
+    'type' => 'entityreference',
+  );
+
+  // Exported field_base: 'field_language_skills'
+  $field_bases['field_language_skills'] = array(
+    'active' => 1,
+    'cardinality' => -1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_language_skills',
+    'indexes' => array(
+      'revision_id' => array(
+        0 => 'revision_id',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'field_collection',
+    'settings' => array(
+      'hide_blank_items' => 1,
+      'path' => '',
+    ),
+    'translatable' => 0,
+    'type' => 'field_collection',
   );
 
   // Exported field_base: 'field_languages'
@@ -877,31 +1008,6 @@ function vaxia_field_default_field_bases() {
     'settings' => array(),
     'translatable' => 0,
     'type' => 'number_integer',
-  );
-
-  // Exported field_base: 'field_needs_work'
-  $field_bases['field_needs_work'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_needs_work',
-    'indexes' => array(
-      'value' => array(
-        0 => 'value',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'list',
-    'settings' => array(
-      'allowed_values' => array(
-        0 => 'This character is complete.',
-        1 => 'There is more information needed for this character even though it is in play.',
-      ),
-      'allowed_values_function' => '',
-    ),
-    'translatable' => 0,
-    'type' => 'list_boolean',
   );
 
   // Exported field_base: 'field_occupation'
@@ -1080,7 +1186,10 @@ function vaxia_field_default_field_bases() {
     'locked' => 0,
     'module' => 'computed_field',
     'settings' => array(
-      'code' => '$entity_field[0][\'value\'] =  ($entity->field_spirituality[$entity->language][0][\'value\'] + $entity->field_charisma[$entity->language][0][\'value\']) / 2;',
+      'code' => '$this_value =  ($entity->field_spirituality[$entity->language][0][\'value\'] + $entity->field_charisma[$entity->language][0][\'value\']) / 2;
+if (!empty($this_value)) {
+$entity_field[0][\'value\'] = $this_value;
+}',
       'database' => array(
         'data_default' => 0,
         'data_index' => 0,
@@ -1096,6 +1205,34 @@ function vaxia_field_default_field_bases() {
     ),
     'translatable' => 0,
     'type' => 'computed',
+  );
+
+  // Exported field_base: 'field_proficiency'
+  $field_bases['field_proficiency'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_proficiency',
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        1 => 'Learner',
+        2 => 'Basic',
+        3 => 'Accented',
+        4 => 'Fluent',
+        5 => 'Native',
+      ),
+      'allowed_values_function' => '',
+    ),
+    'translatable' => 0,
+    'type' => 'list_text',
   );
 
   // Exported field_base: 'field_property'
@@ -1183,6 +1320,21 @@ function vaxia_field_default_field_bases() {
     'type' => 'list_text',
   );
 
+  // Exported field_base: 'field_real_age'
+  $field_bases['field_real_age'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_real_age',
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'number',
+    'settings' => array(),
+    'translatable' => 0,
+    'type' => 'number_integer',
+  );
+
   // Exported field_base: 'field_reflexes'
   $field_bases['field_reflexes'] = array(
     'active' => 1,
@@ -1197,7 +1349,10 @@ function vaxia_field_default_field_bases() {
     'locked' => 0,
     'module' => 'computed_field',
     'settings' => array(
-      'code' => '$entity_field[0][\'value\'] =  ($entity->field_dexterity[$entity->language][0][\'value\'] + $entity->field_intelligence[$entity->language][0][\'value\']) / 2;',
+      'code' => '$this_value =  ($entity->field_dexterity[$entity->language][0][\'value\'] + $entity->field_intelligence[$entity->language][0][\'value\']) / 2;
+if (!empty($this_value)) {
+$entity_field[0][\'value\'] = $this_value;
+}',
       'database' => array(
         'data_default' => 0,
         'data_index' => 0,
@@ -1346,7 +1501,7 @@ function vaxia_field_default_field_bases() {
     'locked' => 0,
     'module' => 'field_collection',
     'settings' => array(
-      'hide_blank_items' => TRUE,
+      'hide_blank_items' => 1,
       'path' => '',
     ),
     'translatable' => 0,
@@ -1469,6 +1624,80 @@ function vaxia_field_default_field_bases() {
     'settings' => array(),
     'translatable' => 0,
     'type' => 'number_integer',
+  );
+
+  // Exported field_base: 'field_tech_language'
+  $field_bases['field_tech_language'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_tech_language',
+    'indexes' => array(
+      'tid' => array(
+        0 => 'tid',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'taxonomy',
+    'settings' => array(
+      'allowed_values' => array(
+        0 => array(
+          'vocabulary' => 'technology_languages',
+          'parent' => 0,
+        ),
+      ),
+    ),
+    'translatable' => 0,
+    'type' => 'taxonomy_term_reference',
+  );
+
+  // Exported field_base: 'field_tech_languages'
+  $field_bases['field_tech_languages'] = array(
+    'active' => 1,
+    'cardinality' => -1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_tech_languages',
+    'indexes' => array(
+      'revision_id' => array(
+        0 => 'revision_id',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'field_collection',
+    'settings' => array(
+      'hide_blank_items' => 1,
+      'path' => '',
+    ),
+    'translatable' => 0,
+    'type' => 'field_collection',
+  );
+
+  // Exported field_base: 'field_tech_proficiency'
+  $field_bases['field_tech_proficiency'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_tech_proficiency',
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        'Unfamiliar' => 'Unfamiliar',
+        'Familiar' => 'Familiar',
+        'Proficient' => 'Proficient',
+      ),
+      'allowed_values_function' => '',
+    ),
+    'translatable' => 0,
+    'type' => 'list_text',
   );
 
   // Exported field_base: 'field_titles'

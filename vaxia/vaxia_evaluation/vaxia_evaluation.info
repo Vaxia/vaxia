@@ -5,6 +5,7 @@ package = Vaxia
 version = 7.x-1.1
 project = vaxia_evaluation
 dependencies[] = php
+dependencies[] = views
 dependencies[] = workflow_rules
 features[ctools][] = views:views_default:3.0
 features[features_api][] = api:2
@@ -17,4 +18,3 @@ features[rules_config][] = rules_catch_too_many_min_max_characters
 features[rules_config][] = rules_char_eval_other_and_conditions_under_hxp
 features[rules_config][] = vaxia_evaluation_notify_player_when_char_workflow
 features[views_view][] = storyhost_evaluation
-

@@ -10,9 +10,9 @@
 function site_events_taxonomy_default_vocabularies() {
   return array(
     'content' => array(
-      'name' => 'Content warnings',
+      'name' => 'Events: Content',
       'machine_name' => 'content',
-      'description' => 'Content warnings',
+      'description' => 'Events: Content',
       'hierarchy' => 0,
       'module' => 'taxonomy',
       'weight' => -1,

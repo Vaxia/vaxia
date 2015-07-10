@@ -110,52 +110,6 @@ function vaxia_evaluation_views_default_views() {
   $handler = $view->new_display('block', 'Evaluation notices', 'sh_evaluation');
   $handler->display->display_options['display_description'] = 'Evaluation notices';
   $handler->display->display_options['block_description'] = 'Evaluation notices';
-
-  /* Display: Followup notices */
-  $handler = $view->new_display('block', 'Followup notices', 'sh_followup');
-  $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Followup notices';
-  $handler->display->display_options['display_description'] = 'Followup notices';
-  $handler->display->display_options['defaults']['header'] = FALSE;
-  /* Header: Global: Text area */
-  $handler->display->display_options['header']['area']['id'] = 'area';
-  $handler->display->display_options['header']['area']['table'] = 'views';
-  $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['content'] = 'The following items need attention for followup details or clarification. When done, uncheck the "Needs work" checkbox by the SH notes.';
-  $handler->display->display_options['header']['area']['format'] = 'wiki';
-  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
-  $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Content: Published */
-  $handler->display->display_options['filters']['status']['id'] = 'status';
-  $handler->display->display_options['filters']['status']['table'] = 'node';
-  $handler->display->display_options['filters']['status']['field'] = 'status';
-  $handler->display->display_options['filters']['status']['value'] = 1;
-  $handler->display->display_options['filters']['status']['group'] = 1;
-  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Content: Type */
-  $handler->display->display_options['filters']['type']['id'] = 'type';
-  $handler->display->display_options['filters']['type']['table'] = 'node';
-  $handler->display->display_options['filters']['type']['field'] = 'type';
-  $handler->display->display_options['filters']['type']['value'] = array(
-    'character_sheet' => 'character_sheet',
-  );
-  $handler->display->display_options['filters']['type']['group'] = 1;
-  /* Filter criterion: Workflow: Current state */
-  $handler->display->display_options['filters']['sid']['id'] = 'sid';
-  $handler->display->display_options['filters']['sid']['table'] = 'workflow_node';
-  $handler->display->display_options['filters']['sid']['field'] = 'sid';
-  $handler->display->display_options['filters']['sid']['value'] = array(
-    4 => '4',
-  );
-  $handler->display->display_options['filters']['sid']['group'] = 1;
-  /* Filter criterion: Content: Needs work (field_needs_work) */
-  $handler->display->display_options['filters']['field_needs_work_value']['id'] = 'field_needs_work_value';
-  $handler->display->display_options['filters']['field_needs_work_value']['table'] = 'field_data_field_needs_work';
-  $handler->display->display_options['filters']['field_needs_work_value']['field'] = 'field_needs_work_value';
-  $handler->display->display_options['filters']['field_needs_work_value']['value'] = array(
-    1 => '1',
-  );
-  $handler->display->display_options['block_description'] = 'Followup notices';
   $export['storyhost_evaluation'] = $view;
 
   return $export;

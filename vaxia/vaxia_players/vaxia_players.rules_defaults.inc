@@ -34,6 +34,7 @@ function vaxia_players_default_rules_configuration() {
   $items['rules_filedepot_add_personal_folder'] = entity_import('rules_config', '{ "rules_filedepot_add_personal_folder" : {
       "LABEL" : "Filedepot add personal folder",
       "PLUGIN" : "reaction rule",
+      "ACTIVE" : false,
       "OWNER" : "rules",
       "TAGS" : [ "Vaxia filesystem" ],
       "REQUIRES" : [ "rules", "filedepot_rules" ],

@@ -40,8 +40,9 @@ function storyhosts_default_rules_configuration() {
     }
   }');
   $items['rules_remove_starvation_role_from_sh'] = entity_import('rules_config', '{ "rules_remove_starvation_role_from_sh" : {
-      "LABEL" : "Remove starvation role from SH",
+      "LABEL" : "REM: Remove starvation role from SH",
       "PLUGIN" : "reaction rule",
+      "ACTIVE" : false,
       "OWNER" : "rules",
       "TAGS" : [ "Starvation mode" ],
       "REQUIRES" : [ "rules", "user_stats" ],
@@ -75,7 +76,7 @@ function storyhosts_default_rules_configuration() {
           }
         },
         { "entity_save" : { "data" : [ "node:author" ] } },
-        { "data_set" : { "data" : [ "node:field-realm" ], "value" : "storyhost" } },
+        { "data_set" : { "data" : [ "node:field-tag-realm" ], "value" : "1004" } },
         { "data_set" : { "data" : [ "node:field-titles" ], "value" : "ASH" } },
         { "workflow_rules_set_state" : {
             "node" : [ "node" ],

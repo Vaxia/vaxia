@@ -36,11 +36,11 @@ function suspend_players_default_rules_configuration() {
     }
   }');
   $items['strikes_strikes_third_yellow_strike'] = entity_import('rules_config', '{ "strikes_strikes_third_yellow_strike" : {
-      "LABEL" : "Suspend - 3rd yellow strike ",
+      "LABEL" : "Strikes - 3rd yellow strike ",
       "PLUGIN" : "reaction rule",
       "WEIGHT" : "5",
       "OWNER" : "rules",
-      "TAGS" : [ "Suspend Players" ],
+      "TAGS" : [ "Strikes" ],
       "REQUIRES" : [ "rules", "views_rules" ],
       "ON" : { "node_insert--strike" : { "bundle" : "strike" } },
       "IF" : [
@@ -71,7 +71,11 @@ function suspend_players_default_rules_configuration() {
                   "PROVIDE" : { "entity_created" : { "red_strike" : "Red strike" } }
                 }
               },
-              { "data_set" : { "data" : [ "node:field-associated-record" ], "value" : [ "node" ] } },
+              { "data_set" : {
+                  "data" : [ "node:field-associated-record" ],
+                  "value" : [ "node:field-associated-record" ]
+                }
+              },
               { "data_set" : { "data" : [ "red-strike:field-date-of-incident" ], "value" : "now" } },
               { "data_set" : {
                   "data" : [ "red-strike:field-struck-player" ],
@@ -79,20 +83,24 @@ function suspend_players_default_rules_configuration() {
                 }
               },
               { "data_set" : { "data" : [ "red-strike:field-severity" ], "value" : "Red" } },
-              { "list_add" : {
-                  "list" : [ "node:field-associated-record:field-red-strike" ],
-                  "item" : [ "node:field-struck-player" ],
-                  "unique" : 1
+              { "data_set" : {
+                  "data" : [ "red-strike:body" ],
+                  "value" : { "value" : {
+                      "value" : "This Red strike was given as the result of a 3rd (or greater) Yellow strike within a year timeframe.",
+                      "format" : "wiki"
+                    }
+                  }
                 }
               },
               { "list_add" : {
                   "list" : [ "node:field-associated-record:field-results" ],
-                  "item" : "red",
-                  "unique" : 1
+                  "item" : "red-upgrade",
+                  "unique" : "1"
                 }
               },
+              { "entity_save" : { "data" : [ "node:field-associated-record" ] } },
               { "entity_save" : { "data" : [ "red-strike" ] } },
-              { "entity_save" : { "data" : [ "node:field-associated-record" ] } }
+              { "drupal_message" : { "message" : "This is the players third Yellow strike within the year. This Yellow has been upgraded to a Red as a result and the player\\u0027s account will be suspended." } }
             ]
           }
         }
@@ -105,7 +113,7 @@ function suspend_players_default_rules_configuration() {
       "WEIGHT" : "5",
       "OWNER" : "rules",
       "TAGS" : [ "Suspend Players" ],
-      "REQUIRES" : [ "rules", "views_rules" ],
+      "REQUIRES" : [ "rules", "views_rules", "cold_storage" ],
       "ON" : { "node_insert--strike" : { "bundle" : "strike" } },
       "IF" : [
         { "node_is_of_type" : { "node" : [ "node" ], "type" : { "value" : { "strike" : "strike" } } } },
@@ -123,6 +131,14 @@ function suspend_players_default_rules_configuration() {
               "new_ban" : { "new_ban" : "New Ban" }
             },
             "DO" : [
+              { "cold_storage_rules_update_nodes" : {
+                  "user" : [ "node:field-struck-player" ],
+                  "node_type" : { "value" : { "character_sheet" : "character_sheet" } },
+                  "current_state" : { "value" : { "4" : "4" } },
+                  "new_state" : { "value" : { "2" : "2" } },
+                  "workflow_comment" : "Characters moved to draft after suspension."
+                }
+              },
               { "data_set" : {
                   "data" : [ "node:field-struck-player:field-banned-until" ],
                   "value" : [ "new-ban" ]
@@ -136,7 +152,6 @@ function suspend_players_default_rules_configuration() {
                       "30" : "30",
                       "8" : "8",
                       "9" : "9",
-                      "14" : "14",
                       "21" : "21",
                       "24" : "24",
                       "26" : "26",
@@ -145,12 +160,13 @@ function suspend_players_default_rules_configuration() {
                       "28" : "28",
                       "29" : "29",
                       "12" : "12",
+                      "34" : "34",
+                      "35" : "35",
                       "25" : "25",
                       "13" : "13",
                       "10" : "10",
                       "17" : "17",
                       "15" : "15",
-                      "20" : "20",
                       "22" : "22",
                       "23" : "23",
                       "31" : "31",
@@ -164,7 +180,8 @@ function suspend_players_default_rules_configuration() {
                   "roles" : { "value" : { "32" : "32" } }
                 }
               },
-              { "user_block" : { "account" : [ "node:field-struck-player" ] } }
+              { "user_block" : { "account" : [ "node:field-struck-player" ] } },
+              { "drupal_message" : { "message" : "This is Red strike #[red-count:value] in the last year. [node:field-struck-player] has been suspended for [new-ban-months:value] months thru [new-ban:value]." } }
             ]
           }
         }

@@ -4,6 +4,7 @@ core = 7.x
 package = RPG
 version = 7.x-1.0
 project = suspend_players
+dependencies[] = cold_storage
 dependencies[] = ctools
 dependencies[] = entity
 dependencies[] = features

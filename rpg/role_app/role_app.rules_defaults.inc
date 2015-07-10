@@ -23,11 +23,11 @@ function role_app_default_rules_configuration() {
           }
         },
         { "NOT data_is_empty" : { "data" : [ "node:field-applied-role-id" ] } },
+        { "NOT data_is" : { "data" : [ "node:field-applied-role-id" ], "value" : "9" } },
         { "role_app_approved_app" : { "webform" : [ "node" ] } }
       ],
       "DO" : [
         { "role_app_set_role" : { "user" : [ "node:author" ], "rid" : "[node:field-applied-role-id]" } },
-        { "drupal_message" : { "message" : "Approval for [node:author:name] has been granted! Thanks!" } },
         { "webform_close" : { "entity" : [ "node" ], "selected_webform" : { "value" : [] } } }
       ]
     }

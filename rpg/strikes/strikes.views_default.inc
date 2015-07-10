@@ -223,34 +223,12 @@ If you have any questions about a specific incident, or about notations in gener
   $handler->display->display_options['fields']['field_results']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_results']['delta_offset'] = '0';
   $handler->display->display_options['fields']['field_results']['multi_type'] = 'ul';
-  /* Field: Content: Yellow Strikes */
-  $handler->display->display_options['fields']['field_yellow_strike']['id'] = 'field_yellow_strike';
-  $handler->display->display_options['fields']['field_yellow_strike']['table'] = 'field_data_field_yellow_strike';
-  $handler->display->display_options['fields']['field_yellow_strike']['field'] = 'field_yellow_strike';
-  $handler->display->display_options['fields']['field_yellow_strike']['label'] = '';
-  $handler->display->display_options['fields']['field_yellow_strike']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['field_yellow_strike']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_yellow_strike']['empty'] = '<div class="item-list"><ul><li class="first last">No yellow strikes.</li></ul></div>';
-  $handler->display->display_options['fields']['field_yellow_strike']['delta_offset'] = '0';
-  $handler->display->display_options['fields']['field_yellow_strike']['multi_type'] = 'ul';
-  /* Field: Content: Red Strikes */
-  $handler->display->display_options['fields']['field_red_strike']['id'] = 'field_red_strike';
-  $handler->display->display_options['fields']['field_red_strike']['table'] = 'field_data_field_red_strike';
-  $handler->display->display_options['fields']['field_red_strike']['field'] = 'field_red_strike';
-  $handler->display->display_options['fields']['field_red_strike']['label'] = '';
-  $handler->display->display_options['fields']['field_red_strike']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['field_red_strike']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_red_strike']['empty'] = '<div class="item-list"><ul><li class="first last">No red strikes.</li></ul></div>';
-  $handler->display->display_options['fields']['field_red_strike']['delta_offset'] = '0';
-  $handler->display->display_options['fields']['field_red_strike']['multi_type'] = 'ul';
   /* Field: Global: Custom text */
   $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
   $handler->display->display_options['fields']['nothing']['table'] = 'views';
   $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
   $handler->display->display_options['fields']['nothing']['label'] = 'Actions taken';
-  $handler->display->display_options['fields']['nothing']['alter']['text'] = '<b>Results:</b> [field_results]
-<b>Yellow Strikes:</b> [field_yellow_strike]
-<b>Red Strikes:</b> [field_red_strike]';
+  $handler->display->display_options['fields']['nothing']['alter']['text'] = '<b>Results:</b> [field_results]';
   /* Sort criterion: Content: Date of Incident (field_date_of_incident) */
   $handler->display->display_options['sorts']['field_date_of_incident_value']['id'] = 'field_date_of_incident_value';
   $handler->display->display_options['sorts']['field_date_of_incident_value']['table'] = 'field_data_field_date_of_incident';
@@ -404,6 +382,13 @@ return FALSE;';
   $handler->display->display_options['filters']['uid_current_2']['expose']['operator'] = 'uid_current_2_op';
   $handler->display->display_options['filters']['uid_current_2']['expose']['identifier'] = 'uid_current_2';
   $handler->display->display_options['filters']['uid_current_2']['expose']['required'] = TRUE;
+  /* Filter criterion: Workflow: Current state */
+  $handler->display->display_options['filters']['sid']['id'] = 'sid';
+  $handler->display->display_options['filters']['sid']['table'] = 'workflow_node';
+  $handler->display->display_options['filters']['sid']['field'] = 'sid';
+  $handler->display->display_options['filters']['sid']['value'] = array(
+    33 => '33',
+  );
   $handler->display->display_options['path'] = 'user/%/notations';
   $handler->display->display_options['menu']['type'] = 'tab';
   $handler->display->display_options['menu']['title'] = 'Notations';
@@ -421,6 +406,80 @@ return FALSE;';
     21 => '21',
     29 => '29',
   );
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Date of Incident */
+  $handler->display->display_options['fields']['field_date_of_incident']['id'] = 'field_date_of_incident';
+  $handler->display->display_options['fields']['field_date_of_incident']['table'] = 'field_data_field_date_of_incident';
+  $handler->display->display_options['fields']['field_date_of_incident']['field'] = 'field_date_of_incident';
+  $handler->display->display_options['fields']['field_date_of_incident']['label'] = 'Occurred On';
+  $handler->display->display_options['fields']['field_date_of_incident']['settings'] = array(
+    'format_type' => 'short',
+    'fromto' => 'both',
+    'multiple_number' => '',
+    'multiple_from' => '',
+    'multiple_to' => '',
+    'show_repeat_rule' => 'show',
+  );
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = 'Details';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  /* Field: Content: Documentation */
+  $handler->display->display_options['fields']['field_documentation']['id'] = 'field_documentation';
+  $handler->display->display_options['fields']['field_documentation']['table'] = 'field_data_field_documentation';
+  $handler->display->display_options['fields']['field_documentation']['field'] = 'field_documentation';
+  $handler->display->display_options['fields']['field_documentation']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_documentation']['delta_offset'] = '0';
+  /* Field: Content: Category */
+  $handler->display->display_options['fields']['field_category']['id'] = 'field_category';
+  $handler->display->display_options['fields']['field_category']['table'] = 'field_data_field_category';
+  $handler->display->display_options['fields']['field_category']['field'] = 'field_category';
+  $handler->display->display_options['fields']['field_category']['empty'] = 'See record';
+  $handler->display->display_options['fields']['field_category']['delta_offset'] = '0';
+  $handler->display->display_options['fields']['field_category']['multi_type'] = 'ul';
+  /* Field: Content: Player */
+  $handler->display->display_options['fields']['field_players']['id'] = 'field_players';
+  $handler->display->display_options['fields']['field_players']['table'] = 'field_data_field_players';
+  $handler->display->display_options['fields']['field_players']['field'] = 'field_players';
+  $handler->display->display_options['fields']['field_players']['delta_offset'] = '0';
+  $handler->display->display_options['fields']['field_players']['multi_type'] = 'ul';
+  /* Field: Content: Bystanding */
+  $handler->display->display_options['fields']['field_witnesses']['id'] = 'field_witnesses';
+  $handler->display->display_options['fields']['field_witnesses']['table'] = 'field_data_field_witnesses';
+  $handler->display->display_options['fields']['field_witnesses']['field'] = 'field_witnesses';
+  $handler->display->display_options['fields']['field_witnesses']['label'] = 'Affected Player(s)';
+  $handler->display->display_options['fields']['field_witnesses']['empty'] = 'No additional players affected.';
+  $handler->display->display_options['fields']['field_witnesses']['delta_offset'] = '0';
+  $handler->display->display_options['fields']['field_witnesses']['multi_type'] = 'ul';
+  /* Field: Content: Social Members */
+  $handler->display->display_options['fields']['field_social_members']['id'] = 'field_social_members';
+  $handler->display->display_options['fields']['field_social_members']['table'] = 'field_data_field_social_members';
+  $handler->display->display_options['fields']['field_social_members']['field'] = 'field_social_members';
+  $handler->display->display_options['fields']['field_social_members']['label'] = 'Social member(s)';
+  $handler->display->display_options['fields']['field_social_members']['delta_offset'] = '0';
+  $handler->display->display_options['fields']['field_social_members']['multi_type'] = 'ul';
+  /* Field: Content: Results */
+  $handler->display->display_options['fields']['field_results']['id'] = 'field_results';
+  $handler->display->display_options['fields']['field_results']['table'] = 'field_data_field_results';
+  $handler->display->display_options['fields']['field_results']['field'] = 'field_results';
+  $handler->display->display_options['fields']['field_results']['label'] = '';
+  $handler->display->display_options['fields']['field_results']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_results']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_results']['delta_offset'] = '0';
+  $handler->display->display_options['fields']['field_results']['multi_type'] = 'ul';
+  /* Field: Global: Custom text */
+  $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['table'] = 'views';
+  $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['label'] = 'Actions taken';
+  $handler->display->display_options['fields']['nothing']['alter']['text'] = '<b>Results:</b> [field_results]';
+  /* Field: Workflow: Current state */
+  $handler->display->display_options['fields']['sid']['id'] = 'sid';
+  $handler->display->display_options['fields']['sid']['table'] = 'workflow_node';
+  $handler->display->display_options['fields']['sid']['field'] = 'sid';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
@@ -1159,34 +1218,16 @@ return FALSE;';
   $handler->display->display_options['fields']['field_results']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_results']['delta_offset'] = '0';
   $handler->display->display_options['fields']['field_results']['multi_type'] = 'ul';
-  /* Field: Content: Yellow Strikes */
-  $handler->display->display_options['fields']['field_yellow_strike']['id'] = 'field_yellow_strike';
-  $handler->display->display_options['fields']['field_yellow_strike']['table'] = 'field_data_field_yellow_strike';
-  $handler->display->display_options['fields']['field_yellow_strike']['field'] = 'field_yellow_strike';
-  $handler->display->display_options['fields']['field_yellow_strike']['label'] = '';
-  $handler->display->display_options['fields']['field_yellow_strike']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['field_yellow_strike']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_yellow_strike']['empty'] = '<div class="item-list"><ul><li class="first last">No yellow strikes.</li></ul></div>';
-  $handler->display->display_options['fields']['field_yellow_strike']['delta_offset'] = '0';
-  $handler->display->display_options['fields']['field_yellow_strike']['multi_type'] = 'ul';
-  /* Field: Content: Red Strikes */
-  $handler->display->display_options['fields']['field_red_strike']['id'] = 'field_red_strike';
-  $handler->display->display_options['fields']['field_red_strike']['table'] = 'field_data_field_red_strike';
-  $handler->display->display_options['fields']['field_red_strike']['field'] = 'field_red_strike';
-  $handler->display->display_options['fields']['field_red_strike']['label'] = '';
-  $handler->display->display_options['fields']['field_red_strike']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['field_red_strike']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_red_strike']['empty'] = '<div class="item-list"><ul><li class="first last">No red strikes.</li></ul></div>';
-  $handler->display->display_options['fields']['field_red_strike']['delta_offset'] = '0';
-  $handler->display->display_options['fields']['field_red_strike']['multi_type'] = 'ul';
   /* Field: Global: Custom text */
   $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
   $handler->display->display_options['fields']['nothing']['table'] = 'views';
   $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
   $handler->display->display_options['fields']['nothing']['label'] = 'Actions taken';
-  $handler->display->display_options['fields']['nothing']['alter']['text'] = '<b>Results:</b> [field_results]
-<b>Yellow Strikes:</b> [field_yellow_strike]
-<b>Red Strikes:</b> [field_red_strike]';
+  $handler->display->display_options['fields']['nothing']['alter']['text'] = '<b>Results:</b> [field_results]';
+  /* Field: Workflow: Current state */
+  $handler->display->display_options['fields']['sid']['id'] = 'sid';
+  $handler->display->display_options['fields']['sid']['table'] = 'workflow_node';
+  $handler->display->display_options['fields']['sid']['field'] = 'sid';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
@@ -1393,6 +1434,7 @@ return FALSE;';
   $handler->display->display_options['filters']['uid_2']['field'] = 'uid';
   $handler->display->display_options['filters']['uid_2']['relationship'] = 'field_witnesses_uid';
   $handler->display->display_options['filters']['uid_2']['value'] = '';
+  $handler->display->display_options['filters']['uid_2']['group'] = 1;
   $handler->display->display_options['filters']['uid_2']['exposed'] = TRUE;
   $handler->display->display_options['filters']['uid_2']['expose']['operator_id'] = 'uid_2_op';
   $handler->display->display_options['filters']['uid_2']['expose']['label'] = 'Affected';

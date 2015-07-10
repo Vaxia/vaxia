@@ -1,0 +1,7 @@
+name = Justice Form
+description = A central UI for handling the justice rolls for SHs
+core = 7.x
+package = Vaxia
+version = 7.x-1.8
+project = justice_form
+dependencies[] = vaxia

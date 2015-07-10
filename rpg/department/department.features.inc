@@ -1,5 +1,4 @@
 <?php
-/**
- * @file
- * department.features.inc
- */
+
+// This file is deprecated and can be removed.
+// Please remove include_once('department.features.inc') in department.module as well.

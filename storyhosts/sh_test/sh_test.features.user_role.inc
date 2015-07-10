@@ -16,12 +16,6 @@ function sh_test_user_default_roles() {
     'weight' => 14,
   );
 
-  // Exported role: evaluator.
-  $roles['evaluator'] = array(
-    'name' => 'evaluator',
-    'weight' => 6,
-  );
-
   // Exported role: storyteller.
   $roles['storyteller'] = array(
     'name' => 'storyteller',

@@ -221,41 +221,54 @@ function top_tens_views_default_views() {
     0 => '0',
   );
   $handler->display->display_options['filters']['field_is_storyteller_value']['group'] = 1;
-  /* Filter criterion: Content: Realm (field_realm) */
-  $handler->display->display_options['filters']['field_realm_value']['id'] = 'field_realm_value';
-  $handler->display->display_options['filters']['field_realm_value']['table'] = 'field_data_field_realm';
-  $handler->display->display_options['filters']['field_realm_value']['field'] = 'field_realm_value';
-  $handler->display->display_options['filters']['field_realm_value']['relationship'] = 'nid';
-  $handler->display->display_options['filters']['field_realm_value']['value'] = array(
-    'Vaxia' => 'Vaxia',
-    'Sirian' => 'Sirian',
+  /* Filter criterion: Field: Realm (field_tag_realm) */
+  $handler->display->display_options['filters']['field_tag_realm_tid']['id'] = 'field_tag_realm_tid';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['table'] = 'field_data_field_tag_realm';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['field'] = 'field_tag_realm_tid';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['relationship'] = 'nid';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['value'] = array(
+    725 => '725',
+    726 => '726',
   );
-  $handler->display->display_options['filters']['field_realm_value']['group'] = 1;
-  $handler->display->display_options['filters']['field_realm_value']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['field_realm_value']['expose']['operator_id'] = 'field_realm_value_op';
-  $handler->display->display_options['filters']['field_realm_value']['expose']['label'] = 'Realm';
-  $handler->display->display_options['filters']['field_realm_value']['expose']['operator'] = 'field_realm_value_op';
-  $handler->display->display_options['filters']['field_realm_value']['expose']['identifier'] = 'field_realm_value';
-  $handler->display->display_options['filters']['field_realm_value']['expose']['multiple'] = TRUE;
-  $handler->display->display_options['filters']['field_realm_value']['expose']['remember_roles'] = array(
+  $handler->display->display_options['filters']['field_tag_realm_tid']['group'] = 1;
+  $handler->display->display_options['filters']['field_tag_realm_tid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['operator_id'] = 'field_tag_realm_tid_op';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['label'] = 'Realm';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['operator'] = 'field_tag_realm_tid_op';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['identifier'] = 'field_tag_realm_tid';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
+    3 => 0,
+    30 => 0,
     8 => 0,
+    9 => 0,
+    21 => 0,
+    24 => 0,
+    26 => 0,
+    27 => 0,
     19 => 0,
+    28 => 0,
+    29 => 0,
     12 => 0,
+    34 => 0,
+    35 => 0,
+    25 => 0,
     13 => 0,
     10 => 0,
     17 => 0,
     15 => 0,
-    9 => 0,
-    20 => 0,
-    14 => 0,
-    21 => 0,
-    4 => 0,
-    3 => 0,
-    11 => 0,
+    22 => 0,
+    23 => 0,
+    31 => 0,
+    32 => 0,
   );
-  $handler->display->display_options['filters']['field_realm_value']['expose']['reduce'] = TRUE;
+  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['reduce'] = TRUE;
+  $handler->display->display_options['filters']['field_tag_realm_tid']['type'] = 'select';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['vocabulary'] = 'realm';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['hierarchy'] = 1;
   /* Filter criterion: Global: PHP */
   $handler->display->display_options['filters']['php']['id'] = 'php';
   $handler->display->display_options['filters']['php']['table'] = 'views';
@@ -497,7 +510,7 @@ function top_tens_views_default_views() {
     0 => '0',
   );
   $handler->display->display_options['filters']['field_is_storyteller_value']['group'] = 1;
-  /* Filter criterion: Content: Realm (field_realm) */
+  /* Filter criterion: Broken/missing handler */
   $handler->display->display_options['filters']['field_realm_value']['id'] = 'field_realm_value';
   $handler->display->display_options['filters']['field_realm_value']['table'] = 'field_data_field_realm';
   $handler->display->display_options['filters']['field_realm_value']['field'] = 'field_realm_value';
@@ -531,7 +544,6 @@ function top_tens_views_default_views() {
     3 => 0,
     11 => 0,
   );
-  $handler->display->display_options['filters']['field_realm_value']['expose']['reduce'] = TRUE;
   /* Filter criterion: Global: PHP */
   $handler->display->display_options['filters']['php']['id'] = 'php';
   $handler->display->display_options['filters']['php']['table'] = 'views';

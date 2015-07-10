@@ -77,25 +77,28 @@ function site_wiki_workflow_default_workflows() {
     ),
     'transitions' => array(
       0 => array(
-        'roles' => 'workflow_features_author_name,evaluator',
+        'roles' => 'workflow_features_author_name',
         'state' => '(creation)',
         'target_state' => 'open',
       ),
       1 => array(
-        'roles' => 'workflow_features_author_name,evaluator',
+        'roles' => 'workflow_features_author_name',
         'state' => '(creation)',
         'target_state' => 'locked',
       ),
       2 => array(
-        'roles' => 'administrator,evaluator',
+        'roles' => 'administrator',
         'state' => 'open',
         'target_state' => 'locked',
       ),
       3 => array(
-        'roles' => 'administrator,evaluator',
+        'roles' => 'administrator',
         'state' => 'locked',
         'target_state' => 'open',
       ),
+    ),
+    'node_types' => array(
+      0 => 'wiki_page',
     ),
   );
 

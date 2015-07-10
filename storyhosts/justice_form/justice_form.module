@@ -1,0 +1,82 @@
+<?php
+/**
+ * @file
+ */
+
+/**
+ * Implements hook_permission().
+ */
+function justice_form_permission() {
+  return array(
+    'use justice form'=> array(
+      'title' => t('use justice form'),
+      'description' => t('Use justice form.'),
+    ),
+    'administrate justice form'=> array(
+      'title' => t('administrate justice form'),
+      'description' => t('Administrate justice form.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function justice_form_menu() {
+  $items['admin/vaxia/justice_form'] = array(
+    'title' => 'Justice Form Settings',
+    'description' => 'Settings for the Justice Form',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('_justice_form_admin_settings'),
+    'access arguments' => array('administrate justice form'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  $items['vaxia/justice'] = array(
+    'title' => 'Justice Calculator',
+    'description' => 'Quick calculator for the justice system',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('_justice_form'),
+    'access arguments' => array('use justice form'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  return $items;
+}
+
+/**
+ * Menu callback, admin form.
+ */
+function _justice_form_admin_settings($form, &$form_state) {
+  // Loop over each form and get the settings.
+  $tiers = array('justice_form_tiers', 5);
+  $form['tiers'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Tier Settings'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#tree' => TRUE,
+    '#theme' => 'table',
+    '#header' => array(),
+    '#rows' => array(),
+  );
+  // Loop over each.
+  for ($tier = 0, $tier < $tiers, $tier++) {
+  }
+  return system_settings_form($form);
+}
+
+/**
+ * Menu callback, justice form.
+ */
+function _justice_form($form, &$form_state) {
+}
+
+/**
+ * Justice form, validate handler.
+ */
+function _justice_form_validate($form, &$form_state) {}
+
+/**
+ * Justice form, submit handler.
+ */
+function _justice_form_submit($form, &$form_state) {
+}

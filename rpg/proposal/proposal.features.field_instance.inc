@@ -22,7 +22,7 @@ function proposal_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 1,
+        'weight' => 2,
       ),
       'question' => array(
         'label' => 'above',
@@ -126,7 +126,7 @@ function proposal_field_default_field_instances() {
     'entity_type' => 'node',
     'field_name' => 'field_associated_forum_threads',
     'label' => 'Associated Forum Threads',
-    'required' => 1,
+    'required' => 0,
     'settings' => array(
       'user_register_form' => FALSE,
     ),
@@ -203,7 +203,7 @@ After you click save, this proposal will be automatically opened to begin the gr
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 2,
+        'weight' => 1,
       ),
       'question' => array(
         'label' => 'above',
@@ -241,9 +241,8 @@ After you click save, this proposal will be automatically opened to begin the gr
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'taxonomy',
         'settings' => array(),
-        'type' => 'taxonomy_term_reference_link',
+        'type' => 'hidden',
         'weight' => 0,
       ),
       'question' => array(

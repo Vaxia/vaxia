@@ -330,7 +330,7 @@ Social members are members of the social department that got involved.
   $handler->display->display_options['fields']['php']['php_value'] = '$ban = \'now\';
 $ban_for = ($row->nid > 1) ? ($row->nid - 1) * 3 : 1;
 $new_ban = strtotime(\'+\' . $ban_for . \' months\', strtotime($ban));
-return date(\'m/d/Y H:i:s\', $new_ban);
+return date(\'m/d/Y\', $new_ban);
 ';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';

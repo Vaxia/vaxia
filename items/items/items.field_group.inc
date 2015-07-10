@@ -13,6 +13,214 @@ function items_field_group_info() {
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
+  $field_group->identifier = 'group_comp_stats|node|items|artwork';
+  $field_group->group_name = 'group_comp_stats';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'items';
+  $field_group->mode = 'artwork';
+  $field_group->parent_name = 'group_companion';
+  $field_group->data = array(
+    'label' => 'Companion Stats',
+    'weight' => '9',
+    'children' => array(
+      0 => 'field_agility',
+      1 => 'field_appearance',
+      2 => 'field_awareness',
+      3 => 'field_constitution',
+      4 => 'field_health',
+      5 => 'field_presence',
+      6 => 'field_reflexes',
+      7 => 'field_charisma',
+      8 => 'field_dexterity',
+      9 => 'field_endurance',
+      10 => 'field_intelligence',
+      11 => 'field_life',
+      12 => 'field_spirituality',
+      13 => 'field_strength',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'label' => 'Companion Stats',
+      'instance_settings' => array(
+        'classes' => 'group-comp-stats field-group-fieldset',
+        'description' => '',
+      ),
+      'formatter' => 'collapsed',
+    ),
+  );
+  $export['group_comp_stats|node|items|artwork'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_comp_stats|node|items|default';
+  $field_group->group_name = 'group_comp_stats';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'items';
+  $field_group->mode = 'default';
+  $field_group->parent_name = 'group_companion';
+  $field_group->data = array(
+    'label' => 'Companion Stats',
+    'weight' => '9',
+    'children' => array(
+      0 => 'field_agility',
+      1 => 'field_appearance',
+      2 => 'field_awareness',
+      3 => 'field_constitution',
+      4 => 'field_health',
+      5 => 'field_presence',
+      6 => 'field_reflexes',
+      7 => 'field_charisma',
+      8 => 'field_dexterity',
+      9 => 'field_endurance',
+      10 => 'field_intelligence',
+      11 => 'field_life',
+      12 => 'field_spirituality',
+      13 => 'field_strength',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'formatter' => 'collapsible',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => 'group-comp-stats field-group-fieldset',
+        'required_fields' => 1,
+      ),
+    ),
+  );
+  $export['group_comp_stats|node|items|default'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_comp_stats|node|items|form';
+  $field_group->group_name = 'group_comp_stats';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'items';
+  $field_group->mode = 'form';
+  $field_group->parent_name = 'group_companion';
+  $field_group->data = array(
+    'label' => 'Companion Stats',
+    'weight' => '135',
+    'children' => array(
+      0 => 'field_agility',
+      1 => 'field_appearance',
+      2 => 'field_awareness',
+      3 => 'field_constitution',
+      4 => 'field_health',
+      5 => 'field_presence',
+      6 => 'field_reflexes',
+      7 => 'field_charisma',
+      8 => 'field_dexterity',
+      9 => 'field_endurance',
+      10 => 'field_intelligence',
+      11 => 'field_life',
+      12 => 'field_spirituality',
+      13 => 'field_strength',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'label' => 'Companion Stats',
+      'instance_settings' => array(
+        'required_fields' => 1,
+        'classes' => 'group-comp-stats field-group-fieldset',
+        'description' => '',
+      ),
+      'formatter' => 'collapsed',
+    ),
+  );
+  $export['group_comp_stats|node|items|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_companion|node|items|artwork';
+  $field_group->group_name = 'group_companion';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'items';
+  $field_group->mode = 'artwork';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Companion',
+    'weight' => '4',
+    'children' => array(
+      0 => 'group_skills',
+      1 => 'group_comp_stats',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'label' => 'Companion',
+      'instance_settings' => array(
+        'required_fields' => 1,
+        'classes' => 'group-companion field-group-fieldset',
+        'description' => 'Companion skills and stats, only used for companion animals and drones.',
+      ),
+      'formatter' => 'collapsed',
+    ),
+  );
+  $export['group_companion|node|items|artwork'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_companion|node|items|default';
+  $field_group->group_name = 'group_companion';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'items';
+  $field_group->mode = 'default';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Companion',
+    'weight' => '5',
+    'children' => array(
+      0 => 'group_skills',
+      1 => 'group_comp_stats',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'label' => 'Companion',
+      'instance_settings' => array(
+        'required_fields' => 1,
+        'classes' => 'group-companion field-group-fieldset',
+        'description' => 'Companion skills and stats, only used for companion animals and drones.',
+      ),
+      'formatter' => 'collapsed',
+    ),
+  );
+  $export['group_companion|node|items|default'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_companion|node|items|form';
+  $field_group->group_name = 'group_companion';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'items';
+  $field_group->mode = 'form';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Companion',
+    'weight' => '6',
+    'children' => array(
+      0 => 'group_skills',
+      1 => 'group_comp_stats',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'label' => 'Companion',
+      'instance_settings' => array(
+        'required_fields' => 1,
+        'classes' => 'group-companion field-group-fieldset',
+        'description' => 'Companion skills and stats, only used for companion animals and drones.',
+      ),
+      'formatter' => 'collapsible',
+    ),
+  );
+  $export['group_companion|node|items|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
   $field_group->identifier = 'group_creation_history|node|items|default';
   $field_group->group_name = 'group_creation_history';
   $field_group->entity_type = 'node';
@@ -21,10 +229,8 @@ function items_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Creation History',
-    'weight' => '8',
-    'children' => array(
-      0 => 'field_creation_history',
-    ),
+    'weight' => '13',
+    'children' => array(),
     'format_type' => 'hidden',
     'format_settings' => array(
       'label' => 'Creation History',
@@ -79,6 +285,7 @@ function items_field_group_info() {
     'children' => array(
       0 => 'field_character_owner',
       1 => 'field_realm',
+      2 => 'field_tag_realm',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -100,7 +307,7 @@ function items_field_group_info() {
   $field_group->entity_type = 'node';
   $field_group->bundle = 'items';
   $field_group->mode = 'artwork';
-  $field_group->parent_name = '';
+  $field_group->parent_name = 'group_mod_stats';
   $field_group->data = array(
     'label' => 'Modifies',
     'weight' => '3',
@@ -141,10 +348,10 @@ function items_field_group_info() {
   $field_group->entity_type = 'node';
   $field_group->bundle = 'items';
   $field_group->mode = 'form';
-  $field_group->parent_name = '';
+  $field_group->parent_name = 'group_mod_stats';
   $field_group->data = array(
     'label' => 'Modifies',
-    'weight' => '6',
+    'weight' => '8',
     'children' => array(
       0 => 'field_item_agility',
       1 => 'field_item_appearance',
@@ -178,6 +385,91 @@ function items_field_group_info() {
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
+  $field_group->identifier = 'group_mod_stats|node|items|artwork';
+  $field_group->group_name = 'group_mod_stats';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'items';
+  $field_group->mode = 'artwork';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Modify Stats',
+    'weight' => '3',
+    'children' => array(
+      0 => 'group_item_stats',
+      1 => 'group_overlaps',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'label' => 'Modify Stats',
+      'instance_settings' => array(
+        'classes' => 'group-mod-stats field-group-fieldset',
+        'description' => 'Modifications to a character\'s stats.',
+      ),
+      'formatter' => 'collapsed',
+    ),
+  );
+  $export['group_mod_stats|node|items|artwork'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_mod_stats|node|items|default';
+  $field_group->group_name = 'group_mod_stats';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'items';
+  $field_group->mode = 'default';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Modify Stats',
+    'weight' => '4',
+    'children' => array(
+      0 => 'group_stats',
+      1 => 'group_overlaps',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'label' => 'Modify Stats',
+      'instance_settings' => array(
+        'classes' => 'group-mod-stats field-group-fieldset',
+        'description' => 'Modifications to a character\'s stats.',
+      ),
+      'formatter' => 'collapsible',
+    ),
+  );
+  $export['group_mod_stats|node|items|default'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_mod_stats|node|items|form';
+  $field_group->group_name = 'group_mod_stats';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'items';
+  $field_group->mode = 'form';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Modify Stats',
+    'weight' => '5',
+    'children' => array(
+      0 => 'group_item_stats',
+      1 => 'group_overlaps',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'label' => 'Modify Stats',
+      'instance_settings' => array(
+        'required_fields' => 1,
+        'classes' => 'group-mod-stats field-group-fieldset',
+        'description' => 'Modify the stats of the character using the item. Use these fields for items that provide bonuses to the character, or replace the character\'s stat when rolled.',
+      ),
+      'formatter' => 'collapsible',
+    ),
+  );
+  $export['group_mod_stats|node|items|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
   $field_group->identifier = 'group_notes|node|items|artwork';
   $field_group->group_name = 'group_notes';
   $field_group->entity_type = 'node';
@@ -186,7 +478,7 @@ function items_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Notes',
-    'weight' => '6',
+    'weight' => '5',
     'children' => array(
       0 => 'field_player_notes',
       1 => 'field_sh_notes',
@@ -215,12 +507,11 @@ function items_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Notes',
-    'weight' => '7',
+    'weight' => '6',
     'children' => array(
       0 => 'field_player_notes',
       1 => 'field_sh_notes',
       2 => 'field_sh_private_notes',
-      3 => 'workflow_current_state',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -272,10 +563,10 @@ function items_field_group_info() {
   $field_group->entity_type = 'node';
   $field_group->bundle = 'items';
   $field_group->mode = 'artwork';
-  $field_group->parent_name = '';
+  $field_group->parent_name = 'group_mod_stats';
   $field_group->data = array(
     'label' => 'Overlaps',
-    'weight' => '5',
+    'weight' => '4',
     'children' => array(
       0 => 'field_item_over_agility',
       1 => 'field_item_over_appearance',
@@ -313,7 +604,7 @@ function items_field_group_info() {
   $field_group->entity_type = 'node';
   $field_group->bundle = 'items';
   $field_group->mode = 'default';
-  $field_group->parent_name = '';
+  $field_group->parent_name = 'group_mod_stats';
   $field_group->data = array(
     'label' => 'Overlaps',
     'weight' => '6',
@@ -354,10 +645,10 @@ function items_field_group_info() {
   $field_group->entity_type = 'node';
   $field_group->bundle = 'items';
   $field_group->mode = 'form';
-  $field_group->parent_name = '';
+  $field_group->parent_name = 'group_mod_stats';
   $field_group->data = array(
     'label' => 'Overlaps',
-    'weight' => '7',
+    'weight' => '9',
     'children' => array(
       0 => 'field_item_over_agility',
       1 => 'field_item_over_appearance',
@@ -399,7 +690,7 @@ function items_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Shop details',
-    'weight' => '4',
+    'weight' => '7',
     'children' => array(
       0 => 'field_in_shop',
       1 => 'field_declared_value',
@@ -427,7 +718,7 @@ function items_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Shop details',
-    'weight' => '5',
+    'weight' => '7',
     'children' => array(
       0 => 'field_value',
       1 => 'field_in_shop',
@@ -450,12 +741,94 @@ function items_field_group_info() {
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
+  $field_group->identifier = 'group_skills|node|items|artwork';
+  $field_group->group_name = 'group_skills';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'items';
+  $field_group->mode = 'artwork';
+  $field_group->parent_name = 'group_companion';
+  $field_group->data = array(
+    'label' => 'Skills',
+    'weight' => '10',
+    'children' => array(
+      0 => 'field_skill',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'label' => 'Skills',
+      'instance_settings' => array(
+        'classes' => 'group-skills field-group-fieldset',
+        'description' => '',
+      ),
+      'formatter' => 'collapsed',
+    ),
+  );
+  $export['group_skills|node|items|artwork'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_skills|node|items|default';
+  $field_group->group_name = 'group_skills';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'items';
+  $field_group->mode = 'default';
+  $field_group->parent_name = 'group_companion';
+  $field_group->data = array(
+    'label' => 'Skills',
+    'weight' => '10',
+    'children' => array(
+      0 => 'field_skill',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'formatter' => 'collapsible',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => 'group-skills field-group-fieldset',
+        'required_fields' => 1,
+      ),
+    ),
+  );
+  $export['group_skills|node|items|default'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_skills|node|items|form';
+  $field_group->group_name = 'group_skills';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'items';
+  $field_group->mode = 'form';
+  $field_group->parent_name = 'group_companion';
+  $field_group->data = array(
+    'label' => 'Skills',
+    'weight' => '150',
+    'children' => array(
+      0 => 'field_skill',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'label' => 'Skills',
+      'instance_settings' => array(
+        'required_fields' => 1,
+        'classes' => 'group-skills field-group-fieldset',
+        'description' => '',
+      ),
+      'formatter' => 'collapsed',
+    ),
+  );
+  $export['group_skills|node|items|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
   $field_group->identifier = 'group_stats|node|items|default';
   $field_group->group_name = 'group_stats';
   $field_group->entity_type = 'node';
   $field_group->bundle = 'items';
   $field_group->mode = 'default';
-  $field_group->parent_name = '';
+  $field_group->parent_name = 'group_mod_stats';
   $field_group->data = array(
     'label' => 'Modifies',
     'weight' => '5',
@@ -491,6 +864,60 @@ function items_field_group_info() {
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
+  $field_group->identifier = 'group_tech_lang|field_collection_item|field_skill|default';
+  $field_group->group_name = 'group_tech_lang';
+  $field_group->entity_type = 'field_collection_item';
+  $field_group->bundle = 'field_skill';
+  $field_group->mode = 'default';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Tech Languages',
+    'weight' => '12',
+    'children' => array(
+      0 => 'field_tech_languages',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'formatter' => 'collapsible',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => 'group-tech-lang field-group-fieldset',
+      ),
+    ),
+  );
+  $export['group_tech_lang|field_collection_item|field_skill|default'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_tech_lang|field_collection_item|field_skill|form';
+  $field_group->group_name = 'group_tech_lang';
+  $field_group->entity_type = 'field_collection_item';
+  $field_group->bundle = 'field_skill';
+  $field_group->mode = 'form';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Tech languages',
+    'weight' => '4',
+    'children' => array(
+      0 => 'field_tech_languages',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'label' => 'Tech languages',
+      'instance_settings' => array(
+        'required_fields' => 1,
+        'classes' => 'group-tech-lang field-group-fieldset',
+        'description' => 'If this is a Sirian tech skill, select two technical languages to be familiar with. Skills start with two languages by default.',
+      ),
+      'formatter' => 'collapsed',
+    ),
+  );
+  $export['group_tech_lang|field_collection_item|field_skill|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
   $field_group->identifier = 'group_uses|node|items|artwork';
   $field_group->group_name = 'group_uses';
   $field_group->entity_type = 'node';
@@ -511,6 +938,9 @@ function items_field_group_info() {
       7 => 'field_armor_absorbs',
       8 => 'field_armor_penalty',
       9 => 'field_fixed_strength',
+      10 => 'field_absorb_type',
+      11 => 'field_build_points',
+      12 => 'field_weapon_sub_type',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -547,6 +977,9 @@ function items_field_group_info() {
       7 => 'field_armor_absorbs',
       8 => 'field_armor_penalty',
       9 => 'field_fixed_strength',
+      10 => 'field_absorb_type',
+      11 => 'field_build_points',
+      12 => 'field_weapon_sub_type',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -583,6 +1016,9 @@ function items_field_group_info() {
       7 => 'field_armor_absorbs',
       8 => 'field_armor_penalty',
       9 => 'field_fixed_strength',
+      10 => 'field_absorb_type',
+      11 => 'field_build_points',
+      12 => 'field_weapon_sub_type',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(

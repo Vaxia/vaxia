@@ -7,6 +7,7 @@ project = role_app
 dependencies[] = number
 dependencies[] = quiz_rules
 dependencies[] = strikes
+dependencies[] = views
 dependencies[] = webform_rules
 features[ctools][] = strongarm:strongarm:1
 features[ctools][] = views:views_default:3.0

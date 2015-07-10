@@ -22,7 +22,7 @@ function proposal_views_default_views() {
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Proposals closing';
+  $handler->display->display_options['title'] = 'Proposals';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['link_display'] = 'active_proposals';
   $handler->display->display_options['access']['type'] = 'role';
@@ -439,6 +439,8 @@ function proposal_views_default_views() {
 
   /* Display: Proposal closing block */
   $handler = $view->new_display('block', 'Proposal closing block', 'proposals_closing');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Proposals closing';
   $handler->display->display_options['display_description'] = 'A block display of proposals within 3 days of closing';
   $handler->display->display_options['defaults']['access'] = FALSE;
   $handler->display->display_options['access']['type'] = 'role';
@@ -456,13 +458,13 @@ function proposal_views_default_views() {
   );
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['header'] = FALSE;
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['content'] = 'These proposals are nearing their close date. If you haven\'t voted in them yet, please do! We need your input! Closing proposals:';
+  $handler->display->display_options['header']['area']['format'] = 'wiki';
   $handler->display->display_options['defaults']['footer'] = FALSE;
-  /* Footer: Global: Text area */
-  $handler->display->display_options['footer']['area']['id'] = 'area';
-  $handler->display->display_options['footer']['area']['table'] = 'views';
-  $handler->display->display_options['footer']['area']['field'] = 'area';
-  $handler->display->display_options['footer']['area']['content'] = 'These proposals are nearing their close date. If you haven\'t voted in them yet, please do! We need your input!';
-  $handler->display->display_options['footer']['area']['format'] = 'wiki';
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';

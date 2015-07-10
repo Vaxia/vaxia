@@ -10,15 +10,28 @@
 function items_default_rules_configuration() {
   $items = array();
   $items['rules_creating_item_move_to_workflow'] = entity_import('rules_config', '{ "rules_creating_item_move_to_workflow" : {
-      "LABEL" : "Creating item move to workflow",
+      "LABEL" : "Edit approved item - set workflow",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
       "TAGS" : [ "Items" ],
-      "REQUIRES" : [ "rules" ],
-      "ON" : { "node_insert--items" : { "bundle" : "items" } },
+      "REQUIRES" : [ "workflow_rules", "rules" ],
+      "ON" : { "node_update--items" : { "bundle" : "items" } },
+      "IF" : [
+        { "workflow_check_state" : {
+            "node" : [ "node-unchanged" ],
+            "workflow_state" : { "value" : { "15" : "15" } }
+          }
+        }
+      ],
       "DO" : [
-        { "redirect" : { "url" : "node\\/[node:nid]\\/workflow" } },
-        { "drupal_message" : { "message" : "Don\\u0027t forget to set the item to submitted so that the evaluation team can review it." } }
+        { "workflow_rules_set_state" : {
+            "node" : [ "node" ],
+            "workflow_state" : { "value" : { "14" : "14" } },
+            "workflow_comment" : "Setting item back to needing approval after being edited in an approved state."
+          }
+        },
+        { "data_set" : { "data" : [ "node:author" ], "value" : [ "site:current-user" ] } },
+        { "drupal_message" : { "message" : "You have edited an item that was already approved. This invalidated the approval and the item has been returned to submit and owned to your account so the changes may be reviewed." } }
       ]
     }
   }');
@@ -101,6 +114,7 @@ function items_default_rules_configuration() {
   $items['vaxia_notify_player_when_item_disapproved'] = entity_import('rules_config', '{ "vaxia_notify_player_when_item_disapproved" : {
       "LABEL" : "Notify player when item disapproved",
       "PLUGIN" : "reaction rule",
+      "ACTIVE" : false,
       "OWNER" : "rules",
       "TAGS" : [ "Items" ],
       "REQUIRES" : [ "rules", "workflow_rules" ],

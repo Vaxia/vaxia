@@ -289,46 +289,6 @@ function rpg_chat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-rpg_chatroom-field_realm'
-  $field_instances['node-rpg_chatroom-field_realm'] = array(
-    'bundle' => 'rpg_chatroom',
-    'default_value' => array(
-      0 => array(
-        'value' => 'Vaxia',
-      ),
-    ),
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'hidden',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 6,
-      ),
-      'question' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_realm',
-    'label' => 'Realm',
-    'required' => 1,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'options',
-      'settings' => array(),
-      'type' => 'options_select',
-      'weight' => 2,
-    ),
-  );
-
   // Exported field_instance: 'node-rpg_chatroom-field_rl_weather'
   $field_instances['node-rpg_chatroom-field_rl_weather'] = array(
     'bundle' => 'rpg_chatroom',
@@ -462,7 +422,7 @@ function rpg_chat_field_default_field_instances() {
       'module' => 'location_cck',
       'settings' => array(),
       'type' => 'location',
-      'weight' => 3,
+      'weight' => 4,
     ),
   );
 
@@ -538,6 +498,47 @@ function rpg_chat_field_default_field_instances() {
       ),
       'type' => 'text_textarea',
       'weight' => 14,
+    ),
+  );
+
+  // Exported field_instance: 'node-rpg_chatroom-field_tag_realm'
+  $field_instances['node-rpg_chatroom-field_tag_realm'] = array(
+    'bundle' => 'rpg_chatroom',
+    'default_value' => array(
+      0 => array(
+        'tid' => 725,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'taxonomy',
+        'settings' => array(),
+        'type' => 'taxonomy_term_reference_link',
+        'weight' => 10,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_tag_realm',
+    'label' => 'Realm',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_select',
+      'weight' => 3,
     ),
   );
 
