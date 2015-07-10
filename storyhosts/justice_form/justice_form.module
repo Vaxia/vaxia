@@ -57,7 +57,7 @@ function _justice_form_admin_settings($form, &$form_state) {
       '#type' => 'textfield',
       '#title' => t('Base PP'),
       '#required' => TRUE,
-      '#default' => variable_get('justice_form_base_pp', 25),
+      '#default_value' => variable_get('justice_form_base_pp', 25),
     );
   // Loop over each.
   $tiers = variable_get('justice_form_tiers', 5);
@@ -65,12 +65,12 @@ function _justice_form_admin_settings($form, &$form_state) {
     $form['tiers']['justice_form_silver_' . $tier] = array(
       '#type' => 'textfield',
       '#title' => t('Silver for Tier @tier', array('@tier' => $tier)),
-      '#default' => variable_get('justice_form_silver_' . $tier, 10),
+      '#default_value' => variable_get('justice_form_silver_' . $tier, 10),
     );
     $form['tiers']['justice_form_time_' . $tier] = array(
       '#type' => 'textfield',
       '#title' => t('Time amount for Tier @tier', array('@tier' => $tier)),
-      '#default' => variable_get('justice_form_time_' . $tier, 1),
+      '#default_value' => variable_get('justice_form_time_' . $tier, 1),
     );
     $form['tiers']['justice_form_timeunit_' . $tier] = array(
       '#type' => 'select',
@@ -80,7 +80,7 @@ function _justice_form_admin_settings($form, &$form_state) {
         ' weeks' => t('Weeks'),
         ' months' => t('Months'),
       ),
-      '#default' => variable_get('justice_form_timeunit_' . $tier, 'days'),
+      '#default_value' => variable_get('justice_form_timeunit_' . $tier, 'days'),
     );
   }
   return system_settings_form($form);
