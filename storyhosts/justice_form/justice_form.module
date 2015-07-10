@@ -225,13 +225,13 @@ function _justice_form($form, &$form_state) {
   );
   // Tables.
   $punishment_table = '';
-  $form['setup'] = array(
+  $form['punishment'] = array(
     '#type' => 'item',
     '#markup' => $punishment_table,
     '#title' => t('Punishment Table'),
   );
   $reputation_table = '';
-  $form['setup'] = array(
+  $form['reputation'] = array(
     '#type' => 'item',
     '#markup' => $reputation_table,
     '#title' => t('Reputation Table'),
