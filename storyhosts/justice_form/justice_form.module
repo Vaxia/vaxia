@@ -206,7 +206,7 @@ function _justice_form_results($form, $form_state) {
     $base_pp = variable_get('justice_form_base_pp', 25);
     $pp = $form_state['values']['pp'];
     $rep = $form_state['values']['rep'];
-    $results .= t('The Tier level us @tier.',
+    $results .= t('The Tier level is Tier @tier.',
       array('@tier' => $tier)) . '</br>';
     // Adjust the rep.
     if ($rep < -16) {
