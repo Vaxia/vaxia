@@ -168,19 +168,7 @@ function _justice_form($form, &$form_state) {
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => t('Calculate results'),
-    '#ajax' => array(
-      'callback' => '_justice_form_ajax',
-      'wrapper' => 'justice_results',
-      'method' => 'replace',
-      'effect' => 'fade',
-    ),
-  );
-  $form['justice_results'] = array(
-    '#type' => 'item',
-    '#markup' => _justice_form_results($form, $form_state),
-    '#title' => t('Results'),
-    '#prefix' => '<div id="justice_results" style="padding-top:0.5em;">',
-    '#suffix' => '</div>',
+    '#submit' => array('_justice_form_submit'),
   );
   // Tables.
   $form['punishment'] = array(
@@ -197,10 +185,11 @@ function _justice_form($form, &$form_state) {
 }
 
 /**
- * AJAX form callback.
+ * Submit handler.
  */
-function _justice_form_ajax($form, $form_state) {
-  return $form['justice_results'];
+function _justice_form_submit($form, $form_state) {
+  $results = _justice_form_results($form, $form_state);
+  drupal_set_message($results);
 }
 
 function _justice_form_results($form, $form_state) {
