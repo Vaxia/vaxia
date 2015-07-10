@@ -206,14 +206,18 @@ function _justice_form_results($form, $form_state) {
     $base_pp = variable_get('justice_form_base_pp', 25);
     $pp = $form_state['values']['pp'];
     $rep = $form_state['values']['rep'];
+    $results .= t('The Tier level us @tier.',
+      array('@tier' => $tier)) . '</br>';
     // Adjust the rep.
-    if ($rep < 16) {
-      $results .= t('A bad reputation raised the Tier level.') . '</br>';
-      $tier--;
+    if ($rep < -16) {
+      $tier++;
+      $results .= t('A bad reputation raised the Tier level to @tier.',
+        array('@tier' => $tier)) . '</br>';
     }
     if ($rep > 16) {
-      $results .= t('A good reputation lowered the Tier level.') . '</br>';
-      $tier++;
+      $tier--;
+      $results .= t('A good reputation raised the Tier level to @tier.',
+        array('@tier' => $tier)) . '</br>';
     }
     $diff = $base_pp * $tier;
     // Update result info.
@@ -243,6 +247,7 @@ function _justice_form_results($form, $form_state) {
       $pp = $pp - $this_pp;
     }
     // And leftover PP.
+    $pp = ($pp > 0) ? $pp : 0;
     $results .= t('Crime PP leftover: @pp',
       array('@pp' => $pp)) . '</br>';
     // Calculate the punishment leftover.
