@@ -177,13 +177,12 @@ function _justice_form($form, &$form_state) {
   );
   $form['justice_results'] = array(
     '#type' => 'item',
-    '#markup' => _justice_form_submit_results($form, $form_state),
+    '#markup' => _justice_form_results($form, $form_state),
     '#title' => t('Results'),
     '#prefix' => '<div id="justice_results" style="padding-top:0.5em;">',
     '#suffix' => '</div>',
   );
   // Tables.
-  $punishment_table = '';
   $form['punishment'] = array(
     '#type' => 'item',
     '#markup' => variable_get('justice_form_punishments', ''),
@@ -204,9 +203,9 @@ function _justice_form_ajax($form, $form_state) {
   return $form['justice_results'];
 }
 
-function _justice_form_submit_results($form, $form_state) {
+function _justice_form_results($form, $form_state) {
   // Check the output results.
-  $results = t('No results');
+  $results = t('No results.');
   if (!empty($form_state['values'])) {
     // Get the setup.
     $tier = $form_state['values']['tier'];
@@ -268,15 +267,4 @@ function _justice_form_submit_results($form, $form_state) {
       array('@silver_pun' => $silver_pun, '@service_pun' => $service_pun, '@time_pun' => $time_pun)) . '</br>';
   }
   return $results;
-}
-
-/**
- * Justice form, validate handler.
- */
-function _justice_form_validate($form, &$form_state) {}
-
-/**
- * Justice form, submit handler.
- */
-function _justice_form_submit($form, &$form_state) {
 }
