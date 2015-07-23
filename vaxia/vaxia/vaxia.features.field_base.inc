@@ -243,55 +243,6 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'taxonomy_term_reference',
   );
 
-  // Exported field_base: 'field_associated_locations'
-  $field_bases['field_associated_locations'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_associated_locations',
-    'indexes' => array(
-      'nid' => array(
-        0 => 'nid',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'node_reference',
-    'settings' => array(
-      'referenceable_types' => array(
-        'artwork' => 0,
-        'character_sheet' => 0,
-        'event' => 0,
-        'filedepot_folder' => 0,
-        'forum' => 0,
-        'items' => 0,
-        'long_answer' => 0,
-        'mass_contact' => 0,
-        'multichoice' => 0,
-        'notation' => 0,
-        'page' => 0,
-        'play_suggestions' => 0,
-        'proposal' => 0,
-        'quiz' => 0,
-        'rpg_chatroom' => 'rpg_chatroom',
-        'scene' => 0,
-        'session_report' => 0,
-        'storyhost_application' => 0,
-        'strike' => 0,
-        'timeline_event' => 0,
-        'webform' => 0,
-        'wiki_page' => 0,
-      ),
-      'view' => array(
-        'args' => array(),
-        'display_name' => '',
-        'view_name' => '',
-      ),
-    ),
-    'translatable' => 0,
-    'type' => 'node_reference',
-  );
-
   // Exported field_base: 'field_awareness'
   $field_bases['field_awareness'] = array(
     'active' => 1,

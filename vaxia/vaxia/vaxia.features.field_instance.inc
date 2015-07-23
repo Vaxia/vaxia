@@ -715,42 +715,6 @@ function vaxia_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_associated_locations'
-  $field_instances['node-character_sheet-field_associated_locations'] = array(
-    'bundle' => 'character_sheet',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 14,
-      ),
-      'question' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_associated_locations',
-    'label' => 'Associated locations',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'options',
-      'settings' => array(),
-      'type' => 'options_select',
-      'weight' => 7,
-    ),
-  );
-
   // Exported field_instance: 'node-character_sheet-field_awareness'
   $field_instances['node-character_sheet-field_awareness'] = array(
     'bundle' => 'character_sheet',

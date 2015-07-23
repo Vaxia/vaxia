@@ -139,8 +139,7 @@ function vaxia_field_group_info() {
       2 => 'field_is_storyteller',
       3 => 'field_post_color',
       4 => 'field_background_color',
-      5 => 'field_associated_locations',
-      6 => 'title',
+      5 => 'title',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
