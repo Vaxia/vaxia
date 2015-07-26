@@ -341,18 +341,10 @@ function _vaxia_donation_save_donation_xp($pid, $donated_amount) {
   drupal_set_message(t('Donation site-award XP (@amount) for #@nid @title',
     array('@amount' => $amount, '@nid' => $node->nid, '@title' => $node->title)));
   // Mark the XP.
-  $new_spent = _character_sheet_get_xp($node->nid, 'spent_xp');
-  if ($new_spent > 5) { // 5 or under for spent xp limits for transfer.
-    // Put XP to banked.
-    _character_sheet_update_xp($node->nid, $amount, 'bxp');
-  }
-  else {
-    // If the character has no XP on it - go to xp.
-    _character_sheet_update_xp($node->nid, $amount, 'xp');
-  }
+  _character_sheet_update_xp($node->nid, $amount, 'bxp');
   // Add to the character log.
   global $user;
-  $message = t('@xp @type xp added to @title by system.',
-    array('@xp' => $amount, '@type' => 'site-award', '@title' => $node->title));
-  _character_sheet_update_log($node->nid, 'site-award', $message);
+  $message = t('@xp @type xp added to @title by system for donation.',
+    array('@xp' => $amount, '@type' => 'donation', '@title' => $node->title));
+  _character_sheet_update_log($node->nid, 'donation', $message);
 }
