@@ -959,7 +959,7 @@ function _vaxia_transfer_hxp_form(&$form, $form_state, $node) {
     );
     $form['transfer']['alert']['alert'] = array(
       '#type' => 'item',
-      '#markup' => t('IF YOU TRANSFER YOUR CHARACTER XP: <br/> YOUR CHARACTER WILL NOT BE PLAYABLE AFTERWARDS.'),
+      '#markup' => t('IF YOU TRANSFER YOUR CHARACTER SPENT XP: <br/> YOUR CHARACTER WILL NOT BE PLAYABLE AFTERWARDS.'),
     );
     $percent = variable_get('vaxia_transfer_percentage', 0.75);
     $xp_amount = _character_sheet_get_xp($node->nid, 'spent_xp');
@@ -992,12 +992,6 @@ function _vaxia_transfer_hxp_form(&$form, $form_state, $node) {
       '#title' => t('Transfer to'),
       '#description' => t('Transfer HXP to this character sheet.'),
       '#autocomplete_path' => 'vaxia/transfer_xp',
-    );
-    $xp = _character_sheet_get_xp($node->nid, 'spent_xp');
-    $form['transfer']['confirm']['amount'] = array(
-      '#type' => 'hidden',
-      '#value' => $xp,
-      '#description' => t('Up to ' . $xp . ' HXP is available to be transferred.'),
     );
     $form['transfer']['confirm']['confirm'] = array(
       '#type' => 'textfield',
@@ -1119,12 +1113,7 @@ function _vaxia_transfer_xp_submit(&$form, &$form_state) {
     $workflow = variable_get('vaxia_transfer_workflow', '');
     if (!empty($old_character) && !empty($new_character) && !empty($workflow) && $old_character->nid != $new_character->nid) {
       // Grab XP for this character.
-      $full_xp = _character_sheet_get_xp($old_character->nid, 'spent_xp');
-      $xp = $form_state['values']['amount'];
-      // Check in case user entered more than they have.
-      if ($xp > $full_xp) {
-        $xp = $full_xp;
-      }
+      $xp = _character_sheet_get_xp($old_character->nid, 'spent_xp');
       // Amount to transfer.
       $new_xp = floor($xp * variable_get('vaxia_transfer_percentage', 0.75));
       $max = '';
@@ -1137,15 +1126,18 @@ function _vaxia_transfer_xp_submit(&$form, &$form_state) {
         }
       }
       // Record transfer
-      watchdog('vaxia', 'Transfering %new_xp XP out of %xp%max from #@nid @title to #@nid2 @title2',
+      watchdog('vaxia', 'Transferring %new_xp XP out of %xp%max from #@nid @title to #@nid2 @title2.',
         array('%new_xp' => $new_xp, '%xp' => $xp, '%max' => $max, '@nid' => $old_character->nid,
         '@title' => $old_character->title, '@nid2' => $new_character->nid, '@title2' => $new_character->title));
-      drupal_set_message(t('Transfering %new_xp XP out of %xp%max from #@nid @title to #@nid2 @title2',
+      $trans_mess = t('Transferring %new_xp XP out of %xp%max from #@nid @title to #@nid2 @title2.',
         array('%new_xp' => $new_xp, '%xp' => $xp, '%max' => $max, '@nid' => $old_character->nid,
-        '@title' => $old_character->title, '@nid2' => $new_character->nid, '@title2' => $new_character->title)));
+        '@title' => $old_character->title, '@nid2' => $new_character->nid, '@title2' => $new_character->title));
+      drupal_set_message($trans_mess);
+      _character_sheet_update_log($old_character->nid, 'transfer', $trans_mess);
+      _character_sheet_update_log($new_character->nid, 'transfer', $trans_mess);
       // New character?
       $new_spent = _character_sheet_get_xp($new_character->nid, 'spent_xp');
-      if ($new_spent > 5) { // 5 or under for spent xp limits for transfer.
+      if ($new_spent > 0) {
         _character_sheet_update_xp($new_character->nid, $new_xp, 'bxp');
       }
       else {
@@ -1155,17 +1147,14 @@ function _vaxia_transfer_xp_submit(&$form, &$form_state) {
       _character_sheet_update_xp($old_character->nid, $xp, 'spent_xp');
       _character_sheet_update_xp($old_character->nid, $xp, 'xp');
       // Logs and cleanup.
-      $message = t('@xp transfer xp added to @title by system.',
-        array('@xp' => $new_xp, '@title' => $new_character->title));
+      $message = t('@xp transfer xp added to @title by system.', array('@xp' => $new_xp, '@title' => $new_character->title));
       _character_sheet_update_log($new_character->nid, 'transfer', $message);
-      if ($full_xp <= $xp) {
-        // Clear records for the XP recorded for the old character.
-        _character_sheet_delete_xp($old_character->nid);
-        _character_sheet_delete_log($old_character->nid);
-        _vaxia_delete_type_tracking($old_character->nid);
-        // And update the original character status.
-        workflow_execute_transition($old_character, $workflow, t('Transferred all XP to a new character'), TRUE);
-      }
+      // Clear records for the XP recorded for the old character.
+      _character_sheet_delete_xp($old_character->nid);
+      _vaxia_delete_type_tracking($old_character->nid);
+      _character_sheet_update_log($old_character->nid, 'transfer', 'Cleared records for XP and flavor XP. DO NOT REACTIVATE CHARACTER.');
+      // And update the original character status.
+      workflow_execute_transition($old_character, $workflow, t('Transferred all XP to a new character.'), TRUE);
     }
   }
   else {
