@@ -36,6 +36,19 @@ function site_wiki_menu() {
   return $items;
 }
 
+/**
+ * Implelents node_form_alter for nodes.
+ * Character sheet, field level controls for players and moderators according to character sheet defs.
+ */
+function site_wiki_form_node_form_alter(&$form, &$form_state, $form_id) {
+  $node = !empty($form['#node']) ? $form['#node'] : '';
+  if (variable_get('site_wiki_revision', TRUE) && !empty($form['revision_information']['log'])
+    && !empty($node->type) && $node->type == 'wiki_page') {
+    $form['revision_information']['#weight'] = 10;
+    $form['revision_information']['log']['#required'] = TRUE;
+  }
+}
+
 // New approach to handling wiki links.
 // Since we're trying to put wiki's in place and not have a deep
 // restructure all the time when we change file names.
@@ -122,10 +135,22 @@ function _site_wiki_get_titles() {
  * Implementation of admin settings form.
  */
 function _site_wiki_admin_settings($form, &$form_state) {
+  $form['site_wiki_settings'] = array(
+    '#title' => t('Site wiki settings'),
+    '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+  );
+  $form['site_wiki_settings']['site_wiki_revision'] = array(
+    '#title' => t('Require revision notes'),
+    '#description' => t('Check to make sure that revision notes are required.'),
+    '#type' => 'checkbox',
+    '#default_value' => variable_get('site_wiki_revision', TRUE),
+  );
   $form['site_wiki_templates'] = array(
     '#title' => t('Site wiki templates'),
     '#type' => 'fieldset',
     '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
     '#tree' => TRUE,
   );
   // X templates, with Name and value.
@@ -431,8 +456,18 @@ function _site_wiki_is_locked($node) {
  * Helper function for views.
  */
 function _site_wiki_limit_categories_by_nodecount($tid, $limit = 5) {
-  $count = count( taxonomy_select_nodes($tid, FALSE) );
+  $count = count(taxonomy_select_nodes($tid, FALSE));
   if ($count < $limit) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+/**
+ * Check if node is a wiki node.
+ */
+function _site_wiki_enabled($node) {
+  if (!empty($node->type) && $node->type == 'wiki_page') {
     return TRUE;
   }
   return FALSE;
