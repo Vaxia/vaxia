@@ -10,44 +10,6 @@
 function rpg_chat_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'node-rpg_chatroom-field_children'
-  $field_instances['node-rpg_chatroom-field_children'] = array(
-    'bundle' => 'rpg_chatroom',
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'nodereferrer',
-        'settings' => array(),
-        'type' => 'nodereferrer_default',
-        'weight' => 2,
-      ),
-      'question' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_children',
-    'label' => 'Sub-locations',
-    'required' => 0,
-    'settings' => array(
-      'prefix' => '',
-      'suffix' => '',
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'nodereferrer',
-      'settings' => array(),
-      'type' => 'nodereferrer_list',
-      'weight' => 7,
-    ),
-  );
-
   // Exported field_instance: 'node-rpg_chatroom-field_is_personal_room'
   $field_instances['node-rpg_chatroom-field_is_personal_room'] = array(
     'bundle' => 'rpg_chatroom',
@@ -107,7 +69,7 @@ function rpg_chat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 8,
+        'weight' => 7,
       ),
       'question' => array(
         'label' => 'above',
@@ -149,7 +111,7 @@ function rpg_chat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 7,
+        'weight' => 6,
       ),
       'question' => array(
         'label' => 'above',
@@ -171,78 +133,6 @@ function rpg_chat_field_default_field_instances() {
       'settings' => array(),
       'type' => 'options_buttons',
       'weight' => 16,
-    ),
-  );
-
-  // Exported field_instance: 'node-rpg_chatroom-field_parent'
-  $field_instances['node-rpg_chatroom-field_parent'] = array(
-    'bundle' => 'rpg_chatroom',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'node_reference',
-        'settings' => array(),
-        'type' => 'node_reference_default',
-        'weight' => 1,
-      ),
-      'print' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 1,
-      ),
-      'question' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'rss' => array(
-        'label' => 'hidden',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 1,
-      ),
-      'search_index' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 1,
-      ),
-      'search_result' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 1,
-      ),
-      'teaser' => array(
-        'label' => 'inline',
-        'module' => 'node_reference',
-        'settings' => array(),
-        'type' => 'node_reference_default',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_parent',
-    'label' => 'Parent-locations',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'node_reference',
-      'settings' => array(
-        'autocomplete_match' => 'contains',
-        'autocomplete_path' => 'node_reference/autocomplete',
-        'size' => 60,
-      ),
-      'type' => 'node_reference_autocomplete',
-      'weight' => 6,
     ),
   );
 
@@ -514,10 +404,9 @@ function rpg_chat_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'taxonomy',
         'settings' => array(),
-        'type' => 'taxonomy_term_reference_link',
-        'weight' => 10,
+        'type' => 'hidden',
+        'weight' => 2,
       ),
       'question' => array(
         'label' => 'above',
@@ -553,7 +442,7 @@ function rpg_chat_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 9,
+        'weight' => 8,
       ),
       'question' => array(
         'label' => 'above',
@@ -629,14 +518,12 @@ function rpg_chat_field_default_field_instances() {
   // Included for use with string extractors like potx.
   t('Locked to users');
   t('Mature posting');
-  t('Parent-locations');
   t('Personal room');
   t('Private room');
   t('RL weather');
   t('Realm');
   t('Room Description');
   t('Select the users to lock this room for. Only these users may post here. If you own this room - be SURE to put yourself on this list or you risk locking yourself out!');
-  t('Sub-locations');
   t('Users');
   t('Wiki source');
 

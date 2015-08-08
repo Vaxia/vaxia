@@ -40,7 +40,7 @@ function vaxia_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 3,
+      'weight' => 0,
     ),
   );
 
@@ -72,7 +72,7 @@ function vaxia_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 2,
+      'weight' => 1,
     ),
   );
 
@@ -80,7 +80,11 @@ function vaxia_field_default_field_instances() {
   // 'field_collection_item-field_skill-field_aspect_one'
   $field_instances['field_collection_item-field_skill-field_aspect_one'] = array(
     'bundle' => 'field_skill',
-    'default_value' => NULL,
+    'default_value' => array(
+      0 => array(
+        'tid' => 1125,
+      ),
+    ),
     'deleted' => 0,
     'description' => '',
     'display' => array(
@@ -95,7 +99,7 @@ function vaxia_field_default_field_instances() {
     'entity_type' => 'field_collection_item',
     'field_name' => 'field_aspect_one',
     'label' => '1.',
-    'required' => 0,
+    'required' => 1,
     'settings' => array(
       'user_register_form' => FALSE,
     ),
@@ -112,7 +116,11 @@ function vaxia_field_default_field_instances() {
   // 'field_collection_item-field_skill-field_aspect_three'
   $field_instances['field_collection_item-field_skill-field_aspect_three'] = array(
     'bundle' => 'field_skill',
-    'default_value' => NULL,
+    'default_value' => array(
+      0 => array(
+        'tid' => 1125,
+      ),
+    ),
     'deleted' => 0,
     'description' => '',
     'display' => array(
@@ -127,7 +135,7 @@ function vaxia_field_default_field_instances() {
     'entity_type' => 'field_collection_item',
     'field_name' => 'field_aspect_three',
     'label' => '3.',
-    'required' => 0,
+    'required' => 1,
     'settings' => array(
       'user_register_form' => FALSE,
     ),
@@ -144,7 +152,11 @@ function vaxia_field_default_field_instances() {
   // 'field_collection_item-field_skill-field_aspect_two'
   $field_instances['field_collection_item-field_skill-field_aspect_two'] = array(
     'bundle' => 'field_skill',
-    'default_value' => NULL,
+    'default_value' => array(
+      0 => array(
+        'tid' => 1125,
+      ),
+    ),
     'deleted' => 0,
     'description' => '',
     'display' => array(
@@ -159,7 +171,7 @@ function vaxia_field_default_field_instances() {
     'entity_type' => 'field_collection_item',
     'field_name' => 'field_aspect_two',
     'label' => '2.',
-    'required' => 0,
+    'required' => 1,
     'settings' => array(
       'user_register_form' => FALSE,
     ),
@@ -368,7 +380,7 @@ function vaxia_field_default_field_instances() {
         'label' => 'hidden',
         'module' => 'taxonomy',
         'settings' => array(),
-        'type' => 'taxonomy_term_reference_link',
+        'type' => 'taxonomy_term_reference_plain',
         'weight' => 0,
       ),
     ),
@@ -851,7 +863,7 @@ function vaxia_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 15,
+        'weight' => 16,
       ),
       'question' => array(
         'label' => 'above',
@@ -891,7 +903,7 @@ function vaxia_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 9,
+        'weight' => 10,
       ),
       'question' => array(
         'label' => 'above',
@@ -935,7 +947,7 @@ function vaxia_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 11,
+        'weight' => 12,
       ),
       'question' => array(
         'label' => 'above',
@@ -1225,7 +1237,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 8,
+        'weight' => 9,
       ),
       'question' => array(
         'label' => 'above',
@@ -1754,11 +1766,11 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     'description' => 'Toggle character access to the item shop on or off.',
     'display' => array(
       'default' => array(
-        'label' => 'above',
+        'label' => 'hidden',
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 21,
+        'weight' => 22,
       ),
       'question' => array(
         'label' => 'above',
@@ -2369,7 +2381,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
         'label' => 'hidden',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 14,
+        'weight' => 15,
       ),
       'question' => array(
         'label' => 'above',
@@ -2700,7 +2712,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 10,
+        'weight' => 11,
       ),
       'question' => array(
         'label' => 'above',
@@ -3186,11 +3198,11 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     'description' => 'This field is a *temporary* field to allow us to quickly identify character sheets that have not been reviewed as part of a site-wide effort to bring all characters up to spec for skills.',
     'display' => array(
       'default' => array(
-        'label' => 'above',
+        'label' => 'inline',
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 22,
+        'weight' => 0,
       ),
       'question' => array(
         'label' => 'above',
@@ -3426,7 +3438,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     'description' => 'Uncheck this box to hide this character\'s posts from the power search. This is useful if you are playing a character whose actions you want to keep private. Be aware, while this will hide the posts of this character from the search it will not hide the posts of other character\'s in a scene with you if they are not also set for private mode.',
     'display' => array(
       'default' => array(
-        'label' => 'inline',
+        'label' => 'hidden',
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
@@ -3474,7 +3486,6 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
   t('Apparent Age');
   t('Apparent Gender');
   t('Appearance');
-  t('Associated locations');
   t('Awareness');
   t('Background');
   t('Birth Day');

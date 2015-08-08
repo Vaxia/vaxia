@@ -53,7 +53,7 @@ function rpg_chat_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Description',
-    'weight' => '2',
+    'weight' => '1',
     'children' => array(
       0 => 'field_wiki_source',
       1 => 'field_room_description',

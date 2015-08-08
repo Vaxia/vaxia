@@ -10,109 +10,6 @@
 function items_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance:
-  // 'field_collection_item-field_skill-field_tech_languages'
-  $field_instances['field_collection_item-field_skill-field_tech_languages'] = array(
-    'bundle' => 'field_skill',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'hidden',
-        'module' => 'field_collection_table',
-        'settings' => array(
-          'add' => '',
-          'delete' => '',
-          'description' => 0,
-          'edit' => '',
-          'empty' => 1,
-          'view_mode' => 'full',
-        ),
-        'type' => 'field_collection_table_view',
-        'weight' => 6,
-      ),
-    ),
-    'entity_type' => 'field_collection_item',
-    'field_name' => 'field_tech_languages',
-    'label' => 'Tech languages',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'field_collection',
-      'settings' => array(),
-      'type' => 'field_collection_embed',
-      'weight' => 6,
-    ),
-  );
-
-  // Exported field_instance:
-  // 'field_collection_item-field_tech_languages-field_tech_language'
-  $field_instances['field_collection_item-field_tech_languages-field_tech_language'] = array(
-    'bundle' => 'field_tech_languages',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'hidden',
-        'module' => 'taxonomy',
-        'settings' => array(),
-        'type' => 'taxonomy_term_reference_link',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'field_collection_item',
-    'field_name' => 'field_tech_language',
-    'label' => 'Tech language',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'options',
-      'settings' => array(),
-      'type' => 'options_select',
-      'weight' => 1,
-    ),
-  );
-
-  // Exported field_instance:
-  // 'field_collection_item-field_tech_languages-field_tech_proficiency'
-  $field_instances['field_collection_item-field_tech_languages-field_tech_proficiency'] = array(
-    'bundle' => 'field_tech_languages',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'hidden',
-        'module' => 'list',
-        'settings' => array(),
-        'type' => 'list_default',
-        'weight' => 1,
-      ),
-    ),
-    'entity_type' => 'field_collection_item',
-    'field_name' => 'field_tech_proficiency',
-    'label' => 'Proficiency',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'options',
-      'settings' => array(),
-      'type' => 'options_select',
-      'weight' => 2,
-    ),
-  );
-
   // Exported field_instance: 'node-items-field_absorb_type'
   $field_instances['node-items-field_absorb_type'] = array(
     'bundle' => 'items',
@@ -4545,7 +4442,6 @@ function items_field_default_field_instances() {
   t('Player Notes');
   t('Presence');
   t('Private SH Notes');
-  t('Proficiency');
   t('Rate of Use');
   t('Realm');
   t('Recalculate the value of this item based on changes in stats.');
@@ -4558,8 +4454,6 @@ function items_field_default_field_instances() {
   t('Spirit');
   t('Spirituality');
   t('Strength');
-  t('Tech language');
-  t('Tech languages');
   t('The multiple action modifier for the weapon.');
   t('The number of charges used so far for this item.');
   t('The percentage bonus for the weapon\'s damage calculations.');

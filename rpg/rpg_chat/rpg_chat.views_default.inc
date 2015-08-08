@@ -194,13 +194,13 @@ if (!empty($nid) && is_numeric($nid) && function_exists(\'_rpg_chat_set_room_use
   $handler->display->display_options['fields']['last_comment_timestamp']['field'] = 'last_comment_timestamp';
   $handler->display->display_options['fields']['last_comment_timestamp']['label'] = 'Last Activity';
   $handler->display->display_options['fields']['last_comment_timestamp']['date_format'] = 'long';
-  /* Field: Content: Parent-locations */
+  /* Field: Broken/missing handler */
   $handler->display->display_options['fields']['field_parent']['id'] = 'field_parent';
   $handler->display->display_options['fields']['field_parent']['table'] = 'field_data_field_parent';
   $handler->display->display_options['fields']['field_parent']['field'] = 'field_parent';
   $handler->display->display_options['fields']['field_parent']['label'] = 'Parent Room';
   $handler->display->display_options['fields']['field_parent']['element_label_colon'] = FALSE;
-  /* Contextual filter: Content: Parent-locations (field_parent) */
+  /* Contextual filter: Broken/missing handler */
   $handler->display->display_options['arguments']['field_parent_nid']['id'] = 'field_parent_nid';
   $handler->display->display_options['arguments']['field_parent_nid']['table'] = 'field_data_field_parent';
   $handler->display->display_options['arguments']['field_parent_nid']['field'] = 'field_parent_nid';
@@ -262,12 +262,6 @@ if (!empty($nid) && is_numeric($nid) && function_exists(\'_rpg_chat_set_room_use
   $handler->display->display_options['fields']['title']['label'] = 'Chatroom';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  /* Field: Content: Parent-locations */
-  $handler->display->display_options['fields']['field_parent']['id'] = 'field_parent';
-  $handler->display->display_options['fields']['field_parent']['table'] = 'field_data_field_parent';
-  $handler->display->display_options['fields']['field_parent']['field'] = 'field_parent';
-  $handler->display->display_options['fields']['field_parent']['label'] = 'Parent Room';
-  $handler->display->display_options['fields']['field_parent']['element_label_colon'] = FALSE;
   $handler->display->display_options['defaults']['sorts'] = FALSE;
   /* Sort criterion: Content: Title */
   $handler->display->display_options['sorts']['title']['id'] = 'title';
@@ -414,6 +408,10 @@ if (!empty($nid) && is_numeric($nid) && function_exists(\'_rpg_chat_set_room_use
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['row_options']['inline'] = array(
+    'title' => 'title',
+    'field_tag_realm' => 'field_tag_realm',
+  );
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['header'] = FALSE;
   /* Header: Global: Text area */
@@ -442,6 +440,15 @@ if (!empty($nid) && is_numeric($nid) && function_exists(\'_rpg_chat_set_room_use
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title']['hide_alter_empty'] = FALSE;
+  /* Field: Field: Realm */
+  $handler->display->display_options['fields']['field_tag_realm']['id'] = 'field_tag_realm';
+  $handler->display->display_options['fields']['field_tag_realm']['table'] = 'field_data_field_tag_realm';
+  $handler->display->display_options['fields']['field_tag_realm']['field'] = 'field_tag_realm';
+  $handler->display->display_options['fields']['field_tag_realm']['label'] = '';
+  $handler->display->display_options['fields']['field_tag_realm']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_tag_realm']['alter']['text'] = '([field_tag_realm])';
+  $handler->display->display_options['fields']['field_tag_realm']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_tag_realm']['type'] = 'taxonomy_term_reference_plain';
   $handler->display->display_options['defaults']['sorts'] = FALSE;
   /* Sort criterion: Content: Last comment time */
   $handler->display->display_options['sorts']['last_comment_timestamp']['id'] = 'last_comment_timestamp';
@@ -639,6 +646,10 @@ if (!empty($nid) && is_numeric($nid) && function_exists(\'_rpg_chat_set_room_use
   $handler->display->display_options['fields']['field_tag_realm']['id'] = 'field_tag_realm';
   $handler->display->display_options['fields']['field_tag_realm']['table'] = 'field_data_field_tag_realm';
   $handler->display->display_options['fields']['field_tag_realm']['field'] = 'field_tag_realm';
+  $handler->display->display_options['fields']['field_tag_realm']['label'] = '';
+  $handler->display->display_options['fields']['field_tag_realm']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_tag_realm']['alter']['text'] = '([field_tag_realm])';
+  $handler->display->display_options['fields']['field_tag_realm']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_tag_realm']['type'] = 'taxonomy_term_reference_plain';
   $handler->display->display_options['defaults']['sorts'] = FALSE;
   /* Sort criterion: Content: Last comment time */

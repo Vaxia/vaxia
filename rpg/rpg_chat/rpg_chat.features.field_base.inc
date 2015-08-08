@@ -10,49 +10,6 @@
 function rpg_chat_field_default_field_bases() {
   $field_bases = array();
 
-  // Exported field_base: 'field_children'
-  $field_bases['field_children'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_children',
-    'field_permissions' => array(
-      'type' => 0,
-    ),
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'nodereferrer',
-    'settings' => array(
-      'multiple' => 0,
-      'referrer_fields' => array(
-        'field_artwork' => 0,
-        'field_comment_character' => 0,
-        'field_current_character' => 0,
-        'field_items' => 0,
-        'field_npcs' => 0,
-        'field_parent' => 'field_parent',
-      ),
-      'referrer_nodes_per_page' => 0,
-      'referrer_order' => 'TITLE_ASC',
-      'referrer_pager_element' => 0,
-      'referrer_translations' => 0,
-      'referrer_types' => array(
-        'article' => 0,
-        'artwork' => 0,
-        'character_sheet' => 0,
-        'forum' => 0,
-        'items' => 0,
-        'npc' => 0,
-        'page' => 0,
-        'rpg_chatroom' => 'rpg_chatroom',
-      ),
-      'required' => FALSE,
-    ),
-    'translatable' => 0,
-    'type' => 'nodereferrer',
-  );
-
   // Exported field_base: 'field_is_personal_room'
   $field_bases['field_is_personal_room'] = array(
     'active' => 1,
@@ -128,44 +85,6 @@ function rpg_chat_field_default_field_bases() {
     ),
     'translatable' => 0,
     'type' => 'list_boolean',
-  );
-
-  // Exported field_base: 'field_parent'
-  $field_bases['field_parent'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_parent',
-    'field_permissions' => array(
-      'type' => 0,
-    ),
-    'indexes' => array(
-      'nid' => array(
-        0 => 'nid',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'node_reference',
-    'settings' => array(
-      'referenceable_types' => array(
-        'article' => 0,
-        'artwork' => 0,
-        'character_sheet' => 0,
-        'forum' => 0,
-        'items' => 0,
-        'npc' => 0,
-        'page' => 0,
-        'rpg_chatroom' => 'rpg_chatroom',
-      ),
-      'view' => array(
-        'args' => array(),
-        'display_name' => '',
-        'view_name' => '',
-      ),
-    ),
-    'translatable' => 0,
-    'type' => 'node_reference',
   );
 
   // Exported field_base: 'field_private_room'

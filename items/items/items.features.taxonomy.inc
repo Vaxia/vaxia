@@ -17,14 +17,6 @@ function items_taxonomy_default_vocabularies() {
       'module' => 'taxonomy',
       'weight' => 2,
     ),
-    'technology_languages' => array(
-      'name' => 'Technology Languages',
-      'machine_name' => 'technology_languages',
-      'description' => 'Technology Languages',
-      'hierarchy' => 0,
-      'module' => 'taxonomy',
-      'weight' => 0,
-    ),
     'weapon_category' => array(
       'name' => 'Weapon Category',
       'machine_name' => 'weapon_category',

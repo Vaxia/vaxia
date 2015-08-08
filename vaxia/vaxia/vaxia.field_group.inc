@@ -139,7 +139,8 @@ function vaxia_field_group_info() {
       2 => 'field_is_storyteller',
       3 => 'field_post_color',
       4 => 'field_background_color',
-      5 => 'title',
+      5 => 'field_associated_locations',
+      6 => 'title',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -191,7 +192,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Details',
-    'weight' => '2',
+    'weight' => '3',
     'children' => array(
       0 => 'field_age_app',
       1 => 'field_is_npc',
@@ -266,7 +267,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Items',
-    'weight' => '5',
+    'weight' => '6',
     'children' => array(
       0 => 'field_economy',
       1 => 'field_items',
@@ -324,7 +325,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Notes',
-    'weight' => '6',
+    'weight' => '7',
     'children' => array(
       0 => 'field_player_notes',
       1 => 'field_character_goals',
@@ -383,7 +384,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Personal',
-    'weight' => '0',
+    'weight' => '1',
     'children' => array(
       0 => 'field_background',
       1 => 'field_description',
@@ -448,7 +449,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Public information',
-    'weight' => '1',
+    'weight' => '2',
     'children' => array(
       0 => 'field_public_information',
       1 => 'field_sh_public_information',
@@ -503,12 +504,11 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'SH Notes',
-    'weight' => '7',
+    'weight' => '8',
     'children' => array(
       0 => 'field_sh_notes',
       1 => 'field_sh_private_notes',
-      2 => 'field_skill_review',
-      3 => 'field_item_shop',
+      2 => 'field_item_shop',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -561,7 +561,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Skills',
-    'weight' => '4',
+    'weight' => '5',
     'children' => array(
       0 => 'field_skill',
       1 => 'field_languages',
@@ -618,7 +618,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Stats',
-    'weight' => '3',
+    'weight' => '4',
     'children' => array(
       0 => 'field_agility',
       1 => 'field_appearance',

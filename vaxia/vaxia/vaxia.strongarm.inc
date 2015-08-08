@@ -120,13 +120,13 @@ function vaxia_strongarm() {
       'display' => array(
         'workflow_current_state' => array(
           'default' => array(
-            'weight' => '12',
+            'weight' => '13',
             'visible' => FALSE,
           ),
         ),
         'workflow' => array(
           'default' => array(
-            'weight' => '13',
+            'weight' => '14',
             'visible' => FALSE,
           ),
         ),

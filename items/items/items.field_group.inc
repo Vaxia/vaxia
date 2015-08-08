@@ -864,60 +864,6 @@ function items_field_group_info() {
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
-  $field_group->identifier = 'group_tech_lang|field_collection_item|field_skill|default';
-  $field_group->group_name = 'group_tech_lang';
-  $field_group->entity_type = 'field_collection_item';
-  $field_group->bundle = 'field_skill';
-  $field_group->mode = 'default';
-  $field_group->parent_name = '';
-  $field_group->data = array(
-    'label' => 'Tech Languages',
-    'weight' => '12',
-    'children' => array(
-      0 => 'field_tech_languages',
-    ),
-    'format_type' => 'fieldset',
-    'format_settings' => array(
-      'formatter' => 'collapsible',
-      'instance_settings' => array(
-        'description' => '',
-        'classes' => 'group-tech-lang field-group-fieldset',
-      ),
-    ),
-  );
-  $export['group_tech_lang|field_collection_item|field_skill|default'] = $field_group;
-
-  $field_group = new stdClass();
-  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
-  $field_group->api_version = 1;
-  $field_group->identifier = 'group_tech_lang|field_collection_item|field_skill|form';
-  $field_group->group_name = 'group_tech_lang';
-  $field_group->entity_type = 'field_collection_item';
-  $field_group->bundle = 'field_skill';
-  $field_group->mode = 'form';
-  $field_group->parent_name = '';
-  $field_group->data = array(
-    'label' => 'Tech languages',
-    'weight' => '4',
-    'children' => array(
-      0 => 'field_tech_languages',
-    ),
-    'format_type' => 'fieldset',
-    'format_settings' => array(
-      'label' => 'Tech languages',
-      'instance_settings' => array(
-        'required_fields' => 1,
-        'classes' => 'group-tech-lang field-group-fieldset',
-        'description' => 'If this is a Sirian tech skill, select two technical languages to be familiar with. Skills start with two languages by default.',
-      ),
-      'formatter' => 'collapsed',
-    ),
-  );
-  $export['group_tech_lang|field_collection_item|field_skill|form'] = $field_group;
-
-  $field_group = new stdClass();
-  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
-  $field_group->api_version = 1;
   $field_group->identifier = 'group_uses|node|items|artwork';
   $field_group->group_name = 'group_uses';
   $field_group->entity_type = 'node';
