@@ -62,8 +62,9 @@
  * @see template_process()
  * @see theme_comment()
  */
+$comment_background_color = !empty($comment_background_color) ? $comment_background_color : '';
 ?>
-<article class="<?php print $classes; ?> clearfix" <?php print $attributes; ?> style="background-color:<?php print $comment_background_color?>">
+<article class="<?php print $classes; ?> clearfix" <?php print $attributes; ?> style="background-color:<?php print $comment_background_color; ?>">
 
   <header>
     <p class="submitted">
