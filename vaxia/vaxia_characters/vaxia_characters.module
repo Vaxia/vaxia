@@ -126,6 +126,138 @@ function vaxia_characters_node_view($node, $view_mode, $langcode) {
 }
 
 /**
+ * Implelents node_form_alter for nodes.
+ * Character sheet, field level controls for players and moderators according to character sheet defs.
+ */
+function vaxia_characters_form_node_form_alter(&$form, &$form_state, $form_id) {
+  global $user;
+  $node = $form['#node'];
+  $lang = $form['language']['#value'];
+
+  // Only on a character sheet that isn't yet enabled.
+  if (_character_sheet_is_enabled($node) && !_character_sheet_is_playable($node)) {
+
+    // Hide these fields for new characters.
+    $disabled = array('field_economy', 'field_npcs', 'field_items', 'field_property', 'field_achivements', 'field_skill_review');
+    foreach ($disabled as $field_name) {
+      $form[$field_name]['#access'] = FALSE;
+      $form[$field_name][$lang][0]['#access'] = FALSE;
+      if (isset($form[$field_name][$lang][0]['#default_value'])) {
+        $form[$field_name][$lang][0]['#value'] = $form[$field_name][$lang][0]['#default_value'];
+      }
+      if (isset($form[$field_name][$lang]['add_more'])) {
+        $form[$field_name][$lang]['add_more']['#access'] = FALSE;
+      }
+    }
+
+    // If the owner, and new, and user isn't an SH sort.
+    if ($user->uid == $node->uid && !user_access('create NPCs') && !user_access('create open NPCs')) {
+      drupal_set_message(t('This character is currently not playable.'));
+      // Stat option changes.
+      $reduced = array('field_life', 'field_endurance', 'field_strength', 'field_dexterity',
+        'field_intelligence', 'field_spirituality', 'field_charisma');
+      $low = variable_get('vaxia_pc_stat_min', 10);
+      $high = variable_get('vaxia_pc_stat_max', 40);
+      $options = array_combine(range($low, $high), range($low, $high));
+      foreach ($reduced as $field_name) {
+        if (isset($form[$field_name][$lang][0]['value']['#type'])
+          && $form[$field_name][$lang][0]['value']['#type'] == 'textfield') {
+          $form[$field_name][$lang][0]['value']['#type'] = 'select';
+          $form[$field_name][$lang][0]['value']['#size'] = 1;
+          $form[$field_name][$lang][0]['value']['#options'] = $options;
+        }
+      }
+      // Skill option changes.
+      $low = variable_get('vaxia_pc_skill_min', 5);
+      $high = variable_get('vaxia_pc_skill_max', 40);
+      $vals = range($low, $high);
+      array_unshift($vals, 0);
+      $options = array_combine($vals, $vals);
+      foreach ($form['field_skill'][$lang] as $delta => $field) {
+        if (is_array($field) && isset($form['field_skill'][$lang][$delta]['field_skill_value'][$lang][0]['value']['#type'])
+          && $form['field_skill'][$lang][$delta]['field_skill_value'][$lang][0]['value']['#type'] == 'textfield') {
+          $form['field_skill'][$lang][$delta]['field_skill_value'][$lang][0]['value']['#type'] = 'select';
+          $form['field_skill'][$lang][$delta]['field_skill_value'][$lang][0]['value']['#size'] = 1;
+          $form['field_skill'][$lang][$delta]['field_skill_value'][$lang][0]['value']['#options'] = $options;
+        }
+      }
+      // Other and Condition change.
+      $min_hxp = variable_get('vaxia_other_min_hxp', 1);
+      $user = user_load($user->uid);
+      $hxp = $user->field_xp_over_time['und'][0]['value'];
+      if ( $hxp < $min_hxp || (function_exists('shadowban_is_banned_user') && shadowban_is_banned_user($user)) ) {
+          $options = $form['field_race'][$lang]['#options'];
+          unset($form['field_race'][$lang]['#options']['other']);
+          $form['field_conditions']['#disabled'] = TRUE;
+      }
+    } // End if owner, new and not an SH.
+
+    // If in submit / review mode then really remove access.
+    if ($user->uid == $node->uid && isset($node->workflow_state_name) && $node->workflow_state_name == 'submitted') {
+      drupal_set_message(t('This character is currently in submit and cannot be edited by the owner.'));
+      $form['#disabled'] = TRUE;
+    }
+
+    // If has xp, and in draft - then disable. We only want to see you submit this character, it's been pulled back from cold storage.
+    if (!empty($node->nid)) {
+      $has_xp = _character_sheet_get_xp($node->nid, 'xp');
+      if ($user->uid == $node->uid && isset($node->workflow_state_name) && $node->workflow_state_name == 'draft' && $has_xp != 0) {
+        drupal_set_message(t('This character is currently in draft, but has earned XP and cannot be edited by the owner.'));
+        $form['#disabled'] = TRUE;
+      }
+    }
+  } // End if not enabled to play.
+
+  // Only do this if this is a character sheet in play.
+  if (_character_sheet_is_enabled($node) && _character_sheet_is_playable($node)) {
+    // Remove skill's remove button and add more button IIF owner viewing playable.
+    if ($node->uid == $user->uid) {
+      unset($form['field_skill'][$lang]['add_more']);
+      foreach ($form['field_skill'][$lang] as $delta => $field) {
+        if (is_array($field) && isset($form['field_skill'][$lang][$delta]['remove_button'])) {
+          unset($form['field_skill'][$lang][$delta]['remove_button']);
+        }
+        if (is_array($field) && !isset($form['field_skill'][$lang][$delta]['field_skill_name'][$lang][0]['value']['#default_value'])) {
+          unset($form['field_skill'][$lang][$delta]);
+        } 
+      }
+    }
+  } // End if playable.
+
+  // Do this for all char forms.
+  // Disable the private note if you can't edit it. Can't edit your own.
+  if (!($user->uid == $node->uid || user_access('edit SH notes'))) {
+    $form['field_sh_notes'][$lang][0]['#disabled'] = TRUE;
+    if (isset($form['field_sh_notes'][$lang][0]['#default_value'])) {
+      $form['field_sh_notes'][$lang][0]['#value'] = $form['field_sh_notes'][$lang][0]['#default_value'];
+    }
+  }
+  // Hide the private note if you can't edit it. Can't edit your own.
+  if (!($user->uid != $node->uid && user_access('edit private SH notes'))) {
+    $form['field_sh_private_notes'][$lang][0]['#access'] = FALSE;
+    if (isset($form['field_sh_private_notes'][$lang][0]['#default_value'])) {
+      $form['field_sh_private_notes'][$lang][0]['#value'] = $form['field_sh_private_notes'][$lang][0]['#default_value'];
+    }
+  }
+  // Remove the NPC / ONPC buttons if the user is not permissioned.
+  $sh_char = _vaxia_get_SH_characters($node->uid);
+  if (!user_access('create SHs') || !empty($sh_char)) {
+    $form['field_is_storyteller'][$lang]['#access'] = FALSE;
+  }
+  if (!user_access('create NPCs')) {
+    $form['field_is_npc'][$lang]['#access'] = FALSE;
+    $form['field_is_npc'][$lang]['#value'] =
+      isset($form['field_is_npc'][$lang]['#default_value']) ? $form['field_is_npc'][$lang]['#default_value'] : FALSE;
+  }
+  if (!user_access('create open NPCs')) {
+    $form['field_is_open_npc'][$lang]['#access'] = FALSE;
+    $form['field_is_open_npc'][$lang]['#value'] =
+      isset($form['field_is_open_npc'][$lang]['#default_value']) ? $form['field_is_open_npc'][$lang]['#default_value'] : FALSE;
+  }
+
+}
+
+/**
  * Helper function, is storyhost
  */
 function _vaxia_characters_is_sh_character($node) {
