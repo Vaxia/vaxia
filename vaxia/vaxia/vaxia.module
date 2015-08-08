@@ -358,7 +358,7 @@ function vaxia_process_comment(&$variables) {
   }
 
   // Check for character type only on RPG type nodes. (and do some other work as well on RPG chat nodes)
-  if (_rpg_chat_is_enabled($variables['node']->type)) {
+  if (!empty($variables['node']) && !empty($variables['node']->type) && _rpg_chat_is_enabled($variables['node']->type)) {
     // Redo the submitted field for RPG chatrooms only.
     $variables['submitted'] = t('!username </br> !datetime',
       array('!username' => $variables['author'], '!datetime' => $variables['created']));
