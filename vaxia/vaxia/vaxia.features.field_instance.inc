@@ -1662,55 +1662,6 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_is_open_npc'
-  $field_instances['node-character_sheet-field_is_open_npc'] = array(
-    'bundle' => 'character_sheet',
-    'default_value' => array(
-      0 => array(
-        'value' => 0,
-      ),
-    ),
-    'deleted' => 0,
-    'description' => 'Check this box if the character is intended to be an openly available NPC.',
-    'display' => array(
-      'default' => array(
-        'label' => 'inline',
-        'module' => 'list',
-        'settings' => array(),
-        'type' => 'list_default',
-        'weight' => 5,
-      ),
-      'question' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_is_open_npc',
-    'label' => 'Open NPC',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'options',
-      'settings' => array(
-        'display_label' => 1,
-      ),
-      'type' => 'options_onoff',
-      'weight' => 6,
-    ),
-  );
-
   // Exported field_instance: 'node-character_sheet-field_is_storyteller'
   $field_instances['node-character_sheet-field_is_storyteller'] = array(
     'bundle' => 'character_sheet',
@@ -3493,7 +3444,6 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
   t('Character Goals');
   t('Charisma');
   t('Check this box if the character is intended to be an NPC.');
-  t('Check this box if the character is intended to be an openly available NPC.');
   t('Conditions');
   t('Constitution');
   t('Contributes to Agility and Finesse.');
@@ -3540,7 +3490,6 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
   t('NPC');
   t('Name');
   t('Occupation');
-  t('Open NPC');
   t('Other Species');
   t('Permissions');
   t('Personal room');

@@ -711,34 +711,6 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'list_boolean',
   );
 
-  // Exported field_base: 'field_is_open_npc'
-  $field_bases['field_is_open_npc'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_is_open_npc',
-    'field_permissions' => array(
-      'type' => 1,
-    ),
-    'indexes' => array(
-      'value' => array(
-        0 => 'value',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'list',
-    'settings' => array(
-      'allowed_values' => array(
-        0 => 'No',
-        1 => 'Yes',
-      ),
-      'allowed_values_function' => '',
-    ),
-    'translatable' => 0,
-    'type' => 'list_boolean',
-  );
-
   // Exported field_base: 'field_is_storyteller'
   $field_bases['field_is_storyteller'] = array(
     'active' => 1,

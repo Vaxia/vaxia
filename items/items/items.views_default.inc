@@ -1002,7 +1002,7 @@ function items_views_default_views() {
   $handler->display->display_options['fields']['field_is_npc']['alter']['text'] = 'NPC';
   $handler->display->display_options['fields']['field_is_npc']['empty'] = 'Not an NPC';
   $handler->display->display_options['fields']['field_is_npc']['type'] = 'list_key';
-  /* Field: Content: Open NPC */
+  /* Field: Broken/missing handler */
   $handler->display->display_options['fields']['field_is_open_npc']['id'] = 'field_is_open_npc';
   $handler->display->display_options['fields']['field_is_open_npc']['table'] = 'field_data_field_is_open_npc';
   $handler->display->display_options['fields']['field_is_open_npc']['field'] = 'field_is_open_npc';
@@ -1010,7 +1010,6 @@ function items_views_default_views() {
   $handler->display->display_options['fields']['field_is_open_npc']['alter']['text'] = 'Open NPC';
   $handler->display->display_options['fields']['field_is_open_npc']['empty'] = 'Not an open NPC';
   $handler->display->display_options['fields']['field_is_open_npc']['empty_zero'] = TRUE;
-  $handler->display->display_options['fields']['field_is_open_npc']['type'] = 'list_key';
   /* Field: Content: Post date */
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'node';
@@ -1196,7 +1195,7 @@ function items_views_default_views() {
   $handler->display->display_options['filters']['field_strength_value']['operator'] = '>';
   $handler->display->display_options['filters']['field_strength_value']['value']['value'] = '70';
   $handler->display->display_options['filters']['field_strength_value']['group'] = 2;
-  /* Filter criterion: Content: Open NPC (field_is_open_npc) */
+  /* Filter criterion: Broken/missing handler */
   $handler->display->display_options['filters']['field_is_open_npc_value']['id'] = 'field_is_open_npc_value';
   $handler->display->display_options['filters']['field_is_open_npc_value']['table'] = 'field_data_field_is_open_npc';
   $handler->display->display_options['filters']['field_is_open_npc_value']['field'] = 'field_is_open_npc_value';
