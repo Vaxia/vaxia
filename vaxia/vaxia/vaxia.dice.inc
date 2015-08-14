@@ -123,10 +123,8 @@ function _vaxia_dice_roller_submit_rolls($submitted_rolls, $character, $lang) {
     $commands = array();
     foreach ($rolls as $delta => $roll) {
       // Double check the roll info.s
-      $roll['stat'] = ($roll['stat'] > 0) ? trim($roll['stat']) : 0;
-      $roll['skill'] = ($roll['skill'] > 0) ? trim($roll['skill']) : 0;
-     // $roll['number'] = (is_int($roll['number']) && $roll['number'] > 0) ? $roll['number'] : 1;
-     // $roll['size'] = (is_int($roll['size']) && $roll['size'] > 0) ? $roll['size'] : 1;
+      $roll['stat'] = ($roll['stat'] > 0) ? (int) trim($roll['stat']) : 0;
+      $roll['skill'] = ($roll['skill'] > 0) ? (int) trim($roll['skill']) : 0;
       // Set roll.
       $roll['might'] = $roll['stat'] + $roll['skill'];
       $commands['commands'][] = $roll['number'] . 'd' . $roll['size'] . '+' . $roll['might'];
@@ -160,6 +158,9 @@ function _vaxia_dice_roller_prep_rolls($rolls, $character, $lang) {
     // Get skill value from the character if it exists.
     if (!empty($roll['skill'])) {
       $skill_details = field_collection_item_load($roll['skill']);
+      // Update the skill after trying to load it for review.
+      $roll['skill'] = 0;
+      // Process the skill if we got one.
       if (!empty($skill_details->field_skill_value[$lang][0]['value'])) {
         $value = !empty($skill_details->field_skill_value[$lang][0]['value']) ? $skill_details->field_skill_value[$lang][0]['value'] : 0;
         $name = !empty($skill_details->field_skill_name[$lang][0]['value']) ? $skill_details->field_skill_name[$lang][0]['value'] : t('Unk. skill');
