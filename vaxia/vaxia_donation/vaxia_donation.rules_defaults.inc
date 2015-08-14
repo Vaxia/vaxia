@@ -10,10 +10,10 @@
 function vaxia_donation_default_rules_configuration() {
   $items = array();
   $items['rules_vaxia_donation_recieved'] = entity_import('rules_config', '{ "rules_vaxia_donation_recieved" : {
-      "LABEL" : "Donation recieved - completed",
+      "LABEL" : "Vaxia Donations - Donation completed",
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
-      "TAGS" : [ "Vaxia donations" ],
+      "TAGS" : [ "Vaxia Donations" ],
       "REQUIRES" : [ "payment", "rules", "php" ],
       "ON" : { "payment_status_change" : [] },
       "IF" : [

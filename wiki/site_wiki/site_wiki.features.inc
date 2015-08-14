@@ -87,12 +87,12 @@ function site_wiki_workflow_default_workflows() {
         'target_state' => 'locked',
       ),
       2 => array(
-        'roles' => 'administrator',
+        'roles' => 'administrator,storyteller,lead',
         'state' => 'open',
         'target_state' => 'locked',
       ),
       3 => array(
-        'roles' => 'administrator',
+        'roles' => 'administrator,lead',
         'state' => 'locked',
         'target_state' => 'open',
       ),

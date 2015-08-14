@@ -631,48 +631,6 @@ function storyhosts_views_default_views() {
     28 => 0,
   );
   $handler->display->display_options['filters']['field_is_npc_value']['expose']['reduce'] = TRUE;
-  /* Filter criterion: Content: Open NPC (field_is_open_npc) */
-  $handler->display->display_options['filters']['field_is_open_npc_value']['id'] = 'field_is_open_npc_value';
-  $handler->display->display_options['filters']['field_is_open_npc_value']['table'] = 'field_data_field_is_open_npc';
-  $handler->display->display_options['filters']['field_is_open_npc_value']['field'] = 'field_is_open_npc_value';
-  $handler->display->display_options['filters']['field_is_open_npc_value']['relationship'] = 'field_skill_node';
-  $handler->display->display_options['filters']['field_is_open_npc_value']['value'] = array(
-    0 => '0',
-    1 => '1',
-  );
-  $handler->display->display_options['filters']['field_is_open_npc_value']['group'] = 1;
-  $handler->display->display_options['filters']['field_is_open_npc_value']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['field_is_open_npc_value']['expose']['operator_id'] = 'field_is_open_npc_value_op';
-  $handler->display->display_options['filters']['field_is_open_npc_value']['expose']['label'] = 'Is Open NPC?';
-  $handler->display->display_options['filters']['field_is_open_npc_value']['expose']['operator'] = 'field_is_open_npc_value_op';
-  $handler->display->display_options['filters']['field_is_open_npc_value']['expose']['identifier'] = 'field_is_open_npc_value';
-  $handler->display->display_options['filters']['field_is_open_npc_value']['expose']['remember'] = TRUE;
-  $handler->display->display_options['filters']['field_is_open_npc_value']['expose']['multiple'] = TRUE;
-  $handler->display->display_options['filters']['field_is_open_npc_value']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    8 => 0,
-    19 => 0,
-    12 => 0,
-    13 => 0,
-    10 => 0,
-    17 => 0,
-    15 => 0,
-    9 => 0,
-    20 => 0,
-    14 => 0,
-    25 => 0,
-    21 => 0,
-    3 => 0,
-    11 => 0,
-    22 => 0,
-    23 => 0,
-    24 => 0,
-    26 => 0,
-    27 => 0,
-    28 => 0,
-  );
-  $handler->display->display_options['filters']['field_is_open_npc_value']['expose']['reduce'] = TRUE;
   /* Filter criterion: Content: Storyhost (field_is_storyteller) */
   $handler->display->display_options['filters']['field_is_storyteller_value']['id'] = 'field_is_storyteller_value';
   $handler->display->display_options['filters']['field_is_storyteller_value']['table'] = 'field_data_field_is_storyteller';

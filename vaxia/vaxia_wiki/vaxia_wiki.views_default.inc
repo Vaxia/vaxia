@@ -2399,10 +2399,6 @@ Search for an NPC.';
   $handler->display->display_options['sorts']['title']['table'] = 'node';
   $handler->display->display_options['sorts']['title']['field'] = 'title';
   $handler->display->display_options['sorts']['title']['expose']['label'] = 'Title';
-  $handler->display->display_options['filter_groups']['groups'] = array(
-    1 => 'AND',
-    2 => 'OR',
-  );
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
@@ -2422,6 +2418,14 @@ Search for an NPC.';
     'character_sheet' => 'character_sheet',
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
+  /* Filter criterion: Content: NPC (field_is_npc) */
+  $handler->display->display_options['filters']['field_is_npc_value']['id'] = 'field_is_npc_value';
+  $handler->display->display_options['filters']['field_is_npc_value']['table'] = 'field_data_field_is_npc';
+  $handler->display->display_options['filters']['field_is_npc_value']['field'] = 'field_is_npc_value';
+  $handler->display->display_options['filters']['field_is_npc_value']['value'] = array(
+    1 => '1',
+  );
+  $handler->display->display_options['filters']['field_is_npc_value']['group'] = 1;
   /* Filter criterion: Workflow: Current state */
   $handler->display->display_options['filters']['sid']['id'] = 'sid';
   $handler->display->display_options['filters']['sid']['table'] = 'workflow_node';
@@ -2458,22 +2462,6 @@ Search for an NPC.';
     23 => 0,
   );
   $handler->display->display_options['filters']['sid']['expose']['reduce'] = TRUE;
-  /* Filter criterion: Content: Open NPC (field_is_open_npc) */
-  $handler->display->display_options['filters']['field_is_open_npc_value']['id'] = 'field_is_open_npc_value';
-  $handler->display->display_options['filters']['field_is_open_npc_value']['table'] = 'field_data_field_is_open_npc';
-  $handler->display->display_options['filters']['field_is_open_npc_value']['field'] = 'field_is_open_npc_value';
-  $handler->display->display_options['filters']['field_is_open_npc_value']['value'] = array(
-    1 => '1',
-  );
-  $handler->display->display_options['filters']['field_is_open_npc_value']['group'] = 2;
-  /* Filter criterion: Content: NPC (field_is_npc) */
-  $handler->display->display_options['filters']['field_is_npc_value']['id'] = 'field_is_npc_value';
-  $handler->display->display_options['filters']['field_is_npc_value']['table'] = 'field_data_field_is_npc';
-  $handler->display->display_options['filters']['field_is_npc_value']['field'] = 'field_is_npc_value';
-  $handler->display->display_options['filters']['field_is_npc_value']['value'] = array(
-    1 => '1',
-  );
-  $handler->display->display_options['filters']['field_is_npc_value']['group'] = 2;
   /* Filter criterion: Content: Title */
   $handler->display->display_options['filters']['title']['id'] = 'title';
   $handler->display->display_options['filters']['title']['table'] = 'node';
@@ -2549,6 +2537,7 @@ Search for an NPC.';
   $handler->display->display_options['filters']['field_background_value']['table'] = 'field_data_field_background';
   $handler->display->display_options['filters']['field_background_value']['field'] = 'field_background_value';
   $handler->display->display_options['filters']['field_background_value']['operator'] = 'contains';
+  $handler->display->display_options['filters']['field_background_value']['group'] = 1;
   $handler->display->display_options['filters']['field_background_value']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_background_value']['expose']['operator_id'] = 'field_background_value_op';
   $handler->display->display_options['filters']['field_background_value']['expose']['label'] = 'Background';

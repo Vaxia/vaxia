@@ -15,7 +15,6 @@ dependencies[] = workflow_rules
 features[ctools][] = views:views_default:3.0
 features[features_api][] = api:2
 features[rules_config][] = rules_make_user_eligible_for_sh_on_xp_gain
-features[rules_config][] = rules_remove_starvation_role_from_sh
 features[rules_config][] = rules_set_sh_character_on_user
 features[views_view][] = character_goals
 features[views_view][] = skill_inventory

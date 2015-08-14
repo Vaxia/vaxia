@@ -22,7 +22,7 @@ function npcs_views_default_views() {
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'My character NPCs';
+  $handler->display->display_options['title'] = 'NPCs';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'role';
   $handler->display->display_options['access']['role'] = array(
@@ -192,9 +192,9 @@ function npcs_views_default_views() {
     4 => 0,
   );
 
-  /* Display: My NPCs */
-  $handler = $view->new_display('page', 'My NPCs', 'npcs');
-  $handler->display->display_options['display_description'] = 'My NPCs';
+  /* Display: NPCs */
+  $handler = $view->new_display('page', 'NPCs', 'npcs');
+  $handler->display->display_options['display_description'] = 'NPCs';
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: Titles */
@@ -260,13 +260,6 @@ function npcs_views_default_views() {
     'character_sheet' => 'character_sheet',
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
-  /* Filter criterion: User: Current */
-  $handler->display->display_options['filters']['uid_current']['id'] = 'uid_current';
-  $handler->display->display_options['filters']['uid_current']['table'] = 'users';
-  $handler->display->display_options['filters']['uid_current']['field'] = 'uid_current';
-  $handler->display->display_options['filters']['uid_current']['relationship'] = 'uid';
-  $handler->display->display_options['filters']['uid_current']['value'] = '1';
-  $handler->display->display_options['filters']['uid_current']['group'] = 1;
   /* Filter criterion: Content: NPC (field_is_npc) */
   $handler->display->display_options['filters']['field_is_npc_value']['id'] = 'field_is_npc_value';
   $handler->display->display_options['filters']['field_is_npc_value']['table'] = 'field_data_field_is_npc';
@@ -309,129 +302,10 @@ function npcs_views_default_views() {
     11 => 0,
   );
   $handler->display->display_options['filters']['sid']['expose']['reduce'] = TRUE;
-  $handler->display->display_options['path'] = 'character-sheets/my-npcs';
+  $handler->display->display_options['path'] = 'character-sheets/npcs';
   $handler->display->display_options['menu']['type'] = 'tab';
-  $handler->display->display_options['menu']['title'] = 'My NPCs';
-  $handler->display->display_options['menu']['description'] = 'My NPCs';
-  $handler->display->display_options['menu']['weight'] = '1';
-  $handler->display->display_options['menu']['name'] = 'menu-vaxia';
-  $handler->display->display_options['menu']['context'] = 0;
-  $handler->display->display_options['menu']['context_only_inline'] = 0;
-
-  /* Display: Open NPCs */
-  $handler = $view->new_display('page', 'Open NPCs', 'open_npcs');
-  $handler->display->display_options['display_description'] = 'Open NPCs';
-  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
-  $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Content: Titles */
-  $handler->display->display_options['fields']['field_titles']['id'] = 'field_titles';
-  $handler->display->display_options['fields']['field_titles']['table'] = 'field_data_field_titles';
-  $handler->display->display_options['fields']['field_titles']['field'] = 'field_titles';
-  /* Field: Content: Title */
-  $handler->display->display_options['fields']['title']['id'] = 'title';
-  $handler->display->display_options['fields']['title']['table'] = 'node';
-  $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = 'NPC';
-  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
-  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
-  /* Field: Content: Last Name */
-  $handler->display->display_options['fields']['field_last_name']['id'] = 'field_last_name';
-  $handler->display->display_options['fields']['field_last_name']['table'] = 'field_data_field_last_name';
-  $handler->display->display_options['fields']['field_last_name']['field'] = 'field_last_name';
-  /* Field: User: Name */
-  $handler->display->display_options['fields']['name']['id'] = 'name';
-  $handler->display->display_options['fields']['name']['table'] = 'users';
-  $handler->display->display_options['fields']['name']['field'] = 'name';
-  $handler->display->display_options['fields']['name']['relationship'] = 'uid';
-  $handler->display->display_options['fields']['name']['label'] = 'Player';
-  /* Field: Content: Post date */
-  $handler->display->display_options['fields']['created']['id'] = 'created';
-  $handler->display->display_options['fields']['created']['table'] = 'node';
-  $handler->display->display_options['fields']['created']['field'] = 'created';
-  $handler->display->display_options['fields']['created']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['created']['date_format'] = 'long';
-  /* Field: Content: Updated date */
-  $handler->display->display_options['fields']['changed']['id'] = 'changed';
-  $handler->display->display_options['fields']['changed']['table'] = 'node';
-  $handler->display->display_options['fields']['changed']['field'] = 'changed';
-  $handler->display->display_options['fields']['changed']['label'] = 'Last updated';
-  $handler->display->display_options['fields']['changed']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['changed']['date_format'] = 'long';
-  /* Field: Content: Edit link */
-  $handler->display->display_options['fields']['edit_node']['id'] = 'edit_node';
-  $handler->display->display_options['fields']['edit_node']['table'] = 'views_entity_node';
-  $handler->display->display_options['fields']['edit_node']['field'] = 'edit_node';
-  $handler->display->display_options['fields']['edit_node']['label'] = 'edit';
-  $handler->display->display_options['fields']['edit_node']['element_label_colon'] = FALSE;
-  /* Field: Workflow: Current state */
-  $handler->display->display_options['fields']['sid']['id'] = 'sid';
-  $handler->display->display_options['fields']['sid']['table'] = 'workflow_node';
-  $handler->display->display_options['fields']['sid']['field'] = 'sid';
-  $handler->display->display_options['fields']['sid']['label'] = 'State';
-  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
-  $handler->display->display_options['filter_groups']['operator'] = 'OR';
-  $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Content: Type */
-  $handler->display->display_options['filters']['type_1']['id'] = 'type_1';
-  $handler->display->display_options['filters']['type_1']['table'] = 'node';
-  $handler->display->display_options['filters']['type_1']['field'] = 'type';
-  $handler->display->display_options['filters']['type_1']['value'] = array(
-    'character_sheet' => 'character_sheet',
-  );
-  $handler->display->display_options['filters']['type_1']['group'] = 1;
-  /* Filter criterion: Content: Open NPC (field_is_open_npc) */
-  $handler->display->display_options['filters']['field_is_open_npc_value']['id'] = 'field_is_open_npc_value';
-  $handler->display->display_options['filters']['field_is_open_npc_value']['table'] = 'field_data_field_is_open_npc';
-  $handler->display->display_options['filters']['field_is_open_npc_value']['field'] = 'field_is_open_npc_value';
-  $handler->display->display_options['filters']['field_is_open_npc_value']['value'] = array(
-    1 => '1',
-  );
-  $handler->display->display_options['filters']['field_is_open_npc_value']['group'] = 1;
-  /* Filter criterion: Content: Published */
-  $handler->display->display_options['filters']['status_1']['id'] = 'status_1';
-  $handler->display->display_options['filters']['status_1']['table'] = 'node';
-  $handler->display->display_options['filters']['status_1']['field'] = 'status';
-  $handler->display->display_options['filters']['status_1']['value'] = '1';
-  $handler->display->display_options['filters']['status_1']['group'] = 1;
-  /* Filter criterion: Workflow: Current state */
-  $handler->display->display_options['filters']['sid']['id'] = 'sid';
-  $handler->display->display_options['filters']['sid']['table'] = 'workflow_node';
-  $handler->display->display_options['filters']['sid']['field'] = 'sid';
-  $handler->display->display_options['filters']['sid']['value'] = array(
-    2 => '2',
-    3 => '3',
-    4 => '4',
-    5 => '5',
-    6 => '6',
-  );
-  $handler->display->display_options['filters']['sid']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['sid']['expose']['operator_id'] = 'sid_op';
-  $handler->display->display_options['filters']['sid']['expose']['label'] = 'Current state';
-  $handler->display->display_options['filters']['sid']['expose']['operator'] = 'sid_op';
-  $handler->display->display_options['filters']['sid']['expose']['identifier'] = 'sid';
-  $handler->display->display_options['filters']['sid']['expose']['remember'] = TRUE;
-  $handler->display->display_options['filters']['sid']['expose']['multiple'] = TRUE;
-  $handler->display->display_options['filters']['sid']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    12 => 0,
-    8 => 0,
-    13 => 0,
-    10 => 0,
-    17 => 0,
-    15 => 0,
-    9 => 0,
-    14 => 0,
-    4 => 0,
-    3 => 0,
-    11 => 0,
-  );
-  $handler->display->display_options['filters']['sid']['expose']['reduce'] = TRUE;
-  $handler->display->display_options['path'] = 'character-sheets/open-npcs';
-  $handler->display->display_options['menu']['type'] = 'tab';
-  $handler->display->display_options['menu']['title'] = 'Open NPCs';
-  $handler->display->display_options['menu']['description'] = 'Open NPCs';
+  $handler->display->display_options['menu']['title'] = 'NPCs';
+  $handler->display->display_options['menu']['description'] = 'NPCs';
   $handler->display->display_options['menu']['weight'] = '1';
   $handler->display->display_options['menu']['name'] = 'menu-vaxia';
   $handler->display->display_options['menu']['context'] = 0;
@@ -575,15 +449,6 @@ function npcs_views_default_views() {
   $handler->display->display_options['fields']['name']['field'] = 'name';
   $handler->display->display_options['fields']['name']['relationship'] = 'uid';
   $handler->display->display_options['fields']['name']['label'] = 'Player';
-  /* Field: Content: Open NPC */
-  $handler->display->display_options['fields']['field_is_open_npc']['id'] = 'field_is_open_npc';
-  $handler->display->display_options['fields']['field_is_open_npc']['table'] = 'field_data_field_is_open_npc';
-  $handler->display->display_options['fields']['field_is_open_npc']['field'] = 'field_is_open_npc';
-  $handler->display->display_options['fields']['field_is_open_npc']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['field_is_open_npc']['alter']['text'] = 'Open NPC';
-  $handler->display->display_options['fields']['field_is_open_npc']['empty'] = 'Not an open NPC';
-  $handler->display->display_options['fields']['field_is_open_npc']['empty_zero'] = TRUE;
-  $handler->display->display_options['fields']['field_is_open_npc']['type'] = 'list_key';
   /* Field: Content: Post date */
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'node';
@@ -906,10 +771,6 @@ function npcs_views_default_views() {
   $handler->display->display_options['header']['area']['content'] = 'These are NPCs that require additional [color=red]OVERSIGHT[/color]. These Items either have a stat over 70, or a skill over 70, or both. Please keep use of these powerful NPCs to a reasonable rate. At any point these NPCs may be subject to further review due to power levels.';
   $handler->display->display_options['header']['area']['format'] = 'plain_text';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
-  $handler->display->display_options['filter_groups']['groups'] = array(
-    1 => 'AND',
-    2 => 'OR',
-  );
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
@@ -926,6 +787,22 @@ function npcs_views_default_views() {
     'character_sheet' => 'character_sheet',
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
+  /* Filter criterion: Content: NPC (field_is_npc) */
+  $handler->display->display_options['filters']['field_is_npc_value']['id'] = 'field_is_npc_value';
+  $handler->display->display_options['filters']['field_is_npc_value']['table'] = 'field_data_field_is_npc';
+  $handler->display->display_options['filters']['field_is_npc_value']['field'] = 'field_is_npc_value';
+  $handler->display->display_options['filters']['field_is_npc_value']['value'] = array(
+    1 => '1',
+  );
+  $handler->display->display_options['filters']['field_is_npc_value']['group'] = 1;
+  /* Filter criterion: Global: PHP */
+  $handler->display->display_options['filters']['php']['id'] = 'php';
+  $handler->display->display_options['filters']['php']['table'] = 'views';
+  $handler->display->display_options['filters']['php']['field'] = 'php';
+  $handler->display->display_options['filters']['php']['group'] = 1;
+  $handler->display->display_options['filters']['php']['use_php_setup'] = 0;
+  $handler->display->display_options['filters']['php']['php_filter'] = '// Return the negative, cause we want the ones that need oversight to show.
+return !npcs_check_needs_oversight(node_load($row->nid));';
   /* Filter criterion: User: Name */
   $handler->display->display_options['filters']['uid']['id'] = 'uid';
   $handler->display->display_options['filters']['uid']['table'] = 'users';
@@ -950,60 +827,51 @@ function npcs_views_default_views() {
     4 => 0,
     11 => 0,
   );
-  /* Filter criterion: User: Active */
-  $handler->display->display_options['filters']['status_1']['id'] = 'status_1';
-  $handler->display->display_options['filters']['status_1']['table'] = 'users';
-  $handler->display->display_options['filters']['status_1']['field'] = 'status';
-  $handler->display->display_options['filters']['status_1']['relationship'] = 'uid';
-  $handler->display->display_options['filters']['status_1']['value'] = '1';
-  $handler->display->display_options['filters']['status_1']['group'] = 1;
-  /* Filter criterion: User: Roles */
-  $handler->display->display_options['filters']['rid']['id'] = 'rid';
-  $handler->display->display_options['filters']['rid']['table'] = 'users_roles';
-  $handler->display->display_options['filters']['rid']['field'] = 'rid';
-  $handler->display->display_options['filters']['rid']['relationship'] = 'uid';
-  $handler->display->display_options['filters']['rid']['value'] = array(
-    3 => '3',
-    9 => '9',
-    10 => '10',
-    7 => '7',
-    4 => '4',
-    11 => '11',
-  );
-  $handler->display->display_options['filters']['rid']['group'] = 1;
-  $handler->display->display_options['filters']['rid']['reduce_duplicates'] = TRUE;
-  /* Filter criterion: Content: Open NPC (field_is_open_npc) */
-  $handler->display->display_options['filters']['field_is_open_npc_value']['id'] = 'field_is_open_npc_value';
-  $handler->display->display_options['filters']['field_is_open_npc_value']['table'] = 'field_data_field_is_open_npc';
-  $handler->display->display_options['filters']['field_is_open_npc_value']['field'] = 'field_is_open_npc_value';
-  $handler->display->display_options['filters']['field_is_open_npc_value']['value'] = array(
-    1 => '1',
-  );
-  $handler->display->display_options['filters']['field_is_open_npc_value']['group'] = 2;
-  /* Filter criterion: Content: NPC (field_is_npc) */
-  $handler->display->display_options['filters']['field_is_npc_value']['id'] = 'field_is_npc_value';
-  $handler->display->display_options['filters']['field_is_npc_value']['table'] = 'field_data_field_is_npc';
-  $handler->display->display_options['filters']['field_is_npc_value']['field'] = 'field_is_npc_value';
-  $handler->display->display_options['filters']['field_is_npc_value']['value'] = array(
-    1 => '1',
-  );
-  $handler->display->display_options['filters']['field_is_npc_value']['group'] = 2;
-  /* Filter criterion: Global: PHP */
-  $handler->display->display_options['filters']['php']['id'] = 'php';
-  $handler->display->display_options['filters']['php']['table'] = 'views';
-  $handler->display->display_options['filters']['php']['field'] = 'php';
-  $handler->display->display_options['filters']['php']['group'] = 1;
-  $handler->display->display_options['filters']['php']['use_php_setup'] = 0;
-  $handler->display->display_options['filters']['php']['php_filter'] = '// Return the negative, cause we want the ones that need oversight to show.
-return !npcs_check_needs_oversight(node_load($row->nid));';
   /* Filter criterion: Workflow: Current state */
   $handler->display->display_options['filters']['sid']['id'] = 'sid';
   $handler->display->display_options['filters']['sid']['table'] = 'workflow_node';
   $handler->display->display_options['filters']['sid']['field'] = 'sid';
   $handler->display->display_options['filters']['sid']['value'] = array(
+    3 => '3',
     4 => '4',
     6 => '6',
   );
+  $handler->display->display_options['filters']['sid']['group'] = 1;
+  $handler->display->display_options['filters']['sid']['exposed'] = TRUE;
+  $handler->display->display_options['filters']['sid']['expose']['operator_id'] = 'sid_op';
+  $handler->display->display_options['filters']['sid']['expose']['label'] = 'Current state';
+  $handler->display->display_options['filters']['sid']['expose']['operator'] = 'sid_op';
+  $handler->display->display_options['filters']['sid']['expose']['identifier'] = 'sid';
+  $handler->display->display_options['filters']['sid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['sid']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['sid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    30 => 0,
+    8 => 0,
+    9 => 0,
+    21 => 0,
+    24 => 0,
+    26 => 0,
+    27 => 0,
+    19 => 0,
+    28 => 0,
+    29 => 0,
+    12 => 0,
+    34 => 0,
+    35 => 0,
+    25 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    22 => 0,
+    23 => 0,
+    31 => 0,
+    32 => 0,
+  );
+  $handler->display->display_options['filters']['sid']['expose']['reduce'] = TRUE;
   $handler->display->display_options['path'] = 'oversight/NPCs';
   $handler->display->display_options['menu']['type'] = 'default tab';
   $handler->display->display_options['menu']['title'] = 'Oversight NPCs';
@@ -1018,117 +886,6 @@ return !npcs_check_needs_oversight(node_load($row->nid));';
   $handler->display->display_options['tab_options']['weight'] = '0';
   $handler->display->display_options['tab_options']['name'] = 'menu-vaxia';
   $export['oversight'] = $view;
-
-  $view = new view();
-  $view->name = 'room_npcs';
-  $view->description = 'Vaxia NPCs in Rooms';
-  $view->tag = 'NPCs';
-  $view->base_table = 'node';
-  $view->human_name = 'Vaxia NPCs in Rooms';
-  $view->core = 7;
-  $view->api_version = '3.0';
-  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
-
-  /* Display: Master */
-  $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['use_more_always'] = FALSE;
-  $handler->display->display_options['access']['type'] = 'perm';
-  $handler->display->display_options['cache']['type'] = 'none';
-  $handler->display->display_options['query']['type'] = 'views_query';
-  $handler->display->display_options['exposed_form']['type'] = 'basic';
-  $handler->display->display_options['pager']['type'] = 'full';
-  $handler->display->display_options['style_plugin'] = 'default';
-  $handler->display->display_options['row_plugin'] = 'fields';
-  /* Field: Content: Titles */
-  $handler->display->display_options['fields']['field_titles']['id'] = 'field_titles';
-  $handler->display->display_options['fields']['field_titles']['table'] = 'field_data_field_titles';
-  $handler->display->display_options['fields']['field_titles']['field'] = 'field_titles';
-  $handler->display->display_options['fields']['field_titles']['label'] = '';
-  $handler->display->display_options['fields']['field_titles']['element_label_colon'] = FALSE;
-  /* Field: Content: Title */
-  $handler->display->display_options['fields']['title']['id'] = 'title';
-  $handler->display->display_options['fields']['title']['table'] = 'node';
-  $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = '';
-  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
-  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  /* Field: Content: Last Name */
-  $handler->display->display_options['fields']['field_last_name']['id'] = 'field_last_name';
-  $handler->display->display_options['fields']['field_last_name']['table'] = 'field_data_field_last_name';
-  $handler->display->display_options['fields']['field_last_name']['field'] = 'field_last_name';
-  $handler->display->display_options['fields']['field_last_name']['label'] = '';
-  $handler->display->display_options['fields']['field_last_name']['element_label_colon'] = FALSE;
-  /* Field: Workflow: Current state name */
-  $handler->display->display_options['fields']['state']['id'] = 'state';
-  $handler->display->display_options['fields']['state']['table'] = 'workflow_states';
-  $handler->display->display_options['fields']['state']['field'] = 'state';
-  $handler->display->display_options['fields']['state']['label'] = '';
-  $handler->display->display_options['fields']['state']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['state']['alter']['text'] = '([state])';
-  $handler->display->display_options['fields']['state']['element_label_colon'] = FALSE;
-  /* Sort criterion: Content: Post date */
-  $handler->display->display_options['sorts']['created']['id'] = 'created';
-  $handler->display->display_options['sorts']['created']['table'] = 'node';
-  $handler->display->display_options['sorts']['created']['field'] = 'created';
-  $handler->display->display_options['sorts']['created']['order'] = 'DESC';
-  $handler->display->display_options['filter_groups']['groups'] = array(
-    1 => 'AND',
-    2 => 'OR',
-  );
-  /* Filter criterion: Content: Published */
-  $handler->display->display_options['filters']['status']['id'] = 'status';
-  $handler->display->display_options['filters']['status']['table'] = 'node';
-  $handler->display->display_options['filters']['status']['field'] = 'status';
-  $handler->display->display_options['filters']['status']['value'] = 1;
-  $handler->display->display_options['filters']['status']['group'] = 1;
-  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filter criterion: Content: Type */
-  $handler->display->display_options['filters']['type']['id'] = 'type';
-  $handler->display->display_options['filters']['type']['table'] = 'node';
-  $handler->display->display_options['filters']['type']['field'] = 'type';
-  $handler->display->display_options['filters']['type']['value'] = array(
-    'character_sheet' => 'character_sheet',
-  );
-  $handler->display->display_options['filters']['type']['group'] = 1;
-  /* Filter criterion: Workflow: Current state */
-  $handler->display->display_options['filters']['sid']['id'] = 'sid';
-  $handler->display->display_options['filters']['sid']['table'] = 'workflow_node';
-  $handler->display->display_options['filters']['sid']['field'] = 'sid';
-  $handler->display->display_options['filters']['sid']['value'] = array(
-    4 => '4',
-    6 => '6',
-  );
-  $handler->display->display_options['filters']['sid']['group'] = 1;
-  /* Filter criterion: Content: NPC (field_is_npc) */
-  $handler->display->display_options['filters']['field_is_npc_value']['id'] = 'field_is_npc_value';
-  $handler->display->display_options['filters']['field_is_npc_value']['table'] = 'field_data_field_is_npc';
-  $handler->display->display_options['filters']['field_is_npc_value']['field'] = 'field_is_npc_value';
-  $handler->display->display_options['filters']['field_is_npc_value']['value'] = array(
-    1 => '1',
-  );
-  $handler->display->display_options['filters']['field_is_npc_value']['group'] = 2;
-  /* Filter criterion: Content: Open NPC (field_is_open_npc) */
-  $handler->display->display_options['filters']['field_is_open_npc_value']['id'] = 'field_is_open_npc_value';
-  $handler->display->display_options['filters']['field_is_open_npc_value']['table'] = 'field_data_field_is_open_npc';
-  $handler->display->display_options['filters']['field_is_open_npc_value']['field'] = 'field_is_open_npc_value';
-  $handler->display->display_options['filters']['field_is_open_npc_value']['value'] = array(
-    1 => '1',
-  );
-  $handler->display->display_options['filters']['field_is_open_npc_value']['group'] = 2;
-
-  /* Display: References */
-  $handler = $view->new_display('references', 'References', 'references_1');
-  $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['pager']['type'] = 'none';
-  $handler->display->display_options['pager']['options']['offset'] = '0';
-  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
-  $handler->display->display_options['style_plugin'] = 'references_style';
-  $handler->display->display_options['defaults']['style_options'] = FALSE;
-  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
-  $handler->display->display_options['row_plugin'] = 'references_fields';
-  $handler->display->display_options['row_options']['separator'] = ' ';
-  $handler->display->display_options['defaults']['row_options'] = FALSE;
-  $export['room_npcs'] = $view;
 
   return $export;
 }

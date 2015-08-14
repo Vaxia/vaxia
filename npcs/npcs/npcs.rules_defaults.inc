@@ -56,7 +56,7 @@ function npcs_default_rules_configuration() {
       "PLUGIN" : "reaction rule",
       "OWNER" : "rules",
       "TAGS" : [ "NPCs" ],
-      "REQUIRES" : [ "rules", "npcs" ],
+      "REQUIRES" : [ "rules" ],
       "ON" : { "npcs_request" : [] },
       "IF" : [ { "NOT user_is_blocked" : { "account" : [ "node:author" ] } } ],
       "DO" : [

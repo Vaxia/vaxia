@@ -155,7 +155,7 @@ function site_events_field_default_field_instances() {
     'description' => 'What rate of play to expect for this session. Fast posts are a scheduled time where players and SH are posting constantly. Slow posts are sessions where SHs and players may post once or twice a day allowing players who aren\'t on the same timezone to play.',
     'display' => array(
       'default' => array(
-        'label' => 'above',
+        'label' => 'inline',
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',

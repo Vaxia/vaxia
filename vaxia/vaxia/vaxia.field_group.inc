@@ -139,8 +139,7 @@ function vaxia_field_group_info() {
       2 => 'field_is_storyteller',
       3 => 'field_post_color',
       4 => 'field_background_color',
-      5 => 'field_associated_locations',
-      6 => 'title',
+      5 => 'title',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -384,7 +383,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Personal',
-    'weight' => '1',
+    'weight' => '2',
     'children' => array(
       0 => 'field_background',
       1 => 'field_description',
@@ -393,7 +392,6 @@ function vaxia_field_group_info() {
       4 => 'field_personality',
       5 => 'field_titles',
       6 => 'field_artwork_image',
-      7 => 'field_achivements',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -424,7 +422,6 @@ function vaxia_field_group_info() {
       2 => 'field_occupation',
       3 => 'field_personality',
       4 => 'field_titles',
-      5 => 'field_achivements',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -449,10 +446,11 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Public information',
-    'weight' => '2',
+    'weight' => '1',
     'children' => array(
-      0 => 'field_public_information',
-      1 => 'field_sh_public_information',
+      0 => 'field_achivements',
+      1 => 'field_public_information',
+      2 => 'field_sh_public_information',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -478,8 +476,9 @@ function vaxia_field_group_info() {
     'label' => 'Public information',
     'weight' => '3',
     'children' => array(
-      0 => 'field_public_information',
-      1 => 'field_sh_public_information',
+      0 => 'field_achivements',
+      1 => 'field_public_information',
+      2 => 'field_sh_public_information',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(

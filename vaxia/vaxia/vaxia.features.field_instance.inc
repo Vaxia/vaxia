@@ -444,7 +444,7 @@ function vaxia_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 2,
+        'weight' => 9,
       ),
       'question' => array(
         'label' => 'above',
@@ -502,7 +502,7 @@ function vaxia_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 0,
+      'weight' => 6,
     ),
   );
 
@@ -686,7 +686,7 @@ function vaxia_field_default_field_instances() {
           'image_style' => 'medium',
         ),
         'type' => 'image',
-        'weight' => 0,
+        'weight' => 3,
       ),
       'question' => array(
         'label' => 'above',
@@ -914,7 +914,7 @@ function vaxia_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_birth_day',
-    'label' => 'Birth Day',
+    'label' => 'Day',
     'required' => 1,
     'settings' => array(
       'max' => 31,
@@ -958,7 +958,7 @@ function vaxia_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_birth_month',
-    'label' => 'Birth Month',
+    'label' => 'Birth Date',
     'required' => 1,
     'settings' => array(
       'user_register_form' => FALSE,
@@ -1970,11 +1970,11 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'above',
+        'label' => 'inline',
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 3,
+        'weight' => 2,
       ),
       'question' => array(
         'label' => 'above',
@@ -3388,7 +3388,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'above',
+        'label' => 'inline',
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
@@ -3488,8 +3488,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
   t('Appearance');
   t('Awareness');
   t('Background');
-  t('Birth Day');
-  t('Birth Month');
+  t('Birth Date');
   t('Can use item shop');
   t('Character Goals');
   t('Charisma');
@@ -3505,6 +3504,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
   t('Contributes to Health and Constitution.');
   t('Contributes to Presence and Appearance.');
   t('Currently wearing');
+  t('Day');
   t('Default Post Background');
   t('Default Post Color #');
   t('Description');
