@@ -804,8 +804,8 @@ function _vaxia_transfer_hxp_form(&$form, $form_state, $node) {
     $xp_amount = _character_sheet_get_xp($node->nid, 'spent_xp');
     // Amount to transfer.
     $new_xp = floor($xp_amount * variable_get('vaxia_transfer_percentage', 0.75));
-    $max = '';
     // Calc amounts.
+    $max = '';
     if (variable_get('vaxia_transfer_cap_on', TRUE)) {
       $cap = variable_get('vaxia_transfer_cap', 300);
       $max = ' max ' . $cap;
@@ -934,10 +934,6 @@ function vaxia_form__character_sheet_owner_form_alter(&$form, &$form_state) {
 function _vaxia_transfer_xp_validate(&$form, &$form_state) {
   if ($form_state['values']['confirm'] != 'TRANSFER') {
     form_set_error('confirm', t('Transfer was not confirmed.'));
-  }
-  // Sanity check
-  if (!is_numeric(trim($form_state['values']['amount'])) || $form_state['values']['amount'] < 1) {
-    form_set_error('amount', t('Amount to transfer makes no sense.'));
   }
 }
 
