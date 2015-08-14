@@ -66,11 +66,6 @@ function vaxia_character_sheet_field_info() {
         'owner' => DISABLE_SHEET,
       ),
     ),
-    'field_is_open_npc' => array(
-      'permissions' => array(
-        'owner' => DISABLE_SHEET,
-      ),
-    ),
     'field_is_storyteller' => array(
       'permissions' => array(
         'owner' => DISABLE_SHEET,
@@ -326,9 +321,6 @@ function vaxia_character_sheet_presave_sheet($node) {
 function vaxia_character_sheet_validate_sheet($node, $old_node, $form, $form_state) {
   // Don't check this if the sheet is marked as an NPC.
   if (isset($node->field_is_npc[$node->language][0]['value']) && $node->field_is_npc[$node->language][0]['value'] == TRUE) {
-    return FALSE;
-  }
-  if (isset($node->field_is_open_npc[$node->language][0]['value']) && $node->field_is_open_npc[$node->language][0]['value'] == TRUE) {
     return FALSE;
   }
   // Run this only for draft nodes, to cap out at 300 per field.
@@ -727,8 +719,9 @@ function vaxia_form__character_sheet_xp_form_alter(&$form, $form_state) {
 function _vaxia_add_xp_form(&$form, $form_state, $node) {
   global $user;
   // Add additional options for xp IIF allowed.
-  if (isset($form['add_xp']) && $node->field_is_storyteller[$node->language][0]['value'] == 0 
-    && $node->field_is_npc[$node->language][0]['value'] == 0 && $node->field_is_open_npc[$node->language][0]['value'] == 0) {
+  if (isset($form['add_xp'])
+    && $node->field_is_storyteller[$node->language][0]['value'] == 0 
+    && $node->field_is_npc[$node->language][0]['value'] == 0) {
     $form['add_xp']['xp']['#options'] = range(0, 500);
     $xp_types = array();
     foreach(explode("\n", variable_get('vaxia_xp_types', "good\nevil\nsmart\nclever\nwarrior\nmage\nrogue")) as $type) {
@@ -752,8 +745,7 @@ function _vaxia_transfer_rxp_form(&$form, $form_state, $node) {
   // And add the SH transfer options.
   $rxp = _character_sheet_get_xp($node->nid, 'rxp');
   if ($rxp > 0 &&
-    ($node->field_is_storyteller[$node->language][0]['value'] == 1 || $node->field_is_npc[$node->language][0]['value'] == 1 ||
-    $node->field_is_open_npc[$node->language][0]['value'] == 1) &&
+    ($node->field_is_storyteller[$node->language][0]['value'] == 1 || $node->field_is_npc[$node->language][0]['value'] == 1) &&
     ($node->uid == $user->uid && user_access('transfer rxp') || user_access('transfer others sheets'))
   ) {
     $form['transfer_rxp'] = array(
@@ -903,12 +895,12 @@ function _vaxia_transfer_xp_autocomplete($character_name = '') {
     'LEFT JOIN {users} u ON n.uid = u.uid ' .
     'LEFT JOIN {workflow_node} w ON w.nid = n.nid ' .
     'LEFT JOIN {field_data_field_is_npc} npc ON npc.entity_id = n.nid ' .
-    'LEFT JOIN {field_data_field_is_open_npc} onpc ON onpc.entity_id = n.nid ' .
+    //'LEFT JOIN {field_data_field_is_open_npc} onpc ON onpc.entity_id = n.nid ' .
     'LEFT JOIN {field_data_field_is_storyteller} s ON s.entity_id = n.nid ' .
     'WHERE n.type LIKE \'character_sheet\' AND n.status = 1 ' .
     'AND w.sid = :approved_workflow ' .
     'AND npc.field_is_npc_value = 0 ' .
-    'AND onpc.field_is_open_npc_value = 0 ' .
+    //'AND onpc.field_is_open_npc_value = 0 ' .
     'AND s.field_is_storyteller_value = 0 ' .
     'AND n.uid = :uid AND n.title LIKE :name',
     array(':approved_workflow' => $workflow,

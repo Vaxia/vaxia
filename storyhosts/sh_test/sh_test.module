@@ -75,9 +75,9 @@ function _sh_test_cron_check_overdue() {
   $timeframe = strtotime('-1 week');
   $applications = db_query('SELECT n.nid FROM {node} n ' .
     'LEFT JOIN {webform} w ON w.nid = n.nid ' .
-    'WHERE w.status = 1 '. // Where the webform is still open.
+    'WHERE w.status = 1 '. // Where the webform is still active.
     'AND n.type = \'storyhost_application\' ' . // And it's a storyhost application type.
-    'AND n.changed < :timeframe', // And it's been open for more than a week.
+    'AND n.changed < :timeframe', // And it's been active for more than a week.
      array(':timeframe' => $timeframe));
   // Now that we have a list of applications that might qualify.
   $today = strtotime('now');
@@ -420,9 +420,6 @@ function sh_test_session_counts($session) {
       $counts = TRUE;
       // Check if NPCs.
       if (!$npcs && $character->field_is_npc[$character->language][0]['value'] == 1) {
-        $counts = FALSE;
-      }
-      if (!$npcs && $character->field_is_open_npc[$character->language][0]['value'] == 1) {
         $counts = FALSE;
       }
       // Check if A/SHs.

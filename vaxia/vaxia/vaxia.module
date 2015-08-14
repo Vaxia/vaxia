@@ -681,8 +681,7 @@ function _vaxia_comment_add_kxp_submit($form, $form_state) {
       $kxp = _vaxia_figure_kxp($form_state['values']['comment_body'][$lang][0]['value']);
       $character = node_load($form_state['values']['field_comment_character'][$lang][0]['nid']);
       // Posting with an NPC? Mark the XP to the SH character.
-      if ($character->field_is_npc[$character->language][0]['value'] == 1 
-        || $character->field_is_open_npc[$character->language][0]['value'] == 1) {
+      if ($character->field_is_npc[$character->language][0]['value'] == 1) {
         global $user;
         $sh_character = _vaxia_get_SH_characters($user->uid);
         if (!empty($sh_character)) {
@@ -816,15 +815,10 @@ function _vaxia_get_character_ref_types($nid) {
   global $user;
   $node = node_load($nid);
   $lang = $node->language;
-  $field_is_open_npc = isset($node->field_is_open_npc[$lang][0]['value']) ?
-    $node->field_is_open_npc[$lang][0]['value'] : 0;
   $field_is_npc = isset($node->field_is_npc[$lang][0]['value']) ?
     $node->field_is_npc[$lang][0]['value'] : 0;
-  if ($field_is_open_npc == 1) {
-    return 'Open NPCs';
-  }
-  if ($field_is_npc == 1 && $node->uid == $user->uid ) {
-    return 'Personal NPCs';
+  if ($field_is_npc == 1) {
+    return 'NPCs';
   }
   return 'Characters';
 }

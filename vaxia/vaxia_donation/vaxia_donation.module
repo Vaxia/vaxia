@@ -178,9 +178,9 @@ function vaxia_donation_form_payment_donation_form_alter(&$form, &$form_state) {
     'AND n.nid NOT IN (' .
     'SELECT npc.entity_id FROM {field_data_field_is_npc} npc WHERE npc.field_is_npc_value = 1' . // Not an NPC
     ')'.
-    'AND n.nid NOT IN (' .
-    'SELECT onpc.entity_id FROM {field_data_field_is_open_npc} onpc WHERE onpc.field_is_open_npc_value = 1' . // Not an open NPC
-    ')'.
+    //'AND n.nid NOT IN (' .
+    //'SELECT onpc.entity_id FROM {field_data_field_is_open_npc} onpc WHERE onpc.field_is_open_npc_value = 1' . // Not an open NPC
+    //')'.
     'AND n.nid NOT IN (' .
     'SELECT st.entity_id FROM {field_data_field_is_storyteller} st WHERE st.field_is_storyteller_value = 1' . // Not a storyteller.
     ')',

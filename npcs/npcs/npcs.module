@@ -23,10 +23,6 @@ function npcs_permission() {
       'title' => t('create NPCs'),
       'description' => t('Create NPCs for posting.'),
     ),
-    'create open NPCs' => array(
-      'title' => t('create open NPCs'),
-      'description' => t('Create open NPCs for posting.'),
-    ),
     'use NPCs' => array(
       'title' => t('use NPCs'),
       'description' => t('Use NPCs for posting.'),
@@ -150,14 +146,14 @@ function _vaxia_cron_delete_inactive_no_post_npcs() {
     'LEFT JOIN {workflow_node} w ON n.nid = w.nid ' .
     'WHERE n.status = 1 ' . // Active node
     'AND w.sid = :state ' . // Is in the right state.
-    'AND npc.field_is_npc_value = 1 ' . // Is an NPC
-    'UNION ' . // Merge two sets
-    'SELECT onpc.entity_id FROM {field_data_field_is_open_npc} onpc ' . // Where an open NPC
-    'LEFT JOIN {node} n2 ON n2.nid = onpc.entity_id AND n2.vid = onpc.revision_id ' .
-    'LEFT JOIN {workflow_node} w2 ON n2.nid = w2.nid ' .
-    'WHERE n2.status = 1 ' . // Active node
-    'AND w2.sid = :state2 ' . // Is in the right state.
-    'AND onpc.field_is_open_npc_value = 1 ', // Is an open NPC
+    'AND npc.field_is_npc_value = 1 ', // Is an NPC
+    //'UNION ' . // Merge two sets
+    //'SELECT onpc.entity_id FROM {field_data_field_is_open_npc} onpc ' . // Where an open NPC
+    //'LEFT JOIN {node} n2 ON n2.nid = onpc.entity_id AND n2.vid = onpc.revision_id ' .
+    //'LEFT JOIN {workflow_node} w2 ON n2.nid = w2.nid ' .
+    //'WHERE n2.status = 1 ' . // Active node
+    //'AND w2.sid = :state2 ' . // Is in the right state.
+    //'AND onpc.field_is_open_npc_value = 1 ', // Is an open NPC
     array(':state' => $workflow, ':state2' => $workflow)
   );
   foreach ($npcs as $npc) {
@@ -190,14 +186,14 @@ function _vaxia_cron_pullback_npcs() {
     'LEFT JOIN {workflow_node} w ON n.nid = w.nid ' .
     'WHERE n.status = 1 ' . // Active node
     'AND w.sid = :state ' . // Is in the right state.
-    'AND npc.field_is_npc_value = 1 ' . // Is an NPC
-    'UNION ' . // Merge two sets
-    'SELECT onpc.entity_id FROM {field_data_field_is_open_npc} onpc ' . // Where an open NPC
-    'LEFT JOIN {node} n2 ON n2.nid = onpc.entity_id AND n2.vid = onpc.revision_id ' .
-    'LEFT JOIN {workflow_node} w2 ON n2.nid = w2.nid ' .
-    'WHERE n2.status = 1 ' . // Active node
-    'AND w2.sid = :state2 ' . // Is in the right state.
-    'AND onpc.field_is_open_npc_value = 1 ', // Is an open NPC
+    'AND npc.field_is_npc_value = 1 ', // Is an NPC
+    //'UNION ' . // Merge two sets
+    //'SELECT onpc.entity_id FROM {field_data_field_is_open_npc} onpc ' . // Where an open NPC
+    //'LEFT JOIN {node} n2 ON n2.nid = onpc.entity_id AND n2.vid = onpc.revision_id ' .
+    //'LEFT JOIN {workflow_node} w2 ON n2.nid = w2.nid ' .
+    //'WHERE n2.status = 1 ' . // Active node
+    //'AND w2.sid = :state2 ' . // Is in the right state.
+    //'AND onpc.field_is_open_npc_value = 1 ', // Is an open NPC
     array(':state' => $workflow, ':state2' => $workflow)
   );
   foreach ($npcs as $npc) {
@@ -264,20 +260,6 @@ function npcs_rules_event_info() {
         ),
       ),
     ),
-    'npcs_request' => array(
-      'label' => t('NPC requested'),
-      'group' => t('Vaxia'),
-      'variables' => array(
-        'user' => array(
-            'type' => 'user',
-            'label' => t('NPC user'),
-        ),
-        'node' => array(
-            'type' => 'node',
-            'label' => t('NPC'),
-        ),
-      ),
-    ),
     'npcs_return' => array(
       'label' => t('NPC returns'),
       'group' => t('Vaxia'),
@@ -302,9 +284,9 @@ function npcs_rules_event_info() {
 function npcs_form_character_sheet_node_form_alter(&$form, &$form_state, $form_id) {
   $node = isset($form['#node']) ? $form['#node'] : '';
   if (_character_sheet_is_enabled($node) && _character_sheet_is_playable($node)) {
-    if (_npcs_is_an_open_npc($node) || _npcs_is_an_npc($node)) {
+    if (_npcs_is_an_npc($node)) {
       $allowed_edit = array('field_age_app', 'field_background', 'field_personality', 'field_description', 'field_occupation',
-        'field_last_name', 'field_titles', 'field_is_open_npc', 'field_race', 'field_sex', 'field_age_real', 'field_post_color',
+        'field_last_name', 'field_titles', 'field_race', 'field_sex', 'field_age_real', 'field_post_color',
         'field_character_owner', 'field_sh_notes', 'field_sh_private_notes', 'field_player_notes', 'field_artwork_image');
       foreach (element_children($form) as $child) {
         if ((strpos($child, 'field_') === 0 || $child == 'title') && !in_array($child, $allowed_edit)) {
@@ -347,25 +329,20 @@ function npcs_node_view($node, $view_mode, $langcode) {
   // If node is a character sheet, marked as an NPC.
   if (user_access('claim NPC') && _character_sheet_is_enabled($node) && _npcs_is_an_npc($node)) {
     global $user;
-    // If workflow is in the claimable mode and this is open or owned NPC, add button.
-    if (_npcs_can_be_claimed($node) && ($node->uid == $user->uid || _npcs_is_an_open_npc($node) || !_npcs_owner_is_sh($node))) {
+    // If workflow is in the claimable mode and not the owner, add button.
+    if (_npcs_can_be_claimed($node) && ($node->uid != $user->uid)) {
       $node->content['npcs_form'] = drupal_get_form('_npcs_claim_form', $node);
       $node->content['npcs_form']['#weight'] = -100;
     }
-    // If workflow is in the claimable mode and this is not open anod no owned NPC, add button.
-    if (_npcs_can_be_claimed($node) && ($node->uid != $user->uid && !_npcs_is_an_open_npc($node) && _npcs_owner_is_sh($node))) {
-      $node->content['npcs_form'] = drupal_get_form('_npcs_request_form', $node);
-      $node->content['npcs_form']['#weight'] = -100;
-    }
     // Else, is in active use. If the viewer is the owner give the button to return.
-    if (!_npcs_can_be_claimed($node) && ($node->uid == $user->uid || _npcs_is_an_open_npc($node))) {
+    if (!_npcs_can_be_claimed($node) && ($node->uid == $user->uid)) {
       $node->content['npcs_form'] = drupal_get_form('_npcs_return_form', $node);
       $node->content['npcs_form']['#weight'] = -100;
     }
   }
   // If node is a character sheet, marked as an NPC.
   if (user_access('convert NPC to wiki page') && _character_sheet_is_enabled($node) && _npcs_is_an_npc($node)) {
-    if (_npcs_can_be_claimed($node) && ($node->uid == $user->uid || _npcs_is_an_open_npc($node) || !_npcs_owner_is_sh($node))) {
+    if (_npcs_can_be_claimed($node) && ($node->uid == $user->uid || !_npcs_owner_is_sh($node))) {
       global $user;
       // If workflow is in the claimable mode and this is open or owned NPC, add button.
       $node->content['wiki_form'] = drupal_get_form('_npcs_wiki_form', $node);
@@ -529,37 +506,6 @@ function _npcs_claim_form_submit($form, $form_state) {
 }
 
 /**
- * Implementation of request form.
- */
-function _npcs_request_form($form, &$form_state, $node) {
-  $form = array();
-  $form['nid'] = array(
-    '#type' => 'hidden',
-    '#value' => $node->nid,
-  );
-  $form['vaxia_npc_request'] = array(
-    '#type' => 'submit',
-    '#value' => t('Request NPC'),
-  );
-  return $form;
-}
-
-/*
- * Form callback submission for _npcs_request_form.
- */
-function _npcs_request_form_submit($form, $form_state) {
-  $node = node_load($form_state['values']['nid']);
-  $time = variable_get('npcs_request_timeout', '6 months');
-  drupal_set_message(t('You have requested this NPC for use in sessions. Because it is not an open NPC, the current owner needs to ' . 
-    'coordinate use with you to avoid story conflicts with ongoing or future sagas. They have been sent an email to get that conversation ' .
-    'started, but you may want to follow up with them directly as well.'));
-  if (function_exists('rules_invoke_event')) {
-    global $user;
-    rules_invoke_event('npcs_request', $user, $node);
-  }
-}
-
-/**
  * Implementation of return form.
  */
 function _npcs_return_form($form, &$form_state, $node) {
@@ -596,19 +542,6 @@ function _npcs_return_form_submit($form, $form_state) {
 function _npcs_is_an_npc($node) {
   if (isset($node->field_is_npc[$node->language][0]['value']) && $node->field_is_npc[$node->language][0]['value'] == TRUE) {
     return TRUE;
-  }
-  if (isset($node->field_is_open_npc[$node->language][0]['value']) && $node->field_is_open_npc[$node->language][0]['value'] == TRUE) {
-    return FALSE;
-  }
-  return FALSE;
-}
-
-/**
- * Helper function, check for open NPC status.
- */
-function _npcs_is_an_open_npc($node) {
-  if (isset($node->field_is_open_npc[$node->language][0]['value']) && $node->field_is_open_npc[$node->language][0]['value'] == TRUE) {
-    return FALSE;
   }
   return FALSE;
 }

@@ -42,9 +42,9 @@ function _silver_cron_silver() {
       'AND n.nid NOT IN (' .
       'SELECT npc.entity_id FROM {field_data_field_is_npc} npc WHERE npc.field_is_npc_value = 1' . // Not an NPC
       ')'.
-      'AND n.nid NOT IN (' .
-      'SELECT onpc.entity_id FROM {field_data_field_is_open_npc} onpc WHERE onpc.field_is_open_npc_value = 1' . // Not an open NPC
-      ')'.
+      //'AND n.nid NOT IN (' .
+      //'SELECT onpc.entity_id FROM {field_data_field_is_open_npc} onpc WHERE onpc.field_is_open_npc_value = 1' . // Not an open NPC
+      //')'.
       'AND n.nid NOT IN (' .
       'SELECT st.entity_id FROM {field_data_field_is_storyteller} st WHERE st.field_is_storyteller_value = 1' . // Not a storyteller.
       ')');
@@ -172,7 +172,7 @@ function silver_form__character_sheet_xp_form_alter(&$form, $form_state) {
 
   // Add additional options for xp IIF allowed.
   if (isset($form['add_xp']) && $node->field_is_storyteller[$node->language][0]['value'] == 0
-    && $node->field_is_npc[$node->language][0]['value'] == 0 && $node->field_is_open_npc[$node->language][0]['value'] == 0) {
+    && $node->field_is_npc[$node->language][0]['value'] == 0) {
     // Add a form to handle silver on it's own.
     $form['add_silver'] = array(
       '#type' => 'fieldset',

@@ -47,9 +47,6 @@ function _rpg_rep_cron() {
         'SELECT npc.entity_id FROM {field_data_field_is_npc} npc WHERE npc.field_is_npc_value = 1 ' . // Not an NPC
         ') '.
         'AND x.nid NOT IN ( ' .
-        'SELECT onpc.entity_id FROM {field_data_field_is_open_npc} onpc WHERE onpc.field_is_open_npc_value = 1 ' . // Not an open NPC
-        ') '.
-        'AND x.nid NOT IN ( ' .
         'SELECT st.entity_id FROM {field_data_field_is_storyteller} st WHERE st.field_is_storyteller_value = 1 ' . // Not a storyteller.
         ')', array(':reps' => $reps));
       // Increase reps for those with negative.
@@ -59,9 +56,6 @@ function _rpg_rep_cron() {
         'AND x.xp < 0 '. // Only for those less than 1.
         'AND x.nid NOT IN ( ' .
         'SELECT npc.entity_id FROM {field_data_field_is_npc} npc WHERE npc.field_is_npc_value = 1 ' . // Not an NPC
-        ') '.
-        'AND x.nid NOT IN ( ' .
-        'SELECT onpc.entity_id FROM {field_data_field_is_open_npc} onpc WHERE onpc.field_is_open_npc_value = 1 ' . // Not an open NPC
         ') '.
         'AND x.nid NOT IN ( ' .
         'SELECT st.entity_id FROM {field_data_field_is_storyteller} st WHERE st.field_is_storyteller_value = 1 ' . // Not a storyteller.
@@ -317,8 +311,7 @@ function _rpg_rep_is_pc($node) {
     $node = node_load($node);
   }
   if ($node->field_is_storyteller[$node->language][0]['value'] == 0 &&
-    $node->field_is_npc[$node->language][0]['value'] == 0 &&
-    $node->field_is_open_npc[$node->language][0]['value'] == 0) {
+    $node->field_is_npc[$node->language][0]['value'] == 0) {
     return TRUE;
   }
   return FALSE;
