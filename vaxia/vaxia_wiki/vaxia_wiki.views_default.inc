@@ -2499,39 +2499,6 @@ Search for an NPC.';
     22 => 0,
     23 => 0,
   );
-  /* Filter criterion: Content: Open NPC (field_is_open_npc) */
-  $handler->display->display_options['filters']['field_is_open_npc_value_1']['id'] = 'field_is_open_npc_value_1';
-  $handler->display->display_options['filters']['field_is_open_npc_value_1']['table'] = 'field_data_field_is_open_npc';
-  $handler->display->display_options['filters']['field_is_open_npc_value_1']['field'] = 'field_is_open_npc_value';
-  $handler->display->display_options['filters']['field_is_open_npc_value_1']['value'] = array(
-    0 => '0',
-    1 => '1',
-  );
-  $handler->display->display_options['filters']['field_is_open_npc_value_1']['group'] = 1;
-  $handler->display->display_options['filters']['field_is_open_npc_value_1']['exposed'] = TRUE;
-  $handler->display->display_options['filters']['field_is_open_npc_value_1']['expose']['operator_id'] = 'field_is_open_npc_value_1_op';
-  $handler->display->display_options['filters']['field_is_open_npc_value_1']['expose']['label'] = 'Open NPC';
-  $handler->display->display_options['filters']['field_is_open_npc_value_1']['expose']['operator'] = 'field_is_open_npc_value_1_op';
-  $handler->display->display_options['filters']['field_is_open_npc_value_1']['expose']['identifier'] = 'field_is_open_npc_value_1';
-  $handler->display->display_options['filters']['field_is_open_npc_value_1']['expose']['remember'] = TRUE;
-  $handler->display->display_options['filters']['field_is_open_npc_value_1']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    8 => 0,
-    19 => 0,
-    12 => 0,
-    13 => 0,
-    10 => 0,
-    17 => 0,
-    15 => 0,
-    9 => 0,
-    20 => 0,
-    14 => 0,
-    4 => 0,
-    3 => 0,
-    11 => 0,
-  );
-  $handler->display->display_options['filters']['field_is_open_npc_value_1']['reduce_duplicates'] = TRUE;
   /* Filter criterion: Content: Background (field_background) */
   $handler->display->display_options['filters']['field_background_value']['id'] = 'field_background_value';
   $handler->display->display_options['filters']['field_background_value']['table'] = 'field_data_field_background';
