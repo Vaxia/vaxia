@@ -183,17 +183,18 @@ function _vaxia_dice_roller_prep_rolls($rolls, $character, $lang) {
         }
         // Add tech to display.
         if (!empty($skill_details->field_tech_languages[$lang]) && is_array($skill_details->field_tech_languages[$lang])) {
+          $techs = array();
           foreach ($skill_details->field_tech_languages[$lang] as $delta => $tech_id) {
-            $techs = array();
             $tech_details = field_collection_item_load($tech_id['value']);
             if (!empty($tech_details->field_tech_language[$lang][0]['tid'])) {
               $tech = taxonomy_term_load($tech_details->field_tech_language[$lang][0]['tid']);
               $tech_desc = !empty($tech_details->field_tech_proficiency[$lang][0]['value']) ? $tech_details->field_tech_proficiency[$lang][0]['value'] : 'Unfamiliar';
               $techs[] = $tech->name . ': ' . strtolower($tech_desc);
             }
-            if (!empty($tech)) {
-              $desc .= ' (' . implode(', ', $techs) . ')';
-            }
+          }
+          // Add any tech langs found.
+          if (!empty($tech)) {
+            $desc .= ' (' . implode(', ', $techs) . ')';
           }
         }
         // Set display.
