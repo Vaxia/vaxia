@@ -872,7 +872,7 @@ return !npcs_check_needs_oversight(node_load($row->nid));';
     32 => 0,
   );
   $handler->display->display_options['filters']['sid']['expose']['reduce'] = TRUE;
-  $handler->display->display_options['path'] = 'oversight/NPCs';
+  $handler->display->display_options['path'] = 'oversight/npcs';
   $handler->display->display_options['menu']['type'] = 'default tab';
   $handler->display->display_options['menu']['title'] = 'Oversight NPCs';
   $handler->display->display_options['menu']['description'] = 'Allow for oversight of epic NPCs';
