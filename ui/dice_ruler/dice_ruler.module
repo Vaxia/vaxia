@@ -2153,18 +2153,23 @@ function _dice_ruler_read_dice($dice_rolls, $difficulty = 25, $bonus = 0) {
         $skip = array_shift($notes);
         $note = isset($notes[$index]) ? trim($notes[$index]) : '';
         // Check new style.
-        if (strpos($note, 'aspects="') !== FALSE && preg_match('/aspects="(.+)"/', $note, $matches)) {
+        if (strpos($note, 'aspects="') !== FALSE && preg_match('/aspects="(.+?)"/', $note, $matches)) {
           if (!empty($matches[1])) {
-            $aspects = explode(' ', $matches[1]);
+            $found = explode(' ', $matches[1]);
+            $aspects = array_merge($aspects, $found);
           }
         }
         // Check old style.
-        if (empty($aspects) && preg_match('/title=".+\((.+)\)"/', $note, $matches)) {
+        if (empty($aspects) && preg_match('/title=".+?\((.+?)\)"/', $note, $matches)) {
           if (!empty($matches[1])) {
-            $aspects = explode(', ', $matches[1]);
+            $found = explode(', ', $matches[1]);
+            $aspects = array_merge($aspects, $found);
           }
         }
-        // Else no aspects to be pulled.
+        // Trim any aspects.
+        foreach ($aspects as $a_i => $aspect) {
+          $aspects[$a_i] = trim($aspect);
+        }
       }
       // Extract the aspects from the nodes.
       $roll_ruling['aspects'][] = $aspects;
