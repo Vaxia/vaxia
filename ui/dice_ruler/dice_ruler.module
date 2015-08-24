@@ -2191,7 +2191,7 @@ function _dice_ruler_read_dice($dice_rolls, $difficulty = 25, $bonus = 0) {
       }
     }
     // Figure out if this is a 2 trait roll.
-    if (count($roll_ruling['mights']) == 2) {
+    if (count($roll_ruling['mights']) > 1) {
       $result = _dice_ruler_make_two_trait_ruling(
         $roll_ruling['mights'][0] + $roll_ruling['bonus'],
         $roll_ruling['diff'],
@@ -2215,7 +2215,6 @@ function _dice_ruler_read_dice($dice_rolls, $difficulty = 25, $bonus = 0) {
         $roll_ruling['100s']++;
       }
     }
-    // If more than two, we don't have an idea what's going on and should ignore the roll.
     // Now, if we have a ruling, let's get some info out of it too.
     if (!empty($result)) {
       $by_generated = $result['winsby'];
