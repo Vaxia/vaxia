@@ -224,7 +224,6 @@ function vaxia_characters_form_node_form_alter(&$form, &$form_state, $form_id) {
     }
   } // End if playable.
 
-  // Do this for all char forms.
   // Disable the private note if you can't edit it. Can't edit your own.
   if (!($user->uid == $node->uid || user_access('edit SH notes'))) {
     $form['field_sh_notes'][$lang][0]['#disabled'] = TRUE;
@@ -232,6 +231,7 @@ function vaxia_characters_form_node_form_alter(&$form, &$form_state, $form_id) {
       $form['field_sh_notes'][$lang][0]['#value'] = $form['field_sh_notes'][$lang][0]['#default_value'];
     }
   }
+
   // Hide the private note if you can't edit it. Can't edit your own.
   if (!($user->uid != $node->uid && user_access('edit private SH notes'))) {
     $form['field_sh_private_notes'][$lang][0]['#access'] = FALSE;
@@ -239,15 +239,25 @@ function vaxia_characters_form_node_form_alter(&$form, &$form_state, $form_id) {
       $form['field_sh_private_notes'][$lang][0]['#value'] = $form['field_sh_private_notes'][$lang][0]['#default_value'];
     }
   }
-  // Remove the NPC / ONPC buttons if the user is not permissioned.
+
+  // Remove the make Storyhost if the user is not permissioned.
   $sh_char = _vaxia_get_SH_characters($node->uid);
   if (!user_access('create SHs') || !empty($sh_char)) {
     $form['field_is_storyteller'][$lang]['#access'] = FALSE;
   }
+
+  // Remove the make NPC if the user is not permissioned.
   if (!user_access('create NPCs')) {
     $form['field_is_npc'][$lang]['#access'] = FALSE;
     $form['field_is_npc'][$lang]['#value'] =
       isset($form['field_is_npc'][$lang]['#default_value']) ? $form['field_is_npc'][$lang]['#default_value'] : FALSE;
+  }
+
+  // Removing edit for the personal room entirely.  
+  if (!user_access('edit personal rooms')) {
+    $form['field_personal_room'][$lang]['#access'] = FALSE;
+    $form['field_personal_room'][$lang]['#value'] =
+      isset($form['field_personal_room'][$lang]['#default_value']) ? $form['field_personal_room'][$lang]['#default_value'] : FALSE;
   }
 }
 
