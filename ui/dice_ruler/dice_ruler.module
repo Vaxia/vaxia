@@ -2130,6 +2130,7 @@ function _dice_ruler_read_dice($dice_rolls, $difficulty = 25, $bonus = 0) {
   $roll_ruling['diff'] = $difficulty;
   $roll_ruling['bonus'] = $bonus;
   $roll_ruling['mights'] = $roll_ruling['rolls'] = array();
+  $roll_ruling['aspects'] = $roll_ruling['notes'] = array();
   $roll_ruling['1s'] = $roll_ruling['100s'] = 0;
   $roll_ruling['by'] = $roll_ruling['PPs'] = 0;
   $roll_ruling['crit_fails'] = $roll_ruling['crit_wins'] = 0;
@@ -2143,6 +2144,31 @@ function _dice_ruler_read_dice($dice_rolls, $difficulty = 25, $bonus = 0) {
       $might = explode('=', $might);
       $roll_ruling['mights'][] = isset($might[0]) ? trim($might[0]) : 0;
       $roll_ruling['rolls'][] = isset($results[0]) ? trim($results[0]) : 0;
+      $aspects = array();
+      $note = '';
+      // Look for the 'title' alt for notes, so we can ignore anything not in format.
+      $notes = isset($dice_rolls[$index]['roll_notes']) ? $dice_rolls[$index]['roll_notes'] : '';
+      if (strpos($notes, '<a title="') !== FALSE) {
+        $notes = explode('<br>', $notes);
+        $skip = array_shift($notes);
+        $note = isset($notes[$index]) ? trim($notes[$index]) : '';
+        // Check new style.
+        if (strpos($note, 'aspects="') !== FALSE && preg_match('/aspects="(.+)"/', $note, $matches)) {
+          if (!empty($matches[1])) {
+            $aspects = explode(' ', $matches[1]);
+          }
+        }
+        // Check old style.
+        if (empty($aspects) && preg_match('/title=".+\((.+)\)"/', $note, $matches)) {
+          if (!empty($matches[1])) {
+            $aspects = explode(', ', $matches[1]);
+          }
+        }
+        // Else no aspects to be pulled.
+      }
+      // Extract the aspects from the nodes.
+      $roll_ruling['aspects'][] = $aspects;
+      $roll_ruling['notes'][] = $note;
     }
     // Figure out if this is a 1 trait roll.
     if (count($roll_ruling['mights']) == 1) {
