@@ -21,30 +21,81 @@ function item_helper_scene_record_goal_info() {
  */
 function _item_helper_calculate_results($comment, &$context) {
   $message_items = array();
+  // Check that the skill is legit for item creation.
+  if (!_item_helper_craft_skill($comment, $context)) {
+    $message_items[] = t('<span style="color:red;font-weight:bold;">No item create/repair 2-stat roll found.</span>');
+    return $message_items;
+  }
   // Grab rolls and start calculations.
   $diff = !empty($context['diff']) ? $context['diff'] : 25;
+  // Pick up the item starting rolls.
+  if (empty($context['items'])) {
+    $context['items'] = $context['ongoing'];
+  }
+  // Check for crit fails.
+  if ($context['roll_set']['crit_fails'] > 0) {
+    $message_items[] = t('<span style="color:red;font-weight:bold;">A critical FAIL wiped out items progress.</span>');
+    // Reset.
+    $context['items']['_ruling']['PPs'] = 0;
+    $context['items']['_ruling']['1s'] = 0;
+    $context['items']['_ruling']['100s'] = 0;
+    $context['items']['_ruling']['crit_fails'] = 0;
+    $context['items']['_ruling']['crit_wins'] = 0;
+  }
+  else {
+    // Update our context values.
+    $message_items[] = t('<span style="color:green;font-weight:bold;">Item create/repair 2-stat roll found.</span>');
+    $context['items']['_ruling']['PPs'] += $context['roll_set']['PPs'];
+    $context['items']['_ruling']['1s'] += $context['roll_set']['1s'];
+    $context['items']['_ruling']['100s'] += $context['roll_set']['100s'];
+    $context['items']['_ruling']['crit_fails'] += $context['roll_set']['crit_fails'];
+    $context['items']['_ruling']['crit_wins'] += $context['roll_set']['crit_wins'];
+  }
   // More messages.
   if ($diff > 25) {
     $pp_needed_per_point = (1 + (($diff - 40) / 10) ) * 25;
     $points_built_max = (1 + (($diff - 40) / 10) ) * 5;
-    $points_built_primary = floor($context['ongoing']['_ruling']['PPs'] / $pp_needed_per_point);
-    $points_built_secondary = floor($context['ongoing']['_ruling']['PPs'] / ($pp_needed_per_point * 1.5));
-    $points_built_skills= floor($context['ongoing']['_ruling']['PPs'] / ($pp_needed_per_point * 0.75));
+    $points_built_primary = floor($context['items']['_ruling']['PPs'] / $pp_needed_per_point);
+    $points_built_secondary = floor($context['items']['_ruling']['PPs'] / ($pp_needed_per_point * 1.5));
+    $points_built_skills= floor($context['items']['_ruling']['PPs'] / ($pp_needed_per_point * 0.75));
     // Messages.
     $message_items[] = t('Max points at this difficulty: @points_built_max.', array('@points_built_max' => $points_built_max));
     $display_primary = ($points_built_max <= $points_built_primary) ? $points_built_max . ' (max)' : $points_built_primary;
-    $message_items[] = t('Bonus points for primary stats: @points_built_primary', array('@points_built_primary' => $display_primary));
+    $message_items[] = t('Points generated for primary stats: @points_built_primary', array('@points_built_primary' => $display_primary));
     $display_secondary = ($points_built_max <= $points_built_secondary) ? $points_built_max . ' (max)'  : $points_built_secondary;
-    $message_items[] = t('Bonus points for secondary stats: @points_built_secondary.', array('@points_built_secondary' => $display_secondary));
+    $message_items[] = t('Points generated for secondary stats: @points_built_secondary.', array('@points_built_secondary' => $display_secondary));
     $display_skills = ($points_built_max <= $points_built_skills) ? $points_built_max . ' (max)'  : $points_built_skills;
-    $message_items[] = t('Bonus points for skills: @points_built_skills.', array('@points_built_skills' => $display_skills));
-    $message_items[] = t('PP effect: @pp_effect.', array('@pp_effect' => number_format($context['ongoing']['_ruling']['PPs'], 2)));
+    $message_items[] = t('Points generated for skills: @points_built_skills.', array('@points_built_skills' => $display_skills));
+    $message_items[] = t('PP generated for effect: @pp_effect.', array('@pp_effect' => number_format($context['items']['_ruling']['PPs'], 2)));
   }
   else {
-    $message_items[] = t('PP generated for enchanting one time use: @pp_use.', array('@pp_use' => number_format($context['ongoing']['_ruling']['PPs'], 2)));
-    $message_items[] = t('PP generated for enchanting 3 uses: @pp_use.', array('@pp_use' => floor($context['ongoing']['_ruling']['PPs'] / 3)));
-    $message_items[] = t('PP generated for enchanting once a day: @pp_use.', array('@pp_use' => floor($context['ongoing']['_ruling']['PPs'] / 50)));
-    $message_items[] = t('PP generated for enchanting at will: @pp_use.', array('@pp_use' => floor($context['ongoing']['_ruling']['PPs'] / 150)));
+    $message_items[] = t('PP generated for enchanting one time use: @pp_use.', array('@pp_use' => number_format($context['items']['_ruling']['PPs'], 2)));
+    $message_items[] = t('PP generated for enchanting 3 uses: @pp_use.', array('@pp_use' => floor($context['items']['_ruling']['PPs'] / 3)));
+    $message_items[] = t('PP generated for enchanting once a day: @pp_use.', array('@pp_use' => floor($context['items']['_ruling']['PPs'] / 50)));
+    $message_items[] = t('PP generated for enchanting at will: @pp_use.', array('@pp_use' => floor($context['items']['_ruling']['PPs'] / 150)));
   }
   return $message_items;
+}
+
+/**
+ * Helper function, does skill qualify for items.
+ */
+function _item_helper_craft_skill($comment, $context) {
+  // Check that this is a proper two set roll, not a single.
+  if (count($context['roll_set']['aspects']) < 2) {
+    return FALSE;
+  }
+  // If neither of the array keywords are present, then bail.
+  $keywords = variable_get('item_helper_keywords', array('craft', 'repair'));
+  // Skill one.
+  $contains = array_intersect($context['roll_set']['aspects'][0], $keywords);
+  if (empty($contains)) {
+    return FALSE;
+  }
+  // Skill two.
+  $contains = array_intersect($context['roll_set']['aspects'][1], $keywords);
+  if (empty($contains)) {
+    return FALSE;
+  }
+  return TRUE;
 }
