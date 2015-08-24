@@ -283,7 +283,7 @@ function _scene_record_calculate_results($node, $comments, $goals) {
           $message_items[] = '<b>' . t('Roll @by_verb by @bys, @pp_verb @pps PP.', array(
               '@by_verb' => $by_verb, '@bys' =>  number_format($context['roll_set']['by']),
               '@pp_verb' => $pp_verb, '@pps' =>  number_format($context['roll_set']['PPs']),
-            ))  . '</b>';;
+            ))  . '</b>';
         }
         // And mark for feedback.
         $message_items[] = t('<b><span style="color:green;">@critwin crit wins-by</span> /' .
