@@ -298,10 +298,10 @@ function _dice_ruler_dice_assist_multi_attack_results($form, $form_state) {
         50
       );
       // Check if success.
-      if ($this_result[5] == 'yes') {
+      if ($this_result['success'] == 'yes') {
         $success = TRUE;
         $last_damage = $this_damage;
-        $this_damage = $this_result[7] + ($this_result[7] * $multi_attack_perc);
+        $this_damage = $this_result['pp'] + ($this_result['pp'] * $multi_attack_perc);
       }
     }
     // Number of successful attacks.
@@ -310,7 +310,7 @@ function _dice_ruler_dice_assist_multi_attack_results($form, $form_state) {
     $average_might = $average_might / 2;
     $advice = t('With your average might of @average_might, and an opponent of might @multi_attack_target_might you can probably ' .
       'hit him @number_attacks time(s) for a total of @total_damage.',
-      array('@average_might' => number_format($average_might, 2), '@multi_attack_target_might' => $multi_attack_target_might,
+      array('@average_might' => number_format($average_might), '@multi_attack_target_might' => $multi_attack_target_might,
       '@number_attacks' => $number_attacks, '@total_damage' => $this_damage * $number_attacks));
     $less_attacks = $number_attacks - 1;
     if (($last_damage * $less_attacks) > ($this_damage * $number_attacks)) {
@@ -1268,12 +1268,12 @@ function _dice_ruler_one_trait(
   $header = array(
     t('Might'),
     t('Diff'),
-'', //    t('Add diff.'),
     t('Rolled'),
     t('Roll needed'),
     t('Success'),
     t('Winsby'),
     t('Points'),
+    t('1/7th PP'),
     t('% of diff'),
     t('Failed might'),
   );
@@ -1346,12 +1346,12 @@ function _dice_ruler_two_trait(
   $header = array(
     t('Might'),
     t('Diff'),
-'', //    t('Add diff.'),
     t('Rolled'),
     t('Roll needed'),
     t('Success'),
     t('Winsby'),
     t('Points'),
+    t('1/7th PP'),
     t('% of diff'),
     t('Failed might'),
   );
@@ -1408,12 +1408,12 @@ function _dice_ruler_trait_vs(
   $header = array(
     t('Might'),
     t('Diff'),
-'', //    t('Add diff.'),
     t('Rolled'),
     t('Roll needed'),
     t('Success'),
     t('Winsby'),
     t('Points'),
+    t('1/7th PP'),
     t('% of diff'),
     t('Failed might'),
   );
@@ -1515,12 +1515,12 @@ function _dice_ruler_two_trait_vs(
   $header = array(
     t('Might'),
     t('Diff'),
-'', //    t('Add diff.'),
     t('Rolled'),
     t('Roll needed'),
     t('Success'),
     t('Winsby'),
     t('Points'),
+    t('1/7th PP'),
     t('% of diff'),
     t('Failed might'),
   );
@@ -1700,7 +1700,7 @@ function _dice_ruler_combat(
   array_unshift($attack_a_vs_b, 'A Attacks B:');
   $remove_field = array_pop($attack_a_vs_b);
   $remove_field = array_pop($attack_a_vs_b);
-  $attack_a_vs_b[] = ($attack_a_vs_b[8] + ($attack_a_vs_b[8] * $combat_weapon_a)) . t(' to B, w/ weapon');
+  $attack_a_vs_b[] = ($attack_a_vs_b['perc_diff'] + ($attack_a_vs_b['perc_diff'] * $combat_weapon_a)) . t(' to B, w/ weapon');
   $rows[] = $attack_a_vs_b;
   $attack_b_vs_a = _dice_ruler_make_two_trait_ruling(
     $combat_might_b_dex,
@@ -1715,10 +1715,10 @@ function _dice_ruler_combat(
   array_unshift($attack_b_vs_a, 'B Attacks A:');
   $remove_field = array_pop($attack_b_vs_a);
   $remove_field = array_pop($attack_b_vs_a);
-  $attack_b_vs_a[] = ($attack_b_vs_a[8] + ($attack_b_vs_a[8] * $combat_weapon_b)) . t(' to A, w/ weapon');
+  $attack_b_vs_a[] = ($attack_b_vs_a['perc_diff'] + ($attack_b_vs_a['perc_diff'] * $combat_weapon_b)) . t(' to A, w/ weapon');
   $rows[] = $attack_b_vs_a;
-  $attack_a_points = $attack_a_vs_b[8]; // PP produced by a
-  $attack_b_points = $attack_b_vs_a[8]; // PP produced by b
+  $attack_a_points = $attack_a_vs_b['perc_diff']; // PP produced by a
+  $attack_b_points = $attack_b_vs_a['perc_diff']; // PP produced by b
   $block_a_vs_b = _dice_ruler_make_two_trait_ruling(
     $combat_might_a_str,
     $combat_might_b_dex, // Defender.
@@ -1732,8 +1732,8 @@ function _dice_ruler_combat(
   array_unshift($block_a_vs_b, 'A Blocks B:');
   $remove_field = array_pop($block_a_vs_b);
   $remove_field = array_pop($block_a_vs_b);
-  $block_a_vs_b[] = (($attack_b_points - $block_a_vs_b[8]) > 0) ?
-    ($attack_b_points - $block_a_vs_b[8] + (($attack_b_points - $block_a_vs_b[8]) * $combat_weapon_b)) . t(' to A, w/ weapon') : 0 . t(' to A');
+  $block_a_vs_b[] = (($attack_b_points - $block_a_vs_b['perc_diff']) > 0) ?
+    ($attack_b_points - $block_a_vs_b['perc_diff'] + (($attack_b_points - $block_a_vs_b['perc_diff']) * $combat_weapon_b)) . t(' to A, w/ weapon') : 0 . t(' to A');
   $rows[] = $block_a_vs_b;
   $block_b_vs_a = _dice_ruler_make_two_trait_ruling(
     $combat_might_b_str,
@@ -1748,8 +1748,8 @@ function _dice_ruler_combat(
   array_unshift($block_b_vs_a, 'B Blocks A:');
   $remove_field = array_pop($block_b_vs_a);
   $remove_field = array_pop($block_b_vs_a);
-  $block_b_vs_a[] = (($attack_a_points - $block_b_vs_a[8]) > 0) ?
-    ($attack_a_points - $block_b_vs_a[8] + (($attack_a_points - $block_b_vs_a[8]) * $combat_weapon_a)) . t(' to B, w/ weapon') : 0 . t(' to B');
+  $block_b_vs_a[] = (($attack_a_points - $block_b_vs_a['perc_diff']) > 0) ?
+    ($attack_a_points - $block_b_vs_a['perc_diff'] + (($attack_a_points - $block_b_vs_a['perc_diff']) * $combat_weapon_a)) . t(' to B, w/ weapon') : 0 . t(' to B');
   $rows[] = $block_b_vs_a;
   $parry_a_vs_b = _dice_ruler_make_two_trait_ruling(
     $combat_might_a_dex,
@@ -1764,8 +1764,8 @@ function _dice_ruler_combat(
   array_unshift($parry_a_vs_b, 'A Parrys B:');
   $remove_field = array_pop($parry_a_vs_b);
   $remove_field = array_pop($parry_a_vs_b);
-  $parry_a_vs_b[] = (($attack_b_points - $parry_a_vs_b[8]) > 0) ?
-    ($attack_b_points - $parry_a_vs_b[8] + (($attack_b_points - $parry_a_vs_b[8]) * $combat_weapon_b)) . t(' to A, w/ weapon') : 0 . t(' to A');
+  $parry_a_vs_b[] = (($attack_b_points - $parry_a_vs_b['perc_diff']) > 0) ?
+    ($attack_b_points - $parry_a_vs_b['perc_diff'] + (($attack_b_points - $parry_a_vs_b['perc_diff']) * $combat_weapon_b)) . t(' to A, w/ weapon') : 0 . t(' to A');
   $rows[] = $parry_a_vs_b;
   $parry_b_vs_a = _dice_ruler_make_two_trait_ruling(
     $combat_might_b_dex,
@@ -1780,8 +1780,8 @@ function _dice_ruler_combat(
   array_unshift($parry_b_vs_a, 'B Parrys A:');
   $remove_field = array_pop($parry_b_vs_a);
   $remove_field = array_pop($parry_b_vs_a);
-  $parry_b_vs_a[] = (($attack_a_points - $parry_b_vs_a[8]) > 0) ?
-    ($attack_a_points - $parry_b_vs_a[8] + (($attack_a_points - $parry_b_vs_a[8]) * $combat_weapon_a)) . t(' to B, w/ weapon') : 0 . t(' to B');
+  $parry_b_vs_a[] = (($attack_a_points - $parry_b_vs_a['perc_diff']) > 0) ?
+    ($attack_a_points - $parry_b_vs_a['perc_diff'] + (($attack_a_points - $parry_b_vs_a['perc_diff']) * $combat_weapon_a)) . t(' to B, w/ weapon') : 0 . t(' to B');
   $rows[] = $parry_b_vs_a;
   $dodge_a_vs_b = _dice_ruler_make_two_trait_ruling(
     $combat_might_a_dex,
@@ -1796,8 +1796,8 @@ function _dice_ruler_combat(
   array_unshift($dodge_a_vs_b, 'A Dodges B:');
   $remove_field = array_pop($dodge_a_vs_b);
   $remove_field = array_pop($dodge_a_vs_b);
-  $dodge_a_vs_b[] = (($attack_b_points - $dodge_a_vs_b[8]) > 0) ?
-    ($attack_b_points - $dodge_a_vs_b[8] + (($attack_b_points - $dodge_a_vs_b[8]) * $combat_weapon_b)) . t(' to A, w/ weapon') : 0 . t(' to A');
+  $dodge_a_vs_b[] = (($attack_b_points - $dodge_a_vs_b['perc_diff']) > 0) ?
+    ($attack_b_points - $dodge_a_vs_b['perc_diff'] + (($attack_b_points - $dodge_a_vs_b['perc_diff']) * $combat_weapon_b)) . t(' to A, w/ weapon') : 0 . t(' to A');
   $rows[] = $dodge_a_vs_b;
   $dodge_b_vs_a = _dice_ruler_make_two_trait_ruling(
     $combat_might_b_dex,
@@ -1812,20 +1812,20 @@ function _dice_ruler_combat(
   array_unshift($dodge_b_vs_a, 'B Dodges A:');
   $remove_field = array_pop($dodge_b_vs_a);
   $remove_field = array_pop($dodge_b_vs_a);
-  $dodge_b_vs_a[] = (($attack_a_points - $dodge_b_vs_a[8]) > 0) ?
-    ($attack_a_points - $dodge_b_vs_a[8] + (($attack_a_points - $dodge_b_vs_a[8]) * $combat_weapon_a)) . t(' to B, w/ weapon') : 0 . t(' to B');
+  $dodge_b_vs_a[] = (($attack_a_points - $dodge_b_vs_a['perc_diff']) > 0) ?
+    ($attack_a_points - $dodge_b_vs_a['perc_diff'] + (($attack_a_points - $dodge_b_vs_a['perc_diff']) * $combat_weapon_a)) . t(' to B, w/ weapon') : 0 . t(' to B');
   $rows[] = $dodge_b_vs_a;
   // Now put all these into a table to display.
   $header = array(
     t('Action'),
     t('Might'),
     t('Diff'),
-'', //    t('Add diff.'),
     t('Rolled'),
     t('Roll needed'),
     t('Success'),
     t('Winsby'),
     t('Points'),
+    t('1/7th PP'),
     t('After defense'),
   );
   $output = theme('table', array(
@@ -1908,12 +1908,12 @@ function _dice_ruler_magic(
   $header = array(
     t('Might'),
     t('Diff'),
-'', //    t('Add diff.'),
     t('Rolled'),
     t('Roll needed'),
     t('Success'),
     t('Winsby'),
     t('Points'),
+    t('1/7th PP'),
     t('% of diff'),
     t('Failed might'),
   );
@@ -1982,10 +1982,10 @@ function _dice_ruler_make_magic_ruling(
     0,
     $magic_rolled_b);
   // Figure out as per a two-trait.
-  $versus_one = (($magic_rolled_a - $magic_a[4]) >= 0) ? $magic_add_diff_a : 0; // 4 => Roll needed
-  $versus_two = (($magic_rolled_b - $magic_b[4]) >= 0) ? $magic_add_diff_b : 0; // 4 => Roll needed
-  $winsby_one = $magic_a[3] - $magic_a[4];
-  $winsby_two = $magic_b[3] - $magic_b[4];
+  $versus_one = (($magic_rolled_a - $magic_a['needed']) >= 0) ? $magic_add_diff_a : 0; // 4 => Roll needed
+  $versus_two = (($magic_rolled_b - $magic_b['needed']) >= 0) ? $magic_add_diff_b : 0; // 4 => Roll needed
+  $winsby_one = $magic_a['rolled'] - $magic_a['needed'];
+  $winsby_two = $magic_b['rolled'] - $magic_b['needed'];
   $magic_winsby = ($winsby_one / 2) + ($winsby_two / 2) + $versus_one + $versus_two; // 6 => Windsby
   $magic_success = ($magic_winsby >= 0) ? 'yes' : 'no';
   if ($magic_success == 'no') {
@@ -2003,16 +2003,16 @@ function _dice_ruler_make_magic_ruling(
     $magic_failed_might = round((($magic_diff_a + $magic_diff_b) / 2) * (1 - $magic_perc_diff));
   }
   return array(
-    '<div>' . $magic_might_a . '</div><div style="border-top:1px solid;">' . $magic_might_b . '</div>', // Display the two.
-    '<div>' . $magic_diff_a . '</div><div style="border-top:1px solid;">' . $magic_diff_b . '</div>', // Display the two.
-'', //    '<div>' . $magic_add_diff_a . '</div><div style="border-top:1px solid;">' . $magic_add_diff_b . '</div>', // Display the two.
-    '<div>' . $magic_rolled_a . '</div><div style="border-top:1px solid;">' . $magic_rolled_b . '</div>', // Display the two.
-    '<div>' . number_format($magic_a[4], 1) . '</div><div style="border-top:1px solid;">' . number_format($magic_b[4], 1) . '</div>', // Display the two.
-    $magic_success,
-    is_numeric($magic_winsby) ? number_format($magic_winsby) : $magic_winsby,
-    is_numeric($magic_points) ? number_format($magic_points) : $magic_points,
-    is_numeric($magic_perc_diff) ? number_format($magic_perc_diff, 2) : $magic_perc_diff,
-    $magic_failed_might,
+    'might' => '<div>' . $magic_might_a . '</div><div style="border-top:1px solid;">' . $magic_might_b . '</div>', // Display the two.
+    'diff' => '<div>' . $magic_diff_a . '</div><div style="border-top:1px solid;">' . $magic_diff_b . '</div>', // Display the two.
+    'rolled' => '<div>' . $magic_rolled_a . '</div><div style="border-top:1px solid;">' . $magic_rolled_b . '</div>', // Display the two.
+    'needed' => '<div>' . number_format($magic_a['needed'], 1) . '</div><div style="border-top:1px solid;">' . number_format($magic_b['needed'], 1) . '</div>', // Display the two.
+    'success' => $magic_success,
+    'winsby' => is_numeric($magic_winsby) ? number_format($magic_winsby) : $magic_winsby,
+    'pp' => is_numeric($magic_points) ? number_format($magic_points) : $magic_points,
+    'seven_pp' => is_numeric($magic_points) ? number_format($magic_points / 7) : $magic_points,
+    'perc_diff' => is_numeric($magic_perc_diff) ? number_format($magic_perc_diff) : $magic_perc_diff,
+    'fail_might' => $magic_failed_might,
   );
 }
 
@@ -2049,16 +2049,16 @@ function _dice_ruler_make_ruling(
   }
   // Return array results.
   return array(
-    $one_trait_might,
-    $one_trait_diff,
-'', //    $one_trait_add_diff,
-    $one_trait_rolled,
-    ($format_results) ? number_format($roll_needed, 2) : $roll_needed,
-    $success,
-    ($format_results) ? number_format($winsby, 2) : $winsby,
-    ($format_results) ? number_format($points, 2) : $points,
-    is_numeric($perc_diff) ? number_format($perc_diff, 2) : $perc_diff,
-    $failed_might,
+    'might' => $one_trait_might,
+    'diff' => $one_trait_diff,
+    'rolled' => $one_trait_rolled,
+    'needed' => ($format_results) ? number_format($roll_needed) : $roll_needed,
+    'success' => $success,
+    'winsby' => ($format_results) ? number_format($winsby) : $winsby,
+    'pp' => ($format_results) ? number_format($points) : $points,
+    'seven_pp' => ($format_results) ? number_format($points / 7) : $points,
+    'perc_diff' => is_numeric($perc_diff) ? number_format($perc_diff) : $perc_diff,
+    'fail_might' => $failed_might,
   );
 }
 
@@ -2086,10 +2086,10 @@ function _dice_ruler_make_two_trait_ruling(
     $two_trait_diff_b,
     $two_trait_add_diff_b,
     $two_trait_rolled_b);
-  $versus_one = (($two_trait_rolled_a - $trait_a[4]) >= 0) ? $two_trait_add_diff_a : 0; // 4 => Roll needed
-  $versus_two = (($two_trait_rolled_b - $trait_b[4]) >= 0) ? $two_trait_add_diff_b : 0; // 4 => Roll needed
-  $winsby_one = $trait_a[3] - $trait_a[4];
-  $winsby_two = $trait_b[3] - $trait_b[4];
+  $versus_one = (($two_trait_rolled_a - $trait_a['needed']) >= 0) ? $two_trait_add_diff_a : 0; // 4 => Roll needed
+  $versus_two = (($two_trait_rolled_b - $trait_b['needed']) >= 0) ? $two_trait_add_diff_b : 0; // 4 => Roll needed
+  $winsby_one = $trait_a['rolled'] - $trait_a['needed'];
+  $winsby_two = $trait_b['rolled'] - $trait_b['needed'];
   $two_trait_winsby = ($winsby_one / 2) + ($winsby_two / 2) + $versus_one + $versus_two; // 6 => Windsby
   $two_trait_success = ($two_trait_winsby >= 0) ? 'yes' : 'no';
   if ($two_trait_success == 'no') {
@@ -2108,21 +2108,21 @@ function _dice_ruler_make_two_trait_ruling(
   }
   // Combine results.
   return array(
-    '<div>' . $two_trait_might_a . '</div><div style="border-top:1px solid;">' . $two_trait_might_b . '</div>', // Display the two.
-    '<div>' . $two_trait_diff_a . '</div><div style="border-top:1px solid;">' . $two_trait_diff_b . '</div>', // Display the two.
-'', //    '<div>' . $two_trait_add_diff_a . '</div><div style="border-top:1px solid;">' . $two_trait_add_diff_b . '</div>', // Display the two.
-    '<div>' . $two_trait_rolled_a . '</div><div style="border-top:1px solid;">' . $two_trait_rolled_b . '</div>', // Display the two.
-    '<div>' . number_format($trait_a[4], 1) . '</div><div style="border-top:1px solid;">' . number_format($trait_b[4], 1) . '</div>', // Display the two.
-    $two_trait_success,
-    is_numeric($two_trait_winsby) ? number_format($two_trait_winsby) : $two_trait_winsby,
-    is_numeric($two_trait_points) ? number_format($two_trait_points) : $two_trait_points,
-    is_numeric($two_trait_perc_diff) ? number_format($two_trait_perc_diff, 2) : $two_trait_perc_diff,
-    $two_trait_failed_might,
+    'might' => '<div>' . $two_trait_might_a . '</div><div style="border-top:1px solid;">' . $two_trait_might_b . '</div>', // Display the two.
+    'diff' => '<div>' . $two_trait_diff_a . '</div><div style="border-top:1px solid;">' . $two_trait_diff_b . '</div>', // Display the two.
+    'rolled' => '<div>' . $two_trait_rolled_a . '</div><div style="border-top:1px solid;">' . $two_trait_rolled_b . '</div>', // Display the two.
+    'needed' => '<div>' . number_format($trait_a['needed'], 1) . '</div><div style="border-top:1px solid;">' . number_format($trait_b['needed'], 1) . '</div>', // Display the two.
+    'success' => $two_trait_success,
+    'winsby' => is_numeric($two_trait_winsby) ? number_format($two_trait_winsby) : $two_trait_winsby,
+    'pp' => is_numeric($two_trait_points) ? number_format($two_trait_points) : $two_trait_points,
+    'seven_pp' => is_numeric($two_trait_points) ? number_format($two_trait_points / 7) : $two_trait_points,
+    'perc_diff' => is_numeric($two_trait_perc_diff) ? number_format($two_trait_perc_diff) : $two_trait_perc_diff,
+    'fail_might' => $two_trait_failed_might,
   );
 }
 
 /**
- * Helper function, read a set of rolls with agiven diff and bonus.
+ * Helper function, read a set of rolls with a given diff and bonus.
  */
 function _dice_ruler_read_dice($dice_rolls, $difficulty = 25, $bonus = 0) {
   // Create a formal result set for dice.
@@ -2187,8 +2187,8 @@ function _dice_ruler_read_dice($dice_rolls, $difficulty = 25, $bonus = 0) {
     // If more than two, we don't have an idea what's going on and should ignore the roll.
     // Now, if we have a ruling, let's get some info out of it too.
     if (!empty($result)) {
-      $by_generated = $result[6];
-      $PP_generated = $result[7];
+      $by_generated = $result['winsby'];
+      $PP_generated = $result['pp'];
       if ($by_generated < 0) {
         $PP_generated = floor( $PP_generated * (($by_generated * -1) / 100) );
         $roll_ruling['success'] = FALSE;
