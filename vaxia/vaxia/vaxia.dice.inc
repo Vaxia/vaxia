@@ -165,6 +165,7 @@ function _vaxia_dice_roller_prep_rolls($rolls, $character, $lang) {
         $value = !empty($skill_details->field_skill_value[$lang][0]['value']) ? $skill_details->field_skill_value[$lang][0]['value'] : 0;
         $name = !empty($skill_details->field_skill_name[$lang][0]['value']) ? $skill_details->field_skill_name[$lang][0]['value'] : t('Unk. skill');
         $desc = !empty($skill_details->field_skill_desc[$lang][0]['value']) ? $skill_details->field_skill_desc[$lang][0]['value'] : '';
+        $aspect_list = '';
         // Add aspects to display.
         $aspects = array();
         if (!empty($skill_details->field_aspect_one[$lang][0]['tid'])) {
@@ -181,6 +182,7 @@ function _vaxia_dice_roller_prep_rolls($rolls, $character, $lang) {
         }
         if (!empty($aspects)) {
           $desc .= ' (' . implode(', ', $aspects) . ')';
+          $aspect_list = implode(' ', $aspects);
         }
         // Add tech to display.
         if (!empty($skill_details->field_tech_languages[$lang]) && is_array($skill_details->field_tech_languages[$lang])) {
@@ -200,7 +202,7 @@ function _vaxia_dice_roller_prep_rolls($rolls, $character, $lang) {
         }
         // Set display.
         $roll['skill'] = $value;
-        $roll['note'][] = '<a title="' . $desc . '" href="#">' . $name . '</a> (' . $value . ')';
+        $roll['note'][] = '<a title="' . $desc . '" aspects="' . $aspect_list . '" href="#">' . $name . '</a> (' . $value . ')';
       }
     }
     $rolls[$delta] = $roll;
