@@ -141,11 +141,18 @@ function _vaxia_dice_roller_submit_rolls($submitted_rolls, $character, $lang) {
 function _vaxia_dice_roller_prep_rolls($rolls, $character, $lang) {
   // Figure out the stat and skill.
   foreach ($rolls as $delta => $roll) {
+    // Set defaults.
+    $roll['number'] = !empty($roll['number']) ? $roll['number'] : 1;
+    $roll['size'] = !empty($roll['size']) ? $roll['size'] : 100;
+    $roll['stat'] = !empty($roll['stat']) ? $roll['stat'] : 'any';
+    $roll['skill'] = !empty($roll['skill']) ? $roll['skill'] : 0;
     // Get some data before we start replacing values.
     $this_stat = !empty($roll['stat']) ? $roll['stat'] : 'any';
     $roll['stat_name'] = $this_stat;
+    $this_skill = !empty($roll['skill']) ? $roll['skill'] : 0;
+    $roll['skill_nid'] = $this_skill;
     // Add an initial value to the note array so we get a leading '+' on display.
-    $roll['note'] = !empty($roll['note']) ? $roll['note'] : array('');
+    $roll['note'] = !empty($roll['note']) ? $roll['note'] : array();
     // Get stat value from the character if it exists.
     if (!empty($roll['stat'])) {
       $small_label = _vaxia_dice_roller_small_label($this_stat);
