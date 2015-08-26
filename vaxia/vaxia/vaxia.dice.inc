@@ -127,6 +127,10 @@ function _vaxia_dice_roller_submit_rolls($submitted_rolls, $character, $lang) {
       $roll['skill'] = ($roll['skill'] > 0) ? (int) trim($roll['skill']) : 0;
       // Set roll.
       $roll['might'] = $roll['stat'] + $roll['skill'];
+      // TMP: addressing an ongoing bug that was putting the skill NID in value.
+      // This is NOT a permanent solution.
+      $roll['might'] = ($roll['might'] < 1000) ? $roll['might'] : 0;
+      // Make the command.
       $commands['commands'][] = $roll['number'] . 'd' . $roll['size'] . '+' . $roll['might'];
       $commands['notes'][] = 'Roll '. $delta + 1 .' : roll(' . $roll['number'] . 'd' . $roll['size'] . ') ' . implode(' + ', $roll['note']);
     }
