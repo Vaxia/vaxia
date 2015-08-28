@@ -11,16 +11,13 @@
 $str_rolls = '';
 $ruled = 'dice_not_ruled';
 if (isset($dice_rolls) && is_array($dice_rolls) && !empty($dice_rolls)) {
-  $read_rolls = _dice_ruler_read_dice($dice_rolls);
-  $rolls_found = array();
   $stats_rolled = '';
+  $rolls_found = array();
   if (isset($dice_rolls[0]['roll_notes'])) {
-    // Notes starts as a list of all rolls and results, separated by "<br>".
-    $notes = explode('<br>', $dice_rolls[0]['roll_notes']);
+    $read_rolls = _dice_ruler_read_dice($dice_rolls);
     // An array of each note, in the format: array('0' => "1 : roll(1d100) + agi (26)");
     foreach ($read_rolls['notes'] as $dice_row => $note) {
       $stat = '';
-      $display = array();
       // Trim "1 : roll" off the note. New format: roll(1d100) + agi (26)
       if (!empty($note)) {
         $note = substr(trim($note), 8);
@@ -38,6 +35,7 @@ if (isset($dice_rolls) && is_array($dice_rolls) && !empty($dice_rolls)) {
       $last = ($dice_row == (count($dice_rolls) - 1)) ? ' last ' : '';
       $even_odd = ($dice_row % 2 == 0) ? ' even ' : ' odd ';
       // Start generating the display.
+      $display = array();
       $display[] = '<div class="dice' . $first . $last . $even_odd . '" dice_row="' . $dice_row . '">';
       if (!empty($stat) || !empty($skill)) {
         $ruled = 'dice_ruled';
