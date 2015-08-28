@@ -184,7 +184,7 @@ Drupal.behaviors.diceRuler = {
     switch(button_type) {
       case 'combat':
         // Get all str, dex, end combinations.
-        $(rolls).find('.dice_set').each(function() {
+        $(rolls).find('.dice_sets').each(function() {
           if ($(this).find('.dice_roll_str').length > 0 && $(this).find('.dice_roll_dex').length > 0) {
             new_slot = new_slot + 1;
             var new_form = $('#dice-ruler-form #edit-action-' + new_slot);
@@ -199,7 +199,7 @@ Drupal.behaviors.diceRuler = {
       break;
       case 'magic':
         // Get all int, spi combinations.
-        $(rolls).find('.dice_set').each(function() {
+        $(rolls).find('.dice_sets').each(function() {
           if ($(this).find('.dice_roll_int').length > 0 && $(this).find('.dice_roll_spi').length > 0) {
             new_slot = new_slot + 1;
             var new_form = $('#dice-ruler-form #edit-action-' + new_slot);
@@ -212,7 +212,7 @@ Drupal.behaviors.diceRuler = {
       break;
       case 'tech':
         // Get all int, dex combinations.
-        $(rolls).find('.dice_set').each(function() {
+        $(rolls).find('.dice_sets').each(function() {
           if ($(this).find('.dice_roll_int').length > 0 && $(this).find('.dice_roll_dex').length > 0) {
             new_slot = new_slot + 1;
             var new_form = $('#dice-ruler-form #edit-action-' + new_slot);
@@ -239,7 +239,7 @@ Drupal.behaviors.diceRuler = {
     switch(button_type) {
       case 'combat_b':
         // Get all str, dex, end combinations.
-        $(rolls).find('.dice_set').each(function() {
+        $(rolls).find('.dice_sets').each(function() {
           if ($(this).find('.dice_roll_str').length > 0 && $(this).find('.dice_roll_dex').length > 0) {
             var new_form = $('#dice-ruler-form #edit-action-' + new_slot);
             $(new_form).find('input[name*="combat_might_b_dex"]').val( $(this).find('.dice_roll_dex').attr('might') );
