@@ -58,7 +58,7 @@ if (isset($dice_rolls) && is_array($dice_rolls) && !empty($dice_rolls)) {
     $dice_roll = 0;
     foreach ($roll_set as $stat => $roll) {
       $str_rolls .= '    ' .
-        '<span class="dice_roll dice_roll_' . $roll['stat_name'] . ' dice_row_' . $dice_roll . '" ' .
+        '<span class="dice_roll dice_roll_' . $index . ' dice_row_' . $dice_roll . '" ' .
         'stat="' . $stat . '" roll="' . $roll['roll'] . '" might="' . $roll['might'] . '"></span>'. "\n";
         $dice_roll++;
     }
