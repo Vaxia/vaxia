@@ -40,6 +40,7 @@ if (isset($dice_rolls) && is_array($dice_rolls) && !empty($dice_rolls)) {
       // Start generating the display.
       $display[] = '<div class="dice' . $first . $last . $even_odd . '" dice_row="' . $dice_row . '">';
       if (!empty($stat) || !empty($skill)) {
+        $ruled = 'dice_ruled';
         $display[] = '<span class="dice_render">' . $note . ' =>' . ' <b>' . t('Might') . ':</b> ' . $might . ' <b>' . t('Roll') . ':</b> ' . $roll . '</span>';
         $rolls_found[$dice_row][$stat] = array('might' => $might, 'roll' => $roll, 'stat_name' => $stat_name);
       }
