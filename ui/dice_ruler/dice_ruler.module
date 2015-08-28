@@ -1699,7 +1699,6 @@ function _dice_ruler_combat(
   );
   array_unshift($attack_a_vs_b, 'A Attacks B:');
   $remove_field = array_pop($attack_a_vs_b);
-  $remove_field = array_pop($attack_a_vs_b);
   $attack_a_vs_b[] = ($attack_a_vs_b['perc_diff'] + ($attack_a_vs_b['perc_diff'] * $combat_weapon_a)) . t(' to B, w/ weapon');
   $rows[] = $attack_a_vs_b;
   $attack_b_vs_a = _dice_ruler_make_two_trait_ruling(
@@ -1713,7 +1712,6 @@ function _dice_ruler_combat(
     $combat_rolled_b_str
   );
   array_unshift($attack_b_vs_a, 'B Attacks A:');
-  $remove_field = array_pop($attack_b_vs_a);
   $remove_field = array_pop($attack_b_vs_a);
   $attack_b_vs_a[] = ($attack_b_vs_a['perc_diff'] + ($attack_b_vs_a['perc_diff'] * $combat_weapon_b)) . t(' to A, w/ weapon');
   $rows[] = $attack_b_vs_a;
@@ -1731,7 +1729,6 @@ function _dice_ruler_combat(
   );
   array_unshift($block_a_vs_b, 'A Blocks B:');
   $remove_field = array_pop($block_a_vs_b);
-  $remove_field = array_pop($block_a_vs_b);
   $block_a_vs_b[] = (($attack_b_points - $block_a_vs_b['perc_diff']) > 0) ?
     ($attack_b_points - $block_a_vs_b['perc_diff'] + (($attack_b_points - $block_a_vs_b['perc_diff']) * $combat_weapon_b)) . t(' to A, w/ weapon') : 0 . t(' to A');
   $rows[] = $block_a_vs_b;
@@ -1746,7 +1743,6 @@ function _dice_ruler_combat(
     $combat_rolled_b_end
   );
   array_unshift($block_b_vs_a, 'B Blocks A:');
-  $remove_field = array_pop($block_b_vs_a);
   $remove_field = array_pop($block_b_vs_a);
   $block_b_vs_a[] = (($attack_a_points - $block_b_vs_a['perc_diff']) > 0) ?
     ($attack_a_points - $block_b_vs_a['perc_diff'] + (($attack_a_points - $block_b_vs_a['perc_diff']) * $combat_weapon_a)) . t(' to B, w/ weapon') : 0 . t(' to B');
@@ -1763,7 +1759,6 @@ function _dice_ruler_combat(
   );
   array_unshift($parry_a_vs_b, 'A Parrys B:');
   $remove_field = array_pop($parry_a_vs_b);
-  $remove_field = array_pop($parry_a_vs_b);
   $parry_a_vs_b[] = (($attack_b_points - $parry_a_vs_b['perc_diff']) > 0) ?
     ($attack_b_points - $parry_a_vs_b['perc_diff'] + (($attack_b_points - $parry_a_vs_b['perc_diff']) * $combat_weapon_b)) . t(' to A, w/ weapon') : 0 . t(' to A');
   $rows[] = $parry_a_vs_b;
@@ -1778,7 +1773,6 @@ function _dice_ruler_combat(
     $combat_rolled_b_str
   );
   array_unshift($parry_b_vs_a, 'B Parrys A:');
-  $remove_field = array_pop($parry_b_vs_a);
   $remove_field = array_pop($parry_b_vs_a);
   $parry_b_vs_a[] = (($attack_a_points - $parry_b_vs_a['perc_diff']) > 0) ?
     ($attack_a_points - $parry_b_vs_a['perc_diff'] + (($attack_a_points - $parry_b_vs_a['perc_diff']) * $combat_weapon_a)) . t(' to B, w/ weapon') : 0 . t(' to B');
@@ -1795,7 +1789,6 @@ function _dice_ruler_combat(
   );
   array_unshift($dodge_a_vs_b, 'A Dodges B:');
   $remove_field = array_pop($dodge_a_vs_b);
-  $remove_field = array_pop($dodge_a_vs_b);
   $dodge_a_vs_b[] = (($attack_b_points - $dodge_a_vs_b['perc_diff']) > 0) ?
     ($attack_b_points - $dodge_a_vs_b['perc_diff'] + (($attack_b_points - $dodge_a_vs_b['perc_diff']) * $combat_weapon_b)) . t(' to A, w/ weapon') : 0 . t(' to A');
   $rows[] = $dodge_a_vs_b;
@@ -1810,7 +1803,6 @@ function _dice_ruler_combat(
     $combat_rolled_b_end
   );
   array_unshift($dodge_b_vs_a, 'B Dodges A:');
-  $remove_field = array_pop($dodge_b_vs_a);
   $remove_field = array_pop($dodge_b_vs_a);
   $dodge_b_vs_a[] = (($attack_a_points - $dodge_b_vs_a['perc_diff']) > 0) ?
     ($attack_a_points - $dodge_b_vs_a['perc_diff'] + (($attack_a_points - $dodge_b_vs_a['perc_diff']) * $combat_weapon_a)) . t(' to B, w/ weapon') : 0 . t(' to B');
