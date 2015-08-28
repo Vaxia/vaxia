@@ -2196,8 +2196,8 @@ function _dice_ruler_read_dice($dice_rolls, $difficulty = 0, $bonus = 0) {
       $roll_ruling['skill'][] = $skill;
       $roll_ruling['notes'][] = $note;
     }
-    // No difficulty, no ruling.
-    if ($difficulty < 1) {
+    // No difficulty, no ruling, must be at least 1.
+    if ($difficulty > 0) {
       // Figure out if this is a 1 trait roll.
       if (count($roll_ruling['mights']) == 1) {
         $result = _dice_ruler_make_ruling(
