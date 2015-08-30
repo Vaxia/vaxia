@@ -96,8 +96,8 @@ function _site_wiki_process($text, $filter, $format, $langcode, $cache, $cache_i
       // Add slashes to the title when we set the pattern up.
       $title = preg_quote($title);
       $search_replace = array(
-        '|[ \n]' . $title . '[ \n]|i' => $replacement,
-        '|[\]]' . $title . '[ \n]|i' => ']' . $replacement,
+        '|[ \n]' . $title . '[ .,?!\n]|i' => $replacement,
+        '|[\]]' . $title . '[ .,?!\n]|i' => ']' . $replacement,
         '|[ \n]' . $title . '[\[]|i' => $replacement . '[',
         '|[\]]' . $title . '[\[]|i' => ']' . $replacement . '[',
       );
@@ -120,7 +120,7 @@ function _site_wiki_process($text, $filter, $format, $langcode, $cache, $cache_i
 function _site_wiki_get_titles() {
   $results = db_query('SELECT n.nid, n.title FROM {node} n ' .
     'WHERE type=\'wiki_page\' ' .
-    'AND status=1 '.
+    'AND status=1 '. // Published 
     'ORDER BY CHAR_LENGTH(title) DESC');
   $found = array();
   foreach ($results as $result) {
