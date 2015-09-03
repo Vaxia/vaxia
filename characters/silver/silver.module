@@ -400,7 +400,7 @@ function _silver_scene_calculate_silver($comment, &$context) {
     }
     // Add value to character.
     if (!empty($context['ongoing']['_ruling']['PPs'])) {
-      $context['ongoing']['silver']['all'][$character->title] += $context['ongoing']['_ruling']['PPs'];
+      $context['ongoing']['silver']['all'][$character->title] = $context['ongoing']['_ruling']['PPs'];
     }
     // Show amount.
     foreach ($context['ongoing']['silver']['all'] as $name => $count) {
