@@ -2142,10 +2142,17 @@ function _dice_ruler_read_dice($dice_rolls, $difficulty = 0, $bonus = 0) {
     // Break all dice up looking for the rolls that got with them.
     foreach ($dice_rolls as $index => $dice_roll) {
       $results = explode(',', $dice_rolls[$index]['roll_result']);
-      $might = array_pop($results);
-      $might = explode('=', $might);
-      $roll_ruling['mights'][] = isset($might[0]) ? trim($might[0]) : 0;
-      $roll_ruling['rolls'][] = isset($results[0]) ? trim($results[0]) : 0;
+      if (count($results) > 1) {
+        $might = array_pop($results);
+        $might = explode('=', $might);
+        $roll_ruling['mights'][] = isset($might[0]) ? trim($might[0]) : 0;
+        $roll_ruling['rolls'][] = isset($results[0]) ? trim($results[0]) : 0;
+      }
+      else {
+        $rolls = explode('=', $results[0]);
+        $roll_ruling['mights'][] = 0;
+        $roll_ruling['rolls'][] = isset($rolls[0]) ? trim($rolls[0]) : 0;
+      }
       $aspects = array();
       $stat_name = $stat = $skill = '';
       $note = '';

@@ -17,7 +17,6 @@ if (isset($dice_rolls) && is_array($dice_rolls) && !empty($dice_rolls)) {
     $read_rolls = _dice_ruler_read_dice($dice_rolls);
     // An array of each note, in the format: array('0' => "1 : roll(1d100) + agi (26)");
     foreach ($read_rolls['notes'] as $dice_row => $note) {
-      $stat = '';
       // Trim "1 : roll" off the note. New format: roll(1d100) + agi (26)
       if (!empty($note)) {
         $note = substr(trim($note), 8);
@@ -25,7 +24,6 @@ if (isset($dice_rolls) && is_array($dice_rolls) && !empty($dice_rolls)) {
       // Get the values from the row.
       $stat = !empty($read_rolls['stat'][$dice_row]) ? $read_rolls['stat'][$dice_row] : 0;
       $stat_name = !empty($read_rolls['stat_name'][$dice_row]) ? $read_rolls['stat_name'][$dice_row] : 0;
-      $skill = !empty($read_rolls['skill'][$dice_row]) ? $read_rolls['skill'][$dice_row] : 0;
       $might = !empty($read_rolls['mights'][$dice_row]) ? $read_rolls['mights'][$dice_row] : 0;
       $roll = !empty($read_rolls['rolls'][$dice_row]) ? $read_rolls['rolls'][$dice_row] : 0;
       // Figure out the ass for the display.
@@ -37,10 +35,10 @@ if (isset($dice_rolls) && is_array($dice_rolls) && !empty($dice_rolls)) {
       // Start generating the display.
       $display = array();
       $display[] = '<div class="dice' . $first . $last . $even_odd . '" dice_row="' . $dice_row . '">';
-      if (!empty($stat) || !empty($skill)) {
+      if (!empty($might)) {
         $ruled = 'dice_ruled';
         $display[] = '<span class="dice_render">' . $note . ' =>' . ' <b>' . t('Might') . ':</b> ' . $might . ' <b>' . t('Roll') . ':</b> ' . $roll . '</span>';
-        $rolls_found[$dice_row][$stat] = array('might' => $might, 'roll' => $roll, 'stat_name' => $stat_name);
+        $rolls_found[$dice_row] = array('might' => $might, 'roll' => $roll, 'stat_name' => $stat_name, 'stat' => $stat);
       }
       else {
         $display[] = '<span class="dice_render">' . $note . ' => ' . '<b>' . t('Roll') . ':</b> ' . $roll . '</span>';
@@ -51,20 +49,13 @@ if (isset($dice_rolls) && is_array($dice_rolls) && !empty($dice_rolls)) {
   } // End if protecting the roll set.
   if (!empty($rolls_found)) {
     $str_rolls .= '<span class="dice_sets" style="display:none;">'. "\n";
-  }
-  // We now know all the stats involved in this roll and have the rolls collected into a sorted array.
-  foreach ($rolls_found as $index => $roll_set) {
-    $str_rolls .= '  <span class="dice_set dice_set_' . $index . '" set="' . $index . '">'. "\n";
-    $dice_roll = 0;
-    foreach ($roll_set as $stat => $roll) {
-      $str_rolls .= '    ' .
-        '<span class="dice_roll dice_roll_' . $roll['stat_name'] . ' dice_row_' . $index . '" ' .
-        'stat="' . $stat . '" roll="' . $roll['roll'] . '" might="' . $roll['might'] . '"></span>'. "\n";
-        $dice_roll++;
+    // We now know all the stats involved in this roll and have the rolls collected into a sorted array.
+    foreach ($rolls_found as $dice_row => $roll) {
+      $str_rolls .= '  <span class="dice_set dice_set_' . $dice_row . '" set="' . $dice_row . '">'. "\n";
+      $str_rolls .= '    <span class="dice_roll dice_roll_' . $roll['stat_name'] . ' dice_row_' . $dice_row . '" ' .
+        'stat="' . $roll['stat'] . '" roll="' . $roll['roll'] . '" might="' . $roll['might'] . '"></span>'. "\n";
+      $str_rolls .= '  </span>'. "\n";
     }
-    $str_rolls .= '  </span>'. "\n";
-  }
-  if (!empty($rolls_found)) {
     $str_rolls .= '</span>'. "\n";
   }
 }

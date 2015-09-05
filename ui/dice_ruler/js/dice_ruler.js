@@ -277,39 +277,41 @@ Drupal.behaviors.diceRuler = {
 
   // Once, on page load, add the pause button to the interface.
   $('document').ready(function() {
-    // Set up the form for us.
-    setupRuler();
-    // Show or hide the reset button based on the actions selected.
-    $('#dice-ruler-form select[name="actions"]').change(function() {
-      if ($(this).val() == 'hidden') {
+    // Set up the form for us, but only once.
+    if ($('.dice_rule').length == 0) {
+      setupRuler();
+      // Show or hide the reset button based on the actions selected.
+      $('#dice-ruler-form select[name="actions"]').change(function() {
+        if ($(this).val() == 'hidden') {
+          clearRuler();
+        }
+      });
+      // Add click listener for the ruler.
+      $('.dice_ruler_reset').click(function() {
         clearRuler();
-      }
-    });
-    // Add click listener for the ruler.
-    $('.dice_ruler_reset').click(function() {
-      clearRuler();
-      return false;
-    });
-    // Load up just this row when clicked on.
-    $('.dice-ruler-row-buttons .dice-ruler-a a').click(function() {
-      clickRowButton(this);
-      return false;
-    });
-    // Vs only for the two vs settings.
-    $('.dice-ruler-row-buttons .dice-ruler-b a').click(function() {
-      clickRowButtonB(this);
-      return false;
-    });
-    // Load it all up when clicked on.
-    $('.dice-ruler-set-buttons .dice-ruler-a a').click(function() {
-      clickSetButton(this);
-      return false;
-    });
-    // Vs only for the combat vs settings.
-    $('.dice-ruler-set-buttons .dice-ruler-b a').click(function() {
-      clickSetButtonB(this);
-      return false;
-    });
+        return false;
+      });
+      // Load up just this row when clicked on.
+      $('.dice-ruler-row-buttons .dice-ruler-a a').click(function() {
+        clickRowButton(this);
+        return false;
+      });
+      // Vs only for the two vs settings.
+      $('.dice-ruler-row-buttons .dice-ruler-b a').click(function() {
+        clickRowButtonB(this);
+        return false;
+      });
+      // Load it all up when clicked on.
+      $('.dice-ruler-set-buttons .dice-ruler-a a').click(function() {
+        clickSetButton(this);
+        return false;
+      });
+      // Vs only for the combat vs settings.
+      $('.dice-ruler-set-buttons .dice-ruler-b a').click(function() {
+        clickSetButtonB(this);
+        return false;
+      });
+    }
   });
 
   })(jQuery); }
