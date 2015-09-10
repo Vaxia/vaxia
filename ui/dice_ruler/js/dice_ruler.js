@@ -102,7 +102,7 @@ Drupal.behaviors.diceRuler = {
           $(new_form).find('input[name*="two_trait_might_a"]').val( $(this).attr('might') );
           $(new_form).find('input[name*="two_trait_rolled_a"]').val( $(this).attr('roll') );
           var this_set = $(this).parent('.dice_set').attr('set');
-          $(rolls).find('.dice_set_' + this_set + ' .dice_row_' + next_row).each(function() {
+          $(rolls).find('.dice_row_' + next_row).each(function() {
             $(new_form).find('input[name*="two_trait_might_b"]').val( $(this).attr('might') );
             $(new_form).find('input[name*="two_trait_rolled_b"]').val( $(this).attr('roll') );
           });
@@ -125,7 +125,7 @@ Drupal.behaviors.diceRuler = {
           $(new_form).find('input[name*="two_trait_vs_might_aa"]').val( $(this).attr('might') );
           $(new_form).find('input[name*="two_trait_vs_rolled_aa"]').val( $(this).attr('roll') );
           var this_set = $(this).parent('.dice_set').attr('set');
-          $(rolls).find('.dice_set_' + this_set + ' .dice_row_' + next_row).each(function() {
+          $(rolls).find('.dice_row_' + next_row).each(function() {
             $(new_form).find('input[name*="two_trait_vs_might_ab"]').val( $(this).attr('might') );
             $(new_form).find('input[name*="two_trait_vs_rolled_ab"]').val( $(this).attr('roll') );
           });
@@ -161,7 +161,7 @@ Drupal.behaviors.diceRuler = {
           $(new_form).find('input[name*="two_trait_vs_might_ba"]').val( $(this).attr('might') );
           $(new_form).find('input[name*="two_trait_vs_rolled_ba"]').val( $(this).attr('roll') );
           var this_set = $(this).parent('.dice_set').attr('set');
-          $(rolls).find('.dice_set_' + this_set + ' .dice_row_' + next_row).each(function() {
+          $(rolls).find('.dice_row_' + next_row).each(function() {
             $(new_form).find('input[name*="two_trait_vs_might_bb"]').val( $(this).attr('might') );
             $(new_form).find('input[name*="two_trait_vs_rolled_bb"]').val( $(this).attr('roll') );
           });
