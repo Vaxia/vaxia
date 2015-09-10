@@ -35,7 +35,8 @@ if (isset($dice_rolls) && is_array($dice_rolls) && !empty($dice_rolls)) {
       $display = array();
       $display[] = '<div class="dice' . $first . $last . $even_odd . '" dice_row="' . $dice_row . '">';
       if (!empty($might)) {
-        $note = substr($note, 5);
+        $note = str_replace('1d100 + ', '', $note);
+        $note = str_replace('1d100  + ', '', $note);
         $ruled = 'dice_ruled';
         $display[] = '<span class="dice_render">' . $note . ' =>' . ' <b>' .
           t('Might') . ':</b> ' . $might . ' <b>' . t('Roll') . ':</b> ' . $roll . '</span>';
