@@ -35,12 +35,14 @@ if (isset($dice_rolls) && is_array($dice_rolls) && !empty($dice_rolls)) {
       $display = array();
       $display[] = '<div class="dice' . $first . $last . $even_odd . '" dice_row="' . $dice_row . '">';
       if (!empty($might)) {
+        $note = substr($note, 5);
         $ruled = 'dice_ruled';
         $display[] = '<span class="dice_render">' . $note . ' =>' . ' <b>' .
           t('Might') . ':</b> ' . $might . ' <b>' . t('Roll') . ':</b> ' . $roll . '</span>';
         $rolls_found[$dice_row] = array('might' => $might, 'roll' => $roll, 'stat_name' => $stat_name, 'stat' => $stat);
       }
       else {
+        $note = substr($note, 1);
         $display[] = '<span class="dice_render">' . $note . ' => ' . '<b>' . t('Roll') . ':</b> ' . $roll . '</span>';
       } 
       $display[] = '</div>';

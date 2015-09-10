@@ -2128,8 +2128,9 @@ function _dice_ruler_read_dice($dice_rolls, $difficulty = 0, $bonus = 0) {
   // Create a formal result set for dice.
   $roll_ruling = array();
   // Read on all results.
+  $roll_ruling['results']  = array();
   $roll_ruling['mights'] = $roll_ruling['rolls'] = array();
-  $roll_ruling['stat'] = $roll_ruling['skill'] = array();
+  $roll_ruling['skill'] = $roll_ruling['stat'] = $roll_ruling['stat_name'] = array();
   $roll_ruling['aspects'] = $roll_ruling['notes'] = array();
   $roll_ruling['diff'] = $difficulty;
   $roll_ruling['bonus'] = $bonus;
@@ -2141,28 +2142,22 @@ function _dice_ruler_read_dice($dice_rolls, $difficulty = 0, $bonus = 0) {
   if (!empty($dice_rolls)) {
     // Break all dice up looking for the rolls that got with them.
     foreach ($dice_rolls as $index => $dice_roll) {
-      $results = explode(',', $dice_rolls[$index]['roll_result']);
-      if (count($results) > 1) {
-        $might = array_pop($results);
-        $might = explode('=', $might);
-        $roll_ruling['mights'][] = isset($might[0]) ? trim($might[0]) : 0;
-        $roll_ruling['rolls'][] = isset($results[0]) ? trim($results[0]) : 0;
-      }
-      else {
-        $rolls = explode('=', $results[0]);
-        $roll_ruling['mights'][] = 0;
-        $roll_ruling['rolls'][] = isset($rolls[0]) ? trim($rolls[0]) : 0;
-      }
-      $aspects = array();
-      $stat_name = $stat = $skill = '';
-      $note = '';
-      // Look for the 'title' alt for notes, so we can ignore anything not in format.
+      // set values.
+      $results = isset($dice_rolls[$index]['roll_result']) ? $dice_rolls[$index]['roll_result'] : '';
       $notes = isset($dice_rolls[$index]['roll_notes']) ? $dice_rolls[$index]['roll_notes'] : '';
-      if (strpos($notes, '<a title="') !== FALSE) {
+      $aspects = array();
+      $stat_name = '';
+      $stat = $skill = $might = 0;
+      // Get notes, new or old style.
+      $note = $notes;
+      if (strpos('<br>', $notes) !== FALSE) {
         $notes = explode('<br>', $notes);
         $skip = array_shift($notes);
         $note = isset($notes[$index]) ? trim($notes[$index]) : '';
-        // Check new style.
+      }
+      // Look for the 'title' alt for notes with skills, and get the data out of them if we can.
+      if (strpos($note, '<a title="') !== FALSE) {
+        // Check new style for passing values on roll notes.
         if (strpos($note, 'aspects="') !== FALSE && preg_match('/aspects="(.+?)"/', $note, $matches)) {
           if (!empty($matches[1])) {
             $found = explode(' ', $matches[1]);
@@ -2175,7 +2170,7 @@ function _dice_ruler_read_dice($dice_rolls, $difficulty = 0, $bonus = 0) {
           }
         }
         if (strpos($note, 'stat="') !== FALSE && preg_match('/stat="(.+?)"/', $note, $matches)) {
-          if (!empty($matches[1])) {
+          if (!empty($matches[1]) && $stat_name != 'any') {
             $stat = (int) $matches[1];
           }
         }
@@ -2196,14 +2191,39 @@ function _dice_ruler_read_dice($dice_rolls, $difficulty = 0, $bonus = 0) {
           $aspects[$a_i] = trim($aspect);
         }
       }
+      // Check for stat information now.
+      if (empty($stat_name) && preg_match('/d100 (...) \(\d+?\)/', $note, $matches)) {
+        if (!empty($matches[1])) {
+          $stat_name = trim($matches[1]);
+        }
+      }
+      if (empty($stat) && preg_match('/d100 ... \((\d+?)\)/', $note, $matches)) {
+        if (!empty($matches[1])) {
+          $stat = (int) $matches[1];
+        }
+      }
+      // Lastly, get the roll.
+      $roll_results = explode('=', $results);
+      $roll_results = explode(',', $roll_results[0]);
+      if (count($roll_results) > 1 && (!empty($stat) || !empty($skill))) {
+        $skip = array_pop($roll_results);
+      }
       // Extract the aspects from the nodes.
-      $roll_ruling['aspects'][] = $aspects;
-      $roll_ruling['stat_name'][] = $stat_name;
-      $roll_ruling['stat'][] = $stat;
-      $roll_ruling['skill'][] = $skill;
-      $roll_ruling['notes'][] = $note;
+      foreach ($roll_results as $roll_result) {
+        $roll_ruling['results'][] = $results;
+        $roll_ruling['aspects'][] = $aspects;
+        $roll_ruling['stat_name'][] = ($stat_name != 'any') ? $stat_name : '';
+        $roll_ruling['stat'][] = $stat;
+        $roll_ruling['skill'][] = $skill;
+        $roll_ruling['mights'][] = $stat + $skill;
+        $roll_ruling['rolls'][] = trim($roll_result);
+        $roll_ruling['notes'][] = $note;
+      }
     }
-    // No difficulty, no ruling, must be at least 1.
+
+    // If difficulty is set, then we process all rolls
+    // to date in light of their available settings and stuff.
+    // The following values are after processing for the entire set.
     if ($difficulty > 0) {
       // Figure out if this is a 1 trait roll.
       if (count($roll_ruling['mights']) == 1) {

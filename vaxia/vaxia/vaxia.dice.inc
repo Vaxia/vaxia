@@ -79,17 +79,17 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
       variable_set('vaxia_last_character_' . $user->uid, $character->nid);
     }
     // Get the command array.
-    $roll_commands = _vaxia_dice_roller_submit_rolls($content->vaxia_rolls, $character, $lang);
+    $commands = _vaxia_dice_roller_submit_rolls($content->vaxia_rolls, $character, $lang);
     // Apply the set of rolls.
-    if (!empty($roll_commands)) {
-      // Get the notes and commands.
-      $roll_commands['commands'] = !empty($roll_commands['commands']) ? $roll_commands['commands'] : array();
-      $commands = implode(';', $roll_commands['commands']);
-      $roll_commands['notes'] = !empty($roll_commands['notes']) ? $roll_commands['notes'] : array();
-      $notes = '<br>' . implode('<br>', $roll_commands['notes']) . '<br>';
+    if (!empty($commands)) {
       // Make the call.
       module_load_include('inc', 'dice_roller', 'dice_roller.roller');
-      $dids = _dice_roller_parse_roll($commands, $notes, $content->cid, 'c');
+      foreach ($commands as $command) {
+        if (!empty($command['command'])) {
+          $command['note'] = !empty($command['note']) ? $command['note'] : $command['command'];
+          _dice_roller_parse_roll($command['command'], $command['note'], $content->cid, 'c');
+        }
+      }
     }
   }
 }
@@ -131,8 +131,11 @@ function _vaxia_dice_roller_submit_rolls($submitted_rolls, $character, $lang) {
       // This is NOT a permanent solution.
       $roll['might'] = ($roll['might'] < 1000) ? $roll['might'] : 0;
       // Make the command.
-      $commands['commands'][] = $roll['number'] . 'd' . $roll['size'] . '+' . $roll['might'];
-      $commands['notes'][] = 'Roll '. $delta + 1 .' : roll(' . $roll['number'] . 'd' . $roll['size'] . ') ' . implode(' + ', $roll['note']);
+      $this_note = !empty($roll['note']) ? implode(' + ', $roll['note']) : $roll['number'] . 'd' . $roll['size'];
+      $commands[] = array(
+        'command' => $roll['number'] . 'd' . $roll['size'] . '+' . $roll['might'],
+        'note' => $this_note,
+      );
     }
     return $commands;
   }
@@ -280,7 +283,7 @@ function _vaxia_dice_roller_get_selected_character(&$form, &$form_state) {
  * For regular characters only, not SH characters.
  */
 function _vaxia_dice_roller_node_row($node) {
-  $dice_size = array(100,77,50,30,20,16,12,10,8,6,4,2);
+  $dice_size = array(100,20,12,10,8,6,4,2);
   // Make sure the stat keys are set by field.
   $stats = _vaxia_dice_roller_get_stats($node);
   $skills = _vaxia_dice_roller_get_skills($node);
