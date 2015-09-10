@@ -73,15 +73,13 @@ function _item_companions_pick($form, $form_state) {
  */
 function item_companions_vaxia_dice_commands_alter(&$rolls, $context) {
   $submitted_rolls = $context['submitted_rolls'];
-  $character = $context['character'];
-  $lang = $context['lang'];
-  $companion_rolls = array();
   // Check for items.
   if (!empty($submitted_rolls['as_companion']) && !empty($submitted_rolls['companions'])) {
     // Make sure that the companion's roll is also included in the set.
     // So expanding the number of rolls and all.
     $companion = node_load($submitted_rolls['as_companion']);
     // Add rolls for the companion.
+    $companion_rolls = array();
     foreach ($submitted_rolls['companions']['dice'] as $delta => $roll) {
       $number = !empty($roll['number']) ? $roll['number'] : 0;
       if ($number > 0) {
@@ -92,12 +90,11 @@ function item_companions_vaxia_dice_commands_alter(&$rolls, $context) {
       }
     }
     // Calculate the companion roll preps.
-    $prepped_rolls = _vaxia_dice_roller_prep_rolls($companion_rolls, $companion, $lang);
+    $prepped_rolls = _vaxia_dice_roller_prep_rolls($companion_rolls, $companion, $context['lang']);
     foreach ($prepped_rolls as $index => $roll) {
       $roll['note'][] = '<a title="' . $companion->title . '" href="#">Companion</a>';
-      $prepped_rolls[$index] = $roll;
+      $rolls[] = $roll;
     }
-    $rolls = array_merge($rolls, $prepped_rolls);
   }
 }
 
