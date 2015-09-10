@@ -40,13 +40,11 @@ function item_dice_vaxia_dice_form_alter(&$form, $form_state, $form_id) {
  */
 function item_dice_vaxia_dice_commands_alter(&$rolls, $context) {
   $submitted_rolls = $context['submitted_rolls'];
-  $character = $context['character'];
-  $lang = $context['lang'];
   // Check for items.
   $items = array();
   if (!empty($submitted_rolls['items'])) {
     // This also accounts for item overlaps and stat fallthrus.
-    $items = _item_dice_submit_rolls_items($submitted_rolls['items'], $character, $lang);
+    $items = _item_dice_submit_rolls_items($submitted_rolls['items'], $context['character'], $context['lang']);
     // If we have items but no rolls, we roll 1d1 for the die.
     if (empty($rolls) && !empty($items)) {
       $rolls[] = array(
@@ -56,10 +54,7 @@ function item_dice_vaxia_dice_commands_alter(&$rolls, $context) {
         'skill' => 0,
       );
     }
-  }
-  // Calculate the impact of items on rolls.
-  if (!empty($rolls)) {
-    // Check for items against this stat.
+    // Calculate the impact of items on rolls.
     foreach ($rolls as $delta => $roll) {
       $roll['item_notes'] = array();
       $roll['item_mods'] = 0;
@@ -77,8 +72,8 @@ function item_dice_vaxia_dice_commands_alter(&$rolls, $context) {
       }
       // Save it.
       $rolls[$delta] = $roll;
-    }
-  }
+    } // End apply items to rolls.
+  } // End check for items.
 }
 
 /**
@@ -216,21 +211,22 @@ function _item_dice_submit_command_items($roll, $items, $mods) {
   $roll['item_notes'] = !empty($roll['item_notes']) ? $roll['item_notes'] : array();
   // Modify the stat by the item.
   if (!empty($items)) {
+    $roll[$mods] = !empty($roll[$mods]) ? $roll[$mods] : 0;
     // Set overlap. ONLY one (the top) overlap is returned from items.
-    if (!empty($items['overlaps'])) {
-      $roll[$mods] = $items['overlaps'];
-    }
+    $roll[$mods] = !empty($items['overlaps']) ? $items['overlaps'] : $roll[$mods];
     // Set modifiers. It is possible more than one is returned from items.
-    $roll[$mods] = isset($roll[$mods]) ? $roll[$mods] : 0;
-    // But it will always return an arrray.
     if (!empty($items['modifies'])) {
       foreach ($items['modifies'] as $item_modifier) {
-        $roll[$mods] = $roll[$mods] + $item_modifier['modifies'];
-        $roll['item_mods'] = $roll['item_mods'] + $item_modifier['modifies'];
-        $roll['item_notes'][] = $item_modifier['notes'];
+        $item_modifier['modifies'] = !empty($item_modifier['modifies']) ? $item_modifier['modifies'] : 0;
+        if (!empty($item_modifier['modifies'])) {
+          $roll[$mods] = $roll[$mods] + $item_modifier['modifies'];
+          $roll['item_mods'] = $roll['item_mods'] + $item_modifier['modifies'];
+          $roll['item_notes'][] = $item_modifier['notes'];
+        }
       }
     }
     // Check the generic modifier.
+    $items['general'] = !empty($items['general']) ? $items['general'] : 0;
     if (!empty($items['general'])) {
       $roll[$mods] = $roll[$mods] + $items['general'];
       $roll['item_mods'] = $roll['item_mods'] + $items['general'];
