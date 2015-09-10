@@ -17,10 +17,8 @@ if (isset($dice_rolls) && is_array($dice_rolls) && !empty($dice_rolls)) {
     $read_rolls = _dice_ruler_read_dice($dice_rolls);
     // An array of each note, in the format: array('0' => "1 : roll(1d100) + agi (26)");
     foreach ($read_rolls['notes'] as $dice_row => $note) {
-      // Trim "1 : roll" off the note. New format: roll(1d100) + agi (26)
-      if (!empty($note)) {
-        $note = substr(trim($note), 8);
-      }
+      // Clip bits out of the note.
+      $note = str_replace('<br>1 : roll(1d100)', '', $note);
       // Get the values from the row.
       $stat = !empty($read_rolls['stat'][$dice_row]) ? $read_rolls['stat'][$dice_row] : 0;
       $stat_name = !empty($read_rolls['stat_name'][$dice_row]) ? $read_rolls['stat_name'][$dice_row] : 0;
@@ -37,7 +35,8 @@ if (isset($dice_rolls) && is_array($dice_rolls) && !empty($dice_rolls)) {
       $display[] = '<div class="dice' . $first . $last . $even_odd . '" dice_row="' . $dice_row . '">';
       if (!empty($might)) {
         $ruled = 'dice_ruled';
-        $display[] = '<span class="dice_render">' . $note . ' =>' . ' <b>' . t('Might') . ':</b> ' . $might . ' <b>' . t('Roll') . ':</b> ' . $roll . '</span>';
+        $display[] = '<span class="dice_render">' . $note . ' =>' . ' <b>' .
+          t('Might') . ':</b> ' . $might . ' <b>' . t('Roll') . ':</b> ' . $roll . '</span>';
         $rolls_found[$dice_row] = array('might' => $might, 'roll' => $roll, 'stat_name' => $stat_name, 'stat' => $stat);
       }
       else {
