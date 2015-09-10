@@ -18,7 +18,8 @@ if (isset($dice_rolls) && is_array($dice_rolls) && !empty($dice_rolls)) {
     // An array of each note, in the format: array('0' => "1 : roll(1d100) + agi (26)");
     foreach ($read_rolls['notes'] as $dice_row => $note) {
       // Clip bits out of the note.
-      $note = str_replace('<br>1 : roll(1d100)', '', $note);
+      $note = str_replace('<br>', '', $note);
+      $note = str_replace('1 : roll(1d100)', '', $note);
       // Get the values from the row.
       $stat = !empty($read_rolls['stat'][$dice_row]) ? $read_rolls['stat'][$dice_row] : 0;
       $stat_name = !empty($read_rolls['stat_name'][$dice_row]) ? $read_rolls['stat_name'][$dice_row] : 0;
