@@ -145,9 +145,11 @@ function _vaxia_dice_roller_submit_rolls($submitted_rolls, $character, $lang) {
 /**
  * Helper function, prepare rolls.
  */
-function _vaxia_dice_roller_prep_rolls($rolls, $character, $lang) {
+function _vaxia_dice_roller_prep_rolls($sub_rolls, $character, $lang) {
   // Figure out the stat and skill.
-  foreach ($rolls as $delta => $roll) {
+  $rolls = array();
+  foreach ($sub_rolls as $delta => $roll) {
+
     // Set defaults.
     $roll_attr = array();
     $roll['number'] = !empty($roll['number']) ? $roll['number'] : 1;
@@ -155,16 +157,15 @@ function _vaxia_dice_roller_prep_rolls($rolls, $character, $lang) {
     $roll['stat'] = !empty($roll['stat']) ? $roll['stat'] : 'any';
     $roll['skill'] = !empty($roll['skill']) ? $roll['skill'] : 0;
     // Get some data before we start replacing values.
-    $this_stat = !empty($roll['stat']) ? $roll['stat'] : 'any';
-    $roll['stat_name'] = $this_stat;
-    $this_skill = !empty($roll['skill']) ? $roll['skill'] : 0;
-    $roll['skill_nid'] = $this_skill;
+    $roll['stat_name'] = $roll['stat'];
+    $roll['skill_nid'] = $roll['skill'];
     // Add an initial value to the note array so we get a leading '+' on display.
     $roll['note'] = !empty($roll['note']) ? $roll['note'] : array();
+
     // Get stat value from the character if it exists.
     if (!empty($roll['stat'])) {
-      $small_label = _vaxia_dice_roller_small_label($this_stat);
-      $field_name = 'field_' . $this_stat;
+      $small_label = _vaxia_dice_roller_small_label($roll['stat_name']);
+      $field_name = 'field_' . $roll['stat_name'];
       $roll['stat'] = !empty($character->{$field_name}[$lang][0]['value']) ? $character->{$field_name}[$lang][0]['value'] : 0;
       if (!empty($character->{$field_name}[$lang][0]['value'])) {
         $roll['note'][] = $small_label . ' (' . $roll['stat'] . ')';
@@ -172,6 +173,7 @@ function _vaxia_dice_roller_prep_rolls($rolls, $character, $lang) {
       $roll_attr['stat_name'] = $small_label;
       $roll_attr['stat'] = $roll['stat'];
     }
+
     // Get skill value from the character if it exists.
     if (!empty($roll['skill'])) {
       $skill_details = field_collection_item_load($roll['skill']);
@@ -226,6 +228,8 @@ function _vaxia_dice_roller_prep_rolls($rolls, $character, $lang) {
         $roll['note'][] = '<a title="' . $desc . '" ' . $roll_context . ' href="#">' . $name . '</a> (' . $value . ')';
       }
     }
+
+    // Add roll to rolls to return;
     $rolls[$delta] = $roll;
   }
   return $rolls;
@@ -386,7 +390,7 @@ function _vaxia_dice_roller_get_skills($node) {
   if (isset($node->field_skill[$lang])) {
     foreach ($node->field_skill[$lang] as $delta => $skill) {
       $this_skill = field_collection_item_load($skill['value']);
-      if ($this_skill) {
+      if (!empty($this_skill)) {
         $id = $skill['value'];
         $name = !empty($this_skill->field_skill_name[$lang][0]['value'])
           ? $this_skill->field_skill_name[$lang][0]['value'] : t('Unk. skill');
