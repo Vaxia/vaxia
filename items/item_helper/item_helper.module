@@ -23,7 +23,7 @@ function _item_helper_calculate_results($comment, &$context) {
   $message_items = array();
   // Check that the skill is legit for item creation.
   if (!_item_helper_craft_skill($comment, $context)) {
-    $message_items[] = t('Item craft/repair/persist 2-stat roll <span style="color:red;font-weight:bold;">NOT found.</span>');
+    $message_items[] = t('Item craft/persist 2-stat roll <span style="color:red;font-weight:bold;">NOT found.</span>');
     return $message_items;
   }
   // Grab rolls and start calculations.
@@ -61,9 +61,9 @@ function _item_helper_calculate_results($comment, &$context) {
     $context['items_enchant']['_ruling']['crit_fails'] = 0;
     $context['items_enchant']['_ruling']['crit_wins'] = 0;
   }
-  elseif (_item_helper_craft_skill($comment, $context, array('craft', 'repair'))) {
+  elseif (_item_helper_craft_skill($comment, $context, array('craft'))) {
     // Update our context values.
-    $message_items[] = t('Item craft/repair 2-stat roll <span style="color:green;font-weight:bold;">found.</span>');
+    $message_items[] = t('Item craft 2-stat roll <span style="color:green;font-weight:bold;">found.</span>');
     $context['items_make']['_ruling']['PPs'] += $context['roll_set']['PPs'];
     $context['items_make']['_ruling']['1s'] += $context['roll_set']['1s'];
     $context['items_make']['_ruling']['100s'] += $context['roll_set']['100s'];
