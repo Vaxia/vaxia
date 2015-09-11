@@ -31,9 +31,19 @@ function _item_helper_calculate_results($comment, &$context) {
   // Pick up the item starting rolls.
   if (empty($context['items_make'])) {
     $context['items_make'] = $context['ongoing'];
+    $context['items_make']['_ruling']['PPs'] = 0;
+    $context['items_make']['_ruling']['1s'] = 0;
+    $context['items_make']['_ruling']['100s'] = 0;
+    $context['items_make']['_ruling']['crit_fails'] = 0;
+    $context['items_make']['_ruling']['crit_wins'] = 0;
   }
   if (empty($context['items_enchant'])) {
     $context['items_enchant'] = $context['ongoing'];
+    $context['items_enchant']['_ruling']['PPs'] = 0;
+    $context['items_enchant']['_ruling']['1s'] = 0;
+    $context['items_enchant']['_ruling']['100s'] = 0;
+    $context['items_enchant']['_ruling']['crit_fails'] = 0;
+    $context['items_enchant']['_ruling']['crit_wins'] = 0;
   }
   // Check for crit fails.
   if ($context['roll_set']['crit_fails'] > 0) {
