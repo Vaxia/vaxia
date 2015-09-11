@@ -276,8 +276,8 @@ function _scene_record_calculate_results($node, $comments, $goals) {
         $pp_verb = 'gained';
         $by_verb = 'wins';
         if (!$context['roll_set']['success']) {
-          $pp_verb = 'gained';
-          $by_verb = 'wins';
+          $pp_verb = 'lost';
+          $by_verb = 'fails';
         }
         $message_items[] = '<b>' . t('Roll @by_verb by @bys, @pp_verb @pps PP.', array(
             '@by_verb' => $by_verb, '@bys' =>  number_format($context['roll_set']['by']),
