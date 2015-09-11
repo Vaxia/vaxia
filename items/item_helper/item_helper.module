@@ -23,7 +23,7 @@ function _item_helper_calculate_results($comment, &$context) {
   $message_items = array();
   // Check that the skill is legit for item creation.
   if (!_item_helper_craft_skill($comment, $context)) {
-    $message_items[] = t('<span style="color:red;font-weight:bold;">No item craft/repair/persist 2-stat roll found.</span>');
+    $message_items[] = t('Item craft/repair/persist 2-stat roll <span style="color:red;font-weight:bold;">NOT found.</span>');
     return $message_items;
   }
   // Grab rolls and start calculations.
@@ -37,7 +37,7 @@ function _item_helper_calculate_results($comment, &$context) {
   }
   // Check for crit fails.
   if ($context['roll_set']['crit_fails'] > 0) {
-    $message_items[] = t('<span style="color:red;font-weight:bold;">A critical FAIL wiped out items progress.</span>');
+    $message_items[] = t('A critical <span style="color:red;font-weight:bold;">FAIL</span> wiped out items progress.');
     // Reset.
     $context['items_make']['_ruling']['PPs'] = 0;
     $context['items_make']['_ruling']['1s'] = 0;
@@ -53,7 +53,7 @@ function _item_helper_calculate_results($comment, &$context) {
   }
   elseif (_item_helper_craft_skill($comment, $context, array('craft', 'repair'))) {
     // Update our context values.
-    $message_items[] = t('<span style="color:green;font-weight:bold;">Item craft/repair 2-stat roll found.</span>');
+    $message_items[] = t('Item craft/repair 2-stat roll <span style="color:green;font-weight:bold;">found.</span>');
     $context['items_make']['_ruling']['PPs'] += $context['roll_set']['PPs'];
     $context['items_make']['_ruling']['1s'] += $context['roll_set']['1s'];
     $context['items_make']['_ruling']['100s'] += $context['roll_set']['100s'];
@@ -61,7 +61,7 @@ function _item_helper_calculate_results($comment, &$context) {
     $context['items_make']['_ruling']['crit_wins'] += $context['roll_set']['crit_wins'];
   }
   elseif (_item_helper_craft_skill($comment, $context, array('persist'))) {
-    $message_items[] = t('<span style="color:green;font-weight:bold;">Item persist 2-stat roll found.</span>');
+    $message_items[] = t('Item persist 2-stat roll <span style="color:green;font-weight:bold;">found.</span>');
     $context['items_enchant']['_ruling']['PPs'] += $context['roll_set']['PPs'];
     $context['items_enchant']['_ruling']['1s'] += $context['roll_set']['1s'];
     $context['items_enchant']['_ruling']['100s'] += $context['roll_set']['100s'];
@@ -76,7 +76,6 @@ function _item_helper_calculate_results($comment, &$context) {
   $points_built_skills= floor($context['items_make']['_ruling']['PPs'] / ($pp_needed_per_point * 0.75));
   // Crafting.
   if (!empty($context['items_make']['_ruling']['PPs'])) {
-    $message_items[] = t('PP generated for effect: @pp_effect.', array('@pp_effect' => number_format($context['items_make']['_ruling']['PPs'], 2)));
     // Get PP for the max levels.
     $message_items[] = t('Max points at this difficulty: @points_built_max.', array('@points_built_max' => $points_built_max));
     $display_primary = ($points_built_max <= $points_built_primary) ? $points_built_max . ' (max)' : $points_built_primary;
@@ -85,6 +84,7 @@ function _item_helper_calculate_results($comment, &$context) {
     $message_items[] = t('Points for secondary stats: @points_built_secondary.', array('@points_built_secondary' => $display_secondary));
     $display_skills = ($points_built_max <= $points_built_skills) ? $points_built_max . ' (max)'  : $points_built_skills;
     $message_items[] = t('Points for skills: @points_built_skills.', array('@points_built_skills' => $display_skills));
+    $message_items[] = t('PP generated for effect: @pp_effect.', array('@pp_effect' => number_format($context['items_make']['_ruling']['PPs'], 2)));
   }
   // Enchanting.
   if (!empty($context['items_enchant']['_ruling']['PPs'])) {
