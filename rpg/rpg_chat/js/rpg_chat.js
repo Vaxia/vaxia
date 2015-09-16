@@ -35,17 +35,6 @@ Drupal.behaviors.rpgChat = {
       rpgChatPause();
     });
 
-    // Revert title when we have focus.
-    $(window).on('focus', function() {
-      // Revert the title.
-      var title = $('body').attr('chat_title');
-      if (title.length > 0 ) {
-        document.title = title;
-      }
-      // Update the saved message when refocused.
-      $('body').attr('chat_mess', $('#rpg-chat a').filter(':first').attr('id'));
-    });
-
     // Add listener for when we're in AJAX event.
     $(document).ajaxStart(function(){
       $('body').attr('ajax', 'ajax');
@@ -99,14 +88,17 @@ Drupal.behaviors.rpgChat = {
   function rpgChatCheckNew() {
     var curr_mess = $('#rpg-chat a').filter(':first').attr('id');
     var chat_mess = $('body').attr('chat_mess');
+    // Check for mismatch.
     if (!document.hasFocus() && curr_mess != chat_mess) {
-      $('body').attr('chat_mess', curr_mess);
       var title = $('body').attr('chat_title');
       if (title.length > 0 ) {
         document.title = title;
       }
-      document.title = title + ' *';
+      var numb = 1;
+      document.title = title + ' (' + numb + ')';
     }
+    // Set for next refresh.
+    $('body').attr('chat_mess', curr_mess);
   }
 
   // Once, on inital page load, add the pause button to the interface.
@@ -129,6 +121,17 @@ Drupal.behaviors.rpgChat = {
       if ($('body').attr('ajax') == 'ajax') {
         return false;
       }
+    });
+
+    // Revert title when we have focus.
+    $(window).focus(function() {
+      // Revert the title.
+      var title = $('body').attr('chat_title');
+      if (title.length > 0 ) {
+        document.title = title;
+      }
+      // Update the saved message when refocused.
+      rpgChatCheckNew()
     });
 
   });
