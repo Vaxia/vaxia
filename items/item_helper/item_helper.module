@@ -47,7 +47,7 @@ function _item_helper_calculate_results($comment, &$context) {
   }
   // Check for crit fails.
   if ($context['roll_set']['crit_fails'] > 0) {
-    $message_items[] = t('A critical <span style="color:red;font-weight:bold;">FAIL</span> wiped out items progress.');
+    $message_items[] = t('<span style="color:red;font-weight:bold;">A critical FAIL wiped out items progress.</span>');
     // Reset.
     $context['items_make']['_ruling']['PPs'] = 0;
     $context['items_make']['_ruling']['1s'] = 0;
@@ -78,21 +78,29 @@ function _item_helper_calculate_results($comment, &$context) {
     $context['items_enchant']['_ruling']['crit_fails'] += $context['roll_set']['crit_fails'];
     $context['items_enchant']['_ruling']['crit_wins'] += $context['roll_set']['crit_wins'];
   }
-  // More messages.
-  $pp_needed_per_point = (1 + (($diff - 40) / 10) ) * 25;
-  $points_built_max = (1 + (($diff - 40) / 10) ) * 5;
+  // Figure out the maxes.
+  $points_built_max_primary = floor((1 + (($diff - 40) / 10) ) * 5);
+  $points_built_max_secondary = floor($points_built_max_primary / 1.5);
+  $points_built_max_skill = floor($points_built_max_primary / 0.75);
+  // Figure out the current points available.
+  $pp_needed_per_point = floor((1 + (($diff - 40) / 10) ) * 25);
   $points_built_primary = floor($context['items_make']['_ruling']['PPs'] / $pp_needed_per_point);
-  $points_built_secondary = floor($context['items_make']['_ruling']['PPs'] / ($pp_needed_per_point * 1.5));
-  $points_built_skills= floor($context['items_make']['_ruling']['PPs'] / ($pp_needed_per_point * 0.75));
+  $points_built_secondary = floor($points_built_primary / 1.5);
+  $points_built_skills = floor($points_built_primary / 0.75);
   // Crafting.
   if (!empty($context['items_make']['_ruling']['PPs'])) {
     // Get PP for the max levels.
-    $message_items[] = t('Max points at this difficulty: @points_built_max.', array('@points_built_max' => $points_built_max));
-    $display_primary = ($points_built_max <= $points_built_primary) ? $points_built_max . ' (max)' : $points_built_primary;
+    $message_items[] = t('Max primary / secondary / skill : @points_built_max_primary / @points_built_max_secondary / @points_built_max_skill.',
+      array(
+        '@points_built_max_primary' => number_format($points_built_max_primary),
+        '@points_built_max_secondary' => number_format($points_built_max_secondary),
+        '@points_built_max_skill' => number_format($points_built_max_skill),
+      ));
+    $display_primary = ($points_built_max_primary <= $points_built_primary) ? $points_built_max_primary . ' (max)' : $points_built_primary;
     $message_items[] = t('Points for primary stats: @points_built_primary', array('@points_built_primary' => $display_primary));
-    $display_secondary = ($points_built_max <= $points_built_secondary) ? $points_built_max . ' (max)'  : $points_built_secondary;
+    $display_secondary = ($points_built_max_secondary <= $points_built_secondary) ? $points_built_max_secondary . ' (max)'  : $points_built_secondary;
     $message_items[] = t('Points for secondary stats: @points_built_secondary.', array('@points_built_secondary' => $display_secondary));
-    $display_skills = ($points_built_max <= $points_built_skills) ? $points_built_max . ' (max)'  : $points_built_skills;
+    $display_skills = ($points_built_max_skill <= $points_built_skills) ? $points_built_max_skill . ' (max)'  : $points_built_skills;
     $message_items[] = t('Points for skills: @points_built_skills.', array('@points_built_skills' => $display_skills));
     $message_items[] = t('PP generated for effect: @pp_effect.', array('@pp_effect' => number_format($context['items_make']['_ruling']['PPs'], 2)));
   }
