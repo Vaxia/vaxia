@@ -67,6 +67,7 @@ function scene_record_node_view($node, $view_mode, $langcode) {
     }
     $owns_scene = ($user->uid == $node->uid && user_access('view own scenes'));
     $characters = _scene_record_has_characters($comments);
+    $is_submit = ($node->workflow_state_name == 'submitted') ? TRUE : FALSE;
     $has_character = FALSE;
     foreach ($characters as $character) {
       if ($user->uid == $character->uid) {
@@ -84,9 +85,9 @@ function scene_record_node_view($node, $view_mode, $langcode) {
         $node->content['field_rp_posts']['#markup'] = _scene_record_view_table($node, $comments, $goals);
       }
       // Allow user to view the form for ruling scenes.
-      if (user_access('rule all scenes') && !$owns_scene && !$has_character) {
+      if (user_access('rule all scenes') && $is_submit && !$owns_scene && !$has_character) {
         $scene_ruler = drupal_get_form('scene_record_ruler_form', $node, $comments, $goals);
-        $node->content['scene_ruler_form'] = drupal_render($scene_ruler);
+        $node->content['scene_ruler_form']['#markup'] = drupal_render($scene_ruler);
         $node->content['scene_ruler_form']['#weight'] = !empty($node->content['field_rp_posts']['#weight']) ? $node->content['field_rp_posts']['#weight'] + 0.5 : 100;
       }
     }
