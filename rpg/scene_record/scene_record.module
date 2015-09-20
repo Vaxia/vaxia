@@ -75,7 +75,7 @@ function scene_record_node_view($node, $view_mode, $langcode) {
       }
     }
     // If we can view all scenes, or made the scene, or has a character in the scene allow view.
-    if (user_access('view all scenes', $user) || $owns_scene || $has_character) {
+    if (user_access('view all scenes') || $owns_scene || $has_character) {
       // Get additional display results.
       $goals = !empty($node->field_goal[$node->language]) ? $node->field_goal[$node->language] : array('0' => array('value' => 'misc'));
       // Put together the posts for display.
