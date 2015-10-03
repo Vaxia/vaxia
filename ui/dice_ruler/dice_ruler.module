@@ -2205,6 +2205,11 @@ function _dice_ruler_read_dice($dice_rolls, $difficulty = 0, $bonus = 0) {
           $stat_name = trim($matches[1]);
         }
       }
+      if (empty($stat) && preg_match('/... \((.+?)\)/', $note, $matches)) {
+        if (!empty($matches[1])) {
+          $stat = (int) $matches[1];
+        }
+      }
       if (empty($stat_name) && preg_match('/d100 (...) \(.+?\)/', $note, $matches)) {
         if (!empty($matches[1])) {
           $stat_name = trim($matches[1]);
