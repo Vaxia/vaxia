@@ -25,7 +25,6 @@ if (isset($dice_rolls) && is_array($dice_rolls) && !empty($dice_rolls)) {
       $stat_name = !empty($read_rolls['stat_name'][$dice_row]) ? $read_rolls['stat_name'][$dice_row] : 0;
       $might = !empty($read_rolls['mights'][$dice_row]) ? $read_rolls['mights'][$dice_row] : 0;
       $roll = !empty($read_rolls['rolls'][$dice_row]) ? $read_rolls['rolls'][$dice_row] : 0;
-      // Figure out the ass for the display.
       // The the first rolls are the rolls. The very last one is the might.
       // If there is no might, leave it empty. For 1-dice rolls.
       $first = ($dice_row == 0) ? ' first ' : '';
@@ -45,7 +44,6 @@ if (isset($dice_rolls) && is_array($dice_rolls) && !empty($dice_rolls)) {
         $rolls_found[$dice_row] = array('might' => $might, 'roll' => $roll, 'stat_name' => $stat_name, 'stat' => $stat);
       }
       else {
-        $note = substr($note, 1);
         $display[] = '<span class="dice_render">' . $note . ' => ' . '<b>' . t('Roll') . ':</b> ' . $roll . '</span>';
       } 
       $display[] = '</div>';
