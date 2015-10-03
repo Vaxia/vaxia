@@ -2235,10 +2235,11 @@ function _dice_ruler_read_dice($dice_rolls, $difficulty = 0, $bonus = 0) {
       $roll_results = explode('=', $results);
       $roll_results = explode(',', $roll_results[0]);
       if (count($roll_results) > 1 && (!empty($stat) || !empty($skill))) {
+        // Get the might off the roll.
         $skip = array_pop($roll_results);
       }
       // Extract the aspects from the nodes.
-      foreach ($roll_results as $roll_result) {
+      //foreach ($roll_results as $roll_result) {
         $roll_ruling['commands'][] = $commands;
         $roll_ruling['results'][] = $results;
         $roll_ruling['aspects'][] = $aspects;
@@ -2246,9 +2247,10 @@ function _dice_ruler_read_dice($dice_rolls, $difficulty = 0, $bonus = 0) {
         $roll_ruling['stat'][] = $stat;
         $roll_ruling['skill'][] = $skill;
         $roll_ruling['mights'][] = $stat + $skill;
-        $roll_ruling['rolls'][] = trim($roll_result);
+      //  $roll_ruling['rolls'][] = trim($roll_result);
+        $roll_ruling['rolls'][] = trim(implode(', ', $roll_results));
         $roll_ruling['notes'][] = $note;
-      } // End roll processing.
+      //} // End roll processing.
     } // End all roles.
 
     // If difficulty is set, then we process all rolls
