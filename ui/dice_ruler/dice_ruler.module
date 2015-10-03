@@ -2160,7 +2160,7 @@ function _dice_ruler_read_dice($dice_rolls, $difficulty = 0, $bonus = 0) {
       $note = str_replace('1 : roll(1d100)', '1d100', $note);
       // Look for the 'title' alt for notes with skills, and get the data out of them if we can.
       if (strpos($note, '<a title="') !== FALSE) {
-        // Check new style for passing values on roll notes.
+        // New style.
         if (strpos($note, 'aspects="') !== FALSE && preg_match('/aspects="(.+?)"/', $note, $matches)) {
           if (!empty($matches[1])) {
             $found = explode(' ', $matches[1]);
@@ -2198,8 +2198,13 @@ function _dice_ruler_read_dice($dice_rolls, $difficulty = 0, $bonus = 0) {
         foreach ($aspects as $a_i => $aspect) {
           $aspects[$a_i] = trim($aspect);
         }
-      }
+      } // End checking for stats with skills.
       // Check for stat information new style.
+      if (empty($stat_name) && preg_match('/(...) \(.+?\)/', $note, $matches)) {
+        if (!empty($matches[1])) {
+          $stat_name = trim($matches[1]);
+        }
+      }
       if (empty($stat_name) && preg_match('/d100 (...) \(.+?\)/', $note, $matches)) {
         if (!empty($matches[1])) {
           $stat_name = trim($matches[1]);
