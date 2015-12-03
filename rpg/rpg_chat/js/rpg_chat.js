@@ -108,8 +108,10 @@ Drupal.behaviors.rpgChat = {
       }
       document.title = title + ' (' + numb + ')';
     }
-    // Set message for next refresh.
-    $('body').attr('chat_mess', chat_first);
+    // Set message for next refresh only if we are in focus.
+    if (!document.hasFocus()) {
+      $('body').attr('chat_mess', chat_first);
+    }
   }
 
   // Once, on inital page load, add the pause button to the interface.
