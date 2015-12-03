@@ -28,7 +28,7 @@ Drupal.behaviors.rpgChat = {
 
     // Make note of the title and messages for updates.
     $('body').attr('chat_title', document.title);
-    $('body').attr('chat_mess', $('#rpg-chat a').filter(':first').attr('id'));
+    $('body').attr('chat_mess', $('#rpg-chat [id^="comment-"]').filter(':first').attr('id'));
 
     // Add the listener for the pause click.
     $('.toggle-rpg-chat-pause').click(function() {
@@ -86,19 +86,30 @@ Drupal.behaviors.rpgChat = {
 
   // Function to update the title for the page.
   function rpgChatCheckNew() {
-    var curr_mess = $('#rpg-chat a').filter(':first').attr('id');
     var chat_mess = $('body').attr('chat_mess');
+    var chat_first = $('#rpg-chat [id^="comment-"]').filter(':first').attr('id');
     // Check for mismatch.
-    if (!document.hasFocus() && curr_mess != chat_mess) {
+    if (!document.hasFocus() && chat_first != chat_mess) {
+      var numb = 0;
+      var found = false;
+      // Loop over each comment id.
+      $('#rpg-chat [id^="comment-"]').each(function() {
+        if (!found && $(this).attr('id') != chat_mess) {
+          numb = numb + 1;
+        }
+        else {
+          found = true;
+        }
+      });
+      // Update the title.
       var title = $('body').attr('chat_title');
       if (title.length > 0 ) {
         document.title = title;
       }
-      var numb = 1;
       document.title = title + ' (' + numb + ')';
     }
-    // Set for next refresh.
-    $('body').attr('chat_mess', curr_mess);
+    // Set message for next refresh.
+    $('body').attr('chat_mess', chat_first);
   }
 
   // Once, on inital page load, add the pause button to the interface.
