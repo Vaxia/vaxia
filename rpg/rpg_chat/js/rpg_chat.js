@@ -109,7 +109,7 @@ Drupal.behaviors.rpgChat = {
       document.title = title + ' (' + numb + ')';
     }
     // Set message for next refresh only if we are in focus.
-    if (!document.hasFocus()) {
+    if (document.hasFocus()) {
       $('body').attr('chat_mess', chat_first);
     }
   }
