@@ -178,7 +178,8 @@ function rpg_chat_node_view_alter(&$build) {
     // Get users for display in addition to the wrapper.
     $user_names = array();
     foreach ($build['#node']->rpg_chat_current_users as $found_user) {
-      $user_names[] = !empty($found_user->name) ? $found_user->name : t('Lurker*');
+      $user_names[] = (!is_null($found_user->name) && !($found_user->name == 'null'))
+        ? $found_user->name : t('Lurker*');
     }
     $user_string = '<div id="rpg-chat-userlist">' .
       theme('item_list', array('title' => t('Users in this room'), 'items' => $user_names)) .
