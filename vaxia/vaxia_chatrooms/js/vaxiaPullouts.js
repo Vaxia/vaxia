@@ -83,7 +83,13 @@ Drupal.behaviors.doPullouts = {
 
           // Copy weather and moon back into display.
           var weather = $('.weather-pic').html();
+          if (weather == 'null') {
+	        weather = '';
+	      }
           var moon = $('.moon-block').html();
+          if (moon == 'null') {
+	        moon = '';
+	      }
           var rpg_weather = '' +
             '<div id="rpg-chat-weather" style="float:right;">' +
             '<div class="rpg-weather rpg-weather-img">' + weather + '</div>' +
