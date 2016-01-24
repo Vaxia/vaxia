@@ -83,11 +83,11 @@ Drupal.behaviors.doPullouts = {
 
           // Copy weather and moon back into display.
           var weather = $('.weather-pic').html();
-          if (weather.length == 0) {
+          if (weather == null || weather.length == 0) {
 	        weather = '';
 	      }
           var moon = $('.moon-block').html();
-          if (moon.length == 0) {
+          if (moon == null || moon.length == 0) {
 	        moon = '';
 	      }
           var rpg_weather = '' +
