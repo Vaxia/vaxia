@@ -289,9 +289,7 @@ function _imagefield_add_cropinfo_fields($fid = NULL) {
   );
   if ($fid) {
     $crop_info = _imagefield_crop_get_file($fid);
-    if (!empty($crop_info)) {
-      $defaults = array_merge($defaults, $crop_info);
-    }
+    $defaults = array_merge($defaults, (array) $crop_info);
   }
 
   foreach ($defaults as $name => $default) {
@@ -516,7 +514,7 @@ function _imagefield_crop_get_file($fid) {
   $results = db_query('SELECT i.* FROM {imagefield_crop} i ' .
     'WHERE i.fid = :fid', array(':fid' => $fid));
   foreach ($results as $result) {
-    return $result;
+    return (array) $result;
   }
   return array();
 }
