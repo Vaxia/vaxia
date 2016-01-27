@@ -520,6 +520,7 @@ function _imagefield_crop_get_file($fid) {
 }
 
 function _imagefield_crop_set_file($fid, $data) {
+  _imagefield_crop_delete_file($fid);
   $data['fid'] = $fid;
   drupal_write_record('imagefield_crop', $data);
 }
