@@ -288,9 +288,9 @@ function _imagefield_add_cropinfo_fields($fid = NULL) {
     'changed' => 0,
   );
   if ($fid) {
-    $crop_info = variable_get('imagefield_crop_info', array());
-    if (isset($crop_info[$fid]) && !empty($crop_info[$fid])) {
-      $defaults = array_merge($defaults, $crop_info[$fid]);
+    $crop_info = _imagefield_crop_get_file($fid);
+    if (!empty($crop_info)) {
+      $defaults = array_merge($defaults, $crop_info);
     }
   }
 
@@ -382,11 +382,9 @@ function imagefield_crop_widget_value(&$element, &$input, $form_state) {
     // file_save($src);
 
     if (_imagefield_crop_resize(drupal_realpath($file_to_crop->uri), $crop, $scale, drupal_realpath($src->uri))) {
-      // insert crop info for this image in imagefield_crop_info variable
-      $crop_info = variable_get('imagefield_crop_info', array());
+      // insert crop info for this image in imagefield crop table
       unset($crop['changed']);
-      $crop_info[$src->fid] = $crop;
-      variable_set('imagefield_crop_info', $crop_info);
+      _imagefield_crop_set_file($src->fid, $crop);
       // Remove cached versions of the cropped image.
       image_path_flush($src->uri);
     }
@@ -401,9 +399,7 @@ function imagefield_crop_widget_delete($form, &$form_state) {
   if ($orig->fid != $element['fid']) {
     file_usage_delete($orig, 'imagefield_crop');
     file_delete($orig);
-    $crop_info = variable_get('imagefield_crop_info', array());
-    unset($crop_info[$element['fid']]);
-    variable_set('imagefield_crop_info', $crop_info);
+    _imagefield_crop_delete_file($element['fid']);
   }
 }
 
@@ -511,4 +507,25 @@ function _imagefield_crop_file_to_crop($fid) {
     $fid = $row->fid;
   }
   return file_load($fid);
+}
+
+/**
+ * Use the database tables.
+ */
+function _imagefield_crop_get_file($fid) {
+  $results = db_query('SELECT i.* FROM {imagefield_crop} i ' .
+    'WHERE i.fid = :fid', array(':fid' => $fid));
+  foreach ($results as $result) {
+    return $result;
+  }
+  return array();
+}
+
+function _imagefield_crop_set_file($fid, $data) {
+  $data['fid'] = $fid;
+  drupal_write_record('imagefield_crop', $data);
+}
+
+function _imagefield_crop_delete_file($fid) {
+  db_query('DELETE FROM {imagefield_crop} WHERE fid = :fid', array(':fid' => $fid));
 }
