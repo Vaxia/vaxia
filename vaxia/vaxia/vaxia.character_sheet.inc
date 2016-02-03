@@ -61,17 +61,25 @@ function vaxia_character_sheet_field_info() {
         'owner' => DISABLE_SHEET,
       ),
     ),
-    'field_is_npc' => array(
-      'permissions' => array(
-        'owner' => DISABLE_SHEET,
-      ),
-    ),
+    //field_post_color
+    //field_background_color
     'field_is_storyteller' => array(
       'permissions' => array(
         'owner' => DISABLE_SHEET,
       ),
     ),
-    //field_background
+    'field_is_npc' => array(
+      'permissions' => array(
+        'owner' => DISABLE_SHEET,
+      ),
+    ),
+    //field_titles
+    //field_last_name
+    'field_background' => array(
+      'permissions' => array(
+        'owner' => DISABLE_SHEET,
+      ),
+    ),
     //field_personality
     //field_occupation
     //field_public_information
@@ -80,22 +88,50 @@ function vaxia_character_sheet_field_info() {
         'owner' => DISABLE_SHEET,
       ),
     ),
+    'field_achivements' => array(
+      'permissions' => array(
+        'owner' => DISABLE_SHEET,
+      ),
+    ),
     //field_description
-    //field_artwork_image
     'field_tag_realm' => array(
       'permissions' => array(
         'owner' => DISABLE_SHEET,
       ),
     ),
-    //'field_sex' => array(
     'field_race' => array(
       'permissions' => array(
         'owner' => DISABLE_SHEET,
       ),
     ),
-    //field_age_real
-    //field_birthday
+    'field_sirian_species' => array(
+      'permissions' => array(
+        'owner' => DISABLE_SHEET,
+      ),
+    ),
+    'field_other_species' => array(
+      'permissions' => array(
+        'owner' => DISABLE_SHEET,
+      ),
+    ),
+    'field_conditions' => array(
+      'permissions' => array(
+        'owner' => DISABLE_SHEET,
+      ),
+    ),
+    //field_sex
     //field_age_app
+    //field_real_age
+    //field_birth_month
+    //field_birth_day
+    //field_age
+    'field_personal_room'  => array(
+      'permissions' => array(
+        'owner' => DISABLE_SHEET, // Disabled for all, we're a rule to handle this.
+        'other' => DISABLE_SHEET, // So we don't want this value getting meddled with.
+      ),
+    ),
+    //field_artwork_image
     'field_life' => array(
       'permissions' => array(
         'owner' => LIMIT_SHEET,
@@ -201,29 +237,17 @@ function vaxia_character_sheet_field_info() {
         'owner' => DISABLE_SHEET,
       ),
     ),
-    'field_economy' => array(
-      'permissions' => array(
-        'owner' => DISABLE_SHEET,
-      ),
-//      'costs' => array(
-//        'xp_type' => 'xp',
-//        'cost' => variable_get('vaxia_economy_cost', 1),
-//        'step' => 1,
-//        'value_callback' => '_vaxia_calculate_attribute_field_value',
-//      ),
-    ),
-    'field_items' => array(
-      'permissions' => array(
-        'owner' => DISABLE_SHEET, // Disabled for all, we're using the CNR module to handle this.
-        'other' => DISABLE_SHEET, // So we don't want this value getting meddled with.
-      ),
-    ),
-    'field_languages' => array( // TMP till removed
+    'field_aspect_one' => array(
       'permissions' => array(
         'owner' => DISABLE_SHEET,
       ),
     ),
-    'field_language' => array(
+    'field_aspect_two' => array(
+      'permissions' => array(
+        'owner' => DISABLE_SHEET,
+      ),
+    ),
+    'field_aspect_three' => array(
       'permissions' => array(
         'owner' => DISABLE_SHEET,
       ),
@@ -243,24 +267,25 @@ function vaxia_character_sheet_field_info() {
         'owner' => DISABLE_SHEET,
       ),
     ),
-    'field_aspect_one' => array(
+    'field_vaxia_languages' => array(
       'permissions' => array(
         'owner' => DISABLE_SHEET,
       ),
     ),
-    'field_aspect_two' => array(
+    'field_sirian_languages' => array(
       'permissions' => array(
         'owner' => DISABLE_SHEET,
       ),
     ),
-    'field_aspect_three' => array(
+    'field_economy' => array(
       'permissions' => array(
         'owner' => DISABLE_SHEET,
       ),
     ),
-    'field_languages' => array(
+    'field_items' => array(
       'permissions' => array(
-        'owner' => DISABLE_SHEET,
+        'owner' => DISABLE_SHEET, // Disabled for all, we're using the CNR module to handle this.
+        'other' => DISABLE_SHEET, // So we don't want this value getting meddled with.
       ),
     ),
     'field_property' => array(
@@ -268,16 +293,11 @@ function vaxia_character_sheet_field_info() {
         'owner' => DISABLE_SHEET,
       ),
     ),
-    'field_npcs' => array(
-      'permissions' => array(
-        'owner' => DISABLE_SHEET,
-      ),
-    ),
-    'field_achivements' => array(
-      'permissions' => array(
-        'owner' => DISABLE_SHEET,
-      ),
-    ),
+    //field_currently_wearing
+    //field_player_notes
+    //field_character_goals
+    //field_visibility
+    //field_content_limits
     'field_sh_notes' => array(
       'permissions' => array(
         'owner' => DISABLE_SHEET,
@@ -288,17 +308,16 @@ function vaxia_character_sheet_field_info() {
         'owner' => DISABLE_SHEET,
       ),
     ),
-    //field_player_notes
     // Temporary hide.
     'field_skill_review' => array(
       'permissions' => array(
         'owner' => DISABLE_SHEET,
       ),
     ),
-    'field_personal_room'  => array(
+    // Temporary hide.
+    'field_item_shop' => array(
       'permissions' => array(
-        'owner' => DISABLE_SHEET, // Disabled for all, we're a rule to handle this.
-        'other' => DISABLE_SHEET, // So we don't want this value getting meddled with.
+        'owner' => DISABLE_SHEET,
       ),
     ),
   );
