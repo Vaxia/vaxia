@@ -105,11 +105,13 @@ Drupal.behaviors.diceHelper = {
   // When the image is changed, rotate that in the display.
   function setImageAssist() {
     var image_html = $('#edit-field-artwork-und option:selected').html();
-    image_html = image_html.replace(/&lt;/g, '<');
-    image_html = image_html.replace(/&gt;/g, '>');
-    $('#dice-helper-image').html(image_html);
-    image_html = $('#dice-helper-image .views-field-field-artwork-image .field-content').html();
-    $('#dice-helper-image').html(image_html);
+    if (image_html.length > 0) {
+      image_html = image_html.replace(/&lt;/g, '<');
+      image_html = image_html.replace(/&gt;/g, '>');
+      $('#dice-helper-image').html(image_html);
+      image_html = $('#dice-helper-image .views-field-field-artwork-image .field-content').html();
+      $('#dice-helper-image').html(image_html);
+    }
   }
 
   // Add toggle buttons, but only the once.
@@ -171,11 +173,6 @@ Drupal.behaviors.diceHelper = {
     setDiceHelper();
   });
 
-  //  Changing the character pic dropdown.
-  $('#edit-field-artwork-und').change(function() {
-    setImageAssist();
-  });
-
   // Clicking a quick pick button, trigger auto selects.
   $('.dice-helper-button').unbind('click').click(function() {
     quickPick($(this).val().toLowerCase());
@@ -184,6 +181,11 @@ Drupal.behaviors.diceHelper = {
   // Changing a skill, check for all skill setting.
   $('.dice-skill').unbind('change').change(function() {
     sameSkillCheck($(this).attr('id'), $(this).val());
+  });
+
+  //  Changing the character pic dropdown.
+  $('#edit-field-artwork-und').change(function() {
+    setImageAssist();
   });
 
   })(jQuery); }
