@@ -105,7 +105,7 @@ Drupal.behaviors.diceHelper = {
   // When the image is changed, rotate that in the display.
   function setImageAssist() {
     var image_html = $('#edit-field-artwork-und option:selected').html();
-    if (image_html.length > 0) {
+    if (image_html !== null && image_html !== undefined && image_html.length > 0) {
       image_html = image_html.replace(/&lt;/g, '<');
       image_html = image_html.replace(/&gt;/g, '>');
       $('#dice-helper-image').html(image_html);
