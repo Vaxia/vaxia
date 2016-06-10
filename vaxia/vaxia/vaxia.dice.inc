@@ -205,7 +205,7 @@ function _vaxia_dice_roller_prep_rolls($sub_rolls, $character, $lang) {
         // Add tech to display.
         if (!empty($skill_details->field_tech_languages[$lang]) && is_array($skill_details->field_tech_languages[$lang])) {
           $techs = array();
-          foreach ($skill_details->field_tech_languages[$lang] as $delta => $tech_id) {
+          foreach ($skill_details->field_tech_languages[$lang] as $tech_delta => $tech_id) {
             $tech_details = field_collection_item_load($tech_id['value']);
             if (!empty($tech_details->field_tech_language[$lang][0]['tid'])) {
               $tech = taxonomy_term_load($tech_details->field_tech_language[$lang][0]['tid']);
