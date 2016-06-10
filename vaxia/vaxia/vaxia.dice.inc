@@ -127,9 +127,6 @@ function _vaxia_dice_roller_submit_rolls($submitted_rolls, $character, $lang) {
       $roll['skill'] = ($roll['skill'] > 0) ? (int) trim($roll['skill']) : 0;
       // Set roll.
       $roll['might'] = $roll['stat'] + $roll['skill'];
-      // TMP: addressing an ongoing bug that was putting the skill NID in value.
-      // This is NOT a permanent solution.
-      $roll['might'] = ($roll['might'] < 1000) ? $roll['might'] : 0;
       // Make the command.
       $this_note = !empty($roll['note']) ? implode(' + ', $roll['note']) : $roll['number'] . 'd' . $roll['size'];
       $commands[] = array(
@@ -184,6 +181,8 @@ function _vaxia_dice_roller_prep_rolls($sub_rolls, $character, $lang) {
         $value = !empty($skill_details->field_skill_value[$lang][0]['value']) ? $skill_details->field_skill_value[$lang][0]['value'] : 0;
         $name = !empty($skill_details->field_skill_name[$lang][0]['value']) ? $skill_details->field_skill_name[$lang][0]['value'] : t('Unk. skill');
         $desc = !empty($skill_details->field_skill_desc[$lang][0]['value']) ? $skill_details->field_skill_desc[$lang][0]['value'] : '';
+        $roll['skill'] = $value;
+        $roll_attr['skill'] = $value;
         // Add aspects to display.
         $aspects = array();
         if (!empty($skill_details->field_aspect_one[$lang][0]['tid'])) {
@@ -219,8 +218,6 @@ function _vaxia_dice_roller_prep_rolls($sub_rolls, $character, $lang) {
           }
         }
         // Set display.
-        $roll['skill'] = $value;
-        $roll_attr['skill'] = $value;
         $roll_context = '';
         foreach ($roll_attr as $key => $val) {
           $roll_context .= ' ' . $key . '="' . $val . '"';
