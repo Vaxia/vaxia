@@ -1,0 +1,46 @@
+/* CSS for dice helper layout. */
+/* Position the char image. */
+#dice-helper-image{float:right;}
+#dice-helper-image span.views-field-title{display:none;}
+#dice-helper-image img{width:60px;height:60px;}
+
+/* Position injected buttons. */
+.dice-helper-button{float:left;}
+.dice-helper-singles{clear:left;}
+.dice-helper-help{float:right;width:180px;font-size:10px;border:1px solid #eee;padding:3px;}
+.dice-helper-single{
+	background:black !important;
+	border:none !important;
+	color:white !important;
+	font-weight:bold !important;
+	text-shadow: 0 0 0 transparent !important;
+	padding: 5px  !important;
+	font-size: 10px;
+}
+.dice-helper-icon{
+	border:none !important;
+	color:transparent !important;
+	text-shadow: 0 0 0 transparent !important;
+	padding: 0  !important;
+	height: 30px;
+	width: 30px;
+}
+.dice-helper-button-attack{
+	background:rgba(0, 0, 0, 0) url("images/attack.png") no-repeat scroll 0 0 / 100% 100% !important;
+}
+.dice-helper-button-magic{
+	background:rgba(0, 0, 0, 0) url("images/magic.png") no-repeat scroll 0 0 / 100% 100% !important;
+}
+.dice-helper-button-tech{
+	background:rgba(0, 0, 0, 0) url("images/tech.png") no-repeat scroll 0 0 / 100% 100% !important;
+}
+.dice-helper-button-aware{
+	background:rgba(0, 0, 0, 0) url("images/aware.png") no-repeat scroll 0 0 / 100% 100% !important;
+}
+.dice-helper-button-charm{
+	background:rgba(0, 0, 0, 0) url("images/charm.png") no-repeat scroll 0 0 / 100% 100% !important;
+}
+.dice-helper-button-threat{
+	background:rgba(0, 0, 0, 0) url("images/threat.png") no-repeat scroll 0 0 / 100% 100% !important;
+}
+.dice-helper-skill{padding-left:10px;clear:left;}
