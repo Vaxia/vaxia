@@ -385,6 +385,8 @@ th.views-field{padding-left:0.25em;padding-right:0.25em;}
 fieldset.group-aspects div.field-type-taxonomy-term-reference{float:left;margin-right:2em;width:auto;}
 fieldset.group-aspects .field-multiple-table tbody label{display:none;}
 fieldset.group-tech-lang div.field-type-taxonomy-term-reference{float:left;margin-right:2em;width:auto;}
+fieldset.group-tech-lang div.field-type-list-text{float:left;margin-right:2em;width:auto;}
+fieldset.group-tech-lang table.field-multiple-table input.form-submit{float:left;margin:0;width:auto;}
 fieldset.group-tech-lang .field-multiple-table tbody label{display:none;}
 .page-node-add .filter-wrapper, .page-node-edit .filter-wrapper{display:none;}
 .page-comment-add .filter-wrapper, .page-comment-edit .filter-wrapper{display:none;}
