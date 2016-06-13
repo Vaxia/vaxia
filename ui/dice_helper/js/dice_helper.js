@@ -88,6 +88,11 @@ Drupal.behaviors.diceHelper = {
       $('.form-item-vaxia-rolls-dice-0-size select').val(100);
       $('.form-item-vaxia-rolls-dice-0-stat select').val('presence');
     }
+    if (type == 'sneak') {
+      $('.form-item-vaxia-rolls-dice-0-number select').val(1);
+      $('.form-item-vaxia-rolls-dice-0-size select').val(100);
+      $('.form-item-vaxia-rolls-dice-0-stat select').val('reflexes');
+    }
     if (type == 'end') {
       $('.form-item-vaxia-rolls-dice-0-number select').val(1);
       $('.form-item-vaxia-rolls-dice-0-size select').val(100);
@@ -181,6 +186,9 @@ Drupal.behaviors.diceHelper = {
             '<input type="button" value="Threat" alt="Threat" ' +
               'desc="Intimidate a target into cooperation." ' +
               'class="dice-helper-button dice-helper-icon dice-helper-button-threat">' +
+            '<input type="button" value="Sneak" alt="Sneak" ' +
+              'desc="Sneak and hide to avoid detection." ' +
+              'class="dice-helper-button dice-helper-icon dice-helper-button-sneak">' +
           '</div>' +
           '<div class="dice-helper-help dice-helper-icon-help" style="display:none;"></div>' +
           '<div class="dice-helper-singles">' +
@@ -194,27 +202,18 @@ Drupal.behaviors.diceHelper = {
               'desc="A finesse roll, often used for sneaking." ' +
               'class="dice-helper-button dice-helper-single">' +
           '</div>' +
-          '<div class="dice-helper-help dice-helper-single-help" style="display:none;"></div>' +
           '<div class="dice-helper-skill">' +
             '<input type="checkbox" id="same-skill-for-all" class="dice-helper-select">Use the same skill for rolls?' +
           '</div>' +
         '</div>'
       );
       // Add hovers to the newly injected buttons.
-      $('.dice-helper-icon').hover(
+      $('.dice-helper-button').hover(
         function(){
           $('.dice-helper-icon-help').html($(this).attr('desc')).show();
         },
         function(){
           $('.dice-helper-icon-help').hide();
-        }
-      );
-      $('.dice-helper-single').hover(
-        function(){
-          $('.dice-helper-single-help').html($(this).attr('desc')).show();
-        },
-        function(){
-          $('.dice-helper-single-help').hide();
         }
       );
       // Check the cookie against the helper value to set pic and color.
