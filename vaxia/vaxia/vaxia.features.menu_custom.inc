@@ -21,6 +21,5 @@ function vaxia_menu_default_menu_custom() {
   t('Vaxia');
   t('Vaxia basic navigation');
 
-
   return $menus;
 }

@@ -10,7 +10,7 @@
 function site_events_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'node-event-body'
+  // Exported field_instance: 'node-event-body'.
   $field_instances['node-event-body'] = array(
     'bundle' => 'event',
     'default_value' => NULL,
@@ -96,7 +96,7 @@ function site_events_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-event-field_content_warnings'
+  // Exported field_instance: 'node-event-field_content_warnings'.
   $field_instances['node-event-field_content_warnings'] = array(
     'bundle' => 'event',
     'default_value' => array(
@@ -143,7 +143,7 @@ function site_events_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-event-field_format'
+  // Exported field_instance: 'node-event-field_format'.
   $field_instances['node-event-field_format'] = array(
     'bundle' => 'event',
     'default_value' => array(
@@ -190,7 +190,7 @@ function site_events_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-event-field_max_seating'
+  // Exported field_instance: 'node-event-field_max_seating'.
   $field_instances['node-event-field_max_seating'] = array(
     'bundle' => 'event',
     'default_value' => NULL,
@@ -242,7 +242,7 @@ function site_events_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-event-field_tag_realm'
+  // Exported field_instance: 'node-event-field_tag_realm'.
   $field_instances['node-event-field_tag_realm'] = array(
     'bundle' => 'event',
     'default_value' => array(
@@ -289,7 +289,7 @@ function site_events_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-event-field_when'
+  // Exported field_instance: 'node-event-field_when'.
   $field_instances['node-event-field_when'] = array(
     'bundle' => 'event',
     'deleted' => 0,
@@ -304,6 +304,7 @@ function site_events_field_default_field_instances() {
           'multiple_from' => '',
           'multiple_number' => '',
           'multiple_to' => '',
+          'show_remaining_days' => FALSE,
           'show_repeat_rule' => 'show',
         ),
         'type' => 'date_default',
@@ -350,7 +351,7 @@ function site_events_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-event-taxonomy_forums'
+  // Exported field_instance: 'node-event-taxonomy_forums'.
   $field_instances['node-event-taxonomy_forums'] = array(
     'bundle' => 'event',
     'default_value' => array(

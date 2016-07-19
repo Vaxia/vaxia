@@ -8,7 +8,7 @@
  * Implements hook_field_group_info().
  */
 function items_field_group_info() {
-  $export = array();
+  $field_groups = array();
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -48,7 +48,7 @@ function items_field_group_info() {
       'formatter' => 'collapsed',
     ),
   );
-  $export['group_comp_stats|node|items|artwork'] = $field_group;
+  $field_groups['group_comp_stats|node|items|artwork'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -88,7 +88,7 @@ function items_field_group_info() {
       ),
     ),
   );
-  $export['group_comp_stats|node|items|default'] = $field_group;
+  $field_groups['group_comp_stats|node|items|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -129,7 +129,7 @@ function items_field_group_info() {
       'formatter' => 'collapsed',
     ),
   );
-  $export['group_comp_stats|node|items|form'] = $field_group;
+  $field_groups['group_comp_stats|node|items|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -158,7 +158,7 @@ function items_field_group_info() {
       'formatter' => 'collapsed',
     ),
   );
-  $export['group_companion|node|items|artwork'] = $field_group;
+  $field_groups['group_companion|node|items|artwork'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -187,7 +187,7 @@ function items_field_group_info() {
       'formatter' => 'collapsed',
     ),
   );
-  $export['group_companion|node|items|default'] = $field_group;
+  $field_groups['group_companion|node|items|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -216,7 +216,7 @@ function items_field_group_info() {
       'formatter' => 'collapsible',
     ),
   );
-  $export['group_companion|node|items|form'] = $field_group;
+  $field_groups['group_companion|node|items|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -241,7 +241,7 @@ function items_field_group_info() {
       'formatter' => 'collapsed',
     ),
   );
-  $export['group_creation_history|node|items|default'] = $field_group;
+  $field_groups['group_creation_history|node|items|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -257,7 +257,8 @@ function items_field_group_info() {
     'weight' => '2',
     'children' => array(
       0 => 'field_character_owner',
-      1 => 'field_realm',
+      1 => 'field_tag_realm',
+      2 => 'workflow_current_state',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -268,7 +269,7 @@ function items_field_group_info() {
       ),
     ),
   );
-  $export['group_details|node|items|default'] = $field_group;
+  $field_groups['group_details|node|items|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -297,7 +298,7 @@ function items_field_group_info() {
       ),
     ),
   );
-  $export['group_details|node|items|form'] = $field_group;
+  $field_groups['group_details|node|items|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -338,7 +339,7 @@ function items_field_group_info() {
       'formatter' => 'collapsed',
     ),
   );
-  $export['group_item_stats|node|items|artwork'] = $field_group;
+  $field_groups['group_item_stats|node|items|artwork'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -380,7 +381,7 @@ function items_field_group_info() {
       'formatter' => 'collapsed',
     ),
   );
-  $export['group_item_stats|node|items|form'] = $field_group;
+  $field_groups['group_item_stats|node|items|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -408,7 +409,7 @@ function items_field_group_info() {
       'formatter' => 'collapsed',
     ),
   );
-  $export['group_mod_stats|node|items|artwork'] = $field_group;
+  $field_groups['group_mod_stats|node|items|artwork'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -436,7 +437,7 @@ function items_field_group_info() {
       'formatter' => 'collapsible',
     ),
   );
-  $export['group_mod_stats|node|items|default'] = $field_group;
+  $field_groups['group_mod_stats|node|items|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -465,7 +466,7 @@ function items_field_group_info() {
       'formatter' => 'collapsible',
     ),
   );
-  $export['group_mod_stats|node|items|form'] = $field_group;
+  $field_groups['group_mod_stats|node|items|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -494,7 +495,7 @@ function items_field_group_info() {
       'formatter' => 'collapsed',
     ),
   );
-  $export['group_notes|node|items|artwork'] = $field_group;
+  $field_groups['group_notes|node|items|artwork'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -523,7 +524,7 @@ function items_field_group_info() {
       'formatter' => 'collapsible',
     ),
   );
-  $export['group_notes|node|items|default'] = $field_group;
+  $field_groups['group_notes|node|items|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -553,7 +554,7 @@ function items_field_group_info() {
       ),
     ),
   );
-  $export['group_notes|node|items|form'] = $field_group;
+  $field_groups['group_notes|node|items|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -594,7 +595,7 @@ function items_field_group_info() {
       'formatter' => 'collapsed',
     ),
   );
-  $export['group_overlaps|node|items|artwork'] = $field_group;
+  $field_groups['group_overlaps|node|items|artwork'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -635,7 +636,7 @@ function items_field_group_info() {
       'formatter' => 'collapsible',
     ),
   );
-  $export['group_overlaps|node|items|default'] = $field_group;
+  $field_groups['group_overlaps|node|items|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -677,7 +678,7 @@ function items_field_group_info() {
       'formatter' => 'collapsed',
     ),
   );
-  $export['group_overlaps|node|items|form'] = $field_group;
+  $field_groups['group_overlaps|node|items|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -705,7 +706,7 @@ function items_field_group_info() {
       ),
     ),
   );
-  $export['group_shop_details|node|items|default'] = $field_group;
+  $field_groups['group_shop_details|node|items|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -736,7 +737,7 @@ function items_field_group_info() {
       ),
     ),
   );
-  $export['group_shop_details|node|items|form'] = $field_group;
+  $field_groups['group_shop_details|node|items|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -763,7 +764,7 @@ function items_field_group_info() {
       'formatter' => 'collapsed',
     ),
   );
-  $export['group_skills|node|items|artwork'] = $field_group;
+  $field_groups['group_skills|node|items|artwork'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -790,7 +791,7 @@ function items_field_group_info() {
       ),
     ),
   );
-  $export['group_skills|node|items|default'] = $field_group;
+  $field_groups['group_skills|node|items|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -818,7 +819,7 @@ function items_field_group_info() {
       'formatter' => 'collapsed',
     ),
   );
-  $export['group_skills|node|items|form'] = $field_group;
+  $field_groups['group_skills|node|items|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -859,7 +860,7 @@ function items_field_group_info() {
       'formatter' => 'collapsible',
     ),
   );
-  $export['group_stats|node|items|default'] = $field_group;
+  $field_groups['group_stats|node|items|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -898,7 +899,7 @@ function items_field_group_info() {
       'formatter' => 'collapsed',
     ),
   );
-  $export['group_uses|node|items|artwork'] = $field_group;
+  $field_groups['group_uses|node|items|artwork'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -937,7 +938,7 @@ function items_field_group_info() {
       'formatter' => 'collapsible',
     ),
   );
-  $export['group_uses|node|items|default'] = $field_group;
+  $field_groups['group_uses|node|items|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -977,7 +978,21 @@ function items_field_group_info() {
       'formatter' => 'collapsible',
     ),
   );
-  $export['group_uses|node|items|form'] = $field_group;
+  $field_groups['group_uses|node|items|form'] = $field_group;
 
-  return $export;
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('Companion');
+  t('Companion Stats');
+  t('Creation History');
+  t('Details');
+  t('Item Type');
+  t('Modifies');
+  t('Modify Stats');
+  t('Notes');
+  t('Overlaps');
+  t('Shop details');
+  t('Skills');
+
+  return $field_groups;
 }

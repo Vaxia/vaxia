@@ -120,7 +120,7 @@ function items_strongarm() {
       'display' => array(
         'workflow_current_state' => array(
           'default' => array(
-            'weight' => '8',
+            'weight' => '5',
             'visible' => TRUE,
           ),
           'artwork' => array(
@@ -180,6 +180,34 @@ function items_strongarm() {
   $strongarm->name = 'node_submitted_items';
   $strongarm->value = 0;
   $export['node_submitted_items'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_node_items_pattern';
+  $strongarm->value = 'items/[node:field-character-owner:title]-[node:title]';
+  $export['pathauto_node_items_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_taxonomy_term_item_type_pattern';
+  $strongarm->value = '';
+  $export['pathauto_taxonomy_term_item_type_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_taxonomy_term_weapon_category_pattern';
+  $strongarm->value = '';
+  $export['pathauto_taxonomy_term_weapon_category_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_taxonomy_term_weapon_sub_category_pattern';
+  $strongarm->value = '';
+  $export['pathauto_taxonomy_term_weapon_sub_category_pattern'] = $strongarm;
 
   return $export;
 }

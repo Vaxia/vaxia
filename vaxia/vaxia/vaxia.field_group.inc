@@ -8,7 +8,7 @@
  * Implements hook_field_group_info().
  */
 function vaxia_field_group_info() {
-  $export = array();
+  $field_groups = array();
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -34,7 +34,7 @@ function vaxia_field_group_info() {
       ),
     ),
   );
-  $export['group_artwork|node|character_sheet|default'] = $field_group;
+  $field_groups['group_artwork|node|character_sheet|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -61,7 +61,7 @@ function vaxia_field_group_info() {
       ),
     ),
   );
-  $export['group_artwork|node|character_sheet|form'] = $field_group;
+  $field_groups['group_artwork|node|character_sheet|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -82,14 +82,16 @@ function vaxia_field_group_info() {
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
-      'formatter' => 'collapsible',
+      'label' => 'Aspects',
       'instance_settings' => array(
-        'description' => '',
+        'id' => '',
         'classes' => 'group-aspects field-group-fieldset',
+        'description' => '',
       ),
+      'formatter' => 'open',
     ),
   );
-  $export['group_aspects|field_collection_item|field_skill|default'] = $field_group;
+  $field_groups['group_aspects|field_collection_item|field_skill|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -119,7 +121,7 @@ function vaxia_field_group_info() {
       'formatter' => 'collapsed',
     ),
   );
-  $export['group_aspects|field_collection_item|field_skill|form'] = $field_group;
+  $field_groups['group_aspects|field_collection_item|field_skill|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -135,11 +137,10 @@ function vaxia_field_group_info() {
     'weight' => '1',
     'children' => array(
       0 => 'field_is_npc',
-      1 => 'field_is_open_npc',
-      2 => 'field_is_storyteller',
-      3 => 'field_post_color',
-      4 => 'field_background_color',
-      5 => 'title',
+      1 => 'field_is_storyteller',
+      2 => 'field_post_color',
+      3 => 'field_background_color',
+      4 => 'title',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -151,7 +152,7 @@ function vaxia_field_group_info() {
       ),
     ),
   );
-  $export['group_basics|node|character_sheet|form'] = $field_group;
+  $field_groups['group_basics|node|character_sheet|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -178,7 +179,7 @@ function vaxia_field_group_info() {
       ),
     ),
   );
-  $export['group_descriptions|node|character_sheet|form'] = $field_group;
+  $field_groups['group_descriptions|node|character_sheet|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -191,20 +192,19 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Details',
-    'weight' => '3',
+    'weight' => '2',
     'children' => array(
       0 => 'field_age_app',
       1 => 'field_is_npc',
-      2 => 'field_is_open_npc',
-      3 => 'field_race',
-      4 => 'field_sex',
-      5 => 'field_is_storyteller',
-      6 => 'field_conditions',
-      7 => 'field_other_species',
-      8 => 'field_sirian_species',
-      9 => 'field_personal_room',
-      10 => 'field_tag_realm',
-      11 => 'field_age',
+      2 => 'field_race',
+      3 => 'field_sex',
+      4 => 'field_is_storyteller',
+      5 => 'field_conditions',
+      6 => 'field_other_species',
+      7 => 'field_sirian_species',
+      8 => 'field_personal_room',
+      9 => 'field_tag_realm',
+      10 => 'field_age',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -215,7 +215,7 @@ function vaxia_field_group_info() {
       ),
     ),
   );
-  $export['group_details|node|character_sheet|default'] = $field_group;
+  $field_groups['group_details|node|character_sheet|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -253,7 +253,7 @@ function vaxia_field_group_info() {
       ),
     ),
   );
-  $export['group_details|node|character_sheet|form'] = $field_group;
+  $field_groups['group_details|node|character_sheet|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -266,7 +266,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Items',
-    'weight' => '6',
+    'weight' => '5',
     'children' => array(
       0 => 'field_economy',
       1 => 'field_items',
@@ -281,7 +281,7 @@ function vaxia_field_group_info() {
       ),
     ),
   );
-  $export['group_items|node|character_sheet|default'] = $field_group;
+  $field_groups['group_items|node|character_sheet|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -311,7 +311,7 @@ function vaxia_field_group_info() {
       ),
     ),
   );
-  $export['group_items|node|character_sheet|form'] = $field_group;
+  $field_groups['group_items|node|character_sheet|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -324,7 +324,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Notes',
-    'weight' => '7',
+    'weight' => '6',
     'children' => array(
       0 => 'field_player_notes',
       1 => 'field_character_goals',
@@ -340,7 +340,7 @@ function vaxia_field_group_info() {
       ),
     ),
   );
-  $export['group_notes|node|character_sheet|default'] = $field_group;
+  $field_groups['group_notes|node|character_sheet|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -370,7 +370,7 @@ function vaxia_field_group_info() {
       ),
     ),
   );
-  $export['group_notes|node|character_sheet|form'] = $field_group;
+  $field_groups['group_notes|node|character_sheet|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -383,7 +383,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Personal',
-    'weight' => '2',
+    'weight' => '1',
     'children' => array(
       0 => 'field_background',
       1 => 'field_description',
@@ -402,7 +402,7 @@ function vaxia_field_group_info() {
       ),
     ),
   );
-  $export['group_personal|node|character_sheet|default'] = $field_group;
+  $field_groups['group_personal|node|character_sheet|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -433,7 +433,7 @@ function vaxia_field_group_info() {
       ),
     ),
   );
-  $export['group_personal|node|character_sheet|form'] = $field_group;
+  $field_groups['group_personal|node|character_sheet|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -446,7 +446,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Public information',
-    'weight' => '1',
+    'weight' => '0',
     'children' => array(
       0 => 'field_achivements',
       1 => 'field_public_information',
@@ -461,7 +461,7 @@ function vaxia_field_group_info() {
       ),
     ),
   );
-  $export['group_public_info|node|character_sheet|default'] = $field_group;
+  $field_groups['group_public_info|node|character_sheet|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -490,7 +490,7 @@ function vaxia_field_group_info() {
       ),
     ),
   );
-  $export['group_public_info|node|character_sheet|form'] = $field_group;
+  $field_groups['group_public_info|node|character_sheet|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -503,11 +503,10 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'SH Notes',
-    'weight' => '8',
+    'weight' => '7',
     'children' => array(
       0 => 'field_sh_notes',
       1 => 'field_sh_private_notes',
-      2 => 'field_item_shop',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -518,7 +517,7 @@ function vaxia_field_group_info() {
       ),
     ),
   );
-  $export['group_sh_notes|node|character_sheet|default'] = $field_group;
+  $field_groups['group_sh_notes|node|character_sheet|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -547,7 +546,7 @@ function vaxia_field_group_info() {
       ),
     ),
   );
-  $export['group_sh_notes|node|character_sheet|form'] = $field_group;
+  $field_groups['group_sh_notes|node|character_sheet|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -560,11 +559,11 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Skills',
-    'weight' => '5',
+    'weight' => '4',
     'children' => array(
       0 => 'field_skill',
-      1 => 'field_languages',
-      2 => 'field_language_skills',
+      1 => 'field_vaxia_languages',
+      2 => 'field_sirian_languages',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -575,7 +574,7 @@ function vaxia_field_group_info() {
       ),
     ),
   );
-  $export['group_skills|node|character_sheet|default'] = $field_group;
+  $field_groups['group_skills|node|character_sheet|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -591,8 +590,8 @@ function vaxia_field_group_info() {
     'weight' => '8',
     'children' => array(
       0 => 'field_skill',
-      1 => 'field_languages',
-      2 => 'field_language_skills',
+      1 => 'field_vaxia_languages',
+      2 => 'field_sirian_languages',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -604,7 +603,7 @@ function vaxia_field_group_info() {
       ),
     ),
   );
-  $export['group_skills|node|character_sheet|form'] = $field_group;
+  $field_groups['group_skills|node|character_sheet|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -617,7 +616,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Stats',
-    'weight' => '4',
+    'weight' => '3',
     'children' => array(
       0 => 'field_agility',
       1 => 'field_appearance',
@@ -643,7 +642,7 @@ function vaxia_field_group_info() {
       ),
     ),
   );
-  $export['group_stats|node|character_sheet|default'] = $field_group;
+  $field_groups['group_stats|node|character_sheet|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -684,7 +683,7 @@ function vaxia_field_group_info() {
       'formatter' => 'collapsible',
     ),
   );
-  $export['group_stats|node|character_sheet|form'] = $field_group;
+  $field_groups['group_stats|node|character_sheet|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -710,7 +709,7 @@ function vaxia_field_group_info() {
       ),
     ),
   );
-  $export['group_tech_lang|field_collection_item|field_skill|default'] = $field_group;
+  $field_groups['group_tech_lang|field_collection_item|field_skill|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -738,7 +737,24 @@ function vaxia_field_group_info() {
       'formatter' => 'collapsed',
     ),
   );
-  $export['group_tech_lang|field_collection_item|field_skill|form'] = $field_group;
+  $field_groups['group_tech_lang|field_collection_item|field_skill|form'] = $field_group;
 
-  return $export;
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('Art');
+  t('Aspects');
+  t('Basics');
+  t('Descriptions');
+  t('Details');
+  t('Items');
+  t('Notes');
+  t('Personal');
+  t('Public information');
+  t('SH Notes');
+  t('Skills');
+  t('Stats');
+  t('Tech Languages');
+  t('Tech languages');
+
+  return $field_groups;
 }

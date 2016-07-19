@@ -10,7 +10,7 @@
 function items_field_default_field_bases() {
   $field_bases = array();
 
-  // Exported field_base: 'field_absorb_type'
+  // Exported field_base: 'field_absorb_type'.
   $field_bases['field_absorb_type'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -35,7 +35,7 @@ function items_field_default_field_bases() {
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'field_armor_absorbs'
+  // Exported field_base: 'field_armor_absorbs'.
   $field_bases['field_armor_absorbs'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -50,7 +50,7 @@ function items_field_default_field_bases() {
     'type' => 'number_integer',
   );
 
-  // Exported field_base: 'field_armor_penalty'
+  // Exported field_base: 'field_armor_penalty'.
   $field_bases['field_armor_penalty'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -65,7 +65,7 @@ function items_field_default_field_bases() {
     'type' => 'number_integer',
   );
 
-  // Exported field_base: 'field_build_points'
+  // Exported field_base: 'field_build_points'.
   $field_bases['field_build_points'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -80,7 +80,7 @@ function items_field_default_field_bases() {
     'type' => 'number_integer',
   );
 
-  // Exported field_base: 'field_calc_value'
+  // Exported field_base: 'field_calc_value'.
   $field_bases['field_calc_value'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -105,7 +105,7 @@ function items_field_default_field_bases() {
     'type' => 'list_boolean',
   );
 
-  // Exported field_base: 'field_character_owner'
+  // Exported field_base: 'field_character_owner'.
   $field_bases['field_character_owner'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -152,7 +152,7 @@ function items_field_default_field_bases() {
     'type' => 'node_reference',
   );
 
-  // Exported field_base: 'field_creation_history'
+  // Exported field_base: 'field_creation_history'.
   $field_bases['field_creation_history'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -171,7 +171,7 @@ function items_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_declared_value'
+  // Exported field_base: 'field_declared_value'.
   $field_bases['field_declared_value'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -192,7 +192,7 @@ function items_field_default_field_bases() {
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_fixed_strength'
+  // Exported field_base: 'field_fixed_strength'.
   $field_bases['field_fixed_strength'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -207,7 +207,7 @@ function items_field_default_field_bases() {
     'type' => 'number_integer',
   );
 
-  // Exported field_base: 'field_in_shop'
+  // Exported field_base: 'field_in_shop'.
   $field_bases['field_in_shop'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -232,7 +232,7 @@ function items_field_default_field_bases() {
     'type' => 'list_boolean',
   );
 
-  // Exported field_base: 'field_item_agility'
+  // Exported field_base: 'field_item_agility'.
   $field_bases['field_item_agility'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -252,7 +252,7 @@ function items_field_default_field_bases() {
     'type' => 'number_float',
   );
 
-  // Exported field_base: 'field_item_appearance'
+  // Exported field_base: 'field_item_appearance'.
   $field_bases['field_item_appearance'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -272,7 +272,7 @@ function items_field_default_field_bases() {
     'type' => 'number_float',
   );
 
-  // Exported field_base: 'field_item_awareness'
+  // Exported field_base: 'field_item_awareness'.
   $field_bases['field_item_awareness'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -292,7 +292,7 @@ function items_field_default_field_bases() {
     'type' => 'number_float',
   );
 
-  // Exported field_base: 'field_item_charisma'
+  // Exported field_base: 'field_item_charisma'.
   $field_bases['field_item_charisma'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -312,7 +312,7 @@ function items_field_default_field_bases() {
     'type' => 'number_float',
   );
 
-  // Exported field_base: 'field_item_constitution'
+  // Exported field_base: 'field_item_constitution'.
   $field_bases['field_item_constitution'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -332,7 +332,7 @@ function items_field_default_field_bases() {
     'type' => 'number_float',
   );
 
-  // Exported field_base: 'field_item_desc'
+  // Exported field_base: 'field_item_desc'.
   $field_bases['field_item_desc'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -354,7 +354,7 @@ function items_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_item_dexterity'
+  // Exported field_base: 'field_item_dexterity'.
   $field_bases['field_item_dexterity'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -374,7 +374,7 @@ function items_field_default_field_bases() {
     'type' => 'number_float',
   );
 
-  // Exported field_base: 'field_item_difficulty'
+  // Exported field_base: 'field_item_difficulty'.
   $field_bases['field_item_difficulty'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -389,7 +389,7 @@ function items_field_default_field_bases() {
     'type' => 'number_integer',
   );
 
-  // Exported field_base: 'field_item_endurance'
+  // Exported field_base: 'field_item_endurance'.
   $field_bases['field_item_endurance'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -409,7 +409,7 @@ function items_field_default_field_bases() {
     'type' => 'number_float',
   );
 
-  // Exported field_base: 'field_item_health'
+  // Exported field_base: 'field_item_health'.
   $field_bases['field_item_health'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -429,7 +429,7 @@ function items_field_default_field_bases() {
     'type' => 'number_float',
   );
 
-  // Exported field_base: 'field_item_history'
+  // Exported field_base: 'field_item_history'.
   $field_bases['field_item_history'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -451,7 +451,7 @@ function items_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_item_intelligence'
+  // Exported field_base: 'field_item_intelligence'.
   $field_bases['field_item_intelligence'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -471,7 +471,7 @@ function items_field_default_field_bases() {
     'type' => 'number_float',
   );
 
-  // Exported field_base: 'field_item_life'
+  // Exported field_base: 'field_item_life'.
   $field_bases['field_item_life'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -491,7 +491,7 @@ function items_field_default_field_bases() {
     'type' => 'number_float',
   );
 
-  // Exported field_base: 'field_item_over_agility'
+  // Exported field_base: 'field_item_over_agility'.
   $field_bases['field_item_over_agility'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -508,7 +508,7 @@ function items_field_default_field_bases() {
     'type' => 'number_float',
   );
 
-  // Exported field_base: 'field_item_over_appearance'
+  // Exported field_base: 'field_item_over_appearance'.
   $field_bases['field_item_over_appearance'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -525,7 +525,7 @@ function items_field_default_field_bases() {
     'type' => 'number_float',
   );
 
-  // Exported field_base: 'field_item_over_awareness'
+  // Exported field_base: 'field_item_over_awareness'.
   $field_bases['field_item_over_awareness'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -542,7 +542,7 @@ function items_field_default_field_bases() {
     'type' => 'number_float',
   );
 
-  // Exported field_base: 'field_item_over_charisma'
+  // Exported field_base: 'field_item_over_charisma'.
   $field_bases['field_item_over_charisma'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -559,7 +559,7 @@ function items_field_default_field_bases() {
     'type' => 'number_float',
   );
 
-  // Exported field_base: 'field_item_over_constitution'
+  // Exported field_base: 'field_item_over_constitution'.
   $field_bases['field_item_over_constitution'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -576,7 +576,7 @@ function items_field_default_field_bases() {
     'type' => 'number_float',
   );
 
-  // Exported field_base: 'field_item_over_dexterity'
+  // Exported field_base: 'field_item_over_dexterity'.
   $field_bases['field_item_over_dexterity'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -593,7 +593,7 @@ function items_field_default_field_bases() {
     'type' => 'number_float',
   );
 
-  // Exported field_base: 'field_item_over_endurance'
+  // Exported field_base: 'field_item_over_endurance'.
   $field_bases['field_item_over_endurance'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -610,7 +610,7 @@ function items_field_default_field_bases() {
     'type' => 'number_float',
   );
 
-  // Exported field_base: 'field_item_over_health'
+  // Exported field_base: 'field_item_over_health'.
   $field_bases['field_item_over_health'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -627,7 +627,7 @@ function items_field_default_field_bases() {
     'type' => 'number_float',
   );
 
-  // Exported field_base: 'field_item_over_intellegence'
+  // Exported field_base: 'field_item_over_intellegence'.
   $field_bases['field_item_over_intellegence'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -644,7 +644,7 @@ function items_field_default_field_bases() {
     'type' => 'number_float',
   );
 
-  // Exported field_base: 'field_item_over_life'
+  // Exported field_base: 'field_item_over_life'.
   $field_bases['field_item_over_life'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -661,7 +661,7 @@ function items_field_default_field_bases() {
     'type' => 'number_float',
   );
 
-  // Exported field_base: 'field_item_over_presence'
+  // Exported field_base: 'field_item_over_presence'.
   $field_bases['field_item_over_presence'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -678,7 +678,7 @@ function items_field_default_field_bases() {
     'type' => 'number_float',
   );
 
-  // Exported field_base: 'field_item_over_reflexes'
+  // Exported field_base: 'field_item_over_reflexes'.
   $field_bases['field_item_over_reflexes'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -695,7 +695,7 @@ function items_field_default_field_bases() {
     'type' => 'number_float',
   );
 
-  // Exported field_base: 'field_item_over_skill'
+  // Exported field_base: 'field_item_over_skill'.
   $field_bases['field_item_over_skill'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -712,7 +712,7 @@ function items_field_default_field_bases() {
     'type' => 'number_float',
   );
 
-  // Exported field_base: 'field_item_over_spirituality'
+  // Exported field_base: 'field_item_over_spirituality'.
   $field_bases['field_item_over_spirituality'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -729,7 +729,7 @@ function items_field_default_field_bases() {
     'type' => 'number_float',
   );
 
-  // Exported field_base: 'field_item_over_strength'
+  // Exported field_base: 'field_item_over_strength'.
   $field_bases['field_item_over_strength'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -746,7 +746,7 @@ function items_field_default_field_bases() {
     'type' => 'number_float',
   );
 
-  // Exported field_base: 'field_item_presence'
+  // Exported field_base: 'field_item_presence'.
   $field_bases['field_item_presence'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -766,7 +766,7 @@ function items_field_default_field_bases() {
     'type' => 'number_float',
   );
 
-  // Exported field_base: 'field_item_reflexes'
+  // Exported field_base: 'field_item_reflexes'.
   $field_bases['field_item_reflexes'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -786,7 +786,7 @@ function items_field_default_field_bases() {
     'type' => 'number_float',
   );
 
-  // Exported field_base: 'field_item_skill'
+  // Exported field_base: 'field_item_skill'.
   $field_bases['field_item_skill'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -806,7 +806,7 @@ function items_field_default_field_bases() {
     'type' => 'number_float',
   );
 
-  // Exported field_base: 'field_item_spent_uses'
+  // Exported field_base: 'field_item_spent_uses'.
   $field_bases['field_item_spent_uses'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -821,7 +821,7 @@ function items_field_default_field_bases() {
     'type' => 'number_integer',
   );
 
-  // Exported field_base: 'field_item_spirituality'
+  // Exported field_base: 'field_item_spirituality'.
   $field_bases['field_item_spirituality'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -841,7 +841,7 @@ function items_field_default_field_bases() {
     'type' => 'number_float',
   );
 
-  // Exported field_base: 'field_item_strength'
+  // Exported field_base: 'field_item_strength'.
   $field_bases['field_item_strength'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -861,7 +861,7 @@ function items_field_default_field_bases() {
     'type' => 'number_float',
   );
 
-  // Exported field_base: 'field_item_type'
+  // Exported field_base: 'field_item_type'.
   $field_bases['field_item_type'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -887,7 +887,7 @@ function items_field_default_field_bases() {
     'type' => 'taxonomy_term_reference',
   );
 
-  // Exported field_base: 'field_item_use_day'
+  // Exported field_base: 'field_item_use_day'.
   $field_bases['field_item_use_day'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -913,7 +913,7 @@ function items_field_default_field_bases() {
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'field_item_uses'
+  // Exported field_base: 'field_item_uses'.
   $field_bases['field_item_uses'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -928,7 +928,7 @@ function items_field_default_field_bases() {
     'type' => 'number_integer',
   );
 
-  // Exported field_base: 'field_multi_action_mod'
+  // Exported field_base: 'field_multi_action_mod'.
   $field_bases['field_multi_action_mod'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -943,7 +943,7 @@ function items_field_default_field_bases() {
     'type' => 'number_integer',
   );
 
-  // Exported field_base: 'field_percentage'
+  // Exported field_base: 'field_percentage'.
   $field_bases['field_percentage'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -958,7 +958,7 @@ function items_field_default_field_bases() {
     'type' => 'number_integer',
   );
 
-  // Exported field_base: 'field_pp_created'
+  // Exported field_base: 'field_pp_created'.
   $field_bases['field_pp_created'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -973,7 +973,7 @@ function items_field_default_field_bases() {
     'type' => 'number_integer',
   );
 
-  // Exported field_base: 'field_sellback'
+  // Exported field_base: 'field_sellback'.
   $field_bases['field_sellback'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -998,7 +998,7 @@ function items_field_default_field_bases() {
     'type' => 'list_boolean',
   );
 
-  // Exported field_base: 'field_value'
+  // Exported field_base: 'field_value'.
   $field_bases['field_value'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -1022,7 +1022,7 @@ function items_field_default_field_bases() {
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_weapon_class'
+  // Exported field_base: 'field_weapon_class'.
   $field_bases['field_weapon_class'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -1048,7 +1048,7 @@ function items_field_default_field_bases() {
     'type' => 'taxonomy_term_reference',
   );
 
-  // Exported field_base: 'field_weapon_sub_type'
+  // Exported field_base: 'field_weapon_sub_type'.
   $field_bases['field_weapon_sub_type'] = array(
     'active' => 1,
     'cardinality' => 1,

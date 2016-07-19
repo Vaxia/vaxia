@@ -10,7 +10,7 @@
 function timeline_events_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'node-timeline_event-body'
+  // Exported field_instance: 'node-timeline_event-body'.
   $field_instances['node-timeline_event-body'] = array(
     'bundle' => 'timeline_event',
     'default_value' => NULL,
@@ -66,7 +66,7 @@ function timeline_events_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-timeline_event-field_session_held'
+  // Exported field_instance: 'node-timeline_event-field_session_held'.
   $field_instances['node-timeline_event-field_session_held'] = array(
     'bundle' => 'timeline_event',
     'deleted' => 0,
@@ -87,6 +87,7 @@ function timeline_events_field_default_field_instances() {
           'multiple_from' => '',
           'multiple_number' => '',
           'multiple_to' => '',
+          'show_remaining_days' => FALSE,
           'show_repeat_rule' => 'show',
         ),
         'type' => 'date_default',
@@ -133,7 +134,7 @@ function timeline_events_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-timeline_event-field_tag_realm'
+  // Exported field_instance: 'node-timeline_event-field_tag_realm'.
   $field_instances['node-timeline_event-field_tag_realm'] = array(
     'bundle' => 'timeline_event',
     'default_value' => array(

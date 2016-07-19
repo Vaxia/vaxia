@@ -10,7 +10,7 @@
 function vaxia_wiki_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'node-wiki_page-field_associated_npcs'
+  // Exported field_instance: 'node-wiki_page-field_associated_npcs'.
   $field_instances['node-wiki_page-field_associated_npcs'] = array(
     'bundle' => 'wiki_page',
     'deleted' => 0,
@@ -50,11 +50,11 @@ function vaxia_wiki_field_default_field_instances() {
       'module' => 'nodereferrer',
       'settings' => array(),
       'type' => 'nodereferrer_list',
-      'weight' => 5,
+      'weight' => 7,
     ),
   );
 
-  // Exported field_instance: 'node-wiki_page-field_organization_type'
+  // Exported field_instance: 'node-wiki_page-field_organization_type'.
   $field_instances['node-wiki_page-field_organization_type'] = array(
     'bundle' => 'wiki_page',
     'default_value' => NULL,
@@ -84,7 +84,7 @@ function vaxia_wiki_field_default_field_instances() {
     'entity_type' => 'node',
     'field_name' => 'field_organization_type',
     'label' => 'Organization Type',
-    'required' => 0,
+    'required' => 1,
     'settings' => array(
       'user_register_form' => FALSE,
     ),
@@ -92,12 +92,12 @@ function vaxia_wiki_field_default_field_instances() {
       'active' => 1,
       'module' => 'options',
       'settings' => array(),
-      'type' => 'options_buttons',
-      'weight' => 16,
+      'type' => 'options_select',
+      'weight' => 17,
     ),
   );
 
-  // Exported field_instance: 'node-wiki_page-field_referencing_chat_rooms'
+  // Exported field_instance: 'node-wiki_page-field_referencing_chat_rooms'.
   $field_instances['node-wiki_page-field_referencing_chat_rooms'] = array(
     'bundle' => 'wiki_page',
     'deleted' => 0,
@@ -137,11 +137,11 @@ function vaxia_wiki_field_default_field_instances() {
       'module' => 'nodereferrer',
       'settings' => array(),
       'type' => 'nodereferrer_list',
-      'weight' => 4,
+      'weight' => 6,
     ),
   );
 
-  // Exported field_instance: 'node-wiki_page-field_tag_department'
+  // Exported field_instance: 'node-wiki_page-field_tag_department'.
   $field_instances['node-wiki_page-field_tag_department'] = array(
     'bundle' => 'wiki_page',
     'default_value' => NULL,
@@ -184,7 +184,7 @@ function vaxia_wiki_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-wiki_page-field_tag_location'
+  // Exported field_instance: 'node-wiki_page-field_tag_location'.
   $field_instances['node-wiki_page-field_tag_location'] = array(
     'bundle' => 'wiki_page',
     'default_value' => NULL,
@@ -223,11 +223,11 @@ function vaxia_wiki_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 15,
+      'weight' => 16,
     ),
   );
 
-  // Exported field_instance: 'node-wiki_page-field_tag_realm'
+  // Exported field_instance: 'node-wiki_page-field_tag_realm'.
   $field_instances['node-wiki_page-field_tag_realm'] = array(
     'bundle' => 'wiki_page',
     'default_value' => NULL,
@@ -270,7 +270,7 @@ function vaxia_wiki_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-wiki_page-field_tag_type'
+  // Exported field_instance: 'node-wiki_page-field_tag_type'.
   $field_instances['node-wiki_page-field_tag_type'] = array(
     'bundle' => 'wiki_page',
     'default_value' => NULL,
@@ -308,7 +308,7 @@ function vaxia_wiki_field_default_field_instances() {
       'active' => 1,
       'module' => 'options',
       'settings' => array(),
-      'type' => 'options_buttons',
+      'type' => 'options_select',
       'weight' => 14,
     ),
   );

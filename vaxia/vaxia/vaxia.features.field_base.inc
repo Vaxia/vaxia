@@ -10,7 +10,7 @@
 function vaxia_field_default_field_bases() {
   $field_bases = array();
 
-  // Exported field_base: 'field_achivements'
+  // Exported field_base: 'field_achivements'.
   $field_bases['field_achivements'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -31,7 +31,7 @@ function vaxia_field_default_field_bases() {
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_age'
+  // Exported field_base: 'field_age'.
   $field_bases['field_age'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -65,13 +65,14 @@ $entity_field[0][\'value\'] = $month. \'/\' .  $day . \'/\' . $year;',
 $now = new DateTime(\'now\');
 $interval = $now->diff($born);
 $display_output = $born->format(\'F jS, Y\') . \', \' . $interval->format(\'%y years\') . \' ago\';',
+      'recalculate' => FALSE,
       'store' => 1,
     ),
     'translatable' => 0,
     'type' => 'computed',
   );
 
-  // Exported field_base: 'field_age_app'
+  // Exported field_base: 'field_age_app'.
   $field_bases['field_age_app'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -95,7 +96,7 @@ $display_output = $born->format(\'F jS, Y\') . \', \' . $interval->format(\'%y y
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_agility'
+  // Exported field_base: 'field_agility'.
   $field_bases['field_agility'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -124,13 +125,14 @@ $entity_field[0][\'value\'] = $this_value;
         'data_type' => 'float',
       ),
       'display_format' => '$display_output = $entity_field_item[\'value\'];',
+      'recalculate' => FALSE,
       'store' => 1,
     ),
     'translatable' => 0,
     'type' => 'computed',
   );
 
-  // Exported field_base: 'field_appearance'
+  // Exported field_base: 'field_appearance'.
   $field_bases['field_appearance'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -159,13 +161,14 @@ $entity_field[0][\'value\'] = $this_value;
         'data_type' => 'float',
       ),
       'display_format' => '$display_output = $entity_field_item[\'value\'];',
+      'recalculate' => FALSE,
       'store' => 1,
     ),
     'translatable' => 0,
     'type' => 'computed',
   );
 
-  // Exported field_base: 'field_aspect_one'
+  // Exported field_base: 'field_aspect_one'.
   $field_bases['field_aspect_one'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -191,7 +194,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'taxonomy_term_reference',
   );
 
-  // Exported field_base: 'field_aspect_three'
+  // Exported field_base: 'field_aspect_three'.
   $field_bases['field_aspect_three'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -217,7 +220,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'taxonomy_term_reference',
   );
 
-  // Exported field_base: 'field_aspect_two'
+  // Exported field_base: 'field_aspect_two'.
   $field_bases['field_aspect_two'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -243,7 +246,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'taxonomy_term_reference',
   );
 
-  // Exported field_base: 'field_awareness'
+  // Exported field_base: 'field_awareness'.
   $field_bases['field_awareness'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -272,13 +275,14 @@ $entity_field[0][\'value\'] = $this_value;
         'data_type' => 'float',
       ),
       'display_format' => '$display_output = $entity_field_item[\'value\'];',
+      'recalculate' => FALSE,
       'store' => 1,
     ),
     'translatable' => 0,
     'type' => 'computed',
   );
 
-  // Exported field_base: 'field_background'
+  // Exported field_base: 'field_background'.
   $field_bases['field_background'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -300,7 +304,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_background_color'
+  // Exported field_base: 'field_background_color'.
   $field_bases['field_background_color'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -327,7 +331,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'field_birth_day'
+  // Exported field_base: 'field_birth_day'.
   $field_bases['field_birth_day'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -342,7 +346,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'number_integer',
   );
 
-  // Exported field_base: 'field_birth_month'
+  // Exported field_base: 'field_birth_month'.
   $field_bases['field_birth_month'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -377,7 +381,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'field_character_goals'
+  // Exported field_base: 'field_character_goals'.
   $field_bases['field_character_goals'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -396,7 +400,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_charisma'
+  // Exported field_base: 'field_charisma'.
   $field_bases['field_charisma'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -414,7 +418,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'number_integer',
   );
 
-  // Exported field_base: 'field_conditions'
+  // Exported field_base: 'field_conditions'.
   $field_bases['field_conditions'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -435,7 +439,7 @@ $entity_field[0][\'value\'] = $this_value;
         'metalborn-digi' => 'Digital Metalborn (Sirian only)',
         'magical' => 'Active Magic or Psionic User (Sirian only)',
         'mental' => 'Restricted Mental Disorder',
-        'underage' => 'Underage or Looks Underage',
+        'underage' => 'Underage (Actual age, looks, or mentality)',
         'other' => 'Other',
       ),
       'allowed_values_function' => '',
@@ -445,7 +449,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'field_constitution'
+  // Exported field_base: 'field_constitution'.
   $field_bases['field_constitution'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -474,13 +478,14 @@ $entity_field[0][\'value\'] = $this_value;
         'data_type' => 'float',
       ),
       'display_format' => '$display_output = $entity_field_item[\'value\'];',
+      'recalculate' => FALSE,
       'store' => 1,
     ),
     'translatable' => 0,
     'type' => 'computed',
   );
 
-  // Exported field_base: 'field_content_limits'
+  // Exported field_base: 'field_content_limits'.
   $field_bases['field_content_limits'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -506,7 +511,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'taxonomy_term_reference',
   );
 
-  // Exported field_base: 'field_currently_wearing'
+  // Exported field_base: 'field_currently_wearing'.
   $field_bases['field_currently_wearing'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -554,7 +559,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'node_reference',
   );
 
-  // Exported field_base: 'field_description'
+  // Exported field_base: 'field_description'.
   $field_bases['field_description'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -576,7 +581,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_dexterity'
+  // Exported field_base: 'field_dexterity'.
   $field_bases['field_dexterity'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -594,7 +599,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'number_integer',
   );
 
-  // Exported field_base: 'field_economy'
+  // Exported field_base: 'field_economy'.
   $field_bases['field_economy'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -612,7 +617,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'number_integer',
   );
 
-  // Exported field_base: 'field_endurance'
+  // Exported field_base: 'field_endurance'.
   $field_bases['field_endurance'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -630,7 +635,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'number_integer',
   );
 
-  // Exported field_base: 'field_health'
+  // Exported field_base: 'field_health'.
   $field_bases['field_health'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -659,13 +664,14 @@ $entity_field[0][\'value\'] = $this_value;
         'data_type' => 'float',
       ),
       'display_format' => '$display_output = $entity_field_item[\'value\'];',
+      'recalculate' => FALSE,
       'store' => 1,
     ),
     'translatable' => 0,
     'type' => 'computed',
   );
 
-  // Exported field_base: 'field_intelligence'
+  // Exported field_base: 'field_intelligence'.
   $field_bases['field_intelligence'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -683,7 +689,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'number_integer',
   );
 
-  // Exported field_base: 'field_is_npc'
+  // Exported field_base: 'field_is_npc'.
   $field_bases['field_is_npc'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -711,7 +717,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'list_boolean',
   );
 
-  // Exported field_base: 'field_is_storyteller'
+  // Exported field_base: 'field_is_storyteller'.
   $field_bases['field_is_storyteller'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -736,7 +742,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'list_boolean',
   );
 
-  // Exported field_base: 'field_item_shop'
+  // Exported field_base: 'field_item_shop'.
   $field_bases['field_item_shop'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -761,7 +767,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'list_boolean',
   );
 
-  // Exported field_base: 'field_items'
+  // Exported field_base: 'field_items'.
   $field_bases['field_items'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -814,84 +820,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'node_reference',
   );
 
-  // Exported field_base: 'field_language'
-  $field_bases['field_language'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_language',
-    'indexes' => array(
-      'target_id' => array(
-        0 => 'target_id',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'entityreference',
-    'settings' => array(
-      'handler' => 'views',
-      'handler_settings' => array(
-        'behaviors' => array(
-          'views-select-list' => array(
-            'status' => 1,
-          ),
-        ),
-        'view' => array(
-          'args' => array(),
-          'display_name' => 'char_langs',
-          'view_name' => 'character_languages',
-        ),
-      ),
-      'target_type' => 'taxonomy_term',
-    ),
-    'translatable' => 0,
-    'type' => 'entityreference',
-  );
-
-  // Exported field_base: 'field_language_skills'
-  $field_bases['field_language_skills'] = array(
-    'active' => 1,
-    'cardinality' => -1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_language_skills',
-    'indexes' => array(
-      'revision_id' => array(
-        0 => 'revision_id',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'field_collection',
-    'settings' => array(
-      'hide_blank_items' => 1,
-      'path' => '',
-    ),
-    'translatable' => 0,
-    'type' => 'field_collection',
-  );
-
-  // Exported field_base: 'field_languages'
-  $field_bases['field_languages'] = array(
-    'active' => 1,
-    'cardinality' => -1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_languages',
-    'indexes' => array(
-      'format' => array(
-        0 => 'format',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'text',
-    'settings' => array(
-      'max_length' => 255,
-    ),
-    'translatable' => 0,
-    'type' => 'text',
-  );
-
-  // Exported field_base: 'field_last_name'
+  // Exported field_base: 'field_last_name'.
   $field_bases['field_last_name'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -915,7 +844,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_life'
+  // Exported field_base: 'field_life'.
   $field_bases['field_life'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -933,7 +862,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'number_integer',
   );
 
-  // Exported field_base: 'field_occupation'
+  // Exported field_base: 'field_occupation'.
   $field_bases['field_occupation'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -955,7 +884,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_other_species'
+  // Exported field_base: 'field_other_species'.
   $field_bases['field_other_species'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -981,7 +910,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'field_personal_room'
+  // Exported field_base: 'field_personal_room'.
   $field_bases['field_personal_room'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -1030,7 +959,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'node_reference',
   );
 
-  // Exported field_base: 'field_personality'
+  // Exported field_base: 'field_personality'.
   $field_bases['field_personality'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -1052,7 +981,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_player_notes'
+  // Exported field_base: 'field_player_notes'.
   $field_bases['field_player_notes'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -1074,7 +1003,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_post_color'
+  // Exported field_base: 'field_post_color'.
   $field_bases['field_post_color'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -1095,7 +1024,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_presence'
+  // Exported field_base: 'field_presence'.
   $field_bases['field_presence'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -1124,41 +1053,14 @@ $entity_field[0][\'value\'] = $this_value;
         'data_type' => 'float',
       ),
       'display_format' => '$display_output = $entity_field_item[\'value\'];',
+      'recalculate' => FALSE,
       'store' => 1,
     ),
     'translatable' => 0,
     'type' => 'computed',
   );
 
-  // Exported field_base: 'field_proficiency'
-  $field_bases['field_proficiency'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_proficiency',
-    'indexes' => array(
-      'value' => array(
-        0 => 'value',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'list',
-    'settings' => array(
-      'allowed_values' => array(
-        1 => 'Learner',
-        2 => 'Basic',
-        3 => 'Accented',
-        4 => 'Fluent',
-        5 => 'Native',
-      ),
-      'allowed_values_function' => '',
-    ),
-    'translatable' => 0,
-    'type' => 'list_text',
-  );
-
-  // Exported field_base: 'field_property'
+  // Exported field_base: 'field_property'.
   $field_bases['field_property'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -1180,7 +1082,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_public_information'
+  // Exported field_base: 'field_public_information'.
   $field_bases['field_public_information'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -1199,7 +1101,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_race'
+  // Exported field_base: 'field_race'.
   $field_bases['field_race'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -1243,7 +1145,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'field_real_age'
+  // Exported field_base: 'field_real_age'.
   $field_bases['field_real_age'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -1258,7 +1160,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'number_integer',
   );
 
-  // Exported field_base: 'field_reflexes'
+  // Exported field_base: 'field_reflexes'.
   $field_bases['field_reflexes'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -1287,13 +1189,14 @@ $entity_field[0][\'value\'] = $this_value;
         'data_type' => 'float',
       ),
       'display_format' => '$display_output = $entity_field_item[\'value\'];',
+      'recalculate' => FALSE,
       'store' => 1,
     ),
     'translatable' => 0,
     'type' => 'computed',
   );
 
-  // Exported field_base: 'field_sex'
+  // Exported field_base: 'field_sex'.
   $field_bases['field_sex'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -1317,7 +1220,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_sh_notes'
+  // Exported field_base: 'field_sh_notes'.
   $field_bases['field_sh_notes'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -1339,7 +1242,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_sh_private_notes'
+  // Exported field_base: 'field_sh_private_notes'.
   $field_bases['field_sh_private_notes'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -1361,7 +1264,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_sh_public_information'
+  // Exported field_base: 'field_sh_public_information'.
   $field_bases['field_sh_public_information'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -1380,7 +1283,42 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_sirian_species'
+  // Exported field_base: 'field_sirian_languages'.
+  $field_bases['field_sirian_languages'] = array(
+    'active' => 1,
+    'cardinality' => -1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_sirian_languages',
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        'dal_knw' => 'Dalhan (known)',
+        'dal_nat' => 'Dalhan (native)',
+        'cln_knw' => 'Desert Clans (known)',
+        'cln_nat' => 'Desert Clans (native)',
+        'gar_knw' => 'Gargorian (known)',
+        'gar_nat' => 'Gargorian (native)',
+        'san_knw' => 'San-saram (known)',
+        'san_nat' => 'San-saram (native)',
+        'roh_knw' => 'Rohearn (known)',
+        'roh_nat' => 'Rohearn (native)',
+        'zux_knw' => 'Zuxian  (known)',
+        'zux_nat' => 'Zuxian  (native)',
+      ),
+      'allowed_values_function' => '',
+    ),
+    'translatable' => 0,
+    'type' => 'list_text',
+  );
+
+  // Exported field_base: 'field_sirian_species'.
   $field_bases['field_sirian_species'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -1406,7 +1344,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'field_skill'
+  // Exported field_base: 'field_skill'.
   $field_bases['field_skill'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -1431,7 +1369,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'field_collection',
   );
 
-  // Exported field_base: 'field_skill_desc'
+  // Exported field_base: 'field_skill_desc'.
   $field_bases['field_skill_desc'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -1450,7 +1388,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_skill_name'
+  // Exported field_base: 'field_skill_name'.
   $field_bases['field_skill_name'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -1471,34 +1409,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_skill_review'
-  $field_bases['field_skill_review'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_skill_review',
-    'indexes' => array(
-      'value' => array(
-        0 => 'value',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'list',
-    'settings' => array(
-      'allowed_values' => array(
-        'NR' => 'Needs review',
-        'IR' => 'In review',
-        'CR' => 'Completed review',
-      ),
-      'allowed_values_function' => '',
-      'allowed_values_php' => '',
-    ),
-    'translatable' => 0,
-    'type' => 'list_text',
-  );
-
-  // Exported field_base: 'field_skill_value'
+  // Exported field_base: 'field_skill_value'.
   $field_bases['field_skill_value'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -1513,7 +1424,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'number_integer',
   );
 
-  // Exported field_base: 'field_spirituality'
+  // Exported field_base: 'field_spirituality'.
   $field_bases['field_spirituality'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -1531,7 +1442,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'number_integer',
   );
 
-  // Exported field_base: 'field_strength'
+  // Exported field_base: 'field_strength'.
   $field_bases['field_strength'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -1549,7 +1460,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'number_integer',
   );
 
-  // Exported field_base: 'field_tech_language'
+  // Exported field_base: 'field_tech_language'.
   $field_bases['field_tech_language'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -1575,7 +1486,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'taxonomy_term_reference',
   );
 
-  // Exported field_base: 'field_tech_languages'
+  // Exported field_base: 'field_tech_languages'.
   $field_bases['field_tech_languages'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -1597,7 +1508,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'field_collection',
   );
 
-  // Exported field_base: 'field_tech_proficiency'
+  // Exported field_base: 'field_tech_proficiency'.
   $field_bases['field_tech_proficiency'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -1623,7 +1534,7 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'field_titles'
+  // Exported field_base: 'field_titles'.
   $field_bases['field_titles'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -1647,7 +1558,52 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_visibility'
+  // Exported field_base: 'field_vaxia_languages'.
+  $field_bases['field_vaxia_languages'] = array(
+    'active' => 1,
+    'cardinality' => -1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_vaxia_languages',
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        'vax_knw' => 'Vaxian Tradespeak (known)',
+        'vax_nat' => 'Vaxian Tradespeak (native)',
+        'can_knw' => 'Candenoridian Tradespeak (known)',
+        'can_nat' => 'Candenoridian Tradespeak (native)',
+        'ink_knw' => 'Inkahani Tradespeak (known)',
+        'ink_nat' => 'Inkahani Tradespeak (native)',
+        'bat_knw' => 'Batueri (known)',
+        'bat_nat' => 'Batueri (native)',
+        'elv_knw' => 'Elvarian (known)',
+        'elv_nat' => 'Elvarian (native)',
+        'fal_knw' => 'Falnoric (known)',
+        'fal_nat' => 'Falnoric (native)',
+        'nau_knw' => 'Nauterical (known)',
+        'nau_nat' => 'Nauterical (native)',
+        'rog_knw' => 'Roaggnid (known)',
+        'rog_nat' => 'Roaggnid (native)',
+        'sub_knw' => 'Subterin (known)',
+        'sub_nat' => 'Subterin (native)',
+        'tin_knw' => 'Tinkeric (known)',
+        'tin_nat' => 'Tinkeric (native)',
+        'tra_knw' => 'Travens (known)',
+        'tra_nat' => 'Travens (native)',
+      ),
+      'allowed_values_function' => '',
+    ),
+    'translatable' => 0,
+    'type' => 'list_text',
+  );
+
+  // Exported field_base: 'field_visibility'.
   $field_bases['field_visibility'] = array(
     'active' => 1,
     'cardinality' => 1,

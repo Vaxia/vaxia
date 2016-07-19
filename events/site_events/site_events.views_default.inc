@@ -60,14 +60,6 @@ function site_events_views_default_views() {
     'multiple_to' => '',
     'show_repeat_rule' => 'show',
   );
-  /* Field: Broken/missing handler */
-  $handler->display->display_options['fields']['field_realm']['id'] = 'field_realm';
-  $handler->display->display_options['fields']['field_realm']['table'] = 'field_data_field_realm';
-  $handler->display->display_options['fields']['field_realm']['field'] = 'field_realm';
-  $handler->display->display_options['fields']['field_realm']['label'] = '';
-  $handler->display->display_options['fields']['field_realm']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['field_realm']['alter']['text'] = '([field_realm])';
-  $handler->display->display_options['fields']['field_realm']['element_label_colon'] = FALSE;
   /* Sort criterion: Content: When -  start date (field_when) */
   $handler->display->display_options['sorts']['field_when_value']['id'] = 'field_when_value';
   $handler->display->display_options['sorts']['field_when_value']['table'] = 'field_data_field_when';
@@ -101,6 +93,13 @@ function site_events_views_default_views() {
   $handler->display->display_options['filters']['field_when_value']['operator'] = '>=';
   $handler->display->display_options['filters']['field_when_value']['form_type'] = 'date_popup';
   $handler->display->display_options['filters']['field_when_value']['default_date'] = 'today';
+  /* Filter criterion: Workflow: Current state */
+  $handler->display->display_options['filters']['sid']['id'] = 'sid';
+  $handler->display->display_options['filters']['sid']['table'] = 'workflow_node';
+  $handler->display->display_options['filters']['sid']['field'] = 'sid';
+  $handler->display->display_options['filters']['sid']['value'] = array(
+    38 => '38',
+  );
 
   /* Display: Coming up */
   $handler = $view->new_display('block', 'Coming up', 'coming_up');
@@ -134,7 +133,7 @@ function site_events_views_default_views() {
   $handler->display->display_options['relationships']['uid']['id'] = 'uid';
   $handler->display->display_options['relationships']['uid']['table'] = 'node';
   $handler->display->display_options['relationships']['uid']['field'] = 'uid';
-  /* Field: Field: Realm */
+  /* Field: Content: Realm */
   $handler->display->display_options['fields']['field_tag_realm']['id'] = 'field_tag_realm';
   $handler->display->display_options['fields']['field_tag_realm']['table'] = 'field_data_field_tag_realm';
   $handler->display->display_options['fields']['field_tag_realm']['field'] = 'field_tag_realm';
@@ -188,6 +187,10 @@ function site_events_views_default_views() {
   $handler->display->display_options['sorts']['field_when_value']['field'] = 'field_when_value';
   $handler->display->display_options['sorts']['field_when_value']['order'] = 'DESC';
   $handler->display->display_options['filter_groups']['operator'] = 'OR';
+  $handler->display->display_options['filter_groups']['groups'] = array(
+    1 => 'AND',
+    2 => 'AND',
+  );
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
@@ -201,7 +204,6 @@ function site_events_views_default_views() {
   $handler->display->display_options['filters']['type']['field'] = 'type';
   $handler->display->display_options['filters']['type']['value'] = array(
     'event' => 'event',
-    'proposal' => 'proposal',
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
   /* Filter criterion: Content: When -  start date (field_when) */
@@ -209,10 +211,19 @@ function site_events_views_default_views() {
   $handler->display->display_options['filters']['field_when_value']['table'] = 'field_data_field_when';
   $handler->display->display_options['filters']['field_when_value']['field'] = 'field_when_value';
   $handler->display->display_options['filters']['field_when_value']['operator'] = '<=';
+  $handler->display->display_options['filters']['field_when_value']['group'] = 1;
   $handler->display->display_options['filters']['field_when_value']['form_type'] = 'date_text';
   $handler->display->display_options['filters']['field_when_value']['default_date'] = '+1 month';
   $handler->display->display_options['filters']['field_when_value']['year_range'] = '-1:+3';
-  /* Filter criterion: Field: Realm (field_tag_realm) */
+  /* Filter criterion: Workflow: Current state */
+  $handler->display->display_options['filters']['sid']['id'] = 'sid';
+  $handler->display->display_options['filters']['sid']['table'] = 'workflow_node';
+  $handler->display->display_options['filters']['sid']['field'] = 'sid';
+  $handler->display->display_options['filters']['sid']['value'] = array(
+    38 => '38',
+  );
+  $handler->display->display_options['filters']['sid']['group'] = 1;
+  /* Filter criterion: Content: Realm (field_tag_realm) */
   $handler->display->display_options['filters']['field_tag_realm_tid']['id'] = 'field_tag_realm_tid';
   $handler->display->display_options['filters']['field_tag_realm_tid']['table'] = 'field_data_field_tag_realm';
   $handler->display->display_options['filters']['field_tag_realm_tid']['field'] = 'field_tag_realm_tid';
@@ -221,6 +232,7 @@ function site_events_views_default_views() {
     725 => '725',
     726 => '726',
   );
+  $handler->display->display_options['filters']['field_tag_realm_tid']['group'] = 1;
   $handler->display->display_options['filters']['field_tag_realm_tid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['operator_id'] = 'field_tag_realm_tid_op';
   $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['label'] = 'Realm';
@@ -259,6 +271,29 @@ function site_events_views_default_views() {
   $handler->display->display_options['filters']['field_tag_realm_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_tag_realm_tid']['vocabulary'] = 'realm';
   $handler->display->display_options['filters']['field_tag_realm_tid']['hierarchy'] = 1;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status_1']['id'] = 'status_1';
+  $handler->display->display_options['filters']['status_1']['table'] = 'node';
+  $handler->display->display_options['filters']['status_1']['field'] = 'status';
+  $handler->display->display_options['filters']['status_1']['value'] = '1';
+  $handler->display->display_options['filters']['status_1']['group'] = 2;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type_1']['id'] = 'type_1';
+  $handler->display->display_options['filters']['type_1']['table'] = 'node';
+  $handler->display->display_options['filters']['type_1']['field'] = 'type';
+  $handler->display->display_options['filters']['type_1']['value'] = array(
+    'proposal' => 'proposal',
+  );
+  $handler->display->display_options['filters']['type_1']['group'] = 2;
+  /* Filter criterion: Content: When -  start date (field_when) */
+  $handler->display->display_options['filters']['field_when_value_1']['id'] = 'field_when_value_1';
+  $handler->display->display_options['filters']['field_when_value_1']['table'] = 'field_data_field_when';
+  $handler->display->display_options['filters']['field_when_value_1']['field'] = 'field_when_value';
+  $handler->display->display_options['filters']['field_when_value_1']['operator'] = '<=';
+  $handler->display->display_options['filters']['field_when_value_1']['group'] = 2;
+  $handler->display->display_options['filters']['field_when_value_1']['form_type'] = 'date_text';
+  $handler->display->display_options['filters']['field_when_value_1']['default_date'] = '+1 month';
+  $handler->display->display_options['filters']['field_when_value_1']['year_range'] = '-1:+3';
 
   /* Display: Calendar Feed */
   $handler = $view->new_display('feed', 'Calendar Feed', 'calendar_feed');
@@ -278,7 +313,7 @@ function site_events_views_default_views() {
   $handler = $view->new_display('page', 'Calendar Event List', 'calendar_event_list');
   $handler->display->display_options['display_description'] = 'Calendar Event List';
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Field: Realm */
+  /* Field: Content: Realm */
   $handler->display->display_options['fields']['field_tag_realm']['id'] = 'field_tag_realm';
   $handler->display->display_options['fields']['field_tag_realm']['table'] = 'field_data_field_tag_realm';
   $handler->display->display_options['fields']['field_tag_realm']['field'] = 'field_tag_realm';
@@ -353,7 +388,7 @@ function site_events_views_default_views() {
 To add this calendar to your own Google calendar or other software, use this URL: <a href="http://vaxia.org/?q=calendar/ical">http://vaxia.org/?q=calendar/ical</a>.';
   $handler->display->display_options['footer']['area']['format'] = 'wiki';
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Field: Field: Realm */
+  /* Field: Content: Realm */
   $handler->display->display_options['fields']['field_tag_realm']['id'] = 'field_tag_realm';
   $handler->display->display_options['fields']['field_tag_realm']['table'] = 'field_data_field_tag_realm';
   $handler->display->display_options['fields']['field_tag_realm']['field'] = 'field_tag_realm';

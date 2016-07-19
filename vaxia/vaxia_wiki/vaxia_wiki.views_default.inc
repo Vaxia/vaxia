@@ -12,10 +12,10 @@ function vaxia_wiki_views_default_views() {
 
   $view = new view();
   $view->name = 'vaxia_wiki';
-  $view->description = 'Vaxia wiki';
-  $view->tag = 'default';
+  $view->description = 'Vaxia Wiki';
+  $view->tag = 'Vaxia Wiki';
   $view->base_table = 'node';
-  $view->human_name = 'Vaxia wiki';
+  $view->human_name = 'Vaxia Wiki';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
@@ -177,7 +177,7 @@ function vaxia_wiki_views_default_views() {
   $handler->display->display_options['fields']['field_tag_department']['id'] = 'field_tag_department';
   $handler->display->display_options['fields']['field_tag_department']['table'] = 'field_data_field_tag_department';
   $handler->display->display_options['fields']['field_tag_department']['field'] = 'field_tag_department';
-  /* Field: Field: Realm */
+  /* Field: Content: Realm */
   $handler->display->display_options['fields']['field_tag_realm']['id'] = 'field_tag_realm';
   $handler->display->display_options['fields']['field_tag_realm']['table'] = 'field_data_field_tag_realm';
   $handler->display->display_options['fields']['field_tag_realm']['field'] = 'field_tag_realm';
@@ -578,7 +578,7 @@ function vaxia_wiki_views_default_views() {
   );
   $handler->display->display_options['filters']['field_tag_department_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_tag_department_tid']['vocabulary'] = 'department';
-  /* Filter criterion: Field: Realm (field_tag_realm) */
+  /* Filter criterion: Content: Realm (field_tag_realm) */
   $handler->display->display_options['filters']['field_tag_realm_tid']['id'] = 'field_tag_realm_tid';
   $handler->display->display_options['filters']['field_tag_realm_tid']['table'] = 'field_data_field_tag_realm';
   $handler->display->display_options['filters']['field_tag_realm_tid']['field'] = 'field_tag_realm_tid';
@@ -1175,10 +1175,10 @@ function vaxia_wiki_views_default_views() {
 
   $view = new view();
   $view->name = 'vaxia_wiki_search';
-  $view->description = 'Wiki search';
-  $view->tag = 'Wiki';
+  $view->description = 'Vaxia Wiki Search';
+  $view->tag = 'Vaxia Wiki';
   $view->base_table = 'node';
-  $view->human_name = 'Wiki search';
+  $view->human_name = 'Vaxia Wiki Search';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
@@ -1577,7 +1577,7 @@ Search for a wiki article by tag(s).';
   $handler->display->display_options['filters']['field_tag_department_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_tag_department_tid']['vocabulary'] = 'department';
   $handler->display->display_options['filters']['field_tag_department_tid']['error_message'] = FALSE;
-  /* Filter criterion: Field: Realm (field_tag_realm) */
+  /* Filter criterion: Content: Realm (field_tag_realm) */
   $handler->display->display_options['filters']['field_tag_realm_tid']['id'] = 'field_tag_realm_tid';
   $handler->display->display_options['filters']['field_tag_realm_tid']['table'] = 'field_data_field_tag_realm';
   $handler->display->display_options['filters']['field_tag_realm_tid']['field'] = 'field_tag_realm_tid';
@@ -1868,7 +1868,7 @@ Search for a wiki article by tag(s).';
   $handler->display->display_options['fields']['field_saga']['alter']['text'] = '<h2>[field_titles] [title_1] : [field_saga]</h2>';
   $handler->display->display_options['fields']['field_saga']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_saga']['empty'] = '<h2>[field_titles] [title_1] : Standalone Sessions</h2>';
-  /* Field: Content: Event held */
+  /* Field: Content: Session held */
   $handler->display->display_options['fields']['field_session_held']['id'] = 'field_session_held';
   $handler->display->display_options['fields']['field_session_held']['table'] = 'field_data_field_session_held';
   $handler->display->display_options['fields']['field_session_held']['field'] = 'field_session_held';
@@ -1922,7 +1922,7 @@ Search for a wiki article by tag(s).';
   $handler->display->display_options['filters']['type']['value'] = array(
     'session_report' => 'session_report',
   );
-  /* Filter criterion: Field: Realm (field_tag_realm) */
+  /* Filter criterion: Content: Realm (field_tag_realm) */
   $handler->display->display_options['filters']['field_tag_realm_tid']['id'] = 'field_tag_realm_tid';
   $handler->display->display_options['filters']['field_tag_realm_tid']['table'] = 'field_data_field_tag_realm';
   $handler->display->display_options['filters']['field_tag_realm_tid']['field'] = 'field_tag_realm_tid';
@@ -1967,7 +1967,7 @@ Search for a wiki article by tag(s).';
   $handler->display->display_options['filters']['type']['value'] = array(
     'session_report' => 'session_report',
   );
-  /* Filter criterion: Field: Realm (field_tag_realm) */
+  /* Filter criterion: Content: Realm (field_tag_realm) */
   $handler->display->display_options['filters']['field_tag_realm_tid']['id'] = 'field_tag_realm_tid';
   $handler->display->display_options['filters']['field_tag_realm_tid']['table'] = 'field_data_field_tag_realm';
   $handler->display->display_options['filters']['field_tag_realm_tid']['field'] = 'field_tag_realm_tid';
@@ -1998,7 +1998,7 @@ Search for a wiki article by tag(s).';
   $handler->display->display_options['row_options']['summary_field'] = 'default_title';
   $handler->display->display_options['row_options']['location_field'] = 'none';
   $handler->display->display_options['defaults']['sorts'] = FALSE;
-  /* Sort criterion: Content: Event held (field_session_held) */
+  /* Sort criterion: Content: Session held (field_session_held) */
   $handler->display->display_options['sorts']['field_session_held_value']['id'] = 'field_session_held_value';
   $handler->display->display_options['sorts']['field_session_held_value']['table'] = 'field_data_field_session_held';
   $handler->display->display_options['sorts']['field_session_held_value']['field'] = 'field_session_held_value';
@@ -2019,7 +2019,7 @@ Search for a wiki article by tag(s).';
   $handler->display->display_options['filters']['type']['value'] = array(
     'session_report' => 'session_report',
   );
-  /* Filter criterion: Field: Realm (field_tag_realm) */
+  /* Filter criterion: Content: Realm (field_tag_realm) */
   $handler->display->display_options['filters']['field_tag_realm_tid']['id'] = 'field_tag_realm_tid';
   $handler->display->display_options['filters']['field_tag_realm_tid']['table'] = 'field_data_field_tag_realm';
   $handler->display->display_options['filters']['field_tag_realm_tid']['field'] = 'field_tag_realm_tid';
@@ -2044,7 +2044,7 @@ Search for a wiki article by tag(s).';
   $handler->display->display_options['row_options']['summary_field'] = 'default_title';
   $handler->display->display_options['row_options']['location_field'] = 'none';
   $handler->display->display_options['defaults']['sorts'] = FALSE;
-  /* Sort criterion: Content: Event held (field_session_held) */
+  /* Sort criterion: Content: Session held (field_session_held) */
   $handler->display->display_options['sorts']['field_session_held_value']['id'] = 'field_session_held_value';
   $handler->display->display_options['sorts']['field_session_held_value']['table'] = 'field_data_field_session_held';
   $handler->display->display_options['sorts']['field_session_held_value']['field'] = 'field_session_held_value';
@@ -2066,7 +2066,7 @@ Search for a wiki article by tag(s).';
     'session_report' => 'session_report',
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
-  /* Filter criterion: Field: Realm (field_tag_realm) */
+  /* Filter criterion: Content: Realm (field_tag_realm) */
   $handler->display->display_options['filters']['field_tag_realm_tid']['id'] = 'field_tag_realm_tid';
   $handler->display->display_options['filters']['field_tag_realm_tid']['table'] = 'field_data_field_tag_realm';
   $handler->display->display_options['filters']['field_tag_realm_tid']['field'] = 'field_tag_realm_tid';
@@ -2081,10 +2081,10 @@ Search for a wiki article by tag(s).';
 
   $view = new view();
   $view->name = 'wiki_governance';
-  $view->description = 'Wiki governance';
+  $view->description = 'Vaxia Wiki Governance';
   $view->tag = 'Vaxia Wiki';
   $view->base_table = 'node';
-  $view->human_name = 'Wiki governance';
+  $view->human_name = 'Vaxia Wiki Governance';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
@@ -2238,10 +2238,10 @@ Search for a wiki article by tag(s).';
 
   $view = new view();
   $view->name = 'wiki_npcs_list';
-  $view->description = 'Wiki NPCs list';
+  $view->description = 'Vaxia Wiki NPCs';
   $view->tag = 'Vaxia Wiki';
   $view->base_table = 'node';
-  $view->human_name = 'Wiki NPCs list';
+  $view->human_name = 'Vaxia Wiki NPCs';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
@@ -2372,7 +2372,7 @@ Search for an NPC.';
   $handler->display->display_options['fields']['name']['field'] = 'name';
   $handler->display->display_options['fields']['name']['relationship'] = 'uid';
   $handler->display->display_options['fields']['name']['label'] = 'Storyhost';
-  /* Field: Field: Realm */
+  /* Field: Content: Realm */
   $handler->display->display_options['fields']['field_tag_realm']['id'] = 'field_tag_realm';
   $handler->display->display_options['fields']['field_tag_realm']['table'] = 'field_data_field_tag_realm';
   $handler->display->display_options['fields']['field_tag_realm']['field'] = 'field_tag_realm';
@@ -2386,7 +2386,7 @@ Search for an NPC.';
   $handler->display->display_options['fields']['field_sirian_species']['id'] = 'field_sirian_species';
   $handler->display->display_options['fields']['field_sirian_species']['table'] = 'field_data_field_sirian_species';
   $handler->display->display_options['fields']['field_sirian_species']['field'] = 'field_sirian_species';
-  /* Field: Field: Descriptions */
+  /* Field: Field: Description */
   $handler->display->display_options['fields']['field_description']['id'] = 'field_description';
   $handler->display->display_options['fields']['field_description']['table'] = 'field_data_field_description';
   $handler->display->display_options['fields']['field_description']['field'] = 'field_description';
@@ -2552,10 +2552,10 @@ Search for an NPC.';
 
   $view = new view();
   $view->name = 'wiki_organizations_list';
-  $view->description = 'Wiki NPCs list';
+  $view->description = 'Vaxia Wiki Orgs and Govs';
   $view->tag = 'Vaxia Wiki';
   $view->base_table = 'node';
-  $view->human_name = 'Wiki Organizations list';
+  $view->human_name = 'Vaxia Wiki Orgs and Govs';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
@@ -2647,7 +2647,7 @@ A list of all organizations in the system.';
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  /* Field: Field: Realm */
+  /* Field: Content: Realm */
   $handler->display->display_options['fields']['field_tag_realm']['id'] = 'field_tag_realm';
   $handler->display->display_options['fields']['field_tag_realm']['table'] = 'field_data_field_tag_realm';
   $handler->display->display_options['fields']['field_tag_realm']['field'] = 'field_tag_realm';
@@ -2709,7 +2709,7 @@ A list of all organizations in the system.';
   $handler->display->display_options['filters']['title']['group'] = 1;
   $handler->display->display_options['filters']['title']['exposed'] = TRUE;
   $handler->display->display_options['filters']['title']['expose']['operator_id'] = 'title_op';
-  $handler->display->display_options['filters']['title']['expose']['label'] = 'NPC Name';
+  $handler->display->display_options['filters']['title']['expose']['label'] = 'Name';
   $handler->display->display_options['filters']['title']['expose']['operator'] = 'title_op';
   $handler->display->display_options['filters']['title']['expose']['identifier'] = 'title';
   $handler->display->display_options['filters']['title']['expose']['remember'] = TRUE;
@@ -2720,7 +2720,6 @@ A list of all organizations in the system.';
     30 => 0,
     8 => 0,
     9 => 0,
-    14 => 0,
     21 => 0,
     24 => 0,
     26 => 0,
@@ -2729,16 +2728,19 @@ A list of all organizations in the system.';
     28 => 0,
     29 => 0,
     12 => 0,
+    34 => 0,
+    35 => 0,
     25 => 0,
     13 => 0,
     10 => 0,
     17 => 0,
     15 => 0,
-    20 => 0,
     22 => 0,
     23 => 0,
+    31 => 0,
+    32 => 0,
   );
-  /* Filter criterion: Field: Realm (field_tag_realm) */
+  /* Filter criterion: Content: Realm (field_tag_realm) */
   $handler->display->display_options['filters']['field_tag_realm_tid']['id'] = 'field_tag_realm_tid';
   $handler->display->display_options['filters']['field_tag_realm_tid']['table'] = 'field_data_field_tag_realm';
   $handler->display->display_options['filters']['field_tag_realm_tid']['field'] = 'field_tag_realm_tid';
@@ -2830,7 +2832,7 @@ A list of all organizations in the system.';
   $handler->display->display_options['filters']['field_provides_reputation_value']['expose']['reduce'] = TRUE;
 
   /* Display: Setting Organizations */
-  $handler = $view->new_display('page', 'Setting Organizations', 'npcs_list');
+  $handler = $view->new_display('page', 'Setting Organizations', 'setting_orgs');
   $handler->display->display_options['display_description'] = 'List out available Organizations';
   $handler->display->display_options['path'] = 'wiki/organizations-list';
   $handler->display->display_options['menu']['type'] = 'normal';
@@ -2840,6 +2842,184 @@ A list of all organizations in the system.';
   $handler->display->display_options['menu']['name'] = 'menu-wiki-links';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
+
+  /* Display: ERef: Setting Orgs */
+  $handler = $view->new_display('entityreference', 'ERef: Setting Orgs', 'eref_setting_orgs');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Wiki Organizations';
+  $handler->display->display_options['display_description'] = 'ERef: Setting Orgs';
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'entityreference_style';
+  $handler->display->display_options['style_options']['search_fields'] = array(
+    'title' => 'title',
+    'field_tag_realm' => 0,
+    'field_organization_type' => 0,
+    'body' => 0,
+    'field_provides_reputation' => 0,
+  );
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'entityreference_fields';
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  /* Field: Content: Realm */
+  $handler->display->display_options['fields']['field_tag_realm']['id'] = 'field_tag_realm';
+  $handler->display->display_options['fields']['field_tag_realm']['table'] = 'field_data_field_tag_realm';
+  $handler->display->display_options['fields']['field_tag_realm']['field'] = 'field_tag_realm';
+  $handler->display->display_options['fields']['field_tag_realm']['label'] = '';
+  $handler->display->display_options['fields']['field_tag_realm']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_tag_realm']['alter']['text'] = ' ([field_tag_realm])';
+  $handler->display->display_options['fields']['field_tag_realm']['delta_offset'] = '0';
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator_id'] = '';
+  $handler->display->display_options['filters']['status']['expose']['label'] = 'Published';
+  $handler->display->display_options['filters']['status']['expose']['operator'] = 'status_op';
+  $handler->display->display_options['filters']['status']['expose']['identifier'] = 'status';
+  $handler->display->display_options['filters']['status']['expose']['required'] = TRUE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'wiki_page' => 'wiki_page',
+  );
+  $handler->display->display_options['filters']['type']['group'] = 1;
+  /* Filter criterion: Content: Type (field_tag_type) */
+  $handler->display->display_options['filters']['field_tag_type_tid']['id'] = 'field_tag_type_tid';
+  $handler->display->display_options['filters']['field_tag_type_tid']['table'] = 'field_data_field_tag_type';
+  $handler->display->display_options['filters']['field_tag_type_tid']['field'] = 'field_tag_type_tid';
+  $handler->display->display_options['filters']['field_tag_type_tid']['value'] = array(
+    0 => '729',
+  );
+  $handler->display->display_options['filters']['field_tag_type_tid']['group'] = 1;
+  $handler->display->display_options['filters']['field_tag_type_tid']['vocabulary'] = 'setting_type';
+  /* Filter criterion: Content: Provides reputation (field_provides_reputation) */
+  $handler->display->display_options['filters']['field_provides_reputation_value']['id'] = 'field_provides_reputation_value';
+  $handler->display->display_options['filters']['field_provides_reputation_value']['table'] = 'field_data_field_provides_reputation';
+  $handler->display->display_options['filters']['field_provides_reputation_value']['field'] = 'field_provides_reputation_value';
+  $handler->display->display_options['filters']['field_provides_reputation_value']['value'] = array(
+    1 => '1',
+  );
+  $handler->display->display_options['filters']['field_provides_reputation_value']['group'] = 1;
+  $handler->display->display_options['filters']['field_provides_reputation_value']['expose']['operator_id'] = 'field_provides_reputation_value_op';
+  $handler->display->display_options['filters']['field_provides_reputation_value']['expose']['label'] = 'Provides reputation';
+  $handler->display->display_options['filters']['field_provides_reputation_value']['expose']['operator'] = 'field_provides_reputation_value_op';
+  $handler->display->display_options['filters']['field_provides_reputation_value']['expose']['identifier'] = 'field_provides_reputation_value';
+  $handler->display->display_options['filters']['field_provides_reputation_value']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_provides_reputation_value']['expose']['multiple'] = TRUE;
+  $handler->display->display_options['filters']['field_provides_reputation_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    3 => 0,
+    30 => 0,
+    8 => 0,
+    9 => 0,
+    14 => 0,
+    21 => 0,
+    24 => 0,
+    26 => 0,
+    27 => 0,
+    19 => 0,
+    28 => 0,
+    29 => 0,
+    12 => 0,
+    25 => 0,
+    13 => 0,
+    10 => 0,
+    17 => 0,
+    15 => 0,
+    20 => 0,
+    22 => 0,
+    23 => 0,
+    31 => 0,
+    32 => 0,
+  );
+  $handler->display->display_options['filters']['field_provides_reputation_value']['expose']['reduce'] = TRUE;
+
+  /* Display: ERef: Setting Govs */
+  $handler = $view->new_display('entityreference', 'ERef: Setting Govs', 'eref_setting_gov');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Wiki Organizations';
+  $handler->display->display_options['display_description'] = 'ERef: Setting Govs';
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'entityreference_style';
+  $handler->display->display_options['style_options']['search_fields'] = array(
+    'title' => 'title',
+    'field_tag_realm' => 0,
+    'field_organization_type' => 0,
+    'body' => 0,
+    'field_provides_reputation' => 0,
+  );
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'entityreference_fields';
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  /* Field: Content: Realm */
+  $handler->display->display_options['fields']['field_tag_realm']['id'] = 'field_tag_realm';
+  $handler->display->display_options['fields']['field_tag_realm']['table'] = 'field_data_field_tag_realm';
+  $handler->display->display_options['fields']['field_tag_realm']['field'] = 'field_tag_realm';
+  $handler->display->display_options['fields']['field_tag_realm']['label'] = '';
+  $handler->display->display_options['fields']['field_tag_realm']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_tag_realm']['alter']['text'] = ' ([field_tag_realm])';
+  $handler->display->display_options['fields']['field_tag_realm']['delta_offset'] = '0';
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator_id'] = '';
+  $handler->display->display_options['filters']['status']['expose']['label'] = 'Published';
+  $handler->display->display_options['filters']['status']['expose']['operator'] = 'status_op';
+  $handler->display->display_options['filters']['status']['expose']['identifier'] = 'status';
+  $handler->display->display_options['filters']['status']['expose']['required'] = TRUE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'wiki_page' => 'wiki_page',
+  );
+  $handler->display->display_options['filters']['type']['group'] = 1;
+  /* Filter criterion: Content: Type (field_tag_type) */
+  $handler->display->display_options['filters']['field_tag_type_tid']['id'] = 'field_tag_type_tid';
+  $handler->display->display_options['filters']['field_tag_type_tid']['table'] = 'field_data_field_tag_type';
+  $handler->display->display_options['filters']['field_tag_type_tid']['field'] = 'field_tag_type_tid';
+  $handler->display->display_options['filters']['field_tag_type_tid']['value'] = array(
+    0 => '1251',
+  );
+  $handler->display->display_options['filters']['field_tag_type_tid']['group'] = 1;
+  $handler->display->display_options['filters']['field_tag_type_tid']['vocabulary'] = 'setting_type';
   $export['wiki_organizations_list'] = $view;
 
   return $export;

@@ -366,7 +366,7 @@ function vaxia_views_default_views() {
   $handler->display->display_options['fields']['name']['relationship'] = 'uid';
   $handler->display->display_options['fields']['name']['label'] = 'Player';
   $handler->display->display_options['fields']['name']['hide_alter_empty'] = FALSE;
-  /* Field: Field: Realm */
+  /* Field: Content: Realm */
   $handler->display->display_options['fields']['field_tag_realm']['id'] = 'field_tag_realm';
   $handler->display->display_options['fields']['field_tag_realm']['table'] = 'field_data_field_tag_realm';
   $handler->display->display_options['fields']['field_tag_realm']['field'] = 'field_tag_realm';
@@ -438,6 +438,7 @@ function vaxia_views_default_views() {
     2 => '2',
     3 => '3',
     4 => '4',
+    6 => '6',
   );
   $handler->display->display_options['filters']['sid']['group'] = 1;
   $handler->display->display_options['path'] = 'character-sheets/mine';
@@ -535,7 +536,7 @@ function vaxia_views_default_views() {
   $handler->display->display_options['fields']['name']['relationship'] = 'uid';
   $handler->display->display_options['fields']['name']['label'] = 'Player';
   $handler->display->display_options['fields']['name']['hide_alter_empty'] = FALSE;
-  /* Field: Field: Realm */
+  /* Field: Content: Realm */
   $handler->display->display_options['fields']['field_tag_realm']['id'] = 'field_tag_realm';
   $handler->display->display_options['fields']['field_tag_realm']['table'] = 'field_data_field_tag_realm';
   $handler->display->display_options['fields']['field_tag_realm']['field'] = 'field_tag_realm';
@@ -644,6 +645,7 @@ function vaxia_views_default_views() {
     2 => '2',
     3 => '3',
     4 => '4',
+    6 => '6',
   );
   $handler->display->display_options['filters']['sid_1']['group'] = 2;
   /* Filter criterion: User: Current */
@@ -749,7 +751,7 @@ function vaxia_views_default_views() {
   $handler->display->display_options['sorts']['title']['table'] = 'node';
   $handler->display->display_options['sorts']['title']['field'] = 'title';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
-  /* Contextual filter: Field: Realm (field_tag_realm) */
+  /* Contextual filter: Content: Realm (field_tag_realm) */
   $handler->display->display_options['arguments']['field_tag_realm_tid']['id'] = 'field_tag_realm_tid';
   $handler->display->display_options['arguments']['field_tag_realm_tid']['table'] = 'field_data_field_tag_realm';
   $handler->display->display_options['arguments']['field_tag_realm_tid']['field'] = 'field_tag_realm_tid';
@@ -1040,7 +1042,7 @@ return !( user_access(\'use NPCs\') || $row->uid == $user->uid );';
   $handler->display->display_options['fields']['title_1']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title_1']['hide_alter_empty'] = FALSE;
   $handler->display->display_options['fields']['title_1']['link_to_node'] = FALSE;
-  /* Field: Field: Realm */
+  /* Field: Content: Realm */
   $handler->display->display_options['fields']['field_tag_realm']['id'] = 'field_tag_realm';
   $handler->display->display_options['fields']['field_tag_realm']['table'] = 'field_data_field_tag_realm';
   $handler->display->display_options['fields']['field_tag_realm']['field'] = 'field_tag_realm';
@@ -1569,6 +1571,82 @@ return !($day == $char_day && $month == $char_month);';
       'name' => 'nid',
     ),
   );
+
+  /* Display: Block: Notify Returned Chars */
+  $handler = $view->new_display('block', 'Block: Notify Returned Chars', 'block_notify_ret_chars');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Notify Returned Chars';
+  $handler->display->display_options['display_description'] = 'Notify Returned Chars';
+  $handler->display->display_options['defaults']['pager'] = FALSE;
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'list';
+  $handler->display->display_options['style_options']['wrapper_class'] = 'item-list messages status';
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Content: Title */
+  $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
+  $handler->display->display_options['fields']['title_1']['table'] = 'node';
+  $handler->display->display_options['fields']['title_1']['field'] = 'title';
+  $handler->display->display_options['fields']['title_1']['label'] = '';
+  $handler->display->display_options['fields']['title_1']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['title_1']['alter']['text'] = 'Your character "[title_1]" has been returned to draft for further revision. Please check the "Workflow" tab on the character for details.';
+  $handler->display->display_options['fields']['title_1']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['title_1']['hide_alter_empty'] = FALSE;
+  $handler->display->display_options['defaults']['sorts'] = FALSE;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'character_sheet' => 'character_sheet',
+  );
+  $handler->display->display_options['filters']['type']['group'] = 1;
+  /* Filter criterion: User: Current */
+  $handler->display->display_options['filters']['uid_current']['id'] = 'uid_current';
+  $handler->display->display_options['filters']['uid_current']['table'] = 'users';
+  $handler->display->display_options['filters']['uid_current']['field'] = 'uid_current';
+  $handler->display->display_options['filters']['uid_current']['relationship'] = 'uid';
+  $handler->display->display_options['filters']['uid_current']['value'] = '1';
+  $handler->display->display_options['filters']['uid_current']['group'] = 1;
+  /* Filter criterion: Workflow: Current state */
+  $handler->display->display_options['filters']['sid']['id'] = 'sid';
+  $handler->display->display_options['filters']['sid']['table'] = 'workflow_node';
+  $handler->display->display_options['filters']['sid']['field'] = 'sid';
+  $handler->display->display_options['filters']['sid']['value'] = array(
+    2 => '2',
+  );
+  $handler->display->display_options['filters']['sid']['group'] = 1;
+  /* Filter criterion: Workflow: Previous state */
+  $handler->display->display_options['filters']['sid_1']['id'] = 'sid_1';
+  $handler->display->display_options['filters']['sid_1']['table'] = 'workflow_node_history';
+  $handler->display->display_options['filters']['sid_1']['field'] = 'sid';
+  $handler->display->display_options['filters']['sid_1']['value'] = array(
+    3 => '3',
+  );
+  $handler->display->display_options['filters']['sid_1']['group'] = 1;
+  /* Filter criterion: Workflow: Current time */
+  $handler->display->display_options['filters']['stamp']['id'] = 'stamp';
+  $handler->display->display_options['filters']['stamp']['table'] = 'workflow_node';
+  $handler->display->display_options['filters']['stamp']['field'] = 'stamp';
+  $handler->display->display_options['filters']['stamp']['operator'] = '>';
+  $handler->display->display_options['filters']['stamp']['value']['value'] = '-3 days';
+  $handler->display->display_options['filters']['stamp']['value']['type'] = 'offset';
+  $handler->display->display_options['filters']['stamp']['group'] = 1;
+  $handler->display->display_options['block_description'] = 'Notify Returned Chars';
   $export['vaxia_character_sheets'] = $view;
 
   return $export;

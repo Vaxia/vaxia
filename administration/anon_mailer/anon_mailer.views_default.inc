@@ -62,7 +62,8 @@ return FALSE;';
   $handler->display->display_options['fields']['submitted']['id'] = 'submitted';
   $handler->display->display_options['fields']['submitted']['table'] = 'webform_submissions';
   $handler->display->display_options['fields']['submitted']['field'] = 'submitted';
-  $handler->display->display_options['fields']['submitted']['date_format'] = 'privatemsg_current_day';
+  $handler->display->display_options['fields']['submitted']['date_format'] = 'short';
+  $handler->display->display_options['fields']['submitted']['second_date_format'] = 'privatemsg_current_day';
   /* Field: Global: PHP */
   $handler->display->display_options['fields']['php_1']['id'] = 'php_1';
   $handler->display->display_options['fields']['php_1']['table'] = 'views';

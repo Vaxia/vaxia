@@ -10,7 +10,7 @@
 function items_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'node-items-field_absorb_type'
+  // Exported field_instance: 'node-items-field_absorb_type'.
   $field_instances['node-items-field_absorb_type'] = array(
     'bundle' => 'items',
     'default_value' => array(
@@ -58,7 +58,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_agility'
+  // Exported field_instance: 'node-items-field_agility'.
   $field_instances['node-items-field_agility'] = array(
     'bundle' => 'items',
     'deleted' => 0,
@@ -101,7 +101,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_appearance'
+  // Exported field_instance: 'node-items-field_appearance'.
   $field_instances['node-items-field_appearance'] = array(
     'bundle' => 'items',
     'deleted' => 0,
@@ -144,7 +144,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_armor_absorbs'
+  // Exported field_instance: 'node-items-field_armor_absorbs'.
   $field_instances['node-items-field_armor_absorbs'] = array(
     'bundle' => 'items',
     'default_value' => array(
@@ -206,7 +206,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_armor_penalty'
+  // Exported field_instance: 'node-items-field_armor_penalty'.
   $field_instances['node-items-field_armor_penalty'] = array(
     'bundle' => 'items',
     'default_value' => array(
@@ -268,7 +268,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_awareness'
+  // Exported field_instance: 'node-items-field_awareness'.
   $field_instances['node-items-field_awareness'] = array(
     'bundle' => 'items',
     'deleted' => 0,
@@ -311,7 +311,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_build_points'
+  // Exported field_instance: 'node-items-field_build_points'.
   $field_instances['node-items-field_build_points'] = array(
     'bundle' => 'items',
     'default_value' => array(
@@ -373,7 +373,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_calc_value'
+  // Exported field_instance: 'node-items-field_calc_value'.
   $field_instances['node-items-field_calc_value'] = array(
     'bundle' => 'items',
     'default_value' => array(
@@ -391,7 +391,7 @@ function items_field_default_field_instances() {
         'weight' => 7,
       ),
       'default' => array(
-        'label' => 'above',
+        'label' => 'inline',
         'settings' => array(),
         'type' => 'hidden',
         'weight' => 10,
@@ -421,7 +421,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_character_owner'
+  // Exported field_instance: 'node-items-field_character_owner'.
   $field_instances['node-items-field_character_owner'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -468,7 +468,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_charisma'
+  // Exported field_instance: 'node-items-field_charisma'.
   $field_instances['node-items-field_charisma'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -526,7 +526,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_constitution'
+  // Exported field_instance: 'node-items-field_constitution'.
   $field_instances['node-items-field_constitution'] = array(
     'bundle' => 'items',
     'deleted' => 0,
@@ -569,7 +569,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_creation_history'
+  // Exported field_instance: 'node-items-field_creation_history'.
   $field_instances['node-items-field_creation_history'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -648,7 +648,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_declared_value'
+  // Exported field_instance: 'node-items-field_declared_value'.
   $field_instances['node-items-field_declared_value'] = array(
     'bundle' => 'items',
     'default_value' => array(
@@ -732,7 +732,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_dexterity'
+  // Exported field_instance: 'node-items-field_dexterity'.
   $field_instances['node-items-field_dexterity'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -790,7 +790,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_endurance'
+  // Exported field_instance: 'node-items-field_endurance'.
   $field_instances['node-items-field_endurance'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -848,7 +848,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_fixed_strength'
+  // Exported field_instance: 'node-items-field_fixed_strength'.
   $field_instances['node-items-field_fixed_strength'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -906,7 +906,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_health'
+  // Exported field_instance: 'node-items-field_health'.
   $field_instances['node-items-field_health'] = array(
     'bundle' => 'items',
     'deleted' => 0,
@@ -949,7 +949,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_in_shop'
+  // Exported field_instance: 'node-items-field_in_shop'.
   $field_instances['node-items-field_in_shop'] = array(
     'bundle' => 'items',
     'default_value' => array(
@@ -998,7 +998,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_intelligence'
+  // Exported field_instance: 'node-items-field_intelligence'.
   $field_instances['node-items-field_intelligence'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -1056,7 +1056,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_item_agility'
+  // Exported field_instance: 'node-items-field_item_agility'.
   $field_instances['node-items-field_item_agility'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -1120,7 +1120,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_item_appearance'
+  // Exported field_instance: 'node-items-field_item_appearance'.
   $field_instances['node-items-field_item_appearance'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -1184,7 +1184,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_item_awareness'
+  // Exported field_instance: 'node-items-field_item_awareness'.
   $field_instances['node-items-field_item_awareness'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -1248,7 +1248,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_item_charisma'
+  // Exported field_instance: 'node-items-field_item_charisma'.
   $field_instances['node-items-field_item_charisma'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -1312,7 +1312,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_item_constitution'
+  // Exported field_instance: 'node-items-field_item_constitution'.
   $field_instances['node-items-field_item_constitution'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -1376,7 +1376,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_item_desc'
+  // Exported field_instance: 'node-items-field_item_desc'.
   $field_instances['node-items-field_item_desc'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -1455,7 +1455,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_item_dexterity'
+  // Exported field_instance: 'node-items-field_item_dexterity'.
   $field_instances['node-items-field_item_dexterity'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -1519,7 +1519,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_item_difficulty'
+  // Exported field_instance: 'node-items-field_item_difficulty'.
   $field_instances['node-items-field_item_difficulty'] = array(
     'bundle' => 'items',
     'default_value' => array(
@@ -1581,7 +1581,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_item_endurance'
+  // Exported field_instance: 'node-items-field_item_endurance'.
   $field_instances['node-items-field_item_endurance'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -1645,7 +1645,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_item_health'
+  // Exported field_instance: 'node-items-field_item_health'.
   $field_instances['node-items-field_item_health'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -1709,7 +1709,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_item_history'
+  // Exported field_instance: 'node-items-field_item_history'.
   $field_instances['node-items-field_item_history'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -1788,7 +1788,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_item_intelligence'
+  // Exported field_instance: 'node-items-field_item_intelligence'.
   $field_instances['node-items-field_item_intelligence'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -1852,7 +1852,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_item_life'
+  // Exported field_instance: 'node-items-field_item_life'.
   $field_instances['node-items-field_item_life'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -1916,7 +1916,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_item_over_agility'
+  // Exported field_instance: 'node-items-field_item_over_agility'.
   $field_instances['node-items-field_item_over_agility'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -1980,7 +1980,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_item_over_appearance'
+  // Exported field_instance: 'node-items-field_item_over_appearance'.
   $field_instances['node-items-field_item_over_appearance'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -2044,7 +2044,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_item_over_awareness'
+  // Exported field_instance: 'node-items-field_item_over_awareness'.
   $field_instances['node-items-field_item_over_awareness'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -2108,7 +2108,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_item_over_charisma'
+  // Exported field_instance: 'node-items-field_item_over_charisma'.
   $field_instances['node-items-field_item_over_charisma'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -2172,7 +2172,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_item_over_constitution'
+  // Exported field_instance: 'node-items-field_item_over_constitution'.
   $field_instances['node-items-field_item_over_constitution'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -2236,7 +2236,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_item_over_dexterity'
+  // Exported field_instance: 'node-items-field_item_over_dexterity'.
   $field_instances['node-items-field_item_over_dexterity'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -2300,7 +2300,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_item_over_endurance'
+  // Exported field_instance: 'node-items-field_item_over_endurance'.
   $field_instances['node-items-field_item_over_endurance'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -2364,7 +2364,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_item_over_health'
+  // Exported field_instance: 'node-items-field_item_over_health'.
   $field_instances['node-items-field_item_over_health'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -2428,7 +2428,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_item_over_intellegence'
+  // Exported field_instance: 'node-items-field_item_over_intellegence'.
   $field_instances['node-items-field_item_over_intellegence'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -2492,7 +2492,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_item_over_life'
+  // Exported field_instance: 'node-items-field_item_over_life'.
   $field_instances['node-items-field_item_over_life'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -2556,7 +2556,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_item_over_presence'
+  // Exported field_instance: 'node-items-field_item_over_presence'.
   $field_instances['node-items-field_item_over_presence'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -2620,7 +2620,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_item_over_reflexes'
+  // Exported field_instance: 'node-items-field_item_over_reflexes'.
   $field_instances['node-items-field_item_over_reflexes'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -2684,7 +2684,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_item_over_skill'
+  // Exported field_instance: 'node-items-field_item_over_skill'.
   $field_instances['node-items-field_item_over_skill'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -2748,7 +2748,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_item_over_spirituality'
+  // Exported field_instance: 'node-items-field_item_over_spirituality'.
   $field_instances['node-items-field_item_over_spirituality'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -2812,7 +2812,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_item_over_strength'
+  // Exported field_instance: 'node-items-field_item_over_strength'.
   $field_instances['node-items-field_item_over_strength'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -2876,7 +2876,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_item_presence'
+  // Exported field_instance: 'node-items-field_item_presence'.
   $field_instances['node-items-field_item_presence'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -2940,7 +2940,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_item_reflexes'
+  // Exported field_instance: 'node-items-field_item_reflexes'.
   $field_instances['node-items-field_item_reflexes'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -3004,7 +3004,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_item_skill'
+  // Exported field_instance: 'node-items-field_item_skill'.
   $field_instances['node-items-field_item_skill'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -3068,7 +3068,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_item_spent_uses'
+  // Exported field_instance: 'node-items-field_item_spent_uses'.
   $field_instances['node-items-field_item_spent_uses'] = array(
     'bundle' => 'items',
     'default_value' => array(
@@ -3130,7 +3130,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_item_spirituality'
+  // Exported field_instance: 'node-items-field_item_spirituality'.
   $field_instances['node-items-field_item_spirituality'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -3194,7 +3194,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_item_strength'
+  // Exported field_instance: 'node-items-field_item_strength'.
   $field_instances['node-items-field_item_strength'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -3258,7 +3258,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_item_type'
+  // Exported field_instance: 'node-items-field_item_type'.
   $field_instances['node-items-field_item_type'] = array(
     'bundle' => 'items',
     'default_value' => array(
@@ -3306,7 +3306,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_item_use_day'
+  // Exported field_instance: 'node-items-field_item_use_day'.
   $field_instances['node-items-field_item_use_day'] = array(
     'bundle' => 'items',
     'default_value' => array(
@@ -3354,7 +3354,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_item_uses'
+  // Exported field_instance: 'node-items-field_item_uses'.
   $field_instances['node-items-field_item_uses'] = array(
     'bundle' => 'items',
     'default_value' => array(
@@ -3416,7 +3416,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_life'
+  // Exported field_instance: 'node-items-field_life'.
   $field_instances['node-items-field_life'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -3474,7 +3474,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_player_notes'
+  // Exported field_instance: 'node-items-field_player_notes'.
   $field_instances['node-items-field_player_notes'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -3553,7 +3553,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_pp_created'
+  // Exported field_instance: 'node-items-field_pp_created'.
   $field_instances['node-items-field_pp_created'] = array(
     'bundle' => 'items',
     'default_value' => array(
@@ -3615,7 +3615,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_presence'
+  // Exported field_instance: 'node-items-field_presence'.
   $field_instances['node-items-field_presence'] = array(
     'bundle' => 'items',
     'deleted' => 0,
@@ -3658,7 +3658,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_reflexes'
+  // Exported field_instance: 'node-items-field_reflexes'.
   $field_instances['node-items-field_reflexes'] = array(
     'bundle' => 'items',
     'deleted' => 0,
@@ -3701,7 +3701,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_sellback'
+  // Exported field_instance: 'node-items-field_sellback'.
   $field_instances['node-items-field_sellback'] = array(
     'bundle' => 'items',
     'default_value' => array(
@@ -3750,7 +3750,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_sh_notes'
+  // Exported field_instance: 'node-items-field_sh_notes'.
   $field_instances['node-items-field_sh_notes'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -3829,7 +3829,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_sh_private_notes'
+  // Exported field_instance: 'node-items-field_sh_private_notes'.
   $field_instances['node-items-field_sh_private_notes'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -3908,7 +3908,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_skill'
+  // Exported field_instance: 'node-items-field_skill'.
   $field_instances['node-items-field_skill'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -3932,6 +3932,8 @@ function items_field_default_field_instances() {
         'module' => 'field_collection_table',
         'settings' => array(
           'add' => '',
+          'cssfield' => FALSE,
+          'cssrowcol' => FALSE,
           'delete' => '',
           'description' => 0,
           'edit' => '',
@@ -3964,7 +3966,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_spirituality'
+  // Exported field_instance: 'node-items-field_spirituality'.
   $field_instances['node-items-field_spirituality'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -4022,7 +4024,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_strength'
+  // Exported field_instance: 'node-items-field_strength'.
   $field_instances['node-items-field_strength'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -4080,7 +4082,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_tag_realm'
+  // Exported field_instance: 'node-items-field_tag_realm'.
   $field_instances['node-items-field_tag_realm'] = array(
     'bundle' => 'items',
     'default_value' => array(
@@ -4098,11 +4100,11 @@ function items_field_default_field_instances() {
         'weight' => 0,
       ),
       'default' => array(
-        'label' => 'above',
+        'label' => 'inline',
         'module' => 'taxonomy',
         'settings' => array(),
-        'type' => 'taxonomy_term_reference_link',
-        'weight' => 74,
+        'type' => 'taxonomy_term_reference_plain',
+        'weight' => 4,
       ),
       'question' => array(
         'label' => 'above',
@@ -4127,7 +4129,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_value'
+  // Exported field_instance: 'node-items-field_value'.
   $field_instances['node-items-field_value'] = array(
     'bundle' => 'items',
     'default_value' => array(
@@ -4216,7 +4218,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_weapon_class'
+  // Exported field_instance: 'node-items-field_weapon_class'.
   $field_instances['node-items-field_weapon_class'] = array(
     'bundle' => 'items',
     'default_value' => array(
@@ -4264,7 +4266,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-items-field_weapon_sub_type'
+  // Exported field_instance: 'node-items-field_weapon_sub_type'.
   $field_instances['node-items-field_weapon_sub_type'] = array(
     'bundle' => 'items',
     'default_value' => NULL,
@@ -4309,7 +4311,7 @@ function items_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'taxonomy_term-weapon_category-field_multi_action_mod'
+  // 'taxonomy_term-weapon_category-field_multi_action_mod'.
   $field_instances['taxonomy_term-weapon_category-field_multi_action_mod'] = array(
     'bundle' => 'weapon_category',
     'default_value' => array(
@@ -4353,7 +4355,7 @@ function items_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'taxonomy_term-weapon_category-field_percentage'
+  // Exported field_instance: 'taxonomy_term-weapon_category-field_percentage'.
   $field_instances['taxonomy_term-weapon_category-field_percentage'] = array(
     'bundle' => 'weapon_category',
     'default_value' => array(

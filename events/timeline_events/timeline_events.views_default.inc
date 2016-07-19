@@ -52,16 +52,15 @@ function timeline_events_views_default_views() {
   $handler->display->display_options['fields']['body']['alter']['max_length'] = '300';
   $handler->display->display_options['fields']['body']['alter']['strip_tags'] = TRUE;
   $handler->display->display_options['fields']['body']['alter']['trim'] = TRUE;
-  /* Field: Field: Realm */
+  /* Field: Content: Realm */
   $handler->display->display_options['fields']['field_tag_realm']['id'] = 'field_tag_realm';
   $handler->display->display_options['fields']['field_tag_realm']['table'] = 'field_data_field_tag_realm';
   $handler->display->display_options['fields']['field_tag_realm']['field'] = 'field_tag_realm';
   $handler->display->display_options['fields']['field_tag_realm']['type'] = 'taxonomy_term_reference_plain';
-  /* Field: Content: Event held */
+  /* Field: Content: Session held */
   $handler->display->display_options['fields']['field_session_held']['id'] = 'field_session_held';
   $handler->display->display_options['fields']['field_session_held']['table'] = 'field_data_field_session_held';
   $handler->display->display_options['fields']['field_session_held']['field'] = 'field_session_held';
-  $handler->display->display_options['fields']['field_session_held']['label'] = 'Session held';
   $handler->display->display_options['fields']['field_session_held']['settings'] = array(
     'format_type' => 'long',
     'fromto' => 'both',
@@ -90,7 +89,7 @@ function timeline_events_views_default_views() {
     'session_report' => 'session_report',
     'timeline_event' => 'timeline_event',
   );
-  /* Filter criterion: Field: Realm (field_tag_realm) */
+  /* Filter criterion: Content: Realm (field_tag_realm) */
   $handler->display->display_options['filters']['field_tag_realm_tid']['id'] = 'field_tag_realm_tid';
   $handler->display->display_options['filters']['field_tag_realm_tid']['table'] = 'field_data_field_tag_realm';
   $handler->display->display_options['filters']['field_tag_realm_tid']['field'] = 'field_tag_realm_tid';

@@ -11,78 +11,12 @@ function vaxia_field_default_field_instances() {
   $field_instances = array();
 
   // Exported field_instance:
-  // 'field_collection_item-field_language_skills-field_language'
-  $field_instances['field_collection_item-field_language_skills-field_language'] = array(
-    'bundle' => 'field_language_skills',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'entityreference',
-        'settings' => array(
-          'link' => FALSE,
-        ),
-        'type' => 'entityreference_label',
-        'weight' => 2,
-      ),
-    ),
-    'entity_type' => 'field_collection_item',
-    'field_name' => 'field_language',
-    'label' => 'Language',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'options',
-      'settings' => array(),
-      'type' => 'options_select',
-      'weight' => 0,
-    ),
-  );
-
-  // Exported field_instance:
-  // 'field_collection_item-field_language_skills-field_proficiency'
-  $field_instances['field_collection_item-field_language_skills-field_proficiency'] = array(
-    'bundle' => 'field_language_skills',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'hidden',
-        'module' => 'list',
-        'settings' => array(),
-        'type' => 'list_default',
-        'weight' => 1,
-      ),
-    ),
-    'entity_type' => 'field_collection_item',
-    'field_name' => 'field_proficiency',
-    'label' => 'Proficiency',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'options',
-      'settings' => array(),
-      'type' => 'options_select',
-      'weight' => 1,
-    ),
-  );
-
-  // Exported field_instance:
-  // 'field_collection_item-field_skill-field_aspect_one'
+  // 'field_collection_item-field_skill-field_aspect_one'.
   $field_instances['field_collection_item-field_skill-field_aspect_one'] = array(
     'bundle' => 'field_skill',
     'default_value' => array(
       0 => array(
-        'tid' => 1125,
+        'tid' => 1141,
       ),
     ),
     'deleted' => 0,
@@ -113,12 +47,12 @@ function vaxia_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'field_collection_item-field_skill-field_aspect_three'
+  // 'field_collection_item-field_skill-field_aspect_three'.
   $field_instances['field_collection_item-field_skill-field_aspect_three'] = array(
     'bundle' => 'field_skill',
     'default_value' => array(
       0 => array(
-        'tid' => 1125,
+        'tid' => 1141,
       ),
     ),
     'deleted' => 0,
@@ -149,12 +83,12 @@ function vaxia_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'field_collection_item-field_skill-field_aspect_two'
+  // 'field_collection_item-field_skill-field_aspect_two'.
   $field_instances['field_collection_item-field_skill-field_aspect_two'] = array(
     'bundle' => 'field_skill',
     'default_value' => array(
       0 => array(
-        'tid' => 1125,
+        'tid' => 1141,
       ),
     ),
     'deleted' => 0,
@@ -185,7 +119,7 @@ function vaxia_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'field_collection_item-field_skill-field_skill_desc'
+  // 'field_collection_item-field_skill-field_skill_desc'.
   $field_instances['field_collection_item-field_skill-field_skill_desc'] = array(
     'bundle' => 'field_skill',
     'default_value' => NULL,
@@ -254,7 +188,7 @@ function vaxia_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'field_collection_item-field_skill-field_skill_name'
+  // 'field_collection_item-field_skill-field_skill_name'.
   $field_instances['field_collection_item-field_skill-field_skill_name'] = array(
     'bundle' => 'field_skill',
     'default_value' => NULL,
@@ -289,7 +223,7 @@ function vaxia_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'field_collection_item-field_skill-field_skill_value'
+  // 'field_collection_item-field_skill-field_skill_value'.
   $field_instances['field_collection_item-field_skill-field_skill_value'] = array(
     'bundle' => 'field_skill',
     'default_value' => NULL,
@@ -330,7 +264,7 @@ function vaxia_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'field_collection_item-field_skill-field_tech_languages'
+  // 'field_collection_item-field_skill-field_tech_languages'.
   $field_instances['field_collection_item-field_skill-field_tech_languages'] = array(
     'bundle' => 'field_skill',
     'default_value' => NULL,
@@ -342,6 +276,8 @@ function vaxia_field_default_field_instances() {
         'module' => 'field_collection_table',
         'settings' => array(
           'add' => '',
+          'cssfield' => FALSE,
+          'cssrowcol' => FALSE,
           'delete' => '',
           'description' => 0,
           'edit' => '',
@@ -369,7 +305,7 @@ function vaxia_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'field_collection_item-field_tech_languages-field_tech_language'
+  // 'field_collection_item-field_tech_languages-field_tech_language'.
   $field_instances['field_collection_item-field_tech_languages-field_tech_language'] = array(
     'bundle' => 'field_tech_languages',
     'default_value' => NULL,
@@ -401,7 +337,7 @@ function vaxia_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'field_collection_item-field_tech_languages-field_tech_proficiency'
+  // 'field_collection_item-field_tech_languages-field_tech_proficiency'.
   $field_instances['field_collection_item-field_tech_languages-field_tech_proficiency'] = array(
     'bundle' => 'field_tech_languages',
     'default_value' => NULL,
@@ -432,7 +368,7 @@ function vaxia_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_achivements'
+  // Exported field_instance: 'node-character_sheet-field_achivements'.
   $field_instances['node-character_sheet-field_achivements'] = array(
     'bundle' => 'character_sheet',
     'default_value' => NULL,
@@ -506,7 +442,7 @@ function vaxia_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_age'
+  // Exported field_instance: 'node-character_sheet-field_age'.
   $field_instances['node-character_sheet-field_age'] = array(
     'bundle' => 'character_sheet',
     'deleted' => 0,
@@ -542,7 +478,7 @@ function vaxia_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_age_app'
+  // Exported field_instance: 'node-character_sheet-field_age_app'.
   $field_instances['node-character_sheet-field_age_app'] = array(
     'bundle' => 'character_sheet',
     'default_value' => NULL,
@@ -588,7 +524,7 @@ function vaxia_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_agility'
+  // Exported field_instance: 'node-character_sheet-field_agility'.
   $field_instances['node-character_sheet-field_agility'] = array(
     'bundle' => 'character_sheet',
     'deleted' => 0,
@@ -630,7 +566,7 @@ function vaxia_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_appearance'
+  // Exported field_instance: 'node-character_sheet-field_appearance'.
   $field_instances['node-character_sheet-field_appearance'] = array(
     'bundle' => 'character_sheet',
     'deleted' => 0,
@@ -672,7 +608,7 @@ function vaxia_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_artwork_image'
+  // Exported field_instance: 'node-character_sheet-field_artwork_image'.
   $field_instances['node-character_sheet-field_artwork_image'] = array(
     'bundle' => 'character_sheet',
     'deleted' => 0,
@@ -727,7 +663,7 @@ function vaxia_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_awareness'
+  // Exported field_instance: 'node-character_sheet-field_awareness'.
   $field_instances['node-character_sheet-field_awareness'] = array(
     'bundle' => 'character_sheet',
     'deleted' => 0,
@@ -769,7 +705,7 @@ function vaxia_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_background'
+  // Exported field_instance: 'node-character_sheet-field_background'.
   $field_instances['node-character_sheet-field_background'] = array(
     'bundle' => 'character_sheet',
     'default_value' => array(
@@ -850,7 +786,7 @@ function vaxia_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_background_color'
+  // Exported field_instance: 'node-character_sheet-field_background_color'.
   $field_instances['node-character_sheet-field_background_color'] = array(
     'bundle' => 'character_sheet',
     'default_value' => NULL,
@@ -888,7 +824,7 @@ function vaxia_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_birth_day'
+  // Exported field_instance: 'node-character_sheet-field_birth_day'.
   $field_instances['node-character_sheet-field_birth_day'] = array(
     'bundle' => 'character_sheet',
     'default_value' => array(
@@ -932,7 +868,7 @@ function vaxia_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_birth_month'
+  // Exported field_instance: 'node-character_sheet-field_birth_month'.
   $field_instances['node-character_sheet-field_birth_month'] = array(
     'bundle' => 'character_sheet',
     'default_value' => array(
@@ -972,7 +908,7 @@ function vaxia_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_character_goals'
+  // Exported field_instance: 'node-character_sheet-field_character_goals'.
   $field_instances['node-character_sheet-field_character_goals'] = array(
     'bundle' => 'character_sheet',
     'default_value' => array(
@@ -988,7 +924,7 @@ function vaxia_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 39,
+        'weight' => 47,
       ),
       'question' => array(
         'label' => 'above',
@@ -1046,11 +982,11 @@ function vaxia_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 44,
+      'weight' => 52,
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_charisma'
+  // Exported field_instance: 'node-character_sheet-field_charisma'.
   $field_instances['node-character_sheet-field_charisma'] = array(
     'bundle' => 'character_sheet',
     'default_value' => array(
@@ -1106,7 +1042,7 @@ function vaxia_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_conditions'
+  // Exported field_instance: 'node-character_sheet-field_conditions'.
   $field_instances['node-character_sheet-field_conditions'] = array(
     'bundle' => 'character_sheet',
     'default_value' => NULL,
@@ -1145,7 +1081,7 @@ function vaxia_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_constitution'
+  // Exported field_instance: 'node-character_sheet-field_constitution'.
   $field_instances['node-character_sheet-field_constitution'] = array(
     'bundle' => 'character_sheet',
     'deleted' => 0,
@@ -1187,7 +1123,7 @@ function vaxia_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_content_limits'
+  // Exported field_instance: 'node-character_sheet-field_content_limits'.
   $field_instances['node-character_sheet-field_content_limits'] = array(
     'bundle' => 'character_sheet',
     'default_value' => NULL,
@@ -1201,7 +1137,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
         'module' => 'taxonomy',
         'settings' => array(),
         'type' => 'taxonomy_term_reference_link',
-        'weight' => 40,
+        'weight' => 44,
       ),
       'question' => array(
         'label' => 'above',
@@ -1222,11 +1158,11 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 46,
+      'weight' => 50,
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_currently_wearing'
+  // Exported field_instance: 'node-character_sheet-field_currently_wearing'.
   $field_instances['node-character_sheet-field_currently_wearing'] = array(
     'bundle' => 'character_sheet',
     'default_value' => NULL,
@@ -1237,7 +1173,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 9,
+        'weight' => 8,
       ),
       'question' => array(
         'label' => 'above',
@@ -1262,7 +1198,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_description'
+  // Exported field_instance: 'node-character_sheet-field_description'.
   $field_instances['node-character_sheet-field_description'] = array(
     'bundle' => 'character_sheet',
     'default_value' => array(
@@ -1347,7 +1283,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_dexterity'
+  // Exported field_instance: 'node-character_sheet-field_dexterity'.
   $field_instances['node-character_sheet-field_dexterity'] = array(
     'bundle' => 'character_sheet',
     'default_value' => array(
@@ -1403,7 +1339,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_economy'
+  // Exported field_instance: 'node-character_sheet-field_economy'.
   $field_instances['node-character_sheet-field_economy'] = array(
     'bundle' => 'character_sheet',
     'default_value' => array(
@@ -1459,7 +1395,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_endurance'
+  // Exported field_instance: 'node-character_sheet-field_endurance'.
   $field_instances['node-character_sheet-field_endurance'] = array(
     'bundle' => 'character_sheet',
     'default_value' => array(
@@ -1515,7 +1451,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_health'
+  // Exported field_instance: 'node-character_sheet-field_health'.
   $field_instances['node-character_sheet-field_health'] = array(
     'bundle' => 'character_sheet',
     'deleted' => 0,
@@ -1557,7 +1493,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_intelligence'
+  // Exported field_instance: 'node-character_sheet-field_intelligence'.
   $field_instances['node-character_sheet-field_intelligence'] = array(
     'bundle' => 'character_sheet',
     'default_value' => array(
@@ -1613,7 +1549,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_is_npc'
+  // Exported field_instance: 'node-character_sheet-field_is_npc'.
   $field_instances['node-character_sheet-field_is_npc'] = array(
     'bundle' => 'character_sheet',
     'default_value' => array(
@@ -1662,7 +1598,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_is_storyteller'
+  // Exported field_instance: 'node-character_sheet-field_is_storyteller'.
   $field_instances['node-character_sheet-field_is_storyteller'] = array(
     'bundle' => 'character_sheet',
     'default_value' => array(
@@ -1705,7 +1641,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_item_shop'
+  // Exported field_instance: 'node-character_sheet-field_item_shop'.
   $field_instances['node-character_sheet-field_item_shop'] = array(
     'bundle' => 'character_sheet',
     'default_value' => array(
@@ -1718,10 +1654,9 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     'display' => array(
       'default' => array(
         'label' => 'hidden',
-        'module' => 'list',
         'settings' => array(),
-        'type' => 'list_default',
-        'weight' => 22,
+        'type' => 'hidden',
+        'weight' => 9,
       ),
       'question' => array(
         'label' => 'above',
@@ -1748,7 +1683,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_items'
+  // Exported field_instance: 'node-character_sheet-field_items'.
   $field_instances['node-character_sheet-field_items'] = array(
     'bundle' => 'character_sheet',
     'default_value' => NULL,
@@ -1797,123 +1732,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_language_skills'
-  $field_instances['node-character_sheet-field_language_skills'] = array(
-    'bundle' => 'character_sheet',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => 'All starting characters may select up to three languages at Native proficiency.<ul>
-<li><a href="http://vaxia.org/wiki/vaxia-languages">Languages of Vaxia</a></li>
-<li><a href="http://vaxia.org/wiki/sirian-languages">Languages of Sirian</a></li>
-</ul>',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'field_collection',
-        'settings' => array(
-          'add' => '',
-          'delete' => '',
-          'description' => 0,
-          'edit' => '',
-          'view_mode' => 'full',
-        ),
-        'type' => 'field_collection_view',
-        'weight' => 15,
-      ),
-      'question' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_language_skills',
-    'label' => 'Languages',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'field_collection',
-      'settings' => array(),
-      'type' => 'field_collection_embed',
-      'weight' => 17,
-    ),
-  );
-
-  // Exported field_instance: 'node-character_sheet-field_languages'
-  $field_instances['node-character_sheet-field_languages'] = array(
-    'bundle' => 'character_sheet',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => 'IMPORTANT: This field is going away in the next month! Please take this opportunity to copy language information over for your character and/or post a note on the Requests forum to include a relevant language so you can copy/paste the information over.',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'module' => 'text',
-        'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 14,
-      ),
-      'question' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_languages',
-    'label' => 'Languages',
-    'required' => 0,
-    'settings' => array(
-      'better_formats' => array(
-        'allowed_formats' => array(
-          'filtered_html' => 0,
-          'full_html' => 'full_html',
-          'php_code' => 'php_code',
-          'plain_text' => 'plain_text',
-          'wiki' => 'wiki',
-        ),
-        'allowed_formats_toggle' => 0,
-        'default_order_toggle' => 0,
-        'default_order_wrapper' => array(
-          'formats' => array(
-            'filtered_html' => array(
-              'weight' => 0,
-            ),
-            'full_html' => array(
-              'weight' => 1,
-            ),
-            'php_code' => array(
-              'weight' => 11,
-            ),
-            'plain_text' => array(
-              'weight' => 10,
-            ),
-            'wiki' => array(
-              'weight' => 0,
-            ),
-          ),
-        ),
-      ),
-      'text_processing' => 0,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'size' => 60,
-      ),
-      'type' => 'text_textfield',
-      'weight' => 16,
-    ),
-  );
-
-  // Exported field_instance: 'node-character_sheet-field_last_name'
+  // Exported field_instance: 'node-character_sheet-field_last_name'.
   $field_instances['node-character_sheet-field_last_name'] = array(
     'bundle' => 'character_sheet',
     'default_value' => NULL,
@@ -1959,7 +1778,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_life'
+  // Exported field_instance: 'node-character_sheet-field_life'.
   $field_instances['node-character_sheet-field_life'] = array(
     'bundle' => 'character_sheet',
     'default_value' => array(
@@ -2015,7 +1834,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_occupation'
+  // Exported field_instance: 'node-character_sheet-field_occupation'.
   $field_instances['node-character_sheet-field_occupation'] = array(
     'bundle' => 'character_sheet',
     'default_value' => NULL,
@@ -2091,7 +1910,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_other_species'
+  // Exported field_instance: 'node-character_sheet-field_other_species'.
   $field_instances['node-character_sheet-field_other_species'] = array(
     'bundle' => 'character_sheet',
     'default_value' => NULL,
@@ -2128,7 +1947,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_personal_room'
+  // Exported field_instance: 'node-character_sheet-field_personal_room'.
   $field_instances['node-character_sheet-field_personal_room'] = array(
     'bundle' => 'character_sheet',
     'default_value' => NULL,
@@ -2169,7 +1988,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_personality'
+  // Exported field_instance: 'node-character_sheet-field_personality'.
   $field_instances['node-character_sheet-field_personality'] = array(
     'bundle' => 'character_sheet',
     'default_value' => NULL,
@@ -2245,7 +2064,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_player_notes'
+  // Exported field_instance: 'node-character_sheet-field_player_notes'.
   $field_instances['node-character_sheet-field_player_notes'] = array(
     'bundle' => 'character_sheet',
     'default_value' => NULL,
@@ -2257,7 +2076,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 38,
+        'weight' => 46,
       ),
       'question' => array(
         'label' => 'above',
@@ -2317,11 +2136,11 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 43,
+      'weight' => 51,
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_post_color'
+  // Exported field_instance: 'node-character_sheet-field_post_color'.
   $field_instances['node-character_sheet-field_post_color'] = array(
     'bundle' => 'character_sheet',
     'default_value' => NULL,
@@ -2394,7 +2213,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_presence'
+  // Exported field_instance: 'node-character_sheet-field_presence'.
   $field_instances['node-character_sheet-field_presence'] = array(
     'bundle' => 'character_sheet',
     'deleted' => 0,
@@ -2436,7 +2255,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_property'
+  // Exported field_instance: 'node-character_sheet-field_property'.
   $field_instances['node-character_sheet-field_property'] = array(
     'bundle' => 'character_sheet',
     'default_value' => array(
@@ -2453,7 +2272,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 36,
+        'weight' => 37,
       ),
       'question' => array(
         'label' => 'above',
@@ -2521,7 +2340,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_public_information'
+  // Exported field_instance: 'node-character_sheet-field_public_information'.
   $field_instances['node-character_sheet-field_public_information'] = array(
     'bundle' => 'character_sheet',
     'default_value' => array(
@@ -2599,7 +2418,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_race'
+  // Exported field_instance: 'node-character_sheet-field_race'.
   $field_instances['node-character_sheet-field_race'] = array(
     'bundle' => 'character_sheet',
     'default_value' => array(
@@ -2648,7 +2467,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_real_age'
+  // Exported field_instance: 'node-character_sheet-field_real_age'.
   $field_instances['node-character_sheet-field_real_age'] = array(
     'bundle' => 'character_sheet',
     'default_value' => array(
@@ -2692,7 +2511,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_reflexes'
+  // Exported field_instance: 'node-character_sheet-field_reflexes'.
   $field_instances['node-character_sheet-field_reflexes'] = array(
     'bundle' => 'character_sheet',
     'deleted' => 0,
@@ -2734,7 +2553,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_sex'
+  // Exported field_instance: 'node-character_sheet-field_sex'.
   $field_instances['node-character_sheet-field_sex'] = array(
     'bundle' => 'character_sheet',
     'default_value' => NULL,
@@ -2814,7 +2633,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_sh_notes'
+  // Exported field_instance: 'node-character_sheet-field_sh_notes'.
   $field_instances['node-character_sheet-field_sh_notes'] = array(
     'bundle' => 'character_sheet',
     'default_value' => NULL,
@@ -2890,7 +2709,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_sh_private_notes'
+  // Exported field_instance: 'node-character_sheet-field_sh_private_notes'.
   $field_instances['node-character_sheet-field_sh_private_notes'] = array(
     'bundle' => 'character_sheet',
     'default_value' => NULL,
@@ -2966,7 +2785,8 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_sh_public_information'
+  // Exported field_instance:
+  // 'node-character_sheet-field_sh_public_information'.
   $field_instances['node-character_sheet-field_sh_public_information'] = array(
     'bundle' => 'character_sheet',
     'default_value' => array(
@@ -3044,7 +2864,44 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_sirian_species'
+  // Exported field_instance: 'node-character_sheet-field_sirian_languages'.
+  $field_instances['node-character_sheet-field_sirian_languages'] = array(
+    'bundle' => 'character_sheet',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'All starting characters may select up to three languages at Native proficiency <a href="http://vaxia.org/wiki/sirian-languages">Languages of Sirian</a>',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 16,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_sirian_languages',
+    'label' => 'Languages',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 19,
+    ),
+  );
+
+  // Exported field_instance: 'node-character_sheet-field_sirian_species'.
   $field_instances['node-character_sheet-field_sirian_species'] = array(
     'bundle' => 'character_sheet',
     'default_value' => array(
@@ -3085,7 +2942,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_skill'
+  // Exported field_instance: 'node-character_sheet-field_skill'.
   $field_instances['node-character_sheet-field_skill'] = array(
     'bundle' => 'character_sheet',
     'default_value' => NULL,
@@ -3097,6 +2954,8 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
         'module' => 'field_collection_table',
         'settings' => array(
           'add' => '',
+          'cssfield' => FALSE,
+          'cssrowcol' => FALSE,
           'delete' => '',
           'description' => 0,
           'edit' => '',
@@ -3135,50 +2994,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_skill_review'
-  $field_instances['node-character_sheet-field_skill_review'] = array(
-    'bundle' => 'character_sheet',
-    'default_value' => array(
-      0 => array(
-        'value' => 'NR',
-      ),
-    ),
-    'default_value_function' => '',
-    'default_value_php' => '',
-    'deleted' => 0,
-    'description' => 'This field is a *temporary* field to allow us to quickly identify character sheets that have not been reviewed as part of a site-wide effort to bring all characters up to spec for skills.',
-    'display' => array(
-      'default' => array(
-        'label' => 'inline',
-        'module' => 'list',
-        'settings' => array(),
-        'type' => 'list_default',
-        'weight' => 0,
-      ),
-      'question' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_skill_review',
-    'label' => 'Skill Review (tmp)',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'options',
-      'settings' => array(),
-      'type' => 'options_select',
-      'weight' => 0,
-    ),
-  );
-
-  // Exported field_instance: 'node-character_sheet-field_spirituality'
+  // Exported field_instance: 'node-character_sheet-field_spirituality'.
   $field_instances['node-character_sheet-field_spirituality'] = array(
     'bundle' => 'character_sheet',
     'default_value' => array(
@@ -3234,7 +3050,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_strength'
+  // Exported field_instance: 'node-character_sheet-field_strength'.
   $field_instances['node-character_sheet-field_strength'] = array(
     'bundle' => 'character_sheet',
     'default_value' => array(
@@ -3290,7 +3106,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_tag_realm'
+  // Exported field_instance: 'node-character_sheet-field_tag_realm'.
   $field_instances['node-character_sheet-field_tag_realm'] = array(
     'bundle' => 'character_sheet',
     'default_value' => array(
@@ -3331,7 +3147,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_titles'
+  // Exported field_instance: 'node-character_sheet-field_titles'.
   $field_instances['node-character_sheet-field_titles'] = array(
     'bundle' => 'character_sheet',
     'default_value' => NULL,
@@ -3377,7 +3193,44 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_visibility'
+  // Exported field_instance: 'node-character_sheet-field_vaxia_languages'.
+  $field_instances['node-character_sheet-field_vaxia_languages'] = array(
+    'bundle' => 'character_sheet',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => 'All starting characters may select up to three languages at Native proficiency: <a href="http://vaxia.org/wiki/vaxia-languages">Languages of Vaxia</a>',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 17,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_vaxia_languages',
+    'label' => 'Languages',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(),
+      'type' => 'options_buttons',
+      'weight' => 18,
+    ),
+  );
+
+  // Exported field_instance: 'node-character_sheet-field_visibility'.
   $field_instances['node-character_sheet-field_visibility'] = array(
     'bundle' => 'character_sheet',
     'default_value' => array(
@@ -3393,7 +3246,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 41,
+        'weight' => 45,
       ),
       'question' => array(
         'label' => 'above',
@@ -3416,7 +3269,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
         'display_label' => 0,
       ),
       'type' => 'options_onoff',
-      'weight' => 45,
+      'weight' => 49,
     ),
   );
 
@@ -3430,10 +3283,8 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
   t('Additional property');
   t('Age');
   t('Agility');
-  t('All starting characters may select up to three languages at Native proficiency.<ul>
-<li><a href="http://vaxia.org/wiki/vaxia-languages">Languages of Vaxia</a></li>
-<li><a href="http://vaxia.org/wiki/sirian-languages">Languages of Sirian</a></li>
-</ul>');
+  t('All starting characters may select up to three languages at Native proficiency <a href="http://vaxia.org/wiki/sirian-languages">Languages of Sirian</a>');
+  t('All starting characters may select up to three languages at Native proficiency: <a href="http://vaxia.org/wiki/vaxia-languages">Languages of Vaxia</a>');
   t('Apparent Age');
   t('Apparent Gender');
   t('Appearance');
@@ -3468,7 +3319,6 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
   t('For character evaluation purposes - Sirian characters <b>must</b> note their country or city of origin. We need to know political alliances (and what legal system your character may fall under) for Sirian plots.');
   t('Health');
   t('IC achievements! Titles earned, championships won. Fun stuff!');
-  t('IMPORTANT: This field is going away in the next month! Please take this opportunity to copy language information over for your character and/or post a note on the Requests forum to include a relevant language so you can copy/paste the information over.');
   t('If the species you want to play is not listed here, select \'Other\'. (Setting approval is never guaranteed.) Please take a look here for more information about <a href=http://vaxia.org/wiki/setting-approval-pcs>getting Setting approval for PCs</a>.');
   t('If you have selected "Other" for your species you MUST select an option here to clarify what sort of \'Other\' species this character is. If this is not an NPC expect to need to get Setting approval. (Setting approval is never guaranteed.) Please take a look here for more information about <a href="http://vaxia.org/wiki/setting-approval-pcs" target="_blank">getting Setting approval for PCs</a>.');
   t('If your character has any over-arching life goals. Things they want to do or see done that may require an A/SH to help achieve - make note of them here.');
@@ -3477,7 +3327,6 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
   t('Intelligence');
   t('Items');
   t('Items are added to characters from the Item form, not the Character Sheet form. If you need to add an item to this character, go to the item to set the IC owner.');
-  t('Language');
   t('Languages');
   t('Last Name');
   t('Life');
@@ -3506,14 +3355,12 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
   t('SH provided public information about your character.');
   t('Sirian Species');
   t('Skill');
-  t('Skill Review (tmp)');
   t('Spirit');
   t('Storyhost');
   t('Strength');
   t('Tech language');
   t('Tech languages');
   t('The first description listed will be used on your posts and for viewing by other players. You can add additional descriptions and sort them as needed if your character has more than one \'appearance\'.');
-  t('This field is a *temporary* field to allow us to quickly identify character sheets that have not been reviewed as part of a site-wide effort to bring all characters up to spec for skills.');
   t('Titles');
   t('Toggle character access to the item shop on or off.');
   t('Uncheck this box to hide this character\'s posts from the power search. This is useful if you are playing a character whose actions you want to keep private. Be aware, while this will hide the posts of this character from the search it will not hide the posts of other character\'s in a scene with you if they are not also set for private mode.');

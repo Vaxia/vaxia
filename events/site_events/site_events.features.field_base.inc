@@ -10,7 +10,7 @@
 function site_events_field_default_field_bases() {
   $field_bases = array();
 
-  // Exported field_base: 'field_content_warnings'
+  // Exported field_base: 'field_content_warnings'.
   $field_bases['field_content_warnings'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -36,7 +36,7 @@ function site_events_field_default_field_bases() {
     'type' => 'taxonomy_term_reference',
   );
 
-  // Exported field_base: 'field_format'
+  // Exported field_base: 'field_format'.
   $field_bases['field_format'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -61,7 +61,7 @@ function site_events_field_default_field_bases() {
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'field_max_seating'
+  // Exported field_base: 'field_max_seating'.
   $field_bases['field_max_seating'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -76,7 +76,7 @@ function site_events_field_default_field_bases() {
     'type' => 'number_integer',
   );
 
-  // Exported field_base: 'field_when'
+  // Exported field_base: 'field_when'.
   $field_bases['field_when'] = array(
     'active' => 1,
     'cardinality' => 1,

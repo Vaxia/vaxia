@@ -8,7 +8,7 @@
  * Implements hook_field_group_info().
  */
 function site_events_field_group_info() {
-  $export = array();
+  $field_groups = array();
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -39,7 +39,7 @@ function site_events_field_group_info() {
       'formatter' => 'collapsible',
     ),
   );
-  $export['group_what|node|event|default'] = $field_group;
+  $field_groups['group_what|node|event|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -70,7 +70,7 @@ function site_events_field_group_info() {
       'formatter' => 'collapsible',
     ),
   );
-  $export['group_what|node|event|form'] = $field_group;
+  $field_groups['group_what|node|event|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -97,7 +97,7 @@ function site_events_field_group_info() {
       ),
     ),
   );
-  $export['group_where|node|event|form'] = $field_group;
+  $field_groups['group_where|node|event|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -124,7 +124,13 @@ function site_events_field_group_info() {
       ),
     ),
   );
-  $export['group_who|node|event|form'] = $field_group;
+  $field_groups['group_who|node|event|form'] = $field_group;
 
-  return $export;
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('Details');
+  t('Where');
+  t('Who');
+
+  return $field_groups;
 }

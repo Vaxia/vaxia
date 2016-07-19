@@ -10,7 +10,7 @@
 function vaxia_wiki_field_default_field_bases() {
   $field_bases = array();
 
-  // Exported field_base: 'field_associated_npcs'
+  // Exported field_base: 'field_associated_npcs'.
   $field_bases['field_associated_npcs'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -71,7 +71,7 @@ function vaxia_wiki_field_default_field_bases() {
     'type' => 'nodereferrer',
   );
 
-  // Exported field_base: 'field_organization_type'
+  // Exported field_base: 'field_organization_type'.
   $field_bases['field_organization_type'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -97,7 +97,7 @@ function vaxia_wiki_field_default_field_bases() {
     'type' => 'taxonomy_term_reference',
   );
 
-  // Exported field_base: 'field_referencing_chat_rooms'
+  // Exported field_base: 'field_referencing_chat_rooms'.
   $field_bases['field_referencing_chat_rooms'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -158,7 +158,7 @@ function vaxia_wiki_field_default_field_bases() {
     'type' => 'nodereferrer',
   );
 
-  // Exported field_base: 'field_tag_department'
+  // Exported field_base: 'field_tag_department'.
   $field_bases['field_tag_department'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -184,7 +184,7 @@ function vaxia_wiki_field_default_field_bases() {
     'type' => 'taxonomy_term_reference',
   );
 
-  // Exported field_base: 'field_tag_location'
+  // Exported field_base: 'field_tag_location'.
   $field_bases['field_tag_location'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -210,7 +210,7 @@ function vaxia_wiki_field_default_field_bases() {
     'type' => 'taxonomy_term_reference',
   );
 
-  // Exported field_base: 'field_tag_realm'
+  // Exported field_base: 'field_tag_realm'.
   $field_bases['field_tag_realm'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -236,7 +236,7 @@ function vaxia_wiki_field_default_field_bases() {
     'type' => 'taxonomy_term_reference',
   );
 
-  // Exported field_base: 'field_tag_type'
+  // Exported field_base: 'field_tag_type'.
   $field_bases['field_tag_type'] = array(
     'active' => 1,
     'cardinality' => 1,
