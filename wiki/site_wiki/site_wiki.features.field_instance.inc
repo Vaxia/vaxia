@@ -10,7 +10,7 @@
 function site_wiki_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'node-wiki_page-body'
+  // Exported field_instance: 'node-wiki_page-body'.
   $field_instances['node-wiki_page-body'] = array(
     'bundle' => 'wiki_page',
     'default_value' => NULL,
@@ -29,7 +29,7 @@ function site_wiki_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 1,
+        'weight' => 2,
       ),
       'question' => array(
         'label' => 'above',
@@ -90,11 +90,11 @@ function site_wiki_field_default_field_instances() {
         'summary_rows' => 5,
       ),
       'type' => 'text_textarea_with_summary',
-      'weight' => 4,
+      'weight' => 3,
     ),
   );
 
-  // Exported field_instance: 'node-wiki_page-field_additional_tagging'
+  // Exported field_instance: 'node-wiki_page-field_additional_tagging'.
   $field_instances['node-wiki_page-field_additional_tagging'] = array(
     'bundle' => 'wiki_page',
     'default_value' => NULL,
@@ -146,7 +146,280 @@ function site_wiki_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-wiki_page-field_provides_reputation'
+  // Exported field_instance: 'node-wiki_page-field_has_goals'.
+  $field_instances['node-wiki_page-field_has_goals'] = array(
+    'bundle' => 'wiki_page',
+    'default_value' => array(
+      0 => array(
+        'value' => 0,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => 'Check this checkbox if this organization is meant to be included in the organization goal system for automatic setting plots.',
+    'display' => array(
+      'artwork' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'default' => array(
+        'label' => 'above',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 12,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_has_goals',
+    'label' => 'Has goals',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(
+        'display_label' => 0,
+      ),
+      'type' => 'options_onoff',
+      'weight' => 19,
+    ),
+  );
+
+  // Exported field_instance: 'node-wiki_page-field_org_diplomatic_influence'.
+  $field_instances['node-wiki_page-field_org_diplomatic_influence'] = array(
+    'bundle' => 'wiki_page',
+    'default_value' => array(
+      0 => array(
+        'value' => 0,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => 'The diplomatic strength of the organization.',
+    'display' => array(
+      'artwork' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'default' => array(
+        'label' => 'above',
+        'module' => 'number',
+        'settings' => array(
+          'decimal_separator' => '.',
+          'prefix_suffix' => TRUE,
+          'scale' => 0,
+          'thousand_separator' => ' ',
+        ),
+        'type' => 'number_integer',
+        'weight' => 14,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_org_diplomatic_influence',
+    'label' => 'Diplomatic Influence',
+    'required' => 1,
+    'settings' => array(
+      'max' => 200,
+      'min' => 0,
+      'prefix' => '',
+      'suffix' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'number',
+      'settings' => array(),
+      'type' => 'number',
+      'weight' => 21,
+    ),
+  );
+
+  // Exported field_instance: 'node-wiki_page-field_org_economic_influence'.
+  $field_instances['node-wiki_page-field_org_economic_influence'] = array(
+    'bundle' => 'wiki_page',
+    'default_value' => array(
+      0 => array(
+        'value' => 0,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => 'In terms of capital and liquid assets, how deep are this organizations pockets? Do their financial decisions influence the market strongly?',
+    'display' => array(
+      'artwork' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'default' => array(
+        'label' => 'above',
+        'module' => 'number',
+        'settings' => array(
+          'decimal_separator' => '.',
+          'prefix_suffix' => TRUE,
+          'scale' => 0,
+          'thousand_separator' => ' ',
+        ),
+        'type' => 'number_integer',
+        'weight' => 16,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_org_economic_influence',
+    'label' => 'Economic Influence',
+    'required' => 1,
+    'settings' => array(
+      'max' => 200,
+      'min' => 0,
+      'prefix' => '',
+      'suffix' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'number',
+      'settings' => array(),
+      'type' => 'number',
+      'weight' => 23,
+    ),
+  );
+
+  // Exported field_instance: 'node-wiki_page-field_org_material_strength'.
+  $field_instances['node-wiki_page-field_org_material_strength'] = array(
+    'bundle' => 'wiki_page',
+    'default_value' => array(
+      0 => array(
+        'value' => 0,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => 'The material capabilities of the organization, how many swords or guns, how much territory and material resources are available.',
+    'display' => array(
+      'artwork' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'default' => array(
+        'label' => 'above',
+        'module' => 'number',
+        'settings' => array(
+          'decimal_separator' => '.',
+          'prefix_suffix' => TRUE,
+          'scale' => 0,
+          'thousand_separator' => ' ',
+        ),
+        'type' => 'number_integer',
+        'weight' => 15,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_org_material_strength',
+    'label' => 'Material Strength',
+    'required' => 1,
+    'settings' => array(
+      'max' => 200,
+      'min' => 0,
+      'prefix' => '',
+      'suffix' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'number',
+      'settings' => array(),
+      'type' => 'number',
+      'weight' => 22,
+    ),
+  );
+
+  // Exported field_instance: 'node-wiki_page-field_org_membership_size'.
+  $field_instances['node-wiki_page-field_org_membership_size'] = array(
+    'bundle' => 'wiki_page',
+    'default_value' => array(
+      0 => array(
+        'value' => 0,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => 'How powerful the membership (individual and sheer numbers) of the organization is compared to others. Past 200 strong, Setting recommends splitting the organization into two.',
+    'display' => array(
+      'artwork' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'default' => array(
+        'label' => 'above',
+        'module' => 'number',
+        'settings' => array(
+          'decimal_separator' => '.',
+          'prefix_suffix' => TRUE,
+          'scale' => 0,
+          'thousand_separator' => ' ',
+        ),
+        'type' => 'number_integer',
+        'weight' => 13,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_org_membership_size',
+    'label' => 'Membership Size',
+    'required' => 1,
+    'settings' => array(
+      'max' => 200,
+      'min' => 0,
+      'prefix' => '',
+      'suffix' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'number',
+      'settings' => array(),
+      'type' => 'number',
+      'weight' => 20,
+    ),
+  );
+
+  // Exported field_instance: 'node-wiki_page-field_provides_reputation'.
   $field_instances['node-wiki_page-field_provides_reputation'] = array(
     'bundle' => 'wiki_page',
     'default_value' => array(
@@ -167,7 +440,7 @@ function site_wiki_field_default_field_instances() {
         'label' => 'inline',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 12,
+        'weight' => 7,
       ),
       'question' => array(
         'label' => 'above',
@@ -190,11 +463,11 @@ function site_wiki_field_default_field_instances() {
         'display_label' => 0,
       ),
       'type' => 'options_onoff',
-      'weight' => 17,
+      'weight' => 18,
     ),
   );
 
-  // Exported field_instance: 'node-wiki_page-field_wiki_files'
+  // Exported field_instance: 'node-wiki_page-field_wiki_files'.
   $field_instances['node-wiki_page-field_wiki_files'] = array(
     'bundle' => 'wiki_page',
     'deleted' => 0,
@@ -244,11 +517,11 @@ function site_wiki_field_default_field_instances() {
         'progress_indicator' => 'throbber',
       ),
       'type' => 'file_generic',
-      'weight' => 6,
+      'weight' => 4,
     ),
   );
 
-  // Exported field_instance: 'node-wiki_page-field_wiki_images'
+  // Exported field_instance: 'node-wiki_page-field_wiki_images'.
   $field_instances['node-wiki_page-field_wiki_images'] = array(
     'bundle' => 'wiki_page',
     'deleted' => 0,
@@ -272,7 +545,7 @@ function site_wiki_field_default_field_instances() {
           'image_style' => 'medium',
         ),
         'type' => 'image',
-        'weight' => 3,
+        'weight' => 1,
       ),
       'question' => array(
         'label' => 'above',
@@ -310,7 +583,7 @@ function site_wiki_field_default_field_instances() {
         'progress_indicator' => 'throbber',
       ),
       'type' => 'image_image',
-      'weight' => 5,
+      'weight' => 2,
     ),
   );
 
@@ -319,10 +592,20 @@ function site_wiki_field_default_field_instances() {
   t('Add categories to the wiki page to help us locate information about it. Example tags include: Vaxia, Sirian, Setting, Social, and System...');
   t('Body');
   t('Categories');
+  t('Check this checkbox if this organization is meant to be included in the organization goal system for automatic setting plots.');
   t('Check this checkbox if this organization is meant to provide reputation points for players.');
+  t('Diplomatic Influence');
+  t('Economic Influence');
   t('Files');
+  t('Has goals');
+  t('How powerful the membership (individual and sheer numbers) of the organization is compared to others. Past 200 strong, Setting recommends splitting the organization into two.');
   t('Images');
+  t('In terms of capital and liquid assets, how deep are this organizations pockets? Do their financial decisions influence the market strongly?');
+  t('Material Strength');
+  t('Membership Size');
   t('Provides reputation');
+  t('The diplomatic strength of the organization.');
+  t('The material capabilities of the organization, how many swords or guns, how much territory and material resources are available.');
   t('Upload any files to go with this article.');
   t('Upload any images to go with this article.');
 

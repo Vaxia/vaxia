@@ -10,7 +10,7 @@
 function site_wiki_field_default_field_bases() {
   $field_bases = array();
 
-  // Exported field_base: 'field_additional_tagging'
+  // Exported field_base: 'field_additional_tagging'.
   $field_bases['field_additional_tagging'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -39,7 +39,92 @@ function site_wiki_field_default_field_bases() {
     'type' => 'taxonomy_term_reference',
   );
 
-  // Exported field_base: 'field_provides_reputation'
+  // Exported field_base: 'field_has_goals'.
+  $field_bases['field_has_goals'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_has_goals',
+    'indexes' => array(
+      'value' => array(
+        0 => 'value',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'list',
+    'settings' => array(
+      'allowed_values' => array(
+        0 => 'This organization does NOT have goals',
+        1 => 'This organization HAS goals',
+      ),
+      'allowed_values_function' => '',
+    ),
+    'translatable' => 0,
+    'type' => 'list_boolean',
+  );
+
+  // Exported field_base: 'field_org_diplomatic_influence'.
+  $field_bases['field_org_diplomatic_influence'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_org_diplomatic_influence',
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'number',
+    'settings' => array(),
+    'translatable' => 0,
+    'type' => 'number_integer',
+  );
+
+  // Exported field_base: 'field_org_economic_influence'.
+  $field_bases['field_org_economic_influence'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_org_economic_influence',
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'number',
+    'settings' => array(),
+    'translatable' => 0,
+    'type' => 'number_integer',
+  );
+
+  // Exported field_base: 'field_org_material_strength'.
+  $field_bases['field_org_material_strength'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_org_material_strength',
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'number',
+    'settings' => array(),
+    'translatable' => 0,
+    'type' => 'number_integer',
+  );
+
+  // Exported field_base: 'field_org_membership_size'.
+  $field_bases['field_org_membership_size'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_org_membership_size',
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'number',
+    'settings' => array(),
+    'translatable' => 0,
+    'type' => 'number_integer',
+  );
+
+  // Exported field_base: 'field_provides_reputation'.
   $field_bases['field_provides_reputation'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -64,7 +149,7 @@ function site_wiki_field_default_field_bases() {
     'type' => 'list_boolean',
   );
 
-  // Exported field_base: 'field_wiki_files'
+  // Exported field_base: 'field_wiki_files'.
   $field_bases['field_wiki_files'] = array(
     'active' => 1,
     'cardinality' => 10,
@@ -90,7 +175,7 @@ function site_wiki_field_default_field_bases() {
     'type' => 'file',
   );
 
-  // Exported field_base: 'field_wiki_images'
+  // Exported field_base: 'field_wiki_images'.
   $field_bases['field_wiki_images'] = array(
     'active' => 1,
     'cardinality' => 5,

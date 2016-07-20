@@ -95,6 +95,9 @@ function site_wiki_strongarm() {
       'print' => array(
         'custom_settings' => FALSE,
       ),
+      'question' => array(
+        'custom_settings' => TRUE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(
@@ -102,22 +105,22 @@ function site_wiki_strongarm() {
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '6',
+          'weight' => '9',
         ),
         'workflow' => array(
-          'weight' => '6',
-        ),
-        'locations' => array(
           'weight' => '8',
         ),
+        'locations' => array(
+          'weight' => '11',
+        ),
         'badges' => array(
-          'weight' => '7',
+          'weight' => '10',
         ),
       ),
       'display' => array(
         'workflow_current_state' => array(
           'default' => array(
-            'weight' => '4',
+            'weight' => '5',
             'visible' => TRUE,
           ),
           'artwork' => array(
@@ -127,7 +130,7 @@ function site_wiki_strongarm() {
         ),
         'workflow' => array(
           'default' => array(
-            'weight' => '10',
+            'weight' => '6',
             'visible' => FALSE,
           ),
           'artwork' => array(
@@ -177,6 +180,20 @@ function site_wiki_strongarm() {
   $strongarm->name = 'node_submitted_wiki_page';
   $strongarm->value = 0;
   $export['node_submitted_wiki_page'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_node_wiki_page_pattern';
+  $strongarm->value = 'wiki/[node:title]';
+  $export['pathauto_node_wiki_page_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_taxonomy_term_wiki_tags_pattern';
+  $strongarm->value = 'wiki/categories/[term:name]';
+  $export['pathauto_taxonomy_term_wiki_tags_pattern'] = $strongarm;
 
   return $export;
 }

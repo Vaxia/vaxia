@@ -8,7 +8,7 @@
  * Implements hook_field_group_info().
  */
 function site_wiki_field_group_info() {
-  $export = array();
+  $field_groups = array();
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -21,10 +21,9 @@ function site_wiki_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Assoc. Files',
-    'weight' => '2',
+    'weight' => '3',
     'children' => array(
-      0 => 'field_wiki_images',
-      1 => 'field_wiki_files',
+      0 => 'field_wiki_files',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -36,7 +35,7 @@ function site_wiki_field_group_info() {
       ),
     ),
   );
-  $export['group_assoc_files|node|wiki_page|default'] = $field_group;
+  $field_groups['group_assoc_files|node|wiki_page|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -64,7 +63,7 @@ function site_wiki_field_group_info() {
       ),
     ),
   );
-  $export['group_assoc_files|node|wiki_page|form'] = $field_group;
+  $field_groups['group_assoc_files|node|wiki_page|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -77,7 +76,7 @@ function site_wiki_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Categories',
-    'weight' => '3',
+    'weight' => '4',
     'children' => array(
       0 => 'field_additional_tagging',
       1 => 'field_tag_department',
@@ -96,7 +95,7 @@ function site_wiki_field_group_info() {
       'formatter' => 'collapsible',
     ),
   );
-  $export['group_categories|node|wiki_page|default'] = $field_group;
+  $field_groups['group_categories|node|wiki_page|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -108,29 +107,33 @@ function site_wiki_field_group_info() {
   $field_group->mode = 'form';
   $field_group->parent_name = '';
   $field_group->data = array(
-    'label' => 'Categories',
+    'label' => 'Details',
     'weight' => '1',
     'children' => array(
       0 => 'field_additional_tagging',
       1 => 'field_tag_department',
       2 => 'field_tag_realm',
       3 => 'field_tag_type',
-      4 => 'field_tag_location',
-      5 => 'field_organization_type',
-      6 => 'field_provides_reputation',
+      4 => 'group_extra_details',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
-      'label' => 'Categories',
+      'label' => 'Details',
       'instance_settings' => array(
         'required_fields' => 1,
         'classes' => 'group-categories field-group-fieldset',
-        'description' => 'Categories are required for wiki articles - these help us search for articles and sort our information properly.',
+        'description' => 'Details are required for wiki articles - these help us search for articles and sort our information properly. Please fill these out completely!',
       ),
       'formatter' => 'collapsible',
     ),
   );
-  $export['group_categories|node|wiki_page|form'] = $field_group;
+  $field_groups['group_categories|node|wiki_page|form'] = $field_group;
 
-  return $export;
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('Assoc. Files');
+  t('Categories');
+  t('Details');
+
+  return $field_groups;
 }
