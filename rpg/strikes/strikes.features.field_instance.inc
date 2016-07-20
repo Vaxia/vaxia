@@ -10,14 +10,14 @@
 function strikes_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'node-notation-body'
+  // Exported field_instance: 'node-notation-body'.
   $field_instances['node-notation-body'] = array(
     'bundle' => 'notation',
     'default_value' => array(
       0 => array(
         'summary' => '',
         'value' => '',
-        'format' => 'wiki',
+        'format' => 'plain_text',
       ),
     ),
     'deleted' => 0,
@@ -30,11 +30,11 @@ function strikes_field_default_field_instances() {
         'weight' => 0,
       ),
       'default' => array(
-        'label' => 'hidden',
+        'label' => 'above',
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 5,
+        'weight' => 2,
       ),
       'question' => array(
         'label' => 'above',
@@ -54,7 +54,7 @@ function strikes_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'body',
-    'label' => 'Details of Interaction',
+    'label' => 'Description',
     'required' => 1,
     'settings' => array(
       'better_formats' => array(
@@ -63,7 +63,6 @@ function strikes_field_default_field_instances() {
           'full_html' => 0,
           'php_code' => 0,
           'plain_text' => 'plain_text',
-          'whiteboard' => 0,
           'wiki' => 0,
         ),
         'allowed_formats_toggle' => 1,
@@ -81,9 +80,6 @@ function strikes_field_default_field_instances() {
             ),
             'plain_text' => array(
               'weight' => 10,
-            ),
-            'whiteboard' => array(
-              'weight' => 0,
             ),
             'wiki' => array(
               'weight' => 0,
@@ -107,7 +103,7 @@ function strikes_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-notation-field_category'
+  // Exported field_instance: 'node-notation-field_category'.
   $field_instances['node-notation-field_category'] = array(
     'bundle' => 'notation',
     'default_value' => NULL,
@@ -127,7 +123,7 @@ function strikes_field_default_field_instances() {
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 4,
+        'weight' => 1,
       ),
       'question' => array(
         'label' => 'above',
@@ -158,7 +154,7 @@ function strikes_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-notation-field_date_of_incident'
+  // Exported field_instance: 'node-notation-field_date_of_incident'.
   $field_instances['node-notation-field_date_of_incident'] = array(
     'bundle' => 'notation',
     'deleted' => 0,
@@ -171,7 +167,7 @@ function strikes_field_default_field_instances() {
         'weight' => 0,
       ),
       'default' => array(
-        'label' => 'above',
+        'label' => 'inline',
         'module' => 'date',
         'settings' => array(
           'format_type' => 'long',
@@ -179,6 +175,7 @@ function strikes_field_default_field_instances() {
           'multiple_from' => '',
           'multiple_number' => '',
           'multiple_to' => '',
+          'show_remaining_days' => FALSE,
           'show_repeat_rule' => 'show',
         ),
         'type' => 'date_default',
@@ -199,7 +196,7 @@ function strikes_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_date_of_incident',
-    'label' => 'Date of Incident',
+    'label' => 'Date',
     'required' => 0,
     'settings' => array(
       'default_value' => 'now',
@@ -216,6 +213,7 @@ function strikes_field_default_field_instances() {
         'input_format' => 'm/d/Y - g:i:sa',
         'input_format_custom' => '',
         'label_position' => 'above',
+        'no_fieldset' => 0,
         'repeat_collapsed' => 0,
         'text_parts' => array(),
         'year_range' => '-3:+3',
@@ -225,7 +223,7 @@ function strikes_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-notation-field_documentation'
+  // Exported field_instance: 'node-notation-field_documentation'.
   $field_instances['node-notation-field_documentation'] = array(
     'bundle' => 'notation',
     'deleted' => 0,
@@ -242,7 +240,7 @@ function strikes_field_default_field_instances() {
         'module' => 'file',
         'settings' => array(),
         'type' => 'file_default',
-        'weight' => 6,
+        'weight' => 3,
       ),
       'question' => array(
         'label' => 'above',
@@ -279,7 +277,7 @@ function strikes_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-notation-field_players'
+  // Exported field_instance: 'node-notation-field_players'.
   $field_instances['node-notation-field_players'] = array(
     'bundle' => 'notation',
     'default_value' => NULL,
@@ -293,7 +291,7 @@ function strikes_field_default_field_instances() {
         'weight' => 0,
       ),
       'default' => array(
-        'label' => 'above',
+        'label' => 'inline',
         'module' => 'user_reference',
         'settings' => array(),
         'type' => 'user_reference_default',
@@ -332,7 +330,7 @@ function strikes_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-notation-field_results'
+  // Exported field_instance: 'node-notation-field_results'.
   $field_instances['node-notation-field_results'] = array(
     'bundle' => 'notation',
     'default_value' => NULL,
@@ -383,7 +381,7 @@ function strikes_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-notation-field_social_members'
+  // Exported field_instance: 'node-notation-field_social_members'.
   $field_instances['node-notation-field_social_members'] = array(
     'bundle' => 'notation',
     'default_value' => NULL,
@@ -397,7 +395,7 @@ function strikes_field_default_field_instances() {
         'weight' => 0,
       ),
       'default' => array(
-        'label' => 'above',
+        'label' => 'inline',
         'module' => 'user_reference',
         'settings' => array(),
         'type' => 'user_reference_default',
@@ -436,7 +434,7 @@ function strikes_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-notation-field_witnesses'
+  // Exported field_instance: 'node-notation-field_witnesses'.
   $field_instances['node-notation-field_witnesses'] = array(
     'bundle' => 'notation',
     'default_value' => NULL,
@@ -450,7 +448,7 @@ function strikes_field_default_field_instances() {
         'weight' => 0,
       ),
       'default' => array(
-        'label' => 'above',
+        'label' => 'inline',
         'module' => 'user_reference',
         'settings' => array(),
         'type' => 'user_reference_default',
@@ -489,7 +487,7 @@ function strikes_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-strike-field_associated_record'
+  // Exported field_instance: 'node-strike-field_associated_record'.
   $field_instances['node-strike-field_associated_record'] = array(
     'bundle' => 'strike',
     'default_value' => NULL,
@@ -542,7 +540,7 @@ function strikes_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-strike-field_date_of_incident'
+  // Exported field_instance: 'node-strike-field_date_of_incident'.
   $field_instances['node-strike-field_date_of_incident'] = array(
     'bundle' => 'strike',
     'deleted' => 0,
@@ -563,6 +561,7 @@ function strikes_field_default_field_instances() {
           'multiple_from' => '',
           'multiple_number' => '',
           'multiple_to' => '',
+          'show_remaining_days' => FALSE,
           'show_repeat_rule' => 'show',
         ),
         'type' => 'date_default',
@@ -609,7 +608,7 @@ function strikes_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-strike-field_details'
+  // Exported field_instance: 'node-strike-field_details'.
   $field_instances['node-strike-field_details'] = array(
     'bundle' => 'strike',
     'default_value' => NULL,
@@ -691,7 +690,7 @@ function strikes_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-strike-field_severity'
+  // Exported field_instance: 'node-strike-field_severity'.
   $field_instances['node-strike-field_severity'] = array(
     'bundle' => 'strike',
     'default_value' => array(
@@ -750,7 +749,7 @@ function strikes_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-strike-field_struck_player'
+  // Exported field_instance: 'node-strike-field_struck_player'.
   $field_instances['node-strike-field_struck_player'] = array(
     'bundle' => 'strike',
     'default_value' => NULL,
@@ -813,10 +812,11 @@ function strikes_field_default_field_instances() {
   t('Bystanding');
   t('Category');
   t('Check all actions taken as a result of this. If you would like to recommend that a player receive a strikes please mark that here. The strike will not be granted until this notation is approved.');
+  t('Date');
   t('Date of Incident');
   t('Describe the situation, include players related to the event - and all documentary evidence as an attached file. THIS IS REQUIRED. We want documentation to be transparent so the next time an issue comes up the reviewing SH can see all prior data incase you yourself are no longer available for comment. Please leave a track record for others.');
+  t('Description');
   t('Details');
-  t('Details of Interaction');
   t('Documentation');
   t('Members of the social department that got involved.');
   t('Player');

@@ -22,7 +22,7 @@ function strikes_views_default_views() {
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Notations';
+  $handler->display->display_options['title'] = 'Notes';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['access']['perm'] = 'create strike content';
@@ -293,22 +293,28 @@ If you have any questions about a specific incident, or about notations in gener
   );
   $handler->display->display_options['filters']['field_severity_value_1']['expose']['reduce'] = TRUE;
 
-  /* Display: User Notations */
-  $handler = $view->new_display('page', 'User Notations', 'notations');
-  $handler->display->display_options['display_description'] = 'User Notations';
+  /* Display: User Notes */
+  $handler = $view->new_display('page', 'User Notes', 'notations');
+  $handler->display->display_options['display_description'] = 'User Notes';
   $handler->display->display_options['defaults']['access'] = FALSE;
   $handler->display->display_options['access']['type'] = 'php';
   $handler->display->display_options['access']['php_access'] = 'global $user;
-if ($user->uid == arg(1)) {
+if ($user->uid == arg(1) || user_access(\'edit any notation content\')) {
 return TRUE;
 }
 return FALSE;';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Content: Player (field_players) */
+  $handler->display->display_options['arguments']['field_players_uid']['id'] = 'field_players_uid';
+  $handler->display->display_options['arguments']['field_players_uid']['table'] = 'field_data_field_players';
+  $handler->display->display_options['arguments']['field_players_uid']['field'] = 'field_players_uid';
+  $handler->display->display_options['arguments']['field_players_uid']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['field_players_uid']['default_argument_type'] = 'user';
+  $handler->display->display_options['arguments']['field_players_uid']['default_argument_options']['user'] = FALSE;
+  $handler->display->display_options['arguments']['field_players_uid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['field_players_uid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['field_players_uid']['summary_options']['items_per_page'] = '25';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
-  $handler->display->display_options['filter_groups']['groups'] = array(
-    1 => 'AND',
-    2 => 'OR',
-  );
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
@@ -356,50 +362,17 @@ return FALSE;';
     29 => 0,
   );
   $handler->display->display_options['filters']['type']['expose']['reduce'] = TRUE;
-  /* Filter criterion: User: Current */
-  $handler->display->display_options['filters']['uid_current']['id'] = 'uid_current';
-  $handler->display->display_options['filters']['uid_current']['table'] = 'users';
-  $handler->display->display_options['filters']['uid_current']['field'] = 'uid_current';
-  $handler->display->display_options['filters']['uid_current']['relationship'] = 'field_players_uid';
-  $handler->display->display_options['filters']['uid_current']['value'] = '1';
-  $handler->display->display_options['filters']['uid_current']['group'] = 2;
-  /* Filter criterion: User: Current */
-  $handler->display->display_options['filters']['uid_current_1']['id'] = 'uid_current_1';
-  $handler->display->display_options['filters']['uid_current_1']['table'] = 'users';
-  $handler->display->display_options['filters']['uid_current_1']['field'] = 'uid_current';
-  $handler->display->display_options['filters']['uid_current_1']['relationship'] = 'field_witnesses_uid';
-  $handler->display->display_options['filters']['uid_current_1']['value'] = '1';
-  $handler->display->display_options['filters']['uid_current_1']['group'] = 2;
-  /* Filter criterion: User: Current */
-  $handler->display->display_options['filters']['uid_current_2']['id'] = 'uid_current_2';
-  $handler->display->display_options['filters']['uid_current_2']['table'] = 'users';
-  $handler->display->display_options['filters']['uid_current_2']['field'] = 'uid_current';
-  $handler->display->display_options['filters']['uid_current_2']['relationship'] = 'field_social_members_uid';
-  $handler->display->display_options['filters']['uid_current_2']['value'] = '1';
-  $handler->display->display_options['filters']['uid_current_2']['group'] = 2;
-  $handler->display->display_options['filters']['uid_current_2']['expose']['operator_id'] = '';
-  $handler->display->display_options['filters']['uid_current_2']['expose']['label'] = 'Is the logged in user';
-  $handler->display->display_options['filters']['uid_current_2']['expose']['operator'] = 'uid_current_2_op';
-  $handler->display->display_options['filters']['uid_current_2']['expose']['identifier'] = 'uid_current_2';
-  $handler->display->display_options['filters']['uid_current_2']['expose']['required'] = TRUE;
-  /* Filter criterion: Workflow: Current state */
-  $handler->display->display_options['filters']['sid']['id'] = 'sid';
-  $handler->display->display_options['filters']['sid']['table'] = 'workflow_node';
-  $handler->display->display_options['filters']['sid']['field'] = 'sid';
-  $handler->display->display_options['filters']['sid']['value'] = array(
-    33 => '33',
-  );
   $handler->display->display_options['path'] = 'user/%/notations';
   $handler->display->display_options['menu']['type'] = 'tab';
-  $handler->display->display_options['menu']['title'] = 'Notations';
-  $handler->display->display_options['menu']['description'] = 'Notations';
+  $handler->display->display_options['menu']['title'] = 'Notes';
+  $handler->display->display_options['menu']['description'] = 'Notes';
   $handler->display->display_options['menu']['weight'] = '98';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
 
-  /* Display: Notations */
-  $handler = $view->new_display('page', 'Notations', 'all_notations');
-  $handler->display->display_options['display_description'] = 'Notations';
+  /* Display: Notes */
+  $handler = $view->new_display('page', 'Notes', 'all_notations');
+  $handler->display->display_options['display_description'] = 'Notes';
   $handler->display->display_options['defaults']['access'] = FALSE;
   $handler->display->display_options['access']['type'] = 'role';
   $handler->display->display_options['access']['role'] = array(
@@ -718,7 +691,7 @@ return FALSE;';
   );
   $handler->display->display_options['path'] = 'notations';
   $handler->display->display_options['menu']['type'] = 'normal';
-  $handler->display->display_options['menu']['title'] = 'Social Notations (NEW)';
+  $handler->display->display_options['menu']['title'] = 'Social Notes';
   $handler->display->display_options['menu']['description'] = 'All notations over time';
   $handler->display->display_options['menu']['weight'] = '99';
   $handler->display->display_options['menu']['context'] = 0;
@@ -890,9 +863,9 @@ return FALSE;';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
 
-  /* Display: Notations */
-  $handler = $view->new_display('page', 'Notations', 'page_2');
-  $handler->display->display_options['display_description'] = 'Notations';
+  /* Display: Notes */
+  $handler = $view->new_display('page', 'Notes', 'page_2');
+  $handler->display->display_options['display_description'] = 'Notes';
   $handler->display->display_options['defaults']['access'] = FALSE;
   $handler->display->display_options['access']['type'] = 'role';
   $handler->display->display_options['access']['role'] = array(
@@ -1137,21 +1110,21 @@ return FALSE;';
   );
   $handler->display->display_options['path'] = 'notations/all';
   $handler->display->display_options['menu']['type'] = 'default tab';
-  $handler->display->display_options['menu']['title'] = 'Notations';
+  $handler->display->display_options['menu']['title'] = 'Notes';
   $handler->display->display_options['menu']['description'] = 'All notations over time';
   $handler->display->display_options['menu']['weight'] = '1';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
   $handler->display->display_options['tab_options']['type'] = 'tab';
-  $handler->display->display_options['tab_options']['title'] = 'Notations';
-  $handler->display->display_options['tab_options']['description'] = 'Notations';
+  $handler->display->display_options['tab_options']['title'] = 'Notes';
+  $handler->display->display_options['tab_options']['description'] = 'Notes';
   $handler->display->display_options['tab_options']['weight'] = '0';
 
-  /* Display: Notation log */
-  $handler = $view->new_display('page', 'Notation log', 'page_3');
+  /* Display: Notes log */
+  $handler = $view->new_display('page', 'Notes log', 'page_3');
   $handler->display->display_options['defaults']['title'] = FALSE;
-  $handler->display->display_options['title'] = 'Notation  log';
-  $handler->display->display_options['display_description'] = 'Notation log';
+  $handler->display->display_options['title'] = 'Notes  log';
+  $handler->display->display_options['display_description'] = 'Notes log';
   $handler->display->display_options['defaults']['access'] = FALSE;
   $handler->display->display_options['access']['type'] = 'role';
   $handler->display->display_options['access']['role'] = array(
@@ -1467,7 +1440,7 @@ return FALSE;';
   );
   $handler->display->display_options['path'] = 'notation-log';
   $handler->display->display_options['menu']['type'] = 'normal';
-  $handler->display->display_options['menu']['title'] = 'Notation log';
+  $handler->display->display_options['menu']['title'] = 'Notes log';
   $handler->display->display_options['menu']['description'] = 'All notations over time';
   $handler->display->display_options['menu']['weight'] = '1';
   $handler->display->display_options['menu']['context'] = 0;

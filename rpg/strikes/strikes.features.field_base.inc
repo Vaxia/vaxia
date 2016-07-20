@@ -10,7 +10,7 @@
 function strikes_field_default_field_bases() {
   $field_bases = array();
 
-  // Exported field_base: 'body'
+  // Exported field_base: 'body'.
   $field_bases['body'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -34,7 +34,7 @@ function strikes_field_default_field_bases() {
     'type' => 'text_with_summary',
   );
 
-  // Exported field_base: 'field_associated_record'
+  // Exported field_base: 'field_associated_record'.
   $field_bases['field_associated_record'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -82,7 +82,7 @@ function strikes_field_default_field_bases() {
     'type' => 'node_reference',
   );
 
-  // Exported field_base: 'field_category'
+  // Exported field_base: 'field_category'.
   $field_bases['field_category'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -98,39 +98,42 @@ function strikes_field_default_field_bases() {
     'module' => 'list',
     'settings' => array(
       'allowed_values' => array(
-        'language' => 'Attacking other players (verbal abuse)',
-        'slander' => 'Attacking other players (slander)',
-        'threats' => 'Attacking other players (threats)',
-        'sexual' => 'Harassing other players (sexual)',
-        'hounding' => 'Harassing other players (hounding)',
-        'stalking' => 'Harassing other players (IC stalking / lurking after asked not to)',
-        'disruption' => 'OOC Session disruption',
-        'consent' => 'Ignoring consent of other player (IC / OOC)',
-        'griefing' => 'Player disturbance (griefing)',
-        'extortion' => 'Player disturbance (extortion)',
-        'manipulation' => 'Emotional manipulation (overt aggression)',
-        'guilt-trip' => 'Emotional manipulation (guilt-tripping)',
-        'passive-aggro' => 'Emotional manipulation (covert / passive aggression)',
-        'baiting' => 'Emotional manipulation (baiting / goading)',
-        'chaseme' => 'Emotional manipulation (chase me behavior)',
-        'play-victim' => 'Emotional manipulation (projecting blame)',
-        'gaslighting' => 'Emotional manipulation (gaslighting)',
-        'xxxpost' => 'Posting in public room (sexual)',
-        'bigotpost' => 'Posting in public room (racist or bigoted)',
-        'violentpost' => 'Posting in public room (extremely violent)',
-        'noncompliance' => 'Not following directions of site staff',
-        'contract' => 'Breaking terms of social contract',
-        'cheating' => 'Deliberate violation of System rules or Setting limits',
-        'impersonation' => 'Impersonation of site staff / moderation staff',
-        'hacking' => 'Unauthorized access of server or account',
-        'multiaccounts' => 'Operating multiple accounts without permission',
-        'guiding_principles' => 'Violating site guiding principles',
+        'misc' => 'Admin: General request',
+        'gen_note' => 'Admin: RLH request',
+        'xp_request' => 'Admin: XP requested for previous character',
+        'noncompliance' => 'Admin: Not following directions of site staff',
+        'impersonation' => 'Admin: Impersonation of site staff / moderation staff',
+        'hacking' => 'Admin: Unauthorized access of server or account',
+        'multiaccounts' => 'Admin: Operating multiple accounts without permission',
+        'guiding_principles' => 'Admin: Violating site guiding principles',
         'policy-violation' => 'Site policy: General player policy',
         'policy-social' => 'Site policy: Social dept. policy',
         'policy-setting' => 'Site policy: Setting dept. policy',
         'policy-system' => 'Site policy: System dept. policy',
-        'positive' => 'Positive feedback / Check-in',
-        'misc' => 'Misc',
+        'cheating' => 'Setting: Deliberate violation of Setting limits',
+        'cheating2' => 'System: Deliberate violation of System rules',
+        'language' => 'Social: Attacking other players (verbal abuse)',
+        'slander' => 'Social: Attacking other players (slander)',
+        'threats' => 'Social: Attacking other players (threats)',
+        'sexual' => 'Social: Harassing other players (sexual)',
+        'hounding' => 'Social: Harassing other players (hounding)',
+        'stalking' => 'Social: Harassing other players (IC stalking / lurking after asked not to)',
+        'disruption' => 'Social: OOC Session disruption',
+        'consent' => 'Social: Ignoring consent of other player (IC / OOC)',
+        'griefing' => 'Social: Player disturbance (griefing)',
+        'extortion' => 'Social: Player disturbance (extortion)',
+        'manipulation' => 'Social: Emotional manipulation (overt aggression)',
+        'guilt-trip' => 'Social: Emotional manipulation (guilt-tripping)',
+        'passive-aggro' => 'Social: Emotional manipulation (covert / passive aggression)',
+        'baiting' => 'Social: Emotional manipulation (baiting / goading)',
+        'chaseme' => 'Social: Emotional manipulation (chase me behavior)',
+        'play-victim' => 'Social: Emotional manipulation (projecting blame)',
+        'gaslighting' => 'Social: Emotional manipulation (gaslighting)',
+        'xxxpost' => 'Social: Posting in public room (sexual)',
+        'bigotpost' => 'Social: Posting in public room (racist or bigoted)',
+        'violentpost' => 'Social: Posting in public room (extremely violent)',
+        'contract' => 'Social: Breaking terms of social contract',
+        'positive' => 'Social: Positive feedback / Check-in',
       ),
       'allowed_values_function' => '',
       'allowed_values_php' => '',
@@ -139,7 +142,7 @@ function strikes_field_default_field_bases() {
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'field_date_of_incident'
+  // Exported field_base: 'field_date_of_incident'.
   $field_bases['field_date_of_incident'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -169,7 +172,7 @@ function strikes_field_default_field_bases() {
     'type' => 'datetime',
   );
 
-  // Exported field_base: 'field_details'
+  // Exported field_base: 'field_details'.
   $field_bases['field_details'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -188,7 +191,7 @@ function strikes_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_documentation'
+  // Exported field_base: 'field_documentation'.
   $field_bases['field_documentation'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -211,7 +214,7 @@ function strikes_field_default_field_bases() {
     'type' => 'file',
   );
 
-  // Exported field_base: 'field_players'
+  // Exported field_base: 'field_players'.
   $field_bases['field_players'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -266,7 +269,7 @@ function strikes_field_default_field_bases() {
     'type' => 'user_reference',
   );
 
-  // Exported field_base: 'field_results'
+  // Exported field_base: 'field_results'.
   $field_bases['field_results'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -297,6 +300,10 @@ function strikes_field_default_field_bases() {
         'red-upgrade' => 'Yellow upgraded to Red, 3rd Yellow w/in year',
         'red' => 'Red Strike recommended',
         'site-ban' => 'Permanent site-ban recommended',
+        'xp_yes' => 'XP request granted',
+        'xp_no' => 'XP request NOT granted',
+        'rlh_yes' => 'RLH request granted',
+        'rlh_no' => 'RLH request NOT granted',
         'other' => 'Other action taken',
       ),
       'allowed_values_function' => '',
@@ -306,7 +313,7 @@ function strikes_field_default_field_bases() {
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'field_severity'
+  // Exported field_base: 'field_severity'.
   $field_bases['field_severity'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -332,7 +339,7 @@ function strikes_field_default_field_bases() {
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'field_social_members'
+  // Exported field_base: 'field_social_members'.
   $field_bases['field_social_members'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -387,7 +394,7 @@ function strikes_field_default_field_bases() {
     'type' => 'user_reference',
   );
 
-  // Exported field_base: 'field_struck_player'
+  // Exported field_base: 'field_struck_player'.
   $field_bases['field_struck_player'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -442,7 +449,7 @@ function strikes_field_default_field_bases() {
     'type' => 'user_reference',
   );
 
-  // Exported field_base: 'field_witnesses'
+  // Exported field_base: 'field_witnesses'.
   $field_bases['field_witnesses'] = array(
     'active' => 1,
     'cardinality' => -1,

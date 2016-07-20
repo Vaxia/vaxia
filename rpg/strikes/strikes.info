@@ -87,4 +87,6 @@ features[variable][] = node_preview_notation
 features[variable][] = node_preview_strike
 features[variable][] = node_submitted_notation
 features[variable][] = node_submitted_strike
+features[variable][] = pathauto_node_notation_pattern
+features[variable][] = pathauto_node_strike_pattern
 features[views_view][] = strikes

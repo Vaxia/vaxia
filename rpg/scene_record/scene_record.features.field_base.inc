@@ -10,7 +10,7 @@
 function scene_record_field_default_field_bases() {
   $field_bases = array();
 
-  // Exported field_base: 'field_difficulty'
+  // Exported field_base: 'field_difficulty'.
   $field_bases['field_difficulty'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -40,10 +40,10 @@ function scene_record_field_default_field_bases() {
     'type' => 'list_integer',
   );
 
-  // Exported field_base: 'field_goal'
+  // Exported field_base: 'field_goal'.
   $field_bases['field_goal'] = array(
     'active' => 1,
-    'cardinality' => -1,
+    'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_goal',
@@ -62,6 +62,9 @@ function scene_record_field_default_field_bases() {
         'fame' => 'Gain reputation',
         'maint' => 'Maintenance',
         'save_point' => 'Save point',
+        'skill' => 'Learning new skill',
+        'lang' => 'Learning new language',
+        'tech_lang' => 'Learning new tech language',
         'priv' => 'Private record',
       ),
       'allowed_values_function' => '',
@@ -70,7 +73,7 @@ function scene_record_field_default_field_bases() {
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'field_rp_bonus'
+  // Exported field_base: 'field_rp_bonus'.
   $field_bases['field_rp_bonus'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -95,7 +98,7 @@ function scene_record_field_default_field_bases() {
     'type' => 'list_boolean',
   );
 
-  // Exported field_base: 'field_rp_posts'
+  // Exported field_base: 'field_rp_posts'.
   $field_bases['field_rp_posts'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -132,26 +135,7 @@ function scene_record_field_default_field_bases() {
     'type' => 'entityreference',
   );
 
-  // Exported field_base: 'field_scene'
-  $field_bases['field_scene'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_scene',
-    'indexes' => array(
-      'format' => array(
-        0 => 'format',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'text',
-    'settings' => array(),
-    'translatable' => 0,
-    'type' => 'text_long',
-  );
-
-  // Exported field_base: 'field_scene_character'
+  // Exported field_base: 'field_scene_character'.
   $field_bases['field_scene_character'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -201,7 +185,7 @@ function scene_record_field_default_field_bases() {
     'type' => 'node_reference',
   );
 
-  // Exported field_base: 'field_scene_notes'
+  // Exported field_base: 'field_scene_notes'.
   $field_bases['field_scene_notes'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -220,7 +204,7 @@ function scene_record_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_sh_attention_to'
+  // Exported field_base: 'field_sh_attention_to'.
   $field_bases['field_sh_attention_to'] = array(
     'active' => 1,
     'cardinality' => 1,

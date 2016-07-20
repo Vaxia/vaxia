@@ -98,6 +98,9 @@ function scene_record_strongarm() {
       'print' => array(
         'custom_settings' => FALSE,
       ),
+      'subscriptions' => array(
+        'custom_settings' => FALSE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(
@@ -105,28 +108,28 @@ function scene_record_strongarm() {
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '4',
+          'weight' => '12',
         ),
         'locations' => array(
-          'weight' => '3',
-        ),
-        'workflow' => array(
           'weight' => '13',
         ),
+        'workflow' => array(
+          'weight' => '10',
+        ),
         'badges' => array(
-          'weight' => '2',
+          'weight' => '11',
         ),
       ),
       'display' => array(
         'workflow_current_state' => array(
           'default' => array(
-            'weight' => '0',
+            'weight' => '8',
             'visible' => TRUE,
           ),
         ),
         'workflow' => array(
           'default' => array(
-            'weight' => '10',
+            'weight' => '9',
             'visible' => TRUE,
           ),
         ),
@@ -172,6 +175,13 @@ function scene_record_strongarm() {
   $strongarm->name = 'node_submitted_scene';
   $strongarm->value = 1;
   $export['node_submitted_scene'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_node_scene_pattern';
+  $strongarm->value = 'scenes/[node:title]';
+  $export['pathauto_node_scene_pattern'] = $strongarm;
 
   return $export;
 }

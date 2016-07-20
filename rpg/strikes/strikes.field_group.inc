@@ -8,7 +8,7 @@
  * Implements hook_field_group_info().
  */
 function strikes_field_group_info() {
-  $export = array();
+  $field_groups = array();
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -21,11 +21,9 @@ function strikes_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Actions taken',
-    'weight' => '3',
+    'weight' => '2',
     'children' => array(
       0 => 'field_results',
-      1 => 'field_yellow_strike',
-      2 => 'field_red_strike',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -37,7 +35,7 @@ function strikes_field_group_info() {
       ),
     ),
   );
-  $export['group_actions_taken|node|notation|default'] = $field_group;
+  $field_groups['group_actions_taken|node|notation|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -53,7 +51,7 @@ function strikes_field_group_info() {
     'weight' => '5',
     'children' => array(
       0 => 'field_results',
-      1 => 'group_strikes_given',
+      1 => 'workflow',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -65,7 +63,7 @@ function strikes_field_group_info() {
       ),
     ),
   );
-  $export['group_actions_taken|node|notation|form'] = $field_group;
+  $field_groups['group_actions_taken|node|notation|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -78,11 +76,12 @@ function strikes_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Incident report',
-    'weight' => '2',
+    'weight' => '1',
     'children' => array(
       0 => 'body',
       1 => 'field_category',
       2 => 'field_documentation',
+      3 => 'field_date_of_incident',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -94,7 +93,7 @@ function strikes_field_group_info() {
       ),
     ),
   );
-  $export['group_inc_report|node|notation|default'] = $field_group;
+  $field_groups['group_inc_report|node|notation|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -123,7 +122,7 @@ function strikes_field_group_info() {
       ),
     ),
   );
-  $export['group_inc_report|node|notation|form'] = $field_group;
+  $field_groups['group_inc_report|node|notation|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -136,7 +135,7 @@ function strikes_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Involved members',
-    'weight' => '1',
+    'weight' => '0',
     'children' => array(
       0 => 'field_players',
       1 => 'field_social_members',
@@ -152,7 +151,7 @@ function strikes_field_group_info() {
       ),
     ),
   );
-  $export['group_members|node|notation|default'] = $field_group;
+  $field_groups['group_members|node|notation|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -181,7 +180,7 @@ function strikes_field_group_info() {
       ),
     ),
   );
-  $export['group_members|node|notation|form'] = $field_group;
+  $field_groups['group_members|node|notation|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -210,7 +209,14 @@ function strikes_field_group_info() {
       'formatter' => 'collapsible',
     ),
   );
-  $export['group_strikes_given|node|notation|form'] = $field_group;
+  $field_groups['group_strikes_given|node|notation|form'] = $field_group;
 
-  return $export;
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('Actions taken');
+  t('Incident report');
+  t('Involved members');
+  t('Strikes given');
+
+  return $field_groups;
 }

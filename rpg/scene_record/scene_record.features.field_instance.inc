@@ -10,7 +10,7 @@
 function scene_record_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'node-scene-field_difficulty'
+  // Exported field_instance: 'node-scene-field_difficulty'.
   $field_instances['node-scene-field_difficulty'] = array(
     'bundle' => 'scene',
     'default_value' => array(
@@ -32,7 +32,7 @@ function scene_record_field_default_field_instances() {
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 7,
+        'weight' => 4,
       ),
       'question' => array(
         'label' => 'above',
@@ -59,11 +59,11 @@ function scene_record_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 8,
+      'weight' => 5,
     ),
   );
 
-  // Exported field_instance: 'node-scene-field_goal'
+  // Exported field_instance: 'node-scene-field_goal'.
   $field_instances['node-scene-field_goal'] = array(
     'bundle' => 'scene',
     'default_value' => array(
@@ -73,7 +73,7 @@ function scene_record_field_default_field_instances() {
     ),
     'deleted' => 0,
     'description' => '<b>Let us know what you\'re looking for with this scene!</b><br>
-If you\'re looking for silver, need an item ruled, or want to gain reputation select those goals to match. If you are submitting a scene as evidence of maintaining a character or other situation. For example, vampiric feeding or other "Maintenance required" conditions, select maintenance as your goal. IF you\'re looking to setup a character save point if your character encounters a death situation, select that. If you\'re not sure, leave this as \'generic\' and explain in the notes.',
+If you\'re looking for silver, need an item ruled, or want to gain reputation select the goal to match. If you are submitting a scene as evidence of maintaining a character or other situation, for example, vampiric feeding or other "Maintenance required" conditions, select maintenance as your goal. If you\'re looking to setup a character save point if your character encounters a death situation, select that. If you\'re not sure, leave this as \'generic\' and explain in the notes.',
     'display' => array(
       'artwork' => array(
         'label' => 'above',
@@ -86,7 +86,7 @@ If you\'re looking for silver, need an item ruled, or want to gain reputation se
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 8,
+        'weight' => 5,
       ),
       'question' => array(
         'label' => 'above',
@@ -113,11 +113,11 @@ If you\'re looking for silver, need an item ruled, or want to gain reputation se
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_select',
-      'weight' => 7,
+      'weight' => 4,
     ),
   );
 
-  // Exported field_instance: 'node-scene-field_rp_bonus'
+  // Exported field_instance: 'node-scene-field_rp_bonus'.
   $field_instances['node-scene-field_rp_bonus'] = array(
     'bundle' => 'scene',
     'default_value' => array(
@@ -168,11 +168,11 @@ If you\'re looking for silver, need an item ruled, or want to gain reputation se
         'display_label' => 1,
       ),
       'type' => 'options_onoff',
-      'weight' => 9,
+      'weight' => 6,
     ),
   );
 
-  // Exported field_instance: 'node-scene-field_rp_posts'
+  // Exported field_instance: 'node-scene-field_rp_posts'.
   $field_instances['node-scene-field_rp_posts'] = array(
     'bundle' => 'scene',
     'deleted' => 0,
@@ -192,7 +192,7 @@ If you\'re looking for silver, need an item ruled, or want to gain reputation se
           'view_mode' => 'full',
         ),
         'type' => 'entityreference_entity_view',
-        'weight' => 2,
+        'weight' => 1,
       ),
       'question' => array(
         'label' => 'above',
@@ -227,101 +227,11 @@ If you\'re looking for silver, need an item ruled, or want to gain reputation se
         'view_mode' => 'full',
       ),
       'type' => 'entityreference_view_widget',
-      'weight' => 10,
+      'weight' => 7,
     ),
   );
 
-  // Exported field_instance: 'node-scene-field_scene'
-  $field_instances['node-scene-field_scene'] = array(
-    'bundle' => 'scene',
-    'default_value' => array(
-      0 => array(
-        'value' => '',
-      ),
-    ),
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'artwork' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'default' => array(
-        'label' => 'hidden',
-        'module' => 'text',
-        'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 3,
-      ),
-      'question' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_scene',
-    'label' => 'Scene',
-    'required' => 0,
-    'settings' => array(
-      'better_formats' => array(
-        'allowed_formats' => array(
-          'filtered_html' => 0,
-          'full_html' => 'full_html',
-          'php_code' => 0,
-          'plain_text' => 0,
-          'whiteboard' => 0,
-          'wiki' => 0,
-        ),
-        'allowed_formats_toggle' => 1,
-        'default_order_toggle' => 0,
-        'default_order_wrapper' => array(
-          'formats' => array(
-            'filtered_html' => array(
-              'weight' => 0,
-            ),
-            'full_html' => array(
-              'weight' => 1,
-            ),
-            'php_code' => array(
-              'weight' => 11,
-            ),
-            'plain_text' => array(
-              'weight' => 10,
-            ),
-            'whiteboard' => array(
-              'weight' => 0,
-            ),
-            'wiki' => array(
-              'weight' => 0,
-            ),
-          ),
-        ),
-      ),
-      'text_processing' => 1,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'text',
-      'settings' => array(
-        'rows' => 5,
-      ),
-      'type' => 'text_textarea',
-      'weight' => 12,
-    ),
-  );
-
-  // Exported field_instance: 'node-scene-field_scene_character'
+  // Exported field_instance: 'node-scene-field_scene_character'.
   $field_instances['node-scene-field_scene_character'] = array(
     'bundle' => 'scene',
     'default_value' => NULL,
@@ -339,7 +249,7 @@ If you\'re looking for silver, need an item ruled, or want to gain reputation se
         'module' => 'node_reference',
         'settings' => array(),
         'type' => 'node_reference_default',
-        'weight' => 5,
+        'weight' => 3,
       ),
       'question' => array(
         'label' => 'above',
@@ -370,14 +280,19 @@ If you\'re looking for silver, need an item ruled, or want to gain reputation se
         'size' => 60,
       ),
       'type' => 'node_reference_autocomplete',
-      'weight' => 6,
+      'weight' => 3,
     ),
   );
 
-  // Exported field_instance: 'node-scene-field_scene_notes'
+  // Exported field_instance: 'node-scene-field_scene_notes'.
   $field_instances['node-scene-field_scene_notes'] = array(
     'bundle' => 'scene',
-    'default_value' => NULL,
+    'default_value' => array(
+      0 => array(
+        'value' => '',
+        'format' => 'wiki',
+      ),
+    ),
     'deleted' => 0,
     'description' => 'Extra information for the reviewer.',
     'display' => array(
@@ -392,7 +307,7 @@ If you\'re looking for silver, need an item ruled, or want to gain reputation se
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 9,
+        'weight' => 7,
       ),
       'question' => array(
         'label' => 'above',
@@ -414,14 +329,13 @@ If you\'re looking for silver, need an item ruled, or want to gain reputation se
     'settings' => array(
       'better_formats' => array(
         'allowed_formats' => array(
-          'filtered_html' => 'filtered_html',
-          'full_html' => 'full_html',
-          'php_code' => 'php_code',
+          'filtered_html' => 0,
+          'full_html' => 0,
+          'php_code' => 0,
           'plain_text' => 'plain_text',
-          'whiteboard' => 'whiteboard',
-          'wiki' => 'wiki',
+          'wiki' => 0,
         ),
-        'allowed_formats_toggle' => 0,
+        'allowed_formats_toggle' => 1,
         'default_order_toggle' => 0,
         'default_order_wrapper' => array(
           'formats' => array(
@@ -437,16 +351,13 @@ If you\'re looking for silver, need an item ruled, or want to gain reputation se
             'plain_text' => array(
               'weight' => 10,
             ),
-            'whiteboard' => array(
-              'weight' => 0,
-            ),
             'wiki' => array(
               'weight' => 0,
             ),
           ),
         ),
       ),
-      'text_processing' => 0,
+      'text_processing' => 1,
       'user_register_form' => FALSE,
     ),
     'widget' => array(
@@ -456,11 +367,11 @@ If you\'re looking for silver, need an item ruled, or want to gain reputation se
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 11,
+      'weight' => 8,
     ),
   );
 
-  // Exported field_instance: 'node-scene-field_sh_attention_to'
+  // Exported field_instance: 'node-scene-field_sh_attention_to'.
   $field_instances['node-scene-field_sh_attention_to'] = array(
     'bundle' => 'scene',
     'default_value' => array(
@@ -482,7 +393,7 @@ If you\'re looking for silver, need an item ruled, or want to gain reputation se
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 4,
+        'weight' => 2,
       ),
       'question' => array(
         'label' => 'above',
@@ -546,11 +457,11 @@ If you\'re looking for silver, need an item ruled, or want to gain reputation se
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 5,
+      'weight' => 2,
     ),
   );
 
-  // Exported field_instance: 'node-scene-taxonomy_forums'
+  // Exported field_instance: 'node-scene-taxonomy_forums'.
   $field_instances['node-scene-taxonomy_forums'] = array(
     'bundle' => 'scene',
     'default_value' => array(
@@ -572,7 +483,7 @@ If you\'re looking for silver, need an item ruled, or want to gain reputation se
         'module' => 'taxonomy',
         'settings' => array(),
         'type' => 'taxonomy_term_reference_link',
-        'weight' => 1,
+        'weight' => 0,
       ),
       'question' => array(
         'label' => 'above',
@@ -606,7 +517,7 @@ If you\'re looking for silver, need an item ruled, or want to gain reputation se
   // Translatables
   // Included for use with string extractors like potx.
   t('<b>Let us know what you\'re looking for with this scene!</b><br>
-If you\'re looking for silver, need an item ruled, or want to gain reputation select those goals to match. If you are submitting a scene as evidence of maintaining a character or other situation. For example, vampiric feeding or other "Maintenance required" conditions, select maintenance as your goal. IF you\'re looking to setup a character save point if your character encounters a death situation, select that. If you\'re not sure, leave this as \'generic\' and explain in the notes.');
+If you\'re looking for silver, need an item ruled, or want to gain reputation select the goal to match. If you are submitting a scene as evidence of maintaining a character or other situation, for example, vampiric feeding or other "Maintenance required" conditions, select maintenance as your goal. If you\'re looking to setup a character save point if your character encounters a death situation, select that. If you\'re not sure, leave this as \'generic\' and explain in the notes.');
   t('Add the posts for your scene here.');
   t('Attention To');
   t('Character');
@@ -619,7 +530,6 @@ If you\'re looking for silver, need an item ruled, or want to gain reputation se
   t('Notes');
   t('RP Bonus');
   t('RP Posts');
-  t('Scene');
   t('Set the difficulty for the scene. For most scenes that difficulty is a 25.');
   t('Which character this scene is put in for.');
 

@@ -141,6 +141,12 @@ function strikes_strongarm() {
       'token' => array(
         'custom_settings' => FALSE,
       ),
+      'question' => array(
+        'custom_settings' => TRUE,
+      ),
+      'print' => array(
+        'custom_settings' => FALSE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(
@@ -156,8 +162,24 @@ function strikes_strongarm() {
         'badges' => array(
           'weight' => '10',
         ),
+        'workflow' => array(
+          'weight' => '6',
+        ),
       ),
-      'display' => array(),
+      'display' => array(
+        'workflow_current_state' => array(
+          'default' => array(
+            'weight' => '3',
+            'visible' => TRUE,
+          ),
+        ),
+        'workflow' => array(
+          'default' => array(
+            'weight' => '4',
+            'visible' => TRUE,
+          ),
+        ),
+      ),
     ),
   );
   $export['field_bundle_settings_node__notation'] = $strongarm;
@@ -291,6 +313,20 @@ function strikes_strongarm() {
   $strongarm->name = 'node_submitted_strike';
   $strongarm->value = 1;
   $export['node_submitted_strike'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_node_notation_pattern';
+  $strongarm->value = 'notations/[node:title]';
+  $export['pathauto_node_notation_pattern'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'pathauto_node_strike_pattern';
+  $strongarm->value = 'strikes/[node:title]';
+  $export['pathauto_node_strike_pattern'] = $strongarm;
 
   return $export;
 }
