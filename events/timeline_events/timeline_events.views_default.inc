@@ -57,10 +57,11 @@ function timeline_events_views_default_views() {
   $handler->display->display_options['fields']['field_tag_realm']['table'] = 'field_data_field_tag_realm';
   $handler->display->display_options['fields']['field_tag_realm']['field'] = 'field_tag_realm';
   $handler->display->display_options['fields']['field_tag_realm']['type'] = 'taxonomy_term_reference_plain';
-  /* Field: Content: Session held */
+  /* Field: Content: Event held */
   $handler->display->display_options['fields']['field_session_held']['id'] = 'field_session_held';
   $handler->display->display_options['fields']['field_session_held']['table'] = 'field_data_field_session_held';
   $handler->display->display_options['fields']['field_session_held']['field'] = 'field_session_held';
+  $handler->display->display_options['fields']['field_session_held']['label'] = 'Session held';
   $handler->display->display_options['fields']['field_session_held']['settings'] = array(
     'format_type' => 'long',
     'fromto' => 'both',
