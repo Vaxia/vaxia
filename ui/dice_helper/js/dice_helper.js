@@ -32,39 +32,81 @@ Drupal.behaviors.diceHelper = {
 
   // Set quickly picked values.
   function quickPick(type) {
-    $('.form-item-vaxia-rolls-dice-0-number select').val(1);
+    // Set to empty.
+    $('.form-item-vaxia-rolls-dice-0-number select').val(0);
     $('.form-item-vaxia-rolls-dice-0-size select').val(100);
+    $('.form-item-vaxia-rolls-dice-0-stat select').val(-1);
+    $('.form-item-vaxia-rolls-dice-1-number select').val(0);
+    $('.form-item-vaxia-rolls-dice-1-size select').val(100);
+    $('.form-item-vaxia-rolls-dice-1-stat select').val(-1);
+    $('.form-item-vaxia-rolls-dice-2-number select').val(0);
+    $('.form-item-vaxia-rolls-dice-2-size select').val(100);
+    $('.form-item-vaxia-rolls-dice-2-stat select').val(-1);
+    // Update settings based on dice picked.
     if (type == 'attack') {
+      $('.form-item-vaxia-rolls-dice-0-number select').val(1);
+      $('.form-item-vaxia-rolls-dice-0-size select').val(100);
+      $('.form-item-vaxia-rolls-dice-0-stat select').val('dexterity');
       $('.form-item-vaxia-rolls-dice-1-number select').val(1);
       $('.form-item-vaxia-rolls-dice-1-size select').val(100);
+      $('.form-item-vaxia-rolls-dice-1-stat select').val('strength');
       $('.form-item-vaxia-rolls-dice-2-number select').val(1);
       $('.form-item-vaxia-rolls-dice-2-size select').val(100);
-      $('.form-item-vaxia-rolls-dice-0-stat select').val('dexterity');
-      $('.form-item-vaxia-rolls-dice-1-stat select').val('strength');
       $('.form-item-vaxia-rolls-dice-2-stat select').val('endurance');
     }
     if (type == 'magic') {
-       $('.form-item-vaxia-rolls-dice-1-number select').val(1);
-       $('.form-item-vaxia-rolls-dice-1-size select').val(100);
-       $('.form-item-vaxia-rolls-dice-0-stat select').val('intelligence');
-       $('.form-item-vaxia-rolls-dice-1-stat select').val('spirituality');
-       $('.form-item-vaxia-rolls-dice-2-number select').val(0);
-       $('.form-item-vaxia-rolls-dice-2-stat select').val(-1);
+      $('.form-item-vaxia-rolls-dice-0-number select').val(1);
+      $('.form-item-vaxia-rolls-dice-0-size select').val(100);
+      $('.form-item-vaxia-rolls-dice-0-stat select').val('intelligence');
+      $('.form-item-vaxia-rolls-dice-1-number select').val(1);
+      $('.form-item-vaxia-rolls-dice-1-size select').val(100);
+      $('.form-item-vaxia-rolls-dice-1-stat select').val('spirituality');
     }
     if (type == 'tech') {
-       $('.form-item-vaxia-rolls-dice-1-number select').val(1);
-       $('.form-item-vaxia-rolls-dice-1-size select').val(100);
-       $('.form-item-vaxia-rolls-dice-0-stat select').val('intelligence');
-       $('.form-item-vaxia-rolls-dice-1-stat select').val('dexterity');
-       $('.form-item-vaxia-rolls-dice-2-number select').val(0);
-       $('.form-item-vaxia-rolls-dice-2-stat select').val(-1);
+      $('.form-item-vaxia-rolls-dice-0-number select').val(1);
+      $('.form-item-vaxia-rolls-dice-0-size select').val(100);
+      $('.form-item-vaxia-rolls-dice-0-stat select').val('intelligence');
+      $('.form-item-vaxia-rolls-dice-1-number select').val(1);
+      $('.form-item-vaxia-rolls-dice-1-size select').val(100);
+      $('.form-item-vaxia-rolls-dice-1-stat select').val('dexterity');
     }
     if (type == 'aware') {
-       $('.form-item-vaxia-rolls-dice-0-stat select').val('awareness');
-       $('.form-item-vaxia-rolls-dice-1-number select').val(0);
-       $('.form-item-vaxia-rolls-dice-2-number select').val(0);
-       $('.form-item-vaxia-rolls-dice-1-stat select').val(-1);
-       $('.form-item-vaxia-rolls-dice-2-stat select').val(-1);
+      $('.form-item-vaxia-rolls-dice-0-number select').val(1);
+      $('.form-item-vaxia-rolls-dice-0-size select').val(100);
+      $('.form-item-vaxia-rolls-dice-0-stat select').val('awareness');
+    }
+    if (type == 'charm') {
+      $('.form-item-vaxia-rolls-dice-0-number select').val(1);
+      $('.form-item-vaxia-rolls-dice-0-size select').val(100);
+      $('.form-item-vaxia-rolls-dice-0-stat select').val('charisma');
+      $('.form-item-vaxia-rolls-dice-1-number select').val(1);
+      $('.form-item-vaxia-rolls-dice-1-size select').val(100);
+      $('.form-item-vaxia-rolls-dice-1-stat select').val('spirituality');
+    }
+    if (type == 'threat') {
+      $('.form-item-vaxia-rolls-dice-0-number select').val(1);
+      $('.form-item-vaxia-rolls-dice-0-size select').val(100);
+      $('.form-item-vaxia-rolls-dice-0-stat select').val('presence');
+    }
+    if (type == 'sneak') {
+      $('.form-item-vaxia-rolls-dice-0-number select').val(1);
+      $('.form-item-vaxia-rolls-dice-0-size select').val(100);
+      $('.form-item-vaxia-rolls-dice-0-stat select').val('reflexes');
+    }
+    if (type == 'end') {
+      $('.form-item-vaxia-rolls-dice-0-number select').val(1);
+      $('.form-item-vaxia-rolls-dice-0-size select').val(100);
+      $('.form-item-vaxia-rolls-dice-0-stat select').val('endurance');
+    }
+    if (type == 'agi') {
+      $('.form-item-vaxia-rolls-dice-0-number select').val(1);
+      $('.form-item-vaxia-rolls-dice-0-size select').val(100);
+      $('.form-item-vaxia-rolls-dice-0-stat select').val('agility');
+    }
+    if (type == 'fin') {
+      $('.form-item-vaxia-rolls-dice-0-number select').val(1);
+      $('.form-item-vaxia-rolls-dice-0-size select').val(100);
+      $('.form-item-vaxia-rolls-dice-0-stat select').val('reflexes');
     }
   }
 
@@ -120,22 +162,59 @@ Drupal.behaviors.diceHelper = {
     if (helper.length == 0) {
       // On page load, inject the buttons into place in the DOM.
        $('#edit-comment-body').before('' +
-        '<style>' +
-        '#dice-helper-image{float:right}' +
-        '#dice-helper-image span.views-field-title{display:none;}' +
-        '#dice-helper-image img{width:60px;height:60px;}' +
-        '</style>' +
         '<div id="dice-helper-image" style="">' +
         '</div>'
       );
       $('#vaxia-dice-character').before('' +
         '<div id="dice-helper" style="">' +
-        '<input type="button" value="Attack" class="dice-helper-button">' +
-        '<input type="button" value="Magic" class="dice-helper-button">' +
-        '<input type="button" value="Tech" class="dice-helper-button">' +
-        '<input type="button" value="Aware" class="dice-helper-button">' +
-        '<input type="checkbox" id="same-skill-for-all" class="dice-helper-select"> Same skill?' +
+          '<div class="dice-helper-sets">' +
+            '<input type="button" value="Attack" alt="Attack" ' +
+              'desc="Attack with melee or ranged weapons." ' +
+              'class="dice-helper-button dice-helper-icon dice-helper-button-attack">' +
+            '<input type="button" value="Magic" alt="Magic" ' +
+              'desc="Cast a spell or psionic effect." ' +
+              'class="dice-helper-button dice-helper-icon dice-helper-button-magic">' +
+            '<input type="button" value="Tech" alt="Tech" ' +
+              'desc="Work with technology or crafting." ' +
+              'class="dice-helper-button dice-helper-icon dice-helper-button-tech">' +
+            '<input type="button" value="Aware" alt="Aware" ' +
+              'desc="Listen or watch for signifigant things." ' +
+              'class="dice-helper-button dice-helper-icon dice-helper-button-aware">' +
+            '<input type="button" value="Charm" alt="Charm" ' +
+              'desc="Charm a target into cooperation. " ' +
+              'class="dice-helper-button dice-helper-icon dice-helper-button-charm">' +
+            '<input type="button" value="Threat" alt="Threat" ' +
+              'desc="Intimidate a target into cooperation." ' +
+              'class="dice-helper-button dice-helper-icon dice-helper-button-threat">' +
+            '<input type="button" value="Sneak" alt="Sneak" ' +
+              'desc="Sneak and hide to avoid detection." ' +
+              'class="dice-helper-button dice-helper-icon dice-helper-button-sneak">' +
+          '</div>' +
+          '<div class="dice-helper-help dice-helper-icon-help" style="display:none;"></div>' +
+          '<div class="dice-helper-singles">' +
+            '<input type="button" value="END" alt="Endurance" ' +
+              'desc="An endurance roll, often used to survive effects." ' +
+              'class="dice-helper-button dice-helper-single">' +
+            '<input type="button" value="AGI" alt="Agility" ' +
+              'desc="An agility roll, often used to dodge effects." ' +
+              'class="dice-helper-button dice-helper-single">' +
+            '<input type="button" value="FIN" alt="Finesse" ' +
+              'desc="A finesse roll, often used for sneaking." ' +
+              'class="dice-helper-button dice-helper-single">' +
+          '</div>' +
+          '<div class="dice-helper-skill">' +
+            '<input type="checkbox" id="same-skill-for-all" class="dice-helper-select">Use the same skill for rolls?' +
+          '</div>' +
         '</div>'
+      );
+      // Add hovers to the newly injected buttons.
+      $('.dice-helper-button').hover(
+        function(){
+          $('.dice-helper-icon-help').html($(this).attr('desc')).show();
+        },
+        function(){
+          $('.dice-helper-icon-help').hide();
+        }
       );
       // Check the cookie against the helper value to set pic and color.
       var narr = getCookie('vaxia_dice_helper_narrative');
