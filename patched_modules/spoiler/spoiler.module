@@ -52,7 +52,8 @@ function spoiler_filter_info() {
  * Filter callback to display filter tips.
  */
 function _spoiler_filter_tips($filter, $format, $long) {
-  return t('Potential spoilers can be hidden between [spoiler][/spoiler] tags to hide them by default.');
+  return t('Potential spoilers can be hidden between [spoiler][/spoiler] tags to hide them by default. ' .
+    'Labels can be shown as [spoiler=label][/spoiler].');
 }
 
 /**
@@ -83,12 +84,16 @@ function _spoiler_filter_process($text) {
   // Keep it simple. Use of the lazy quantifier allows use of multiple spoiler
   // blocks but does not address nested spoilers.
   return preg_replace_callback(
-    '#\[\s*spoiler\s*\](.*?)\[\s*/\s*spoiler\s*\]#is',
-    create_function('$matches', 'return theme("spoiler", array("spoiler" => $matches[1]));'),
+    '#\[\s*spoiler\s*(=.*?)*\](.*?)\[\s*/\s*spoiler\s*\]#is',
+    create_function('$matches', 'return theme("spoiler", array("spoiler_label" => $matches[1], "spoiler" => $matches[2]));'),
     $text
   );
 }
 
 function theme_spoiler($variables) {
-  return '<div class="spoiler"><div class="spoiler-warning">' . t('<span>Spoiler:</span> Highlight to view') . '</div><div class="spoiler-content">' . $variables['spoiler'] . '</div></div>';
+  $variables['spoiler_label'] = !empty($variables['spoiler_label']) ?
+    trim(strip_tags(str_replace("'", '',str_replace('"', '', substr($variables['spoiler_label'], 1))))) : t('Spoiler');
+  return '<div class="spoiler">' .
+    '<div class="spoiler-warning" show="' . $variables['spoiler_label'] . '"><span>' . $variables['spoiler_label'] . ':</span> ' . t('Highlight to view') . '</div>' .
+    '<div class="spoiler-content">' . $variables['spoiler'] . '</div></div>';
 }
