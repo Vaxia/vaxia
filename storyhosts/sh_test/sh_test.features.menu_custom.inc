@@ -21,6 +21,5 @@ function sh_test_menu_default_menu_custom() {
   t('A menu for all the ASH related links.');
   t('Vaxia ASH');
 
-
   return $menus;
 }

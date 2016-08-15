@@ -114,7 +114,7 @@ function sh_test_views_default_views() {
   $handler->display->display_options['fields']['field_saga']['field'] = 'field_saga';
   $handler->display->display_options['fields']['field_saga']['alter']['alter_text'] = TRUE;
   $handler->display->display_options['fields']['field_saga']['alter']['text'] = ' ([field_saga])';
-  /* Field: Field: Realm */
+  /* Field: Content: Realm */
   $handler->display->display_options['fields']['field_tag_realm']['id'] = 'field_tag_realm';
   $handler->display->display_options['fields']['field_tag_realm']['table'] = 'field_data_field_tag_realm';
   $handler->display->display_options['fields']['field_tag_realm']['field'] = 'field_tag_realm';
@@ -238,7 +238,7 @@ function sh_test_views_default_views() {
     11 => 0,
     22 => 0,
   );
-  /* Filter criterion: Field: Realm (field_tag_realm) */
+  /* Filter criterion: Content: Realm (field_tag_realm) */
   $handler->display->display_options['filters']['field_tag_realm_tid']['id'] = 'field_tag_realm_tid';
   $handler->display->display_options['filters']['field_tag_realm_tid']['table'] = 'field_data_field_tag_realm';
   $handler->display->display_options['filters']['field_tag_realm_tid']['field'] = 'field_tag_realm_tid';

@@ -1034,6 +1034,14 @@ return !( user_access(\'use NPCs\') || $row->uid == $user->uid );';
   $handler->display->display_options['fields']['nid']['label'] = '';
   $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
   $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
+  /* Field: Content: Realm */
+  $handler->display->display_options['fields']['field_tag_realm']['id'] = 'field_tag_realm';
+  $handler->display->display_options['fields']['field_tag_realm']['table'] = 'field_data_field_tag_realm';
+  $handler->display->display_options['fields']['field_tag_realm']['field'] = 'field_tag_realm';
+  $handler->display->display_options['fields']['field_tag_realm']['label'] = '';
+  $handler->display->display_options['fields']['field_tag_realm']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_tag_realm']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_tag_realm']['type'] = 'taxonomy_term_reference_plain';
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
   $handler->display->display_options['fields']['title_1']['table'] = 'node';
@@ -1042,11 +1050,6 @@ return !( user_access(\'use NPCs\') || $row->uid == $user->uid );';
   $handler->display->display_options['fields']['title_1']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title_1']['hide_alter_empty'] = FALSE;
   $handler->display->display_options['fields']['title_1']['link_to_node'] = FALSE;
-  /* Field: Content: Realm */
-  $handler->display->display_options['fields']['field_tag_realm']['id'] = 'field_tag_realm';
-  $handler->display->display_options['fields']['field_tag_realm']['table'] = 'field_data_field_tag_realm';
-  $handler->display->display_options['fields']['field_tag_realm']['field'] = 'field_tag_realm';
-  $handler->display->display_options['fields']['field_tag_realm']['type'] = 'taxonomy_term_reference_plain';
   /* Field: User: Name */
   $handler->display->display_options['fields']['name']['id'] = 'name';
   $handler->display->display_options['fields']['name']['table'] = 'users';
@@ -1054,7 +1057,7 @@ return !( user_access(\'use NPCs\') || $row->uid == $user->uid );';
   $handler->display->display_options['fields']['name']['relationship'] = 'uid';
   $handler->display->display_options['fields']['name']['label'] = '';
   $handler->display->display_options['fields']['name']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['name']['alter']['text'] = '([name])';
+  $handler->display->display_options['fields']['name']['alter']['text'] = '([field_tag_realm] / [name])';
   $handler->display->display_options['fields']['name']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['name']['link_to_user'] = FALSE;
   $handler->display->display_options['defaults']['sorts'] = FALSE;

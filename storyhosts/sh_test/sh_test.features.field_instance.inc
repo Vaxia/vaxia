@@ -10,7 +10,7 @@
 function sh_test_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'node-session_report-body'
+  // Exported field_instance: 'node-session_report-body'.
   $field_instances['node-session_report-body'] = array(
     'bundle' => 'session_report',
     'default_value' => NULL,
@@ -87,7 +87,7 @@ function sh_test_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-session_report-field_additional_notes'
+  // Exported field_instance: 'node-session_report-field_additional_notes'.
   $field_instances['node-session_report-field_additional_notes'] = array(
     'bundle' => 'session_report',
     'deleted' => 0,
@@ -129,7 +129,7 @@ function sh_test_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-session_report-field_characters_involved'
+  // Exported field_instance: 'node-session_report-field_characters_involved'.
   $field_instances['node-session_report-field_characters_involved'] = array(
     'bundle' => 'session_report',
     'default_value' => NULL,
@@ -170,7 +170,7 @@ function sh_test_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-session_report-field_rate_session'
+  // Exported field_instance: 'node-session_report-field_rate_session'.
   $field_instances['node-session_report-field_rate_session'] = array(
     'bundle' => 'session_report',
     'default_value' => NULL,
@@ -219,7 +219,7 @@ function sh_test_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-session_report-field_saga'
+  // Exported field_instance: 'node-session_report-field_saga'.
   $field_instances['node-session_report-field_saga'] = array(
     'bundle' => 'session_report',
     'default_value' => NULL,
@@ -259,7 +259,7 @@ function sh_test_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-session_report-field_session_held'
+  // Exported field_instance: 'node-session_report-field_session_held'.
   $field_instances['node-session_report-field_session_held'] = array(
     'bundle' => 'session_report',
     'deleted' => 0,
@@ -274,6 +274,7 @@ function sh_test_field_default_field_instances() {
           'multiple_from' => '',
           'multiple_number' => '',
           'multiple_to' => '',
+          'show_remaining_days' => FALSE,
           'show_repeat_rule' => 'show',
         ),
         'type' => 'date_default',
@@ -314,7 +315,7 @@ function sh_test_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-session_report-field_tag_realm'
+  // Exported field_instance: 'node-session_report-field_tag_realm'.
   $field_instances['node-session_report-field_tag_realm'] = array(
     'bundle' => 'session_report',
     'default_value' => array(
@@ -355,7 +356,7 @@ function sh_test_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-session_report-taxonomy_forums'
+  // Exported field_instance: 'node-session_report-taxonomy_forums'.
   $field_instances['node-session_report-taxonomy_forums'] = array(
     'bundle' => 'session_report',
     'default_value' => NULL,
@@ -392,7 +393,7 @@ function sh_test_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-storyhost_application-body'
+  // Exported field_instance: 'node-storyhost_application-body'.
   $field_instances['node-storyhost_application-body'] = array(
     'bundle' => 'storyhost_application',
     'default_value' => NULL,

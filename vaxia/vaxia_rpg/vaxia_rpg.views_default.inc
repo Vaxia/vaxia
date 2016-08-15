@@ -1031,5 +1031,88 @@ return ($nid_fxp > 0) ? $nid_fxp : 0;';
   $handler->display->display_options['block_description'] = 'Message of the Day';
   $export['message_of_the_day'] = $view;
 
+  $view = new view();
+  $view->name = 'vaxia_rpg_wiki_view';
+  $view->description = 'Vaxia RPG Wiki View';
+  $view->tag = 'Vaxia RPG Wiki View';
+  $view->base_table = 'node';
+  $view->human_name = 'Vaxia RPG Wiki View';
+  $view->core = 7;
+  $view->api_version = '3.0';
+  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+
+  /* Display: Master */
+  $handler = $view->new_display('default', 'Master', 'default');
+  $handler->display->display_options['title'] = 'Vaxia RPG Wiki View';
+  $handler->display->display_options['css_class'] = 'messages--warning messages warning';
+  $handler->display->display_options['use_more_always'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'perm';
+  $handler->display->display_options['cache']['type'] = 'none';
+  $handler->display->display_options['query']['type'] = 'views_query';
+  $handler->display->display_options['exposed_form']['type'] = 'basic';
+  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '1';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['row_options']['inline'] = array(
+    'timestamp' => 'timestamp',
+    'changed' => 'changed',
+  );
+  $handler->display->display_options['row_options']['separator'] = '  : ';
+  /* Relationship: Content: Wiki source (field_wiki_source) */
+  $handler->display->display_options['relationships']['field_wiki_source_nid']['id'] = 'field_wiki_source_nid';
+  $handler->display->display_options['relationships']['field_wiki_source_nid']['table'] = 'field_data_field_wiki_source';
+  $handler->display->display_options['relationships']['field_wiki_source_nid']['field'] = 'field_wiki_source_nid';
+  $handler->display->display_options['relationships']['field_wiki_source_nid']['required'] = TRUE;
+  $handler->display->display_options['relationships']['field_wiki_source_nid']['delta'] = '-1';
+  /* Field: Content: Updated date */
+  $handler->display->display_options['fields']['changed']['id'] = 'changed';
+  $handler->display->display_options['fields']['changed']['table'] = 'node';
+  $handler->display->display_options['fields']['changed']['field'] = 'changed';
+  $handler->display->display_options['fields']['changed']['relationship'] = 'field_wiki_source_nid';
+  $handler->display->display_options['fields']['changed']['label'] = '';
+  $handler->display->display_options['fields']['changed']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['changed']['alter']['text'] = 'This room description was updated on [changed], please review description changes.';
+  $handler->display->display_options['fields']['changed']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['changed']['date_format'] = 'short';
+  $handler->display->display_options['fields']['changed']['second_date_format'] = 'privatemsg_current_day';
+  /* Contextual filter: Content: Nid */
+  $handler->display->display_options['arguments']['nid']['id'] = 'nid';
+  $handler->display->display_options['arguments']['nid']['table'] = 'node';
+  $handler->display->display_options['arguments']['nid']['field'] = 'nid';
+  $handler->display->display_options['arguments']['nid']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['nid']['default_argument_type'] = 'node';
+  $handler->display->display_options['arguments']['nid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['nid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['nid']['summary_options']['items_per_page'] = '25';
+  /* Filter criterion: Content: Has new content */
+  $handler->display->display_options['filters']['timestamp']['id'] = 'timestamp';
+  $handler->display->display_options['filters']['timestamp']['table'] = 'history';
+  $handler->display->display_options['filters']['timestamp']['field'] = 'timestamp';
+  $handler->display->display_options['filters']['timestamp']['relationship'] = 'field_wiki_source_nid';
+  $handler->display->display_options['filters']['timestamp']['group'] = 1;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'rpg_chatroom' => 'rpg_chatroom',
+  );
+  $handler->display->display_options['filters']['type']['group'] = 1;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+
+  /* Display: Vaxia RPG Wiki View */
+  $handler = $view->new_display('block', 'Vaxia RPG Wiki View', 'block');
+  $handler->display->display_options['display_description'] = 'Vaxia RPG Wiki View';
+  $handler->display->display_options['block_description'] = 'Vaxia RPG Wiki View';
+  $export['vaxia_rpg_wiki_view'] = $view;
+
   return $export;
 }

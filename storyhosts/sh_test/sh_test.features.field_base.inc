@@ -10,7 +10,7 @@
 function sh_test_field_default_field_bases() {
   $field_bases = array();
 
-  // Exported field_base: 'field_additional_notes'
+  // Exported field_base: 'field_additional_notes'.
   $field_bases['field_additional_notes'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -33,7 +33,7 @@ function sh_test_field_default_field_bases() {
     'type' => 'file',
   );
 
-  // Exported field_base: 'field_characters_involved'
+  // Exported field_base: 'field_characters_involved'.
   $field_bases['field_characters_involved'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -52,7 +52,7 @@ function sh_test_field_default_field_bases() {
     'module' => 'node_reference',
     'settings' => array(
       'referenceable_types' => array(
-        'article' => 0,
+        'application' => 0,
         'artwork' => 0,
         'character_sheet' => 'character_sheet',
         'event' => 0,
@@ -62,7 +62,10 @@ function sh_test_field_default_field_bases() {
         'long_answer' => 0,
         'mass_contact' => 0,
         'multichoice' => 0,
+        'notation' => 0,
+        'organization_goal' => 0,
         'page' => 0,
+        'play_suggestions' => 0,
         'proposal' => 0,
         'quiz' => 0,
         'rpg_chatroom' => 0,
@@ -70,12 +73,13 @@ function sh_test_field_default_field_bases() {
         'session_report' => 0,
         'storyhost_application' => 0,
         'strike' => 0,
+        'timeline_event' => 0,
         'webform' => 0,
         'wiki_page' => 0,
       ),
       'view' => array(
         'args' => array(),
-        'display_name' => 'active_characters_ref',
+        'display_name' => 'active_chars_ref',
         'view_name' => 'vaxia_character_sheets',
       ),
     ),
@@ -83,7 +87,7 @@ function sh_test_field_default_field_bases() {
     'type' => 'node_reference',
   );
 
-  // Exported field_base: 'field_rate_session'
+  // Exported field_base: 'field_rate_session'.
   $field_bases['field_rate_session'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -103,7 +107,7 @@ function sh_test_field_default_field_bases() {
     'type' => 'fivestar',
   );
 
-  // Exported field_base: 'field_saga'
+  // Exported field_base: 'field_saga'.
   $field_bases['field_saga'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -129,7 +133,7 @@ function sh_test_field_default_field_bases() {
     'type' => 'taxonomy_term_reference',
   );
 
-  // Exported field_base: 'field_session_held'
+  // Exported field_base: 'field_session_held'.
   $field_bases['field_session_held'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -162,7 +166,7 @@ function sh_test_field_default_field_bases() {
     'type' => 'datetime',
   );
 
-  // Exported field_base: 'taxonomy_forums'
+  // Exported field_base: 'taxonomy_forums'.
   $field_bases['taxonomy_forums'] = array(
     'active' => 1,
     'cardinality' => 1,
