@@ -48,12 +48,16 @@ function _vaxia_dice_roller_dice_form($node, $type = 'character') {
     if (isset($node->title)) {
       // Mark character you're on.
       $element['#description'] = '<div class="vaxia-dice-roller-node">' .
-        t('On ' . $type . ' !name', array('!name' => l($node->title, 'node/' . $node->nid))) .
+        t('!name', array('!name' => l($node->title, 'node/' . $node->nid))) .
         '</div>';
-      // Get the items to display if we have any.
+      // Get the rows to display in the dice roller.
       $display_dice = variable_get('vaxia_display_dice', 6);
-      for ($i = 0; $i < $display_dice; $i++) {
-        $element['dice'][$i] = _vaxia_dice_roller_node_row($node);
+      // If the node is an SH character use SH form instead.
+      if ($node->field_is_storyteller[$node->language][0]['value'] == 1) {
+        $element['dice'] = _vaxia_dice_roller_SH_form($display_dice);
+      }
+      else {
+        $element['dice'] = _vaxia_dice_roller_char_form($node, $display_dice);
       }
     }
   }
@@ -74,12 +78,18 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
     $lang = $content->language;
     $character = isset($content->field_comment_character[$lang][0]['nid']) ?
       node_load($content->field_comment_character[$lang][0]['nid']) : '';
-    global $user;
-    if (!empty($character)) {
-      variable_set('vaxia_last_character_' . $user->uid, $character->nid);
+    // Bail early if we don't have a character.
+    if (empty($character)) {
+      return;
     }
-    // Get the command array.
-    $commands = _vaxia_dice_roller_submit_rolls($content->vaxia_rolls, $character, $lang);
+    // If the node is an SH character use SH form submit instead.
+    if ($character->field_is_storyteller[$character->language][0]['value'] == 1) {
+      $commands = _vaxia_dice_roller_submit_sh($content->vaxia_rolls);
+    }
+    else {
+      // Get the command array.
+      $commands = _vaxia_dice_roller_submit_rolls($content->vaxia_rolls, $character, $lang);
+    }
     // Apply the set of rolls.
     if (!empty($commands)) {
       // Make the call.
@@ -95,6 +105,37 @@ function vaxia_dice_roller_form_submit($content, $origin = 'node') {
 }
 
 /**
+ * Process the submitted SH rolls into commands.
+ */
+function _vaxia_dice_roller_submit_sh($submitted_rolls) {
+echo print_r($submitted_rolls,1);
+  $commands = array();
+  // Loop over each submitted SH dice and make a command.
+  if (!empty($submitted_rolls['dice']) && is_array($submitted_rolls['dice'])) {
+    // Check for roll formatting.
+    $rolls = array();
+    foreach ($submitted_rolls['dice'] as $delta => $roll) {
+      $roll['number'] = !empty($roll['number']) ? $roll['number'] : 0;
+      if ($roll['number'] > 0) {
+        $roll['size'] = !empty($roll['size']) ? $roll['size'] : 100;
+        $roll['stat'] = !empty($roll['stat']) ? (int) trim($roll['stat']) : 0;
+        $roll['skill'] = !empty($roll['skill']) ? (int) trim($roll['skill']) : 0;
+        $rolls[] = $roll;
+      }
+    }
+    // Now that we have the roll do the rest.
+    foreach ($rolls as $roll) {
+      $roll['might'] = $roll['stat'] + $roll['skill'];
+      $commands[] = array(
+        'command' => $roll['number'] . 'd' . $roll['size'] . '+' . $roll['might'],
+        'note' => 'stat (' . $roll['stat'] . ') + skill (' . $roll['skill'] . ')',
+      );
+    }
+  }
+  return $commands;
+}
+
+/**
  * Get commands from the submitted rolls.
  */
 function _vaxia_dice_roller_submit_rolls($submitted_rolls, $character, $lang) {
@@ -104,7 +145,7 @@ function _vaxia_dice_roller_submit_rolls($submitted_rolls, $character, $lang) {
     foreach ($submitted_rolls['dice'] as $delta => $roll) {
       $number = !empty($roll['number']) ? $roll['number'] : 0;
       if ($number > 0) {
-        $roll['size'] = !empty($roll['size']) ? $roll['size'] : 1;
+        $roll['size'] = !empty($roll['size']) ? $roll['size'] : 100;
         $roll['stat'] = ($roll['stat'] != -1) ? $roll['stat'] : 'any';
         $roll['skill'] = ($roll['skill'] != -1) ? $roll['skill'] : 0;
         $rolls[] = $roll;
@@ -279,42 +320,135 @@ function _vaxia_dice_roller_get_selected_character(&$form, &$form_state) {
   return $character;
 }
 
+
+/**
+ * Helper function, create the row of dice rolling options.
+ * This is for SH characters, if rolling as a NPC then the regular
+ * NPC stats apply. This is to encourage NPC use for easy roller integration.
+ * And to encourage standard stats elsewhere.
+ */
+function _vaxia_dice_roller_SH_form($numb_rows) {
+  // Optional dice sizes for characters. TODO: reduce to 1d100, add secondary form.
+  $number = range(0, 10);
+  $stats_skills = array(
+    '0' => 'No ability (0)',
+    '15' => 'Low (15)',
+    '25' => 'Average (25)',
+    '30' => 'Dabbler (30)',
+    '35' => 'Apprentice (35)',
+    '45' => 'Trained (45)',
+    '55' => 'Expert (55)',
+    '60' => 'Known Expert (60)',
+    '70' => 'Mastery (70) (NPC cap)',
+  );
+  // Loop over the number of rows we want.
+  // This saves us from querying more than once for skills etc.
+  $form = array();
+  for ($i = 0; $i < $numb_rows - 2; $i++) {
+    // Dice number.
+    $form[$i]['number'] = array(
+      '#type' => 'select',
+      '#options' => $number,
+    );
+    $form[$i]['number']['#attributes']['class'][] = 'dice-number';
+    // Dice size.
+    $form[$i]['size'] = array(
+      '#type' => 'select',
+      '#options' => array('100' => 100),
+      '#default_value' => '100',
+      '#value' => '100',
+      '#disabled' => TRUE,
+    );
+    $form[$i]['size']['#attributes']['class'][] = 'dice-size';
+    // Stat.
+    $form[$i]['stat'] = array(
+      '#type' => 'select',
+      '#options' => $stats_skills,
+    );
+    $form[$i]['stat']['#attributes']['class'][] = 'dice-stat';
+    // Skill.
+    $form[$i]['skill'] = array(
+      '#type' => 'select',
+      '#options' => $stats_skills,
+    );
+    $form[$i]['skill']['#attributes']['class'][] = 'dice-skill';
+  }
+  // And add the last two rows.
+  $dice_size = array(100,20,12,10,8,6,4,2);
+  $sizes = array_combine($dice_size, $dice_size);
+  for ($i = $i; $i < $numb_rows; $i++) {
+    // Dice number.
+    $form[$i]['number'] = array(
+      '#type' => 'select',
+      '#options' => $number,
+    );
+    $form[$i]['number']['#attributes']['class'][] = 'dice-number';
+    // Dice size.
+    $form[$i]['size'] = array(
+      '#type' => 'select',
+      '#options' => $sizes,
+    );
+    $form[$i]['size']['#attributes']['class'][] = 'dice-size';
+    // Stat.
+    $form[$i]['stat'] = array(
+      '#type' => 'textfield',
+      '#size' => 5,
+    );
+    $form[$i]['stat']['#attributes']['class'][] = 'dice-stat';
+    // Skill.
+    $form[$i]['skill'] = array(
+      '#type' => 'textfield',
+      '#size' => 5,
+    );
+    $form[$i]['skill']['#attributes']['class'][] = 'dice-skill';
+  }
+  return $form;
+}
+
 /**
  * Helper function, create the row of dice rolling options.
  * For regular characters only, not SH characters.
  */
-function _vaxia_dice_roller_node_row($node) {
+function _vaxia_dice_roller_char_form($node, $numb_rows) {
+  // Optional dice sizes for characters. TODO: reduce to 1d100, add secondary form.
+  $number = range(0, 10);
   $dice_size = array(100,20,12,10,8,6,4,2);
+  $sizes = array_combine($dice_size, $dice_size);
   // Make sure the stat keys are set by field.
   $stats = _vaxia_dice_roller_get_stats($node);
   $skills = _vaxia_dice_roller_get_skills($node);
   // Set the dropdowns.
   $stats = _vaxia_dice_roller_get_dropdown($stats);
   $skills = _vaxia_dice_roller_get_dropdown($skills);
-  // Dice number.
-  $form['number'] = array(
-    '#type' => 'select',
-    '#options' => range(0, 10),
-  );
-  $form['number']['#attributes']['class'][] = 'dice-number';
-  // Dice size.
-  $form['size'] = array(
-    '#type' => 'select',
-    '#options' => array_combine($dice_size, $dice_size),
-  );
-  $form['size']['#attributes']['class'][] = 'dice-size';
-  // Stat.
-  $form['stat'] = array(
-    '#type' => 'select',
-    '#options' => $stats,
-  );
-  $form['stat']['#attributes']['class'][] = 'dice-stat';
-  // Skill.
-  $form['skill'] = array(
-    '#type' => 'select',
-    '#options' => $skills,
-  );
-  $form['skill']['#attributes']['class'][] = 'dice-skill';
+  // Loop over the number of rows we want.
+  // This saves us from querying more than once for skills etc.
+  $form = array();
+  for ($i = 0; $i < $numb_rows; $i++) {
+    // Dice number.
+    $form[$i]['number'] = array(
+      '#type' => 'select',
+      '#options' => $number,
+    );
+    $form[$i]['number']['#attributes']['class'][] = 'dice-number';
+    // Dice size.
+    $form[$i]['size'] = array(
+      '#type' => 'select',
+      '#options' => $sizes,
+    );
+    $form[$i]['size']['#attributes']['class'][] = 'dice-size';
+    // Stat.
+    $form[$i]['stat'] = array(
+      '#type' => 'select',
+      '#options' => $stats,
+    );
+    $form[$i]['stat']['#attributes']['class'][] = 'dice-stat';
+    // Skill.
+    $form[$i]['skill'] = array(
+      '#type' => 'select',
+      '#options' => $skills,
+    );
+    $form[$i]['skill']['#attributes']['class'][] = 'dice-skill';
+  }
   return $form;
 }
 
