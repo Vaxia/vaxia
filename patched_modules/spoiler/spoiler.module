@@ -1,0 +1,94 @@
+<?php
+
+/**
+ * @file
+ *   Spoiler module: This module allows users to hide potential "spoiler"
+ * content by inserting them between [spoiler][/spoiler] tags. These tags will
+ * be converted to HTML by this filter. If JavaScript is available, then a
+ * button will be presented to the user which can be clicked to display the
+ * content. If JavaScript is unavailable, then the relevant CSS rules will set
+ * the foreground and background colours to the same value, thereby rendering
+ * the text invisible, until highlighted.
+ */
+
+/**
+ * Implements hook_init().
+ */
+function spoiler_init() {
+  $path = drupal_get_path('module', 'spoiler');
+
+  drupal_add_css($path . '/spoiler.css');
+  drupal_add_js($path . '/spoiler.js');
+}
+
+/**
+ * Implements hook_theme().
+ */
+function spoiler_theme() {
+  return array(
+    'spoiler' => array(
+      'variables' => array(
+        'spoiler' => NULL
+      )
+    )
+  );
+}
+
+/**
+ * Implements hook_filter_info().
+ */
+function spoiler_filter_info() {
+  $filters['spoiler'] = array(
+    'title' => t('Spoiler filter'),
+    'description' => t('Converts [spoiler][/spoiler] tags to markup which hides the content within. When Javascript is available, a button is made available which can be clicked to view the hidden content. Alternatively, when Javascript is disabled, the filter sets the foreground and background colours to the same value, effectively rendering the content within invisible until highlighted.'),
+    'process callback' => '_spoiler_filter_process',
+    'tips callback'  => '_spoiler_filter_tips'
+  );
+
+  return $filters;
+}
+
+/**
+ * Filter callback to display filter tips.
+ */
+function _spoiler_filter_tips($filter, $format, $long) {
+  return t('Potential spoilers can be hidden between [spoiler][/spoiler] tags to hide them by default.');
+}
+
+/**
+ * Implements hook_wysiwyg_include_directory(). Registers the wysiwyg directory
+ * as the one containing the plugin implementation.
+ *
+ * @param $type
+ *   The type of objects being collected: either 'plugins' or 'editors'.
+ * @return
+ *   A sub-directory of the implementing module that contains the corresponding
+ *   plugin files. This directory must only contain integration files for
+ *   Wysiwyg module.
+ */
+function spoiler_wysiwyg_include_directory($type) {
+  return 'wysiwyg';
+}
+
+/**
+ * Replace [spoiler] tags with markup.
+ *
+ * @param $text
+ *   The text with the [spoiler] tags that need to be replaced with HTML tags.
+ *
+ * @return $text
+ *   Filtered text.
+ */
+function _spoiler_filter_process($text) {
+  // Keep it simple. Use of the lazy quantifier allows use of multiple spoiler
+  // blocks but does not address nested spoilers.
+  return preg_replace_callback(
+    '#\[\s*spoiler\s*\](.*?)\[\s*/\s*spoiler\s*\]#is',
+    create_function('$matches', 'return theme("spoiler", array("spoiler" => $matches[1]));'),
+    $text
+  );
+}
+
+function theme_spoiler($variables) {
+  return '<div class="spoiler"><div class="spoiler-warning">' . t('<span>Spoiler:</span> Highlight to view') . '</div><div class="spoiler-content">' . $variables['spoiler'] . '</div></div>';
+}

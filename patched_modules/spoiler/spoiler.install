@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Installation and uninstallation scripts for the spoiler module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function spoiler_install() {
+  $t = get_t();
+  drupal_set_message($t('Spoiler module: Installation script complete. The spoiler filter can be configured via the <a href="!url">text formats</a> page.', array('!url' => url('admin/config/formats'))));
+
+  return array();
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function spoiler_uninstall() {
+  $t = get_t();
+  drupal_set_message($t('Spoiler module: Uninstallation script complete.'));
+}

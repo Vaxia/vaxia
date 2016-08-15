@@ -1,0 +1,21 @@
+.spoiler-warning span {
+  font-weight: bold;
+}
+.spoiler .spoiler-content {
+  padding: 1em;
+  border: 1px solid #DDD;
+  background-color: #CCC;
+  color: #CCC;
+}
+.spoiler-js {
+  border: 1px dotted;
+  padding: 1em;
+}
+.spoiler-js .spoiler-warning span.spoiler-button {
+  cursor: pointer;
+  background-color: #DDD;
+  padding: 4px;
+  border-color: #CECECE #4A4A4A #4A4A4A #CECECE;
+  border-style: solid;
+  border-width: 1px 2px 2px 1px;
+}
