@@ -455,124 +455,16 @@ function archives_form($form, &$form_state) {
   $root = variable_get('archives_flat_file_path', '');
   // Generate form.
   $form = array();
-  $form['archives_style'] = array(
-    '#type' => 'item',
-    '#markup' => '<style>' .
-      '#archives-form .form-type-textfield{float:left;margin-left:1em;height:40px;}' .
-      '#archives-form .form-type-select{float:left;margin-left:1em;height:40px;}' .
-      '#archives-form .form-type-select select{width:12em;}' .
-      '#archives-form .form-type-radios{float:left;margin-left:1em;height:40px;}' .
-      '#archives-form #edit-archives-date{float:left;margin-left:1em;height:40px;}' .
-      '#archives-form #edit-archives-date select{width:5em;}' .
-      '#archives-form #edit-archives-date .form-type-select{float:left;margin-left:1em;}' .
-      '#archives-form #edit-vaxia-archives-submit{clear:left;}' .
-      '</style>',
-  );
   $form['search_fieldset'] = array(
     '#type' => 'fieldset',
   );
-  $form['search_fieldset']['archives_specifics'] = array(
-    '#title' => t('Specifics'),
-    '#type' => 'fieldset',
-    //'#description' => t('Enter a date to limit results to that date.'),
-  );
-  $form['search_fieldset']['archives_specifics']['archives_date'] = array(
-    '#title' => t('Date'),
-    '#type' => 'fieldset',
-    //'#description' => t('Enter a date to limit results to that date.'),
-  );
-  $form['search_fieldset']['archives_specifics']['archives_date']['archives_date_month'] = array(
-    '#type' => 'select',
-    '#options' => array(
-      'any' => '--',
-      '01' => 'Jan',
-      '02' => 'Feb',
-      '03' => 'Mar',
-      '04' => 'Apr',
-      '05' => 'May',
-      '06' => 'Jun',
-      '07' => 'Jul',
-      '08' => 'Aug',
-      '09' => 'Sep',
-      '10' => 'Oct',
-      '11' => 'Nov',
-      '12' => 'Dec',
-    ),
-  );
-  $day_ranges = range(1, 31);
-  foreach ($day_ranges as $day_range) {
-    if ($day_range < 10) {
-      $day_range = '0' . $day_range;
-    }
-    $days[$day_range] = $day_range;
-  }
-  $days = array_combine($days, $days);
-  $days = array('any' => '--') + $days;
-  $form['search_fieldset']['archives_specifics']['archives_date']['archives_date_day'] = array(
-    '#type' => 'select',
-    '#options' => $days,
-  );
-  $years = array_combine(range(2004, date('Y')), range(2004, date('Y')));
-  $years = array('any' => '--') + $years;
-  $form['search_fieldset']['archives_specifics']['archives_date']['archives_date_year'] = array(
-    '#type' => 'select',
-    '#options' => $years,
-  );
-  $location = _archives_data_list('location');
-  asort($location);
-  $location = array('any' => '--') + $location;
-  $form['search_fieldset']['archives_specifics']['archives_location'] = array(
-    '#title' => t('Location'),
-    '#type' => 'select',
-    //'#description' => t('Enter a location to search for the location in the archive filename.'),
-    '#options' => $location,
-    '#default_value' => 'any',
-  );
-  $character = _archives_data_list('character');
-  asort($character);
-  $character = array('any' => '--') + $character;
-  $form['search_fieldset']['archives_specifics']['archives_character'] = array(
-    '#title' => t('Character'),
-    '#type' => 'select',
-    //'#description' => t('Enter a character to search for the location in the archive filename and text.'),
-    '#options' => $character,
-    '#default_value' => 'any',
-  );
-  $player = _archives_data_list('player');
-  asort($player);
-  $player = array('any' => '--') + $player;
-  $form['search_fieldset']['archives_specifics']['archives_player'] = array(
-    '#title' => t('Player'),
-    '#type' => 'select',
-    //'#description' => t('Enter a character to search for the location in the archive filename and text.'),
-    '#options' => $player,
-    '#default_value' => 'any',
-    '#suffix' => '<div style="clear:both;">&nbsp;</div>',
-  );
-  $form['search_fieldset']['archives_contents'] = array(
-    '#title' => t('Contents'),
-    '#type' => 'fieldset',
-    //'#description' => t('Enter a date to limit results to that date.'),
-  );
-  $form['search_fieldset']['archives_contents']['archives_text'] = array(
+  $form['search_fieldset']['archives_text'] = array(
     '#title' => t('Text'),
     '#type' => 'textfield',
     //'#description' => t('Enter any string to search for the location in the archive text.'),
     '#size' => 15,
   );
-  $form['search_fieldset']['archives_contents']['archives_type'] = array(
-    '#title' => t('Type'),
-    '#type' => 'radios',
-    //'#description' => t('Enter any string to search for the location in the archive text.'),
-    '#options' => array(
-      'any' => t('Any Post'),
-      'room' => t('Chat Room Post'),
-      'forum' => t('Forum Post'),
-    ),
-    '#default_value' => 'any',
-    '#suffix' => '<div style="clear:both;">&nbsp;</div>',
-  );
-  $form['archives_submit'] = array(
+  $form['search_fieldset']['archives_submit'] = array(
     '#type' => 'button',
     '#value' => t('Search archives'),
     '#ajax' => array(
@@ -583,24 +475,8 @@ function archives_form($form, &$form_state) {
     ),
   );
   $search_results = t('No search performed.');
-  if (!empty($form_state['values']['archives_date_month']) ||
-    !empty($form_state['values']['archives_date_day']) ||
-    !empty($form_state['values']['archives_date_year']) ||
-    !empty($form_state['values']['archives_type']) ||
-    !empty($form_state['values']['archives_location']) ||
-    !empty($form_state['values']['archives_character']) ||
-    !empty($form_state['values']['archives_player']) ||
-    !empty($form_state['values']['archives_text'])) {
-    $search_results = _archives_search(
-      $form_state['values']['archives_date_month'],
-      $form_state['values']['archives_date_day'],
-      $form_state['values']['archives_date_year'],
-      $form_state['values']['archives_type'],
-      $form_state['values']['archives_location'],
-      $form_state['values']['archives_character'],
-      $form_state['values']['archives_player'],
-      $form_state['values']['archives_text']
-    );
+  if (!empty($form_state['values']['archives_text'])) {
+    $search_results = _archives_search($form_state['values']['archives_text']);
   }
   $form['archives_results'] = array(
     '#title' => t('Seach results'),
@@ -700,84 +576,17 @@ function _archives_prepare_string($string) {
  * Helper function, make a list of searchable results.
  * THIS IS NOT A 'proper' SEARCH SYSTEM.
  */
-function _archives_search($month = 'any', $day = 'any', $year = 'any', $type = 'any', $location, $character, $player, $text) {
+function _archives_search($text) {
   // Is the date set? Check that set path instead of all.
   $root = variable_get('archives_flat_file_path', '');
-
   // Set the path if those values were selected.
-  $path = '';
-  if (!empty($year) && $year != 'any') {
-    $path = $path . '/' . $year; // Since only the archives are org by year.
-  }
-  if (!empty($year) && $year != 'any' && !empty($month) && $month != 'any') {
-    $path = $path . '/' . $month ;
-  }
-  if (!empty($year) && $year != 'any' && !empty($month) && $month != 'any' && !empty($day) && $day != 'any') {
-    $path = $path . '/' . $day ;
-  }
-  if (!empty($year) && $year != 'any' && !empty($month) && $month != 'any' && !empty($day) && $day != 'any' && !empty($type) && $type != 'any') {
-    $path = $path . '/' . $type ;
-  }
-
-  // Scrub the other values.
-  $location = trim($location);
-  $character = trim($character);
-  $player = trim($player);
   $text = trim(addslashes(strip_tags($text)));
-
-  // Check location name in file and content
   $found = array();
-  // First get the contents of folders on the path matching .html.
-  if (!empty($year) && $year != 'any') {
-    $this_found = array();
-    $output = '';
-    $command = 'find -L ' . DRUPAL_ROOT . '/' . $root . $path . ' -name "*.html"';
-    exec($command, $output);
-    foreach ($output as $found_file) {
-      $this_found[] = $found_file;
-    }
-    foreach ($this_found as $index => $found_path) {
-      $length = drupal_strlen(DRUPAL_ROOT) + drupal_strlen($root) + 2;
-      $this_found[$index] = drupal_substr($found_path, $length);
-    }
-    $found = empty($found) ? $this_found : array_intersect($found, $this_found);
-  }
-
-  // Check for location info.
-  if (!empty($location) && $location != 'any') {
-    $this_found = _archives_read_data_file($root .'/d/location.' . _archives_prepare_string($location) . '.data');
-    // Only use the results that show under both.
-    if (empty($this_found)) {
-      $found = array();
-    }
-    $found = empty($found) ? $this_found : array_intersect($found, $this_found);
-  }
-
-  // Check character name in content
-  if (!empty($character) && $character != 'any') {
-    $this_found = _archives_read_data_file($root .'/d/character.' . _archives_prepare_string($character) . '.data');
-    // Only use the results that show under both.
-    if (empty($this_found)) {
-      $found = array();
-    }
-    $found = empty($found) ? $this_found : array_intersect($found, $this_found);
-  }
-
-  // Check player name in content
-  if (!empty($player) && $player != 'any') {
-    $this_found = _archives_read_data_file($root .'/d/player.' . _archives_prepare_string($player) . '.data');
-    // Only use the results that show under both.
-    if (empty($this_found)) {
-      $found = array();
-    }
-    $found = empty($found) ? $this_found : array_intersect($found, $this_found);
-  }
-
   // Check text in content
   if (!empty($text)) {
     $this_found = array();
     $output = '';
-    $command = 'grep -R -i -c -m 1 --exclude=' . DRUPAL_ROOT . '/' . $root . '/d "' . $text . '" ' . DRUPAL_ROOT . '/' . $root . $path;
+    $command = 'grep -R -i -c -m 1 --exclude=' . DRUPAL_ROOT . '/' . $root . '/d "' . $text . '" ' . DRUPAL_ROOT . '/' . $root;
     exec($command, $output);
     foreach ($output as $found_file) {
       $found_file_parts = explode(':', $found_file);
