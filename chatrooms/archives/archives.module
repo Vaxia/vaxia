@@ -595,7 +595,7 @@ function _archives_search($text) {
       }
     }
     foreach ($this_found as $index => $found_path) {
-      $length = drupal_strlen(DRUPAL_ROOT) + drupal_strlen($root) + 2;
+      $length = drupal_strlen(DRUPAL_ROOT) + drupal_strlen($root) + 1; // One off.
       $this_found[$index] = drupal_substr($found_path, $length);
     }
     // Only use the results that show under both.
@@ -604,16 +604,6 @@ function _archives_search($text) {
     }
     $found = empty($found) ? $this_found : array_intersect($found, $this_found);
   }
-  // Filter found paths for type
-  if (!empty($type) && $type != 'any') {
-    foreach ($found as $index => $found_path) {
-      // If the type isn't in the path, drop the result.
-      if (strpos($found_path, $type) === FALSE) {
-        unset($found[ $index ]);
-      }
-    }
-  }
-
   // Clean up the found paths for proper links through
   global $base_url;
   foreach ($found as $index => $found_path) {
