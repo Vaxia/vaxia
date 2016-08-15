@@ -459,9 +459,9 @@ function archives_form($form, &$form_state) {
     '#type' => 'fieldset',
   );
   $form['search_fieldset']['archives_text'] = array(
-    '#title' => t('Text'),
+    '#title' => t('Search Text'),
     '#type' => 'textfield',
-    //'#description' => t('Enter any string to search for the location in the archive text.'),
+    '#description' => t('Enter any string to search for it in the archive text.'),
     '#size' => 15,
   );
   $form['search_fieldset']['archives_submit'] = array(
