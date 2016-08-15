@@ -97,9 +97,9 @@ article.node-rpg-chatroom.clearfix:after, article.node-rpg-chatroom .field-type-
 .rpg-chat-node #rpg-chat-userlist{float:none;clear:none;width:auto;}
 .rpg-chat-node #comment-form{clear:none;}
 .rpg-chat-node #rpg-chat{float:none;clear:none;width:auto;}
-.rpg-chat-node .vaxia-dice-roller .form-select{width:90px;}
 .rpg-chat-node .vaxia-dice-roller .dice-number{width:auto;}
 .rpg-chat-node .vaxia-dice-roller .dice-size{width:auto;}
+.rpg-chat-node .vaxia-dice-roller .dice-stat{width:90px;}
 .rpg-chat-node .vaxia-dice-roller .dice-skill{width:180px;}
 .rpg-chat-node .vaxia-dice-roller #edit-vaxia-rolls-items{width:380px;}
 .rpg-chat-node #comment-form{float:left;clear:left;width:400px;}
