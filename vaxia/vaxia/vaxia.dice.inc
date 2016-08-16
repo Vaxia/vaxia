@@ -393,12 +393,14 @@ function _vaxia_dice_roller_SH_form($numb_rows) {
     $form[$i]['stat'] = array(
       '#type' => 'textfield',
       '#size' => 5,
+      '#default_value' => '',
     );
     $form[$i]['stat']['#attributes']['class'][] = 'dice-stat';
     // Skill.
     $form[$i]['skill'] = array(
       '#type' => 'textfield',
       '#size' => 5,
+      '#default_value' => '',
     );
     $form[$i]['skill']['#attributes']['class'][] = 'dice-skill';
   }
