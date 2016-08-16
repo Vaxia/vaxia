@@ -816,11 +816,19 @@ function _vaxia_get_character_ref_types($nid) {
   global $user;
   $node = node_load($nid);
   $lang = $node->language;
+  // Look for Generic NPCs.
+  $field_is_generic_npc = isset($node->field_is_generic_npc[$lang][0]['value']) ?
+    $node->field_is_generic_npc[$lang][0]['value'] : 0;
+  if ($field_is_generic_npc == 1) {
+    return 'Generic NPCs';
+  }
+  // Look for any NPCs.
   $field_is_npc = isset($node->field_is_npc[$lang][0]['value']) ?
     $node->field_is_npc[$lang][0]['value'] : 0;
   if ($field_is_npc == 1) {
     return 'NPCs';
   }
+  // Default is a Character.
   return 'Characters';
 }
 
