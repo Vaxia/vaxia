@@ -412,8 +412,6 @@ function _vaxia_dice_roller_SH_form($numb_rows) {
 function _vaxia_dice_roller_char_form($node, $numb_rows) {
   // Optional dice sizes for characters. TODO: reduce to 1d100, add secondary form.
   $number = range(0, 10);
-  $dice_size = array(100,20,12,10,8,6,4,2);
-  $sizes = array_combine($dice_size, $dice_size);
   // Make sure the stat keys are set by field.
   $stats = _vaxia_dice_roller_get_stats($node);
   $skills = _vaxia_dice_roller_get_skills($node);
@@ -433,7 +431,10 @@ function _vaxia_dice_roller_char_form($node, $numb_rows) {
     // Dice size.
     $form[$i]['size'] = array(
       '#type' => 'select',
-      '#options' => $sizes,
+      '#options' => array('100' => 100),
+      '#default_value' => '100',
+      '#value' => '100',
+      '#disabled' => TRUE,
     );
     $form[$i]['size']['#attributes']['class'][] = 'dice-size';
     // Stat.
