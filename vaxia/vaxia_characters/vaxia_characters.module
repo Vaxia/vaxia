@@ -251,6 +251,9 @@ function vaxia_characters_form_node_form_alter(&$form, &$form_state, $form_id) {
     $form['field_is_npc'][$lang]['#access'] = FALSE;
     $form['field_is_npc'][$lang]['#value'] =
       isset($form['field_is_npc'][$lang]['#default_value']) ? $form['field_is_npc'][$lang]['#default_value'] : FALSE;
+    $form['field_is_generic_npc'][$lang]['#access'] = FALSE;
+    $form['field_is_generic_npc'][$lang]['#value'] =
+      isset($form['field_is_generic_npc'][$lang]['#default_value']) ? $form['field_is_generic_npc'][$lang]['#default_value'] : FALSE;
   }
 
   // Removing edit for the personal room entirely.  
