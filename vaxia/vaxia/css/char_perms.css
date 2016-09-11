@@ -1,0 +1,40 @@
+/* CSS for char permission layout. */
+.char-perm-button{float:left;
+  border:none !important;
+  color:transparent !important;
+  text-shadow: 0 0 0 transparent !important;
+  padding: 0  !important;
+  height: 10px;
+  width: 10px;
+  background:rgba(0, 0, 0, 0) no-repeat scroll 0 0 / 100% 100% !important;
+}
+.char-perm-button-sex-yes{
+  background-image:url("images/yes.png"), url("images/sex.png") !important;
+}
+.char-perm-button-pvp-yes{
+  background-image:url("images/yes.png"), url("images/pvp.png") !important;
+}
+.char-perm-button-violence-yes{
+  background-image:url("images/yes.png"), url("images/violence.png") !important;
+}
+.char-perm-button-mind-yes{
+  background-image:url("images/yes.png"), url("images/mind.png") !important;
+}
+.char-perm-button-consent-yes{
+  background-image:url("images/yes.png"), url("images/consent.png") !important;
+}
+.char-perm-button-sex-no{
+  background-image:url("images/no.png"), url("images/sex.png") !important;
+}
+.char-perm-button-pvp-no{
+  background-image:url("images/no.png"), url("images/pvp.png") !important;
+}
+.char-perm-button-violence-no{
+  background-image:url("images/no.png"), url("images/violence.png") !important;
+}
+.char-perm-button-mind-no{
+  background-image:url("images/no.png"), url("images/mind.png") !important;
+}
+.char-perm-button-consent-no{
+  background-image:url("images/no.png"), url("images/consent.png") !important;
+}

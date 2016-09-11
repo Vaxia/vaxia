@@ -29,6 +29,10 @@ function vaxia_permission() {
       'title' => t('use SH dice options'),
       'description' => t('Use SH dice options.'),
     ),
+    'view character permissions' => array(
+      'title' => t('view character permissions'),
+      'description' => t('View character permissions.'),
+    ),
     'transfer others sheets' => array(
       'title' => t('transfer others sheets'),
       'description' => t('Transfer the XP of others sheets.'),
@@ -436,9 +440,25 @@ function vaxia_process_comment(&$variables) {
       if (strlen($char_desc) > 595) {
         $char_desc = drupal_substr($char_desc, 0, 600) . '...';
       }
+      // Get character options if viewer is allowed to see them.
+      $char_perms = '';
+      if (user_access('view character permissions')) {
+        $permissions = array();
+        // Check for
+        $permissions[] = '<li class="char-perm-button char-perm-button-sex-yes">Graphic sexual content</li>';
+        $permissions[] = '<li class="char-perm-button char-perm-button-pvp-yes">Player vs Player combat</li>';
+        $permissions[] = '<li class="char-perm-button char-perm-button-violence-no">Graphic violent content</li>';
+        $permissions[] = '<li class="char-perm-button char-perm-button-mind-no">Mind control</li>';
+        $permissions[] = '<li class="char-perm-button char-perm-button-consent-no">Loss of consent</li>';
+        if (!empty($permissions)) {
+          drupal_add_css(drupal_get_path('module', 'vaxia').'/css/char_perms.css');
+          $char_perms = '<ul class="char-perms">' . implode('', $permissions) . '</ul>';
+        }
+      }
+      // Finalize char desc.
       $options = array('attributes' => array('title' => $char_desc));
       $character_name = '<span class="rpgchat-character-name">' . l($character_name, 'node/' . $character->nid, $options) . '</span>' .
-            '<span class="rpgchat-user-name">(' . l($this_user->name, 'user/' . $this_user->uid) . ')</span>';
+            '<span class="rpgchat-user-name">(' . l($this_user->name, 'user/' . $this_user->uid) . ') ' . $char_perms . '</span>';
       // Update the submission variables with name, description information.
       $variables['submitted'] = t('!username !datetime',
         array(
