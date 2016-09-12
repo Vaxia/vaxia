@@ -305,7 +305,7 @@ margin-left:1em;text-shadow: 0 0 0;font-style: italic;font-size: 80%;}
 #block-payment-donation-payment-donation #edit-pay{padding-top:1em;}
 .bb-table tr{border-bottom:solid 1px #EEE;}
 .rpgchat-user-name{font-size:80%;}
-.rpg-chat-narrative header .rpgchat-user-name, .rpg-chat-narrative header .rpgchat-character-name{display:none !important;}
+.rpg-chat-narrative header .rpgchat-user-name, .rpg-chat-narrative header .rpgchat-character-name, .rpg-chat-narrative header .rpgchat-character-perms{display:none !important;}
 div.view div.item-list{min-height:30px;}
 #rpg-chat article .links {position:relative;top:-15px;}
 #rpg-chat article .field-name-field-ooc p:empty{height:1px;margin:0;}

@@ -440,25 +440,48 @@ function vaxia_process_comment(&$variables) {
       if (strlen($char_desc) > 595) {
         $char_desc = drupal_substr($char_desc, 0, 600) . '...';
       }
-      // Get character options if viewer is allowed to see them.
-      $char_perms = '';
-      if (user_access('view character permissions')) {
-        $permissions = array();
-        // Check for
-        $permissions[] = '<li class="char-perm-button char-perm-button-sex-yes">Graphic sexual content</li>';
-        $permissions[] = '<li class="char-perm-button char-perm-button-pvp-yes">Player vs Player combat</li>';
-        $permissions[] = '<li class="char-perm-button char-perm-button-violence-no">Graphic violent content</li>';
-        $permissions[] = '<li class="char-perm-button char-perm-button-mind-no">Mind control</li>';
-        $permissions[] = '<li class="char-perm-button char-perm-button-consent-no">Loss of consent</li>';
-        if (!empty($permissions)) {
+      // Get character options if viewer is allowed to see them or is the owner.
+      // And if the character is NOT a storyhost character or NPC.
+      global $user;
+      $character_permissions = '';
+      if ( (user_access('view character permissions') || $character->uid == $user->uid)
+        && $character->field_is_storyteller[$lang][0]['value'] != 1 && $character->field_is_npc[$lang][0]['value'] != 1
+        ) {
+        // Check the cache.
+        static $char_perms = array();
+        if (empty($char_perms[$character->nid])) {
+          // Get the character permission set.
+          $char_tids = array();
+          foreach ($character->field_content_limits[$lang] as $delta => $tids) {
+            $char_tids[] = $tids['tid'];
+          }
+          // Load the permission set.
+          $perms_vocab = taxonomy_vocabulary_machine_name_load(variable_get('vaxia_char_perms', 'character_limits'));
+          $perms = taxonomy_term_load_multiple(array(), array('vid' => $perms_vocab->vid));
+          // Check for perms. Use span insteadl of a list b/c span containing list issues.
+          $permissions = array();
+          foreach ($perms as $this_perm) {
+            $perm_key = $this_perm->tid; // TODO - better naming later.
+            if (in_array($this_perm->tid, $char_tids)) {
+              $permissions[] = '<span class="char-perm-button char-perm-button-yes char-perm-button-' . $perm_key . '" title="OK for ' . $this_perm->name . '">' .
+                'OK for ' . $this_perm->name . '.</span>';
+            }
+            else {
+              $permissions[] = '<span class="char-perm-button char-perm-button-no char-perm-button-' . $perm_key . '" title="NOT ok for ' . $this_perm->name . '">' .
+                'NOT ok ' . $this_perm->name . '.</span>';
+            }
+          } // End perm loop.
+          $char_perms[$character->nid] = '<span class="rpgchat-character-perms">' . implode('', $permissions) . '</span>';
           drupal_add_css(drupal_get_path('module', 'vaxia').'/css/char_perms.css');
-          $char_perms = '<ul class="char-perms">' . implode('', $permissions) . '</ul>';
-        }
+        } // End cache loop.
+        // Set from cache.
+        $character_permissions = !empty($char_perms[$character->nid]) ? $char_perms[$character->nid] : '';
       }
       // Finalize char desc.
       $options = array('attributes' => array('title' => $char_desc));
       $character_name = '<span class="rpgchat-character-name">' . l($character_name, 'node/' . $character->nid, $options) . '</span>' .
-            '<span class="rpgchat-user-name">(' . l($this_user->name, 'user/' . $this_user->uid) . ') ' . $char_perms . '</span>';
+        $character_permissions .
+        '<span class="rpgchat-user-name">(' . l($this_user->name, 'user/' . $this_user->uid) . ')</span>';
       // Update the submission variables with name, description information.
       $variables['submitted'] = t('!username !datetime',
         array(
