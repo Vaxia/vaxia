@@ -216,6 +216,11 @@ function _silver_add_submit_form(&$form, &$form_state) {
   $nid = $form_state['values']['nid'];
   $character = node_load($nid);
   $add_silver = $form_state['values']['add_silver'];
+  // Get the silver stats for logging.
+  $silver = _character_sheet_get_xp($character->nid, 'silver');
+  $silver_spent = _character_sheet_get_xp($character->nid, 'spent_silver');
+  $silver_invested = _character_sheet_get_xp($character->nid, 'invest_silver');
+  $available_silver = $silver - ($silver_spent + $silver_invested);
   // Clear the cache if need be.
   if (module_exists('entitycache')) {
     cache_clear_all($nid, 'cache_entity_node');
@@ -223,19 +228,22 @@ function _silver_add_submit_form(&$form, &$form_state) {
   // If positive, add silver as per standard XP.
   if ($add_silver > 0) {
     _character_sheet_update_xp($nid, $add_silver, 'silver');
-    drupal_set_message(t('@add_silver silver has been added to this sheet.', array('@add_silver' => $add_silver)));
-    $message = t('@xp silver added to @title by @user.',
-      array('@xp' => $add_silver, '@title' => $character->title, '@user' => $user->name));
+    drupal_set_message(t('@add_silver silver has been added to this sheet, total @new_silver.',
+      array('@add_silver' => $add_silver, '@new_silver' => $add_silver + $available_silver)));
+    $message = t('@xp silver added to @title by @user, total @new_silver.',
+      array('@xp' => $add_silver, '@title' => $character->title, '@user' => $user->name,
+      '@new_silver' => $add_silver + $available_silver));
     _character_sheet_update_log($nid, 'silver', $message);
     return;
   }
   // If negative. First check if we can just subtract off of given XP.
   if ($add_silver < 0) {
     _silver_add_submit_form_remove_silver($nid, $add_silver);
-    drupal_set_message(t('%add_silver silver has been removed from this sheet.',
-      array('%add_silver' => $add_silver)));
-    $message = t('@xp silver removed from @title by @user.',
-      array('@xp' => $add_silver, '@title' => $character->title, '@user' => $user->name));
+    drupal_set_message(t('%add_silver silver has been removed from this sheet, total @new_silver.',
+      array('@add_silver' => $add_silver, '@new_silver' => $add_silver + $available_silver)));
+    $message = t('@xp silver removed from @title by @user, total @new_silver.',
+      array('@xp' => $add_silver, '@title' => $character->title, '@user' => $user->name,
+      '@new_silver' => $add_silver + $available_silver));
     _character_sheet_update_log($nid, 'silver', $message);
   }
 }
@@ -352,29 +360,40 @@ function _silver_invest_silver_submit($form, $form_state) {
   if (is_numeric($invest) && $invest > 0 && $invest <= $available_silver) {
     // Figure out how many to add based on added silver.
     $cost = _silver_invest_calculate_cost_to_improve($node->field_economy[$node->language][0]['value']);
+    // Get silver alrady invested.
     $silver_invested = _character_sheet_get_xp($node->nid, 'invest_silver');
+    // Track new silver invested.
     $silver_to_invest = 0;
+    // And calculate investment results, silver by silver.
     while ($invest > 0) {
+      // Track changes.
       $invest--;
       $silver_invested++;
       $silver_to_invest++;
+      // Add to the investment, remove from wallet.
+      _character_sheet_update_xp($node->nid, 1, 'spent_silver');
+      _character_sheet_update_xp($node->nid, 1, 'invest_silver');
+      // If we can afford the investment cost, convert.
       if ($silver_invested >= $cost ) {
-        // Pay the investment.
-        $node->field_economy[$node->language][0]['value']++;
         $save_node = TRUE;
-        _character_sheet_update_xp($node->nid, $silver_invested, 'spent_silver');
-        // Remove silver invested - back to zero.
+        // Set the new stat for the investment.
+        $node->field_economy[$node->language][0]['value']++;
+        // Clear investment.
         $current_invest = _character_sheet_get_xp($node->nid, 'invest_silver');
         _character_sheet_update_xp($node->nid, $current_invest * -1, 'invest_silver');
+        // Log.
+        $message = t('Economy improved through investment to @econ on @title by @user, for @converted invested.',
+          array('@econ' => $node->field_economy[$node->language][0]['value'],
+          '@title' => $node->title, '@user' => $user->name, '@converted' => $current_invest));
+        _character_sheet_update_log($nid, 'invest', $message);
+        // Reset.
         $silver_to_invest = 0;
         $silver_invested = 0;
-        $message = t('Economy improved through investment to @econ on @title by @user.',
-          array('@econ' => $node->field_economy[$node->language][0]['value'],
-          '@title' => $node->title, '@user' => $user->name));
-        _character_sheet_update_log($nid, 'invest', $message);
+        // Recalculate the cost to improve, based on new.
+        $cost = _silver_invest_calculate_cost_to_improve($node->field_economy[$node->language][0]['value']);
       }
-    }
-    _character_sheet_update_xp($node->nid, $silver_to_invest, 'invest_silver');
+    } // End while.
+    //And update the log.
     $message = t('@xp silver invested on @title by @user.',
       array('@xp' => $silver_to_invest, '@title' => $node->title, '@user' => $user->name));
     _character_sheet_update_log($nid, 'invest', $message);
