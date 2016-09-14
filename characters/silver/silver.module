@@ -394,9 +394,11 @@ function _silver_invest_silver_submit($form, $form_state) {
       }
     } // End while.
     //And update the log.
-    $message = t('@xp silver invested on @title by @user.',
-      array('@xp' => $silver_to_invest, '@title' => $node->title, '@user' => $user->name));
-    _character_sheet_update_log($nid, 'invest', $message);
+    if ($silver_to_invest > 0) {
+      $message = t('@xp silver invested on @title by @user.',
+        array('@xp' => $silver_to_invest, '@title' => $node->title, '@user' => $user->name));
+      _character_sheet_update_log($nid, 'invest', $message);
+    }
   }
   // Flag to save the node if called for.
   if ($save_node) {
