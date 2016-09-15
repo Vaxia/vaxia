@@ -583,6 +583,48 @@ function theme_vaxia_dice_roller($element) {
 }
 
 /**
+ * Implements hook_theme_registry_alter.
+ * Override the workflow display with our own.
+ */
+function vaxia_theme_registry_alter(&$theme_registry) {
+  $theme_registry['workflow_history_table_row']['theme path'] = drupal_get_path('module', 'vaxia');
+  $theme_registry['workflow_history_table_row']['function'] = 'vaxia_workflow_history_table_row';
+}
+
+/**
+ * Implements theme function for workflow_history_table_row().
+ * Theme override for workflow history table row.
+ * Because the workflow needs to allow for breaks in display. Needs a diff output format.
+ */
+function vaxia_workflow_history_table_row($variables) {
+  static $default_format = '';
+  if (empty($default_format)) {
+    $default_format = filter_default_format();
+  }
+  $row = array();
+  $old_state_name = $variables['old_state_name'];
+  $state_name = $variables['state_name'];
+  $history = $variables['history'];
+  $account = user_load($variables['uid']);
+  $row = array(
+    'data' => array(
+      array('data' => format_date($history->stamp), 'class' => array('timestamp')),
+      array('data' => $old_state_name, 'class' => array('previous-state-name')),
+      array('data' => $state_name, 'class' => array('state-name')),
+      array('data' => theme('username', array('account' => $account)), 'class' => array('user-name')),
+      array('data' => check_markup(trim(filter_xss($history->comment)), $default_format), 'class' => array('log-comment')),
+      ),
+    'class' => array('workflow_history_row'),
+    );
+
+  if (!empty($variables['extra'])) {
+    $row['data'][] = $variables['extra'];
+  }
+
+  return $row;
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  */
 function vaxia_form_workflow_tab_form_alter(&$form, &$form_state, $form_id) {
