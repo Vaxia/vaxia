@@ -356,8 +356,9 @@ function _silver_invest_silver_submit($form, $form_state) {
   if (module_exists('entitycache')) {
     cache_clear_all($nid, 'cache_entity_node');
   }
-  global $user;
+  // Try to invest.
   if (is_numeric($invest) && $invest > 0 && $invest <= $available_silver) {
+    global $user;
     // Figure out how many to add based on added silver.
     $cost = _silver_invest_calculate_cost_to_improve($node->field_economy[$node->language][0]['value']);
     // Get silver alrady invested.
@@ -371,7 +372,6 @@ function _silver_invest_silver_submit($form, $form_state) {
       $silver_invested++;
       $silver_to_invest++;
       // Add to the investment, remove from wallet.
-      _character_sheet_update_xp($node->nid, 1, 'spent_silver');
       _character_sheet_update_xp($node->nid, 1, 'invest_silver');
       // If we can afford the investment cost, convert.
       if ($silver_invested >= $cost ) {
@@ -380,6 +380,9 @@ function _silver_invest_silver_submit($form, $form_state) {
         $node->field_economy[$node->language][0]['value']++;
         // Clear investment.
         $current_invest = _character_sheet_get_xp($node->nid, 'invest_silver');
+        // Officially add the investment to the spent.
+        _character_sheet_update_xp($node->nid, $current_invest, 'spent_silver');
+        // Resest the investment to zero.
         _character_sheet_update_xp($node->nid, $current_invest * -1, 'invest_silver');
         // Log.
         $message = t('Economy improved through investment to @econ on @title by @user, for @converted invested.',
@@ -395,10 +398,21 @@ function _silver_invest_silver_submit($form, $form_state) {
     } // End while.
     //And update the log.
     if ($silver_to_invest > 0) {
-      $message = t('@xp silver invested on @title by @user.',
-        array('@xp' => $silver_to_invest, '@title' => $node->title, '@user' => $user->name));
+      // Recalculate stuff.
+      $silver = _character_sheet_get_xp($node->nid, 'silver');
+      $silver_spent = _character_sheet_get_xp($node->nid, 'spent_silver');
+      $silver_invested = _character_sheet_get_xp($node->nid, 'invest_silver');
+      $available_silver = $silver - ($silver_spent + $silver_invested);
+      // Get message.
+      $message = t('@xp silver invested on @title by @user, total @invested invested, total @silver silver.',
+        array('@xp' => $silver_to_invest, '@title' => $node->title, '@user' => $user->name,
+        '@invested' => $silver_invested, '@silver' => $available_silver));
       _character_sheet_update_log($nid, 'invest', $message);
     }
+  }
+  else {
+    drupal_set_message(t('Unable to invest @invest, not enough silver available or not a number.',
+      array('$invest' => $invest)));
   }
   // Flag to save the node if called for.
   if ($save_node) {
