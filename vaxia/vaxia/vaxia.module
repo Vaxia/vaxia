@@ -301,6 +301,15 @@ function vaxia_node_update($node) {
 }
 
 /**
+ * Implements hook_node_view(). Include the CSS only the once.
+ */
+function vaxia_node_view($node, $view_mode, $langcode) {
+  if (_rpg_chat_is_enabled($node->type) && $view_mode == 'full' ) {
+    drupal_add_css(drupal_get_path('module', 'vaxia') . '/css/char_perms.css');
+  }
+}
+
+/**
  * Implements hook_comment_insert().
  */
 function vaxia_comment_presave($comment) {
@@ -463,16 +472,17 @@ function vaxia_process_comment(&$variables) {
           foreach ($perms as $this_perm) {
             $perm_key = $this_perm->tid; // TODO - better naming later.
             if (in_array($this_perm->tid, $char_tids)) {
-              $permissions[] = '<span class="char-perm-button char-perm-button-yes char-perm-button-' . $perm_key . '" title="OK for ' . $this_perm->name . '">' .
+              $permissions[] = '<span class="char-perm-button char-perm-button-yes char-perm-button-' . $perm_key . '" ' .
+                'style="color:transparent !important;height: 20px;width: 20px;float:left;" title="OK for ' . $this_perm->name . '">' .
                 'OK for ' . $this_perm->name . '.</span>';
             }
             else {
-              $permissions[] = '<span class="char-perm-button char-perm-button-no char-perm-button-' . $perm_key . '" title="NOT ok for ' . $this_perm->name . '">' .
+              $permissions[] = '<span class="char-perm-button char-perm-button-no char-perm-button-' . $perm_key . '" ' .
+                'style="color:transparent !important;height: 20px;width: 20px;float:left;" title="NOT ok for ' . $this_perm->name . '">' .
                 'NOT ok ' . $this_perm->name . '.</span>';
             }
           } // End perm loop.
           $char_perms[$character->nid] = '<span class="rpgchat-character-perms">' . implode('', $permissions) . '</span>';
-          drupal_add_css(drupal_get_path('module', 'vaxia').'/css/char_perms.css');
         } // End cache loop.
         // Set from cache.
         $character_permissions = !empty($char_perms[$character->nid]) ? $char_perms[$character->nid] : '';
