@@ -135,7 +135,7 @@ function silver_form__character_sheet_xp_form_alter(&$form, $form_state) {
   $invest = $cost - $silver_invested;
   // Invested silver is spent_silver, adjusted to show the difference between spent and the cost of the current economy level.
   $desc = t('You have %available silver available to invest. You need to invest %invest more silver before you will reach %level economy. Invested so far %so_far.',
-    array('%available' => floor($available_silver), '%invest' => ceil($invest), '%level' => $level + 1, '%so_far' => $silver_invested));
+    array('%available' => floor($available_silver), '%invest' => ceil($invest), '%level' => $level + 1, '%so_far' => number_format($silver_invested, 2)));
 
   global $user;
   if ($user->uid == $node->uid) {
@@ -227,23 +227,25 @@ function _silver_add_submit_form(&$form, &$form_state) {
   }
   // If positive, add silver as per standard XP.
   if ($add_silver > 0) {
+    $new_silver = $add_silver + $available_silver;
     _character_sheet_update_xp($nid, $add_silver, 'silver');
     drupal_set_message(t('@add_silver silver has been added to this sheet, total @new_silver.',
       array('@add_silver' => $add_silver, '@new_silver' => $add_silver + $available_silver)));
     $message = t('@xp silver added to @title by @user, total @new_silver.',
       array('@xp' => $add_silver, '@title' => $character->title, '@user' => $user->name,
-      '@new_silver' => $add_silver + $available_silver));
+      '@new_silver' => number_format($new_silver, 2)));
     _character_sheet_update_log($nid, 'silver', $message);
     return;
   }
   // If negative. First check if we can just subtract off of given XP.
   if ($add_silver < 0) {
+    $new_silver = $add_silver + $available_silver;
     _silver_add_submit_form_remove_silver($nid, $add_silver);
     drupal_set_message(t('%add_silver silver has been removed from this sheet, total @new_silver.',
       array('@add_silver' => $add_silver, '@new_silver' => $add_silver + $available_silver)));
     $message = t('@xp silver removed from @title by @user, total @new_silver.',
       array('@xp' => $add_silver, '@title' => $character->title, '@user' => $user->name,
-      '@new_silver' => $add_silver + $available_silver));
+      '@new_silver' => number_format($new_silver, 2)));
     _character_sheet_update_log($nid, 'silver', $message);
   }
 }
@@ -387,7 +389,7 @@ function _silver_invest_silver_submit($form, $form_state) {
         // Log.
         $message = t('Economy improved through investment to @econ on @title by @user, for @converted invested.',
           array('@econ' => $node->field_economy[$node->language][0]['value'],
-          '@title' => $node->title, '@user' => $user->name, '@converted' => $current_invest));
+          '@title' => $node->title, '@user' => $user->name, '@converted' => number_format($current_invest, 2)));
         _character_sheet_update_log($nid, 'invest', $message);
         // Reset.
         $silver_to_invest = 0;
@@ -405,8 +407,8 @@ function _silver_invest_silver_submit($form, $form_state) {
       $available_silver = $silver - ($silver_spent + $silver_invested);
       // Get message.
       $message = t('@xp silver invested on @title by @user, total @invested invested, total @silver silver.',
-        array('@xp' => $silver_to_invest, '@title' => $node->title, '@user' => $user->name,
-        '@invested' => $silver_invested, '@silver' => $available_silver));
+        array('@xp' => number_format($silver_to_invest, 2), '@title' => $node->title, '@user' => $user->name,
+        '@invested' => number_format($silver_invested, 2), '@silver' => number_format($available_silver, 2)));
       _character_sheet_update_log($nid, 'invest', $message);
     }
   }
