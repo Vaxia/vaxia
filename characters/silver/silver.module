@@ -278,7 +278,7 @@ function _silver_add_submit_form_remove_silver($nid, $add_silver) {
       _character_sheet_update_xp($nid, $converted_silver, 'silver');
       $message = t('Converted economy from level @economy to @less_economy, for @converted silver.',
         array('@economy' => $economy, '@less_economy' => $economy - 1,
-        '@converted' => number_format($converted_silver, 2)));
+        '@converted' => floor($converted_silver)));
       _character_sheet_update_log($node->nid, 'silver', $message);
       drupal_set_message($message);
       // Remove econmy.
@@ -389,7 +389,7 @@ function _silver_invest_silver_submit($form, $form_state) {
         // Log.
         $message = t('Economy improved through investment to @econ on @title by @user, for @converted invested.',
           array('@econ' => $node->field_economy[$node->language][0]['value'],
-          '@title' => $node->title, '@user' => $user->name, '@converted' => number_format($current_invest, 2)));
+          '@title' => $node->title, '@user' => $user->name, '@converted' => floor($current_invest)));
         _character_sheet_update_log($nid, 'invest', $message);
         // Reset.
         $silver_to_invest = 0;
@@ -406,9 +406,9 @@ function _silver_invest_silver_submit($form, $form_state) {
       $silver_invested = _character_sheet_get_xp($node->nid, 'invest_silver');
       $available_silver = $silver - ($silver_spent + $silver_invested);
       // Get message.
-      $message = t('@xp silver invested on @title by @user, total @invested invested, total @silver silver.',
-        array('@xp' => number_format($silver_to_invest, 2), '@title' => $node->title, '@user' => $user->name,
-        '@invested' => number_format($silver_invested, 2), '@silver' => number_format($available_silver, 2)));
+      $message = t('@xp silver invested on @title by @user, total @invested invested, total @silver silver left.',
+        array('@xp' => floor($silver_to_invest), '@title' => $node->title, '@user' => $user->name,
+        '@invested' => floor($silver_invested), '@silver' => number_format($available_silver, 2)));
       _character_sheet_update_log($nid, 'invest', $message);
     }
   }
