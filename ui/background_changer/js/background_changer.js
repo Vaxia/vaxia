@@ -20,8 +20,12 @@ Drupal.behaviors.backgroundChanger = {
     }
     // Grab the base path from Drupal.settings and add the specific background image
     path = path + n + '.jpg';
+    var target = 'body';
+    if ($('.new_vaxia_demo').length > 0) {
+        target = '#rpg-chat';
+    }
     // Swap the background-image attribute on the body tag
-    $('body').css('background-image', 'url(' + path + ')');
+    $(target).css('background-image', 'url(' + path + ')');
   }
   setBackground(Drupal.settings.background_changer.path);
 
