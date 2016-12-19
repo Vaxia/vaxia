@@ -72,6 +72,8 @@ Drupal.behaviors.doPullouts = {
           make_flap('Sidebar', 'extruderBarFirst', '.sidebar-first .region-sidebar-first', '220px');
           make_flap('Description', 'extruderBarDesc',
             'article.node-rpg-chatroom fieldset.group-description', '330px');
+          make_flap('Search', 'extruderBarSearch',
+            '#block-views-rpg-chats-inroom-rpg-chats', '440px');
 
           // Tweak the display width for all moon displays.
           $('img.moon-overlay').each(function() {

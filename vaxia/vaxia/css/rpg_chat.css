@@ -78,13 +78,6 @@ width:30px;
 margin:0;
 }
 
-#block-views-rpg-chats-inroom-rpg-chats {
-float:right;
-margin:0 0 0 .5em;
-width:210px;
-clear:right;
-}
-
 #block-views-rpg-chats-search-rpg-chats .form-item .error,
 #block-views-rpg-chats-inroom-rpg-chats .form-item .error {
 border:1px solid #ccc;
