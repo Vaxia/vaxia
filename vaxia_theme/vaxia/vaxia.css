@@ -1,425 +1,788 @@
-/* Vaxia CSS */
-html{font-size:80%}
-body{background-image:url('images/background.jpg');background-repeat:repeat-x;background-attachment:fixed;}
-#page{max-width:100%;padding-bottom:100px;}
-#header{width:100%;height:100px;}
-#header #logo{float:none;display:block;height:100px;width:100px;margin:0 auto;}
-#header #name-and-slogan{display:none;}
-#main{width:auto;margin:0 3em;padding-top:3em;}
-#content{padding-bottom:1em;}
-#footer{width:960px;margin:0 auto;}
-
-/* Front page */
-body.front #content #page-title, body.page-node-42 #content #page-title{display:none;}
-body.front #content .breadcrumb, body.page-node-42 #content .breadcrumb{display:none;}
-body.front #main, body.page-node-42 #main{padding-top:0;}
-
-/* Fonts styles. */
-body{font-family:Verdana,Arial,Helvetica,sans-serif;line-height:1.25em;} /* Setup for em driven percent resizes.*/
-h1{font-size:1.5em;}
-h2{font-size:1.2em;}
-h3{font-size:1em;}
-p{font-size:0.9em;}
-
-/* Text colors. */
-body{color:#FFF;}
-a{color:#FFF;} /*4799CC*/
-a.active{color:#FFF;} /*5BA4D2*/
-a:visited{color:#FFF;} /*368EC4*/
-li a.active{color:#FFF;} /*4799CC*/
-
-/* Default background colors by element. */
-body{background-color:#07E;} /* Default background color is a nuetral dark grey. */
-table, th, thead, tbody, tr, tr.even, tr.odd, td, td.active{background-color:transparent;} /* Default tables are transparent background. */
-
-/* Tab formating. */
-ul.primary a:link, ul.primary a:visited{padding:0 0.5em;}
-ul.tabs a:link, ul.tabs a:visited{} /*background-color:#A7CEE7*/
-ul.tabs li{
-  -moz-border-radius: 8px 8px 0 0;
-  -webkit-border-radius: 8px 8px 0 0;
-  -khtml-border-radius: 8px 8px 0 0;
-  border-radius: 8px 8px 0 0;
+/* Condensed 2016. */
+#block-dice-ruler-dice-ruler {
+clear:left;
+margin:0;
 }
 
-/* Navigation link formatting for all pgs. */
-#navigation #main-menu{float:right;position:relative;top:-25px;}
-#navigation a{display:block;height:20px;text-decoration:none;color:#FFF;text-align:center;padding:0 0.5em;padding-bottom:0.12em;}
-#navigation a:hover{background:url('images/underline.jpg') center bottom no-repeat;}
-
-/* General article formating. */
-article{margin:0.5em auto;}
-article .submitted{font-style:italic;}
-article .submitted .user-picture{float:left;margin:0.5em;}
-article .submitted .permalink{float:right;}
-article .field-name-body, article .field-name-comment-body{text-align:justify;margin-bottom:0.5em;}
-article .field-name-body h1, article .field-name-body h2, article .field-name-body h3{clear:both;}
-article .field-name-body img{margin:0.5em;float:right;max-width:50%;}
-article .field-name-body img.odd{float:left;}
-article .field-type-taxonomy-term-reference{display:none;}
-article .links li.subscriptions-subscribe{display:none;}
-article .links li.statistics_counter{display:none;}
-article .links li{display:none;}
-article .links li.service-links{display:inline;float:left;margin-top:2em;}
-article .links li.node-readmore{display:inline;clear:right;float:right;}
-article .links li.comment-add{display:inline;clear:right;float:right;}
-article section.comments{clear:both;margin-top:0.5em;}
-article #comment-body-add-more-wrapper #edit-comment-body-und-0-format{display:none;}
-
-/* Chatroom formatting */
-.rpg-chat-node .field-name-field-artwork {float:left;padding:1em;}
-.rpg-chat-node #comment-form .field-name-field-artwork {float:none;padding:0;}
-.rpg-chat-node .field-name-field-artwork h2{display:none;}
-.rpg-chat-node .field-name-field-artwork{float:right;padding:1em;clear:right;width:250px;}
-.rpg-chat-node .field-name-field-parent{float:right;padding:1em;clear:right;width:250px;}
-.rpg-chat-node .field-name-field-children{float:right;padding:1em;clear:right;width:250px;}
-.rpg-chat-node article.comment {border:solid 1px #FFF;padding:0.5em;background-color:#555;}
-.rpg-chat-node article.comment.clearfix:after{clear:none;}
-.rpg-chat-node article.comment header mark.new{display:none;}
-.rpg-chat-node article.comment header .submitted{margin:1em;width:150px;float:left;}
-.rpg-chat-node article.comment header .submitted img{display:block;margin:0 auto;}
-.rpg-chat-node article.comment header .submitted span{display:block;}
-.rpg-chat-node article.comment header .permalink{float:none;}
-.rpg-chat-node article.comment .field-name-comment-body{min-height:210px;}
-.rpg-chat-node .comments{padding-top:1em;}
-.rpg-chat-node .comments h2{display:none;}
-.rpg-chat-node .links{display:none;}
-.rpg-chat-node .links a{display:none;}
-.rpg-chat-node .form-type-item{display:none;}
-#vaxia-dice-character fieldset{font-size:80%;}
-article.node-rpg-chatroom.clearfix:after, article.node-rpg-chatroom .field-type-node-reference.clearfix:after{clear:none;}
-#block-views-rpg-chats-rpg-chats-children {float:right;clear:right;padding-left:2em;}
-/* .rpg-chat-narrative header{display:none;} */
-.rpg-chat-narrative header a{display:none;}
-.rpg-chat-narrative header a.permalink{display:inline;}
-
-/* RPG room arrangement. */
-.rpg-chat-node #rpg-chat-userlist{float:none;clear:none;width:auto;}
-.rpg-chat-node #comment-form{clear:none;}
-.rpg-chat-node #rpg-chat{float:none;clear:none;width:auto;}
-.rpg-chat-node .vaxia-dice-roller .dice-number{width:auto;}
-.rpg-chat-node .vaxia-dice-roller .dice-size{width:auto;}
-.rpg-chat-node .vaxia-dice-roller .dice-stat{width:90px;}
-.rpg-chat-node .vaxia-dice-roller .dice-skill{width:180px;}
-.rpg-chat-node .vaxia-dice-roller #edit-vaxia-rolls-items{width:380px;}
-.rpg-chat-node #comment-form{float:left;clear:left;width:400px;}
-.rpg-chat-node #rpg-chat-wrapper{float:none;margin-left:410px;position:relative;top:-25px;}
-
-/* Forum Thread*/
-.forum-table td{padding: 0.5em 0;}
-.forum-post{border:1px solid #FFF;}
-.forum-post-panel-sub .author-pane{text-align:center;}
-.forum-post-panel-sub .author-pane .user-picture{display:block;margin-top:0.5em;}
-.forum-post-links{float:none;margin-left:160px;}
-.forum-post ul.links li{display:none;}
-.forum-post .links li.service-links{display:inline;float:left;}
-.forum-post .links li.quote{display:inline;float:right;}
-.forum-post .links li.post-edit{display:inline;float:right;}
-.forum-post .links li.post-delete{display:inline;float:right;}
-.forum-post .links li.comment-add{display:inline;float:right;}
-.forum-post .links li.comment-edit{display:inline;float:right;}
-.forum-post .links li.comment-delete{display:inline;float:right;}
-.forum-post .links li.comment-reply{display:inline;float:right;}
-.forum-post .links li.quote{clear:left;}
-
-/* Forum Images */
-#content .button, .sidebars .button, button, input[type="reset"], input[type="button"], input[type="submit"] {
-  -moz-border-radius: 8px;
-  -webkit-border-radius: 8px;
-  -khtml-border-radius: 8px;
-  border-radius: 8px;
-  border-color: #eee #eee -moz-use-text-color;
-  border-style: solid solid none;
-  border-width: 1px 1px 0;
-  padding:0.25em;
-  margin: 0.5em 0 0 3px;
-  text-shadow: 1px 1px 0 white;
-  background:#abc;
+#block-dice-ruler-dice-ruler-player-assist {
+float:left;
+margin:0;
+width:50%;
 }
-#content a.button, #content .button a{text-decoration:none; color:#111;}
-#content .button-large{}
-#content .button-small{}
 
-/* Fancy select dropdown button. */
-.dd{text-align:center;width:200px !important;}
+#block-dice-ruler-dice-ruler-player-assist label {
+display:inline-block;
+width:20em;
+}
 
-/* Artwork grid page layouts. */
-.view-artwork td{background:#aaa;border:2px solid #eee;text-align:center;padding:0.5em;}
+#block-moon-phases-moons .moon-block {
+float:right;
+position:relative;
+top:-7px;
+width:150px;
+}
 
-/* User images, everywhere but forums. */
-article.node .submitted .user-picture{display:none;}
+#block-play-suggestions-play-suggestions {
+float:left;
+width:40%;
+}
 
-/* Wiki taxonomy is ok. */
-article.node-wiki-page .field-type-taxonomy-term-reference{display:block;}
+#block-privatemsg-privatemsg-new #privatemsg-new-link {
+background-color:#f8fff0;
+border:1px solid;
+border-color:#be7;
+color:#234600;
+display:block;
+padding:.5em;
+}
 
-/* Additional table tweaking */
-tr{background:transparent !important;}
+#block-views-proposals-proposals-closing {
+background:rgba(100,100,100,0.3);
+border:1px solid #EEE;
+padding-left:1em;
+padding-right:1em;
+}
 
-/* Chatroom userlist tweaks. */
-#rpg-chat-userlist li{float:right;width:30%;}
-#rpg-chat{clear:right !important;}
-#rpg-chat .field-name-field-ooc{height:20px;clear:none;}
+#block-views-rpg-chats-inroom-rpg-chats {
+float:right;
+margin:0 0 0 .5em;
+width:210px;
+}
 
-/* Error displays, colors fix. */
-div.error a, table tr.error a{color:#111 !important;}
+#block-views-rpg-chats-rpg-chats-children {
+clear:right;
+float:right;
+padding-left:2em;
+}
 
-/* Fix weather below a certain width. */
-.weather{width:auto;}
-.weather .weather-pic{float:none !important;padding:0.2em !important;}
+#block-views-rpg-chats-search-rpg-chats .form-item .error,#block-views-rpg-chats-inroom-rpg-chats .form-item .error {
+border:1px solid #ccc;
+}
 
-/* Whiteboard background color. */
-#whiteboard{background-color:#fff;}
+#block-views-rpg-chats-search-rpg-chats .views-exposed-form .views-exposed-widget .form-submit {
+margin-top:0;
+}
 
-/* Wiki background color. */
-article.node-wiki-page{background-color:#666;padding:1em;}
+#block-views-rpg-chats-search-rpg-chats input.form-text,.view-display-id-character_sheets_mine_block select,.vaxia-dice-roller .form-type-textfield .dice-skill {
+width:170px;
+}
 
-/* Collected fixes. 8/5/13 */
-tr.selected td{background:transparent;}
-div.quiz-report .dt{background:transparent;}
-.quiz-hover-menu{opacity:1;}
-.q-correct, .q-wrong{background-color:transparent;}
-.dd{width:90% !important;text-align:left;}
-.messages a, .status a{color:#111111 !important;}
-.forum-node-create-links .forum-add-node{height:30px;}
-.forum-table{width:90%;}
-.forum-table .views-field-last-updated{display:none;}
-.forum-table .views-field-totalcount{display:none;}
-.vertical-tabs ul.vertical-tabs-list li{background-color:transparent;}
-.vertical-tabs ul.vertical-tabs-list li.selected{background-color:transparent;}
-#navigation{position:relative;height:0;}
+#content {
+padding-bottom:1em;
+}
 
-/* Collected fixes. 11/17/13 */
-.form-item{margin:0;}
-.item-list .pager li{float:left;}
-.messages{border:1px solid;padding:0.5em;font-weight:bold;}
-.messages--status{background-color:#0A0;}
-.messages--error{background-color:#A00;}
-.rpg-chat-node .vaxia-dice-roller .form-item-vaxia-rolls-items .form-select{width:100%;}
-.rpg-chat-node article.rpg-chat-narrative .field-name-comment-body{min-height:10px !important;}
-#edit-subscriptions-notify .description{display:none;}
-.wiki-category-tag{display:inline;padding-right:1em;}
+.button,button,input[type="reset"],input[type="button"],input[type="submit"] {
+-khtml-border-radius:8px;
+-moz-border-radius:8px;
+-webkit-border-radius:8px;
+background:#abc;
+border-color:#222;
+border-radius:8px;
+border-style:solid;
+border-width:1px;
+margin:.5em 0 0 3px;
+padding:.25em;
+white-space:nowrap;
+}
+input:disabled{
+color:#888 !important;
+border-color:#abc;
+}
 
-/* Collected fixes. 02/26/14 */
-#block-privatemsg-privatemsg-new #privatemsg-new-link{background-color:#f8fff0;color:#234600;border:1px solid;border-color:#be7;padding:0.5em;display:block;}
-#block-privatemsg-privatemsg-new #privatemsg-new-link a{color:#111 !important;}
-.rpg-chat-node article.rpg-chat-narrative header .submitted img{display:none;}
-a.freelink-createnode{color:#F55;}
-article.node-wiki-page{background:transparent;}
-.field-name-field-items article.node-items h2{line-height: 1.25em; font-size: 100%;}
-article .field-name-body img[class*="embed_grid_img"]{max-width:100% !important;}
-.forum-node-create-links{width:100%;padding-top:0.25em;padding-bottom:0.25em;float:none;}
-.views-ui-display-tab-bucket .even{background:transparent;}
-.ctools-button-processed{background:transparent;}
-.views-display-top{background:transparent;}
-table.sticky-header{background:white;color:#222;}
-.proposal_help, .proposal_response, .proposal_result {margin-right:10px;}
-.webform-results-analysis, .webform-detailed-responses{width:100%;}
-tr.webform-results-question td{padding-top:3em;}
-tr.webform-results-question-first td{padding-top:0;}
-.webform-component{margin-top:2em;}
-.webform-grid{width:100%;}
-.field-name-field-wiki-source header{display:none;}
-.field-name-field-artwork .node-artwork header{display:none;}
+#content a.button,#content .button a {
+color:#111;
+text-decoration:none;
+}
 
-/* Block widths from views. */
-#block-views-rpg-chats-search-rpg-chats .view-header p{margin:0;}
-#block-views-rpg-chats-search-rpg-chats input.form-text{width:170px;}
-#block-views-rpg-chats-search-rpg-chats .form-item .error{border:1px solid #ccc;}
-#block-views-rpg-chats-search-rpg-chats .views-exposed-widget{float:none;}
-#block-views-rpg-chats-search-rpg-chats .views-exposed-form .views-exposed-widget .form-submit{margin-top:0px;}
-#block-views-rpg-chats-inroom-rpg-chats{float:right;width:210px;margin:0;margin-left:0.5em;}
-#block-views-rpg-chats-inroom-rpg-chats p{margin:0;} {margin:0;}
-#block-views-rpg-chats-inroom-rpg-chats .view-empty{display:none;}
-#block-views-rpg-chats-inroom-rpg-chats .form-item .error{border:1px solid #ccc;}
-.view-display-id-character_sheets_mine_block select{width:170px;}
-.view-display-id-character_sheets_mine_block input.form-submit{display:block;}
+#footer {
+margin:0 auto;
+width:960px;
+}
 
-/* Rate CSS for Vaxia */
-.node-type-forum .forum-post .forum-post-content .form-item label{display:none;}
-.rate-info, .rate-description{color:#EEE;}
-.rate-widget .rate-number-up-down-btn-up{border:1px solid;margin-left:10px;background-color:#CCC;}
-.rate-number-up-down-rating{font-weight:bold;font-size:16px;line-height:26px;}
-.rate-widget .rate-number-up-down-btn-down{display:none;}
-.post-edited{clear:left;}
+#header {
+height:100px;
+width:100%;
+}
 
-/* Zen - max-width: 100% for img tags in normalize.css messes up ImageField Crop's preview and cropbox -
-     we have to set max-width to none to fix it per: https://drupal.org/node/1779494 */
-/* inner wrappers: div.imagefield-crop-preview, div.imagefield-crop-cropbox */
+#header #logo {
+display:block;
+float:none;
+height:100px;
+margin:0 auto;
+width:100px;
+}
+
+#main {
+margin:0 3em;
+padding-top:3em;
+width:auto;
+}
+
+#navigation {
+height:0;
+position:relative;
+}
+
+#navigation #main-menu {
+float:right;
+position:relative;
+top:-25px;
+}
+
+#navigation a {
+color:#FFF;
+display:block;
+height:20px;
+padding:0 .5em .12em;
+text-align:center;
+text-decoration:none;
+}
+
+#navigation a:hover {
+background:url(images/underline.jpg) center bottom no-repeat;
+}
+
+#page {
+max-width:100%;
+padding-bottom:100px;
+}
+
+#rpg-chat {
+clear:right!important;
+}
+
+#rpg-chat .comment .links {
+display:inline!important;
+float:right;
+margin:0;
+}
+
+#rpg-chat .comment .links li.comment-edit a,#rpg-chat .comment .links li.comment-revisions a {
+-moz-appearance:none;
+-webkit-appearance:none;
+background:none;
+border:0 none;
+color:#EEE;
+display:inline;
+float:right;
+font-size:80%;
+font-style:italic;
+margin:0 0 0 1em;
+padding:0;
+text-shadow:0 0 0;
+}
+
+#rpg-chat .field-name-field-ooc {
+clear:none;
+height:auto;
+min-height:1px;
+}
+
+#rpg-chat article .field-name-field-ooc p:empty,#rpg-chat article .dice_rolls:empty {
+height:1px;
+margin:0;
+}
+
+#rpg-chat article .links {
+position:relative;
+top:-15px;
+}
+
+#rpg-chat-userlist {
+margin-right:32px;
+}
+
+#rpg-chat-userlist li {
+float:right;
+width:30%;
+}
+
+#rpg-chat-weather {
+float:right;
+position:relative;
+top:-2.2em;
+}
+
+#rpg-chat-weather .moon {
+margin:0;
+padding:0;
+}
+
+#rpg-chat-weather .rpg-weather-img img {
+width:30px;
+}
+
+#views-exposed-form-rpg-chats-inroom-rpg-chats {
+margin-bottom:.5em;
+}
+
+#whiteboard {
+background-color:#fff;
+}
+
+.bb-table tr {
+border-bottom:solid 1px #EEE;
+}
+
+.comment-form .vaxia-dice-roller table {
+margin-bottom:0;
+position:relative;
+top:-1.5em;
+}
+
+.dd {
+text-align:left;
+width:90%!important;
+}
+
+.dice-helper-skill {
+padding-top:2px;
+}
+
+.dice-ruler-row-buttons {
+clear:none;
+display:inline;
+}
+
+.field-name-field-items article.node-items h2 {
+font-size:100%;
+line-height:1.25em;
+}
+
+.form-field-name-field-provides-reputation {
+float:left;
+padding-top:1em;
+}
+
+.form-item,#block-views-rpg-chats-search-rpg-chats .view-header p,#block-views-rpg-chats-inroom-rpg-chats p,,#rpg-chat-userlist h3,#rpg-chat-userlist ul,article .field-name-field-tech-languages table {
+margin:0;
+}
+
+.forum-node-create-links {
+float:none;
+padding-bottom:.25em;
+padding-top:.25em;
+width:100%;
+}
+
+.forum-node-create-links .forum-add-node,#rpg-chat-weather img {
+height:30px;
+}
+
+.forum-post {
+border:1px solid #FFF;
+}
+
+.forum-post .links li.post-edit,.forum-post .links li.post-delete,.forum-post .links li.comment-add,.forum-post .links li.comment-edit,.forum-post .links li.comment-delete,.forum-post .links li.comment-reply,.forum-post .links li.comment-revisions {
+display:inline;
+float:right;
+}
+
+.forum-post .links li.quote {
+clear:left;
+display:inline;
+float:right;
+}
+
+.forum-post .links li.service-links {
+display:inline;
+float:left;
+}
+
+.forum-post-links {
+float:none;
+margin-left:160px;
+}
+
+.forum-post-panel-sub .author-pane .user-picture {
+display:block;
+margin-top:.5em;
+}
+
+.forum-post-panel-sub .author-pane,#block-payment-donation-payment-donation {
+text-align:center;
+}
+
+.forum-table {
+width:90%;
+}
+
+.forum-table td {
+padding:.5em 0;
+}
+
+.group-categories .form-field-type-taxonomy-term-reference {
+float:left;
+padding-right:1em;
+padding-top:1em;
+}
+
+.messages {
+border:1px solid;
+font-weight:700;
+padding:.5em;
+}
+
+.messages--error {
+background-color:#A00;
+}
+
+.messages--status {
+background-color:#0A0;
+}
+
+.moon-block .moon {
+-moz-border-radius:30px;
+-webkit-border-radius:30px;
+background-color:transparent;
+border-radius:30px;
+height:30px;
+width:30px;
+}
+
+.moon-block .moon .moonmask {
+-moz-border-radius:30px;
+-webkit-border-radius:30px;
+border-radius:30px;
+height:30px;
+width:30px;
+}
+
+.moon-block .moon .moonmask .overlay {
+height:30px;
+width:15px;
+}
+
+.node-character_sheet-form #edit-field-language-skills .field-name-field-language {
+float:left;
+margin-right:2em;
+}
+
+.node-play_suggestions-form label {
+display:inline-block;
+text-align:right;
+width:100px;
+}
+
+.node-type-rpg-chatroom #main {
+padding-top:.5em;
+}
+
+.node-type-rpg-chatroom #main #content .breadcrumb,.node-type-rpg-chatroom #main #content #page-title {
+clear:right;
+float:right;
+}
+
+.not-logged-in .rpg-chat-node #rpg-chat-wrapper {
+margin-left:0;
+}
+
+.page-node-edit.node-type-character-sheet #edit-field-age {
+float:left;
+width:45%;
+}
+
+.page-node-edit.node-type-character-sheet #edit-field-birth-month {
+float:left;
+width:150px;
+}
+
+.page-user .profile .field-name-field-artwork-image {
+float:left;
+margin-right:1em;
+}
+
+.post-edited,.node-wiki_page-form .group-extra-details,.node-wiki_page-form .group-extra-details .form-field-type-list-boolean {
+clear:left;
+}
+
+.proposal_help,.proposal_response,.proposal_result {
+margin-right:10px;
+}
+
+.quiz-hover-menu {
+opacity:1;
+}
+
+.rate-info,.rate-description {
+color:#EEE;
+}
+
+.rate-number-up-down-rating {
+font-size:16px;
+font-weight:700;
+line-height:26px;
+}
+
+.rate-widget .rate-number-up-down-btn-up {
+background-color:#CCC;
+border:1px solid;
+margin-left:10px;
+}
+
+.rpg-chat-node #comment-form {
+clear:left;
+float:left;
+width:400px;
+}
+
+.rpg-chat-node #comment-form .field-name-field-artwork {
+float:none;
+padding:0;
+}
+
+.rpg-chat-node #rpg-chat-userlist,.rpg-chat-node #rpg-chat {
+clear:none;
+float:none;
+width:auto;
+}
+
+.rpg-chat-node #rpg-chat-wrapper {
+float:none;
+margin-left:410px;
+position:relative;
+top:-25px;
+}
+
+.rpg-chat-node .comments,#block-payment-donation-payment-donation form,#block-payment-donation-payment-donation #edit-pay {
+padding-top:1em;
+}
+
+.rpg-chat-node .field-name-field-artwork,.rpg-chat-node .field-name-field-parent,.rpg-chat-node .field-name-field-children {
+clear:right;
+float:right;
+padding:1em;
+width:250px;
+}
+
+.rpg-chat-node .vaxia-dice-roller #edit-vaxia-rolls-items {
+width:380px;
+}
+
+.rpg-chat-node .vaxia-dice-roller .dice-number,.rpg-chat-node .vaxia-dice-roller .dice-size,.weather {
+width:auto;
+}
+
+.rpg-chat-node .vaxia-dice-roller .dice-skill {
+width:180px;
+}
+
+.rpg-chat-node .vaxia-dice-roller .dice-stat {
+width:90px;
+}
+
+.rpg-chat-node .vaxia-dice-roller .form-item-vaxia-rolls-items .form-select,.webform-results-analysis,.webform-detailed-responses,.webform-grid,form .field-multiple-table,form.wiki-page-node-form #edit-field-additional-tagging {
+width:100%;
+}
+
+.rpg-chat-node article.comment {
+background-color:#555;
+border:solid 1px #FFF;
+padding:.5em;
+}
+
+.rpg-chat-node article.comment .field-name-comment-body {
+min-height:210px;
+}
+
+.rpg-chat-node article.comment header .permalink,#block-views-rpg-chats-search-rpg-chats .views-exposed-widget {
+float:none;
+}
+
+.rpg-chat-node article.comment header .submitted {
+float:left;
+margin:1em;
+width:150px;
+}
+
+.rpg-chat-node article.comment header .submitted img {
+display:block;
+margin:0 auto;
+}
+
+.rpg-chat-node article.comment header .submitted span,article.node-wiki-page .field-type-taxonomy-term-reference,.field-name-field-wiki-source header,.view-display-id-character_sheets_mine_block input.form-submit,#forum .forum-node-create-links .forum-add-forum,.page-forum-879 #forum .forum-node-create-links .forum-add-event,.page-forum-16 #forum .forum-node-create-links .forum-add-proposal,.page-forum-707 #forum .forum-node-create-links .forum-add-proposal,.page-forum-709 #forum .forum-node-create-links .forum-add-proposal,.page-forum-708 #forum .forum-node-create-links .forum-add-proposal,.page-forum-13 #forum .forum-node-create-links .forum-add-session_report,.page-forum-14 #forum .forum-node-create-links .forum-add-session_report,article.node-items .field-type-taxonomy-term-reference {
+display:block;
+}
+
+.rpg-chat-node article.comment.clearfix:after,article.node-rpg-chatroom.clearfix:after,article.node-rpg-chatroom .field-type-node-reference.clearfix:after,.dice-ruler-set-buttons,.dice_rolls,.dice_rolls .dice {
+clear:none;
+}
+
+.rpg-chat-node article.rpg-chat-narrative .field-name-comment-body {
+min-height:10px!important;
+}
+
+.vaxia-dice-roller .fieldset-description {
+float:right;
+font-size:10px;
+position:relative;
+z-index:10;
+}
+
+.vaxia-dice-roller .form-type-textfield .dice-stat {
+width:80px;
+}
+
+.vaxia-dice-roller table td {
+padding-right:0;
+}
+
+.vaxia-dice-roller-hidden,.rpg-chat-narrative header .rpgchat-user-name,.rpg-chat-narrative header .rpgchat-character-name,.rpg-chat-narrative header .rpgchat-character-perms {
+display:none!important;
+}
+
+.view-artwork td {
+background:#aaa;
+border:2px solid #eee;
+padding:.5em;
+text-align:center;
+}
+
+.view-character-sheet-moderation-log .views-exposed-widgets div.views-exposed-widget {
+display:block;
+margin-left:0;
+width:100%;
+}
+
+.weather .weather-pic {
+float:none!important;
+padding:.2em!important;
+}
+
+.webform-component {
+margin-top:2em;
+}
+
+.wiki-category-tag {
+display:inline;
+padding-right:1em;
+}
+
+a,a.active,a:visited,li a.active {
+color:#FFF;
+}
+
+a.freelink-createnode {
+color:#F55;
+}
+
+article {
+margin:.5em auto;
+}
+
+article .field-name-body h1,article .field-name-body h2,article .field-name-body h3,.node-type-rpg-chatroom #main #content .tabs-primary {
+clear:both;
+}
+
+article .field-name-body img {
+float:right;
+margin:.5em;
+max-width:50%;
+}
+
+article .field-name-body img.odd,.item-list .pager li {
+float:left;
+}
+
+article .field-name-body img[class*="embed_grid_img"] {
+max-width:100%!important;
+}
+
+article .field-name-body,article .field-name-comment-body {
+margin-bottom:.5em;
+text-align:justify;
+}
+
+article .field-name-field-tech-languages .field-item.even {
+white-space:nowrap;
+}
+
+article .field-name-field-tech-languages tr {
+border-bottom:none;
+}
+
+article .field-type-taxonomy-term-reference {
+display:inline;
+}
+
+article .links li {
+display:inline-block;
+height:28px;
+}
+
+
+article .links li.node-readmore,article .links li.comment-add {
+clear:right;
+display:inline;
+float:right;
+}
+
+article .links li.service-links {
+display:inline;
+float:left;
+margin-top:2em;
+}
+
+article .submitted {
+font-style:italic;
+}
+
+article .submitted .permalink,article.node-wiki-page .links {
+float:right;
+}
+
+article .submitted .user-picture {
+float:left;
+margin:.5em;
+}
+
+article section.comments {
+clear:both;
+margin-top:.5em;
+}
+
+article td.field_aspect_one,article td.field_aspect_two,article td.field_aspect_three {
+clear:left;
+float:left;
+}
+
+article.node-character-sheet .field-name-field-artwork-image {
+float:right;
+padding:1em;
+}
+
+article.node-character-sheet .links li {
+display:inline;
+position:relative;
+top:20px;
+}
+
+article.node-wiki-page {
+background:transparent;
+padding:1em;
+}
+
+article.node-wiki-page .field-name-field-wiki-images img {
+float:right;
+padding:.5em;
+}
+
+article.node-wiki-page .group-categories .field-items {
+padding-left:.5em;
+}
+
+article.node-wiki-page .group-categories .field-items .field-item {
+display:inline;
+padding-left:.5em;
+}
+
+article.node-wiki-page .group-categories .field-type-taxonomy-term-reference {
+padding:.5em;
+}
+
+article.ooc-room #rpg-chat article.comment .field-name-comment-body img,.view-chat-archives article.comment .field-name-comment-body img {
+max-width:400px;
+}
+
+body {
+background-attachment:fixed;
+background-color:#07E;
+background-image:url(images/background.jpg);
+background-repeat:repeat-x;
+color:#FFF;
+font-family:Verdana,Arial,Helvetica,sans-serif;
+line-height:1.25em;
+}
+
+body.front #main,body.page-node-42 #main,tr.webform-results-question-first td {
+padding-top:0;
+}
+
+div.error a,table tr.error a,.messages a,.status a,#block-privatemsg-privatemsg-new #privatemsg-new-link a {
+color:#111!important;
+}
+
 div.imagefield-crop-widget img {
-  max-width:none;
+max-width:none;
 }
 
-/* Collected fixes. 03/07/14 */
-.node-type-rpg-chatroom #main{padding-top:0.5em;}
-.not-logged-in .rpg-chat-node #rpg-chat-wrapper{margin-left:0;}
-.node-type-rpg-chatroom #main #content .tabs-primary{clear:both;}
-.node-type-rpg-chatroom #main #content .breadcrumb{float:right;clear:right;}
-.node-type-rpg-chatroom #main #content #page-title{float:right;clear:right;}
-table td{padding-right:15px;}
-.node-type-storyhost-application #content .messages--error{display:none;}
-
-/* Adding advanced forums style back. */
-.af-button-large{background: none repeat scroll 0 0 #AABBCC;
-  border-color: #EEEEEE #EEEEEE -moz-use-text-color;
-  border-radius: 8px;
-  border-style: solid solid none;
-  border-width: 1px 1px 0;
-  margin: 0.5em 0 0 3px;
-  padding: 0.25em;
-  text-shadow: 1px 1px 0 #FFFFFF;
+div.view div.item-list {
+min-height:30px;
 }
 
-/* Collected fixes. 12/29/14 */
-p{font-size:100%;}
-.vaxia-dice-roller table td{padding-right:0;}
-.vaxia-dice-roller .fieldset-description{float:right;font-size:10px;}
-.vaxia-dice-roller-hidden{display:none !important;}
-article.node-wiki-page .links {float:right;}
-article.node-wiki-page .links li{display:inline;}
-.view-character-sheet-moderation-log .views-exposed-widgets div.views-exposed-widget{display:block;width:100%;margin-left:0;}
-.dice-ruler-set-buttons{clear:none;}
-#block-dice-ruler-dice-ruler-player-assist{float:left;margin:0;width:50%;}
-#block-dice-ruler-dice-ruler-player-assist label{display:inline-block;width:20em;}
-#block-dice-ruler-dice-ruler{clear:left;margin:0;}
-#views-exposed-form-rpg-chats-inroom-rpg-chats{margin-bottom:0.5em;}
-#filedepotmodule{color:black;}
-#filedepotmodule a{color:black;}
-article #edit-field-ooc-und-0-format{display:none;}
-#rpg-chat .comment .links{display:inline !important;float:right;margin:0;}
-#rpg-chat .comment .links li.comment-edit{display:inline;}
-#rpg-chat .comment .links li.comment-edit a{display:inline;}
-#rpg-chat .comment .links li.comment-edit a{-webkit-appearance:none;-moz-appearance:none;
-background: none;border: 0 none;color: #EEEEEE;float: right;margin: 0;padding: 0;
-margin-left:1em;text-shadow: 0 0 0;font-style: italic;font-size: 80%;}
-#rpg-chat .comment .links li.comment-revisions{display:inline;}
-#rpg-chat .comment .links li.comment-revisions a{display:inline;}
-#rpg-chat .comment .links li.comment-revisions a{-webkit-appearance:none;-moz-appearance:none;
-background: none;border: 0 none;color: #EEEEEE;float: right;margin: 0;padding: 0;
-margin-left:1em;text-shadow: 0 0 0;font-style: italic;font-size: 80%;}
-#rpg-chat .field-name-field-ooc{min-height:20px;height:auto;}
-.dice_rolls{clear:none;}
-.dice_rolls .dice{clear:none;}
-.dice-ruler-row-buttons{clear:none;display:inline;}
-#block-payment-donation-payment-donation{text-align:center;}
-#block-payment-donation-payment-donation form{padding-top:1em;}
-#block-payment-donation-payment-donation #edit-pay{padding-top:1em;}
-.bb-table tr{border-bottom:solid 1px #EEE;}
-.rpgchat-user-name{font-size:80%;}
-.rpg-chat-narrative header .rpgchat-user-name, .rpg-chat-narrative header .rpgchat-character-name, .rpg-chat-narrative header .rpgchat-character-perms{display:none !important;}
-div.view div.item-list{min-height:30px;}
-#rpg-chat article .links {position:relative;top:-15px;}
-#rpg-chat article .field-name-field-ooc p:empty{height:1px;margin:0;}
-#rpg-chat article .dice_rolls:empty{height:1px;margin:0;}
-#rpg-chat .field-name-field-ooc{min-height:1px;}
-.forum-post .links li.comment-revisions{display:inline;float:right;}
-#mass-contact-mail-page #edit-bcc-info{display:none;}
-#mass-contact-mail-page #edit-nodecc-notice{display:none;}
-form .field-multiple-table{width:100%;}
-.group-categories .form-field-type-taxonomy-term-reference{float:left;padding-right:1em;padding-top:1em;}
-div.imagefield-crop-widget img {max-width:none;}
-article.node-character-sheet .field-name-field-artwork-image{float:right;padding:1em;}
-article.ic-room #rpg-chat article.comment .field-name-comment-body img{display:none;}
-article.ooc-room #rpg-chat article.comment .field-name-comment-body img{max-width:400px;}
-.view-chat-archives article.comment .field-name-comment-body img{max-width:400px;}
-article.node-wiki-page .group-categories .field-type-taxonomy-term-reference{padding:0.5em;}
-article.node-wiki-page .group-categories .field-items{padding-left:0.5em;}
-article.node-wiki-page .group-categories .field-items .field-item{display:inline;padding-left:0.5em;}
-form.wiki-page-node-form #edit-field-additional-tagging{width:100%;}
-#character-sheet-node-form .filter-guidelines-item{display:none;}
-#character-sheet-node-form .filter-wrapper{display:none;}
-#block-play-suggestions-play-suggestions{float:left;width:40%;}
-table.views-table{width:95%;}
+fieldset.group-aspects div.field-type-taxonomy-term-reference,fieldset.group-tech-lang div.field-type-taxonomy-term-reference,fieldset.group-tech-lang div.field-type-list-text {
+float:left;
+margin-right:2em;
+width:auto;
+}
 
-/* Collected 04/20/2015 */
-th.views-field{padding-left:0.25em;padding-right:0.25em;}
-#block-moon-phases-moons .moon-block{width:150px;float:right;position:relative;top:-7px;}
-.moon-block .moon{width:30px;height:30px;background-color:transparent;border-radius:30px;-moz-border-radius:30px;-webkit-border-radius:30px;}
-.moon-block .moon .moonmask{width:30px;height:30px;border-radius:30px;-moz-border-radius:30px;-webkit-border-radius:30px;}
-.moon-block .moon .moonmask .overlay{width:15px;height:30px;}
-.moon-block h5{display:none;}
-#rpg-chat-weather{float:right;position:relative;top:-2.2em;}
-#rpg-chat-weather img{height:30px;}
-#rpg-chat-weather .rpg-weather-img img{width:30px;}
-#rpg-chat-weather .moon{padding:0px;margin:0px;}
-#rpg-chat-userlist{margin-right:32px;}
-#rpg-chat-userlist h3{margin:0;}
-#rpg-chat-userlist ul{margin:0;}
-.form-field-name-field-provides-reputation{float: left;padding-top: 1em;}
-#forum .forum-node-create-links .forum-add-node{display:none;}
-#forum .forum-node-create-links .forum-add-forum{display:block;}
-.page-forum-879 #forum .forum-node-create-links .forum-add-event{display:block;}
-.page-forum-16 #forum .forum-node-create-links .forum-add-proposal{display:block;}
-.page-forum-707 #forum .forum-node-create-links .forum-add-proposal{display:block;}
-.page-forum-709 #forum .forum-node-create-links .forum-add-proposal{display:block;}
-.page-forum-708 #forum .forum-node-create-links .forum-add-proposal{display:block;}
-.page-forum-13 #forum .forum-node-create-links .forum-add-session_report{display:block;}
-.page-forum-14 #forum .forum-node-create-links .forum-add-session_report{display:block;}
-fieldset.group-aspects div.field-type-taxonomy-term-reference{width:30%;float:left;}
-fieldset.group-aspects div.field-type-taxonomy-term-reference label{display:none;}
-.page-node-add .filter-wrapper, .page-node-edit .filter-wrapper{display:none;}
+fieldset.group-tech-lang table.field-multiple-table input.form-submit {
+float:left;
+margin:0;
+width:auto;
+}
 
-/* Collected 05/19/2015 */
-th.views-field{padding-left:0.25em;padding-right:0.25em;}
-#block-moon-phases-moons .moon-block{width:150px;float:right;position:relative;top:-7px;}
-.moon-block .moon{width:30px;height:30px;background-color:transparent;border-radius:30px;-moz-border-radius:30px;-webkit-border-radius:30px;}
-.moon-block .moon .moonmask{width:30px;height:30px;border-radius:30px;-moz-border-radius:30px;-webkit-border-radius:30px;}
-.moon-block .moon .moonmask .overlay{width:15px;height:30px;}
-.moon-block h5{display:none;}
-#rpg-chat-weather{float:right;position:relative;top:-2.2em;}
-#rpg-chat-weather img{height:30px;}
-#rpg-chat-weather .rpg-weather-img img{width:30px;}
-#rpg-chat-weather .moon{padding:0px;margin:0px;}
-#rpg-chat-userlist{margin-right:32px;}
-#rpg-chat-userlist h3{margin:0;}
-#rpg-chat-userlist ul{margin:0;}
-.form-field-name-field-provides-reputation{float: left;padding-top: 1em;}
-#forum .forum-node-create-links .forum-add-node{display:none;}
-#forum .forum-node-create-links .forum-add-forum{display:block;}
-.page-forum-879 #forum .forum-node-create-links .forum-add-event{display:block;}
-.page-forum-16 #forum .forum-node-create-links .forum-add-proposal{display:block;}
-.page-forum-707 #forum .forum-node-create-links .forum-add-proposal{display:block;}
-.page-forum-709 #forum .forum-node-create-links .forum-add-proposal{display:block;}
-.page-forum-708 #forum .forum-node-create-links .forum-add-proposal{display:block;}
-.page-forum-13 #forum .forum-node-create-links .forum-add-session_report{display:block;}
-.page-forum-14 #forum .forum-node-create-links .forum-add-session_report{display:block;}
-fieldset.group-aspects div.field-type-taxonomy-term-reference{float:left;margin-right:2em;width:auto;}
-fieldset.group-aspects .field-multiple-table tbody label{display:none;}
-fieldset.group-tech-lang div.field-type-taxonomy-term-reference{float:left;margin-right:2em;width:auto;}
-fieldset.group-tech-lang div.field-type-list-text{float:left;margin-right:2em;width:auto;}
-fieldset.group-tech-lang table.field-multiple-table input.form-submit{float:left;margin:0;width:auto;}
-fieldset.group-tech-lang .field-multiple-table tbody label{display:none;}
-.page-node-add .filter-wrapper, .page-node-edit .filter-wrapper{display:none;}
-.page-comment-add .filter-wrapper, .page-comment-edit .filter-wrapper{display:none;}
-#block-views-proposals-proposals-closing{border:1px solid #EEE;padding-left:1em;padding-right:1em;background:rgba(100, 100, 100, 0.3)}
-article.node-items .field-type-taxonomy-term-reference{display:block;}
-.node-character_sheet-form #edit-field-language-skills .field-name-field-language{float:left;margin-right: 2em}
-.vaxia-realm-vaxia fieldset.group-tech-lang{display:none;}
-.vaxia-owner #edit-field-language-skills .description{display:none;}
-.vaxia-owner #edit-field-language-skills .clearfix{display:none;}
-.vaxia-owner #edit-field-language-skills .form-submit{display:none;}
-.comment-form .vaxia-dice-roller table{position:relative;top:-1.5em;margin-bottom:0}
+h1 {
+font-size:1.5em;
+}
 
+h2 {
+font-size:1.2em;
+}
 
-/* collected 12/18/2016 */
-table th{padding-right:15px;}
-.node-play_suggestions-form label{text-align:right;width:100px;display:inline-block;}
-.field-name-field-wiki-source header{display:block;}
-article .field-type-taxonomy-term-reference{display:inline;}
-article td.field_aspect_one{float:left;clear:left;}
-article td.field_aspect_two{float:left;clear:left;}
-article td.field_aspect_three{float:left;clear:left;}
-article .field-type-taxonomy-term-reference{display:inline;}
-article .field-name-field-tech-languages table{margin:0px;}
-article .field-name-field-tech-languages tr{border-bottom:none;}
-article .field-name-field-tech-languages .field-item.even{white-space:nowrap;}
-.page-node-edit.node-type-character-sheet #edit-field-birth-month{width:150px;float:left;}
-.page-node-edit.node-type-character-sheet #edit-field-age{width:45%;float:left;}
-article.node-wiki-page .field-name-field-wiki-images img{float:right;padding:0.5em;}
-.node-wiki_page-form .group-extra-details{clear:left;}
-.node-wiki_page-form .group-extra-details .form-field-type-list-boolean{clear:left;}
-article.node-character-sheet .links li{display:inline;position:relative;top:20px;}
-.page-user .profile .field-name-field-artwork-image{float:left;margin-right:1em;}
-.dice-helper-skill{padding-top:2px;}
-.vaxia-dice-roller .fieldset-description{position:relative;z-index:10;}
-.vaxia-dice-roller .form-type-textfield .dice-stat{width:80px;}
-.vaxia-dice-roller .form-type-textfield .dice-skill{width:170px;}
+h3 {
+font-size:1em;
+}
+
+html,#vaxia-dice-character fieldset,.rpgchat-user-name {
+font-size:80%;
+}
+
+p {
+font-size:100%;
+}
+
+table td,table th {
+padding-right:15px;
+}
+
+table,th,thead,tbody,tr,tr.even,tr.odd,td,td.active,.q-correct,.q-wrong,.vertical-tabs ul.vertical-tabs-list li,.vertical-tabs ul.vertical-tabs-list li.selected {
+background-color:transparent;
+}
+
+table.sticky-header {
+background:#FFF;
+color:#222;
+}
+
+table.views-table {
+width:95%;
+}
+
+th.views-field {
+padding-left:.25em;
+padding-right:.25em;
+}
+
+tr {
+background:transparent!important;
+}
+
+tr.selected td,div.quiz-report .dt,.views-ui-display-tab-bucket .even,.ctools-button-processed,.views-display-top {
+background:transparent;
+}
+
+tr.webform-results-question td {
+padding-top:3em;
+}
+
+ul.primary a:link,ul.primary a:visited {
+padding:0 .5em;
+}
+
+ul.tabs li {
+-khtml-border-radius:8px 8px 0 0;
+-moz-border-radius:8px 8px 0 0;
+-webkit-border-radius:8px 8px 0 0;
+border-radius:8px 8px 0 0;
+}
