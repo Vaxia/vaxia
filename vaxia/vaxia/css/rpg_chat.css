@@ -15,7 +15,7 @@ margin:0;
 #rpg-chat .comment .new{display:none;}
 #rpg-chat .comment .comment-reply{display:none;}
 
-#rpg-chat .comment .links li.comment-edit a,#rpg-chat .comment .links li.comment-revisions a {
+#rpg-chat .comment .links li a,#rpg-chat .comment .links li a {
 -moz-appearance:none;
 -webkit-appearance:none;
 background:none;
