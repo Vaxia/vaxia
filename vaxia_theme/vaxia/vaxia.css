@@ -398,3 +398,28 @@ article.node-items .field-type-taxonomy-term-reference{display:block;}
 .vaxia-owner #edit-field-language-skills .clearfix{display:none;}
 .vaxia-owner #edit-field-language-skills .form-submit{display:none;}
 .comment-form .vaxia-dice-roller table{position:relative;top:-1.5em;margin-bottom:0}
+
+
+/* collected 12/18/2016 */
+table th{padding-right:15px;}
+.node-play_suggestions-form label{text-align:right;width:100px;display:inline-block;}
+.field-name-field-wiki-source header{display:block;}
+article .field-type-taxonomy-term-reference{display:inline;}
+article td.field_aspect_one{float:left;clear:left;}
+article td.field_aspect_two{float:left;clear:left;}
+article td.field_aspect_three{float:left;clear:left;}
+article .field-type-taxonomy-term-reference{display:inline;}
+article .field-name-field-tech-languages table{margin:0px;}
+article .field-name-field-tech-languages tr{border-bottom:none;}
+article .field-name-field-tech-languages .field-item.even{white-space:nowrap;}
+.page-node-edit.node-type-character-sheet #edit-field-birth-month{width:150px;float:left;}
+.page-node-edit.node-type-character-sheet #edit-field-age{width:45%;float:left;}
+article.node-wiki-page .field-name-field-wiki-images img{float:right;padding:0.5em;}
+.node-wiki_page-form .group-extra-details{clear:left;}
+.node-wiki_page-form .group-extra-details .form-field-type-list-boolean{clear:left;}
+article.node-character-sheet .links li{display:inline;position:relative;top:20px;}
+.page-user .profile .field-name-field-artwork-image{float:left;margin-right:1em;}
+.dice-helper-skill{padding-top:2px;}
+.vaxia-dice-roller .fieldset-description{position:relative;z-index:10;}
+.vaxia-dice-roller .form-type-textfield .dice-stat{width:80px;}
+.vaxia-dice-roller .form-type-textfield .dice-skill{width:170px;}
