@@ -9,8 +9,8 @@ display:inline !important;
 float:right;
 margin:0;
 }
-.node-rpg-chatroom .links .first{display:none;}
-.node-rpg-chatroom .comment .links .first{display:inline-block;}
+.node-rpg-chatroom .links{display:none;}
+.node-rpg-chatroom .comment .links{display:inline-block;}
 .node-rpg-chatroom  #comment-form .filter-wrapper{display:none;}
 #rpg-chat .comment .new{display:none;}
 #rpg-chat .comment .comment-reply{display:none;}
