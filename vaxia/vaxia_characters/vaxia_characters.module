@@ -44,6 +44,9 @@ function vaxia_characters_node_view($node, $view_mode, $langcode) {
     // Get current user.
     global $user;
 
+    // Add the vaxia character css for form edits.
+    drupal_add_css(drupal_get_path('module', 'vaxia_characters') . '/css/vaxia_characters.css');
+
     // Display warning alert for new characters.
     // Check if the sheet has been finalized.
     if (_vaxia_characters_is_removed($node)) {
@@ -133,6 +136,9 @@ function vaxia_characters_form_node_form_alter(&$form, &$form_state, $form_id) {
   global $user;
   $node = $form['#node'];
   $lang = $form['language']['#value'];
+
+  // Add the vaxia character css for form edits.
+  drupal_add_css(drupal_get_path('module', 'vaxia_characters') . '/css/vaxia_characters.css');
 
   // Only on a character sheet that isn't yet enabled.
   if (_character_sheet_is_enabled($node) && !_character_sheet_is_playable($node)) {

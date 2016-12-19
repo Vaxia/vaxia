@@ -46,4 +46,6 @@
 .dice-helper-button-sneak{
   background:rgba(0, 0, 0, 0) url("images/sneak.png") no-repeat scroll 0 0 / 100% 100% !important;
 }
-.dice-helper-skill{padding-left:10px;clear:left;}
+.dice-helper-skill{
+  padding-left:10px;padding-top:2px;clear:left;
+}

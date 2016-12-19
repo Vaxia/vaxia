@@ -42,8 +42,8 @@
 .dice-ruler-trait-vs, .dice-ruler-two-trait-vs{font-size:9px;}
 .dice-ruler-combat-two{margin-left:27px;}
 .dice_rolls .dice{margin-top:10px;}
-.dice-ruler-row-buttons{float:left;}
-.dice-ruler-set-buttons{clear:left;margin-top:10px;}
+.dice-ruler-row-buttons{float:left;clear:none;display:inline;}
+.dice-ruler-set-buttons{clear:none;margin-top:10px;}
 .dice_rolls .last .dice-ruler-one-trait{margin-right:32px;}
 .dice_rolls .last .dice-ruler-two-trait{display:none;}
 .dice_rolls .last .dice-ruler-trait-vs{margin-right:32px;}
@@ -53,3 +53,7 @@
 .dice_rolls .dice_ruler_label{font-size:8px;font-weight:bold;margin-left:2px;}
 .dice_rolls .dice_ruler_label_b{margin-left:88px;}
 .dice_rolls{margin-top:0.5em;}
+/* Block positioning. */
+#block-dice-ruler-dice-ruler{clear:left;margin:0;}
+#block-dice-ruler-dice-ruler-player-assist{float:left;margin:0;width:50%;}
+#block-dice-ruler-dice-ruler-player-assist label{display:inline-block;width:20em;}

@@ -305,6 +305,7 @@ function vaxia_node_update($node) {
  */
 function vaxia_node_view($node, $view_mode, $langcode) {
   if (_rpg_chat_is_enabled($node->type) && $view_mode == 'full' ) {
+    drupal_add_css(drupal_get_path('module', 'vaxia') . '/css/rpg_chat.css');
     drupal_add_css(drupal_get_path('module', 'vaxia') . '/css/char_perms.css');
   }
 }

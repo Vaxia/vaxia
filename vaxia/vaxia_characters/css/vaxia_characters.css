@@ -1,0 +1,48 @@
+
+#character-sheet-node-form .filter-wrapper{display:none;}
+
+article td.field_aspect_one,
+article td.field_aspect_two,
+article td.field_aspect_three {
+clear:left;
+float:left;
+}
+
+article.node-character-sheet .field-name-field-artwork-image {
+float:right;
+padding:1em;
+}
+
+article.node-character-sheet .links li {
+display:inline;
+position:relative;
+top:20px;
+}
+
+
+fieldset.group-aspects div.field-type-taxonomy-term-reference,
+fieldset.group-tech-lang div.field-type-taxonomy-term-reference,
+fieldset.group-tech-lang div.field-type-list-text {
+float:left;
+margin-right:2em;
+width:auto;
+}
+
+fieldset.group-tech-lang table.field-multiple-table input.form-submit {
+float:left;
+margin:0;
+width:auto;
+}
+
+div.view div.item-list {
+min-height:30px;
+}
+
+
+article .field-name-field-tech-languages .field-item.even {
+white-space:nowrap;
+}
+
+article .field-name-field-tech-languages tr {
+border-bottom:none;
+}

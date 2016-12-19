@@ -37,19 +37,13 @@ function play_suggestions_block_view($delta = '') {
  * Search form.
  */
 function _play_suggestions_search($form, &$form_state, $nid) {
-  $form['lets_play'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('I\'m bored.'),
-    '#collapsible' => TRUE,
-    '#collapsed' => TRUE,
-  );
-  $form['lets_play']['nid'] = array(
+  $form['nid'] = array(
     '#type' => 'hidden',
     '#value' => $nid,
   );
-  $form['lets_play']['lets_play'] = array(
+  $form['lets_play'] = array(
     '#type' => 'submit',
-    '#value' => t('Let\'s Play'),
+    '#value' => t('I\'m bored.'),
   );
   return $form;
 }
