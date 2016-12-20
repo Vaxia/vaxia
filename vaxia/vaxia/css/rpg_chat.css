@@ -193,6 +193,8 @@ margin:0;
 float:right;
 clear:right;
 margin:0px;
+position:relative;
+z-index:10;
 }
 
 #block-dice-ruler-dice-ruler{
