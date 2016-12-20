@@ -30,14 +30,16 @@
 .node-rpg-chatroom #comment-form .vaxia-dice-roller-hidden{display:none!important;}
 
 /* Layout of the chatroom itself. */
+.node-rpg-chatroom h2.title{display:none;}
 .node-rpg-chatroom .field-name-field-private-room{float:left;clear:left;}
 .node-rpg-chatroom #rpg-chat-wrapper{float:none;margin-left:410px;margin-right:40px;position:relative;top:-50px;}
 
 /* Handle the userlist. */
-.node-rpg-chatroom #rpg-chat-userlist{margin-right:32px;clear:right;float:none;width:100%;}
+.node-rpg-chatroom #rpg-chat-userlist{clear:right;float:none;width:100%;min-height:35px;}
 .node-rpg-chatroom #rpg-chat-userlist h3{display:none;}
 .node-rpg-chatroom #rpg-chat-userlist ul{margin:0;}
 .node-rpg-chatroom #rpg-chat-userlist li{float:right;width:30%;overflow:hidden;}
+.node-rpg-chatroom.ooc-room #rpg-chat-userlist ul{margin-right:50px;}
 
 /* Chatroom comments. */
 .node-rpg-chatroom #rpg-chat{clear:right;float:none;width:100%;background-color:#555;border:solid 1px #FFF;padding:.5em;}
@@ -56,7 +58,6 @@
 .node-rpg-chatroom #rpg-chat .field-name-field-ooc{clear:none;height:auto;min-height:1px;}
 
 /* Hide elements we don't want in all posts. */
-.node-rpg-chatroom #rpg-chat h2.title{display:none;}
 .node-rpg-chatroom #rpg-chat .new{display:none;}
 .node-rpg-chatroom #rpg-chat .comment-reply{display:none;}
 

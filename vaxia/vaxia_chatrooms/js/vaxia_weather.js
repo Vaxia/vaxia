@@ -31,12 +31,12 @@ Drupal.behaviors.vaxia_chatrooms_weather = {
             moon = '';
           }
           var rpg_weather = '' +
-            '<div id="rpg-chat-weather" style="float:right;">' +
+            '<div id="rpg-chat-weather">' +
             '<div class="rpg-weather rpg-weather-img">' + weather + '</div>' +
             '<div class="rpg-weather rpg-moon-img moon-block">' + moon +'</div>' +
             '</div>';
           // Place the new weather widget.
-          $('#rpg-chat-wrapper').before(rpg_weather);
+          $('article.node-rpg-chatroom').before(rpg_weather);
           // Remove the old widgets.
           $('#block-moon-phases-moons').remove();
         });
