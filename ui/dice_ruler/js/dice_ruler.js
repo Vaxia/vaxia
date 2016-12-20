@@ -51,6 +51,7 @@ Drupal.behaviors.diceRuler = {
       var reset_button = '<input type="button" class="form-submit dice_ruler_reset" ' +
         'value="Reset" name="dice_ruler_reset" id="dice_ruler_reset">';
       $('#edit-rule-dice').after(reset_button);
+      $('#dice_ruler_reset').hide();
     }
   }
 
@@ -284,6 +285,10 @@ Drupal.behaviors.diceRuler = {
       $('#dice-ruler-form select[name="actions"]').change(function() {
         if ($(this).val() == 'hidden') {
           clearRuler();
+          $('#dice_ruler_reset').hide();
+        }
+        else {
+          $('#dice_ruler_reset').show();
         }
       });
       // Add click listener for the ruler.
