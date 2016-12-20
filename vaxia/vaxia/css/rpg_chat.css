@@ -12,9 +12,7 @@
 .node-rpg-chatroom .comments h2.title{display:none;}
 .node-rpg-chatroom .field-name-field-private-room{float:left;clear:left;}
 /* Don't show images for descriptive posts. */
-.rpg-chat-narrative .rpgchat-user-name,
-.rpg-chat-narrative .rpgchat-character-name,
-.rpg-chat-narrative .rpgchat-character-perms{
+.rpg-chat-narrative .submitted{
 display:none;
 }
 
