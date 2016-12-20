@@ -20,10 +20,10 @@ Drupal.behaviors.backgroundChanger = {
     }
     // Grab the base path from Drupal.settings and add the specific background image
     path = path + n + '.jpg';
-    var target = '#rpg-chat-wrapper';
+    var target = '#rpg-chat';
     // Swap the background-image attribute on the body tag
     $(target).css('background-image', 'url(' + path + ')');
-    $(target).css('padding-right', '30px;');
+    $(target).css('padding-right', '30px');
    }
   setBackground(Drupal.settings.background_changer.path);
 
