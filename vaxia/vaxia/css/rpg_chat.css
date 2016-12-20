@@ -1,21 +1,32 @@
 /* CSS for the RPG chat room. */
+.node-type-rpg-chatroom #main {padding-top:.5em;}
+.node-type-rpg-chatroom #main #content #page-title{clear:right;float:right;}
+.node-type-rpg-chatroom .breadcrumb{display:none;}
 
-#rpg-chat {
-clear:right!important;
-}
-
-#rpg-chat .comment .links {
-display:inline !important;
-float:right;
-margin:0;
-}
 .node-rpg-chatroom .links{display:none;}
 .node-rpg-chatroom .comment .links{display:inline-block;}
 .node-rpg-chatroom  #comment-form .filter-wrapper{display:none;}
-#rpg-chat .comment .new{display:none;}
-#rpg-chat .comment .comment-reply{display:none;}
+.node-rpg-chatroom .comments h2.title{display:none;}
+.node-rpg-chatroom .field-name-field-private-room{float:right;margin-bottom:15px;}
 
-#rpg-chat .comment .links li a,#rpg-chat .comment .links li a {
+/* Don't show images for descriptive posts. */
+.rpg-chat-narrative .rpgchat-user-name,
+.rpg-chat-narrative .rpgchat-character-name,
+.rpg-chat-narrative .rpgchat-character-perms{
+display:none;
+}
+
+/* Images only allowed in OOC rooms */
+.node-rpg-chatroom .field-name-comment-body img {display:none;}
+.node-rpg-chatroom.ooc-room #rpg-chat .field-name-comment-body img{max-width:400px;}
+
+#rpg-chat-userlist h3, #rpg-chat-userlist ul{margin:0;}
+
+#rpg-chat {clear:right !important;}
+#rpg-chat .comment .new{display:none;}
+#rpg-chat .comment .links {display:inline-block;float:right;margin:0;}
+#rpg-chat .comment .links li a,
+#rpg-chat .comment .links li a {
 -moz-appearance:none;
 -webkit-appearance:none;
 background:none;
@@ -29,6 +40,8 @@ margin:0 0 0 1em;
 padding:0;
 text-shadow:0 0 0;
 }
+
+#rpg-chat .comment .comment-reply{display:none;}
 
 #rpg-chat .field-name-field-ooc {
 clear:none;
@@ -60,52 +73,6 @@ float:right;
 position:relative;
 top:-2.2em;
 }
-
-#rpg-chat-weather .moon {
-margin:0;
-padding:0;
-}
-
-#rpg-chat-weather .rpg-weather-img img {
-width:30px;
-}
-
-/* Block specific changes. */
-#block-views-rpg-chats-search-rpg-chats .view-header p,
-#block-views-rpg-chats-inroom-rpg-chats p,
-#rpg-chat-userlist h3,
-#rpg-chat-userlist ul{
-margin:0;
-}
-
-#block-views-rpg-chats-search-rpg-chats .form-item .error,
-#block-views-rpg-chats-inroom-rpg-chats .form-item .error {
-border:1px solid #ccc;
-}
-
-#block-views-rpg-chats-search-rpg-chats input.form-text,
-.vaxia-dice-roller .form-type-textfield .dice-skill {
-width:170px;
-}
-
-#block-moon-phases-moons .moon-block {
-float:right;
-position:relative;
-top:-7px;
-width:150px;
-}
-
-#block-play-suggestions-play-suggestions {
-float:right;
-clear:right;
-}
-
-#views-exposed-form-rpg-chats-inroom-rpg-chats {
-margin-bottom:.5em;
-}
-
-/* Don't show images for descriptive posts. */
-.rpg-chat-narrative .submitted{display:none;}
 
 .rpg-chat-node #comment-form {
 clear:left;
@@ -208,39 +175,7 @@ clear:none;
 min-height:10px!important;
 }
 
-.vaxia-dice-roller .fieldset-description {
-float:right;
-font-size:10px;
-position:relative;
-z-index:10;
-}
-
-.vaxia-dice-roller .form-type-textfield .dice-stat {
-width:80px;
-}
-
-.vaxia-dice-roller table td {
-padding-right:0;
-}
-
-.vaxia-dice-roller-hidden,
-.rpg-chat-narrative header .rpgchat-user-name,
-.rpg-chat-narrative header .rpgchat-character-name,
-.rpg-chat-narrative header .rpgchat-character-perms {
-display:none!important;
-}
-
-.node-type-rpg-chatroom #main {
-padding-top:.5em;
-}
-
-.node-type-rpg-chatroom #main #content .breadcrumb,
-.node-type-rpg-chatroom #main #content #page-title {
-clear:right;
-float:right;
-}
-
-/* Only shows in limbo. */
+/* Block specific changes. */
 #block-views-proposals-proposals-closing {
 background:rgba(100,100,100,0.3);
 border:1px solid #EEE;
@@ -248,19 +183,41 @@ padding-left:1em;
 padding-right:1em;
 }
 
-/* Images only allowed in OOC rooms */
-#rpg-chat .field-name-comment-body img,
-.view-chat-archives .field-name-comment-body img {
-display:none;
+#block-views-rpg-chats-search-rpg-chats .view-header p{
+margin:0;
 }
-article.ooc-room #rpg-chat .field-name-comment-body img,
-.view-chat-archives .field-name-comment-body img {
-max-width:400px;
+
+#block-play-suggestions-play-suggestions {
+float:right;
+clear:right;
+margin:0px;
+}
+
+#block-dice-ruler-dice-ruler{
+float:left;
+clear:left;
+margin:0px;
+}
+
+#block-views-rpg-chats-search-rpg-chats .form-item .error,
+#block-views-rpg-chats-inroom-rpg-chats .form-item .error {
+border:1px solid #ccc;
+}
+
+#block-views-rpg-chats-search-rpg-chats input.form-text,
+.vaxia-dice-roller .form-type-textfield .dice-skill {
+width:170px;
 }
 
 /* Weather and moon layout */
 #rpg-chat-weather img {
 height:30px;
+width:30px;
+}
+
+#rpg-chat-weather .moon {
+margin:0;
+padding:0;
 }
 
 .weather .weather-pic {
@@ -289,4 +246,31 @@ width:30px;
 .moon-block .moon .moonmask .overlay {
 height:30px;
 width:15px;
+}
+
+#block-moon-phases-moons .moon-block {
+float:right;
+position:relative;
+top:-7px;
+width:150px;
+}
+
+/* Roller CSS */
+.vaxia-dice-roller .fieldset-description {
+float:right;
+font-size:10px;
+position:relative;
+z-index:10;
+}
+
+.vaxia-dice-roller .form-type-textfield .dice-stat {
+width:80px;
+}
+
+.vaxia-dice-roller table td {
+padding-right:0;
+}
+
+.vaxia-dice-roller-hidden {
+display:none!important;
 }
