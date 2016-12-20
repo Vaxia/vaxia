@@ -8,7 +8,7 @@
 .node-rpg-chatroom .comment .links{display:inline-block;}
 .node-rpg-chatroom  #comment-form .filter-wrapper{display:none;}
 .node-rpg-chatroom .comments h2.title{display:none;}
-.node-rpg-chatroom .field-name-field-private-room{float:right;margin-bottom:15px;}
+.node-rpg-chatroom .field-name-field-private-room{float:right;position:relative;top:-1em;}
 
 /* Don't show images for descriptive posts. */
 .rpg-chat-narrative .rpgchat-user-name,
