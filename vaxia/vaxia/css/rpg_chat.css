@@ -11,8 +11,6 @@
 .node-rpg-chatroom .comments h2.title{display:none;}
 .node-rpg-chatroom .field-name-field-private-room{float:right;position:relative;top:-1em;}
 
-
-
 /* Don't show images for descriptive posts. */
 .rpg-chat-narrative .rpgchat-user-name,
 .rpg-chat-narrative .rpgchat-character-name,
@@ -23,7 +21,6 @@ display:none;
 /* Images only allowed in OOC rooms */
 .node-rpg-chatroom .field-name-comment-body img {display:none;}
 .node-rpg-chatroom.ooc-room #rpg-chat .field-name-comment-body img{max-width:400px;}
-
 #rpg-chat-userlist h3, #rpg-chat-userlist ul{margin:0;}
 
 #rpg-chat {clear:right !important;}
@@ -215,6 +212,8 @@ width:170px;
 }
 
 /* Weather and moon layout */
+.node-rpg-chatroom.ooc-room #rpg-chat-weather{display:none;}
+
 #rpg-chat-weather img {
 height:30px;
 width:30px;
