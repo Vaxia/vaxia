@@ -2,6 +2,7 @@
 .node-type-rpg-chatroom #main {padding-top:.5em;}
 .node-type-rpg-chatroom #main #content #page-title{clear:right;float:right;}
 .node-type-rpg-chatroom .breadcrumb{display:none;}
+.node-type-rpg-chatroom h1.page-title{float:right;height:0px;top:0.5em;}
 
 .node-rpg-chatroom .links{display:none;}
 .node-rpg-chatroom .comment .links{display:inline-block;}
