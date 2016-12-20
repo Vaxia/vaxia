@@ -40,12 +40,15 @@ Drupal.behaviors.doPullouts = {
 
       /* Functions. */
       function make_flap(label, id, txt_target, top) {
-        $(txt_target).wrap('<div id="target_' + id + '" class="jsPullout jsPulloutContent isClosed"></div>');
-        $('#main').before(
+        var target = $(txt_target);
+        if (target != null || target.length > 0) {
+          $(target).wrap('<div id="target_' + id + '" class="jsPullout jsPulloutContent isClosed"></div>');
+          $('#main').before(
             '<div id="' + id + '" class="jsPullout jsPulloutFlap rotate" style="top:' + top + ';">' +
             '  <a class="jsPulloutFlapLabel" href="#">' + label + '</a>' +
             '</div>'
           );
+        }
       }
 
       function toggle_flap(flap_name) {
@@ -74,6 +77,11 @@ Drupal.behaviors.doPullouts = {
             'article.node-rpg-chatroom fieldset.group-description', '330px');
           make_flap('Search', 'extruderBarSearch',
             '#block-views-rpg-chats-inroom-rpg-chats', '440px');
+          // Set listener for all flaps now that they've been created.
+          $('.jsPulloutFlap a.jsPulloutFlapLabel').click(function() {
+            toggle_flap( $(this).parent().attr('id') );
+            return false;
+          });
 
           // Tweak the display width for all moon displays.
           $('img.moon-overlay').each(function() {
@@ -86,12 +94,12 @@ Drupal.behaviors.doPullouts = {
           // Copy weather and moon back into display.
           var weather = $('.weather-pic').html();
           if (weather == null || weather.length == 0) {
-	        weather = '';
-	      }
+            weather = '';
+          }
           var moon = $('.moon-block').html();
           if (moon == null || moon.length == 0) {
-	        moon = '';
-	      }
+            moon = '';
+          }
           var rpg_weather = '' +
             '<div id="rpg-chat-weather" style="float:right;">' +
             '<div class="rpg-weather rpg-weather-img">' + weather + '</div>' +
@@ -99,16 +107,8 @@ Drupal.behaviors.doPullouts = {
             '</div>';
           $('#rpg-chat-wrapper').before(rpg_weather);
 
-          // Set listener for all flaps now that they've been created.
-          $('.jsPulloutFlap a.jsPulloutFlapLabel').click(function() {
-            toggle_flap( $(this).parent().attr('id') );
-            return false;
-          });
         };
-
       });
-
     } // End if ( $( window ).width() > 600) {
-
   })(jQuery); }
 }
