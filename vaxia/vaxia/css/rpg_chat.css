@@ -101,7 +101,8 @@ top:-25px;
 }
 
 .rpg-chat-node .comments{
-padding-top:1em;
+padding-top:0px;
+margin-top:0px;
 }
 
 .rpg-chat-node .field-name-field-artwork,
