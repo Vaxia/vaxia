@@ -41,7 +41,7 @@ Drupal.behaviors.doPullouts = {
       /* Functions. */
       function make_flap(label, id, txt_target, top) {
         var target = $(txt_target);
-        if (target != null || target.length > 0) {
+        if (target != null && target.length > 0) {
           $(target).wrap('<div id="target_' + id + '" class="jsPullout jsPulloutContent isClosed"></div>');
           $('#main').before(
             '<div id="' + id + '" class="jsPullout jsPulloutFlap rotate" style="top:' + top + ';">' +
