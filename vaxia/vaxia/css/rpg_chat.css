@@ -72,7 +72,7 @@ width:30%;
 #rpg-chat-weather {
 float:right;
 position:relative;
-top:-2.2em;
+top:-50px;
 }
 
 .rpg-chat-node #comment-form {
@@ -97,7 +97,7 @@ width:auto;
 float:none;
 margin-left:410px;
 position:relative;
-top:-25px;
+top:-50px;
 }
 
 .rpg-chat-node .comments{
