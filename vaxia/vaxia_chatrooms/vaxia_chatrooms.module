@@ -54,8 +54,13 @@ function vaxia_chatrooms_node_view($node, $view_mode, $langcode) {
     }
 
     // If node is an RPG chatroom, add the js, css for additional behaviors for Vaxia specifically.
-    drupal_add_js(drupal_get_path('module', 'vaxia_chatrooms') . '/js/vaxiaPullouts.js');
-    drupal_add_css(drupal_get_path('module', 'vaxia_chatrooms') . '/css/vaxiaPullouts.css');
+    drupal_add_js(drupal_get_path('module', 'vaxia_chatrooms') . '/js/vaxia_chatrooms.js');
+    drupal_add_css(drupal_get_path('module', 'vaxia_chatrooms') . '/css/vaxia_chatrooms.css');
+    drupal_add_css(drupal_get_path('module', 'vaxia_chatrooms') . '/css/vaxia_permissions.css');
+    drupal_add_js(drupal_get_path('module', 'vaxia_chatrooms') . '/js/vaxia_pullouts.js');
+    drupal_add_css(drupal_get_path('module', 'vaxia_chatrooms') . '/css/vaxia_pullouts.css');
+    drupal_add_js(drupal_get_path('module', 'vaxia_chatrooms') . '/js/vaxia_weather.js');
+    drupal_add_css(drupal_get_path('module', 'vaxia_chatrooms') . '/css/vaxia_weather.css');
   }
 
 }

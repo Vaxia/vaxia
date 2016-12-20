@@ -1,0 +1,20 @@
+/* Weather placement. */
+.node-rpg-chatroom.ooc-room #rpg-chat-weather{display:none;}
+
+/* Moon layout */
+#rpg-chat-weather {float:right;position:relative;top:-50px;}
+#rpg-chat-weather .moon-block {float:right;position:relative;top:-7px;width:150px;}
+#rpg-chat-weather .moon-block h5{display:none;}
+#rpg-chat-weather .moon {-moz-border-radius:30px;-webkit-border-radius:30px;
+  margin:0;padding:0;background-color:transparent;border-radius:30px;height:30px;width:30px;}
+#rpg-chat-weather .moonmask {-moz-border-radius:30px;
+  -webkit-border-radius:30px;border-radius:30px;height:30px;width:30px;}
+#rpg-chat-weather .moonmask .overlay {height:30px;width:15px;}
+#rpg-chat-weather .moonmask img {height:30px;width:30px;}
+
+/*
+WAS:
+.weather {width:auto;}
+.weather .weather-pic {float:none!important;padding:.2em!important;}
+
+*/

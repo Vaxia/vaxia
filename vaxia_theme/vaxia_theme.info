@@ -60,8 +60,7 @@ stylesheets[all][] = css/print.css
 ; Add vaxiaphase specific elements.
 ; Fonts, colors, link colors etc. All the basics. Also standard screens. Over 960 and up.
 stylesheets[all][] = vaxia/vaxia.css
-;stylesheets[all][] = vaxia/vaxia_classic.css
-;stylesheets[all][] = vaxia/vaxia_2017.css
+stylesheets[all][] = vaxia/vaxia_2017.css
 
 ; Smaller screens. Under 960, over 600.
 stylesheets[screen and (max-width: 960px)][] = vaxia/vaxia-960.css

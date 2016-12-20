@@ -104,7 +104,7 @@ function rpg_rep_comment_view($comment) {
           '#title' => t('Reputation'),
           '#collapsible' => TRUE,
           '#collapsed' => TRUE,
-          '#attributes' => array('class' => array('collapsible collapsed')),
+          '#attributes' => array('class' => array('rpg-reputation collapsible collapsed')),
         );
         $element['amounts'] = array(
           //'#type' => 'markup',
