@@ -257,6 +257,8 @@ width:150px;
 }
 
 /* Roller CSS */
+#dice-ruler-form .form-items-actions select{width:240px;}
+
 .vaxia-dice-roller .fieldset-description {
 float:right;
 font-size:10px;
