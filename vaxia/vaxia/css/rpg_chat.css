@@ -3,14 +3,14 @@
 .node-type-rpg-chatroom #main #content #page-title{clear:right;float:right;}
 .node-type-rpg-chatroom .breadcrumb{display:none;}
 .node-type-rpg-chatroom #page-title{float:right;height:0px;margin-top:0.5em;}
+.node-type-rpg-chatroom #content ul.tabs-primary{margin-bottom:0;}
 
 .node-rpg-chatroom .links{display:none;}
 .node-rpg-chatroom .comment .links{display:inline-block;}
 .node-rpg-chatroom #comment-form .form-type-item{display:none;}
 .node-rpg-chatroom #comment-form .filter-wrapper{display:none;}
 .node-rpg-chatroom .comments h2.title{display:none;}
-.node-rpg-chatroom .field-name-field-private-room{float:right;position:relative;top:-1em;}
-
+.node-rpg-chatroom .field-name-field-private-room{float:left;clear:left;}
 /* Don't show images for descriptive posts. */
 .rpg-chat-narrative .rpgchat-user-name,
 .rpg-chat-narrative .rpgchat-character-name,
