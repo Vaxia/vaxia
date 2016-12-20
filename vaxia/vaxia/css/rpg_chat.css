@@ -257,7 +257,7 @@ width:150px;
 }
 
 /* Roller CSS */
-#dice-ruler-form .form-items-actions select{width:240px;}
+#dice-ruler-form .form-item-actions select{width:240px;}
 
 .vaxia-dice-roller .fieldset-description {
 float:right;
