@@ -55,7 +55,6 @@
 /* WAS clear:right !important; */
 .node-rpg-chatroom #rpg-chat .field-name-field-ooc{clear:none;height:auto;min-height:1px;}
 
-
 /* Hide elements we don't want in all posts. */
 .node-rpg-chatroom #rpg-chat h2.title{display:none;}
 .node-rpg-chatroom #rpg-chat .new{display:none;}
@@ -74,7 +73,7 @@
 .node-rpg-chatroom .rpg-chat-narrative .field-name-comment-body{min-height:10px!important;}
 
 /* Change links within the chatroom. */
-.node-rpg-chatroom #rpg-chat .links{display:inline-block;float:right;margin:0;position:relative;top:-15px;height:15px;}
+.node-rpg-chatroom #rpg-chat .links{display:inline-block;float:right;margin:0;height:15px;}
 .node-rpg-chatroom #rpg-chat .links li{height:15px;}
 .node-rpg-chatroom #rpg-chat .links li a{-moz-appearance:none;-webkit-appearance:none;background:none;
   border:0 none;color:#EEE;display:inline;float:right;font-size:80%;font-style:italic;
