@@ -2,7 +2,7 @@
 .node-rpg-chatroom.ooc-room #rpg-chat-weather{display:none;}
 
 /* Moon layout */
-#rpg-chat-weather {float:right;clear:right;height:30px;margin-top:5px;}
+#rpg-chat-weather {float:right;clear:right;height:30px;margin-top:5px;margin-right:25px;}
 #rpg-chat-weather .moon-block {float:right;width:30px;}
 #rpg-chat-weather .moon-block h5{display:none;}
 #rpg-chat-weather .moon {-moz-border-radius:30px;-webkit-border-radius:30px;

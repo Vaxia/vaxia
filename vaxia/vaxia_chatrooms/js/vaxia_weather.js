@@ -21,23 +21,27 @@ Drupal.behaviors.vaxia_chatrooms_weather = {
           $(this).attr('width', moon_width).width(moon_width);
         });
 */
-          // Copy weather and moon back into display.
-          var weather = $('.weather-pic').html();
-          if (weather == null || weather.length == 0) {
-            weather = '';
+          // Only add the display if we're in the ic room
+          var target = $('.node-type-rpg-chatroom .ic-room');
+          if (target != null && target.length > 0) {
+            // Copy weather and moon back into display.
+            var weather = $('.weather-pic').html();
+            if (weather == null || weather.length == 0) {
+              weather = '';
+            }
+            var moon = $('#block-moon-phases-moons .moon-block').html();
+            if (moon == null || moon.length == 0) {
+              moon = '';
+            }
+            var rpg_weather = '' +
+              '<div id="rpg-chat-weather">' +
+              '<div class="rpg-weather rpg-weather-img">' + weather + '</div>' +
+              '<div class="rpg-weather rpg-moon-img moon-block">' + moon +'</div>' +
+              '</div>';
+            // Place the new weather widget.
+            $(target).before(rpg_weather);
           }
-          var moon = $('#block-moon-phases-moons .moon-block').html();
-          if (moon == null || moon.length == 0) {
-            moon = '';
-          }
-          var rpg_weather = '' +
-            '<div id="rpg-chat-weather">' +
-            '<div class="rpg-weather rpg-weather-img">' + weather + '</div>' +
-            '<div class="rpg-weather rpg-moon-img moon-block">' + moon +'</div>' +
-            '</div>';
-          // Place the new weather widget.
-          $('article.node-rpg-chatroom').before(rpg_weather);
-          // Remove the old widgets.
+          // Remove the old widget no matter what.
           $('#block-moon-phases-moons').remove();
         });
       });
