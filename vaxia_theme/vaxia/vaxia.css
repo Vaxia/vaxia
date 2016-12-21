@@ -47,6 +47,7 @@ form input[type="reset"]:disabled, input[type="button"]:disabled, input[type="su
 form .field-multiple-table{width:100%;}
 form .form-item{margin:0;}
 form .dd{text-align:left;width:90%!important;}
+form .edit-cancel{margin-left: 0.5em;}
 
 /* Page layout. */
 #header{height:100px;width:100%;}
@@ -70,7 +71,6 @@ th.views-field{padding-left:.25em;padding-right:.25em;}
 .views-ui-display-tab-bucket .even, .ctools-button-processed, .views-display-top{background:transparent;}
 
 /* Articles. */
-a.freelink-createnode{color:#F55;}
 article{margin:.5em auto;}
 article .field-name-body h1, article .field-name-body h2, article .field-name-body h3{clear:both;}
 article .field-name-body img{float:right;margin:.5em;max-width:50%;}
@@ -127,6 +127,7 @@ div.imagefield-crop-widget img{max-width:none;}
 .rate-widget .rate-number-up-down-btn-up{background-color:#CCC;border:1px solid;margin-left:10px;}
 
 /* Wiki */
+a.freelink-createnode{color:#F55;}
 .node-wiki-page{background:transparent;padding:1em;}
 .node-wiki-page .links{float:right;}
 .node-wiki-page .field-type-taxonomy-term-reference, .field-name-field-wiki-source header{display:block;}
@@ -172,6 +173,7 @@ form.wiki-page-node-form #edit-field-additional-tagging{width:100%;}
   font-weight:bold;font-size:1.2em;}
 .page-user .profile .masquerade-switch{display:block;margin-bottom:1em;
   font-weight:bold;font-size:1.2em;}
+
 /* Specific blocks. */
 #block-payment-donation-payment-donation{text-align:center;}
 #block-payment-donation-payment-donation form,
