@@ -42,7 +42,8 @@
 .node-rpg-chatroom.ooc-room #rpg-chat-userlist ul{margin-right:50px;}
 
 /* Chatroom comments. */
-.node-rpg-chatroom #rpg-chat{clear:right;float:none;width:100%;background-color:#555;border:solid 1px #FFF;padding:.5em;}
+.node-rpg-chatroom #rpg-chat{clear:right;float:none;width:100%;background-color:#555;
+  border:solid 1px #FFF;padding:.5em;display:inline-block;}
 .node-rpg-chatroom #rpg-chat.clearfix:after{clear:none;}
 .node-rpg-chatroom #rpg-chat .comment{padding:0.5em;}
 .node-rpg-chatroom #rpg-chat .field-name-comment-body{min-height:210px;}
