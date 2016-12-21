@@ -1,401 +1,97 @@
 /* Condensed 2016. */
+html{font-size:80%;}
+body{line-height:1.25em;background-attachment:fixed;background-color:#07E;
+ background-image:url(images/background.jpg);background-repeat:repeat-x;color:#FFF;
+ font-family:Verdana,Arial,Helvetica,sans-serif;}
+h1{font-size:1.5em;}
+h2{font-size:1.2em;}
+h3{font-size:1em;}
+p{font-size:100%;}
 
-html {
-font-size:80%;
-}
+/* Links */
+a, a.active, a:visited{color:#FFF;}
+.item-list .pager li{float:left;}
 
-body {
-background-attachment:fixed;
-background-color:#07E;
-background-image:url(images/background.jpg);
-background-repeat:repeat-x;
-color:#FFF;
-font-family:Verdana,Arial,Helvetica,sans-serif;
-line-height:1.25em;
-}
+/* Tables. */
+table, th, thead, tbody, tr, tr.even, tr.odd, td, td.active{background-color:transparent;}
+table td, table th{padding-right:15px;}
+table.sticky-header{background:#FFF;color:#222;}
+table tr{background:transparent!important;}
+table tr.selected td{background:transparent;}
 
-h1 {
-font-size:1.5em;
-}
+/* Errors */
+.error a, .messages a, .status a{color:#111!important;}
+.messages{border:1px solid;font-weight:700;padding:.5em;}
+.messages--error{background-color:#A00;}
+.messages--status{background-color:#0A0;}
 
-h2 {
-font-size:1.2em;
-}
-
-h3 {
-font-size:1em;
-}
-
-p {
-font-size:100%;
-}
-
-table,
-th,
-thead,
-tbody,
-tr,
-tr.even,
-tr.odd,
-td,
-td.active,
-.q-correct,
-.q-wrong,
-.vertical-tabs ul.vertical-tabs-list li,
-.vertical-tabs ul.vertical-tabs-list li.selected {
-background-color:transparent;
-}
-
-table td,
-table th {
-padding-right:15px;
-}
-
-table.sticky-header {
-background:#FFF;
-color:#222;
-}
-
-table.views-table {
-width:95%;
-}
-
-th.views-field {
-padding-left:.25em;
-padding-right:.25em;
-}
-
-tr {
-background:transparent!important;
-}
-
-tr.selected td,
-div.quiz-report .dt,
-.views-ui-display-tab-bucket .even,
-.ctools-button-processed,
-.views-display-top {
-background:transparent;
-}
-
-tr.webform-results-question td {
-padding-top:3em;
-}
-
-div.error a,
-table tr.error a,
-.messages a,
-.status a,
-#block-privatemsg-privatemsg-new #privatemsg-new-link a {
-color:#111!important;
-}
-
+/* Tabs */
 ul.primary li{border-color:#222;}
-ul.primary a:link,
-ul.primary a:visited {
-padding:0 .5em;
-}
-ul.primary a:link, ul.primary a:visited{
-background-color:#dedede;
-border-style:none;
-color: #333;
-letter-spacing: 1px;
-padding: 0 1em;
-text-align: center;
-border-radius:8px 8px 0 0;
-}
-ul.primary a.active{
-background-color: #abc;
-background-image:none;
-}
+ul.primary a:link, ul.primary a:visited{padding:0 .5em;background-color:#dedede;
+ border-style:none;color:#333;letter-spacing:1px;padding:0 1em;text-align:center;
+ border-radius:8px 8px 0 0;}
+ul.primary a.active{background-color:#abc;background-image:none;}
+ul.tabs li{-khtml-border-radius:8px 8px 0 0;-moz-border-radius:8px 8px 0 0;
+ -webkit-border-radius:8px 8px 0 0;border-radius:8px 8px 0 0;}
+.vertical-tabs ul.vertical-tabs-list li, .vertical-tabs ul.vertical-tabs-list li.selected{background-color:transparent;}
 
-ul.tabs li {
--khtml-border-radius:8px 8px 0 0;
--moz-border-radius:8px 8px 0 0;
--webkit-border-radius:8px 8px 0 0;
-border-radius:8px 8px 0 0;
-}
+/* Buttons */
+.button, button, input[type="reset"], input[type="button"], input[type="submit"]{-khtml-border-radius:8px;
+  -moz-border-radius:8px;-webkit-border-radius:8px;background:#abc;color:#111;border-color:#222;
+  border-radius:8px;border-style:solid;border-width:1px;margin:.5em 0 0 3px;padding:.25em;white-space:nowrap;}
+a.button, .button a{color:#111;text-decoration:none;}
 
-a,
-a.active,
-a:visited,
-li a.active {
-color:#FFF;
-}
+/* Forms */
+form input[type="reset"]:disabled, input[type="button"]:disabled, input[type="submit"]:disabled{color:#777 !important;
+  border-color:#abc;}
+form .field-multiple-table{width:100%;}
+form .form-item{margin:0;}
+form .dd{text-align:left;width:90%!important;}
 
-a.button,
- .button a {
-color:#111;
-text-decoration:none;
-}
+/* Page layout. */
+#header{height:100px;width:100%;}
+#header #logo{display:block;float:none;height:100px;margin:0 auto;width:100px;}
+#footer{margin:0 auto;width:960px;}
+#main{margin:0 3em;padding-top:3em;width:auto;}
+#main .sidebar select{max-width:170px;}
+#main .sidebar input{max-width:170px;}
+#navigation{height:0;position:relative;}
+#navigation #main-menu{float:right;position:relative;top:-25px;}
+#navigation a{color:#FFF;display:block;height:20px;padding:0 .5em .12em;text-align:center;text-decoration:none;}
+#navigation a:hover{background:url(images/underline.jpg) center bottom no-repeat;}
+#page{max-width:100%;padding-bottom:100px;}
+#content{padding-bottom:1em;}
 
-.button,
-button,
-input[type="reset"],
-input[type="button"],
-input[type="submit"] {
--khtml-border-radius:8px;
--moz-border-radius:8px;
--webkit-border-radius:8px;
-background:#abc;
-color:#111;
-border-color:#222;
-border-radius:8px;
-border-style:solid;
-border-width:1px;
-margin:.5em 0 0 3px;
-padding:.25em;
-white-space:nowrap;
-}
+/* Views */
+table.views-table{width:95%;}
+th.views-field{padding-left:.25em;padding-right:.25em;}
+.views-ui-display-tab-bucket .even, .ctools-button-processed, .views-display-top{background:transparent;}
 
-input[type="reset"]:disabled,
-input[type="button"]:disabled,
-input[type="submit"]:disabled {
-color:#777 !important;
-border-color:#abc;
-}
+/* Articles. */
+a.freelink-createnode{color:#F55;}
+article{margin:.5em auto;}
+article .field-name-body h1, article .field-name-body h2, article .field-name-body h3{clear:both;}
+article .field-name-body img{float:right;margin:.5em;max-width:50%;}
+article .field-name-body img.odd{float:left;}
+article .field-name-body img[class*="embed_grid_img"]{max-width:100%!important;}
+article .field-name-body, article .field-name-comment-body{margin-bottom:.5em;text-align:justify;}
+article .links li{display:inline-block;height:28px;}
+article .links li.node-readmore, article .links li.comment-add{clear:right;display:inline;float:right;}
+article .links li.service-links{display:inline;float:left;margin-top:2em;}
+article .submitted{font-style:italic;}
+article .submitted .permalink{float:right;}
+article .submitted .user-picture{float:left;margin:.5em;}
+article .comments{clear:both;margin-top:.5em;}
+article .field-type-taxonomy-term-reference{display:inline;}
+article .view-artwork td{background:#aaa;border:2px solid #eee;padding:.5em;text-align:center;}
+div.imagefield-crop-widget img{max-width:none;}
+.post-edited{clear:left;}
+.node-items .field-type-taxonomy-term-reference{display:block;}
 
-#header {
-height:100px;
-width:100%;
-}
+/* BBCode */
+.bb-table tr{border-bottom:solid 1px #EEE;}
 
-#header #logo {
-display:block;
-float:none;
-height:100px;
-margin:0 auto;
-width:100px;
-}
-
-#footer {
-margin:0 auto;
-width:960px;
-}
-
-#main {
-margin:0 3em;
-padding-top:3em;
-width:auto;
-}
-
-#navigation {
-height:0;
-position:relative;
-}
-
-#navigation #main-menu {
-float:right;
-position:relative;
-top:-25px;
-}
-
-#navigation a {
-color:#FFF;
-display:block;
-height:20px;
-padding:0 .5em .12em;
-text-align:center;
-text-decoration:none;
-}
-
-#navigation a:hover {
-background:url(images/underline.jpg) center bottom no-repeat;
-}
-
-#page {
-max-width:100%;
-padding-bottom:100px;
-}
-
-#content {
-padding-bottom:1em;
-}
-
-.sidebar select{
-max-width:170px;
-}
-
-.sidebar input{
-max-width:170px;
-}
-
-.messages {
-border:1px solid;
-font-weight:700;
-padding:.5em;
-}
-
-.messages--error {
-background-color:#A00;
-}
-
-.messages--status {
-background-color:#0A0;
-}
-
-.bb-table tr {
-border-bottom:solid 1px #EEE;
-}
-
-.comment-form .vaxia-dice-roller table {
-margin-bottom:0;
-position:relative;
-top:-1.5em;
-}
-
-.dd {
-text-align:left;
-width:90%!important;
-}
-
-.field-name-field-items article.node-items h2 {
-font-size:100%;
-line-height:1.25em;
-}
-
-.form-field-name-field-provides-reputation {
-float:left;
-padding-top:1em;
-}
-
-.form-item,
-article .field-name-field-tech-languages table {
-margin:0;
-}
-
-.forum-node-create-links {
-float:none;
-padding-bottom:.25em;
-padding-top:.25em;
-width:100%;
-}
-
-.forum-node-create-links .forum-add-node{
-height:30px;
-}
-
-.forum-post {
-border:1px solid #FFF;
-}
-
-.forum-post .links li.post-edit,
-.forum-post .links li.post-delete,
-.forum-post .links li.comment-add,
-.forum-post .links li.comment-edit,
-.forum-post .links li.comment-delete,
-.forum-post .links li.comment-reply,
-.forum-post .links li.comment-revisions {
-display:inline;
-float:right;
-}
-
-.forum-post .rate-number-up-down-btn-down{display:none;}
-
-.forum-post .links li.quote {
-clear:left;
-display:inline;
-float:right;
-}
-
-.forum-post .links li.service-links {
-display:inline;
-float:left;
-}
-
-.forum-post-links {
-float:none;
-margin-left:160px;
-}
-
-.forum-post-panel-sub .author-pane .user-picture {
-display:block;
-margin-top:.5em;
-}
-
-.forum-post-panel-sub .author-pane,
-#block-payment-donation-payment-donation {
-text-align:center;
-}
-
-.forum-table {
-width:90%;
-}
-
-.forum-table td {
-padding:.5em 0;
-}
-
-.group-categories .form-field-type-taxonomy-term-reference {
-float:left;
-padding-right:1em;
-padding-top:1em;
-}
-
-.node-character_sheet-form #edit-field-language-skills .field-name-field-language {
-float:left;
-margin-right:2em;
-}
-
-.not-logged-in .rpg-chat-node #rpg-chat-wrapper {
-margin-left:0;
-}
-
-.page-node-edit.node-type-character-sheet #edit-field-age {
-float:left;
-width:45%;
-}
-
-.page-node-edit.node-type-character-sheet #edit-field-birth-month {
-float:left;
-width:150px;
-}
-
-.page-user .profile .field-name-field-artwork-image {
-float:left;
-margin-right:1em;
-}
-
-#block-payment-donation-payment-donation form,
-#block-payment-donation-payment-donation #edit-pay {
-padding-top:1em;
-}
-
-.post-edited,
-.node-wiki_page-form .group-extra-details,
-.node-wiki_page-form .group-extra-details .form-field-type-list-boolean {
-clear:left;
-}
-
-.proposal_help,
-.proposal_response,
-.proposal_result {
-margin-right:10px;
-}
-
-.quiz-hover-menu {
-opacity:1;
-}
-
-.rate-info,
-.rate-description {
-color:#EEE;
-}
-
-.rate-number-up-down-rating {
-font-size:16px;
-font-weight:700;
-line-height:26px;
-}
-
-.rate-widget .rate-number-up-down-btn-up {
-background-color:#CCC;
-border:1px solid;
-margin-left:10px;
-}
-
-article.node-wiki-page .field-type-taxonomy-term-reference,
-.field-name-field-wiki-source header,
-.view-display-id-character_sheets_mine_block input.form-submit,
+/* Forums */
 #forum .forum-node-create-links .forum-add-forum,
 .page-forum-879 #forum .forum-node-create-links .forum-add-event,
 .page-forum-16 #forum .forum-node-create-links .forum-add-proposal,
@@ -403,156 +99,78 @@ article.node-wiki-page .field-type-taxonomy-term-reference,
 .page-forum-709 #forum .forum-node-create-links .forum-add-proposal,
 .page-forum-708 #forum .forum-node-create-links .forum-add-proposal,
 .page-forum-13 #forum .forum-node-create-links .forum-add-session_report,
-.page-forum-14 #forum .forum-node-create-links .forum-add-session_report,
-article.node-items .field-type-taxonomy-term-reference {
-display:block;
-}
+.page-forum-14 #forum .forum-node-create-links .forum-add-session_report
+{display:block;}
+.forum-node-create-links{float:none;padding-bottom:.25em;padding-top:.25em;width:100%;}
+.forum-node-create-links .forum-add-node{height:30px;}
+.forum-post{border:1px solid #FFF;}
+.forum-post-links{float:none;margin-left:160px;}
+.forum-post .links li.quote{display:inline;clear:left;float:right;}
+.forum-post .links li.service-links{display:inline;float:left;}
+.forum-post .links li.post-edit,
+.forum-post .links li.post-delete,
+.forum-post .links li.comment-add,
+.forum-post .links li.comment-edit,
+.forum-post .links li.comment-delete,
+.forum-post .links li.comment-reply,
+.forum-post .links li.comment-revisions
+{display:inline;float:right;}
+.forum-post .rate-number-up-down-btn-down{display:none;}
+.forum-post-panel-sub .author-pane .user-picture{display:block;margin-top:.5em;}
+.forum-post-panel-sub .author-pane{text-align:center;}
+.forum-table{width:90%;}
+.forum-table td{padding:.5em 0;}
+.rate-info, .rate-description{color:#EEE;}
+.rate-number-up-down-rating{font-size:16px;font-weight:700;line-height:26px;}
+.rate-widget .rate-number-up-down-btn-up{background-color:#CCC;border:1px solid;margin-left:10px;}
 
-.view-artwork td {
-background:#aaa;
-border:2px solid #eee;
-padding:.5em;
-text-align:center;
-}
+/* Wiki */
+.node-wiki-page{background:transparent;padding:1em;}
+.node-wiki-page .links{float:right;}
+.node-wiki-page .field-type-taxonomy-term-reference, .field-name-field-wiki-source header{display:block;}
+.node-wiki-page .field-name-field-wiki-images img{float:right;padding:.5em;}
+.node-wiki-page .group-categories .field-items{padding-left:.5em;}
+.node-wiki-page .group-categories .field-items .field-item{display:inline;padding-left:.5em;}
+.node-wiki-page .group-categories .field-type-taxonomy-term-reference{padding:.5em;}
+.node-wiki_page-form .group-extra-details,
+.node-wiki_page-form .group-extra-details .form-field-type-list-boolean{clear:left;}
+.wiki-category-tag{display:inline;padding-right:1em;}
+form.wiki-page-node-form #edit-field-additional-tagging{width:100%;}
+.form-field-name-field-provides-reputation{float:left;padding-top:1em;}
+.group-categories .form-field-type-taxonomy-term-reference{float:left;padding-right:1em;padding-top:1em;}
 
-.view-character-sheet-moderation-log .views-exposed-widgets div.views-exposed-widget {
-display:block;
-margin-left:0;
-width:100%;
-}
+/* Quizzes. */
+.quiz-hover-menu{opacity:1;}
+.quiz-report .dt{background:transparent;}
+.q-correct, .q-wrong{background-color:transparent;}
 
-.webform-results-analysis,
-.webform-detailed-responses,
-.webform-grid,
-form .field-multiple-table,
-form.wiki-page-node-form #edit-field-additional-tagging {
-width:100%;
-}
+/* Webforms */
+.webform-results-analysis, .webform-detailed-responses, .webform-grid{width:100%;}
+.webform-results-question td{padding-top:3em;}
+.webform-component{margin-top:2em;}
 
-.webform-component {
-margin-top:2em;
-}
+/* Proposals. */
+.proposal_help, .proposal_response, .proposal_result{margin-right:10px;}
 
-.wiki-category-tag {
-display:inline;
-padding-right:1em;
-}
+/* Character sheets */
+.field-name-field-items article.node-items h2{font-size:100%;line-height:1.25em;}
+.field-name-field-tech-languages table{margin:0;}
+.view-display-id-character_sheets_mine_block input.form-submit{display:block;}
+.view-character-sheet-moderation-log .views-exposed-widgets div.views-exposed-widget{display:block;margin-left:0;width:100%;}
+.node-type-character-sheet #edit-field-language-skills .field-name-field-language{float:left;margin-right:2em;}
+.node-type-character-sheet #edit-field-age{float:left;width:45%;}
+.node-type-character-sheet #edit-field-birth-month{float:left;width:150px;}
 
-a.freelink-createnode {
-color:#F55;
-}
+/* Play suggestions */
+.node-play_suggestions-form label{display:inline-block;text-align:right;width:100px;}
 
-article {
-margin:.5em auto;
-}
+/* User profiles */
+.page-user .profile .field-name-field-artwork-image{float:left;margin-right:1em;}
 
-article .field-name-body h1,
-article .field-name-body h2,
-article .field-name-body h3,
-.node-type-rpg-chatroom #main #content .tabs-primary {
-clear:both;
-}
-
-article .field-name-body img {
-float:right;
-margin:.5em;
-max-width:50%;
-}
-
-article .field-name-body img.odd,
-.item-list .pager li {
-float:left;
-}
-
-article .field-name-body img[class*="embed_grid_img"] {
-max-width:100%!important;
-}
-
-article .field-name-body,
-article .field-name-comment-body {
-margin-bottom:.5em;
-text-align:justify;
-}
-
-article .links li {
-display:inline-block;
-height:28px;
-}
-
-article .links li.node-readmore,
-article .links li.comment-add {
-clear:right;
-display:inline;
-float:right;
-}
-
-article .links li.service-links {
-display:inline;
-float:left;
-margin-top:2em;
-}
-
-article .submitted {
-font-style:italic;
-}
-
-article .submitted .permalink,
-article.node-wiki-page .links {
-float:right;
-}
-
-article .submitted .user-picture {
-float:left;
-margin:.5em;
-}
-
-article section.comments {
-clear:both;
-margin-top:.5em;
-}
-
-article.node-wiki-page {
-background:transparent;
-padding:1em;
-}
-
-article.node-wiki-page .field-name-field-wiki-images img {
-float:right;
-padding:.5em;
-}
-
-article.node-wiki-page .group-categories .field-items {
-padding-left:.5em;
-}
-
-article.node-wiki-page .group-categories .field-items .field-item {
-display:inline;
-padding-left:.5em;
-}
-
-article.node-wiki-page .group-categories .field-type-taxonomy-term-reference {
-padding:.5em;
-}
-
-article .field-type-taxonomy-term-reference {
-display:inline;
-}
-
-div.imagefield-crop-widget img {
-max-width:none;
-}
-
-#block-privatemsg-privatemsg-new #privatemsg-new-link {
-background-color:#f8fff0;
-border:1px solid;
-border-color:#be7;
-color:#234600;
-display:block;
-padding:.5em;
-}
-
-.node-play_suggestions-form label {
-display:inline-block;
-text-align:right;
-width:100px;
-}
+/* Specific blocks. */
+#block-payment-donation-payment-donation{text-align:center;}
+#block-payment-donation-payment-donation form,
+#block-payment-donation-payment-donation #edit-pay{padding-top:1em;}
+#block-privatemsg-privatemsg-new #privatemsg-new-link{background-color:#f8fff0;border:1px solid;
+  border-color:#be7;color:#234600;display:block;padding:.5em;}
+#block-privatemsg-privatemsg-new #privatemsg-new-link a{color:#111!important;}

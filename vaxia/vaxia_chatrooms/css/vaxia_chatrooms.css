@@ -1,7 +1,7 @@
 /* CSS for the RPG chat room. */
 .node-type-rpg-chatroom #main{padding-top:.5em;}
 .node-type-rpg-chatroom #page-title{clear:right;float:right;height:0px;margin-top:0.5em;}
-.node-type-rpg-chatroom #content ul.tabs-primary{margin-bottom:0;}
+.node-type-rpg-chatroom #content ul.tabs-primary{margin-bottom:0;clear:both;}
 .node-type-rpg-chatroom .breadcrumb{display:none;}
 
 /* Only show certain links. */
@@ -23,6 +23,7 @@
 .node-rpg-chatroom #comment-form .vaxia-dice-roller .dice-skill{width:180px;}
 .node-rpg-chatroom #comment-form .vaxia-dice-roller .dice-stat{width:90px;}
 .node-rpg-chatroom #comment-form .vaxia-dice-roller .form-item-vaxia-rolls-items .form-select{width:100%;}
+.node-rpg-chatroom #comment-form .vaxia-dice-roller table{margin-bottom:0;position:relative;top:-1.5em;}
 .node-rpg-chatroom #comment-form .vaxia-dice-roller table td{padding-right:0;}
 .node-rpg-chatroom #comment-form .vaxia-dice-roller .form-type-textfield .dice-skill{width:170px;}
 .node-rpg-chatroom #comment-form .vaxia-dice-roller .fieldset-description{float:right;font-size:10px;position:relative;z-index:10;}
@@ -33,6 +34,7 @@
 .node-rpg-chatroom h2.title{display:none;}
 .node-rpg-chatroom .field-name-field-private-room{float:left;clear:left;}
 .node-rpg-chatroom #rpg-chat-wrapper{float:none;margin-left:410px;margin-right:40px;position:relative;top:-35px;}
+.not-logged-in .node-rpg-chatroom #rpg-chat-wrapper{margin-left:0;}
 
 /* Handle the userlist. */
 .node-rpg-chatroom #rpg-chat-userlist{clear:right;float:none;width:100%;display:inline-block;min-height:35px;}
@@ -54,8 +56,6 @@
 .node-rpg-chatroom #rpg-chat .dice_rolls{clear:both;}
 .node-rpg-chatroom #rpg-chat .dice_rolls .dice{clear:none;}
 .node-rpg-chatroom #rpg-chat .rpg-reputation{margin:0;padding:0;}
-
-/* WAS clear:right !important; */
 .node-rpg-chatroom #rpg-chat .field-name-field-ooc{clear:none;height:auto;min-height:1px;}
 
 /* Hide elements we don't want in all posts. */
@@ -89,6 +89,7 @@
 #block-dice-ruler-dice-ruler{float:left;clear:left;margin:0px;}
 #block-dice-ruler-dice-ruler #dice-ruler-form .form-item-actions select{width:240px;}
 #block-privatemsg-privatemsg-new{margin:0;margin-top:5px;}
+
 /* Don't show fake errors. */
 #block-views-rpg-chats-search-rpg-chats .form-item .error,
 #block-views-rpg-chats-inroom-rpg-chats .form-item .error{border:1px solid #ccc;}
