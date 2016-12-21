@@ -210,6 +210,14 @@ padding-bottom:100px;
 padding-bottom:1em;
 }
 
+.sidebar select{
+max-width:170px;
+}
+
+.sidebar input{
+max-width:170px;
+}
+
 .messages {
 border:1px solid;
 font-weight:700;
