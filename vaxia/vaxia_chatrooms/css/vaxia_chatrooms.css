@@ -35,7 +35,7 @@
 .node-rpg-chatroom #rpg-chat-wrapper{float:none;margin-left:410px;margin-right:40px;position:relative;top:-35px;}
 
 /* Handle the userlist. */
-.node-rpg-chatroom #rpg-chat-userlist{clear:right;float:none;width:100%;display:inline;min-height:35px;}
+.node-rpg-chatroom #rpg-chat-userlist{clear:right;float:none;width:100%;display:inline-block;min-height:35px;}
 .node-rpg-chatroom #rpg-chat-userlist h3{display:none;}
 .node-rpg-chatroom #rpg-chat-userlist ul{margin:0;}
 .node-rpg-chatroom #rpg-chat-userlist li{float:right;width:30%;overflow:hidden;}
