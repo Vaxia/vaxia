@@ -70,6 +70,7 @@ ul.tabs li{background-color:#529ecc;}
 .jsPulloutContent #navigation a:visited{color:#4f4f4f;}
 .jsPulloutContent .region-sidebar-first h2{margin-left:-17px;}
 .jsPulloutContent .region-sidebar-first h3{margin-left:-17px;}
+.jsPulloutFlap a{font-size:1.4em;font-family:bebas_neueregular;font-weight:400;}
 
 /* Forum */
 .forum-post{border:solid 1px #222;}
