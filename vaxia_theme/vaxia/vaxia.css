@@ -167,8 +167,11 @@ form.wiki-page-node-form #edit-field-additional-tagging{width:100%;}
 .node-play_suggestions-form label{display:inline-block;text-align:right;width:100px;}
 
 /* User profiles */
-.page-user .profile .field-name-field-artwork-image{float:left;margin-right:1em;}
-
+.page-user .profile .field-name-field-artwork-image{float:left;margin-right:1em;margin-top:0.6em;}
+.page-user .profile .privatemsg-send-link{display:block;margin-bottom:1em;
+  font-weight:bold;font-size:1.2em;}
+.page-user .profile .masquerade-switch{display:block;margin-bottom:1em;
+  font-weight:bold;font-size:1.2em;}
 /* Specific blocks. */
 #block-payment-donation-payment-donation{text-align:center;}
 #block-payment-donation-payment-donation form,
