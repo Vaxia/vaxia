@@ -26,7 +26,7 @@ table tr.selected td{background:transparent;}
 .messages--status{background-color:#0A0;}
 
 /* Tabs */
-ul.primary li{border-color:#222;}
+ul.primary li{border-color:#222;text-shadow:none;}
 ul.primary a:link, ul.primary a:visited{padding:0 .5em;background-color:#dedede;
  border-style:none;color:#333;letter-spacing:1px;padding:0 1em;text-align:center;
  border-radius:8px 8px 0 0;}
@@ -50,8 +50,8 @@ form .dd{text-align:left;width:90%!important;}
 
 /* Page layout. */
 #header{height:100px;width:100%;}
-#header #logo{display:block;float:none;height:100px;margin:0 auto;width:100px;}
-#footer{margin:0 auto;width:960px;}
+#header #logo{margin:0 auto;width:100px;display:block;float:none;height:100px;}
+#footer{margin:0 auto;width:960px;padding-bottom:100px;}
 #main{margin:0 3em;padding-top:3em;width:auto;}
 #main .sidebar select{max-width:170px;}
 #main .sidebar input{max-width:170px;}
@@ -59,7 +59,7 @@ form .dd{text-align:left;width:90%!important;}
 #navigation #main-menu{float:right;position:relative;top:-25px;}
 #navigation a{color:#FFF;display:block;height:20px;padding:0 .5em .12em;text-align:center;text-decoration:none;}
 #navigation a:hover{background:url(images/underline.jpg) center bottom no-repeat;}
-#page{max-width:100%;padding-bottom:100px;}
+#page{max-width:100%;}
 #content{padding-bottom:1em;}
 
 /* Views */
