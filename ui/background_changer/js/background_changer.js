@@ -23,6 +23,7 @@ Drupal.behaviors.backgroundChanger = {
     var target = '#rpg-chat';
     // Swap the background-image attribute on the body tag
     $(target).css('background-image', 'url(' + path + ')');
+    $(target).css('background-size', 'cover');
     $(target).css('padding-left', '10px');
     $(target).css('padding-right', '30px');
    }
