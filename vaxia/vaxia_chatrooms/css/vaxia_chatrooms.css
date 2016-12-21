@@ -87,7 +87,7 @@
   position:relative;z-index:10;}
 #block-dice-ruler-dice-ruler{float:left;clear:left;margin:0px;}
 #block-dice-ruler-dice-ruler #dice-ruler-form .form-item-actions select{width:240px;}
-
+#block-privatemsg-privatemsg-new{margin:0;margin-top:5px;}
 /* Don't show fake errors. */
 #block-views-rpg-chats-search-rpg-chats .form-item .error,
 #block-views-rpg-chats-inroom-rpg-chats .form-item .error{border:1px solid #ccc;}
