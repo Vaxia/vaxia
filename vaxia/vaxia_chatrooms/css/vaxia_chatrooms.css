@@ -51,7 +51,8 @@
 .node-rpg-chatroom #rpg-chat .field-name-comment-body{min-height:210px;}
 .node-rpg-chatroom #rpg-chat .permalink{float:none;}
 .node-rpg-chatroom #rpg-chat .submitted{float:left;margin:1em;width:150px;}
-.node-rpg-chatroom #rpg-chat .submitted img{display:block;margin:0 auto;}
+.node-rpg-chatroom #rpg-chat .submitted img{display:block;margin:0 auto;
+  max-width:150px;max-height:150px;}
 .node-rpg-chatroom #rpg-chat .submitted span{display:block;}
 .node-rpg-chatroom #rpg-chat .dice_rolls{clear:both;}
 .node-rpg-chatroom #rpg-chat .dice_rolls .dice{clear:none;}
