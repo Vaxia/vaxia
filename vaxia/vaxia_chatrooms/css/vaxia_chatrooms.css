@@ -32,7 +32,7 @@
 /* Layout of the chatroom itself. */
 .node-rpg-chatroom h2.title{display:none;}
 .node-rpg-chatroom .field-name-field-private-room{float:left;clear:left;}
-.node-rpg-chatroom #rpg-chat-wrapper{float:none;margin-left:410px;margin-right:40px;position:relative;top:-50px;}
+.node-rpg-chatroom #rpg-chat-wrapper{float:none;margin-left:410px;margin-right:40px;position:relative;top:-35px;}
 
 /* Handle the userlist. */
 .node-rpg-chatroom #rpg-chat-userlist{clear:right;float:none;width:100%;display:inline;min-height:35px;}
