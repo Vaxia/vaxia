@@ -29,6 +29,7 @@ body{color:#4f4f4f;background-image:url('images/texture.png');
 #navigation a{font-family:bebas_neueregular;font-weight:400;font-size:1.6em;}
 #navigation a, #navigation a.active, #navigation a:visited{color:#427ea3}
 #main .breadcrumb{margin-top:10px;}
+#rpg-chat{color:#fff;}
 
 /* Fonts styles. */
 h1{font-size:1.8em;font-family:bebas_neueregular;font-weight:400;}
