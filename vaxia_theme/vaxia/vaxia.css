@@ -50,6 +50,7 @@ form .dd{text-align:left;width:90%!important;}
 
 /* Page layout. */
 #header{height:100px;width:100%;}
+#header #site-name{display:none;}
 #header #logo{margin:0 auto;width:100px;display:block;float:none;height:100px;}
 #footer{margin:0 auto;width:960px;padding-bottom:100px;}
 #main{margin:0 3em;padding-top:3em;width:auto;}

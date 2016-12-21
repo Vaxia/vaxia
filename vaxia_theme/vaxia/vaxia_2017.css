@@ -23,6 +23,7 @@ body{color:#4f4f4f;background-image:url('images/texture.png');
 #header #site-name{font-size:5.6em;line-height:64px;padding-top:30px;}
 #header #site-name a:link, #site-name a:visited, #site-name a:hover{color:#fff;
   text-decoration:none;}
+#header #logo{display:none;}
 #header #secondary-menu{display:none;}
 #navigation #main-menu{top:-15px;padding:0 5%;}
 #navigation a{font-family:bebas_neueregular;font-weight:400;font-size:1.6em;}
