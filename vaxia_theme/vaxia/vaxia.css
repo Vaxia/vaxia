@@ -56,6 +56,7 @@ form .dd{text-align:left;width:90%!important;}
 #main{margin:0 3em;padding-top:3em;width:auto;}
 #main .sidebar select{max-width:170px;}
 #main .sidebar input{max-width:170px;}
+#main .sidebar .block-views .view-header p{margin:0;}
 #navigation{height:0;position:relative;}
 #navigation #main-menu{float:right;position:relative;top:-25px;}
 #navigation a{color:#FFF;display:block;height:20px;padding:0 .5em .12em;text-align:center;text-decoration:none;}
