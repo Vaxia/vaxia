@@ -101,6 +101,7 @@ color: #333;
 letter-spacing: 1px;
 padding: 0 1em;
 text-align: center;
+border-radius:8px 8px 0 0;
 }
 ul.primary a.active{
 background-color: #abc;
