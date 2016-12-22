@@ -3,6 +3,10 @@
 #header #logo{height:80px;margin:0 auto;}
 #header #logo img{height:40px;}
 
+/* Navigation menu tweaks. */
+#navigation{margin-top:1em;height:auto;}
+#navigation #main-menu{float:none;clear:both;top:0;}
+
 /* Tabs realign and stretch. */
 .tabs li{float:none !important;margin:0 !important;}
 .tabs li a{height:25px;}
@@ -10,7 +14,3 @@
 /* Forum thread. */
 .forum-post .forum-post-panel-main{margin-left:0;}
 .forum-post-links{margin-left:0;}
-
-/* RPG chat edits below 768. */
-.rpg-chat-node #comment-form{clear:none;float:none;width:100%;top:0px;}
-.rpg-chat-node #rpg-chat-wrapper{margin-left:0;top:0px;}

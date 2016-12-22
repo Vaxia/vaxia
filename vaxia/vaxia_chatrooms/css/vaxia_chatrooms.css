@@ -50,9 +50,9 @@
 .node-rpg-chatroom #rpg-chat .comment{padding:0.5em;border:solid 1px #eee;}
 .node-rpg-chatroom #rpg-chat .field-name-comment-body{min-height:210px;}
 .node-rpg-chatroom #rpg-chat .permalink{float:none;}
-.node-rpg-chatroom #rpg-chat .submitted{float:left;margin:1em;width:150px;}
+.node-rpg-chatroom #rpg-chat .submitted{float:left;margin:1em;width:120px;}
 .node-rpg-chatroom #rpg-chat .submitted img{display:block;margin:0 auto;
-  max-width:150px;max-height:150px;}
+  max-width:120px;max-height:120px;}
 .node-rpg-chatroom #rpg-chat .submitted span{display:block;}
 .node-rpg-chatroom #rpg-chat .dice_rolls{clear:both;}
 .node-rpg-chatroom #rpg-chat .dice_rolls .dice{clear:none;}
@@ -94,3 +94,27 @@
 /* Don't show fake errors. */
 #block-views-rpg-chats-search-rpg-chats .form-item .error,
 #block-views-rpg-chats-inroom-rpg-chats .form-item .error{border:1px solid #ccc;}
+
+/* Responsive */
+@media screen and (max-width: 960px) {
+  /* Bring chat title over tabs. */
+  .node-type-rpg-chatroom #page-title{height:auto;}
+}
+@media screen and (max-width: 768px) {
+  /* Bring comment box over top of chat. */
+  .node-rpg-chatroom #comment-form{clear:none;float:none;width:100%;top:0px;}
+  /* Close space left of chat to put at bottom. */
+  .node-rpg-chatroom #rpg-chat-wrapper{margin-left:0;top:0px;}
+  /* Shrink icon size down. */
+  .node-rpg-chatroom #rpg-chat-wrapper .submitted{width:80px;font-size:0.9em;}
+  .node-rpg-chatroom #rpg-chat-wrapper .submitted img{max-width:80px;max-height:80px;}
+}
+@media screen and (max-width: 600px) {
+  /* Shrink icon size down. */
+  .node-rpg-chatroom #rpg-chat-wrapper .submitted{width:60px;font-size:0.7em;}
+  .node-rpg-chatroom #rpg-chat-wrapper .submitted img{max-width:60px;max-height:60px;}
+}
+@media screen and (max-width: 480px) {
+  /* Place userlist in center. */
+  .node-rpg-chatroom #rpg-chat-userlist li{float:none;width:100%;}
+}

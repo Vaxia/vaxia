@@ -5,13 +5,12 @@
 #header #logo{height:40px;margin:0 auto;}
 #header #logo img{height:40px;}
 #main{padding-top:0;}
+#main #content{width:100% !important;margin:0 !important;}
 
 /* Navigation menu tweaks. */
-#navigation{margin-top:1em;height:auto;}
-#navigation #main-menu{float:none;clear:both;top:0;}
-#navigation #main-menu li{float:none;display:block;}
 #navigation a{width:100%;padding-top:10px;padding-bottom:5px;background:#000;border: solid 1px #666;border-bottom:0;}
 #navigation ul.links li, #navigation ul.menu li{padding: 0 20px 0 0;margin:0;}
+#navigation #main-menu li{float:none;display:block;}
 
 .front_page_flash{left:0;margin:0.5em 0;}
 
@@ -59,12 +58,8 @@ article .links a{padding:5px;}
 .sidebars .block{width:46%;padding:1%;border:solid 1px #555;float:left;clear:left;}
 .sidebars .block.odd{float:right;clear:right;}
 .sidebars .block .block-title{text-align:center;}
-#main #content{width:100% !important;margin:0 !important;}
-.view-display-id-character_sheets_mine_block select{width:auto;}
+
+/* Specific blocks. */
 #block-views-rpg-chats-search-rpg-chats input.form-text{width:100%;}
+.view-display-id-character_sheets_mine_block select{width:auto;}
 
-/* Chat display shrink. */
-.node-rpg-chatroom #rpg-chat-wrapper .comment header .submitted{font-size:0.7em;width:60px;}
-
-/* Chatroom userlist tweaks. */
-#rpg-chat-userlist li{float:none;width:100%;}

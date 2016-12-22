@@ -1,6 +1,6 @@
 /* Header */
-#header{height:80px;}
-#header #logo{height:80px;margin:0 auto;}
+#header{height:40px;}
+#header #logo{height:40px;margin:0 auto;}
 #header #logo img{height:40px;}
 
 /* Tabs realign and stretch. */
@@ -11,5 +11,3 @@
 .forum-post .forum-post-panel-main{margin-left:0;}
 .forum-post-links{margin-left:0;}
 
-/* Chat display shrink. */
-.node-rpg-chatroom #rpg-chat-wrapper .comment header .submitted{width:80px;}

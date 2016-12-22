@@ -74,3 +74,42 @@ ul.tabs li{background-color:#529ecc;}
 
 /* Forum */
 .forum-post{border:solid 1px #222;}
+
+
+/* Responsive */
+@media screen and (max-width: 960px) {
+}
+@media screen and (max-width: 768px) {
+  /* Make block labels smaller. */
+  .sidebars .region-sidebar-first h2{line-height:40px;font-size:1.6em;margin-bottom:0.25em;min-height:40px;}
+  .sidebars .region-sidebar-first h3{line-height:40px;font-size:1.6em;margin-bottom:0.25em;min-height:40px;}
+}
+@media screen and (max-width: 600px) {
+  /* Make block labels smaller. */
+  .sidebars .region-sidebar-first h2{line-height:20px;font-size:1.6em;margin-bottom:0.25em;min-height:20px;}
+  .sidebars .region-sidebar-first h3{line-height:20px;font-size:1.6em;margin-bottom:0.25em;min-height:20px;}
+}
+@media screen and (max-width: 480px) {
+  /* Sidebar rounds to both sidebars. */
+  .sidebars .sidebar h2{margin-left:-50px;min-height:60px;
+    border-radius:0 100px 100px 0;color:#fff;font-size:1.8em;font-weight:400;
+    line-height:60px;padding-left:50px;margin-bottom:0.25em;
+    background-image:url('images/texture.png');
+    background-repeat:repeat;background-color:#427ea3}
+  .sidebars .sidebar h2 a,
+  .sidebars .sidebar h2 a.active,
+  .sidebars .sidebar h2 a:visited{color:#fff;}
+  .sidebars .sidebar h3{margin-left:-50px;min-height:60px;
+    border-radius:0 100px 100px 0;color:#fff;font-size:1.8em;font-weight:400;
+    line-height:60px;padding-left:50px;margin-bottom:0.25em;
+    background-image:url('images/texture.png');
+    background-repeat:repeat;background-color:#427ea3}
+  .sidebars .sidebar h3 a,
+  .sidebars .sidebar h3 a.active,
+  .sidebars .sidebar h3 a:visited{color:#fff;}
+  /* Make block labels smaller. */
+  .sidebars .sidebar h2{margin-left:-4px;line-height:20px;font-size:1.6em;
+    padding-left:0;margin-bottom:0.25em;min-height:20px;}
+  .sidebars .sidebar h3{margin-left:-4px;line-height:20px;font-size:1.6em;
+    padding-left:0;margin-bottom:0.25em;min-height:20px;}
+}
