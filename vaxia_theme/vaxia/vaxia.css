@@ -155,6 +155,11 @@ form.wiki-page-node-form #edit-field-additional-tagging{width:100%;}
 /* Proposals. */
 .proposal_help, .proposal_response, .proposal_result{margin-right:10px;}
 
+/* Events */
+.node-event-form .form-item-twitter-post{margin-bottom: 0.5em;margin-top:0.25em;}
+.node-event-form .form-item-twitter-post label{font-weight:bold;}
+.node-event-form .form-item-twitter-status .form-text{margin-bottom: 0.25em;}
+
 /* Character sheets */
 .field-name-field-items article.node-items h2{font-size:100%;line-height:1.25em;}
 .field-name-field-tech-languages table{margin:0;}
