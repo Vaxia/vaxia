@@ -11,6 +11,10 @@
   width:80px;
   text-align:center;
   opacity:0.8;
+  font-family:Tahoma, Geneva, sans-serif;
+  font-weight:400;
+  text-transform:uppercase;
+  font-size:0.9em;
 }
 .jsPulloutFlap a {
   text-decoration:none;
@@ -34,7 +38,7 @@
   -ms-transform: rotate(-90deg);
   /* Opera */
   -o-transform: rotate(-90deg);
-  -o-transform-origin:0px 0px; 
+  -o-transform-origin:0px 0px;
   /* Internet Explorer */
   filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
   float:left;
