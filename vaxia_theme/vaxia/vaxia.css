@@ -65,6 +65,10 @@ form .edit-cancel{margin-left: 0.5em;}
 #page{max-width:100%;}
 #content{padding-bottom:1em;}
 
+/* Sidebar breaks. */
+.sidebars .region-sidebar-first h2{white-space:nowrap;border-bottom:solid 2px;font-weight:bold;font-size:1.2em;margin-bottom:0.25em;}
+.sidebars .region-sidebar-first h3{white-space:nowrap;border-bottom:solid 2px;font-weight:bold;font-size:1.2em;margin-bottom:0.25em;}
+
 /* Views */
 table.views-table{width:95%;}
 th.views-field{padding-left:.25em;padding-right:.25em;}

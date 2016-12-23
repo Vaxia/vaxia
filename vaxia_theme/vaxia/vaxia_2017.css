@@ -27,7 +27,7 @@ body{color:#4f4f4f;background-image:url('images/texture.png');
 #header #secondary-menu{display:none;}
 #navigation #main-menu{top:-15px;padding:0 5%;}
 #navigation a{font-family:bebas_neueregular;font-weight:400;font-size:1.6em;}
-#navigation a, #navigation a.active, #navigation a:visited{color:#427ea3}
+#navigation a, #navigation a.active, #navigation a:visited{color:#427ea3;}
 #main .breadcrumb{margin-top:10px;}
 #rpg-chat{color:#fff;}
 #rpg-chat a, #rpg-chat a.active, #rpg-chat a:visited{color:#fff;}
@@ -48,7 +48,7 @@ ul.tabs li{background-color:#529ecc;}
   border-radius:0 100px 100px 0;color:#fff;font-size:1.8em;font-weight:400;
   line-height:60px;padding-left:50px;margin-bottom:0.25em;white-space:nowrap;
   background-image:url('images/texture.png');
-  background-repeat:repeat;background-color:#427ea3}
+  background-repeat:repeat;background-color:#427ea3;}
 .sidebars .region-sidebar-first h2 a,
 .sidebars .region-sidebar-first h2 a.active,
 .sidebars .region-sidebar-first h2 a:visited{color:#fff;}
@@ -56,7 +56,7 @@ ul.tabs li{background-color:#529ecc;}
   border-radius:0 100px 100px 0;color:#fff;font-size:1.8em;font-weight:400;
   line-height:60px;padding-left:50px;margin-bottom:0.25em;white-space:nowrap;
   background-image:url('images/texture.png');
-  background-repeat:repeat;background-color:#427ea3}
+  background-repeat:repeat;background-color:#427ea3;}
 .sidebars .region-sidebar-first h3 a,
 .sidebars .region-sidebar-first h3 a.active,
 .sidebars .region-sidebar-first h3 a:visited{color:#fff;}
@@ -99,7 +99,7 @@ ul.tabs li{background-color:#529ecc;}
     border-radius:0 100px 100px 0;color:#fff;font-size:1.8em;font-weight:400;
     line-height:60px;padding-left:50px;margin-bottom:0.25em;
     background-image:url('images/texture.png');
-    background-repeat:repeat;background-color:#427ea3}
+    background-repeat:repeat;background-color:#427ea3;}
   .sidebars .sidebar h2 a,
   .sidebars .sidebar h2 a.active,
   .sidebars .sidebar h2 a:visited{color:#fff;}
@@ -107,7 +107,7 @@ ul.tabs li{background-color:#529ecc;}
     border-radius:0 100px 100px 0;color:#fff;font-size:1.8em;font-weight:400;
     line-height:60px;padding-left:50px;margin-bottom:0.25em;
     background-image:url('images/texture.png');
-    background-repeat:repeat;background-color:#427ea3}
+    background-repeat:repeat;background-color:#427ea3;}
   .sidebars .sidebar h3 a,
   .sidebars .sidebar h3 a.active,
   .sidebars .sidebar h3 a:visited{color:#fff;}
