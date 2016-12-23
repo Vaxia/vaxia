@@ -3,9 +3,9 @@ html{font-size:80%;}
 body{line-height:1.25em;background-attachment:fixed;background-color:#07E;
  background-image:url(images/background.jpg);background-repeat:repeat-x;color:#FFF;
  font-family:Verdana,Arial,Helvetica,sans-serif;}
-h1{font-size:1.5em;}
-h2{font-size:1.2em;}
-h3{font-size:1em;}
+h1{font-size:1.5em;font-family:Tahoma, Geneva, sans-serif;font-weight:bold;text-transform:uppercase;}
+h2{font-size:1.2em;font-family:Tahoma, Geneva, sans-serif;font-weight:bold;text-transform:uppercase;}
+h3{font-size:1em;font-family:Tahoma, Geneva, sans-serif;font-weight:bold;text-transform:uppercase;}
 p{font-size:100%;}
 
 /* Links */
@@ -66,8 +66,8 @@ form .edit-cancel{margin-left: 0.5em;}
 #content{padding-bottom:1em;}
 
 /* Sidebar breaks. */
-.sidebars .region-sidebar-first h2{white-space:nowrap;border-bottom:solid 2px;font-weight:bold;font-size:1.2em;margin-bottom:0.25em;}
-.sidebars .region-sidebar-first h3{white-space:nowrap;border-bottom:solid 2px;font-weight:bold;font-size:1.2em;margin-bottom:0.25em;}
+.sidebars .region-sidebar-first h2{white-space:nowrap;border-bottom:solid 2px;font-size:1.2em;margin-bottom:0.25em;}
+.sidebars .region-sidebar-first h3{white-space:nowrap;border-bottom:solid 2px;font-size:1.2em;margin-bottom:0.25em;}
 
 /* Views */
 table.views-table{width:95%;}
