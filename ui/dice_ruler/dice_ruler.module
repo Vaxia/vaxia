@@ -354,7 +354,7 @@ function _dice_ruler_form_settings() {
     '#type' => 'fieldset',
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
-    '#prefix' => '<div id="dice_ruler_dice_help_settings" class="secondary-help">',
+    '#prefix' => '<div id="dice_ruler_dice_help_settings" class="dice-ruler-help secondary-help">',
     '#suffix' => '</div>',
     '#states' => array(
       'invisible' => array(
@@ -889,15 +889,20 @@ function dice_ruler_form($form, &$form_state) {
   if (!empty($general_help)) {
     $form['dice_ruler_dice_help'] = array(
     '#title' => t('General Help'),
-    '#type' => 'item',
-    '#markup' => $general_help,
-    '#prefix' => '<div id="dice_ruler_dice_help" class="dice_ruler_dice_help">',
+    '#type' => 'fieldset',
+    '#prefix' => '<div id="dice_ruler_dice_help" class="dice-ruler-help dice_ruler_dice_help">',
     '#suffix' => '</div>',
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
     '#states' => array(
       'invisible' => array(
         ':input[name="actions"]' => array('value' => 'hidden'),
         ),
       ),
+    'help' => array(
+      '#type' => 'item',
+      '#markup' => $general_help,
+     ),
     );
   }
   $types = array('one_trait', 'two_trait', 'trait_vs', 'two_trait_vs', 'combat', 'magic');
@@ -907,7 +912,7 @@ function dice_ruler_form($form, &$form_state) {
       $form['dice_ruler_dice_help_' . $type] = array(
         '#title' => ucwords(str_replace('_', ' ', $type)) . ' ' . t('Help'),
         '#type' => 'fieldset',
-        '#prefix' => '<div id="dice_ruler_dice_help_' . $type . '" class="secondary-help">',
+        '#prefix' => '<div id="dice_ruler_dice_help_' . $type . '" class="dice-ruler-help secondary-help">',
         '#suffix' => '</div>',
         '#collapsible' => TRUE,
         '#collapsed' => TRUE,
