@@ -80,16 +80,20 @@ ul.tabs li{background-color:#529ecc;}
 @media screen and (max-width: 960px) {
 }
 @media screen and (max-width: 768px) {
+  #header #site-name{font-size:4.2em;line-height:49px;}
   /* Make block labels smaller. */
   .sidebars .region-sidebar-first h2{line-height:40px;font-size:1.6em;margin-bottom:0.25em;min-height:40px;}
   .sidebars .region-sidebar-first h3{line-height:40px;font-size:1.6em;margin-bottom:0.25em;min-height:40px;}
 }
 @media screen and (max-width: 600px) {
+  #header #site-name{padding-top:15px;font-size:2.5em;line-height:25px;}
   /* Make block labels smaller. */
   .sidebars .region-sidebar-first h2{line-height:20px;font-size:1.6em;margin-bottom:0.25em;min-height:20px;}
   .sidebars .region-sidebar-first h3{line-height:20px;font-size:1.6em;margin-bottom:0.25em;min-height:20px;}
 }
 @media screen and (max-width: 480px) {
+  #main{padding-top:30px;font-size:2.5em;line-height:25px;}
+  #navigation a{background-color:transparent;}
   /* Sidebar rounds to both sidebars. */
   .sidebars .sidebar h2{margin-left:-50px;min-height:60px;
     border-radius:0 100px 100px 0;color:#fff;font-size:1.8em;font-weight:400;
