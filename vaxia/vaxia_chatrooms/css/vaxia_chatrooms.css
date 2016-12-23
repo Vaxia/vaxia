@@ -69,7 +69,7 @@
 
 /* Images only allowed in OOC rooms */
 .node-rpg-chatroom #rpg-chat .field-name-comment-body img{display:none;}
-.node-rpg-chatroom.ooc-room #rpg-chat .field-name-comment-body img{max-width:400px;}
+.ooc-room #rpg-chat .field-name-comment-body img{max-width:400px;}
 
 /* Tweak narrative posts. */
 .node-rpg-chatroom .rpg-chat-narrative .submitted{display:none;}
