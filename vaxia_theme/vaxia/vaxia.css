@@ -60,7 +60,8 @@ form .edit-cancel{margin-left: 0.5em;}
 #main .sidebar .block-views .view-header p{margin:0;}
 #navigation{height:0;position:relative;}
 #navigation #main-menu{float:right;position:relative;top:-25px;}
-#navigation a{color:#FFF;display:block;height:20px;padding:0 .5em .12em;text-align:center;text-decoration:none;}
+#navigation a{color:#FFF;display:block;height:20px;padding:0 .5em .12em;text-align:center;text-decoration:none;
+  font-family:Tahoma, Geneva, sans-serif;font-weight:bold;text-transform:uppercase;font-size:1.2em;}
 #navigation a:hover{background:url(images/underline.jpg) center bottom no-repeat;}
 #page{max-width:100%;}
 #content{padding-bottom:1em;}
