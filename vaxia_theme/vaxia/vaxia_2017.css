@@ -86,7 +86,7 @@ ul.tabs li{background-color:#529ecc;}
   .sidebars .region-sidebar-first h3{line-height:40px;font-size:1.6em;margin-bottom:0.25em;min-height:40px;}
 }
 @media screen and (max-width:600px) {
-  #header #site-name{padding-top:15px;font-size:2.5em;line-height:25px;}
+  #header #site-name{padding-top:11px;font-size:2.5em;line-height:29px;}
   /* Make block labels smaller. */
   .sidebars .region-sidebar-first h2{line-height:20px;font-size:1.6em;margin-bottom:0.25em;min-height:20px;}
   .sidebars .region-sidebar-first h3{line-height:20px;font-size:1.6em;margin-bottom:0.25em;min-height:20px;}
