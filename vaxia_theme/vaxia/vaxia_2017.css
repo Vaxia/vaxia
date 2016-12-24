@@ -62,9 +62,8 @@ ul.tabs li{background-color:#529ecc;}
 
 /* Pullout color tweaks */
 .jsPulloutFlap{z-index:50;border-color:#529ecc;
-  border-radius:0 0 100px;height:18px;opacity:0.4;width:90%;
   background-image:url('images/texture.png');
-  background-repeat:repeat;background-color:#fff;}
+  background-repeat:repeat;background-color:#529ecc;}
 .jsPulloutContent{background-image:url('images/texture.png');background-repeat:repeat;
   background-color:#fff;border-color:#529ecc;z-index:100;}
 .jsPulloutContent #navigation a,
