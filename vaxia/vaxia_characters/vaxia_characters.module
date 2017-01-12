@@ -14,6 +14,10 @@ function vaxia_characters_permission() {
       'title' => t('view inactive sheets'),
       'description' => t('View inactive sheets.'),
     ),
+    'use template sheets'=> array(
+      'title' => t('use template sheets'),
+      'description' => t('Use template sheets.'),
+    ),
   );
 }
 
@@ -142,7 +146,12 @@ function vaxia_characters_form_node_form_alter(&$form, &$form_state, $form_id) {
 
   // Only on a character sheet that isn't yet enabled.
   if (_character_sheet_is_enabled($node) && !_character_sheet_is_playable($node)) {
-
+    // Add the options to use a template if the clone module exists.
+    if (user_access('use template sheets')) {
+      if (!isset($form_state['node']->nid) || isset($form_state['node']->is_new)) {
+        drupal_add_js(drupal_get_path('module', 'vaxia_characters') . '/js/vaxia_characters.js');
+      }
+    }
     // Hide these fields for new characters.
     $disabled = array('field_economy', 'field_npcs', 'field_items', 'field_property', 'field_achivements', 'field_skill_review');
     foreach ($disabled as $field_name) {

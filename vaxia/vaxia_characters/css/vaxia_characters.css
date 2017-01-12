@@ -1,6 +1,13 @@
 
 #character-sheet-node-form .filter-wrapper{display:none;}
 
+.vaxia-character-sheet-templates h3{margin:0;}
+.vaxia-character-sheet-templates .vaxia-character-sheet-setting{margin-top:1em;width:49%;float:left;}
+.vaxia-character-sheet-templates .vaxia-character-sheet-template-desc{margin:1em 0 1em 1em;}
+.vaxia-character-sheet-templates .vaxia-character-sheet-template-label{font-weight:bold;text-align:center;}
+.vaxia-character-sheet-templates .vaxia-character-sheet-template-buttons li{float:left;height:35px;width:49%;list-style:none;}
+.vaxia-character-sheet-templates .vaxia-character-sheet-template-button{color:#111;text-align:center;margin:0 auto;display:block;width:100px;}
+
 article td.field_aspect_one,
 article td.field_aspect_two,
 article td.field_aspect_three {
