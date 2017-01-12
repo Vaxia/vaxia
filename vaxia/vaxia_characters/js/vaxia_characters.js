@@ -48,7 +48,7 @@ Drupal.behaviors.vaxia_characters = {
           'Since this is randomly generated you may need to review it to make sure it makes sense.')
           .show().delay('2500').fadeOut(2500);
         // General details.
-        $('#character-sheet-node-form #edit-field-tag-realm-und').val(vaxia_characters_template_realm(realm, template));
+        $('#character-sheet-node-form #edit-field-tag-realm-und').val(vaxia_characters_template_realm(realm, template)).change();
         var gender = vaxia_characters_template_gender(realm, template);
         var species = vaxia_characters_template_species(realm, template);
         $('#character-sheet-node-form #edit-title').val(vaxia_characters_template_name(realm, template));
