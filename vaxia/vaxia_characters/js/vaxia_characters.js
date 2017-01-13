@@ -43,9 +43,8 @@ Drupal.behaviors.vaxia_characters = {
       var realm = $(clicked).attr('realm');
       var realmName = realm.charAt(0).toUpperCase() + realm.slice(1);
       $('.vaxia-character-sheet-template-feedback').html('You selected a ' + template + ' which is a ' + realmName + ' concept. ' +
-        'The form has been filled out with this information. ' +
-        'Since this is randomly generated you may need to review it to make sure it makes sense.')
-        .show().delay('2500').fadeOut(2500);
+        'Please allow a moment for us to fill out the sheet for you. ' +
+        'Since this is randomly generated you may need to review it to make sure it makes sense.').show();
       // General details.
       $('#character-sheet-node-form #edit-field-tag-realm-und').val(vaxia_characters_template_realm(realm, template)).change();
       var gender = vaxia_characters_template_gender(realm, template);
@@ -640,6 +639,8 @@ Drupal.behaviors.vaxia_characters = {
     }
 
     function _vaxia_characters_template_skills(realm, template) {
+      // Update the feedback.
+      $('.vaxia-character-sheet-template-feedback').html('Your sheet is ready. Enjoy!').delay('2500').fadeOut(2500);
       // And set the values for each template.
       switch(template) {
         case 'wizard':
