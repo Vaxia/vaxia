@@ -632,10 +632,10 @@ Drupal.behaviors.vaxia_characters = {
       $('#character-sheet-node-form #edit-field-skill-und-add-more').trigger('mousedown');
       var skill2 = setTimeout(function() {
         $('#character-sheet-node-form #edit-field-skill-und-add-more--2').trigger('mousedown');
-      }, 10000);
+      }, 3000);
       var skill3 = setTimeout(function() {
         _vaxia_characters_template_skills(realm, template);
-      }, 20000);
+      }, 6000);
     }
 
     function _vaxia_characters_template_skills(realm, template) {
