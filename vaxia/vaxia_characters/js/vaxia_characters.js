@@ -628,7 +628,7 @@ Drupal.behaviors.vaxia_characters = {
     }
 
     function vaxia_characters_template_skills(realm, template) {
-      // Set up two skills.
+      // Set up two skills. @todo - switch to set interval.
       $('#character-sheet-node-form #edit-field-skill-und-add-more').trigger('mousedown');
       var skill2 = setTimeout(function() {
         $('#character-sheet-node-form #edit-field-skill-und-add-more--2').trigger('mousedown');
