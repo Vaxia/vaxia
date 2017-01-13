@@ -19,10 +19,10 @@ Drupal.behaviors.vaxia_characters = {
         '<div class="vaxia-character-sheet-setting">' +
         '<div class="vaxia-character-sheet-template-label">Fantasy Concepts</div>' +
         '<ul class="vaxia-character-sheet-template-buttons">' +
-        '<li><a class="button vaxia-character-sheet-template-button" realm="vaxia" template="wizard" href="#">Wizard</a></li>' +
+        '<li><a class="button vaxia-character-sheet-template-button" realm="vaxia" template="mage" href="#">Mage</a></li>' +
         '<li><a class="button vaxia-character-sheet-template-button" realm="vaxia" template="rogue" href="#">Rogue</a></li>' +
         '<li><a class="button vaxia-character-sheet-template-button" realm="vaxia" template="fighter" href="#">Fighter</a></li>' +
-        '<li><a class="button vaxia-character-sheet-template-button" realm="vaxia" template="cleric" href="#">Cleric</a></li>' +
+        '<li><a class="button vaxia-character-sheet-template-button" realm="vaxia" template="healer" href="#">Healer</a></li>' +
         '</ul></div>' +
         '<div class="vaxia-character-sheet-setting">' +
         '<div class="vaxia-character-sheet-template-label">Science Fiction Concepts</div>' +
@@ -76,7 +76,7 @@ Drupal.behaviors.vaxia_characters = {
     function vaxia_characters_template_species(realm, template) {
       // Default by realm.
       if (realm == 'sirian') {
-        var species = ['metalborn'];//['human', 'human', 'human', 'human', 'human', 'human','metalborn'];
+        var species = ['human', 'human', 'human', 'human', 'human', 'human','metalborn'];
         species = vaxia_characters_template_random(species);
         $('#character-sheet-node-form #edit-field-sirian-species-und').val(species);
       }
@@ -643,7 +643,7 @@ Drupal.behaviors.vaxia_characters = {
       $('.vaxia-character-sheet-template-feedback').html('Your sheet is ready. Enjoy!').delay('2500').fadeOut(2500);
       // And set the values for each template.
       switch(template) {
-        case 'wizard':
+        case 'mage':
           var skillname = ['Elementalist', 'Spellcraft', 'Item Craft'];
           var skillval = [40, 30, 30];
           var skilldesc = [
@@ -679,7 +679,7 @@ Drupal.behaviors.vaxia_characters = {
           var aspect2 = ['1141', '1141', '1138'];
           var aspect3 = ['1129', '1139', '1140'];
         break;
-        case 'cleric':
+        case 'healer':
           var skillname = ['Healing', 'Charismatic', 'Fighting'];
           var skillval = [40, 30, 30];
           var skilldesc = [
