@@ -592,7 +592,7 @@ Drupal.behaviors.vaxia_characters = {
     function vaxia_characters_template_stats(realm, template) {
       // And set the values for each template.
       switch(template) {
-        case 'wizard':
+        case 'mage':
           var stats = [25,25,20,30,40,35,25];
         break;
         case 'rogue':
@@ -601,7 +601,7 @@ Drupal.behaviors.vaxia_characters = {
         case 'fighter':
           var stats = [25,30,40,35,25,25,20];
         break;
-        case 'cleric':
+        case 'healer':
           var stats = [25,25,20,25,40,35,30];
         break;
         case 'engineer':
