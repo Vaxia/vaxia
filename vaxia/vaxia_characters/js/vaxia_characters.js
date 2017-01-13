@@ -1,118 +1,117 @@
 /* jQuery driven theme Behaviors. */
 Drupal.behaviors.vaxia_characters = {
-  attach: function(context) { (function($) {
+  attach: function(context, settings) { (function($) {
 
   /* Add buttons for the javascript preloads. */
   $('document').ready(function() {
-    $('.node-character_sheet-form').once(function (index) {
 
-      function vaxia_characters_init() {
-          var template_form = '' +
-          '<div class="vaxia-character-sheet-template-feedback messages--status messages status"></div>' +
-          '<fieldset class="collapsible form-wrapper vaxia-character-sheet-templates" id="edit-field-templates">' +
-          '<legend><span class="fieldset-legend">' +
-          '<a class="fieldset-title" href="#"><span class="fieldset-legend-prefix element-invisible">Hide</span> Character wizard</a>' +
-          '<span class="summary"></span></span></legend>' +
-          '<div class="fieldset-wrapper"><div class="fieldset-description">' +
-          '<h3>Would you like to make this quick as possible? Awesome - start here!</h3>' +
-          '<div class="vaxia-character-sheet-template-desc">Click on a button to preload the stats and skills for a type of character. ' +
-          'We will pre-fill your form for a head start so you can focus on creating the background and personality.</div>' +
-          '<div class="vaxia-character-sheet-setting">' +
-          '<div class="vaxia-character-sheet-template-label">Fantasy Concepts</div>' +
-          '<ul class="vaxia-character-sheet-template-buttons">' +
-          '<li><a class="button vaxia-character-sheet-template-button" realm="vaxia" template="wizard" href="#">Wizard</a></li>' +
-          '<li><a class="button vaxia-character-sheet-template-button" realm="vaxia" template="rogue" href="#">Rogue</a></li>' +
-          '<li><a class="button vaxia-character-sheet-template-button" realm="vaxia" template="fighter" href="#">Fighter</a></li>' +
-          '<li><a class="button vaxia-character-sheet-template-button" realm="vaxia" template="cleric" href="#">Cleric</a></li>' +
-          '</ul></div>' +
-          '<div class="vaxia-character-sheet-setting">' +
-          '<div class="vaxia-character-sheet-template-label">Science Fiction Concepts</div>' +
-          '<ul class="vaxia-character-sheet-template-buttons">' +
-          '<li><a class="button vaxia-character-sheet-template-button" realm="sirian" template="engineer" href="#">Engineer</a></li>' +
-          '<li><a class="button vaxia-character-sheet-template-button" realm="sirian" template="hacker" href="#">Hacker</a></li>' +
-          '<li><a class="button vaxia-character-sheet-template-button" realm="sirian" template="gunbunny" href="#">Gunbunny</a></li>' +
-          '<li><a class="button vaxia-character-sheet-template-button" realm="sirian" template="medic" href="#">Medic</a></li>' +
-          '</ul></div>' +
-          '</div></div>' +
-          '</fieldset>';
-          $('.node-character_sheet-form').prepend(template_form);
-          $('.vaxia-character-sheet-template-feedback').hide();
+    function vaxia_characters_init() {
+        var template_form = '' +
+        '<div class="vaxia-character-sheet-template-feedback messages--status messages status"></div>' +
+        '<fieldset class="collapsible form-wrapper vaxia-character-sheet-templates" id="edit-field-templates">' +
+        '<legend><span class="fieldset-legend">' +
+        '<a class="fieldset-title" href="#"><span class="fieldset-legend-prefix element-invisible">Hide</span> Character wizard</a>' +
+        '<span class="summary"></span></span></legend>' +
+        '<div class="fieldset-wrapper"><div class="fieldset-description">' +
+        '<h3>Would you like to make this quick as possible? Awesome - start here!</h3>' +
+        '<div class="vaxia-character-sheet-template-desc">Click on a button to preload the stats and skills for a type of character. ' +
+        'We will pre-fill your form for a head start so you can focus on creating the background and personality.</div>' +
+        '<div class="vaxia-character-sheet-setting">' +
+        '<div class="vaxia-character-sheet-template-label">Fantasy Concepts</div>' +
+        '<ul class="vaxia-character-sheet-template-buttons">' +
+        '<li><a class="button vaxia-character-sheet-template-button" realm="vaxia" template="wizard" href="#">Wizard</a></li>' +
+        '<li><a class="button vaxia-character-sheet-template-button" realm="vaxia" template="rogue" href="#">Rogue</a></li>' +
+        '<li><a class="button vaxia-character-sheet-template-button" realm="vaxia" template="fighter" href="#">Fighter</a></li>' +
+        '<li><a class="button vaxia-character-sheet-template-button" realm="vaxia" template="cleric" href="#">Cleric</a></li>' +
+        '</ul></div>' +
+        '<div class="vaxia-character-sheet-setting">' +
+        '<div class="vaxia-character-sheet-template-label">Science Fiction Concepts</div>' +
+        '<ul class="vaxia-character-sheet-template-buttons">' +
+        '<li><a class="button vaxia-character-sheet-template-button" realm="sirian" template="engineer" href="#">Engineer</a></li>' +
+        '<li><a class="button vaxia-character-sheet-template-button" realm="sirian" template="hacker" href="#">Hacker</a></li>' +
+        '<li><a class="button vaxia-character-sheet-template-button" realm="sirian" template="gunbunny" href="#">Gunbunny</a></li>' +
+        '<li><a class="button vaxia-character-sheet-template-button" realm="sirian" template="medic" href="#">Medic</a></li>' +
+        '</ul></div>' +
+        '</div></div>' +
+        '</fieldset>';
+        $('.node-character_sheet-form').prepend(template_form);
+        $('.vaxia-character-sheet-template-feedback').hide();
+    }
+
+    function vaxia_characters_template_fill(clicked) {
+      var template = $(clicked).attr('template');
+      var realm = $(clicked).attr('realm');
+      var realmName = realm.charAt(0).toUpperCase() + realm.slice(1);
+      $('.vaxia-character-sheet-template-feedback').html('You selected a ' + template + ' which is a ' + realmName + ' concept. ' +
+        'The form has been filled out with this information. ' +
+        'Since this is randomly generated you may need to review it to make sure it makes sense.')
+        .show().delay('2500').fadeOut(2500);
+      // General details.
+      $('#character-sheet-node-form #edit-field-tag-realm-und').val(vaxia_characters_template_realm(realm, template)).change();
+      var gender = vaxia_characters_template_gender(realm, template);
+      var species = vaxia_characters_template_species(realm, template);
+      $('#character-sheet-node-form #edit-title').val(vaxia_characters_template_name(realm, template));
+      $('#character-sheet-node-form #edit-field-last-name-und-0-value').val(vaxia_characters_template_name(realm, template));
+      $('#character-sheet-node-form #edit-field-background-und-0-value').val(vaxia_characters_template_background(realm, template, gender, species));
+      $('#character-sheet-node-form #edit-field-personality-und-0-value').val(vaxia_characters_template_personality(realm, template, gender, species));
+      $('#character-sheet-node-form #edit-field-occupation-und-0-value').val(vaxia_characters_template_occupation(realm, template, gender, species));
+      $('#character-sheet-node-form #edit-field-description-und-0-value').val(vaxia_characters_template_description(realm, template, gender, species));
+      $('#character-sheet-node-form #edit-field-age-app-und-0-value').val(18);
+      // Set the stats and skills.
+      vaxia_characters_template_stats(realm, template);
+      vaxia_characters_template_skills(realm, template);
+      vaxia_characters_template_langs(realm, template);
+
+      // Close the wizard.
+      $('.vaxia-character-sheet-templates .fieldset-legend .fieldset-title').click();
+    }
+
+    function vaxia_characters_template_realm(realm, template) {
+      // Default by realm.
+      if (realm == 'sirian') {
+        return 726;
       }
+      return 725;
+    }
 
-      function vaxia_characters_template_fill(clicked) {
-        var template = $(clicked).attr('template');
-        var realm = $(clicked).attr('realm');
-        var realmName = realm.charAt(0).toUpperCase() + realm.slice(1);
-        $('.vaxia-character-sheet-template-feedback').html('You selected a ' + template + ' which is a ' + realmName + ' concept. ' +
-          'The form has been filled out with this information. ' +
-          'Since this is randomly generated you may need to review it to make sure it makes sense.')
-          .show().delay('2500').fadeOut(2500);
-        // General details.
-        $('#character-sheet-node-form #edit-field-tag-realm-und').val(vaxia_characters_template_realm(realm, template)).change();
-        var gender = vaxia_characters_template_gender(realm, template);
-        var species = vaxia_characters_template_species(realm, template);
-        $('#character-sheet-node-form #edit-title').val(vaxia_characters_template_name(realm, template));
-        $('#character-sheet-node-form #edit-field-last-name-und-0-value').val(vaxia_characters_template_name(realm, template));
-        $('#character-sheet-node-form #edit-field-background-und-0-value').val(vaxia_characters_template_background(realm, template, gender, species));
-        $('#character-sheet-node-form #edit-field-personality-und-0-value').val(vaxia_characters_template_personality(realm, template, gender, species));
-        $('#character-sheet-node-form #edit-field-occupation-und-0-value').val(vaxia_characters_template_occupation(realm, template, gender, species));
-        $('#character-sheet-node-form #edit-field-description-und-0-value').val(vaxia_characters_template_description(realm, template, gender, species));
-        $('#character-sheet-node-form #edit-field-age-app-und-0-value').val(18);
-        // Set the stats and skills.
-        vaxia_characters_template_stats(realm, template);
-        vaxia_characters_template_skills(realm, template);
-        vaxia_characters_template_langs(realm, template);
-
-        // Close the wizard.
-        $('.vaxia-character-sheet-templates .fieldset-legend .fieldset-title').click();
+    function vaxia_characters_template_species(realm, template) {
+      // Default by realm.
+      if (realm == 'sirian') {
+        var species = ['metalborn'];//['human', 'human', 'human', 'human', 'human', 'human','metalborn'];
+        species = vaxia_characters_template_random(species);
+        $('#character-sheet-node-form #edit-field-sirian-species-und').val(species);
       }
+      else {
+        var species = ['human', 'human', 'human', 'half-elf', 'half-elf', 'half-elf',
+          'elf', 'elf',  'dwarf', 'orc', 'half-orc', 'gnome'];
+        species = vaxia_characters_template_random(species);
+        $('#character-sheet-node-form #edit-field-race-und').val(species);
+      }
+      return species;
+    }
 
-      function vaxia_characters_template_realm(realm, template) {
-        // Default by realm.
-        if (realm == 'sirian') {
-          return 726;
+    function vaxia_characters_template_gender(realm, template) {
+      var genders = ['male', 'female', 'hard to tell'];
+      var gender = vaxia_characters_template_random(genders);
+      // Set the value for the form.
+      $('#character-sheet-node-form #edit-field-sex-und-0-value').val(gender);
+      // Get the value for the final search and replace.
+      // Dev note: Apologies here, I know this isn't accurate *at all* for NB but for the
+      // sake of simplicity and purposes of getting players started fast, needed. You can still
+      // change the pronouns by editing the generated text and apparent gender display.
+      if (gender == 'hard to tell') {
+        // Hard to tell option.
+        var random = Math.round(Math.random());
+        gender = 'male';
+        if (random) {
+          gender = 'female';
         }
-        return 725;
       }
+      return gender;
+    }
 
-      function vaxia_characters_template_species(realm, template) {
-        // Default by realm.
-        if (realm == 'sirian') {
-          var species = ['metalborn'];//['human', 'human', 'human', 'human', 'human', 'human','metalborn'];
-          species = vaxia_characters_template_random(species);
-          $('#character-sheet-node-form #edit-field-sirian-species-und').val(species);
-        }
-        else {
-          var species = ['human', 'human', 'human', 'half-elf', 'half-elf', 'half-elf',
-            'elf', 'elf',  'dwarf', 'orc', 'half-orc', 'gnome'];
-          species = vaxia_characters_template_random(species);
-          $('#character-sheet-node-form #edit-field-race-und').val(species);
-        }
-        return species;
-      }
-
-      function vaxia_characters_template_gender(realm, template) {
-        var genders = ['male', 'female', 'hard to tell'];
-        var gender = vaxia_characters_template_random(genders);
-        // Set the value for the form.
-        $('#character-sheet-node-form #edit-field-sex-und-0-value').val(gender);
-        // Get the value for the final search and replace.
-        // Dev note: Apologies here, I know this isn't accurate *at all* for NB but for the
-        // sake of simplicity and purposes of getting players started fast, needed. You can still
-        // change the pronouns by editing the generated text and apparent gender display.
-        if (gender == 'hard to tell') {
-          // Hard to tell option.
-          var random = Math.round(Math.random());
-          gender = 'male';
-          if (random) {
-            gender = 'female';
-          }
-        }
-        return gender;
-      }
-
-      function vaxia_characters_template_name(realm, template) {
-        var first = [
+    function vaxia_characters_template_name(realm, template) {
+      var first = [
 'a', 'e', 'i', 'o', 'u', 'y', 'ace', 'ach', 'ada', 'adh', 'aed', 'ael', 'aer', 'agh', 'aid',
 'aig', 'ail', 'ain', 'air', 'ais', 'ait', 'ala', 'ald', 'all', 'ana', 'and', 'ane', 'ang',
 'ani', 'ann', 'ans', 'ant', 'any', 'ara', 'ard', 'are', 'ari', 'arn', 'arr', 'art', 'ase',
@@ -152,13 +151,13 @@ Drupal.behaviors.vaxia_characters = {
 'ulf', 'una', 'und', 'unt', 'ure', 'urg', 'urn', 'ury', 'ust', 'uth', 'val', 'van', 'var',
 'vel', 'ven', 'ver', 'vie', 'vin', 'vis', 'von', 'vor', 'vyn', 'wan', 'wel', 'wen', 'win',
 'wyn', 'yan', 'yce', 'ydd', 'yna', 'yne', 'ynn', 'yon', 'yth', 'zel'
-        ];
-        var name = vaxia_characters_template_string(first, first, 2, 1, '');
-        return name.charAt(0).toUpperCase() + name.slice(1);
-      }
+      ];
+      var name = vaxia_characters_template_string(first, first, 2, 1, '');
+      return name.charAt(0).toUpperCase() + name.slice(1);
+    }
 
-      function vaxia_characters_template_background(realm, template, gender, species) {
-        var first = [
+    function vaxia_characters_template_background(realm, template, gender, species) {
+      var first = [
 ' disturbing ',
 ' dreadful ',
 ' gruesome ',
@@ -180,8 +179,8 @@ Drupal.behaviors.vaxia_characters = {
 ' small ',
 ' decent ',
 ' successful'
-        ];
-        var second = [
+      ];
+      var second = [
 ' town ',
 ' city ',
 ' village ',
@@ -191,9 +190,9 @@ Drupal.behaviors.vaxia_characters = {
 ' commune ',
 ' orphanage ',
 ' street '
-        ];
-        var background = ' Ze grew up in a ' + vaxia_characters_template_string(first, second, 1, 1, '');
-        first = [
+      ];
+      var background = ' Ze grew up in a ' + vaxia_characters_template_string(first, second, 1, 1, '');
+      first = [
 ' without worry until ze was about ',
 ' out of trouble until ze was about ',
 ' free of worries until ze was about ',
@@ -204,16 +203,16 @@ Drupal.behaviors.vaxia_characters = {
 ' a rough life until ze was about ',
 ' a quiet life until ze was about ',
 ' in poverty until ze was about '
-        ];
-        second = [
+      ];
+      second = [
 ' 7 ',
 ' 10 ',
 ' 12 ',
 ' 15 ',
 ' 18 '
-        ];
-        background = background + ' and lived' + vaxia_characters_template_string(first, second, 1, 1, '') + 'years old. ';
-        first = [
+      ];
+      background = background + ' and lived' + vaxia_characters_template_string(first, second, 1, 1, '') + 'years old. ';
+      first = [
 ' gained responsibilities after ',
 ' gained new responsibilities after ',
 ' started to travel a lot after ',
@@ -252,7 +251,7 @@ Drupal.behaviors.vaxia_characters = {
 ' destroyed someone\'s life during ',
 ' destroyed someone\'s life by accident during '
 ];
-        second = [
+      second = [
 ' a freak fire.',
 ' a robbery gone wrong.',
 ' a terrible disaster.',
@@ -274,9 +273,9 @@ Drupal.behaviors.vaxia_characters = {
 ' a government takeover.',
 ' a rebellion.',
 ' a revolution.'
-        ];
-        background = background + 'Then ze ' + vaxia_characters_template_string(first, second, 1, 1, '');
-        first = [
+      ];
+      background = background + 'Then ze ' + vaxia_characters_template_string(first, second, 1, 1, '');
+      first = [
 ' with the support of great friends ',
 ' alongside great friends ',
 ' with amazing, new friends ',
@@ -314,8 +313,8 @@ Drupal.behaviors.vaxia_characters = {
 ' with a loyal friend ',
 ' reunited with a friend ',
 ' reunited with a lost pet '
-        ];
-        second = [
+      ];
+      second = [
 ' ze is reaching great success.',
 ' ze is finding a way to the top.',
 ' ze is fulfilling all dreams.',
@@ -345,13 +344,13 @@ Drupal.behaviors.vaxia_characters = {
 ' ze is somebody who could change the world.',
 ' ze is an unstoppable force.',
 ' ze is a friend you\'d want by your side.'
-        ];
-        background = background + ' Now ' + vaxia_characters_template_string(first, second, 1, 1, '');
-        return vaxia_characters_template_personalize(background, gender, species);
-      }
+      ];
+      background = background + ' Now ' + vaxia_characters_template_string(first, second, 1, 1, '');
+      return vaxia_characters_template_personalize(background, gender, species);
+    }
 
-      function vaxia_characters_template_personality(realm, template, gender, species) {
-        var first = [
+    function vaxia_characters_template_personality(realm, template, gender, species) {
+      var first = [
 ' Ze is an adventurous young SPECIES ',
 ' Ze is an affectionate young SPECIES ',
 ' Ze is an analytical young SPECIES ',
@@ -407,8 +406,8 @@ Drupal.behaviors.vaxia_characters = {
 ' Ze is a whimsical young SPECIES ',
 ' Ze is a wise young SPECIES ',
 ' Ze is a witty young SPECIES '
-        ];
-        var second = [
+      ];
+      var second = [
 ' with anxious tendancies. ',
 ' with arrogant tendancies. ',
 ' with bewildered tendancies. ',
@@ -439,9 +438,9 @@ Drupal.behaviors.vaxia_characters = {
 ' with stubborn tendancies. ',
 ' with timid tendancies. ',
 ' with uncontrolled tendancies. '
-        ];
-        var personality = vaxia_characters_template_string(first, second, 1, 1, '');
-        first = [
+      ];
+      var personality = vaxia_characters_template_string(first, second, 1, 1, '');
+      first = [
 ' This is to be expected from someone ',
 ' But what else do you expect from someone ',
 ' This is not surprising considering for someone ',
@@ -449,19 +448,19 @@ Drupal.behaviors.vaxia_characters = {
 ' But this is all just a facade, for someone ',
 ' But there is more than this to someone ',
 ' But there is more than meets the eye, not surprising for someone '
-        ];
-        second = [
+      ];
+      second = [
 ' with zir past. ',
 ' with zir potential. ',
 ' with zir future plans. ',
 ' with zir raising. ',
-        ];
-        personality = personality + vaxia_characters_template_string(first, second, 1, 1, '');
-        return vaxia_characters_template_personalize(personality, gender, species);
-      }
+      ];
+      personality = personality + vaxia_characters_template_string(first, second, 1, 1, '');
+      return vaxia_characters_template_personalize(personality, gender, species);
+    }
 
-      function vaxia_characters_template_occupation(realm, template, gender, species) {
-        var first = [
+    function vaxia_characters_template_occupation(realm, template, gender, species) {
+      var first = [
 ' strange ',
 ' weird ',
 ' ever changing ',
@@ -497,20 +496,20 @@ Drupal.behaviors.vaxia_characters = {
 ' vicious ',
 ' villainous ',
 ' corrupt '
-        ];
-        var occupation = ' Ze is a ' + vaxia_characters_template_string(first, first, 1, 1, ' and ') + template + '.';
-        return vaxia_characters_template_personalize(occupation, gender, species);
-      }
+      ];
+      var occupation = ' Ze is a ' + vaxia_characters_template_string(first, first, 1, 1, ' and ') + template + '.';
+      return vaxia_characters_template_personalize(occupation, gender, species);
+    }
 
-      function vaxia_characters_template_description(realm, template, gender, species) {
-        var first = [
+    function vaxia_characters_template_description(realm, template, gender, species) {
+      var first = [
 'very tall ',
 'tall ',
 'average height ',
 'short ',
 'very short '
-        ];
-        var second = [
+      ];
+      var second = [
 ' with blue ',
 ' with green ',
 ' with brown ',
@@ -525,9 +524,9 @@ Drupal.behaviors.vaxia_characters = {
 ' with chestnut ',
 ' with chestnut ',
 ' with silver '
-        ];
-        var description = ' Ze is ' + vaxia_characters_template_string(first, second, 1, 1, '') + 'eyes.';
-        first = [
+      ];
+      var description = ' Ze is ' + vaxia_characters_template_string(first, second, 1, 1, '') + 'eyes.';
+      first = [
 ' short ',
 ' short spiky ',
 ' short bristly ',
@@ -551,8 +550,8 @@ Drupal.behaviors.vaxia_characters = {
 ' curly ',
 ' coily ',
 ' shoulder-length '
-        ];
-        second = [
+      ];
+      second = [
 ' purple ',
 ' blue ',
 ' green ',
@@ -586,237 +585,245 @@ Drupal.behaviors.vaxia_characters = {
 ' chestnut ',
 ' silver ',
 ' striped '
-        ];
-        description = description + ' Ze has ' + vaxia_characters_template_string(first, second, 1, 1, '') + ' hair.';
-        return vaxia_characters_template_personalize(description, gender, species);
-      }
+      ];
+      description = description + ' Ze has ' + vaxia_characters_template_string(first, second, 1, 1, '') + ' hair.';
+      return vaxia_characters_template_personalize(description, gender, species);
+    }
 
-      function vaxia_characters_template_stats(realm, template) {
-        // And set the values for each template.
-        switch(template) {
-          case 'wizard':
-            var stats = [25,25,20,30,40,35,25];
-          break;
-          case 'rogue':
-            var stats = [25,20,40,35,30,25,25];
-          break;
-          case 'fighter':
-            var stats = [25,30,40,35,25,25,20];
-          break;
-          case 'cleric':
-            var stats = [25,25,20,25,40,35,30];
-          break;
-          case 'engineer':
-            var stats = [25,25,25,35,40,30,20];
-          break;
-          case 'hacker':
-            var stats = [25,25,20,35,40,25,30];
-          break;
-          case 'gunbunny':
-            var stats = [25,30,35,40,25,25,20];
-          break;
-          case 'medic':
-            var stats = [25,25,20,35,40,30,25];
-          break;
-        }
-        // Set the given stats.
-        $('#character-sheet-node-form #edit-field-life-und-0-value').val(stats[0]);
-        $('#character-sheet-node-form #edit-field-endurance-und-0-value').val(stats[1]);
-        $('#character-sheet-node-form #edit-field-strength-und-0-value').val(stats[2]);
-        $('#character-sheet-node-form #edit-field-dexterity-und-0-value').val(stats[3]);
-        $('#character-sheet-node-form #edit-field-intelligence-und-0-value').val(stats[4]);
-        $('#character-sheet-node-form #edit-field-spirituality-und-0-value').val(stats[5]);
-        $('#character-sheet-node-form #edit-field-charisma-und-0-value').val(stats[6]);
+    function vaxia_characters_template_stats(realm, template) {
+      // And set the values for each template.
+      switch(template) {
+        case 'wizard':
+          var stats = [25,25,20,30,40,35,25];
+        break;
+        case 'rogue':
+          var stats = [25,20,40,35,30,25,25];
+        break;
+        case 'fighter':
+          var stats = [25,30,40,35,25,25,20];
+        break;
+        case 'cleric':
+          var stats = [25,25,20,25,40,35,30];
+        break;
+        case 'engineer':
+          var stats = [25,25,25,35,40,30,20];
+        break;
+        case 'hacker':
+          var stats = [25,25,20,35,40,25,30];
+        break;
+        case 'gunbunny':
+          var stats = [25,30,35,40,25,25,20];
+        break;
+        case 'medic':
+          var stats = [25,25,20,35,40,30,25];
+        break;
       }
+      // Set the given stats.
+      $('#character-sheet-node-form #edit-field-life-und-0-value').val(stats[0]);
+      $('#character-sheet-node-form #edit-field-endurance-und-0-value').val(stats[1]);
+      $('#character-sheet-node-form #edit-field-strength-und-0-value').val(stats[2]);
+      $('#character-sheet-node-form #edit-field-dexterity-und-0-value').val(stats[3]);
+      $('#character-sheet-node-form #edit-field-intelligence-und-0-value').val(stats[4]);
+      $('#character-sheet-node-form #edit-field-spirituality-und-0-value').val(stats[5]);
+      $('#character-sheet-node-form #edit-field-charisma-und-0-value').val(stats[6]);
+    }
 
-      function vaxia_characters_template_skills(realm, template) {
-        // Set up three skills.
-        $('#character-sheet-node-form #edit-field-skill-und-add-more').click();
-        // Wait for response. Then click again.
-        $('#character-sheet-node-form #edit-field-skill-und-add-more--2').click();
-        // And set the values for each template.
-        switch(template) {
-          case 'wizard':
-            var skillname = ['Elementalist', 'Spellcraft', 'Item Craft'];
-            var skillval = [40, 30, 30];
-            var skilldesc = [
+    function vaxia_characters_template_skills(realm, template) {
+      // Set up two skills.
+      $('#character-sheet-node-form #edit-field-skill-und-add-more').trigger('mousedown');
+      var skill2 = setTimeout(function() {
+        $('#character-sheet-node-form #edit-field-skill-und-add-more--2').trigger('mousedown');
+      }, 10000);
+      var skill3 = setTimeout(function() {
+        _vaxia_characters_template_skills(realm, template);
+      }, 20000);
+    }
+
+    function _vaxia_characters_template_skills(realm, template) {
+      // And set the values for each template.
+      switch(template) {
+        case 'wizard':
+          var skillname = ['Elementalist', 'Spellcraft', 'Item Craft'];
+          var skillval = [40, 30, 30];
+          var skilldesc = [
 'The ability to use the element of fire to attack, defend, and shield others.',
 'The ability to understand principles of magic, and analyze magical effects in the field.',
 'The ability to create magical items to lock in the spells of others or your own.'
-            ];
-            var aspect1 = ['1145', '1131', '1127'];
-            var aspect2 = ['1141', '1130', '1129'];
-            var aspect3 = ['1142', '1130', '1128'];
-          break;
-          case 'rogue':
-            var skillname = ['Acrobatics', 'Fighting', 'Alertness'];
-            var skillval = [40, 30, 30];
-            var skilldesc = [
+          ];
+          var aspect1 = ['1145', '1131', '1127'];
+          var aspect2 = ['1141', '1130', '1129'];
+          var aspect3 = ['1142', '1130', '1128'];
+        break;
+        case 'rogue':
+          var skillname = ['Acrobatics', 'Fighting', 'Alertness'];
+          var skillval = [40, 30, 30];
+          var skilldesc = [
 'The ability to move quickly, quietly, and acrobatically.',
 'The ability to use a dagger to attack and defend, and to maintain the weapon.',
 'The ability to use eyes and ears to detect trouble, and avoid traps.'
-            ];
-            var aspect1 = ['1143', '1145', '1131'];
-            var aspect2 = ['1141', '1141', '1131'];
-            var aspect3 = ['1134', '1129', '1144'];
-          break;
-          case 'fighter':
-            var skillname = ['Guns', 'Martial Arts', 'Taunt'];
-            var skillval = [40, 30, 30];
-            var skilldesc = [
+          ];
+          var aspect1 = ['1143', '1145', '1131'];
+          var aspect2 = ['1141', '1141', '1131'];
+          var aspect3 = ['1134', '1129', '1144'];
+        break;
+        case 'fighter':
+          var skillname = ['Guns', 'Martial Arts', 'Taunt'];
+          var skillval = [40, 30, 30];
+          var skilldesc = [
 'The ability to use a sword to attack and defend, and to maintain the weapon.',
 'The ability to fight barehanded and anticipate opponents in a fight.',
 'The ability to read people, discourage them, and convince them of lies.'
-            ];
-            var aspect1 = ['1145', '1145', '1131'];
-            var aspect2 = ['1141', '1141', '1138'];
-            var aspect3 = ['1129', '1139', '1140'];
-          break;
-          case 'cleric':
-            var skillname = ['Healing', 'Charismatic', 'Fighting'];
-            var skillval = [40, 30, 30];
-            var skilldesc = [
+          ];
+          var aspect1 = ['1145', '1145', '1131'];
+          var aspect2 = ['1141', '1141', '1138'];
+          var aspect3 = ['1129', '1139', '1140'];
+        break;
+        case 'cleric':
+          var skillname = ['Healing', 'Charismatic', 'Fighting'];
+          var skillval = [40, 30, 30];
+          var skilldesc = [
 'The ability to heal others, shield them from harm, and detect illnesses.',
 'The ability to read people, encourage them, and convince them to follow you.',
 'The ability to use a staff to attack and defend, and to maintain the weapon.'
-            ];
-            var aspect1 = ['1129', '1131', '1145'];
-            var aspect2 = ['1142', '1138', '1141'];
-            var aspect3 = ['1131', '1139', '1129'];
-          break;
-          case 'engineer':
-            var skillname = ['Repair', 'Programming', 'Drones'];
-            var skillval = [40, 30, 30];
-            var skilldesc = [
+          ];
+          var aspect1 = ['1129', '1131', '1145'];
+          var aspect2 = ['1142', '1138', '1141'];
+          var aspect3 = ['1131', '1139', '1129'];
+        break;
+        case 'engineer':
+          var skillname = ['Repair', 'Programming', 'Drones'];
+          var skillval = [40, 30, 30];
+          var skilldesc = [
 'The ability to repair engines, craft new ones, and understand ones encountered in the field.',
 'The ability to repair programs, craft new ones, and understand ones encountered in the field.',
 'The ability to operate and repair a drone as a companion. (Comes with free companion!)'
-            ];
-            var aspect1 = ['1129', '1129', '1133'];
-            var aspect2 = ['1127', '1127', '1129'];
-            var aspect3 = ['1130', '1130', '1127'];
-          break;
-          case 'hacker':
-            var skillname = ['Hacking', 'Alertness', 'Guns'];
-            var skillval = [40, 30, 30];
-            var skilldesc = [
+          ];
+          var aspect1 = ['1129', '1129', '1133'];
+          var aspect2 = ['1127', '1127', '1129'];
+          var aspect3 = ['1130', '1130', '1127'];
+        break;
+        case 'hacker':
+          var skillname = ['Hacking', 'Alertness', 'Guns'];
+          var skillval = [40, 30, 30];
+          var skilldesc = [
 'The ability to bypass protections on systems, gather information and weaken technical defenses.',
 'The ability to use eyes and ears to detect trouble, and avoid traps.',
 'The ability to use a gun to attack and defend, and to maintain the weapon.'
-            ];
-            var aspect1 = ['1131', '1131', '1145'];
-            var aspect2 = ['1144', '1131', '1141'];
-            var aspect3 = ['1140', '1144', '1129'];
-          break;
-          case 'gunbunny':
-            var skillname = ['Guns', 'Martial Arts', 'Taunt'];
-            var skillval = [40, 30, 30];
-            var skilldesc = [
+          ];
+          var aspect1 = ['1131', '1131', '1145'];
+          var aspect2 = ['1144', '1131', '1141'];
+          var aspect3 = ['1140', '1144', '1129'];
+        break;
+        case 'gunbunny':
+          var skillname = ['Guns', 'Martial Arts', 'Taunt'];
+          var skillval = [40, 30, 30];
+          var skilldesc = [
 'The ability to use a gun to attack and defend, and to maintain the weapon.',
 'The ability to fight barehanded and anticipate opponents in a fight.',
 'The ability to read people, discourage them, and convince them of lies.'
-            ];
-            var aspect1 = ['1145', '1145', '1131'];
-            var aspect2 = ['1141', '1141', '1138'];
-            var aspect3 = ['1129', '1139', '1140'];
-          break;
-          case 'medic':
-            var skillname = ['Healing', 'Charismatic', 'Guns'];
-            var skillval = [40, 30, 30];
-            var skilldesc = [
+          ];
+          var aspect1 = ['1145', '1145', '1131'];
+          var aspect2 = ['1141', '1141', '1138'];
+          var aspect3 = ['1129', '1139', '1140'];
+        break;
+        case 'medic':
+          var skillname = ['Healing', 'Charismatic', 'Guns'];
+          var skillval = [40, 30, 30];
+          var skilldesc = [
 'The ability to heal others, shield them from harm, and detect illnesses.',
 'The ability to read people, encourage them, and convince them to follow you.',
 'The ability to use a gun to attack and defend, and to maintain the weapon.'
-            ];
-            var aspect1 = ['1129', '1131', '1145'];
-            var aspect2 = ['1142', '1138', '1141'];
-            var aspect3 = ['1131', '1139', '1129'];
-          break;
-        }
-        // Set the given skills. Name.
-        $('#character-sheet-node-form #edit-field-skill-und-0-field-skill-name-und-0-value--3').val(skillname[0]);
-        $('#character-sheet-node-form #edit-field-skill-und-1-field-skill-name-und-0-value--2').val(skillname[1]);
-        $('#character-sheet-node-form #edit-field-skill-und-2-field-skill-name-und-0-value').val(skillname[2]);
-        // Value.
-        $('#character-sheet-node-form #edit-field-skill-und-0-field-skill-value-und-0-value--3').val(skillval[0]);
-        $('#character-sheet-node-form #edit-field-skill-und-1-field-skill-value-und-0-value--2').val(skillval[1]);
-        $('#character-sheet-node-form #edit-field-skill-und-2-field-skill-value-und-0-value').val(skillval[2]);
-        // Description.
-        $('#character-sheet-node-form #edit-field-skill-und-0-field-skill-desc-und-0-value--3').val(skilldesc[0]);
-        $('#character-sheet-node-form #edit-field-skill-und-1-field-skill-desc-und-0-value--2').val(skilldesc[1]);
-        $('#character-sheet-node-form #edit-field-skill-und-2-field-skill-desc-und-0-value').val(skilldesc[2]);
-        // Aspect1.
-        $('#character-sheet-node-form #edit-field-skill-und-0-field-aspect-one-und--3').val(aspect1[0]);
-        $('#character-sheet-node-form #edit-field-skill-und-1-field-aspect-one-und--2').val(aspect1[1]);
-        $('#character-sheet-node-form #edit-field-skill-und-2-field-aspect-one-und').val(aspect1[2]);
-        // Aspect2.
-        $('#character-sheet-node-form #edit-field-skill-und-0-field-aspect-two-und--3').val(aspect2[0]);
-        $('#character-sheet-node-form #edit-field-skill-und-1-field-aspect-two-und--2').val(aspect2[1]);
-        $('#character-sheet-node-form #edit-field-skill-und-2-field-aspect-two-und').val(aspect2[2]);
-        // Aspect3.
-        $('#character-sheet-node-form #edit-field-skill-und-0-field-aspect-three-und--3').val(aspect3[0]);
-        $('#character-sheet-node-form #edit-field-skill-und-1-field-aspect-three-und--2').val(aspect3[1]);
-        $('#character-sheet-node-form #edit-field-skill-und-2-field-aspect-three-und').val(aspect3[2]);
+          ];
+          var aspect1 = ['1129', '1131', '1145'];
+          var aspect2 = ['1142', '1138', '1141'];
+          var aspect3 = ['1131', '1139', '1129'];
+        break;
       }
+      // Set the given skills. Name.
+      $('#character-sheet-node-form #edit-field-skill-und-0-field-skill-name-und-0-value--3').val(skillname[0]);
+      $('#character-sheet-node-form #edit-field-skill-und-1-field-skill-name-und-0-value--2').val(skillname[1]);
+      $('#character-sheet-node-form #edit-field-skill-und-2-field-skill-name-und-0-value').val(skillname[2]);
+      // Value.
+      $('#character-sheet-node-form #edit-field-skill-und-0-field-skill-value-und-0-value--3').val(skillval[0]);
+      $('#character-sheet-node-form #edit-field-skill-und-1-field-skill-value-und-0-value--2').val(skillval[1]);
+      $('#character-sheet-node-form #edit-field-skill-und-2-field-skill-value-und-0-value').val(skillval[2]);
+      // Description.
+      $('#character-sheet-node-form #edit-field-skill-und-0-field-skill-desc-und-0-value--3').val(skilldesc[0]);
+      $('#character-sheet-node-form #edit-field-skill-und-1-field-skill-desc-und-0-value--2').val(skilldesc[1]);
+      $('#character-sheet-node-form #edit-field-skill-und-2-field-skill-desc-und-0-value').val(skilldesc[2]);
+      // Aspect1.
+      $('#character-sheet-node-form #edit-field-skill-und-0-field-aspect-one-und--3').val(aspect1[0]);
+      $('#character-sheet-node-form #edit-field-skill-und-1-field-aspect-one-und--2').val(aspect1[1]);
+      $('#character-sheet-node-form #edit-field-skill-und-2-field-aspect-one-und').val(aspect1[2]);
+      // Aspect2.
+      $('#character-sheet-node-form #edit-field-skill-und-0-field-aspect-two-und--3').val(aspect2[0]);
+      $('#character-sheet-node-form #edit-field-skill-und-1-field-aspect-two-und--2').val(aspect2[1]);
+      $('#character-sheet-node-form #edit-field-skill-und-2-field-aspect-two-und').val(aspect2[2]);
+      // Aspect3.
+      $('#character-sheet-node-form #edit-field-skill-und-0-field-aspect-three-und--3').val(aspect3[0]);
+      $('#character-sheet-node-form #edit-field-skill-und-1-field-aspect-three-und--2').val(aspect3[1]);
+      $('#character-sheet-node-form #edit-field-skill-und-2-field-aspect-three-und').val(aspect3[2]);
+    }
 
-      function vaxia_characters_template_langs(realm, template) {
-        // Default by realm.
-        if (realm == 'sirian') {
-          $('#character-sheet-node-form #edit-field-sirian-languages-und-dal-knw').attr('checked', true);
-          $('#character-sheet-node-form #edit-field-sirian-languages-und-roh-knw').attr('checked', true);
-          $('#character-sheet-node-form #edit-field-sirian-languages-und-cln-knw').attr('checked', true);
-        }
-        else {
-          $('#character-sheet-node-form #edit-field-vaxia-languages-und-vax-knw').attr('checked', true);
-          $('#character-sheet-node-form #edit-field-vaxia-languages-und-ink-knw').attr('checked', true);
-          $('#character-sheet-node-form #edit-field-vaxia-languages-und-elv-nat').attr('checked', true);
-        }
+    function vaxia_characters_template_langs(realm, template) {
+      // Default by realm.
+      if (realm == 'sirian') {
+        $('#character-sheet-node-form #edit-field-sirian-languages-und-dal-knw').attr('checked', true);
+        $('#character-sheet-node-form #edit-field-sirian-languages-und-roh-knw').attr('checked', true);
+        $('#character-sheet-node-form #edit-field-sirian-languages-und-cln-knw').attr('checked', true);
       }
+      else {
+        $('#character-sheet-node-form #edit-field-vaxia-languages-und-vax-knw').attr('checked', true);
+        $('#character-sheet-node-form #edit-field-vaxia-languages-und-ink-knw').attr('checked', true);
+        $('#character-sheet-node-form #edit-field-vaxia-languages-und-elv-nat').attr('checked', true);
+      }
+    }
 
-      function vaxia_characters_template_string(first, second, max, min, join) {
-        var string = '';
-        for (i = 1; i <= max; i++) {
-          var rand = Math.floor( Math.random() * first.length );
-          string = string + first[rand];
-          first.splice(rand, 1);
-          var rand = Math.floor( Math.random() * second.length );
-          string = string + join + second[rand];
-          second.splice(rand, 1);
-          // Option to return early.
-          if (i >= min && i <= max) {
-            var early = Math.round(Math.random());
-            if (early == 1) {
-              return string;
-            }
+    function vaxia_characters_template_string(first, second, max, min, join) {
+      var string = '';
+      for (i = 1; i <= max; i++) {
+        var rand = Math.floor( Math.random() * first.length );
+        string = string + first[rand];
+        first.splice(rand, 1);
+        var rand = Math.floor( Math.random() * second.length );
+        string = string + join + second[rand];
+        second.splice(rand, 1);
+        // Option to return early.
+        if (i >= min && i <= max) {
+          var early = Math.round(Math.random());
+          if (early == 1) {
+            return string;
           }
         }
-        // Done, return.
-        return string;
       }
+      // Done, return.
+      return string;
+    }
 
-      function vaxia_characters_template_random(items) {
-        return items[Math.floor( Math.random() * items.length )];
+    function vaxia_characters_template_random(items) {
+      return items[Math.floor( Math.random() * items.length )];
+    }
+
+    function vaxia_characters_template_personalize(string, gender, species) {
+      // Figure out pronouns for replacement.
+      var pronouns = [' He ', ' His ', ' he ', ' his '];
+      if (gender == 'female') {
+        var pronouns = [' She ', ' Her ', ' she ', ' her '];
       }
+      // Search and replace the string.
+      string = ' ' + string + ' ';
+      string = '' + string.replace(/ Ze /g, pronouns[0]);
+      string = '' + string.replace(/ Zir /g, pronouns[1]);
+      string = '' + string.replace(/ ze /g, pronouns[2]);
+      string = '' + string.replace(/ zir /g, pronouns[3]);
+      string = '' + string.replace(/SPECIES/g, species);
+      string = '' + string.replace(/  /g, ' ');
+      string = '' + string.replace(/  /g, ' ');
+      string = '' + string.replace(/  /g, ' ');
+      return string.trim();
+    }
 
-      function vaxia_characters_template_personalize(string, gender, species) {
-        // Figure out pronouns for replacement.
-        var pronouns = [' He ', ' His ', ' he ', ' his '];
-        if (gender == 'female') {
-          var pronouns = [' She ', ' Her ', ' she ', ' her '];
-        }
-        // Search and replace the string.
-        string = ' ' + string + ' ';
-        string = '' + string.replace(/ Ze /g, pronouns[0]);
-        string = '' + string.replace(/ Zir /g, pronouns[1]);
-        string = '' + string.replace(/ ze /g, pronouns[2]);
-        string = '' + string.replace(/ zir /g, pronouns[3]);
-        string = '' + string.replace(/SPECIES/g, species);
-        string = '' + string.replace(/  /g, ' ');
-        string = '' + string.replace(/  /g, ' ');
-        string = '' + string.replace(/  /g, ' ');
-        return string.trim();
-      }
-
+    $('.node-character_sheet-form').once(function (index) {
       // Add the display to the form.
       vaxia_characters_init();
       // Now that it's added, add the click responses.
@@ -824,8 +831,8 @@ Drupal.behaviors.vaxia_characters = {
         vaxia_characters_template_fill(this);
         return false;
       });
-
     });
+
   });
 
   })(jQuery); }
