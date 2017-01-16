@@ -1066,6 +1066,15 @@ return ($nid_fxp > 0) ? $nid_fxp : 0;';
   $handler->display->display_options['relationships']['field_wiki_source_nid']['field'] = 'field_wiki_source_nid';
   $handler->display->display_options['relationships']['field_wiki_source_nid']['required'] = TRUE;
   $handler->display->display_options['relationships']['field_wiki_source_nid']['delta'] = '-1';
+  /* Field: Content: Link */
+  $handler->display->display_options['fields']['view_node']['id'] = 'view_node';
+  $handler->display->display_options['fields']['view_node']['table'] = 'views_entity_node';
+  $handler->display->display_options['fields']['view_node']['field'] = 'view_node';
+  $handler->display->display_options['fields']['view_node']['relationship'] = 'field_wiki_source_nid';
+  $handler->display->display_options['fields']['view_node']['label'] = '';
+  $handler->display->display_options['fields']['view_node']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['view_node']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['view_node']['text'] = 'review description changes';
   /* Field: Content: Updated date */
   $handler->display->display_options['fields']['changed']['id'] = 'changed';
   $handler->display->display_options['fields']['changed']['table'] = 'node';
@@ -1073,7 +1082,7 @@ return ($nid_fxp > 0) ? $nid_fxp : 0;';
   $handler->display->display_options['fields']['changed']['relationship'] = 'field_wiki_source_nid';
   $handler->display->display_options['fields']['changed']['label'] = '';
   $handler->display->display_options['fields']['changed']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['changed']['alter']['text'] = 'This room description was updated on [changed], please review description changes.';
+  $handler->display->display_options['fields']['changed']['alter']['text'] = 'This room description was updated on [changed], please [view_node].';
   $handler->display->display_options['fields']['changed']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['changed']['date_format'] = 'short';
   $handler->display->display_options['fields']['changed']['second_date_format'] = 'privatemsg_current_day';

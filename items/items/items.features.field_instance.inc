@@ -3923,6 +3923,7 @@ function items_field_default_field_instances() {
           'delete' => 'Delete',
           'description' => TRUE,
           'edit' => 'Edit',
+          'translate' => 'Translate',
         ),
         'type' => 'field_collection_list',
         'weight' => 0,

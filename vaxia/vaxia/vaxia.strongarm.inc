@@ -62,6 +62,27 @@ function vaxia_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'diff_enable_revisions_page_node_character_sheet';
+  $strongarm->value = 1;
+  $export['diff_enable_revisions_page_node_character_sheet'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'diff_show_preview_changes_node_character_sheet';
+  $strongarm->value = 1;
+  $export['diff_show_preview_changes_node_character_sheet'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'diff_view_mode_preview_node_character_sheet';
+  $strongarm->value = 'full';
+  $export['diff_view_mode_preview_node_character_sheet'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'field_bundle_settings_node__character_sheet';
   $strongarm->value = array(
     'view_modes' => array(
@@ -98,6 +119,9 @@ function vaxia_strongarm() {
       'question' => array(
         'custom_settings' => TRUE,
       ),
+      'subscriptions' => array(
+        'custom_settings' => FALSE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(
@@ -105,16 +129,16 @@ function vaxia_strongarm() {
           'weight' => '1',
         ),
         'path' => array(
-          'weight' => '12',
+          'weight' => '14',
         ),
         'workflow' => array(
           'weight' => '13',
         ),
         'locations' => array(
-          'weight' => '15',
+          'weight' => '16',
         ),
         'badges' => array(
-          'weight' => '14',
+          'weight' => '15',
         ),
       ),
       'display' => array(

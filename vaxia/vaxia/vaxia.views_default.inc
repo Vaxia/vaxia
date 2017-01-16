@@ -223,7 +223,7 @@ function vaxia_views_default_views() {
   $handler->display->display_options['filters']['status_1']['relationship'] = 'uid';
   $handler->display->display_options['filters']['status_1']['value'] = '1';
   $handler->display->display_options['filters']['status_1']['group'] = 1;
-  /* Filter criterion: Content: NPC (field_is_npc) */
+  /* Filter criterion: Content: This is an NPC (field_is_npc) */
   $handler->display->display_options['filters']['field_is_npc_value']['id'] = 'field_is_npc_value';
   $handler->display->display_options['filters']['field_is_npc_value']['table'] = 'field_data_field_is_npc';
   $handler->display->display_options['filters']['field_is_npc_value']['field'] = 'field_is_npc_value';
@@ -285,12 +285,10 @@ function vaxia_views_default_views() {
   $handler->display->display_options['style_options']['columns'] = array(
     'title_1' => 'title_1',
     'name' => 'name',
-    'field_realm' => 'field_realm',
+    'field_tag_realm' => 'field_tag_realm',
     'created' => 'created',
     'last_updated' => 'last_updated',
     'sid' => 'sid',
-    'status' => 'status',
-    'edit_node' => 'edit_node',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
@@ -308,8 +306,8 @@ function vaxia_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
-    'field_realm' => array(
-      'sortable' => 1,
+    'field_tag_realm' => array(
+      'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
@@ -332,18 +330,6 @@ function vaxia_views_default_views() {
     'sid' => array(
       'sortable' => 1,
       'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'status' => array(
-      'sortable' => 1,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'edit_node' => array(
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -422,7 +408,7 @@ function vaxia_views_default_views() {
     'character_sheet' => 'character_sheet',
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
-  /* Filter criterion: Content: NPC (field_is_npc) */
+  /* Filter criterion: Content: This is an NPC (field_is_npc) */
   $handler->display->display_options['filters']['field_is_npc_value']['id'] = 'field_is_npc_value';
   $handler->display->display_options['filters']['field_is_npc_value']['table'] = 'field_data_field_is_npc';
   $handler->display->display_options['filters']['field_is_npc_value']['field'] = 'field_is_npc_value';
@@ -579,7 +565,7 @@ function vaxia_views_default_views() {
     'character_sheet' => 'character_sheet',
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
-  /* Filter criterion: Content: NPC (field_is_npc) */
+  /* Filter criterion: Content: This is an NPC (field_is_npc) */
   $handler->display->display_options['filters']['field_is_npc_value']['id'] = 'field_is_npc_value';
   $handler->display->display_options['filters']['field_is_npc_value']['table'] = 'field_data_field_is_npc';
   $handler->display->display_options['filters']['field_is_npc_value']['field'] = 'field_is_npc_value';
@@ -628,7 +614,7 @@ function vaxia_views_default_views() {
     'character_sheet' => 'character_sheet',
   );
   $handler->display->display_options['filters']['type_1']['group'] = 2;
-  /* Filter criterion: Content: NPC (field_is_npc) */
+  /* Filter criterion: Content: This is an NPC (field_is_npc) */
   $handler->display->display_options['filters']['field_is_npc_value_1']['id'] = 'field_is_npc_value_1';
   $handler->display->display_options['filters']['field_is_npc_value_1']['table'] = 'field_data_field_is_npc';
   $handler->display->display_options['filters']['field_is_npc_value_1']['field'] = 'field_is_npc_value';
@@ -742,10 +728,15 @@ function vaxia_views_default_views() {
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
   $handler->display->display_options['defaults']['sorts'] = FALSE;
-  /* Sort criterion: Content: NPC (field_is_npc) */
+  /* Sort criterion: Content: This is an NPC (field_is_npc) */
   $handler->display->display_options['sorts']['field_is_npc_value']['id'] = 'field_is_npc_value';
   $handler->display->display_options['sorts']['field_is_npc_value']['table'] = 'field_data_field_is_npc';
   $handler->display->display_options['sorts']['field_is_npc_value']['field'] = 'field_is_npc_value';
+  /* Sort criterion: Content: This is a generic NPC (field_is_generic_npc) */
+  $handler->display->display_options['sorts']['field_is_generic_npc_value']['id'] = 'field_is_generic_npc_value';
+  $handler->display->display_options['sorts']['field_is_generic_npc_value']['table'] = 'field_data_field_is_generic_npc';
+  $handler->display->display_options['sorts']['field_is_generic_npc_value']['field'] = 'field_is_generic_npc_value';
+  $handler->display->display_options['sorts']['field_is_generic_npc_value']['order'] = 'DESC';
   /* Sort criterion: Content: Title */
   $handler->display->display_options['sorts']['title']['id'] = 'title';
   $handler->display->display_options['sorts']['title']['table'] = 'node';
@@ -820,7 +811,7 @@ function vaxia_views_default_views() {
     'character_sheet' => 'character_sheet',
   );
   $handler->display->display_options['filters']['type_1']['group'] = 2;
-  /* Filter criterion: Content: NPC (field_is_npc) */
+  /* Filter criterion: Content: This is an NPC (field_is_npc) */
   $handler->display->display_options['filters']['field_is_npc_value']['id'] = 'field_is_npc_value';
   $handler->display->display_options['filters']['field_is_npc_value']['table'] = 'field_data_field_is_npc';
   $handler->display->display_options['filters']['field_is_npc_value']['field'] = 'field_is_npc_value';
@@ -828,6 +819,14 @@ function vaxia_views_default_views() {
     1 => '1',
   );
   $handler->display->display_options['filters']['field_is_npc_value']['group'] = 2;
+  /* Filter criterion: Workflow: Current state */
+  $handler->display->display_options['filters']['sid_1']['id'] = 'sid_1';
+  $handler->display->display_options['filters']['sid_1']['table'] = 'workflow_node';
+  $handler->display->display_options['filters']['sid_1']['field'] = 'sid';
+  $handler->display->display_options['filters']['sid_1']['value'] = array(
+    4 => '4',
+  );
+  $handler->display->display_options['filters']['sid_1']['group'] = 2;
   /* Filter criterion: User Access Permissions */
   $handler->display->display_options['filters']['php']['id'] = 'php';
   $handler->display->display_options['filters']['php']['table'] = 'views';
@@ -838,14 +837,6 @@ function vaxia_views_default_views() {
   $handler->display->display_options['filters']['php']['php_filter'] = '// If the user is able to create open NPCs or is the owner then allow access.
 global $user;
 return !( user_access(\'use NPCs\') || $row->uid == $user->uid );';
-  /* Filter criterion: Workflow: Current state */
-  $handler->display->display_options['filters']['sid_1']['id'] = 'sid_1';
-  $handler->display->display_options['filters']['sid_1']['table'] = 'workflow_node';
-  $handler->display->display_options['filters']['sid_1']['field'] = 'sid';
-  $handler->display->display_options['filters']['sid_1']['value'] = array(
-    4 => '4',
-  );
-  $handler->display->display_options['filters']['sid_1']['group'] = 2;
 
   /* Display: Block: Character sheets */
   $handler = $view->new_display('block', 'Block: Character sheets', 'my_chars_block');
@@ -874,10 +865,18 @@ return !( user_access(\'use NPCs\') || $row->uid == $user->uid );';
     ),
   );
   $handler->display->display_options['style_options']['path'] = 'nid';
+  $handler->display->display_options['style_options']['choose'] = '- Chose a Character -';
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['row_plugin'] = 'fields';
   $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['content'] = 'Select a character to view.';
+  $handler->display->display_options['header']['area']['format'] = 'wiki';
   $handler->display->display_options['defaults']['footer'] = FALSE;
   $handler->display->display_options['defaults']['empty'] = FALSE;
   /* No results behavior: Global: Text area */
@@ -923,7 +922,7 @@ return !( user_access(\'use NPCs\') || $row->uid == $user->uid );';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
   $handler->display->display_options['defaults']['sorts'] = FALSE;
-  /* Sort criterion: Content: NPC (field_is_npc) */
+  /* Sort criterion: Content: This is an NPC (field_is_npc) */
   $handler->display->display_options['sorts']['field_is_npc_value']['id'] = 'field_is_npc_value';
   $handler->display->display_options['sorts']['field_is_npc_value']['table'] = 'field_data_field_is_npc';
   $handler->display->display_options['sorts']['field_is_npc_value']['field'] = 'field_is_npc_value';
@@ -983,7 +982,7 @@ return !( user_access(\'use NPCs\') || $row->uid == $user->uid );';
     'character_sheet' => 'character_sheet',
   );
   $handler->display->display_options['filters']['type_1']['group'] = 2;
-  /* Filter criterion: Content: NPC (field_is_npc) */
+  /* Filter criterion: Content: This is an NPC (field_is_npc) */
   $handler->display->display_options['filters']['field_is_npc_value']['id'] = 'field_is_npc_value';
   $handler->display->display_options['filters']['field_is_npc_value']['table'] = 'field_data_field_is_npc';
   $handler->display->display_options['filters']['field_is_npc_value']['field'] = 'field_is_npc_value';
@@ -1343,7 +1342,7 @@ Don\'t hesitate to contact the System lead(s) or another evaller for a second op
     'character_sheet' => 'character_sheet',
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
-  /* Filter criterion: Content: NPC (field_is_npc) */
+  /* Filter criterion: Content: This is an NPC (field_is_npc) */
   $handler->display->display_options['filters']['field_is_npc_value']['id'] = 'field_is_npc_value';
   $handler->display->display_options['filters']['field_is_npc_value']['table'] = 'field_data_field_is_npc';
   $handler->display->display_options['filters']['field_is_npc_value']['field'] = 'field_is_npc_value';
@@ -1407,7 +1406,7 @@ Don\'t hesitate to contact the System lead(s) or another evaller for a second op
     3 => '3',
   );
   $handler->display->display_options['filters']['sid']['group'] = 1;
-  /* Filter criterion: Content: NPC (field_is_npc) */
+  /* Filter criterion: Content: This is an NPC (field_is_npc) */
   $handler->display->display_options['filters']['field_is_npc_value']['id'] = 'field_is_npc_value';
   $handler->display->display_options['filters']['field_is_npc_value']['table'] = 'field_data_field_is_npc';
   $handler->display->display_options['filters']['field_is_npc_value']['field'] = 'field_is_npc_value';
@@ -1479,7 +1478,7 @@ Don\'t hesitate to contact the System lead(s) or another evaller for a second op
     4 => '4',
   );
   $handler->display->display_options['filters']['sid']['group'] = 1;
-  /* Filter criterion: Content: NPC (field_is_npc) */
+  /* Filter criterion: Content: This is an NPC (field_is_npc) */
   $handler->display->display_options['filters']['field_is_npc_value']['id'] = 'field_is_npc_value';
   $handler->display->display_options['filters']['field_is_npc_value']['table'] = 'field_data_field_is_npc';
   $handler->display->display_options['filters']['field_is_npc_value']['field'] = 'field_is_npc_value';

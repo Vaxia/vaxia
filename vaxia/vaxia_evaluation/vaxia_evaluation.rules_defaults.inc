@@ -167,8 +167,7 @@ function vaxia_evaluation_default_rules_configuration() {
         { "VIEW LOOP" : {
             "VIEW" : "vaxia_character_sheets",
             "DISPLAY" : "eval2",
-            "USING" : { "uid" : [ "node:author:uid" ] },
-            "ROW VARIABLES" : { "nid" : { "nid" : "Nid" } },
+            "ROW VARIABLES" : [],
             "DO" : [
               { "workflow_rules_set_state" : {
                   "node" : [ "node" ],
@@ -222,7 +221,6 @@ function vaxia_evaluation_default_rules_configuration() {
           }
         },
         { "data_is" : { "data" : [ "node:field-is-npc" ], "value" : 0 } },
-        { "data_is" : { "data" : [ "node:field-is-open-npc" ], "value" : 0 } },
         { "data_is" : { "data" : [ "node:field-is-storyteller" ], "value" : 0 } },
         { "php_eval" : { "code" : "$has_xp = _character_sheet_get_xp($node-\\u003Enid, \\u0027xp\\u0027);\\r\\n\\/\\/ Only run this check if they don\\u0027t have XP.\\r\\nif (!$has_xp) {\\r\\n$messages = _vaxia_check_minmax_flags($node);\\r\\nreturn !empty($messages); \\/\\/ True if messages were flagged.\\r\\n}\\r\\nreturn FALSE;" } },
         { "php_eval" : { "code" : "$mm_chars = [node:author:field-characters-minmax];\\r\\n$chars = [node:author:field-characters-submitted];\\r\\n$perc = $mm_chars \\/ $chars;\\r\\nif ($perc \\u003E 0.5) {\\r\\nreturn TRUE;\\r\\n}\\r\\nreturn FALSE;" } }
@@ -286,7 +284,6 @@ function vaxia_evaluation_default_rules_configuration() {
           }
         },
         { "data_is" : { "data" : [ "node:field-is-npc" ], "value" : 0 } },
-        { "data_is" : { "data" : [ "node:field-is-open-npc" ], "value" : 0 } },
         { "data_is" : { "data" : [ "node:field-is-storyteller" ], "value" : 0 } },
         { "OR" : [
             { "data_is" : { "data" : [ "node:field-race" ], "value" : "other" } },

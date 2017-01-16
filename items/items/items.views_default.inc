@@ -994,7 +994,7 @@ function items_views_default_views() {
   $handler->display->display_options['fields']['name']['field'] = 'name';
   $handler->display->display_options['fields']['name']['relationship'] = 'uid';
   $handler->display->display_options['fields']['name']['label'] = 'Player';
-  /* Field: Content: NPC */
+  /* Field: Content: This is an NPC */
   $handler->display->display_options['fields']['field_is_npc']['id'] = 'field_is_npc';
   $handler->display->display_options['fields']['field_is_npc']['table'] = 'field_data_field_is_npc';
   $handler->display->display_options['fields']['field_is_npc']['field'] = 'field_is_npc';
@@ -1203,7 +1203,7 @@ function items_views_default_views() {
     1 => '1',
   );
   $handler->display->display_options['filters']['field_is_open_npc_value']['group'] = 3;
-  /* Filter criterion: Content: NPC (field_is_npc) */
+  /* Filter criterion: Content: This is an NPC (field_is_npc) */
   $handler->display->display_options['filters']['field_is_npc_value']['id'] = 'field_is_npc_value';
   $handler->display->display_options['filters']['field_is_npc_value']['table'] = 'field_data_field_is_npc';
   $handler->display->display_options['filters']['field_is_npc_value']['field'] = 'field_is_npc_value';

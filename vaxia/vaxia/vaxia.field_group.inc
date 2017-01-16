@@ -11,7 +11,7 @@ function vaxia_field_group_info() {
   $field_groups = array();
 
   $field_group = new stdClass();
-  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->disabled = TRUE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
   $field_group->identifier = 'group_artwork|node|character_sheet|default';
   $field_group->group_name = 'group_artwork';
@@ -115,10 +115,11 @@ function vaxia_field_group_info() {
       'label' => 'Aspects',
       'instance_settings' => array(
         'required_fields' => 1,
+        'id' => '',
         'classes' => 'group-aspects field-group-fieldset',
-        'description' => 'Select aspects for your skill to clarify for our char eval team what your skill can do. Information on aspects can be found <a href="http://vaxia.org/forums/skill-verbs/aspects" target="_blank">here</a>.',
+        'description' => 'Skill aspects determine what your skill can do in our system. Information on aspects can be found <a href="http://vaxia.org/forums/skill-verbs/aspects" target="_blank">here</a>.<br>',
       ),
-      'formatter' => 'collapsed',
+      'formatter' => 'open',
     ),
   );
   $field_groups['group_aspects|field_collection_item|field_skill|form'] = $field_group;
@@ -133,23 +134,34 @@ function vaxia_field_group_info() {
   $field_group->mode = 'form';
   $field_group->parent_name = '';
   $field_group->data = array(
-    'label' => 'Basics',
+    'label' => 'Settings',
     'weight' => '1',
     'children' => array(
       0 => 'field_is_npc',
       1 => 'field_is_storyteller',
       2 => 'field_post_color',
       3 => 'field_background_color',
-      4 => 'title',
+      4 => 'field_is_generic_npc',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
-      'formatter' => 'collapsible',
+      'label' => 'Settings',
       'instance_settings' => array(
-        'description' => '',
-        'classes' => 'group-basics field-group-fieldset',
         'required_fields' => 1,
+        'id' => '',
+        'classes' => 'group-basics field-group-fieldset',
+        'description' => '<b>When you are done creating this character be sure to check the Workflow settings at the bottom of this sheet to submit it for review.</b></br>
+</br>
+You have 300 points to distribute between stats and skills.</br>
+</br>
+* If you get stuck, please use the templates to generate character to get you started.</br>
+</br>
+* If you need more help, check out our wiki page on <a href="/wiki/character-creation" target="_blank">Character Creation</a></br>
+</br>
+* And please visit in <a href="/locations/limbo" target="_blank">Limbo</a>! We\'re always glad to help new players get started.</br>
+</br>',
       ),
+      'formatter' => 'collapsible',
     ),
   );
   $field_groups['group_basics|node|character_sheet|form'] = $field_group;
@@ -205,6 +217,7 @@ function vaxia_field_group_info() {
       8 => 'field_personal_room',
       9 => 'field_tag_realm',
       10 => 'field_age',
+      11 => 'field_is_generic_npc',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -294,7 +307,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Items',
-    'weight' => '9',
+    'weight' => '10',
     'children' => array(
       0 => 'field_economy',
       1 => 'field_items',
@@ -312,6 +325,35 @@ function vaxia_field_group_info() {
     ),
   );
   $field_groups['group_items|node|character_sheet|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_languages|node|character_sheet|form';
+  $field_group->group_name = 'group_languages';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'character_sheet';
+  $field_group->mode = 'form';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Languages',
+    'weight' => '9',
+    'children' => array(
+      0 => 'field_vaxia_languages',
+      1 => 'field_sirian_languages',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'formatter' => 'collapsible',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => 'group-languages field-group-fieldset',
+        'required_fields' => 1,
+        'id' => '',
+      ),
+    ),
+  );
+  $field_groups['group_languages|node|character_sheet|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -353,7 +395,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Notes',
-    'weight' => '10',
+    'weight' => '11',
     'children' => array(
       0 => 'field_player_notes',
       1 => 'field_character_goals',
@@ -422,6 +464,7 @@ function vaxia_field_group_info() {
       2 => 'field_occupation',
       3 => 'field_personality',
       4 => 'field_titles',
+      5 => 'title',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -530,7 +573,7 @@ function vaxia_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'SH Notes',
-    'weight' => '11',
+    'weight' => '12',
     'children' => array(
       0 => 'field_sh_notes',
       1 => 'field_sh_private_notes',
@@ -590,8 +633,6 @@ function vaxia_field_group_info() {
     'weight' => '8',
     'children' => array(
       0 => 'field_skill',
-      1 => 'field_vaxia_languages',
-      2 => 'field_sirian_languages',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -743,14 +784,15 @@ function vaxia_field_group_info() {
   // Included for use with string extractors like potx.
   t('Art');
   t('Aspects');
-  t('Basics');
   t('Descriptions');
   t('Details');
   t('Items');
+  t('Languages');
   t('Notes');
   t('Personal');
   t('Public information');
   t('SH Notes');
+  t('Settings');
   t('Skills');
   t('Stats');
   t('Tech Languages');

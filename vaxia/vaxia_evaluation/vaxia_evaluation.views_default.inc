@@ -74,6 +74,8 @@ function vaxia_evaluation_views_default_views() {
   $handler->display->display_options['fields']['type']['field'] = 'type';
   $handler->display->display_options['fields']['type']['label'] = '';
   $handler->display->display_options['fields']['type']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['type']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['type']['alter']['text'] = '[type]s';
   $handler->display->display_options['fields']['type']['element_label_colon'] = FALSE;
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';

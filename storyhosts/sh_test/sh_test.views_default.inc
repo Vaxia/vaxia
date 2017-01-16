@@ -86,6 +86,10 @@ function sh_test_views_default_views() {
       'empty_column' => 0,
     ),
   );
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['area']['id'] = 'area';
   $handler->display->display_options['empty']['area']['table'] = 'views';
@@ -242,7 +246,11 @@ function sh_test_views_default_views() {
   $handler->display->display_options['filters']['field_tag_realm_tid']['id'] = 'field_tag_realm_tid';
   $handler->display->display_options['filters']['field_tag_realm_tid']['table'] = 'field_data_field_tag_realm';
   $handler->display->display_options['filters']['field_tag_realm_tid']['field'] = 'field_tag_realm_tid';
-  $handler->display->display_options['filters']['field_tag_realm_tid']['value'] = '';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['value'] = array(
+    1004 => '1004',
+    725 => '725',
+    726 => '726',
+  );
   $handler->display->display_options['filters']['field_tag_realm_tid']['exposed'] = TRUE;
   $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['operator_id'] = 'field_tag_realm_tid_op';
   $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['label'] = 'Realm';
@@ -389,6 +397,16 @@ function sh_test_views_default_views() {
   $handler->display->display_options['display_description'] = 'SH sessions';
   $handler->display->display_options['defaults']['access'] = FALSE;
   $handler->display->display_options['access']['type'] = 'none';
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['content'] = 'Session requirements are used to determine if a session qualifies to keep an SH active or qualifies towards an ASH\'s progression in the Storyhost course. The requirements for a session are as follows:
+
+* Included two or more PCs that do not belong to the running Storyhost.
+* The session was run within the last 12 months.';
+  $handler->display->display_options['header']['area']['format'] = 'wiki';
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: User: Name */
   $handler->display->display_options['fields']['name']['id'] = 'name';
@@ -441,6 +459,28 @@ function sh_test_views_default_views() {
     'style' => 'average',
     'text' => 'average',
   );
+  /* Field: Content: Nid */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'node';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['label'] = '';
+  $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
+  /* Field: Global: PHP */
+  $handler->display->display_options['fields']['php']['id'] = 'php';
+  $handler->display->display_options['fields']['php']['table'] = 'views';
+  $handler->display->display_options['fields']['php']['field'] = 'php';
+  $handler->display->display_options['fields']['php']['label'] = 'Session Requirements';
+  $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php']['php_value'] = '// Get the node.
+$this_session = node_load($row->nid);
+$counts = FALSE;
+if (function_exists(\'sh_test_session_counts\')) {
+  $counts = sh_test_session_counts($this_session);
+}
+return ($counts) ? \'yes\' : \'no\';';
+  $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '2';
+  $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   /* Contextual filter: User: Uid */
   $handler->display->display_options['arguments']['uid']['id'] = 'uid';

@@ -34,13 +34,7 @@ function vaxia_node_info() {
       'description' => t('Character sheet'),
       'has_title' => '1',
       'title_label' => t('Name'),
-      'help' => t('Step 1: Creating a new character, the guidelines can be found here: <a href="http://vaxia.org/wiki/character-creation" target="_blanke">http://vaxia.org/wiki/character-creation</a>
-<br/><br/>
-Step 2: Save, when ready to submit change the workflow to submitted.
-<br/><br/>
-Things to remember: you get 300 points to allocate between stats and skills pre-play. Those points are flat. 30 points in a stat is 30 points from your pool, 20 points in a skill is 20 from the pool. It is only once in play, when you are spending XP, that the cost of higher values will scale.
-<br/><br/>
-Please note: not all character concepts are available if you are a new player. We ask new players to get familiar with the community and the settings before playing more difficult characters. Please see the information on <a href="http://vaxia.org/wiki/setting-approval-conditions" target="_blank">Conditions</a> for more information.'),
+      'help' => '',
     ),
   );
   drupal_alter('node_info', $items);

@@ -715,7 +715,8 @@ function vaxia_field_default_field_instances() {
       ),
     ),
     'deleted' => 0,
-    'description' => 'For character evaluation purposes - Sirian characters <b>must</b> note their country or city of origin. We need to know political alliances (and what legal system your character may fall under) for Sirian plots.',
+    'description' => 'Rank and money are things earned in sessions and by playing your character. Therefore characters are <b>not</b> allowed to begin play holding high ranking noble titles or excessive wealth. Character concepts that violate this requirement will not be reviewed and will be be automatically returned to draft.</br>
+</br>',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -782,7 +783,7 @@ function vaxia_field_default_field_instances() {
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 2,
+      'weight' => 4,
     ),
   );
 
@@ -995,7 +996,7 @@ function vaxia_field_default_field_instances() {
       ),
     ),
     'deleted' => 0,
-    'description' => 'Contributes to Presence and Appearance.',
+    'description' => 'Charisma (CHA): Mental Resistance; Influence',
     'display' => array(
       'default' => array(
         'label' => 'inline',
@@ -1292,7 +1293,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
       ),
     ),
     'deleted' => 0,
-    'description' => 'Contributes to Agility and Finesse.',
+    'description' => 'Dexterity (DEX): Physical Coordination; Deftness',
     'display' => array(
       'default' => array(
         'label' => 'inline',
@@ -1404,7 +1405,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
       ),
     ),
     'deleted' => 0,
-    'description' => 'Contributes to Health and Constitution.',
+    'description' => 'Endurance (END): Physical Resistance; Fortitude',
     'display' => array(
       'default' => array(
         'label' => 'inline',
@@ -1502,7 +1503,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
       ),
     ),
     'deleted' => 0,
-    'description' => 'Contributes to Finesse and Awareness.',
+    'description' => 'Intellect (INT): Mental Acuity; Reasoning',
     'display' => array(
       'default' => array(
         'label' => 'inline',
@@ -1549,6 +1550,49 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     ),
   );
 
+  // Exported field_instance: 'node-character_sheet-field_is_generic_npc'.
+  $field_instances['node-character_sheet-field_is_generic_npc'] = array(
+    'bundle' => 'character_sheet',
+    'default_value' => array(
+      0 => array(
+        'value' => 0,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => 'Generic NPCs are intended for general use in running sessions. If this is a generic NPC, make sure to mark this as an NPC as well.',
+    'display' => array(
+      'default' => array(
+        'label' => 'inline',
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 5,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_is_generic_npc',
+    'label' => 'This is a generic NPC',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(
+        'display_label' => 1,
+      ),
+      'type' => 'options_onoff',
+      'weight' => 6,
+    ),
+  );
+
   // Exported field_instance: 'node-character_sheet-field_is_npc'.
   $field_instances['node-character_sheet-field_is_npc'] = array(
     'bundle' => 'character_sheet',
@@ -1558,7 +1602,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
       ),
     ),
     'deleted' => 0,
-    'description' => 'Check this box if the character is intended to be an NPC.',
+    'description' => '',
     'display' => array(
       'default' => array(
         'label' => 'inline',
@@ -1582,7 +1626,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     ),
     'entity_type' => 'node',
     'field_name' => 'field_is_npc',
-    'label' => 'NPC',
+    'label' => 'This is an NPC',
     'required' => 0,
     'settings' => array(
       'user_register_form' => FALSE,
@@ -1774,7 +1818,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 1,
+      'weight' => 2,
     ),
   );
 
@@ -1787,7 +1831,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
       ),
     ),
     'deleted' => 0,
-    'description' => 'Contributes to Appearance and Health.',
+    'description' => 'Life (LIF): Hitpoints',
     'display' => array(
       'default' => array(
         'label' => 'inline',
@@ -1906,7 +1950,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 4,
+      'weight' => 6,
     ),
   );
 
@@ -2060,7 +2104,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
         'rows' => 5,
       ),
       'type' => 'text_textarea',
-      'weight' => 3,
+      'weight' => 5,
     ),
   );
 
@@ -2897,7 +2941,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 19,
+      'weight' => 18,
     ),
   );
 
@@ -3003,7 +3047,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
       ),
     ),
     'deleted' => 0,
-    'description' => 'Contributes to Awareness and Presence.',
+    'description' => 'Spirit (SPIR): Mental Power; Wisdom',
     'display' => array(
       'default' => array(
         'label' => 'inline',
@@ -3059,7 +3103,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
       ),
     ),
     'deleted' => 0,
-    'description' => 'Contributes to Constitution and Agility.',
+    'description' => 'Strength (STR): Physical Power; Toughness',
     'display' => array(
       'default' => array(
         'label' => 'inline',
@@ -3189,7 +3233,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => -1,
+      'weight' => 3,
     ),
   );
 
@@ -3226,7 +3270,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 18,
+      'weight' => 17,
     ),
   );
 
@@ -3294,16 +3338,9 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
   t('Can use item shop');
   t('Character Goals');
   t('Charisma');
-  t('Check this box if the character is intended to be an NPC.');
+  t('Charisma (CHA): Mental Resistance; Influence');
   t('Conditions');
   t('Constitution');
-  t('Contributes to Agility and Finesse.');
-  t('Contributes to Appearance and Health.');
-  t('Contributes to Awareness and Presence.');
-  t('Contributes to Constitution and Agility.');
-  t('Contributes to Finesse and Awareness.');
-  t('Contributes to Health and Constitution.');
-  t('Contributes to Presence and Appearance.');
   t('Currently wearing');
   t('Day');
   t('Default Post Background');
@@ -3311,12 +3348,14 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
   t('Description');
   t('Descriptions');
   t('Dexterity');
+  t('Dexterity (DEX): Physical Coordination; Deftness');
   t('Economy');
   t('Endurance');
+  t('Endurance (END): Physical Resistance; Fortitude');
   t('Enter as a hex value such as "001100" or text such as "red".');
   t('Finesse');
   t('For A/SHs - always feel free to add another property field to give each item a field.');
-  t('For character evaluation purposes - Sirian characters <b>must</b> note their country or city of origin. We need to know political alliances (and what legal system your character may fall under) for Sirian plots.');
+  t('Generic NPCs are intended for general use in running sessions. If this is a generic NPC, make sure to mark this as an NPC as well.');
   t('Health');
   t('IC achievements! Titles earned, championships won. Fun stuff!');
   t('If the species you want to play is not listed here, select \'Other\'. (Setting approval is never guaranteed.) Please take a look here for more information about <a href=http://vaxia.org/wiki/setting-approval-pcs>getting Setting approval for PCs</a>.');
@@ -3324,19 +3363,20 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
   t('If your character has any over-arching life goals. Things they want to do or see done that may require an A/SH to help achieve - make note of them here.');
   t('Image');
   t('Include any public information other characters could easily find out about this character. For example: The information a chatty bartender, or a social media search would reveal.');
+  t('Intellect (INT): Mental Acuity; Reasoning');
   t('Intelligence');
   t('Items');
   t('Items are added to characters from the Item form, not the Character Sheet form. If you need to add an item to this character, go to the item to set the IC owner.');
   t('Languages');
   t('Last Name');
   t('Life');
+  t('Life (LIF): Hitpoints');
   t('Mark the items your character is usually wearing and they will be automatically selected in the items dropdown for you.');
   t('Mark these topics as things your character is ok with if and ONLY if you are ok with the character experiencing them in play.
 </br><br/>
 This gives you a way to tell an A/SH in advance what sort of things are ok without you ever having to be put on the spot. If this is a special-occasion where you trust the A/SH involved and want to give them permission to cross these lines, please make sure to explicitly state that. If an A/SH crosses one of these lines without your permission, please tell our Social department as soon as you can.');
   t('Mark this sheet as a storyteller sheet.');
   t('Most characters should start play with no conditions. Starting play with a \'Condition\' requires approval from the Setting department. (Setting approval is never guaranteed.) Please take a look here for more information about <a href="http://vaxia.org/wiki/setting-approval-conditions" target="_blank">getting Setting approval for Conditions</a> and <a href="http://vaxia.org/wiki/setting-approval-mental-disorders" target="_blank">getting Setting approval for Mental Conditions</a> including amnesia and multiple personality disorders.');
-  t('NPC');
   t('Name');
   t('Occupation');
   t('Other Species');
@@ -3348,6 +3388,8 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
   t('Private SH Notes');
   t('Proficiency');
   t('Public information');
+  t('Rank and money are things earned in sessions and by playing your character. Therefore characters are <b>not</b> allowed to begin play holding high ranking noble titles or excessive wealth. Character concepts that violate this requirement will not be reviewed and will be be automatically returned to draft.</br>
+</br>');
   t('Real Age');
   t('Realm');
   t('SH Notes');
@@ -3356,11 +3398,15 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
   t('Sirian Species');
   t('Skill');
   t('Spirit');
+  t('Spirit (SPIR): Mental Power; Wisdom');
   t('Storyhost');
   t('Strength');
+  t('Strength (STR): Physical Power; Toughness');
   t('Tech language');
   t('Tech languages');
   t('The first description listed will be used on your posts and for viewing by other players. You can add additional descriptions and sort them as needed if your character has more than one \'appearance\'.');
+  t('This is a generic NPC');
+  t('This is an NPC');
   t('Titles');
   t('Toggle character access to the item shop on or off.');
   t('Uncheck this box to hide this character\'s posts from the power search. This is useful if you are playing a character whose actions you want to keep private. Be aware, while this will hide the posts of this character from the search it will not hide the posts of other character\'s in a scene with you if they are not also set for private mode.');
