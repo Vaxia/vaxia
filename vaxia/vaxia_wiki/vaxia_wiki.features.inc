@@ -148,3 +148,21 @@ function vaxia_wiki_flag_default_flags() {
   return $flags;
 
 }
+
+/**
+ * Implements hook_node_info().
+ */
+function vaxia_wiki_node_info() {
+  $items = array(
+    'organization_goal' => array(
+      'name' => t('Organization Goal'),
+      'base' => 'node_content',
+      'description' => t('Organization goal'),
+      'has_title' => '1',
+      'title_label' => t('IC Method / Tactic'),
+      'help' => '',
+    ),
+  );
+  drupal_alter('node_info', $items);
+  return $items;
+}
