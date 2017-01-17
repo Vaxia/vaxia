@@ -10,7 +10,7 @@
 function rpg_chat_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'node-rpg_chatroom-field_is_personal_room'
+  // Exported field_instance: 'node-rpg_chatroom-field_is_personal_room'.
   $field_instances['node-rpg_chatroom-field_is_personal_room'] = array(
     'bundle' => 'rpg_chatroom',
     'default_value' => array(
@@ -52,7 +52,7 @@ function rpg_chat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-rpg_chatroom-field_locked_to_users'
+  // Exported field_instance: 'node-rpg_chatroom-field_locked_to_users'.
   $field_instances['node-rpg_chatroom-field_locked_to_users'] = array(
     'bundle' => 'rpg_chatroom',
     'default_value' => array(
@@ -94,7 +94,7 @@ function rpg_chat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-rpg_chatroom-field_mature_posting'
+  // Exported field_instance: 'node-rpg_chatroom-field_mature_posting'.
   $field_instances['node-rpg_chatroom-field_mature_posting'] = array(
     'bundle' => 'rpg_chatroom',
     'default_value' => array(
@@ -136,7 +136,7 @@ function rpg_chat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-rpg_chatroom-field_private_room'
+  // Exported field_instance: 'node-rpg_chatroom-field_private_room'.
   $field_instances['node-rpg_chatroom-field_private_room'] = array(
     'bundle' => 'rpg_chatroom',
     'default_value' => array(
@@ -179,7 +179,7 @@ function rpg_chat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-rpg_chatroom-field_rl_weather'
+  // Exported field_instance: 'node-rpg_chatroom-field_rl_weather'.
   $field_instances['node-rpg_chatroom-field_rl_weather'] = array(
     'bundle' => 'rpg_chatroom',
     'default_value' => array(
@@ -316,7 +316,7 @@ function rpg_chat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-rpg_chatroom-field_room_description'
+  // Exported field_instance: 'node-rpg_chatroom-field_room_description'.
   $field_instances['node-rpg_chatroom-field_room_description'] = array(
     'bundle' => 'rpg_chatroom',
     'default_value' => array(
@@ -391,7 +391,7 @@ function rpg_chat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-rpg_chatroom-field_tag_realm'
+  // Exported field_instance: 'node-rpg_chatroom-field_tag_realm'.
   $field_instances['node-rpg_chatroom-field_tag_realm'] = array(
     'bundle' => 'rpg_chatroom',
     'default_value' => array(
@@ -431,7 +431,7 @@ function rpg_chat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-rpg_chatroom-field_users'
+  // Exported field_instance: 'node-rpg_chatroom-field_users'.
   $field_instances['node-rpg_chatroom-field_users'] = array(
     'bundle' => 'rpg_chatroom',
     'default_value' => NULL,
@@ -471,7 +471,7 @@ function rpg_chat_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-rpg_chatroom-field_wiki_source'
+  // Exported field_instance: 'node-rpg_chatroom-field_wiki_source'.
   $field_instances['node-rpg_chatroom-field_wiki_source'] = array(
     'bundle' => 'rpg_chatroom',
     'default_value' => NULL,

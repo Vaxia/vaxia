@@ -10,7 +10,7 @@
 function rpg_chat_field_default_field_bases() {
   $field_bases = array();
 
-  // Exported field_base: 'field_is_personal_room'
+  // Exported field_base: 'field_is_personal_room'.
   $field_bases['field_is_personal_room'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -35,7 +35,7 @@ function rpg_chat_field_default_field_bases() {
     'type' => 'list_boolean',
   );
 
-  // Exported field_base: 'field_locked_to_users'
+  // Exported field_base: 'field_locked_to_users'.
   $field_bases['field_locked_to_users'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -61,7 +61,7 @@ function rpg_chat_field_default_field_bases() {
     'type' => 'list_boolean',
   );
 
-  // Exported field_base: 'field_mature_posting'
+  // Exported field_base: 'field_mature_posting'.
   $field_bases['field_mature_posting'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -87,7 +87,7 @@ function rpg_chat_field_default_field_bases() {
     'type' => 'list_boolean',
   );
 
-  // Exported field_base: 'field_private_room'
+  // Exported field_base: 'field_private_room'.
   $field_bases['field_private_room'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -112,7 +112,7 @@ function rpg_chat_field_default_field_bases() {
     'type' => 'list_boolean',
   );
 
-  // Exported field_base: 'field_rl_weather'
+  // Exported field_base: 'field_rl_weather'.
   $field_bases['field_rl_weather'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -199,7 +199,7 @@ function rpg_chat_field_default_field_bases() {
     'type' => 'location',
   );
 
-  // Exported field_base: 'field_room_description'
+  // Exported field_base: 'field_room_description'.
   $field_bases['field_room_description'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -218,7 +218,7 @@ function rpg_chat_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_users'
+  // Exported field_base: 'field_users'.
   $field_bases['field_users'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -274,7 +274,7 @@ function rpg_chat_field_default_field_bases() {
     'type' => 'user_reference',
   );
 
-  // Exported field_base: 'field_wiki_source'
+  // Exported field_base: 'field_wiki_source'.
   $field_bases['field_wiki_source'] = array(
     'active' => 1,
     'cardinality' => 1,

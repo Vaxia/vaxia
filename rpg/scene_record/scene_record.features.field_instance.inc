@@ -189,6 +189,7 @@ If you\'re looking for silver, need an item ruled, or want to gain reputation se
         'module' => 'entityreference',
         'settings' => array(
           'links' => 1,
+          'use_content_language' => TRUE,
           'view_mode' => 'full',
         ),
         'type' => 'entityreference_entity_view',

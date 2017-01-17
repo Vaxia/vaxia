@@ -310,7 +310,7 @@ if (!empty($nid) && is_numeric($nid) && function_exists(\'_rpg_chat_set_room_use
     5 => 0,
     4 => 0,
   );
-  /* Filter criterion: Field: Realm (field_tag_realm) */
+  /* Filter criterion: Content: Realm (field_tag_realm) */
   $handler->display->display_options['filters']['field_tag_realm_tid']['id'] = 'field_tag_realm_tid';
   $handler->display->display_options['filters']['field_tag_realm_tid']['table'] = 'field_data_field_tag_realm';
   $handler->display->display_options['filters']['field_tag_realm_tid']['field'] = 'field_tag_realm_tid';
@@ -440,7 +440,7 @@ if (!empty($nid) && is_numeric($nid) && function_exists(\'_rpg_chat_set_room_use
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title']['hide_alter_empty'] = FALSE;
-  /* Field: Field: Realm */
+  /* Field: Content: Realm */
   $handler->display->display_options['fields']['field_tag_realm']['id'] = 'field_tag_realm';
   $handler->display->display_options['fields']['field_tag_realm']['table'] = 'field_data_field_tag_realm';
   $handler->display->display_options['fields']['field_tag_realm']['field'] = 'field_tag_realm';
@@ -511,7 +511,7 @@ if (!empty($nid) && is_numeric($nid) && function_exists(\'_rpg_chat_set_room_use
     31 => 0,
     32 => 0,
   );
-  /* Filter criterion: Field: Realm (field_tag_realm) */
+  /* Filter criterion: Content: Realm (field_tag_realm) */
   $handler->display->display_options['filters']['field_tag_realm_tid']['id'] = 'field_tag_realm_tid';
   $handler->display->display_options['filters']['field_tag_realm_tid']['table'] = 'field_data_field_tag_realm';
   $handler->display->display_options['filters']['field_tag_realm_tid']['field'] = 'field_tag_realm_tid';
@@ -642,7 +642,7 @@ if (!empty($nid) && is_numeric($nid) && function_exists(\'_rpg_chat_set_room_use
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title']['hide_alter_empty'] = FALSE;
-  /* Field: Field: Realm */
+  /* Field: Content: Realm */
   $handler->display->display_options['fields']['field_tag_realm']['id'] = 'field_tag_realm';
   $handler->display->display_options['fields']['field_tag_realm']['table'] = 'field_data_field_tag_realm';
   $handler->display->display_options['fields']['field_tag_realm']['field'] = 'field_tag_realm';

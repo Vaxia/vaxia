@@ -8,7 +8,7 @@
  * Implements hook_field_group_info().
  */
 function rpg_chat_field_group_info() {
-  $export = array();
+  $field_groups = array();
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -40,7 +40,7 @@ function rpg_chat_field_group_info() {
       ),
     ),
   );
-  $export['group_access_settings|node|rpg_chatroom|form'] = $field_group;
+  $field_groups['group_access_settings|node|rpg_chatroom|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -67,10 +67,10 @@ function rpg_chat_field_group_info() {
       ),
     ),
   );
-  $export['group_description|node|rpg_chatroom|default'] = $field_group;
+  $field_groups['group_description|node|rpg_chatroom|default'] = $field_group;
 
   $field_group = new stdClass();
-  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->disabled = TRUE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
   $field_group->identifier = 'group_navigation|node|rpg_chatroom|default';
   $field_group->group_name = 'group_navigation';
@@ -94,7 +94,7 @@ function rpg_chat_field_group_info() {
       ),
     ),
   );
-  $export['group_navigation|node|rpg_chatroom|default'] = $field_group;
+  $field_groups['group_navigation|node|rpg_chatroom|default'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -123,7 +123,7 @@ function rpg_chat_field_group_info() {
       ),
     ),
   );
-  $export['group_room_data|node|rpg_chatroom|form'] = $field_group;
+  $field_groups['group_room_data|node|rpg_chatroom|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -152,7 +152,15 @@ function rpg_chat_field_group_info() {
       ),
     ),
   );
-  $export['group_source_info|node|rpg_chatroom|form'] = $field_group;
+  $field_groups['group_source_info|node|rpg_chatroom|form'] = $field_group;
 
-  return $export;
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('Access settings');
+  t('Description');
+  t('Navigation');
+  t('Room data');
+  t('Source info');
+
+  return $field_groups;
 }
