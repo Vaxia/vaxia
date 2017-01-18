@@ -6,8 +6,8 @@
 // Hide the field if we have no value.
 $field_empty = FALSE;
 foreach ($items as $delta => $item) {
-  if ($element['#object']->type == 'items') {
-    if ( ($item['value'] == '0') || ($item['#markup'] == '0') ) {
+  if (!empty($element['#object']->type) && $element['#object']->type == 'items') {
+    if ( (!empty($item['value']) && $item['value'] == '0') || (!empty($item['#markup']) && $item['#markup'] == '0') ) {
       $field_empty = TRUE;
     }
   }
