@@ -452,8 +452,10 @@ function vaxia_process_comment(&$variables) {
         if (empty($char_perms[$character->nid])) {
           // Get the character permission set.
           $char_tids = array();
-          foreach ($character->field_content_limits[$lang] as $delta => $tids) {
-            $char_tids[] = $tids['tid'];
+          if (!empty($character->field_content_limits[$lang])) {
+            foreach ($character->field_content_limits[$lang] as $delta => $tids) {
+              $char_tids[] = $tids['tid'];
+            }
           }
           // Load the permission set.
           $perms_vocab = taxonomy_vocabulary_machine_name_load(variable_get('vaxia_char_perms', 'character_limits'));
