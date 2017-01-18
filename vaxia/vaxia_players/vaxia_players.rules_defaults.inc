@@ -31,38 +31,6 @@ function vaxia_players_default_rules_configuration() {
       ]
     }
   }');
-  $items['rules_filedepot_add_personal_folder'] = entity_import('rules_config', '{ "rules_filedepot_add_personal_folder" : {
-      "LABEL" : "Filedepot add personal folder",
-      "PLUGIN" : "reaction rule",
-      "ACTIVE" : false,
-      "OWNER" : "rules",
-      "TAGS" : [ "Vaxia filesystem" ],
-      "REQUIRES" : [ "rules", "filedepot_rules" ],
-      "ON" : { "node_insert--character_sheet" : { "bundle" : "character_sheet" } },
-      "IF" : [
-        { "data_is_empty" : { "data" : [ "node:author:field-personal-folder" ] } }
-      ],
-      "DO" : [
-        { "filedepot_rules_actions_create_folder" : {
-            "USING" : {
-              "owner" : [ "node:author" ],
-              "folder_name" : "[account:name] Personal Files",
-              "parent_folder" : { "value" : { "89" : "89" } },
-              "description" : "Personal files for [account:name]",
-              "inherit_permission" : 0,
-              "set_owner" : 1
-            },
-            "PROVIDE" : { "folder_node" : { "folder_node" : "Created folder" } }
-          }
-        },
-        { "data_set" : {
-            "data" : [ "node:author:field-personal-folder" ],
-            "value" : [ "folder-node" ]
-          }
-        }
-      ]
-    }
-  }');
   $items['rules_node_redirect_after_creation'] = entity_import('rules_config', '{ "rules_node_redirect_after_creation" : {
       "LABEL" : "Node redirect after creation",
       "PLUGIN" : "reaction rule",
