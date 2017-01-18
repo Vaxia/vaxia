@@ -96,7 +96,7 @@ function _site_events_get_events($start = '', $end = '') {
     $start = strtotime('+1 day');
   }
   if (empty($end)) {
-    $end = strtotime('+1 day', $start);
+    $end = strtotime('+2 day');
   }
   return db_query('SELECT w.entity_id from {field_data_field_when} w ' .
     'LEFT JOIN {node} n ON w.entity_id = n.nid ' .
