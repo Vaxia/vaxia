@@ -10,7 +10,7 @@
 function proposal_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'node-proposal-body'
+  // Exported field_instance: 'node-proposal-body'.
   $field_instances['node-proposal-body'] = array(
     'bundle' => 'proposal',
     'default_value' => NULL,
@@ -60,7 +60,7 @@ function proposal_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-proposal-field_associated_files'
+  // Exported field_instance: 'node-proposal-field_associated_files'.
   $field_instances['node-proposal-field_associated_files'] = array(
     'bundle' => 'proposal',
     'deleted' => 0,
@@ -102,7 +102,7 @@ function proposal_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-proposal-field_associated_forum_threads'
+  // Exported field_instance: 'node-proposal-field_associated_forum_threads'.
   $field_instances['node-proposal-field_associated_forum_threads'] = array(
     'bundle' => 'proposal',
     'default_value' => NULL,
@@ -143,7 +143,7 @@ function proposal_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-proposal-field_grievance_members'
+  // Exported field_instance: 'node-proposal-field_grievance_members'.
   $field_instances['node-proposal-field_grievance_members'] = array(
     'bundle' => 'proposal',
     'default_value' => NULL,
@@ -185,7 +185,7 @@ After you click save, this proposal will be automatically opened to begin the gr
     ),
   );
 
-  // Exported field_instance: 'node-proposal-field_proposal_type'
+  // Exported field_instance: 'node-proposal-field_proposal_type'.
   $field_instances['node-proposal-field_proposal_type'] = array(
     'bundle' => 'proposal',
     'default_value' => array(
@@ -228,7 +228,7 @@ After you click save, this proposal will be automatically opened to begin the gr
     ),
   );
 
-  // Exported field_instance: 'node-proposal-taxonomy_forums'
+  // Exported field_instance: 'node-proposal-taxonomy_forums'.
   $field_instances['node-proposal-taxonomy_forums'] = array(
     'bundle' => 'proposal',
     'default_value' => array(

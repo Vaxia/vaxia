@@ -1868,7 +1868,7 @@ Search for a wiki article by tag(s).';
   $handler->display->display_options['fields']['field_saga']['alter']['text'] = '<h2>[field_titles] [title_1] : [field_saga]</h2>';
   $handler->display->display_options['fields']['field_saga']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_saga']['empty'] = '<h2>[field_titles] [title_1] : Standalone Sessions</h2>';
-  /* Field: Content: Event held */
+  /* Field: Content: Session held */
   $handler->display->display_options['fields']['field_session_held']['id'] = 'field_session_held';
   $handler->display->display_options['fields']['field_session_held']['table'] = 'field_data_field_session_held';
   $handler->display->display_options['fields']['field_session_held']['field'] = 'field_session_held';
@@ -1998,7 +1998,7 @@ Search for a wiki article by tag(s).';
   $handler->display->display_options['row_options']['summary_field'] = 'default_title';
   $handler->display->display_options['row_options']['location_field'] = 'none';
   $handler->display->display_options['defaults']['sorts'] = FALSE;
-  /* Sort criterion: Content: Event held (field_session_held) */
+  /* Sort criterion: Content: Session held (field_session_held) */
   $handler->display->display_options['sorts']['field_session_held_value']['id'] = 'field_session_held_value';
   $handler->display->display_options['sorts']['field_session_held_value']['table'] = 'field_data_field_session_held';
   $handler->display->display_options['sorts']['field_session_held_value']['field'] = 'field_session_held_value';
@@ -2044,7 +2044,7 @@ Search for a wiki article by tag(s).';
   $handler->display->display_options['row_options']['summary_field'] = 'default_title';
   $handler->display->display_options['row_options']['location_field'] = 'none';
   $handler->display->display_options['defaults']['sorts'] = FALSE;
-  /* Sort criterion: Content: Event held (field_session_held) */
+  /* Sort criterion: Content: Session held (field_session_held) */
   $handler->display->display_options['sorts']['field_session_held_value']['id'] = 'field_session_held_value';
   $handler->display->display_options['sorts']['field_session_held_value']['table'] = 'field_data_field_session_held';
   $handler->display->display_options['sorts']['field_session_held_value']['field'] = 'field_session_held_value';
@@ -2386,7 +2386,7 @@ Search for an NPC.';
   $handler->display->display_options['fields']['field_sirian_species']['id'] = 'field_sirian_species';
   $handler->display->display_options['fields']['field_sirian_species']['table'] = 'field_data_field_sirian_species';
   $handler->display->display_options['fields']['field_sirian_species']['field'] = 'field_sirian_species';
-  /* Field: Field: Descriptions */
+  /* Field: Field: Description */
   $handler->display->display_options['fields']['field_description']['id'] = 'field_description';
   $handler->display->display_options['fields']['field_description']['table'] = 'field_data_field_description';
   $handler->display->display_options['fields']['field_description']['field'] = 'field_description';

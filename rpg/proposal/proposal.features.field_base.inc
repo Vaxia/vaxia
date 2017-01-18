@@ -10,7 +10,7 @@
 function proposal_field_default_field_bases() {
   $field_bases = array();
 
-  // Exported field_base: 'field_associated_files'
+  // Exported field_base: 'field_associated_files'.
   $field_bases['field_associated_files'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -33,7 +33,7 @@ function proposal_field_default_field_bases() {
     'type' => 'file',
   );
 
-  // Exported field_base: 'field_associated_forum_threads'
+  // Exported field_base: 'field_associated_forum_threads'.
   $field_bases['field_associated_forum_threads'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -83,7 +83,7 @@ function proposal_field_default_field_bases() {
     'type' => 'node_reference',
   );
 
-  // Exported field_base: 'field_grievance_members'
+  // Exported field_base: 'field_grievance_members'.
   $field_bases['field_grievance_members'] = array(
     'active' => 1,
     'cardinality' => -1,
@@ -136,7 +136,7 @@ function proposal_field_default_field_bases() {
     'type' => 'user_reference',
   );
 
-  // Exported field_base: 'field_proposal_type'
+  // Exported field_base: 'field_proposal_type'.
   $field_bases['field_proposal_type'] = array(
     'active' => 1,
     'cardinality' => 1,

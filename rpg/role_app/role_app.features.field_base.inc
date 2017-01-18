@@ -10,7 +10,7 @@
 function role_app_field_default_field_bases() {
   $field_bases = array();
 
-  // Exported field_base: 'field_applied_role_id'
+  // Exported field_base: 'field_applied_role_id'.
   $field_bases['field_applied_role_id'] = array(
     'active' => 1,
     'cardinality' => 1,

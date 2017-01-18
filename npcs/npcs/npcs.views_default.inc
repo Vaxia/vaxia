@@ -260,7 +260,7 @@ function npcs_views_default_views() {
     'character_sheet' => 'character_sheet',
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
-  /* Filter criterion: Content: NPC (field_is_npc) */
+  /* Filter criterion: Content: This is an NPC (field_is_npc) */
   $handler->display->display_options['filters']['field_is_npc_value']['id'] = 'field_is_npc_value';
   $handler->display->display_options['filters']['field_is_npc_value']['table'] = 'field_data_field_is_npc';
   $handler->display->display_options['filters']['field_is_npc_value']['field'] = 'field_is_npc_value';
@@ -634,7 +634,7 @@ function npcs_views_default_views() {
   $handler->display->display_options['filters']['field_strength_value']['operator'] = '>';
   $handler->display->display_options['filters']['field_strength_value']['value']['value'] = '70';
   $handler->display->display_options['filters']['field_strength_value']['group'] = 2;
-  /* Filter criterion: Content: Open NPC (field_is_open_npc) */
+  /* Filter criterion: Broken/missing handler */
   $handler->display->display_options['filters']['field_is_open_npc_value']['id'] = 'field_is_open_npc_value';
   $handler->display->display_options['filters']['field_is_open_npc_value']['table'] = 'field_data_field_is_open_npc';
   $handler->display->display_options['filters']['field_is_open_npc_value']['field'] = 'field_is_open_npc_value';
@@ -642,7 +642,7 @@ function npcs_views_default_views() {
     1 => '1',
   );
   $handler->display->display_options['filters']['field_is_open_npc_value']['group'] = 3;
-  /* Filter criterion: Content: NPC (field_is_npc) */
+  /* Filter criterion: Content: This is an NPC (field_is_npc) */
   $handler->display->display_options['filters']['field_is_npc_value']['id'] = 'field_is_npc_value';
   $handler->display->display_options['filters']['field_is_npc_value']['table'] = 'field_data_field_is_npc';
   $handler->display->display_options['filters']['field_is_npc_value']['field'] = 'field_is_npc_value';
@@ -787,7 +787,7 @@ function npcs_views_default_views() {
     'character_sheet' => 'character_sheet',
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
-  /* Filter criterion: Content: NPC (field_is_npc) */
+  /* Filter criterion: Content: This is an NPC (field_is_npc) */
   $handler->display->display_options['filters']['field_is_npc_value']['id'] = 'field_is_npc_value';
   $handler->display->display_options['filters']['field_is_npc_value']['table'] = 'field_data_field_is_npc';
   $handler->display->display_options['filters']['field_is_npc_value']['field'] = 'field_is_npc_value';

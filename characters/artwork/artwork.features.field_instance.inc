@@ -10,7 +10,7 @@
 function artwork_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'node-artwork-field_artwork_credit'
+  // Exported field_instance: 'node-artwork-field_artwork_credit'.
   $field_instances['node-artwork-field_artwork_credit'] = array(
     'bundle' => 'artwork',
     'default_value' => NULL,
@@ -88,7 +88,7 @@ function artwork_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-artwork-field_artwork_image'
+  // Exported field_instance: 'node-artwork-field_artwork_image'.
   $field_instances['node-artwork-field_artwork_image'] = array(
     'bundle' => 'artwork',
     'deleted' => 0,
@@ -159,7 +159,7 @@ function artwork_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-artwork-field_website'
+  // Exported field_instance: 'node-artwork-field_website'.
   $field_instances['node-artwork-field_website'] = array(
     'bundle' => 'artwork',
     'default_value' => NULL,

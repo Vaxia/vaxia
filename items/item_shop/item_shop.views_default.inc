@@ -405,7 +405,7 @@ return FALSE;';
   $handler->display->display_options['fields']['field_value']['alter']['text'] = '[field_value] silver';
   $handler->display->display_options['fields']['field_value']['empty'] = 'Free (Lifestyle)';
   $handler->display->display_options['fields']['field_value']['empty_zero'] = TRUE;
-  /* Field: Field: Realm */
+  /* Field: Content: Realm */
   $handler->display->display_options['fields']['field_tag_realm']['id'] = 'field_tag_realm';
   $handler->display->display_options['fields']['field_tag_realm']['table'] = 'field_data_field_tag_realm';
   $handler->display->display_options['fields']['field_tag_realm']['field'] = 'field_tag_realm';
@@ -523,7 +523,7 @@ return FALSE;';
   );
   $handler->display->display_options['filters']['field_item_type_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_item_type_tid']['vocabulary'] = 'item_type';
-  /* Filter criterion: Field: Realm (field_tag_realm) */
+  /* Filter criterion: Content: Realm (field_tag_realm) */
   $handler->display->display_options['filters']['field_tag_realm_tid']['id'] = 'field_tag_realm_tid';
   $handler->display->display_options['filters']['field_tag_realm_tid']['table'] = 'field_data_field_tag_realm';
   $handler->display->display_options['filters']['field_tag_realm_tid']['field'] = 'field_tag_realm_tid';

@@ -10,7 +10,7 @@
 function artwork_field_default_field_bases() {
   $field_bases = array();
 
-  // Exported field_base: 'field_artwork_credit'
+  // Exported field_base: 'field_artwork_credit'.
   $field_bases['field_artwork_credit'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -32,7 +32,7 @@ function artwork_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_artwork_image'
+  // Exported field_base: 'field_artwork_image'.
   $field_bases['field_artwork_image'] = array(
     'active' => 1,
     'cardinality' => 1,
@@ -54,7 +54,7 @@ function artwork_field_default_field_bases() {
     'type' => 'image',
   );
 
-  // Exported field_base: 'field_website'
+  // Exported field_base: 'field_website'.
   $field_bases['field_website'] = array(
     'active' => 1,
     'cardinality' => 1,

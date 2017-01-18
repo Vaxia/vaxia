@@ -11,6 +11,3 @@ dependencies[] = rules
 dependencies[] = workflow
 dependencies[] = workflow_rules
 features[features_api][] = api:2
-features[rules_config][] = items_notify_player_when_scene_ruled
-features[rules_config][] = items_notify_sh_re_new_scene
-features[rules_config][] = rules_creating_scene_move_to_workflow

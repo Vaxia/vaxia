@@ -13,7 +13,5 @@ dependencies[] = views
 dependencies[] = workflow_rules
 features[ctools][] = views:views_default:3.0
 features[features_api][] = api:2
-features[rules_config][] = rules_item_shop_clone_approved_item
-features[rules_config][] = rules_item_shop_created_item_not_for_resell
 features[views_view][] = item_shop
 files[] = item_shop_field_handler_add_item.inc

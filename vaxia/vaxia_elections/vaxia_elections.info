@@ -8,6 +8,5 @@ dependencies[] = entity
 dependencies[] = features
 dependencies[] = rules
 features[features_api][] = api:2
-features[rules_config][] = rules_add_starvation_role_to_ash_on_session
 features[user_role][] = lead
 features[user_role][] = starvation-mode-ash-approver

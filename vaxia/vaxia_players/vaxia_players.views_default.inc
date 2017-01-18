@@ -470,7 +470,7 @@ function vaxia_players_views_default_views() {
     1 => '1',
   );
   $handler->display->display_options['filters']['field_private_room_value']['group'] = 1;
-  /* Filter criterion: Field: Realm (field_tag_realm) */
+  /* Filter criterion: Content: Realm (field_tag_realm) */
   $handler->display->display_options['filters']['field_tag_realm_tid']['id'] = 'field_tag_realm_tid';
   $handler->display->display_options['filters']['field_tag_realm_tid']['table'] = 'field_data_field_tag_realm';
   $handler->display->display_options['filters']['field_tag_realm_tid']['field'] = 'field_tag_realm_tid';

@@ -8,7 +8,7 @@
  * Implements hook_field_group_info().
  */
 function proposal_field_group_info() {
-  $export = array();
+  $field_groups = array();
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -37,7 +37,7 @@ function proposal_field_group_info() {
       'formatter' => 'collapsible',
     ),
   );
-  $export['group_add_info|node|proposal|form'] = $field_group;
+  $field_groups['group_add_info|node|proposal|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -65,7 +65,12 @@ function proposal_field_group_info() {
       ),
     ),
   );
-  $export['group_settings|node|proposal|form'] = $field_group;
+  $field_groups['group_settings|node|proposal|form'] = $field_group;
 
-  return $export;
+  // Translatables
+  // Included for use with string extractors like potx.
+  t('Additional information');
+  t('Settings');
+
+  return $field_groups;
 }

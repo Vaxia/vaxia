@@ -10,7 +10,7 @@
 function role_app_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'node-application-body'
+  // Exported field_instance: 'node-application-body'.
   $field_instances['node-application-body'] = array(
     'bundle' => 'application',
     'default_value' => NULL,
@@ -66,7 +66,7 @@ function role_app_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-application-field_applied_role_id'
+  // Exported field_instance: 'node-application-field_applied_role_id'.
   $field_instances['node-application-field_applied_role_id'] = array(
     'bundle' => 'application',
     'default_value' => NULL,
