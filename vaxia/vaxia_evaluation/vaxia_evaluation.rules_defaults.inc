@@ -122,54 +122,6 @@ function vaxia_evaluation_default_rules_configuration() {
       ]
     }
   }');
-  $items['rules_cap_of_characters_in_the_bin_at_the_same_time'] = entity_import('rules_config', '{ "rules_cap_of_characters_in_the_bin_at_the_same_time" : {
-      "LABEL" : "Cap # of characters in the bin at the same time",
-      "PLUGIN" : "reaction rule",
-      "WEIGHT" : "-5",
-      "OWNER" : "rules",
-      "TAGS" : [ "Characters" ],
-      "REQUIRES" : [ "rules", "workflow_rules", "views_rules", "php" ],
-      "ON" : { "workflow_state_changed" : [] },
-      "IF" : [
-        { "node_is_of_type" : {
-            "node" : [ "node" ],
-            "type" : { "value" : { "character_sheet" : "character_sheet" } }
-          }
-        },
-        { "workflow_check_transition" : {
-            "node" : [ "node" ],
-            "old_state" : { "value" : { "1" : "1", "2" : "2" } },
-            "new_state" : { "value" : { "3" : "3" } }
-          }
-        },
-        { "data_is" : { "data" : [ "node:field-is-npc" ], "value" : 0 } },
-        { "data_is" : { "data" : [ "node:field-is-open-npc" ], "value" : 0 } },
-        { "data_is" : { "data" : [ "node:field-is-storyteller" ], "value" : 0 } }
-      ],
-      "DO" : [
-        { "VIEW LOOP" : {
-            "VIEW" : "vaxia_character_sheets",
-            "DISPLAY" : "eval2",
-            "ROW VARIABLES" : [],
-            "DO" : [
-              { "workflow_rules_set_state" : {
-                  "node" : [ "node" ],
-                  "workflow_state" : { "value" : { "2" : "2" } },
-                  "workflow_comment" : "This character has been returned to draft by the system. Players are limited to submitting only as many characters to the submission bin as there are evaluators available."
-                }
-              },
-              { "php_eval" : { "code" : "db_query(\\u0027UPDATE {workflow_node_history} h \\u0027 .\\r\\n\\u0027SET h.stamp = h.stamp + 1 \\u0027 .\\r\\n\\u0027WHERE h.nid = :nid \\u0027 .\\r\\n\\u0027ORDER BY hid DESC LIMIT 1\\u0027,\\r\\narray(\\u0027:nid\\u0027 =\\u003E $node-\\u003Enid));" } },
-              { "drupal_message" : {
-                  "message" : "You already have as many characters in the eval bin as we currently have evaluators. To avoid overwhelming the evaluation staff your character has been returned to draft. Once you get one of your other characters approved you can resubmit this character to be evaluated.",
-                  "type" : "warning"
-                }
-              }
-            ]
-          }
-        }
-      ]
-    }
-  }');
   $items['rules_catch_too_many_min_max_characters'] = entity_import('rules_config', '{ "rules_catch_too_many_min_max_characters" : {
       "LABEL" : "Catch too many Min Max characters",
       "PLUGIN" : "reaction rule",
