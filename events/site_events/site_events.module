@@ -93,10 +93,10 @@ function site_events_send_reminders() {
 function _site_events_get_events($start = '', $end = '') {
   // If not set, default start is tomorrow, end is +24hrs.
   if (empty($start)) {
-    $start = strtotime('+1 day');
+    $start = strtotime('+2 day');
   }
   if (empty($end)) {
-    $end = strtotime('+2 day');
+    $end = strtotime('+1 day', $start);
   }
   return db_query('SELECT w.entity_id from {field_data_field_when} w ' .
     'LEFT JOIN {node} n ON w.entity_id = n.nid ' .
