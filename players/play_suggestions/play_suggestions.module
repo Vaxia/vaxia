@@ -13,6 +13,7 @@ function play_suggestions_block_info() {
   $blocks = array();
   $blocks['play_suggestions'] = array(
     'info' => t('Play suggestions'),
+    'cache' => DRUPAL_NO_CACHE,
   );
   return $blocks;
 }
@@ -51,7 +52,13 @@ function _play_suggestions_search($form, &$form_state, $nid) {
 /**
  * Submit handler.
  */
-function _play_suggestions_search_submit(&$form, $form_state) {
+function _play_suggestions_search_validate($form, &$form_state) {
+  // HACK. But pending figuring out why _play_suggestions_search_submit()
+  // won't call correctly, this will have to do.
+  _play_suggestions_search_submit($form, $form_state);
+}
+
+function _play_suggestions_search_submit($form, &$form_state) {
   $nid = $form_state['values']['nid'];
   $play_suggestion = _play_suggestions_get_suggestion();
   $realm = !empty($play_suggestion['realm']) ? $play_suggestion['realm'] : '';
@@ -60,7 +67,7 @@ function _play_suggestions_search_submit(&$form, $form_state) {
   if (empty($realm) || empty($suggestion) || empty($location)) {
     return;
   }
-  $link = '[url=http://vaxia.org/node/add/play-suggestions]Click here.[/url]';
+  $link = '[url=/node/add/play-suggestions]Click here.[/url]';
   $post = t('In @realm, @suggestion at !location.',
     array('@realm' => $realm, '@suggestion' => $suggestion, '!location' => $location));
   $ooc = t('Want to add some suggestions? !link', array('!link' => $link));
