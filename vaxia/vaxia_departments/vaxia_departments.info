@@ -7,7 +7,6 @@ project = vaxia_departments
 dependencies[] = ctools
 dependencies[] = entity
 dependencies[] = quiz_rules
-dependencies[] = rules
 dependencies[] = user_stats
 dependencies[] = views
 features[ctools][] = views:views_default:3.0

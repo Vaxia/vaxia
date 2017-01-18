@@ -6,7 +6,6 @@ version = 7.x-1.1
 project = vaxia_elections
 dependencies[] = entity
 dependencies[] = features
-dependencies[] = rules
 features[features_api][] = api:2
 features[user_role][] = lead
 features[user_role][] = starvation-mode-ash-approver

@@ -11,7 +11,6 @@ dependencies[] = payment
 dependencies[] = payment_donation
 dependencies[] = paypal_payment_pps
 dependencies[] = php
-dependencies[] = rules
 dependencies[] = vaxia
 dependencies[] = views
 features[ctools][] = views:views_default:3.0

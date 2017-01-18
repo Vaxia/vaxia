@@ -1,6 +1,0 @@
-name = Filedepot Rules Integration
-description = Rules integration for Filedepot
-core = 7.x
-package = File management
-version = 7.x-1.0
-dependencies[] = filedepot

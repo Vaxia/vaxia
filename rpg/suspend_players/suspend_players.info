@@ -8,7 +8,6 @@ dependencies[] = cold_storage
 dependencies[] = ctools
 dependencies[] = entity
 dependencies[] = features
-dependencies[] = rules
 dependencies[] = user_stats
 dependencies[] = views
 dependencies[] = views_rules
