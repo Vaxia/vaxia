@@ -8,6 +8,7 @@ dependencies[] = ctools
 dependencies[] = entity
 dependencies[] = features
 dependencies[] = php
+dependencies[] = rules
 dependencies[] = user_stats
 dependencies[] = views
 dependencies[] = workflow_rules

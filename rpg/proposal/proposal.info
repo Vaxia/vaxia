@@ -14,6 +14,7 @@ dependencies[] = list
 dependencies[] = node_reference
 dependencies[] = options
 dependencies[] = role_expire
+dependencies[] = rules
 dependencies[] = strongarm
 dependencies[] = taxonomy
 dependencies[] = text

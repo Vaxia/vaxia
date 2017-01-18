@@ -8,6 +8,7 @@ dependencies[] = entity
 dependencies[] = features
 dependencies[] = proposal
 dependencies[] = rpg_election
+dependencies[] = rules
 features[features_api][] = api:2
 features[user_role][] = knows-the-setting
 features[user_role][] = knows-the-social

@@ -15,6 +15,7 @@ dependencies[] = list
 dependencies[] = nodereferrer
 dependencies[] = number
 dependencies[] = options
+dependencies[] = rules
 dependencies[] = site_wiki
 dependencies[] = strongarm
 dependencies[] = taxonomy

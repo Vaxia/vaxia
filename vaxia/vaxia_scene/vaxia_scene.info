@@ -7,5 +7,7 @@ project = vaxia_scene
 dependencies[] = entity
 dependencies[] = features
 dependencies[] = php
+dependencies[] = rules
 dependencies[] = workflow
+dependencies[] = workflow_rules
 features[features_api][] = api:2

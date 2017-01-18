@@ -7,6 +7,7 @@ project = item_shop
 dependencies[] = clone
 dependencies[] = ctools
 dependencies[] = entity
+dependencies[] = rules
 dependencies[] = vaxia
 dependencies[] = views
 dependencies[] = workflow_rules

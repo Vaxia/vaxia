@@ -8,6 +8,7 @@ dependencies[] = ctools
 dependencies[] = entity
 dependencies[] = php
 dependencies[] = references
+dependencies[] = rules
 dependencies[] = vaxia
 dependencies[] = views
 dependencies[] = workflow_rules
