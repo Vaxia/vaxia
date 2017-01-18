@@ -122,23 +122,6 @@ function vaxia_evaluation_default_rules_configuration() {
       ]
     }
   }');
-  $items['rules_add_character_and_become_a_player'] = entity_import('rules_config', '{ "rules_add_character_and_become_a_player" : {
-      "LABEL" : "Add character and become a player",
-      "PLUGIN" : "reaction rule",
-      "ACTIVE" : false,
-      "OWNER" : "rules",
-      "TAGS" : [ "Players" ],
-      "REQUIRES" : [ "rules" ],
-      "ON" : { "node_insert--character_sheet" : { "bundle" : "character_sheet" } },
-      "IF" : [
-        { "NOT user_has_role" : { "account" : [ "node:author" ], "roles" : { "value" : { "8" : "8" } } } }
-      ],
-      "DO" : [
-        { "user_add_role" : { "account" : [ "node:author" ], "roles" : { "value" : { "8" : "8" } } } },
-        { "user_remove_role" : { "account" : [ "node:author" ], "roles" : { "value" : { "30" : "30" } } } }
-      ]
-    }
-  }');
   $items['rules_cap_of_characters_in_the_bin_at_the_same_time'] = entity_import('rules_config', '{ "rules_cap_of_characters_in_the_bin_at_the_same_time" : {
       "LABEL" : "Cap # of characters in the bin at the same time",
       "PLUGIN" : "reaction rule",
