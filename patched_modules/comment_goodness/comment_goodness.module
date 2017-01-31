@@ -251,7 +251,7 @@ function comment_goodness_delete_comment_access($comment) {
 /**
  * Implements hook_comment_view().
  */
-function COMMENT_GOODNESS_COMMENT_view($comment, $view_mode, $langcode) {
+function comment_goodness_comment_view($comment, $view_mode, $langcode) {
   // We only need to add the delete link if it's not there.
   if (!isset($comment->content['links']['comment']['#links']['comment-delete']) && comment_goodness_delete_comment_access($comment)) {
     $comment->content['links']['comment']['#links']['comment-delete'] = array(
