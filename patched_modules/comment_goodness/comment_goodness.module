@@ -12,13 +12,13 @@
 /**
  *  Constants
  */
-define('comment_goodness_OLDER_FIRST', 1); // default
-define('comment_goodness_NEWER_FIRST', 2);
-define('comment_goodness_FORM_PLACEMENT_SORT', 1);
-define('comment_goodness_FORM_PLACEMENT_TOP', 2);
-define('comment_goodness_FORM_PLACEMENT_BOTTOM', 3);
-define('comment_goodness_COMMENT_SECTION_LABEL', t('Comments'));
-define('comment_goodness_COMMENT_FORM_LABEL', t('Post new comment'));
+define('COMMENT_GOODNESS_OLDER_FIRST', 1); // default
+define('COMMENT_GOODNESS_NEWER_FIRST', 2);
+define('COMMENT_GOODNESS_FORM_PLACEMENT_SORT', 1);
+define('COMMENT_GOODNESS_FORM_PLACEMENT_TOP', 2);
+define('COMMENT_GOODNESS_FORM_PLACEMENT_BOTTOM', 3);
+define('COMMENT_GOODNESS_COMMENT_SECTION_LABEL', t('Comments'));
+define('COMMENT_GOODNESS_COMMENT_FORM_LABEL', t('Post new comment'));
 
 /**
  * Implements hook_form_FORM_ID_alter().
@@ -43,7 +43,7 @@ function comment_goodness_form_node_type_form_alter(&$form, $form_state) {
     '#type' => 'select',
     '#options' => array(1 => t('Older first'),
                        2 => t('Newer first')),
-    '#default_value' => variable_get('comment_default_sorting_' . $form['#node_type']->type, comment_goodness_OLDER_FIRST),
+    '#default_value' => variable_get('comment_default_sorting_' . $form['#node_type']->type, COMMENT_GOODNESS_OLDER_FIRST),
   );
   $form['comment']['comment_form_placement'] = array(
     '#title' => t('Comment form location'),
@@ -53,17 +53,17 @@ function comment_goodness_form_node_type_form_alter(&$form, $form_state) {
       2 => t('Above existing comments'),
       3 => t('Below existing comments'),
     ),
-    '#default_value' => variable_get('comment_form_placement_' . $form['#node_type']->type, comment_goodness_FORM_PLACEMENT_BOTTOM),
+    '#default_value' => variable_get('comment_form_placement_' . $form['#node_type']->type, COMMENT_GOODNESS_FORM_PLACEMENT_BOTTOM),
   );
   $form['comment']['comment_section_label'] = array(
     '#title' => t('Comment section label'),
     '#type' => 'textfield',
-    '#default_value' => variable_get('comment_section_label_' . $form['#node_type']->type, comment_goodness_COMMENT_SECTION_LABEL),
+    '#default_value' => variable_get('comment_section_label_' . $form['#node_type']->type, COMMENT_GOODNESS_COMMENT_SECTION_LABEL),
   );
   $form['comment']['comment_form_label'] = array(
     '#title' => t('New comment form label'),
     '#type' => 'textfield',
-    '#default_value' => variable_get('comment_form_label_' . $form['#node_type']->type, comment_goodness_COMMENT_FORM_LABEL),
+    '#default_value' => variable_get('comment_form_label_' . $form['#node_type']->type, COMMENT_GOODNESS_COMMENT_FORM_LABEL),
   );
 
   // Set "Comments per page" setting to textfield so it allows more gradual
@@ -126,10 +126,10 @@ function comment_goodness_node_type_form_submit($form, &$form_state) {
 function comment_goodness_query_comment_filter_alter(QueryAlterableInterface $query){
   if (($node = $query->getMetaData('node')) && (get_class($query) == 'PagerDefault')) {
     // Get the configured default sort ordering for this node type.
-    $sort = variable_get('comment_default_sorting_' . $node->type, comment_goodness_OLDER_FIRST);
+    $sort = variable_get('comment_default_sorting_' . $node->type, COMMENT_GOODNESS_OLDER_FIRST);
     // The default ordering is ASC (older on top). If the configured sorting is
     // newer on top, change the ordering to DESC.
-    if ($sort == comment_goodness_NEWER_FIRST) {
+    if ($sort == COMMENT_GOODNESS_NEWER_FIRST) {
       $orderby = &$query->getOrderBy();
       $expressions = &$query->getExpressions();
       // Sorting for threaded comments.
@@ -147,7 +147,7 @@ function comment_goodness_query_comment_filter_alter(QueryAlterableInterface $qu
           unset($orderby['c.cid']);
         }
 // Commented out properly order by cid for creation order.
-//        $orderby['c.created'] = $direction;
+        $orderby['c.created'] = $direction;
         $orderby['c.cid'] = $direction;
       }
     }
@@ -251,7 +251,7 @@ function comment_goodness_delete_comment_access($comment) {
 /**
  * Implements hook_comment_view().
  */
-function comment_goodness_comment_view($comment, $view_mode, $langcode) {
+function COMMENT_GOODNESS_COMMENT_view($comment, $view_mode, $langcode) {
   // We only need to add the delete link if it's not there.
   if (!isset($comment->content['links']['comment']['#links']['comment-delete']) && comment_goodness_delete_comment_access($comment)) {
     $comment->content['links']['comment']['#links']['comment-delete'] = array(
@@ -490,36 +490,36 @@ function comment_goodness_preprocess_comment(&$variables) {
  */
 function comment_goodness_preprocess_comment_wrapper(&$variables) {
   // Get the configured form placement for this node type.
-  $form_placement = variable_get('comment_form_placement_' . $variables['node']->type, comment_goodness_FORM_PLACEMENT_BOTTOM);
+  $form_placement = variable_get('comment_form_placement_' . $variables['node']->type, COMMENT_GOODNESS_FORM_PLACEMENT_BOTTOM);
 
   switch ($form_placement) {
-    case comment_goodness_FORM_PLACEMENT_TOP:
+    case COMMENT_GOODNESS_FORM_PLACEMENT_TOP:
       $variables['comment_form_placement'] = 'top';
       break;
 
-    case comment_goodness_FORM_PLACEMENT_BOTTOM:
+    case COMMENT_GOODNESS_FORM_PLACEMENT_BOTTOM:
       $variables['comment_form_placement'] = 'bottom';
       break;
 
-    case comment_goodness_FORM_PLACEMENT_SORT:
+    case COMMENT_GOODNESS_FORM_PLACEMENT_SORT:
     default:
       // Bottom placement of the comment form is the Drupal default.
       $variables['comment_form_placement'] = 'bottom';
 
       // Get the configured default sort ordering for this node type.
-      $sort = variable_get('comment_default_sorting_' . $variables['node']->type, comment_goodness_OLDER_FIRST);
+      $sort = variable_get('comment_default_sorting_' . $variables['node']->type, COMMENT_GOODNESS_OLDER_FIRST);
 
       // Indicate that the comment form should be rendered above the comments
       // if the sort order is newest to oldest (ASC).
-      if ($sort == comment_goodness_NEWER_FIRST) {
+      if ($sort == COMMENT_GOODNESS_NEWER_FIRST) {
         $variables['comment_form_placement'] = 'top';
       }
       break;
   }
 
   // Get the section labels
-  $comment_section_label = variable_get('comment_section_label_' . $variables['node']->type, comment_goodness_COMMENT_SECTION_LABEL);
-  $comment_form_label = variable_get('comment_form_label_' . $variables['node']->type, comment_goodness_COMMENT_FORM_LABEL);
+  $comment_section_label = variable_get('comment_section_label_' . $variables['node']->type, COMMENT_GOODNESS_COMMENT_SECTION_LABEL);
+  $comment_form_label = variable_get('comment_form_label_' . $variables['node']->type, COMMENT_GOODNESS_COMMENT_FORM_LABEL);
 
   // Add the labels to the page variables
   $variables['labels'] = array(
@@ -610,8 +610,8 @@ function comment_goodness_get_display_ordinal($cid, $node_type) {
   }
 
   // Get the configured default sort ordering for this node type.
-  $sort = variable_get('comment_default_sorting_' . $node_type, comment_goodness_OLDER_FIRST);
-  $operation = ($sort == comment_goodness_NEWER_FIRST) ? '>' : '<';
+  $sort = variable_get('comment_default_sorting_' . $node_type, COMMENT_GOODNESS_OLDER_FIRST);
+  $operation = ($sort == COMMENT_GOODNESS_NEWER_FIRST) ? '>' : '<';
   $mode = variable_get('comment_default_mode_' . $node_type, COMMENT_MODE_THREADED);
 
   if ($mode == COMMENT_MODE_FLAT) {
@@ -622,7 +622,7 @@ function comment_goodness_get_display_ordinal($cid, $node_type) {
   }
   else {
     // For threaded comments, the c.thread column is used for ordering.
-    if ($sort == comment_goodness_NEWER_FIRST) {
+    if ($sort == COMMENT_GOODNESS_NEWER_FIRST) {
       // For newer to older sorted comments, we look for how many comments have
       // a higher thread value than the current comment.
       $query->where('c1.thread ' . $operation . ' c2.thread');
