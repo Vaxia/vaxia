@@ -181,10 +181,10 @@ function rpg_chat_node_view_alter(&$build) {
       $user_names[] = (!is_null($found_user->name) && !($found_user->name == 'null'))
         ? $found_user->name : t('Lurker*');
     }
-    $user_string = '<div id="rpg-chat-userlist">' .
+    $user_string = '<div id="rpg-chat-userlist" class="rpg-chat-userlist">' .
       theme('item_list', array('title' => t('Users in this room'), 'items' => $user_names)) .
       '</div>';
-    $build['comments']['comments']['#prefix'] = '<div id="rpg-chat-wrapper">' . $user_string . '<div id="rpg-chat">';
+    $build['comments']['comments']['#prefix'] = '<div id="rpg-chat-wrapper" class="rpg-chat-wrapper">' . $user_string . '<div id="rpg-chat" class="rpg-chat">';
     $build['comments']['comments']['#suffix'] = '</div></div>';
   }
 }
@@ -247,10 +247,10 @@ function rpg_chat_refresh($nid) {
   foreach ($node->rpg_chat_current_users as $found_user) {
     $user_names[] = $found_user->name;
   }
-  $return_string = '<div id="rpg-chat-userlist">' .
+  $return_string = '<div id="rpg-chat-userlist" class="rpg-chat-userlist">' .
     theme('item_list', array('title' => t('Users in this room'), 'items' => $user_names)) .
     '</div>';
-  $return_string .= '<div id="rpg-chat">';
+  $return_string .= '<div id="rpg-chat" class="rpg-chat">';
   // COPIED from comment_node_page_additions();
   // Only attempt to render comments if the node has visible comments.
   // Unpublished comments are not included in $node->comment_count, so show
@@ -278,7 +278,7 @@ function rpg_chat_refresh($nid) {
     'command' => 'insert',
     'method' => NULL,
     'selector' => NULL,
-    'data' => '<div id="rpg-chat-wrapper">' . $return_string . '</div>',
+    'data' => '<div id="rpg-chat-wrapper" class="rpg-chat-wrapper">' . $return_string . '</div>',
     'settings' => NULL,
   );
   // Echo the string, to avoid bootstrapping entire delivery system.
