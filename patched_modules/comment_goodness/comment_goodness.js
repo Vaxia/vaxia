@@ -2,7 +2,7 @@
 
 Drupal.behaviors.comment_goodness = {
   attach: function (context) {
-    $('form.comment-form div.field-name-comment-body div.text-format-wrapper iframe:not(.cgprocessed)').live('mouseover', function () {
+    $('form.comment-form div.field-name-comment-body div.text-format-wrapper iframe:not(.cgprocessed)').on('mouseover', function () {
       var $this = $(this);
       $this.addClass('cgprocessed');
       var ctx = $this.parents('div.text-format-wrapper');
