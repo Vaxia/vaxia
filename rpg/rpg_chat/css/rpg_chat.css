@@ -6,14 +6,14 @@
 #comments h2.title {display:none;}
 
 /* Arrange components of the chat room. */
-#rpg-chat-userlist {width: 24%;float:right;clear:right;}
-#rpg-chat {width: 74%;float:left;clear:left;}
+.rpg-chat-userlist {width: 24%;float:right;clear:right;}
+.rpg-chat {width: 74%;float:left;clear:left;}
 #comment-form {clear:both;}
 
 /* Display particulars, default values. */
-#rpg-chat-userlist h3 {text-align:center;}
+.rpg-chat-userlist h3 {text-align:center;}
 
 /* Hide specific elements of the comment display. */
-#rpg-chat .comment .comment-permalink {display:none;}
-#rpg-chat .comment h3 {display:none;}
-#rpg-chat .comment .links {display:none;}
+.rpg-chat .comment .comment-permalink {display:none;}
+.rpg-chat .comment h3 {display:none;}
+.rpg-chat .comment .links {display:none;}
