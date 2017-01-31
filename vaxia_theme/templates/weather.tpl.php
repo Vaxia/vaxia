@@ -4,7 +4,7 @@
  * Template for the weather module.
  */
 ?>
-<div class="weather">
+<div class="vaxia-theme weather">
   <style>
     .weather{width:250px;}
     .weather .weather-pic img{width:30px;}

@@ -38,7 +38,7 @@
 $comments = render($content['comments']);
 $comment_form = render($content['comment_form']);
 ?>
-<section class="comments <?php print $classes; ?>"<?php print $attributes; ?>>
+<section class="vaxia-theme comments <?php print $classes; ?>"<?php print $attributes; ?>>
   <?php print render($title_prefix); ?>
   <?php if ($comments && $node->type != 'forum'): ?>
     <h2 class="title"><?php print t('Comments'); ?></h2>

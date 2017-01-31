@@ -16,7 +16,7 @@
   }
 ?>
 
-<div class="author-pane">
+<div class="vaxia-theme author-pane">
  <div class="author-pane-inner">
     <?php /* General section */ ?>
     <div class="author-pane-section author-pane-general">

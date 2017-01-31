@@ -70,7 +70,7 @@
  */
 ?>
 
-<div id="page">
+<div id="vaxia-theme page">
 
   <header id="header" role="banner">
 

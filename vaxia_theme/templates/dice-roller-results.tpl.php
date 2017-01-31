@@ -63,6 +63,6 @@ if (isset($dice_rolls) && is_array($dice_rolls) && !empty($dice_rolls)) {
   }
 }
 // Echo the rows.
-print '<div class="dice_rolls ' . $ruled . '">' . $str_rolls . '</div>';
+print '<div class="vaxia-theme dice_rolls ' . $ruled . '">' . $str_rolls . '</div>';
 
 // BP: no end.

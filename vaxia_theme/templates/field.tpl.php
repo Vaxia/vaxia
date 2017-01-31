@@ -15,7 +15,7 @@ foreach ($items as $delta => $item) {
 
 if (!$field_empty) {
 ?>
-<div class="<?php print $classes; ?> vaxia-theme-custom-field"<?php print $attributes; ?>>
+<div class="vaxia-theme <?php print $classes; ?> vaxia-theme-custom-field"<?php print $attributes; ?>>
   <?php if (!$label_hidden): ?>
     <div class="field-label"<?php print $title_attributes; ?>><?php print $label ?>:&nbsp;</div>
   <?php endif; ?>

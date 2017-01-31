@@ -13,7 +13,7 @@ if (!empty($node->{$field}[$node->language][0]['tid'])) {
   $realm = !empty($realm_term->name) ? strtolower($realm_term->name) : $realm;
 }
 ?>
-<article class="node-<?php print $node->nid; ?> <?php print $classes; ?> realm-<?php print $realm; ?> clearfix"<?php print $attributes; ?>>
+<article class="vaxia-theme node-<?php print $node->nid; ?> <?php print $classes; ?> realm-<?php print $realm; ?> clearfix"<?php print $attributes; ?>>
 
   <?php if ($title_prefix || $title_suffix || $display_submitted || $unpublished || !$page && $title): ?>
     <header>
