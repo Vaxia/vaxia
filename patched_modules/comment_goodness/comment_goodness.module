@@ -195,6 +195,8 @@ function comment_goodness_menu() {
  * and because of this, permalinks do not work with DESC sorted comments.
  */
 function comment_goodness_menu_alter(&$items) {
+  // NOTE: talk module does NOT provide for menu override! We must weight comment_goodness
+  // under talk module to make sure this override occurs, and then include the redirect for talk.
   if (isset($items['comment/%'])) {
     $items['comment/%']['page callback'] = 'comment_goodness_permalink';
   }
@@ -567,18 +569,28 @@ function comment_goodness_get_display_page($cid, $node_type) {
  * @see comment_permalink()
  */
 function comment_goodness_permalink($cid) {
-  if (($comment = comment_load($cid)) && ($node = node_load($comment->nid))) {
 
+  //  Load the comment, accounting for talk module.
+  if (($comment = comment_load($cid)) && ($node = node_load($comment->nid))) {
     // Find the current display page for this comment.
     $page = comment_goodness_get_display_page($comment->cid, $node->type);
 
-    // Set $_GET['q'] and $_GET['page'] ourselves so that the node callback
-    // behaves as it would when visiting the page directly.
-    $_GET['q'] = 'node/' . $node->nid;
-    $_GET['page'] = $page;
+    if (!function_exists('talk_activated') || !talk_activated($node->type)) {
+      // Set $_GET['q'] and $_GET['page'] ourselves so that the node callback
+      // behaves as it would when visiting the page directly.
+      $_GET['q'] = 'node/' . $node->nid;
+      $_GET['page'] = $page;
 
-    // Return the node view, this will show the correct comment in context.
-    return menu_execute_active_handler('node/' . $node->nid, FALSE);
+      // Return the node view, this will show the correct comment in context.
+      return menu_execute_active_handler('node/' . $node->nid, FALSE);
+    }
+    else {
+      drupal_goto("node/$node->nid/talk/$comment->nid", array(
+          'fragment' => "comment-$comment->cid",
+        ),
+        301
+      );
+    }
   }
   return MENU_NOT_FOUND;
 }
