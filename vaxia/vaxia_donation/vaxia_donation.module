@@ -168,6 +168,10 @@ function vaxia_donation_form_payment_donation_form_alter(&$form, &$form_state) {
   $user_so_far = !empty($this_user->field_donated['und'][0]['value']) ? $this_user->field_donated['und'][0]['value'] : 0;
   $donate_left = $cap - $user_so_far;
   if ($donate_left <= 0) {
+    // Only add the character form and process as a donate form IFF there's a valid character.
+    $form['donation_help'] = array(
+      '#markup' => t('You have maxed out character rewards for the year. Thank you!<br/>'),
+    );
     return;
   }
   // Add the character select IIF characters eligable for it.
@@ -193,6 +197,9 @@ function vaxia_donation_form_payment_donation_form_alter(&$form, &$form_state) {
     }
   }
   if (empty($characters)) {
+    $form['donation_help'] = array(
+      '#markup' => t('You have no characters to select awards for.<br/>'),
+    );
     return;
   }
   // Only add the character form and process as a donate form IFF there's a valid character.
