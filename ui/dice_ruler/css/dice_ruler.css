@@ -4,13 +4,16 @@
 #dice-ruler-form table{margin-top:0px;}
 #dice-ruler-form .form-type-textfield{float:left;margin-left:1em;margin-top:0;margin-bottom:0;}
 #dice-ruler-form #edit-action-1, #dice-ruler-form #edit-action-2,
-  #dice-ruler-form #edit-action-3, #dice-ruler-form #edit-action-4{margin-right:220px;}
+  #dice-ruler-form #edit-action-3, #dice-ruler-form #edit-action-4{
+  border:solid 1px #CCC;margin:0.25em;margin-right:220px;}
+#dice-ruler-form .dice-ruler-row-reset{margin-left:0.5em;}
+/* Format two trait vs displays. */
+#dice-ruler-form .two-trait-form fieldset.form-wrapper{float:left;margin-left:1em;margin-top:0;margin-bottom:0;width:45%;}
 /* Format trait vs displays. */
 #dice-ruler-form .trait-vs-form fieldset.form-wrapper{float:left;margin-left:1em;margin-top:0;margin-bottom:0;width:45%;}
 #dice-ruler-form .trait-vs-form fieldset.form-wrapper fieldset.form-wrapper{width:90%;border:0;}
-/* Format two trait vs displays. */
+/* Format two traits. */
 #dice-ruler-form .two-trait-vs-form fieldset.form-wrapper{float:left;margin-left:1em;margin-top:0;margin-bottom:0;width:45%;}
-#dice-ruler-form .two-trait-vs-form fieldset.form-wrapper fieldset.form-wrapper{clear:left;width:90%;border:0;}
 /* Format combat displays. */
 #dice-ruler-form .combat-form fieldset.form-wrapper{float:left;margin-left:1em;margin-top:0;margin-bottom:0;width:45%;}
 #dice-ruler-form .combat-form fieldset.form-wrapper fieldset.form-wrapper{clear:left;width:90%;border:0;}

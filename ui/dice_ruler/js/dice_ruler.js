@@ -45,13 +45,22 @@ Drupal.behaviors.diceRuler = {
       'title="Make a Combat ruling with all available Str, Dex and End rolls. Second Party."><a href="#">C</a></li>' +
        '</ul>';
     $('.dice_ruled .dice_sets').after(rule_buttons);
-    // Add a reset button to the ruling form.
-    var reset = $('.dice_ruler_reset').length;
+    // Add reset buttons to the ruling form.
+    var reset = $('.dice-ruler-reset').length;
     if (reset == 0) {
-      var reset_button = '<input type="button" class="form-submit dice_ruler_reset" ' +
-        'value="Reset" name="dice_ruler_reset" id="dice_ruler_reset">';
+      // Number the rows.
+      // Primary reset.
+      var reset_button = '<input type="button" class="form-submit dice-ruler-reset" value="Reset All">';
       $('#edit-rule-dice').after(reset_button);
-      $('#dice_ruler_reset').hide();
+      $('.dice-ruler-reset').hide();
+      // Secondary reset.
+      var row_count = 1;
+      $('.form-type-select select[name*="roll_type"]').each(function(){
+         reset_button = '<input type="button" class="form-submit dice-ruler-row-reset" '
+           + 'value="Reset" row-id="' + row_count + '">';
+         $(this).after(reset_button);
+         row_count++;
+       });
     }
   }
 
@@ -59,17 +68,28 @@ Drupal.behaviors.diceRuler = {
   function clearRuler() {
     last_slot = 0;
     vs_slot = 0;
-    $('#dice-ruler-form').find('input[type="text"]').val('');
-    $('#dice-ruler-form').find('input[name*="number_actions_b"]').val(1);
-    // Set the diff default.
-    $('#dice-ruler-form').find('input[name*="one_trait_diff"]').val(25);
-    $('#dice-ruler-form').find('input[name*="two_trait_diff"]').val(25);
-    $('#dice-ruler-form').find('input[name*="magic_diff"]').val(25);
+    // For each of the four slots, update the view.
+    for (slot = 1; slot < 5; slot++) {
+      clearRow(slot);
+    }
     // Change the dropdown.
-    $('#dice-ruler-form').find('.form-type-select select[name*="roll_type"]').val('one_trait').trigger('change');
     if ($('#dice-ruler-form select[name="actions"]').val() != 'hidden') {
       $('#dice-ruler-form select[name="actions"]').val('hidden').trigger('change');
     }
+  }
+
+  // Clear the ruler as needed.
+  function clearRow(row_number) {
+    var this_row = $('#dice-ruler-form #edit-action-' + row_number);
+    // Clear the text values.
+    $(this_row).find('input[type="text"]').val('');
+    $(this_row).find('input[name*="number_actions_b"]').val(1);
+    // Set the diff default.
+    $(this_row).find('input[name*="one_trait_diff"]').val(25);
+    $(this_row).find('input[name*="two_trait_diff"]').val(25);
+    $(this_row).find('input[name*="magic_diff"]').val(25);
+    // Change the dropdown.
+    $(this_row).find('.form-type-select select[name*="roll_type"]').val('one_trait').trigger('change');
   }
 
   // Clicking a row button.
@@ -285,16 +305,35 @@ Drupal.behaviors.diceRuler = {
       $('#dice-ruler-form select[name="actions"]').change(function() {
         if ($(this).val() == 'hidden') {
           clearRuler();
-          $('#dice_ruler_reset').hide();
+          $('.dice-ruler-reset').hide();
         }
         else {
-          $('#dice_ruler_reset').show();
+          $('.dice-ruler-reset').show();
         }
       });
       // Add click listener for the ruler.
-      $('.dice_ruler_reset').click(function() {
+      $('.dice-ruler-reset').click(function() {
         clearRuler();
         return false;
+      });
+      // Add the refresh buttons to all rows.
+      $('.dice-ruler-row-reset').click(function() {
+        var row_number = $(this).attr('row-id');
+        clearRow(row_number);
+        return false;
+      });
+      // Make the buttons give feedback if hovered.
+      $('.dice-ruler-buttons li.dice-ruler-a').mouseover(function() {
+        $(this).css('border-color', '#0A0');
+      });
+      $('.dice-ruler-buttons li.dice-ruler-b').mouseover(function() {
+        $(this).css('border-color', '#0A0');
+      });
+      $('.dice-ruler-buttons li.dice-ruler-a').mouseout(function() {
+        $(this).css('border-color', '#EEE');
+      });
+      $('.dice-ruler-buttons li.dice-ruler-b').mouseout(function() {
+        $(this).css('border-color', '#A00');
       });
       // Load up just this row when clicked on.
       $('.dice-ruler-row-buttons .dice-ruler-a a').click(function() {
