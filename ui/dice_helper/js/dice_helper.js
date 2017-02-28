@@ -108,6 +108,11 @@ Drupal.behaviors.diceHelper = {
       $('.form-item-vaxia-rolls-dice-0-size select').val(100);
       $('.form-item-vaxia-rolls-dice-0-stat select').val('reflexes');
     }
+    if (type == 'con') {
+      $('.form-item-vaxia-rolls-dice-0-number select').val(1);
+      $('.form-item-vaxia-rolls-dice-0-size select').val(100);
+      $('.form-item-vaxia-rolls-dice-0-stat select').val('constitution');
+    }
   }
 
   // Set skill if all are to be set.
@@ -200,6 +205,9 @@ Drupal.behaviors.diceHelper = {
               'class="dice-helper-button dice-helper-single">' +
             '<input type="button" value="FIN" alt="Finesse" ' +
               'desc="A finesse roll, often used for sneaking." ' +
+              'class="dice-helper-button dice-helper-single">' +
+            '<input type="button" value="CON" alt="Constitution" ' +
+              'desc="A constitution roll, often used for enduring damage." ' +
               'class="dice-helper-button dice-helper-single">' +
           '</div>' +
           '<div class="dice-helper-skill">' +
