@@ -27,10 +27,11 @@ body{color:#4f4f4f;background-image:url('images/texture.png');
 #navigation #main-menu{top:-15px;padding:0 5%;}
 #navigation a{font-family:bebas_neueregular;font-weight:400;font-size:1.6em;}
 #navigation a, #navigation a.active, #navigation a:visited{color:#427ea3;}
+#main{padding-top:1.5em;}
 #main .breadcrumb{margin-top:10px;}
 .rpg-chat{color:#fff;}
 .rpg-chat a, .rpg-chat a.active, .rpg-chat a:visited{color:#fff;}
-#main #navigation{top:-50px;}
+#main #navigation{top:-30px;}
 #main #navigation a{color:#EEE;}
 
 /* Fonts styles. */
@@ -82,7 +83,7 @@ ul.tabs li{background-color:#529ecc;}
 @media screen and (max-width:960px) {
 }
 @media screen and (max-width:768px) {
-  #main #navigation{top:-55px;}
+  #main #navigation{top:-40px;}
   #main #navigation a{color:#EEE;}
   #navigation #main-menu{float:right;}
   #header #site-name{font-size:4.2em;line-height:49px;}
@@ -91,6 +92,7 @@ ul.tabs li{background-color:#529ecc;}
   .sidebars .region-sidebar-first h3{line-height:40px;font-size:1.6em;margin-bottom:0.25em;min-height:40px;}
 }
 @media screen and (max-width:600px) {
+  #navigation #main-menu{padding:0;}
   #navigation ul.links li, #navigation ul.menu li{padding:0px;}
   #header #site-name{padding-top:11px;font-size:2.5em;line-height:29px;}
   /* Make block labels smaller. */
