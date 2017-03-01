@@ -30,6 +30,8 @@ body{color:#4f4f4f;background-image:url('images/texture.png');
 #main .breadcrumb{margin-top:10px;}
 .rpg-chat{color:#fff;}
 .rpg-chat a, .rpg-chat a.active, .rpg-chat a:visited{color:#fff;}
+#main #navigation{top:-50px;}
+#main #navigation a{color:#EEE;}
 
 /* Fonts styles. */
 h1{font-size:1.8em;font-family:bebas_neueregular;font-weight:400;}
@@ -80,18 +82,25 @@ ul.tabs li{background-color:#529ecc;}
 @media screen and (max-width:960px) {
 }
 @media screen and (max-width:768px) {
+  #main #navigation{top:-55px;}
+  #main #navigation a{color:#EEE;}
+  #navigation #main-menu{float:right;}
   #header #site-name{font-size:4.2em;line-height:49px;}
   /* Make block labels smaller. */
   .sidebars .region-sidebar-first h2{line-height:40px;font-size:1.6em;margin-bottom:0.25em;min-height:40px;}
   .sidebars .region-sidebar-first h3{line-height:40px;font-size:1.6em;margin-bottom:0.25em;min-height:40px;}
 }
 @media screen and (max-width:600px) {
+  #navigation ul.links li, #navigation ul.menu li{padding:0px;}
   #header #site-name{padding-top:11px;font-size:2.5em;line-height:29px;}
   /* Make block labels smaller. */
   .sidebars .region-sidebar-first h2{line-height:20px;font-size:1.6em;margin-bottom:0.25em;min-height:20px;}
   .sidebars .region-sidebar-first h3{line-height:20px;font-size:1.6em;margin-bottom:0.25em;min-height:20px;}
 }
 @media screen and (max-width:480px) {
+  #main #navigation{top:-50px;}
+  #main #navigation a, #navigation a, #navigation a.active, #navigation a:visited{color:#427ea3;}
+  #navigation #main-menu{top:30px;float:none;}
   #main{padding-top:30px;}
   #navigation a{background:transparent;}
   /* Sidebar rounds to both sidebars. */
