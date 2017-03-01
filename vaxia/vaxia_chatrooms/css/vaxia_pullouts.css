@@ -87,26 +87,28 @@
 #target_extruderBarDesc{
   width: 600px;
 }
-#target_extruderBarHead #navigation{
+#main #target_extruderBarHead #navigation{
   height:auto;
   text-align:left;
   overflow:hidden;
+  top:0px;
 }
-#target_extruderBarHead #navigation #main-menu{
+#main #target_extruderBarHead #navigation #main-menu{
   float:none;
   top:0;
 }
-#target_extruderBarHead #navigation ul.links li, #target_extruderBarHead #navigation ul.menu li {
+#main #target_extruderBarHead #navigation ul.links li, #target_extruderBarHead #navigation ul.menu li {
   float:none;
   list-style-type:disc;
 }
-#target_extruderBarHead ul.inline{
+#main #target_extruderBarHead ul.inline{
   display:block;
 }
-#target_extruderBarHead li{
+#main #target_extruderBarHead li{
   float:none;
   display:block;
 }
-#target_extruderBarHead #navigation a{
+#main #target_extruderBarHead #navigation a{
   text-align:left;
+  color:#427ea3;
 }
