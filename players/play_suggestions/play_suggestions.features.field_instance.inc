@@ -10,7 +10,7 @@
 function play_suggestions_field_default_field_instances() {
   $field_instances = array();
 
-  // Exported field_instance: 'node-play_suggestions-field_tag_realm'
+  // Exported field_instance: 'node-play_suggestions-field_tag_realm'.
   $field_instances['node-play_suggestions-field_tag_realm'] = array(
     'bundle' => 'play_suggestions',
     'default_value' => array(

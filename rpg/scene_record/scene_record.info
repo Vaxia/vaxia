@@ -5,6 +5,7 @@ package = RPG
 version = 7.x-1.2
 project = scene_record
 dependencies[] = entityreference_view_widget
+dependencies[] = sh_test
 dependencies[] = vaxia
 dependencies[] = workflow
 features[ctools][] = strongarm:strongarm:1

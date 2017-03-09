@@ -117,7 +117,7 @@ function vaxia_field_group_info() {
         'required_fields' => 1,
         'id' => '',
         'classes' => 'group-aspects field-group-fieldset',
-        'description' => 'Skill aspects determine what your skill can do in our system. Information on aspects can be found <a href="http://vaxia.org/forums/skill-verbs/aspects" target="_blank">here</a>.<br>',
+        'description' => '',
       ),
       'formatter' => 'open',
     ),
@@ -577,7 +577,6 @@ You have 300 points to distribute between stats and skills.</br>
     'children' => array(
       0 => 'field_sh_notes',
       1 => 'field_sh_private_notes',
-      2 => 'field_item_shop',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -762,18 +761,19 @@ You have 300 points to distribute between stats and skills.</br>
   $field_group->mode = 'form';
   $field_group->parent_name = '';
   $field_group->data = array(
-    'label' => 'Tech languages',
+    'label' => 'Tech contexts',
     'weight' => '4',
     'children' => array(
       0 => 'field_tech_languages',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
-      'label' => 'Tech languages',
+      'label' => 'Tech contexts',
       'instance_settings' => array(
         'required_fields' => 1,
+        'id' => '',
         'classes' => 'group-tech-lang field-group-fieldset',
-        'description' => 'If this is a Sirian tech skill, select two technical languages to be familiar with. Skills start with two languages by default.',
+        'description' => '',
       ),
       'formatter' => 'collapsed',
     ),
@@ -796,7 +796,7 @@ You have 300 points to distribute between stats and skills.</br>
   t('Skills');
   t('Stats');
   t('Tech Languages');
-  t('Tech languages');
+  t('Tech contexts');
 
   return $field_groups;
 }

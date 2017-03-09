@@ -113,20 +113,17 @@ function scene_record_field_default_field_bases() {
     'locked' => 0,
     'module' => 'entityreference',
     'settings' => array(
-      'handler' => 'base',
+      'handler' => 'views',
       'handler_settings' => array(
         'behaviors' => array(
           'views-select-list' => array(
             'status' => 0,
           ),
         ),
-        'sort' => array(
-          'direction' => 'ASC',
-          'property' => 'cid',
-          'type' => 'property',
-        ),
-        'target_bundles' => array(
-          'comment_node_rpg_chatroom' => 'comment_node_rpg_chatroom',
+        'view' => array(
+          'args' => array(),
+          'display_name' => 'character_posts',
+          'view_name' => 'character_posts',
         ),
       ),
       'target_type' => 'comment',

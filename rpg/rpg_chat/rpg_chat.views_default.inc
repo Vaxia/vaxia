@@ -23,13 +23,17 @@ function rpg_chat_views_default_views() {
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['title'] = 'Chat Archives';
+  $handler->display->display_options['css_class'] = 'rpg-chat';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['exposed_form']['type'] = 'basic';
   $handler->display->display_options['pager']['type'] = 'full';
-  $handler->display->display_options['pager']['options']['items_per_page'] = '35';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '30';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['quantity'] = '9';
   $handler->display->display_options['style_plugin'] = 'default';
   $handler->display->display_options['style_options']['row_class'] = 'rpg-chat-node';
   $handler->display->display_options['row_plugin'] = 'comment';
@@ -45,7 +49,11 @@ $nid = arg(1);
 if (!empty($nid) && is_numeric($nid) && function_exists(\'_rpg_chat_set_room_users\')) {
   _rpg_chat_set_room_users($nid);
 }
-?>';
+?>
+<link type="text/css" rel="stylesheet" href="http://vaxia.org/sites/all/modules/vaxia-prod/vaxia/vaxia_chatrooms/css/vaxia_chatrooms.css" media="all" />
+<style>
+.rpg-chat .item-list .pager{height:1px;}
+</style>';
   /* Relationship: Comment: Content */
   $handler->display->display_options['relationships']['nid']['id'] = 'nid';
   $handler->display->display_options['relationships']['nid']['table'] = 'comment';

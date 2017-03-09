@@ -324,7 +324,7 @@ function vaxia_wiki_views_default_views() {
   $handler->display->display_options['relationships']['bid']['field'] = 'bid';
   /* Field: Bulk operations: Content */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
-  $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'node';
+  $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['views_bulk_operations']['field'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['label'] = '';
   $handler->display->display_options['fields']['views_bulk_operations']['element_label_colon'] = FALSE;
@@ -782,7 +782,7 @@ function vaxia_wiki_views_default_views() {
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Bulk operations: Content */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
-  $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'node';
+  $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['views_bulk_operations']['field'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['label'] = '';
   $handler->display->display_options['fields']['views_bulk_operations']['element_label_colon'] = FALSE;
@@ -924,7 +924,7 @@ function vaxia_wiki_views_default_views() {
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Bulk operations: Content */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
-  $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'node';
+  $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['views_bulk_operations']['field'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['label'] = '';
   $handler->display->display_options['fields']['views_bulk_operations']['element_label_colon'] = FALSE;
@@ -1062,7 +1062,7 @@ function vaxia_wiki_views_default_views() {
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Bulk operations: Content */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
-  $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'node';
+  $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['views_bulk_operations']['field'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['label'] = '';
   $handler->display->display_options['fields']['views_bulk_operations']['element_label_colon'] = FALSE;
@@ -1280,7 +1280,7 @@ Search for a wiki article by tag(s).';
   $handler->display->display_options['relationships']['bid']['field'] = 'bid';
   /* Field: Bulk operations: Content */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
-  $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'node';
+  $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['views_bulk_operations']['field'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['label'] = '';
   $handler->display->display_options['fields']['views_bulk_operations']['element_label_colon'] = FALSE;
@@ -1868,7 +1868,7 @@ Search for a wiki article by tag(s).';
   $handler->display->display_options['fields']['field_saga']['alter']['text'] = '<h2>[field_titles] [title_1] : [field_saga]</h2>';
   $handler->display->display_options['fields']['field_saga']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_saga']['empty'] = '<h2>[field_titles] [title_1] : Standalone Sessions</h2>';
-  /* Field: Content: Session held */
+  /* Field: Content: Event held */
   $handler->display->display_options['fields']['field_session_held']['id'] = 'field_session_held';
   $handler->display->display_options['fields']['field_session_held']['table'] = 'field_data_field_session_held';
   $handler->display->display_options['fields']['field_session_held']['field'] = 'field_session_held';
@@ -1998,7 +1998,7 @@ Search for a wiki article by tag(s).';
   $handler->display->display_options['row_options']['summary_field'] = 'default_title';
   $handler->display->display_options['row_options']['location_field'] = 'none';
   $handler->display->display_options['defaults']['sorts'] = FALSE;
-  /* Sort criterion: Content: Session held (field_session_held) */
+  /* Sort criterion: Content: Event held (field_session_held) */
   $handler->display->display_options['sorts']['field_session_held_value']['id'] = 'field_session_held_value';
   $handler->display->display_options['sorts']['field_session_held_value']['table'] = 'field_data_field_session_held';
   $handler->display->display_options['sorts']['field_session_held_value']['field'] = 'field_session_held_value';
@@ -2044,7 +2044,7 @@ Search for a wiki article by tag(s).';
   $handler->display->display_options['row_options']['summary_field'] = 'default_title';
   $handler->display->display_options['row_options']['location_field'] = 'none';
   $handler->display->display_options['defaults']['sorts'] = FALSE;
-  /* Sort criterion: Content: Session held (field_session_held) */
+  /* Sort criterion: Content: Event held (field_session_held) */
   $handler->display->display_options['sorts']['field_session_held_value']['id'] = 'field_session_held_value';
   $handler->display->display_options['sorts']['field_session_held_value']['table'] = 'field_data_field_session_held';
   $handler->display->display_options['sorts']['field_session_held_value']['field'] = 'field_session_held_value';
@@ -2386,7 +2386,7 @@ Search for an NPC.';
   $handler->display->display_options['fields']['field_sirian_species']['id'] = 'field_sirian_species';
   $handler->display->display_options['fields']['field_sirian_species']['table'] = 'field_data_field_sirian_species';
   $handler->display->display_options['fields']['field_sirian_species']['field'] = 'field_sirian_species';
-  /* Field: Field: Description */
+  /* Field: Field: Descriptions */
   $handler->display->display_options['fields']['field_description']['id'] = 'field_description';
   $handler->display->display_options['fields']['field_description']['table'] = 'field_data_field_description';
   $handler->display->display_options['fields']['field_description']['field'] = 'field_description';

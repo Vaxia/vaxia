@@ -282,6 +282,7 @@ function vaxia_field_default_field_instances() {
           'description' => 0,
           'edit' => '',
           'empty' => 1,
+          'hide_empty' => FALSE,
           'view_mode' => 'full',
         ),
         'type' => 'field_collection_table_view',
@@ -290,7 +291,7 @@ function vaxia_field_default_field_instances() {
     ),
     'entity_type' => 'field_collection_item',
     'field_name' => 'field_tech_languages',
-    'label' => 'Tech languages',
+    'label' => 'Tech contexts',
     'required' => 0,
     'settings' => array(
       'user_register_form' => FALSE,
@@ -915,10 +916,12 @@ function vaxia_field_default_field_instances() {
     'default_value' => array(
       0 => array(
         'value' => '',
+        'format' => 'plain_text',
       ),
     ),
     'deleted' => 0,
-    'description' => 'If your character has any over-arching life goals. Things they want to do or see done that may require an A/SH to help achieve - make note of them here.',
+    'description' => 'If your character has any over-arching life goals. Things they want to do or see done that may require an A/SH to help achieve - make note of them here.
+<br><br>',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -945,7 +948,6 @@ function vaxia_field_default_field_instances() {
           'full_html' => 0,
           'php_code' => 0,
           'plain_text' => 'plain_text',
-          'whiteboard' => 0,
           'wiki' => 0,
         ),
         'allowed_formats_toggle' => 1,
@@ -963,9 +965,6 @@ function vaxia_field_default_field_instances() {
             ),
             'plain_text' => array(
               'weight' => 10,
-            ),
-            'whiteboard' => array(
-              'weight' => 0,
             ),
             'wiki' => array(
               'weight' => 0,
@@ -1050,7 +1049,8 @@ function vaxia_field_default_field_instances() {
     'default_value_function' => '',
     'default_value_php' => '',
     'deleted' => 0,
-    'description' => 'Most characters should start play with no conditions. Starting play with a \'Condition\' requires approval from the Setting department. (Setting approval is never guaranteed.) Please take a look here for more information about <a href="http://vaxia.org/wiki/setting-approval-conditions" target="_blank">getting Setting approval for Conditions</a> and <a href="http://vaxia.org/wiki/setting-approval-mental-disorders" target="_blank">getting Setting approval for Mental Conditions</a> including amnesia and multiple personality disorders.',
+    'description' => 'Most characters should start play with no conditions. Starting play with a \'Condition\' requires approval from the Setting department. (Setting approval is never guaranteed.) Please take a look here for more information about <a href="http://vaxia.org/wiki/setting-approval-conditions" target="_blank">getting Setting approval for Conditions</a> and <a href="http://vaxia.org/wiki/setting-approval-mental-disorders" target="_blank">getting Setting approval for Mental Conditions</a> including amnesia and multiple personality disorders.
+<br><br>',
     'display' => array(
       'default' => array(
         'label' => 'inline',
@@ -1129,9 +1129,13 @@ function vaxia_field_default_field_instances() {
     'bundle' => 'character_sheet',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Mark these topics as things your character is ok with if and ONLY if you are ok with the character experiencing them in play.
+    'description' => '<br/>
+Mark these topics as things your character is ok with if and ONLY if you are ok with the character experiencing them in play.
 </br><br/>
-This gives you a way to tell an A/SH in advance what sort of things are ok without you ever having to be put on the spot. If this is a special-occasion where you trust the A/SH involved and want to give them permission to cross these lines, please make sure to explicitly state that. If an A/SH crosses one of these lines without your permission, please tell our Social department as soon as you can.',
+This gives you a way to tell an A/SH in advance what sort of things are ok for this character. At the beginning of a session, please review your permission toggles to make sure they are what you want. You will NOT be allowed to change them in the middle of a session. This helps our A/SHs keep play going quickly with the least disruption.
+</br><br/>
+If this is a special occasion where you trust the A/SH involved and want to give them individual permission to cross these lines, please make sure to explicitly state that in PMs or in the room you will be posting in so we have it on record. If an A/SH crosses one of these lines without your permission, please tell our Social department as soon as you can so our Social department can take action.
+<br><br>',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -1159,7 +1163,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 50,
+      'weight' => 53,
     ),
   );
 
@@ -1685,48 +1689,6 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_item_shop'.
-  $field_instances['node-character_sheet-field_item_shop'] = array(
-    'bundle' => 'character_sheet',
-    'default_value' => array(
-      0 => array(
-        'value' => 1,
-      ),
-    ),
-    'deleted' => 0,
-    'description' => 'Toggle character access to the item shop on or off.',
-    'display' => array(
-      'default' => array(
-        'label' => 'hidden',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 9,
-      ),
-      'question' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_item_shop',
-    'label' => 'Can use item shop',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'options',
-      'settings' => array(
-        'display_label' => 0,
-      ),
-      'type' => 'options_onoff',
-      'weight' => 43,
-    ),
-  );
-
   // Exported field_instance: 'node-character_sheet-field_items'.
   $field_instances['node-character_sheet-field_items'] = array(
     'bundle' => 'character_sheet',
@@ -1959,7 +1921,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     'bundle' => 'character_sheet',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'If you have selected "Other" for your species you MUST select an option here to clarify what sort of \'Other\' species this character is. If this is not an NPC expect to need to get Setting approval. (Setting approval is never guaranteed.) Please take a look here for more information about <a href="http://vaxia.org/wiki/setting-approval-pcs" target="_blank">getting Setting approval for PCs</a>.',
+    'description' => 'If you have selected "Other" for your species you MUST select an option here to clarify what sort of \'Other\' species this character is. If this is not an NPC expect to need to get Setting approval. (Setting approval is never guaranteed.) Please take a look here for more information about <a href="/wiki/setting-approval-pcs" target="_blank">getting Setting approval for PCs</a>.',
     'display' => array(
       'default' => array(
         'label' => 'inline',
@@ -2111,9 +2073,15 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
   // Exported field_instance: 'node-character_sheet-field_player_notes'.
   $field_instances['node-character_sheet-field_player_notes'] = array(
     'bundle' => 'character_sheet',
-    'default_value' => NULL,
+    'default_value' => array(
+      0 => array(
+        'value' => '',
+        'format' => 'plain_text',
+      ),
+    ),
     'deleted' => 0,
-    'description' => '',
+    'description' => 'Personal notes for yourself about your character.
+<br><br>',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -2142,16 +2110,19 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     'settings' => array(
       'better_formats' => array(
         'allowed_formats' => array(
+          'filtered_html' => 0,
           'full_html' => 0,
           'php_code' => 0,
           'plain_text' => 'plain_text',
-          'whiteboard' => 0,
           'wiki' => 0,
         ),
         'allowed_formats_toggle' => 1,
         'default_order_toggle' => 0,
         'default_order_wrapper' => array(
           'formats' => array(
+            'filtered_html' => array(
+              'weight' => 0,
+            ),
             'full_html' => array(
               'weight' => -47,
             ),
@@ -2160,9 +2131,6 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
             ),
             'plain_text' => array(
               'weight' => -50,
-            ),
-            'whiteboard' => array(
-              'weight' => -49,
             ),
             'wiki' => array(
               'weight' => -48,
@@ -2189,7 +2157,8 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     'bundle' => 'character_sheet',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'Enter as a hex value such as "001100" or text such as "red".',
+    'description' => 'Enter as a hex value such as "001100" or text such as "red".
+<br><br>',
     'display' => array(
       'default' => array(
         'label' => 'hidden',
@@ -2215,7 +2184,6 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
           'full_html' => 'full_html',
           'php_code' => 'php_code',
           'plain_text' => 'plain_text',
-          'whiteboard' => 'whiteboard',
           'wiki' => 'wiki',
         ),
         'allowed_formats_toggle' => 0,
@@ -2233,9 +2201,6 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
             ),
             'plain_text' => array(
               'weight' => 10,
-            ),
-            'whiteboard' => array(
-              'weight' => 0,
             ),
             'wiki' => array(
               'weight' => 0,
@@ -2390,10 +2355,12 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     'default_value' => array(
       0 => array(
         'value' => '',
+        'format' => 'wiki',
       ),
     ),
     'deleted' => 0,
-    'description' => 'Include any public information other characters could easily find out about this character. For example: The information a chatty bartender, or a social media search would reveal.',
+    'description' => 'Include any public information other characters could easily find out about this character. For example: The information a chatty bartender, or a social media search would reveal.
+<br><br>',
     'display' => array(
       'default' => array(
         'label' => 'hidden',
@@ -2420,7 +2387,6 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
           'full_html' => 0,
           'php_code' => 0,
           'plain_text' => 0,
-          'whiteboard' => 0,
           'wiki' => 'wiki',
         ),
         'allowed_formats_toggle' => 1,
@@ -2438,9 +2404,6 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
             ),
             'plain_text' => array(
               'weight' => 10,
-            ),
-            'whiteboard' => array(
-              'weight' => 0,
             ),
             'wiki' => array(
               'weight' => 0,
@@ -2473,7 +2436,8 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     'default_value_function' => '',
     'default_value_php' => '',
     'deleted' => 0,
-    'description' => 'If the species you want to play is not listed here, select \'Other\'. (Setting approval is never guaranteed.) Please take a look here for more information about <a href=http://vaxia.org/wiki/setting-approval-pcs>getting Setting approval for PCs</a>.',
+    'description' => 'If the species you want to play is not listed here, select \'Other\'. (Setting approval is never guaranteed.) Please take a look here for more information about <a href="/wiki/setting-approval-pcs" target="_blank">getting Setting approval for PCs</a>.
+<br><br>',
     'display' => array(
       'default' => array(
         'label' => 'inline',
@@ -2913,7 +2877,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     'bundle' => 'character_sheet',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'All starting characters may select up to three languages at Native proficiency <a href="http://vaxia.org/wiki/sirian-languages">Languages of Sirian</a>',
+    'description' => 'All starting characters may select up to three languages at "native" proficiency: <a href="/wiki/sirian-languages" target="_blank">Languages of Sirian</a>',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -2954,7 +2918,8 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
       ),
     ),
     'deleted' => 0,
-    'description' => 'If the species you want to play is not listed here, select \'Other\'. (Setting approval is never guaranteed.) Please take a look here for more information about <a href=http://vaxia.org/wiki/setting-approval-pcs>getting Setting approval for PCs</a>.',
+    'description' => 'If the species you want to play is not listed here, select \'Other\'. (Setting approval is never guaranteed.) Please take a look here for more information about <a href="/wiki/setting-approval-pcs" target="_blank">getting Setting approval for PCs</a>.
+<br><br>',
     'display' => array(
       'default' => array(
         'label' => 'inline',
@@ -2991,7 +2956,10 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     'bundle' => 'character_sheet',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '',
+    'description' => '<br>
+Skill aspects determine what your skill can do in our system. Information on aspects can be found <a href="/forums/skill-verbs/aspects" target="_blank">here</a>.
+If and ONLY if this is a Sirian tech skill: select two technical contexts to be familiar with. Skills start with two "proficient" contexts by default.
+<br>',
     'display' => array(
       'default' => array(
         'label' => 'hidden',
@@ -3004,6 +2972,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
           'description' => 0,
           'edit' => '',
           'empty' => 0,
+          'hide_empty' => FALSE,
           'view_mode' => 'full',
         ),
         'type' => 'field_collection_table_view',
@@ -3242,7 +3211,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
     'bundle' => 'character_sheet',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'All starting characters may select up to three languages at Native proficiency: <a href="http://vaxia.org/wiki/vaxia-languages">Languages of Vaxia</a>',
+    'description' => 'All starting characters may select up to three languages at "native" proficiency: <a href="/wiki/vaxia-languages" target="_blank">Languages of Vaxia</a>',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -3313,7 +3282,7 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
         'display_label' => 0,
       ),
       'type' => 'options_onoff',
-      'weight' => 49,
+      'weight' => 54,
     ),
   );
 
@@ -3322,20 +3291,30 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
   t('1.');
   t('2.');
   t('3.');
+  t('<br/>
+Mark these topics as things your character is ok with if and ONLY if you are ok with the character experiencing them in play.
+</br><br/>
+This gives you a way to tell an A/SH in advance what sort of things are ok for this character. At the beginning of a session, please review your permission toggles to make sure they are what you want. You will NOT be allowed to change them in the middle of a session. This helps our A/SHs keep play going quickly with the least disruption.
+</br><br/>
+If this is a special occasion where you trust the A/SH involved and want to give them individual permission to cross these lines, please make sure to explicitly state that in PMs or in the room you will be posting in so we have it on record. If an A/SH crosses one of these lines without your permission, please tell our Social department as soon as you can so our Social department can take action.
+<br><br>');
+  t('<br>
+Skill aspects determine what your skill can do in our system. Information on aspects can be found <a href="/forums/skill-verbs/aspects" target="_blank">here</a>.
+If and ONLY if this is a Sirian tech skill: select two technical contexts to be familiar with. Skills start with two "proficient" contexts by default.
+<br>');
   t('A personal room is intended for a character to roleplay crafting and personal scenes in. It is automatically set to be NOT displayed on the public search. Posts in these rooms will NOT be archived. Personal rooms are automatically created once the character is approved.');
   t('Achivements');
   t('Additional property');
   t('Age');
   t('Agility');
-  t('All starting characters may select up to three languages at Native proficiency <a href="http://vaxia.org/wiki/sirian-languages">Languages of Sirian</a>');
-  t('All starting characters may select up to three languages at Native proficiency: <a href="http://vaxia.org/wiki/vaxia-languages">Languages of Vaxia</a>');
+  t('All starting characters may select up to three languages at "native" proficiency: <a href="/wiki/sirian-languages" target="_blank">Languages of Sirian</a>');
+  t('All starting characters may select up to three languages at "native" proficiency: <a href="/wiki/vaxia-languages" target="_blank">Languages of Vaxia</a>');
   t('Apparent Age');
   t('Apparent Gender');
   t('Appearance');
   t('Awareness');
   t('Background');
   t('Birth Date');
-  t('Can use item shop');
   t('Character Goals');
   t('Charisma');
   t('Charisma (CHA): Mental Resistance; Influence');
@@ -3352,17 +3331,21 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
   t('Economy');
   t('Endurance');
   t('Endurance (END): Physical Resistance; Fortitude');
-  t('Enter as a hex value such as "001100" or text such as "red".');
+  t('Enter as a hex value such as "001100" or text such as "red".
+<br><br>');
   t('Finesse');
   t('For A/SHs - always feel free to add another property field to give each item a field.');
   t('Generic NPCs are intended for general use in running sessions. If this is a generic NPC, make sure to mark this as an NPC as well.');
   t('Health');
   t('IC achievements! Titles earned, championships won. Fun stuff!');
-  t('If the species you want to play is not listed here, select \'Other\'. (Setting approval is never guaranteed.) Please take a look here for more information about <a href=http://vaxia.org/wiki/setting-approval-pcs>getting Setting approval for PCs</a>.');
-  t('If you have selected "Other" for your species you MUST select an option here to clarify what sort of \'Other\' species this character is. If this is not an NPC expect to need to get Setting approval. (Setting approval is never guaranteed.) Please take a look here for more information about <a href="http://vaxia.org/wiki/setting-approval-pcs" target="_blank">getting Setting approval for PCs</a>.');
-  t('If your character has any over-arching life goals. Things they want to do or see done that may require an A/SH to help achieve - make note of them here.');
+  t('If the species you want to play is not listed here, select \'Other\'. (Setting approval is never guaranteed.) Please take a look here for more information about <a href="/wiki/setting-approval-pcs" target="_blank">getting Setting approval for PCs</a>.
+<br><br>');
+  t('If you have selected "Other" for your species you MUST select an option here to clarify what sort of \'Other\' species this character is. If this is not an NPC expect to need to get Setting approval. (Setting approval is never guaranteed.) Please take a look here for more information about <a href="/wiki/setting-approval-pcs" target="_blank">getting Setting approval for PCs</a>.');
+  t('If your character has any over-arching life goals. Things they want to do or see done that may require an A/SH to help achieve - make note of them here.
+<br><br>');
   t('Image');
-  t('Include any public information other characters could easily find out about this character. For example: The information a chatty bartender, or a social media search would reveal.');
+  t('Include any public information other characters could easily find out about this character. For example: The information a chatty bartender, or a social media search would reveal.
+<br><br>');
   t('Intellect (INT): Mental Acuity; Reasoning');
   t('Intelligence');
   t('Items');
@@ -3372,15 +3355,15 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
   t('Life');
   t('Life (LIF): Hitpoints');
   t('Mark the items your character is usually wearing and they will be automatically selected in the items dropdown for you.');
-  t('Mark these topics as things your character is ok with if and ONLY if you are ok with the character experiencing them in play.
-</br><br/>
-This gives you a way to tell an A/SH in advance what sort of things are ok without you ever having to be put on the spot. If this is a special-occasion where you trust the A/SH involved and want to give them permission to cross these lines, please make sure to explicitly state that. If an A/SH crosses one of these lines without your permission, please tell our Social department as soon as you can.');
   t('Mark this sheet as a storyteller sheet.');
-  t('Most characters should start play with no conditions. Starting play with a \'Condition\' requires approval from the Setting department. (Setting approval is never guaranteed.) Please take a look here for more information about <a href="http://vaxia.org/wiki/setting-approval-conditions" target="_blank">getting Setting approval for Conditions</a> and <a href="http://vaxia.org/wiki/setting-approval-mental-disorders" target="_blank">getting Setting approval for Mental Conditions</a> including amnesia and multiple personality disorders.');
+  t('Most characters should start play with no conditions. Starting play with a \'Condition\' requires approval from the Setting department. (Setting approval is never guaranteed.) Please take a look here for more information about <a href="http://vaxia.org/wiki/setting-approval-conditions" target="_blank">getting Setting approval for Conditions</a> and <a href="http://vaxia.org/wiki/setting-approval-mental-disorders" target="_blank">getting Setting approval for Mental Conditions</a> including amnesia and multiple personality disorders.
+<br><br>');
   t('Name');
   t('Occupation');
   t('Other Species');
   t('Permissions');
+  t('Personal notes for yourself about your character.
+<br><br>');
   t('Personal room');
   t('Personality');
   t('Player Notes');
@@ -3402,13 +3385,12 @@ This gives you a way to tell an A/SH in advance what sort of things are ok witho
   t('Storyhost');
   t('Strength');
   t('Strength (STR): Physical Power; Toughness');
+  t('Tech contexts');
   t('Tech language');
-  t('Tech languages');
   t('The first description listed will be used on your posts and for viewing by other players. You can add additional descriptions and sort them as needed if your character has more than one \'appearance\'.');
   t('This is a generic NPC');
   t('This is an NPC');
   t('Titles');
-  t('Toggle character access to the item shop on or off.');
   t('Uncheck this box to hide this character\'s posts from the power search. This is useful if you are playing a character whose actions you want to keep private. Be aware, while this will hide the posts of this character from the search it will not hide the posts of other character\'s in a scene with you if they are not also set for private mode.');
   t('Value');
   t('Vaxia Species');

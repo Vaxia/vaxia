@@ -767,31 +767,6 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'list_boolean',
   );
 
-  // Exported field_base: 'field_item_shop'.
-  $field_bases['field_item_shop'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_item_shop',
-    'indexes' => array(
-      'value' => array(
-        0 => 'value',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'list',
-    'settings' => array(
-      'allowed_values' => array(
-        0 => 'Character can NOT use the item shop',
-        1 => 'Character can use the item shop',
-      ),
-      'allowed_values_function' => '',
-    ),
-    'translatable' => 0,
-    'type' => 'list_boolean',
-  );
-
   // Exported field_base: 'field_items'.
   $field_bases['field_items'] = array(
     'active' => 1,
@@ -1391,7 +1366,7 @@ $entity_field[0][\'value\'] = $this_value;
     'module' => 'field_collection',
     'settings' => array(
       'hide_blank_items' => 1,
-      'hide_initial_item' => FALSE,
+      'hide_initial_item' => 0,
       'path' => '',
     ),
     'translatable' => 0,
@@ -1534,7 +1509,7 @@ $entity_field[0][\'value\'] = $this_value;
     'module' => 'field_collection',
     'settings' => array(
       'hide_blank_items' => 1,
-      'hide_initial_item' => FALSE,
+      'hide_initial_item' => 0,
       'path' => '',
     ),
     'translatable' => 0,
