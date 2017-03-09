@@ -6,7 +6,6 @@ version = 7.x-1.2
 project = vaxia_players
 dependencies[] = ctools
 dependencies[] = entity
-dependencies[] = filedepot_rules
 dependencies[] = php
 dependencies[] = rules
 dependencies[] = user_stats
