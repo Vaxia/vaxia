@@ -319,12 +319,6 @@ function vaxia_character_sheet_field_info() {
         'owner' => DISABLE_SHEET,
       ),
     ),
-    // Temporary hide.
-    'field_item_shop' => array(
-      'permissions' => array(
-        'owner' => DISABLE_SHEET,
-      ),
-    ),
   );
 }
 
