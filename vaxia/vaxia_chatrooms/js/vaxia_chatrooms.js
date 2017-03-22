@@ -29,5 +29,8 @@ Drupal.behaviors.vaxia_chatrooms = {
       });
     }
 
+    /* Hide standard display messags in chatrooms after they've posted. */
+    $('.node-type-rpg-chatroom .messages--status').delay('fast').fadeOut();
+  
   })(jQuery); }
 }
