@@ -31,6 +31,10 @@ Drupal.behaviors.vaxia_chatrooms = {
 
     /* Hide standard display messags in chatrooms after they've posted. */
     $('.node-type-rpg-chatroom .messages--status').delay('fast').fadeOut();
-  
+
+    /* Move the private room label to save space. */
+    $('.node-rpg-chatroom .field-name-field-private-room').detach()
+      .prependTo('.node-rpg-chatroom .comment-wrapper');
+
   })(jQuery); }
 }
