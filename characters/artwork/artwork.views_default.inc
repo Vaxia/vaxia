@@ -144,9 +144,9 @@ function artwork_views_default_views() {
   $handler->display->display_options['tab_options']['weight'] = '0';
   $handler->display->display_options['tab_options']['name'] = 'menu-vaxia';
 
-  /* Display: My artwork */
-  $handler = $view->new_display('page', 'My artwork', 'artwork_mine');
-  $handler->display->display_options['display_description'] = 'View my artwork';
+  /* Display: User artwork */
+  $handler = $view->new_display('page', 'User artwork', 'user_artwork');
+  $handler->display->display_options['display_description'] = 'User artwork';
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: Title */
@@ -177,6 +177,16 @@ function artwork_views_default_views() {
   $handler->display->display_options['sorts']['title']['id'] = 'title';
   $handler->display->display_options['sorts']['title']['table'] = 'node';
   $handler->display->display_options['sorts']['title']['field'] = 'title';
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: Content: Author uid */
+  $handler->display->display_options['arguments']['uid']['id'] = 'uid';
+  $handler->display->display_options['arguments']['uid']['table'] = 'node';
+  $handler->display->display_options['arguments']['uid']['field'] = 'uid';
+  $handler->display->display_options['arguments']['uid']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['uid']['default_argument_type'] = 'current_user';
+  $handler->display->display_options['arguments']['uid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['uid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['uid']['summary_options']['items_per_page'] = '25';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
@@ -210,12 +220,14 @@ function artwork_views_default_views() {
     8 => '8',
     10 => '10',
   );
-  $handler->display->display_options['path'] = 'artwork/mine';
+  $handler->display->display_options['path'] = 'user/%/artwork';
   $handler->display->display_options['menu']['type'] = 'tab';
-  $handler->display->display_options['menu']['title'] = 'My art';
-  $handler->display->display_options['menu']['description'] = 'My art';
+  $handler->display->display_options['menu']['title'] = 'Artwork';
+  $handler->display->display_options['menu']['description'] = 'Artwork';
   $handler->display->display_options['menu']['weight'] = '1';
   $handler->display->display_options['menu']['name'] = 'menu-vaxia';
+  $handler->display->display_options['menu']['context'] = 0;
+  $handler->display->display_options['menu']['context_only_inline'] = 0;
 
   /* Display: My artwork refs */
   $handler = $view->new_display('references', 'My artwork refs', 'artwork_mine_refs');

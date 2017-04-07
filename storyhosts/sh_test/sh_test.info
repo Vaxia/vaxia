@@ -47,7 +47,6 @@ features[field_instance][] = node-session_report-field_session_held
 features[field_instance][] = node-session_report-field_tag_realm
 features[field_instance][] = node-session_report-taxonomy_forums
 features[field_instance][] = node-storyhost_application-body
-features[menu_custom][] = menu-vaxia-ash
 features[node][] = session_report
 features[node][] = storyhost_application
 features[taxonomy][] = ash_test

@@ -46,12 +46,6 @@ function vaxia_evaluation_views_default_views() {
     ),
   );
   $handler->display->display_options['row_plugin'] = 'fields';
-  /* Header: Global: Text area */
-  $handler->display->display_options['header']['area']['id'] = 'area';
-  $handler->display->display_options['header']['area']['table'] = 'views';
-  $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['content'] = 'The following items need attention for evaluation.';
-  $handler->display->display_options['header']['area']['format'] = 'wiki';
   /* Field: Content: Attention To */
   $handler->display->display_options['fields']['field_sh_attention_to']['id'] = 'field_sh_attention_to';
   $handler->display->display_options['fields']['field_sh_attention_to']['table'] = 'field_data_field_sh_attention_to';
@@ -75,7 +69,7 @@ function vaxia_evaluation_views_default_views() {
   $handler->display->display_options['fields']['type']['label'] = '';
   $handler->display->display_options['fields']['type']['exclude'] = TRUE;
   $handler->display->display_options['fields']['type']['alter']['alter_text'] = TRUE;
-  $handler->display->display_options['fields']['type']['alter']['text'] = '[type]s';
+  $handler->display->display_options['fields']['type']['alter']['text'] = 'Evaluate [type]s';
   $handler->display->display_options['fields']['type']['element_label_colon'] = FALSE;
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';

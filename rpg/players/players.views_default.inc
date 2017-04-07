@@ -141,8 +141,14 @@ function players_views_default_views() {
   $handler = $view->new_display('page', 'Players', 'players');
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['defaults']['access'] = FALSE;
-  $handler->display->display_options['access']['type'] = 'perm';
-  $handler->display->display_options['access']['perm'] = 'access user profiles';
+  $handler->display->display_options['access']['type'] = 'role';
+  $handler->display->display_options['access']['role'] = array(
+    3 => '3',
+    21 => '21',
+    9 => '9',
+    10 => '10',
+    17 => '17',
+  );
   $handler->display->display_options['defaults']['footer'] = FALSE;
   $handler->display->display_options['path'] = 'players/all';
   $handler->display->display_options['menu']['type'] = 'default tab';
