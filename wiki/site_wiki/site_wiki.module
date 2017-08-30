@@ -44,7 +44,7 @@ function site_wiki_form_node_form_alter(&$form, &$form_state, $form_id) {
   $node = !empty($form['#node']) ? $form['#node'] : '';
   if (variable_get('site_wiki_revision', TRUE) && !empty($form['revision_information']['log'])
     && !empty($node->type) && $node->type == 'wiki_page') {
-    $form['revision_information']['#weight'] = 10;
+    $form['revision_information']['#weight'] = -100; // Place at top of options.
     $form['revision_information']['log']['#required'] = TRUE;
   }
 }
