@@ -7,6 +7,18 @@
 // Once a month lower the reputation XP for everyone.
 
 /**
+* Implements hook_cron_queue_info().
+*/
+function rpg_rep_cron_queue_info() {
+  $queues = array();
+  $queues['vaxiaRPGRepQueue'] = array(
+    'worker callback' => '_rpg_rep_character_monthly_rep',
+    'time' => 60,
+  );
+  return $queues;
+}
+
+/**
  * Implements hook_cron().
  */
 function rpg_rep_cron() {
@@ -15,8 +27,8 @@ function rpg_rep_cron() {
   if ($last_run < $yesterday) {
     variable_set('rpg_rep_sheet_cron', strtotime('now'));
     // Check if this is the first of the month.
-    $day = date('j');
-    if ($day == '1') {
+    $day = date('d', strtotime('now'));
+    if ($day == '01') {
       _rpg_rep_cron();
       watchdog('rpg_rep', 'Ran rpg rep updates.');
     }
@@ -28,39 +40,66 @@ function rpg_rep_cron() {
  */
 function _rpg_rep_cron() {
   // Run queries for each setting.
-  $settings = variable_get('rpg_rep_settings', array('Vaxia', 'Sirian'));
-  foreach ($settings as $setting) {
+  $queue = DrupalQueue::get('vaxiaRPGRepQueue');
+  $sheets = db_query('SELECT n.nid FROM {node} n ' . // With an economy value
+    'WHERE n.status = 1 ' . // Active character sheet
+    'AND n.nid NOT IN (' .
+      'SELECT npc.entity_id FROM {field_data_field_is_npc} npc WHERE npc.field_is_npc_value = 1' . // Not an NPC
+    ')'.
+    'AND n.nid NOT IN (' .
+      'SELECT st.entity_id FROM {field_data_field_is_storyteller} st WHERE st.field_is_storyteller_value = 1' . // Not a storyteller.
+    ')');
+  foreach ($sheets as $node_data) {
+    $item = array(
+      'nid' => $node_data->nid
+    );
+    $queue->createItem($item);
+  }
+}
+
+
+/**
+ * Helper function, calculate rep changes on cron.
+ */
+function _rpg_rep_character_monthly_rep($node_data) {
+  // If an in play node.
+  $node = node_load($node_data['nid']);
+  if (_character_sheet_is_enabled($node) && _character_sheet_is_playable($node)) {
+    // From vaxia.module
+    $realm = _vaxia_get_realm($node);
     $reps = array();
     foreach(_rpg_rep_get_groups($setting) as $gid => $group) {
       $reps[] = 'rep_' . $gid;
     }
+    // If not empty reps.
     if (!empty($reps)) {
-      watchdog('rpg_rep', 'Running reputation processing.');
-/*
-      // Get all PCs with reps type.
-      // Lower reps for those with positive.
-      $sheets = db_query('UPDATE {character_sheet_xp} x ' . // With an XP score
-        'SET x.xp = (x.xp - 1) ' . // For all reputations over 0, reduce by 1.
-        'WHERE x.type IN (:reps) '.  // YES we want to do this to inactive PCs as well. So don't check status.
-        'AND x.xp > 0 '. // Only for those greater than 1.
-        'AND x.nid NOT IN ( ' .
-        'SELECT npc.entity_id FROM {field_data_field_is_npc} npc WHERE npc.field_is_npc_value = 1 ' . // Not an NPC
-        ') '.
-        'AND x.nid NOT IN ( ' .
-        'SELECT st.entity_id FROM {field_data_field_is_storyteller} st WHERE st.field_is_storyteller_value = 1 ' . // Not a storyteller.
-        ')', array(':reps' => $reps));
-      // Increase reps for those with negative.
-      $sheets = db_query('UPDATE {character_sheet_xp} x ' . // With an XP score
-        'SET x.xp = (x.xp + 1) ' . // For all reputations under 0, add by 1.
-        'WHERE x.type IN (:reps) '.  // YES we want to do this to inactive PCs as well. So don't check status.
-        'AND x.xp < 0 '. // Only for those less than 1.
-        'AND x.nid NOT IN ( ' .
-        'SELECT npc.entity_id FROM {field_data_field_is_npc} npc WHERE npc.field_is_npc_value = 1 ' . // Not an NPC
-        ') '.
-        'AND x.nid NOT IN ( ' .
-        'SELECT st.entity_id FROM {field_data_field_is_storyteller} st WHERE st.field_is_storyteller_value = 1 ' . // Not a storyteller.
-        ')', array(':reps' => $reps));
-*/
+      watchdog('rpg_rep', 'Running reputation for character ' . $node->title);
+      foreach ($reps as $rep) {
+        // Current.
+         $this_rep = _character_sheet_get_xp($node->nid, $rep);
+         if ($this_rep > 0) {
+           watchdog('rpg_rep', 'Removing 1 ' . $rep . ' reputation for ' . $node->title . ' was ' . $this_rep);
+           $new_rep = $this_rep - 1;
+           // Reduce rep.
+// TMP.
+//           _character_sheet_update_xp($node->nid, $daily * -1, $rep);
+//           $message = 'Removed 1 ' . $rep . ' from # '. $node->nid . ' ' . $node->title;
+//           _character_sheet_update_log($node->nid, 'monthly_rpg_rep', $message);
+         }
+         elseif ($this_rep < 0) {
+           watchdog('rpg_rep', 'Adding 1 ' . $rep . ' reputation for ' . $node->title . ' was ' . $this_rep);
+           $new_rep = $this_rep + 1;
+           // Reduce rep.
+// TMP.
+//           _character_sheet_update_xp($node->nid, $daily * -1, $rep);
+//           $message = 'Added 1 ' . $rep . ' to # '. $node->nid . ' ' . $node->title;
+//           _character_sheet_update_log($node->nid, 'monthly_rpg_rep', $message);
+         }
+         // Do nothing if rep is at zero.
+      }
+    }
+    else {
+      watchdog('rpg_rep', 'No groups found for realm:' . $realm, WATCHDOG_ERROR);
     }
   }
 }
