@@ -66,9 +66,9 @@ function _rpg_rep_character_monthly_rep($node_data) {
   $node = node_load($node_data['nid']);
   if (_character_sheet_is_enabled($node) && _character_sheet_is_playable($node)) {
     // From vaxia.module
-    $realm = _vaxia_get_realm($node);
     $reps = array();
-    foreach(_rpg_rep_get_groups($setting) as $gid => $group) {
+    $realm = _vaxia_get_realm($node);
+    foreach(_rpg_rep_get_groups($realm) as $gid => $group) {
       $reps[] = 'rep_' . $gid;
     }
     // If not empty reps.
@@ -78,7 +78,7 @@ function _rpg_rep_character_monthly_rep($node_data) {
         // Current.
          $this_rep = _character_sheet_get_xp($node->nid, $rep);
          if ($this_rep > 0) {
-           watchdog('rpg_rep', 'Removing 1 ' . $rep . ' reputation for ' . $node->title . ' was ' . $this_rep);
+           watchdog('rpg_rep', 'TMP: Removing 1 ' . $rep . ' reputation for ' . $node->title . ' was ' . $this_rep);
            $new_rep = $this_rep - 1;
            // Reduce rep.
 // TMP.
@@ -87,7 +87,7 @@ function _rpg_rep_character_monthly_rep($node_data) {
 //           _character_sheet_update_log($node->nid, 'monthly_rpg_rep', $message);
          }
          elseif ($this_rep < 0) {
-           watchdog('rpg_rep', 'Adding 1 ' . $rep . ' reputation for ' . $node->title . ' was ' . $this_rep);
+           watchdog('rpg_rep', 'TMP: Adding 1 ' . $rep . ' reputation for ' . $node->title . ' was ' . $this_rep);
            $new_rep = $this_rep + 1;
            // Reduce rep.
 // TMP.
