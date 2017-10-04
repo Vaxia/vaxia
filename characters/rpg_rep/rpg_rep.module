@@ -28,7 +28,8 @@ function rpg_rep_cron() {
     variable_set('rpg_rep_sheet_cron', strtotime('now'));
     // Check if this is the first of the month.
     $day = date('d', strtotime('now'));
-    if ($day == '01') {
+//    if ($day == '01') {
+    if ($day == '05') {
       _rpg_rep_cron();
       watchdog('rpg_rep', 'Ran rpg rep updates.');
     }
