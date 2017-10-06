@@ -28,8 +28,7 @@ function rpg_rep_cron() {
     variable_set('rpg_rep_sheet_cron', strtotime('now'));
     // Check if this is the first of the month.
     $day = date('d', strtotime('now'));
-//    if ($day == '01') {
-    if ($day == '05') {
+    if ($day == '01') {
       _rpg_rep_cron();
       watchdog('rpg_rep', 'Ran rpg rep updates.');
     }
@@ -70,33 +69,24 @@ function _rpg_rep_character_monthly_rep($node_data) {
     $reps = array();
     $realm = _vaxia_get_realm($node);
     foreach(_rpg_rep_get_groups($realm) as $gid => $group) {
-      $reps[] = 'rep_' . $gid;
+      $reps[$group] = 'rep_' . $gid;
     }
     // If not empty reps.
     if (!empty($reps)) {
       watchdog('rpg_rep', 'Running reputation for character ' . $node->title);
-      foreach ($reps as $rep) {
-        // Current.
-         $this_rep = _character_sheet_get_xp($node->nid, $rep);
-         if ($this_rep > 0) {
-           watchdog('rpg_rep', 'TMP: Removing 1 ' . $rep . ' reputation for ' . $node->title . ' was ' . $this_rep);
-           $new_rep = $this_rep - 1;
-           // Reduce rep.
-// TMP.
-//           _character_sheet_update_xp($node->nid, $daily * -1, $rep);
-//           $message = 'Removed 1 ' . $rep . ' from # '. $node->nid . ' ' . $node->title;
-//           _character_sheet_update_log($node->nid, 'monthly_rpg_rep', $message);
-         }
-         elseif ($this_rep < 0) {
-           watchdog('rpg_rep', 'TMP: Adding 1 ' . $rep . ' reputation for ' . $node->title . ' was ' . $this_rep);
-           $new_rep = $this_rep + 1;
-           // Reduce rep.
-// TMP.
-//           _character_sheet_update_xp($node->nid, $daily * -1, $rep);
-//           $message = 'Added 1 ' . $rep . ' to # '. $node->nid . ' ' . $node->title;
-//           _character_sheet_update_log($node->nid, 'monthly_rpg_rep', $message);
-         }
-         // Do nothing if rep is at zero.
+      foreach ($reps as $group => $rep) {
+        $old_rep = _character_sheet_get_xp($node->nid, $rep);
+        // Do nothing if rep is at zero.
+        if ($old_rep != 0) {
+          $new_rep = 1;
+          if ($old_rep > 0) {
+            $new_rep = -1;
+          }
+          // Reduce rep.
+          _character_sheet_update_xp($node->nid, $new_rep, $rep);
+          $message = 'Reputation changed by ' . $new_rep . ' for group '. $group . ', was ' . $old_rep;
+          _character_sheet_update_log($node->nid, 'monthly_rpg_rep', $message);
+        }
       }
     }
     else {
