@@ -8,110 +8,52 @@
 Drupal.behaviors.diceHelper = {
   attach: function(context) { (function($) {
 
-  // Cookie handling, set cookie.
-  function setCookie(c_name, value, exdays) {
-    var exdate = new Date();
-    exdate.setDate(exdate.getDate() + exdays);
-    var c_value = escape(value) + ((exdays == null) ? '' : '; expires=' + exdate.toUTCString());
-    document.cookie = c_name + '=' + c_value;
-  }
+  var maxSet = 6;
+  var lastSet = 0;
+  var setsStats = [
+    {name: 'attack', desc: 'Attack with melee or ranged weapons.',
+      useStats: ['dexterity', 'strength', 'endurance']},
+    {name: 'magic', desc: 'Cast a spell or psionic effect.',
+      useStats: ['intelligence', 'spirituality']},
+    {name: 'tech', desc: 'Work with technology or crafting.',
+      useStats: ['intelligence', 'dexterity']},
+    {name: 'aware', desc: 'Listen or watch for signifigant things.',
+      useStats: ['intelligence', 'spirituality']},
+    {name: 'charm', desc: 'Charm a target into cooperation.',
+      useStats: ['charisma', 'spirituality']},
+    {name: 'threat', desc: 'Intimidate a target into cooperation.',
+      useStats: ['charisma', 'spirituality']},
+    {name: 'sneak', desc: 'Sneak and hide to avoid detection.',
+      useStats: ['intelligence', 'dexterity']}
+  ];
 
-  // Cookie handling, get cookie.
-  function getCookie(c_name) {
-    var i, x, y, ARRcookies = document.cookie.split(';');
-    for (i=0; i < ARRcookies.length; i++) {
-      x = ARRcookies[i].substr(0, ARRcookies[i].indexOf('='));
-      y = ARRcookies[i].substr(ARRcookies[i].indexOf('=') + 1);
-      x = x.replace(/^\s+|\s+$/g, '');
-      if (x == c_name) {
-        return unescape(y);
-      }
+  function setPick(number, stat = -1) {
+    var selectVal = 1;
+    if (stat == -1) {
+      selectVal = 0;
     }
-    return 0;
+    $('.form-item-vaxia-rolls-dice-' + number + '-number select').val(selectVal);
+    $('.form-item-vaxia-rolls-dice-' + number + '-size select').val(100);
+    $('.form-item-vaxia-rolls-dice-' + number + '-stat select').val(stat);
   }
 
   // Set quickly picked values.
   function quickPick(type) {
-    // Set to empty.
-    $('.form-item-vaxia-rolls-dice-0-number select').val(0);
-    $('.form-item-vaxia-rolls-dice-0-size select').val(100);
-    $('.form-item-vaxia-rolls-dice-0-stat select').val(-1);
-    $('.form-item-vaxia-rolls-dice-1-number select').val(0);
-    $('.form-item-vaxia-rolls-dice-1-size select').val(100);
-    $('.form-item-vaxia-rolls-dice-1-stat select').val(-1);
-    $('.form-item-vaxia-rolls-dice-2-number select').val(0);
-    $('.form-item-vaxia-rolls-dice-2-size select').val(100);
-    $('.form-item-vaxia-rolls-dice-2-stat select').val(-1);
-    // Update settings based on dice picked.
-    if (type == 'attack') {
-      $('.form-item-vaxia-rolls-dice-0-number select').val(1);
-      $('.form-item-vaxia-rolls-dice-0-size select').val(100);
-      $('.form-item-vaxia-rolls-dice-0-stat select').val('dexterity');
-      $('.form-item-vaxia-rolls-dice-1-number select').val(1);
-      $('.form-item-vaxia-rolls-dice-1-size select').val(100);
-      $('.form-item-vaxia-rolls-dice-1-stat select').val('strength');
-      $('.form-item-vaxia-rolls-dice-2-number select').val(1);
-      $('.form-item-vaxia-rolls-dice-2-size select').val(100);
-      $('.form-item-vaxia-rolls-dice-2-stat select').val('endurance');
-    }
-    if (type == 'magic') {
-      $('.form-item-vaxia-rolls-dice-0-number select').val(1);
-      $('.form-item-vaxia-rolls-dice-0-size select').val(100);
-      $('.form-item-vaxia-rolls-dice-0-stat select').val('intelligence');
-      $('.form-item-vaxia-rolls-dice-1-number select').val(1);
-      $('.form-item-vaxia-rolls-dice-1-size select').val(100);
-      $('.form-item-vaxia-rolls-dice-1-stat select').val('spirituality');
-    }
-    if (type == 'tech') {
-      $('.form-item-vaxia-rolls-dice-0-number select').val(1);
-      $('.form-item-vaxia-rolls-dice-0-size select').val(100);
-      $('.form-item-vaxia-rolls-dice-0-stat select').val('intelligence');
-      $('.form-item-vaxia-rolls-dice-1-number select').val(1);
-      $('.form-item-vaxia-rolls-dice-1-size select').val(100);
-      $('.form-item-vaxia-rolls-dice-1-stat select').val('dexterity');
-    }
-    if (type == 'aware') {
-      $('.form-item-vaxia-rolls-dice-0-number select').val(1);
-      $('.form-item-vaxia-rolls-dice-0-size select').val(100);
-      $('.form-item-vaxia-rolls-dice-0-stat select').val('awareness');
-    }
-    if (type == 'charm') {
-      $('.form-item-vaxia-rolls-dice-0-number select').val(1);
-      $('.form-item-vaxia-rolls-dice-0-size select').val(100);
-      $('.form-item-vaxia-rolls-dice-0-stat select').val('charisma');
-      $('.form-item-vaxia-rolls-dice-1-number select').val(1);
-      $('.form-item-vaxia-rolls-dice-1-size select').val(100);
-      $('.form-item-vaxia-rolls-dice-1-stat select').val('spirituality');
-    }
-    if (type == 'threat') {
-      $('.form-item-vaxia-rolls-dice-0-number select').val(1);
-      $('.form-item-vaxia-rolls-dice-0-size select').val(100);
-      $('.form-item-vaxia-rolls-dice-0-stat select').val('presence');
-    }
-    if (type == 'sneak') {
-      $('.form-item-vaxia-rolls-dice-0-number select').val(1);
-      $('.form-item-vaxia-rolls-dice-0-size select').val(100);
-      $('.form-item-vaxia-rolls-dice-0-stat select').val('reflexes');
-    }
-    if (type == 'end') {
-      $('.form-item-vaxia-rolls-dice-0-number select').val(1);
-      $('.form-item-vaxia-rolls-dice-0-size select').val(100);
-      $('.form-item-vaxia-rolls-dice-0-stat select').val('endurance');
-    }
-    if (type == 'agi') {
-      $('.form-item-vaxia-rolls-dice-0-number select').val(1);
-      $('.form-item-vaxia-rolls-dice-0-size select').val(100);
-      $('.form-item-vaxia-rolls-dice-0-stat select').val('agility');
-    }
-    if (type == 'fin') {
-      $('.form-item-vaxia-rolls-dice-0-number select').val(1);
-      $('.form-item-vaxia-rolls-dice-0-size select').val(100);
-      $('.form-item-vaxia-rolls-dice-0-stat select').val('reflexes');
-    }
-    if (type == 'con') {
-      $('.form-item-vaxia-rolls-dice-0-number select').val(1);
-      $('.form-item-vaxia-rolls-dice-0-size select').val(100);
-      $('.form-item-vaxia-rolls-dice-0-stat select').val('constitution');
+    for (i = 0; i < setsStats.length; i++) {
+      if (type == setsStats[i].name) {
+        var useStats = setsStats[i].useStats;
+        var toSet = useStats.length;
+        if ( maxSet < (lastSet + toSet) ) {
+          lastSet = 0;
+          for (j = 0; j < maxSet; j++) {
+            setPick(j, -1);
+          }
+        }
+        for (j = 0; j < toSet; j++) {
+          setPick(lastSet + j, useStats[j]);
+        }
+        lastSet = lastSet + toSet;
+      }
     }
   }
 
@@ -161,57 +103,31 @@ Drupal.behaviors.diceHelper = {
     }
   }
 
+  function makeButton(buttonStat, buttonClasses) {
+    return '<input type="button" ' +
+      'value="' + buttonStat.name + '" ' +
+      'alt="' + buttonStat.name + '" ' +
+      'desc="' + buttonStat.desc + '" ' +
+      'class="dice-helper-button ' + buttonClasses + ' dice-helper-button-' + buttonStat.name + '">';
+  }
+
   // Add toggle buttons, but only the once.
   function setupButtons() {
     helper = $('#dice-helper');
     if (helper.length == 0) {
       // On page load, inject the buttons into place in the DOM.
-       $('#edit-comment-body').before('' +
-        '<div id="dice-helper-image" style="">' +
-        '</div>'
-      );
+      $('#edit-comment-body').before('<div id="dice-helper-image" style=""></div>');
+      var setsButtons = '';
+      for (i = 0; i < setsStats.length; i++) {
+        setsButtons = setsButtons + makeButton(setsStats[i], 'dice-helper-icon');
+      }
       $('#vaxia-dice-character').before('' +
-        '<div id="dice-helper" style="">' +
-          '<div class="dice-helper-sets">' +
-            '<input type="button" value="Attack" alt="Attack" ' +
-              'desc="Attack with melee or ranged weapons." ' +
-              'class="dice-helper-button dice-helper-icon dice-helper-button-attack">' +
-            '<input type="button" value="Magic" alt="Magic" ' +
-              'desc="Cast a spell or psionic effect." ' +
-              'class="dice-helper-button dice-helper-icon dice-helper-button-magic">' +
-            '<input type="button" value="Tech" alt="Tech" ' +
-              'desc="Work with technology or crafting." ' +
-              'class="dice-helper-button dice-helper-icon dice-helper-button-tech">' +
-            '<input type="button" value="Aware" alt="Aware" ' +
-              'desc="Listen or watch for signifigant things." ' +
-              'class="dice-helper-button dice-helper-icon dice-helper-button-aware">' +
-            '<input type="button" value="Charm" alt="Charm" ' +
-              'desc="Charm a target into cooperation. " ' +
-              'class="dice-helper-button dice-helper-icon dice-helper-button-charm">' +
-            '<input type="button" value="Threat" alt="Threat" ' +
-              'desc="Intimidate a target into cooperation." ' +
-              'class="dice-helper-button dice-helper-icon dice-helper-button-threat">' +
-            '<input type="button" value="Sneak" alt="Sneak" ' +
-              'desc="Sneak and hide to avoid detection." ' +
-              'class="dice-helper-button dice-helper-icon dice-helper-button-sneak">' +
-          '</div>' +
+        '<div id="dice-helper">' +
+          '<div class="dice-helper-sets">' + setsButtons + '</div>' +
           '<div class="dice-helper-help dice-helper-icon-help" style="display:none;"></div>' +
-          '<div class="dice-helper-singles">' +
-            '<input type="button" value="END" alt="Endurance" ' +
-              'desc="An endurance roll, often used to survive effects." ' +
-              'class="dice-helper-button dice-helper-single">' +
-            '<input type="button" value="AGI" alt="Agility" ' +
-              'desc="An agility roll, often used to dodge effects." ' +
-              'class="dice-helper-button dice-helper-single">' +
-            '<input type="button" value="FIN" alt="Finesse" ' +
-              'desc="A finesse roll, often used for sneaking." ' +
-              'class="dice-helper-button dice-helper-single">' +
-            '<input type="button" value="CON" alt="Constitution" ' +
-              'desc="A constitution roll, often used for enduring damage." ' +
-              'class="dice-helper-button dice-helper-single">' +
-          '</div>' +
           '<div class="dice-helper-skill">' +
-            '<input type="checkbox" id="same-skill-for-all" class="dice-helper-select">Use the same skill for rolls?' +
+            '<input type="checkbox" id="same-skill-for-all" class="dice-helper-select">' +
+            'Use the same skill for all rolls?' +
           '</div>' +
         '</div>'
       );
@@ -234,6 +150,28 @@ Drupal.behaviors.diceHelper = {
       // Set the image on display.
       setImageAssist();
     }
+  }
+
+  // Cookie handling, set cookie.
+  function setCookie(c_name, value, exdays) {
+    var exdate = new Date();
+    exdate.setDate(exdate.getDate() + exdays);
+    var c_value = escape(value) + ((exdays == null) ? '' : '; expires=' + exdate.toUTCString());
+    document.cookie = c_name + '=' + c_value;
+  }
+
+  // Cookie handling, get cookie.
+  function getCookie(c_name) {
+    var i, x, y, ARRcookies = document.cookie.split(';');
+    for (i=0; i < ARRcookies.length; i++) {
+      x = ARRcookies[i].substr(0, ARRcookies[i].indexOf('='));
+      y = ARRcookies[i].substr(ARRcookies[i].indexOf('=') + 1);
+      x = x.replace(/^\s+|\s+$/g, '');
+      if (x == c_name) {
+        return unescape(y);
+      }
+    }
+    return 0;
   }
 
   // Save the color and pic on post.
@@ -262,7 +200,7 @@ Drupal.behaviors.diceHelper = {
 
   // Clicking a quick pick button, trigger auto selects.
   $('.dice-helper-button').unbind('click').click(function() {
-    quickPick($(this).val().toLowerCase());
+    quickPick($(this).val());
   });
 
   // Changing a skill, check for all skill setting.
