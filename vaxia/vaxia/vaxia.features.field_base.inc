@@ -96,78 +96,6 @@ $display_output = $born->format(\'F jS, Y\') . \', \' . $interval->format(\'%y y
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_agility'.
-  $field_bases['field_agility'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_agility',
-    'field_permissions' => array(
-      'type' => 1,
-    ),
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'computed_field',
-    'settings' => array(
-      'code' => '$this_value =  ($entity->field_strength[$entity->language][0][\'value\'] + $entity->field_dexterity[$entity->language][0][\'value\']) / 2;
-if (!empty($this_value)) {
-$entity_field[0][\'value\'] = $this_value;
-}',
-      'database' => array(
-        'data_default' => 0,
-        'data_index' => 0,
-        'data_length' => 32,
-        'data_not_NULL' => 1,
-        'data_precision' => 10,
-        'data_scale' => 2,
-        'data_size' => 'normal',
-        'data_type' => 'float',
-      ),
-      'display_format' => '$display_output = $entity_field_item[\'value\'];',
-      'recalculate' => FALSE,
-      'store' => 1,
-    ),
-    'translatable' => 0,
-    'type' => 'computed',
-  );
-
-  // Exported field_base: 'field_appearance'.
-  $field_bases['field_appearance'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_appearance',
-    'field_permissions' => array(
-      'type' => 1,
-    ),
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'computed_field',
-    'settings' => array(
-      'code' => '$this_value =  ($entity->field_charisma[$entity->language][0][\'value\'] + $entity->field_life[$entity->language][0][\'value\']) / 2;
-if (!empty($this_value)) {
-$entity_field[0][\'value\'] = $this_value;
-}',
-      'database' => array(
-        'data_default' => 0,
-        'data_index' => 0,
-        'data_length' => 32,
-        'data_not_NULL' => 1,
-        'data_precision' => 10,
-        'data_scale' => 2,
-        'data_size' => 'normal',
-        'data_type' => 'float',
-      ),
-      'display_format' => '$display_output = $entity_field_item[\'value\'];',
-      'recalculate' => FALSE,
-      'store' => 1,
-    ),
-    'translatable' => 0,
-    'type' => 'computed',
-  );
-
   // Exported field_base: 'field_aspect_one'.
   $field_bases['field_aspect_one'] = array(
     'active' => 1,
@@ -244,42 +172,6 @@ $entity_field[0][\'value\'] = $this_value;
     ),
     'translatable' => 0,
     'type' => 'taxonomy_term_reference',
-  );
-
-  // Exported field_base: 'field_awareness'.
-  $field_bases['field_awareness'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_awareness',
-    'field_permissions' => array(
-      'type' => 1,
-    ),
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'computed_field',
-    'settings' => array(
-      'code' => '$this_value =  ($entity->field_intelligence[$entity->language][0][\'value\'] + $entity->field_spirituality[$entity->language][0][\'value\']) / 2;
-if (!empty($this_value)) {
-$entity_field[0][\'value\'] = $this_value;
-}',
-      'database' => array(
-        'data_default' => 0,
-        'data_index' => 0,
-        'data_length' => 32,
-        'data_not_NULL' => 1,
-        'data_precision' => 10,
-        'data_scale' => 2,
-        'data_size' => 'normal',
-        'data_type' => 'float',
-      ),
-      'display_format' => '$display_output = $entity_field_item[\'value\'];',
-      'recalculate' => FALSE,
-      'store' => 1,
-    ),
-    'translatable' => 0,
-    'type' => 'computed',
   );
 
   // Exported field_base: 'field_background'.
@@ -449,42 +341,6 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'list_text',
   );
 
-  // Exported field_base: 'field_constitution'.
-  $field_bases['field_constitution'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_constitution',
-    'field_permissions' => array(
-      'type' => 1,
-    ),
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'computed_field',
-    'settings' => array(
-      'code' => '$this_value =  ($entity->field_endurance[$entity->language][0][\'value\'] + $entity->field_strength[$entity->language][0][\'value\']) / 2;
-if (!empty($this_value)) {
-$entity_field[0][\'value\'] = $this_value;
-}',
-      'database' => array(
-        'data_default' => 0,
-        'data_index' => 0,
-        'data_length' => 32,
-        'data_not_NULL' => 1,
-        'data_precision' => 10,
-        'data_scale' => 2,
-        'data_size' => 'normal',
-        'data_type' => 'float',
-      ),
-      'display_format' => '$display_output = $entity_field_item[\'value\'];',
-      'recalculate' => FALSE,
-      'store' => 1,
-    ),
-    'translatable' => 0,
-    'type' => 'computed',
-  );
-
   // Exported field_base: 'field_content_limits'.
   $field_bases['field_content_limits'] = array(
     'active' => 1,
@@ -633,42 +489,6 @@ $entity_field[0][\'value\'] = $this_value;
     'settings' => array(),
     'translatable' => 0,
     'type' => 'number_integer',
-  );
-
-  // Exported field_base: 'field_health'.
-  $field_bases['field_health'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_health',
-    'field_permissions' => array(
-      'type' => 1,
-    ),
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'computed_field',
-    'settings' => array(
-      'code' => '$this_value = ($entity->field_life[$entity->language][0][\'value\'] + $entity->field_endurance[$entity->language][0][\'value\']) / 2;
-if (!empty($this_value)) {
-$entity_field[0][\'value\'] = $this_value;
-}',
-      'database' => array(
-        'data_default' => 0,
-        'data_index' => 0,
-        'data_length' => 32,
-        'data_not_NULL' => 1,
-        'data_precision' => 10,
-        'data_scale' => 2,
-        'data_size' => 'normal',
-        'data_type' => 'float',
-      ),
-      'display_format' => '$display_output = $entity_field_item[\'value\'];',
-      'recalculate' => FALSE,
-      'store' => 1,
-    ),
-    'translatable' => 0,
-    'type' => 'computed',
   );
 
   // Exported field_base: 'field_intelligence'.
@@ -1024,42 +844,6 @@ $entity_field[0][\'value\'] = $this_value;
     'type' => 'text',
   );
 
-  // Exported field_base: 'field_presence'.
-  $field_bases['field_presence'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_presence',
-    'field_permissions' => array(
-      'type' => 1,
-    ),
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'computed_field',
-    'settings' => array(
-      'code' => '$this_value =  ($entity->field_spirituality[$entity->language][0][\'value\'] + $entity->field_charisma[$entity->language][0][\'value\']) / 2;
-if (!empty($this_value)) {
-$entity_field[0][\'value\'] = $this_value;
-}',
-      'database' => array(
-        'data_default' => 0,
-        'data_index' => 0,
-        'data_length' => 32,
-        'data_not_NULL' => 1,
-        'data_precision' => 10,
-        'data_scale' => 2,
-        'data_size' => 'normal',
-        'data_type' => 'float',
-      ),
-      'display_format' => '$display_output = $entity_field_item[\'value\'];',
-      'recalculate' => FALSE,
-      'store' => 1,
-    ),
-    'translatable' => 0,
-    'type' => 'computed',
-  );
-
   // Exported field_base: 'field_property'.
   $field_bases['field_property'] = array(
     'active' => 1,
@@ -1158,42 +942,6 @@ $entity_field[0][\'value\'] = $this_value;
     'settings' => array(),
     'translatable' => 0,
     'type' => 'number_integer',
-  );
-
-  // Exported field_base: 'field_reflexes'.
-  $field_bases['field_reflexes'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_reflexes',
-    'field_permissions' => array(
-      'type' => 1,
-    ),
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'computed_field',
-    'settings' => array(
-      'code' => '$this_value =  ($entity->field_dexterity[$entity->language][0][\'value\'] + $entity->field_intelligence[$entity->language][0][\'value\']) / 2;
-if (!empty($this_value)) {
-$entity_field[0][\'value\'] = $this_value;
-}',
-      'database' => array(
-        'data_default' => 0,
-        'data_index' => 0,
-        'data_length' => 32,
-        'data_not_NULL' => 1,
-        'data_precision' => 10,
-        'data_scale' => 2,
-        'data_size' => 'normal',
-        'data_type' => 'float',
-      ),
-      'display_format' => '$display_output = $entity_field_item[\'value\'];',
-      'recalculate' => FALSE,
-      'store' => 1,
-    ),
-    'translatable' => 0,
-    'type' => 'computed',
   );
 
   // Exported field_base: 'field_sex'.

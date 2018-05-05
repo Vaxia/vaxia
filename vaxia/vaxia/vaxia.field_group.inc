@@ -156,7 +156,7 @@ You have 300 points to distribute between stats and skills.</br>
 </br>
 * If you get stuck, please use the templates to generate character to get you started.</br>
 </br>
-* If you need more help, check out our wiki page on <a href="/wiki/character-creation" target="_blank">Character Creation</a></br>
+* If you need more help, check out our wiki page on <a href="/wiki/social/storyhost/character-creation" target="_blank">Character Creation</a></br>
 </br>
 * And please visit in <a href="/locations/limbo" target="_blank">Limbo</a>! We\'re always glad to help new players get started.</br>
 </br>',
@@ -658,20 +658,13 @@ You have 300 points to distribute between stats and skills.</br>
     'label' => 'Stats',
     'weight' => '3',
     'children' => array(
-      0 => 'field_agility',
-      1 => 'field_appearance',
-      2 => 'field_awareness',
-      3 => 'field_charisma',
-      4 => 'field_constitution',
-      5 => 'field_dexterity',
-      6 => 'field_endurance',
-      7 => 'field_health',
-      8 => 'field_intelligence',
-      9 => 'field_life',
-      10 => 'field_presence',
-      11 => 'field_reflexes',
-      12 => 'field_spirituality',
-      13 => 'field_strength',
+      0 => 'field_charisma',
+      1 => 'field_dexterity',
+      2 => 'field_endurance',
+      3 => 'field_intelligence',
+      4 => 'field_life',
+      5 => 'field_spirituality',
+      6 => 'field_strength',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(

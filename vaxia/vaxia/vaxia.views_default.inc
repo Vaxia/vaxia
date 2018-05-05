@@ -552,60 +552,7 @@ function vaxia_views_default_views() {
   $handler->display->display_options['sorts']['title']['field'] = 'title';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['filter_groups']['operator'] = 'OR';
-  $handler->display->display_options['filter_groups']['groups'] = array(
-    1 => 'AND',
-    2 => 'AND',
-  );
   $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filter criterion: Content: Type */
-  $handler->display->display_options['filters']['type']['id'] = 'type';
-  $handler->display->display_options['filters']['type']['table'] = 'node';
-  $handler->display->display_options['filters']['type']['field'] = 'type';
-  $handler->display->display_options['filters']['type']['value'] = array(
-    'character_sheet' => 'character_sheet',
-  );
-  $handler->display->display_options['filters']['type']['group'] = 1;
-  /* Filter criterion: Content: This is an NPC (field_is_npc) */
-  $handler->display->display_options['filters']['field_is_npc_value']['id'] = 'field_is_npc_value';
-  $handler->display->display_options['filters']['field_is_npc_value']['table'] = 'field_data_field_is_npc';
-  $handler->display->display_options['filters']['field_is_npc_value']['field'] = 'field_is_npc_value';
-  $handler->display->display_options['filters']['field_is_npc_value']['operator'] = 'not';
-  $handler->display->display_options['filters']['field_is_npc_value']['value'] = array(
-    1 => '1',
-  );
-  $handler->display->display_options['filters']['field_is_npc_value']['group'] = 1;
-  /* Filter criterion: Workflow: Current state */
-  $handler->display->display_options['filters']['sid']['id'] = 'sid';
-  $handler->display->display_options['filters']['sid']['table'] = 'workflow_node';
-  $handler->display->display_options['filters']['sid']['field'] = 'sid';
-  $handler->display->display_options['filters']['sid']['value'] = array(
-    4 => '4',
-  );
-  $handler->display->display_options['filters']['sid']['group'] = 1;
-  $handler->display->display_options['filters']['sid']['expose']['operator_id'] = 'sid_op';
-  $handler->display->display_options['filters']['sid']['expose']['label'] = 'Current state';
-  $handler->display->display_options['filters']['sid']['expose']['operator'] = 'sid_op';
-  $handler->display->display_options['filters']['sid']['expose']['identifier'] = 'sid';
-  $handler->display->display_options['filters']['sid']['expose']['required'] = TRUE;
-  $handler->display->display_options['filters']['sid']['expose']['remember'] = TRUE;
-  $handler->display->display_options['filters']['sid']['expose']['multiple'] = TRUE;
-  $handler->display->display_options['filters']['sid']['expose']['remember_roles'] = array(
-    2 => '2',
-    1 => 0,
-    12 => 0,
-    8 => 0,
-    13 => 0,
-    10 => 0,
-    17 => 0,
-    15 => 0,
-    9 => 0,
-    14 => 0,
-    4 => 0,
-    3 => 0,
-    11 => 0,
-    18 => 0,
-  );
-  $handler->display->display_options['filters']['sid']['expose']['reduce'] = TRUE;
   /* Filter criterion: Content: Type */
   $handler->display->display_options['filters']['type_1']['id'] = 'type_1';
   $handler->display->display_options['filters']['type_1']['table'] = 'node';
@@ -613,7 +560,7 @@ function vaxia_views_default_views() {
   $handler->display->display_options['filters']['type_1']['value'] = array(
     'character_sheet' => 'character_sheet',
   );
-  $handler->display->display_options['filters']['type_1']['group'] = 2;
+  $handler->display->display_options['filters']['type_1']['group'] = 1;
   /* Filter criterion: Content: This is an NPC (field_is_npc) */
   $handler->display->display_options['filters']['field_is_npc_value_1']['id'] = 'field_is_npc_value_1';
   $handler->display->display_options['filters']['field_is_npc_value_1']['table'] = 'field_data_field_is_npc';
@@ -622,7 +569,7 @@ function vaxia_views_default_views() {
   $handler->display->display_options['filters']['field_is_npc_value_1']['value'] = array(
     1 => '1',
   );
-  $handler->display->display_options['filters']['field_is_npc_value_1']['group'] = 2;
+  $handler->display->display_options['filters']['field_is_npc_value_1']['group'] = 1;
   /* Filter criterion: Workflow: Current state */
   $handler->display->display_options['filters']['sid_1']['id'] = 'sid_1';
   $handler->display->display_options['filters']['sid_1']['table'] = 'workflow_node';
@@ -633,14 +580,7 @@ function vaxia_views_default_views() {
     4 => '4',
     6 => '6',
   );
-  $handler->display->display_options['filters']['sid_1']['group'] = 2;
-  /* Filter criterion: User: Current */
-  $handler->display->display_options['filters']['uid_current']['id'] = 'uid_current';
-  $handler->display->display_options['filters']['uid_current']['table'] = 'users';
-  $handler->display->display_options['filters']['uid_current']['field'] = 'uid_current';
-  $handler->display->display_options['filters']['uid_current']['relationship'] = 'uid';
-  $handler->display->display_options['filters']['uid_current']['value'] = '1';
-  $handler->display->display_options['filters']['uid_current']['group'] = 2;
+  $handler->display->display_options['filters']['sid_1']['group'] = 1;
   $handler->display->display_options['path'] = 'user/%/characters';
   $handler->display->display_options['menu']['type'] = 'tab';
   $handler->display->display_options['menu']['title'] = 'Characters';

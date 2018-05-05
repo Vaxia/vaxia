@@ -31,13 +31,14 @@ function timeline_events_views_default_views() {
   $handler->display->display_options['pager']['type'] = 'none';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['style_plugin'] = 'timelinejs';
-  $handler->display->display_options['style_options']['timeline_theme']['width'] = '90';
-  $handler->display->display_options['style_options']['timeline_fields']['date'] = 'field_session_held';
-  $handler->display->display_options['style_options']['timeline_fields']['bodytext'] = 'body';
+  $handler->display->display_options['style_options']['timeline_config']['height'] = '20em';
+  $handler->display->display_options['style_options']['timeline_config']['hash_bookmark'] = TRUE;
+  $handler->display->display_options['style_options']['timeline_config']['scale_factor'] = '4';
+  $handler->display->display_options['style_options']['timeline_config']['start_at_end'] = TRUE;
+  $handler->display->display_options['style_options']['additional_config']['start_at_current'] = 0;
+  $handler->display->display_options['style_options']['timeline_fields']['start_date'] = 'field_session_held';
+  $handler->display->display_options['style_options']['timeline_fields']['display_date'] = 'field_session_held';
   $handler->display->display_options['style_options']['timeline_fields']['headline'] = 'title';
-  $handler->display->display_options['style_options']['timeline_config']['hash_bookmark'] = '1';
-  $handler->display->display_options['style_options']['timeline_config']['start_at_end'] = '1';
-  $handler->display->display_options['style_options']['timeline_config']['start_zoom_adjust'] = '-2';
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -103,8 +104,8 @@ function timeline_events_views_default_views() {
   $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['label'] = 'Realm';
   $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['operator'] = 'field_tag_realm_tid_op';
   $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['identifier'] = 'field_tag_realm_tid';
+  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['required'] = TRUE;
   $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['remember'] = TRUE;
-  $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['multiple'] = TRUE;
   $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['remember_roles'] = array(
     2 => '2',
     1 => 0,
@@ -133,6 +134,7 @@ function timeline_events_views_default_views() {
     32 => 0,
   );
   $handler->display->display_options['filters']['field_tag_realm_tid']['expose']['reduce'] = TRUE;
+  $handler->display->display_options['filters']['field_tag_realm_tid']['reduce_duplicates'] = TRUE;
   $handler->display->display_options['filters']['field_tag_realm_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_tag_realm_tid']['vocabulary'] = 'realm';
   $handler->display->display_options['filters']['field_tag_realm_tid']['hierarchy'] = 1;

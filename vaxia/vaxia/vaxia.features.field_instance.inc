@@ -525,90 +525,6 @@ function vaxia_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-character_sheet-field_agility'.
-  $field_instances['node-character_sheet-field_agility'] = array(
-    'bundle' => 'character_sheet',
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'inline',
-        'module' => 'computed_field',
-        'settings' => array(),
-        'type' => 'computed_field_plain',
-        'weight' => 15,
-      ),
-      'question' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_agility',
-    'label' => 'Agility',
-    'required' => 1,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'computed_field',
-      'settings' => array(),
-      'type' => 'computed',
-      'weight' => 20,
-    ),
-  );
-
-  // Exported field_instance: 'node-character_sheet-field_appearance'.
-  $field_instances['node-character_sheet-field_appearance'] = array(
-    'bundle' => 'character_sheet',
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'inline',
-        'module' => 'computed_field',
-        'settings' => array(),
-        'type' => 'computed_field_plain',
-        'weight' => 23,
-      ),
-      'question' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_appearance',
-    'label' => 'Appearance',
-    'required' => 1,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'computed_field',
-      'settings' => array(),
-      'type' => 'computed',
-      'weight' => 28,
-    ),
-  );
-
   // Exported field_instance: 'node-character_sheet-field_artwork_image'.
   $field_instances['node-character_sheet-field_artwork_image'] = array(
     'bundle' => 'character_sheet',
@@ -661,48 +577,6 @@ function vaxia_field_default_field_instances() {
       ),
       'type' => 'imagefield_crop_widget',
       'weight' => 37,
-    ),
-  );
-
-  // Exported field_instance: 'node-character_sheet-field_awareness'.
-  $field_instances['node-character_sheet-field_awareness'] = array(
-    'bundle' => 'character_sheet',
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'inline',
-        'module' => 'computed_field',
-        'settings' => array(),
-        'type' => 'computed_field_plain',
-        'weight' => 19,
-      ),
-      'question' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_awareness',
-    'label' => 'Awareness',
-    'required' => 1,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'computed_field',
-      'settings' => array(),
-      'type' => 'computed',
-      'weight' => 24,
     ),
   );
 
@@ -801,7 +675,7 @@ function vaxia_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 16,
+        'weight' => 15,
       ),
       'question' => array(
         'label' => 'above',
@@ -841,7 +715,7 @@ function vaxia_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 10,
+        'weight' => 9,
       ),
       'question' => array(
         'label' => 'above',
@@ -885,7 +759,7 @@ function vaxia_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 12,
+        'weight' => 11,
       ),
       'question' => array(
         'label' => 'above',
@@ -1007,7 +881,7 @@ function vaxia_field_default_field_instances() {
           'thousand_separator' => ' ',
         ),
         'type' => 'number_integer',
-        'weight' => 22,
+        'weight' => 16,
       ),
       'question' => array(
         'label' => 'above',
@@ -1038,7 +912,7 @@ function vaxia_field_default_field_instances() {
       'module' => 'number',
       'settings' => array(),
       'type' => 'number',
-      'weight' => 27,
+      'weight' => 21,
     ),
   );
 
@@ -1049,7 +923,7 @@ function vaxia_field_default_field_instances() {
     'default_value_function' => '',
     'default_value_php' => '',
     'deleted' => 0,
-    'description' => 'Most characters should start play with no conditions. Starting play with a \'Condition\' requires approval from the Setting department. (Setting approval is never guaranteed.) Please take a look here for more information about <a href="http://vaxia.org/wiki/setting-approval-conditions" target="_blank">getting Setting approval for Conditions</a> and <a href="http://vaxia.org/wiki/setting-approval-mental-disorders" target="_blank">getting Setting approval for Mental Conditions</a> including amnesia and multiple personality disorders.
+    'description' => 'Most characters should start play with no conditions. Starting play with a \'Condition\' requires approval from the Setting department. (Setting approval is never guaranteed.) Please take a look here for more information about <a href="/wiki/setting/storyhost/setting-approval-conditions" target="_blank">getting Setting approval for Conditions</a> and <a href="/wiki/setting/storyhost/setting-approval-mental-disorders" target="_blank">getting Setting approval for Mental Conditions</a> including amnesia and multiple personality disorders.
 <br><br>',
     'display' => array(
       'default' => array(
@@ -1079,48 +953,6 @@ function vaxia_field_default_field_instances() {
       'settings' => array(),
       'type' => 'options_select',
       'weight' => 23,
-    ),
-  );
-
-  // Exported field_instance: 'node-character_sheet-field_constitution'.
-  $field_instances['node-character_sheet-field_constitution'] = array(
-    'bundle' => 'character_sheet',
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'inline',
-        'module' => 'computed_field',
-        'settings' => array(),
-        'type' => 'computed_field_plain',
-        'weight' => 13,
-      ),
-      'question' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_constitution',
-    'label' => 'Constitution',
-    'required' => 1,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'computed_field',
-      'settings' => array(),
-      'type' => 'computed',
-      'weight' => 18,
     ),
   );
 
@@ -1213,7 +1045,7 @@ If this is a special occasion where you trust the A/SH involved and want to give
       ),
     ),
     'deleted' => 0,
-    'description' => 'The first description listed will be used on your posts and for viewing by other players. You can add additional descriptions and sort them as needed if your character has more than one \'appearance\'.',
+    'description' => 'The first description listed will be used on your posts and for viewing by other players. You can add additional descriptions and sort them as needed if your character has more than one appearance.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -1246,7 +1078,6 @@ If this is a special occasion where you trust the A/SH involved and want to give
           'full_html' => 0,
           'php_code' => 0,
           'plain_text' => 'plain_text',
-          'whiteboard' => 0,
           'wiki' => 0,
         ),
         'allowed_formats_toggle' => 1,
@@ -1264,9 +1095,6 @@ If this is a special occasion where you trust the A/SH involved and want to give
             ),
             'plain_text' => array(
               'weight' => 10,
-            ),
-            'whiteboard' => array(
-              'weight' => 0,
             ),
             'wiki' => array(
               'weight' => 0,
@@ -1309,7 +1137,7 @@ If this is a special occasion where you trust the A/SH involved and want to give
           'thousand_separator' => ' ',
         ),
         'type' => 'number_integer',
-        'weight' => 16,
+        'weight' => 13,
       ),
       'question' => array(
         'label' => 'above',
@@ -1340,7 +1168,7 @@ If this is a special occasion where you trust the A/SH involved and want to give
       'module' => 'number',
       'settings' => array(),
       'type' => 'number',
-      'weight' => 21,
+      'weight' => 18,
     ),
   );
 
@@ -1421,7 +1249,7 @@ If this is a special occasion where you trust the A/SH involved and want to give
           'thousand_separator' => ' ',
         ),
         'type' => 'number_integer',
-        'weight' => 12,
+        'weight' => 11,
       ),
       'question' => array(
         'label' => 'above',
@@ -1452,48 +1280,6 @@ If this is a special occasion where you trust the A/SH involved and want to give
       'module' => 'number',
       'settings' => array(),
       'type' => 'number',
-      'weight' => 17,
-    ),
-  );
-
-  // Exported field_instance: 'node-character_sheet-field_health'.
-  $field_instances['node-character_sheet-field_health'] = array(
-    'bundle' => 'character_sheet',
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'inline',
-        'module' => 'computed_field',
-        'settings' => array(),
-        'type' => 'computed_field_plain',
-        'weight' => 11,
-      ),
-      'question' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_health',
-    'label' => 'Health',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'computed_field',
-      'settings' => array(),
-      'type' => 'computed',
       'weight' => 16,
     ),
   );
@@ -1519,7 +1305,7 @@ If this is a special occasion where you trust the A/SH involved and want to give
           'thousand_separator' => ' ',
         ),
         'type' => 'number_integer',
-        'weight' => 18,
+        'weight' => 14,
       ),
       'question' => array(
         'label' => 'above',
@@ -1550,7 +1336,7 @@ If this is a special occasion where you trust the A/SH involved and want to give
       'module' => 'number',
       'settings' => array(),
       'type' => 'number',
-      'weight' => 23,
+      'weight' => 19,
     ),
   );
 
@@ -1921,7 +1707,7 @@ If this is a special occasion where you trust the A/SH involved and want to give
     'bundle' => 'character_sheet',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => 'If you have selected "Other" for your species you MUST select an option here to clarify what sort of \'Other\' species this character is. If this is not an NPC expect to need to get Setting approval. (Setting approval is never guaranteed.) Please take a look here for more information about <a href="/wiki/setting-approval-pcs" target="_blank">getting Setting approval for PCs</a>.',
+    'description' => 'If you have selected "Other" for your species you MUST select an option here to clarify what sort of \'Other\' species this character is. If this is not an NPC expect to need to get Setting approval. (Setting approval is never guaranteed.) Please take a look here for more information about <a href="/wiki/setting/storyhost/setting-approval-pcs" target="_blank">getting Setting approval for PCs</a>.',
     'display' => array(
       'default' => array(
         'label' => 'inline',
@@ -2164,7 +1950,7 @@ If this is a special occasion where you trust the A/SH involved and want to give
         'label' => 'hidden',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 15,
+        'weight' => 14,
       ),
       'question' => array(
         'label' => 'above',
@@ -2219,48 +2005,6 @@ If this is a special occasion where you trust the A/SH involved and want to give
       ),
       'type' => 'text_textfield',
       'weight' => 2,
-    ),
-  );
-
-  // Exported field_instance: 'node-character_sheet-field_presence'.
-  $field_instances['node-character_sheet-field_presence'] = array(
-    'bundle' => 'character_sheet',
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'inline',
-        'module' => 'computed_field',
-        'settings' => array(),
-        'type' => 'computed_field_plain',
-        'weight' => 21,
-      ),
-      'question' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_presence',
-    'label' => 'Presence',
-    'required' => 1,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'computed_field',
-      'settings' => array(),
-      'type' => 'computed',
-      'weight' => 26,
     ),
   );
 
@@ -2359,7 +2103,7 @@ If this is a special occasion where you trust the A/SH involved and want to give
       ),
     ),
     'deleted' => 0,
-    'description' => 'Include any public information other characters could easily find out about this character. For example: The information a chatty bartender, or a social media search would reveal.
+    'description' => 'Include any public information other characters could easily find out about this character. For example: The information a chatty bartender or a social media search would reveal.
 <br><br>',
     'display' => array(
       'default' => array(
@@ -2436,7 +2180,7 @@ If this is a special occasion where you trust the A/SH involved and want to give
     'default_value_function' => '',
     'default_value_php' => '',
     'deleted' => 0,
-    'description' => 'If the species you want to play is not listed here, select \'Other\'. (Setting approval is never guaranteed.) Please take a look here for more information about <a href="/wiki/setting-approval-pcs" target="_blank">getting Setting approval for PCs</a>.
+    'description' => 'If the species you want to play is not listed here, select \'Other\'. (Setting approval is never guaranteed.) Please take a look here for more information about <a href="/wiki/setting/storyhost/setting-approval-pcs" target="_blank">getting Setting approval for PCs</a>.
 <br><br>',
     'display' => array(
       'default' => array(
@@ -2490,7 +2234,7 @@ If this is a special occasion where you trust the A/SH involved and want to give
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 11,
+        'weight' => 10,
       ),
       'question' => array(
         'label' => 'above',
@@ -2516,48 +2260,6 @@ If this is a special occasion where you trust the A/SH involved and want to give
       'settings' => array(),
       'type' => 'number',
       'weight' => 26,
-    ),
-  );
-
-  // Exported field_instance: 'node-character_sheet-field_reflexes'.
-  $field_instances['node-character_sheet-field_reflexes'] = array(
-    'bundle' => 'character_sheet',
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'inline',
-        'module' => 'computed_field',
-        'settings' => array(),
-        'type' => 'computed_field_plain',
-        'weight' => 17,
-      ),
-      'question' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_reflexes',
-    'label' => 'Finesse',
-    'required' => 1,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'computed_field',
-      'settings' => array(),
-      'type' => 'computed',
-      'weight' => 22,
     ),
   );
 
@@ -2918,7 +2620,7 @@ If this is a special occasion where you trust the A/SH involved and want to give
       ),
     ),
     'deleted' => 0,
-    'description' => 'If the species you want to play is not listed here, select \'Other\'. (Setting approval is never guaranteed.) Please take a look here for more information about <a href="/wiki/setting-approval-pcs" target="_blank">getting Setting approval for PCs</a>.
+    'description' => 'If the species you want to play is not listed here, select \'Other\'. (Setting approval is never guaranteed.) Please take a look here for more information about <a href="/wiki/setting/storyhost/setting-approval-pcs" target="_blank">getting Setting approval for PCs</a>.
 <br><br>',
     'display' => array(
       'default' => array(
@@ -2966,8 +2668,6 @@ If and ONLY if this is a Sirian tech skill: select two technical contexts to be 
         'module' => 'field_collection_table',
         'settings' => array(
           'add' => '',
-          'cssfield' => FALSE,
-          'cssrowcol' => FALSE,
           'delete' => '',
           'description' => 0,
           'edit' => '',
@@ -3028,7 +2728,7 @@ If and ONLY if this is a Sirian tech skill: select two technical contexts to be 
           'thousand_separator' => ' ',
         ),
         'type' => 'number_integer',
-        'weight' => 20,
+        'weight' => 15,
       ),
       'question' => array(
         'label' => 'above',
@@ -3059,7 +2759,7 @@ If and ONLY if this is a Sirian tech skill: select two technical contexts to be 
       'module' => 'number',
       'settings' => array(),
       'type' => 'number',
-      'weight' => 25,
+      'weight' => 20,
     ),
   );
 
@@ -3084,7 +2784,7 @@ If and ONLY if this is a Sirian tech skill: select two technical contexts to be 
           'thousand_separator' => ' ',
         ),
         'type' => 'number_integer',
-        'weight' => 14,
+        'weight' => 12,
       ),
       'question' => array(
         'label' => 'above',
@@ -3115,7 +2815,7 @@ If and ONLY if this is a Sirian tech skill: select two technical contexts to be 
       'module' => 'number',
       'settings' => array(),
       'type' => 'number',
-      'weight' => 19,
+      'weight' => 17,
     ),
   );
 
@@ -3306,20 +3006,16 @@ If and ONLY if this is a Sirian tech skill: select two technical contexts to be 
   t('Achivements');
   t('Additional property');
   t('Age');
-  t('Agility');
   t('All starting characters may select up to three languages at "native" proficiency: <a href="/wiki/sirian-languages" target="_blank">Languages of Sirian</a>');
   t('All starting characters may select up to three languages at "native" proficiency: <a href="/wiki/vaxia-languages" target="_blank">Languages of Vaxia</a>');
   t('Apparent Age');
   t('Apparent Gender');
-  t('Appearance');
-  t('Awareness');
   t('Background');
   t('Birth Date');
   t('Character Goals');
   t('Charisma');
   t('Charisma (CHA): Mental Resistance; Influence');
   t('Conditions');
-  t('Constitution');
   t('Currently wearing');
   t('Day');
   t('Default Post Background');
@@ -3333,18 +3029,16 @@ If and ONLY if this is a Sirian tech skill: select two technical contexts to be 
   t('Endurance (END): Physical Resistance; Fortitude');
   t('Enter as a hex value such as "001100" or text such as "red".
 <br><br>');
-  t('Finesse');
   t('For A/SHs - always feel free to add another property field to give each item a field.');
   t('Generic NPCs are intended for general use in running sessions. If this is a generic NPC, make sure to mark this as an NPC as well.');
-  t('Health');
   t('IC achievements! Titles earned, championships won. Fun stuff!');
-  t('If the species you want to play is not listed here, select \'Other\'. (Setting approval is never guaranteed.) Please take a look here for more information about <a href="/wiki/setting-approval-pcs" target="_blank">getting Setting approval for PCs</a>.
+  t('If the species you want to play is not listed here, select \'Other\'. (Setting approval is never guaranteed.) Please take a look here for more information about <a href="/wiki/setting/storyhost/setting-approval-pcs" target="_blank">getting Setting approval for PCs</a>.
 <br><br>');
-  t('If you have selected "Other" for your species you MUST select an option here to clarify what sort of \'Other\' species this character is. If this is not an NPC expect to need to get Setting approval. (Setting approval is never guaranteed.) Please take a look here for more information about <a href="/wiki/setting-approval-pcs" target="_blank">getting Setting approval for PCs</a>.');
+  t('If you have selected "Other" for your species you MUST select an option here to clarify what sort of \'Other\' species this character is. If this is not an NPC expect to need to get Setting approval. (Setting approval is never guaranteed.) Please take a look here for more information about <a href="/wiki/setting/storyhost/setting-approval-pcs" target="_blank">getting Setting approval for PCs</a>.');
   t('If your character has any over-arching life goals. Things they want to do or see done that may require an A/SH to help achieve - make note of them here.
 <br><br>');
   t('Image');
-  t('Include any public information other characters could easily find out about this character. For example: The information a chatty bartender, or a social media search would reveal.
+  t('Include any public information other characters could easily find out about this character. For example: The information a chatty bartender or a social media search would reveal.
 <br><br>');
   t('Intellect (INT): Mental Acuity; Reasoning');
   t('Intelligence');
@@ -3356,7 +3050,7 @@ If and ONLY if this is a Sirian tech skill: select two technical contexts to be 
   t('Life (LIF): Hitpoints');
   t('Mark the items your character is usually wearing and they will be automatically selected in the items dropdown for you.');
   t('Mark this sheet as a storyteller sheet.');
-  t('Most characters should start play with no conditions. Starting play with a \'Condition\' requires approval from the Setting department. (Setting approval is never guaranteed.) Please take a look here for more information about <a href="http://vaxia.org/wiki/setting-approval-conditions" target="_blank">getting Setting approval for Conditions</a> and <a href="http://vaxia.org/wiki/setting-approval-mental-disorders" target="_blank">getting Setting approval for Mental Conditions</a> including amnesia and multiple personality disorders.
+  t('Most characters should start play with no conditions. Starting play with a \'Condition\' requires approval from the Setting department. (Setting approval is never guaranteed.) Please take a look here for more information about <a href="/wiki/setting/storyhost/setting-approval-conditions" target="_blank">getting Setting approval for Conditions</a> and <a href="/wiki/setting/storyhost/setting-approval-mental-disorders" target="_blank">getting Setting approval for Mental Conditions</a> including amnesia and multiple personality disorders.
 <br><br>');
   t('Name');
   t('Occupation');
@@ -3367,7 +3061,6 @@ If and ONLY if this is a Sirian tech skill: select two technical contexts to be 
   t('Personal room');
   t('Personality');
   t('Player Notes');
-  t('Presence');
   t('Private SH Notes');
   t('Proficiency');
   t('Public information');
@@ -3387,7 +3080,7 @@ If and ONLY if this is a Sirian tech skill: select two technical contexts to be 
   t('Strength (STR): Physical Power; Toughness');
   t('Tech contexts');
   t('Tech language');
-  t('The first description listed will be used on your posts and for viewing by other players. You can add additional descriptions and sort them as needed if your character has more than one \'appearance\'.');
+  t('The first description listed will be used on your posts and for viewing by other players. You can add additional descriptions and sort them as needed if your character has more than one appearance.');
   t('This is a generic NPC');
   t('This is an NPC');
   t('Titles');

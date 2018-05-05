@@ -236,66 +236,6 @@ function items_field_default_field_bases() {
     'type' => 'list_boolean',
   );
 
-  // Exported field_base: 'field_item_agility'.
-  $field_bases['field_item_agility'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_item_agility',
-    'field_permissions' => array(
-      'type' => 1,
-    ),
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'number',
-    'settings' => array(
-      'decimal_separator' => '.',
-    ),
-    'translatable' => 0,
-    'type' => 'number_float',
-  );
-
-  // Exported field_base: 'field_item_appearance'.
-  $field_bases['field_item_appearance'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_item_appearance',
-    'field_permissions' => array(
-      'type' => 1,
-    ),
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'number',
-    'settings' => array(
-      'decimal_separator' => '.',
-    ),
-    'translatable' => 0,
-    'type' => 'number_float',
-  );
-
-  // Exported field_base: 'field_item_awareness'.
-  $field_bases['field_item_awareness'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_item_awareness',
-    'field_permissions' => array(
-      'type' => 1,
-    ),
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'number',
-    'settings' => array(
-      'decimal_separator' => '.',
-    ),
-    'translatable' => 0,
-    'type' => 'number_float',
-  );
-
   // Exported field_base: 'field_item_charisma'.
   $field_bases['field_item_charisma'] = array(
     'active' => 1,
@@ -303,26 +243,6 @@ function items_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_item_charisma',
-    'field_permissions' => array(
-      'type' => 1,
-    ),
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'number',
-    'settings' => array(
-      'decimal_separator' => '.',
-    ),
-    'translatable' => 0,
-    'type' => 'number_float',
-  );
-
-  // Exported field_base: 'field_item_constitution'.
-  $field_bases['field_item_constitution'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_item_constitution',
     'field_permissions' => array(
       'type' => 1,
     ),
@@ -413,26 +333,6 @@ function items_field_default_field_bases() {
     'type' => 'number_float',
   );
 
-  // Exported field_base: 'field_item_health'.
-  $field_bases['field_item_health'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_item_health',
-    'field_permissions' => array(
-      'type' => 1,
-    ),
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'number',
-    'settings' => array(
-      'decimal_separator' => '.',
-    ),
-    'translatable' => 0,
-    'type' => 'number_float',
-  );
-
   // Exported field_base: 'field_item_history'.
   $field_bases['field_item_history'] = array(
     'active' => 1,
@@ -495,57 +395,6 @@ function items_field_default_field_bases() {
     'type' => 'number_float',
   );
 
-  // Exported field_base: 'field_item_over_agility'.
-  $field_bases['field_item_over_agility'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_item_over_agility',
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'number',
-    'settings' => array(
-      'decimal_separator' => '.',
-    ),
-    'translatable' => 0,
-    'type' => 'number_float',
-  );
-
-  // Exported field_base: 'field_item_over_appearance'.
-  $field_bases['field_item_over_appearance'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_item_over_appearance',
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'number',
-    'settings' => array(
-      'decimal_separator' => '.',
-    ),
-    'translatable' => 0,
-    'type' => 'number_float',
-  );
-
-  // Exported field_base: 'field_item_over_awareness'.
-  $field_bases['field_item_over_awareness'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_item_over_awareness',
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'number',
-    'settings' => array(
-      'decimal_separator' => '.',
-    ),
-    'translatable' => 0,
-    'type' => 'number_float',
-  );
-
   // Exported field_base: 'field_item_over_charisma'.
   $field_bases['field_item_over_charisma'] = array(
     'active' => 1,
@@ -553,23 +402,6 @@ function items_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_item_over_charisma',
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'number',
-    'settings' => array(
-      'decimal_separator' => '.',
-    ),
-    'translatable' => 0,
-    'type' => 'number_float',
-  );
-
-  // Exported field_base: 'field_item_over_constitution'.
-  $field_bases['field_item_over_constitution'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_item_over_constitution',
     'indexes' => array(),
     'locked' => 0,
     'module' => 'number',
@@ -614,23 +446,6 @@ function items_field_default_field_bases() {
     'type' => 'number_float',
   );
 
-  // Exported field_base: 'field_item_over_health'.
-  $field_bases['field_item_over_health'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_item_over_health',
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'number',
-    'settings' => array(
-      'decimal_separator' => '.',
-    ),
-    'translatable' => 0,
-    'type' => 'number_float',
-  );
-
   // Exported field_base: 'field_item_over_intellegence'.
   $field_bases['field_item_over_intellegence'] = array(
     'active' => 1,
@@ -655,40 +470,6 @@ function items_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_item_over_life',
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'number',
-    'settings' => array(
-      'decimal_separator' => '.',
-    ),
-    'translatable' => 0,
-    'type' => 'number_float',
-  );
-
-  // Exported field_base: 'field_item_over_presence'.
-  $field_bases['field_item_over_presence'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_item_over_presence',
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'number',
-    'settings' => array(
-      'decimal_separator' => '.',
-    ),
-    'translatable' => 0,
-    'type' => 'number_float',
-  );
-
-  // Exported field_base: 'field_item_over_reflexes'.
-  $field_bases['field_item_over_reflexes'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_item_over_reflexes',
     'indexes' => array(),
     'locked' => 0,
     'module' => 'number',
@@ -740,46 +521,6 @@ function items_field_default_field_bases() {
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_item_over_strength',
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'number',
-    'settings' => array(
-      'decimal_separator' => '.',
-    ),
-    'translatable' => 0,
-    'type' => 'number_float',
-  );
-
-  // Exported field_base: 'field_item_presence'.
-  $field_bases['field_item_presence'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_item_presence',
-    'field_permissions' => array(
-      'type' => 1,
-    ),
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'number',
-    'settings' => array(
-      'decimal_separator' => '.',
-    ),
-    'translatable' => 0,
-    'type' => 'number_float',
-  );
-
-  // Exported field_base: 'field_item_reflexes'.
-  $field_bases['field_item_reflexes'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_item_reflexes',
-    'field_permissions' => array(
-      'type' => 1,
-    ),
     'indexes' => array(),
     'locked' => 0,
     'module' => 'number',

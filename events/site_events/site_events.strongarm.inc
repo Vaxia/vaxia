@@ -119,6 +119,9 @@ function site_events_strongarm() {
       'print' => array(
         'custom_settings' => FALSE,
       ),
+      'subscriptions' => array(
+        'custom_settings' => FALSE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(
@@ -126,16 +129,32 @@ function site_events_strongarm() {
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '5',
-        ),
-        'locations' => array(
           'weight' => '6',
         ),
-        'badges' => array(
+        'locations' => array(
           'weight' => '7',
         ),
+        'badges' => array(
+          'weight' => '8',
+        ),
+        'workflow' => array(
+          'weight' => '9',
+        ),
       ),
-      'display' => array(),
+      'display' => array(
+        'workflow_current_state' => array(
+          'default' => array(
+            'weight' => '0',
+            'visible' => TRUE,
+          ),
+        ),
+        'workflow' => array(
+          'default' => array(
+            'weight' => '4',
+            'visible' => TRUE,
+          ),
+        ),
+      ),
     ),
   );
   $export['field_bundle_settings_node__event'] = $strongarm;

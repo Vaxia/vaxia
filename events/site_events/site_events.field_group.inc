@@ -58,6 +58,7 @@ function site_events_field_group_info() {
       1 => 'field_content_warnings',
       2 => 'field_tag_realm',
       3 => 'field_format',
+      4 => 'field_send_notification',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(

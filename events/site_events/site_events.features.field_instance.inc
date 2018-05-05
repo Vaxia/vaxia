@@ -22,7 +22,7 @@ function site_events_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 1,
+        'weight' => 2,
       ),
       'ical' => array(
         'label' => 'hidden',
@@ -242,6 +242,54 @@ function site_events_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-event-field_send_notification'.
+  $field_instances['node-event-field_send_notification'] = array(
+    'bundle' => 'event',
+    'default_value' => array(
+      0 => array(
+        'value' => 1,
+      ),
+    ),
+    'deleted' => 0,
+    'description' => 'Send a notification about this event to Social Media accounts. (Twitter and Tumblr.) If in doubt, leave unchecked. Abuse of this feature can result in your account being suspended.',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 5,
+      ),
+      'ical' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'question' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_send_notification',
+    'label' => 'Send social media notification?',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(
+        'display_label' => 1,
+      ),
+      'type' => 'options_onoff',
+      'weight' => 10,
+    ),
+  );
+
   // Exported field_instance: 'node-event-field_tag_realm'.
   $field_instances['node-event-field_tag_realm'] = array(
     'bundle' => 'event',
@@ -367,7 +415,7 @@ function site_events_field_default_field_instances() {
         'module' => 'taxonomy',
         'settings' => array(),
         'type' => 'taxonomy_term_reference_link',
-        'weight' => 0,
+        'weight' => 1,
       ),
       'ical' => array(
         'label' => 'hidden',
@@ -409,6 +457,8 @@ function site_events_field_default_field_instances() {
   t('Max seating');
   t('Realm');
   t('Select Vaxia or Sirian for session announcements. For events that aren\'t tied to sessions (elections, meetings, or the like) then select Storyhost.');
+  t('Send a notification about this event to Social Media accounts. (Twitter and Tumblr.) If in doubt, leave unchecked. Abuse of this feature can result in your account being suspended.');
+  t('Send social media notification?');
   t('This field can handle your timezone shift for you. Make sure you configure your preferred time-zone under <a href="/user">your account information</a>. After you set that, dates and times throughout this site will be displayed using your time zone. This allows you to enter times in your preferred time zone. They will display for other site members in their preferred time zone and on the calendar in default EST.');
   t('What rate of play to expect for this session. Fast posts are a scheduled time where players and SH are posting constantly. Slow posts are sessions where SHs and players may post once or twice a day allowing players who aren\'t on the same timezone to play.');
   t('When');

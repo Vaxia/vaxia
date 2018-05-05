@@ -191,6 +191,7 @@ function vaxia_wiki_field_default_field_instances() {
         'label' => 'above',
         'module' => 'entityreference',
         'settings' => array(
+          'bypass_access' => FALSE,
           'link' => FALSE,
         ),
         'type' => 'entityreference_label',
@@ -348,6 +349,7 @@ function vaxia_wiki_field_default_field_instances() {
         'label' => 'above',
         'module' => 'entityreference',
         'settings' => array(
+          'bypass_access' => FALSE,
           'link' => FALSE,
         ),
         'type' => 'entityreference_label',
@@ -399,6 +401,7 @@ function vaxia_wiki_field_default_field_instances() {
         'label' => 'above',
         'module' => 'entityreference',
         'settings' => array(
+          'bypass_access' => FALSE,
           'link' => FALSE,
         ),
         'type' => 'entityreference_label',
@@ -620,7 +623,11 @@ function vaxia_wiki_field_default_field_instances() {
   // Exported field_instance: 'node-wiki_page-field_tag_department'.
   $field_instances['node-wiki_page-field_tag_department'] = array(
     'bundle' => 'wiki_page',
-    'default_value' => NULL,
+    'default_value' => array(
+      0 => array(
+        'tid' => 984,
+      ),
+    ),
     'deleted' => 0,
     'description' => '',
     'display' => array(
@@ -655,7 +662,7 @@ function vaxia_wiki_field_default_field_instances() {
       'active' => 1,
       'module' => 'options',
       'settings' => array(),
-      'type' => 'options_buttons',
+      'type' => 'options_select',
       'weight' => 12,
     ),
   );
@@ -706,7 +713,11 @@ function vaxia_wiki_field_default_field_instances() {
   // Exported field_instance: 'node-wiki_page-field_tag_realm'.
   $field_instances['node-wiki_page-field_tag_realm'] = array(
     'bundle' => 'wiki_page',
-    'default_value' => NULL,
+    'default_value' => array(
+      0 => array(
+        'tid' => 1004,
+      ),
+    ),
     'deleted' => 0,
     'description' => '',
     'display' => array(
@@ -741,7 +752,7 @@ function vaxia_wiki_field_default_field_instances() {
       'active' => 1,
       'module' => 'options',
       'settings' => array(),
-      'type' => 'options_buttons',
+      'type' => 'options_select',
       'weight' => 13,
     ),
   );

@@ -84,6 +84,7 @@ features[variable][] = menu_parent_organization_goal
 features[variable][] = node_options_organization_goal
 features[variable][] = node_preview_organization_goal
 features[variable][] = node_submitted_organization_goal
+features[variable][] = pathauto_node_organization_goal_pattern
 features[variable][] = pathauto_taxonomy_term_department_pattern
 features[variable][] = pathauto_taxonomy_term_location_depth_pattern
 features[variable][] = pathauto_taxonomy_term_organization_type_pattern

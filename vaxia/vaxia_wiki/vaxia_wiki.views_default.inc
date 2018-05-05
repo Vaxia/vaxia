@@ -2386,7 +2386,7 @@ Search for an NPC.';
   $handler->display->display_options['fields']['field_sirian_species']['id'] = 'field_sirian_species';
   $handler->display->display_options['fields']['field_sirian_species']['table'] = 'field_data_field_sirian_species';
   $handler->display->display_options['fields']['field_sirian_species']['field'] = 'field_sirian_species';
-  /* Field: Field: Descriptions */
+  /* Field: Field: Description */
   $handler->display->display_options['fields']['field_description']['id'] = 'field_description';
   $handler->display->display_options['fields']['field_description']['table'] = 'field_data_field_description';
   $handler->display->display_options['fields']['field_description']['field'] = 'field_description';
