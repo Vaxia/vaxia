@@ -9,9 +9,6 @@
 #dice-ruler-form .dice-ruler-row-reset{margin-left:0.5em;}
 /* Format two trait vs displays. */
 #dice-ruler-form .two-trait-form fieldset.form-wrapper{float:left;margin-left:1em;margin-top:0;margin-bottom:0;width:45%;}
-/* Format trait vs displays. */
-#dice-ruler-form .trait-vs-form fieldset.form-wrapper{float:left;margin-left:1em;margin-top:0;margin-bottom:0;width:45%;}
-#dice-ruler-form .trait-vs-form fieldset.form-wrapper fieldset.form-wrapper{width:90%;border:0;}
 /* Format two traits. */
 #dice-ruler-form .two-trait-vs-form fieldset.form-wrapper{float:left;margin-left:1em;margin-top:0;margin-bottom:0;width:45%;}
 /* Format combat displays. */
@@ -38,23 +35,22 @@
 #dice-ruler-form .secondary-help{float:right;clear:right;}
 #dice-ruler-form .secondary-help{width:210px;}
 /* Format the button display. */
+.dice_rolls .dice{margin-top:10px;}
+.dice_rolls ul.dice-ruler-row-buttons{width:110px;}
 .dice-ruler-buttons{padding:0px;margin:0px;height:20px;}
 .dice-ruler-label, .dice-ruler-button{float:left;height:20px;width:20px;list-style-type:none;margin-right:5px;text-align:center;font-weight:bold;}
 .dice-ruler-button{background:#111;border:solid 1px #eee;}
 .dice-ruler-button a{text-decoration:none;line-height:20px;}
-.dice-ruler-trait-vs, .dice-ruler-two-trait-vs{font-size:9px;}
-.dice-ruler-combat-two{margin-left:27px;}
-.dice_rolls .dice{margin-top:10px;}
+.dice-ruler-two-trait-vs{font-size:9px;}
 .dice-ruler-row-buttons{float:left;clear:none;display:inline;}
 .dice-ruler-set-buttons{clear:none;margin-top:10px;}
-.dice_rolls .last .dice-ruler-one-trait{margin-right:32px;}
 .dice_rolls .last .dice-ruler-two-trait{display:none;}
-.dice_rolls .last .dice-ruler-trait-vs{margin-right:32px;}
 .dice_rolls .last .dice-ruler-two-trait-vs{display:none;}
 .dice-ruler-b{border:1px solid #A00;}
+.dice-ruler-b.dice-ruler-two-trait-vs{margin-left:27px;}
 .dice_rolls .first{margin-top:0;}
 .dice_rolls .dice_ruler_label{font-size:8px;font-weight:bold;margin-left:2px;}
-.dice_rolls .dice_ruler_label_b{margin-left:88px;}
+.dice_rolls .dice_ruler_label_b{margin-left:60px;}
 .dice_rolls{margin-top:0.5em;}
 /* Block positioning. */
 #block-dice-ruler-dice-ruler{clear:left;margin:0;}

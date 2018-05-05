@@ -19,16 +19,10 @@ Drupal.behaviors.diceRuler = {
     $('.dice_ruled').prepend(rule_buttons);
     // First set of buttons.
     var rule_buttons = '<ul class="dice_rule dice-ruler-buttons dice-ruler-row-buttons"> ' +
-      '<li class="dice-ruler-button dice-ruler-a dice-ruler-one-trait" type="one_trait" ' +
-      'title="Make a One Trait ruling with these rolls."><a href="#">1T</a></li>' +
       '<li class="dice-ruler-button dice-ruler-a dice-ruler-two-trait" type="two_trait" ' +
       'title="Make a Two Trait ruling with these rolls and the ones on the row below."><a href="#">2T</a></li>' +
-      '<li class="dice-ruler-button dice-ruler-a dice-ruler-trait-vs" type="trait_vs" ' +
-      'title="Make a One Trait Versus ruling with these rolls."><a href="#">TvT</a></li>' +
       '<li class="dice-ruler-button dice-ruler-a dice-ruler-two-trait-vs" type="two_trait_vs" ' +
       'title="Make a Two Trait Versus ruling with these rolls and the ones on the row below."><a href="#">2Tv</a></li>' +
-      '<li class="dice-ruler-button dice-ruler-b dice-ruler-trait-vs" type="trait_vs_b" ' +
-      'title="Make a One Trait Versus ruling with these rolls. Second Party."><a href="#">TvT</a></li>' +
       '<li class="dice-ruler-button dice-ruler-b dice-ruler-two-trait-vs" type="two_trait_vs_b" ' +
       'title="Make a Two Trait Versus ruling with these rolls and the ones on the row below. Second Party."><a href="#">2Tv</a></li>' +
       '</ul>';
@@ -85,11 +79,10 @@ Drupal.behaviors.diceRuler = {
     $(this_row).find('input[type="text"]').val('');
     $(this_row).find('input[name*="number_actions_b"]').val(1);
     // Set the diff default.
-    $(this_row).find('input[name*="one_trait_diff"]').val(25);
     $(this_row).find('input[name*="two_trait_diff"]').val(25);
     $(this_row).find('input[name*="magic_diff"]').val(25);
     // Change the dropdown.
-    $(this_row).find('.form-type-select select[name*="roll_type"]').val('one_trait').trigger('change');
+    $(this_row).find('.form-type-select select[name*="roll_type"]').val('two_trait').trigger('change');
   }
 
   // Clicking a row button.
@@ -106,14 +99,6 @@ Drupal.behaviors.diceRuler = {
     this_row = parseInt(this_row);
     // Process the button.
     switch(button_type) {
-      case 'one_trait':
-        $(rolls).find('.dice_row_' + this_row).each(function() {
-          new_slot = new_slot + 1;
-          var new_form = $('#dice-ruler-form #edit-action-' + new_slot);
-          $(new_form).find('input[name*="one_trait_might"]').val( $(this).attr('might') );
-          $(new_form).find('input[name*="one_trait_rolled"]').val( $(this).attr('roll') );
-        });
-      break;
       case 'two_trait':
         // Get the second trait from the next row.
         next_row = this_row + 1;
@@ -127,14 +112,6 @@ Drupal.behaviors.diceRuler = {
             $(new_form).find('input[name*="two_trait_might_b"]').val( $(this).attr('might') );
             $(new_form).find('input[name*="two_trait_rolled_b"]').val( $(this).attr('roll') );
           });
-        });
-      break;
-      case 'trait_vs':
-        $(rolls).find('.dice_row_' + this_row).each(function() {
-          new_slot = new_slot + 1;
-          var new_form = $('#dice-ruler-form #edit-action-' + new_slot);
-          $(new_form).find('input[name*="trait_vs_might_a"]').val( $(this).attr('might') );
-          $(new_form).find('input[name*="trait_vs_rolled_a"]').val( $(this).attr('roll') );
         });
       break;
       case 'two_trait_vs':
@@ -167,13 +144,6 @@ Drupal.behaviors.diceRuler = {
     this_row = parseInt(this_row);
     // Process the button.
     switch(button_type) {
-      case 'trait_vs_b':
-        $(rolls).find('.dice_row_' + this_row).each(function() {
-          var new_form = $('#dice-ruler-form #edit-action-' + new_slot);
-          $(new_form).find('input[name*="trait_vs_might_b"]').val( $(this).attr('might') );
-          $(new_form).find('input[name*="trait_vs_rolled_b"]').val( $(this).attr('roll') );
-        });
-      break;
       case 'two_trait_vs_b':
         // Get the second trait from the next row.
         next_row = this_row + 1;
