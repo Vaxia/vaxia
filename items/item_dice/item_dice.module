@@ -81,7 +81,6 @@ function item_dice_vaxia_dice_commands_alter(&$rolls, $context) {
  */
 function _item_dice_submit_rolls_items($submitted_items, $character, $lang) {
   $stats = _vaxia_dice_roller_get_stats();
-  $relations = _vaxia_dice_roller_get_stat_relations();
   $stats['skill'] = 'Skill';
   // Check for items.
   $roll_mods = array();
@@ -150,17 +149,6 @@ function _item_dice_submit_modifiers($items, $item, $stat_key, $lang) {
     // Set EITHER with overlap OR as additional set of items.
     $items[$stat_key]['modifies'] = isset($items[$stat_key]['modifies']) ? $items[$stat_key]['modifies'] : array();
     $items[$stat_key]['modifies'] = _item_dice_submit_rolls_items_modifies($items[$stat_key]['modifies'], $item_modifier);
-    // If this is a primary key, half the bonus and apply to relations.
-    if (in_array($stat_key, array_keys($relations))) {
-      foreach ($relations[$stat_key] as $second_key) {
-        $second_small_label = _vaxia_dice_roller_small_label($second_key);
-        $second_modify = $modify / 2;
-        $second_notes = $item->title .' (' . $second_small_label . ' ' . $second_modify . ')';
-        $second_item_modifier = array('modifies' => $second_modify, 'notes' => $second_notes);
-        $items[$second_key]['modifies'] = isset($items[$second_key]['modifies']) ? $items[$second_key]['modifies'] : array();
-        $items[$second_key]['modifies'] = _item_dice_submit_rolls_items_modifies($items[$second_key]['modifies'], $second_item_modifier);
-      }
-    }
   }
   return $items;
 }

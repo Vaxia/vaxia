@@ -214,13 +214,6 @@ function vaxia_character_sheet_field_info() {
         'value_callback' => '_vaxia_calculate_attribute_field_value',
       ),
     ),
-    //field_health
-    //field_constitution
-    //field_agility
-    //field_reflexes
-    //field_awareness
-    //field_presence
-    //field_appearance
     'field_skill_value' => array(
       'permissions' => array(
         'owner' => LIMIT_SHEET,

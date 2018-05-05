@@ -200,11 +200,6 @@ function _items_admin_settings($form, &$form_state) {
     '#type' => 'textfield',
     '#default_value' => variable_get('items_primary_value', 1),
   );
-  $form['silver']['items_secondary_value'] = array(
-    '#title' => t('Value modifier for secondary stats'),
-    '#type' => 'textfield',
-    '#default_value' => variable_get('items_secondary_value', 1.5),
-  );
   $form['silver']['items_skills_value'] = array(
     '#title' => t('Value modifier for skills'),
     '#type' => 'textfield',
@@ -257,16 +252,13 @@ function _items_get_item_value($node) {
   $lang = isset($node->language) ? $node->language : 'und';
   $real_value = 0;
   // Price the benefits for items stats.
-  $stats = _items_item_stats('primary');
-  $second_stats = _items_item_stats('secondary');
+  $stats = _items_item_stats();
   // Get the benefits and penalties for item mods.
   $primary = _items_value_stat_bonus($node, $stats);
-  $secondary = _items_value_stat_bonus($node, $second_stats);
   $skill = _items_value_stat_bonus($node, array('skill'));
   $items_primary_value = variable_get('items_primary_value', 1);
-  $items_secondary_value = variable_get('items_secondary_value', 1.5);
   $items_skills_value = variable_get('items_skills_value', 0.75);
-  $bonus = ($primary * $items_primary_value) + ($secondary * $items_secondary_value) + ($skill * $items_skills_value);
+  $bonus = ($primary * $items_primary_value) + ($skill * $items_skills_value);
   $bonus_value = 0;
   if ($bonus > 0) {
     $bonus_value = variable_get('items_bonus_value', 50);
@@ -280,9 +272,8 @@ function _items_get_item_value($node) {
   }
   // Figure out what the overlap stats bonuses are for the stats.
   $primary = _items_value_stat_overlap($node, $stats);
-  $secondary = _items_value_stat_overlap($node, $second_stats);
   $skill = _items_value_stat_overlap($node, array('skill'));
-  $overlap = ($primary) + ($secondary) + ($skill);
+  $overlap = ($primary) + ($skill);
   $overlap_value = 0;
   if ($overlap > 0) {
     $overlap_silver_value = variable_get('items_overlap_value', 2);
@@ -415,16 +406,6 @@ function items_check_needs_oversight($node) {
 /**
  * Helper function.
  */
-function _items_item_stats($mode = 'all') {
-  // Return by mode.
-  if ($mode == 'primary') {
-    return array('life', 'endurance', 'strength', 'dexterity', 'intelligence', 'spirituality', 'charisma');
-  }
-  if ($mode == 'secondary') {
-    return array('health', 'constitution', 'agility', 'reflexes', 'awareness', 'presence', 'appearance');
-  }
-  // Else, return all.
-  return  array('life', 'health', 'endurance', 'constitution', 'strength', 'agility', 'dexterity',
-      'reflexes', 'intelligence', 'awareness', 'spirituality', 'presence', 'charisma', 'appearance', 'skill',
-    );
+function _items_item_stats() {
+  return array('life', 'endurance', 'strength', 'dexterity', 'intelligence', 'spirituality', 'charisma');
 }

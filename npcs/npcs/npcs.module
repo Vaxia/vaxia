@@ -125,9 +125,8 @@ function npcs_check_needs_oversight($node) {
   $return_value = FALSE;
   $lang = $node->language;
   // Check each stat.
-  $fields = array('life', 'health', 'endurance', 'constitution', 'strength', 'agility', 'dexterity',
-    'reflexes', 'intelligence', 'awareness', 'spirituality', 'presence', 'charisma', 'appearance',
-  );
+  $fields = array('life', 'endurance', 'strength', 'dexterity',
+    'intelligence', 'spirituality', 'charisma');
   foreach ($fields as $field_name) {
     $field_name = 'field_' . $field_name;
     $stat = isset($node->{$field_name}[$lang][0]['value']) ?

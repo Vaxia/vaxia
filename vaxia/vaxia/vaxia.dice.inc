@@ -473,19 +473,12 @@ function _vaxia_dice_roller_get_stats($node = '') {
   // Return the list.
   $list = array(
     'life' => 'Life', 
-    'health' => 'Health', 
     'endurance' => 'Endurance', 
-    'constitution' => 'Constitution', 
     'strength' => 'Strength', 
-    'agility' => 'Agility', 
     'dexterity' => 'Dexterity', 
-    'reflexes' => 'Finesse', 
     'intelligence' => 'Intelligence', 
-    'awareness' => 'Awareness', 
     'spirituality' => 'Spirituality', 
-    'presence' => 'Presence', 
     'charisma' => 'Charisma', 
-    'appearance' => 'Appearance',
   );
   // Use the character if available.
   if (!empty($node)) {
@@ -498,22 +491,6 @@ function _vaxia_dice_roller_get_stats($node = '') {
   }
   return $list;
 }
-
-/**
- * Helper function, list all stats.
- */
-function _vaxia_dice_roller_get_stat_relations() {
-  return array(
-    'life' => array('appearance', 'health'), 
-    'endurance' => array('health', 'constitution'),
-    'strength' => array('constitution', 'agility'), 
-    'dexterity' => array('agility', 'reflexes'),
-    'intelligence' => array('reflexes', 'awareness'),
-    'spirituality' => array('awareness', 'presence'),
-    'charisma' => array('presence', 'appearance'),
-  );
-}
-
 
 /**
  * Helper function, list all skills.
