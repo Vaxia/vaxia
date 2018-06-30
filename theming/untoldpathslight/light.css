@@ -25,7 +25,7 @@
  Chat Color: #fff
  */
 /* Font size, color, family.*/
-body{color:#444;background-color:#ccc;}
+body{color:#444;background-color:#eee;border-color:#222;}
 #page{color:#444;background-color:#fff;}
 #header{background-color:#59c;}
 #primary-menu-bar{background-color:#59c;}
@@ -68,6 +68,8 @@ form input[type="reset"]:disabled, input[type="button"]:disabled, input[type="su
   color:#777;border-color:#abc;background-color:#bcd;}
 
 /* Tables */
+table.sticky-header{color:#fff;background-color:#abc;}
+table.sticky-header a{color:#fff;}
 tr.even, tr.odd{border-color:#222;}
 
 /* Pullout color tweaks */
@@ -88,3 +90,7 @@ a.freelink-createnode{color:#f55;}
 /* PRG Chat links. */
 .rpg-chat{color:#fff;}
 .rpg-chat a, .rpg-chat a.active, .rpg-chat a:visited{color:#fff;}
+
+/* Forum rate it. */
+.rate-info, .rate-description{color:#eee;}
+.rate-widget .rate-number-up-down-btn-up{background-color:#ccc;}

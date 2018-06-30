@@ -44,6 +44,7 @@ p{font-size:100%;}
   font-size:1.8em;font-weight:400;white-space:nowrap;
   -webkit-border-radius:0 100px 100px 0;border-radius:0 100px 100px 0;
   background-image:url('images/texture.png');background-repeat:repeat;}
+.region-sidebar-first .region-inner{padding-right: 0.5em;}
 
 /* Tabs */
 ul.tabs li{border:solid 2px;padding:1px;border-bottom:0;
@@ -71,6 +72,7 @@ a.button, .button a{text-decoration:none;}
 
 /* Tables */
 tr.even, tr.odd{background-color:transparent;border-bottom:solid 1px;}
+tr.even td.active, tr.odd td.active{background-color:transparent;}
 
 /* Pullout color tweaks */
 .jsPulloutFlap{z-index:50;background-image:url('images/texture.png');background-repeat:repeat;}
@@ -91,3 +93,13 @@ tr.even, tr.odd{background-color:transparent;border-bottom:solid 1px;}
 /* TnC to left and font size. */
 .terms_and_conditions{float:right;font-size:70%;width:500px;text-align:right;margin:1em 0;margin-right: 0.5em;}
 
+/* Chat room layout. */
+.node-type-rpg-chatroom #content-column .content-inner{margin-left:0px;}
+.forum-post-info{border-top:1px solid;border-bottom:1px solid;}
+.forum-post-footer{border-bottom:1px solid;}
+article .view-artwork td{background:#aaa;border:2px solid #eee;padding:.5em;text-align:center;}
+div.imagefield-crop-widget img{max-width:none;}
+
+/* Forum rate it. */
+.rate-number-up-down-rating{font-size:16px;font-weight:700;line-height:26px;}
+.rate-widget .rate-number-up-down-btn-up{border:1px solid;margin-left:10px;}

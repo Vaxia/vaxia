@@ -1,5 +1,5 @@
 /* Font size, color, family.*/
-body{color:#ccc;background-color:#001;}
+body{color:#ccc;background-color:#001;border-color:#ccc}
 #page{color:#ccc;background-color:#012;}
 #header{background-color:#035;}
 #primary-menu-bar{background-color:#035;}
@@ -42,6 +42,8 @@ form input[type="reset"]:disabled, input[type="button"]:disabled, input[type="su
   color:#777;border-color:#abc;background-color:#bcd;}
 
 /* Tables */
+table.sticky-header{color:#999;background-color:#456;}
+table.sticky-header a{color:#999;}
 tr.even, tr.odd{border-color:#ccc;}
 
 /* Pullout color tweaks */
