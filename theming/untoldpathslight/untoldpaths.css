@@ -82,7 +82,7 @@ tr.even, tr.odd{background-color:transparent;border-bottom:solid 1px;}
 tr.even td.active, tr.odd td.active{background-color:transparent;}
 
 /* Pullout color tweaks */
-.jsPulloutFlap{z-index:50;background-image:url('images/texture.png');background-repeat:repeat;}
+.jsPulloutFlap{z-index:50;background-image:url('images/texture.png');background-repeat:repeat;letter-spacing: 2px;}
 .jsPulloutContent{z-index:100;background-image:url('images/texture.png');background-repeat:repeat;}
 .jsPulloutContent .region-sidebar-first h2{margin-left:-17px;}
 .jsPulloutContent .region-sidebar-first h3{margin-left:-17px;}
@@ -103,7 +103,7 @@ tr.even td.active, tr.odd td.active{background-color:transparent;}
 /* Chat room layout. */
 .node-type-rpg-chatroom #content-column .content-inner{margin-left:0px;}
 .node-type-rpg-chatroom #comment-form .field-name-field-artwork .dd{width:250px !important;}
-.node-type-rpg-chatroom .links{display:none;}
+.node-type-rpg-chatroom article nav{display:none;}
 article .view-artwork td{background:#aaa;border:2px solid #eee;padding:.5em;text-align:center;}
 div.imagefield-crop-widget img{max-width:none;}
 

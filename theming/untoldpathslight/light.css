@@ -80,6 +80,7 @@ tr.even, tr.odd{border-color:#222;}
 
 /* Pullout color tweaks */
 .jsPulloutFlap{border-color:#59c;background-color:#fff;}
+.jsPulloutFlap a{color:#fff}
 .jsPulloutContent{border-color:#59c;background-color:#fff;}
 .jsPulloutContent #primary-menu-bar a,
 .jsPulloutContent #primary-menu-bar a.active,

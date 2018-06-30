@@ -57,8 +57,9 @@ table.sticky-header a{color:#999;}
 tr.even, tr.odd{border-color:#ccc;}
 
 /* Pullout color tweaks */
-.jsPulloutFlap{border-color:#024;background-color:#456;}
-.jsPulloutContent{border-color:#024;background-color:#456;}
+.jsPulloutFlap{;border-color:#024;background-color:#456;}
+.jsPulloutFlap a{color:#eee}
+.jsPulloutContent{border-color:#024;background-color:#012;}
 .jsPulloutContent #primary-menu-bar a,
 .jsPulloutContent #primary-menu-bar a.active,
 .jsPulloutContent #primary-menu-bar a:visited{color:#ccc;}
