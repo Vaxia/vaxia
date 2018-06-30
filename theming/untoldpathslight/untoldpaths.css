@@ -109,3 +109,4 @@ div.imagefield-crop-widget img{max-width:none;}
   border:solid 2px;padding:1px;float: left;
   -khtml-border-radius:8px;-moz-border-radius:8px;
   -webkit-border-radius:8px;border-radius:8px;}
+.forum-node-create-links .forum-add-node a{text-decoration: none;padding: 0.25em;}
