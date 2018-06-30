@@ -65,7 +65,7 @@ ul.primary a.active{background-image:none;font-weight: bold;}
   -khtml-border-radius:8px;-moz-border-radius:8px;
   -webkit-border-radius:8px;border-radius:8px;
   border-style:solid;border-width:1px;height:34px;
-  padding:.25em;margin:.5em 0 0 3px;white-space:nowrap;}
+  padding:0.5em;margin:0.5em 0 0 3px;white-space:nowrap;}
 a.button, .button a{text-decoration:none;}
 
 /* Forms */
