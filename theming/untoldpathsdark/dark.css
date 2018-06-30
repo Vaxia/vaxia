@@ -42,8 +42,11 @@ a.button, .button a{color:#ccc;}
 
 /* Forms */
 form input{color:#eee;border-color:#456;background-color:#678;}
+form input:focus{background-color:#678;}
 form textarea{color:#eee;background-color:#678;}
+form textarea:focus{background-color:#678;}
 form select{color:#eee;background-color:#678;}
+form select:focus{background-color:#678;}
 form select optgroup{color:#eee;background-color:#678;}
 form select option{color:#eee;background-color:#678;}
 form .dd .ddTitle{color:#eee;background-color:#678;}
