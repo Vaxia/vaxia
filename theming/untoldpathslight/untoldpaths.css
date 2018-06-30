@@ -101,6 +101,10 @@ tr.even td.active, tr.odd td.active{background-color:transparent;}
 article .view-artwork td{background:#aaa;border:2px solid #eee;padding:.5em;text-align:center;}
 div.imagefield-crop-widget img{max-width:none;}
 
-/* Forum rate it. */
+/* Forums. */
 .rate-number-up-down-rating{font-size:16px;font-weight:700;line-height:26px;}
 .rate-widget .rate-number-up-down-btn-up{border:1px solid;margin-left:10px;}
+.forum-node-create-links{float: left;margin-top: 0.5em;margin-right: 0.25em;
+  border:solid 2px;padding:1px;
+  -khtml-border-radius:8px 8px 0 0;-moz-border-radius:8px 8px 0 0;
+  -webkit-border-radius:8px 8px 0 0;border-radius:8px 8px 0 0;}

@@ -91,6 +91,8 @@ a.freelink-createnode{color:#f55;}
 .rpg-chat{color:#fff;}
 .rpg-chat a, .rpg-chat a.active, .rpg-chat a:visited{color:#fff;}
 
-/* Forum rate it. */
+/* Forums */
 .rate-info, .rate-description{color:#eee;}
 .rate-widget .rate-number-up-down-btn-up{background-color:#ccc;}
+.forum-node-create-links{border-color:#ccc;background-color:#ddd;}
+.forum-node-create-links a{color:#333;}
