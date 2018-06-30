@@ -43,6 +43,8 @@ a.button, .button a{color:#ccc;}
 form input{color:#eee;border-color:#456;background-color:#678;}
 form textarea{color:#eee;background-color:#678;}
 form select{color:#eee;background-color:#678;}
+form select optgroup{color:#eee;background-color:#678;}
+form select option{color:#eee;background-color:#678;}
 form .dd .ddTitle{color:#eee;background-color:#678;}
 form .resizable-textarea .grippie{background-color: #456;}
 form input[type="reset"]:disabled, input[type="button"]:disabled, input[type="submit"]:disabled{

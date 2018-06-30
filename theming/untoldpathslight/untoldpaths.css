@@ -69,13 +69,11 @@ ul.primary a.active{background-image:none;font-weight: bold;}
 a.button, .button a{text-decoration:none;}
 
 /* Forms */
-form select{height:25px;font-size:1em;}
+form select{height:30px;font-size:1em;}
+form select optgroup{height:30px;font-size:1em;}
+form select option{height:30px;font-size:1em;}
+form .dd{-khtml-border-radius:0;-moz-border-radius:0;-webkit-border-radius:0;border-radius:0;}
 form .dd .ddTitle{background:url();font-size:1em;}
-
-select:-moz-focusring {
-  color: transparent;
-  text-shadow: 0 0 0 #000;
-}
 
 /* Tables */
 tr.even, tr.odd{background-color:transparent;border-bottom:solid 1px;}
