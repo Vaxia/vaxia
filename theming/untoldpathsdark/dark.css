@@ -40,7 +40,11 @@ ul.primary li.active a{color:#bbb;background-color:#678;}
 a.button, .button a{color:#ccc;}
 
 /* Forms */
-form input{color:#ccc;border-color:#222;background-color:#fff;}
+form input{color:#eee;border-color:#456;background-color:#678;}
+form textarea{color:#eee;background-color:#678;}
+form select{color:#eee;background-color:#678;}
+form .dd .ddTitle{color:#eee;background-color:#678;}
+form .resizable-textarea .grippie{background-color: #456;}
 form input[type="reset"]:disabled, input[type="button"]:disabled, input[type="submit"]:disabled{
   color:#777 !important;border-color:#abc;background-color:#bcd;}
 

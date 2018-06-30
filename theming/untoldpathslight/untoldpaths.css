@@ -69,7 +69,13 @@ ul.primary a.active{background-image:none;font-weight: bold;}
 a.button, .button a{text-decoration:none;}
 
 /* Forms */
-/* n/a */
+form select{height:25px;font-size:1em;}
+form .dd .ddTitle{background:url();font-size:1em;}
+
+select:-moz-focusring {
+  color: transparent;
+  text-shadow: 0 0 0 #000;
+}
 
 /* Tables */
 tr.even, tr.odd{background-color:transparent;border-bottom:solid 1px;}
@@ -97,6 +103,7 @@ tr.even td.active, tr.odd td.active{background-color:transparent;}
 /* Chat room layout. */
 .node-type-rpg-chatroom #content-column .content-inner{margin-left:0px;}
 .node-type-rpg-chatroom #comment-form .field-name-field-artwork .dd{width:250px !important;}
+.node-type-rpg-chatroom .links{display:none;}
 article .view-artwork td{background:#aaa;border:2px solid #eee;padding:.5em;text-align:center;}
 div.imagefield-crop-widget img{max-width:none;}
 
