@@ -39,7 +39,7 @@ a.button, .button a{color:#ccc;}
 /* Forms */
 form input{color:#ccc;border-color:#222;background-color:#fff;}
 form input[type="reset"]:disabled, input[type="button"]:disabled, input[type="submit"]:disabled{
-  color:#777;border-color:#abc;background-color:#bcd;}
+  color:#777 !important;border-color:#abc;background-color:#bcd;}
 
 /* Tables */
 table.sticky-header{color:#999;background-color:#456;}

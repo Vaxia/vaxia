@@ -47,7 +47,8 @@ p{font-size:100%;}
 .region-sidebar-first .region-inner{padding-right: 0.5em;}
 
 /* Tabs */
-ul.tabs li{border:solid 2px;padding:1px;border-bottom:0;
+ul.tabs li{float: left;margin-top: 0.5em;margin-right: 0.25em;
+  border:solid 2px;padding:1px;border-bottom:0;
   -khtml-border-radius:8px 8px 0 0;-moz-border-radius:8px 8px 0 0;
   -webkit-border-radius:8px 8px 0 0;border-radius:8px 8px 0 0;}
 ul.primary{padding-bottom:0;}
@@ -88,7 +89,7 @@ tr.even td.active, tr.odd td.active{background-color:transparent;}
 
 /* Badges */
 .user_badges img{margin:0.25em;padding:0.25em;border:solid 2px;border-radius:4px;}
-.author-badges img{margin:0.12em;padding:0.12em;border:solid 2px;border-radius:4px;width:30px;}
+.author-badges img{margin:0.12em;padding:0.12em;border:solid 2px;border-radius:4px;width:30px;height: 30px;}
 
 /* TnC to left and font size. */
 .terms_and_conditions{float:right;font-size:70%;width:500px;text-align:right;margin:1em 0;margin-right: 0.5em;}
