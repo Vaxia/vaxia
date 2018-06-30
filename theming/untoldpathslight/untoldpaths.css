@@ -96,12 +96,13 @@ tr.even td.active, tr.odd td.active{background-color:transparent;}
 
 /* Chat room layout. */
 .node-type-rpg-chatroom #content-column .content-inner{margin-left:0px;}
-.forum-post-info{border-top:1px solid;border-bottom:1px solid;}
-.forum-post-footer{border-bottom:1px solid;}
+.node-type-rpg-chatroom #comment-form .field-name-field-artwork .dd{width:250px !important;}
 article .view-artwork td{background:#aaa;border:2px solid #eee;padding:.5em;text-align:center;}
 div.imagefield-crop-widget img{max-width:none;}
 
 /* Forums. */
+.forum-post-info{border-top:1px solid;border-bottom:1px solid;}
+.forum-post-footer{border-bottom:1px solid;}
 .forum-post-wrapper .author-pane-section img.image-style-thumbnail{max-width:125px;}
 .rate-number-up-down-rating{font-size:16px;font-weight:700;line-height:26px;}
 .rate-widget .rate-number-up-down-btn-up{border:1px solid;margin-left:10px;}
