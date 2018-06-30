@@ -63,6 +63,7 @@ tr.even, tr.odd{border-color:#ccc;}
 .jsPulloutContent #primary-menu-bar a,
 .jsPulloutContent #primary-menu-bar a.active,
 .jsPulloutContent #primary-menu-bar a:visited{color:#ccc;}
+#target_extruderBarHead .primary-menu a{color:#eee;}
 
 /* Badges */
 .user_badges img{background:#222;border-color:#444;}

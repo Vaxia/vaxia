@@ -85,6 +85,7 @@ tr.even, tr.odd{border-color:#222;}
 .jsPulloutContent #primary-menu-bar a,
 .jsPulloutContent #primary-menu-bar a.active,
 .jsPulloutContent #primary-menu-bar a:visited{color:#444;}
+#target_extruderBarHead .primary-menu a{color:#47a;}
 
 /* Badges */
 .user_badges img{background:#222;border-color:#444;}
