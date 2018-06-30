@@ -112,6 +112,13 @@ tr.even td.active, tr.odd td.active{background-color:transparent;}
 .node-type-rpg-chatroom article nav{display:none;}
 article .view-artwork td{background:#aaa;border:2px solid #eee;padding:.5em;text-align:center;}
 div.imagefield-crop-widget img{max-width:none;}
+#rpg-chat{
+  -khtml-border-radius:8px;-moz-border-radius:8px;
+  -webkit-border-radius:8px;border-radius:8px;}
+#rpg-chat .rpg-chat-post{
+  -khtml-border-radius:8px;-moz-border-radius:8px;
+  -webkit-border-radius:8px;border-radius:8px;}
+#rpg-chat .rpg-chat-post .links{display:none;}
 
 /* Forums. */
 .forum-post-info{border-top:1px solid;border-bottom:1px solid;}
