@@ -1,0 +1,79 @@
+/**
+ */
+
+/* Articles (nodes) */
+.article {
+  margin-bottom: 20px;
+}
+
+.article > header {}
+
+/* Teaser title. */
+.article-title {}
+.article-title a:link,
+.article-title a:visited,
+.article-title a:active {
+  text-decoration: none;
+}
+.article-title a:hover,
+.article-title a:focus {
+  text-decoration: underline;
+}
+
+/* Skinr article title alignment. */
+.ta-l .article-title {
+  text-align: left;
+}
+.ta-r .article-title {
+  text-align: right;
+}
+.ta-c .article-title {
+  text-align: center;
+}
+
+/* User Picture. */
+.article .user-picture {}
+.article .user-picture img {}
+
+/* Submitted */
+.article > footer {}
+.article > footer a {}
+.article > footer a:hover {}
+.article > footer .username {}
+.article > footer time {}
+
+/* Links. */
+.article ul.links {
+  margin: 0;
+}
+.article ul.links li {
+  margin: 0;
+  padding: 0 .75em 0 0;
+}
+.article ul.links li a {}
+.article ul.links li.node_read_more a {}
+.article ul.links li.comment_add a {}
+.article ul.links li.comment_comments a {}
+.article ul.links li.comment_new_comments a {}
+.article ul.links li.blog_usernames_blog a {}
+.article ul.links li.print_html a {}
+.article ul.links li.print_email a {}
+.article ul.links li.print_pdf a {}
+
+/* UL link first and last classes. */
+.article ul.links li.first {}
+.article ul.links li.last  {}
+
+/* Workflow states. */
+.article-add    {}
+.article-edit   {}
+.article-delete {}
+.article-preview  {}
+.article-sticky   {}
+.article-promoted {}
+
+/* Status. */
+.article-unpublished {}
+
+/* Theme the teaser. */
+.article-teaser {}

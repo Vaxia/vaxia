@@ -1,0 +1,10 @@
+;----------// Theme Information
+  name        = Untold Paths - Dark
+  description = Untold Paths - Dark
+  core        = 7.x
+  engine      = phptemplate
+  screenshot  = screenshot.png
+  base theme  = untoldpathslight_subtheme
+
+  stylesheets[all][] = css/dark.css
+  stylesheets[all][] = dark.css

@@ -1,0 +1,63 @@
+/* Font size, color, family.*/
+body{color:#ccc;background-color:#012;}
+#header{background-color:#035;}
+.region-footer{background-color:#035;}
+#header .region-header{background-color:#035;}
+
+/* Link colors - light.*/
+a, a.active, a:visited{color:#69c;}
+
+/* Site name. */
+#header #site-name a:link, #site-name a:visited, #site-name a:hover{color:#ccc;}
+
+/* Navigation links. */
+#main #navigation a{color:#ccc;}
+
+/* Tabs */
+ul.tabs li{border-color:#ccc;}
+ul.primary li{background-color:#456 !important;}
+ul.primary li a{color:#999;background-color:#456;}
+ul.primary li.active{background-color:#678 !important;}
+ul.primary li.active a{color:#bbb;background-color:#678;}
+
+/* Input buttons. */
+.button, button, input[type="reset"], input[type="button"], input[type="submit"]{
+  color:#ccc;border-color:#ccc;background:#456;}
+a.button, .button a{color:#ccc;}
+
+/* Forms */
+form input{color:#ccc;border-color:#222;background-color:#fff;}
+form input[type="reset"]:disabled, input[type="button"]:disabled, input[type="submit"]:disabled{
+  color:#777;border-color:#abc;background-color:#bcd;}
+
+/* Tables */
+tr.even, tr.odd{border-color:#ccc;}
+
+/* Sidebar rounds. */
+.sidebars .region-sidebar-first h2{color:#ccc;background-color:#035;}
+.sidebars .region-sidebar-first h2 a,
+.sidebars .region-sidebar-first h2 a.active,
+.sidebars .region-sidebar-first h2 a:visited{color:#ccc;}
+.sidebars .region-sidebar-first h3{color:#ccc;background-color:#035;}
+.sidebars .region-sidebar-first h3 a,
+.sidebars .region-sidebar-first h3 a.active,
+.sidebars .region-sidebar-first h3 a:visited{color:#ccc;}
+
+/* Pullout color tweaks */
+.jsPulloutFlap{border-color:#035;background-color:#456;}
+.jsPulloutContent{border-color:#035;background-color:#456;}
+.jsPulloutContent #navigation a,
+.jsPulloutContent #navigation a.active,
+.jsPulloutContent #navigation a:visited{color:#ccc;}
+
+/* Badges */
+.user_badges img{background:#222;border-color:#444;}
+.author-badges img{background:#222;border-color:#444;}
+
+/* Wiki links.
+a.freelink-createnode{color:#f55;}
+*/
+
+/* PRG Chat links. */
+.rpg-chat{color:#fff;}
+.rpg-chat a, .rpg-chat a.active, .rpg-chat a:visited{color:#fff;}

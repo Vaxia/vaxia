@@ -1,0 +1,91 @@
+/* Background image. */
+body{background-image:url('images/texture.png');background-repeat:repeat;background-attachment:fixed;}
+#header{background-image:url('images/texture.png');background-repeat:repeat;}
+.region-footer{background-image:url('images/texture.png');background-repeat:repeat;}
+#header .region-header{opacity:0.4;width:90%;float:left;
+  height: 1.4em;margin-top: 1em;
+  -webkit-border-radius:0 0 100px;border-radius:0 0 100px;
+  background-image:url('images/texture.png');background-repeat:repeat;}
+
+/* Font size, color, family.*/
+body{font-family:Verdana,Arial,Helvetica,sans-serif;}
+h1{font-size:1.8em;font-family:bebas_neueregular;font-weight:400;text-transform:uppercase;}
+h2{font-size:1.6em;font-family:bebas_neueregular;font-weight:400;text-transform:uppercase;}
+h3{font-size:1.4em;font-family:bebas_neueregular;font-weight:400;text-transform:uppercase;}
+p{font-size:100%;}
+
+/* Header. */
+#header{padding-bottom:1em;padding-top:2em;}
+#header #site-name{font-size:5.2em;line-height:34px;padding-left:1em;}
+#header #site-name a:link, #site-name a:visited, #site-name a:hover{text-decoration:none;}
+#header #logo{display:none;}
+#header #site-slogan{display:none;}
+#header #secondary-menu{display:none;}
+
+/* Navigation. */
+#navigation{position:relative;float:right;top:-4em;padding:0 5%;}
+#navigation a{font-size:1.6em;font-weight:400;text-decoration:none;
+  font-family:bebas_neueregular;}
+
+/* Navigation dot display. */
+#navigation a:hover{background:url('images/underline.jpg') center bottom no-repeat;}
+#content #crumbs{display:none;}
+
+/* Tabs */
+ul.tabs li{border:solid 2px;padding:1px;border-bottom:0;
+  -khtml-border-radius:8px 8px 0 0;-moz-border-radius:8px 8px 0 0;
+  -webkit-border-radius:8px 8px 0 0;border-radius:8px 8px 0 0;}
+ul.primary{padding-bottom:0;}
+ul.primary li{text-shadow:none;}
+ul.primary a:link, ul.primary a:visited{padding:0 1em;
+  text-align:center;border-style:none !important;border-radius:8px 8px 0 0;
+  font-size:1.1em;letter-spacing:1px;background-color:transparent;}
+ul.primary a.active{background-image:none;}
+.vertical-tabs ul.vertical-tabs-list li{background-color:transparent;}
+.vertical-tabs ul.vertical-tabs-list li.selected{background-color:transparent;}
+
+/* Input buttons. */
+.button, button, input[type="reset"], input[type="button"], input[type="submit"]{
+  -khtml-border-radius:8px;-moz-border-radius:8px;
+  -webkit-border-radius:8px;border-radius:8px;
+  border-style:solid;border-width:1px;
+  padding:.25em;margin:.5em 0 0 3px;white-space:nowrap;}
+a.button, .button a{text-decoration:none;}
+
+/* Forms */
+/* n/a */
+
+/* Tables */
+tr.even, tr.odd{background-color:transparent;border-bottom:solid 1px;}
+
+/* Sidebar rounds. */
+.sidebars .region-sidebar-first h2{margin-left:-50px;min-height:60px;
+  -webkit-border-radius:0 100px 100px 0;border-radius:0 100px 100px 0;
+  font-size:1.8em;font-weight:400;line-height:60px;white-space:nowrap;
+  padding-left:50px;margin-bottom:0.25em;
+  background-image:url('images/texture.png');background-repeat:repeat;}
+.sidebars .region-sidebar-first h3{margin-left:-50px;min-height:60px;
+  -webkit-border-radius:0 100px 100px 0;border-radius:0 100px 100px 0;
+  font-size:1.8em;font-weight:400;line-height:60px;white-space:nowrap;
+  padding-left:50px;margin-bottom:0.25em;
+  background-image:url('images/texture.png');background-repeat:repeat;}
+
+/* Pullout color tweaks */
+.jsPulloutFlap{z-index:50;background-image:url('images/texture.png');background-repeat:repeat;}
+.jsPulloutContent{z-index:100;background-image:url('images/texture.png');background-repeat:repeat;}
+.jsPulloutContent .region-sidebar-first h2{margin-left:-17px;}
+.jsPulloutContent .region-sidebar-first h3{margin-left:-17px;}
+.jsPulloutFlap a{font-size:1.4em;font-family:bebas_neueregular;font-weight:400;}
+
+/* User profiles */
+.page-user .profile .field-name-field-artwork-image{float:left;margin-right:1em;margin-top:0.6em;}
+.page-user .profile .privatemsg-send-link{display:block;margin-bottom:1em;font-weight:400;font-size:1.2em;}
+.page-user .profile .masquerade-switch{display:block;margin-bottom:1em;font-weight:400;font-size:1.2em;}
+
+/* Badges */
+.user_badges img{margin:0.25em;padding:0.25em;border:solid 2px;border-radius:4px;}
+.author-badges img{margin:0.12em;padding:0.12em;border:solid 2px;border-radius:4px;width:30px;}
+
+/* TnC to left and font size. */
+.terms_and_conditions{float:right;font-size:70%;width:500px;text-align:right;margin:1em 0;}
+

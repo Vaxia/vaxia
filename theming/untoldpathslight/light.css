@@ -1,0 +1,89 @@
+/** COLOR LIST:
+ Back: #fff
+ Primary Splash: #59c
+ Text Color: #444
+ Link Color: #47a
+ Header Color: #fff
+ Header Link: #fff
+ Border Color: #222
+ Tab Border: #ccc
+ Tab Color: #333
+ Tab Back: #abc
+ Inactive Tab Border: #ccc
+ Inactive Tab Back: #ddd
+ Inactive Tab Color: #333
+ Button Color: #111
+ Button Face: #222
+ Button Back: #abc
+ Input Color: #444
+ Input Border: #222
+ Input Border: #abc
+ Button Back: #abc
+ Inactive Input Color: #777
+ Inactive Input Border: #abc
+ Inactive Button Back: #abc
+ Chat Color: #fff
+ */
+/* Font size, color, family.*/
+body{color:#444;background-color:#fff;}
+#header{background-color:#59c;}
+.region-footer{background-color:#59c;}
+#header .region-header{background-color:#59c;}
+
+/* Link colors - light.*/
+a, a.active, a:visited{color:#47a;}
+
+/* Site name. */
+#header #site-name a:link, #site-name a:visited, #site-name a:hover{color:#fff;}
+
+/* Navigation links. */
+#main #navigation a{color:#fff;}
+
+/* Tabs */
+ul.tabs li{border-color:#ccc;}
+ul.primary li{background-color:#ddd !important;}
+ul.primary li a{color:#333;background-color:#ddd;}
+ul.primary li.active{background-color:#abc !important;}
+ul.primary li.active a{color:#333;background-color:#abc;}
+
+/* Input buttons. */
+.button, button, input[type="reset"], input[type="button"], input[type="submit"]{
+  color:#111;border-color:#222;background:#abc;}
+a.button, .button a{color:#111;}
+
+/* Forms */
+form input{color:#444;border-color:#222;background-color:#fff;}
+form input[type="reset"]:disabled, input[type="button"]:disabled, input[type="submit"]:disabled{
+  color:#777;border-color:#abc;background-color:#bcd;}
+
+/* Tables */
+tr.even, tr.odd{border-color:#222;}
+
+/* Sidebar rounds. */
+.sidebars .region-sidebar-first h2{color:#fff;background-color:#59c;}
+.sidebars .region-sidebar-first h2 a,
+.sidebars .region-sidebar-first h2 a.active,
+.sidebars .region-sidebar-first h2 a:visited{color:#fff;}
+.sidebars .region-sidebar-first h3{color:#fff;background-color:#59c;}
+.sidebars .region-sidebar-first h3 a,
+.sidebars .region-sidebar-first h3 a.active,
+.sidebars .region-sidebar-first h3 a:visited{color:#fff;}
+
+/* Pullout color tweaks */
+.jsPulloutFlap{border-color:#59c;background-color:#fff;}
+.jsPulloutContent{border-color:#59c;background-color:#fff;}
+.jsPulloutContent #navigation a,
+.jsPulloutContent #navigation a.active,
+.jsPulloutContent #navigation a:visited{color:#444;}
+
+/* Badges */
+.user_badges img{background:#222;border-color:#444;}
+.author-badges img{background:#222;border-color:#444;}
+
+/* Wiki links.
+a.freelink-createnode{color:#f55;}
+*/
+
+/* PRG Chat links. */
+.rpg-chat{color:#fff;}
+.rpg-chat a, .rpg-chat a.active, .rpg-chat a:visited{color:#fff;}
