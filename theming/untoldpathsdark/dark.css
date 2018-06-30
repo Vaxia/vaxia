@@ -68,5 +68,5 @@ a.freelink-createnode{color:#f55;}
 /* Forums */
 .rate-info, .rate-description{color:#eee;}
 .rate-widget .rate-number-up-down-btn-up{background-color:#ccc;}
-.forum-node-create-links{border-color:#ccc;background-color:#456;}
-.forum-node-create-links a{color:#999;}
+.forum-node-create-links .forum-add-node{border-color:#ccc;background-color:#456;}
+.forum-node-create-links .forum-add-node a{color:#999;}
