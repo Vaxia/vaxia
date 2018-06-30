@@ -104,6 +104,9 @@ div.imagefield-crop-widget img{max-width:none;}
 /* Forums. */
 .rate-number-up-down-rating{font-size:16px;font-weight:700;line-height:26px;}
 .rate-widget .rate-number-up-down-btn-up{border:1px solid;margin-left:10px;}
+.forum-post-links{border:solid 2px;padding:1px;
+  -khtml-border-radius:8px;-moz-border-radius:8px;
+  -webkit-border-radius:8px;border-radius:8px;}
 .forum-node-create-links{width:60%;}
 .forum-node-create-links .forum-add-node{margin-top: 0.5em;margin-right: 0.25em;
   border:solid 2px;padding:1px;float: left;
