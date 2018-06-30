@@ -69,7 +69,7 @@ ul.primary a.active{background-image:none;font-weight: bold;}
 a.button, .button a{text-decoration:none;}
 
 /* Forms */
-form input[type=text]{height:34px;}
+form input[type=text]{height:28px;}
 form select{height:34px;font-size:1em;}
 form select optgroup:before{content: attr(label);display: block;}
 form select optgroup{height:34px;font-size:1em;}
