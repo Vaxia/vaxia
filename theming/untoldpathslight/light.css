@@ -30,6 +30,7 @@ body{color:#444;background-color:#eee;border-color:#222;}
 #header{background-color:#59c;}
 #primary-menu-bar{background-color:#59c;}
 #footer{background-color:#59c;}
+.description{color:#444;}
 
 /* Link colors - light.*/
 a, a.active, a:visited{color:#47a;}
@@ -72,7 +73,6 @@ form .dd .ddTitle{color:#444;background-color:#fff;}
 form .resizable-textarea .grippie{background-color: #222;}
 form input[type="reset"]:disabled, input[type="button"]:disabled, input[type="submit"]:disabled{
   color:#777 !important;border-color:#abc;background-color:#bcd;}
-
 /* Tables */
 table.sticky-header{color:#fff;background-color:#abc;}
 table.sticky-header a{color:#fff;}

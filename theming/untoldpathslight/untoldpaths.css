@@ -64,14 +64,16 @@ ul.primary a.active{background-image:none;font-weight: bold;}
 .button, button, input[type="reset"], input[type="button"], input[type="submit"]{
   -khtml-border-radius:8px;-moz-border-radius:8px;
   -webkit-border-radius:8px;border-radius:8px;
-  border-style:solid;border-width:1px;
+  border-style:solid;border-width:1px;height:34px;
   padding:.25em;margin:.5em 0 0 3px;white-space:nowrap;}
 a.button, .button a{text-decoration:none;}
 
 /* Forms */
-form select{height:30px;font-size:1em;}
-form select optgroup{height:30px;font-size:1em;}
-form select option{height:30px;font-size:1em;}
+form input[type=text]{height:34px;}
+form select{height:34px;font-size:1em;}
+form select optgroup:before{content: attr(label);display: block;}
+form select optgroup{height:34px;font-size:1em;}
+form select option{height:34px;font-size:1em;}
 form .dd{-khtml-border-radius:0;-moz-border-radius:0;-webkit-border-radius:0;border-radius:0;}
 form .dd .ddTitle{background:url();font-size:1em;}
 

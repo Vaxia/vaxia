@@ -7,6 +7,7 @@ body{color:#ccc;background-color:#001;border-color:#ccc}
 #header{background-color:#024;}
 #primary-menu-bar{background-color:#024;}
 #footer{background-color:#024;}
+.description{color:#ccc;}
 
 /* Link colors - light.*/
 a, a.active, a:visited{color:#69c;}
