@@ -50,8 +50,8 @@
   background: #555;
   background: #555;
   border:#EEE 1px solid;
-  position:absolute;
-  left:1em;
+  position: fixed;
+  left: 4em;
   top:160px;
   padding:0.5em;
   border-radius:10px;
@@ -87,28 +87,28 @@
 #target_extruderBarDesc{
   width: 600px;
 }
-#main #target_extruderBarHead #navigation{
+#target_extruderBarHead .primary-menu{
   height:auto;
   text-align:left;
   overflow:hidden;
   top:0px;
 }
-#main #target_extruderBarHead #navigation #main-menu{
+#target_extruderBarHead .primary-menu{
   float:none;
   top:0;
 }
-#main #target_extruderBarHead #navigation ul.links li, #target_extruderBarHead #navigation ul.menu li {
+#target_extruderBarHead .primary-menu ul.menu li {
   float:none;
   list-style-type:disc;
 }
-#main #target_extruderBarHead ul.inline{
+#target_extruderBarHead ul.inline{
   display:block;
 }
-#main #target_extruderBarHead li{
+#target_extruderBarHead li{
   float:none;
   display:block;
 }
-#main #target_extruderBarHead #navigation a{
+#target_extruderBarHead .primary-menu a{
   text-align:left;
   color:#427ea3;
 }

@@ -17,7 +17,7 @@ Drupal.behaviors.vaxia_chatrooms_pullouts = {
             var target = $(txt_target);
             if (target != null && target.length > 0) {
               $(target).wrap('<div id="target_' + id + '" class="jsPullout jsPulloutContent isClosed"></div>');
-              $('#main').before(
+              $('#main-content').before(
                 '<div id="' + id + '" class="jsPullout jsPulloutFlap rotate" style="top:' + top + ';">' +
                 '  <a class="jsPulloutFlapLabel" href="#">' + label + '</a>' +
                 '</div>'
@@ -41,7 +41,7 @@ Drupal.behaviors.vaxia_chatrooms_pullouts = {
           }
 
           // Make pullouts for the sidebars.
-          make_flap('Site Nav', 'extruderBarHead', '#navigation', '110px');
+          make_flap('Site Nav', 'extruderBarHead', '#primary-menu-bar .primary-menu', '110px');
           make_flap('Sidebar', 'extruderBarFirst', '.sidebar-first .region-sidebar-first', '220px');
           make_flap('Description', 'extruderBarDesc',
             'article.node-rpg-chatroom fieldset.group-description', '330px');
