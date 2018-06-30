@@ -1,9 +1,12 @@
+/* Layout. */
+#primary-menu-bar nav{background-color:rgba(255,255,255, 0.1);
+
 /* Font size, color, family.*/
 body{color:#ccc;background-color:#001;border-color:#ccc}
 #page{color:#ccc;background-color:#012;}
-#header{background-color:#035;}
-#primary-menu-bar{background-color:#035;}
-#footer{background-color:#035;}
+#header{background-color:#024;}
+#primary-menu-bar{background-color:#024;}
+#footer{background-color:#024;}
 
 /* Link colors - light.*/
 a, a.active, a:visited{color:#69c;}
@@ -15,11 +18,11 @@ a, a.active, a:visited{color:#69c;}
 #primary-menu-bar a{color:#ccc;}
 
 /* Sidebar rounds. */
-.region-sidebar-first h2{color:#ccc;background-color:#035;}
+.region-sidebar-first h2{color:#ccc;background-color:#024;}
 .region-sidebar-first h2 a,
 .region-sidebar-first h2 a.active,
 .region-sidebar-first h2 a:visited{color:#ccc;}
-.region-sidebar-first h3{color:#ccc;background-color:#035;}
+.region-sidebar-first h3{color:#ccc;background-color:#024;}
 .region-sidebar-first h3 a,
 .region-sidebar-first h3 a.active,
 .region-sidebar-first h3 a:visited{color:#ccc;}
@@ -47,8 +50,8 @@ table.sticky-header a{color:#999;}
 tr.even, tr.odd{border-color:#ccc;}
 
 /* Pullout color tweaks */
-.jsPulloutFlap{border-color:#035;background-color:#456;}
-.jsPulloutContent{border-color:#035;background-color:#456;}
+.jsPulloutFlap{border-color:#024;background-color:#456;}
+.jsPulloutContent{border-color:#024;background-color:#456;}
 .jsPulloutContent #primary-menu-bar a,
 .jsPulloutContent #primary-menu-bar a.active,
 .jsPulloutContent #primary-menu-bar a:visited{color:#ccc;}

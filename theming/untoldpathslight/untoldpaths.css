@@ -1,4 +1,4 @@
-/* Background image. */
+/* Layout. */
 body{background-image:url('images/texture.png');background-repeat:repeat;background-attachment:fixed;}
 #page{background-image:url('images/texture.png');background-repeat:repeat;background-attachment:fixed;}
 #header{background-image:url('images/texture.png');background-repeat:repeat;}
