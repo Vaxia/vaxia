@@ -53,6 +53,7 @@ form .dd .ddTitle{color:#eee;background-color:#678;}
 form .resizable-textarea .grippie{background-color: #456;}
 form input[type="reset"]:disabled, input[type="button"]:disabled, input[type="submit"]:disabled{
   color:#777 !important;border-color:#abc;background-color:#bcd;}
+.form-text:focus, .form-checkbox:focus, .form-radio:focus, .form-select:focus{background-color:#678;}
 
 /* Tables */
 table.sticky-header{color:#999;background-color:#456;}
