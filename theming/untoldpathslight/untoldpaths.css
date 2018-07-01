@@ -1,4 +1,14 @@
 /* Layout. */
+
+/*
+body::after {content:'';background: url('images/brut.jpg');
+  background-repeat:repeat;background-attachment:fixed;
+  opacity: 0.5;top: 0;left: 0;bottom: 0;right: 0;height:100%;width:100%;
+  position:fixed;z-index:-1;}
+#page{background-repeat:repeat;background-attachment:fixed;}
+#page{background-color:rgb(255,255,255,0.85) !important;}
+*/
+
 body{background-image:url('images/texture.png');background-repeat:repeat;background-attachment:fixed;}
 #page{background-image:url('images/texture.png');background-repeat:repeat;background-attachment:fixed;}
 #header{background-image:url('images/texture.png');background-repeat:repeat;}
@@ -12,9 +22,10 @@ body{background-image:url('images/texture.png');background-repeat:repeat;backgro
 
 /* Font size, color, family.*/
 body{font-family:Verdana,Arial,Helvetica,sans-serif;}
-h1{font-size:1.8em;font-family:bebas_neueregular;font-weight:400;text-transform:uppercase;}
-h2{font-size:1.6em;font-family:bebas_neueregular;font-weight:400;text-transform:uppercase;}
-h3{font-size:1.4em;font-family:bebas_neueregular;font-weight:400;text-transform:uppercase;}
+
+h1{font-size:1.8em;font-family:'Fjalla One', sans-serif;font-weight:400;text-transform:uppercase;}
+h2{font-size:1.6em;font-family:'Fjalla One', sans-serif;font-weight:400;text-transform:uppercase;}
+h3{font-size:1.4em;font-family:'Fjalla One', sans-serif;font-weight:400;text-transform:uppercase;}
 p{font-size:100%;}
 
 /* Header. */
@@ -28,7 +39,7 @@ p{font-size:100%;}
 /* Navigation. */
 #primary-menu-bar .primary-menu{position: relative;top: -3.5em;float: right;}
 #primary-menu-bar a{font-size:1.6em;font-weight:400;text-decoration:none;
-  font-family:bebas_neueregular;}
+  font-family:'Fjalla One', sans-serif;text-transform:uppercase;}
 #primary-menu-bar a:hover{background:url('images/underline.jpg') center bottom no-repeat;}
 #secondary-menu-bar{display:none;}
 
@@ -54,8 +65,9 @@ ul.tabs li{float: left;margin-top: 0.5em;margin-right: 0.25em;
 ul.primary{padding-bottom:0;}
 ul.primary li{text-shadow:none;}
 ul.primary a:link, ul.primary a:visited{padding:0 1em;
+  font-family:'Fjalla One', sans-serif;text-transform:uppercase;
   text-align:center;border-style:none !important;border-radius:8px 8px 0 0;
-  font-size:1.1em;letter-spacing:1px;background-color:transparent;}
+  font-size:1.1em;background-color:transparent;}
 ul.primary a.active{background-image:none;font-weight: bold;}
 .vertical-tabs ul.vertical-tabs-list li{background-color:transparent;}
 .vertical-tabs ul.vertical-tabs-list li.selected{background-color:transparent;}
@@ -64,7 +76,7 @@ ul.primary a.active{background-image:none;font-weight: bold;}
 .button, button, input[type="reset"], input[type="button"], input[type="submit"]{
   -khtml-border-radius:8px;-moz-border-radius:8px;
   -webkit-border-radius:8px;border-radius:8px;
-  border-style:solid;border-width:1px;height:34px;
+  border-style:solid;border-width:1px;height:34px;font-family:'Fjalla One', sans-serif;
   padding:0.5em;margin:0.5em 0 0 3px;white-space:nowrap;}
 a.button, .button a{text-decoration:none;}
 
@@ -82,7 +94,7 @@ tr.even, tr.odd{background-color:transparent;border-bottom:solid 1px;}
 tr.even td.active, tr.odd td.active{background-color:transparent;}
 
 /* Pullout color tweaks */
-.jsPulloutFlap{z-index:50;background-image:url('images/texture.png');background-repeat:repeat;letter-spacing: 2px;
+.jsPulloutFlap{z-index:50;background-image:url('images/texture.png');background-repeat:repeat;
   -khtml-border-radius:0 0 8px 8px;-moz-border-radius:0 0 8px 8px;
   -webkit-border-radius:0 0 8px 8px;border-radius:0 0 8px 8px;
 }
@@ -90,7 +102,7 @@ tr.even td.active, tr.odd td.active{background-color:transparent;}
 .jsPulloutContent .region-sidebar-first{margin-left:0.8em;}
 .jsPulloutContent .region-sidebar-first h2{margin-left:-17px;}
 .jsPulloutContent .region-sidebar-first h3{margin-left:-17px;}
-.jsPulloutFlap a{font-size:1.4em;font-family:bebas_neueregular;font-weight:400;}
+.jsPulloutFlap a{font-size:1.4em;font-family:'Fjalla One', sans-serif;font-weight:400;}
 #target_extruderBarHead .primary-menu{top:0;}
 #target_extruderBarFirst{height: 400px;overflow-x: hidden;overflow-y: scroll;}
 

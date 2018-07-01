@@ -4,6 +4,9 @@
 /* Font size, color, family.*/
 body{color:#ccc;background-color:#001;border-color:#ccc}
 #page{color:#ccc;background-color:#012;}
+
+#page{background-color:rgb(0,17,34,0.85) !important;}
+
 #header{background-color:#024;}
 #primary-menu-bar{background-color:#024;}
 #footer{background-color:#024;}

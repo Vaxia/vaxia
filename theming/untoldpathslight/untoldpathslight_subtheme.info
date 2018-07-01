@@ -23,7 +23,7 @@
   ; TODO - dark.css may still need some work but its pretty good.
   ;stylesheets[all][] = css/admin-section.css
   ;stylesheets[all][] = css/dark.css
-  stylesheets[all][] = bebasneue.css
+  stylesheets[all][] = fonts.css
   stylesheets[all][] = untoldpaths.css
   stylesheets[all][] = light.css
 
