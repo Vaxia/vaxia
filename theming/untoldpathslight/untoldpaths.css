@@ -119,21 +119,23 @@ tr.even td.active, tr.odd td.active{background-color:transparent;}
 /* TnC to left and font size. */
 .terms_and_conditions{float:right;font-size:70%;width:500px;text-align:right;margin:1em 0;margin-right: 0.5em;}
 
-/* Chat room layout. */
+/* General layout. */
+article .view-artwork td{background:#aaa;border:2px solid #eee;padding:.5em;text-align:center;}
+div.imagefield-crop-widget img{max-width:none;}
+
+/* Chat type layout. */
 .node-type-rpg-chatroom #content-column .content-inner{margin-left:0px;}
 .node-type-rpg-chatroom #content-column #content{position: relative;top:-2em;}
 .node-type-rpg-chatroom #comment-form .field-name-field-artwork .dd{width:250px !important;}
 .node-type-rpg-chatroom article nav{display:none;}
 .node-type-rpg-chatroom #messages{display:none;}
-article .view-artwork td{background:#aaa;border:2px solid #eee;padding:.5em;text-align:center;}
-div.imagefield-crop-widget img{max-width:none;}
-#rpg-chat{
+
+/* Chat room specific. */
+#rpg-chat, #rpg-chat .rpg-chat-post {
   -khtml-border-radius:8px;-moz-border-radius:8px;
   -webkit-border-radius:8px;border-radius:8px;}
-#rpg-chat .rpg-chat-post{
-  -khtml-border-radius:8px;-moz-border-radius:8px;
-  -webkit-border-radius:8px;border-radius:8px;}
-#rpg-chat .rpg-chat-post .links{display:none;}
+#rpg-chat .rpg-chat-post{margin-bottom: 0.25em;}
+#rpg-chat .rpg-chat-post .comment-spacer{display:none;}
 #rpg-chat img{max-width:300px;}
 
 /* Forums. */
