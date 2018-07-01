@@ -82,7 +82,7 @@ ul.primary a.active{background-image:none;font-weight: bold;}
 a.button, .button a{text-decoration:none;}
 
 /* Forms */
-form input[type=text]{height:28px;}
+form input[type=text], form input[type=pass]{height:28px;}
 form select{height:34px;font-size:1em;}
 form select optgroup:before{content: attr(label);display: block;}
 form select optgroup{height:34px;font-size:1em;}
@@ -134,8 +134,10 @@ div.imagefield-crop-widget img{max-width:none;}
   -khtml-border-radius:8px;-moz-border-radius:8px;
   -webkit-border-radius:8px;border-radius:8px;}
 #rpg-chat .rpg-chat-post .links{display:none;}
+#rpg-chat img{max-width:300px;}
 
 /* Forums. */
+.forum-post img{max-width:300px;}
 .forum-post-info{border-top:1px solid;border-bottom:1px solid;}
 .forum-post-footer{border-bottom:1px solid;}
 .forum-post-wrapper .author-pane-section img.image-style-thumbnail{max-width:125px;}
@@ -150,3 +152,6 @@ div.imagefield-crop-widget img{max-width:none;}
   -khtml-border-radius:8px;-moz-border-radius:8px;
   -webkit-border-radius:8px;border-radius:8px;}
 .forum-node-create-links .forum-add-node a{text-decoration: none;padding: 0.25em;}
+
+/* Hide the rate down button. */
+.rate-number-up-down-btn-down{display:none;}
