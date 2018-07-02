@@ -137,6 +137,7 @@ div.imagefield-crop-widget img{max-width:none;}
 #rpg-chat .rpg-chat-post{margin-bottom: 0.25em;}
 #rpg-chat .rpg-chat-post .comment-spacer{display:none;}
 #rpg-chat img{max-width:300px;}
+.rpg-chat .submitted img{max-height:100px;max-width:100px;}
 
 /* Forums. */
 .forum-post img{max-width:300px;}
