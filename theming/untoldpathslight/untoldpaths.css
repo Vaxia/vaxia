@@ -161,13 +161,13 @@ div.imagefield-crop-widget img{max-width:none;}
 
 /* Responsive bits. */
 @media only screen and (min-width:769px) and (max-width:1024px){
-  font-size: 3.5em;
+  #header #site-name{font-size: 3.5em;}
 }
 @media only screen and (min-width:581px) and (max-width:768px) {
-  margin-bottom: 0.75em;
+  #header #site-name{margin-bottom: 0.75em;}
 }
 @media only screen and (min-width:321px) and (max-width:580px) {
-  #header #site-name {padding: 0 0.25em;font-size: 3em;margin-bottom: 2em;}
+  #header #site-name{padding: 0 0.25em;font-size: 3em;margin-bottom: 2em;}
   #primary-menu-bar .primary-menu{top:-5.5em;}
 }
 @media only screen and (max-width:320px) {
