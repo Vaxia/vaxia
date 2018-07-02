@@ -61,6 +61,7 @@ form input[type="reset"]:disabled, input[type="button"]:disabled, input[type="su
 /* Tables */
 table.sticky-header{color:#999;background-color:#456;}
 table.sticky-header a{color:#999;}
+th{color:#ccc;}
 tr.even, tr.odd{border-color:#ccc;}
 
 /* Pullout color tweaks */
