@@ -30,7 +30,7 @@ p{font-size:100%;}
 
 /* Header. */
 #header{padding-bottom:1em;padding-top:2em;margin-bottom: -1em;}
-#header #site-name{font-size: 4.5em;padding:0 1em;margin:0;float:left;}
+#header #site-name{font-size: 4.5em;padding:0 1em;margin:0;float:left;white-space: nowrap;}
 #header #site-name a:link, #site-name a:visited, #site-name a:hover{text-decoration:none;}
 #header #logo{display:none;}
 #header #site-slogan{display:none;}
@@ -117,7 +117,7 @@ tr.even td.active, tr.odd td.active{background-color:transparent;}
 .author-badges img{margin:0.12em;padding:0.12em;border:solid 2px;border-radius:4px;width:30px;height: 30px;}
 
 /* TnC to left and font size. */
-.terms_and_conditions{float:right;font-size:70%;width:500px;text-align:right;margin:1em 0;margin-right: 0.5em;}
+.terms_and_conditions{float:right;font-size:70%;max-width:500px;text-align:right;margin:1em 0;margin-right: 0.5em;}
 
 /* General layout. */
 article .view-artwork td{background:#aaa;border:2px solid #eee;padding:.5em;text-align:center;}
@@ -154,6 +154,21 @@ div.imagefield-crop-widget img{max-width:none;}
   -khtml-border-radius:8px;-moz-border-radius:8px;
   -webkit-border-radius:8px;border-radius:8px;}
 .forum-node-create-links .forum-add-node a{text-decoration: none;padding: 0.25em;}
+.author-pane .author-ip{display:none;}
 
 /* Hide the rate down button. */
 .rate-number-up-down-btn-down{display:none;}
+
+/* Responsive bits. */
+@media only screen and (min-width:769px) and (max-width:1024px){
+  font-size: 3.5em;
+}
+@media only screen and (min-width:581px) and (max-width:768px) {
+  margin-bottom: 0.75em;
+}
+@media only screen and (min-width:321px) and (max-width:580px) {
+  #header #site-name {padding: 0 0.25em;font-size: 3em;margin-bottom: 2em;}
+  #primary-menu-bar .primary-menu{top:-5.5em;}
+}
+@media only screen and (max-width:320px) {
+}
