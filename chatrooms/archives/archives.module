@@ -23,7 +23,7 @@ function archives_permission() {
 /**
  * Implements hook_cron().
  */
-function archives_cron() {
+function tmp_disable_archives_cron() {
   if (variable_get('archives_cron',  FALSE)) {
     $last_run = variable_get('archives_crontime', 0);
     $yesterday = strtotime('-1 day');
