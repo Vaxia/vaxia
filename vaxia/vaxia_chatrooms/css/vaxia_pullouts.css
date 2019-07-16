@@ -44,6 +44,11 @@
   float:left;
 }
 
+/* Pullout spacing */
+body.jsPulloutActive #content{
+  margin-left:30px;
+}
+
 /* Panel CSS. */
 .jsPulloutContent{
   width: 300px;

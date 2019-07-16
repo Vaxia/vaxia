@@ -39,6 +39,8 @@ Drupal.behaviors.vaxia_chatrooms_pullouts = {
               flap.removeClass('isActive').fadeTo(400, 0.8, 'swing');
             }
           }
+          // Set marking JS
+          $('body').addClass('jsPulloutActive');
 
           // Make pullouts for the sidebars.
           make_flap('Site Nav', 'extruderBarHead', '#primary-menu-bar .primary-menu', '110px');
