@@ -1,3 +1,20 @@
+-------------------------------------------------------------------------------
+IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT 
+-------------------------------------------------------------------------------
+
+THIS VERSION OF VAXIA CODE IS DEPRECATED. IT IS NO LONGER BEING SUPPORTED.
+YOU SHOULD NOT USE IT.
+INSTEAD USE IT - AT MOST - AS A MODEL OF CODE AGAINST THE LATEST DRUPAL VERSION.
+ 
+-------------------------------------------------------------------------------
+IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT 
+------------------------------------------------------------------------------- 
+
+
+
+
+
+
 CONTENTS
 --------
 Introduction
