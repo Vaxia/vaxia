@@ -1,0 +1,21 @@
+uuid: 579a5e24-bcac-4903-9ac0-1ddaa10965ed
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_other_species
+    - node.type.character_sheet
+  module:
+    - options
+id: node.character_sheet.field_other_species
+field_name: field_other_species
+entity_type: node
+bundle: character_sheet
+label: 'Other Species'
+description: 'If you have selected "Other" for your species you MUST select an option here to clarify what sort of ''Other'' species this character is. If this is not an NPC expect to need to get Setting approval. (Setting approval is never guaranteed.) Please take a look here for more information about <a href="/wiki/setting/storyhost/setting-approval-pcs" target="_blank">getting Setting approval for PCs</a>.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

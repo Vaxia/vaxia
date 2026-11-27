@@ -1,0 +1,83 @@
+uuid: f6ac1490-14b2-4ff5-8d2c-471da10825ba
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.storyhost_application.body
+    - field.field.node.storyhost_application.comment_node_storyhost_applica
+    - field.field.node.storyhost_application.webform
+    - node.type.storyhost_application
+  module:
+    - comment
+    - path
+    - text
+    - webform
+id: node.storyhost_application.default
+targetEntityType: node
+bundle: storyhost_application
+mode: default
+content:
+  body:
+    type: text_textarea_with_summary
+    weight: 1
+    region: content
+    settings:
+      rows: 9
+      summary_rows: 3
+      placeholder: ''
+      show_summary: false
+    third_party_settings: {  }
+  comment_node_storyhost_applica:
+    type: comment_default
+    weight: 20
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  created:
+    type: datetime_timestamp
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 30
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 120
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  uid:
+    type: entity_reference_autocomplete
+    weight: 5
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  webform:
+    type: webform_entity_reference_select
+    weight: 20
+    region: content
+    settings:
+      default_data: true
+      webforms: {  }
+    third_party_settings: {  }
+hidden:
+  promote: true
+  sticky: true

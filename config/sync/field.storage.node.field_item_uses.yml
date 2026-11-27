@@ -1,0 +1,20 @@
+uuid: e5501d66-9de3-46a0-8238-1369d4bc29fe
+langcode: und
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_item_uses
+field_name: field_item_uses
+entity_type: node
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

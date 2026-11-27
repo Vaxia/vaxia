@@ -1,0 +1,9 @@
+uuid: 4147d3f1-e21d-492b-929a-91e624bf3091
+langcode: en
+status: true
+dependencies: {  }
+name: 'Setting Type'
+vid: setting_type
+description: 'Type of setting article'
+weight: -4
+new_revision: false

@@ -1,0 +1,22 @@
+uuid: 5a3cece2-8c20-42e5-9d97-eaf4c57cfe0f
+langcode: en
+status: true
+dependencies:
+  module:
+    - taxonomy
+    - user
+_core:
+  default_config_hash: IYTJMAx5p6AIbmeuHa1q9bIG2pcpRPR5GrXtuNnJBT8
+id: taxonomy_term.field_privatemsg_tag_author
+field_name: field_privatemsg_tag_author
+entity_type: taxonomy_term
+type: entity_reference
+settings:
+  target_type: user
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

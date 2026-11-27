@@ -1,0 +1,20 @@
+uuid: 0bc4785c-5062-4357-b5ae-07e869c71da6
+langcode: und
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_max_seating
+field_name: field_max_seating
+entity_type: node
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

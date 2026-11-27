@@ -1,0 +1,21 @@
+uuid: 7871d679-999c-4c5c-837b-c14f307c45ad
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_took_ash2
+  module:
+    - datetime
+    - user
+id: user.user.field_took_ash2
+field_name: field_took_ash2
+entity_type: user
+bundle: user
+label: 'Took ASH 2'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

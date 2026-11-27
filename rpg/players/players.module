@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the Players feature.
- */
-
-include_once 'players.features.inc';

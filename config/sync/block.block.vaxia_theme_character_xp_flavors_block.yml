@@ -1,0 +1,20 @@
+uuid: f36a3e5b-ea9a-48b6-b717-18818c8d6319
+langcode: en
+status: true
+dependencies:
+  module:
+    - vaxia_core
+  theme:
+    - vaxia_theme
+id: vaxia_theme_character_xp_flavors_block
+theme: vaxia_theme
+region: content
+weight: -38
+provider: null
+plugin: character_xp_flavors-block
+settings:
+  id: character_xp_flavors-block
+  label: 'Character XP Flavors'
+  label_display: '0'
+  provider: vaxia_core
+visibility: {  }

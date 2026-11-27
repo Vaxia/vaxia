@@ -1,0 +1,18 @@
+uuid: f93be5a0-5329-48ec-bcb4-e1350a553ff9
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - xbbcode_standard
+_core:
+  default_config_hash: HCd64Hxs51PPLcnx7xkShNiAvjXFOjGSQtr2V11pZ4c
+id: quote
+label: Quote
+description: 'Quote: [quote]text[/quote] or [quote=Name]text[/quote].'
+name: quote
+attached: {  }
+sample: '[{{ name }}=Someone]Quoted[/{{ name }}]'
+template_code: '{% if tag.option %}<div class="bb-quote"><b>{{ tag.option }} wrote:</b><blockquote class="bb-quote-body">{{ tag.content }}</blockquote></div>{% else %}<div class="bb-quote">Quote:<blockquote class="bb-quote-body">{{ tag.content }}</blockquote></div>{% endif %}'
+template_file: null
+editable: false

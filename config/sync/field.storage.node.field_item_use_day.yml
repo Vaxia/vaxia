@@ -1,0 +1,30 @@
+uuid: db2c23f2-a18a-4b70-a8f0-ab8b0bf0fdf4
+langcode: und
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_item_use_day
+field_name: field_item_use_day
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: once
+      label: 'Single use'
+    -
+      value: per_day
+      label: 'Per day'
+    -
+      value: at_will
+      label: At-will
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

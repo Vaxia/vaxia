@@ -1,0 +1,28 @@
+uuid: a5141527-1dbc-4366-beeb-68c983415613
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.notation
+  module:
+    - text
+id: node.notation.body
+field_name: body
+entity_type: node
+bundle: notation
+label: Description
+description: 'Describe the situation, include players related to the event - and all documentary evidence as an attached file. THIS IS REQUIRED. We want documentation to be transparent so the next time an issue comes up the reviewing SH can see all prior data incase you yourself are no longer available for comment. Please leave a track record for others.'
+required: true
+translatable: false
+default_value:
+  -
+    value: ''
+    summary: ''
+    format: plain_text
+default_value_callback: ''
+settings:
+  display_summary: false
+  required_summary: false
+  allowed_formats: {  }
+field_type: text_with_summary

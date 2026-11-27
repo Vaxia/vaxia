@@ -1,0 +1,8 @@
+uuid: 76adae89-25cc-478f-94f2-9ce9c1a3958a
+langcode: en
+status: true
+dependencies: {  }
+id: notation_approval
+label: 'Notation approval'
+module: workflow
+options: {  }

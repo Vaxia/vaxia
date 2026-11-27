@@ -1,0 +1,13 @@
+uuid: c41ebcd9-30ff-45ee-aa28-19d6218e112a
+langcode: en
+status: true
+dependencies: {  }
+id: heading_5
+label: 'Heading 5'
+description: Heading.
+name: h5
+attached: {  }
+sample: '[{{ name }}]Text[/{{ name }}]'
+template_code: '<h5>{{ tag.content }}</h5>'
+template_file: null
+editable: false

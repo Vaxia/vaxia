@@ -1,0 +1,14 @@
+uuid: 79bfd84f-73ce-449d-9e61-1df23516b7e7
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.banned_user
+  module:
+    - user
+id: user_add_role_action.banned_user
+label: 'Add the banned user role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: banned_user

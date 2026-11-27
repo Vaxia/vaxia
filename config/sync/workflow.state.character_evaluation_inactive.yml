@@ -1,0 +1,13 @@
+uuid: 6d9f710e-d461-4889-80c3-9f2fa8733c7c
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.character_evaluation
+id: character_evaluation_inactive
+label: inactive
+weight: -15
+module: workflow
+wid: character_evaluation
+sysid: 0
+single_state_widget: ''

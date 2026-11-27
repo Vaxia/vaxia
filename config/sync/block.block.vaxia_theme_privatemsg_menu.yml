@@ -1,0 +1,20 @@
+uuid: 4a8da3a3-1089-4cfe-9485-b2222886f1af
+langcode: en
+status: true
+dependencies:
+  module:
+    - privatemsg
+  theme:
+    - vaxia_theme
+id: vaxia_theme_privatemsg_menu
+theme: vaxia_theme
+region: sidebar_first
+weight: -22
+provider: null
+plugin: privatemsg_block
+settings:
+  id: privatemsg_block
+  label: 'Private Messages'
+  label_display: visible
+  provider: privatemsg
+visibility: {  }

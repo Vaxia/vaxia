@@ -1,0 +1,9 @@
+uuid: 420f20ea-71fe-4708-8a4a-b012ce0b34ab
+langcode: en
+status: true
+dependencies: {  }
+name: 'Events: Content'
+vid: content
+description: 'Events: Content'
+weight: -1
+new_revision: false

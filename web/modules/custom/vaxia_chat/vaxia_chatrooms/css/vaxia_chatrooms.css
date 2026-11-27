@@ -1,0 +1,170 @@
+/* CSS for the RPG chat room. */
+.node-type-rpg-chatroom #main{padding-top:.5em;}
+.node-type-rpg-chatroom #page-title{clear:right;float:right;height:0px;margin-top:0.5em;}
+.node-type-rpg-chatroom #content ul.tabs-primary{margin-bottom:0;clear:both;}
+.node-type-rpg-chatroom .breadcrumb{display:none;}
+
+/* Only show certain links. */
+.node-rpg-chatroom .links{display:none;}
+.node-rpg-chatroom .comment .links{display:inline-block;}
+.node-rpg-chatroom.clearfix:after{clear:none;}
+.node-rpg-chatroom .field-type-node-reference.clearfix:after{clear:none;}
+
+/* Reduce displays on the comment form. */
+.node-rpg-chatroom #comment-form{clear:left;float:left;width:400px;}
+.node-rpg-chatroom #comment-form .form-type-item{display:none;}
+.node-rpg-chatroom #comment-form .filter-wrapper{display:none;}
+.node-rpg-chatroom #comment-form .field-name-field-artwork{float:none;padding:0;clear:right;width:250px;}
+
+/* Dice roller tweaks. */
+.node-rpg-chatroom #comment-form .vaxia-dice-roller #edit-vaxia-rolls-items{width:380px;}
+.node-rpg-chatroom #comment-form .vaxia-dice-roller .dice-number{width:auto;}
+.node-rpg-chatroom #comment-form .vaxia-dice-roller .dice-size{width:auto;}
+.node-rpg-chatroom #comment-form .vaxia-dice-roller .dice-stat{width:90px;}
+.node-rpg-chatroom #comment-form .vaxia-dice-roller .dice-skill{width:180px;}
+.node-rpg-chatroom #comment-form .vaxia-dice-roller .form-type-textfield .dice-skill{width:170px;}
+.node-rpg-chatroom #comment-form .vaxia-dice-roller .form-type-textfield .dice-stat{width:80px;}
+.node-rpg-chatroom #comment-form .vaxia-dice-roller .form-item-vaxia-rolls-items .form-select{width:100%;}
+.node-rpg-chatroom #comment-form .vaxia-dice-roller table{margin-bottom:0;position:relative;top:-1.5em;}
+.node-rpg-chatroom #comment-form .vaxia-dice-roller table td{padding-right:0;}
+/* Char name. */
+.node-rpg-chatroom #comment-form .vaxia-dice-roller .fieldset-description{float:right;font-size:10px;position:relative;z-index:10;}
+.node-rpg-chatroom #comment-form .vaxia-dice-roller-hidden{display:none!important;}
+
+/* Layout of the chatroom itself. */
+.node-rpg-chatroom h2.title{display:none;}
+.node-rpg-chatroom .field-name-field-private-room{float:left;clear:left;}
+.rpg-chat-wrapper{float:none;margin-left:410px;margin-right:40px;position:relative;top:-35px;}
+.not-logged-in .rpg-chat-wrapper{margin-left:0;}
+
+/* Handle the userlist. */
+.rpg-chat-userlist{clear:right;float:none;width:100%;display:inline-block;min-height:35px;}
+.rpg-chat-userlist h3{display:none;}
+.rpg-chat-userlist ul{margin:0;}
+.rpg-chat-userlist li{float:right;width:30%;overflow:hidden;}
+.ooc-room .rpg-chat-userlist ul{margin-right:50px;}
+
+/* Chatroom comments. */
+.rpg-chat{clear:right;float:none;width:100%;background-color:#555;
+  border:solid 1px #FFF;padding:.5em;display:inline-block;}
+.rpg-chat.clearfix:after{clear:none;}
+.rpg-chat .comment{padding:0.5em;border:solid 1px #eee;}
+.rpg-chat .field-name-comment-body{min-height:210px;}
+.rpg-chat .permalink{float:none;}
+.rpg-chat .submitted{float:left;margin:1em;width:120px;}
+.rpg-chat .submitted img{display:block;margin:0 auto;
+  max-width:120px;max-height:120px;}
+.rpg-chat .submitted span{display:block;}
+.rpg-chat .dice_rolls{clear:both;}
+.rpg-chat .dice_rolls .dice{clear:none;}
+.rpg-chat .rpg-reputation{margin:0;padding:0;}
+.rpg-chat .field-name-field-ooc{clear:none;height:auto;min-height:1px;}
+
+/* Hide elements we don't want in all posts. */
+.rpg-chat .new{display:none;}
+.rpg-chat .comment-reply{display:none;}
+
+/* Collapse things not used. */
+.rpg-chat .field-name-field-ooc p:empty{height:1px;margin:0;}
+.rpg-chat .dice_rolls:empty{height:1px;margin:0;}
+
+/* Images only allowed in OOC rooms */
+.rpg-chat .field-name-comment-body img{display:none;}
+.ooc-room .rpg-chat .field-name-comment-body img{max-width:400px;display:block;}
+
+/* Tweak narrative posts. */
+.rpg-chat-narrative .submitted{display:none;}
+.rpg-chat-narrative .field-name-comment-body{min-height:10px!important;}
+
+/* Change links within the chatroom. */
+.rpg-chat .links{display:inline-block;float:right;margin:0;height:15px;}
+.rpg-chat .links li{height:15px;}
+.rpg-chat .links li a{-moz-appearance:none;-webkit-appearance:none;background:none;
+  border:0 none;color:#EEE;display:inline;float:right;font-size:80%;font-style:italic;
+  margin:0 0 0 1em;padding:0;text-shadow:0 0 0;}
+
+/* Block specific changes. */
+#block-views-proposals-proposals-closing{background:rgba(100,100,100,0.3);
+  border:1px solid #EEE;padding-left:1em;padding-right:1em;}
+#block-play-suggestions-play-suggestions{float:right;clear:right;margin:0px;margin-right:25px;
+  position:relative;z-index:10;}
+#block-dice-ruler-dice-ruler{float:left;clear:left;margin:0px;width:100%;}
+#block-dice-ruler-dice-ruler fieldset{margin:0.25em;padding:0.25em;border-width:0px;}
+#block-dice-ruler-dice-ruler fieldset label{display:none;}
+#block-dice-ruler-dice-ruler fieldset fieldset fieldset{border-width:1px;}
+#block-dice-ruler-dice-ruler fieldset fieldset fieldset label{display:block;}
+#block-dice-ruler-dice-ruler #dice-ruler-form .form-item-actions select{width:240px;}
+#block-privatemsg-privatemsg-new{margin:0;margin-top:5px;}
+
+/* Don't show fake errors. */
+#block-views-rpg-chats-search-rpg-chats .form-item .error,
+#block-views-rpg-chats-inroom-rpg-chats .form-item .error{border:1px solid #ccc;}
+
+/* Responsive */
+@media screen and (max-width: 960px) {
+  /* Bring chat title over tabs. */
+  .node-type-rpg-chatroom #page-title{height:auto;}
+  /* Shrink the comment width down for readability. */
+  .node-rpg-chatroom #comment-form{width:39%;}
+  .rpg-chat-wrapper{width:59%;margin-left:40%;margin-right:0px;}
+  .ooc-room .rpg-chat .field-name-comment-body img{max-width:230px;}
+  /* Shrink dice roller. */
+  .node-rpg-chatroom #comment-form .vaxia-dice-roller .fieldset-description{float:none;}
+  .node-rpg-chatroom #comment-form .vaxia-dice-roller .vaxia-dice-character fieldset.form-wrapper{margin:0;padding:0.25em;}
+  .node-rpg-chatroom #comment-form .vaxia-dice-roller #edit-vaxia-rolls-items{width:380px;}
+  .node-rpg-chatroom #comment-form .vaxia-dice-roller .dice-number{width:40px;}
+  .node-rpg-chatroom #comment-form .vaxia-dice-roller .dice-size{width:55px;}
+  .node-rpg-chatroom #comment-form .vaxia-dice-roller .dice-stat{width:85px;}
+  .node-rpg-chatroom #comment-form .vaxia-dice-roller .dice-skill{width:130px;}
+  /* Storyhost form. */
+  .node-rpg-chatroom #comment-form .vaxia-dice-roller #edit-vaxia-rolls-items{width:100%;}
+  .node-rpg-chatroom #comment-form .vaxia-dice-roller .form-type-textfield .dice-stat{width:75px;}
+  .node-rpg-chatroom #comment-form .vaxia-dice-roller .form-type-textfield .dice-skill{width:122px;}
+}
+@media screen and (max-width: 768px) {
+  /* Bring comment box over top of chat. */
+  .node-rpg-chatroom #comment-form{clear:none;float:none;width:100%;top:0px;}
+  /* Close space left of chat to put at bottom. */
+  .rpg-chat-wrapper{margin:0;width:100%;top:0px;}
+  /* Shrink icon size down. */
+  .rpg-chat-wrapper .submitted{width:80px;font-size:0.9em;}
+  .rpg-chat-wrapper .submitted img{max-width:80px;max-height:80px;}
+  /* Bring ruler and help around. */
+  #block-dice-ruler-dice-ruler #dice-ruler-form .dice-ruler-help{width:100%;float:none;clear:none;}
+  #dice-ruler-form #edit-action-1, #dice-ruler-form #edit-action-2, #dice-ruler-form #edit-action-3, #dice-ruler-form #edit-action-4{margin-right:0px;}
+}
+@media screen and (max-width: 600px) {
+  /* Shrink icon size down. */
+  .rpg-chat-wrapper .submitted{width:60px;font-size:0.7em;}
+  .rpg-chat-wrapper .submitted img{max-width:60px;max-height:60px;}
+}
+@media screen and (max-width: 480px) {
+  /* Place userlist in center. */
+  .rpg-chat-userlist li{float:none;width:100%;}
+}
+/* Chat rooms hide the header (vaxia_chatrooms.js, over 600px wide, the same
+   pages vaxia_pullouts.js marks jsPulloutActive); the main menu sits over it
+   elsewhere: give it its own row above the room instead of letting it
+   ride up over the page tabs. */
+body.jsPulloutActive #main #navigation{top:0;height:auto;margin:0 0 0.5em;}
+body.jsPulloutActive #navigation #main-menu{float:none;position:static;top:0;text-align:right;}
+body.jsPulloutActive #main #navigation a,
+body.jsPulloutActive #main #navigation a:visited{color:#427ea3;display:inline-block;}
+
+/* The multi-attack advisor sits under the post form: keep it to that column. */
+body.node-type-rpg-chatroom #block-vaxia-theme-dice-ruler-player-assist{width:400px;max-width:100%;}
+
+/* Earlier Posts has no post form beside the chat: use the full width. */
+.rpg-chat-wrapper.rpg-chat-archive{margin-left:0;margin-right:0;width:auto;top:0;}
+
+/* D7 tucked the dice table up into its fieldset legend's space; D11's
+   fieldset has none, so the table overlapped the dice helper's "Use the same
+   skill for all rolls?" line. */
+.node-rpg-chatroom #comment-form .vaxia-dice-roller table{top:0;}
+/* The advisor now sits in the post form's column, after the form. */
+.node-rpg-chatroom .vaxia-advisor{float:left;clear:left;width:400px;max-width:100%;margin-top:0.5em;}
+
+/* D11: "I'm bored." on the right, under the room name (user, 2026-11-25). */
+#block-vaxia-theme-play-suggestions {
+  text-align: right;
+}

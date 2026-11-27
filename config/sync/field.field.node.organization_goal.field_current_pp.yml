@@ -1,0 +1,25 @@
+uuid: a21c0849-e3f6-4136-89d2-2e11be288156
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_current_pp
+    - node.type.organization_goal
+id: node.organization_goal.field_current_pp
+field_name: field_current_pp
+entity_type: node
+bundle: organization_goal
+label: 'Current PP'
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

@@ -1,0 +1,24 @@
+uuid: 8fc18660-debe-441f-96cf-2621ea575bea
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_characters_submitted
+  module:
+    - user
+id: user.user.field_characters_submitted
+field_name: field_characters_submitted
+entity_type: user
+bundle: user
+label: 'Characters submitted'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

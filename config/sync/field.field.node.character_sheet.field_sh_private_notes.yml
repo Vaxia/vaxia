@@ -1,0 +1,24 @@
+uuid: 2f1be084-aed2-4cec-900d-85732b13c660
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_sh_private_notes
+    - filter.format.filtered_html
+    - node.type.character_sheet
+  module:
+    - text
+id: node.character_sheet.field_sh_private_notes
+field_name: field_sh_private_notes
+entity_type: node
+bundle: character_sheet
+label: 'Private SH Notes'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - filtered_html
+field_type: text_long

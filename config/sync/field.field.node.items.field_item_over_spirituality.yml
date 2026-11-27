@@ -1,0 +1,23 @@
+uuid: 2fe28150-dc4a-4d39-94cb-da35388483d9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_item_over_spirituality
+    - node.type.items
+id: node.items.field_item_over_spirituality
+field_name: field_item_over_spirituality
+entity_type: node
+bundle: items
+label: Spirit
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: float

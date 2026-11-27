@@ -1,0 +1,15 @@
+uuid: 63d2064e-c6d5-4b1f-9d28-04234cf7325f
+langcode: en
+status: true
+dependencies:
+  config:
+    - flag.flag.expand
+  module:
+    - flag
+id: flag_action.expand_unflag
+label: "Don't expand"
+type: node
+plugin: 'flag_action:expand_unflag'
+configuration:
+  flag_id: expand
+  flag_action: unflag

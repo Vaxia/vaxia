@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Run with tests/run-tests.sh (inside the docker web container). -->
+<phpunit bootstrap="bootstrap.php"
+         colors="true"
+         cacheResult="false"
+         convertDeprecationsToExceptions="false"
+         failOnRisky="false"
+         beStrictAboutOutputDuringTests="false">
+  <testsuites>
+    <testsuite name="modules">
+      <directory suffix="Test.php">modules</directory>
+    </testsuite>
+  </testsuites>
+  <!-- @group knownbug tests pin bugs the D7 site had; Drupal 11 fixes them, so
+       they run with everything else as regression tests. -->
+</phpunit>

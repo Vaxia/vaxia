@@ -1,0 +1,9 @@
+uuid: 84a05ede-cd2d-4b86-a0bd-60e1cf392a6c
+langcode: en
+status: true
+dependencies: {  }
+name: Categories
+vid: wiki_tags
+description: 'Use tags to group articles on similar topics into categories.'
+weight: -7
+new_revision: false

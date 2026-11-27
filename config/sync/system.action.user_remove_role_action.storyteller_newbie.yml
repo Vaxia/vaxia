@@ -1,0 +1,14 @@
+uuid: bbed3695-6416-4cfb-8d63-d381cb50fc30
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.storyteller_newbie
+  module:
+    - user
+id: user_remove_role_action.storyteller_newbie
+label: 'Remove the storyteller-newbie role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: storyteller_newbie

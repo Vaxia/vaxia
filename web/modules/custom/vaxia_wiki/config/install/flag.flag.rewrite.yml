@@ -1,0 +1,33 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.wiki_page
+  module:
+    - node
+id: rewrite
+label: Rewrite
+bundles:
+  - wiki_page
+entity_type: node
+global: true
+weight: 0
+flag_short: 'Mark to Rewrite'
+flag_long: 'Mark this page for rewrite'
+flag_message: 'This page has been marked for rewriting to address spelling, grammar or tone issues.'
+unflag_short: 'Don''t rewrite'
+unflag_long: 'Un-mark this page for rewrite'
+unflag_message: 'This page has been un-marked for rewriting'
+unflag_denied_text: ''
+flag_type: 'entity:node'
+link_type: reload
+flagTypeConfig:
+  show_in_links:
+    full: full
+    teaser: teaser
+  show_as_field: false
+  show_on_form: false
+  show_contextual_link: false
+  extra_permissions: {  }
+  access_author: ''
+linkTypeConfig: {  }

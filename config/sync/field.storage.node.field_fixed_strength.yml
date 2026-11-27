@@ -1,0 +1,20 @@
+uuid: fa4aeae6-907b-4a25-9232-bbe2b5aaac59
+langcode: und
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_fixed_strength
+field_name: field_fixed_strength
+entity_type: node
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

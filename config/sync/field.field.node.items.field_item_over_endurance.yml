@@ -1,0 +1,23 @@
+uuid: 34690077-168f-4f3b-88d7-a7e88e07e647
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_item_over_endurance
+    - node.type.items
+id: node.items.field_item_over_endurance
+field_name: field_item_over_endurance
+entity_type: node
+bundle: items
+label: Endurance
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: float

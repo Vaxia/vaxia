@@ -1,0 +1,16 @@
+uuid: fa5ef8ad-566a-4205-864f-30d7e8149b6f
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    parent: 'main:'
+name: 'Character sheet'
+type: character_sheet
+description: 'Character sheet'
+help: null
+new_revision: true
+preview_mode: 1
+display_submitted: true

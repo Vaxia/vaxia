@@ -1,0 +1,25 @@
+uuid: fc2fa067-52f8-4eca-a4bf-cac807a79036
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_pp_created
+    - node.type.items
+id: node.items.field_pp_created
+field_name: field_pp_created
+entity_type: node
+bundle: items
+label: 'Effect PP'
+description: 'For items that are created with an effect in mind, such as spells, list the PP value for the effect.'
+required: true
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

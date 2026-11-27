@@ -1,0 +1,14 @@
+vaxia_dice.dice_ruler_settings:
+  path: '/admin/vaxia/dice_ruler'
+  defaults:
+    _form: '\Drupal\vaxia_dice\Form\DiceRulerSettingsForm'
+    _title: 'Dice ruler settings'
+  requirements:
+    _permission: 'administer dice ruler'
+vaxia_dice.dice_proof:
+  path: '/dice_helper/dice_proof'
+  defaults:
+    _controller: '\Drupal\vaxia_dice\Controller\DiceProof::page'
+    _title: 'Diceroller proof'
+  requirements:
+    _permission: 'view dice rolls'

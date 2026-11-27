@@ -1,0 +1,25 @@
+uuid: a2e8fbba-03e2-439c-aaa4-c5a648596200
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+    - vaxia_wiki
+  theme:
+    - vaxia_theme
+id: vaxia_theme_site_wiki_disamb
+theme: vaxia_theme
+region: content
+weight: -42
+provider: null
+plugin: site_wiki_disamb
+settings:
+  id: site_wiki_disamb
+  label: 'Site wiki disambiguation'
+  label_display: visible
+  provider: vaxia_wiki
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: '/wiki/*'

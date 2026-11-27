@@ -1,0 +1,13 @@
+uuid: a2d84dbf-3622-4f3f-9865-ffb4b45b272a
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.wiki_workflow
+id: wiki_workflow_creation
+label: (creation)
+weight: -50
+module: workflow
+wid: wiki_workflow
+sysid: 1
+single_state_widget: ''

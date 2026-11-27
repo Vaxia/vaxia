@@ -1,7 +1,0 @@
-name = Dice Helper
-description = Provides additional javascript to aid dice rolling
-package = Vaxia
-core = 7.x
-dependencies[] = rpg_chat
-dependencies[] = dice_roller
-version = 7.x-1.0

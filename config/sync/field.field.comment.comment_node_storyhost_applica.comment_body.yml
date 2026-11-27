@@ -1,0 +1,22 @@
+uuid: 53d15c03-378d-41ce-b2b9-6e9a420f85b1
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.comment_node_storyhost_applica
+    - field.storage.comment.comment_body
+  module:
+    - text
+id: comment.comment_node_storyhost_applica.comment_body
+field_name: comment_body
+entity_type: comment
+bundle: comment_node_storyhost_applica
+label: Comment
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

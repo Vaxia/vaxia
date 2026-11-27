@@ -1,0 +1,20 @@
+vaxia_chat.admin:
+  title: 'RPG'
+  description: 'Administer RPG settings'
+  route_name: vaxia_chat.admin
+  parent: system.admin
+vaxia_chat.archives_settings:
+  title: 'Archive settings'
+  description: 'Flat file archive settings'
+  route_name: vaxia_chat.archives_settings
+  parent: vaxia_core.admin
+vaxia_chat.room_cleanup:
+  title: 'Room cleanup'
+  description: 'Cleanup rooms empty of comments.'
+  route_name: vaxia_chat.room_cleanup
+  parent: vaxia_core.admin
+vaxia_chat.personal_rooms_settings:
+  title: 'Personal rooms'
+  description: 'Administer personal rooms'
+  route_name: vaxia_chat.personal_rooms_settings
+  parent: vaxia_chat.admin

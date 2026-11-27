@@ -1,0 +1,29 @@
+uuid: fcf23771-e083-4c43-a3a7-b1e89072f8ed
+langcode: en
+status: true
+dependencies:
+  config:
+    - system.menu.menu-new-start-here
+  module:
+    - system
+  theme:
+    - vaxia_theme
+id: vaxia_theme_menu_new_start_here
+theme: vaxia_theme
+region: sidebar_first
+weight: -42
+provider: null
+plugin: 'system_menu_block:menu-new-start-here'
+settings:
+  id: 'system_menu_block:menu-new-start-here'
+  label: 'New? Start here'
+  label_display: visible
+  provider: system
+  level: 1
+  depth: 0
+  expand_all_items: false
+visibility:
+  request_path:
+    id: request_path
+    negate: true
+    pages: '/locations/*'

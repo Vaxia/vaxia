@@ -1,0 +1,26 @@
+uuid: 56926a1c-483b-4e2b-b4cc-b9e8bbab2ac1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_tag_type
+    - node.type.wiki_page
+    - taxonomy.vocabulary.setting_type
+id: node.wiki_page.field_tag_type
+field_name: field_tag_type
+entity_type: node
+bundle: wiki_page
+label: Type
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      setting_type: setting_type
+    sort:
+      field: _none
+field_type: entity_reference

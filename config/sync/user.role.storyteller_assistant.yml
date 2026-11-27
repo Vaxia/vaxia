@@ -1,0 +1,49 @@
+uuid: 88b527b8-85df-4941-b6de-1af145ce6155
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.character_sheet
+    - node.type.items
+    - node.type.rpg_chatroom
+    - node.type.session_report
+    - workflow.workflow.character_evaluation
+  module:
+    - node
+    - vaxia_characters
+    - vaxia_chat
+    - vaxia_core
+    - vaxia_dice
+    - vaxia_storyhosts
+    - workflow
+id: storyteller_assistant
+label: storyteller-assistant
+weight: 19
+is_admin: false
+permissions:
+  - 'add xp to character sheet'
+  - 'can go on vacation'
+  - 'create NPCs'
+  - 'create character_evaluation workflow_transition'
+  - 'create rpg_chatroom content'
+  - 'create session_report content'
+  - 'delete own session_report content'
+  - 'edit SH notes'
+  - 'edit any character_sheet content'
+  - 'edit any items content'
+  - 'edit any rpg_chatroom content'
+  - 'edit own rpg_chatroom content'
+  - 'edit own session_report content'
+  - 'edit private SH notes'
+  - 'make room from wiki'
+  - 'post in narrative format'
+  - 'transfer rxp'
+  - 'use NPCs'
+  - 'use SH dice options'
+  - 'use dice helper'
+  - 'use scene helper'
+  - 'view all scenes'
+  - 'view character permissions'
+  - 'view own scenes'
+  - 'view session qualify'
+  - 'view sh test results'

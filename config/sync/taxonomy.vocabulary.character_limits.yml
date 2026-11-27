@@ -1,0 +1,9 @@
+uuid: bc7edeb5-5e01-44be-b1c5-bfae9124d4e1
+langcode: en
+status: true
+dependencies: {  }
+name: 'Character limits'
+vid: character_limits
+description: 'Character limits'
+weight: 0
+new_revision: false

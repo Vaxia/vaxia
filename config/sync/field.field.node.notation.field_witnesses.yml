@@ -1,0 +1,28 @@
+uuid: e091e35a-137f-4234-8fe6-a136038c3047
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_witnesses
+    - node.type.notation
+id: node.notation.field_witnesses
+field_name: field_witnesses
+entity_type: node
+bundle: notation
+label: Bystanding
+description: 'Players involved, bystanders, witnesses, or otherwise in a need-to-know position for this incident. This includes members of Social who were not acting as members of the Social department for this incident.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'vaxia_conduct:user'
+  handler_settings:
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    filter:
+      type: _none
+    include_anonymous: true
+field_type: entity_reference

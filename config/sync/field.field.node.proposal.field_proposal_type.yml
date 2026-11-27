@@ -1,0 +1,23 @@
+uuid: 10821f67-d72a-4001-996f-f3a96c97fd31
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_proposal_type
+    - node.type.proposal
+  module:
+    - options
+id: node.proposal.field_proposal_type
+field_name: field_proposal_type
+entity_type: node
+bundle: proposal
+label: Type
+description: 'Select the type of proposal this is. Most proposals are going to be standard proposals.'
+required: true
+translatable: false
+default_value:
+  -
+    value: proposal
+default_value_callback: ''
+settings: {  }
+field_type: list_string

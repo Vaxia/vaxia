@@ -1,0 +1,5 @@
+vaxia_items.settings:
+  title: 'Item settings'
+  description: 'Configure item types'
+  route_name: vaxia_items.settings
+  parent: vaxia_core.admin

@@ -1,0 +1,21 @@
+uuid: 2d80a15e-eace-4eb1-9915-8edf3802cd19
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_item_evaluation
+    - node.type.items
+  module:
+    - workflow
+id: node.items.field_item_evaluation
+field_name: field_item_evaluation
+entity_type: node
+bundle: items
+label: 'Item evaluation'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: workflow

@@ -1,0 +1,39 @@
+# Defaults are production's values (2017 backup).
+vaxia_starting_points: 300
+vaxia_mail_prefix: ''
+admin_realm: Storyhost
+motd_page: 0
+realm_fields: {  }
+vaxia_starting_econ: 25
+vaxia_kxp_ratio: 70
+vaxia_max_kxp_post: 10
+vaxia_xp_types: "good\nevil\nsmart\ncharismatic\nwarrior\nmage\nrogue"
+vaxia_limbo_room: {  }
+vaxia_display_dice: 6
+vaxia_dice_roller_stacking: true
+vaxia_public_char_fields: ''
+vaxia_public_user_fields: ''
+vaxia_disabled_user_fields: ''
+vaxia_attribute_cost: 1
+vaxia_skill_cost: 0.75
+vaxia_economy_cost: 1
+vaxia_transfer_percentage: 0.75
+vaxia_transfer_cap_on: false
+vaxia_transfer_cap: 300
+vaxia_transfer_workflow: character_evaluation_xp_transferred
+vaxia_draft_workflow: character_evaluation_draft
+character_sheet_vaxia_playable:
+  - character_evaluation_approved
+vaxia_pc_skill_warn: 10
+vaxia_pc_stat_spend_warn: 210
+vaxia_pc_stat_high_warn: 3
+vaxia_pc_stat_min_warn: 2
+vaxia_pc_skill_ave_warn: 20
+vaxia_pc_skill_min: 5
+vaxia_pc_skill_max: 40
+vaxia_pc_stat_min: 5
+vaxia_pc_stat_max: 40
+vaxia_pc_stat_spend_cap: 225
+vaxia_pc_stat_high_cap: 4
+vaxia_pc_stat_zero_cap: 1
+vaxia_other_min_hxp: 40

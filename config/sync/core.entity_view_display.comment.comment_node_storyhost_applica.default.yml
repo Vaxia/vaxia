@@ -1,0 +1,27 @@
+uuid: d2af9164-bfd3-4a7c-9134-93e18229dbda
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.comment_node_storyhost_applica
+    - field.field.comment.comment_node_storyhost_applica.comment_body
+  module:
+    - text
+id: comment.comment_node_storyhost_applica.default
+targetEntityType: comment
+bundle: comment_node_storyhost_applica
+mode: default
+content:
+  comment_body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden: {  }

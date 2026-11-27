@@ -1,0 +1,46 @@
+uuid: b18c3f60-203b-4486-87a1-7208b3a10e0c
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.session_report.body
+    - field.field.node.session_report.comment_node_session_report
+    - field.field.node.session_report.field_additional_notes
+    - field.field.node.session_report.field_characters_involved
+    - field.field.node.session_report.field_rate_session
+    - field.field.node.session_report.field_saga
+    - field.field.node.session_report.field_session_held
+    - field.field.node.session_report.field_tag_realm
+    - field.field.node.session_report.taxonomy_forums
+    - node.type.session_report
+  module:
+    - text
+    - user
+id: node.session_report.teaser
+targetEntityType: node
+bundle: session_report
+mode: teaser
+content:
+  body:
+    type: text_summary_or_trimmed
+    label: hidden
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  comment_node_session_report: true
+  field_additional_notes: true
+  field_characters_involved: true
+  field_rate_session: true
+  field_saga: true
+  field_session_held: true
+  field_tag_realm: true
+  taxonomy_forums: true

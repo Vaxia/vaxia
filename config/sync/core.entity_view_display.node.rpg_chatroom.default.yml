@@ -1,0 +1,95 @@
+uuid: c7c4bd0b-29d1-4e15-80de-cfda8fab02b1
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_display.comment.comment_node_rpg_chatroom.default
+    - field.field.node.rpg_chatroom.comment_node_rpg_chatroom
+    - field.field.node.rpg_chatroom.field_is_personal_room
+    - field.field.node.rpg_chatroom.field_locked_to_users
+    - field.field.node.rpg_chatroom.field_mature_posting
+    - field.field.node.rpg_chatroom.field_parent
+    - field.field.node.rpg_chatroom.field_private_room
+    - field.field.node.rpg_chatroom.field_room_description
+    - field.field.node.rpg_chatroom.field_tag_realm
+    - field.field.node.rpg_chatroom.field_users
+    - field.field.node.rpg_chatroom.field_wiki_source
+    - node.type.rpg_chatroom
+  module:
+    - comment
+    - field_group
+    - options
+    - text
+    - user
+third_party_settings:
+  field_group:
+    group_description:
+      children:
+        - field_wiki_source
+        - field_room_description
+      label: Description
+      parent_name: ''
+      region: content
+      weight: 1
+      format_type: fieldset
+      format_settings:
+        classes: 'group-description field-group-fieldset'
+        id: ''
+        description: ''
+        required_fields: false
+id: node.rpg_chatroom.default
+targetEntityType: node
+bundle: rpg_chatroom
+mode: default
+content:
+  comment_node_rpg_chatroom:
+    type: comment_default
+    label: hidden
+    settings:
+      view_mode: default
+      pager_id: 0
+    third_party_settings: {  }
+    weight: 20
+    region: content
+  field_parent:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 9
+    region: content
+  field_private_room:
+    type: list_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_room_description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_wiki_source:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_is_personal_room: true
+  field_locked_to_users: true
+  field_mature_posting: true
+  field_tag_realm: true
+  field_users: true

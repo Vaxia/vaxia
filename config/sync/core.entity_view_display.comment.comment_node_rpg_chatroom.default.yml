@@ -1,0 +1,55 @@
+uuid: 79e9dc5b-bbcb-4b74-adde-d06af45edd5e
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.comment_node_rpg_chatroom
+    - field.field.comment.comment_node_rpg_chatroom.comment_body
+    - field.field.comment.comment_node_rpg_chatroom.field_artwork
+    - field.field.comment.comment_node_rpg_chatroom.field_background_color
+    - field.field.comment.comment_node_rpg_chatroom.field_charisma
+    - field.field.comment.comment_node_rpg_chatroom.field_comment_appearance
+    - field.field.comment.comment_node_rpg_chatroom.field_comment_character
+    - field.field.comment.comment_node_rpg_chatroom.field_comment_color
+    - field.field.comment.comment_node_rpg_chatroom.field_comment_narrative
+    - field.field.comment.comment_node_rpg_chatroom.field_comment_presence
+    - field.field.comment.comment_node_rpg_chatroom.field_description
+    - field.field.comment.comment_node_rpg_chatroom.field_ooc
+  module:
+    - text
+    - vaxia_chat
+id: comment.comment_node_rpg_chatroom.default
+targetEntityType: comment
+bundle: comment_node_rpg_chatroom
+mode: default
+content:
+  comment_body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_ooc:
+    type: vaxia_formatted_string
+    label: above
+    settings:
+      format: plain_text
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_artwork: true
+  field_background_color: true
+  field_charisma: true
+  field_comment_appearance: true
+  field_comment_character: true
+  field_comment_color: true
+  field_comment_narrative: true
+  field_comment_presence: true
+  field_description: true

@@ -1,0 +1,77 @@
+uuid: e68774b7-2340-48e8-a433-db0aecbd7438
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_display.comment.comment_node_strike.default
+    - field.field.node.strike.comment_node_strike
+    - field.field.node.strike.field_associated_record
+    - field.field.node.strike.field_date_of_incident
+    - field.field.node.strike.field_details
+    - field.field.node.strike.field_severity
+    - field.field.node.strike.field_struck_player
+    - node.type.strike
+  module:
+    - comment
+    - datetime
+    - options
+    - user
+id: node.strike.default
+targetEntityType: node
+bundle: strike
+mode: default
+content:
+  comment_node_strike:
+    type: comment_default
+    label: hidden
+    settings:
+      view_mode: default
+      pager_id: 0
+    third_party_settings: {  }
+    weight: 20
+    region: content
+  field_associated_record:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_date_of_incident:
+    type: datetime_custom
+    label: above
+    settings:
+      timezone_override: ''
+      date_format: 'l, F j, Y'
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_details:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_severity:
+    type: list_default
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_struck_player:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden: {  }

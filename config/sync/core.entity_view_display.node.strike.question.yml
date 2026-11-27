@@ -1,0 +1,32 @@
+uuid: 1ecac159-55e4-4a09-99cd-83ea0a2b92b4
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.question
+    - field.field.node.strike.comment_node_strike
+    - field.field.node.strike.field_associated_record
+    - field.field.node.strike.field_date_of_incident
+    - field.field.node.strike.field_details
+    - field.field.node.strike.field_severity
+    - field.field.node.strike.field_struck_player
+    - node.type.strike
+  module:
+    - user
+id: node.strike.question
+targetEntityType: node
+bundle: strike
+mode: question
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  comment_node_strike: true
+  field_associated_record: true
+  field_date_of_incident: true
+  field_details: true
+  field_severity: true
+  field_struck_player: true

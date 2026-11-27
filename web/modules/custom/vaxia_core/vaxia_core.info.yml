@@ -1,0 +1,13 @@
+name: VAXIA core
+type: module
+description: 'Character sheets (Vaxia system): XP pools, the Sheet tab, transfers, new-sheet point rules, and site settings. Replaces D7 character_sheet, vaxia, vaxia_rpg, vaxia_players, players, top_tens.'
+package: VAXIA
+core_version_requirement: ^11
+dependencies:
+  - drupal:node
+  - drupal:comment
+  - drupal:options
+  - drupal:taxonomy
+  - paragraphs:paragraphs
+  - workflow:workflow
+  - webform:webform_node

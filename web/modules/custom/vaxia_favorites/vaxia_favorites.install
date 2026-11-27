@@ -1,0 +1,28 @@
+<?php
+
+/**
+ * @file
+ * Favorites table, as D7 favorites 7.x-2.1 kept it (the data migration
+ * copies rows across unchanged).
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function vaxia_favorites_schema() {
+  $schema['favorites'] = [
+    'description' => "Stores each user's favorite path.",
+    'fields' => [
+      'fid' => ['type' => 'serial', 'unsigned' => TRUE, 'not null' => TRUE],
+      'uid' => ['type' => 'int', 'not null' => TRUE],
+      'path' => ['type' => 'varchar', 'length' => 1024, 'not null' => TRUE],
+      'title' => ['type' => 'varchar', 'length' => 255, 'not null' => TRUE],
+      'query' => ['type' => 'varchar', 'length' => 1024, 'not null' => TRUE],
+      'timestamp' => ['type' => 'int', 'not null' => TRUE],
+      'weight' => ['type' => 'int', 'not null' => TRUE, 'default' => 0],
+    ],
+    'primary key' => ['fid'],
+    'indexes' => ['uid' => ['uid']],
+  ];
+  return $schema;
+}

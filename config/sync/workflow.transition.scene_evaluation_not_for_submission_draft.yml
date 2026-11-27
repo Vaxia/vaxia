@@ -1,0 +1,15 @@
+uuid: 91a896ee-0643-4ff1-ad87-c474a9c42750
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.scene_evaluation_draft
+    - workflow.state.scene_evaluation_not_for_submission
+id: scene_evaluation_not_for_submission_draft
+label: null
+module: workflow
+from_sid: scene_evaluation_not_for_submission
+to_sid: scene_evaluation_draft
+roles:
+  workflow_author: workflow_author
+  administrator: administrator

@@ -1,0 +1,32 @@
+uuid: 32825877-0ea2-4897-a138-2d96908ccd23
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_aspect_two
+    - paragraphs.paragraphs_type.skill
+    - taxonomy.vocabulary.skill_verbs
+  module:
+    - vaxia_core
+third_party_settings:
+  vaxia_core:
+    d7_default_ids:
+      - 1141
+id: paragraph.skill.field_aspect_two
+field_name: field_aspect_two
+entity_type: paragraph
+bundle: skill
+label: '2.'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: vaxia_core_d7_reference_default
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      skill_verbs: skill_verbs
+    sort:
+      field: _none
+field_type: entity_reference

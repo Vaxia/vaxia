@@ -1,0 +1,455 @@
+# Example realms for a new VAXIA site, read by scripts/starter-content.php.
+# One administrative realm (storyhosting and the system pages, not played in)
+# and three playable example realms, each with a setting page, a skills page,
+# three rooms, shop items, an example character (an open NPC storyhosts
+# can play) and stock NPCs (open, generic NPCs: guards, bartenders and the
+# like). Each realm's skills are also its "Common skills" on the character
+# form (the Skill presets vocabulary): [name, description, three aspects]. Edit freely before running the script, or edit the content on
+# the site afterwards.
+
+admin_realm:
+  name: Storyhost
+  description: 'Storyhosting, the game system and site business. Not a place characters play.'
+
+realms:
+
+  - name: Fantasy
+    world: Eldmoor
+    description: 'Swords, sorcery and old roads: the kingdoms of Eldmoor.'
+    setting: |
+      [b]Eldmoor[/b] is a land of walled towns and wild places between them. The old empire fell three hundred years ago; its roads, ruins and half-remembered magic are still everywhere.
+
+      [b]Tone:[/b] classic adventure. Heroes are capable, the world is dangerous, and there is always another road.
+
+      [b]Places[/b]
+      [list]
+      [*][b]Thornwick[/b], a market town at the edge of the Whispering Wood, where most adventures start.
+      [*][b]The Whispering Wood[/b], an old forest the fae still claim.
+      [*][b]Castle Greymoor[/b], a ruined fortress said to hold the last emperor's vault.
+      [/list]
+
+      [b]Powers that be[/b]
+      [list]
+      [*][b]The Lantern Guild[/b]: licensed mages, who keep magic safe (and expensive).
+      [*][b]The Wardens[/b]: rangers who keep the roads open.
+      [*][b]The Ashen Court[/b]: nobles who want the empire back, with themselves in charge.
+      [/list]
+
+      [b]Story hooks:[/b] a map to Greymoor's vault, a fae bargain gone wrong, a caravan that never arrived, a dragon sighted for the first time in a century.
+    skills:
+      - [Swordplay, 'Fighting with blades of any size.', [damage, avoid, move]]
+      - [Archery, 'Bows and crossbows, from hunting to war.', [damage, avoid, discover]]
+      - [Hedge Magic, 'Small, practical spells: light, mending, warding.', [summon, repair, bolster]]
+      - [Woodcraft, 'Living off the land: tracking, foraging, shelter.', [discover, endure, conceal]]
+      - [Courtly Manners, 'Moving among nobles without making enemies.', [convince, know, predict]]
+      - [Alchemy, 'Brewing potions, salves and the occasional explosion.', [craft, change nature, know]]
+      - [Horsemanship, 'Riding, and fighting from the saddle.', [move, operate, endure]]
+      - [Lockpicking, 'Locks, traps and other people''s doors.', [bypass, operate, discover]]
+      - [Herbalism, 'Healing herbs, poultices and which plants to avoid.', [repair, know, discover]]
+      - [Brawling, 'Fists, elbows and tavern furniture.', [damage, avoid, endure]]
+    suggestions:
+      - 'there is a minstrel who only knows one song'
+      - 'there is a lost goat wearing a noble''s signet ring'
+      - 'there is a notice offering a reward for a missing cat'
+      - 'there is a traveling merchant selling "genuine dragon scales"'
+      - 'there is a puddle that reflects a different sky'
+    rooms:
+      - name: 'The Prancing Stag'
+        description: 'A crowded tavern in Thornwick: a roaring hearth, a notice board full of jobs, and a barkeep who hears everything. Where parties form and rumours start.'
+      - name: 'The Whispering Wood'
+        description: 'Ancient trees, paths that move when no one is looking, and lights between the trunks at night. The fae keep their bargains, to the letter.'
+      - name: 'Ruins of Castle Greymoor'
+        description: 'A broken fortress on a hill above the marsh. Its halls are fallen, its cellars are not, and something below still guards the emperor''s vault.'
+    items:
+      - name: 'Ranger''s Longbow'
+        type: Weapon
+        class: 'Medium (45% / 0)'
+        sub_type: Bow
+        description: 'Yew, horn and linen string. Accurate past a hundred paces.'
+        bonuses: {dexterity: 1}
+      - name: 'Steel Longsword'
+        type: Weapon
+        class: 'Medium (45% / 0)'
+        sub_type: 'Long blade'
+        description: 'A plain, well-balanced blade from a Thornwick smith.'
+        bonuses: {strength: 1}
+      - name: 'Leather Brigandine'
+        type: Armor/Shield
+        description: 'Riveted leather over steel plates. Quiet enough for the woods.'
+        absorbs: 2
+        absorb_type: armor
+      - name: 'Healing Draught'
+        type: 'Charged Item'
+        description: 'A bitter green tonic that closes wounds. Three doses.'
+        pp: 10
+        use: once
+        uses: 3
+    # Stock NPCs: open, generic NPCs any storyhost may play as stand-ins for
+    # common encounters, named for their role ("Generic ...", as the original
+    # site named them). Short notes, no age or sex; stats and skills in fives.
+    npcs:
+      - name: 'Generic Town Guard'
+        species: [field_fantasy_species, human]
+        languages: [field_fantasy_languages, [common_nat]]
+        description: 'Helm, tabard, spear and a tired stare.'
+        personality: 'By the book; can be talked down, not bribed.'
+        stats: {life: 30, endurance: 30, strength: 30, dexterity: 25, intelligence: 20, spirituality: 20, charisma: 20}
+        skills:
+          - [Spear and Shield, 35, 'Watch drill: hold the line.', [damage, avoid, endure]]
+          - [Watchfulness, 25, 'Spots trouble before it starts.', [discover, predict, know]]
+        items: ['Steel Longsword']
+      - name: 'Generic Barkeep'
+        species: [field_fantasy_species, dwarf]
+        languages: [field_fantasy_languages, [common_nat, dwarvish_nat]]
+        description: 'Polishes a mug and hears everything.'
+        personality: 'Gruff, fair; sells rumours for a drink.'
+        stats: {life: 30, endurance: 30, strength: 25, dexterity: 20, intelligence: 25, spirituality: 20, charisma: 25}
+        skills:
+          - [Rumourmongering, 35, 'Knows who said what, and what it is worth.', [know, discover, convince]]
+          - [Brawling, 25, 'Ends fights with the cudgel under the bar.', [damage, avoid, endure]]
+      - name: 'Generic Tavern Server'
+        species: [field_fantasy_species, halfling]
+        languages: [field_fantasy_languages, [common_nat]]
+        description: 'Quick feet, full tray, pencil behind an ear.'
+        personality: 'Cheerful, nosy, remembers every face.'
+        stats: {life: 20, endurance: 25, strength: 15, dexterity: 30, intelligence: 20, spirituality: 20, charisma: 30}
+        skills:
+          - [Serving, 30, 'Through a crowd without spilling a drop.', [move, avoid, predict]]
+          - [Gossip, 30, 'Hears what the barkeep misses.', [discover, convince, know]]
+      - name: 'Generic Shopkeeper'
+        species: [field_fantasy_species, gnome]
+        languages: [field_fantasy_languages, [common_nat, dwarvish_knw]]
+        description: 'Spectacles, inky apron, a shop full of odds and ends.'
+        personality: 'Haggles for sport; a story for every item.'
+        stats: {life: 20, endurance: 20, strength: 15, dexterity: 20, intelligence: 30, spirituality: 25, charisma: 30}
+        skills:
+          - [Haggling, 35, 'Never loses a bargain she wants to win.', [convince, predict, know]]
+          - [Appraisal, 30, 'Knows a fake from across the room.', [know, discover, predict]]
+      - name: 'Generic Bandit'
+        species: [field_fantasy_species, human]
+        languages: [field_fantasy_languages, [common_nat]]
+        description: 'Patched cloak, masked face, rusty blade.'
+        personality: 'More bluster than bravery; runs when it turns.'
+        stats: {life: 25, endurance: 25, strength: 25, dexterity: 25, intelligence: 20, spirituality: 20, charisma: 20}
+        skills:
+          - [Swordplay, 30, 'Rough, dirty blade work.', [damage, avoid, move]]
+          - [Ambush, 25, 'Waits in the hedges for easy marks.', [conceal, move, predict]]
+      - name: 'Generic Hedge Witch'
+        species: [field_fantasy_species, human]
+        languages: [field_fantasy_languages, [common_nat, sylvan_knw]]
+        description: 'Barefoot, hung with charms, smelling of herbs.'
+        personality: 'Kind to the sick, sharp with fools.'
+        stats: {life: 20, endurance: 20, strength: 15, dexterity: 20, intelligence: 30, spirituality: 35, charisma: 20}
+        skills:
+          - [Herbalism, 35, 'A cure for most things.', [repair, know, discover]]
+          - [Hedge Magic, 30, 'Charms, wards and small blessings.', [summon, repair, bolster]]
+    character:
+      name: Wren
+      last_name: Ashdown
+      titles: Warden
+      species: [field_fantasy_species, halfling]
+      languages: [field_fantasy_languages, [common_nat, sylvan_knw]]
+      sex: Female
+      age: 34
+      occupation: 'Warden of the Thornwick road'
+      description: 'Small, sun-browned and very quiet. A green cloak, a longbow taller than she is, and eyes that never stop moving.'
+      background: 'Grew up on a farm the Whispering Wood swallowed in a single night. Joined the Wardens to learn why; still asking.'
+      personality: 'Patient, dry-humoured, protective of travellers and suspicious of anyone who wants to go into the Wood on purpose.'
+      stats: {life: 20, endurance: 25, strength: 25, dexterity: 32, intelligence: 22, spirituality: 20, charisma: 19}
+      skills:
+        - [Archery, 32, 'Longbow, fast and accurate at range.', [damage, avoid, discover]]
+        - [Tracking, 28, 'Reads trails, signs and broken twigs.', [discover, know, predict]]
+        - [Woodcraft, 25, 'Lives off the land; finds shelter anywhere.', [discover, endure, conceal]]
+        - [Swordplay, 22, 'Short blade work when the bow is no use.', [damage, avoid, move]]
+        - [Stealth, 30, 'Moves unseen through brush and town alike.', [conceal, move, avoid]]
+      items: ['Ranger''s Longbow', 'Leather Brigandine']
+
+  - name: 'Science Fiction'
+    world: 'The Meridian Reach'
+    description: 'Starships, stations and the edge of known space: the Meridian Reach.'
+    setting: |
+      [b]The Meridian Reach[/b] is the frontier: a string of colonies, mining stations and jump gates at the edge of settled space. The Core worlds are a month away; out here, the corporations make the rules and the crews break them.
+
+      [b]Tone:[/b] space opera with grease under its fingernails. Ships break, contracts go bad, and there are things past the last gate nobody understands.
+
+      [b]Places[/b]
+      [list]
+      [*][b]Port Kessler[/b], an orbital station and free port, where every crew in the Reach stops to refuel.
+      [*][b]The Meridian[/b], a battered long-haul freighter looking for crew.
+      [*][b]The Icarus[/b], a research vessel found drifting, its crew gone.
+      [/list]
+
+      [b]Powers that be[/b]
+      [list]
+      [*][b]Halvorsen-Tak[/b]: the mining corporation that owns half the Reach.
+      [*][b]The Gate Authority[/b]: keeps the jump gates running, and decides who uses them.
+      [*][b]The Drift[/b]: free traders, smugglers and everyone the other two can't control.
+      [/list]
+
+      [b]Story hooks:[/b] a salvage claim on the Icarus, an android asking for asylum, a gate that opened somewhere new, a cargo that is ticking.
+    skills:
+      - [Piloting, 'Flying anything from a shuttle to a freighter.', [move, operate, predict]]
+      - [Hacking, 'Getting into systems that would rather you didn''t.', [bypass, discover, change nature]]
+      - [Starship Engineering, 'Keeping drives, reactors and life support running.', [repair, operate, know]]
+      - [Firearms, 'Pistols, rifles and anything else that shoots.', [damage, avoid, predict]]
+      - [Xenobiology, 'Alien life: what it is, what it eats, what it wants.', [know, discover, predict]]
+      - [Zero-G Maneuvering, 'Moving and fighting without gravity.', [move, endure, avoid]]
+      - [Medicine, 'Trauma care, surgery and keeping crew alive.', [repair, know, discover]]
+      - [Negotiation, 'Contracts, deals and talking your way past port security.', [convince, predict, know]]
+      - [Demolitions, 'Breaching charges and things that should go boom.', [damage, bypass, craft]]
+      - [Navigation, 'Plotting jumps and courses through the Reach.', [predict, operate, know]]
+    suggestions:
+      - 'there is a broken coffee machine'
+      - 'there is a maintenance drone that keeps following people'
+      - 'there is a power cut on one deck'
+      - 'there is a vendor selling hydroponic strawberries, very expensive'
+      - 'there is a stray ship''s cat with an access badge'
+    rooms:
+      - name: 'Port Kessler Promenade'
+        description: 'The free port''s main ring: neon noodle stalls, salvage brokers, a dockside bar, and a view of every ship in the Reach. Jobs, gossip and trouble are all for sale.'
+      - name: 'Bridge of the Meridian'
+        description: 'A freighter''s cramped bridge: a cracked viewscreen, three crash couches and a navigation computer with opinions. Home, if you can keep her flying.'
+      - name: 'The Derelict Icarus'
+        description: 'A research vessel found adrift past the last gate. Power flickers, the logs end mid-sentence, and the airlocks were opened from the inside.'
+    items:
+      - name: 'Coil Pistol'
+        type: Weapon
+        class: 'Light (15% / -10)'
+        sub_type: Pistol
+        description: 'A compact magnetic sidearm, standard issue across the Reach.'
+        bonuses: {dexterity: 1}
+      - name: 'Ballistic Flight Vest'
+        type: Armor/Shield
+        description: 'Layered ballistic weave under a pilot''s vest.'
+        absorbs: 2
+        absorb_type: armor
+      - name: 'Med-Injector'
+        type: 'Charged Item'
+        description: 'Auto-injector of nanite coagulant. Three charges.'
+        pp: 10
+        use: once
+        uses: 3
+      - name: 'Maintenance Drone'
+        type: Companion/Drone
+        description: 'A fist-sized repair drone that follows its owner and fixes what it can reach.'
+        build_points: 20
+    npcs:
+      - name: 'Generic Security Officer'
+        species: [field_scifi_species, human]
+        languages: [field_scifi_languages, [standard_nat, spacer_knw]]
+        description: 'Armoured jumpsuit, mirrored visor, stun baton.'
+        personality: 'Procedural, underpaid, likes paperwork.'
+        stats: {life: 30, endurance: 30, strength: 30, dexterity: 30, intelligence: 20, spirituality: 20, charisma: 20}
+        skills:
+          - [Firearms, 35, 'Regulation sidearm, regulation aim.', [damage, avoid, predict]]
+          - [Crowd Control, 25, 'Breaks up dock brawls before they spread.', [convince, avoid, endure]]
+        items: ['Ballistic Flight Vest']
+      - name: 'Generic Cantina Bartender'
+        species: [field_scifi_species, insectoid]
+        languages: [field_scifi_languages, [spacer_nat, standard_knw, xeno_sign_knw]]
+        description: 'Four arms mixing four drinks at once.'
+        personality: 'Neutral; sells drinks, rumours and silence.'
+        stats: {life: 25, endurance: 30, strength: 25, dexterity: 30, intelligence: 25, spirituality: 15, charisma: 25}
+        skills:
+          - [Information Broker, 35, 'Knows which ship is leaving, and why.', [know, discover, convince]]
+          - [Mixology, 25, 'Something for every species.', [craft, know, predict]]
+      - name: 'Generic Server Android'
+        species: [field_scifi_species, android]
+        languages: [field_scifi_languages, [standard_nat, binary_nat]]
+        description: 'Chrome server unit with a painted smile.'
+        personality: 'Polite, literal, recording everything.'
+        stats: {life: 25, endurance: 30, strength: 25, dexterity: 30, intelligence: 25, spirituality: 10, charisma: 25}
+        skills:
+          - [Service Protocols, 30, 'Takes the order, brings the order.', [move, predict, know]]
+          - [Data Recall, 30, 'Every customer, every tab, every face.', [know, discover, persist]]
+      - name: 'Generic Trader'
+        species: [field_scifi_species, human]
+        languages: [field_scifi_languages, [colonial_nat, standard_knw, spacer_knw]]
+        description: 'A stall of salvage and a gold-toothed smile.'
+        personality: 'Friendly, opportunistic, half honest.'
+        stats: {life: 20, endurance: 20, strength: 20, dexterity: 20, intelligence: 30, spirituality: 20, charisma: 35}
+        skills:
+          - [Negotiation, 35, 'Every price starts a conversation.', [convince, predict, know]]
+          - [Salvage Appraisal, 25, 'Tells a working part from a pretty one.', [know, discover, repair]]
+      - name: 'Generic Pirate'
+        species: [field_scifi_species, cyborg]
+        languages: [field_scifi_languages, [spacer_nat]]
+        description: 'Scavenged armour and a cybernetic arm.'
+        personality: 'Loud, greedy, loyal to this weeks pay.'
+        stats: {life: 30, endurance: 30, strength: 30, dexterity: 30, intelligence: 15, spirituality: 15, charisma: 15}
+        skills:
+          - [Firearms, 35, 'Close-quarters boarding fights.', [damage, avoid, predict]]
+          - [Zero-G Maneuvering, 25, 'First through the airlock.', [move, endure, avoid]]
+      - name: 'Generic Mechanic'
+        species: [field_scifi_species, uplift]
+        languages: [field_scifi_languages, [standard_nat, binary_knw]]
+        description: 'Oil-stained coverall, tools clipped everywhere.'
+        personality: 'Eager, chatty, offended by bad engines.'
+        stats: {life: 20, endurance: 25, strength: 20, dexterity: 30, intelligence: 30, spirituality: 20, charisma: 20}
+        skills:
+          - [Starship Engineering, 35, 'Drives and docking clamps.', [repair, operate, know]]
+          - [Scrounging, 25, 'Finds the part, somehow.', [discover, craft, bypass]]
+    character:
+      name: Talia
+      last_name: Okonkwo
+      titles: 'Chief Engineer'
+      species: [field_scifi_species, human]
+      languages: [field_scifi_languages, [standard_nat, binary_knw]]
+      sex: Female
+      age: 41
+      occupation: 'Chief engineer of the Meridian'
+      description: 'Tall, close-cropped grey hair, a tool belt she never takes off and burn scars on both forearms.'
+      background: 'Twenty years keeping Halvorsen-Tak ore haulers running, until she refused to sign off on a reactor that later killed a crew. Now she keeps the Meridian flying and asks a lot of questions about contracts.'
+      personality: 'Blunt, warm once you earn it, and convinced every machine can be fixed if people would just listen.'
+      stats: {life: 20, endurance: 24, strength: 18, dexterity: 25, intelligence: 32, spirituality: 20, charisma: 22}
+      skills:
+        - [Starship Engineering, 32, 'Drives, reactors and life support.', [repair, operate, know]]
+        - [Hacking, 30, 'Old corporate systems are her specialty.', [bypass, discover, change nature]]
+        - [Piloting, 25, 'Can fly the Meridian, badly but safely.', [move, operate, predict]]
+        - [Zero-G Maneuvering, 22, 'Comfortable outside the hull.', [move, endure, avoid]]
+        - [Field Repair, 30, 'Fixes anything with what is at hand.', [repair, craft, operate]]
+      items: ['Maintenance Drone', 'Ballistic Flight Vest']
+
+  - name: Horror
+    world: 'Hollow Creek'
+    description: 'A small town with a long memory: the dark corners of Hollow Creek.'
+    setting: |
+      [b]Hollow Creek[/b] is a mill town in the hills, cut off by the river and a single bridge. It looks ordinary by day. By night, the old families keep their curtains drawn, and the people who ask questions tend to leave town suddenly.
+
+      [b]Tone:[/b] dread and mystery. Characters are ordinary people up against things they don't understand; knowledge costs, and not everyone makes it to morning.
+
+      [b]Places[/b]
+      [list]
+      [*][b]The Last Light Diner[/b], open all night, where the town's few honest people meet.
+      [*][b]Blackwood Asylum[/b], closed for forty years and never quite empty.
+      [*][b]Ravensworth Manor[/b], home of the town's oldest family, who never seem to age.
+      [/list]
+
+      [b]Powers that be[/b]
+      [list]
+      [*][b]The Ravensworths[/b]: old money, old secrets, and a great deal of influence.
+      [*][b]The Lodge[/b]: a fraternal order that meets on the new moon.
+      [*][b]The Night Watch[/b]: a handful of townsfolk who know the truth and try to keep people safe.
+      [/list]
+
+      [b]Story hooks:[/b] a missing hiker, a radio station that broadcasts only at 3 a.m., a will that leaves Ravensworth Manor to a stranger, lights in the asylum's windows.
+    skills:
+      - [Occult Lore, 'What the old books say about things that should not exist.', [know, discover, predict]]
+      - [Investigation, 'Finding what people hid: records, clues, lies.', [discover, know, persist]]
+      - [Firearms, 'Shotguns and revolvers, for when talking fails.', [damage, avoid, predict]]
+      - [Persuasion, 'Getting frightened people to talk.', [convince, bolster, predict]]
+      - [First Aid, 'Keeping people alive until help arrives.', [repair, bolster, endure]]
+      - [Sixth Sense, 'A feeling when something is wrong.', [predict, discover, avoid]]
+      - [Stealth, 'Not being seen, or heard, or found.', [conceal, move, avoid]]
+      - [Driving, 'Old trucks on bad roads, at night, in a hurry.', [move, operate, avoid]]
+      - [Research, 'Libraries, archives, newspapers and old letters.', [discover, know, persist]]
+      - [Rites of Warding, 'Salt lines, sigils and prayers that keep things out.', [weaken, bolster, persist]]
+    suggestions:
+      - 'there is a jukebox playing a song nobody chose'
+      - 'there is a stranger asking for directions to a road that closed years ago'
+      - 'there is a power flicker and a long, quiet minute'
+      - 'there is a lost dog that won''t go near the woods'
+      - 'there is a church bake sale with suspiciously good pie'
+    rooms:
+      - name: 'The Last Light Diner'
+        description: 'Chrome, cracked vinyl booths and bottomless coffee. The only place in Hollow Creek open past midnight, and the waitress knows which regulars stopped coming in.'
+      - name: 'Blackwood Asylum'
+        description: 'Closed forty years ago after a fire nobody talks about. The doors are chained from the inside, the patient files are still in the cabinets, and the night nurse''s bell still rings.'
+      - name: 'Ravensworth Manor'
+        description: 'A gothic house on the hill above town. Portraits whose eyes follow you, locked wings, and a family dinner you may not leave until it is finished.'
+    items:
+      - name: 'Silvered Revolver'
+        type: Weapon
+        class: 'Light (15% / -10)'
+        sub_type: Pistol
+        description: 'An old six-shooter, its cylinder etched with protective sigils. Takes silver rounds.'
+        bonuses: {dexterity: 1}
+      - name: 'Holy Water'
+        type: 'Charged Item'
+        description: 'Three vials from the chapel on River Street. Burns what should not be.'
+        pp: 10
+        use: once
+        uses: 3
+      - name: 'Ward Charm'
+        type: Misc
+        description: 'A knot of red thread, iron nails and a saint''s medal. Something about it keeps the dark at arm''s length.'
+        bonuses: {spirituality: 1}
+      - name: 'Old Hound'
+        type: Companion/Drone
+        description: 'A grey-muzzled bloodhound who growls at empty doorways.'
+        build_points: 20
+    npcs:
+      - name: 'Generic Deputy'
+        species: [field_horror_species, human]
+        languages: [field_horror_languages, [common_nat]]
+        description: 'Too-big hat, muddy cruiser, unfired revolver.'
+        personality: 'Earnest, scared, believes in rules not ghosts.'
+        stats: {life: 30, endurance: 30, strength: 25, dexterity: 25, intelligence: 20, spirituality: 20, charisma: 20}
+        skills:
+          - [Firearms, 30, 'Service revolver, range-trained.', [damage, avoid, predict]]
+          - [Patrol, 25, 'Every back road and who lives at its end.', [know, discover, move]]
+      - name: 'Generic Waitress'
+        species: [field_horror_species, human]
+        languages: [field_horror_languages, [common_nat]]
+        description: 'Pink uniform and a coffee pot that never empties.'
+        personality: 'Calls everyone hon; saw something by the highway.'
+        stats: {life: 20, endurance: 25, strength: 20, dexterity: 25, intelligence: 20, spirituality: 25, charisma: 30}
+        skills:
+          - [Small-Town Gossip, 35, 'Knows everybodys business.', [know, discover, convince]]
+          - [Keeping Calm, 25, 'Pours coffee through anything.', [endure, bolster, persist]]
+      - name: 'Generic Bartender'
+        species: [field_horror_species, human]
+        languages: [field_horror_languages, [common_nat]]
+        description: 'Flannel, old tattoos, salt shells under the bar.'
+        personality: 'Quiet, watchful, closes early on certain nights.'
+        stats: {life: 30, endurance: 30, strength: 30, dexterity: 25, intelligence: 20, spirituality: 25, charisma: 20}
+        skills:
+          - [Firearms, 30, 'Rock salt, buckshot, whatever works.', [damage, avoid, predict]]
+          - [Reading People, 30, 'Knows a drifter from something wearing one.', [discover, predict, know]]
+      - name: 'Generic Shopkeeper'
+        species: [field_horror_species, human]
+        languages: [field_horror_languages, [common_nat, latin_knw]]
+        description: 'Cardigan, glasses on a chain, chalk and candles in stock.'
+        personality: 'Sweet, sharp-eyed, always has what you need.'
+        stats: {life: 20, endurance: 20, strength: 15, dexterity: 20, intelligence: 30, spirituality: 30, charisma: 25}
+        skills:
+          - [Shopkeeping, 30, 'What every family buys, and when.', [know, convince, predict]]
+          - [Folk Remedies, 30, 'Salt, iron and the old ways.', [weaken, bolster, know]]
+      - name: 'Generic Orderly'
+        species: [field_horror_species, human]
+        languages: [field_horror_languages, [common_nat]]
+        description: 'Stained whites, heavy keys, flickering flashlight.'
+        personality: 'Says nothing; avoids certain rooms.'
+        stats: {life: 30, endurance: 30, strength: 30, dexterity: 25, intelligence: 20, spirituality: 20, charisma: 15}
+        skills:
+          - [Restraint, 35, 'Holds patients down, and worse.', [weaken, endure, avoid]]
+          - [Asylum Layout, 25, 'Every ward, tunnel and locked door.', [know, move, discover]]
+      - name: 'Generic Cultist'
+        species: [field_horror_species, human]
+        languages: [field_horror_languages, [common_nat, old_tongue_knw]]
+        description: 'Hooded robe, ritual knife, a sigil on one palm.'
+        personality: 'Serene, polite, certain the end is near.'
+        stats: {life: 20, endurance: 20, strength: 20, dexterity: 25, intelligence: 25, spirituality: 35, charisma: 25}
+        skills:
+          - [Occult Lore, 35, 'The rites, the names, the hours.', [know, discover, predict]]
+          - [Ritual Blade, 25, 'A ceremonial knife, used for other things.', [damage, avoid, weaken]]
+    character:
+      name: Eli
+      last_name: Marsh
+      titles: ''
+      species: [field_horror_species, human]
+      languages: [field_horror_languages, [common_nat, latin_knw]]
+      sex: Male
+      age: 52
+      occupation: 'Retired sheriff''s deputy, night cook at the Last Light Diner'
+      description: 'Heavy-set, grey stubble, a deputy''s jacket he no longer has the right to wear, and a hound at his heel.'
+      background: 'Twenty-two years as a deputy taught him which cases the sheriff wanted closed fast. Since his partner disappeared at Blackwood, he has kept a notebook of every one of them.'
+      personality: 'Gruff, tired, stubborn, and unable to leave a missing person alone.'
+      stats: {life: 20, endurance: 22, strength: 18, dexterity: 24, intelligence: 28, spirituality: 25, charisma: 28}
+      skills:
+        - [Investigation, 30, 'Old case files, records and witnesses.', [discover, know, predict]]
+        - [Occult Lore, 28, 'Self-taught from his partner''s books.', [know, discover, predict]]
+        - [Firearms, 25, 'Service revolver, kept clean.', [damage, avoid, predict]]
+        - [Persuasion, 22, 'Knows how to get frightened people to talk.', [convince, bolster, predict]]
+        - [Sixth Sense, 30, 'Knows when a room is wrong.', [predict, discover, avoid]]
+      items: ['Silvered Revolver', 'Old Hound']

@@ -1,0 +1,14 @@
+uuid: 26ed74bd-6878-4ed9-b4f2-f9b0176754ce
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.knows_the_setting
+  module:
+    - user
+id: user_add_role_action.knows_the_setting
+label: 'Add the knows-the-setting role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: knows_the_setting

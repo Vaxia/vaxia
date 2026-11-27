@@ -1,0 +1,15 @@
+uuid: fca86c35-3e3a-4370-bd9d-89804155f5b3
+langcode: en
+status: true
+dependencies:
+  config:
+    - flag.flag.delete
+  module:
+    - flag
+id: flag_action.delete_flag
+label: 'Mark to delete'
+type: node
+plugin: 'flag_action:delete_flag'
+configuration:
+  flag_id: delete
+  flag_action: flag

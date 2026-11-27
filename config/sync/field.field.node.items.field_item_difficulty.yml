@@ -1,0 +1,25 @@
+uuid: 8c47ce54-9397-4b70-ac6f-a4b45de020d6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_item_difficulty
+    - node.type.items
+id: node.items.field_item_difficulty
+field_name: field_item_difficulty
+entity_type: node
+bundle: items
+label: 'Item difficulty'
+description: 'This is used for purposes of breaking the item, or defeating in the case of item-resisted rolls such as locks vs lockpicking skills. Equal to the difficulty the item was created at.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 25
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

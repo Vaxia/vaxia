@@ -1,0 +1,124 @@
+vaxia_core.settings:
+  type: config_object
+  label: 'Vaxia settings'
+  mapping:
+    vaxia_starting_points:
+      type: integer
+    vaxia_mail_prefix:
+      type: string
+      label: 'Mail subject prefix (empty: the site name)'
+    motd_page:
+      type: integer
+      label: 'The wiki page shown in the Message of the Day block'
+    admin_realm:
+      type: string
+      label: 'The administrative realm (storyhosting and system pages; not played in)'
+    realm_fields:
+      type: sequence
+      label: 'Species and languages fields of each playable realm'
+      sequence:
+        type: mapping
+        mapping:
+          realm:
+            type: string
+            label: 'Realm term name'
+          species:
+            type: string
+            label: 'Species field'
+          languages:
+            type: string
+            label: 'Languages field'
+          conditions:
+            type: string
+            label: 'Conditions field'
+          skill_fields:
+            type: sequence
+            label: 'Fields inside skills that only this realm uses'
+            sequence:
+              type: string
+    vaxia_starting_econ:
+      type: integer
+    vaxia_kxp_ratio:
+      type: integer
+    vaxia_max_kxp_post:
+      type: integer
+    vaxia_xp_types:
+      type: string
+    vaxia_limbo_room:
+      type: sequence
+      label: 'Limbo rooms (no XP)'
+      sequence:
+        type: integer
+    vaxia_display_dice:
+      type: integer
+    vaxia_dice_roller_stacking:
+      type: boolean
+    vaxia_public_char_fields:
+      type: string
+    vaxia_public_user_fields:
+      type: string
+    vaxia_disabled_user_fields:
+      type: string
+    vaxia_attribute_cost:
+      type: float
+    vaxia_skill_cost:
+      type: float
+    vaxia_economy_cost:
+      type: float
+    vaxia_transfer_percentage:
+      type: float
+    vaxia_transfer_cap_on:
+      type: boolean
+    vaxia_transfer_cap:
+      type: integer
+    vaxia_transfer_workflow:
+      type: string
+    vaxia_draft_workflow:
+      type: string
+    character_sheet_vaxia_playable:
+      type: sequence
+      label: 'Playable states'
+      sequence:
+        type: string
+    vaxia_pc_skill_warn:
+      type: integer
+    vaxia_pc_stat_spend_warn:
+      type: integer
+    vaxia_pc_stat_high_warn:
+      type: integer
+    vaxia_pc_stat_min_warn:
+      type: integer
+    vaxia_pc_skill_ave_warn:
+      type: integer
+    vaxia_pc_skill_min:
+      type: integer
+    vaxia_pc_skill_max:
+      type: integer
+    vaxia_pc_stat_min:
+      type: integer
+    vaxia_pc_stat_max:
+      type: integer
+    vaxia_pc_stat_spend_cap:
+      type: integer
+    vaxia_pc_stat_high_cap:
+      type: integer
+    vaxia_pc_stat_zero_cap:
+      type: integer
+    vaxia_other_min_hxp:
+      type: integer
+field.field.*.*.*.third_party.vaxia_core:
+  type: mapping
+  label: 'VAXIA core field settings'
+  mapping:
+    d7_default_ids:
+      type: sequence
+      label: 'Default reference ids carried over from D7'
+      sequence:
+        type: integer
+vaxia_core.relaunch:
+  type: config_object
+  label: 'Vaxia relaunch settings'
+  mapping:
+    terms_path:
+      type: path
+      label: 'Terms page path'

@@ -1,0 +1,40 @@
+vaxia_items.settings:
+  type: config_object
+  label: 'Vaxia item settings'
+  mapping:
+    items_approved_workflow:
+      type: string
+    items_primary_value:
+      type: float
+    items_skills_value:
+      type: float
+    items_bonus_value:
+      type: float
+    items_overlap_value:
+      type: float
+    items_recalculate_values:
+      type: boolean
+    items_once_value:
+      type: float
+    items_daily_value:
+      type: float
+    items_at_will_value:
+      type: float
+    items_shield_value:
+      type: float
+    items_absorb_value:
+      type: float
+    items_companion_value:
+      type: float
+    oversight_limit:
+      type: integer
+    item_uses_active:
+      type: boolean
+    item_uses_once_workflow:
+      type: string
+    item_uses_daily_workflow:
+      type: string
+    item_shop_sellback:
+      type: boolean
+    item_shop_sellback_percentage:
+      type: float

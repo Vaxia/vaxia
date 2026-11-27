@@ -1,0 +1,21 @@
+uuid: 1e27e52b-47cc-4ec1-9d4a-6c0c468ff02b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_is_open_npc
+    - node.type.character_sheet
+id: node.character_sheet.field_is_open_npc
+field_name: field_is_open_npc
+entity_type: node
+bundle: character_sheet
+label: 'Is open NPC'
+description: "An NPC any storyhost may use without asking permission, because it isn't important to a specific storyline (a background character, a generic opponent). Keep its notes on the sheet so others can play it consistently. Treated as an NPC everywhere else."
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  on_label: ''
+  off_label: ''
+field_type: boolean

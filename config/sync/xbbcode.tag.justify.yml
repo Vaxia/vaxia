@@ -1,0 +1,13 @@
+uuid: 9e988786-ee77-4b90-85ed-774d93999a1b
+langcode: en
+status: true
+dependencies: {  }
+id: justify
+label: Justify
+description: 'Justified block.'
+name: justify
+attached: {  }
+sample: '[{{ name }}]Text[/{{ name }}]'
+template_code: '<div style="text-align:justify;">{{ tag.content }}</div>'
+template_file: null
+editable: false

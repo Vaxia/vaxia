@@ -1,0 +1,18 @@
+uuid: 401ed70f-ca4d-4cb5-b6d6-a6cc42360cfa
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+id: user.field_staff_system_lead
+field_name: field_staff_system_lead
+entity_type: user
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

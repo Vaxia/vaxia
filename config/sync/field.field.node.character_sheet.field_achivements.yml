@@ -1,0 +1,19 @@
+uuid: 165451f7-8026-42b9-a3ff-bb0796bb6399
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_achivements
+    - node.type.character_sheet
+id: node.character_sheet.field_achivements
+field_name: field_achivements
+entity_type: node
+bundle: character_sheet
+label: Achivements
+description: 'IC achievements! Titles earned, championships won. Fun stuff!'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

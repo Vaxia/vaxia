@@ -1,0 +1,10 @@
+vaxia_chat.post_revisions:
+  route_name: vaxia_chat.post_revisions
+  base_route: entity.comment.canonical
+  title: 'Revisions'
+  weight: 2
+vaxia_chat.chat_archives:
+  route_name: vaxia_chat.chat_archives
+  base_route: entity.node.canonical
+  title: 'Earlier Posts'
+  weight: 0

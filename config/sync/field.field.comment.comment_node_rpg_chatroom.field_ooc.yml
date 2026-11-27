@@ -1,0 +1,19 @@
+uuid: 06b9e2d1-75bd-427c-9618-ec2f25ad8e0c
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.comment_node_rpg_chatroom
+    - field.storage.comment.field_ooc
+id: comment.comment_node_rpg_chatroom.field_ooc
+field_name: field_ooc
+entity_type: comment
+bundle: comment_node_rpg_chatroom
+label: OOC
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

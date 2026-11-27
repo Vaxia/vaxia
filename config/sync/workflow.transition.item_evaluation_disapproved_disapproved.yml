@@ -1,0 +1,16 @@
+uuid: 60c66c4c-d11e-4e72-8d8c-03ccbc1fd1bc
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.item_evaluation_disapproved
+id: item_evaluation_disapproved_disapproved
+label: null
+module: workflow
+from_sid: item_evaluation_disapproved
+to_sid: item_evaluation_disapproved
+roles:
+  authenticated: authenticated
+  workflow_author: workflow_author
+  administrator: administrator
+  storyteller: storyteller

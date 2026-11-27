@@ -1,0 +1,33 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.wiki_page
+  module:
+    - node
+id: delete
+label: Delete
+bundles:
+  - wiki_page
+entity_type: node
+global: true
+weight: 0
+flag_short: 'Mark to delete'
+flag_long: 'Mark this page for deletion'
+flag_message: 'This wiki page has been marked for deletion.'
+unflag_short: 'Don''t delete'
+unflag_long: 'Un-mark this page for deletion'
+unflag_message: 'This wiki page has been un-marked for deletion.'
+unflag_denied_text: ''
+flag_type: 'entity:node'
+link_type: reload
+flagTypeConfig:
+  show_in_links:
+    full: full
+    teaser: teaser
+  show_as_field: false
+  show_on_form: false
+  show_contextual_link: false
+  extra_permissions: {  }
+  access_author: ''
+linkTypeConfig: {  }

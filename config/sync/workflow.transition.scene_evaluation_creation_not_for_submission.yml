@@ -1,0 +1,15 @@
+uuid: c60f40de-d619-4785-a032-6a96c991cc79
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.scene_evaluation_creation
+    - workflow.state.scene_evaluation_not_for_submission
+id: scene_evaluation_creation_not_for_submission
+label: null
+module: workflow
+from_sid: scene_evaluation_creation
+to_sid: scene_evaluation_not_for_submission
+roles:
+  workflow_author: workflow_author
+  administrator: administrator

@@ -1,0 +1,14 @@
+uuid: cbc6efe2-aa10-4725-a9f0-584eae8a373a
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.vacation_mode
+  module:
+    - user
+id: user_add_role_action.vacation_mode
+label: 'Add the vacation mode role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: vacation_mode

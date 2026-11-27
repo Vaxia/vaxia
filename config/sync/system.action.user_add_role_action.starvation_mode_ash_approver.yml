@@ -1,0 +1,14 @@
+uuid: e6eb3223-70b7-4c2e-b233-ce2071d51211
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.starvation_mode_ash_approver
+  module:
+    - user
+id: user_add_role_action.starvation_mode_ash_approver
+label: 'Add the starvation-mode-ash-approver role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: starvation_mode_ash_approver

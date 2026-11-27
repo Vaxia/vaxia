@@ -1,0 +1,15 @@
+vaxia_core.admin:
+  title: 'Vaxia'
+  description: 'Administer Vaxia settings'
+  route_name: vaxia_core.admin
+  parent: system.admin
+vaxia_core.settings:
+  title: 'Vaxia'
+  description: 'Administer Vaxia settings'
+  route_name: vaxia_core.settings
+  parent: vaxia_core.admin
+vaxia_core.relaunch_settings:
+  title: 'Relaunch'
+  description: 'The current terms version and terms page'
+  route_name: vaxia_core.relaunch_settings
+  parent: vaxia_core.admin

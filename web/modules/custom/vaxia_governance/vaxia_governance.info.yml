@@ -1,0 +1,8 @@
+name: VAXIA governance
+type: module
+description: 'Site governance: proposals, elections, departments, role applications and the anonymous mailer. Replaces D7 proposal, rpg_election, department, role_app, vaxia_departments, vaxia_elections, anon_mailer.'
+package: VAXIA
+core_version_requirement: ^11
+dependencies:
+  - vaxia_core:vaxia_core
+  - webform:webform_node

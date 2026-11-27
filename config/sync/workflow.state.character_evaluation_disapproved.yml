@@ -1,0 +1,13 @@
+uuid: 1e0d89a1-9f8b-43d0-bde9-f5b5df17e476
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.character_evaluation
+id: character_evaluation_disapproved
+label: disapproved
+weight: 0
+module: workflow
+wid: character_evaluation
+sysid: 0
+single_state_widget: ''

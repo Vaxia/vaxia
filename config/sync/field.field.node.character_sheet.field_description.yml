@@ -1,0 +1,27 @@
+uuid: f0206946-dded-4378-9c42-c28d3db78cce
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_description
+    - filter.format.filtered_html
+    - node.type.character_sheet
+  module:
+    - text
+id: node.character_sheet.field_description
+field_name: field_description
+entity_type: node
+bundle: character_sheet
+label: Descriptions
+description: 'The first description listed will be used on your posts and for viewing by other players. You can add additional descriptions and sort them as needed if your character has more than one appearance.'
+required: true
+translatable: false
+default_value:
+  -
+    value: ''
+    format: plain_text
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - filtered_html
+field_type: text_long

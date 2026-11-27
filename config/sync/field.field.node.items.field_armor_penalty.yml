@@ -1,0 +1,25 @@
+uuid: 01a9f86b-5cbe-4734-8ac6-6cd9033d29a0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_armor_penalty
+    - node.type.items
+id: node.items.field_armor_penalty
+field_name: field_armor_penalty
+entity_type: node
+bundle: items
+label: 'Offense Penalty'
+description: "How much the wearer's PP damage is reduced by the armor he is wearing."
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

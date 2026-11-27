@@ -1,0 +1,25 @@
+uuid: 58f37415-ed86-448e-91b2-edfad6ddfcff
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_preset_aspects
+    - taxonomy.vocabulary.skill_presets
+    - taxonomy.vocabulary.skill_verbs
+id: taxonomy_term.skill_presets.field_preset_aspects
+field_name: field_preset_aspects
+entity_type: taxonomy_term
+bundle: skill_presets
+label: Aspects
+description: "The skill's three aspects, in order."
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      skill_verbs: skill_verbs
+    auto_create: false
+field_type: entity_reference

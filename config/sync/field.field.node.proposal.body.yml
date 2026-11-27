@@ -1,0 +1,24 @@
+uuid: b082116f-ab0b-479c-9499-4737f045b5b1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.proposal
+  module:
+    - text
+id: node.proposal.body
+field_name: body
+entity_type: node
+bundle: proposal
+label: Body
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: true
+  required_summary: false
+  allowed_formats: {  }
+field_type: text_with_summary

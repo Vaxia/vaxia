@@ -1,0 +1,482 @@
+uuid: c5608abe-85f5-49fe-aa50-d3a64a112e06
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.items.comment_node_items
+    - field.field.node.items.field_absorb_type
+    - field.field.node.items.field_armor_absorbs
+    - field.field.node.items.field_armor_penalty
+    - field.field.node.items.field_build_points
+    - field.field.node.items.field_calc_value
+    - field.field.node.items.field_character_owner
+    - field.field.node.items.field_charisma
+    - field.field.node.items.field_creation_history
+    - field.field.node.items.field_declared_value
+    - field.field.node.items.field_dexterity
+    - field.field.node.items.field_endurance
+    - field.field.node.items.field_fixed_strength
+    - field.field.node.items.field_in_shop
+    - field.field.node.items.field_intelligence
+    - field.field.node.items.field_item_charisma
+    - field.field.node.items.field_item_desc
+    - field.field.node.items.field_item_dexterity
+    - field.field.node.items.field_item_difficulty
+    - field.field.node.items.field_item_endurance
+    - field.field.node.items.field_item_evaluation
+    - field.field.node.items.field_item_history
+    - field.field.node.items.field_item_intelligence
+    - field.field.node.items.field_item_life
+    - field.field.node.items.field_item_over_charisma
+    - field.field.node.items.field_item_over_dexterity
+    - field.field.node.items.field_item_over_endurance
+    - field.field.node.items.field_item_over_intellegence
+    - field.field.node.items.field_item_over_life
+    - field.field.node.items.field_item_over_skill
+    - field.field.node.items.field_item_over_spirituality
+    - field.field.node.items.field_item_over_strength
+    - field.field.node.items.field_item_skill
+    - field.field.node.items.field_item_spent_uses
+    - field.field.node.items.field_item_spirituality
+    - field.field.node.items.field_item_strength
+    - field.field.node.items.field_item_type
+    - field.field.node.items.field_item_use_day
+    - field.field.node.items.field_item_uses
+    - field.field.node.items.field_life
+    - field.field.node.items.field_player_notes
+    - field.field.node.items.field_pp_created
+    - field.field.node.items.field_sellback
+    - field.field.node.items.field_sh_notes
+    - field.field.node.items.field_sh_private_notes
+    - field.field.node.items.field_skill
+    - field.field.node.items.field_spirituality
+    - field.field.node.items.field_strength
+    - field.field.node.items.field_tag_realm
+    - field.field.node.items.field_value
+    - field.field.node.items.field_weapon_class
+    - field.field.node.items.field_weapon_sub_type
+    - node.type.items
+  module:
+    - comment
+    - paragraphs
+    - path
+    - text
+    - workflow
+id: node.items.default
+targetEntityType: node
+bundle: items
+mode: default
+content:
+  comment_node_items:
+    type: comment_default
+    weight: 20
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  created:
+    type: datetime_timestamp
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_absorb_type:
+    type: options_select
+    weight: 36
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_armor_absorbs:
+    type: number
+    weight: 35
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_armor_penalty:
+    type: number
+    weight: 37
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_build_points:
+    type: number
+    weight: 42
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_calc_value:
+    type: boolean_checkbox
+    weight: 18
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_character_owner:
+    type: entity_reference_autocomplete_tags
+    weight: 4
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_charisma:
+    type: number
+    weight: 148
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_creation_history:
+    type: string_textarea
+    weight: 51
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_declared_value:
+    type: string_textfield
+    weight: 16
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_dexterity:
+    type: number
+    weight: 142
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_endurance:
+    type: number
+    weight: 138
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_fixed_strength:
+    type: number
+    weight: 34
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_in_shop:
+    type: boolean_checkbox
+    weight: 14
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_intelligence:
+    type: number
+    weight: 144
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_item_charisma:
+    type: number
+    weight: 18
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_item_desc:
+    type: text_textarea
+    weight: 1
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_item_dexterity:
+    type: number
+    weight: 12
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_item_difficulty:
+    type: number
+    weight: 30
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_item_endurance:
+    type: number
+    weight: 8
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_item_evaluation:
+    type: workflow_default
+    weight: 149
+    region: content
+    settings:
+      form_mode: add
+    third_party_settings: {  }
+  field_item_history:
+    type: text_textarea
+    weight: 2
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_item_intelligence:
+    type: number
+    weight: 14
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_item_life:
+    type: number
+    weight: 6
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_item_over_charisma:
+    type: number
+    weight: 112
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_item_over_dexterity:
+    type: number
+    weight: 106
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_item_over_endurance:
+    type: number
+    weight: 102
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_item_over_intellegence:
+    type: number
+    weight: 108
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_item_over_life:
+    type: number
+    weight: 100
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_item_over_skill:
+    type: number
+    weight: 114
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_item_over_spirituality:
+    type: number
+    weight: 110
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_item_over_strength:
+    type: number
+    weight: 104
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_item_skill:
+    type: number
+    weight: 20
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_item_spent_uses:
+    type: number
+    weight: 41
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_item_spirituality:
+    type: number
+    weight: 16
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_item_strength:
+    type: number
+    weight: 10
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_item_type:
+    type: options_select
+    weight: 31
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_item_use_day:
+    type: options_select
+    weight: 39
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_item_uses:
+    type: number
+    weight: 40
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_life:
+    type: number
+    weight: 136
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_player_notes:
+    type: text_textarea
+    weight: 50
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_pp_created:
+    type: number
+    weight: 38
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_sellback:
+    type: boolean_checkbox
+    weight: 15
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_sh_notes:
+    type: text_textarea
+    weight: 48
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_sh_private_notes:
+    type: text_textarea
+    weight: 49
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_skill:
+    type: entity_reference_paragraphs
+    weight: 132
+    region: content
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
+  field_spirituality:
+    type: number
+    weight: 146
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_strength:
+    type: number
+    weight: 140
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_tag_realm:
+    type: options_select
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_value:
+    type: string_textfield
+    weight: 17
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_weapon_class:
+    type: options_select
+    weight: 32
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_weapon_sub_type:
+    type: options_select
+    weight: 33
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 30
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 120
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  uid:
+    type: entity_reference_autocomplete
+    weight: 5
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  promote: true
+  sticky: true

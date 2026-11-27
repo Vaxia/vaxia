@@ -1,0 +1,14 @@
+{#
+/**
+ * @file
+ * The main menu's links as D7 printed them (theme links__system_main_menu):
+ * one flat ul.links.inline row; vaxia.css styles #navigation a.
+ */
+#}
+{% if items %}
+  <ul{{ attributes.addClass('links', 'inline', 'clearfix') }}>
+    {% for item in items %}
+      <li class="menu-item{{ loop.first ? ' first' }}{{ loop.last ? ' last' }}{{ item.in_active_trail ? ' active-trail' }}">{{ link(item.title, item.url) }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}

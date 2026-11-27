@@ -1,0 +1,22 @@
+uuid: 2b534d12-00c6-44cc-8bd3-e817502472b3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_item_history
+    - node.type.items
+  module:
+    - text
+id: node.items.field_item_history
+field_name: field_item_history
+entity_type: node
+bundle: items
+label: History
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

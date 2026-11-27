@@ -1,0 +1,23 @@
+uuid: 787f37b6-deef-4073-baa0-706f1d7c3368
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.comment_node_rpg_chatroom
+    - field.storage.comment.field_comment_appearance
+id: comment.comment_node_rpg_chatroom.field_comment_appearance
+field_name: field_comment_appearance
+entity_type: comment
+bundle: comment_node_rpg_chatroom
+label: Appearance
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: float

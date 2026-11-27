@@ -1,0 +1,22 @@
+uuid: 1429d542-7828-474e-aba5-eec02ab5f066
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - workflow
+id: node.field_scene_evaluation
+field_name: field_scene_evaluation
+entity_type: node
+type: workflow
+settings:
+  workflow_type: scene_evaluation
+  allowed_values: {  }
+  allowed_values_function: workflow_state_allowed_values
+module: workflow
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

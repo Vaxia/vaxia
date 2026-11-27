@@ -1,0 +1,17 @@
+uuid: cb123e64-7517-4902-b280-886d7340216d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.privatemsg_tags.field_privatemsg_tag_author
+    - taxonomy.vocabulary.privatemsg_tags
+_core:
+  default_config_hash: 1A4EWrQphfO1DWf3FG0f320pmir6NhAK6wcOVFeVdG0
+id: taxonomy_term.privatemsg_tags.default
+targetEntityType: taxonomy_term
+bundle: privatemsg_tags
+mode: default
+content: {  }
+hidden:
+  description: true
+  field_privatemsg_tag_author: true

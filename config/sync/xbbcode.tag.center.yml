@@ -1,0 +1,13 @@
+uuid: 156bb407-bc15-401b-a134-b09a095522dd
+langcode: en
+status: true
+dependencies: {  }
+id: center
+label: Center
+description: 'Centered block.'
+name: center
+attached: {  }
+sample: '[{{ name }}]Text[/{{ name }}]'
+template_code: '<div style="text-align:center">{{ tag.content }}</div>'
+template_file: null
+editable: false

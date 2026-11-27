@@ -1,0 +1,18 @@
+uuid: cbe0bba0-1efe-4775-ae80-7d5af0756b08
+langcode: und
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_is_personal_room
+field_name: field_is_personal_room
+entity_type: node
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

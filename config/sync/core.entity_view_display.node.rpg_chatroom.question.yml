@@ -1,0 +1,40 @@
+uuid: cd73ce1f-724c-4445-851c-c678faca4dff
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.question
+    - field.field.node.rpg_chatroom.comment_node_rpg_chatroom
+    - field.field.node.rpg_chatroom.field_is_personal_room
+    - field.field.node.rpg_chatroom.field_locked_to_users
+    - field.field.node.rpg_chatroom.field_mature_posting
+    - field.field.node.rpg_chatroom.field_parent
+    - field.field.node.rpg_chatroom.field_private_room
+    - field.field.node.rpg_chatroom.field_room_description
+    - field.field.node.rpg_chatroom.field_tag_realm
+    - field.field.node.rpg_chatroom.field_users
+    - field.field.node.rpg_chatroom.field_wiki_source
+    - node.type.rpg_chatroom
+  module:
+    - user
+id: node.rpg_chatroom.question
+targetEntityType: node
+bundle: rpg_chatroom
+mode: question
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  comment_node_rpg_chatroom: true
+  field_is_personal_room: true
+  field_locked_to_users: true
+  field_mature_posting: true
+  field_parent: true
+  field_private_room: true
+  field_room_description: true
+  field_tag_realm: true
+  field_users: true
+  field_wiki_source: true

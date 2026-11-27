@@ -1,0 +1,15 @@
+uuid: 7fb7137e-f56a-4f38-bb5c-23c1d5dc83c3
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.notation_approval_greenie_no_strike
+    - workflow.state.notation_approval_strike_approved
+id: notation_approval_strike_approved_greenie_no_strike
+label: null
+module: workflow
+from_sid: notation_approval_strike_approved
+to_sid: notation_approval_greenie_no_strike
+roles:
+  administrator: administrator
+  lead: lead

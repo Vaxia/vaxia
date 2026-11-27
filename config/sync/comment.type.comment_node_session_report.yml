@@ -1,0 +1,8 @@
+uuid: 47d04642-fbfb-49c2-8714-5d00defe37df
+langcode: en
+status: true
+dependencies: {  }
+id: comment_node_session_report
+label: 'Session report comment'
+target_entity_type_id: node
+description: null

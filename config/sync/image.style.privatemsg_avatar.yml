@@ -1,0 +1,17 @@
+uuid: fbeb087e-6483-4bb1-bb6a-df6992ad550c
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: yg8xNmjLnd98dzKOtEkOm3w5qoQRVbecb_nVd33vPMY
+name: privatemsg_avatar
+label: 'Privatemsg Avatar (50x50)'
+effects:
+  3263cefc-06e1-4aac-be48-3301b88c18da:
+    uuid: 3263cefc-06e1-4aac-be48-3301b88c18da
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 50
+      height: 50
+      anchor: center-center

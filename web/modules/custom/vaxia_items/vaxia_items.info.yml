@@ -1,0 +1,9 @@
+name: VAXIA items
+type: module
+description: 'Character items: evaluation, value, the item list on characters, the shop, item dice, uses, weapons and companions. Replaces D7 items, item_shop, item_dice, item_uses, item_weapons, item_companions, item_helper.'
+package: VAXIA
+core_version_requirement: ^11
+dependencies:
+  - vaxia_core:vaxia_core
+  - vaxia_dice:vaxia_dice
+  - vaxia_characters:vaxia_characters

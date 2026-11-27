@@ -1,0 +1,25 @@
+uuid: 3dbc9b4c-66a3-49ac-909b-b450e551c734
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_percentage
+    - taxonomy.vocabulary.weapon_category
+id: taxonomy_term.weapon_category.field_percentage
+field_name: field_percentage
+entity_type: taxonomy_term
+bundle: weapon_category
+label: Percentage
+description: "The percentage bonus for the weapon's damage calculations."
+required: true
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

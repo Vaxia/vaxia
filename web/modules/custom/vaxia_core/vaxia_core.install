@@ -1,0 +1,71 @@
+<?php
+
+/**
+ * @file
+ * Schema for character XP. Same tables and columns as D7's character_sheet
+ * (character_sheet_xp, character_sheet_log) and vaxia (vaxia_xp_type_totals),
+ * so the Phase 3 migration copies rows across.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function vaxia_core_schema() {
+  $schema['character_sheet_xp'] = [
+    'description' => 'XP pools per character: xp, spent_xp, bxp, rxp, kxp.',
+    'fields' => [
+      'nid' => ['type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE, 'default' => 0],
+      'type' => ['type' => 'varchar', 'length' => 32, 'not null' => TRUE, 'default' => 'xp'],
+      'xp' => ['type' => 'float', 'not null' => TRUE, 'default' => 0],
+    ],
+    'primary key' => ['nid', 'type'],
+  ];
+  $schema['character_sheet_log'] = [
+    'description' => 'Character sheet change log.',
+    'fields' => [
+      'lid' => ['type' => 'serial', 'unsigned' => TRUE, 'not null' => TRUE],
+      'nid' => ['type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE, 'default' => 0],
+      'uid' => ['type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE, 'default' => 0],
+      'type' => ['type' => 'varchar', 'length' => 32, 'not null' => TRUE, 'default' => ''],
+      'message' => ['type' => 'text', 'size' => 'big', 'not null' => TRUE],
+      'hostname' => ['type' => 'varchar', 'length' => 128, 'not null' => TRUE, 'default' => ''],
+      'timestamp' => ['type' => 'int', 'not null' => TRUE, 'default' => 0],
+    ],
+    'primary key' => ['lid'],
+    'indexes' => ['nid' => ['nid']],
+  ];
+  $schema['vaxia_xp_type_totals'] = [
+    'description' => 'Flavour XP earned per character (warrior, mage...).',
+    'fields' => [
+      'nid' => ['type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE, 'default' => 0],
+      'type' => ['type' => 'varchar', 'length' => 64, 'not null' => TRUE, 'default' => ''],
+      'xp' => ['type' => 'float', 'not null' => TRUE, 'default' => 0],
+    ],
+    'primary key' => ['nid', 'type'],
+  ];
+  $schema['vaxia_quiz_result'] = [
+    'description' => 'Quiz attempts (D7 quiz_node_results): quizzes are scored webforms.',
+    'fields' => [
+      'rid' => ['type' => 'serial', 'unsigned' => TRUE, 'not null' => TRUE],
+      'nid' => ['type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE, 'default' => 0],
+      'uid' => ['type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE, 'default' => 0],
+      'sid' => ['type' => 'int', 'unsigned' => TRUE, 'not null' => FALSE, 'description' => 'Webform submission, if taken on the site.'],
+      'score' => ['type' => 'float', 'not null' => TRUE, 'default' => 0],
+      'passed' => ['type' => 'int', 'size' => 'tiny', 'not null' => TRUE, 'default' => 0],
+      'time_end' => ['type' => 'int', 'not null' => TRUE, 'default' => 0],
+    ],
+    'primary key' => ['rid'],
+    'indexes' => ['nid_uid' => ['nid', 'uid']],
+  ];
+  return $schema;
+}
+
+/**
+ * Adds the quiz results table.
+ */
+function vaxia_core_update_11001() {
+  $schema = \Drupal::database()->schema();
+  if (!$schema->tableExists('vaxia_quiz_result')) {
+    $schema->createTable('vaxia_quiz_result', vaxia_core_schema()['vaxia_quiz_result']);
+  }
+}

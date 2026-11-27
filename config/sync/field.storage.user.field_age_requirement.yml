@@ -1,0 +1,18 @@
+uuid: 7b921845-b986-43d9-9e98-7d986db8a866
+langcode: und
+status: true
+dependencies:
+  module:
+    - user
+id: user.field_age_requirement
+field_name: field_age_requirement
+entity_type: user
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

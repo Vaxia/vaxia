@@ -1,0 +1,23 @@
+uuid: 0fe26bc4-828d-4e62-b8d5-31cd7b790bf3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_is_personal_room
+    - node.type.rpg_chatroom
+id: node.rpg_chatroom.field_is_personal_room
+field_name: field_is_personal_room
+entity_type: node
+bundle: rpg_chatroom
+label: 'Personal room'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'This is a personal room owned by a character.'
+  off_label: 'This is NOT a personal room owned by a character.'
+field_type: boolean

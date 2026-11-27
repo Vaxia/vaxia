@@ -1,0 +1,11 @@
+_core:
+  default_config_hash: sH-ryrmuOe7Tl38nE4jO5AVSoh6SepREuaj4ghlvEyg
+rpg_chat_types:
+  - rpg_chatroom
+archives_flat_file_path: ''
+archives_date: '12 months'
+archives_cron: false
+room_cleanup_date: '12 months'
+room_cleanup_cron: true
+personal_rooms_fields_edit: ''
+personal_rooms_fields_view: ''

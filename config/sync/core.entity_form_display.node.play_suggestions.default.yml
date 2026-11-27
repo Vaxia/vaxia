@@ -1,0 +1,68 @@
+uuid: 393199af-786c-426e-8915-e2dc7fc8b4a7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.play_suggestions.comment_node_play_suggestions
+    - field.field.node.play_suggestions.field_tag_realm
+    - node.type.play_suggestions
+  module:
+    - comment
+    - path
+id: node.play_suggestions.default
+targetEntityType: node
+bundle: play_suggestions
+mode: default
+content:
+  comment_node_play_suggestions:
+    type: comment_default
+    weight: 20
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  created:
+    type: datetime_timestamp
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tag_realm:
+    type: options_select
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 30
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 120
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  uid:
+    type: entity_reference_autocomplete
+    weight: 5
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  promote: true
+  sticky: true

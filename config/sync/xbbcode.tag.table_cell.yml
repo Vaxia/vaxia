@@ -1,0 +1,13 @@
+uuid: 37895ade-3684-47f7-8716-6931163690bb
+langcode: en
+status: true
+dependencies: {  }
+id: table_cell
+label: 'Table cell'
+description: 'Table cell.'
+name: td
+attached: {  }
+sample: '[{{ name }}]Text[/{{ name }}]'
+template_code: '<td valign="top">{{ tag.content }}</td>'
+template_file: null
+editable: false

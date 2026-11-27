@@ -1,0 +1,25 @@
+uuid: 2cdd003c-303b-485a-b0f7-829a3eaa28f4
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_multi_action_mod
+    - taxonomy.vocabulary.weapon_category
+id: taxonomy_term.weapon_category.field_multi_action_mod
+field_name: field_multi_action_mod
+entity_type: taxonomy_term
+bundle: weapon_category
+label: 'Multi Action Mod'
+description: 'The multiple action modifier for the weapon.'
+required: true
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

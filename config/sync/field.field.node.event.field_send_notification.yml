@@ -1,0 +1,23 @@
+uuid: 297b32ed-e9d4-4590-9b82-d4e8a6ce89ba
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_send_notification
+    - node.type.event
+id: node.event.field_send_notification
+field_name: field_send_notification
+entity_type: node
+bundle: event
+label: 'Send social media notification?'
+description: 'Send a notification about this event to Social Media accounts. (Twitter and Tumblr.) If in doubt, leave unchecked. Abuse of this feature can result in your account being suspended.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'yes'
+  off_label: 'no'
+field_type: boolean

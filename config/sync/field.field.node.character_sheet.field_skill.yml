@@ -1,0 +1,34 @@
+uuid: a066b8cf-4a20-41d2-8e10-8ce0cef44296
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_skill
+    - node.type.character_sheet
+    - paragraphs.paragraphs_type.skill
+  module:
+    - entity_reference_revisions
+id: node.character_sheet.field_skill
+field_name: field_skill
+entity_type: node
+bundle: character_sheet
+label: Skill
+description: '<br>Skill aspects determine what your skill can do in our system: see <a href="/wiki/skills-and-aspects" target="_blank">Skills and Aspects</a>. Science Fiction technology skills only: select two technical contexts to be familiar with (skills start with two "proficient" contexts).<br>'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      skill: skill
+    negate: 0
+    target_bundles_drag_drop:
+      skill:
+        weight: 1
+        enabled: true
+      tech_languages:
+        weight: 2
+        enabled: false
+field_type: entity_reference_revisions

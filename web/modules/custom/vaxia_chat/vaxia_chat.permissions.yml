@@ -1,0 +1,35 @@
+administer rpg chat:
+  title: 'Administer RPG chat'
+  description: 'Administer RPG chat configurations.'
+view rpg chat:
+  title: 'View RPG chat'
+  description: 'View RPG chat conversations.'
+view vaxia ic chat:
+  title: 'View Vaxia IC chat'
+  description: 'View Vaxia IC chat conversations.'
+bypass vaxia ic chat:
+  title: 'Bypass Vaxia IC chat limits'
+  description: 'View Vaxia IC chat conversations even if not normally allowed.'
+view comment revisions:
+  title: 'View chat post revisions'
+view comment revisions diffs:
+  title: 'View revision diffs'
+  restrict access: true
+search old archives:
+  title: 'Search old archives'
+administer old archives:
+  title: 'Administer old archives'
+  restrict access: true
+make room from wiki:
+  title: 'Make room from wiki'
+administer room cleanup:
+  title: 'Administer room cleanup'
+  restrict access: true
+edit personal_rooms:
+  title: 'Edit personal rooms'
+  description: 'Edit the allowed fields of your characters'' personal rooms.'
+admin personal_rooms:
+  title: 'Admin personal rooms'
+  restrict access: true
+use background changer:
+  title: 'Use the background changer javascript'

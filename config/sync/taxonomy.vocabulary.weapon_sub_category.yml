@@ -1,0 +1,9 @@
+uuid: c99b511e-c749-48f5-b5fb-203e7369aa56
+langcode: en
+status: true
+dependencies: {  }
+name: 'Weapon Sub-category'
+vid: weapon_sub_category
+description: null
+weight: 0
+new_revision: false

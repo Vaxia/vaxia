@@ -1,0 +1,16 @@
+uuid: f04ff18d-d6b7-41aa-8bad-13fd97463cd2
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.character_evaluation
+  module:
+    - vaxia_storyhosts
+    - workflow
+id: eligible_for_sh
+label: 'eligible for SH'
+weight: 14
+is_admin: false
+permissions:
+  - 'create character_evaluation workflow_transition'
+  - 'view session qualify'

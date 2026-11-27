@@ -1,0 +1,19 @@
+uuid: 01944338-e2c5-4347-912c-ea622dfc8e33
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_titles
+    - node.type.character_sheet
+id: node.character_sheet.field_titles
+field_name: field_titles
+entity_type: node
+bundle: character_sheet
+label: Titles
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

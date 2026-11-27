@@ -1,0 +1,23 @@
+uuid: fc233ba2-ecc0-40be-a973-bc72772b607e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_has_goals
+    - node.type.wiki_page
+id: node.wiki_page.field_has_goals
+field_name: field_has_goals
+entity_type: node
+bundle: wiki_page
+label: 'Has goals'
+description: 'Check this checkbox if this organization is meant to be included in the organization goal system for automatic setting plots.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'This organization HAS goals'
+  off_label: 'This organization does NOT have goals'
+field_type: boolean

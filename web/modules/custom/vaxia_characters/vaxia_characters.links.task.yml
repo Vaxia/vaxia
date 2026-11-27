@@ -1,0 +1,18 @@
+vaxia_characters.gallery:
+  route_name: vaxia_characters.gallery
+  base_route: vaxia_characters.gallery
+  title: 'Art'
+vaxia_characters.art_mine:
+  route_name: vaxia_characters.art_mine
+  base_route: vaxia_characters.gallery
+  title: 'My art'
+  weight: 1
+vaxia_characters.npc_list:
+  route_name: vaxia_characters.npc_list
+  base_route: vaxia_core.character_sheets_all
+  title: 'NPCs'
+  weight: 1
+vaxia_characters.oversight:
+  route_name: vaxia_characters.oversight
+  base_route: vaxia_characters.oversight
+  title: 'Oversight NPCs'

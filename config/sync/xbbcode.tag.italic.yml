@@ -1,0 +1,18 @@
+uuid: d4a3ac87-530e-41b8-8be6-711274a9533b
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - xbbcode_standard
+_core:
+  default_config_hash: ftN7UKUeeRew9k7CNCT4xShIgmVgB1hkGlYKYy-ppPk
+id: italic
+label: Italic
+description: 'Italicizes text'
+name: i
+attached: {  }
+sample: '[{{ name }}]Italic[/{{ name }}]'
+template_code: '<em>{{ tag.content }}</em>'
+template_file: null
+editable: false

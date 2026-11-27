@@ -1,0 +1,56 @@
+<?php
+
+/**
+ * @file
+ * Room tables, as D7's rpg_chat had them (rows migrate as is).
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function vaxia_chat_schema() {
+  $schema['rpg_chat_room_users'] = [
+    'description' => 'Who has the room open (last refresh).',
+    'fields' => [
+      'nid' => ['type' => 'int', 'not null' => TRUE, 'default' => 0],
+      'uid' => ['type' => 'int', 'not null' => TRUE, 'default' => 0],
+      'timestamp' => ['type' => 'int', 'not null' => TRUE, 'default' => 0],
+    ],
+    'primary key' => ['nid', 'uid'],
+  ];
+  $schema['rpg_chat_room'] = [
+    'description' => 'Chat settings per room.',
+    'fields' => [
+      'nid' => ['type' => 'int', 'not null' => TRUE, 'default' => 0],
+      'min_refresh' => ['type' => 'int', 'not null' => TRUE, 'default' => 60],
+      'mature' => ['type' => 'int', 'size' => 'tiny', 'not null' => TRUE, 'default' => 0],
+      'locked' => ['type' => 'int', 'size' => 'tiny', 'not null' => TRUE, 'default' => 0],
+      'allowed_users' => ['type' => 'text', 'size' => 'big', 'not null' => TRUE],
+      'banned_users' => ['type' => 'text', 'size' => 'big', 'not null' => TRUE],
+    ],
+    'primary key' => ['nid'],
+  ];
+  $schema['vaxia_chat_post_revision'] = [
+    'description' => 'Every saved version of a chat post (D7 comment_revision).',
+    'fields' => [
+      'vid' => ['type' => 'serial', 'unsigned' => TRUE, 'not null' => TRUE],
+      'cid' => ['type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE, 'default' => 0],
+      'uid' => ['description' => 'Who saved this version.', 'type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE, 'default' => 0],
+      'timestamp' => ['type' => 'int', 'not null' => TRUE, 'default' => 0],
+      'subject' => ['type' => 'varchar', 'length' => 64, 'not null' => TRUE, 'default' => ''],
+      'body' => ['type' => 'text', 'size' => 'big', 'not null' => FALSE],
+      'format' => ['type' => 'varchar', 'length' => 255, 'not null' => FALSE],
+    ],
+    'primary key' => ['vid'],
+    'indexes' => ['cid' => ['cid']],
+  ];
+  return $schema;
+}
+
+/**
+ * Adds the chat post edit history table.
+ */
+function vaxia_chat_update_11001() {
+  $schema = vaxia_chat_schema();
+  \Drupal::database()->schema()->createTable('vaxia_chat_post_revision', $schema['vaxia_chat_post_revision']);
+}

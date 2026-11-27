@@ -1,0 +1,12 @@
+# VAXIA custom modules the D11 test site must have enabled (HarnessTest).
+# Add each module here as it is ported (Phase 4).
+vaxia_core
+vaxia_dice
+vaxia_chat
+vaxia_items
+vaxia_characters
+vaxia_conduct
+vaxia_storyhosts
+vaxia_governance
+vaxia_wiki
+vaxia_events

@@ -1,0 +1,40 @@
+uuid: e2478722-1a29-4a49-82a4-1ad15256afcf
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.question
+    - field.field.node.organization_goal.comment_node_organization_goal
+    - field.field.node.organization_goal.field_current_pp
+    - field.field.node.organization_goal.field_first_stat
+    - field.field.node.organization_goal.field_org_goal
+    - field.field.node.organization_goal.field_organization
+    - field.field.node.organization_goal.field_priority
+    - field.field.node.organization_goal.field_second_stat
+    - field.field.node.organization_goal.field_target
+    - field.field.node.organization_goal.field_target_government
+    - field.field.node.organization_goal.field_target_stat
+    - node.type.organization_goal
+  module:
+    - user
+id: node.organization_goal.question
+targetEntityType: node
+bundle: organization_goal
+mode: question
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  comment_node_organization_goal: true
+  field_current_pp: true
+  field_first_stat: true
+  field_org_goal: true
+  field_organization: true
+  field_priority: true
+  field_second_stat: true
+  field_target: true
+  field_target_government: true
+  field_target_stat: true

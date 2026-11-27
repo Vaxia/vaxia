@@ -1,0 +1,14 @@
+uuid: f1d52dc0-6bc4-4626-ac52-345748dfd391
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.character_evaluation_disapproved
+    - workflow.state.character_evaluation_submitted
+id: character_evaluation_disapproved_submitted
+label: null
+module: workflow
+from_sid: character_evaluation_disapproved
+to_sid: character_evaluation_submitted
+roles:
+  administrator: administrator

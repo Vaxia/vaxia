@@ -1,0 +1,57 @@
+uuid: 6fea5685-9992-4459-9152-1818bc1f7de0
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_scifi_languages
+field_name: field_scifi_languages
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: standard_knw
+      label: 'Standard (known)'
+    -
+      value: standard_nat
+      label: 'Standard (native)'
+    -
+      value: spacer_knw
+      label: 'Spacer cant (known)'
+    -
+      value: spacer_nat
+      label: 'Spacer cant (native)'
+    -
+      value: colonial_knw
+      label: 'Colonial creole (known)'
+    -
+      value: colonial_nat
+      label: 'Colonial creole (native)'
+    -
+      value: binary_knw
+      label: 'Machine code (spoken binary) (known)'
+    -
+      value: binary_nat
+      label: 'Machine code (spoken binary) (native)'
+    -
+      value: xeno_sign_knw
+      label: 'Xeno sign (known)'
+    -
+      value: xeno_sign_nat
+      label: 'Xeno sign (native)'
+    -
+      value: old_earth_knw
+      label: 'Old Earth tongues (known)'
+    -
+      value: old_earth_nat
+      label: 'Old Earth tongues (native)'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

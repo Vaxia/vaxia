@@ -1,0 +1,32 @@
+uuid: 505d7290-f27d-4b21-867c-20d7be8bc78b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_item_type
+    - node.type.items
+    - taxonomy.vocabulary.item_type
+  module:
+    - vaxia_core
+third_party_settings:
+  vaxia_core:
+    d7_default_ids:
+      - 909
+id: node.items.field_item_type
+field_name: field_item_type
+entity_type: node
+bundle: items
+label: 'Item type'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: vaxia_core_d7_reference_default
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      item_type: item_type
+    sort:
+      field: _none
+field_type: entity_reference

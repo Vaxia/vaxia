@@ -1,0 +1,7 @@
+name: VAXIA events
+type: module
+description: 'Site events (reminders, calendar, event list, iCal) and the wiki timeline. Replaces D7 site_events and timeline_events.'
+package: VAXIA
+core_version_requirement: ^11
+dependencies:
+  - vaxia_core:vaxia_core

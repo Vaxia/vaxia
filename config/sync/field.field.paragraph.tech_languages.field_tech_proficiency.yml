@@ -1,0 +1,21 @@
+uuid: ddb658ac-272c-4a33-87d5-33eee6e8ee4a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_tech_proficiency
+    - paragraphs.paragraphs_type.tech_languages
+  module:
+    - options
+id: paragraph.tech_languages.field_tech_proficiency
+field_name: field_tech_proficiency
+entity_type: paragraph
+bundle: tech_languages
+label: Proficiency
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

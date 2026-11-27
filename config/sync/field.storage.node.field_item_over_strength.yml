@@ -1,0 +1,18 @@
+uuid: de12b925-bea9-4a18-b135-52dcb5820c17
+langcode: und
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_item_over_strength
+field_name: field_item_over_strength
+entity_type: node
+type: float
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

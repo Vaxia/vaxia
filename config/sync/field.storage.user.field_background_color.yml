@@ -1,0 +1,30 @@
+uuid: b4351412-2e55-4425-a45d-b4c10c008cf2
+langcode: und
+status: true
+dependencies:
+  module:
+    - options
+    - user
+id: user.field_background_color
+field_name: field_background_color
+entity_type: user
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: '555555'
+      label: grey
+    -
+      value: '222222'
+      label: dark
+    -
+      value: '888888'
+      label: light
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

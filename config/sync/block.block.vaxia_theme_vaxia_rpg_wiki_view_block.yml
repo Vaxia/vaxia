@@ -1,0 +1,29 @@
+uuid: 088d05b1-ef38-4683-a247-521552c66f4b
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+    - vaxia_core
+  theme:
+    - vaxia_theme
+id: vaxia_theme_vaxia_rpg_wiki_view_block
+theme: vaxia_theme
+region: content
+weight: -51
+provider: null
+plugin: vaxia_rpg_wiki_view-block
+settings:
+  id: vaxia_rpg_wiki_view-block
+  label: 'Vaxia RPG Wiki View'
+  label_display: '0'
+  provider: vaxia_core
+visibility:
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      administrator: administrator
+      player: player

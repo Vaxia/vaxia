@@ -1,0 +1,14 @@
+uuid: 9d3a232f-724a-48d4-8857-157a61af11a4
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.eligible_for_sh
+  module:
+    - user
+id: user_add_role_action.eligible_for_sh
+label: 'Add the eligible for SH role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: eligible_for_sh

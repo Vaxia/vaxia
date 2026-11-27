@@ -1,0 +1,16 @@
+uuid: 52fcc7c2-7f94-4a9b-a631-dc6fe7161a69
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.item_evaluation_needs_daily_refresh
+id: item_evaluation_needs_daily_refresh_needs_daily_refresh
+label: null
+module: workflow
+from_sid: item_evaluation_needs_daily_refresh
+to_sid: item_evaluation_needs_daily_refresh
+roles:
+  authenticated: authenticated
+  workflow_author: workflow_author
+  administrator: administrator
+  storyteller: storyteller

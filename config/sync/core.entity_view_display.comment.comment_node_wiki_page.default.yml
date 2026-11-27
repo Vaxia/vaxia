@@ -1,0 +1,27 @@
+uuid: 4180c66d-1df4-470f-8748-808e82e05577
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.comment_node_wiki_page
+    - field.field.comment.comment_node_wiki_page.comment_body
+  module:
+    - text
+id: comment.comment_node_wiki_page.default
+targetEntityType: comment
+bundle: comment_node_wiki_page
+mode: default
+content:
+  comment_body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden: {  }

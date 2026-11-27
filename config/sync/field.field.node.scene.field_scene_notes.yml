@@ -1,0 +1,25 @@
+uuid: 85bee092-d639-40fd-9d24-020fb893e15d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_scene_notes
+    - node.type.scene
+  module:
+    - text
+id: node.scene.field_scene_notes
+field_name: field_scene_notes
+entity_type: node
+bundle: scene
+label: Notes
+description: 'Extra information for the reviewer.'
+required: false
+translatable: false
+default_value:
+  -
+    value: ''
+    format: wiki
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

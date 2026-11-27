@@ -1,0 +1,89 @@
+uuid: 87d56fd3-0a70-4ba0-8bdd-59d6e2a4abb5
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.multichoice
+    - node.type.notation
+    - node.type.organization_goal
+    - node.type.quiz
+    - node.type.strike
+    - node.type.timeline_event
+    - node.type.webform
+    - workflow.workflow.art_evaluation
+    - workflow.workflow.character_evaluation
+    - workflow.workflow.event_status
+    - workflow.workflow.notation_approval
+    - workflow.workflow.wiki_workflow
+  module:
+    - node
+    - system
+    - vaxia_characters
+    - vaxia_chat
+    - vaxia_core
+    - vaxia_governance
+    - vaxia_items
+    - vaxia_storyhosts
+    - vaxia_wiki
+    - webform_node
+    - workflow
+id: lead
+label: lead
+weight: 7
+is_admin: false
+permissions:
+  - 'access any event_status workflow_transion overview'
+  - 'access any notation_approval workflow_transion overview'
+  - 'access site in maintenance mode'
+  - 'administrate role application'
+  - 'bypass vaxia ic chat'
+  - 'can go on vacation'
+  - 'create art_evaluation workflow_transition'
+  - 'create character_evaluation workflow_transition'
+  - 'create event_status workflow_transition'
+  - 'create multichoice content'
+  - 'create notation content'
+  - 'create notation_approval workflow_transition'
+  - 'create organization_goal content'
+  - 'create quiz content'
+  - 'create strike content'
+  - 'create timeline_event content'
+  - 'create webform content'
+  - 'create wiki_workflow workflow_transition'
+  - 'delete any multichoice content'
+  - 'delete any organization_goal content'
+  - 'delete any quiz content'
+  - 'delete any timeline_event content'
+  - 'delete own multichoice content'
+  - 'delete own organization_goal content'
+  - 'delete own quiz content'
+  - 'delete own timeline_event content'
+  - 'edit any multichoice content'
+  - 'edit any notation content'
+  - 'edit any organization_goal content'
+  - 'edit any quiz content'
+  - 'edit any strike content'
+  - 'edit any timeline_event content'
+  - 'edit any webform content'
+  - 'edit locked site wiki'
+  - 'edit own multichoice content'
+  - 'edit own notation content'
+  - 'edit own organization_goal content'
+  - 'edit own quiz content'
+  - 'edit own strike content'
+  - 'edit own timeline_event content'
+  - 'edit own webform content'
+  - 'make room from wiki'
+  - 'score any quiz'
+  - 'set item for shop'
+  - 'use justice form'
+  - 'view all scenes'
+  - 'view any unpublished wiki_page content'
+  - 'view character sheet log'
+  - 'view comment revisions'
+  - 'view comment revisions diffs'
+  - 'view others accounts'
+  - 'view reputation xp'
+  - 'view role application'
+  - 'view session notes'
+  - 'view webform submissions own node'

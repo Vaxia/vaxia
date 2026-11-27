@@ -1,0 +1,18 @@
+uuid: 33b7b2c5-fb21-4707-b820-84fa255e77a5
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - xbbcode_standard
+_core:
+  default_config_hash: vV3gC9G-SBe6JzIGF51_tqbd5hrwfYbGxi576kJaFps
+id: color
+label: Color
+description: 'Text color: [color=red] or [color=#ff0000].'
+name: color
+attached: {  }
+sample: '[{{ name }}=red]Red[/{{ name }}]'
+template_code: '{% if tag.option matches ''{^[#A-Za-z0-9_]+$}'' %}<span style="color:{{ tag.option }}">{{ tag.content }}</span>{% else %}{{ tag.outerSource }}{% endif %}'
+template_file: null
+editable: false

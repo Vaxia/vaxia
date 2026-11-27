@@ -1,0 +1,253 @@
+# VAXIA CircleCI configuration: runs the black-box test suite in tests/
+# against the Drupal 11 site, in Docker Compose (tests/docker-d11) exactly as
+# it runs locally, so jobs use the machine executor.
+#
+# A setup job builds the web image, runs composer, installs the test site from
+# config/sync and snapshots it (tests/.build/d11-baseline.sql); test_runner
+# boxes load that image and snapshot and split the test files between them.
+# Each test class restores the snapshot, so files are independent.
+#
+# The D7 site and its CI live on the 7.x-1.x branch.
+version: 2.1
+
+# Run types, chosen when triggering a pipeline (Trigger Pipeline > Add
+# Parameter > string "RUN"). IMPORTANT: capitalisation matters.
+parameters:
+    RUN:
+        type: enum
+        description: "Which tests to run. Default: the pull request set."
+        default: "PULLREQUEST"
+        enum: ["PULLREQUEST", "FULLSET", "KNOWNBUG", "DEBUG"]
+    GROUP:
+        type: string
+        description: "PHPUnit group to run in DEBUG (a module name, e.g. strikes)."
+        default: ""
+    BOXES:
+        type: integer
+        description: "Number of boxes to run in DEBUG."
+        default: 1
+
+executors:
+    vaxia_machine:
+        machine:
+            image: ubuntu-2204:current
+        resource_class: medium
+
+commands:
+    # Starts the database and the web container from the image setup saved.
+    start_stack:
+        steps:
+            - attach_workspace:
+                at: ~/
+            - run:
+                name: Load Web Image
+                command: |
+                    gunzip -c ~/images/vaxia-d11-web.tar.gz | docker load
+            - run:
+                name: Start Docker Stack
+                command: |
+                    cd tests/docker-d11
+                    docker compose up -d --no-build db web
+                    for i in $(seq 1 90); do
+                        docker compose exec -T web mariadb-admin ping -h db -uvaxia -pvaxia --silent >/dev/null 2>&1 && exit 0
+                        sleep 2
+                    done
+                    docker compose logs db
+                    exit 1
+
+jobs:
+
+    # Setup: build the web image, composer install (cached), lint the custom
+    # code, install the test site and snapshot it; persist all of it.
+    setup:
+        executor: vaxia_machine
+        steps:
+            - checkout
+            - restore_cache:
+                keys:
+                    - v2-vaxia-composer-{{ checksum "composer.lock" }}
+            - run:
+                name: Build and Start Stack
+                command: |
+                    cd tests/docker-d11
+                    docker compose build web
+                    docker compose up -d db web
+                    for i in $(seq 1 90); do
+                        docker compose exec -T web mariadb-admin ping -h db -uvaxia -pvaxia --silent >/dev/null 2>&1 && exit 0
+                        sleep 2
+                    done
+                    docker compose logs db
+                    exit 1
+            - run:
+                name: Install Test Site From Config
+                no_output_timeout: 30m
+                command: |
+                    mkdir -p tests/.build/ci-out/setup
+                    cd tests/docker-d11
+                    ./install.sh 2>&1 | tee ../.build/ci-out/setup/install.log
+                    test -s ../.build/d11-baseline.sql
+            - save_cache:
+                key: v2-vaxia-composer-{{ checksum "composer.lock" }}
+                paths:
+                    - vendor
+                    - web/core
+                    - web/modules/contrib
+                    - web/themes/contrib
+                    - web/libraries
+            - run:
+                name: Lint Custom Code
+                command: |
+                    cd tests/docker-d11
+                    docker compose exec -T web bash -c 'cd /var/www/vaxia && find web/modules/custom web/themes/custom scripts \( -name "*.php" -o -name "*.module" -o -name "*.inc" -o -name "*.install" -o -name "*.theme" \) -print0 | xargs -0 -n 50 -P 4 php -l | grep -v "^No syntax errors" || true' | tee ../.build/ci-out/setup/lint.log
+                    ! grep -q "Parse error\|Fatal error" ../.build/ci-out/setup/lint.log
+            - run:
+                name: Harness Check
+                command: |
+                    tests/run-tests.sh --log-junit /var/www/tests/.build/ci-out/setup/harness.xml modules/_harness
+            - run:
+                name: Save Web Image
+                command: |
+                    mkdir -p ~/images
+                    docker save vaxia-d11-web | gzip > ~/images/vaxia-d11-web.tar.gz
+            - store_test_results:
+                path: tests/.build/ci-out/setup
+            - store_artifacts:
+                path: tests/.build/ci-out/setup
+                destination: setup
+            - persist_to_workspace:
+                root: ~/
+                paths:
+                    - project
+                    - images
+
+    test_runner:
+        executor: vaxia_machine
+        parameters:
+            parallel_boxes:
+                description: "How many parallel boxes to set up"
+                default: 1
+                type: integer
+            include_groups:
+                description: "Groups to include (empty: all)"
+                default: ""
+                type: string
+            test_path:
+                description: "Subpath of tests/modules to run, start with a slash (e.g. /rpg)."
+                default: ""
+                type: string
+            timing_balance:
+                description: "Split by historical timing data instead of round robin."
+                default: true
+                type: boolean
+        parallelism: << parameters.parallel_boxes >>
+        steps:
+            - start_stack
+            - run:
+                name: Run Tests
+                no_output_timeout: 30m
+                command: |
+                    OUT=tests/.build/ci-out/$CIRCLE_JOB-$CIRCLE_NODE_INDEX
+                    mkdir -p "$OUT/junit"
+                    PHPUNIT_GRP=""
+                    if [ -n "<< parameters.include_groups >>" ]; then
+                        PHPUNIT_GRP="--group << parameters.include_groups >>"
+                    fi
+                    # Paths as the container sees them, so names match the junit timings.
+                    TEST_LIST=()
+                    if [ "<< parameters.timing_balance >>" = true ]; then
+                        echo "USING historical timing data"
+                        OLDIFS=$IFS
+                        IFS=$'\n'
+                        TEST_LIST=( $(cd tests && find "modules<< parameters.test_path >>" -name '*Test.php' | sort | sed 's#^#/var/www/tests/#' | circleci tests split --split-by=timings --timings-type=filename --time-default=30s) )
+                        IFS=$OLDIFS
+                    else
+                        echo "USING round robin"
+                        TEST_INDEX=0
+                        while IFS= read -r f; do
+                            if [ $((TEST_INDEX % CIRCLE_NODE_TOTAL)) -eq "$CIRCLE_NODE_INDEX" ]; then
+                                TEST_LIST+=("/var/www/tests/$f")
+                            fi
+                            TEST_INDEX=$((TEST_INDEX + 1))
+                        done < <(cd tests && find "modules<< parameters.test_path >>" -name '*Test.php' | sort)
+                    fi
+                    echo "This box runs ${#TEST_LIST[@]} test files."
+                    FAILED_YET=0
+                    N=0
+                    for TEST_FILE in "${TEST_LIST[@]}"; do
+                        N=$((N + 1))
+                        REL=${TEST_FILE#/var/www/tests/}
+                        JUNIT="/var/www/tests/.build/ci-out/$CIRCLE_JOB-$CIRCLE_NODE_INDEX/junit/$N-$(basename "$TEST_FILE" .php).xml"
+                        echo ""
+                        echo "Running: $REL $PHPUNIT_GRP"
+                        tests/run-tests.sh --log-junit "$JUNIT" $PHPUNIT_GRP "$REL" || FAILED_YET=1
+                        # run-tests.sh starts a fresh php-errors.log each run; keep them all.
+                        if [ -f tests/.build/php-errors.log ]; then
+                            cat tests/.build/php-errors.log >> "$OUT/php-errors.log"
+                        fi
+                    done
+                    exit $FAILED_YET
+            - store_test_results:
+                path: tests/.build/ci-out
+            - store_artifacts:
+                path: tests/.build/ci-out
+                destination: results
+
+workflows:
+
+    ###################
+    # PR test - the default for pull requests and pushes.
+    ###################
+    vaxia_pr_test:
+        when:
+            equal: [PULLREQUEST, << pipeline.parameters.RUN >>]
+        jobs:
+            - setup
+            - test_runner:
+                name: test_runner_modules
+                parallel_boxes: 4
+                requires:
+                    - setup
+
+    ###################
+    # SUBSET tests - triggered with the RUN pipeline parameter.
+    ###################
+
+    # Everything, spread wider (also picks up new timing data).
+    vaxia_fullset_test:
+        when:
+            equal: [FULLSET, << pipeline.parameters.RUN >>]
+        jobs:
+            - setup
+            - test_runner:
+                name: test_runner_fullset
+                parallel_boxes: 8
+                timing_balance: false
+                requires:
+                    - setup
+
+    # Only the tests that pin bugs the D7 site had (fixed in Drupal 11).
+    vaxia_knownbug_test:
+        when:
+            equal: [KNOWNBUG, << pipeline.parameters.RUN >>]
+        jobs:
+            - setup
+            - test_runner:
+                name: test_runner_knownbug
+                include_groups: knownbug
+                timing_balance: false
+                requires:
+                    - setup
+
+    # One PHPUnit group (GROUP), on BOXES boxes.
+    vaxia_debug_test:
+        when:
+            equal: [DEBUG, << pipeline.parameters.RUN >>]
+        jobs:
+            - setup
+            - test_runner:
+                name: test_runner_debug
+                parallel_boxes: << pipeline.parameters.BOXES >>
+                include_groups: << pipeline.parameters.GROUP >>
+                timing_balance: false
+                requires:
+                    - setup

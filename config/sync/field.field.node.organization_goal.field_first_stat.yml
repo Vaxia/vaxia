@@ -1,0 +1,23 @@
+uuid: d2b38786-9d5d-4572-a3ce-9916d03d21a5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_first_stat
+    - node.type.organization_goal
+  module:
+    - options
+id: node.organization_goal.field_first_stat
+field_name: field_first_stat
+entity_type: node
+bundle: organization_goal
+label: 'First Stat'
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: members
+default_value_callback: ''
+settings: {  }
+field_type: list_string

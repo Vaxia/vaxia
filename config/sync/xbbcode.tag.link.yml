@@ -1,0 +1,18 @@
+uuid: 89630264-8bdb-4d7e-803d-b82a2036520b
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - xbbcode_standard
+_core:
+  default_config_hash: E3bBOYSPmfNuMOR10SJYwqXhiQzAL0Gyz6vFRtNc7qM
+id: link
+label: Hyperlink
+description: 'Link: [url]http://...[/url] or [url=http://...]text[/url]; www. gets http://.'
+name: url
+attached: {  }
+sample: '[{{ name }}=https://www.drupal.org/]Drupal[/{{ name }}]'
+template_code: "{% set opt = tag.option|trim %}{% set src = ('' ~ tag.source)|trim %}{% set href = opt ?: src %}{% if href matches '{^www[.]}i' %}{% set href = 'http://' ~ href %}{% endif %}{% if href matches '{^[A-Za-z0-9_:;&,~%+!=@/.#?-]+$}' and (href matches '{^(https?|ftp|mailto):}i' or not (href matches '{^[^/?#]*:}')) %}<a href=\"{{ href }}\" class=\"bb-url\" rel=\"nofollow\">{% if opt %}{{ tag.content }}{% else %}{{ src }}{% endif %}</a>{% else %}{{ tag.outerSource }}{% endif %}"
+template_file: null
+editable: false

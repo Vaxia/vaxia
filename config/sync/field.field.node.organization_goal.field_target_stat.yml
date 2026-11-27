@@ -1,0 +1,23 @@
+uuid: 32c97fcd-7a68-4cf5-a742-47020d1a6bf8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_target_stat
+    - node.type.organization_goal
+  module:
+    - options
+id: node.organization_goal.field_target_stat
+field_name: field_target_stat
+entity_type: node
+bundle: organization_goal
+label: 'Target Stat'
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: members
+default_value_callback: ''
+settings: {  }
+field_type: list_string

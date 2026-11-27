@@ -1,5 +1,0 @@
-name = Comment Revisions Diff
-description = Integrates comment revisions with diff
-package = Other
-core = 7.x
-version = 7.x-1.0

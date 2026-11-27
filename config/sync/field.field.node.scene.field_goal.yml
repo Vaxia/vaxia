@@ -1,0 +1,23 @@
+uuid: ee3b0518-db81-4bc4-b2f4-1e7c9bdfda62
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_goal
+    - node.type.scene
+  module:
+    - options
+id: node.scene.field_goal
+field_name: field_goal
+entity_type: node
+bundle: scene
+label: Goal
+description: "<b>Let us know what you're looking for with this scene!</b><br>\r\nIf you're looking for silver, need an item ruled, or want to gain reputation select the goal to match. If you are submitting a scene as evidence of maintaining a character or other situation, for example, vampiric feeding or other \"Maintenance required\" conditions, select maintenance as your goal. If you're looking to setup a character save point if your character encounters a death situation, select that. If you're not sure, leave this as 'generic' and explain in the notes."
+required: true
+translatable: false
+default_value:
+  -
+    value: misc
+default_value_callback: ''
+settings: {  }
+field_type: list_string

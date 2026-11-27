@@ -1,0 +1,21 @@
+uuid: 13ae3b9b-25c7-4ca1-af72-f9ccc42c8948
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_sh_attention_to
+    - node.type.scene
+id: node.scene.field_sh_attention_to
+field_name: field_sh_attention_to
+entity_type: node
+bundle: scene
+label: 'Attention To'
+description: 'List the related Saga or A/SH to bring this scene to the attention of if the scene is tied to a specific Saga or Storyhost. If there isn''t one - leave it at "any A/SH" for open ruling.'
+required: true
+translatable: false
+default_value:
+  -
+    value: 'any A/SH'
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -1,0 +1,5 @@
+services:
+  vaxia_chat.room_gate:
+    class: Drupal\vaxia_chat\EventSubscriber\RoomGate
+    tags:
+      - { name: event_subscriber }

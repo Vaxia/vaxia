@@ -1,0 +1,17 @@
+uuid: 519e4cfa-6f98-48fd-90cc-c6baddebc08e
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.wiki_workflow_open
+id: wiki_workflow_open_open
+label: null
+module: workflow
+from_sid: wiki_workflow_open
+to_sid: wiki_workflow_open
+roles:
+  authenticated: authenticated
+  workflow_author: workflow_author
+  administrator: administrator
+  lead: lead
+  storyteller: storyteller

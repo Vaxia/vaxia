@@ -1,0 +1,5 @@
+vaxia_wiki.flagged_admin:
+  route_name: vaxia_wiki.flagged_admin
+  base_route: system.admin_content
+  title: 'Site wiki flagged'
+  weight: 100

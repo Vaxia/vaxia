@@ -1,0 +1,8 @@
+uuid: 0250da81-de82-403f-9ae2-2de1c0edbee8
+langcode: en
+status: true
+dependencies: {  }
+id: item_evaluation
+label: 'Item evaluation'
+module: workflow
+options: {  }

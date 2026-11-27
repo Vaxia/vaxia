@@ -1,0 +1,17 @@
+{
+    "_hash": "7361d961d344089c91c4d3708c297dfe42664666df6431b9a09b20dcdf59f272",
+    "patches": {
+        "drupal/workflow": [
+            {
+                "package": "drupal/workflow",
+                "description": "Skip creating the creation state during config sync (install from config)",
+                "url": "patches/workflow-skip-creation-state-on-config-sync.patch",
+                "sha256": "e46a120288a25443ee3a0ecb13d3f00960c61d69dd9366af2b4e37a8d58a5ee6",
+                "depth": 1,
+                "extra": {
+                    "provenance": "root"
+                }
+            }
+        ]
+    }
+}

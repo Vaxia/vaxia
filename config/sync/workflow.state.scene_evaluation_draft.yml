@@ -1,0 +1,13 @@
+uuid: b4197708-582a-4b56-8e4d-87e0c1054ce0
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.scene_evaluation
+id: scene_evaluation_draft
+label: draft
+weight: -20
+module: workflow
+wid: scene_evaluation
+sysid: 0
+single_state_widget: ''

@@ -1,0 +1,20 @@
+uuid: b4b1bce5-0eb3-4886-a7e6-857b16698f98
+langcode: en
+status: true
+dependencies:
+  module:
+    - vaxia_characters
+  theme:
+    - vaxia_theme
+id: vaxia_theme_storyhost_evaluation_sh_evaluation
+theme: vaxia_theme
+region: sidebar_first
+weight: -48
+provider: null
+plugin: storyhost_evaluation-sh_evaluation
+settings:
+  id: storyhost_evaluation-sh_evaluation
+  label: 'Evaluation notices'
+  label_display: '0'
+  provider: vaxia_characters
+visibility: {  }

@@ -1,0 +1,21 @@
+uuid: c1f9ee53-aed0-46f8-8743-233766aa73c4
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_results
+    - node.type.notation
+  module:
+    - options
+id: node.notation.field_results
+field_name: field_results
+entity_type: node
+bundle: notation
+label: Results
+description: 'Check all actions taken as a result of this. If you would like to recommend that a player receive a strikes please mark that here. The strike will not be granted until this notation is approved.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

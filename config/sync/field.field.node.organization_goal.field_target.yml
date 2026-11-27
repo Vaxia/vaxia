@@ -1,0 +1,32 @@
+uuid: e0812d62-1e16-43e2-9425-3b3fee5aea44
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_target
+    - node.type.organization_goal
+id: node.organization_goal.field_target
+field_name: field_target
+entity_type: node
+bundle: organization_goal
+label: 'Target Organization'
+description: 'Organization to target.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles: null
+    sort:
+      field: _none
+      direction: ASC
+    behaviors:
+      views-select-list:
+        status: 0
+    view:
+      args: {  }
+      display_name: eref_setting_orgs
+      view_name: wiki_organizations_list
+field_type: entity_reference

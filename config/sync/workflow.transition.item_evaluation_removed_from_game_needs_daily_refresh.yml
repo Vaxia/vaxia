@@ -1,0 +1,14 @@
+uuid: cbcac1ac-e2f8-497c-8be7-02e76655bee5
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.item_evaluation_needs_daily_refresh
+    - workflow.state.item_evaluation_removed_from_game
+id: item_evaluation_removed_from_game_needs_daily_refresh
+label: null
+module: workflow
+from_sid: item_evaluation_removed_from_game
+to_sid: item_evaluation_needs_daily_refresh
+roles:
+  administrator: administrator

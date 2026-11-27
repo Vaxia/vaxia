@@ -1,0 +1,25 @@
+uuid: 9edab261-c011-42b8-b280-48c2f4432425
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_life
+    - node.type.character_sheet
+id: node.character_sheet.field_life
+field_name: field_life
+entity_type: node
+bundle: character_sheet
+label: Life
+description: 'Life (LIF): Hitpoints'
+required: true
+translatable: false
+default_value:
+  -
+    value: 25
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

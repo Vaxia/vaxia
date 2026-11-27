@@ -1,0 +1,51 @@
+uuid: 40771f4a-b5e0-41ee-9b5c-2f4db47f7acd
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_display.comment.comment_node_storyhost_applica.default
+    - field.field.node.storyhost_application.body
+    - field.field.node.storyhost_application.comment_node_storyhost_applica
+    - field.field.node.storyhost_application.webform
+    - node.type.storyhost_application
+  module:
+    - comment
+    - text
+    - user
+    - webform
+id: node.storyhost_application.default
+targetEntityType: node
+bundle: storyhost_application
+mode: default
+content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  comment_node_storyhost_applica:
+    type: comment_default
+    label: hidden
+    settings:
+      view_mode: default
+      pager_id: 0
+    third_party_settings: {  }
+    weight: 20
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+  webform:
+    type: webform_entity_reference_entity_view
+    label: hidden
+    settings:
+      source_entity: true
+      lazy: false
+    third_party_settings: {  }
+    weight: 20
+    region: content
+hidden: {  }

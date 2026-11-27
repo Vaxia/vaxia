@@ -1,0 +1,13 @@
+uuid: 47cef6b3-4ee0-4d9f-9eb5-26447df2169a
+langcode: en
+status: true
+dependencies: {  }
+id: abbr
+label: Abbreviation
+description: 'Abbreviation: [abbr=description]text[/abbr].'
+name: abbr
+attached: {  }
+sample: '[{{ name }}=HyperText Markup Language]HTML[/{{ name }}]'
+template_code: '{% if tag.option matches ''{^[A-Za-z0-9_ ,.-]+$}'' %}<abbr title="{{ tag.option }}">{{ tag.content }}</abbr>{% else %}{{ tag.outerSource }}{% endif %}'
+template_file: null
+editable: false

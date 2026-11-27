@@ -1,0 +1,23 @@
+uuid: dbac1252-106b-49f6-86a1-6b13d8e83bb0
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - vaxia_theme
+id: vaxia_theme_branding
+theme: vaxia_theme
+region: header
+weight: -50
+provider: null
+plugin: system_branding_block
+settings:
+  id: system_branding_block
+  label: 'Site branding'
+  label_display: '0'
+  provider: system
+  use_site_logo: true
+  use_site_name: false
+  use_site_slogan: false
+visibility: {  }

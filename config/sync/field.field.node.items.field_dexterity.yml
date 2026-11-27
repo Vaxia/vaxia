@@ -1,0 +1,23 @@
+uuid: b9b107de-eeee-4ebd-a7f4-e6b9fb6c8768
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_dexterity
+    - node.type.items
+id: node.items.field_dexterity
+field_name: field_dexterity
+entity_type: node
+bundle: items
+label: Dexterity
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

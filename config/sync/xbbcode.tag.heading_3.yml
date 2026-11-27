@@ -1,0 +1,13 @@
+uuid: 38364b26-0d42-4a8b-b629-f08fdc812b78
+langcode: en
+status: true
+dependencies: {  }
+id: heading_3
+label: 'Heading 3'
+description: Heading.
+name: h3
+attached: {  }
+sample: '[{{ name }}]Text[/{{ name }}]'
+template_code: '<h3>{{ tag.content }}</h3>'
+template_file: null
+editable: false

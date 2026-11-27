@@ -1,0 +1,20 @@
+uuid: 560016e9-8f41-45b8-8420-1bb83aa03978
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_banned_ip
+  module:
+    - user
+id: user.user.field_banned_ip
+field_name: field_banned_ip
+entity_type: user
+bundle: user
+label: 'Banned IP'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

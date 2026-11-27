@@ -1,0 +1,42 @@
+uuid: e35ae05d-0179-483c-bd50-3116f38099b4
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_fantasy_conditions
+field_name: field_fantasy_conditions
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: vampire
+      label: Vampire
+    -
+      value: were
+      label: Were-beast
+    -
+      value: fae_touched
+      label: 'Fae-touched (bound by a fae bargain)'
+    -
+      value: cursed
+      label: Cursed
+    -
+      value: mental
+      label: 'Restricted mental disorder'
+    -
+      value: underage
+      label: 'Underage (actual age, looks, or mentality)'
+    -
+      value: other
+      label: Other
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

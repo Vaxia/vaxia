@@ -1,0 +1,8 @@
+uuid: 6c544caa-9c0c-42bb-b8ff-4c1dd03bfe0d
+langcode: en
+status: true
+dependencies: {  }
+id: wiki_workflow
+label: 'Wiki workflow'
+module: workflow
+options: {  }

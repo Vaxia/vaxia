@@ -1,0 +1,57 @@
+uuid: 8490d538-80d4-42d3-ae56-6c318ea1d537
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_horror_languages
+field_name: field_horror_languages
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: common_knw
+      label: 'Common (known)'
+    -
+      value: common_nat
+      label: 'Common (native)'
+    -
+      value: latin_knw
+      label: 'Latin (known)'
+    -
+      value: latin_nat
+      label: 'Latin (native)'
+    -
+      value: old_tongue_knw
+      label: 'The Old Tongue (occult) (known)'
+    -
+      value: old_tongue_nat
+      label: 'The Old Tongue (occult) (native)'
+    -
+      value: enochian_knw
+      label: 'Enochian (known)'
+    -
+      value: enochian_nat
+      label: 'Enochian (native)'
+    -
+      value: deadspeak_knw
+      label: 'Deadspeak (whispers of the dead) (known)'
+    -
+      value: deadspeak_nat
+      label: 'Deadspeak (whispers of the dead) (native)'
+    -
+      value: sign_knw
+      label: 'Sign language (known)'
+    -
+      value: sign_nat
+      label: 'Sign language (native)'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

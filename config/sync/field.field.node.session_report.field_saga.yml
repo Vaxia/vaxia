@@ -1,0 +1,26 @@
+uuid: 94d2e855-e91c-4a1f-bdf0-22c12c874a78
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_saga
+    - node.type.session_report
+    - taxonomy.vocabulary.sagas
+id: node.session_report.field_saga
+field_name: field_saga
+entity_type: node
+bundle: session_report
+label: Saga
+description: 'If this session was part of a series, enter the saga name. If it is a standalone session, leave this blank.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      sagas: sagas
+    sort:
+      field: _none
+field_type: entity_reference

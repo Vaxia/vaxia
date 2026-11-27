@@ -1,0 +1,23 @@
+uuid: 9e4d7d0f-dd91-4e01-9033-5bf3e326b5af
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_strength
+    - node.type.items
+id: node.items.field_strength
+field_name: field_strength
+entity_type: node
+bundle: items
+label: Strength
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

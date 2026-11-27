@@ -1,0 +1,21 @@
+uuid: 3f97eb7a-a9a2-4d1b-a362-394226640a1d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_became_evaluator
+  module:
+    - datetime
+    - user
+id: user.user.field_became_evaluator
+field_name: field_became_evaluator
+entity_type: user
+bundle: user
+label: 'Became evaluator'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

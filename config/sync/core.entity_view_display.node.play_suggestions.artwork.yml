@@ -1,0 +1,24 @@
+uuid: 4ef1a022-d263-4815-ad45-375f3ee3fd39
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.artwork
+    - field.field.node.play_suggestions.comment_node_play_suggestions
+    - field.field.node.play_suggestions.field_tag_realm
+    - node.type.play_suggestions
+  module:
+    - user
+id: node.play_suggestions.artwork
+targetEntityType: node
+bundle: play_suggestions
+mode: artwork
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  comment_node_play_suggestions: true
+  field_tag_realm: true

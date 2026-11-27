@@ -1,0 +1,67 @@
+<?php
+
+/**
+ * @file
+ * The storyhost program (D7 storyhosts package): scenes, storyhosts, duties,
+ * vacations, the justice calculator.
+ */
+
+use Drupal\node\NodeInterface;
+
+require_once __DIR__ . '/includes/scenes.inc';
+require_once __DIR__ . '/includes/storyhosts.inc';
+require_once __DIR__ . '/includes/duties.inc';
+require_once __DIR__ . '/includes/vacation.inc';
+require_once __DIR__ . '/includes/course.inc';
+
+/**
+ * Implements hook_ENTITY_TYPE_presave() for nodes.
+ */
+function vaxia_storyhosts_node_presave(NodeInterface $node) {
+  vaxia_storyhosts_scene_presave($node);
+  vaxia_storyhosts_storyhost_character_presave($node);
+  if ($node->bundle() === 'session_report') {
+    vaxia_storyhosts_duties_session($node);
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert() for nodes.
+ */
+function vaxia_storyhosts_node_insert(NodeInterface $node) {
+  vaxia_storyhosts_storyhost_character_insert($node);
+  vaxia_storyhosts_course_session_insert($node);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view() for nodes.
+ */
+function vaxia_storyhosts_node_view(array &$build, NodeInterface $node, $display, $view_mode) {
+  vaxia_storyhosts_scene_view($build, $node, $view_mode);
+  vaxia_storyhosts_session_view($build, $node);
+  vaxia_storyhosts_course_view($build, $node, $view_mode);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert() for webform submissions.
+ */
+function vaxia_storyhosts_webform_submission_insert($submission) {
+  vaxia_storyhosts_course_submission($submission);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert() for workflow transitions.
+ */
+function vaxia_storyhosts_workflow_transition_insert($transition) {
+  vaxia_storyhosts_scene_transition($transition);
+  vaxia_storyhosts_duties_transition($transition);
+}
+
+/**
+ * Implements hook_cron().
+ */
+function vaxia_storyhosts_cron() {
+  vaxia_storyhosts_duties_cron();
+  vaxia_storyhosts_vacation_cron();
+  vaxia_storyhosts_course_cron();
+}

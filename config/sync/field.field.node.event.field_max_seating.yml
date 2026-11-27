@@ -1,0 +1,23 @@
+uuid: c7f8ca49-25a3-4f4f-9269-3fa69cf24538
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_max_seating
+    - node.type.event
+id: node.event.field_max_seating
+field_name: field_max_seating
+entity_type: node
+bundle: event
+label: 'Max seating'
+description: "Enter the max number of seats you can handle for this event. If you don't have a cap for number of seats, just leave blank."
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 2
+  max: null
+  prefix: ''
+  suffix: ' seats'
+field_type: integer

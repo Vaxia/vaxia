@@ -1,0 +1,13 @@
+uuid: f70bc188-ccab-4615-b005-61bde74b1385
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.notation_approval
+id: notation_approval_strike_submitted
+label: 'strike submitted'
+weight: -18
+module: workflow
+wid: notation_approval
+sysid: 0
+single_state_widget: ''

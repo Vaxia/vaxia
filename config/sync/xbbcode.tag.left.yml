@@ -1,0 +1,13 @@
+uuid: 42181d76-bfe8-478a-abad-4183896d65a4
+langcode: en
+status: true
+dependencies: {  }
+id: left
+label: Left
+description: 'Left-aligned block.'
+name: left
+attached: {  }
+sample: '[{{ name }}]Text[/{{ name }}]'
+template_code: '<div style="text-align:left">{{ tag.content }}</div>'
+template_file: null
+editable: false

@@ -1,0 +1,13 @@
+uuid: a578155e-1d3d-44cf-ac6f-a547ce05ffa3
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.item_evaluation
+id: item_evaluation_needs_recharge
+label: 'needs recharge'
+weight: -15
+module: workflow
+wid: item_evaluation
+sysid: 0
+single_state_widget: ''

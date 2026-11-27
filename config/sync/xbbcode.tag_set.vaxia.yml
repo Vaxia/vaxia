@@ -1,0 +1,81 @@
+uuid: 3244bedc-f68c-4c54-bd07-48383860994c
+langcode: en
+status: true
+dependencies: {  }
+id: vaxia
+label: 'Default BBCode'
+tags:
+  hr:
+    id: 'xbbcode_tag:hr'
+  url:
+    id: 'xbbcode_tag:link'
+  size:
+    id: 'xbbcode_tag:size'
+  color:
+    id: 'xbbcode_tag:color'
+  font:
+    id: 'xbbcode_tag:font'
+  quote:
+    id: 'xbbcode_tag:quote'
+  img:
+    id: 'xbbcode_tag:image'
+  list:
+    id: 'xbbcode_tag:list'
+  li:
+    id: 'xbbcode_tag:list_item'
+  table:
+    id: 'xbbcode_tag:table'
+  tr:
+    id: 'xbbcode_tag:table_row'
+  th:
+    id: 'xbbcode_tag:table_header'
+  td:
+    id: 'xbbcode_tag:table_cell'
+  center:
+    id: 'xbbcode_tag:center'
+  left:
+    id: 'xbbcode_tag:left'
+  right:
+    id: 'xbbcode_tag:right'
+  justify:
+    id: 'xbbcode_tag:justify'
+  indent:
+    id: 'xbbcode_tag:indent'
+  float:
+    id: 'xbbcode_tag:float'
+  code:
+    id: 'xbbcode_tag:code'
+  abbr:
+    id: 'xbbcode_tag:abbr'
+  acronym:
+    id: 'xbbcode_tag:acronym'
+  youtube:
+    id: 'xbbcode_tag:youtube'
+  h1:
+    id: 'xbbcode_tag:heading_1'
+  h2:
+    id: 'xbbcode_tag:heading_2'
+  h3:
+    id: 'xbbcode_tag:heading_3'
+  h4:
+    id: 'xbbcode_tag:heading_4'
+  h5:
+    id: 'xbbcode_tag:heading_5'
+  h6:
+    id: 'xbbcode_tag:heading_6'
+  align:
+    id: 'xbbcode_tag:align'
+  b:
+    id: 'xbbcode_tag:bold'
+  i:
+    id: 'xbbcode_tag:italic'
+  u:
+    id: 'xbbcode_tag:underline'
+  s:
+    id: 'xbbcode_tag:strike'
+  sub:
+    id: 'xbbcode_tag:sub'
+  sup:
+    id: 'xbbcode_tag:sup'
+  spoiler:
+    id: 'xbbcode_tag:spoiler'

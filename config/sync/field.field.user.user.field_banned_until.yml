@@ -1,0 +1,21 @@
+uuid: d9f71261-e609-4367-b803-e9af2e32e46b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_banned_until
+  module:
+    - datetime
+    - user
+id: user.user.field_banned_until
+field_name: field_banned_until
+entity_type: user
+bundle: user
+label: 'Banned until'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

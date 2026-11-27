@@ -1,0 +1,10 @@
+vaxia_governance.anon_posts:
+  route_name: vaxia_governance.anon_posts
+  base_route: entity.node.canonical
+  title: 'Posts made'
+  weight: 0
+vaxia_governance.leads:
+  route_name: vaxia_governance.leads
+  base_route: vaxia_core.players
+  title: 'Leads'
+  weight: 2

@@ -1,0 +1,21 @@
+# Default item settings.
+items_approved_workflow: item_evaluation_approved
+items_primary_value: 1
+items_skills_value: 0.75
+items_bonus_value: 50
+items_overlap_value: 2
+items_recalculate_values: false
+items_once_value: 5
+items_daily_value: 250
+items_at_will_value: 750
+items_shield_value: 25
+items_absorb_value: 50
+items_companion_value: 2
+oversight_limit: 7
+# Item uses (D7 item_uses).
+item_uses_active: true
+item_uses_once_workflow: item_evaluation_needs_recharge
+item_uses_daily_workflow: item_evaluation_needs_daily_refresh
+# Item shop (D7 item_shop).
+item_shop_sellback: true
+item_shop_sellback_percentage: 75

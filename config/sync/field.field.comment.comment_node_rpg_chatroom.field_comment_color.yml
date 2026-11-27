@@ -1,0 +1,19 @@
+uuid: a3ee1cd8-5c50-4338-8cf0-adfed0b4b24e
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.comment_node_rpg_chatroom
+    - field.storage.comment.field_comment_color
+id: comment.comment_node_rpg_chatroom.field_comment_color
+field_name: field_comment_color
+entity_type: comment
+bundle: comment_node_rpg_chatroom
+label: 'Post color'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

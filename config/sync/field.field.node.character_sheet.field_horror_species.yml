@@ -1,0 +1,21 @@
+uuid: 29f3f0f5-4a0d-4dd8-8d45-3847af28770b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_horror_species
+    - node.type.character_sheet
+  module:
+    - options
+id: node.character_sheet.field_horror_species
+field_name: field_horror_species
+entity_type: node
+bundle: character_sheet
+label: 'Horror species'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

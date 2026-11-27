@@ -1,0 +1,34 @@
+uuid: 50cbd357-7583-451c-a894-daad2b92c779
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_skill
+    - node.type.items
+    - paragraphs.paragraphs_type.skill
+  module:
+    - entity_reference_revisions
+id: node.items.field_skill
+field_name: field_skill
+entity_type: node
+bundle: items
+label: Skill
+description: 'Animal companions and drones may have skills associated with them! Use this field to fill in the companion skill information.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      skill: skill
+    negate: 0
+    target_bundles_drag_drop:
+      skill:
+        weight: 1
+        enabled: true
+      tech_languages:
+        weight: 2
+        enabled: false
+field_type: entity_reference_revisions

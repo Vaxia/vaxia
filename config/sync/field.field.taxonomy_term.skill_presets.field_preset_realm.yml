@@ -1,0 +1,25 @@
+uuid: a23a67f3-a101-4323-a1fe-4a9a24a289c6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_preset_realm
+    - taxonomy.vocabulary.realm
+    - taxonomy.vocabulary.skill_presets
+id: taxonomy_term.skill_presets.field_preset_realm
+field_name: field_preset_realm
+entity_type: taxonomy_term
+bundle: skill_presets
+label: Realm
+description: 'The realm whose characters are offered this skill.'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      realm: realm
+    auto_create: false
+field_type: entity_reference

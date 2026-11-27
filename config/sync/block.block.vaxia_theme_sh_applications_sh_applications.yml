@@ -1,0 +1,20 @@
+uuid: 9b14586e-d8c6-4a84-9d8e-aeb48ddcbf16
+langcode: en
+status: true
+dependencies:
+  module:
+    - vaxia_storyhosts
+  theme:
+    - vaxia_theme
+id: vaxia_theme_sh_applications_sh_applications
+theme: vaxia_theme
+region: sidebar_first
+weight: -49
+provider: null
+plugin: sh_applications-sh_applications
+settings:
+  id: sh_applications-sh_applications
+  label: 'SH Applications'
+  label_display: visible
+  provider: vaxia_storyhosts
+visibility: {  }

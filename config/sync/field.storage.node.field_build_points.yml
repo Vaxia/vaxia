@@ -1,0 +1,20 @@
+uuid: e77bfd00-4c9e-4a78-92f4-b472d7de72a6
+langcode: und
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_build_points
+field_name: field_build_points
+entity_type: node
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

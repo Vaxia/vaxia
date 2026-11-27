@@ -1,0 +1,18 @@
+uuid: 40ec5a1c-fcc9-405e-901c-d99b8a486912
+langcode: und
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_in_shop
+field_name: field_in_shop
+entity_type: node
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

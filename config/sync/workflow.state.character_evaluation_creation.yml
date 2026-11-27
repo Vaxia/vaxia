@@ -1,0 +1,13 @@
+uuid: 73483732-23ad-4a77-895d-9ec84b5a22a4
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.character_evaluation
+id: character_evaluation_creation
+label: (creation)
+weight: -50
+module: workflow
+wid: character_evaluation
+sysid: 1
+single_state_widget: ''

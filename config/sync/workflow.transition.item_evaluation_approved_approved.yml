@@ -1,0 +1,16 @@
+uuid: c6798402-559a-48d2-8984-b7f4b0091146
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.item_evaluation_approved
+id: item_evaluation_approved_approved
+label: null
+module: workflow
+from_sid: item_evaluation_approved
+to_sid: item_evaluation_approved
+roles:
+  authenticated: authenticated
+  workflow_author: workflow_author
+  administrator: administrator
+  storyteller: storyteller

@@ -1,0 +1,24 @@
+uuid: 2f43b607-d6b3-4db1-9ae3-0aa6f44641b6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_terms_and_conditions
+  module:
+    - user
+id: user.user.field_terms_and_conditions
+field_name: field_terms_and_conditions
+entity_type: user
+bundle: user
+label: 'Terms and Conditions'
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'I agree to the Terms and Conditions.'
+  off_label: 'I do NOT agree to the Terms and Conditions.'
+field_type: boolean

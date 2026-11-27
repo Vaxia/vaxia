@@ -1,0 +1,33 @@
+uuid: 456e2b93-eb64-48ca-9eb7-127606a8d814
+langcode: en
+status: true
+dependencies:
+  config:
+    - system.menu.menu-vaxia-ash
+  module:
+    - system
+    - user
+  theme:
+    - vaxia_theme
+id: vaxia_theme_menu_vaxia_ash
+theme: vaxia_theme
+region: sidebar_first
+weight: -26
+provider: null
+plugin: 'system_menu_block:menu-vaxia-ash'
+settings:
+  id: 'system_menu_block:menu-vaxia-ash'
+  label: 'Become a Storyhost'
+  label_display: visible
+  provider: system
+  level: 1
+  depth: 0
+  expand_all_items: false
+visibility:
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      eligible_for_sh: eligible_for_sh

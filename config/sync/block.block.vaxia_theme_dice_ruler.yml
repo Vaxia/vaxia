@@ -1,0 +1,33 @@
+uuid: c204f8ca-e6e3-4000-a489-934acdd7f555
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - system
+    - vaxia_dice
+  theme:
+    - vaxia_theme
+id: vaxia_theme_dice_ruler
+theme: vaxia_theme
+region: content
+weight: -44
+provider: null
+plugin: dice_ruler
+settings:
+  id: dice_ruler
+  label: 'Dice ruler'
+  label_display: '0'
+  provider: vaxia_dice
+visibility:
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      rpg_chatroom: rpg_chatroom
+  request_path:
+    id: request_path
+    negate: true
+    pages: '/node/*/*'

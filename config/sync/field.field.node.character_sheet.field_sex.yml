@@ -1,0 +1,19 @@
+uuid: ebfdafb6-43e5-48a1-bf2b-7c0c718af647
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_sex
+    - node.type.character_sheet
+id: node.character_sheet.field_sex
+field_name: field_sex
+entity_type: node
+bundle: character_sheet
+label: 'Apparent Gender'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

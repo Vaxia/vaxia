@@ -1,0 +1,14 @@
+uuid: 365cd1a5-2792-427b-9379-107c9a3907a9
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.knows_the_social
+  module:
+    - user
+id: user_add_role_action.knows_the_social
+label: 'Add the knows-the-social role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: knows_the_social

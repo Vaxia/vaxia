@@ -1,0 +1,21 @@
+uuid: 45687f0c-fef4-4036-ba6e-d31bf204eb20
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.comment_node_rpg_chatroom
+    - field.storage.comment.field_background_color
+  module:
+    - options
+id: comment.comment_node_rpg_chatroom.field_background_color
+field_name: field_background_color
+entity_type: comment
+bundle: comment_node_rpg_chatroom
+label: 'Background #'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

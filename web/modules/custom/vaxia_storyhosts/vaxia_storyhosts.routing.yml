@@ -1,0 +1,158 @@
+vaxia_storyhosts.character_goals:
+  path: '/character-goals'
+  defaults:
+    _controller: '\Drupal\vaxia_storyhosts\Controller\StoryhostLists::goals'
+    _title: 'Character goals'
+  requirements:
+    _role: 'lead+storyteller'
+vaxia_storyhosts.skill_inventory:
+  path: '/skill-inventory'
+  defaults:
+    _controller: '\Drupal\vaxia_storyhosts\Controller\StoryhostLists::skills'
+    _title: 'Skill inventory'
+  requirements:
+    _role: 'administrator+lead+storyteller'
+vaxia_storyhosts.user_activity:
+  path: '/user-activity'
+  defaults:
+    _controller: '\Drupal\vaxia_storyhosts\Controller\StoryhostLists::activity'
+    _title: 'Storyhost Activity'
+  requirements:
+    _role: 'administrator+lead+storyteller'
+vaxia_storyhosts.vacation_settings:
+  path: '/admin/rpg/vacation'
+  defaults:
+    _form: '\Drupal\vaxia_storyhosts\Form\VacationSettingsForm'
+    _title: 'Vacation configurations'
+  requirements:
+    _permission: 'administer vacation'
+vaxia_storyhosts.justice:
+  path: '/vaxia/justice'
+  defaults:
+    _form: '\Drupal\vaxia_storyhosts\Form\JusticeForm'
+    _title: 'Justice Calculator'
+  requirements:
+    _permission: 'use justice form'
+vaxia_storyhosts.justice_settings:
+  path: '/admin/vaxia/justice_form'
+  defaults:
+    _form: '\Drupal\vaxia_storyhosts\Form\JusticeSettingsForm'
+    _title: 'Justice Form Settings'
+  requirements:
+    _permission: 'administrate justice form'
+vaxia_storyhosts.sh_test_settings:
+  path: '/admin/vaxia/sh_test'
+  defaults:
+    _form: '\Drupal\vaxia_storyhosts\Form\ShTestSettingsForm'
+    _title: 'Storyhost course settings'
+  requirements:
+    _permission: 'administrate sh test'
+vaxia_storyhosts.scenes:
+  path: '/character-scenes'
+  defaults:
+    _controller: '\Drupal\vaxia_storyhosts\Controller\SceneLists::mine'
+    _title: 'Scenes'
+  requirements:
+    _permission: 'access content'
+vaxia_storyhosts.scenes_mine:
+  path: '/character-scenes/mine'
+  defaults:
+    _controller: '\Drupal\vaxia_storyhosts\Controller\SceneLists::mine'
+    _title: 'Scenes'
+  requirements:
+    _permission: 'access content'
+vaxia_storyhosts.scenes_evaluate:
+  path: '/character-scenes/evaluate'
+  defaults:
+    _controller: '\Drupal\vaxia_storyhosts\Controller\SceneLists::evaluate'
+    _title: 'Evaluation'
+  requirements:
+    _role: 'storyteller'
+vaxia_storyhosts.character_scenes:
+  path: '/node/{node}/scenes'
+  defaults:
+    _controller: '\Drupal\vaxia_storyhosts\Controller\SceneLists::character'
+    _title: 'Scenes'
+  requirements:
+    _custom_access: '\Drupal\vaxia_storyhosts\Controller\SceneLists::characterAccess'
+  options:
+    parameters:
+      node:
+        type: entity:node
+vaxia_storyhosts.sessions:
+  path: '/sessions'
+  defaults:
+    _controller: '\Drupal\vaxia_storyhosts\Controller\SessionLists::all'
+    _title: 'Sessions'
+  requirements:
+    _access: 'TRUE'
+vaxia_storyhosts.sessions_all:
+  path: '/sessions/all'
+  defaults:
+    _controller: '\Drupal\vaxia_storyhosts\Controller\SessionLists::all'
+    _title: 'Sessions'
+  requirements:
+    _access: 'TRUE'
+vaxia_storyhosts.character_sessions:
+  path: '/node/{node}/sessions'
+  defaults:
+    _controller: '\Drupal\vaxia_storyhosts\Controller\SessionLists::character'
+    _title: 'Character sessions'
+  requirements:
+    _custom_access: '\Drupal\vaxia_storyhosts\Controller\SessionLists::characterAccess'
+  options:
+    parameters:
+      node:
+        type: entity:node
+vaxia_storyhosts.user_sessions:
+  path: '/user/{user}/sessions'
+  defaults:
+    _controller: '\Drupal\vaxia_storyhosts\Controller\SessionLists::user'
+    _title: 'SH Sessions'
+  requirements:
+    _access: 'TRUE'
+    user: '\d+'
+  options:
+    parameters:
+      user:
+        type: entity:user
+vaxia_storyhosts.storyhosts:
+  path: '/sessions/storytellers-and-apprentices'
+  defaults:
+    _controller: '\Drupal\vaxia_storyhosts\Controller\SessionLists::storyhosts'
+    _title: 'Storyhosts and Apprentices'
+  requirements:
+    _permission: 'access content'
+vaxia_storyhosts.retired_storyhosts:
+  path: '/sessions/storytellers-and-apprentices/retired'
+  defaults:
+    _controller: '\Drupal\vaxia_storyhosts\Controller\SessionLists::retired'
+    _title: 'Retired Storyhosts and Apprentices'
+  requirements:
+    _permission: 'access content'
+vaxia_storyhosts.user_applications:
+  path: '/user/{user}/applications'
+  defaults:
+    _controller: '\Drupal\vaxia_storyhosts\Controller\StaffLists::applications'
+    _title: 'Applications'
+  requirements:
+    _role: 'lead+mediator+storyteller'
+    user: '\d+'
+  options:
+    parameters:
+      user:
+        type: entity:user
+vaxia_storyhosts.storyhost_characters:
+  path: '/admin/content/storyhost-characters'
+  defaults:
+    _controller: '\Drupal\vaxia_storyhosts\Controller\StaffLists::storyhostCharacters'
+    _title: 'Storyhost characters'
+  requirements:
+    _permission: 'administer nodes'
+vaxia_storyhosts.moderation_log:
+  path: '/character-sheets/moderation_log'
+  defaults:
+    _controller: '\Drupal\vaxia_storyhosts\Controller\StaffLists::moderationLog'
+    _title: 'Character sheet moderation log'
+  requirements:
+    _role: 'administrator+lead+player+storyteller'

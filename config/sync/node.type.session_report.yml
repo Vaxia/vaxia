@@ -1,0 +1,16 @@
+uuid: c457a666-0930-44cf-952f-5d507e6f852d
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    parent: 'main:'
+name: 'Session report'
+type: session_report
+description: 'For SHs after a session, to include a list of users, characters and provide a record of events.'
+help: null
+new_revision: true
+preview_mode: 1
+display_submitted: true

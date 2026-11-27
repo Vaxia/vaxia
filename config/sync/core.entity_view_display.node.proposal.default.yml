@@ -1,0 +1,83 @@
+uuid: 1d5aca68-f98a-4c47-8dfb-3248e685f38a
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_display.comment.comment_node_proposal.default
+    - field.field.node.proposal.body
+    - field.field.node.proposal.comment_node_proposal
+    - field.field.node.proposal.field_associated_files
+    - field.field.node.proposal.field_associated_forum_threads
+    - field.field.node.proposal.field_grievance_members
+    - field.field.node.proposal.field_proposal_type
+    - field.field.node.proposal.taxonomy_forums
+    - field.field.node.proposal.webform
+    - node.type.proposal
+  module:
+    - comment
+    - file
+    - options
+    - text
+    - user
+    - webform
+id: node.proposal.default
+targetEntityType: node
+bundle: proposal
+mode: default
+content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  comment_node_proposal:
+    type: comment_default
+    label: hidden
+    settings:
+      view_mode: default
+      pager_id: 0
+    third_party_settings: {  }
+    weight: 20
+    region: content
+  field_associated_files:
+    type: file_default
+    label: above
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_associated_forum_threads:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_proposal_type:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+  webform:
+    type: webform_entity_reference_entity_view
+    label: hidden
+    settings:
+      source_entity: true
+      lazy: false
+    third_party_settings: {  }
+    weight: 20
+    region: content
+hidden:
+  field_grievance_members: true
+  taxonomy_forums: true

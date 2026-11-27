@@ -1,0 +1,22 @@
+uuid: a75a6b8a-2bf3-43e3-b388-2158d97652dd
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - vaxia_theme
+_core:
+  default_config_hash: erQSEZF2XUjNmgTl0uNRBzmg18ZGXwUcw2FhApoeuHk
+id: vaxia_theme_content
+theme: vaxia_theme
+region: content
+weight: -41
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  label_display: '0'
+  provider: system
+visibility: {  }

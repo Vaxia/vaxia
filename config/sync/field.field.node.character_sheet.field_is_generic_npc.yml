@@ -1,0 +1,23 @@
+uuid: a8988bf5-49e6-44c2-8b81-20f0bd493073
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_is_generic_npc
+    - node.type.character_sheet
+id: node.character_sheet.field_is_generic_npc
+field_name: field_is_generic_npc
+entity_type: node
+bundle: character_sheet
+label: 'This is a generic NPC'
+description: 'A stock, "red-shirt" NPC (a guard, a bandit, a monster) rather than a named character, for general use in running sessions. Tick "This is an NPC" as well.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'Yes'
+  off_label: 'No'
+field_type: boolean

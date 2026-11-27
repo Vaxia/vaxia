@@ -1,0 +1,14 @@
+uuid: 55e82277-1275-4766-85bb-765df4ea4bc5
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.character_evaluation_draft
+    - workflow.state.character_evaluation_removed_from_game
+id: character_evaluation_removed_from_game_draft
+label: null
+module: workflow
+from_sid: character_evaluation_removed_from_game
+to_sid: character_evaluation_draft
+roles:
+  administrator: administrator

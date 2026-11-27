@@ -1,0 +1,39 @@
+uuid: 0c21fb47-93a8-4751-ab18-777774721461
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.skill_presets.field_preset_aspects
+    - field.field.taxonomy_term.skill_presets.field_preset_realm
+    - taxonomy.vocabulary.skill_presets
+  module:
+    - text
+id: taxonomy_term.skill_presets.default
+targetEntityType: taxonomy_term
+bundle: skill_presets
+mode: default
+content:
+  description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_preset_aspects:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_preset_realm:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 5
+    region: content
+hidden: {  }

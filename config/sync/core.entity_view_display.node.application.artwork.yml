@@ -1,0 +1,28 @@
+uuid: a801aa2e-facb-4cd6-8e03-c89f68951581
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.artwork
+    - field.field.node.application.body
+    - field.field.node.application.comment_node_application
+    - field.field.node.application.field_applied_role_id
+    - field.field.node.application.webform
+    - node.type.application
+  module:
+    - user
+id: node.application.artwork
+targetEntityType: node
+bundle: application
+mode: artwork
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  body: true
+  comment_node_application: true
+  field_applied_role_id: true
+  webform: true

@@ -1,0 +1,14 @@
+uuid: 8b3cfa08-e61c-4add-b0f0-c021f57db78c
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.knows_the_system
+  module:
+    - user
+id: user_remove_role_action.knows_the_system
+label: 'Remove the knows-the-system role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: knows_the_system

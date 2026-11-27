@@ -1,0 +1,20 @@
+_core:
+  default_config_hash: JvXlQaJkTtQoGkuVejukgFQfR8xljXSl-Z2Sc-2flIU
+items_approved_workflow: item_evaluation_approved
+items_primary_value: 1.0
+items_skills_value: 0.75
+items_bonus_value: 50.0
+items_overlap_value: 2.0
+items_recalculate_values: true
+items_once_value: 5.0
+items_daily_value: 250.0
+items_at_will_value: 750.0
+items_shield_value: 25.0
+items_absorb_value: 50.0
+items_companion_value: 2.0
+oversight_limit: 7
+item_uses_active: true
+item_uses_once_workflow: item_evaluation_needs_recharge
+item_uses_daily_workflow: item_evaluation_needs_daily_refresh
+item_shop_sellback: true
+item_shop_sellback_percentage: 75.0

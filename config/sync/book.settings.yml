@@ -1,0 +1,6 @@
+_core:
+  default_config_hash: jmBcLtS4JshpXXtB9fsiBehhukIaDTQjvozHpbvVyPo
+allowed_types:
+  - wiki_page
+child_type: wiki_page
+book_sort: weight

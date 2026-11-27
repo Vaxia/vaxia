@@ -1,0 +1,9 @@
+templates:
+  js:
+    js/site_wiki.js: {}
+  css:
+    component:
+      css/site_wiki.css: {}
+  dependencies:
+    - core/drupal
+    - core/once

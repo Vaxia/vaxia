@@ -1,0 +1,11 @@
+uuid: 936dc48c-8e44-41a4-b77c-f8ffa9096a7a
+langcode: en
+status: true
+dependencies: {  }
+name: 'Forum topic'
+type: forum
+description: 'A <em>forum topic</em> starts a new discussion thread within a forum.'
+help: null
+new_revision: false
+preview_mode: 1
+display_submitted: true

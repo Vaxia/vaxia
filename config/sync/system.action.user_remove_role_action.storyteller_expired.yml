@@ -1,0 +1,14 @@
+uuid: b0df5c05-4ef9-426d-bd7a-457c7b199cad
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.storyteller_expired
+  module:
+    - user
+id: user_remove_role_action.storyteller_expired
+label: 'Remove the storyteller-expired role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: storyteller_expired

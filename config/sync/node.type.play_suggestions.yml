@@ -1,0 +1,16 @@
+uuid: 83bfaee2-a15f-466b-80b1-944a29ff32bc
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    parent: 'main:'
+name: 'Play suggestions'
+type: play_suggestions
+description: 'An event is a small prompt to give suggestions for an evening of casual role-play.'
+help: "<b>An event is a small prompt to give suggestions for an evening of casual role-play.</b>Please keep them small enough that they don't automatically mean you need to call for an SH (no combats or dramatic events). Your suggestion may not be perfect for all locations. That's OK!\r\n<br><br>\r\nThink of it like tossing a challenge out at the other players to figure out a way to 'make it work' for the random location. If it doesn't, then just hit the button again.\r\n<br><br>\r\n<b>Examples: </b> \r\n<ul>\r\n<li><b>In</b> \"<i>Science Fiction</i>\" <b>There is...</b> \"<i>a broken coffee machine.</i>\"</li>\r\n<li><b>In</b> \"<i>Fantasy</i>\" <b>There is...</b> \"<i>a confused gnome looking for directions.</i>\"</li>\r\n</ul>"
+new_revision: false
+preview_mode: 1
+display_submitted: false

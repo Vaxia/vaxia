@@ -1,0 +1,14 @@
+# Content types shown as chat rooms (D7 rpg_chat_<type>).
+rpg_chat_types:
+  - rpg_chatroom
+# Archives (D7 archives module): where flat files go, relative to the site
+# root and ending in "/"; how long posts stay on the site; daily cron run.
+archives_flat_file_path: ''
+archives_date: '12 months'
+archives_cron: false
+# Room cleanup (D7 room_cleanup): empty rooms older than this go; daily cron.
+room_cleanup_date: '12 months'
+room_cleanup_cron: false
+# Personal rooms: room fields the owning character's player may edit / see.
+personal_rooms_fields_edit: ''
+personal_rooms_fields_view: ''

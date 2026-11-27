@@ -1,0 +1,23 @@
+uuid: 82d431ae-ad99-4fb2-a77e-d6b885fa7bde
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_birth_month
+    - node.type.character_sheet
+  module:
+    - options
+id: node.character_sheet.field_birth_month
+field_name: field_birth_month
+entity_type: node
+bundle: character_sheet
+label: 'Birth Date'
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: '01'
+default_value_callback: ''
+settings: {  }
+field_type: list_string

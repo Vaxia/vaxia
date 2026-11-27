@@ -1,0 +1,25 @@
+uuid: 1562d09e-3441-4036-8e1b-c2197c03a642
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_charisma
+    - node.type.character_sheet
+id: node.character_sheet.field_charisma
+field_name: field_charisma
+entity_type: node
+bundle: character_sheet
+label: Charisma
+description: 'Charisma (CHA): Mental Resistance; Influence'
+required: true
+translatable: false
+default_value:
+  -
+    value: 25
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

@@ -1,0 +1,4 @@
+services:
+  vaxia_dice.roller:
+    class: Drupal\vaxia_dice\Roller
+    arguments: ['@database', '@messenger']

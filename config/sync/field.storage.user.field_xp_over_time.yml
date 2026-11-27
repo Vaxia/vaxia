@@ -1,0 +1,20 @@
+uuid: f469d4ae-2663-4090-b803-7ae8746562fe
+langcode: und
+status: true
+dependencies:
+  module:
+    - user
+id: user.field_xp_over_time
+field_name: field_xp_over_time
+entity_type: user
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

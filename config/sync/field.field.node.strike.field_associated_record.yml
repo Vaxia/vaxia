@@ -1,0 +1,27 @@
+uuid: 466fa828-20bd-4c26-8a3c-85cc95f7afc6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_associated_record
+    - node.type.notation
+    - node.type.strike
+id: node.strike.field_associated_record
+field_name: field_associated_record
+entity_type: node
+bundle: strike
+label: 'Associated Record'
+description: 'Required - we must have a record of interaction. That record holds all the documentation for this strike.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      notation: notation
+    sort:
+      field: _none
+      direction: ASC
+field_type: entity_reference

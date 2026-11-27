@@ -1,0 +1,8 @@
+uuid: b6cebc3d-2216-4c6c-8101-25330094fd00
+langcode: en
+status: true
+dependencies: {  }
+id: comment_node_storyhost_applica
+label: 'Storyhost Application comment'
+target_entity_type_id: node
+description: null

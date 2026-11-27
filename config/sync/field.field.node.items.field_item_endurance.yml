@@ -1,0 +1,23 @@
+uuid: 5d8334b2-b933-4b7b-bbe3-35a786d3f32d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_item_endurance
+    - node.type.items
+id: node.items.field_item_endurance
+field_name: field_item_endurance
+entity_type: node
+bundle: items
+label: Endurance
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: float

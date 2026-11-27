@@ -1,0 +1,40 @@
+/**
+ * @file
+ * Javascript for Vaxia UI on RPG pages.
+ *
+ * Allows user to collapse the description as needed.
+ */
+Drupal.behaviors.vaxia_chatrooms = {
+  attach: function(context) { (function($, once) {
+
+    // Only run this if the screen is over 600.
+    if ( $( window ).width() > 600) {
+      {
+        // Just the once per page (D11 core/once replaces jQuery.once).
+        once('vaxia-chatrooms', 'body.node-type-rpg-chatroom', context).forEach(function () {
+          // Hide and adjust widths on the sidebar vs content.
+          $('.sidebar-first #content').css('margin-left', '0%');
+          $('.sidebar-first #content').css('width', '100%');
+          $('.sidebar-first .region-sidebar-first').css('width', '100%');
+          // And hide the header.
+          $('#header').hide();
+        });
+      }
+    }
+    else {
+      // Only run this if the screen is equal or under 480.
+      // If it can be collapsed, collapse it.
+      $('document').ready(function() {
+        $('fieldset.collapsible').addClass('collapsed');
+      });
+    }
+
+    /* Hide standard display messags in chatrooms after they've posted. */
+    $('.node-type-rpg-chatroom .messages--status').delay('fast').fadeOut();
+
+    /* Move the private room label to save space. */
+    $('.node-rpg-chatroom .field-name-field-private-room').detach()
+      .prependTo('.node-rpg-chatroom .comment-wrapper');
+
+  })(jQuery, once); }
+}

@@ -1,0 +1,10 @@
+name: VAXIA chat
+type: module
+description: 'Chat rooms: room access, the live chat display and refresh, who is in the room, and the post form (character, dice, KXP, colours). Replaces D7 rpg_chat and vaxia''s post form code.'
+package: VAXIA
+core_version_requirement: ^11
+dependencies:
+  - drupal:comment
+  - drupal:node
+  - vaxia_core:vaxia_core
+  - vaxia_dice:vaxia_dice

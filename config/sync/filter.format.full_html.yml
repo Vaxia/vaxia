@@ -1,0 +1,46 @@
+uuid: e7adf6be-8e2c-400d-9861-13b75b20a50b
+langcode: en
+status: true
+dependencies:
+  module:
+    - vaxia_chat
+    - vaxia_core
+    - xbbcode
+name: 'Full HTML'
+format: full_html
+weight: 1
+filters:
+  filter_htmlcorrector:
+    id: filter_htmlcorrector
+    provider: filter
+    status: true
+    weight: 10
+    settings: {  }
+  filter_url:
+    id: filter_url
+    provider: filter
+    status: true
+    weight: 0
+    settings:
+      filter_url_length: 72
+  vaxia_bbcode_open_tags:
+    id: vaxia_bbcode_open_tags
+    provider: vaxia_chat
+    status: true
+    weight: -2
+    settings: {  }
+  vaxia_style_block_lines:
+    id: vaxia_style_block_lines
+    provider: vaxia_core
+    status: true
+    weight: -20
+    settings: {  }
+  xbbcode:
+    id: xbbcode
+    provider: xbbcode
+    status: true
+    weight: -1
+    settings:
+      linebreaks: true
+      tags: vaxia
+      xss: false

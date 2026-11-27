@@ -1,0 +1,28 @@
+uuid: ab506432-9260-4acd-85f2-a2decd215658
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.tech_languages.field_tech_language
+    - field.field.paragraph.tech_languages.field_tech_proficiency
+    - paragraphs.paragraphs_type.tech_languages
+id: paragraph.tech_languages.default
+targetEntityType: paragraph
+bundle: tech_languages
+mode: default
+content:
+  field_tech_language:
+    type: options_select
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_tech_proficiency:
+    type: options_select
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

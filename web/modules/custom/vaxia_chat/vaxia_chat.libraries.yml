@@ -1,0 +1,53 @@
+rpg_chat:
+  js:
+    # Kept as its own file (D7's path ends in rpg_chat/js/rpg_chat.js).
+    rpg_chat/js/rpg_chat.js: { preprocess: false }
+  css:
+    component:
+      # D7's rpg_chat.css, loaded before vaxia_chatrooms.css as on D7.
+      rpg_chat/css/rpg_chat.css: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupalSettings
+    - core/drupal.ajax
+vaxia_chatrooms:
+  js:
+    # Own files, as in D7 (paths end in vaxia_chatrooms/js/...).
+    vaxia_chatrooms/js/vaxia_chatrooms.js: { preprocess: false }
+    vaxia_chatrooms/js/vaxia_pullouts.js: { preprocess: false }
+  css:
+    component:
+      vaxia_chatrooms/css/vaxia_chatrooms.css: {}
+      vaxia_chatrooms/css/vaxia_permissions.css: {}
+      vaxia_chatrooms/css/vaxia_pullouts.css: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/once
+background_changer:
+  js:
+    background_changer/js/background_changer.js: { preprocess: false }
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupalSettings
+select_image:
+  js:
+    select_image/js/jquery.dd.min.js: { preprocess: false }
+    select_image/js/select_image.js: { preprocess: false }
+  css:
+    component:
+      select_image/css/dd.css: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+# The chat post styles without the room scripts (the refresh would replace
+# older posts with the latest ones): Earlier Posts looks like the room.
+chat_styles:
+  css:
+    component:
+      rpg_chat/css/rpg_chat.css: {}
+      vaxia_chatrooms/css/vaxia_chatrooms.css: {}
+      vaxia_chatrooms/css/vaxia_permissions.css: {}
+

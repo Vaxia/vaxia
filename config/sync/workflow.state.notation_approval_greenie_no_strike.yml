@@ -1,0 +1,13 @@
+uuid: 84ebd693-1281-4408-a0de-2c53ec7c360a
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.notation_approval
+id: notation_approval_greenie_no_strike
+label: 'greenie / no strike'
+weight: -19
+module: workflow
+wid: notation_approval
+sysid: 0
+single_state_widget: ''

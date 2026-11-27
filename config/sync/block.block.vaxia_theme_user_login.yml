@@ -1,0 +1,20 @@
+uuid: 2c13aa54-d49d-4cc8-af17-18baee0b1538
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+  theme:
+    - vaxia_theme
+id: vaxia_theme_user_login
+theme: vaxia_theme
+region: sidebar_first
+weight: -39
+provider: null
+plugin: user_login_block
+settings:
+  id: user_login_block
+  label: 'User login'
+  label_display: visible
+  provider: user
+visibility: {  }

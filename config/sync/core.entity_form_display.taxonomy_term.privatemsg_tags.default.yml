@@ -1,0 +1,47 @@
+uuid: fe81e294-2c48-467a-9b4c-78eba5dccfa5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.privatemsg_tags.field_privatemsg_tag_author
+    - taxonomy.vocabulary.privatemsg_tags
+_core:
+  default_config_hash: 711tH1a_ipxz_uxiUf_4IkPlArXxVrg8moOo1tqP01M
+id: taxonomy_term.privatemsg_tags.default
+targetEntityType: taxonomy_term
+bundle: privatemsg_tags
+mode: default
+content:
+  field_privatemsg_tag_author:
+    type: entity_reference_autocomplete_tags
+    weight: 1
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 4
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  translation:
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  description: true
+  path: true

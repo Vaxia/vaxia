@@ -1,0 +1,23 @@
+uuid: 8ebad26c-eda9-4912-a9ea-776f55cc2a66
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_item_charisma
+    - node.type.items
+id: node.items.field_item_charisma
+field_name: field_item_charisma
+entity_type: node
+bundle: items
+label: Charisma
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: float

@@ -1,0 +1,23 @@
+uuid: 2f653f8b-eb0a-4c13-8af0-1aeec5814f37
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_provides_reputation
+    - node.type.wiki_page
+id: node.wiki_page.field_provides_reputation
+field_name: field_provides_reputation
+entity_type: node
+bundle: wiki_page
+label: 'Provides reputation'
+description: 'Check this checkbox if this organization is meant to provide reputation points for players.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'This organization provides reputation.'
+  off_label: 'This organization DOES NOT provide reputation.'
+field_type: boolean

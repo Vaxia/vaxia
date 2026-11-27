@@ -1,0 +1,13 @@
+uuid: 248fcbb8-4f6c-4ddf-a028-2efd016b92fd
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.character_evaluation
+id: character_evaluation_removed_from_game
+label: removed_from_game
+weight: 0
+module: workflow
+wid: character_evaluation
+sysid: 0
+single_state_widget: ''

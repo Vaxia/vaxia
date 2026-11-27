@@ -1,0 +1,22 @@
+uuid: cdea9110-c019-463e-b867-58d3b081e6c9
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - vaxia_theme
+_core:
+  default_config_hash: VhBzWb7lMRtIOg9G7VSw_0uopi-7zXeHq4vXqqV1HFE
+id: vaxia_theme_breadcrumbs
+theme: vaxia_theme
+region: content
+weight: -61
+provider: null
+plugin: system_breadcrumb_block
+settings:
+  id: system_breadcrumb_block
+  label: Breadcrumbs
+  label_display: '0'
+  provider: system
+visibility: {  }

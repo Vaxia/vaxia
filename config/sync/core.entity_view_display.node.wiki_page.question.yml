@@ -1,0 +1,55 @@
+uuid: 22d3941d-5423-44f8-ab4c-aff1b7b286c6
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.question
+    - field.field.node.wiki_page.body
+    - field.field.node.wiki_page.comment_node_wiki_page
+    - field.field.node.wiki_page.field_additional_tagging
+    - field.field.node.wiki_page.field_has_goals
+    - field.field.node.wiki_page.field_org_diplomatic_influence
+    - field.field.node.wiki_page.field_org_economic_influence
+    - field.field.node.wiki_page.field_org_material_strength
+    - field.field.node.wiki_page.field_org_membership_size
+    - field.field.node.wiki_page.field_organization_type
+    - field.field.node.wiki_page.field_provides_reputation
+    - field.field.node.wiki_page.field_tag_department
+    - field.field.node.wiki_page.field_tag_location
+    - field.field.node.wiki_page.field_tag_realm
+    - field.field.node.wiki_page.field_tag_type
+    - field.field.node.wiki_page.field_wiki_files
+    - field.field.node.wiki_page.field_wiki_images
+    - field.field.node.wiki_page.field_wiki_workflow
+    - node.type.wiki_page
+  module:
+    - user
+id: node.wiki_page.question
+targetEntityType: node
+bundle: wiki_page
+mode: question
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  body: true
+  book_navigation: true
+  comment_node_wiki_page: true
+  field_additional_tagging: true
+  field_has_goals: true
+  field_org_diplomatic_influence: true
+  field_org_economic_influence: true
+  field_org_material_strength: true
+  field_org_membership_size: true
+  field_organization_type: true
+  field_provides_reputation: true
+  field_tag_department: true
+  field_tag_location: true
+  field_tag_realm: true
+  field_tag_type: true
+  field_wiki_files: true
+  field_wiki_images: true
+  field_wiki_workflow: true

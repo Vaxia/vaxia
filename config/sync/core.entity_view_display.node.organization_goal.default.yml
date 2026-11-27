@@ -1,0 +1,109 @@
+uuid: f873a09e-c86d-4788-84c6-659d2af61e46
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_display.comment.comment_node_organization_goal.default
+    - field.field.node.organization_goal.comment_node_organization_goal
+    - field.field.node.organization_goal.field_current_pp
+    - field.field.node.organization_goal.field_first_stat
+    - field.field.node.organization_goal.field_org_goal
+    - field.field.node.organization_goal.field_organization
+    - field.field.node.organization_goal.field_priority
+    - field.field.node.organization_goal.field_second_stat
+    - field.field.node.organization_goal.field_target
+    - field.field.node.organization_goal.field_target_government
+    - field.field.node.organization_goal.field_target_stat
+    - node.type.organization_goal
+  module:
+    - comment
+    - options
+    - user
+id: node.organization_goal.default
+targetEntityType: node
+bundle: organization_goal
+mode: default
+content:
+  comment_node_organization_goal:
+    type: comment_default
+    label: hidden
+    settings:
+      view_mode: default
+      pager_id: 0
+    third_party_settings: {  }
+    weight: 20
+    region: content
+  field_current_pp:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ' '
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 9
+    region: content
+  field_first_stat:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_org_goal:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_organization:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_priority:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_second_stat:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_target:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_target_government:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: false
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  field_target_stat:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 7
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden: {  }

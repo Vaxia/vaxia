@@ -1,0 +1,14 @@
+uuid: 5c1e28dd-c7b5-412f-a333-5e6578bcda2f
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.event_status_creation
+    - workflow.state.event_status_scheduled
+id: event_status_creation_scheduled
+label: null
+module: workflow
+from_sid: event_status_creation
+to_sid: event_status_scheduled
+roles:
+  workflow_author: workflow_author

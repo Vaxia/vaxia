@@ -1,0 +1,73 @@
+uuid: 92a94ef5-45dd-49b1-9f8d-fb69f6a62bbb
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_display.comment.comment_node_artwork.default
+    - field.field.node.artwork.comment_node_artwork
+    - field.field.node.artwork.field_art_evaluation
+    - field.field.node.artwork.field_artwork_credit
+    - field.field.node.artwork.field_artwork_image
+    - field.field.node.artwork.field_website
+    - image.style.medium
+    - node.type.artwork
+  module:
+    - comment
+    - image
+    - text
+    - user
+    - workflow
+id: node.artwork.default
+targetEntityType: node
+bundle: artwork
+mode: default
+content:
+  comment_node_artwork:
+    type: comment_default
+    label: hidden
+    settings:
+      view_mode: default
+      pager_id: 0
+    third_party_settings: {  }
+    weight: 20
+    region: content
+  field_art_evaluation:
+    type: workflow_state_label
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  field_artwork_credit:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_artwork_image:
+    type: image
+    label: hidden
+    settings:
+      image_link: ''
+      image_style: medium
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_website:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+      link_rel: canonical
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden: {  }

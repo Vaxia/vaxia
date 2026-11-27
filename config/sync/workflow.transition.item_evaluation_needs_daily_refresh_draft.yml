@@ -1,0 +1,14 @@
+uuid: 92d52363-3a6d-4586-bf29-c37abf34adef
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.item_evaluation_draft
+    - workflow.state.item_evaluation_needs_daily_refresh
+id: item_evaluation_needs_daily_refresh_draft
+label: null
+module: workflow
+from_sid: item_evaluation_needs_daily_refresh
+to_sid: item_evaluation_draft
+roles:
+  administrator: administrator

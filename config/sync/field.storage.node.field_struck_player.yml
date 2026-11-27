@@ -1,0 +1,20 @@
+uuid: 318b8289-4e79-4c86-aed6-d2bc041f4dc0
+langcode: und
+status: true
+dependencies:
+  module:
+    - node
+    - user
+id: node.field_struck_player
+field_name: field_struck_player
+entity_type: node
+type: entity_reference
+settings:
+  target_type: user
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,18 @@
+uuid: cec606ff-f532-45e8-8ed5-fd78a9b067ee
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - xbbcode_standard
+_core:
+  default_config_hash: DOrp_ewF-yNtqZjqupyne-bFUl49F7D37ZAu4uCx9IA
+id: bold
+label: Bold
+description: 'Emboldens text.'
+name: b
+attached: {  }
+sample: '[{{ name }}]Bold[/{{ name }}]'
+template_code: '<strong>{{ tag.content }}</strong>'
+template_file: null
+editable: false

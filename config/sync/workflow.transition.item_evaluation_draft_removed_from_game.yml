@@ -1,0 +1,14 @@
+uuid: d5d560df-1da7-4f27-b278-156ea06fdc0e
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.item_evaluation_draft
+    - workflow.state.item_evaluation_removed_from_game
+id: item_evaluation_draft_removed_from_game
+label: null
+module: workflow
+from_sid: item_evaluation_draft
+to_sid: item_evaluation_removed_from_game
+roles:
+  administrator: administrator

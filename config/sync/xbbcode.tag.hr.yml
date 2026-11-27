@@ -1,0 +1,18 @@
+uuid: 12e7914c-12cf-4d3f-9c99-bc695efdc0af
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - xbbcode_standard
+_core:
+  default_config_hash: VDPBucuvB1MCzXav3b3_LSAGOv3reWVuBir9qnw6BpU
+id: hr
+label: 'Horizontal rule'
+description: 'Horizontal rule ([hr]).'
+name: hr
+attached: {  }
+sample: '[{{ name }}/]'
+template_code: '<hr class="bb-hr" />'
+template_file: null
+editable: false

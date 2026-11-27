@@ -1,0 +1,13 @@
+uuid: 15772ac6-0da3-4510-af32-c7f060e0b6ba
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.character_evaluation
+id: character_evaluation_submitted
+label: submitted
+weight: 0
+module: workflow
+wid: character_evaluation
+sysid: 0
+single_state_widget: ''

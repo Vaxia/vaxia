@@ -1,0 +1,7 @@
+name: VAXIA characters
+type: module
+description: 'Character economy and side systems: silver (economy, investing, daily pay), and later artwork, NPCs, reputation and evaluation. Replaces D7 silver, vaxia_characters, artwork, npcs, rpg_rep, vaxia_evaluation.'
+package: VAXIA
+core_version_requirement: ^11
+dependencies:
+  - vaxia_core:vaxia_core

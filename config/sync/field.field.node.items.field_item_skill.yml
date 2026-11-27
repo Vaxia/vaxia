@@ -1,0 +1,23 @@
+uuid: 49dc8945-da2e-464b-b46d-2fd34781ad96
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_item_skill
+    - node.type.items
+id: node.items.field_item_skill
+field_name: field_item_skill
+entity_type: node
+bundle: items
+label: Skill
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: float

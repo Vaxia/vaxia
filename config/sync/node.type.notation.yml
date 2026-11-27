@@ -1,0 +1,16 @@
+uuid: 15d804d9-6650-4868-9712-154a02d0e787
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    parent: 'main:'
+name: Notation
+type: notation
+description: 'A record of interaction is used by social to keep track of interactions with the social team.'
+help: null
+new_revision: true
+preview_mode: 1
+display_submitted: true

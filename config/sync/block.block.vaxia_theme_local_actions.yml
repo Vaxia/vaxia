@@ -1,0 +1,18 @@
+uuid: ca4f8257-44b1-4570-b343-c89315146e75
+langcode: en
+status: true
+dependencies:
+  theme:
+    - vaxia_theme
+id: vaxia_theme_local_actions
+theme: vaxia_theme
+region: content
+weight: -57
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primary admin actions'
+  label_display: '0'
+  provider: core
+visibility: {  }

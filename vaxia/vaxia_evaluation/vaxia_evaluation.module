@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the Vaxia Evaluation feature.
- */
-
-include_once 'vaxia_evaluation.features.inc';

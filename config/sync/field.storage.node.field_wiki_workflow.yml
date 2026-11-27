@@ -1,0 +1,22 @@
+uuid: 748cfc51-f232-4f0f-9304-511e3a26fbf8
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - workflow
+id: node.field_wiki_workflow
+field_name: field_wiki_workflow
+entity_type: node
+type: workflow
+settings:
+  workflow_type: wiki_workflow
+  allowed_values: {  }
+  allowed_values_function: workflow_state_allowed_values
+module: workflow
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

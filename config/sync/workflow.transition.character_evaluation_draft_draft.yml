@@ -1,0 +1,16 @@
+uuid: 128ed1b5-e148-42fe-9286-d2c36813fb09
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.character_evaluation_draft
+id: character_evaluation_draft_draft
+label: null
+module: workflow
+from_sid: character_evaluation_draft
+to_sid: character_evaluation_draft
+roles:
+  authenticated: authenticated
+  administrator: administrator
+  workflow_author: workflow_author
+  storyteller: storyteller

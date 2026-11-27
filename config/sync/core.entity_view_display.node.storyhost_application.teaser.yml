@@ -1,0 +1,34 @@
+uuid: 43ef4b85-5231-4f4c-9983-becf65a5370a
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.storyhost_application.body
+    - field.field.node.storyhost_application.comment_node_storyhost_applica
+    - field.field.node.storyhost_application.webform
+    - node.type.storyhost_application
+  module:
+    - text
+    - user
+id: node.storyhost_application.teaser
+targetEntityType: node
+bundle: storyhost_application
+mode: teaser
+content:
+  body:
+    type: text_summary_or_trimmed
+    label: hidden
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  comment_node_storyhost_applica: true
+  webform: true

@@ -1,0 +1,32 @@
+uuid: 0b340d5e-0f92-44ea-b3b6-5306126f0269
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_tag_realm
+    - node.type.session_report
+    - taxonomy.vocabulary.realm
+  module:
+    - vaxia_core
+third_party_settings:
+  vaxia_core:
+    d7_default_ids:
+      - 725
+id: node.session_report.field_tag_realm
+field_name: field_tag_realm
+entity_type: node
+bundle: session_report
+label: Realm
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: vaxia_core_d7_reference_default
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      realm: realm
+    sort:
+      field: _none
+field_type: entity_reference

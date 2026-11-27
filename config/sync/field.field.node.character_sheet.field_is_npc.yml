@@ -1,0 +1,23 @@
+uuid: 02c3b3b3-4280-4fa0-b3e5-d6b49decea22
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_is_npc
+    - node.type.character_sheet
+id: node.character_sheet.field_is_npc
+field_name: field_is_npc
+entity_type: node
+bundle: character_sheet
+label: 'This is an NPC'
+description: 'A non-player character, run by storyhosts in sessions and scenes. NPCs skip the creation points check, get no personal room and are left off the top-ten lists. Write their numbers down: they may be reviewed if a session goes wrong.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'Yes'
+  off_label: 'No'
+field_type: boolean

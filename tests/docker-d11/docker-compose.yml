@@ -1,0 +1,32 @@
+# Drupal 11 port. Usage (from tests/docker-d11): docker compose up -d --build ; ./install.sh
+# Then: tests/run-tests.sh --target d11 [path]
+name: vaxia-d11
+services:
+  db:
+    image: mariadb:10.11
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_DATABASE: vaxia
+      MARIADB_USER: vaxia
+      MARIADB_PASSWORD: vaxia
+    command: --max_allowed_packet=64M --innodb-buffer-pool-size=256M --transaction-isolation=READ-COMMITTED
+  web:
+    build: .
+    depends_on: [db]
+    environment:
+      VAXIA_TARGET: d11
+    ports: ["127.0.0.1:8078:80"]  # admin/admin: keep it off the network
+    volumes:
+      - ../..:/var/www/vaxia
+      - ..:/var/www/tests
+  # The starter site (fixtures/vaxia-starter.sql) to look around in a browser:
+  # same code, its own database (VAXIA_SITE=demo), mail collected.
+  #   docker compose up -d demo ; ./load-demo.sh   ->  http://localhost:8080
+  demo:
+    build: .
+    depends_on: [db]
+    environment:
+      VAXIA_SITE: demo
+    ports: ["127.0.0.1:8080:80"]
+    volumes:
+      - ../..:/var/www/vaxia

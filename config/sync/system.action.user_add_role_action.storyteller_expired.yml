@@ -1,0 +1,14 @@
+uuid: 33946928-843a-4ea8-8dfe-5db06e081f0a
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.storyteller_expired
+  module:
+    - user
+id: user_add_role_action.storyteller_expired
+label: 'Add the storyteller-expired role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: storyteller_expired

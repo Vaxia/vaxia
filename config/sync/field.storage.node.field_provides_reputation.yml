@@ -1,0 +1,18 @@
+uuid: ab8bc035-499b-4df1-9bea-20c484b8b050
+langcode: und
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_provides_reputation
+field_name: field_provides_reputation
+entity_type: node
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

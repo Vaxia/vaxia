@@ -1,0 +1,27 @@
+uuid: 5f73dd60-26c6-4749-a748-6365574f5ef9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_player_notes
+    - filter.format.filtered_html
+    - node.type.character_sheet
+  module:
+    - text
+id: node.character_sheet.field_player_notes
+field_name: field_player_notes
+entity_type: node
+bundle: character_sheet
+label: 'Player Notes'
+description: "Personal notes for yourself about your character.\r\n<br><br>"
+required: false
+translatable: false
+default_value:
+  -
+    value: ''
+    format: plain_text
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - filtered_html
+field_type: text_long

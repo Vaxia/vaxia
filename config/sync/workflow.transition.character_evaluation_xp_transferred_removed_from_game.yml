@@ -1,0 +1,14 @@
+uuid: 6a9be9bf-f914-43c7-89c2-e55abcb2e2ff
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.character_evaluation_removed_from_game
+    - workflow.state.character_evaluation_xp_transferred
+id: character_evaluation_xp_transferred_removed_from_game
+label: null
+module: workflow
+from_sid: character_evaluation_xp_transferred
+to_sid: character_evaluation_removed_from_game
+roles:
+  administrator: administrator

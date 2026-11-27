@@ -1,0 +1,14 @@
+uuid: 57b715ca-d0b3-4c64-8c9f-e6f7043bb7fb
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.banned_user
+  module:
+    - user
+id: user_remove_role_action.banned_user
+label: 'Remove the banned user role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: banned_user

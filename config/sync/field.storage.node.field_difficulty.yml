@@ -1,0 +1,42 @@
+uuid: 20d51fb9-3a31-495e-81c9-feed4b2ebf84
+langcode: und
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_difficulty
+field_name: field_difficulty
+entity_type: node
+type: list_integer
+settings:
+  allowed_values:
+    -
+      value: 25
+      label: '25: Most rolls, gaining silver'
+    -
+      value: 40
+      label: '40: 1-5 Build Points, 25PP per'
+    -
+      value: 50
+      label: '50: 6-10 Build Points, 50PP per'
+    -
+      value: 60
+      label: '60: 11-15 Build Points, 75PP per'
+    -
+      value: 70
+      label: '70: 16-20 Build Points, 100PP per'
+    -
+      value: 80
+      label: '80: 21 - 25 Build Points, 125PP per'
+    -
+      value: 90
+      label: '90: 26 - 30 Build Points, 150PP per'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

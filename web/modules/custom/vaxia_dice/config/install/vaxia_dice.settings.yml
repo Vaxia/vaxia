@@ -1,0 +1,12 @@
+# Content types whose posts (comments) carry the dice roller (D7
+# dice_roller_<type> + dice_roller_form_<type> = vaxia).
+dice_roller_types:
+  - rpg_chatroom
+# Dice ruler (D7 dice_ruler variables).
+dice_ruler_default_diff: 25
+dice_ruler_extra_action_penalty: 20
+dice_ruler_help_general: ''
+dice_ruler_help_two_trait: ''
+dice_ruler_help_two_trait_vs: ''
+dice_ruler_help_combat: ''
+dice_ruler_help_magic: ''

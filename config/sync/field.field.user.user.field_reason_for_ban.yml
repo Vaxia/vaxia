@@ -1,0 +1,20 @@
+uuid: b750c582-5430-4f2c-8634-16eee387bdb7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_reason_for_ban
+  module:
+    - user
+id: user.user.field_reason_for_ban
+field_name: field_reason_for_ban
+entity_type: user
+bundle: user
+label: 'Reason for ban'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

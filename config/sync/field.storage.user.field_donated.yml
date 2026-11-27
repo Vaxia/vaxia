@@ -1,0 +1,20 @@
+uuid: 76f8376e-0207-4959-8bfd-47b28d8daf6d
+langcode: und
+status: true
+dependencies:
+  module:
+    - user
+id: user.field_donated
+field_name: field_donated
+entity_type: user
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

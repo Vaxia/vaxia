@@ -1,0 +1,18 @@
+uuid: d28be78f-a94e-4584-bf70-1b531168effd
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.play_suggestions
+id: node.play_suggestions.title
+field_name: title
+entity_type: node
+bundle: play_suggestions
+label: 'There is ...'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

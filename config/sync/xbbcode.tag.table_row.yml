@@ -1,0 +1,13 @@
+uuid: defe3928-b6e7-42fa-859f-f6410e2a3a82
+langcode: en
+status: true
+dependencies: {  }
+id: table_row
+label: 'Table row'
+description: 'Table row; [tr color=#ccc] colors it.'
+name: tr
+attached: {  }
+sample: '[{{ name }}]Text[/{{ name }}]'
+template_code: "{% set color = tag.attributes.color|default('') %}{% if color matches '{^[#A-Za-z0-9_]+$}' %}<tr bgcolor=\"{{ color }}\">{% else %}<tr>{% endif %}{{ tag.content }}</tr>"
+template_file: null
+editable: false

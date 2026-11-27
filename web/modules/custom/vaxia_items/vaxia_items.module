@@ -1,0 +1,638 @@
+<?php
+
+/**
+ * @file
+ * Items (D7 items.module and its Rules): value on save, the item list on
+ * characters, evaluation side effects, approved-item edit warning.
+ */
+
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\node\Entity\Node;
+use Drupal\node\NodeInterface;
+use Drupal\vaxia_core\Character;
+use Drupal\vaxia_items\Item;
+
+/**
+ * Implements hook_ENTITY_TYPE_presave() for nodes: the item's value.
+ */
+function vaxia_items_node_presave(NodeInterface $node) {
+  if (!Item::isItem($node)) {
+    return;
+  }
+  $calc = $node->hasField('field_calc_value') && $node->get('field_calc_value')->value;
+  if ($calc || \Drupal::config('vaxia_items.settings')->get('items_recalculate_values')) {
+    $declared = $node->hasField('field_value') ? $node->get('field_value')->value : NULL;
+    $value = Item::value($node);
+    $node->set('field_value', $value);
+    // The value typed in stays as the declared value.
+    $node->set('field_declared_value', (is_numeric($declared) && $declared > 0) ? $declared : $value);
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert() / update() / delete() for nodes.
+ */
+function vaxia_items_node_insert(NodeInterface $node) {
+  if (Item::isItem($node)) {
+    vaxia_items_sync_character_lists($node, NULL);
+  }
+}
+
+function vaxia_items_node_update(NodeInterface $node) {
+  if (!Item::isItem($node)) {
+    return;
+  }
+  $original = $node->original ?? NULL;
+  vaxia_items_sync_character_lists($node, $original);
+  if (!$original) {
+    return;
+  }
+  $before = Character::state($original);
+  $after = Character::state($node);
+  $approved = \Drupal::config('vaxia_items.settings')->get('items_approved_workflow');
+  // Editing an approved item sends it back for evaluation, owned by whoever
+  // edited it (D7 rule "Edit approved item - set workflow").
+  static $resubmitting = [];
+  $system = &drupal_static('vaxia_items_system_save', []);
+  if ($before === $approved && $after === $approved && empty($resubmitting[$node->id()]) && empty($system[$node->id()])) {
+    $resubmitting[$node->id()] = TRUE;
+    $node->setOwnerId(\Drupal::currentUser()->id() ?: $node->getOwnerId());
+    Character::forceState($node, 'item_evaluation_submitted', 'Setting item back to needing approval after being edited in an approved state.');
+    \Drupal::messenger()->addStatus('You have edited an item that was already approved. This invalidated the approval and the item has been returned to submit and owned to your account so the changes may be reviewed.');
+    return;
+  }
+  if ($before === $after) {
+    return;
+  }
+  // Disapproved or removed from game: no longer anyone's (D7 rule "Item
+  // removed from game").
+  if (in_array($after, ['item_evaluation_disapproved', 'item_evaluation_removed_from_game'], TRUE) && !$node->get('field_character_owner')->isEmpty()) {
+    $node->set('field_character_owner', NULL);
+    vaxia_items_system_save($node);
+  }
+  // Submitted: mail the evaluators (D7 rule "Notify item eval re: new item").
+  if ($after === 'item_evaluation_submitted') {
+    $character = $node->get('field_character_owner')->entity;
+    // Ids, not entities: a mail backend may serialize its params, and a
+    // serialized node loses the workflow move still being saved.
+    $params = [
+      'item' => (int) $node->id(),
+      'character' => $character ? (int) $character->id() : NULL,
+    ];
+    $ids = \Drupal::entityQuery('user')->accessCheck(FALSE)->condition('status', 1)->condition('roles', 'administrator')->execute();
+    foreach (\Drupal\user\Entity\User::loadMultiple($ids) as $evaluator) {
+      \Drupal::service('plugin.manager.mail')->mail('vaxia_items', 'evaluate', $evaluator->getEmail(), $evaluator->getPreferredLangcode(), $params);
+    }
+    \Drupal::messenger()->addStatus('Your item has been submitted, and email sent to the item evaluators.');
+  }
+  // Approved in-shop player item: a copy goes into the shop (D7 rule "Item
+  // shop - Clone owned item for shop").
+  if ($after === $approved && $before === 'item_evaluation_submitted' && $node->get('field_in_shop')->value
+    && \Drupal::currentUser()->id() != 1 && !$node->get('field_character_owner')->isEmpty()) {
+    $copy = \Drupal\vaxia_items\Shop::copy($node, (int) $node->getOwnerId(), NULL, TRUE, (string) t('Setting to approve after cloning from item ID #@nid.', ['@nid' => $node->id()]));
+    $node->set('field_in_shop', 0);
+    vaxia_items_system_save($node);
+    \Drupal::messenger()->addStatus(t('A new item @title with item ID #@new has been created from your item ID #@nid and added to the item shop.', ['@title' => $copy->label(), '@new' => $copy->id(), '@nid' => $node->id()]));
+  }
+  // Approved: tell the author (D7 rule "Notify player when item approved").
+  if ($after === $approved && in_array($before, ['item_evaluation_draft', 'item_evaluation_submitted'], TRUE) && $node->getOwner()->isActive()) {
+    \Drupal::service('plugin.manager.mail')->mail('vaxia_items', 'approved', $node->getOwner()->getEmail(), $node->getOwner()->getPreferredLangcode(), ['item' => (int) $node->id()]);
+  }
+}
+
+function vaxia_items_node_delete(NodeInterface $node) {
+  if (Item::isItem($node) && ($character = $node->get('field_character_owner')->entity)) {
+    vaxia_items_remove_from_list($character, (int) $node->id());
+  }
+}
+
+/**
+ * Keeps characters' item lists (field_items) matching items' owners (D7
+ * corresponding node references between field_character_owner and
+ * field_items).
+ */
+function vaxia_items_sync_character_lists(NodeInterface $item, ?NodeInterface $original) {
+  $old = $original ? (int) $original->get('field_character_owner')->target_id : 0;
+  $new = (int) $item->get('field_character_owner')->target_id;
+  if ($old === $new) {
+    return;
+  }
+  if ($old && ($character = Node::load($old))) {
+    vaxia_items_remove_from_list($character, (int) $item->id());
+  }
+  if ($new && ($character = Node::load($new)) && $character->hasField('field_items')) {
+    $ids = array_map('intval', array_column($character->get('field_items')->getValue(), 'target_id'));
+    if (!in_array((int) $item->id(), $ids, TRUE)) {
+      $character->get('field_items')->appendItem($item->id());
+      $character->save();
+    }
+  }
+}
+
+function vaxia_items_remove_from_list(NodeInterface $character, int $item_id) {
+  if (!$character->hasField('field_items')) {
+    return;
+  }
+  $kept = array_values(array_filter($character->get('field_items')->getValue(), fn($v) => (int) $v['target_id'] !== $item_id));
+  if (count($kept) !== $character->get('field_items')->count()) {
+    $character->set('field_items', $kept);
+    $character->save();
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view_alter() for nodes: a sheet lists only
+ * approved items.
+ */
+function vaxia_items_node_view_alter(array &$build, NodeInterface $node, EntityViewDisplayInterface $display) {
+  if (!Character::isSheet($node) || !isset($build['field_items'])) {
+    return;
+  }
+  $kept = [];
+  foreach ($node->get('field_items') as $delta => $reference) {
+    if (isset($build['field_items'][$delta])) {
+      if ($reference->entity && Item::isPlayable($reference->entity)) {
+        $kept[] = $build['field_items'][$delta];
+      }
+      unset($build['field_items'][$delta]);
+    }
+  }
+  // The field template stops at the first missing delta: renumber.
+  foreach ($kept as $delta => $element) {
+    $build['field_items'][$delta] = $element;
+  }
+  $build['#cache']['max-age'] = 0;
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for node forms: warn before
+ * changing an approved item.
+ */
+function vaxia_items_form_node_form_alter(&$form, FormStateInterface $form_state) {
+  $node = $form_state->getFormObject()->getEntity();
+  // Shop flags: only "set item for shop" may change them, and never on your
+  // own item's sellback (D7 item_shop_form_items_node_form_alter()).
+  if (Item::isItem($node)) {
+    $account = \Drupal::currentUser();
+    if (!$account->hasPermission('set item for shop')) {
+      foreach (['field_sellback', 'field_in_shop'] as $field) {
+        if (isset($form[$field])) {
+          $form[$field]['#disabled'] = TRUE;
+        }
+      }
+    }
+    if (!$node->isNew() && $node->getOwnerId() == $account->id() && isset($form['field_sellback'])) {
+      $form['field_sellback']['#disabled'] = TRUE;
+    }
+  }
+  // "Currently wearing" lists the character's own approved, published items
+  // (D7: view character_items, display character_items_ref, as the field's
+  // reference view), plus any it already holds. The port listed every item.
+  if ($node->bundle() === 'character_sheet' && isset($form['field_currently_wearing']['widget']['#options'])) {
+    $held = array_map('intval', array_column($node->get('field_currently_wearing')->getValue(), 'target_id'));
+    $own = [];
+    if (!$node->isNew()) {
+      $storage = \Drupal::entityTypeManager()->getStorage('node');
+      $ids = $storage->getQuery()->accessCheck(FALSE)->condition('type', 'items')->condition('status', 1)->condition('field_character_owner', $node->id())->execute();
+      foreach ($storage->loadMultiple($ids) as $item) {
+        if (Item::isPlayable($item)) {
+          $own[] = (int) $item->id();
+        }
+      }
+    }
+    foreach (array_keys($form['field_currently_wearing']['widget']['#options']) as $key) {
+      if ($key !== '_none' && !in_array((int) $key, $own, TRUE) && !in_array((int) $key, $held, TRUE)) {
+        unset($form['field_currently_wearing']['widget']['#options'][$key]);
+      }
+    }
+  }
+  if (Item::isItem($node) && !$node->isNew() && Item::isPlayable($node)) {
+    \Drupal::messenger()->addWarning('You are editing an Item that has already been approved for play. Editing this item will invalidate the approval and return it to submission.');
+  }
+}
+
+/**
+ * Implements hook_mail().
+ */
+function vaxia_items_mail($key, &$message, $params) {
+  $item = \Drupal\node\Entity\Node::load($params['item']);
+  $footer = "\n\n~~~~~~\nThis email was automatically generated by [site:name].\nYou are receiving this email as part of your membership at [site:name].\nDo not reply this this email, it is not a monitored account and messages will not be received by a human.\n~~~~~~";
+  if ($key === 'evaluate') {
+    $character = $params['character'] ? \Drupal\node\Entity\Node::load($params['character']) : NULL;
+    $message['subject'] = '[site:mail-prefix] An item is ready to be reviewed';
+    $message['body'][] = 'An item is ready to be reviewed.' . "\n\n"
+      . 'You are receiving this email because you are one of the people available to evaluate items. Neither ' . $item->getOwner()->getDisplayName() . ' nor ' . ($character ? $character->getOwner()->getDisplayName() : '') . ' can approve this items. If you are not either of these players, please evaluate this item. Please do so before ' . date('m/d/Y', strtotime('+1 week')) . '. If this item does not meet the requirements to be approved, please revert it to "draft" status and send a Private Message to the player with the details on how to bring it up to an approvable quality. Copy the same notes into the Workflow Comments when you make the change so that we have a record of it with the item in question.' . "\n\n"
+      . 'Item: ' . $item->label() . "\nLink: " . $item->toUrl('canonical', ['absolute' => TRUE])->toString() . "\n\n"
+      . 'This item is created by: ' . $item->getOwner()->getDisplayName() . "\n"
+      . 'And created for the character: ' . ($character ? $character->label() . ', owned by: ' . $character->getOwner()->getDisplayName() : '') . "\n\n"
+      . 'If you are not comfortable with approving items at all, please speak to any of the current heads to update your access privileges.' . $footer;
+  }
+  if ($key === 'approved') {
+    $message['subject'] = '[site:mail-prefix] Your item has been approved';
+    $message['body'][] = 'Your item, ' . $item->label() . ', has been approved and is ready to play!' . "\n\n"
+      . 'If you have additional questions, please contact: ' . \Drupal::currentUser()->getDisplayName() . $footer;
+  }
+}
+
+/**
+ * Implements hook_vaxia_dice_form_alter(): "Using items" on the post form.
+ */
+function vaxia_items_vaxia_dice_form_alter(array &$form, FormStateInterface $form_state, array $context) {
+  $character = $context['character'];
+  if (!Character::isSheet($character)) {
+    return;
+  }
+  $options = \Drupal\vaxia_items\ItemDice::options($character);
+  $wearing = $character->hasField('field_currently_wearing') ? array_column($character->get('field_currently_wearing')->getValue(), 'target_id') : [];
+  $form['vaxia_rolls']['items'] = [
+    '#title' => t('Using items'),
+    '#type' => 'select',
+    '#options' => $options,
+    '#default_value' => array_values(array_intersect($wearing, array_keys($options))),
+    '#size' => count($options),
+    '#multiple' => TRUE,
+  ];
+  vaxia_items_companions_form($form, $form_state, $character);
+}
+
+/**
+ * Implements hook_vaxia_dice_commands_alter(): items change the rolls.
+ */
+function vaxia_items_vaxia_dice_commands_alter(array &$rolls, array $context) {
+  vaxia_items_companion_commands($rolls, $context);
+  $chosen = array_filter((array) ($context['submitted_rolls']['items'] ?? []));
+  if (!$chosen) {
+    return;
+  }
+  $items = \Drupal\vaxia_items\ItemDice::modifiers($chosen);
+  // Items but no dice: roll 1d1 to carry them.
+  if (!$rolls && $items) {
+    $rolls[] = \Drupal\vaxia_dice\DiceForm::prepare(['number' => 1, 'size' => 1, 'stat' => -1, 'skill' => -1], $context['character']);
+  }
+  foreach ($rolls as $delta => $roll) {
+    $roll['item_notes'] = [];
+    $roll['item_mods'] = 0;
+    $stat = !empty($roll['stat_name']) ? $roll['stat_name'] : 'any';
+    if (!empty($items[$stat])) {
+      $roll = \Drupal\vaxia_items\ItemDice::apply($roll, $items[$stat], 'stat');
+    }
+    if (!empty($items['skill'])) {
+      $roll = \Drupal\vaxia_items\ItemDice::apply($roll, $items['skill'], 'skill');
+    }
+    if ($roll['item_notes']) {
+      $roll['note'][] = '<a title="' . \Drupal\Component\Utility\Html::escape(implode(' + ', $roll['item_notes'])) . '" href="#">Items</a>' . ($roll['item_mods'] ? ' (' . $roll['item_mods'] . ')' : '');
+    }
+    $rolls[$delta] = $roll;
+  }
+}
+
+/**
+ * The companion's rows, rolled after the character's (D7 item_companions).
+ */
+function vaxia_items_companion_commands(array &$rolls, array $context) {
+  $submitted = $context['submitted_rolls'];
+  $companion = !empty($submitted['as_companion']) && $submitted['as_companion'] !== '_none' ? Node::load((int) $submitted['as_companion']) : NULL;
+  if (!$companion || empty($submitted['companions']['dice'])) {
+    return;
+  }
+  foreach ($submitted['companions']['dice'] as $roll) {
+    if (!is_array($roll) || empty($roll['number']) || $roll['number'] <= 0) {
+      continue;
+    }
+    $roll['size'] = !empty($roll['size']) ? $roll['size'] : 1;
+    $prepared = \Drupal\vaxia_dice\DiceForm::prepare($roll, $companion);
+    $prepared['note'][] = '<a title="' . \Drupal\Component\Utility\Html::escape($companion->label()) . '" href="#">Companion</a>';
+    $rolls[] = $prepared;
+  }
+}
+
+/**
+ * An item's type (item_type term) name: "Weapon", "Companion/Drone", ...
+ */
+function vaxia_items_type_name(NodeInterface $item): string {
+  return $item->hasField('field_item_type') && $item->get('field_item_type')->entity ? (string) $item->get('field_item_type')->entity->label() : '';
+}
+
+/**
+ * Weapon label: "Heavy Weapon fixed 30" (D7 _item_weapons_check()).
+ */
+function vaxia_items_weapon_label(NodeInterface $item, bool $with_fixed = TRUE): string {
+  if (vaxia_items_type_name($item) !== 'Weapon') {
+    return '';
+  }
+  $labels = [];
+  $class = $item->hasField('field_weapon_class') ? $item->get('field_weapon_class')->entity : NULL;
+  if ($class && $class->label() !== 'Unarmed (0% / 0)') {
+    $labels[] = explode('(', $class->label())[0] . t('Weapon');
+  }
+  $fixed = $item->hasField('field_fixed_strength') ? $item->get('field_fixed_strength')->value : '';
+  if ($with_fixed && !empty($fixed)) {
+    $labels[] = t('fixed @value', ['@value' => $fixed]);
+  }
+  return implode(' ', $labels);
+}
+
+/**
+ * Implements hook_item_dice_label(): weapons and companions in the item list.
+ */
+function vaxia_items_item_dice_label(NodeInterface $item) {
+  // D7's order: item_companions, item_uses, item_weapons.
+  $labels = [];
+  if (vaxia_items_type_name($item) === 'Companion/Drone') {
+    $labels[] = (string) t('Companion');
+  }
+  if ($uses = vaxia_items_uses_label($item)) {
+    $labels[] = $uses;
+  }
+  if ($weapon = vaxia_items_weapon_label($item)) {
+    $labels[] = $weapon;
+  }
+  return $labels;
+}
+
+/**
+ * Implements hook_item_dice_submit_alter(): a weapon's fixed strength is a
+ * strength overlap; its class shows in the roll notes (D7 item_weapons).
+ */
+function vaxia_items_item_dice_submit_alter(array &$mods, array $context) {
+  vaxia_items_uses_submit($mods, $context);
+  $item = $context['item'];
+  $stat = $context['stat_key'];
+  $label = vaxia_items_weapon_label($item);
+  if ($label === '') {
+    return;
+  }
+  $mods[$stat]['general'] = $mods[$stat]['general'] ?? 0;
+  $mods[$stat]['notes'] = $mods[$stat]['notes'] ?? '';
+  $fixed = $item->hasField('field_fixed_strength') ? $item->get('field_fixed_strength')->value : '';
+  if ($stat === 'strength' && !empty($fixed)) {
+    if ($fixed > ($mods[$stat]['overlaps'] ?? 0)) {
+      $mods[$stat]['overlaps'] = $fixed;
+    }
+  }
+  else {
+    $label = vaxia_items_weapon_label($item, FALSE);
+  }
+  if ($label !== '' && $stat !== 'skill') {
+    $mods[$stat]['notes'] .= ' ' . $item->label() . ' (' . $label . ')';
+  }
+}
+
+/**
+ * Item uses in the roll notes (D7 item_uses_item_dice_submit_alter()).
+ */
+function vaxia_items_uses_submit(array &$mods, array $context) {
+  $item = $context['item'];
+  $stat = $context['stat_key'];
+  $label = vaxia_items_uses_label($item);
+  if ($label === '') {
+    return;
+  }
+  $notes = $item->label() . ' ' . $label;
+  $mods[$stat]['general'] = $mods[$stat]['general'] ?? 0;
+  $mods[$stat]['notes'] = ($mods[$stat]['notes'] ?? '') . ' ' . $notes;
+  $mods['any']['general'] = 0;
+  $mods['any']['notes'] = ($mods['any']['notes'] ?? '') . ' ' . $notes;
+}
+
+/**
+ * Companions (D7 item_companions): approved companion items leave the item
+ * list for "Using companion", which shows the companion's own dice rows.
+ */
+function vaxia_items_companions_form(array &$form, FormStateInterface $form_state, NodeInterface $character) {
+  $companions = [];
+  foreach ($character->get('field_items') as $reference) {
+    if ($reference->entity && vaxia_items_type_name($reference->entity) === 'Companion/Drone') {
+      $companions[$reference->entity->id()] = $reference->entity;
+    }
+  }
+  if (!$companions) {
+    return;
+  }
+  $options = ['_none' => t('- None -')];
+  foreach (array_keys($form['vaxia_rolls']['items']['#options'] ?? []) as $nid) {
+    if (isset($companions[$nid])) {
+      unset($form['vaxia_rolls']['items']['#options'][$nid]);
+      $options[$nid] = $companions[$nid]->label();
+    }
+  }
+  $form['vaxia_rolls']['as_companion'] = [
+    '#title' => t('Using companion'),
+    '#type' => 'select',
+    '#options' => $options,
+    '#default_value' => '_none',
+    '#ajax' => ['callback' => 'vaxia_items_companion_pick', 'wrapper' => 'vaxia-dice-companion', 'method' => 'replaceWith'],
+  ];
+  $picked = $form_state->getValue(['vaxia_rolls', 'as_companion']);
+  if ($picked === NULL) {
+    $input = $form_state->getUserInput();
+    $picked = $input['vaxia_rolls']['as_companion'] ?? NULL;
+  }
+  $companion = ($picked && $picked !== '_none' && isset($companions[$picked])) ? $companions[$picked] : NULL;
+  $form['vaxia_rolls']['companions'] = \Drupal\vaxia_dice\DiceForm::element($companion, 'companion');
+  $form['vaxia_rolls']['companions']['#description'] = t('Remember to roll your companion control skill for issuing a command.');
+}
+
+function vaxia_items_companion_pick(array $form, FormStateInterface $form_state) {
+  return $form['vaxia_rolls']['companions'] ?? [];
+}
+
+/**
+ * Uses left on an item: "Per Day, 2 uses, 3 PP" (D7 _item_uses_check()).
+ */
+function vaxia_items_uses_label(NodeInterface $item): string {
+  $value = fn($field, $default) => $item->hasField($field) && !$item->get($field)->isEmpty() ? $item->get($field)->value : $default;
+  $frequency = $value('field_item_use_day', '');
+  $labels = [];
+  if ($frequency !== 'at_will') {
+    $labels[] = $frequency === 'per_day' ? 'Per Day' : 'Once';
+    $left = (float) $value('field_item_uses', 0) - (float) $value('field_item_spent_uses', 0);
+    if ($left > 0) {
+      $labels[] = $left . ' uses';
+    }
+  }
+  if ((float) $value('field_pp_created', 0) > 0) {
+    $labels[] = $value('field_pp_created', 0) . ' PP';
+  }
+  return implode(', ', $labels);
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for comment forms: spending item
+ * charges once the post is saved.
+ */
+function vaxia_items_form_comment_form_alter(&$form, FormStateInterface $form_state) {
+  if (isset($form['vaxia_rolls'])) {
+    $form['actions']['submit']['#submit'][] = 'vaxia_items_spend_charges';
+  }
+}
+
+/**
+ * Spends a charge of each once / per-day item rolled with, in in-character
+ * rooms. Items out of charges leave play until recharged (D7 item_uses; it
+ * only ever spent charges in limbo rooms, which have no dice: known bug).
+ */
+function vaxia_items_spend_charges(array $form, FormStateInterface $form_state) {
+  $config = \Drupal::config('vaxia_items.settings');
+  $comment = $form_state->getFormObject()->getEntity();
+  $room = $comment->getCommentedEntity();
+  // New posts only, as the dice (vaxia_dice_comment_submit): editing a post
+  // spends no charges (review, 2026-11-26).
+  if (!$config->get('item_uses_active') || \Drupal::currentUser()->hasPermission('use items indefinately') || Character::isLimbo($room)
+    || empty($form_state->get('vaxia_dice_new_post')) || !$comment->id() || $comment->get('field_comment_character')->isEmpty()) {
+    return;
+  }
+  foreach (array_filter((array) $form_state->getValue(['vaxia_rolls', 'items'])) as $nid) {
+    $item = Node::load((int) $nid);
+    if (!Item::isItem($item)) {
+      continue;
+    }
+    $frequency = $item->get('field_item_use_day')->value ?: 'at_will';
+    $charges = (int) ($item->get('field_item_uses')->value ?? 1);
+    if (!in_array($frequency, ['once', 'per_day'], TRUE) || $charges <= 0) {
+      continue;
+    }
+    $spent = (int) $item->get('field_item_spent_uses')->value + 1;
+    $item->set('field_item_spent_uses', $spent);
+    \Drupal::messenger()->addStatus(t('@title charge used, @charges charges remaining.', ['@title' => $item->label(), '@charges' => $charges - $spent]));
+    vaxia_items_system_save($item);
+    if ($charges - $spent <= 0) {
+      if ($frequency === 'once') {
+        \Drupal::messenger()->addStatus(t('@title is out of uses cannot be used again until recharged.', ['@title' => $item->label()]));
+        Character::forceState($item, (string) $config->get('item_uses_once_workflow'), (string) t('Item uses ran out, item temporarily removed from game.'));
+      }
+      else {
+        \Drupal::messenger()->addStatus(t('@title is out of uses cannot be used again until tomorrow.', ['@title' => $item->label()]));
+        Character::forceState($item, (string) $config->get('item_uses_daily_workflow'), (string) t('Item uses ran out, item temporarily removed from game.'));
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_cron(): per-day items recharge at 1am (D7 looked them up
+ * wrongly and never did: known bug).
+ */
+function vaxia_items_cron() {
+  if (!\Drupal\vaxia_core\Cron::onceADay('item_uses_daily_recharge', '01:00:00')) {
+    return;
+  }
+  $config = \Drupal::config('vaxia_items.settings');
+  $storage = \Drupal::entityTypeManager()->getStorage('node');
+  $ids = $storage->getQuery()->accessCheck(FALSE)->condition('type', 'items')->condition('field_item_evaluation', $config->get('item_uses_daily_workflow'))->execute();
+  foreach ($storage->loadMultiple($ids) as $item) {
+    if ((int) $item->get('field_item_spent_uses')->value > 0) {
+      \Drupal::logger('item_uses')->notice('Daily recharge for item #@nid.', ['@nid' => $item->id()]);
+      $item->set('field_item_spent_uses', 0);
+      vaxia_items_system_save($item);
+      Character::forceState($item, (string) $config->get('items_approved_workflow'), (string) t('Item recharged daily.'));
+    }
+  }
+}
+
+/**
+ * Saves an item for the system (charges, recharges, owner clean-up): not an
+ * edit, so an approved item stays approved.
+ */
+function vaxia_items_system_save(NodeInterface $item) {
+  $system = &drupal_static('vaxia_items_system_save', []);
+  $system[$item->id()] = TRUE;
+  try {
+    $item->save();
+  }
+  finally {
+    unset($system[$item->id()]);
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view() for nodes: the sellback offer on items.
+ */
+function vaxia_items_node_view(array &$build, NodeInterface $node, EntityViewDisplayInterface $display, $view_mode) {
+  if ($view_mode === 'full' && \Drupal\vaxia_items\Shop::sellbackAllowed($node)) {
+    $build['my_additional_field'] = [
+      '#prefix' => '<div class="sellback_shop">',
+      '#suffix' => '</div>',
+      'form' => \Drupal::formBuilder()->getForm('\Drupal\vaxia_items\Form\SellbackForm', $node),
+      '#weight' => 1000,
+    ];
+  }
+  $build['#cache']['max-age'] = 0;
+}
+
+/**
+ * Implements hook_vaxia_scene_goal_info(): item crafting totals on scenes
+ * with the "item" goal (D7 item_helper).
+ */
+function vaxia_items_vaxia_scene_goal_info() {
+  return ['vaxia_items_scene_crafting' => ['label' => 'A running total for item creation.', 'type' => ['item']]];
+}
+
+/**
+ * Whether a post's roll is two skills, both with one of the aspects.
+ */
+function vaxia_items_craft_roll(array $roll_set, array $aspects = ['craft', 'repair', 'persist']): bool {
+  if (count($roll_set['aspects']) < 2) {
+    return FALSE;
+  }
+  return array_intersect((array) $roll_set['aspects'][0], $aspects) && array_intersect((array) $roll_set['aspects'][1], $aspects);
+}
+
+/**
+ * Running item making and enchanting totals (D7 _item_helper_calculate_results()).
+ */
+function vaxia_items_scene_crafting($comment, array &$context): array {
+  $messages = [];
+  $roll = $context['roll_set'];
+  if (!vaxia_items_craft_roll($roll)) {
+    return [t('Item craft/persist 2-stat roll <span style="color:red;font-weight:bold;">NOT found.</span>')];
+  }
+  $empty = ['PPs' => 0, '1s' => 0, '100s' => 0, 'crit_fails' => 0, 'crit_wins' => 0];
+  $context['items_make'] = $context['items_make'] ?? $empty;
+  $context['items_enchant'] = $context['items_enchant'] ?? $empty;
+  if ($roll['crit_fails'] > 0) {
+    $messages[] = t('<span style="color:red;font-weight:bold;">A critical FAIL wiped out items progress.</span>');
+    $context['items_make'] = $context['items_enchant'] = $empty;
+  }
+  else {
+    $kind = vaxia_items_craft_roll($roll, ['craft']) ? 'items_make' : (vaxia_items_craft_roll($roll, ['persist']) ? 'items_enchant' : NULL);
+    if (!$kind) {
+      // D7 counted nothing here and said nothing.
+      $messages[] = t('Item craft 2-stat roll <span style="color:red;font-weight:bold;">NOT found</span>: both skills must be craft, or both persist.');
+    }
+    else {
+      $messages[] = $kind === 'items_make'
+        ? t('Item craft 2-stat roll <span style="color:green;font-weight:bold;">found.</span>')
+        : t('Item persist 2-stat roll <span style="color:green;font-weight:bold;">found.</span>');
+      foreach ($empty as $key => $zero) {
+        $context[$kind][$key] += $roll[$key];
+      }
+    }
+  }
+  // D7's scale is 1 at difficulty 40; below 30 it went to 0 (division by zero)
+  // or negative, so easier scenes use the difficulty-40 limits.
+  $scale = max(1, 1 + (($context['diff'] ?: 25) - 40) / 10);
+  $max_primary = floor($scale * 5);
+  $max_secondary = floor($max_primary / 1.5);
+  $max_skill = floor($max_primary / 0.75);
+  $pp_per_point = floor($scale * 25);
+  $primary = floor($context['items_make']['PPs'] / $pp_per_point);
+  $secondary = floor($primary / 1.5);
+  $skills = floor($primary / 0.75);
+  if (!empty($context['items_make']['PPs'])) {
+    $messages[] = t('Max primary / secondary / skill : @p / @s / @k.', ['@p' => number_format($max_primary), '@s' => number_format($max_secondary), '@k' => number_format($max_skill)]);
+    $messages[] = t('Points for primary stats: @n', ['@n' => $max_primary <= $primary ? $max_primary . ' (max)' : $primary]);
+    $messages[] = t('Points for secondary stats: @n.', ['@n' => $max_secondary <= $secondary ? $max_secondary . ' (max)' : $secondary]);
+    $messages[] = t('Points for skills: @n.', ['@n' => $max_skill <= $skills ? $max_skill . ' (max)' : $skills]);
+    $messages[] = t('PP generated for effect: @pp.', ['@pp' => number_format($context['items_make']['PPs'], 2)]);
+  }
+  if (!empty($context['items_enchant']['PPs'])) {
+    $pp = $context['items_enchant']['PPs'];
+    $messages[] = t('PP persisted for 1 use: @pp.', ['@pp' => number_format($pp, 2)]);
+    $messages[] = t('PP persisted for 3 uses: @pp.', ['@pp' => floor($pp / 3)]);
+    $messages[] = t('PP persisted for once a day: @pp.', ['@pp' => floor($pp / 50)]);
+    $messages[] = t('PP persisted for at will: @pp.', ['@pp' => floor($pp / 150)]);
+  }
+  return $messages;
+}

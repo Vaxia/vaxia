@@ -1,0 +1,8 @@
+uuid: 66ef0e86-f6a2-404a-b410-e3a744f3272f
+langcode: en
+status: true
+dependencies: {  }
+id: menu-vaxia
+label: Navigation
+description: "The site's basic navigation"
+locked: false

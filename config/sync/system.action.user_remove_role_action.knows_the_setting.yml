@@ -1,0 +1,14 @@
+uuid: ef361d46-d7db-47ec-a210-7fdd0ee0198f
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.knows_the_setting
+  module:
+    - user
+id: user_remove_role_action.knows_the_setting
+label: 'Remove the knows-the-setting role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: knows_the_setting

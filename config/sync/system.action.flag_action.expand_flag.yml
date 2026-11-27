@@ -1,0 +1,15 @@
+uuid: efb6b27e-0e20-49f4-beba-48772d3824e6
+langcode: en
+status: true
+dependencies:
+  config:
+    - flag.flag.expand
+  module:
+    - flag
+id: flag_action.expand_flag
+label: 'Mark to Expand'
+type: node
+plugin: 'flag_action:expand_flag'
+configuration:
+  flag_id: expand
+  flag_action: flag

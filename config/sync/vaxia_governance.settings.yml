@@ -1,0 +1,53 @@
+_core:
+  default_config_hash: kqjQGQKrfRKVVbLuU16k8sFk0bguErmFjE3lp4LH9LU
+proposal_node_help: ''
+proposal_open_timeframe: '2 weeks'
+proposal_active_timeframe: '2 weeks'
+proposal_voter_timeframe: '6 months'
+proposal_required_perc: '50'
+anon_mailer_webform: 0
+anon_mailer_form: 0
+election_rate: '1 year'
+election_positions: ''
+election_term_limits: true
+election_term_limit_limits: '2'
+election_role: ''
+election_default_forum: 0
+election_election_intro: 'Each year we have an rpg_election for key positions on our site. This is so that we can always be sure that the current leadership is connected to and trusted by our players.'
+election_min_numb: true
+election_min_numb_val: '2'
+election_min_perc: true
+election_min_perc_val: '50'
+election_runoff: true
+election_position_counts: {  }
+election_position_descs: {  }
+election_run_roles: {  }
+departments: ''
+department_roles: {  }
+department_vacation_cutoff: '2 weeks'
+walkthrough_quizzes:
+  system: 0
+  setting: 0
+  social: 0
+role_app_roles:
+  - storyteller
+  - mediator
+application_approval_min: '75'
+role_app_settings:
+  storyteller:
+    quiz: {  }
+    eligible: storyteller_candidate
+    view:
+      - storyteller
+      - lead
+    approve:
+      - storyteller
+      - lead
+  mediator:
+    quiz: {  }
+    eligible: eligible_for_mediator
+    view:
+      - lead
+      - mediator
+    approve:
+      - mediator

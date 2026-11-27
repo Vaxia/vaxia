@@ -1,0 +1,14 @@
+uuid: e5d8cb51-f248-4935-b9d3-6ee790d351ac
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.newbie_helper
+  module:
+    - user
+id: user_remove_role_action.newbie_helper
+label: 'Remove the newbie-helper role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: newbie_helper

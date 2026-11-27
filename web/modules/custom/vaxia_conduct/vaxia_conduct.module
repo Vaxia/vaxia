@@ -1,0 +1,292 @@
+<?php
+
+/**
+ * @file
+ * Player conduct: strikes from approved notations, suspensions, bans and cold
+ * storage (D7 strikes, suspend_players, ban_players and cold_storage Rules).
+ *
+ * vaxia_shadowban shipped only a role and disabled Rules: the role is kept,
+ * nothing else is ported.
+ */
+
+use Drupal\Core\Session\AnonymousUserSession;
+use Drupal\node\Entity\Node;
+use Drupal\node\NodeInterface;
+use Drupal\user\Entity\User;
+use Drupal\user\UserInterface;
+use Drupal\vaxia_core\Character;
+
+/**
+ * Roles a player loses when moved to cold storage.
+ */
+const VAXIA_CONDUCT_COLD_STORAGE_DROPS = [
+  'player', 'knows_the_system', 'knows_the_social', 'knows_the_setting', 'voter',
+  'newbie_helper', 'mediator', 'eligible_for_sh', 'starvation_mode_ash_approver',
+  'storyteller_newbie', 'storyteller_assistant', 'storyteller_candidate',
+  'storyteller_expired', 'storyteller', 'lead',
+];
+
+/**
+ * Moves a player's approved characters back to draft.
+ */
+function vaxia_conduct_characters_to_draft(int $uid, string $comment): void {
+  $storage = \Drupal::entityTypeManager()->getStorage('node');
+  $ids = $storage->getQuery()->accessCheck(FALSE)->condition('type', 'character_sheet')->condition('uid', $uid)->execute();
+  foreach ($storage->loadMultiple($ids) as $character) {
+    if (Character::state($character) === 'character_evaluation_approved') {
+      Character::forceState($character, 'character_evaluation_draft', $comment);
+    }
+  }
+}
+
+/**
+ * Strikes of a severity a player got in the last year.
+ */
+function vaxia_conduct_strikes_in_year(int $uid, string $severity): int {
+  return (int) \Drupal::entityTypeManager()->getStorage('node')->getQuery()->accessCheck(FALSE)
+    ->condition('type', 'strike')
+    ->condition('status', 1)
+    ->condition('field_struck_player', $uid)
+    ->condition('field_severity', $severity)
+    ->condition('field_date_of_incident', date('Y-m-d', strtotime('-1 year')), '>=')
+    ->count()->execute();
+}
+
+/**
+ * Implements hook_node_update().
+ *
+ * Approving a strike on a notation issues the strikes its results recommend.
+ */
+function vaxia_conduct_node_update(NodeInterface $node) {
+  static $seen = [];
+  if ($node->bundle() !== 'notation' || !isset($node->original)) {
+    return;
+  }
+  $before = (string) Character::state($node->original);
+  $after = (string) Character::state($node);
+  if ($before !== 'notation_approval_strike_submitted' || $after !== 'notation_approval_strike_approved') {
+    return;
+  }
+  $key = $node->id() . ':' . $before . ':' . $after;
+  if (isset($seen[$key])) {
+    return;
+  }
+  $seen[$key] = TRUE;
+  $results = array_column($node->get('field_results')->getValue(), 'value');
+  $player = $node->get('field_players')->entity;
+  if (!$player) {
+    return;
+  }
+  foreach (['red' => 'Red', 'yellow' => 'Yellow'] as $result => $severity) {
+    if (!in_array($result, $results, TRUE)) {
+      continue;
+    }
+    $values = [
+      'type' => 'strike',
+      'title' => $severity . ' Strike - ' . $player->getDisplayName(),
+      'uid' => $node->getOwnerId(),
+      'field_severity' => $severity,
+      'field_associated_record' => $node->id(),
+      'field_date_of_incident' => $node->get('field_date_of_incident')->value,
+      'field_struck_player' => $player->id(),
+    ];
+    if ($severity === 'Yellow') {
+      $values['field_details'] = "Details from Notation:\r\n\r\n" . $node->get('body')->value;
+    }
+    Node::create($values)->save();
+    \Drupal::messenger()->addStatus(t('Based on your approval of this notation: A @severity strike has been issued to @name.', ['@severity' => strtolower($severity), '@name' => $player->getDisplayName()]));
+  }
+}
+
+/**
+ * Implements hook_node_insert().
+ *
+ * A Red strike suspends the player; a third Yellow in a year becomes a Red.
+ */
+function vaxia_conduct_node_insert(NodeInterface $node) {
+  if ($node->bundle() !== 'strike') {
+    return;
+  }
+  $player = $node->get('field_struck_player')->entity;
+  if (!$player) {
+    return;
+  }
+  $severity = $node->get('field_severity')->value;
+
+  if ($severity === 'Yellow') {
+    $notation = $node->get('field_associated_record')->entity;
+    // D7 upgraded at two Yellows (its count included this one); the rule says
+    // the third.
+    if (!$notation || $notation->bundle() !== 'notation' || vaxia_conduct_strikes_in_year((int) $player->id(), 'Yellow') < 3) {
+      return;
+    }
+    $results = array_column($notation->get('field_results')->getValue(), 'value');
+    if (!in_array('red-upgrade', $results, TRUE)) {
+      $notation->get('field_results')->appendItem('red-upgrade');
+      $notation->save();
+    }
+    \Drupal::messenger()->addStatus(t("This is the players third Yellow strike within the year. This Yellow has been upgraded to a Red as a result and the player's account will be suspended."));
+    Node::create([
+      'type' => 'strike',
+      'title' => 'Red strike - ' . $player->getDisplayName(),
+      'uid' => $node->getOwnerId(),
+      'field_severity' => 'Red',
+      'field_associated_record' => $notation->id(),
+      'field_date_of_incident' => date('Y-m-d'),
+      'field_struck_player' => $player->id(),
+      'field_details' => 'This Red strike was given as the result of a 3rd (or greater) Yellow strike within a year timeframe.',
+    ])->save();
+    return;
+  }
+
+  if ($severity !== 'Red') {
+    return;
+  }
+  $reds = vaxia_conduct_strikes_in_year((int) $player->id(), 'Red');
+  $months = $reds > 1 ? ($reds - 1) * 3 : 1;
+  $until = strtotime('+' . $months . ' months');
+  vaxia_conduct_characters_to_draft((int) $player->id(), 'Characters moved to draft after suspension.');
+  $account = User::load($player->id());
+  $account->set('field_banned_until', date('Y-m-d', $until));
+  $account->set('roles', ['suspended_user']);
+  $account->block();
+  $account->save();
+  \Drupal::messenger()->addStatus(\Drupal::translation()->formatPlural($months,
+    'This is Red strike #@count_reds in the last year. @name has been suspended for 1 month thru @date.',
+    'This is Red strike #@count_reds in the last year. @name has been suspended for @count months thru @date.',
+    ['@count_reds' => $reds, '@name' => $account->getDisplayName(), '@date' => date('m/d/Y', $until)]));
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave() for users.
+ *
+ * Blocking a player puts them in cold storage; unblocking brings them back.
+ * Banned and suspended accounts are left alone.
+ */
+function vaxia_conduct_user_presave(UserInterface $account) {
+  $original = $account->original ?? NULL;
+  if (!$original || $original->isBlocked() === $account->isBlocked()) {
+    return;
+  }
+  if ($account->hasRole('banned_user') || $account->hasRole('suspended_user')) {
+    return;
+  }
+  if ($account->isBlocked() && $account->hasRole('player')) {
+    foreach (VAXIA_CONDUCT_COLD_STORAGE_DROPS as $role) {
+      $account->removeRole($role);
+    }
+    $account->addRole('cold_storage');
+    $account->vaxiaConductMove = 'Moving approved characters to draft on player moving to cold storage.';
+  }
+  elseif (!$account->isBlocked() && $account->hasRole('cold_storage')) {
+    $account->removeRole('cold_storage');
+    $account->addRole('player');
+    // D7 copied the block rule's action here too.
+    $account->vaxiaConductMove = 'Moving approved characters to draft on player moving to cold storage.';
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update() for users.
+ */
+function vaxia_conduct_user_update(UserInterface $account) {
+  if (!empty($account->vaxiaConductMove)) {
+    $comment = $account->vaxiaConductMove;
+    unset($account->vaxiaConductMove);
+    vaxia_conduct_characters_to_draft((int) $account->id(), $comment);
+  }
+}
+
+/**
+ * Implements hook_user_login().
+ *
+ * Banned users get their IP recorded and banned, and are logged out; players
+ * and new accounts have their last IP recorded.
+ */
+function vaxia_conduct_user_login(UserInterface $account) {
+  $ip = \Drupal::request()->getClientIp();
+  if ($account->hasRole('banned_user')) {
+    $ips = array_column($account->get('field_banned_ip')->getValue(), 'value');
+    if (!in_array($ip, $ips, TRUE)) {
+      $account->get('field_banned_ip')->appendItem($ip);
+      $account->save();
+    }
+    \Drupal::service('ban.ip_manager')->banIp($ip);
+    // D7 redirected to user/logout, which lost to the login form's redirect.
+    // Clear the session the login just filled, so nothing is saved back.
+    \Drupal::service('session')->invalidate();
+    \Drupal::currentUser()->setAccount(new AnonymousUserSession());
+    return;
+  }
+  if ($account->hasRole('player') || $account->hasRole('new_account')) {
+    $account->set('field_last_ip', $ip);
+    // D7 looked the IP up with smart_ip; no geo lookup yet, so 0 as D7 stored
+    // for unknown addresses.
+    $account->set('field_latitude', 0);
+    $account->set('field_longitude', 0);
+    $account->save();
+  }
+}
+
+/**
+ * Implements hook_cron().
+ *
+ * Lifts suspensions whose ban date has passed (D7's rule listened for an
+ * event that never delivered a user).
+ */
+function vaxia_conduct_cron() {
+  $storage = \Drupal::entityTypeManager()->getStorage('user');
+  $ids = $storage->getQuery()->accessCheck(FALSE)
+    ->condition('roles', 'suspended_user')
+    ->condition('status', 0)
+    ->condition('field_banned_until', date('Y-m-d'), '<')
+    ->execute();
+  foreach ($storage->loadMultiple($ids) as $account) {
+    $account->removeRole('suspended_user');
+    $account->addRole('player');
+    $account->set('field_banned_until', NULL);
+    $account->activate();
+    $account->save();
+    // D7 vaxia_rpg "Suspend - Unblock a suspended user" mails.
+    $tokens = ['[user:name]' => $account->getAccountName()];
+    vaxia_core_rule_mail_roles('suspend_players_vaxia_suspend_unblock_a_suspended_user.mail_to_users_of_role.0', ['administrator', 'lead'], $tokens);
+    vaxia_core_rule_mail('suspend_players_vaxia_suspend_unblock_a_suspended_user.mail.1', $account->getEmail(), $tokens);
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert() for webform submissions.
+ *
+ * Returning players reactivate their cold storage account by email on the
+ * "returning player" form (D7 rule "Cold Storage - Returning player request
+ * access").
+ */
+function vaxia_conduct_webform_submission_insert($submission) {
+  $source = $submission->getSourceEntity();
+  if (!$source || $source->getEntityTypeId() !== 'node' || (int) $source->id() !== (int) \Drupal::config('vaxia_conduct.settings')->get('cold_storage_return_form')) {
+    return;
+  }
+  $typed = (string) ($submission->getElementData('account_email') ?? '');
+  $mail = trim($typed);
+  $messenger = \Drupal::messenger();
+  $messenger->addStatus(t('Looking up accounts for the email address "@mail" ....', ['@mail' => $typed]));
+  $storage = \Drupal::entityTypeManager()->getStorage('user');
+  $ids = $mail === '' ? [] : $storage->getQuery()->accessCheck(FALSE)->condition('mail', $mail)->condition('status', 0)->condition('roles', 'cold_storage')->execute();
+  $found = FALSE;
+  foreach ($storage->loadMultiple($ids) as $account) {
+    if ($account->hasRole('banned_user') || $account->hasRole('suspended_user')) {
+      continue;
+    }
+    $found = TRUE;
+    $messenger->addStatus(t('Found account "@name" ... The account has been re-activated and a welcome email sent to the last email address associated with the account. Please check your spam and junk folders if you don\'t see that email within the next 30 minutes! If you no longer have access to the old email address or can\'t remember what the address was - please contact us directly.', ['@name' => $account->getAccountName()]));
+    // Unblocking brings them out of cold storage (vaxia_conduct_user_presave)
+    // and core mails the "account activated" notice.
+    $account->activate();
+    $account->save();
+  }
+  if (!$found) {
+    // D7 kept this in the view's "No results" area, which never rendered.
+    $messenger->addStatus(t('No account matching this email was found in cold storage.'));
+  }
+  $messenger->addStatus(t("Done searching. If your account was not found please make sure you're using the right email address for it or contact us and we'll go hunting for it."));
+}

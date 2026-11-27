@@ -1,0 +1,9 @@
+uuid: 6d760329-3c49-4d91-8a34-510c1d8c240c
+langcode: en
+status: true
+dependencies: {  }
+name: 'Skill Verbs'
+vid: skill_verbs
+description: 'For character sheets, the skill verbs that go with a sheet.'
+weight: 0
+new_revision: false

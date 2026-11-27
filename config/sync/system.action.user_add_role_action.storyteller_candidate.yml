@@ -1,0 +1,14 @@
+uuid: 7a65b616-3c99-4e66-b3e9-7375ac9d9ad5
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.storyteller_candidate
+  module:
+    - user
+id: user_add_role_action.storyteller_candidate
+label: 'Add the storyteller-candidate role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: storyteller_candidate

@@ -1,0 +1,26 @@
+<?php
+
+/**
+ * @file
+ * Install hooks for vaxia_storyhosts.
+ */
+
+/**
+ * Implements hook_schema(): the D7 vacation table (positions are role ids,
+ * JSON instead of PHP-serialized).
+ */
+function vaxia_storyhosts_schema() {
+  $schema['vacation'] = [
+    'description' => 'Staff vacations: the roles held before, restored when it ends.',
+    'fields' => [
+      'vid' => ['type' => 'serial', 'unsigned' => TRUE, 'not null' => TRUE],
+      'uid' => ['type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE, 'default' => 0],
+      'start' => ['type' => 'int', 'not null' => TRUE, 'default' => 0],
+      'end' => ['type' => 'int', 'not null' => TRUE, 'default' => 0],
+      'positions' => ['type' => 'text', 'size' => 'medium', 'not null' => FALSE],
+    ],
+    'primary key' => ['vid'],
+    'indexes' => ['uid' => ['uid'], 'end' => ['end']],
+  ];
+  return $schema;
+}

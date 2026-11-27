@@ -1,0 +1,21 @@
+uuid: 90ea2767-49f4-4059-bdf8-074ef901ebe9
+langcode: und
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_post_color
+field_name: field_post_color
+entity_type: node
+type: string
+settings:
+  max_length: 10
+  case_sensitive: false
+  is_ascii: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

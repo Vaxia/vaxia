@@ -1,0 +1,42 @@
+uuid: cfa85790-3632-4b71-8cc0-7071e348ecfd
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.artwork
+    - field.field.node.artwork.comment_node_artwork
+    - field.field.node.artwork.field_art_evaluation
+    - field.field.node.artwork.field_artwork_credit
+    - field.field.node.artwork.field_artwork_image
+    - field.field.node.artwork.field_website
+    - image.style.medium
+    - node.type.artwork
+  module:
+    - image
+    - user
+id: node.artwork.artwork
+targetEntityType: node
+bundle: artwork
+mode: artwork
+content:
+  field_artwork_image:
+    type: image
+    label: hidden
+    settings:
+      image_link: ''
+      image_style: medium
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  comment_node_artwork: true
+  field_art_evaluation: true
+  field_artwork_credit: true
+  field_website: true

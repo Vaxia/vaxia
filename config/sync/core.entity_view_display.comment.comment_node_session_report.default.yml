@@ -1,0 +1,27 @@
+uuid: 13910840-0101-42c2-a6ff-bcef0304e406
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.comment_node_session_report
+    - field.field.comment.comment_node_session_report.comment_body
+  module:
+    - text
+id: comment.comment_node_session_report.default
+targetEntityType: comment
+bundle: comment_node_session_report
+mode: default
+content:
+  comment_body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden: {  }

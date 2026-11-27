@@ -1,0 +1,14 @@
+uuid: 7e1b44d3-4a3a-41aa-b54b-87bc9e79ed14
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.eligible_for_newbie_helper
+  module:
+    - user
+id: user_remove_role_action.eligible_for_newbie_helper
+label: 'Remove the eligible for newbie helper role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: eligible_for_newbie_helper

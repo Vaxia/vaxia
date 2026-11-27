@@ -1,0 +1,120 @@
+_core:
+  default_config_hash: XgqIYbuuWr6tKND-V3pNdcv8lQz8ortqInbSuq5-M9c
+vaxia_starting_points: 300
+vaxia_mail_prefix: ''
+admin_realm: Storyhost
+realm_fields:
+  -
+    realm: Fantasy
+    species: field_fantasy_species
+    languages: field_fantasy_languages
+    conditions: field_fantasy_conditions
+    skill_fields: {  }
+  -
+    realm: 'Science Fiction'
+    species: field_scifi_species
+    languages: field_scifi_languages
+    conditions: field_scifi_conditions
+    skill_fields:
+      - field_tech_languages
+  -
+    realm: Horror
+    species: field_horror_species
+    languages: field_horror_languages
+    conditions: field_horror_conditions
+    skill_fields: {  }
+vaxia_starting_econ: 25
+vaxia_kxp_ratio: 70
+vaxia_max_kxp_post: 10
+vaxia_xp_types: |-
+  good
+  evil
+  smart
+  charismatic
+  warrior
+  mage
+  rogue
+vaxia_limbo_room: {  }
+vaxia_display_dice: 6
+vaxia_dice_roller_stacking: true
+vaxia_public_char_fields: |-
+  field_description
+  field_age_app
+  field_sex
+  field_fantasy_species
+  field_scifi_species
+  field_horror_species
+  field_other_species
+  field_appearance
+  field_charisma
+  field_presence
+  field_public_information
+  field_sh_public_information
+  field_achivements
+  field_personal_room
+vaxia_public_user_fields: |
+  field_artwork_image
+  field_mature
+  timezone
+  field_message_contact
+  privatemsg
+  account
+  field_staff_setting_lead
+  field_staff_social_lead
+  field_staff_system_lead
+  badges
+  field_age_requirement
+  field_availability
+vaxia_disabled_user_fields: |
+  field_powers_expire
+  field_took_system_walkthrough
+  field_took_setting_walkthrough
+  field_took_social_walkthrough
+  field_xp_over_time
+  field_donated
+  field_terms_and_conditions
+  field_age_requirement
+  field_personal_folder
+  field_logged_in_today
+  field_storyhost_character
+  field_took_ash1
+  field_took_ash2
+  field_took_ash3
+  field_took_eval_test
+  field_ash_3_answers
+  field_ash_3_application
+  field_became_sh
+  field_became_evaluator
+  field_characters_submitted
+  field_characters_minmax
+  field_banned_until
+  field_last_ip
+  field_latitude
+  field_longitude
+  field_account_created
+  field_reason_for_ban
+  field_banned_ip
+  field_sh_private_notes
+vaxia_attribute_cost: 1.0
+vaxia_skill_cost: 0.75
+vaxia_economy_cost: 1.0
+vaxia_transfer_percentage: 0.75
+vaxia_transfer_cap_on: false
+vaxia_transfer_cap: 300
+vaxia_transfer_workflow: character_evaluation_xp_transferred
+vaxia_draft_workflow: character_evaluation_draft
+character_sheet_vaxia_playable:
+  - character_evaluation_approved
+vaxia_pc_skill_warn: 10
+vaxia_pc_stat_spend_warn: 210
+vaxia_pc_stat_high_warn: 3
+vaxia_pc_stat_min_warn: 2
+vaxia_pc_skill_ave_warn: 20
+vaxia_pc_skill_min: 5
+vaxia_pc_skill_max: 40
+vaxia_pc_stat_min: 5
+vaxia_pc_stat_max: 40
+vaxia_pc_stat_spend_cap: 225
+vaxia_pc_stat_high_cap: 4
+vaxia_pc_stat_zero_cap: 1
+vaxia_other_min_hxp: 40

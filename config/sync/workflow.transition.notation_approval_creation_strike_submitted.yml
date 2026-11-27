@@ -1,0 +1,14 @@
+uuid: a04aec29-e6ab-4164-b25e-c1f5b7b904a9
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.notation_approval_creation
+    - workflow.state.notation_approval_strike_submitted
+id: notation_approval_creation_strike_submitted
+label: null
+module: workflow
+from_sid: notation_approval_creation
+to_sid: notation_approval_strike_submitted
+roles:
+  workflow_author: workflow_author

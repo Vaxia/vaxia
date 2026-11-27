@@ -1,0 +1,8 @@
+uuid: 2ada92ed-0a8b-461b-8f8b-e29d03d9b291
+langcode: en
+status: true
+dependencies: {  }
+id: comment_node_scene
+label: 'Scene comment'
+target_entity_type_id: node
+description: null

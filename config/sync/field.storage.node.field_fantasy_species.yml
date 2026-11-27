@@ -1,0 +1,45 @@
+uuid: 00d1407a-1baa-4bfe-be6f-597a2f6fe99f
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_fantasy_species
+field_name: field_fantasy_species
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: human
+      label: Human
+    -
+      value: elf
+      label: Elf
+    -
+      value: dwarf
+      label: Dwarf
+    -
+      value: halfling
+      label: Halfling
+    -
+      value: gnome
+      label: Gnome
+    -
+      value: orc
+      label: Orc
+    -
+      value: fae
+      label: Fae
+    -
+      value: other
+      label: 'Other (see Other species)'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

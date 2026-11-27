@@ -1,0 +1,21 @@
+uuid: 6ad0874c-e8af-4165-a761-3631d57aa892
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_horror_languages
+    - node.type.character_sheet
+  module:
+    - options
+id: node.character_sheet.field_horror_languages
+field_name: field_horror_languages
+entity_type: node
+bundle: character_sheet
+label: 'Horror languages'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

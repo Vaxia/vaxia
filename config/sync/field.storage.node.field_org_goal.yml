@@ -1,0 +1,45 @@
+uuid: 555f0c28-8bee-4130-8dcc-ab76fe89b9dc
+langcode: und
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_org_goal
+field_name: field_org_goal
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: stat_up
+      label: 'Stat: Increase stat'
+    -
+      value: stat_down
+      label: 'Stat: Decrease stat'
+    -
+      value: stat_defend
+      label: 'Stat: Defend stat'
+    -
+      value: gov_up
+      label: 'Government: Increase stat'
+    -
+      value: gov_down
+      label: 'Government: Decrease stat'
+    -
+      value: gov_defend
+      label: 'Government: Defend stat'
+    -
+      value: gov_achieve
+      label: 'Government: Achieve a goal'
+    -
+      value: gov_resist
+      label: 'Government: Resist a goal'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

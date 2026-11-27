@@ -1,0 +1,23 @@
+uuid: cbd46841-7557-48ae-a969-ea6a5554268a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_fixed_strength
+    - node.type.items
+id: node.items.field_fixed_strength
+field_name: field_fixed_strength
+entity_type: node
+bundle: items
+label: 'Fixed Strength'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

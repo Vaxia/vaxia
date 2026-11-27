@@ -1,0 +1,24 @@
+uuid: 19f6261d-46d8-439e-9b1b-b4dc6d19f136
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_age_requirement
+  module:
+    - user
+id: user.user.field_age_requirement
+field_name: field_age_requirement
+entity_type: user
+bundle: user
+label: 'Age requirement'
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'I am 13 years old or older.'
+  off_label: 'I am under 13 years old.'
+field_type: boolean

@@ -1,0 +1,13 @@
+uuid: 5568d69b-2e81-4c13-b050-55b841ed099c
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.item_evaluation
+id: item_evaluation_submitted
+label: submitted
+weight: -18
+module: workflow
+wid: item_evaluation
+sysid: 0
+single_state_widget: ''

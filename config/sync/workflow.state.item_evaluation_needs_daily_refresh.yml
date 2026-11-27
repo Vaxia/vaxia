@@ -1,0 +1,13 @@
+uuid: f81d1258-2ff3-4dcd-a198-2e43b451a0c4
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.item_evaluation
+id: item_evaluation_needs_daily_refresh
+label: 'needs daily refresh'
+weight: -14
+module: workflow
+wid: item_evaluation
+sysid: 0
+single_state_widget: ''

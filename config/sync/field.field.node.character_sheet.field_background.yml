@@ -1,0 +1,27 @@
+uuid: bacc1a92-0c2c-47a7-81ad-bddd25b03579
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_background
+    - filter.format.filtered_html
+    - node.type.character_sheet
+  module:
+    - text
+id: node.character_sheet.field_background
+field_name: field_background
+entity_type: node
+bundle: character_sheet
+label: Background
+description: "Rank and money are things earned in sessions and by playing your character. Therefore characters are <b>not</b> allowed to begin play holding high ranking noble titles or excessive wealth. Character concepts that violate this requirement will not be reviewed and will be be automatically returned to draft.</br>\r\n</br>"
+required: true
+translatable: false
+default_value:
+  -
+    value: ''
+    format: plain_text
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - filtered_html
+field_type: text_long

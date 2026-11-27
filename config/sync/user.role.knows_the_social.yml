@@ -1,0 +1,16 @@
+uuid: 10d71d7e-cd43-4fe2-a75e-52d1e1e86e42
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.character_evaluation
+  module:
+    - vaxia_governance
+    - workflow
+id: knows_the_social
+label: knows-the-social
+weight: 9
+is_admin: false
+permissions:
+  - 'create character_evaluation workflow_transition'
+  - 'vote on proposal'

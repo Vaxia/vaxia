@@ -1,0 +1,25 @@
+uuid: 0b3fd092-bdf2-4741-aef0-59e7f32a067c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_room_description
+    - node.type.rpg_chatroom
+  module:
+    - text
+id: node.rpg_chatroom.field_room_description
+field_name: field_room_description
+entity_type: node
+bundle: rpg_chatroom
+label: 'Room Description'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: ''
+    format: wiki
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

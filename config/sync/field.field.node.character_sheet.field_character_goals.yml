@@ -1,0 +1,27 @@
+uuid: aa1b9a53-e376-4e99-a88e-b50a2a24a836
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_character_goals
+    - filter.format.filtered_html
+    - node.type.character_sheet
+  module:
+    - text
+id: node.character_sheet.field_character_goals
+field_name: field_character_goals
+entity_type: node
+bundle: character_sheet
+label: 'Character Goals'
+description: "If your character has any over-arching life goals. Things they want to do or see done that may require an A/SH to help achieve - make note of them here.\r\n<br><br>"
+required: false
+translatable: false
+default_value:
+  -
+    value: ''
+    format: plain_text
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - filtered_html
+field_type: text_long

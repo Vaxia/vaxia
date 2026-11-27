@@ -1,0 +1,20 @@
+uuid: b4802062-f44a-42de-a7fb-a5797e0ea835
+langcode: en
+status: true
+dependencies:
+  module:
+    - vaxia_favorites
+  theme:
+    - vaxia_theme
+id: vaxia_theme_favorites
+theme: vaxia_theme
+region: sidebar_first
+weight: -34
+provider: null
+plugin: favorites
+settings:
+  id: favorites
+  label: 'User Favorites'
+  label_display: visible
+  provider: vaxia_favorites
+visibility: {  }

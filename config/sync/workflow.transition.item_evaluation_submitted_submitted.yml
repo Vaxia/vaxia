@@ -1,0 +1,16 @@
+uuid: bcef20b1-6170-40d8-84dd-56c8d103cbe5
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.item_evaluation_submitted
+id: item_evaluation_submitted_submitted
+label: null
+module: workflow
+from_sid: item_evaluation_submitted
+to_sid: item_evaluation_submitted
+roles:
+  authenticated: authenticated
+  workflow_author: workflow_author
+  administrator: administrator
+  storyteller: storyteller

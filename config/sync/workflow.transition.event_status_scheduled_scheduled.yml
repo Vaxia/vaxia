@@ -1,0 +1,16 @@
+uuid: db6cdbf8-9091-4c72-9e6f-ff34864d16b2
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.event_status_scheduled
+id: event_status_scheduled_scheduled
+label: null
+module: workflow
+from_sid: event_status_scheduled
+to_sid: event_status_scheduled
+roles:
+  authenticated: authenticated
+  workflow_author: workflow_author
+  administrator: administrator
+  lead: lead

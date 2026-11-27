@@ -1,0 +1,16 @@
+uuid: 340c5030-2c55-40d6-a054-0175034485e8
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    parent: 'main:'
+name: 'Timeline Event'
+type: timeline_event
+description: 'A private timeline event for leads only.'
+help: null
+new_revision: true
+preview_mode: 1
+display_submitted: false

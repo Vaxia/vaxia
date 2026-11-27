@@ -1,0 +1,21 @@
+uuid: cde6ada4-3084-46f0-b0a5-96c7f41683ef
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_character_evaluation
+    - node.type.character_sheet
+  module:
+    - workflow
+id: node.character_sheet.field_character_evaluation
+field_name: field_character_evaluation
+entity_type: node
+bundle: character_sheet
+label: 'Character evaluation'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: workflow

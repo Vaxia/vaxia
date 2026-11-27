@@ -1,0 +1,40 @@
+name: 'Vaxia theme'
+type: theme
+'base theme': false
+version: 1.0.0
+libraries:
+  - vaxia_theme/base
+  - vaxia_theme/messages
+  - core/normalize
+  - vaxia_theme/global
+libraries-extend:
+  user/drupal.user:
+    - vaxia_theme/user
+  core/drupal.dropbutton:
+    - vaxia_theme/dropbutton
+  core/drupal.dialog:
+    - vaxia_theme/dialog
+  file/drupal.file:
+    - vaxia_theme/file
+  core/drupal.item-list:
+    - vaxia_theme/item-list
+  core/drupal.progress:
+    - vaxia_theme/progress
+  core/drupal.tablesort:
+    - vaxia_theme/drupal.tablesort
+description: 'Vaxia site theme (rebuilt from the D7 Zen subtheme).'
+core_version_requirement: ^11
+generator: 'starterkit_theme:11.4.13'
+logo: logo.png
+regions:
+  header: Header
+  navigation: 'Navigation bar'
+  highlighted: Highlighted
+  help: Help
+  content: Content
+  sidebar_first: 'First sidebar'
+  sidebar_second: 'Second sidebar'
+  footer: Footer
+  bottom: 'Page bottom'
+  page_top: 'Page top'
+  page_bottom: 'Page bottom (hidden)'

@@ -1,0 +1,21 @@
+uuid: 6fc55be1-b5e0-4238-9691-b55063e3b520
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_fantasy_languages
+    - node.type.character_sheet
+  module:
+    - options
+id: node.character_sheet.field_fantasy_languages
+field_name: field_fantasy_languages
+entity_type: node
+bundle: character_sheet
+label: 'Fantasy languages'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

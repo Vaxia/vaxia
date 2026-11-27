@@ -1,0 +1,33 @@
+uuid: e492d3fc-e31e-4e52-8e45-3e129ae88c69
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.comment_node_rpg_chatroom
+    - node.type.rpg_chatroom
+  module:
+    - comment
+id: node.rpg_chatroom.comment_node_rpg_chatroom
+field_name: comment_node_rpg_chatroom
+entity_type: node
+bundle: rpg_chatroom
+label: Comments
+description: ''
+required: true
+translatable: true
+default_value:
+  -
+    status: 2
+    cid: 0
+    last_comment_timestamp: 0
+    last_comment_name: null
+    last_comment_uid: 0
+    comment_count: 0
+default_value_callback: ''
+settings:
+  default_mode: 0
+  per_page: 30
+  anonymous: 0
+  form_location: true
+  preview: 0
+field_type: comment

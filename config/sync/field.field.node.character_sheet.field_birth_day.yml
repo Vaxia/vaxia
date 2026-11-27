@@ -1,0 +1,25 @@
+uuid: 2309245b-aa13-4e56-b558-411fb01e0a2d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_birth_day
+    - node.type.character_sheet
+id: node.character_sheet.field_birth_day
+field_name: field_birth_day
+entity_type: node
+bundle: character_sheet
+label: Day
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  min: 1
+  max: 31
+  prefix: ''
+  suffix: ''
+field_type: integer

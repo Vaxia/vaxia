@@ -1,0 +1,36 @@
+uuid: b8f07879-88b3-4141-aed5-7bc7416e9f0e
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.timeline_event.body
+    - field.field.node.timeline_event.comment_node_timeline_event
+    - field.field.node.timeline_event.field_session_held
+    - field.field.node.timeline_event.field_tag_realm
+    - node.type.timeline_event
+  module:
+    - text
+    - user
+id: node.timeline_event.teaser
+targetEntityType: node
+bundle: timeline_event
+mode: teaser
+content:
+  body:
+    type: text_summary_or_trimmed
+    label: hidden
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  comment_node_timeline_event: true
+  field_session_held: true
+  field_tag_realm: true

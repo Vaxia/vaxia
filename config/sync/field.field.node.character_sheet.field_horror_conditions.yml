@@ -1,0 +1,21 @@
+uuid: be7b6cbb-b710-4a08-836b-53cc7f22480f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_horror_conditions
+    - node.type.character_sheet
+  module:
+    - options
+id: node.character_sheet.field_horror_conditions
+field_name: field_horror_conditions
+entity_type: node
+bundle: character_sheet
+label: 'Horror conditions'
+description: 'Most characters should start play with no conditions. Starting play with a condition requires approval from the Setting department (never guaranteed), and 40 HXP across your characters.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

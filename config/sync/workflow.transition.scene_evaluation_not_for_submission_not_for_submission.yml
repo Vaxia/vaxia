@@ -1,0 +1,16 @@
+uuid: b9a74063-b244-4b98-807f-1725acf72685
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.scene_evaluation_not_for_submission
+id: scene_evaluation_not_for_submission_not_for_submission
+label: null
+module: workflow
+from_sid: scene_evaluation_not_for_submission
+to_sid: scene_evaluation_not_for_submission
+roles:
+  authenticated: authenticated
+  workflow_author: workflow_author
+  administrator: administrator
+  storyteller: storyteller

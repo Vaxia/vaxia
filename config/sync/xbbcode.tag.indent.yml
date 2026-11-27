@@ -1,0 +1,13 @@
+uuid: e677dd22-3b24-414c-9c54-57da7c7bf3e5
+langcode: en
+status: true
+dependencies: {  }
+id: indent
+label: Indent
+description: 'Indented block.'
+name: indent
+attached: {  }
+sample: '[{{ name }}]Text[/{{ name }}]'
+template_code: '<div style="padding-left: 20px;">{{ tag.content }}</div>'
+template_file: null
+editable: false

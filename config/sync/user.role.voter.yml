@@ -1,0 +1,17 @@
+uuid: 2fb10478-55e5-4ce4-b0d0-a9defecd46e7
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.character_evaluation
+  module:
+    - vaxia_governance
+    - workflow
+id: voter
+label: voter
+weight: 11
+is_admin: false
+permissions:
+  - 'can vote on rpg_elections'
+  - 'create character_evaluation workflow_transition'
+  - 'vote on proposal'

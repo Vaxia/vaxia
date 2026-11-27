@@ -1,0 +1,21 @@
+uuid: 8a34ad0f-cb8a-4776-bd77-3efe2175f3e1
+langcode: en
+status: true
+dependencies:
+  module:
+    - masquerade
+  theme:
+    - vaxia_theme
+id: vaxia_theme_masquerade
+theme: vaxia_theme
+region: sidebar_first
+weight: -46
+provider: null
+plugin: masquerade
+settings:
+  id: masquerade
+  label: Masquerade
+  label_display: visible
+  provider: masquerade
+  show_unmasquerade_link: false
+visibility: {  }

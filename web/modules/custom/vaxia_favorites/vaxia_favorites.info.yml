@@ -1,0 +1,5 @@
+name: 'Vaxia favorites'
+type: module
+description: 'Per-user saved links shown in a sidebar block (D7 favorites).'
+package: Vaxia
+core_version_requirement: ^11

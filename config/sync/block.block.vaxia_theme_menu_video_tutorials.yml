@@ -1,0 +1,29 @@
+uuid: 80f07cfb-d95e-4bc9-8d4d-a00feca077f2
+langcode: en
+status: false
+dependencies:
+  config:
+    - system.menu.menu-video-tutorials
+  module:
+    - system
+  theme:
+    - vaxia_theme
+id: vaxia_theme_menu_video_tutorials
+theme: vaxia_theme
+region: sidebar_first
+weight: -40
+provider: null
+plugin: 'system_menu_block:menu-video-tutorials'
+settings:
+  id: 'system_menu_block:menu-video-tutorials'
+  label: 'Video Tutorials'
+  label_display: visible
+  provider: system
+  level: 1
+  depth: 0
+  expand_all_items: false
+visibility:
+  request_path:
+    id: request_path
+    negate: true
+    pages: '/locations/*'

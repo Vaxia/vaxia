@@ -1,0 +1,27 @@
+uuid: ffec8df0-1d46-45d5-bf57-d0ce32e30d7d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_personal_room
+    - node.type.character_sheet
+    - node.type.rpg_chatroom
+id: node.character_sheet.field_personal_room
+field_name: field_personal_room
+entity_type: node
+bundle: character_sheet
+label: 'Personal room'
+description: 'A personal room is intended for a character to roleplay crafting and personal scenes in. It is automatically set to be NOT displayed on the public search. Posts in these rooms will NOT be archived. Personal rooms are automatically created once the character is approved.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      rpg_chatroom: rpg_chatroom
+    sort:
+      field: _none
+      direction: ASC
+field_type: entity_reference

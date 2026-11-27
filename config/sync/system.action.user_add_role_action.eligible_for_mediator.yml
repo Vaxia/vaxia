@@ -1,0 +1,14 @@
+uuid: eb4cc86b-0860-484a-b6bb-94f3805ce45c
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.eligible_for_mediator
+  module:
+    - user
+id: user_add_role_action.eligible_for_mediator
+label: 'Add the eligible for mediator role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: eligible_for_mediator

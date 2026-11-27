@@ -1,0 +1,23 @@
+uuid: af394b84-b9bf-4a4b-b9c2-64f746db7cac
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_severity
+    - node.type.strike
+  module:
+    - options
+id: node.strike.field_severity
+field_name: field_severity
+entity_type: node
+bundle: strike
+label: Severity
+description: "* A yellow warning, like a yellow card in soccer is a moderate warning but does not immediately require a suspension.\r\n* A red warning is a ban-able offense and should come with a temporary suspension from the site.\r\n* Multiple yellow warnings can be upgraded to a red: 3 yellows within the last year automatically results in a red.\r\n* Multiple red warnings can be upgraded to a permanent ban, as needed for the health of the site."
+required: true
+translatable: false
+default_value:
+  -
+    value: Yellow
+default_value_callback: ''
+settings: {  }
+field_type: list_string

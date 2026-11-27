@@ -1,0 +1,29 @@
+uuid: d67d726e-36e7-4a67-b3e1-e60d1d669468
+langcode: en
+status: false
+dependencies:
+  module:
+    - user
+    - vaxia_chat
+  theme:
+    - vaxia_theme
+id: vaxia_theme_play_suggestions
+theme: vaxia_theme
+region: content
+weight: -46
+provider: null
+plugin: play_suggestions
+settings:
+  id: play_suggestions
+  label: 'Play suggestions'
+  label_display: '0'
+  provider: vaxia_chat
+visibility:
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      administrator: administrator
+      player: player

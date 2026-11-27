@@ -1,0 +1,36 @@
+uuid: df21c680-1a20-43be-a704-accf36c631bf
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.comment_node_storyhost_applica
+    - field.field.comment.comment_node_storyhost_applica.comment_body
+  module:
+    - text
+id: comment.comment_node_storyhost_applica.default
+targetEntityType: comment
+bundle: comment_node_storyhost_applica
+mode: default
+content:
+  author:
+    weight: -2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  comment_body:
+    type: text_textarea
+    weight: 0
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  subject:
+    type: string_textfield
+    weight: 10
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }

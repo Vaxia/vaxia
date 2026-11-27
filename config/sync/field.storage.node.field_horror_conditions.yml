@@ -1,0 +1,42 @@
+uuid: 67a20b65-a2ec-4e93-b103-7646a57824f0
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_horror_conditions
+field_name: field_horror_conditions
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: possessed
+      label: Possessed
+    -
+      value: haunted
+      label: 'Haunted (a ghost follows them)'
+    -
+      value: infected
+      label: 'Infected (slowly turning)'
+    -
+      value: sensitive
+      label: 'Psychic sensitive (sees the dead)'
+    -
+      value: mental
+      label: 'Restricted mental disorder'
+    -
+      value: underage
+      label: 'Underage (actual age, looks, or mentality)'
+    -
+      value: other
+      label: Other
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

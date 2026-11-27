@@ -1,0 +1,25 @@
+uuid: 9649583b-201c-482d-9cff-70371ddb21cb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_strength
+    - node.type.character_sheet
+id: node.character_sheet.field_strength
+field_name: field_strength
+entity_type: node
+bundle: character_sheet
+label: Strength
+description: 'Strength (STR): Physical Power; Toughness'
+required: true
+translatable: false
+default_value:
+  -
+    value: 25
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

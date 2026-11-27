@@ -1,0 +1,14 @@
+uuid: b0740a03-952e-4b7d-8f4f-1108faa27196
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.item_evaluation_approved
+    - workflow.state.item_evaluation_needs_daily_refresh
+id: item_evaluation_approved_needs_daily_refresh
+label: null
+module: workflow
+from_sid: item_evaluation_approved
+to_sid: item_evaluation_needs_daily_refresh
+roles:
+  storyteller: storyteller

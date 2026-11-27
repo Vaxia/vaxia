@@ -1,0 +1,20 @@
+uuid: b908571d-2fc0-4d21-b447-cae9fd547e12
+langcode: en
+status: true
+dependencies:
+  module:
+    - vaxia_core
+  theme:
+    - vaxia_theme
+id: vaxia_theme_message_of_the_day_motd_block
+theme: vaxia_theme
+region: sidebar_first
+weight: -45
+provider: null
+plugin: message_of_the_day-motd_block
+settings:
+  id: message_of_the_day-motd_block
+  label: 'Message of the Day'
+  label_display: visible
+  provider: vaxia_core
+visibility: {  }

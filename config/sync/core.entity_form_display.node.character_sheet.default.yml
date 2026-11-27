@@ -1,0 +1,700 @@
+uuid: 1e51e0b0-5358-4b02-a2c3-b0f041331409
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.character_sheet.comment_node_character_sheet
+    - field.field.node.character_sheet.field_achivements
+    - field.field.node.character_sheet.field_age_app
+    - field.field.node.character_sheet.field_artwork_image
+    - field.field.node.character_sheet.field_background
+    - field.field.node.character_sheet.field_background_color
+    - field.field.node.character_sheet.field_birth_day
+    - field.field.node.character_sheet.field_birth_month
+    - field.field.node.character_sheet.field_character_evaluation
+    - field.field.node.character_sheet.field_character_goals
+    - field.field.node.character_sheet.field_charisma
+    - field.field.node.character_sheet.field_content_limits
+    - field.field.node.character_sheet.field_currently_wearing
+    - field.field.node.character_sheet.field_description
+    - field.field.node.character_sheet.field_dexterity
+    - field.field.node.character_sheet.field_economy
+    - field.field.node.character_sheet.field_endurance
+    - field.field.node.character_sheet.field_fantasy_conditions
+    - field.field.node.character_sheet.field_fantasy_languages
+    - field.field.node.character_sheet.field_fantasy_species
+    - field.field.node.character_sheet.field_horror_conditions
+    - field.field.node.character_sheet.field_horror_languages
+    - field.field.node.character_sheet.field_horror_species
+    - field.field.node.character_sheet.field_intelligence
+    - field.field.node.character_sheet.field_is_generic_npc
+    - field.field.node.character_sheet.field_is_npc
+    - field.field.node.character_sheet.field_is_open_npc
+    - field.field.node.character_sheet.field_is_storyteller
+    - field.field.node.character_sheet.field_items
+    - field.field.node.character_sheet.field_last_name
+    - field.field.node.character_sheet.field_life
+    - field.field.node.character_sheet.field_occupation
+    - field.field.node.character_sheet.field_other_species
+    - field.field.node.character_sheet.field_personal_room
+    - field.field.node.character_sheet.field_personality
+    - field.field.node.character_sheet.field_player_notes
+    - field.field.node.character_sheet.field_post_color
+    - field.field.node.character_sheet.field_property
+    - field.field.node.character_sheet.field_public_information
+    - field.field.node.character_sheet.field_real_age
+    - field.field.node.character_sheet.field_scifi_conditions
+    - field.field.node.character_sheet.field_scifi_languages
+    - field.field.node.character_sheet.field_scifi_species
+    - field.field.node.character_sheet.field_sex
+    - field.field.node.character_sheet.field_sh_notes
+    - field.field.node.character_sheet.field_sh_private_notes
+    - field.field.node.character_sheet.field_sh_public_information
+    - field.field.node.character_sheet.field_skill
+    - field.field.node.character_sheet.field_spirituality
+    - field.field.node.character_sheet.field_strength
+    - field.field.node.character_sheet.field_tag_realm
+    - field.field.node.character_sheet.field_titles
+    - field.field.node.character_sheet.field_visibility
+    - image.style.thumbnail
+    - node.type.character_sheet
+  module:
+    - comment
+    - field_group
+    - image
+    - paragraphs
+    - path
+    - text
+    - workflow
+third_party_settings:
+  field_group:
+    group_character_type:
+      children:
+        - field_is_storyteller
+        - field_is_npc
+        - field_is_generic_npc
+        - field_is_open_npc
+      label: 'Character type'
+      region: content
+      parent_name: ''
+      weight: 1
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        open: true
+        description: 'Player characters leave these unticked. Storyhost characters and NPCs are made by storyhosts.'
+        required_fields: false
+    group_public_information:
+      children:
+        - field_public_information
+        - field_sh_public_information
+      label: 'Public information'
+      region: content
+      parent_name: ''
+      weight: 5
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        open: true
+        description: ''
+        required_fields: false
+    group_about:
+      children:
+        - field_background
+        - field_personality
+        - field_occupation
+        - field_character_goals
+      label: 'About the character'
+      region: content
+      parent_name: ''
+      weight: 3
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        open: true
+        description: ''
+        required_fields: true
+    group_details:
+      children:
+        - field_titles
+        - field_sex
+        - field_age_app
+        - field_real_age
+        - field_birth_month
+        - field_birth_day
+      label: 'Personal details'
+      region: content
+      parent_name: ''
+      weight: 2
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        open: true
+        description: ''
+        required_fields: true
+    group_posting:
+      children:
+        - field_post_color
+        - field_background_color
+        - field_personal_room
+        - field_content_limits
+        - field_visibility
+      label: 'Posting and permissions'
+      region: content
+      parent_name: ''
+      weight: 1000
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        open: true
+        description: ''
+        required_fields: true
+    group_evaluation:
+      children:
+        - field_character_evaluation
+        - comment_node_character_sheet
+      label: Evaluation
+      region: content
+      parent_name: ''
+      weight: 1001
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        open: true
+        description: ''
+        required_fields: true
+    group_appearance:
+      children:
+        - field_artwork_image
+        - field_description
+        - field_currently_wearing
+      label: Appearance
+      region: content
+      parent_name: ''
+      weight: 4
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        open: true
+        description: ''
+        required_fields: true
+    group_notes:
+      children:
+        - field_player_notes
+        - field_sh_notes
+        - field_sh_private_notes
+      label: Notes
+      region: content
+      parent_name: ''
+      weight: 6
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        open: true
+        description: ''
+        required_fields: true
+    group_stats:
+      children:
+        - field_life
+        - field_endurance
+        - field_strength
+        - field_dexterity
+        - field_intelligence
+        - field_spirituality
+        - field_charisma
+      label: Stats
+      region: content
+      parent_name: ''
+      weight: 30
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        open: true
+        description: ''
+        required_fields: true
+    group_skills:
+      children:
+        - field_skill
+      label: Skills
+      region: content
+      parent_name: ''
+      weight: 32
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        open: true
+        description: ''
+        required_fields: true
+    group_realm:
+      children:
+        - field_fantasy_species
+        - field_scifi_species
+        - field_horror_species
+        - field_other_species
+        - field_fantasy_conditions
+        - field_scifi_conditions
+        - field_horror_conditions
+        - field_fantasy_languages
+        - field_scifi_languages
+        - field_horror_languages
+      label: 'Realm details'
+      region: content
+      parent_name: ''
+      weight: 31
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        open: true
+        description: 'Species, conditions and languages of the realm picked above.'
+        required_fields: true
+id: node.character_sheet.default
+targetEntityType: node
+bundle: character_sheet
+mode: default
+content:
+  comment_node_character_sheet:
+    type: comment_default
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  created:
+    type: datetime_timestamp
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_achivements:
+    type: string_textfield
+    weight: 6
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_age_app:
+    type: string_textfield
+    weight: 2
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_artwork_image:
+    type: image_image
+    weight: 0
+    region: content
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+  field_background:
+    type: text_textarea
+    weight: 0
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_background_color:
+    type: options_select
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_birth_day:
+    type: number
+    weight: 5
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_birth_month:
+    type: options_select
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_character_evaluation:
+    type: workflow_default
+    weight: 0
+    region: content
+    settings:
+      form_mode: add
+    third_party_settings: {  }
+  field_character_goals:
+    type: text_textarea
+    weight: 3
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_charisma:
+    type: number
+    weight: 6
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_content_limits:
+    type: options_buttons
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_currently_wearing:
+    type: options_buttons
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_description:
+    type: text_textarea
+    weight: 1
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_dexterity:
+    type: number
+    weight: 3
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_economy:
+    type: number
+    weight: 92
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_endurance:
+    type: number
+    weight: 1
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_fantasy_conditions:
+    type: options_select
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_fantasy_languages:
+    type: options_buttons
+    weight: 7
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_fantasy_species:
+    type: options_select
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_horror_conditions:
+    type: options_select
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_horror_languages:
+    type: options_buttons
+    weight: 9
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_horror_species:
+    type: options_select
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_intelligence:
+    type: number
+    weight: 4
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_is_generic_npc:
+    type: boolean_checkbox
+    weight: 2
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_is_npc:
+    type: boolean_checkbox
+    weight: 1
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_is_open_npc:
+    type: boolean_checkbox
+    weight: 3
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_is_storyteller:
+    type: boolean_checkbox
+    weight: 0
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_items:
+    type: entity_reference_autocomplete_tags
+    weight: 93
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_last_name:
+    type: string_textfield
+    weight: -4
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_life:
+    type: number
+    weight: 0
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_occupation:
+    type: text_textarea
+    weight: 2
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_other_species:
+    type: options_select
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_personal_room:
+    type: entity_reference_autocomplete_tags
+    weight: 2
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_personality:
+    type: text_textarea
+    weight: 1
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_player_notes:
+    type: text_textarea
+    weight: 0
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_post_color:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 6
+      placeholder: ''
+    third_party_settings: {  }
+  field_property:
+    type: text_textarea
+    weight: 94
+    region: content
+    settings:
+      rows: 2
+      placeholder: ''
+    third_party_settings: {  }
+  field_public_information:
+    type: text_textarea
+    weight: 0
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_real_age:
+    type: number
+    weight: 3
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_scifi_conditions:
+    type: options_select
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_scifi_languages:
+    type: options_buttons
+    weight: 8
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_scifi_species:
+    type: options_select
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_sex:
+    type: string_textfield
+    weight: 1
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_sh_notes:
+    type: text_textarea
+    weight: 1
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_sh_private_notes:
+    type: text_textarea
+    weight: 2
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_sh_public_information:
+    type: text_textarea
+    weight: 1
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_skill:
+    type: entity_reference_paragraphs
+    weight: 0
+    region: content
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
+  field_spirituality:
+    type: number
+    weight: 5
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_strength:
+    type: number
+    weight: 2
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_tag_realm:
+    type: options_select
+    weight: -3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_titles:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_visibility:
+    type: boolean_checkbox
+    weight: 4
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 90
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 140
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  uid:
+    type: entity_reference_autocomplete
+    weight: 5
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  promote: true
+  sticky: true

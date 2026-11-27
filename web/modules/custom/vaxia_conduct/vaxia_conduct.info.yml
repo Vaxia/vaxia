@@ -1,0 +1,8 @@
+name: VAXIA conduct
+type: module
+description: 'Player conduct: notations, strikes, suspensions, bans and cold storage. Replaces D7 strikes, suspend_players, ban_players, cold_storage and vaxia_shadowban.'
+package: VAXIA
+core_version_requirement: ^11
+dependencies:
+  - drupal:ban
+  - vaxia_core:vaxia_core

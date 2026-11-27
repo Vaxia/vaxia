@@ -1,0 +1,14 @@
+uuid: 8cefb000-22e6-4e4d-9a48-e8c86e9fd61a
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.newbie_helper
+  module:
+    - user
+id: user_add_role_action.newbie_helper
+label: 'Add the newbie-helper role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: newbie_helper

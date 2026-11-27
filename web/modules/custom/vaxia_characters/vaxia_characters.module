@@ -1,0 +1,187 @@
+<?php
+
+/**
+ * @file
+ * Silver on the Sheet tab, and daily pay (D7 silver).
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\node\Entity\Node;
+use Drupal\vaxia_characters\Silver;
+use Drupal\vaxia_core\Character;
+use Drupal\vaxia_core\Form\SheetForm;
+use Drupal\node\NodeInterface;
+
+require_once __DIR__ . '/includes/evaluation.inc';
+require_once __DIR__ . '/includes/characters.inc';
+require_once __DIR__ . '/includes/npcs.inc';
+require_once __DIR__ . '/includes/reputation.inc';
+
+/**
+ * Implements hook_form_FORM_ID_alter() for the Sheet tab: economy details,
+ * investing (owners) and adding silver (staff).
+ */
+function vaxia_characters_form__character_sheet_xp_form_alter(&$form, FormStateInterface $form_state) {
+  $nid = (int) $form_state->get('nid');
+  $node = Node::load($nid);
+  $available = Silver::available($nid);
+  $level = Silver::economy($nid);
+  $form['node_info']['economy'] = [
+    '#type' => 'item',
+    '#title' => t('Economy details'),
+    '#weight' => 10,
+    'list' => ['#theme' => 'item_list', '#items' => [
+      t('You have %posted silver.', ['%posted' => number_format($available, 2)]),
+      t('Your current economy level is %level.', ['%level' => $level]),
+      t('Your monthly disposable income is %income.', ['%income' => number_format(Silver::monthlyIncome($level), 2)]),
+      t('You get paid %pay a day.', ['%pay' => number_format(Silver::dailyPay($level), 2)]),
+      t('Your total worth is %worth if you cashed in all of your economy levels.', ['%worth' => number_format(Silver::worth($level), 2)]),
+    ]],
+  ];
+  $account = \Drupal::currentUser();
+  $invested = \Drupal::service('vaxia_core.xp')->get($nid, 'invest_silver');
+  $description = t('You have %available silver available to invest. You need to invest %invest more silver before you will reach %level economy. Invested so far %so_far.', [
+    '%available' => floor($available),
+    '%invest' => ceil(Silver::costToImprove($level) - $invested),
+    '%level' => $level + 1,
+    '%so_far' => floor($invested),
+  ]);
+  if ($node->getOwnerId() == $account->id()) {
+    $form['invest'] = ['#type' => 'details', '#title' => t('Invest silver'), '#open' => TRUE];
+    if ($available >= 1) {
+      $form['invest']['invest_silver'] = ['#title' => t('Invest silver'), '#type' => 'textfield', '#description' => $description, '#size' => 15];
+      $form['invest']['submit_economy'] = ['#type' => 'submit', '#value' => t('Invest silver'), '#submit' => ['vaxia_characters_invest_submit']];
+    }
+    else {
+      $form['invest']['invest_silver'] = ['#type' => 'item', '#markup' => t('You currectly have no silver available to invest.'), '#description' => $description];
+    }
+  }
+  if (SheetForm::mayAddXp($node, $account) && !Character::isStoryteller($node) && !Character::isNpc($node)) {
+    $form['add_silver_group'] = ['#type' => 'details', '#title' => t('Add silver'), '#open' => TRUE];
+    $form['add_silver_group']['add_silver'] = [
+      '#type' => 'textfield',
+      '#title' => t('Add silver'),
+      '#size' => 6,
+      '#description' => t('Adding a negative value will subtract silver. First from available silver, then from the economy level, reducing economy.'),
+    ];
+    $form['add_silver_group']['add_silver_submit'] = [
+      '#type' => 'submit',
+      '#value' => t('Add silver'),
+      '#validate' => ['vaxia_characters_add_silver_validate'],
+      '#submit' => ['vaxia_characters_add_silver_submit'],
+    ];
+  }
+  vaxia_characters_rep_sheet($form, $node);
+}
+
+function vaxia_characters_add_silver_validate(array &$form, FormStateInterface $form_state) {
+  $amount = $form_state->getValue('add_silver');
+  if (empty($amount)) {
+    $form_state->setErrorByName('add_silver', t('Empty value given for silver.'));
+  }
+  if (!is_numeric($amount)) {
+    $form_state->setErrorByName('add_silver', t('Silver given is not a numeric value'));
+  }
+}
+
+function vaxia_characters_add_silver_submit(array &$form, FormStateInterface $form_state) {
+  $nid = (int) $form_state->get('nid');
+  $character = Node::load($nid);
+  $amount = (float) $form_state->getValue('add_silver');
+  $available = Silver::available($nid);
+  $total = $amount + $available;
+  $xp = \Drupal::service('vaxia_core.xp');
+  $user = \Drupal::currentUser()->getAccountName();
+  if ($amount > 0) {
+    $xp->update($nid, $amount, 'silver');
+    \Drupal::messenger()->addStatus(t('@add_silver silver has been added to this sheet, total @new_silver.', ['@add_silver' => $amount, '@new_silver' => $total]));
+    $xp->log($nid, 'silver', (string) t('@xp silver added to @title by @user, total @new_silver.', ['@xp' => $amount, '@title' => $character->label(), '@user' => $user, '@new_silver' => number_format($total, 2)]));
+  }
+  elseif ($amount < 0) {
+    Silver::remove($nid, $amount);
+    // D7's message printed "%add_silver" literally (known bug).
+    \Drupal::messenger()->addStatus(t('@add_silver silver has been removed from this sheet, total @new_silver.', ['@add_silver' => $amount, '@new_silver' => $total]));
+    $xp->log($nid, 'silver', (string) t('@xp silver removed from @title by @user, total @new_silver.', ['@xp' => $amount, '@title' => $character->label(), '@user' => $user, '@new_silver' => number_format($total, 2)]));
+  }
+}
+
+/**
+ * Owners put silver toward the next economy level, one silver at a time
+ * (D7 _silver_invest_silver_submit()).
+ */
+function vaxia_characters_invest_submit(array &$form, FormStateInterface $form_state) {
+  $nid = (int) $form_state->get('nid');
+  $node = Node::load($nid);
+  $invest = $form_state->getValue('invest_silver');
+  $xp = \Drupal::service('vaxia_core.xp');
+  if (!is_numeric($invest) || $invest <= 0 || $invest > Silver::available($nid)) {
+    // D7's message printed "@invest" literally (known bug).
+    \Drupal::messenger()->addStatus(t('Unable to invest @invest, not enough silver available or not a number.', ['@invest' => $invest]));
+    return;
+  }
+  $user = \Drupal::currentUser()->getAccountName();
+  $economy = Silver::economy($nid);
+  $cost = Silver::costToImprove($economy);
+  $invested = $xp->get($nid, 'invest_silver');
+  $added = 0;
+  $raised = FALSE;
+  for ($left = (int) $invest; $left > 0; $left--) {
+    $invested++;
+    $added++;
+    $xp->update($nid, 1, 'invest_silver');
+    if ($invested >= $cost) {
+      $economy++;
+      $raised = TRUE;
+      $current = $xp->get($nid, 'invest_silver');
+      $xp->update($nid, $current, 'spent_silver');
+      $xp->update($nid, -$current, 'invest_silver');
+      $xp->log($nid, 'invest', (string) t('Economy improved through investment to @econ on @title by @user, for @converted invested.', ['@econ' => $economy, '@title' => $node->label(), '@user' => $user, '@converted' => floor($current)]));
+      $added = 0;
+      $invested = 0;
+      $cost = Silver::costToImprove($economy);
+    }
+  }
+  if ($added > 0) {
+    $xp->log($nid, 'invest', (string) t('@xp silver invested on @title by @user, total @invested invested, total @silver silver left.', ['@xp' => $added, '@title' => $node->label(), '@user' => $user, '@invested' => floor($invested), '@silver' => number_format(Silver::available($nid), 2)]));
+  }
+  if ($raised) {
+    $node->set('field_economy', $economy);
+    $node->save();
+  }
+}
+
+/**
+ * Implements hook_cron(): daily pay, once a day.
+ */
+function vaxia_characters_cron() {
+  vaxia_characters_rep_cron();
+  $state = \Drupal::state();
+  if ((int) $state->get('vaxia_cron.vaxia_character_sheet_cron', 0) < strtotime('-1 day')) {
+    $state->set('vaxia_cron.vaxia_character_sheet_cron', time());
+    Silver::payDay();
+    \Drupal::logger('silver')->notice('Ran silver updates.');
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update() for nodes: a character's workflow move
+ * (NPC handling first, then player-character evaluation).
+ */
+function vaxia_characters_node_update(NodeInterface $node) {
+  if (!Character::isSheet($node) || !isset($node->original)) {
+    return;
+  }
+  $before = (string) Character::state($node->original);
+  $after = (string) Character::state($node);
+  // One reaction per move: workflow can save the node twice for one move.
+  static $seen = [];
+  $key = $node->id() . ':' . $before . ':' . $after;
+  if ($before === $after || isset($seen[$key])) {
+    return;
+  }
+  $seen[$key] = TRUE;
+  if ($after === 'character_evaluation_submitted' && vaxia_characters_npc_submitted($node)) {
+    return;
+  }
+  vaxia_characters_evaluate($node, $before, $after);
+}

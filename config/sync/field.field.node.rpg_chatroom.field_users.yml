@@ -1,0 +1,30 @@
+uuid: bd8dd78d-cecb-4c01-879f-bc2c1ac9fc2d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_users
+    - node.type.rpg_chatroom
+id: node.rpg_chatroom.field_users
+field_name: field_users
+entity_type: node
+bundle: rpg_chatroom
+label: Users
+description: 'Select the users to lock this room for. Only these users may post here. If you own this room - be SURE to put yourself on this list or you risk locking yourself out!'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:user'
+  handler_settings:
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    filter:
+      type: role
+      role:
+        player: player
+    include_anonymous: true
+field_type: entity_reference

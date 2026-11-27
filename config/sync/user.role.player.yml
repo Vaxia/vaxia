@@ -1,0 +1,79 @@
+uuid: ef0d0e4e-e733-41ab-a646-e9f1a2a18ae9
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.artwork
+    - node.type.character_sheet
+    - node.type.event
+    - node.type.forum
+    - node.type.play_suggestions
+    - node.type.proposal
+    - node.type.scene
+    - node.type.wiki_page
+    - workflow.workflow.character_evaluation
+  module:
+    - comment
+    - flag
+    - node
+    - privatemsg
+    - vaxia_characters
+    - vaxia_chat
+    - vaxia_core
+    - vaxia_dice
+    - vaxia_favorites
+    - vaxia_items
+    - vaxia_storyhosts
+    - workflow
+id: player
+label: player
+weight: 4
+is_admin: false
+permissions:
+  - 'access user profiles'
+  - 'create artwork content'
+  - 'create character_evaluation workflow_transition'
+  - 'create character_sheet content'
+  - 'create event content'
+  - 'create forum content'
+  - 'create play_suggestions content'
+  - 'create proposal content'
+  - 'create scene content'
+  - 'create wiki_page content'
+  - 'delete own scene content'
+  - 'edit any wiki_page content'
+  - 'edit own artwork content'
+  - 'edit own character_sheet content'
+  - 'edit own comments'
+  - 'edit own event content'
+  - 'edit own forum content'
+  - 'edit own proposal content'
+  - 'edit own scene content'
+  - 'edit own wiki_page content'
+  - 'edit personal_rooms'
+  - 'flag delete'
+  - 'flag expand'
+  - 'flag rewrite'
+  - 'manage own favorites'
+  - 'post comments'
+  - 'privatemsg write messages'
+  - 'search old archives'
+  - 'skip comment approval'
+  - 'unflag delete'
+  - 'unflag expand'
+  - 'unflag rewrite'
+  - 'use dice helper'
+  - 'use dice roller'
+  - 'use dice ruler'
+  - 'use item shop'
+  - 'use scene helper'
+  - 'view character sheet log'
+  - 'view comment revisions'
+  - 'view comment revisions diffs'
+  - 'view dice rolls'
+  - 'view others accounts'
+  - 'view own reputation xp'
+  - 'view own scenes'
+  - 'view rpg chat'
+  - 'view session qualify'
+  - 'view vaxia ic chat'

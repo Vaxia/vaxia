@@ -1,0 +1,31 @@
+uuid: 058b30b8-45b6-454a-a0ce-621b3b31f4a3
+langcode: en
+status: true
+dependencies:
+  config:
+    - system.menu.menu-wiki-links
+  module:
+    - system
+  theme:
+    - vaxia_theme
+id: vaxia_theme_menu_wiki_links
+theme: vaxia_theme
+region: sidebar_second
+weight: -51
+provider: null
+plugin: 'system_menu_block:menu-wiki-links'
+settings:
+  id: 'system_menu_block:menu-wiki-links'
+  label: 'Important Links'
+  label_display: visible
+  provider: system
+  level: 1
+  depth: 0
+  expand_all_items: false
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: |-
+      /wiki/*
+      /search/wiki

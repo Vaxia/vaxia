@@ -1,0 +1,36 @@
+uuid: 0211123f-2ca4-4790-ac63-94d6db0db50d
+langcode: und
+status: true
+dependencies:
+  module:
+    - comment
+    - options
+id: comment.field_attendance
+field_name: field_attendance
+entity_type: comment
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: 'yes'
+      label: Yes!
+    -
+      value: idk
+      label: "I don't know / uncertain"
+    -
+      value: waitlist
+      label: 'Interested, but wait-list me for others'
+    -
+      value: no-interest
+      label: 'Not attending'
+    -
+      value: no-time
+      label: "Can't make it in this time slot"
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

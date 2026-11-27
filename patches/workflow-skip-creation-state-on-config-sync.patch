@@ -1,0 +1,27 @@
+--- a/src/Entity/Workflow.php
++++ b/src/Entity/Workflow.php
+@@ -184,8 +184,10 @@
+   public function save() {
+     $status = parent::save();
+     // Make sure a Creation state exists, when saving a Workflow.
+-    if ($status == SAVED_NEW) {
++    // During config import the creation state arrives as its own config
++    // entity; creating it here returns NULL and fails the import.
++    if ($status == SAVED_NEW && !\Drupal::isConfigSyncing()) {
+       $this->createCreationState();
+     }
+     return $status;
+   }
+--- a/src/Entity/WorkflowState.php
++++ b/src/Entity/WorkflowState.php
+@@ -241,7 +241,9 @@
+     /** @var \Drupal\workflow\Entity\WorkflowState[] $states */
+     static $states = NULL;
+     // Avoid PHP8.2 Error: Constant expression contains invalid operations.
+-    if (!$states && $states ??= parent::loadMultiple()) {
++    // During config import states arrive one by one: don't keep a stale list.
++    if (\Drupal::isConfigSyncing() || !$states) {
++      $states = parent::loadMultiple();
+       // Sort the States on state weight.
+       // @todo Sort States via 'orderby: weight' in schema file.
+       uasort($states, [

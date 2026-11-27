@@ -1,0 +1,8 @@
+uuid: 10d2fbf4-13b5-480e-b6a3-8cc7ef9fce5a
+langcode: en
+status: true
+dependencies: {  }
+id: menu-new-start-here
+label: 'New? Start here'
+description: 'New? Start here'
+locked: false

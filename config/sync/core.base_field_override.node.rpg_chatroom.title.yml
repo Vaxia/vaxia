@@ -1,0 +1,18 @@
+uuid: b29b6afa-b6a2-49fc-acee-de822ed5fd14
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.rpg_chatroom
+id: node.rpg_chatroom.title
+field_name: title
+entity_type: node
+bundle: rpg_chatroom
+label: 'Room name'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

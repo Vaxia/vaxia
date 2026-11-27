@@ -1,0 +1,24 @@
+uuid: 41de83fb-b8c9-4b8e-a35f-a7fd18947d7f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_occupation
+    - filter.format.filtered_html
+    - node.type.character_sheet
+  module:
+    - text
+id: node.character_sheet.field_occupation
+field_name: field_occupation
+entity_type: node
+bundle: character_sheet
+label: Occupation
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - filtered_html
+field_type: text_long

@@ -1,0 +1,27 @@
+uuid: 6cb4d0da-5132-47ba-a7ec-42dbb914aa6d
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.comment_node_rpg_chatroom
+    - field.storage.comment.field_artwork
+    - node.type.artwork
+id: comment.comment_node_rpg_chatroom.field_artwork
+field_name: field_artwork
+entity_type: comment
+bundle: comment_node_rpg_chatroom
+label: Artwork
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      artwork: artwork
+    sort:
+      field: _none
+      direction: ASC
+field_type: entity_reference

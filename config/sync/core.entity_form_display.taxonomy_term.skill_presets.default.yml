@@ -1,0 +1,58 @@
+uuid: 6420b9eb-7487-441f-bb6d-a17a9f4b749e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.skill_presets.field_preset_aspects
+    - field.field.taxonomy_term.skill_presets.field_preset_realm
+    - taxonomy.vocabulary.skill_presets
+  module:
+    - path
+    - text
+id: taxonomy_term.skill_presets.default
+targetEntityType: taxonomy_term
+bundle: skill_presets
+mode: default
+content:
+  description:
+    type: text_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_preset_aspects:
+    type: options_select
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_preset_realm:
+    type: options_select
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 30
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 100
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+hidden: {  }

@@ -1,0 +1,26 @@
+uuid: d5e83e18-1f32-47c5-92f0-5c35531fd04d
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.question
+    - field.field.node.storyhost_application.body
+    - field.field.node.storyhost_application.comment_node_storyhost_applica
+    - field.field.node.storyhost_application.webform
+    - node.type.storyhost_application
+  module:
+    - user
+id: node.storyhost_application.question
+targetEntityType: node
+bundle: storyhost_application
+mode: question
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  body: true
+  comment_node_storyhost_applica: true
+  webform: true

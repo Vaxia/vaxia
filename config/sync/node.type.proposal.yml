@@ -1,0 +1,16 @@
+uuid: 15c49bc5-70ae-40cb-bef3-e7324cd50a6f
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    parent: 'main:'
+name: Proposal
+type: proposal
+description: 'The proposal system allows you to build a form out of a collection of form pieces to put questions to site votes.'
+help: "The form will be open for two weeks, then it will automatically close. If you edit it in that timespan the timer will re-set. This is to make sure everyone can get a chance to weigh in, or update their vote if they change their mind.\r\n</br></br>\r\nNot all site members will be able to vote in this proposal - only those currently active when it was created. This is to avoid ballot stuffing or swoop-ins from long absent players.\r\n</br></br>\r\nAnd lastly, no one can see the names or IP addresses of the people who do vote. This is so they feel safe in making their wishes known. \r\n</br></br>\r\nOnce the proposal closes, the results will be posted publicly for all to see. Names will still anonymous.\r\n</br></br>\r\nCreating a proposal is a TWO-STEP process. Fill out the information here, and on saving it - the system will take you to part two to set up your form."
+new_revision: true
+preview_mode: 1
+display_submitted: true

@@ -1,0 +1,19 @@
+uuid: 44409a16-ee49-4bc3-aa0a-6c89a00e542c
+langcode: en
+status: true
+dependencies:
+  module:
+    - taxonomy
+id: taxonomy_term.field_preset_aspects
+field_name: field_preset_aspects
+entity_type: taxonomy_term
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: 3
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

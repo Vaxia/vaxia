@@ -1,0 +1,14 @@
+uuid: 3e8a729b-fbed-4e48-9fe5-00fcb13d6e51
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.knows_the_system
+  module:
+    - user
+id: user_add_role_action.knows_the_system
+label: 'Add the knows-the-system role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: knows_the_system

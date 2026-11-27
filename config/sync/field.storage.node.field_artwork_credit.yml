@@ -1,0 +1,19 @@
+uuid: 247c4402-e61e-484b-9270-5163b09c1f36
+langcode: und
+status: true
+dependencies:
+  module:
+    - node
+    - text
+id: node.field_artwork_credit
+field_name: field_artwork_credit
+entity_type: node
+type: text_long
+settings: {  }
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

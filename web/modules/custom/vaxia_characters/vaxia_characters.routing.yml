@@ -1,0 +1,46 @@
+vaxia_characters.npc_settings:
+  path: '/admin/vaxia/npcs'
+  defaults:
+    _form: '\Drupal\vaxia_characters\Form\NpcSettingsForm'
+    _title: 'NPC handling'
+  requirements:
+    _permission: 'administer NPC handler'
+vaxia_characters.npc_list:
+  path: '/character-sheets/npcs'
+  defaults:
+    _controller: '\Drupal\vaxia_characters\Controller\NpcLists::npcs'
+    _title: 'NPCs'
+  requirements:
+    _role: 'administrator+storyteller'
+vaxia_characters.oversight:
+  path: '/oversight/npcs'
+  defaults:
+    _controller: '\Drupal\vaxia_characters\Controller\NpcLists::oversight'
+    _title: 'NPC oversight'
+  requirements:
+    _role: 'administrator+storyteller'
+vaxia_characters.gallery:
+  path: '/artwork/all'
+  defaults:
+    _controller: '\Drupal\vaxia_characters\Controller\ArtworkList::gallery'
+    _title: 'Artwork'
+  requirements:
+    _role: 'player'
+vaxia_characters.my_art:
+  path: '/user/{user}/artwork'
+  defaults:
+    _controller: '\Drupal\vaxia_characters\Controller\ArtworkList::mine'
+    _title: 'My artwork'
+  requirements:
+    _role: 'player'
+  options:
+    parameters:
+      user:
+        type: entity:user
+vaxia_characters.art_mine:
+  path: '/artwork/mine'
+  defaults:
+    _controller: '\Drupal\vaxia_characters\Controller\ArtworkList::mineTab'
+    _title: 'My artwork'
+  requirements:
+    _role: 'administrator+player'

@@ -1,0 +1,10 @@
+uuid: d1ee8dff-e638-4379-bfc6-80491b634e0e
+langcode: en
+status: true
+dependencies: {  }
+id: tech_languages
+label: 'Tech languages'
+icon_uuid: null
+icon_default: null
+description: 'Migrated from field_collection field_tech_languages'
+behavior_plugins: {  }

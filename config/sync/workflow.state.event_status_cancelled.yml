@@ -1,0 +1,13 @@
+uuid: 5515ab7f-1ce8-40a1-aa32-0b156418c946
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.event_status
+id: event_status_cancelled
+label: cancelled
+weight: -20
+module: workflow
+wid: event_status
+sysid: 0
+single_state_widget: ''

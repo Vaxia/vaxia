@@ -1,0 +1,27 @@
+uuid: ce6df77e-fc26-4e20-91f3-e1641ddc7372
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_property
+    - filter.format.filtered_html
+    - node.type.character_sheet
+  module:
+    - text
+id: node.character_sheet.field_property
+field_name: field_property
+entity_type: node
+bundle: character_sheet
+label: 'Additional property'
+description: 'For A/SHs - always feel free to add another property field to give each item a field.'
+required: false
+translatable: false
+default_value:
+  -
+    value: ''
+    format: plain_text
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - filtered_html
+field_type: text_long

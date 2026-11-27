@@ -1,0 +1,11 @@
+uuid: b6174c54-f067-41c5-96e9-ed251d420335
+langcode: en
+status: true
+dependencies:
+  module:
+    - workflow
+id: workflow_user.token
+label: Token
+description: null
+targetEntityType: workflow_user
+cache: true

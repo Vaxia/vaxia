@@ -1,0 +1,23 @@
+uuid: 120054f4-9d78-4aeb-bad7-ec0a83e393a2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_item_intelligence
+    - node.type.items
+id: node.items.field_item_intelligence
+field_name: field_item_intelligence
+entity_type: node
+bundle: items
+label: Intelligence
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: float

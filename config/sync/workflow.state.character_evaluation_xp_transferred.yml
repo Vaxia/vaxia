@@ -1,0 +1,13 @@
+uuid: d99603f9-ad0a-4755-8c46-71d260a6a3dc
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.character_evaluation
+id: character_evaluation_xp_transferred
+label: xp_transferred
+weight: -14
+module: workflow
+wid: character_evaluation
+sysid: 0
+single_state_widget: ''

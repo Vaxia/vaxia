@@ -1,0 +1,21 @@
+uuid: 66ab17f8-c344-46ba-a4d9-8a977494521a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_session_held
+    - node.type.session_report
+  module:
+    - datetime
+id: node.session_report.field_session_held
+field_name: field_session_held
+entity_type: node
+bundle: session_report
+label: 'Session held'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

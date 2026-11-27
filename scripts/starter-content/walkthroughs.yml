@@ -1,0 +1,2079 @@
+# The new-player walkthrough quizzes and mediator training, read by
+# scripts/starter-content.php. System, social and mediator training are the
+# original VAXIA quizzes with the example realms in place; the setting
+# walkthrough tours the example realms (rewrite it for your own worlds).
+# Passing a walkthrough lets a player join that department (its Join form).
+# Same format as sh-course.yml.
+
+walkthrough_system:
+  title: 'New Player: System Walkthrough'
+  body: |-
+    Welcome to the system walkthrough. This walkthrough is designed to teach you how our dice mechanics work here. Since we have our own system, we know this is the only place you'll have a chance to learn how things work here. So we'll be trying our best to get you up to speed as quickly as we can.
+
+    The walkthrough is a guided tour of the system but you'll be asked questions along the way to make sure you have the important pieces down. Don't worry if you have to stop halfway through, just come back when you have more time and the walkthrough will pick up where we left off.
+
+    [b]If you are looking to join the System department - say so at the end of this quiz to have your score counted.[/b]
+
+    Our A/SHs will handle all the ruling of this for you, so you don't really have to know how this works before you dive into session, but it can be really useful to understand the system so that you know what your options are.
+
+    Please re-take the test as many times as you need in order to get through all the questions or if you ever feel like your skills are getting rusty. It's really useful to know how the system works when you're building a character or in a session and want to know how the A/SH got the numbers they got.
+
+    [size=30][color=#009900][center][b]Answer the questions below to get started.[/b][/center][/color][/size]
+  pass_rate: 100
+  randomize: false
+  takes: 0
+  allow_skipping: false
+  summary_pass: |-
+    And there you go! You’re all done. Thank you for taking this walkthrough, and please let us know if there’s more you would like to see covered in it.
+
+    Please re-take the test as many times as you need in order to get through all the questions or if you ever feel like your skills are getting rusty. It's really useful to know how the system works when you're building a character or in a session and want to know how the A/SH got the numbers they got.
+
+    If you would like to join the department you can do that here:
+
+    [size=30][color=#009900][center][b][url=/content/join-system-department]Join the department here.[/url][/b][/center][/color][/size]
+  summary_default: |-
+    You did not pass this test.
+
+    Please re-take the test as many times as you need in order to get through all the questions or if you ever feel like your skills are getting rusty. It's really useful to know how the system works when you're building a character or in a session and want to know how the A/SH got the numbers they got.
+
+    <a href="/quizzes/new-player-system-walkthrough">Click on the "Take" tab to get started.</a>
+  questions:
+    -
+      type: multichoice
+      title: 'System walkthrough - Stats'
+      body: |-
+        Stats describe your character's basic abilities in specific terms. These numbers represent how strong, fast, smart or healthy your character is. There are two types of stats, "Primary Stats" and "Derived Stats".
+
+        Primary Stats are stats you can spend XP on to improve. Raising a stat costs 1 XP a point up to 20, then the current value in the stat / 10 (rounded down). For example: a primary stat at 34 costs 3 XP to raise.
+
+        The primary stats are:
+
+        [b]Life:[/b] How long the character can keep on ticking.
+        [b]Endurance:[/b] How well the character takes punishment before getting winded or hurt.
+        [b]Strength:[/b] How strong the character is.
+        [b]Dexterity:[/b] Hand-eye coordination, or coordination of any other body part.
+        [b]Intelligence:[/b] How smart the character is and how fast he learns.
+        [b]Spirituality:[/b] How much inner balance and strength of mind the character has.
+        [b]Charisma:[/b] How much influence the character has on others.
+
+        Derived stats are an average of two primary stats. In order to raise one of these, you need to raise the two primary stats that go with them. You cannot raise any of these stats directly.
+
+        [b]Health:[/b] Average of Life and Endurance. How resistant to getting sick the character is.
+        [b]Constitution:[/b] Average of Endurance and Strength. How much stamina the character has.
+        [b]Agility:[/b] Average of Strength and Dexterity. How athletic the character is when moving.
+        [b]Finesse:[/b] Average of Dexterity and Intelligence. How quickly can the character react and how good they are at fine-detailed work.
+        [b]Awareness:[/b] Average of Spirituality and Intelligence. How conscious of the surroundings your character is.
+        [b]Presence:[/b] Average of Charisma and Spirituality. How compelling your character's personality is.
+        [b]Appearance:[/b] Average of Life and Charisma. How attractive (without trying one way or the other) your character is.
+
+        Unsure what an average is? It's the two numbers, divided by 2. Check out <a href="http://www.mathsisfun.com/definitions/average.html" target="_blank">mathisfun.com</a> for more information.
+
+        [b]Question:[/b]
+
+        In order to raise your Awareness what stat(s) do you have to increase? Check all combinations that apply.
+      max_score: 4
+      multi: true
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: Intelligence
+          chosen: 2
+          not_chosen: 0
+        -
+          answer: Awareness
+          chosen: -1
+          not_chosen: 0
+        -
+          answer: Charisma
+          chosen: -1
+          not_chosen: 0
+        -
+          answer: Spirituality
+          chosen: 2
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'System walkthrough - Skills'
+      body: |-
+        If stats describe your character’s basic abilities, then skills describe what your character knows how to do. Skills reflect any training or specific knowledge your character has and allow them to do more complicated things. A skill may grant the character the ability to cast magic spells, swing a sword, or pick a lock.
+
+        What makes our system unique is that you are responsible for writing your own skills!
+
+        This means they can be very flexible and customized to your character’s history and personality. Every skill can be written differently. They may come from a different background and have a different focus or flavor. <a href="/wiki/skills-and-aspects" target="_blank">See the skill guide in the wiki for more information.</a>
+
+        Skills are only needed for actions that are out of the ordinary. A character can easily walk and talk at the same time, can cook a decent enough meal to feed themselves, read, or ride a horse down a road without needing a specific skill. Acrobatically leaping from roof to roof, running the kitchen of a four star restaurant, eavesdropping on a whispered conversation two tables away, or riding a horse into combat call for a skill.
+
+        Even if you don’t need a skill to perform the action, having the skill can make it easier to succeed at.
+
+        You can spend XP to improve skills. It costs the current value in the skill / 10 (rounded down) times 0.75 to raise these stats. For example: a skill at 23 costs 1.5 XP to raise.
+
+        [b]Question:[/b]
+
+        What actions would require a skill to perform well? Check all that apply.
+      max_score: 4
+      multi: true
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'Attacking a goblin with a sword'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'Reading a book in your own language'
+          chosen: -1
+          not_chosen: 0
+        -
+          answer: 'Casting a spell'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'Running after a bad guy'
+          chosen: -1
+          not_chosen: 0
+        -
+          answer: 'Picking a lock'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'Listening to a whispered conversation through a thick door'
+          chosen: 1
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'System walkthrough - Might'
+      body: |-
+        When you hear “might” here, we’re talking about the combined value of your Stat and a relevant Skill. The combination of stats and skills rolled is different for different situations. For example, a skill like "First Aid" could be rolled with Dexterity to perform first aid, or Intelligence to figure out what's wrong with a patient before you work on him. Or even Awareness to spot the clue that someone is about to choke on a piece of chicken before they do.
+
+        If there are any questions which stat to use in a specific situation you can always ask your nearest A/SH.
+
+        Here, a 25 is considered to be ‘average’. A stat of 25 here is equivalent to a 10 in D&D. Likewise a 25 skill is considered to be an average professional at the skill. For example: The average village blacksmith may have a 25 Strength and a 25 Skill, giving him a 50 might.
+
+        If you don’t have a skill that fits the roll, then your might is simply the stat being used. You can always default to the stat.
+
+        [b]Question:[/b]
+
+        If your Intelligence is a 32 and your Awareness a 27, and you have a skill at 34, then what is your might when the skill is used with Intelligence? What is it if used with Awareness?
+      max_score: 4
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'With Intelligence 34 and with Awareness 34'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'With Intelligence 66 and with Awareness 61'
+          chosen: 4
+          not_chosen: 0
+        -
+          answer: 'With Intelligence 58 and with Awareness 66'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'With Intelligence 32 and with Awareness 27'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'With Intelligence 59 and with Awareness 34'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'System walkthrough - Automatic Ablities'
+      body: |-
+        There are no 'free' abilities here such as racial abilities, bonuses or immunities that you may encounter in other systems. Almost all activities require a might and a roll of the die to see how well characters perform. If your character is doing something outside the realm of 'normal' (ie. something that everyone can do, like walk down the street), you will need to roll to see how well a character does.
+
+        This touches on the idea of ‘fairness’ in our system.
+
+        Since a character is basically just a set of stats and skills, granting an automatic ability outside of that isn’t fair to other players who would have to pay for that ability. You need to have a roll to go with whatever you’re trying to do if it’s beyond the ‘normal’ ranges for any other player to do it.
+
+        For example: A character chasing after a bad guy doesn't really need to roll for that. But a character who wants to chase after him more quickly than your average runner or wants to use Acrobatics to catch up with the bad guy - needs to roll to do that.
+
+        Another example: A character may be blind, but want to use Aura Reading to ‘see’ his surroundings. Since this isn’t any more information than a normal character would get with normal eyesight - that’s ok to do without a roll. But if the character wants to be able to ‘see’ around a corner, through walls, or tell how another character is secretly feeling - now he needs to roll.
+
+        Yet another example: A character may be playing a species known for having a super-sniffer or super-hearing. But they will still need to roll to play bloodhound or overhear the wingbeat of a hummingbird in the distance.
+
+        If what you're trying to do is against another character, then the character is able to resist (and assumed to be resisting unless they say otherwise). In those cases, you would use their might as your target.
+
+        [b]Question:[/b]
+
+        If your character wanted to specifically read the aura of another character for details on health, mood or personality, how can you do that?
+      max_score: 4
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'I need to roll my might against a difficulty equal to the other character’s Spirituality might'
+          chosen: 4
+          not_chosen: 0
+        -
+          answer: 'I need to roll my might against a difficulty equal to 25'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Automatically, but only if they are in line of sight'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Automatically, but if I want details I make a basic awareness roll'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'It’s just like eyesight, so anytime I want to without rolling'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'System walkthrough - Rolling Dice'
+      body: |-
+        We use percentile dice to determine success. The higher you roll the better. But it’s not quite as direct as all that. Our system is based on a concept called ‘The Ladder’. The Ladder is used to determine how much you succeeded or failed by. <a href="/wiki/ladder" target="_blank">Check out the Ladder here.</a>
+
+
+
+        The line on the left represents the might. The line on the right represents the difficulty of the task. If you draw a straight line from the might to the difficulty, then where the line crosses the diagonal is the roll needed on your dice.
+
+        All of this is handled on our site by the in-site ruler because this is a little complicated to do by hand. You’ll see the in-site ruler in each chat room just above the posting area. While the actual math involves trigonometry, there are some guidelines that will let you eyeball it:
+
+        If your character's might is equal to the difficulty, you have a 50% chance to succeed.
+        If your character's might is double the difficulty, you have an 80% chance to succeed.
+        If your character's might is half the difficulty, you have a 17% chance to succeed.
+
+        Your might is the base value for doing anything here so you always want to have a high one if you can. But there is a point of diminishing returns where a higher might isn’t going to gain you a lot more. That’s usually around a 140 might - so at that point, consider spending your points in a new skill.
+
+        You'll notice most of the time the values will come out to some kind of fraction. But that doesn't really help us in a session when we want to say how many hit points your character just lost. We use natural rounding here - so 4.4 is read as a 4, and 4.5 is read as a 5.
+
+        [b]Question:[/b]
+
+        If the difficulty of your task is a 25, what might do you need to have at least an 80% chance of success?
+      max_score: 4
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: '25 might'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: '40 might'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: '50 might'
+          chosen: 4
+          not_chosen: 0
+        -
+          answer: '35 might'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'System walkthrough - Winsby and Points Produced'
+      body: |-
+        Once you know what roll you need to succeed, then you need to know how well you succeeded. Did you succeed by the skin or your teeth, or did you make it look easy? Points produced (or PP) is how we tell that. The more PP you have, then better you did.
+
+        Winsby is the difference between what you needed to roll - determined by the Ladder - and what you actually got. If you needed a 23 and rolled a 33, then your winsby is a 10, as in “Dareth wins by 10.” If you needed a 45 and rolled a 34, then you failed and the winsby (also called a failsby) is a -11. 
+
+        Your winsby determines how many points you produced. Points are calculated as a percentage of your might, based on the winsby. If your winsby was a 10, then 10% of your might is your points. If your winsby was a 99, then 99% of your might is your points produced.
+
+        This means having a high might often matters as much, and sometimes more, than the roll itself. While you don’t need a skill to attempt a roll (since you can always default to the relevant stat), having a skill will improve your might and helps you produce more points.
+
+        The number of points produced on a roll is limited by the might the character has. For example: rolling a 99 on a might of 10 at most can produce 10 points. Rolling a 99 on a might of 60 could get up to 60 points produced.
+
+        Points are used to determine how much damage was dealt, hit points healed or the strength of a bonus.
+
+        [b]Question:[/b]
+
+        If your might was a 65, and you needed a 25 to succeed and rolled a 47 - then what was your winsby and points produced?
+      max_score: 4
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'winsby 22 and 14 PP'
+          chosen: 4
+          not_chosen: 0
+        -
+          answer: 'winsby 18 and 22 PP'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'winsby 25 and 16 PP'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'winsby 65 and 47 PP'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'System walkthrough - Succeeding and Failing'
+      body: |-
+        Successes are based on the action you described when you made the post. If you only want to wound someone, a high success gives you exactly that. A high PP won’t accidentally kill them instead if that’s not your stated goal. If you only want to knock someone out same thing - what you’ve described as your goal is what will happen if you succeed.
+
+        The more PP you have, the closer to your described result you get.
+
+        A narrow success is one where you succeeded barely. It’s a ‘kinda’ result - barely scraping by - when your winsby is between 0 and 10. You may need to try again on the next round to make it the rest of the way.
+
+        A ‘normal’ success has a winsby between 10 and 25. This roll will achieve what you described, but you don’t get any additional style points for it.
+
+        An ‘exceptional’ success is one where your winsby is over 25. This is a spectacular success where you make it look easy. Your A/SH may grant additional benefits with this sort of roll.
+
+        [b]Question:[/b]
+
+        If you have a winsby of 12, what sort of success is it?
+      max_score: 4
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'Not a success, a 12 fails.'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'A partial success.'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'A normal success.'
+          chosen: 4
+          not_chosen: 0
+        -
+          answer: 'A spectacular success.'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'System walkthrough - Types of Rolls'
+      body: |-
+        There are two types of rulings in our system.
+
+        The most common sort of ruling you’ll see outside of combat is a “one-trait ruling”. For example: this is the type of ruling meant when we ask for an “Awareness check”. The one-trait ruling is one might with one percentile roll. For an Awareness check, you would roll 1d100 using your might (Awareness + a skill, if you have one) against the difficulty. How well you do on the roll would give you your winsby and how many PP you have.
+
+        For a one-trait ruling calculating PP is: might * (winsby / 100)
+
+        The other sort of ruling you may encounter is a “two-trait ruling”. This is an average of two one-trait rulings. For this sort of ruling, you would use two mights and you would calculate the winsby for both of them like normal. But after you have the two winsbys, you average them together and you average the mights of the two mights you used as well. Then use those averages to figure out the final points produced.
+
+        For a two-trait ruling calculating PP is: averaged might * (averaged winsby / 100)
+
+        Two trait rulings are used for some of our most common actions: magic rulings which use Intelligence and Spirituality mights. And combat rulings which are a combination of two of three mights (Strength, Endurance or Dexterity) depending on your action that round. It’s complicated, but the in-site ruler will handle the math for you most of the time.
+
+        There is a special type of success that comes with two-trait rulings called a ‘lopsided success’. This happens when one trait fails miserably, but the other one succeeds greatly. A lopsided result may have something ‘weird’ happen with it for flavor but the average winsby still determines how successful the roll was. A lopsided success on a fireball may result in a wild blast of out of control fire, but if the roll was a success, you shouldn’t have to worry about lighting the loot on fire or a similar disaster.
+
+        Unsure what an average is? It's adding the two numbers together, then dividing by 2. Check out <a href="http://www.mathsisfun.com/definitions/average.html" target="_blank">mathisfun.com</a> for more information.
+
+        [b]Question:[/b]
+
+        If you have a two-trait ruling, with mights of 45 and 55, and winsbys of 23 and 88 - then how many points did you produce?
+      max_score: 4
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: '28 points'
+          chosen: 4
+          not_chosen: 0
+        -
+          answer: '62 points'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: '50 points'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: '42 points'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Back to fairness - just like how you have to ro...'
+      body: |-
+        Back to fairness - just like how you have to roll to do something difficult, there’s a cost for doing more than one action on your turn. Dividing your attention reduces your mights so you should only do it when you really need to or when you know for sure that you can pull it off.
+
+        The first action is free. But for each extra action you take, your mights for all of your actions will be reduced by 20. Remember: that also limits how much PP you can produce, so make sure your mights are high enough to afford to take 20 off the top and still have a good chance to succeed.
+
+        If you are attacking twice in a round, that’s two actions. If you are trying to jump from roof to roof and fire an arrow at the same time, or if you are climbing a tree and trying to sweet talk a cat into staying put. If you’re trying to pull off two different things - that’s two actions.
+
+        For example: Your character is in a fight and needs to end it quickly. So he attacks twice. You'd be taking a -20 might for the extra action to all of your attacks. If your might started at an 80, when we do the math - for both attack #1 and attack #2 we use a might of 80 - 20, or 60.
+
+        This also counts for animal companions. In a session, the A/SH should be the one rolling for the animal’s actions while you roll any animal handling skill you have. Some A/SHs will allow you to roll for the animal’s action yourself - but you will still take the multi-action penalty even if the animal is the one taking the action. Otherwise it’s just not fair to the other players who are limited to their single character's actions.
+
+        [b]Question:[/b]
+
+        Setting aside weapon adjustments, if you take three actions in a round, what is your multi-action-penalty for all three actions?
+      max_score: 4
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: '-20 to my roll'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: '-40 to my roll'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: '-60 to my roll'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: '-20 to my might'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: '-40 to my might'
+          chosen: 4
+          not_chosen: 0
+        -
+          answer: '-60 to my might'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Magic is a two-trait ruling using Intelligence ...'
+      body: |-
+        Magic is a two-trait ruling using Intelligence and Spirituality as the stat plus a “magical” skill.
+
+        For our purposes, a magical action is anything that defies the normal laws of physics, like conjuring flame out of nowhere or teleporting to a different place. This includes abilities that are psionic, divine, chi-based, or arcane - they all operate under the same magic ruling when it comes time to rolling dice.  The type of magic is only flavor. 
+
+        Difficulty for casting magic is based on the complexity of the effect. Most useful spell effects start around difficulty 25. A larger, more powerful, or longer-lasting version of an effect is just a matter of more PP, not a higher difficulty to cast against. You can make it easier to generate more PP by ‘charging’ the round before to decrease the difficulty of the spell on the next round, or by casting the spell over two rounds and adding the PP generated together.
+
+        You can do this with any skill really, though it is most commonly used with magic and item creation.
+
+        While you don’t need a specific magic skill to cast a spell, it helps a lot, so in general you want to stick to the skill you have described for magic. The most minor of spells, ‘cantrips’ may be cast by even the weakest of mage or non-mage on a good enough roll. But there may not be much PP behind it though for an unskilled caster since the might is so low.
+
+        [b]Question:[/b]
+
+        If you cast a fireball with a difficulty of 25, and want to make it bigger what do you need to do? Check all that apply.
+      max_score: 4
+      multi: true
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'Cast the fireball with a difficulty of 40 to make it bigger.'
+          chosen: -1
+          not_chosen: 0
+        -
+          answer: 'Take the time to prepare to lower the difficulty so I can get a better winsby and more PP.'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'Take the time to cast the fireball over two rounds so I can add the PP together.'
+          chosen: 3
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'A spell against a resisting target is cast agai...'
+      body: |-
+        A spell against a resisting target is cast against the difficulty of the spell plus the target’s might. Everyone is assumed to be resisting unless they say otherwise. Usually the target’s might is just their stat, but sometimes they have a skill that matters as well. This tells you how innately resistant to the magic your target is.
+
+        A spell may succeed, but fail to affect a target if they have a high enough might.
+
+        Physical spells that operate on the body are resisted using Dexterity and Endurance. Mental spells are resisted using Intelligence and Spirituality.
+
+        If a spell causes direct physical damage, such as a fireball, it is generally resisted using physical stats. If a spell meddles with the mind or spirit it is generally resisted with mental stats and usually inflicts positive or negative bonuses to the target’s actions instead of direct damage. If in doubt, use what you're trying to do to determine which resistance to use. If you're trying to deal damage - physical. If you're trying to create a bonus - mental.
+
+        Passively resisting a spell does not cost an action since the difficulty numbers are just how innately hard to hit you are.
+
+        You may also use an action in a given round to attempt to actively dodge or block a spell just like you would any other type of attack, but as usual, it requires an action. If you want to try and dodge a spell and attack in the same round, standard multi-action penalties will apply.
+
+        [b]Question:[/b]
+
+        If you cast a fireball at a zombie, and you have a positive winsby against the base difficulty of 25, but failed against 25 + the zombie’s stat of 20 - what happens?
+      max_score: 4
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'The spell fizzled, nothing happened.'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'The spell went off and hit the zombie for full damage.'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'The spell went off and hit the zombie for only partial damage.'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'The spell went off, but the zombie didn’t take any damage from it.'
+          chosen: 4
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'System walkthrough - Combat'
+      body: |-
+        The meat of the matter!
+
+        Combat is the most complicated part of any system, so we’re going to split this up across a couple of topics.
+
+        Combat rulings are a two-trait ruling. Depending on your action, your ruling may involved your Strength, Dexterity or Endurance.
+
+        You’ll notice in sessions that we ask for all three (Strength, Dexterity and Endurance) rolls from characters. Not all of these rolls are going to be needed in a specific round - but they could be and it saves time to just ask for all three instead of asking for the specific ones we need after everyone has posted.
+
+        When attacking, a character uses his Strength and Dexterity mights against a difficulty of the opponent’s Endurance and Dexterity mights. It is possible, if both characters are attacking instead of defending, for both to take damage in a round. (May the toughest character live the longest.)
+
+        [b]Question:[/b]
+
+        If character A has a Strength of 25, a Dexterity of 30 and an Endurance of 35, and the skill Swordplay at 25. Then what are the difficulties for character B to hit character A?
+      max_score: 4
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'The difficulties are 55 and 60'
+          chosen: 4
+          not_chosen: 0
+        -
+          answer: 'The difficulties are 30 and 45.'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'The difficulties are 50 and 55.'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'The difficulties are 50 and 60.'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'System walkthrough - Going First'
+      body: |-
+        Usually when we post in a session, we assume all the actions are occurring at once. That helps a session go more quickly. But sometimes order matters - for example: if one character is trying to hit a target that another character is trying to protect.
+
+        Determining who goes first means looking at the stats for the characters involved.
+
+        Usually the A/SH will use the PP from the character’s Dexterity ruling or Intelligence ruling in that round. If neither of those stats were rolled then they would use derived stats (Agility, Finesse, Awareness, Presence) instead. If nothing was rolled, then they would look at the stats directly.
+
+        [b]Question:[/b]
+
+        Two characters are in range to attack a target one with a sword the other with a fireball, character A has 34 PP on his Dexterity from his attack ruling and character B has 30 PP from his Intelligence on his fireball. Which hits first, the sword or the fireball?
+      max_score: 4
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: Sword
+          chosen: 4
+          not_chosen: 0
+        -
+          answer: Fireball
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'System walkthrough - Active Defense'
+      body: |-
+        When not getting hit is more important to you than hitting - you should describe your character as taking a defensive action. The dice to roll is still the same: Strength, Dexterity, Endurance plus any relevant skill.
+
+        But instead of trying to generate PP to cause damage to your enemy, you’re trying to generate PP to negate the PP he’s attacking you with.
+
+        There are three types of active defense:
+
+        Blocking - Pits the defender’s Str/End mights against the attacker’s Dex/Str mights 
+        Dodging - Pits the defender’s Dex/End mights against the attacker’s Dex/Str mights 
+        Parrying - Pits the defender’s Dex/Str mights against the attacker’s Dex/Str mights 
+
+        Notice that an attacker has to use his Dexterity and Strength, but a defender can choose any of the two stats to defend with. Which one you go with depends on your description in your action, so be sure to describe it in enough detail that your A/SH can tell what you want to do. Or include a note in the OOC if you're worried there may be confusion on what you're trying to do.
+
+        Actively defending against an attack counts as an action - so multiple-action penalties apply if you are also attacking in that round. If you hit a target twice in a round, but they only rolled for one attack (or defense), then they don't have any active defenses for the second attack. While they don’t take the multiple-action penalties since they didn't try to do two things, they also don’t get a benefit of a roll to attack or defend either.
+
+        [b]Question:[/b]
+
+        If you’re playing a rogue, squirmy and tough but not very strong, what sort of defense should you use to avoid getting hurt by a much bigger opponent?
+      max_score: 4
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: Blocking
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: Parrying
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: Dodging
+          chosen: 4
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Making more than one attack is just another for...'
+      body: |-
+        Making more than one attack is just another form of multiple-actions. So for every attack you roll for after your first, you will take a multiple action penalty. If you miss on your first attack, your other attacks can still hit, so missing on one attack doesn’t impact the others.
+
+        Certain weapons can affect the normal penalties for multiple actions to reflect lighter or heavier weapons.  Unarmed combatants and those using Light weapons subtract 10 from the normal multiple action penalty, whereas Heavy weapon wielders take an additional 10-point penalty.  Medium weapon wielders and anyone doing any other type of action use the standard multiple action penalty.
+
+        The impact of your weapon on the multiple-action penalty (or MAP) is a flat penalty, meaning a Light weapon wielder takes a penalty of 10 instead of 20 if they take two actions, and 30 instead of 40 if they take three actions in a single round.  A Heavy weapon wielder's 2nd action is at a 30-point penalty, and their 3rd action is at a 50-point penalty.  Again, the 10-point additional penalty for wielding a heavy weapon is applied on the 2nd action, and trickles down from there.
+
+        To think of it another way, first figure out what the total penalty would be for a Medium weapon wielder taking as many actions, then apply the adjustment for Heavy or Light weapons to that number.
+
+        [b]Question:[/b]
+
+        If a heavy-weapon wielder attacks four times in a round, how big is their multiple action penalty?
+      max_score: 4
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: '-70 to my might'
+          chosen: 4
+          not_chosen: 0
+        -
+          answer: '-90 to my might'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: '-60 to my might'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Damage in combat is directly related to the amo...'
+      body: |
+        Damage in combat is directly related to the amount of PP you produced. Successfully hitting with a weapon could be a matter of being more strong when you hit - or more dexterous in picking your location - and both Strength and Dexterity mights contribute to the PP for the hit. While a higher might produces higher amounts of PP but it isn’t the only thing that increases the PP you produce - weapons help too.
+
+        Weapons enhance the damage dealt by a character. Additional weapon damage is calculated using the PP so they are not affected by the relative Strength or Dexterity of a character wielding the weapon. The weapon type's extra damage only comes into play after all the other math is handled.
+
+        A weapon will list a certain percentage based on the type of weapon it is. The damage dealt is increased by that percent before it is applied to the target. The percentage of the weapon is added last after all other calculations are complete.
+
+        [i]* Weapon percentage damage and multiple attacks have been reviewed by the site and flagged for revision by a site proposal - so it may be going through a number of changes in the next few months as we study the effect it has on damage output. While the percentage damage will still be calculated the same way - the multiple-action penalty may be adjusted up or down for different types of weapons.[/i]
+
+        [b]Question:[/b]
+
+        A knife fighter generated 50 PP on  his attack, a knife grants 15% extra damage. How much damage does he deal to the target? A swordsman generated 45 PP on his attack, how much damage does his sword of 45% generate?
+      max_score: 4
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'The knife fighter dealt 50 damage, the swordsman 45 damage.'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'The knife fighter dealt 58 damage, the swordsman 65 damage.'
+          chosen: 4
+          not_chosen: 0
+        -
+          answer: 'The knife fighter dealt 8 damage, the swordsman 20 damage.'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'System walkthrough - Ranged Weapons'
+      body: |
+        Ranged weapons are handled exactly the same way melee weapons are: they use Strength and Dexterity like any other weapon does. Since we are a text-based game, the benefits of a ranged weapon are rarely closely tracked enough to be beneficial enough to use a different system. We simply don’t use a map often enough for it to matter.
+
+        There are specific types of ranged weapons that do something ‘odd’ though with strength. Muskets, rifles, crossbows and modern firearms do not rely on the strength of the wielder in their rulings. These weapons have their own Strength based on the power of the ammunition or the design of the weapon - so they replace the wielder’s Strength in rulings. Even if the wielder is stronger than the weapon, the weapon's Strength is used instead These sorts of weapons are more common in the Science Fiction realm.
+
+        [b]Question:[/b]
+
+        What stats should I roll to fire a bow?
+      max_score: 4
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'Strength and Dexterity'
+          chosen: 4
+          not_chosen: 0
+        -
+          answer: 'Strength and Finesse'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Strength and Endurance'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Dexterity and Endurance'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'System walkthrough - Death and Healing'
+      body: |-
+        Like most systems, when you take damage in a combat, it is possible to die!
+
+        You have as many hit points as you have Life score. So if your Life is 30, you have 30 hit points. Damage is dealt to your hit points.  
+
+        At zero you will fall unconscious, and at negative Life you’ll be dead. Resurrection is not easy here - so try not to get dead. Thankfully, you don’t have any negative modifiers just for being hurt, so you’re just as effective in a fight all the way down to your last hit point. 
+
+        Healing works the same way. Spells or skills used to heal generate PP that add directly to your current hit points, up to the maximum of your Life score. Magical healing does leave scars behind - so keep that in mind for roleplaying purposes.
+
+        [b]Question:[/b]
+
+        If you have 30 Life and you just took 7 points of damage - how much more could you take before you drop unconscious?
+      max_score: 4
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: '23 damage'
+          chosen: 4
+          not_chosen: 0
+        -
+          answer: '30 damage'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: '53 damage'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'System walkthrough - Types of Experience'
+      body: |-
+        The higher your stat or skill is then the more XP it will take to increase it. There are a couple of ways to earn XP here: either by posting on your character in IC locations or awarded by a SH when participating in sessions.
+
+        KXP is the smallest unit of XP. You earn KXP every time you make a post on your character in an IC location. It takes 70 KXP to get 1 spendable XP.
+        [i]Right under the drop-down box where you select your character you can see how much KXP you have earned and any XP you have earned.[/i]
+
+        When you reach 70 KXP and get 1 XP you also get 1 RXP. RXP can not be spent! 
+        What RXP does is track how much XP you have earned by just posting on your character. RXP is used to unlock XP awarded from a session.
+
+        Banked XP is session awarded XP that was locked away.
+        If you have 0 RXP, and earn XP from a session, then all that XP goes into BXP and has to be unlocked.  BXP can be unlocked into spendable XP by earning RXP through roleplaying the character. So each time you earn 1 XP, you get another 1 XP, earn 1 RXP, and lose 1 BXP. 
+        [i]Sometimes session XP will come in 'flavors' - good, evil, warrior, mage, charismatic, smart - this is only so you have some clear feedback on the sort of behaviors your character is getting known for.[/i]
+
+        HXP is historical XP. This is the total amount of XP your character has earned over their lifespan. HXP can be transferred to a new character when you retire the old character.
+
+        Yeah - it's really complicated, I know. Here's the main take-away: Our XP system is designed to encourage you to participate in both session and casual RP to unlock all the XP you have been given. Do a mix of both and you'll be in good shape.
+
+        Example:
+        Gina has a character she goes to a session with. The RP actions she types out earns her character 1 XP (70 KXP). This means her character now has 1 XP that she can spend, and 1 RXP counter. Her character is awarded 4 XP for participating in the session. This means that now she has 2 XP and 3 BXP, and 0 RXP. She only has the 2 XP because she got 1 for her own RP, and then 1 from the award to her since she only had 1 RXP. This means the remaining 3 XP from the award goes to BXP.
+        The next day Gina does some casual RP with a friend, she does another 70 KXP worth of play earning another 1 XP; however since she has BXP, she also unlocks 1 BXP. Therefore earning 2 XP. So now Gina has 4 XP, 2 BXP, and 1 RXP. She can spend that 4 XP to improve her character Stats and skills.
+
+        To recap:
+        [list]
+        [*]70 KXP = 1 XP
+        [*]XP stands for experience points. This is what you will spend to make your character more powerful.
+        [*]BXP stands for banked experience points. These points can not be spent, but have to be unlocked through roleplaying.
+        [*]RXP stands for roleplaying experience points. These points can not be spent, is more like a counter for how much XP a player earned by roleplaying.
+        [*]HXP stands for historical experience points. These points can not be spent but can be transferred when the character is retired. It a record of the total amount of XP the character has earned.
+        [/list]
+
+
+
+        [b]Question:[/b]
+
+        If you have 0 XP, 3 BXP, and 2 RXP, and you just got 6XP in a session, what are your XP, BXP, and RXP totals after?
+      max_score: 4
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: '2 XP, 7 BXP and 0 RXP'
+          chosen: 4
+          not_chosen: 0
+        -
+          answer: '6 XP, 3 BXP and 0 RXP'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: '4 XP, 6 BXP, and 3 RXP'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'System walkthrough - Getting New Skills'
+      body: |-
+        If your character has less than 20 HXP, he’s still new enough that you can ask the A/SHs to make changes without having to RP them out first. Your character concept may have changed in the RP that you’ve had with him, and we assume you're feeling out the new character still - so this is your chance to update the character sheet to match.
+
+        Once you pass the 20 HXP mark, you will need to work to gain a new skill by roleplaying the learning process in-character.
+
+        The base RP requirement to learn a new skill on your own is 3 XP, or 210 KXPs, worth of posting. If working with a trainer (an NPC or PC with a skill of 40 points or higher in the relevant area), the RP requirement is reduced to 2 XP, or 140 KXPs worth of posting.
+
+        You can track your progress with a scene, and once you have completed it, post the scene to the SH Request forum for the right setting to get the skill added to your sheet. You will need to include the wording of the new skill so the A/SH can add it - and you may need to work with one of our evaluators to get it right just like you did when you started the character.
+
+        [b]Question:[/b]
+
+        Your character’s friend has offered to teach him water magic.  What will he need before he can act as a teacher?
+      max_score: 4
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'A stat of at least 40'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'A skill of at least 40'
+          chosen: 4
+          not_chosen: 0
+        -
+          answer: 'A might of at least 40'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'System walkthrough - Learning Languages'
+      body: |-
+        You start play knowing three languages at native fluency.
+
+        After starting, languages are earned in much the same way skills are. The character needs to roleplay out at least 1XP worth of posting to begin learning the language. Languages are not paid for with XP like skills are!
+
+        Rolling for understanding a language just isn't a thing we roll for, any more than eating or breathing would be. It makes no sense to create a skill for that.
+
+        So practicing with a language is just a matter of more RP with it.
+
+        1XP worth of posts - learner, you can recognize the language written or heard
+        2XP worth of posts - basic understanding and vocabulary, not able to hold a conversation easily
+        3XP worth of posts - conversationally fluent, with an accent
+        4XP worth of posts - conversationally fluent, with an accent and an understanding of idiomatic phrases
+        5XP worth of posts - equivalent to a native speaker
+
+        [b]Question:[/b]
+
+        If you want to learn how to speak orcish enough to ask directions out of town, how much XP worth of posting should you do?
+      max_score: 4
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'None, I just buy it with my XP like any other skill.'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: '2XP worth'
+          chosen: 4
+          not_chosen: 0
+        -
+          answer: '3XP worth'
+          chosen: 2
+          not_chosen: 0
+        -
+          answer: '4XP worth'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: '5XP worth'
+          chosen: 0
+          not_chosen: 0
+walkthrough_setting:
+  title: 'New Player: Setting Walkthrough'
+  body: |-
+    Welcome to the setting walkthrough. This site has three worlds to play in, one for each realm, plus the Storyhost realm where the site's business happens. This walkthrough is a quick tour so you know where your character could live. Each world has a page on the wiki: [url=/wiki/eldmoor]Eldmoor[/url], [url=/wiki/the-meridian-reach]the Meridian Reach[/url] and [url=/wiki/hollow-creek]Hollow Creek[/url].
+
+    Answer the questions below to get started.
+  pass_rate: 100
+  randomize: false
+  takes: 0
+  allow_skipping: false
+  summary_pass: |-
+    Congratulations! You know your way around our worlds. If you would like to help shape them, you can join the Setting department here:
+
+    [url=/content/join-setting-department]Join the department here.[/url]
+  summary_default: 'Not quite. Have another look at the realm pages on the wiki and try again.'
+  questions:
+    -
+      type: multichoice
+      title: Realms
+      body: |-
+        Every character belongs to one realm. A realm is a world with its own genre, places, species and languages. Your realm decides which rooms are home, which species and languages you can pick, and which items the shop offers you.
+
+        [b]Question:[/b] What does a character's realm decide?
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'Its rooms, species, languages and shop items'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'Only the colour of its posts'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Nothing: realms are just tags'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Which dice it rolls'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Crossing over'
+      body: |-
+        The realms are separate worlds. Characters can't travel between them, so a Fantasy character never walks into a Science Fiction room in character.
+
+        [b]Question:[/b] Can a character from Hollow Creek visit Port Kessler in character?
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'No: the realms are separate worlds'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'Yes, by walking there'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Yes, but only in sessions'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Only storyhosts can'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'The Storyhost realm'
+      body: |-
+        The Storyhost realm is not a world. It holds the site's business: the system pages, the storyhosting rules, and out-of-character rooms like Limbo. Posts in Limbo don't earn XP.
+
+        [b]Question:[/b] Where do you go to chat out of character?
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: Limbo
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'The Prancing Stag'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Blackwood Asylum'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'The Bridge of the Meridian'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: Eldmoor
+      body: |-
+        [b]Eldmoor[/b] is the Fantasy realm: walled towns and wild places between them, three hundred years after the old empire fell. Most adventures start in Thornwick, a market town at the edge of the Whispering Wood.
+
+        [b]Question:[/b] Which realm is Eldmoor?
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: Fantasy
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'Science Fiction'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: Horror
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: Storyhost
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Powers in Eldmoor'
+      body: |-
+        The Lantern Guild licenses mages and keeps magic safe (and expensive). The Wardens keep the roads open. The Ashen Court wants the empire back, with themselves in charge.
+
+        [b]Question:[/b] Who keeps Eldmoor's roads open?
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'The Wardens'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'The Lantern Guild'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'The Ashen Court'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'The Gate Authority'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'The Meridian Reach'
+      body: |-
+        [b]The Meridian Reach[/b] is the Science Fiction realm: the frontier of settled space, a string of colonies, mining stations and jump gates. Port Kessler is the free port where every crew stops.
+
+        [b]Question:[/b] What is Port Kessler?
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'An orbital free port'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'A haunted manor'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'A fae forest'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'A mining corporation'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Powers in the Reach'
+      body: |-
+        Halvorsen-Tak owns half the Reach. The Gate Authority runs the jump gates and decides who uses them. The Drift is everyone else: free traders and smugglers.
+
+        [b]Question:[/b] Who decides who may use the jump gates?
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'The Gate Authority'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: Halvorsen-Tak
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'The Drift'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'The Lodge'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Hollow Creek'
+      body: |-
+        [b]Hollow Creek[/b] is the Horror realm: a mill town in the hills with one bridge out. Ordinary by day; by night the old families draw their curtains. Characters there are ordinary people facing things they don't understand.
+
+        [b]Question:[/b] What kind of characters suit Hollow Creek best?
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'Ordinary people up against the unknown'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'Unstoppable heroes'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Starship crews'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Immortal wizards'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Powers in Hollow Creek'
+      body: |-
+        The Ravensworths are old money with old secrets. The Lodge meets on the new moon. The Night Watch is a handful of townsfolk who know the truth and try to keep people safe.
+
+        [b]Question:[/b] Who tries to keep Hollow Creek's people safe?
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'The Night Watch'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'The Ravensworths'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'The Lodge'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'The Wardens'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Making it yours'
+      body: |-
+        The worlds are meant to grow. Members add places, people and history on the wiki, and the Setting department keeps it consistent. Story hooks on each realm page are there to be picked up.
+
+        [b]Question:[/b] Who keeps the worlds consistent as members add to them?
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'The Setting department'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: Nobody
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Only the site admin'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'The System department'
+          chosen: 0
+          not_chosen: 0
+walkthrough_social:
+  title: 'New Player: Social Walkthrough'
+  body: |
+    Welcome to the social walkthrough. This walkthrough is designed to teach you how we handle the people end of things here. If you're not familiar with roleplaying, or want to make sure you've got a handle on the etiquette here on the site - this is where to start.
+
+    The walkthrough is a guided tour but you'll be asked questions along the way to make sure you have the important pieces down. Don't worry if you have to stop halfway through, just come back when you have more time and the walkthrough will pick up where we left off.
+
+    [b]If you are looking to join the Social department - say so at the end of this quiz to have your score counted.[/b]
+
+    Please re-take the test as many times as you need in order to get through all the questions or if you ever feel like your knowledge is getting rusty. It's really useful to know how things work around here when you're trying to get started.
+
+    [size=30][color=#009900][center][b]Answer the questions below to get started.[/b][/center][/color][/size]
+  pass_rate: 100
+  randomize: false
+  takes: 0
+  allow_skipping: false
+  summary_pass: |-
+    And there you go! You’re all done. Thank you for taking this walkthrough, and please let us know if there’s more you would like to see covered in it.
+
+    [b]You are now a member of the Social department and have access to post on the department's forums. You may be asked to assist the department Lead with site projects and decisions.[/b]
+
+    Please re-take the test as many times as you need in order to get through all the questions or if you ever feel like your skills are getting rusty.
+
+    If you would like to join the department you can do that here:
+
+    [size=30][color=#009900][center][b][url=/content/join-social-department]Join the department here.[/url][/b][/center][/color][/size]
+  summary_default: |-
+    You did not pass this test.
+
+    Please re-take the test as many times as you need in order to get through all the questions or if you ever feel like your skills are getting rusty.
+
+    <a href="/quizzes/new-player-social-walkthrough">Click on the "Take" tab to get started.</a>
+  questions:
+    -
+      type: multichoice
+      title: 'Social walkthrough - Diversity of Play'
+      body: |-
+        Not all players are playing the same game you are. We all come from different experiences in life. Some of our players have never played outside of this site, some started play in the olden days when Dungeons & Dragons was the only game in town. Some come from the point of view of wanting to play a dramatic story and the day-to-day lives of their characters, while others want to focus on action, adventure, and building a legend for themselves.
+
+        It’s important to note: All of these are completely legitimate ways to play!
+
+        With the many varieties of players as we have, we’re bound to find players whose personal styles just don’t naturally click. There will be misunderstandings along the way. But there’s some steps you can take to help smooth the rough edges. One key element is to remember to make sure your fellow players want to go along with your idea.
+
+        It’s a simple thing: When in doubt, ask.
+
+        And if you are asked, give an honest and clear answer. Not speaking up once you’ve been asked isn’t helpful to anyone.  If you aren’t sure what type of play you prefer, let folks know, and be prepared for the chance that you might discover a style you like (or don’t like) in play.
+
+        [b]Question:[/b]
+
+        If you're roleplaying a scene in a bar, and you notice other characters are getting agitated with your behavior and a player even has their character leave the scene early, what should you do?
+      max_score: 4
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'Check in Limbo if the other players are ok with the play, if not, rein the character in or have them exit the scene so other people can keep playing.'
+          chosen: 4
+          not_chosen: 0
+        -
+          answer: 'Rein the character in since it seems to be driving players off.'
+          chosen: 3
+          not_chosen: 0
+        -
+          answer: "You're just playing the character how the character would behave, so nothing to change."
+          chosen: -1
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Social walkthrough - Gamer types'
+      body: |-
+        Robin D. Laws is a game designer and writer who wrote a book called “Robin's Laws of Good Gamemastering”. We can’t recommend this book nearly enough if you’re interested in sharpening your skills as a player and a game designer or game master. It’s mostly common sense advice. But one of the most valuable tools in Laws’s book is the “gamer types”.
+
+        [b]The Power Gamer:[/b] Get more powers and use them often and efficiently.
+        [b]The Butt-Kicker:[/b] Enjoys combat and pwning NPCs!
+        [b]The Tactician:[/b] Likes to beat complex situations through thought and planning.
+        [b]The Specialist:[/b] The one who always plays a "insert character type". Ninjas and Dritzz clones are popular.
+        [b]The Method Actor:[/b] Likes total immersion in a character’s assumed persona, whatever the costs!
+        [b]The Storyteller:[/b] Enjoys exploring a story unfold around a character’s actions and choices.
+        [b]The Casual Gamer:[/b] Shows up to be with friends and share the social energies of the group.
+
+        More information on Robin’s gamer types and the traits people come to a table for <a href="http://www.critical-hits.com/blog/2008/01/23/robins-laws-revisited-part-2-player-types-and-traits/" target="_blank">can be found online</a>.
+
+        Most players are a combination of types! So it can be handy to know roughly where you fit. It helps you identify what sort of characters and sessions you’re looking for. If you’re playing with another player and not getting along, make sure you’re on the same page - the other player may be looking for more of a storyteller scene while you’re looking for a way to blow some steam off after a rough day. Try to find common ground.
+
+        [b]Question:[/b]
+        What kind of gamer are you (mostly)?
+      max_score: 4
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'Power Gamer'
+          chosen: 4
+          not_chosen: 0
+        -
+          answer: Butt-kicker
+          chosen: 4
+          not_chosen: 0
+        -
+          answer: Tactician
+          chosen: 4
+          not_chosen: 0
+        -
+          answer: Specialist
+          chosen: 4
+          not_chosen: 0
+        -
+          answer: 'Method Actor'
+          chosen: 4
+          not_chosen: 0
+        -
+          answer: Storyteller
+          chosen: 4
+          not_chosen: 0
+        -
+          answer: 'Casual Gamer'
+          chosen: 4
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Social walkthrough - OOC vs IC'
+      body: |-
+        You’ll see “OOC” and “IC” floating around a lot on the site. Those stand for “Out Of Character” and “In Character”.
+
+        Out of character is stuff you, as the player know about and consider. In character is stuff your character knows. You know both the OOC and IC, but your character only knows the IC. That means, your character shouldn’t use any of your OOC knowledge. If you need to take notes - do that! Plenty of people do. Each character sheet has a section for “Player Notes” - that’s for you to write down anything you need to.
+
+        Playing two of your characters at once - we really really don’t recommend you do this. Not only is it a bit presumptuous to assume your character’s know each other, but it puts you in a sticky spot. You’re your own best friend - that means you’re in conflict of interest for any favors your characters do for each other. It’s a form of cheating! Your characters shouldn’t share information, silver, or items. Even if it’s innocent, just chattering with yourself, we really don’t recommend making a habit of it - it looks bad, and it won’t be long before someone asks if you are using OOC knowledge.
+
+        [b]Question:[/b]
+        When can I share loot between two of my own characters? (check all that apply)
+      max_score: 4
+      multi: true
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: Never.
+          chosen: 4
+          not_chosen: 0
+        -
+          answer: 'If they knew each other before they got the loot.'
+          chosen: -1
+          not_chosen: 0
+        -
+          answer: "If they knew each other before, and one roleplayed calling 'dibs' on the loot for the other who wasn't in the session."
+          chosen: -1
+          not_chosen: 0
+        -
+          answer: 'If another character made the suggestion.'
+          chosen: -1
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Social walkthrough - Types of RP'
+      body: |-
+        There are two types of RP on the site, casual and session.
+
+        Session RP is when one of our A/SHs plans and runs a scenario for one or more players on the site. Sessions are our version of ‘an adventure’, or even a ‘campaign’ in the case of sagas. In sessions you get the extra challenge and risk of the situation the A/SH has put together for you - but you can also reap plenty of rewards: Silver, extra XP, and items.
+
+        Casual RP is when you and another player (or half a dozen) decide to take over a room and just have fun! Casual RP can be a lot of fun and it builds the social connections between all of your characters. It also helps you unlock any banked XP you’ve gotten from sessions - so if someone’s in Limbo asking for RP and you’ve an evening free: Take them up on it.
+
+        Since session RP can only be unlocked with roleplaying posts - to get all the XP your character's are entitled to you want to do both casual and session RP.
+
+        [b]Question:[/b]
+        Which type of RP requires having an A/SH on hand?
+      max_score: 4
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: Session
+          chosen: 4
+          not_chosen: 0
+        -
+          answer: Casual
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Social walkthrough - How to ask for RP'
+      body: |-
+        Sometimes roleplay just happens, however there are times we may have to let people know that we are interested in doing some roleplay. The easiest and most obvious way is to politely ask if anyone would like to come and roleplay with you. The most common place to ask this would be in Limbo as many of us hang out there during the course of our day in order to be with our friends here.
+
+        When asking to roleplay try to include things like which character you are thinking about playing and a possible location. Be ready to offer more than one location or character if the other player doesn’t have one that matched your first suggestion. Work together.
+
+        Roleplay can also be arranged in the forums or through PMs as well. In the forums there is an In Character section where people can post things pertaining to events that may happen in the IC world. Usually this is a place to post letters from one character to another, or advertise flyers or poster a character may be placing. People can reply with their character’s reactions which may lead to a schedule meeting for roleplay. Sessions will often be posted in the General Discussion area of the forums so people can sign up.
+
+        On occasion schedules just don’t sync up, after all we have people from all over the world playing here! This is where slow posting comes in. Slow posting roleplay can be arranged over the forums or PMs as well as in limbo. It works just like normal roleplaying does – just at a much slower pace. For <a href="/wiki/slow-posting" target="_blank">more information about slow posting go here</a>.
+
+        [b]Question:[/b]
+        If you work third shift and can never quite make regular sessions, what should you do?
+      max_score: 4
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'Contact specific players over PMs or forums, to ask if they would like to start slow-posts for RP.'
+          chosen: 4
+          not_chosen: 0
+        -
+          answer: 'Ask for RP in Limbo, and then stick around for a few hours in case someone comes in who can play.'
+          chosen: 2
+          not_chosen: 0
+        -
+          answer: "Ask for RP in Limbo, but if someone isn't responding in fifteen minutes go elsewhere."
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Nothing - clearly no one wants to take the time to play with me.'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Social walkthrough - Starting and Ending RP'
+      body: |-
+        Joining an existing RP isn't as simple as just jumping into a post. It's very possible the RP you're trying to get in on is a personal scene the players have arranged in advance, and one that's very important to one or more of their characters. You can't really tell from the outside.
+
+        It is always polite to ask before joining first!
+
+        Just drop a OOC post into the room along the lines of "Anyone mind if I join?" If someone does, don't take it personal - some RP is like that. You'll catch them on the next opportunity.
+
+        If a session is in play, or about to be in place, drop a line to the A/SH in Limbo asking to join. Remember a lot of A/SHs will customize their session based on their headcount up to a day before the session - so by joining late you are rattling their plans - if they say no, don't take it personal. If at all possible - make sure to sign up 24 hours in advance for sessions to give them plenty of time to plan.
+
+        Once you’re done with a room it’s polite to say thank you to your RP partner, and make it clear you’re done playing. Not just because it’s nice to say thank you - but also because it makes it easier for other players to tell when you’re done with a slow post in a room.
+
+        A slow-post may have a day or more between each post. If you’re in one be patient. And if you let others know when you’re done that’s a good way to make sure you aren’t keeping others from using the location.
+
+        [b]Question:[/b]
+        How often should I remind another player about a slow-post we're both in?
+      max_score: 4
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'After a day or two has passed.'
+          chosen: 4
+          not_chosen: 0
+        -
+          answer: 'Immediately after I post on the thread.'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: "After an hour without a response on the thread, in case they didn't see it."
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'The next morning.'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Social walkthrough - Conflicts and PVP'
+      body: |-
+        Not all players are comfortable with PvP, or if they are, not on all their characters. That’s ok.
+
+        We want to support both PvP and non-PvP play styles on the site, but we respect the real life harm that can come with mixing those groups. If you are getting into a situation where that looks like it may be a possibility - pause first and ask. That’s being respectful of your fellow players who might not otherwise speak up.
+
+        Similarly, if you see a situation coming and already know that you yourself are ok with getting into the rough stuff - let your fellow players know. Simply knowing that you’re ok with getting the whuppin’ you’ve earned is a great way to let your characters get on with the scene, without making everyone else nervous that you’re about be upset or hurt out of character.
+
+        [b]Question:[/b]
+        If you're about to start a barfight in RP, what's the first thing you should do?
+      max_score: 4
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: "Ask the other player if they're ok with this."
+          chosen: 4
+          not_chosen: 0
+        -
+          answer: 'Make sure a SH (not just an A/SH) is online to help out.'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Make sure you have an IC reason to start the fight.'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: "Nothing - it's what my character would do."
+          chosen: -1
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Social walkthrough - Playing evil'
+      body: |-
+        Want to play an evil character?
+
+        Go right ahead!  But understand this can be tricky. Unlike your usual tabletop game, here players and characters will walk away if things get unpleasant enough. If your character is routinely abusive you should expect the same results you would get in real life for being a jerk. Which can make for some very boring solo roleplay for the rest of the character’s life.
+
+        Playing evil requires walking a fine line between offending or harming characters and offending or harming their players.  
+
+        Lastly, remember that evil people have friends too! Disney villains aren’t the most common of evils out there, and rarely does a character (or a person) cast themselves as the ‘bad guy’ of their own story. Evil characters should still be fully developed personalities, with motives and desires - and friends. 
+
+        That means they will occasionally sacrifice being evil for helping a friend out or being generally agreeable, if only to a handful of people (who may be just as villainous as they are).  That will help keep your character complete, and often make them more likable to players, which should help ensure you can participate in RP with others without constantly chasing them off or getting your character in inescapable trouble (like death or jail).
+
+        [b]Question:[/b]
+        What sort of response should I expect for a character who treats everyone around them like servants?
+      max_score: 4
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'The other characters will probably walk off and stop playing with me. They may even let my character get killed in a session.'
+          chosen: 4
+          not_chosen: 0
+        -
+          answer: "The other characters have to stay around me, I'm a player just like they are."
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: "The other characters may walk off if they want, but they have to have my back if we're in a session, I'm a player just like they are."
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Social walkthrough - Text communication'
+      body: |-
+        It is extremely difficult for other people reading your text to  know if you mean your character’s actions to be taken in a positive light or not. A large part of communication simply does not translate to text. For example the facial expression or tone of voice that lets the other person know you’re teasing.
+
+        So it can be reassuring for other players to hear you state that you know that an action your character took - is in fact unwise, reckless or evil. It reassures them that you know the difference between IC and OOC, and that you - as a person - understand the situation, even if your character may not. That keeps any IC blame firmly in the IC where it belongs.
+
+        [b]Question:[/b]
+        If my character doesn't care about the innocent NPCs he just killed by lighting the stables on fire in a session, how can other players tell that's not my own opinion too?
+      max_score: 4
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: "They can't! I need to include an OOC note to make sure they know for sure that I know what my character did was wrong. "
+          chosen: 4
+          not_chosen: 0
+        -
+          answer: "They should be able to tell because I'm not a bad person."
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: "It doesn't matter if they know or not, it's not like their opinion of me matters."
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Social walkthrough - Respecting boundaries'
+      body: |-
+        People don’t like being randomly touched by strangers in real life. That’s a concept we’re taught from an early age. The same applies in roleplaying as well.
+
+        A scene you are in with another player may make them uncomfortable. That’s not your fault, but they are not obligated to stick around for it. Especially not in an online environment where they may simply logoff. The player does  not have to validate the existence of their emotions regardless of how much others didn’t intend the results, or the logic or lack thereof in having them. (That’s why they’re called emotions.)
+
+        If someone asks for a scene to stop, or has their character firmly walk away without giving any indication they are wanting you to stop them, take the hint and let them walk away.
+
+        If you are confused about what happened, ask later after they have had time to calm down. It is best to do that in private over PMs. The problem may not have had anything to do with you, or it may be something they aren’t comfortable talking about in chat so putting them on the spot in public isn’t going to help.
+
+        [b]Question:[/b]
+        What sort of topics are likely to make other people uncomfortable? (Check all that apply)
+      max_score: 4
+      multi: true
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'Child abuse'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: Sex
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'Rape (of any variety)'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'Bigotry (racism or sexism)'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: Fights
+          chosen: -1
+          not_chosen: 0
+        -
+          answer: Disablity
+          chosen: -1
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Social walkthrough - Respecting work'
+      body: |-
+        A/SHs go to a lot of effort to run games here and they are all volunteer. There’s a lot that goes into running in a shared game setting without stepping on each others toes, and a lot of work to keep from treating other player’s characters unfairly. They have to be trained, take tests, and work through multiple sessions before they are allowed to run freely. Many of our A/SHs take a good chunk of their time before and after a session to plan it, write up the report for after, and plan for any future sessions that may occur as fall out.
+
+        That sort of training doesn’t happen overnight, so please respect the work that our A/SH undertake to bring stories to life for the site.
+
+        If a specific session doesn’t ‘fit’ for your character concept then see if you can find a way for the character to fit, bring another character, or bow out gracefully. Don’t try to make the A/SH feel like they’re responsible for actions that are ultimately under your control - it’s your character and your fingers typing at the keyboard.
+
+        [b]Question:[/b]
+        If I can't go to a session because my character would be asleep at that time, what should I do?
+      max_score: 4
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'Decide my character has insomnia that night, so I can be taking a walk near the location for the session.'
+          chosen: 4
+          not_chosen: 0
+        -
+          answer: 'Ask A/SH privately for ideas on how to get my character there.'
+          chosen: 2
+          not_chosen: 0
+        -
+          answer: "Complain in Limbo about how you can't make it because of the timing."
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: "Nothing - don't go. If they want you there, they'll make better arrangements next time."
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Social walkthrough - Respecting time'
+      body: |-
+        Our A/SHs aren’t paid. But they’re also not independently wealthy either - that means for the most part they have jobs. So be patient with requests, especially if there’s a lot of other activity on the site at the time. We try to handle everything within 72 hours (that’s 3 days). Usually we get to it sooner - but sometimes there’s just too much to get done.
+
+        Being mindful of the time also applies to sessions - while we know sessions will run over. And they do more often than not - if you then get into a PvP fight immediately after - understand you’re tying up an A/SH who may already be past their bedtime for potentially another four to five hours of play. They need to sleep sometime!
+
+        In those situations, offer to pause the situation and schedule it for a better time - your A/SH and your fellow players will be grateful for the courtesy.
+
+        We span across multiple timezones - it can be tricky to make arrangements, and of course adding in work, school, and personal schedules - sometimes it’s just not possible for an A/SH to match your schedule to theirs. It’s not personal.
+
+        If there is an A/SH or a player you want to play with and you can’t find a time that works, consider inviting them to a slow post.
+
+        [b]Question:[/b]
+        If a session starts an hour before you get off work, what should you do?
+      max_score: 4
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: "Make sure my availability is posted on the forums for planning, I'll catch the next one."
+          chosen: 4
+          not_chosen: 0
+        -
+          answer: "Complain privately to the A/SH that they didn't shift the timeframe for me."
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: "Complain in Limbo to the A/SH that they didn't shift the timeframe for me."
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Social walkthrough - Pushing boundaries'
+      body: |-
+        Roleplaying can push many boundaries on occasion, but the question always is how far is too far? There is no easy answer to this as different people have placed the line in different places. This site, however, is about promoting fun as well as being a safe place to come and play. We have already covered respecting each other’s boundaries as different people have their too far line in different places - but there are some things that should be avoid all together in character - and more importantly - OUT of character.
+
+        Start with the <a href="/wiki/code-conduct" target="_blank">Code of Conduct</a> and the site <a href="/wiki/harassment-policy" target="_blank">Harassment Policy<a>, those pages will let you know  if certain scenes and topics are not acceptable for roleplay on the site. The second thing you can do is ask yourself - how far is too far? If you are unsure, before you post anything seek out an A/SH and talk to them. After talking to an A/SH make sure to clear it with your fellow players as well.
+
+        [b]Question:[/b]
+        What behavior should I avoid in IC and OCC for out-of-character reasons per Site Policy? (check all that apply)
+      max_score: 4
+      multi: true
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: Stalking
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'Underage sex'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'Nonconsensual sexual behavior'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: Hate-speech
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'Rough language'
+          chosen: -1
+          not_chosen: 0
+        -
+          answer: 'Politics and religion'
+          chosen: -1
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Social walkthrough - Sharing'
+      body: |-
+        We are all responsible for making sure other people have fun and get to share the limelight as well. Share information unless there’s a reason not to - in general the more you help support other players in the session, the more they can support you. Look for opportunities to shine the spotlight on others.
+
+        If your character has many skills he should have many opportunities to shine in a session. But you know that one of the other characters has a similar skillset - and only that skillset - when it comes up, make an effort to defer to the character that genuinely has no other role in the session. Otherwise you’re leaving a player sitting bored while you claim the one opportunity they had to shine.
+
+        That’s just being polite and letting them have a slice of fun too.
+
+        [b]Question:[/b]
+        If you're playing an all-around wizard expert in healing, fire-balls, and animal control, and another player is playing a beast-master concept, what situation in a session should you let the beast-master take lead on so they can have their moment in the session?
+      max_score: 4
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'Calming the animal guards'
+          chosen: 4
+          not_chosen: 0
+        -
+          answer: 'Dealing direct damage to the bad guy with spells'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Healing the party during or after the fight'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: "Any of them, it's the beast-master's responsibility to expand his skills."
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Social walkthrough - Handling disappointment'
+      body: |-
+        Disappointment is bound to happen just as it happens in real life. Sometimes the dice are not nice or someone's character did something that mess up your character's plan. It is just like our own troubles we encounter in life. It is ok to feel disappointment, but there are ways to handle it correctly. 
+
+        Don't just throw tantrums. If you need to, take a breather. Then if you feel the need to express in public don’t blame, try to express your issue and offer reasonable solutions to fix it. If you are unable to, then seek out one of our A/SHs - they may be able to work with you to get to that point. 
+
+        Try and see the whole picture, often its just a matter of perspective. Try and step back and look at everything: Did your expectations vastly differ from everyone else's? What was the belief behind your expectations? Is your expectation a reasonable or a likely outcome? If you are having trouble trying to see all sides of the situation then seek out one of our A/SHs - they may be able to help you see the other angles.
+
+        Learning from disappointment. This can often be the hardest thing to do. But once you have a cooler head try and look back at the situation, is there something you can learn from it? Often it could have just been a misunderstanding so next time you know to ask for a little more clarification before you think on how your character acts.
+
+        Lastly there is acceptance. Not all situations that lead to disappointment can be changed. It is important to work through your disappointment, see all sides, see what there is to learn, accept what happened and then begin the process of moving on.
+
+        [b]Question:[/b]
+        If another character decides not to go along with your plan, so your character ended up dead, injured or in jail, what should you do?
+      max_score: 4
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: "I'm the one who decided to go through with the plan and didn't make sure the other player was up for it. I get what I get."
+          chosen: 4
+          not_chosen: 0
+        -
+          answer: "I should complain to the player off-site for not backing me up - it's his fault my character got hurt."
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: "I should complain to the player in Limbo for not backing me up - it's his fault my character got hurt."
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: "I shouldn't do anything, the character is just screwed by the other player and the A/SH."
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Social walkthrough - How to complain'
+      body: |-
+        Something happened in a session or a scene and it's just not sitting right with you. You may be considering calling Real Life Harm, or you may not be getting along with another player, or even with a particular A/SH. It happens, even if we try to avoid it. Don't just let it simmer, that just makes things worse!
+
+        Here's what you do:
+
+        First, stop and think! Wait until you're calmer and reconsider the situation. Are you still sure you were wronged or was it more a misunderstanding?
+
+        Second, talk to the player involved (if you can). Try to get it sorted out amongst yourselves. Be prepared to hear some hard things, or be asked to take specific action.
+
+        Third, if you can't work it out with the player - then talk to an A/SH. The A/SHs are there for that. They may pass you up to one of the other A/SH to handle the situation.
+
+        Fourth, an A/SH may ask you to take specific actions in response to the problem. It's possible you might actually be at fault yourself, if so take the time to really listen to what the A/SH is telling you needs to be done to fix the situation.
+
+        [b]Question:[/b]
+        If another player is having problems with me, what's the second thing you should try if you don't know what started it?
+      max_score: 4
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: "Talk to the other player to find out what's going on."
+          chosen: 4
+          not_chosen: 0
+        -
+          answer: "Ignore it, he'll get over it."
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Ask an A/SH to intervene.'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: "Fight back - he started it, I'll end it."
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Social walkthrough - Anon mailer'
+      body: |-
+        Sometimes the problem might be an A/SH, or a Head, or even just a particularly sensitive player. You may not feel comfortable saying anything out loud. In that case, that's what the anonymous mailer is for. You'll find it on the side menu.
+
+        The anonymous mailer will send an email to the Heads after scrubbing your email address off the information. That way you can send feedback and not be tracked back. The Heads are required to reply to any mail they receive on the mailer - and because it's anonymous, it'll be public on the forums.
+
+        After two weeks, the mail will show on the mailer's "Posts made" tab. That way the site can always know if any posts to the anonymous mailer have been ignored by the heads and call attention to it if it was something actually important.
+
+        [b]Question:[/b]
+        What sort of topic is the anon mailer used for? (check all that apply)
+      max_score: 4
+      multi: true
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: "When I have a problem with an A/SH or Head's decision"
+          chosen: 2
+          not_chosen: 0
+        -
+          answer: 'When I have a problem with another player'
+          chosen: 2
+          not_chosen: 0
+        -
+          answer: 'When I want a new site feature'
+          chosen: -1
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Social walkthrough - Consequences'
+      body: |-
+        We’re pretty casual around here, but when a player goes far enough out of line we do have a way of keeping track of problems. We have a strike system on the site - and usually we’ll try to work with you as much as we can before calling for a strike - but it can happen. They come in two flavors “yellow” and “red”.
+
+        A yellow strike is a warning. We keep a record of everything that led up to the strike, so all of our A/SHs will be familiar with what happened. You can get up to three Yellow strikes before we ask you to leave the site.
+
+        A red strike is an instant out. We also keep a record of these and we ban the account.
+
+        We usually try to take other approaches before we reach the level of a strike though. You may be asked to take the social training walkthrough, or asked to avoid another character or player in sessions - you may have to alternate who gets to go to sessions to avoid each other if you can’t otherwise get along. If things get particularly bad we may ask you to take a small break from the site to get your thoughts together. A strike is usually our last resort.
+
+        [b]Questions:[/b]
+        What sort of things might an A/SH ask me to do instead of giving me a strike? (check all that apply)
+      max_score: 4
+      multi: true
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'Publicly apologize for my actions'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'Privately apologize for my actions'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: "Avoid being in sessions with another player, we'll alternate sessions"
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'Step away from posting in Limbo or in character for a short period of time'
+          chosen: 1
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Social walkthrough - How to apologize'
+      body: |-
+        Apologizing is hard! It really is! But a good apology really can heal many things. The thing is, if you need to apologize it's important to actually mean it. And, truthfully, not many of us have been taught how to make a good one and mean it. Here's how to properly apologize:
+
+        There are four parts:
+
+        "I’m sorry for…" - be specific, so the person you're apologizing to knows that you know what it is that you're apologizing for. If you can't be specific about the offense, then the 'apology' is vague - it doesn't mean much at all.
+
+        "This is wrong because…" - this one may take some thought but that's the point. You need to be able to say how what you did hurt another person. 'I'm sorry you're upset' doesn't cut it. This is when you show the other person that you understand what was wrong about your actions.
+
+        "In the future, I will…" - apologies mean nothing if you turn around the next day and do it again! That's not being sorry, that's just trying to smooth things over long enough to do it again. State what you will do in the future, not what you won't - that way you have a goal in mind.
+
+        "Will you forgive me?" - this is the offer to fix your friendship. The other person is not obliged to accept! (Nor are you should you be the one being apologized to.) Sometimes they just aren't interested in forgiveness, but if you've gone through all four steps then you've made a good effort at it.
+
+        Each of these serves a very important purpose, so you've got to hit all of them on the way. And yes, it's an awkward, uncomfortable, and potentially humiliating thing to do. But if you genuinely owe someone an apology - then you've hurt them. Don't you think a little bit of discomfort in return is called for?
+
+        [b]Question:[/b]
+        Which of these apologies count as a 'real' one? (check all that apply)
+      max_score: 4
+      multi: true
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: "I'm sorry I made you uncomfortable when I joked in Limbo about OCD. This is wrong because it's a serious topic that affects people in your life and has hurt them and you. In the future I will make sure that I am considerate of those in the room that I don't know may have been affected by it. Will you forgive me?"
+          chosen: 4
+          not_chosen: 0
+        -
+          answer: "I'm sorry for making you angry. This is wrong because I hurt your feelings. In the future I try to be nicer. Will you forgive me?"
+          chosen: -25
+          not_chosen: 0
+        -
+          answer: "I'm sorry for making you feel attacked when I said you shouldn't talk about my character. This is wrong because that's not how I meant it. In the future I will try to be more clear. Will you forgive me?"
+          chosen: -25
+          not_chosen: 0
+        -
+          answer: "I'm sorry for pestering you about RPing with me all the time. This is wrong because you have a life, and I should respect that. In the future I will not bother you anymore. Will you forgive me?"
+          chosen: -25
+          not_chosen: 0
+        -
+          answer: "I'm sorry for making you feel attacked when I said you shouldn't talk about my character. This is wrong because you got angry. In the future I will try to be more clear. Will you forgive me?"
+          chosen: -25
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Social walkthrough - Site Policies'
+      body: |-
+        Our site policies can be found on the wiki under <a href="/wiki/site-policies" target="_blank">Site Policies</a>. New players to the site should take time to look over this section of the site in particular. There’s a lot of really good information in there.
+
+        The <a href="/wiki/code-conduct" target="_blank">Code of Conduct</a>, as you’ve seen on other sites, should give you a good understanding of the behavior expected of our site members. “<a href="https://www.youtube.com/watch?v=t3ICRoe-QIw" target="_blank">Wheaton's Law</a>” also sums it up nicely.
+
+        We also have a <a href="/wiki/harassment-policy" target="_blank">Site Harassment</a> policy. While the Code of Conduct covers most behaviors, the harassment policy goes into more detail for player interactions and covers specific circumstances.
+
+        We also have a rule on the site called <a href="/wiki/real-life-harm" target="_blank">Real Life Harm</a>. You might see it abbreviated as “RLH”. When something in a scene or session goes way over your personal boundaries and risks driving you off the site, or to abandon the character, you can invoke real life harm to ask the A/SHs to adjust the situation back to something you’re more comfortable with. Real life harm is not about avoiding disappointing outcomes in a session, and we will notice if you abuse it for that.
+
+        [b]Question:[/b]
+        I have read the Code of Conduct and Site Harassment policies.
+      max_score: 4
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'Yes'
+          chosen: 4
+          not_chosen: 0
+        -
+          answer: 'No'
+          chosen: 0
+          not_chosen: 0
+mediator:
+  title: 'Mediator Training'
+  body: |-
+    [b]What is Mediation here? [/b]Mediation is a process in which a neutral person assists the players in resolving their dispute. The mediator has no authority to impose a result upon the other players, and the players involved can end the mediation at any time. However, then further actions may be required at the recommendation of the social leads. During a Mediation the goal is to encourage dialogue so that an outcome may be reached that keeps the players involved happy and the site at large healthy. The presence of a mediator also helps assure the site at large that steps are being taken to resolve conflict and keep everyone's time here positive. This helps prevent conflicts from having a splash effect over more players than the ones involved in the initial conflict.
+
+    Often times no matter how competently you approach your job as a mediator, the players will still be unable to solve their differences. This is not a failing on your part, nor on the players themselves. Sometimes issues are too personal to be resolved with mediation alone. If you find yourself in a mediation that has failed to produce an amicable result you will need to suggest a course of action to the players involved. This is to help the site continue to run productively and respectfully for everyone.
+
+    This quiz will determine if you are ready to help mediate the conflicts that occur here on site. You are allowed to take the test more than once if you fail. However, we ask that if you have failed the test you take time to read over some conflict mediation literature to better understand exactly what you are expected to do. You can also always ask a lead or another mediator for additional help or clarification if you are unsure about your results. Remember that this is a serious responsibility. It is a very important and respected job, and when you act as a mediator, you must conduct yourself appropriately.
+
+    [b]As a mediator some of your key responsibilities are:[/b]
+    -To make proposals to either side so that they can move forward amicably
+    -To advance and make clear the interests of the players involved in the dispute so that a mutually satisfactory solution can be found.
+    -To keep the tone of the mediation as civil and respectful as possible. A mediation is not an excuse to break the code of conduct. The same rules of behavior apply in a mediation as they do anywhere else on site. Encourage the players to focus on the issues and stay away from personal attacks.
+    -To offer a fresh perspective on the conflict. Having numerous options about how to proceed will make the mediation easier for all involved.
+    -To remain neutral, no matter what happens. If you cannot be neutral, step aside and ask another mediator or lead to assist you.
+    -To make sure that the players involved use clear and concise language so that their opinion can be understood. If you have a hard time understanding what one of the players is asking for, then it's likely the other player involved in the mediation is confused as well.
+  pass_rate: 0
+  randomize: true
+  takes: 0
+  allow_skipping: false
+  summary_pass: ''
+  summary_default: ''
+  questions:
+    -
+      type: long_answer
+      title: 'You are in limbo, waiting patiently to play in ...'
+      body: "You are in limbo, waiting patiently to play in a session that has signups at capacity. A player who isn't on as often comes into limbo and demands that someone step out so that they can play. They say that since they aren't on as often they should be given priority so that they can make this session. Other players in Limbo are clearly becoming upset and defensive about the original player's remarks. What would your first action be? Would you follow up with the player in any way?"
+      max_score: 10
+    -
+      type: long_answer
+      title: 'During a session, Player A  has a character that attacks ...'
+      body: "During a session, Player A  has a character that attacks Player B's character, seemingly out of nowhere. There's no clear IC reason for them to have done so, and the session is paused while the A/SH running it sorts out what's happened. The A/SH manages to get the session going again, without the attack occurring so that the other players can still enjoy the session. Unfortunately Player A and Player B instead move their fight into Limbo and begin arguing there instead. It's quickly becoming both distracting to the other players and the A/SH, and it's becoming very toxic. What (if anything) would you do?"
+      max_score: 10
+    -
+      type: long_answer
+      title: 'There are two players who have seemed to never ...'
+      body: "There are two players who have seemed to never get along. Finally the other players are tired of seeing them constantly bickering, and the site agrees that it's gone far enough and they need a mediation to start being civil. As the primary mediator you are in charge of keeping the conversation focused, while one of the leads is there to oversee in case things get out of hand. The players come in and the mediation starts off poorly. It quickly becomes a chance for the two of them to argue and point fingers about which of the two of them is at fault for their personal issues. During the mediation, they are both in violation of several Code of Conduct rules. After numerous messages it seems as though there may not be any progress toward getting the two players to get along. How would you proceed?"
+      max_score: 10
+    -
+      type: long_answer
+      title: 'You are overseeing a mediation between two players ...'
+      body: "You are overseeing a mediation between two players. During the mediation you step in to ask one of the players to watch their language. They're angry and are having outbursts that are not conducive to solving their problems. The Player then begins to argue with you. The second mediator steps in as well, and a similar outcome occurs with the player arguing with the second mediator. In detail, what would you do next?"
+      max_score: 10
+    -
+      type: long_answer
+      title: 'Here is an example of an exchange between players ...'
+      body: |-
+        Here is an example of an exchange between players:
+
+        [b]Player A:[/b] My dice always fail me when I need them.
+        [b]Player B:[/b] It wasn't your dice. It was your plan. That plan you had was not going to work.
+        [b]Player A:[/b] It would have worked. That's not fair. I was thinking outside of the box. Which is still better than your plan of sitting on the sidelines complaining about people trying to make a plan. You always do that. You talk about other people, but you don't see how stupid your actions are.
+        [b]Player B:[/b] My actions aren't stupid. I'm playing my character the way they're written. So you can't say that I'm playing them wrong. You never play a consistent character. You're always just doing whatever you think is funny. It's going to make it so people don't want to play with you anymore.
+        [b]Player A:[/b] You have no idea what you're talking about. Don't threaten me.
+        [b]Player B:[/b] I didn't threaten you. I'm just done with talking to you.
+
+        What, if anything, would you do?
+      max_score: 10
+    -
+      type: long_answer
+      title: 'Learning to be a passive participant in mediations is ...'
+      body: |-
+        Learning to be a passive participant in mediations is important. Remember that you aren't there in the mediation to force a resolution. You're there to help guide the players having the conflict to resolve their issues at their own pace. This requires finesse and patience. Work on asking fewer questions, and when you do, ask open-ended questions. Compare "Did you  argue?" to "What happened?" Or, "Do you feel anxious about the session tomorrow?" to "How do you feel about the session tomorrow?" An open-ended question is like an essay question which allows the player in the mediation to lead the conversation and clarify his or her own concerns. A closed question is like a true/false question and often suggests or narrows the focus of the Mediation.
+
+        Please give some examples of open ended questions and times when you would use them.
+      max_score: 10
+    -
+      type: long_answer
+      title: 'There will be times when mediations are not enough...'
+      body: |-
+        There will be times when mediations are not enough. When that occurs you will often be tasked with figuring out an alternate solution to help the players work through their issues. Try to focus on their specific problems. Whether their biggest issues are IC or OOC, you should be able to find a method that keeps them happy, even if they cannot be friendly to each other.
+
+        However it is possible that the players will agree to some sort of compromise, and then be unwilling to see it through. Perhaps they feel that agreeing to some sort of action will allow them to get back to the game quicker, but they never truly plan on committing to the solution.  
+
+        For example, they might agree to a rotating schedule, but one player keeps showing up saying that they forgot. Or they might agree to separate casual RP but one of the players keeps arriving anyway and forcing the other player to leave. This causes their previous issues to flare back up again. When the compromises that they agreed to are broken, what would you do?
+      max_score: 10
+    -
+      type: long_answer
+      title: 'Sometimes a mediation will be needed after two players...'
+      body: |-
+        Sometimes a mediation will be needed after two players have a particularly hurtful exchange onsite. This could be the sort of thing that happens frequently between the same two players, or it could have been something that was sudden and due to external stimuli of some sort. In either case, there will be times that an apology needs to be tendered by one or more people in the mediation. Most often, people know how to legitimately apologize. Especially after they have calmed down from the initial outburst. But there are times when it can seem disingenuous. Don't hesitate to pause the mediation and ask the player who isn't quite hitting the mark to consider ways to re-word their apology.
+
+        An apology is an act that is neither about problem-solving or negotiation. Rather, it is a way to help gain closure on an issue so that the mediation can move forward into discussion about how to prevent problems in the future. The goal is to allow players to authentically apologize in mediation, but they often need help in getting past the defensiveness and fear of blame that preclude apology. To show genuine remorse is hard in text, so there will be issues occasionally. There are many more steps that can occur afterward, but an apology should be one of the first steps when applicable to the situation. Neither side is required to accept the apology given to them. But if the apology is genuine, they should at least attempt to consider it an olive branch in terms of their future interactions onsite. Apology can not be imposed or forced. It is a moment of opportunity. But know that players may need preparation and help with the words.
+
+        This is a two part question. There will be two hypothetical situations. Please describe how you would respond to both of them.
+
+        Situation A: The two players involved in the mediation have a long standing history of being snide and snippy with each other. Recently it developed into harassment, both IC and OOC. Some of the words used and actions were incredibly hurtful. One player's apologies seem less sincere, and are often followed up with a caveat or a qualifier. How would you help guide  them to make their apologies seem legitimate?
+
+        Situation B: A player is having a bad day offsite and they come on and ask for advice. During the exchange, one player says something inappropriate, and due to the offsite stress, the player who was having a bad day snaps and uses hurtful language. They are pulled aside and asked to calm down. Once they do so, they feel legitimate remorse, but come to you as a mediator to ask for help in wording their apology. What help would you offer to them?
+      max_score: 10
+    -
+      type: long_answer
+      title: 'This is a hypothetical situation that occurs onsite...'
+      body: |-
+        This is a hypothetical situation that occurs onsite.
+
+        On the forums, two players are having a discussion about character development and goals. The first player asks for clarification on an issue, and the second player responds.
+
+        [b]Player A:[/b] I'm still confused about why characters can't travel between the Science Fiction and Fantasy realms. I mean, it's the same place, right?
+        [b]Player B: [/b]It's not. That's like asking about a fan theory. Like why Superman doesn't just get (or let) someone else to kill Lex Luthor. Or why the token in Inception keeps spinning even though the top was his wife's token.
+        [b]Player A: [/b]That's not very productive, and it was a complete derail of my question.
+        [b]Player B:[/b] Well, I was just trying to say that you were wrong about that theory. Posting those sorts of ideas here on the forums is tantamount to fanfiction in my eyes.
+        [b]Player A:[/b] I don't even understand that.
+
+        The conversation then moves back toward the original discussion. What, if anything, would you do?
+      max_score: 10
+    -
+      type: long_answer
+      title: 'Our Code of Conduct states that we have a zero tolerance...'
+      body: |-
+        Our Code of Conduct states that we have a zero tolerance for certain behaviors. This document is important to know as a mediator, so please make sure that you've read and understand it. Often times it's a very valuable tool you have to help people during a mediation. So make sure you keep the site policies close at hand during your mediations. 
+
+        /wiki/site-policies
+
+        Now, if we lived in a perfect world, there would be no need for mediation. Everyone would be happy and they would get along all the time. But sadly, even a fun game like ours isn't immune to real world stress. We are all going to have bad days. Sometimes players will avoid the site when they are hurting just so that they don't take their frustrations out on others. But there will be times when they come to the site angry and they hurt another player, either IC or OOC or both. Sometimes a player will come to you and ask for help after the event occurred because they are continuing to feel upset.
+
+        Here is another situation.
+
+        Player A messages you privately a few days after they received a private message from Player B. Player A wishes to get help or advice because the message that they recieved felt hurtful to them. They attach a copy of the message at the end of their note to you and it is filled with hurtful defamatory language. Far surpassing anything that our site policy allows. Player A is scared of ramifications if they come forward with this message, but they're also afraid of what Player B might say to them in the future.
+
+         Explain what you would do if you were faced with this conflict.
+      max_score: 10
+    -
+      type: long_answer
+      title: 'As a mediator you need to be on the lookout for possible...'
+      body: |
+        As a mediator you need to be on the lookout for possible traps that players will set for you. It is unlikely to occur, but there will be times that a player will try to trap you or the other player.  They may attempt to get out of their responsibility by forcing you into a position where you say something without realizing the double meaning. Here are some types of traps to look out for  during mediations.
+
+        -The Prediction Trap: Asking you to predict or guess what might occur, and then considering it to be fact rather than speculation. Do not be overly cautious or overly confident when you enter into a mediation. If you do this, you run the risk of extending the mediation. The best course of action during a "Prediction Trap" is to explain that you cannot speculate, and ask them a question to get the focus back onto the mediation and their role in it.
+
+        -The Framing Trap: Causing you to use your own past experiences to adjust (or frame) your own view of the conflict in order to better suit their needs. Remember, in a mediation you must always be neutral and try not to consider anything but the current situation.
+
+        -The Comfort Zone Trap: It is possible that if you have already helped with a mediation in which the outcome was [X] you may find yourself leaning toward that same resolution in the future. Remember that every conflict is different. If you always advocate for one specific resolution players may attempt to use that to their advantage.
+
+        -The Supporting Evidence Trap: Having a clear view of both sides of an argument is vital. If one player seems particularly willing to give ancillary evidence that they're right, you'll want to make sure you get copies from both players if you can. It can be exceedingly hard to tell who's telling the truth so make sure that you don't just get the story from one side of the mediation. You can always ask the technical admin to confirm the onsite communications. If something seems amiss, it is very wise to double check.
+
+        There are other types of course. But they are rare enough that you hopefully won't face any of these traps. Paying close attention to the wording and possible outcomes from your answers will help you spot a situation like this before it becomes an issue.
+
+        How would you respond to the following situation. You are mediating for two players. One of whom is also a mediator. Player A has worked on mediations before and knows that showing evidence can be key to getting out of a problem, so they do so in abundance. Even including things that may not be relevant to further cloud the issue. They also occasionally pepper in phrases aimed toward you like "You know me" or "I'm trained to help people." Whether intentionally or not, they seem to be putting you into a situation where you or the other mediator may be trapped. How would you respond to the situation?
+      max_score: 10
+    -
+      type: long_answer
+      title: 'Sometimes the site will have a player who shows repeated...'
+      body: |-
+        Sometimes the site will have a player who shows repeated instances of difficult behavior. Difficult behavior is essentially that which inhibits the productivity, site enjoyment, and well being of others. Left alone it will get worse, affect more people and continue to cause ripples of conflict throughout the site. Most difficult behavior is accidental, but it can also be the result of intentional thought. Sometimes it is sporadic and takes us by surprise. At other times it is ongoing and forms patterns. It's important to remember that difficult behavior can take many forms as well. It includes gossiping with the intent to get someone else in trouble, going over an SH's head, foot dragging after a request is made, outright ignoring a request that was made, being rude, "yelling" at other players, ignoring others to cause them to feel shunned, harassment of any sort, and much more. You'll know difficult behavior when you see it even if it's not on this list.
+
+        Here are some suggestions on ways to help deal with difficult behavior.
+
+        -Stay centered. Don't let your personal feelings affect your response. As a mediator, you must remain neutral at all times no matter how hard you're pushed. If you can't be neutral, then pass the mediation to someone else. It's better than taking the low road that you have been goaded into.
+
+        -Give yourself a reality check. Is it possible that the player's behavior isn't as harmful, but you're compounding it based on past events? If so, try to take a step back and once again only look at the current situation. If a pattern has emerged, that's a different story, but if you're finding an isolated event to be bigger than it normally would be, you may be feeling compromised yourself.
+
+        -Focus on the behavior, and not the player. If you focus on the behavior as a separate entity it's more likely that the player will be open to change. If they feel personally targeted, they will be less likely to adjust their behavior. Remember, be soft on the player, and hard on the behavior.
+
+        -Listen carefully. It's easy to get swept up in the chaos that can come along with disruptive and difficult behavior. The key in all mediation is to listen. Often times the root of the problem is hiding right behind the wall of static that is being caused. If you listen carefully you will be able to help more effectively.
+
+        -Give feedback directly and honestly to the player. A common problem with difficult behavior is that the person is unaware that his or her behavior is causing a problem. At other times the extent of the impact is not comprehended. By giving timely feedback about specific behavior misunderstanding can be avoided and expectations clarified
+
+        -Consider bringing in an additional mediator. Sometimes it helps to get more than one person to brainstorm ways to effectively alter difficult behavior without causing the player harm. During a full mediation you will always have at least one lead already in the discussion. But if you find yourself without another Mediator or lead, feel free to get one to help. They won't be there just to 'back you up" but they will be there to offer a fresh set of eyes.
+
+        -Using formal authority should only be as a last resort. Don't immediately pull out the card that you're in a position of authority over them. This will cause the player to view everything that occurs afterward under the lens of a hierarchy. While they might initially listen, they will eventually revert to the previous behavior and be even less likely to change due to the power imbalance they now feel exists.
+
+        -Remember we're all humans here. The reality is that we can all be difficult from time to time. So treat others with the respect you would want if you were in their shoes. Dealing with difficult behavior is not easy and so we often procrastinate. We do so at our own peril. Being proactive and engaging the person in a conversation about their behavior is the first step toward conflict resolution.  
+
+        Now then, considering the above, here is the question. You have a player that is constantly harassing other players on site. There seems to be no logical pattern to the timing, but they are constantly stepping on toes. This causes people to react back to them, often in poorly chosen ways. So other players are now also getting in trouble for the original player's outbursts. This makes the original player even more vocal about how they're right. They are getting attention and after some reinforcement of their bad behavior they show no signs of stopping. What would you do?
+      max_score: 10

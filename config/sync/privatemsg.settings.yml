@@ -1,0 +1,30 @@
+_core:
+  default_config_hash: 4xmWys-VV6IHcJNTLVm0qSYQ1ZawnrCPAkPpNFaSnLE
+remove_after: '30'
+allowed_roles:
+  - administrator
+  - player
+  - storyteller
+  - lead
+  - knows_the_social
+  - knows_the_setting
+  - voter
+  - newbie_helper
+  - eligible_for_sh
+  - starvation_mode_ash_approver
+  - storyteller_newbie
+  - storyteller_assistant
+  - storyteller_candidate
+  - storyteller_expired
+  - cold_storage
+  - knows_the_system
+  - vacation_mode
+  - banned_user
+  - shadowbanned_user
+  - suspended_user
+  - mediator
+  - new_account
+  - eligible_for_mediator
+  - eligible_for_newbie_helper
+moderator_role: ''
+unblockable_roles: {  }

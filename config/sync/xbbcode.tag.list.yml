@@ -1,0 +1,13 @@
+uuid: 7444ef63-92f0-48a0-8e31-147ec3921a0b
+langcode: en
+status: true
+dependencies: {  }
+id: list
+label: List
+description: 'List: [list] (circle bullets), [list=d|s] (disc, square), [list=1|a|A|i|I] (numbered); items start with [*].'
+name: list
+attached: {  }
+sample: '[{{ name }}=1][li]One[/li][li]Two[/li][/{{ name }}]'
+template_code: "{% set types = {c: ['ul', 'circle'], d: ['ul', 'disc'], s: ['ul', 'square'], '1': ['ol', 'decimal'], a: ['ol', 'lower-alpha'], A: ['ol', 'upper-alpha'], i: ['ol', 'lower-roman'], I: ['ol', 'upper-roman']} %}{% set type = types[tag.option]|default(['ul', 'circle']) %}<{{ type[0] }} class=\"bb-list\" style=\"list-style-type:{{ type[1] }};\">{{ tag.content }}</{{ type[0] }}>"
+template_file: null
+editable: false

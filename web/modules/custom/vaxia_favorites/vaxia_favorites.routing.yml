@@ -1,0 +1,18 @@
+vaxia_favorites.remove:
+  path: '/favorites/remove/{fid}'
+  defaults:
+    _controller: '\Drupal\vaxia_favorites\Controller\FavoritesController::remove'
+    _title: 'Remove Favorite'
+  requirements:
+    _permission: 'manage own favorites'
+    fid: '\d+'
+
+vaxia_favorites.order:
+  path: '/favorites/js/order'
+  defaults:
+    _controller: '\Drupal\vaxia_favorites\Controller\FavoritesController::order'
+    _title: 'Reorg favorite via js'
+  methods: [POST]
+  requirements:
+    _permission: 'manage own favorites'
+    _csrf_token: 'TRUE'

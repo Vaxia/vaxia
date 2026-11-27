@@ -1,0 +1,35 @@
+uuid: dd3510d4-1db0-43ce-8061-fccab7cd5bc0
+langcode: en
+status: true
+dependencies:
+  config:
+    - system.menu.menu-social-helpers
+  module:
+    - system
+    - user
+  theme:
+    - vaxia_theme
+id: vaxia_theme_menu_social_helpers
+theme: vaxia_theme
+region: sidebar_first
+weight: -27
+provider: null
+plugin: 'system_menu_block:menu-social-helpers'
+settings:
+  id: 'system_menu_block:menu-social-helpers'
+  label: Social
+  label_display: visible
+  provider: system
+  level: 1
+  depth: 0
+  expand_all_items: false
+visibility:
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      eligible_for_mediator: eligible_for_mediator
+      lead: lead
+      mediator: mediator

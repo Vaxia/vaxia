@@ -1,0 +1,16 @@
+uuid: ebad9a05-748d-4501-984c-ebc456644f8c
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.character_evaluation_removed_from_game
+id: character_evaluation_removed_from_game_removed_from_game
+label: null
+module: workflow
+from_sid: character_evaluation_removed_from_game
+to_sid: character_evaluation_removed_from_game
+roles:
+  authenticated: authenticated
+  administrator: administrator
+  workflow_author: workflow_author
+  storyteller: storyteller

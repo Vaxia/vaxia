@@ -1,0 +1,45 @@
+uuid: ceea08a2-b268-46c9-8dc9-4897416e6500
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_horror_species
+field_name: field_horror_species
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: human
+      label: Human
+    -
+      value: vampire
+      label: Vampire
+    -
+      value: werewolf
+      label: Werewolf
+    -
+      value: ghost
+      label: Ghost
+    -
+      value: ghoul
+      label: Ghoul
+    -
+      value: revenant
+      label: Revenant
+    -
+      value: changeling
+      label: Changeling
+    -
+      value: other
+      label: 'Other (see Other species)'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,20 @@
+uuid: 45dd59a8-a248-4308-a15e-5a7b8fd64047
+langcode: und
+status: true
+dependencies:
+  module:
+    - datetime
+    - user
+id: user.field_became_sh
+field_name: field_became_sh
+entity_type: user
+type: datetime
+settings:
+  datetime_type: date
+module: datetime
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

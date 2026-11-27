@@ -1,0 +1,24 @@
+uuid: 4d3bfa63-45d7-4634-8561-f2418e49bf30
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_staff_system_lead
+  module:
+    - user
+id: user.user.field_staff_system_lead
+field_name: field_staff_system_lead
+entity_type: user
+bundle: user
+label: 'Eligible for System Lead'
+description: 'I would like to be considered eligible for System Lead positions during rpg_elections.'
+required: false
+translatable: true
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

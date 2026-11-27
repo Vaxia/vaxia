@@ -1,0 +1,14 @@
+uuid: c3ee47d6-a16a-4924-8a5e-27c782eda772
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.item_evaluation_disapproved
+    - workflow.state.item_evaluation_needs_daily_refresh
+id: item_evaluation_needs_daily_refresh_disapproved
+label: null
+module: workflow
+from_sid: item_evaluation_needs_daily_refresh
+to_sid: item_evaluation_disapproved
+roles:
+  administrator: administrator

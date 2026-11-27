@@ -1,0 +1,14 @@
+uuid: a436bd26-8c0f-4537-aff8-2ee3ebd5bbf3
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.vacation_mode
+  module:
+    - user
+id: user_remove_role_action.vacation_mode
+label: 'Remove the vacation mode role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: vacation_mode
