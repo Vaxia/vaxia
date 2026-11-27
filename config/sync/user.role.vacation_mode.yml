@@ -1,0 +1,14 @@
+uuid: 689b8de5-400b-4e2b-b075-7f2a93597028
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.character_evaluation
+  module:
+    - workflow
+id: vacation_mode
+label: 'vacation mode'
+weight: 24
+is_admin: false
+permissions:
+  - 'create character_evaluation workflow_transition'

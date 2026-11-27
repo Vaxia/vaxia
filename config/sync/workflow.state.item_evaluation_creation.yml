@@ -1,0 +1,13 @@
+uuid: 32144be5-3efa-4898-81ad-b5627f266ec8
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.item_evaluation
+id: item_evaluation_creation
+label: (creation)
+weight: -50
+module: workflow
+wid: item_evaluation
+sysid: 1
+single_state_widget: ''

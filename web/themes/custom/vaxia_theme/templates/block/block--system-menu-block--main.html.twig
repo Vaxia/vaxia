@@ -1,0 +1,14 @@
+{#
+/**
+ * @file
+ * The main menu as D7's page template printed it: nav#main-menu with a hidden
+ * heading, floated into the header by vaxia.css (#navigation #main-menu).
+ */
+#}
+{% set heading_id = attributes.id ~ '-menu'|clean_id %}
+<nav id="main-menu" role="navigation" aria-labelledby="{{ heading_id }}">
+  <h2 class="visually-hidden" id="{{ heading_id }}">{{ configuration.label }}</h2>
+  {% block content %}
+    {{ content }}
+  {% endblock %}
+</nav>

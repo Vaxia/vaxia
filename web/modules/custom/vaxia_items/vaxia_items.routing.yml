@@ -1,0 +1,75 @@
+vaxia_items.settings:
+  path: '/admin/vaxia/items'
+  defaults:
+    _form: '\Drupal\vaxia_items\Form\ItemSettingsForm'
+    _title: 'Item settings'
+  requirements:
+    _permission: 'administer item settings'
+vaxia_items.item_uses:
+  path: '/admin/vaxia/item_uses'
+  defaults:
+    _form: '\Drupal\vaxia_items\Form\ItemUsesForm'
+    _title: 'Item uses configuration'
+  requirements:
+    _permission: 'administer item uses'
+vaxia_items.shop:
+  path: '/node/{node}/item_shop'
+  defaults:
+    _form: '\Drupal\vaxia_items\Form\ShopForm'
+    _title: 'Item shop'
+  requirements:
+    _permission: 'use item shop'
+    _custom_access: '\Drupal\vaxia_items\Form\ShopForm::access'
+  options:
+    parameters:
+      node:
+        type: entity:node
+vaxia_items.shop_settings:
+  path: '/admin/vaxia/item_shop'
+  defaults:
+    _form: '\Drupal\vaxia_items\Form\ShopSettingsForm'
+    _title: 'Item shop configuration'
+  requirements:
+    _permission: 'administer item shop'
+vaxia_items.character_items:
+  path: '/character-items'
+  defaults:
+    _controller: '\Drupal\vaxia_items\Controller\ItemLists::all'
+    _title: 'Character items'
+  requirements:
+    _role: 'administrator+lead+storyteller'
+vaxia_items.character_items_all:
+  path: '/character-items/all'
+  defaults:
+    _controller: '\Drupal\vaxia_items\Controller\ItemLists::all'
+    _title: 'Character items'
+  requirements:
+    _role: 'administrator+lead+storyteller'
+vaxia_items.character_items_evaluate:
+  path: '/character-items/evaluate'
+  defaults:
+    _controller: '\Drupal\vaxia_items\Controller\ItemLists::evaluate'
+    _title: 'Evaluate Items'
+  requirements:
+    _role: 'administrator+lead+storyteller'
+vaxia_items.shop_list:
+  path: '/item_shop'
+  defaults:
+    _controller: '\Drupal\vaxia_items\Controller\ItemLists::shop'
+    _title: 'Item shop'
+  requirements:
+    _role: 'administrator+storyteller'
+vaxia_items.oversight:
+  path: '/oversight/items'
+  defaults:
+    _controller: '\Drupal\vaxia_items\Controller\ItemLists::oversightItems'
+    _title: 'Oversight Items'
+  requirements:
+    _role: 'administrator+storyteller'
+vaxia_items.oversight_expensive:
+  path: '/oversight/expensive-items'
+  defaults:
+    _controller: '\Drupal\vaxia_items\Controller\ItemLists::expensiveItems'
+    _title: 'Expensive Items'
+  requirements:
+    _role: 'administrator+storyteller'

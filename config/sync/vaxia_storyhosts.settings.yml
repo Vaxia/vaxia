@@ -1,0 +1,39 @@
+_core:
+  default_config_hash: YGWg3M3c9J0A0dY0-H16QC3AtfEl7ur74aTc0I59ykY
+sh_test_session_party_size: true
+sh_test_session_party_size_min: 2
+sh_test_session_party_size_npcs: false
+sh_test_session_party_size_ashs: false
+sh_test_session_party_size_own_pcs: false
+sh_test_session_expires: true
+sh_test_session_expires_timeframe: '3 years'
+sh_request_forums: {  }
+storyhost_feedback_form: 0
+session_feedback_form: 0
+vacation_description: "<b>If you know you will be absent for some time: Please let us know! We need to know if you'll be around or not.</b> <br/> When you go on vacation mode all of your additional permissions are removed. During this time you will not receive emails, notifications, or other communications from the site."
+justice_form_base_pp: '25'
+justice_form_punishments: ''
+justice_form_reputations: ''
+justice_form_silver_1: '10'
+justice_form_time_1: '1'
+justice_form_timeunit_1: days
+justice_form_silver_2: '10'
+justice_form_time_2: '1'
+justice_form_timeunit_2: days
+justice_form_silver_3: '10'
+justice_form_time_3: '1'
+justice_form_timeunit_3: days
+justice_form_silver_4: '10'
+justice_form_time_4: '1'
+justice_form_timeunit_4: days
+justice_form_silver_5: '10'
+justice_form_time_5: '1'
+justice_form_timeunit_5: days
+sh_test_starvation_mode: '4'
+sh_test_approval_min: '74'
+sh_test_approval_min_starvation: '50'
+sh_test_quiz_ash1: 0
+sh_test_quiz_ash2: 0
+sh_test_quiz_ash2_renewal: 0
+sh_test_quiz_eval: 0
+sh_test_quiz_ash3: 0

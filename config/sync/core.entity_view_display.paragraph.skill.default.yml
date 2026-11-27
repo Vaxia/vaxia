@@ -1,0 +1,79 @@
+uuid: 21592699-6f19-40ee-82d7-e8cbabacb65d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.skill.field_aspect_one
+    - field.field.paragraph.skill.field_aspect_three
+    - field.field.paragraph.skill.field_aspect_two
+    - field.field.paragraph.skill.field_skill_desc
+    - field.field.paragraph.skill.field_skill_name
+    - field.field.paragraph.skill.field_skill_value
+    - field.field.paragraph.skill.field_tech_languages
+    - paragraphs.paragraphs_type.skill
+  module:
+    - entity_reference_revisions
+id: paragraph.skill.default
+targetEntityType: paragraph
+bundle: skill
+mode: default
+content:
+  field_aspect_one:
+    type: entity_reference_label
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_aspect_three:
+    type: entity_reference_label
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_aspect_two:
+    type: entity_reference_label
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_skill_desc:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_skill_name:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+      link_rel: canonical
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_skill_value:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ' '
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_tech_languages:
+    type: entity_reference_revisions_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 6
+    region: content
+hidden: {  }

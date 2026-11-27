@@ -1,0 +1,51 @@
+uuid: 11d5479b-be94-4ba3-bd0d-575e241fc193
+langcode: und
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_goal
+field_name: field_goal
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: misc
+      label: 'Generic ruling'
+    -
+      value: item
+      label: 'Crafting an item'
+    -
+      value: silver
+      label: 'Making some silver'
+    -
+      value: fame
+      label: 'Gain reputation'
+    -
+      value: maint
+      label: Maintenance
+    -
+      value: save_point
+      label: 'Save point'
+    -
+      value: skill
+      label: 'Learning new skill'
+    -
+      value: lang
+      label: 'Learning new language'
+    -
+      value: tech_lang
+      label: 'Learning new tech language'
+    -
+      value: priv
+      label: 'Private record'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

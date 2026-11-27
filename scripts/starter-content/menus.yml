@@ -1,0 +1,131 @@
+# The site's menus, read by scripts/starter-content.php: the original VAXIA
+# sidebar menus with links to this release's pages. Menu blocks show only to
+# the roles their block allows, and Drupal hides any link a visitor can't
+# open, so staff links can sit beside player links.
+#
+# Each menu (by machine name): a list of links with title, weight and one of
+#   path: an internal path or alias ("/" is the front page),
+#   forum: a forum, by its path in the forum list (parent / child),
+#   heading: true, a label for the links under it (children),
+#   per_realm: a path with {realm} (the realm in lower case with dashes);
+#     the title's {realm} is the realm's name. One link per playable realm.
+# Re-running the script adds missing links only (matched by menu, parent and
+# title).
+
+menus:
+  main:
+    - {title: Home, path: /, weight: -50}
+    - {title: Forums, path: /forum, weight: -49}
+    - {title: Calendar, path: /calendar, weight: -48}
+    - {title: Wiki, path: /wiki/system-rules, weight: -47}
+    - {title: Archives, path: /archives, weight: -45}
+    - {title: Contact, path: /form/contact, weight: -44}
+
+  menu-new-start-here:
+    - {title: 'Getting started', path: /wiki/welcome, weight: -50}
+    - {title: 'Create a character', path: /node/add/character_sheet, weight: -48}
+    - {title: 'Limbo chatroom', path: /locations/limbo, weight: -45}
+
+  menu-walkthrough-tutorials:
+    - {title: 'Game mechanics', path: /quizzes/new-player-system-walkthrough, weight: -50}
+    - {title: 'World settings', path: /quizzes/new-player-setting-walkthrough, weight: -49}
+    - {title: 'Good roleplaying', path: /quizzes/new-player-social-walkthrough, weight: -48}
+
+  menu-view-stuff:
+    - {title: Characters, path: /character-sheets, weight: -49}
+    - {title: Items, path: /character-items, weight: -48}
+    - {title: Artwork, path: /artwork/all, weight: -50}
+    - {title: Locations, path: /rpg-chats, weight: -47}
+    - {title: Players, path: /players/all, weight: -46}
+    - {title: Proposals, path: /proposals, weight: -45}
+    - {title: Sessions, path: /sessions, weight: -44}
+    - {title: Scenes, path: /character-scenes, weight: 0}
+
+  menu-create-stuff:
+    - {title: Artwork, path: /node/add/artwork, weight: -50}
+    - {title: 'Character sheet', path: /node/add/character_sheet, weight: -49}
+    - {title: Item, path: /node/add/items, weight: -48}
+    - {title: Proposal, path: /node/add/proposal, weight: -47}
+    - {title: 'Forum topic', path: /node/add/forum, weight: -46}
+    - {title: 'Wiki page', path: /node/add/wiki_page, weight: -45}
+    - {title: Event, path: /node/add/event, weight: -44}
+    - {title: 'Session report', path: /node/add/session_report, weight: -43}
+    - {title: 'RPG chatroom', path: /node/add/rpg_chatroom, weight: -42}
+    - {title: Scene, path: /node/add/scene, weight: -41}
+    - {title: 'Timeline event', path: /node/add/timeline_event, weight: -40}
+
+  menu-vaxia:
+    - {title: Search, path: /search/search, weight: -50}
+    - {title: 'Top tens', path: /top-ten-displays, weight: -47}
+    - {title: 'Anonymous mailer', path: /anonymous-mailer, weight: -46}
+    - {title: Archives, path: /archives, weight: -45}
+    - {title: 'Dice averages', path: /dice_helper/dice_proof, weight: 0}
+    - title: 'Useful links'
+      heading: true
+      weight: 10
+      children:
+        - {title: 'Storyhost activity', path: /user-activity, weight: -50}
+        - {title: 'Notes log', path: /notation-log, weight: -49}
+
+  menu-wiki-links:
+    - {title: 'Flagged for delete', path: /wiki/flagged-delete, weight: -50}
+    - {title: 'Flagged for rewrite', path: /wiki/flagged-rewrite, weight: -50}
+    - {title: 'Flagged for expand', path: /wiki/flagged-expand, weight: -50}
+    - {title: 'Recently updated', path: /wiki/recently-edited, weight: -49}
+    - {title: 'Setting NPCs', path: /wiki/npcs-list, weight: -46}
+    - {title: 'Setting organizations', path: /wiki/organizations-list, weight: -45}
+    - {title: '{realm} sessions', per_realm: '/wiki/{realm}/session-list', weight: -44}
+    - {title: 'Site governance', path: /wiki/site-governance, weight: -42}
+
+  menu-social-helpers:
+    - {title: 'Social notes', path: /notations, weight: -47}
+    - {title: 'Make a note', path: /node/add/notation, weight: -46}
+    - {title: 'Become a mediator', path: /quizzes/mediator-training, weight: -49}
+    - {title: 'Mediator forums', forum: 'Departments / Social Department / Mediators', weight: -48}
+
+  menu-vaxia-ash:
+    - {title: 'SH course', path: /wiki/sh-course, weight: -50}
+    - {title: 'ASH Test 1', path: /quizzes/ash-test-1-story-hosting-basics, weight: -49}
+    - {title: 'ASH Test 2', path: /quizzes/ash-test-2-ruling, weight: -48}
+    - {title: 'ASH Test 3', path: /quizzes/ash-test-3-evaluation, weight: -47}
+    - {title: 'ASH Final', path: /quizzes/ash-test-final-exam, weight: -46}
+
+  menu-vaxia-sh:
+    - title: Evaluation
+      heading: true
+      weight: -50
+      children:
+        - {title: Characters, path: /character-sheets/evaluate, weight: -50}
+        - {title: Items, path: /character-items/evaluate, weight: -49}
+        - {title: Scenes, path: /character-scenes/evaluate, weight: -48}
+    - title: Oversight
+      heading: true
+      weight: -48
+      children:
+        - {title: 'Moderation log', path: /character-sheets/moderation_log, weight: -50}
+        - {title: 'Epic NPCs', path: /oversight/npcs, weight: -49}
+        - {title: 'Epic items', path: /oversight/items, weight: -49}
+        - {title: 'Expensive items', path: /oversight/expensive-items, weight: -49}
+        - {title: 'Social interactions', path: /notations/strikes, weight: -49}
+        - {title: 'Play suggestions', path: /play-suggestions, weight: -48}
+        - {title: 'Personal rooms', path: /character-sheets/personal-rooms, weight: -47}
+    - title: Renewals
+      heading: true
+      weight: -47
+      children:
+        - {title: 'ASH Test 1', path: /quizzes/ash-test-1-story-hosting-basics, weight: -50}
+        - {title: 'ASH Test 2 (renewal)', path: /quizzes/ash-test-2-renewing-shs, weight: -49}
+        - {title: 'ASH Test 3', path: /quizzes/ash-test-3-evaluation, weight: -48}
+    - title: Extras
+      heading: true
+      weight: -46
+      children:
+        - {title: NPCs, path: /character-sheets/npcs, weight: -47}
+        - {title: 'Skill inventory', path: /skill-inventory, weight: -46}
+        - {title: 'Character goals', path: /character-goals, weight: -45}
+
+  menu-leads:
+    - {title: 'Players online time', path: /players/online-time, weight: -50}
+    - {title: 'Player cold storage', path: /players/cold_storage, weight: -48}
+    - {title: 'Item shop list', path: /item_shop, weight: -47}
+    - {title: 'Message of the Day', path: /wiki/message-of-the-day, weight: 0}

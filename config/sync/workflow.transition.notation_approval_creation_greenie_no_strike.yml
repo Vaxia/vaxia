@@ -1,0 +1,14 @@
+uuid: da6f6343-535d-4d71-ac28-396ea53d13a0
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.notation_approval_creation
+    - workflow.state.notation_approval_greenie_no_strike
+id: notation_approval_creation_greenie_no_strike
+label: null
+module: workflow
+from_sid: notation_approval_creation
+to_sid: notation_approval_greenie_no_strike
+roles:
+  workflow_author: workflow_author

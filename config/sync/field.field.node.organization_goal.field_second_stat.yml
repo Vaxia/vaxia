@@ -1,0 +1,23 @@
+uuid: b61cc188-9adb-4847-8960-7168001a5628
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_second_stat
+    - node.type.organization_goal
+  module:
+    - options
+id: node.organization_goal.field_second_stat
+field_name: field_second_stat
+entity_type: node
+bundle: organization_goal
+label: 'Second Stat'
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: members
+default_value_callback: ''
+settings: {  }
+field_type: list_string

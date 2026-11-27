@@ -1,0 +1,112 @@
+uuid: 87152536-7828-479c-bb73-f4d0e664c128
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_display.comment.comment_node_scene.default
+    - field.field.node.scene.comment_node_scene
+    - field.field.node.scene.field_difficulty
+    - field.field.node.scene.field_goal
+    - field.field.node.scene.field_rp_bonus
+    - field.field.node.scene.field_rp_posts
+    - field.field.node.scene.field_scene_character
+    - field.field.node.scene.field_scene_evaluation
+    - field.field.node.scene.field_scene_notes
+    - field.field.node.scene.field_sh_attention_to
+    - field.field.node.scene.taxonomy_forums
+    - node.type.scene
+  module:
+    - comment
+    - options
+    - text
+    - user
+    - workflow
+id: node.scene.default
+targetEntityType: node
+bundle: scene
+mode: default
+content:
+  comment_node_scene:
+    type: comment_default
+    label: hidden
+    settings:
+      view_mode: default
+      pager_id: 0
+    third_party_settings: {  }
+    weight: 20
+    region: content
+  field_difficulty:
+    type: list_default
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_goal:
+    type: list_default
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_rp_bonus:
+    type: list_default
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_rp_posts:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: full
+      link: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_scene_character:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_scene_evaluation:
+    type: workflow_state_label
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  field_scene_notes:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 7
+    region: content
+  field_sh_attention_to:
+    type: string
+    label: inline
+    settings:
+      link_to_entity: false
+      link_rel: canonical
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+  taxonomy_forums:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden: {  }

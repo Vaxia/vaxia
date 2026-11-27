@@ -1,1 +1,21 @@
 *.DS_Store
+# Composer-managed code (rebuild with `composer install`).
+/vendor/
+/web/core/
+/web/modules/contrib/
+/web/themes/contrib/
+/web/profiles/contrib/
+/web/libraries/
+/recipes/
+# Site-specific and generated files.
+/web/sites/*/files/
+/web/sites/*/settings.php
+/web/sites/*/settings.local.php
+/web/sites/simpletest/
+# Local sites (the migrated copy holds member uploads; the demo is built
+# from the fixtures): nothing in them belongs in the repository.
+/web/sites/migrated/
+/web/sites/demo/
+/private/
+/private-migrated/
+/private-demo/

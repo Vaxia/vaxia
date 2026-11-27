@@ -1,0 +1,30 @@
+uuid: 6a694016-3faa-496b-9e4e-fc1b10c0e742
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.question
+    - field.field.node.artwork.comment_node_artwork
+    - field.field.node.artwork.field_art_evaluation
+    - field.field.node.artwork.field_artwork_credit
+    - field.field.node.artwork.field_artwork_image
+    - field.field.node.artwork.field_website
+    - node.type.artwork
+  module:
+    - user
+id: node.artwork.question
+targetEntityType: node
+bundle: artwork
+mode: question
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  comment_node_artwork: true
+  field_art_evaluation: true
+  field_artwork_credit: true
+  field_artwork_image: true
+  field_website: true

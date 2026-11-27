@@ -1,0 +1,23 @@
+uuid: 5551db9c-1812-4c0f-9223-2fe2443fa67c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_is_storyteller
+    - node.type.character_sheet
+id: node.character_sheet.field_is_storyteller
+field_name: field_is_storyteller
+entity_type: node
+bundle: character_sheet
+label: Storyhost
+description: "A storyhost's own character: the one they host sessions and post NPCs under, which earns the KXP for those posts. It is not a playable character (any name and stats, no evaluation). Each storyhost has one; apprentices get theirs when they pass ASH Test 1."
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'Yes'
+  off_label: 'No'
+field_type: boolean

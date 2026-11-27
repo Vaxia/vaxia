@@ -1,0 +1,13 @@
+uuid: d7858868-44b9-46f6-b049-3c4f8b861f30
+langcode: en
+status: true
+dependencies: {  }
+id: acronym
+label: Acronym
+description: 'Acronym: [acronym=description]text[/acronym].'
+name: acronym
+attached: {  }
+sample: '[{{ name }}=HyperText Markup Language]HTML[/{{ name }}]'
+template_code: '{% if tag.option matches ''{^[A-Za-z0-9_ ,.-]+$}'' %}<acronym title="{{ tag.option }}">{{ tag.content }}</acronym>{% else %}{{ tag.outerSource }}{% endif %}'
+template_file: null
+editable: false

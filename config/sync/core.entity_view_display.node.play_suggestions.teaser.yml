@@ -1,0 +1,24 @@
+uuid: 08644c8e-1008-4120-906a-9e43251a85a7
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.play_suggestions.comment_node_play_suggestions
+    - field.field.node.play_suggestions.field_tag_realm
+    - node.type.play_suggestions
+  module:
+    - user
+id: node.play_suggestions.teaser
+targetEntityType: node
+bundle: play_suggestions
+mode: teaser
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  comment_node_play_suggestions: true
+  field_tag_realm: true

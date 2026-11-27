@@ -1,0 +1,15 @@
+uuid: 83efd489-6034-4cdb-9061-7d4efc948b58
+langcode: en
+status: true
+dependencies:
+  config:
+    - flag.flag.rewrite
+  module:
+    - flag
+id: flag_action.rewrite_flag
+label: 'Mark to Rewrite'
+type: node
+plugin: 'flag_action:rewrite_flag'
+configuration:
+  flag_id: rewrite
+  flag_action: flag

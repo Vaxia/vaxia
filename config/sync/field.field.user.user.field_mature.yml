@@ -1,0 +1,22 @@
+uuid: db91206e-2650-46b9-90d3-326f831cabf1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_mature
+  module:
+    - user
+id: user.user.field_mature
+field_name: field_mature
+entity_type: user
+bundle: user
+label: 'Is 18 or older'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  on_label: ''
+  off_label: ''
+field_type: boolean

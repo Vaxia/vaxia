@@ -1,0 +1,8 @@
+uuid: 96ad8b9b-4fc5-4f02-8d63-b902cc5dc2cc
+langcode: en
+status: true
+dependencies: {  }
+id: comment_node_timeline_event
+label: 'Timeline Event comment'
+target_entity_type_id: node
+description: null

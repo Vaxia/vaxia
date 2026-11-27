@@ -1,0 +1,20 @@
+uuid: d40cc207-3d60-4df3-af7b-a709052a0968
+langcode: en
+status: true
+dependencies:
+  module:
+    - vaxia_chat
+  theme:
+    - vaxia_theme
+id: vaxia_theme_background_changer
+theme: vaxia_theme
+region: header
+weight: -42
+provider: null
+plugin: background_changer
+settings:
+  id: background_changer
+  label: 'Change backgound image based on time'
+  label_display: '0'
+  provider: vaxia_chat
+visibility: {  }

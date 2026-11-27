@@ -1,0 +1,11 @@
+_core:
+  default_config_hash: 7myKmsIxR764fvfgFhltYM7xVknayX3894cwYYpYTF4
+dice_roller_types:
+  - rpg_chatroom
+dice_ruler_default_diff: 25
+dice_ruler_extra_action_penalty: 20
+dice_ruler_help_general: ''
+dice_ruler_help_two_trait: ''
+dice_ruler_help_two_trait_vs: ''
+dice_ruler_help_combat: ''
+dice_ruler_help_magic: ''

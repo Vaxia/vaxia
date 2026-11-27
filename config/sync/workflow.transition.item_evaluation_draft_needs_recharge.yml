@@ -1,0 +1,14 @@
+uuid: e300546e-846f-41ad-9223-30d56fbcca0d
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.item_evaluation_draft
+    - workflow.state.item_evaluation_needs_recharge
+id: item_evaluation_draft_needs_recharge
+label: null
+module: workflow
+from_sid: item_evaluation_draft
+to_sid: item_evaluation_needs_recharge
+roles:
+  administrator: administrator

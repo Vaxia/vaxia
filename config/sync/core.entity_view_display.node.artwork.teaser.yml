@@ -1,0 +1,30 @@
+uuid: f4239f17-c259-4ff0-9c3d-0c7df24e3e71
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.artwork.comment_node_artwork
+    - field.field.node.artwork.field_art_evaluation
+    - field.field.node.artwork.field_artwork_credit
+    - field.field.node.artwork.field_artwork_image
+    - field.field.node.artwork.field_website
+    - node.type.artwork
+  module:
+    - user
+id: node.artwork.teaser
+targetEntityType: node
+bundle: artwork
+mode: teaser
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  comment_node_artwork: true
+  field_art_evaluation: true
+  field_artwork_credit: true
+  field_artwork_image: true
+  field_website: true

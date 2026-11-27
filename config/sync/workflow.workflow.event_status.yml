@@ -1,0 +1,8 @@
+uuid: 2e1b82a6-8eb3-44d0-9b49-1262a7b0a639
+langcode: en
+status: true
+dependencies: {  }
+id: event_status
+label: 'Event status'
+module: workflow
+options: {  }

@@ -1,0 +1,8 @@
+favorites:
+  js:
+    js/favorites.js: {}
+  dependencies:
+    - core/drupal
+    - core/drupalSettings
+    - core/once
+    - core/sortable

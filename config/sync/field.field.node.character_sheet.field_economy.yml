@@ -1,0 +1,25 @@
+uuid: 529c26ad-d14e-4bc7-9aa5-3fc5aa1ed6e5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_economy
+    - node.type.character_sheet
+id: node.character_sheet.field_economy
+field_name: field_economy
+entity_type: node
+bundle: character_sheet
+label: Economy
+description: 'You can invest silver instead on the Sheet tab.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

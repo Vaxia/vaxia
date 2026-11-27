@@ -1,0 +1,22 @@
+uuid: 74ebb2cb-be45-4396-b1ec-cc21039f4915
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_artwork_credit
+    - node.type.artwork
+  module:
+    - text
+id: node.artwork.field_artwork_credit
+field_name: field_artwork_credit
+entity_type: node
+bundle: artwork
+label: Credit
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

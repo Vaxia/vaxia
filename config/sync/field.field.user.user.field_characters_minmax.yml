@@ -1,0 +1,24 @@
+uuid: 716f60ff-54a7-4876-aa1c-1bfff4e3ed04
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_characters_minmax
+  module:
+    - user
+id: user.user.field_characters_minmax
+field_name: field_characters_minmax
+entity_type: user
+bundle: user
+label: 'Min-maxed characters'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

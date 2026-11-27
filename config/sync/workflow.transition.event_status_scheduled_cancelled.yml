@@ -1,0 +1,16 @@
+uuid: 3823b248-f069-4c22-942f-085c033352b6
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.event_status_cancelled
+    - workflow.state.event_status_scheduled
+id: event_status_scheduled_cancelled
+label: null
+module: workflow
+from_sid: event_status_scheduled
+to_sid: event_status_cancelled
+roles:
+  workflow_author: workflow_author
+  administrator: administrator
+  lead: lead

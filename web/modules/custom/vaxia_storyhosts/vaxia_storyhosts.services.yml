@@ -1,0 +1,5 @@
+services:
+  vaxia_storyhosts.scene_gate:
+    class: Drupal\vaxia_storyhosts\EventSubscriber\SceneGate
+    tags:
+      - { name: event_subscriber }

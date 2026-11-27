@@ -1,0 +1,30 @@
+uuid: 0d738bdd-7da5-40c2-bf17-528d9902ff1a
+langcode: en
+status: true
+dependencies:
+  module:
+    - book
+    - system
+  theme:
+    - vaxia_theme
+id: vaxia_theme_book_navigation
+theme: vaxia_theme
+region: sidebar_second
+weight: -50
+provider: null
+plugin: book_navigation
+settings:
+  id: book_navigation
+  label: 'Wiki Browsing'
+  label_display: visible
+  provider: book
+  block_mode: 'all pages'
+  show_top_item: false
+  use_top_level_title: false
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: |-
+      /wiki/*
+      /search/wiki

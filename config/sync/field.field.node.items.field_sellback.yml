@@ -1,0 +1,23 @@
+uuid: 9e6a5a9a-10ed-4d51-8221-22f6ae589225
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_sellback
+    - node.type.items
+id: node.items.field_sellback
+field_name: field_sellback
+entity_type: node
+bundle: items
+label: Sellback
+description: 'Check this box if this item can be sold back to the item shop for coin.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'Item can be sold back to the item shop.'
+  off_label: 'Item can NOT be sold back to the item shop.'
+field_type: boolean

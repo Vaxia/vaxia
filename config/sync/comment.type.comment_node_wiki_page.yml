@@ -1,0 +1,8 @@
+uuid: d88d9880-d46f-450d-9941-02172f05af01
+langcode: en
+status: true
+dependencies: {  }
+id: comment_node_wiki_page
+label: 'Wiki page comment'
+target_entity_type_id: node
+description: null

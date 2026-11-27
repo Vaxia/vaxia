@@ -1,0 +1,48 @@
+uuid: 9373cfc0-b654-42f2-a4bf-a392dd074682
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.event.body
+    - field.field.node.event.comment_node_event
+    - field.field.node.event.field_content_warnings
+    - field.field.node.event.field_event_status
+    - field.field.node.event.field_format
+    - field.field.node.event.field_max_seating
+    - field.field.node.event.field_send_notification
+    - field.field.node.event.field_tag_realm
+    - field.field.node.event.field_when
+    - field.field.node.event.taxonomy_forums
+    - node.type.event
+  module:
+    - text
+    - user
+id: node.event.teaser
+targetEntityType: node
+bundle: event
+mode: teaser
+content:
+  body:
+    type: text_summary_or_trimmed
+    label: hidden
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  comment_node_event: true
+  field_content_warnings: true
+  field_event_status: true
+  field_format: true
+  field_max_seating: true
+  field_send_notification: true
+  field_tag_realm: true
+  field_when: true
+  taxonomy_forums: true

@@ -1,0 +1,18 @@
+uuid: 48e40fa3-f96e-4013-84df-4efd6d767a0c
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.character_sheet
+id: node.character_sheet.title
+field_name: title
+entity_type: node
+bundle: character_sheet
+label: Name
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

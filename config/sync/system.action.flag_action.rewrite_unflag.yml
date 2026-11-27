@@ -1,0 +1,15 @@
+uuid: 794792b4-28c5-4f4f-b7bf-7ea096d9dadb
+langcode: en
+status: true
+dependencies:
+  config:
+    - flag.flag.rewrite
+  module:
+    - flag
+id: flag_action.rewrite_unflag
+label: "Don't rewrite"
+type: node
+plugin: 'flag_action:rewrite_unflag'
+configuration:
+  flag_id: rewrite
+  flag_action: unflag

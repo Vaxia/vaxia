@@ -1,0 +1,13 @@
+uuid: de6697c0-2906-4afe-9167-7ce60b77e524
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.item_evaluation
+id: item_evaluation_draft
+label: draft
+weight: -19
+module: workflow
+wid: item_evaluation
+sysid: 0
+single_state_widget: ''

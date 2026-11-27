@@ -1,0 +1,25 @@
+uuid: 05c9143a-278d-449d-b3a2-8a42e115aeda
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_spirituality
+    - node.type.character_sheet
+id: node.character_sheet.field_spirituality
+field_name: field_spirituality
+entity_type: node
+bundle: character_sheet
+label: Spirit
+description: 'Spirit (SPIR): Mental Power; Wisdom'
+required: true
+translatable: false
+default_value:
+  -
+    value: 25
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

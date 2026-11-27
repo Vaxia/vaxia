@@ -1,0 +1,19 @@
+uuid: 561864c7-2a1f-4967-808d-471b7c2f1fba
+langcode: und
+status: true
+dependencies:
+  module:
+    - node
+    - text
+id: node.field_item_desc
+field_name: field_item_desc
+entity_type: node
+type: text_long
+settings: {  }
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

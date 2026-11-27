@@ -1,0 +1,18 @@
+uuid: 25839d7e-70bf-477e-946b-47b1bea7b228
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - xbbcode_standard
+_core:
+  default_config_hash: qygLOYAfCPIpwTDlcGdGKlSqi4mf8hpLZx2ceDLYSxY
+id: sub
+label: Subscript
+description: 'Subscripts text.'
+name: sub
+attached: {  }
+sample: 'H[{{ name }}]2[/{{ name }}]O'
+template_code: '<sub>{{ tag.content }}</sub>'
+template_file: null
+editable: false

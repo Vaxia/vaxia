@@ -1,0 +1,21 @@
+uuid: a8a68c9b-7b86-4347-a357-238f6f2d8613
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_fantasy_species
+    - node.type.character_sheet
+  module:
+    - options
+id: node.character_sheet.field_fantasy_species
+field_name: field_fantasy_species
+entity_type: node
+bundle: character_sheet
+label: 'Fantasy species'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

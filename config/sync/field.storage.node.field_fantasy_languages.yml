@@ -1,0 +1,57 @@
+uuid: cc3aabb5-98af-40b5-a154-240b65919d3c
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_fantasy_languages
+field_name: field_fantasy_languages
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: common_knw
+      label: 'Common (known)'
+    -
+      value: common_nat
+      label: 'Common (native)'
+    -
+      value: elvish_knw
+      label: 'Elvish (known)'
+    -
+      value: elvish_nat
+      label: 'Elvish (native)'
+    -
+      value: dwarvish_knw
+      label: 'Dwarvish (known)'
+    -
+      value: dwarvish_nat
+      label: 'Dwarvish (native)'
+    -
+      value: orcish_knw
+      label: 'Orcish (known)'
+    -
+      value: orcish_nat
+      label: 'Orcish (native)'
+    -
+      value: sylvan_knw
+      label: 'Sylvan (known)'
+    -
+      value: sylvan_nat
+      label: 'Sylvan (native)'
+    -
+      value: old_script_knw
+      label: 'Old Script (scholars and mages) (known)'
+    -
+      value: old_script_nat
+      label: 'Old Script (scholars and mages) (native)'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,14 @@
+uuid: 6e0d3f1a-35ff-4570-a283-2a1213108bda
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.storyteller_newbie
+  module:
+    - user
+id: user_add_role_action.storyteller_newbie
+label: 'Add the storyteller-newbie role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: storyteller_newbie

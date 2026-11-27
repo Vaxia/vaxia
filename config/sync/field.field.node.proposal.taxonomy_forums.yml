@@ -1,0 +1,32 @@
+uuid: 7df78f31-97ee-4de3-99b7-28864cc80138
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.taxonomy_forums
+    - node.type.proposal
+    - taxonomy.vocabulary.forums
+  module:
+    - vaxia_core
+third_party_settings:
+  vaxia_core:
+    d7_default_ids:
+      - 16
+id: node.proposal.taxonomy_forums
+field_name: taxonomy_forums
+entity_type: node
+bundle: proposal
+label: Forums
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: vaxia_core_d7_reference_default
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      forums: forums
+    sort:
+      field: _none
+field_type: entity_reference

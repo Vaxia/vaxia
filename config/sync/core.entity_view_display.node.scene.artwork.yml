@@ -1,0 +1,40 @@
+uuid: 4f01eee3-784c-4928-b7ab-c2b81adc5908
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.artwork
+    - field.field.node.scene.comment_node_scene
+    - field.field.node.scene.field_difficulty
+    - field.field.node.scene.field_goal
+    - field.field.node.scene.field_rp_bonus
+    - field.field.node.scene.field_rp_posts
+    - field.field.node.scene.field_scene_character
+    - field.field.node.scene.field_scene_evaluation
+    - field.field.node.scene.field_scene_notes
+    - field.field.node.scene.field_sh_attention_to
+    - field.field.node.scene.taxonomy_forums
+    - node.type.scene
+  module:
+    - user
+id: node.scene.artwork
+targetEntityType: node
+bundle: scene
+mode: artwork
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  comment_node_scene: true
+  field_difficulty: true
+  field_goal: true
+  field_rp_bonus: true
+  field_rp_posts: true
+  field_scene_character: true
+  field_scene_evaluation: true
+  field_scene_notes: true
+  field_sh_attention_to: true
+  taxonomy_forums: true

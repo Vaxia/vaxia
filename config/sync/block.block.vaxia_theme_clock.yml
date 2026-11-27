@@ -1,0 +1,20 @@
+uuid: 20e31371-ebac-4137-b862-9cdeadd1dbd4
+langcode: en
+status: true
+dependencies:
+  module:
+    - vaxia_core
+  theme:
+    - vaxia_theme
+id: vaxia_theme_clock
+theme: vaxia_theme
+region: sidebar_first
+weight: -38
+provider: null
+plugin: clock
+settings:
+  id: clock
+  label: Clock
+  label_display: visible
+  provider: vaxia_core
+visibility: {  }

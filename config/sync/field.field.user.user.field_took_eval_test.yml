@@ -1,0 +1,21 @@
+uuid: d81174d4-1f55-4601-b5f3-6a02f63174c5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_took_eval_test
+  module:
+    - datetime
+    - user
+id: user.user.field_took_eval_test
+field_name: field_took_eval_test
+entity_type: user
+bundle: user
+label: 'Took evaluator test'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

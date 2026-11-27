@@ -1,0 +1,16 @@
+uuid: e78d3a41-be8b-4c24-9d13-17c2e36bf204
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    parent: 'main:'
+name: 'Storyhost Application'
+type: storyhost_application
+description: 'An application to become a storyhost. Automatically created when a player passes ASH Test Three.'
+help: null
+new_revision: false
+preview_mode: 1
+display_submitted: true

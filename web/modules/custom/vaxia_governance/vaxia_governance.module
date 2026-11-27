@@ -1,0 +1,66 @@
+<?php
+
+/**
+ * @file
+ * Site governance (D7 proposal, rpg_election, department, role_app,
+ * vaxia_departments, vaxia_elections, anon_mailer).
+ */
+
+use Drupal\comment\CommentInterface;
+use Drupal\node\NodeInterface;
+
+require_once __DIR__ . '/includes/proposals.inc';
+require_once __DIR__ . '/includes/anon_mailer.inc';
+require_once __DIR__ . '/includes/elections.inc';
+require_once __DIR__ . '/includes/departments.inc';
+require_once __DIR__ . '/includes/role_app.inc';
+
+/**
+ * Implements hook_ENTITY_TYPE_view() for nodes.
+ */
+function vaxia_governance_node_view(array &$build, NodeInterface $node, $display, $view_mode) {
+  vaxia_governance_proposal_view($build, $node, $view_mode);
+  vaxia_governance_department_view($build, $node);
+  vaxia_governance_role_app_view($build, $node);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert() for nodes.
+ */
+function vaxia_governance_node_insert(NodeInterface $node) {
+  vaxia_governance_voter_activity((int) $node->getOwnerId(), FALSE);
+  vaxia_governance_session_insert($node);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update() for nodes.
+ */
+function vaxia_governance_node_update(NodeInterface $node) {
+  vaxia_governance_election_update($node);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert() for comments.
+ */
+function vaxia_governance_comment_insert(CommentInterface $comment) {
+  vaxia_governance_voter_activity((int) $comment->getOwnerId(), TRUE);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete() for nodes.
+ */
+function vaxia_governance_node_delete(NodeInterface $node) {
+  \Drupal::database()->delete('proposal_eligable_users')->condition('nid', $node->id())->execute();
+  \Drupal::state()->delete('vaxia_governance.proposal_barred.' . $node->id());
+  \Drupal::database()->delete('rpg_election_nodes')->condition('nid', $node->id())->execute();
+}
+
+/**
+ * Implements hook_cron().
+ */
+function vaxia_governance_cron() {
+  vaxia_governance_proposal_cron();
+  vaxia_governance_voter_cron();
+  vaxia_governance_department_cron();
+  vaxia_governance_election_cron();
+}

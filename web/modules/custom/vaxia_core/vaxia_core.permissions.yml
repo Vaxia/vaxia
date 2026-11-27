@@ -1,0 +1,42 @@
+administer character sheet:
+  title: 'Administer character sheet systems'
+view character sheet log:
+  title: 'View character sheet change log'
+add xp to character sheet:
+  title: 'Add XP to a character'
+add xp to own character sheet:
+  title: 'Add XP to own character'
+remove xp from character sheet:
+  title: 'Remove XP from a character'
+remove xp from own character sheet:
+  title: 'Remove XP from own character'
+post in narrative format:
+  title: 'Post in narrative format'
+transfer rxp:
+  title: 'Transfer RXP of your own sheets'
+use SH dice options:
+  title: 'Use SH dice options'
+view character permissions:
+  title: 'View character permissions'
+transfer others sheets:
+  title: 'Transfer the XP of others sheets'
+create SHs:
+  title: 'Create SHs for running games'
+edit SH notes:
+  title: 'Edit SH notes'
+edit private SH notes:
+  title: 'Edit private SH notes'
+admin vaxia settings:
+  title: 'Administrate Vaxia settings'
+  restrict access: true
+email others characters:
+  title: 'Email others their characters'
+view others accounts:
+  title: "View others' full accounts"
+score any quiz:
+  title: 'Score any quiz'
+  description: 'Grade the free-text answers of any quiz attempt (D7 quiz "score any quiz").'
+recover user accounts:
+  title: 'Recover user accounts'
+  description: 'Change a user''s email address after confirming who they are, and send them a one-time login link (user/%/recover).'
+  restrict access: true

@@ -1,0 +1,36 @@
+uuid: 01d7a318-48d5-4da8-a318-36f188acecb0
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.question
+    - field.field.node.proposal.body
+    - field.field.node.proposal.comment_node_proposal
+    - field.field.node.proposal.field_associated_files
+    - field.field.node.proposal.field_associated_forum_threads
+    - field.field.node.proposal.field_grievance_members
+    - field.field.node.proposal.field_proposal_type
+    - field.field.node.proposal.taxonomy_forums
+    - field.field.node.proposal.webform
+    - node.type.proposal
+  module:
+    - user
+id: node.proposal.question
+targetEntityType: node
+bundle: proposal
+mode: question
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  body: true
+  comment_node_proposal: true
+  field_associated_files: true
+  field_associated_forum_threads: true
+  field_grievance_members: true
+  field_proposal_type: true
+  taxonomy_forums: true
+  webform: true

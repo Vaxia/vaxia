@@ -1,0 +1,13 @@
+uuid: ee77051c-72e0-4425-accd-d531442f8c21
+langcode: en
+status: true
+dependencies: {  }
+id: image
+label: Image
+description: 'Image: [img]http://...[/img], [img=WIDTHxHEIGHT], [img=alt text] or [img align=left].'
+name: img
+attached: {  }
+sample: '[{{ name }}]/core/misc/druplicon.png[/{{ name }}]'
+template_code: '{% set src = ('''' ~ tag.source)|trim %}{% set align = tag.attributes.align|default('''') %}{% if src matches ''{^[A-Za-z0-9_:;&,~%+!=@/.#?-]+$}'' and (src matches ''{^(https?://|/|data:image/(png|gif|jpe?g|webp);)}i'' or not (src matches ''{^[^/?#]*:}'')) %}{% if tag.option matches ''{^[0-9]+x[0-9]+$}'' %}{% set dims = tag.option|split(''x'') %}<img width="{{ dims[0] }}" height="{{ dims[1] }}" alt="" src="{{ src }}" class="bb-image" />{% elseif align in [''left'', ''right'', ''center''] %}<img src="{{ src }}" alt="" align="{{ align }}" class="bb-image" />{% elseif tag.option %}<img alt="{{ tag.option }}" src="{{ src }}" class="bb-image" />{% else %}<img src="{{ src }}" alt="" class="bb-image" />{% endif %}{% else %}{{ tag.outerSource }}{% endif %}'
+template_file: null
+editable: false

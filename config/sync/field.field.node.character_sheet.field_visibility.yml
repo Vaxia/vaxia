@@ -1,0 +1,23 @@
+uuid: 8dea6ebd-74b4-4f94-b9cf-75e97fef8e0f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_visibility
+    - node.type.character_sheet
+id: node.character_sheet.field_visibility
+field_name: field_visibility
+entity_type: node
+bundle: character_sheet
+label: Visibility
+description: "Uncheck this box to hide this character's posts from the power search. This is useful if you are playing a character whose actions you want to keep private. Be aware, while this will hide the posts of this character from the search it will not hide the posts of other character's in a scene with you if they are not also set for private mode."
+required: false
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'Public posts. This character will show in the Power Search.'
+  off_label: 'Private posts. This character will NOT show in the Power Search.'
+field_type: boolean

@@ -1,0 +1,18 @@
+uuid: 0a2dab88-513d-4b35-bca9-b2ac9afa5e0e
+langcode: und
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_item_over_intellegence
+field_name: field_item_over_intellegence
+entity_type: node
+type: float
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

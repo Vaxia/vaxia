@@ -1,0 +1,26 @@
+uuid: fb2c47e3-18c2-4479-9f19-30edad26e016
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.artwork
+    - field.field.node.storyhost_application.body
+    - field.field.node.storyhost_application.comment_node_storyhost_applica
+    - field.field.node.storyhost_application.webform
+    - node.type.storyhost_application
+  module:
+    - user
+id: node.storyhost_application.artwork
+targetEntityType: node
+bundle: storyhost_application
+mode: artwork
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  body: true
+  comment_node_storyhost_applica: true
+  webform: true

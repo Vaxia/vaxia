@@ -1,0 +1,23 @@
+uuid: d780dbf7-6cde-485f-9b63-8ffdd1acd92f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_private_room
+    - node.type.rpg_chatroom
+id: node.rpg_chatroom.field_private_room
+field_name: field_private_room
+entity_type: node
+bundle: rpg_chatroom
+label: 'Private room'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'Posts in this room show in Power Search.'
+  off_label: 'Posts in this room do NOT show in Power Search.'
+field_type: boolean

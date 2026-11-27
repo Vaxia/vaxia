@@ -1,0 +1,13 @@
+uuid: eab461e3-12b4-4031-ae9f-83bcbcbc9f0d
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.item_evaluation
+id: item_evaluation_approved
+label: approved
+weight: -17
+module: workflow
+wid: item_evaluation
+sysid: 0
+single_state_widget: ''

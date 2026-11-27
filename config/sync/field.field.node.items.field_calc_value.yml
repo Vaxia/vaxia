@@ -1,0 +1,23 @@
+uuid: 8b8c86f7-5edb-4528-b55d-edaf97656afc
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_calc_value
+    - node.type.items
+id: node.items.field_calc_value
+field_name: field_calc_value
+entity_type: node
+bundle: items
+label: 'Calculate value'
+description: 'Recalculate the value of this item based on changes in stats.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'Recalculate the value of this item.'
+  off_label: 'Do NOT recalculate the value of this item.'
+field_type: boolean

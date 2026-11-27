@@ -1,0 +1,22 @@
+uuid: 0a9cf367-d362-4c19-b863-0db09a671491
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_sh_notes
+    - node.type.items
+  module:
+    - text
+id: node.items.field_sh_notes
+field_name: field_sh_notes
+entity_type: node
+bundle: items
+label: 'SH Notes'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

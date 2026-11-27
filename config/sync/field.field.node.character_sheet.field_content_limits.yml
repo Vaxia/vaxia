@@ -1,0 +1,26 @@
+uuid: 2eddce34-ae2d-4011-9fb9-ec9aaacc196b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_content_limits
+    - node.type.character_sheet
+    - taxonomy.vocabulary.character_limits
+id: node.character_sheet.field_content_limits
+field_name: field_content_limits
+entity_type: node
+bundle: character_sheet
+label: Permissions
+description: "<br/>\r\nMark these topics as things your character is ok with if and ONLY if you are ok with the character experiencing them in play.\r\n</br><br/>\r\nThis gives you a way to tell an A/SH in advance what sort of things are ok for this character. At the beginning of a session, please review your permission toggles to make sure they are what you want. You will NOT be allowed to change them in the middle of a session. This helps our A/SHs keep play going quickly with the least disruption.\r\n</br><br/>\r\nIf this is a special occasion where you trust the A/SH involved and want to give them individual permission to cross these lines, please make sure to explicitly state that in PMs or in the room you will be posting in so we have it on record. If an A/SH crosses one of these lines without your permission, please tell our Social department as soon as you can so our Social department can take action.\r\n<br><br>"
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      character_limits: character_limits
+    sort:
+      field: _none
+field_type: entity_reference

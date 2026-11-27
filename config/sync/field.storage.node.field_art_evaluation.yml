@@ -1,0 +1,22 @@
+uuid: 456980d8-20be-4771-879d-52a7b65aaf42
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - workflow
+id: node.field_art_evaluation
+field_name: field_art_evaluation
+entity_type: node
+type: workflow
+settings:
+  workflow_type: art_evaluation
+  allowed_values: {  }
+  allowed_values_function: workflow_state_allowed_values
+module: workflow
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

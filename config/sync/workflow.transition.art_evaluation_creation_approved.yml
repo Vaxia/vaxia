@@ -1,0 +1,14 @@
+uuid: 929ad1af-7724-4730-93e6-7c2e102ea5fd
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.art_evaluation_approved
+    - workflow.state.art_evaluation_creation
+id: art_evaluation_creation_approved
+label: null
+module: workflow
+from_sid: art_evaluation_creation
+to_sid: art_evaluation_approved
+roles:
+  workflow_author: workflow_author

@@ -1,0 +1,21 @@
+uuid: 3dd74556-a414-4579-8339-22eecd954444
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_art_evaluation
+    - node.type.artwork
+  module:
+    - workflow
+id: node.artwork.field_art_evaluation
+field_name: field_art_evaluation
+entity_type: node
+bundle: artwork
+label: 'Art evaluation'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: workflow

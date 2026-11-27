@@ -1,0 +1,207 @@
+vaxia_core.sheet:
+  path: '/node/{node}/character_sheet'
+  defaults:
+    _form: '\Drupal\vaxia_core\Form\SheetForm'
+    _title: 'Sheet'
+  requirements:
+    _custom_access: '\Drupal\vaxia_core\Form\SheetForm::access'
+  options:
+    parameters:
+      node:
+        type: entity:node
+vaxia_core.transfer_autocomplete:
+  path: '/vaxia/transfer_xp/{name}'
+  defaults:
+    _controller: '\Drupal\vaxia_core\Controller\TransferAutocomplete::matches'
+    name: ''
+  requirements:
+    _permission: 'access content'
+vaxia_core.admin:
+  path: '/admin/vaxia'
+  defaults:
+    _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
+    _title: 'Vaxia'
+  requirements:
+    _permission: 'admin vaxia settings'
+vaxia_core.settings:
+  path: '/admin/vaxia/vaxia'
+  defaults:
+    _form: '\Drupal\vaxia_core\Form\SettingsForm'
+    _title: 'Vaxia'
+  requirements:
+    _permission: 'admin vaxia settings'
+vaxia_core.quiz_take:
+  path: '/node/{node}/take'
+  defaults:
+    _controller: '\Drupal\vaxia_core\Controller\QuizPages::take'
+    _title: 'Take quiz'
+  requirements:
+    _custom_access: '\Drupal\vaxia_core\Controller\QuizPages::takeAccess'
+  options:
+    parameters:
+      node:
+        type: entity:node
+vaxia_core.quiz_result:
+  path: '/node/{node}/quiz-result/{webform_submission}'
+  defaults:
+    _controller: '\Drupal\vaxia_core\Controller\QuizPages::result'
+    _title: 'Quiz results'
+  requirements:
+    _custom_access: '\Drupal\vaxia_core\Controller\QuizPages::resultAccess'
+  options:
+    parameters:
+      node:
+        type: entity:node
+      webform_submission:
+        type: entity:webform_submission
+vaxia_core.quiz_grade:
+  path: '/node/{node}/results/{webform_submission}'
+  defaults:
+    _form: '\Drupal\vaxia_core\Form\QuizGradeForm'
+    _title: 'Score quiz answers'
+  requirements:
+    _permission: 'score any quiz'
+    _custom_access: '\Drupal\vaxia_core\Form\QuizGradeForm::access'
+  options:
+    parameters:
+      node:
+        type: entity:node
+      webform_submission:
+        type: entity:webform_submission
+vaxia_core.quiz_unscored:
+  path: '/admin/quiz/reports/score-long-answer'
+  defaults:
+    _controller: '\Drupal\vaxia_core\Controller\QuizPages::unscored'
+    _title: 'Score long answer questions'
+  requirements:
+    _permission: 'score any quiz'
+vaxia_core.players:
+  path: '/players/all'
+  defaults:
+    _controller: '\Drupal\vaxia_core\Controller\PlayerPages::players'
+    _title: 'Players'
+  requirements:
+    _role: 'administrator+lead+storyteller+storyteller_assistant+storyteller_candidate'
+vaxia_core.player_locations:
+  path: '/players/locations'
+  defaults:
+    _controller: '\Drupal\vaxia_core\Controller\PlayerPages::locations'
+    _title: 'Player locations'
+  requirements:
+    _role: 'administrator+lead'
+vaxia_core.player_locations_map:
+  path: '/players/locations/map'
+  defaults:
+    _controller: '\Drupal\vaxia_core\Controller\PlayerPages::locations'
+    _title: 'Player locations map'
+  requirements:
+    _role: 'administrator+lead'
+vaxia_core.top_tens:
+  path: '/top-ten-displays'
+  defaults:
+    _controller: '\Drupal\vaxia_core\Controller\PlayerPages::topTens'
+    _title_callback: '\Drupal\vaxia_core\Controller\PlayerPages::topTensTitle'
+  requirements:
+    _access: 'TRUE'
+vaxia_core.power_search:
+  path: '/search/search'
+  defaults:
+    _controller: '\Drupal\vaxia_core\Controller\PlayerPages::powerSearch'
+    _title: 'Power Search'
+  requirements:
+    _permission: 'access content'
+vaxia_core.online_time:
+  path: '/players/online-time'
+  defaults:
+    _controller: '\Drupal\vaxia_core\Controller\PlayerPages::onlineTime'
+    _title: 'Online time'
+  requirements:
+    _role: 'administrator+storyteller'
+vaxia_core.total_top_ten:
+  path: '/total-top-ten'
+  defaults:
+    _controller: '\Drupal\vaxia_core\Controller\PlayerPages::totalTopTen'
+    _title: 'Total Top Ten'
+  requirements:
+    _role: 'administrator+player'
+vaxia_core.power_search_unfiltered:
+  path: '/search/unfiltered'
+  defaults:
+    _controller: '\Drupal\vaxia_core\Controller\UnfilteredSearch::search'
+    _title: 'Lead Search (unfiltered)'
+  requirements:
+    _role: 'administrator+lead'
+vaxia_core.character_sheets:
+  path: '/character-sheets'
+  defaults:
+    _controller: '\Drupal\vaxia_core\Controller\CharacterLists::all'
+    _title: 'Character Sheets'
+  requirements:
+    _role: 'administrator+anonymous+new_account+player'
+vaxia_core.character_sheets_all:
+  path: '/character-sheets/all'
+  defaults:
+    _controller: '\Drupal\vaxia_core\Controller\CharacterLists::all'
+    _title: 'Character Sheets'
+  requirements:
+    _role: 'administrator+anonymous+new_account+player'
+vaxia_core.character_sheets_mine:
+  path: '/character-sheets/mine'
+  defaults:
+    _controller: '\Drupal\vaxia_core\Controller\CharacterLists::mine'
+    _title: 'My character sheets'
+  requirements:
+    _role: 'administrator+anonymous+new_account+player'
+vaxia_core.character_sheets_evaluate:
+  path: '/character-sheets/evaluate'
+  defaults:
+    _controller: '\Drupal\vaxia_core\Controller\CharacterLists::evaluate'
+    _title: 'Evaluation'
+  requirements:
+    _role: 'administrator+lead+storyteller'
+vaxia_core.user_characters:
+  path: '/user/{user}/characters'
+  defaults:
+    _controller: '\Drupal\vaxia_core\Controller\CharacterLists::user'
+    _title: 'My character sheets'
+  requirements:
+    _role: 'administrator+anonymous+new_account+player'
+  options:
+    parameters:
+      user:
+        type: entity:user
+vaxia_core.admin_characters:
+  path: '/admin/content/characters'
+  defaults:
+    _controller: '\Drupal\vaxia_core\Controller\CharacterLists::admin'
+    _title: 'Administration: Characters'
+  requirements:
+    _permission: 'access content overview'
+vaxia_core.relaunch_settings:
+  path: '/admin/vaxia/relaunch'
+  defaults:
+    _form: '\Drupal\vaxia_core\Form\RelaunchSettingsForm'
+    _title: 'Relaunch'
+  requirements:
+    _permission: 'admin vaxia settings'
+vaxia_core.terms_accept:
+  path: '/terms/accept'
+  defaults:
+    _form: '\Drupal\vaxia_core\Form\TermsAcceptForm'
+    _title: 'Terms and Conditions'
+  requirements:
+    _user_is_logged_in: 'TRUE'
+  options:
+    no_cache: TRUE
+vaxia_core.recover_account:
+  path: '/user/{user}/recover'
+  defaults:
+    _form: '\Drupal\vaxia_core\Form\RecoverAccountForm'
+    _title: 'Recover account'
+  requirements:
+    _permission: 'recover user accounts'
+    user: \d+
+  options:
+    parameters:
+      user:
+        type: entity:user

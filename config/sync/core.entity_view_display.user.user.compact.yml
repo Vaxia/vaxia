@@ -1,0 +1,89 @@
+uuid: 0d47a36e-7e7e-4e9a-bc06-d22b8edb92e4
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.user.compact
+    - field.field.user.user.field_age_requirement
+    - field.field.user.user.field_background_color
+    - field.field.user.user.field_banned_ip
+    - field.field.user.user.field_banned_until
+    - field.field.user.user.field_became_evaluator
+    - field.field.user.user.field_became_sh
+    - field.field.user.user.field_characters_minmax
+    - field.field.user.user.field_characters_submitted
+    - field.field.user.user.field_comment_color
+    - field.field.user.user.field_donated
+    - field.field.user.user.field_last_ip
+    - field.field.user.user.field_latitude
+    - field.field.user.user.field_longitude
+    - field.field.user.user.field_mature
+    - field.field.user.user.field_powers_expire
+    - field.field.user.user.field_reason_for_ban
+    - field.field.user.user.field_staff_setting_lead
+    - field.field.user.user.field_staff_social_lead
+    - field.field.user.user.field_staff_system_lead
+    - field.field.user.user.field_storyhost_character
+    - field.field.user.user.field_terms_and_conditions
+    - field.field.user.user.field_took_ash1
+    - field.field.user.user.field_took_ash2
+    - field.field.user.user.field_took_ash3
+    - field.field.user.user.field_took_eval_test
+    - field.field.user.user.field_took_setting_walkthrough
+    - field.field.user.user.field_took_social_walkthrough
+    - field.field.user.user.field_took_system_walkthrough
+    - field.field.user.user.field_xp_over_time
+    - field.field.user.user.user_picture
+    - image.style.thumbnail
+  module:
+    - image
+    - user
+id: user.user.compact
+targetEntityType: user
+bundle: user
+mode: compact
+content:
+  user_picture:
+    type: image
+    label: hidden
+    settings:
+      image_link: content
+      image_style: thumbnail
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  field_age_requirement: true
+  field_background_color: true
+  field_banned_ip: true
+  field_banned_until: true
+  field_became_evaluator: true
+  field_became_sh: true
+  field_characters_minmax: true
+  field_characters_submitted: true
+  field_comment_color: true
+  field_donated: true
+  field_last_ip: true
+  field_latitude: true
+  field_longitude: true
+  field_mature: true
+  field_powers_expire: true
+  field_reason_for_ban: true
+  field_staff_setting_lead: true
+  field_staff_social_lead: true
+  field_staff_system_lead: true
+  field_storyhost_character: true
+  field_terms_and_conditions: true
+  field_took_ash1: true
+  field_took_ash2: true
+  field_took_ash3: true
+  field_took_eval_test: true
+  field_took_setting_walkthrough: true
+  field_took_social_walkthrough: true
+  field_took_system_walkthrough: true
+  field_xp_over_time: true
+  masquerade: true
+  member_for: true
+  privatemsg: true

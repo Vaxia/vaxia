@@ -1,0 +1,14 @@
+uuid: e27eda80-f543-4dce-84d2-8536bf73598f
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.shadowbanned_user
+  module:
+    - user
+id: user_add_role_action.shadowbanned_user
+label: 'Add the shadowbanned user role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: shadowbanned_user

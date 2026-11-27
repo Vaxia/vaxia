@@ -1,0 +1,18 @@
+uuid: 3570da10-33d7-441a-b6c7-2969dca2ee8f
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+id: user.field_staff_setting_lead
+field_name: field_staff_setting_lead
+entity_type: user
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,327 @@
+uuid: e45a7c36-a683-4d2b-945d-fd037d30e712
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.user.user.field_age_requirement
+    - field.field.user.user.field_background_color
+    - field.field.user.user.field_banned_ip
+    - field.field.user.user.field_banned_until
+    - field.field.user.user.field_became_evaluator
+    - field.field.user.user.field_became_sh
+    - field.field.user.user.field_characters_minmax
+    - field.field.user.user.field_characters_submitted
+    - field.field.user.user.field_comment_color
+    - field.field.user.user.field_donated
+    - field.field.user.user.field_last_ip
+    - field.field.user.user.field_latitude
+    - field.field.user.user.field_longitude
+    - field.field.user.user.field_mature
+    - field.field.user.user.field_powers_expire
+    - field.field.user.user.field_reason_for_ban
+    - field.field.user.user.field_staff_setting_lead
+    - field.field.user.user.field_staff_social_lead
+    - field.field.user.user.field_staff_system_lead
+    - field.field.user.user.field_storyhost_character
+    - field.field.user.user.field_terms_and_conditions
+    - field.field.user.user.field_took_ash1
+    - field.field.user.user.field_took_ash2
+    - field.field.user.user.field_took_ash3
+    - field.field.user.user.field_took_eval_test
+    - field.field.user.user.field_took_setting_walkthrough
+    - field.field.user.user.field_took_social_walkthrough
+    - field.field.user.user.field_took_system_walkthrough
+    - field.field.user.user.field_xp_over_time
+    - field.field.user.user.user_picture
+  module:
+    - datetime
+    - image
+    - options
+    - user
+    - vaxia_chat
+id: user.user.default
+targetEntityType: user
+bundle: user
+mode: default
+content:
+  field_age_requirement:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 17
+    region: content
+  field_background_color:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 25
+    region: content
+  field_banned_ip:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+      link_rel: canonical
+    third_party_settings: {  }
+    weight: 12
+    region: content
+  field_banned_until:
+    type: datetime_custom
+    label: above
+    settings:
+      timezone_override: ''
+      date_format: 'l, F j, Y'
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  field_became_evaluator:
+    type: datetime_custom
+    label: above
+    settings:
+      timezone_override: ''
+      date_format: 'l, F j, Y'
+    third_party_settings: {  }
+    weight: 7
+    region: content
+  field_became_sh:
+    type: datetime_custom
+    label: above
+    settings:
+      timezone_override: ''
+      date_format: 'l, F j, Y'
+    third_party_settings: {  }
+    weight: 8
+    region: content
+  field_characters_minmax:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 22
+    region: content
+  field_characters_submitted:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 21
+    region: content
+  field_comment_color:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+      link_rel: canonical
+    third_party_settings: {  }
+    weight: 24
+    region: content
+  field_donated:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 19
+    region: content
+  field_last_ip:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+      link_rel: canonical
+    third_party_settings: {  }
+    weight: 11
+    region: content
+  field_latitude:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+      link_rel: canonical
+    third_party_settings: {  }
+    weight: 14
+    region: content
+  field_longitude:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+      link_rel: canonical
+    third_party_settings: {  }
+    weight: 15
+    region: content
+  field_mature:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 16
+    region: content
+  field_powers_expire:
+    type: datetime_custom
+    label: above
+    settings:
+      timezone_override: ''
+      date_format: 'l, F j, Y'
+    third_party_settings: {  }
+    weight: 9
+    region: content
+  field_reason_for_ban:
+    type: vaxia_formatted_string
+    label: above
+    settings:
+      format: plain_text
+    third_party_settings: {  }
+    weight: 13
+    region: content
+  field_staff_setting_lead:
+    type: boolean
+    label: inline
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 27
+    region: content
+  field_staff_social_lead:
+    type: boolean
+    label: inline
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 28
+    region: content
+  field_staff_system_lead:
+    type: boolean
+    label: inline
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 29
+    region: content
+  field_storyhost_character:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 23
+    region: content
+  field_terms_and_conditions:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 18
+    region: content
+  field_took_ash1:
+    type: datetime_custom
+    label: above
+    settings:
+      timezone_override: ''
+      date_format: 'l, F j, Y'
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_took_ash2:
+    type: datetime_custom
+    label: above
+    settings:
+      timezone_override: ''
+      date_format: 'l, F j, Y'
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_took_ash3:
+    type: datetime_custom
+    label: above
+    settings:
+      timezone_override: ''
+      date_format: 'l, F j, Y'
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_took_eval_test:
+    type: datetime_custom
+    label: above
+    settings:
+      timezone_override: ''
+      date_format: 'l, F j, Y'
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_took_setting_walkthrough:
+    type: datetime_custom
+    label: above
+    settings:
+      timezone_override: ''
+      date_format: 'l, F j, Y'
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_took_social_walkthrough:
+    type: datetime_custom
+    label: above
+    settings:
+      timezone_override: ''
+      date_format: 'l, F j, Y'
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_took_system_walkthrough:
+    type: datetime_custom
+    label: above
+    settings:
+      timezone_override: ''
+      date_format: 'l, F j, Y'
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_xp_over_time:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 20
+    region: content
+  masquerade:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 50
+    region: content
+  member_for:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  privatemsg:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 8
+    region: content
+  user_picture:
+    type: image
+    label: hidden
+    settings:
+      image_link: content
+      image_style: ''
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 26
+    region: content
+hidden: {  }

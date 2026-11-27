@@ -1,0 +1,18 @@
+uuid: d0926e16-1e90-492e-af99-25953ea1cde5
+langcode: und
+status: true
+dependencies:
+  module:
+    - comment
+id: comment.field_comment_appearance
+field_name: field_comment_appearance
+entity_type: comment
+type: float
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

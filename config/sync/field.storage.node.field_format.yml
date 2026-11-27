@@ -1,0 +1,27 @@
+uuid: 8987a799-1266-42b0-b795-7968e460e205
+langcode: und
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_format
+field_name: field_format
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: fast
+      label: 'Fast posting'
+    -
+      value: slow
+      label: 'Slow posting'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

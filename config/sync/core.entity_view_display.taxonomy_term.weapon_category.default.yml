@@ -1,0 +1,41 @@
+uuid: e8e8b586-a6be-4207-98da-ab3d3b55a64c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.weapon_category.field_multi_action_mod
+    - field.field.taxonomy_term.weapon_category.field_percentage
+    - taxonomy.vocabulary.weapon_category
+  module:
+    - text
+id: taxonomy_term.weapon_category.default
+targetEntityType: taxonomy_term
+bundle: weapon_category
+mode: default
+content:
+  description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_multi_action_mod:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ' '
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_percentage:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ' '
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden: {  }

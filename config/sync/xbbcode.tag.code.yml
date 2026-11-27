@@ -1,0 +1,13 @@
+uuid: d5c3f82d-6842-472b-b491-933f3bdf704d
+langcode: en
+status: true
+dependencies: {  }
+id: code
+label: Code
+description: 'Code: inline, or a preformatted block when it spans lines.'
+name: code
+attached: {  }
+sample: '[{{ name }}]Text[/{{ name }}]'
+template_code: '{% if "\n" in ('''' ~ tag.source) %}<pre class="bb-code-block">{{ tag.content|replace({''<br />'': ''''})|raw }}</pre>{% else %}<code class="bb-code">{{ tag.content }}</code>{% endif %}'
+template_file: null
+editable: false

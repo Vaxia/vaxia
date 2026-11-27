@@ -1,0 +1,20 @@
+uuid: ffdc344a-3fc6-47f1-bb85-624e0abb302d
+langcode: und
+status: true
+dependencies:
+  module:
+    - comment
+id: comment.field_charisma
+field_name: field_charisma
+entity_type: comment
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

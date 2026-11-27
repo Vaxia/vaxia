@@ -1,0 +1,117 @@
+vaxia_storyhosts.settings:
+  type: config_object
+  label: 'VAXIA storyhost settings (keys are the D7 variable names)'
+  mapping:
+    sh_test_session_party_size:
+      type: boolean
+      label: 'Sessions need a minimum party'
+    sh_test_session_party_size_min:
+      type: integer
+      label: 'Minimum party size'
+    sh_test_session_party_size_npcs:
+      type: boolean
+      label: 'NPCs count toward the party'
+    sh_test_session_party_size_ashs:
+      type: boolean
+      label: 'A/SH characters count toward the party'
+    sh_test_session_party_size_own_pcs:
+      type: boolean
+      label: "The storyhost's own characters count toward the party"
+    sh_test_session_expires:
+      type: boolean
+      label: 'Old sessions stop counting'
+    sh_test_session_expires_timeframe:
+      type: string
+      label: 'How long sessions count'
+    storyhost_feedback_form:
+      type: integer
+      label: 'Node of the "Storyhost Feedback" webform (mailed to the storyhost named and the leads)'
+    session_feedback_form:
+      type: integer
+      label: 'Node of the "Session Feedback" webform (mailed to the storyhosts)'
+    sh_request_forums:
+      type: sequence
+      label: 'Forum terms where storyhosts answer requests'
+      sequence:
+        type: integer
+    vacation_description:
+      type: text
+      label: 'Vacation description on the account form'
+    justice_form_base_pp:
+      type: string
+      label: 'Justice: base PP per tier'
+    justice_form_punishments:
+      type: text
+      label: 'Justice: punishment table'
+    justice_form_reputations:
+      type: text
+      label: 'Justice: reputation table'
+    justice_form_silver_1:
+      type: string
+      label: 'Justice: silver per PP, tier 1'
+    justice_form_time_1:
+      type: string
+      label: 'Justice: time per PP, tier 1'
+    justice_form_timeunit_1:
+      type: string
+      label: 'Justice: time unit, tier 1'
+    justice_form_silver_2:
+      type: string
+      label: 'Justice: silver per PP, tier 2'
+    justice_form_time_2:
+      type: string
+      label: 'Justice: time per PP, tier 2'
+    justice_form_timeunit_2:
+      type: string
+      label: 'Justice: time unit, tier 2'
+    justice_form_silver_3:
+      type: string
+      label: 'Justice: silver per PP, tier 3'
+    justice_form_time_3:
+      type: string
+      label: 'Justice: time per PP, tier 3'
+    justice_form_timeunit_3:
+      type: string
+      label: 'Justice: time unit, tier 3'
+    justice_form_silver_4:
+      type: string
+      label: 'Justice: silver per PP, tier 4'
+    justice_form_time_4:
+      type: string
+      label: 'Justice: time per PP, tier 4'
+    justice_form_timeunit_4:
+      type: string
+      label: 'Justice: time unit, tier 4'
+    justice_form_silver_5:
+      type: string
+      label: 'Justice: silver per PP, tier 5'
+    justice_form_time_5:
+      type: string
+      label: 'Justice: time per PP, tier 5'
+    justice_form_timeunit_5:
+      type: string
+      label: 'Justice: time unit, tier 5'
+    sh_test_starvation_mode:
+      type: string
+      label: 'Minimum Storyhosts before starvation mode'
+    sh_test_approval_min:
+      type: string
+      label: 'Minimum approval percent for ASH 3'
+    sh_test_approval_min_starvation:
+      type: string
+      label: 'Minimum approval percent for ASH 3 in starvation mode'
+    sh_test_quiz_ash1:
+      type: integer
+      label: 'ASH Test One quiz node'
+    sh_test_quiz_ash2:
+      type: integer
+      label: 'ASH Test Two quiz node'
+    sh_test_quiz_ash2_renewal:
+      type: integer
+      label: 'ASH Test Two renewal quiz node'
+    sh_test_quiz_eval:
+      type: integer
+      label: 'Evaluation test quiz node'
+    sh_test_quiz_ash3:
+      type: integer
+      label: 'ASH Test Three essay quiz node'

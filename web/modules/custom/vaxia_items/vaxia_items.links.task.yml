@@ -1,0 +1,24 @@
+vaxia_items.shop:
+  route_name: vaxia_items.shop
+  base_route: entity.node.canonical
+  title: 'Item shop'
+  weight: 5
+vaxia_items.character_items_all:
+  route_name: vaxia_items.character_items_all
+  base_route: vaxia_items.character_items_all
+  title: 'Character items'
+vaxia_items.character_items_evaluate:
+  route_name: vaxia_items.character_items_evaluate
+  base_route: vaxia_items.character_items_all
+  title: 'Evaluate items'
+  weight: 1
+vaxia_items.oversight:
+  route_name: vaxia_items.oversight
+  base_route: vaxia_characters.oversight
+  title: 'Oversight Items'
+  weight: 10
+vaxia_items.oversight_expensive:
+  route_name: vaxia_items.oversight_expensive
+  base_route: vaxia_characters.oversight
+  title: 'Expensive Items'
+  weight: 20

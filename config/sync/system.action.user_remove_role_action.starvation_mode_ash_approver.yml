@@ -1,0 +1,14 @@
+uuid: 3df4e2c1-72de-4090-b787-91cf78df9e7b
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.starvation_mode_ash_approver
+  module:
+    - user
+id: user_remove_role_action.starvation_mode_ash_approver
+label: 'Remove the starvation-mode-ash-approver role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: starvation_mode_ash_approver

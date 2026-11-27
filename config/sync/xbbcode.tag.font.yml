@@ -1,0 +1,18 @@
+uuid: 844d4a63-2ba3-4467-9e45-69d9c2d25331
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - xbbcode_standard
+_core:
+  default_config_hash: lbxNL3qwkRi1DWtwlywbzhjxCXG5Q-YaQ58L5fNbwOk
+id: font
+label: 'Font face'
+description: 'Font: [font=Arial]text[/font].'
+name: font
+attached: {  }
+sample: '[{{ name }}=serif]Serif[/{{ name }}]'
+template_code: '{% if tag.option matches ''{^[A-Za-z0-9_ ]+$}'' %}<span style="font-family:{{ tag.option }}">{{ tag.content }}</span>{% else %}{{ tag.outerSource }}{% endif %}'
+template_file: null
+editable: false

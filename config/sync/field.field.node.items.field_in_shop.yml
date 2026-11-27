@@ -1,0 +1,23 @@
+uuid: bcf3eccd-f33e-49b6-b6c2-852a7747fd74
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_in_shop
+    - node.type.items
+id: node.items.field_in_shop
+field_name: field_in_shop
+entity_type: node
+bundle: items
+label: 'In shop'
+description: 'If checked this item will be available in the player shop.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'Yes'
+  off_label: 'No'
+field_type: boolean

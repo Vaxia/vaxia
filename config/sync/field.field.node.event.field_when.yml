@@ -1,0 +1,21 @@
+uuid: 40ce92a6-582d-4d70-8a9b-a0db1a64f99f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_when
+    - node.type.event
+  module:
+    - datetime_range
+id: node.event.field_when
+field_name: field_when
+entity_type: node
+bundle: event
+label: When
+description: 'This field can handle your timezone shift for you. Make sure you configure your preferred time-zone under <a href="/user">your account information</a>. After you set that, dates and times throughout this site will be displayed using your time zone. This allows you to enter times in your preferred time zone. They will display for other site members in their preferred time zone and on the calendar in default EST.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: daterange

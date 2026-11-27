@@ -1,0 +1,23 @@
+vaxia_dice.settings:
+  type: config_object
+  label: 'Vaxia dice settings'
+  mapping:
+    dice_roller_types:
+      type: sequence
+      label: 'Content types with the dice roller on posts'
+      sequence:
+        type: string
+    dice_ruler_default_diff:
+      type: integer
+    dice_ruler_extra_action_penalty:
+      type: integer
+    dice_ruler_help_general:
+      type: text
+    dice_ruler_help_two_trait:
+      type: text
+    dice_ruler_help_two_trait_vs:
+      type: text
+    dice_ruler_help_combat:
+      type: text
+    dice_ruler_help_magic:
+      type: text

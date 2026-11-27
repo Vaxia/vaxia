@@ -1,0 +1,14 @@
+uuid: 71221d9a-447e-4e01-8aea-26ff0202283d
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.character_evaluation
+  module:
+    - workflow
+id: cold_storage
+label: 'cold storage'
+weight: 23
+is_admin: false
+permissions:
+  - 'create character_evaluation workflow_transition'

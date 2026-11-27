@@ -1,0 +1,129 @@
+uuid: 29af6e0a-158d-47e3-999d-4dc5f4533134
+langcode: und
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_category
+field_name: field_category
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: misc
+      label: 'Admin: General request'
+    -
+      value: gen_note
+      label: 'Admin: RLH request'
+    -
+      value: xp_request
+      label: 'Admin: XP requested for previous character'
+    -
+      value: noncompliance
+      label: 'Admin: Not following directions of site staff'
+    -
+      value: impersonation
+      label: 'Admin: Impersonation of site staff / moderation staff'
+    -
+      value: hacking
+      label: 'Admin: Unauthorized access of server or account'
+    -
+      value: multiaccounts
+      label: 'Admin: Operating multiple accounts without permission'
+    -
+      value: guiding_principles
+      label: 'Admin: Violating site guiding principles'
+    -
+      value: policy-violation
+      label: 'Site policy: General player policy'
+    -
+      value: policy-social
+      label: 'Site policy: Social dept. policy'
+    -
+      value: policy-setting
+      label: 'Site policy: Setting dept. policy'
+    -
+      value: policy-system
+      label: 'Site policy: System dept. policy'
+    -
+      value: cheating
+      label: 'Setting: Deliberate violation of Setting limits'
+    -
+      value: cheating2
+      label: 'System: Deliberate violation of System rules'
+    -
+      value: language
+      label: 'Social: Attacking other players (verbal abuse)'
+    -
+      value: slander
+      label: 'Social: Attacking other players (slander)'
+    -
+      value: threats
+      label: 'Social: Attacking other players (threats)'
+    -
+      value: sexual
+      label: 'Social: Harassing other players (sexual)'
+    -
+      value: hounding
+      label: 'Social: Harassing other players (hounding)'
+    -
+      value: stalking
+      label: 'Social: Harassing other players (IC stalking / lurking after asked not to)'
+    -
+      value: disruption
+      label: 'Social: OOC Session disruption'
+    -
+      value: consent
+      label: 'Social: Ignoring consent of other player (IC / OOC)'
+    -
+      value: griefing
+      label: 'Social: Player disturbance (griefing)'
+    -
+      value: extortion
+      label: 'Social: Player disturbance (extortion)'
+    -
+      value: manipulation
+      label: 'Social: Emotional manipulation (overt aggression)'
+    -
+      value: guilt-trip
+      label: 'Social: Emotional manipulation (guilt-tripping)'
+    -
+      value: passive-aggro
+      label: 'Social: Emotional manipulation (covert / passive aggression)'
+    -
+      value: baiting
+      label: 'Social: Emotional manipulation (baiting / goading)'
+    -
+      value: chaseme
+      label: 'Social: Emotional manipulation (chase me behavior)'
+    -
+      value: play-victim
+      label: 'Social: Emotional manipulation (projecting blame)'
+    -
+      value: gaslighting
+      label: 'Social: Emotional manipulation (gaslighting)'
+    -
+      value: xxxpost
+      label: 'Social: Posting in public room (sexual)'
+    -
+      value: bigotpost
+      label: 'Social: Posting in public room (racist or bigoted)'
+    -
+      value: violentpost
+      label: 'Social: Posting in public room (extremely violent)'
+    -
+      value: contract
+      label: 'Social: Breaking terms of social contract'
+    -
+      value: positive
+      label: 'Social: Positive feedback / Check-in'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

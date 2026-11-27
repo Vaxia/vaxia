@@ -1,0 +1,1880 @@
+# The storyhost (SH) course quizzes, read by scripts/starter-content.php: the
+# original VAXIA course (ASH Test 1, 2, the renewal test, the content
+# evaluation exam and the final exam) with the example realms in place.
+# The exam's item questions use the site's own item worth (the Items and
+# Equipment page, as the item form calculates it; ItemsTest checks them).
+# Each question: type (multichoice or long_answer), title, body (BBCode,
+# wiki format), max_score, and for multiple choice: multi, random, boolean
+# and answers (answer text, score if chosen, score if not chosen).
+# Long answers are graded by hand (Results > Grade).
+
+ash1:
+  title: 'ASH Test 1 - Story Hosting Basics'
+  body: |-
+    Welcome to the start of your SH exam.  Before attempting this quiz, we recommend reading the [url=/wiki/story-hosting-basics]Story Hosting Basics[/url] section of the wiki to make sure you're familiar with the latest policies and philosophies of being an SH here.  
+
+    When you are ready, proceed with the exam.  After you complete the exam, you will need to run at least 3 sessions before you can begin Test 2.  Since we haven't yet covered rulings, you will need to have another SH rule the numbers for you.  It does not need to be the same SH for all three sessions, any SH will do.  They are to act as your mentor, so ask them any questions you need to get yourself comfortable with setting the scene and narrating what's happening IC.
+
+    Good luck!
+  pass_rate: 90
+  randomize: true
+  takes: 0
+  allow_skipping: false
+  summary_pass: "Congratulations!  You've passed Test 1!"
+  summary_default: ''
+  questions:
+    -
+      type: multichoice
+      title: 'Which of the following best describes an SH?'
+      body: ''
+      max_score: 2
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'A judge'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'A friend'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'A guide'
+          chosen: 2
+          not_chosen: 0
+        -
+          answer: 'A boss'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'An opponent'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Which of the following is considered a session?'
+      body: ''
+      max_score: 4
+      multi: true
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'Four friends work to put out a fire in the forest'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'A mage researches water magic techniques at the library'
+          chosen: 0
+          not_chosen: 1
+        -
+          answer: 'A blacksmith fashions a new sword from expensive materials'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'An NPC talks with a character about a recent adventure they shared'
+          chosen: 0
+          not_chosen: 1
+    -
+      type: multichoice
+      title: 'When to contact the Setting department'
+      body: ''
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'Send both Setting department leads a brief synopsis of the saga idea to see if they approve of the impact on the IC world'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'Submit any NPCs with mights over 140 to the Setting department for their approval, along with any powerful items involved in the session'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'See if any other SHs should like to help run the saga or host additional sessions that tie into it'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Post notice of the sessions on the forums to poll players for attendance'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Run the first session in the saga'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Rank the 3 Fs'
+      body: ''
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'Fun, Freedom, Fairness'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'Fairness, Freedom, Fun'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Fun, Fairness, Freedom'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Fairness, Fun, Freedom'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Freedom, Fun, Fairness'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: Railroading
+      body: ''
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: Fun
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: Freedom
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: Fairness
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Fudging the Numbers'
+      body: ''
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: Fun
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: Freedom
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: Fairness
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: PVP
+      body: ''
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'Player-vs-player combat'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'An SH wants to run a sitewide saga'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'A player has an idea for a sword based on the visuals from an anime he saw'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'One PC is rolling exceedingly well, out-performing all the others in the session'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Session Report Elements'
+      body: ''
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'The location of the session'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Exceptional combat rolls'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'The impact the PCs had on the situation'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'The bad guy’s plans'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'What the NPCs did'
+          chosen: -1
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Narrative Examples - Railroading'
+      body: ''
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'You didn’t give enough details about the cave mouth'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'You made the decision to enter on the players’ behalf'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'You weren’t clear about what was happening'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Narrative Examples - All content, no flavor'
+      body: ''
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'You weren’t clear about what happened'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'You’re spotlighting the NPC, rather than the player'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Your description is all content and no flavor'
+          chosen: 1
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Narrative Examples - NPC Spotlighting'
+      body: ''
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'You weren’t clear about what happened'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'You’re spotlighting the NPC, rather than the player'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'You didn’t include how much damage Captain Anders did to the dragon'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Narrative Examples - Not clear'
+      body: ''
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'You weren’t clear about what’s happening'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'Your description is all content and no flavor'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'You’re spotlighting the NPCs, rather than the players'
+          chosen: 0
+          not_chosen: 0
+ash2:
+  title: 'ASH Test 2 - Ruling'
+  body: |-
+    Welcome to your second SH exam!  By now, you have run at least a few sessions and have a feel for what being an SH is like.  The next step is ruling your own numbers and understanding the game system :)
+
+    First, review the SH Course pages on Ruling.  Then, when you feel ready, proceed with the exam. 
+
+    Please understand that this exam is not strictly pass/fail - you can reattempt it until you feel you understand the material, and there will be helpful feedback to explain any answers that you get wrong.  The goal is for you to understand the system by the time you're done, even if you don't understand it perfectly when you start.
+
+    [b]NOTE:[/b] You MAY (and probably should) use Dice Ruler for this exam!  The goal isn't to test your math skills, just your understanding of what to plug in where and how to narrate it back to the players :)  You're welcome to rule by the Ladder if you feel more comfortable with it, but it may be worthwhile to learn to use the Dice Ruler as it can speed response times in actual sessions.
+
+    After you complete the exam, you will need to run at least 5 sessions before you can begin the final exam to become a full SH.  The last exam is entirely open-ended and will be reviewed by your fellow SHs for approval.
+
+    Good luck!
+  pass_rate: 90
+  randomize: false
+  takes: 0
+  allow_skipping: false
+  summary_pass: ''
+  summary_default: ''
+  questions:
+    -
+      type: multichoice
+      title: 'Case 1 - Difficulty'
+      body: |-
+        [b]Case 1 - Single-Trait Ruling[/b]
+        [i]Your Narrative:[/i] "In the newly fallen snow, the night air seems crisp. You four have been called to help capture the dreaded wendigo that has been terrorizing these woods for weeks.  You reach the forest’s edge, and all seems still except for the distant, sporadic cracking of the ice-laden branches of trees.
+
+        Actions?"
+
+        [i]Player 1 (Daedlus):[/i] "Daedlus scours the earth like a nearsighted hawk. This hunt is no simple trip, he feels something momentus will occur, some magical feeling within him that says "this isn't your everyday wendigo hunt." He watches, peering into the dark with his elven eyes, and waiting for some sign of something large, white and furry."
+
+        [b](1d100) + awa (25) + Forest Scouting (35) => Might: 60, Roll: 37[/b]
+
+        [b]Question 1[/b] - What difficulty would you set for the Awareness check?
+      max_score: 1
+      multi: false
+      random: false
+      boolean: false
+      answers:
+        -
+          answer: '5'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: '25'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: '50'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: '70'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Case 1 - Points Produced'
+      body: |-
+        [b]Case 1 - Single-Trait Ruling[/b]
+        [i]Your Narrative:[/i] "In the newly fallen snow, the night air seems crisp. You four have been called to help capture the dreaded wendigo that has been terrorizing these woods for weeks.  You reach the forest’s edge, and all seems still except for the distant, sporadic cracking of the ice-laden branches of trees.
+
+        Actions?"
+
+        [i]Player 1 (Daedlus):[/i] "Daedlus scours the earth like a nearsighted hawk. This hunt is no simple trip, he feels something momentus will occur, some magical feeling within him that says "this isn't your everyday wendigo hunt." He watches, peering into the dark with his elven eyes, and waiting for some sign of something large, white and furry."
+
+        [b](1d100) + awa (25) + Forest Scouting (35) => Might: 60, Roll: 37[/b]
+
+        [b]Question 2[/b] - About how many points were produced on Daedlus' roll? (Assume the AWA skill applies in this situation)
+      max_score: 1
+      multi: false
+      random: false
+      boolean: false
+      answers:
+        -
+          answer: 3-7
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 11-15
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 19-21
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'None, he failed'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Case 1 - Narrative'
+      body: |-
+        [b]Case 1 - Single-Trait Ruling[/b]
+        [i]Your Narrative:[/i] "In the newly fallen snow, the night air seems crisp. You four have been called to help capture the dreaded wendigo that has been terrorizing these woods for weeks.  You reach the forest’s edge, and all seems still except for the distant, sporadic cracking of the ice-laden branches of trees.
+
+        Actions?"
+
+        [i]Player 1 (Daedlus):[/i] "Daedlus scours the earth like a nearsighted hawk. This hunt is no simple trip, he feels something momentus will occur, some magical feeling within him that says "this isn't your everyday wendigo hunt." He watches, peering into the dark with his elven eyes, and waiting for some sign of something large, white and furry."
+
+        [b](1d100) + awa (25) + Forest Scouting (35) => Might: 60, Roll: 37[/b]
+
+        [b]Question 3[/b] - Of the following narratives, pick the one which best describes the result based on those points produced.
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'Daedlus catches sight of a white blur about a hundred yards away, large enough to be the monster they’re seeking.  It seems to be moving away from them in a hurry.'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'Daedlus hears something at a distance, off to the north.'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'A branch cracks above Daedlus’ head, distracting him'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Daedlus sees the wendigo looking at them half a mile away through the thick underbrush, its mouth moving in the gesture of words that may be the start of a teleportation spell.'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: |-
+        Case 2 - Magic
+        Morpheus is a shapeshifting mage...
+      body: |-
+        [b]Case 2 - Magic[/b]
+        Morpheus is a shapeshifting mage, and would like to turn himself into a cheetah briefly to shorten his journey across town.  
+
+        His mights are as follows:  INT 50, SPI 45, Transformation 45.  
+
+        He rolls 23 on the INT roll, and 12 on the SPI roll.  
+
+        [b]Question 1[/b] - Does he succeed in turning himself into a cheetah?  If so, roughly how many points did he produce?
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'No, he failed'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Yes, he succeeded with roughly 8 points produced'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'Yes, he succeeded with roughly 15 points produced'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Yes, he succeeded with roughly 3 points produced'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: |-
+        Case 2 - Magic
+        Morpheus is a shapeshifting mage...
+      body: |-
+        [b]Case 2 - Magic[/b]
+        Morpheus is a shapeshifting mage, and would like to turn himself into a cheetah briefly to shorten his journey across town.   
+
+        [b]Question 2[/b] - Assuming he did fail, with a failsby of 27, how would you describe the result?
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: ' "Morpheus failed to turn into a cheetah, but nothing happens."'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: '"As Morpheus tries to shift into cheetah form, something goes awry, and he feels his leg bones warp incorrectly, leaving him in great pain.  He will need to try to shift again before he’ll be able to walk anywhere to get help."'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: '"Morpheus'' insides rearrange themselves into the wrong places when he attempts the change.  With his heart where his hand should be, he goes into system shock, and dies."'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: '"Morpheus manages to change only his legs, walking about with spots and claws, but otherwise looking perfectly human."'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Case 2 - Diff vs PP'
+      body: |-
+        [b]Case 2 - Magic[/b]
+        Morpheus is a shapeshifting mage, and would like to turn himself into a cheetah briefly to shorten his journey across town.  
+
+        His mights are as follows:  INT 50, SPI 45, Transformation 45.  
+
+        He rolls 23 on the INT roll, and 12 on the SPI roll.  
+
+        [b]Question 3[/b] - Morpheus wants to go for a longer-lasting change.  Which of the following would you raise to signify the longer duration?
+      max_score: 1
+      multi: false
+      random: false
+      boolean: false
+      answers:
+        -
+          answer: Difficulty
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Points Produced'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: Both
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Case 3 - Area Magic'
+      body: |-
+        [b]Case 3 - Multiple Targets[/b]
+
+        Jasmine the fire mage wants to blast the three bandits in front of her with a single wave of fiery force.
+
+        How would you handle the rolls, difficulties and damage?
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: "Apply a +40 difficulty to her actions, and rule each one individually versus each target's defensive mights"
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: "Have Jasmine roll once using the highest defender's mights as her difficulty, and deal that much PP to each target"
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Have Jasmine roll against the base difficulty for the spell (25), then have each defender roll their defense, and subtract their PP from hers.  The remainder is divided evenly among the targets.'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: |-
+        Case 3 - Multiple Targets
+
+        Jasmine the fire mag...
+      body: |-
+        [b]Case 3 - Multiple Targets[/b]
+
+        Jasmine the fire mage wants to blast the three bandits in front of her with a single wave of fiery force.
+
+        Let's say she has INT 50, SPI 50, and Pyromancy at 45.
+
+        She rolls a 1 for INT and a 79 for SPI in her attempt to make the wave of fire.
+
+        The bandits she's targeting have DEX 25 and END 25.
+
+        How would you describe the result?
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: "Jasmine's fiery blast has power but no control.  It goes sideways, blasting her friend instead of the bandits."
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: "Sending a waves of flame whipping about, Jasmine narrowly misses the bandits, who dodge out of the way of the frantic spell.  Instead, the flames set the bandits' tents on fire, causing their bedrolls to go up in smoke."
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'Jasmine succeeds in casting a wave of fire at the three bandits.'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Jasmine fails to cast the spell'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: |-
+        Case 4 - Combat
+        Phylus the nimble half-elf has ...
+      body: |-
+        [b]Case 4 - Combat[/b]
+        Phylus the nimble half-elf has run sour of a dwarf named Furbeard in a local bar.  Combat ensues.  Phylus has LIF 40, the dwarves both have LIF 25.  
+
+        [b]Round 1! [/b] 
+        Still hoping for a peaceful resolution, Phylus raises his shield to try to block Furbeard’s attack.  The dwarf, meanwhile, has grabbed his tankard as a dangerous weapon and seems intent on bashing Phylus’ head in for the offense.
+
+        Phylus rolls: 
+        (1d100) + dex (35) + Sword and Shield (40) + Wooden Shield (-1) => Might: 74, Roll: 19
+        (1d100) + str (40) + Sword and Shield (40) + Longsword (Medium) => Might: 80, Roll: 50
+        (1d100) + end (30) + Sword and Shield (40) + Wooden Shield (5) => Might: 75, Roll: 37
+
+        Furbeard rolls:
+        (1d100) + dex (30) + Bar Combat (35) => Might: 65, Roll: 58
+        (1d100) + str (50) + Bar Combat (35) + Metal Tankard (Light) => Might: 85, Roll: 53
+        (1d100) + end (40) + Bar Combat (35) => Might: 75, Roll: 21
+
+        [b]Question 1[/b] - Did Phylus take damage this round?  If so, how much?
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'No, he took no damage'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Yes, he took 4-5 damage'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'Yes, he took 9-10 damage'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Yes, he took 14-15 damage'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: |-
+        Case 4 - Combat
+        Phylus the nimble half-elf has ...
+      body: |-
+        [b]Case 4 - Combat[/b]
+        Phylus the nimble half-elf has run sour of a dwarf named Furbeard in a local bar.  Combat ensues.  Phylus has LIF 40, the dwarves both have LIF 25.  
+
+        [b]Round 2![/b]  
+        Furbeard’s loyal (and very drunk) friend, Chief Burlap, rushes in to assist Furbeard in taking Phylus down.  Both dwarves attack.  Phylus tries to block the newcomer, Burlap, and then attack Furbeard to discourage the other dwarf from continuing this fight.
+
+        Phylus rolls: 
+        (2d100) + dex (35) + Sword and Shield (40) + Wooden Shield (-1) => Might: 74, Roll: 23, 92
+        (2d100) + str (40) + Sword and Shield (40) + Longsword (Medium) => Might: 80, Roll: 41, 99
+        (2d100) + end (30) + Sword and Shield (40) + Wooden Shield (5) => Might: 75, Roll: 84, 2
+
+        Furbeard rolls:
+        (1d100) + dex (30) + Bar Combat (35) => Might: 65, Roll: 45
+        (1d100) + str (50) + Bar Combat (35) + Metal Tankard (Light) => Might: 85, Roll: 43
+        (1d100) + end (40) + Bar Combat (35) => Might: 75, Roll: 72
+
+        Chief Burlap rolls:
+        (1d100) + dex (20) + Bar Combat (40) => Might: 60, Roll: 32
+        (1d100) + str (60) + Bar Combat (40) + Pointy Tankard (Light) => Might: 100, Roll: 47
+        (1d100) + end (30) + Bar Combat (40) => Might: 70, Roll: 17
+
+        [b]Question 2[/b] - How much total damage does Phylus take this round?
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 14-15
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 26-27
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 9-10
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 5-6
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: |-
+        Case 4 - Combat
+        Phylus the nimble half-elf has ...
+      body: |-
+        [b]Case 4 - Combat[/b]
+        Phylus the nimble half-elf has run sour of a dwarf named Furbeard in a local bar.  Combat ensues.  Phylus has LIF 40, the dwarves both have LIF 25.  
+
+        [b]Round 2![/b]  
+        Furbeard’s loyal (and very drunk) friend, Chief Burlap, rushes in to assist Furbeard in taking Phylus down.  Both dwarves attack.  Phylus tries to block the newcomer, Burlap, and then attack Furbeard to discourage the other dwarf from continuing this fight.
+
+        Phylus rolls: 
+        (2d100) + dex (35) + Sword and Shield (40) + Wooden Shield (-1) => Might: 74, Roll: 23, 92
+        (2d100) + str (40) + Sword and Shield (40) + Longsword (Medium) => Might: 80, Roll: 41, 99
+        (2d100) + end (30) + Sword and Shield (40) + Wooden Shield (5) => Might: 75, Roll: 84, 2
+
+        Furbeard rolls:
+        (1d100) + dex (30) + Bar Combat (35) => Might: 65, Roll: 45
+        (1d100) + str (50) + Bar Combat (35) + Metal Tankard (Light) => Might: 85, Roll: 43
+        (1d100) + end (40) + Bar Combat (35) => Might: 75, Roll: 72
+
+        Chief Burlap rolls:
+        (1d100) + dex (20) + Bar Combat (40) => Might: 60, Roll: 32
+        (1d100) + str (60) + Bar Combat (40) + Pointy Tankard (Light) => Might: 100, Roll: 47
+        (1d100) + end (30) + Bar Combat (40) => Might: 70, Roll: 17
+
+        [b]Question 3[/b] - How much total damage does Furbeard take this round?
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 14-16
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 32-34
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 9-11
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: '0'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: |-
+        Case 4 - Combat
+        Phylus the nimble half-elf has ...
+      body: |-
+        [b]Case 4 - Combat[/b]
+        Phylus the nimble half-elf has run sour of a dwarf named Furbeard in a local bar.  Combat ensues.  Phylus has LIF 40, the dwarves both have LIF 25.  
+
+        [b]Round 2![/b]  
+        Furbeard’s loyal (and very drunk) friend, Chief Burlap, rushes in to assist Furbeard in taking Phylus down.  Both dwarves attack.  Phylus tries to block the newcomer, Burlap, and then attack Furbeard to discourage the other dwarf from continuing this fight.
+
+        Phylus rolls: 
+        (2d100) + dex (35) + Sword and Shield (40) + Wooden Shield (-1) => Might: 74, Roll: 23, 92
+        (2d100) + str (40) + Sword and Shield (40) + Longsword (Medium) => Might: 80, Roll: 41, 99
+        (2d100) + end (30) + Sword and Shield (40) + Wooden Shield (5) => Might: 75, Roll: 84, 2
+
+        Furbeard rolls:
+        (1d100) + dex (30) + Bar Combat (35) => Might: 65, Roll: 45
+        (1d100) + str (50) + Bar Combat (35) + Metal Tankard (Light) => Might: 85, Roll: 43
+        (1d100) + end (40) + Bar Combat (35) => Might: 75, Roll: 72
+
+        Chief Burlap rolls:
+        (1d100) + dex (20) + Bar Combat (40) => Might: 60, Roll: 32
+        (1d100) + str (60) + Bar Combat (40) + Pointy Tankard (Light) => Might: 100, Roll: 47
+        (1d100) + end (30) + Bar Combat (40) => Might: 70, Roll: 17
+
+        [b]Question 4[/b] - Given his Life score (25), what state is Furbeard now in?
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'Still Fighting'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: Unconscious
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: Dead
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: |-
+        Case 4 - Combat
+        Phylus the nimble half-elf has ...
+      body: |-
+        [b]Case 4 - Combat[/b]
+        Phylus the nimble half-elf has run sour of a dwarf named Furbeard in a local bar.  Combat ensues.  Phylus has LIF 40, the dwarves both have LIF 25.  
+
+        [b]Round 3![/b]  
+        Realizing he’s hurt, Phylus tries a desperate maneuver.  Pointing his sword at Chief Burlap, he conjures the power of pure force and channels it directly at the dwarf’s chest, hoping to push him away and thus create a path of escape for himself.  Burlap, worried about just another sword chop like the one his partner got, attempts to block with his tankard.
+
+        Phylus’ rolls:
+        1d100 + int (40) + Telekinesis (50) => Might: 90, Roll: 62
+        1d100 + spi (40) + Telekinesis (50) => Might: 90, Roll: 51
+
+        Chief Burlap’s rolls:
+        (1d100) + dex (20) + Bar Combat (40) => Might: 60, Roll: 56
+        (1d100) + str (60) + Bar Combat (40) + Pointy Tankard (Light) => Might: 100, Roll: 80
+        (1d100) + end (30) + Bar Combat (40) => Might: 70, Roll: 42
+
+        [b]Question 5[/b] - Did Phylus successfully cast the spell?  If so, did he affect Chief Burlap?
+        [i]HINT: Remember that actively blocking changes the stats used to defend.  Account for that when ruling Phylus' attack![/i]
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'Neither, he failed to cast the spell.'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'He cast the spell, but failed to affect Chief Burlap'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Both, he cast the spell and pushed Burlap back a bit'
+          chosen: 1
+          not_chosen: 0
+    -
+      type: multichoice
+      title: |-
+        Case 4 - Combat
+        Phylus the nimble half-elf has ...
+      body: |-
+        [b]Case 4 - Combat[/b]
+        Phylus the nimble half-elf has run sour of a dwarf named Furbeard in a local bar.  Combat ensues.  Phylus has LIF 40, the dwarves both have LIF 25.  
+
+        [b]Round 3![/b]  
+        Realizing he’s hurt, Phylus tries a desperate maneuver.  Pointing his sword at Chief Burlap, he conjures the power of pure force and channels it directly at the dwarf’s chest, hoping to push him away and thus create a path of escape for himself.  Burlap, worried about just another sword chop like the one his partner got, attempts to block with his tankard.
+
+        Phylus’ rolls:
+        1d100 + int (40) + Telekinesis (50) => Might: 90, Roll: 62
+        1d100 + spi (40) + Telekinesis (50) => Might: 90, Roll: 51
+
+        Chief Burlap’s rolls:
+        (1d100) + dex (20) + Bar Combat (40) => Might: 60, Roll: 56
+        (1d100) + str (60) + Bar Combat (40) + Pointy Tankard (Light) => Might: 100, Roll: 80
+        (1d100) + end (30) + Bar Combat (40) => Might: 70, Roll: 42
+
+        [b]Question 6[/b] - How much did Burlap's block protect him?
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: "A bit: it subtracted 6 from Phylus' 18 points produced"
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: "A lot:  it subtracted 6 from Phylus' 8 points produced"
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: "Not much:  It subtracted 1 from Phylus' 6 points produced"
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Not at all:  Burlap failed to block the magical attack'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Case 4 - Narrative'
+      body: |-
+        [b]Case 4 - Combat[/b]
+        Phylus the nimble half-elf has run sour of a dwarf named Furbeard in a local bar.  Combat ensues.  Phylus has LIF 40, the dwarves both have LIF 25.  
+
+        [b]Round 3![/b]  
+        Realizing he’s hurt, Phylus tries a desperate maneuver.  Pointing his sword at Chief Burlap, he conjures the power of pure force and channels it directly at the dwarf’s chest, hoping to push him away and thus create a path of escape for himself.  Burlap, worried about just another sword chop like the one his partner got, attempts to block with his tankard.
+
+        [b]Question 7[/b] - Assume Phylus succeeded with a net 15 points produced (after accounting for Furbeard’s block).  How would you determine how far back, in meters, Furbeard was pushed by the spell?
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'Divide the PP by 7 and use yards or meters (about 2 meters, or 6 feet)'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'Use the raw PP in yards or meters (15 meters, or about 50 feet)'
+          chosen: -1
+          not_chosen: 0
+        -
+          answer: 'Use the raw PP, but in centimeters (15 centimeters, or half a foot)'
+          chosen: -1
+          not_chosen: 0
+        -
+          answer: 'Just say "he was pushed out of striking distance"'
+          chosen: 1
+          not_chosen: 0
+ash2_renewal:
+  title: 'ASH Test 2 - Renewing SHs'
+  body: |-
+    Welcome to your SH renewal exam!  This is your annual refresher on the numbers system, incorporating any new changes and making sure we're all relatively on the same page in terms of ruling.
+
+    First, review Ruling section of the SH Course.  Then, when you feel ready, proceed with the exam. If you are returning from an absence, we also recommend reviewing the Recent System Changes and the SH Reference Guide to get yourself up to date on new features or changes you may have missed.
+
+    Please understand that this exam is not strictly pass/fail - you can reattempt it until you feel you understand the material, and there will be helpful feedback to explain any answers that you get wrong.  The goal is for you to understand the system by the time you're done, even if you don't understand it perfectly when you start.
+
+    [b]NOTE:[/b] You MAY (and probably should) use the on-site dice ruler for this exam!  The goal isn't to test your math skills, just your understanding of what to plug in where and how to narrate it back to the players :)  You're welcome to rule by the Ladder if you feel more comfortable with it, but it may be worthwhile to learn to use the Dice Ruler as it can speed response times in actual sessions.
+
+    Good luck!
+  pass_rate: 100
+  randomize: false
+  takes: 0
+  allow_skipping: false
+  summary_pass: ''
+  summary_default: ''
+  questions:
+    -
+      type: multichoice
+      title: 'Clone of Case 1 - Difficulty'
+      body: |-
+        [b]Case 1 - Single-Trait Ruling[/b]
+        [i]Your Narrative:[/i] "In the newly fallen snow, the night air seems crisp. You four have been called to help capture the dreaded wendigo that has been terrorizing these woods for weeks.  You reach the forest’s edge, and all seems still besides the crunch your own footsteps are making.  A full moon sits high overhead, shedding light down on the naked trees, just like it has every other night the wendigo has been seen prowling around."
+
+        [i]Player 1 (Daedlus):[/i] "Daedlus scours the earth like a nearsighted hawk. This hunt is no simple trip, he feels something momentus will occur, some magical feeling within him that says "this isn't your everyday wendigo hunt." He watches, peering into the dark with his elven eyes, and waiting for some sign of something large, white and furry."
+
+        [b](1d100) + awa (25) + Forest Scouting (12) => Might: 37, Roll: 71[/b]
+
+        [b]Question 1[/b] - What difficulty would you set for the Awareness check?
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: '15'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: '40'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: '50'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: "Use the wendigo's mights for Finesse with its Stealth skill as the difficulty"
+          chosen: 1
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Clone of Case 1 - Points Produced'
+      body: |-
+        [b]Case 1 - Single-Trait Ruling[/b]
+        [i]Your Narrative:[/i] "In the newly fallen snow, the night air seems crisp. You four have been called to help capture the dreaded wendigo that has been terrorizing these woods for weeks.  You reach the forest’s edge, and all seems still besides the crunch your own footsteps are making.  A full moon sits high overhead, shedding light down on the naked trees, just like it has every other night the wendigo has been seen prowling around."
+
+        [i]Player 1 (Daedlus):[/i] "Daedlus scours the earth like a nearsighted hawk. This hunt is no simple trip, he feels something momentus will occur, some magical feeling within him that says "this isn't your everyday wendigo hunt." He watches, peering into the dark with his elven eyes, and waiting for some sign of something large, white and furry."
+
+        [b](1d100) + awa (25) + Forest Scouting (12) => Might: 37, Roll: 71[/b]
+
+        [b]Question 2[/b] - About how many points were produced on Daedlus' roll?
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 3-4
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 20-21
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 11-12
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'None, he failed'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Clone of Case 1 - Narrative'
+      body: |-
+        [b]Case 1 - Single-Trait Ruling[/b]
+        [i]Your Narrative:[/i] "In the newly fallen snow, the night air seems crisp. You four have been called to help capture the dreaded wendigo that has been terrorizing these woods for weeks.  You reach the forest’s edge, and all seems still besides the crunch your own footsteps are making.  A full moon sits high overhead, shedding light down on the naked trees, just like it has every other night the wendigo has been seen prowling around."
+
+        [i]Player 1 (Daedlus):[/i] "Daedlus scours the earth like a nearsighted hawk. This hunt is no simple trip, he feels something momentus will occur, some magical feeling within him that says "this isn't your everyday wendigo hunt." He watches, peering into the dark with his elven eyes, and waiting for some sign of something large, white and furry."
+
+        [b](1d100) + awa (25) + Forest Scouting (12) => Might: 37, Roll: 71[/b]
+
+        [b]Question 3[/b] - Of the following narratives, pick the one which best describes the result based on those points produced. Focus on the quality of the narration in this instance.
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'Daedlus catches sight of a white blur through the trees that might be large enough to be the monster they’re seeking.  It seems to be moving away from them.'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Daedlus hears something at a distance, off to the north.'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'A branch cracks above Daedlus’ head, distracting him'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: "Daedlus spots the wendigo moving between the trees, about a hundred yards off.  From its eyes, he can tell that it's noticed them, and it looks frightened.  It turns to start darting away from them in a hurry.  "
+          chosen: 1
+          not_chosen: 0
+    -
+      type: multichoice
+      title: |-
+        Case 2 - Magic
+        Morpheus is a shapeshifting mage...
+      body: |-
+        [b]Case 2 - Magic[/b]
+        Morpheus is a shapeshifting mage, and would like to turn himself into a cheetah briefly to shorten his journey across town.  
+
+        His mights are as follows:  INT 45, SPI 40, Transformation 45.  
+
+        He rolls 23 on the INT roll, and 12 on the SPI roll.  
+
+        [b]Question 1[/b] - Does he succeed in turning himself into a cheetah?  If so, roughly how many points did he produce?
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'No, he failed'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Yes, he succeeded with roughly 8 points produced'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'Yes, he succeeded with 15 points produced'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Yes, he succeeded with roughly 3 points produced'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Clone of Case 2 - Narrative'
+      body: |-
+        [b]Case 2 - Magic[/b]
+        Morpheus is a shapeshifting mage, and would like to turn himself into a cheetah briefly to shorten his journey across town.  
+
+        [b]Question 2[/b] - Assuming failed, with a failsby of 27, how would you describe the result?
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: ' "Morpheus failed to turn into a cheetah, but nothing happens."'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: '"As Morpheus tries to shift into cheetah form, something goes awry, and he feels his leg bones warp incorrectly, leaving him in great pain.  He will need to try to shift again before he’ll be able to walk anywhere to get help."'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: '"Morpheus'' insides rearrange themselves into the wrong places when he attempts the change.  With his heart where his hand should be, he goes into system shock, and dies."'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: '"Morpheus manages to change only his legs, walking about with spots and claws, but otherwise looking perfectly human."'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Clone of Case 2 - Diff vs PP'
+      body: |-
+        [b]Case 2 - Magic[/b]
+        Morpheus is a shapeshifting mage, and would like to turn himself into a cheetah briefly to shorten his journey across town.  
+
+        His mights are as follows:  INT 45, SPI 40, Transformation 50.  
+
+        He rolls 7 on the INT roll, and 13 on the SPI roll.   
+
+        [b]Question 3[/b] - Morpheus wants to go for a longer-lasting change.  Which of the following would you raise to signify the longer duration?
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: Difficulty
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Points Produced'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: Both
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Clone of Case 3 - Area Magic'
+      body: |-
+        [b]Case 3 - Multiple Targets[/b]
+
+        Jasmine the fire mage wants to blast the three bandits in front of her with a single wave of fiery force.
+
+        How would you handle the rolls, difficulties and damage?
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: "Rule each one individually versus each target's defensive mights, applying the penalties for performing three actions."
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: "Have Jasmine roll once using the highest defender's mights as her difficulty, and deal that much PP to each target"
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Have Jasmine roll against the base difficulty for the spell (40), then have each defender roll their defense, and subtract their PP from hers.  The remainder is divided evenly among the targets.'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: |-
+        Case 3 - Multiple Targets
+
+        Jasmine the fire mag...
+      body: |-
+        [b]Case 3 - Multiple Targets[/b]
+
+        Jasmine the fire mage wants to blast the three bandits in front of her with a single wave of fiery force.
+
+        Let's say she has INT 50, SPI 50, and Pyromancy at 45.
+
+        She rolls a 1 for INT and a 56 for SPI in her attempt to make the wave of fire.
+
+        The bandits she's targeting have DEX 25 and END 25.
+
+        How would you describe the result?
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: "Jasmine's fiery blast has power but no control.  It goes sideways, blasting her friend instead of the bandits."
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: "Sending a waves of flame whipping about, Jasmine narrowly misses the bandits, who dodge out of the way of the frantic spell.  Instead, the flames set the bandits' tents on fire, causing their bedrolls to go up in smoke."
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'Jasmine succeeds in casting a wave of fire at the three bandits.'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Jasmine fails to cast the spell'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: |-
+        Case 4 - Combat
+        Phylus the nimble half-elf has ...
+      body: |-
+        [b]Case 4 - Combat[/b]
+        Phylus the nimble half-elf has run sour of a dwarf named Furbeard in a local bar.  Combat ensues.  Phylus has LIF 40, the dwarves both have LIF 25.  
+
+        [b]Round 1! [/b] 
+        Still hoping for a peaceful resolution, Phylus raises his shield to try to block Furbeard’s attack.  The dwarf, meanwhile, has grabbed his tankard as a dangerous weapon and seems intent on bashing Phylus’ head in for the offense.
+
+        Phylus rolls: 
+        (1d100) + dex (35) + Sword and Shield (40) + Wooden Shield (-1) => Might: 74, Roll: 19
+        (1d100) + str (40) + Sword and Shield (40) + Longsword (Medium) => Might: 80, Roll: 50
+        (1d100) + end (30) + Sword and Shield (40) + Wooden Shield (5) => Might: 75, Roll: 37
+
+        Furbeard rolls:
+        (1d100) + dex (30) + Bar Combat (35) => Might: 65, Roll: 58
+        (1d100) + str (50) + Bar Combat (35) + Metal Tankard (Light) => Might: 85, Roll: 53
+        (1d100) + end (40) + Bar Combat (35) => Might: 75, Roll: 21
+
+        [b]Question 1[/b] - Did Phylus take damage this round?  If so, how much?
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'No, he took no damage'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Yes, he took 4-5 damage'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'Yes, he took 9-10 damage'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Yes, he took 14-15 damage'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: |-
+        Case 4 - Combat
+        Phylus the nimble half-elf has ...
+      body: |-
+        [b]Case 4 - Combat[/b]
+        Phylus the nimble half-elf has run sour of a dwarf named Furbeard in a local bar.  Combat ensues.  Phylus has LIF 40, the dwarves both have LIF 25.  
+
+        [b]Round 2![/b]  
+        Furbeard’s loyal (and very drunk) friend, Chief Burlap, rushes in to assist Furbeard in taking Phylus down.  Both dwarves attack.  Phylus tries to block the newcomer, Burlap, and then attack Furbeard to discourage the other dwarf from continuing this fight.
+
+        Phylus rolls: 
+        (2d100) + dex (35) + Sword and Shield (40) + Wooden Shield (-1) => Might: 74, Roll: 23, 92
+        (2d100) + str (40) + Sword and Shield (40) + Longsword (Medium) => Might: 80, Roll: 41, 99
+        (2d100) + end (30) + Sword and Shield (40) + Wooden Shield (5) => Might: 75, Roll: 84, 2
+
+        Furbeard rolls:
+        (1d100) + dex (30) + Bar Combat (35) => Might: 65, Roll: 45
+        (1d100) + str (50) + Bar Combat (35) + Metal Tankard (Light) => Might: 85, Roll: 43
+        (1d100) + end (40) + Bar Combat (35) => Might: 75, Roll: 72
+
+        Chief Burlap rolls:
+        (1d100) + dex (20) + Bar Combat (40) => Might: 60, Roll: 32
+        (1d100) + str (60) + Bar Combat (40) + Pointy Tankard (Light) => Might: 100, Roll: 47
+        (1d100) + end (30) + Bar Combat (40) => Might: 70, Roll: 17
+
+        [b]Question 2[/b] - How much total damage does Phylus take this round?
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 14-15
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 26-27
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: '0, he takes no damage'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 4-5
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: |-
+        Case 4 - Combat
+        Phylus the nimble half-elf has ...
+      body: |-
+        [b]Case 4 - Combat[/b]
+        Phylus the nimble half-elf has run sour of a dwarf named Furbeard in a local bar.  Combat ensues.  Phylus has LIF 40, the dwarves both have LIF 25.  
+
+        [b]Round 2![/b]  
+        Furbeard’s loyal (and very drunk) friend, Chief Burlap, rushes in to assist Furbeard in taking Phylus down.  Both dwarves attack.  Phylus tries to block the newcomer, Burlap, and then attack Furbeard to discourage the other dwarf from continuing this fight.
+
+        Phylus rolls: 
+        (2d100) + dex (35) + Sword and Shield (40) + Wooden Shield (-1) => Might: 74, Roll: 23, 92
+        (2d100) + str (40) + Sword and Shield (40) + Longsword (Medium) => Might: 80, Roll: 41, 99
+        (2d100) + end (30) + Sword and Shield (40) + Wooden Shield (5) => Might: 75, Roll: 84, 2
+
+        Furbeard rolls:
+        (1d100) + dex (30) + Bar Combat (35) => Might: 65, Roll: 45
+        (1d100) + str (50) + Bar Combat (35) + Metal Tankard (Light) => Might: 85, Roll: 43
+        (1d100) + end (40) + Bar Combat (35) => Might: 75, Roll: 72
+
+        Chief Burlap rolls:
+        (1d100) + dex (20) + Bar Combat (40) => Might: 60, Roll: 32
+        (1d100) + str (60) + Bar Combat (40) + Pointy Tankard (Light) => Might: 100, Roll: 47
+        (1d100) + end (30) + Bar Combat (40) => Might: 70, Roll: 17
+
+        [b]Question 3[/b] - How much total damage does Furbeard take this round?
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 14-16
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 32-34
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 9-11
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: '0'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: |-
+        Case 4 - Combat
+        Phylus the nimble half-elf has ...
+      body: |-
+        [b]Case 4 - Combat[/b]
+        Phylus the nimble half-elf has run sour of a dwarf named Furbeard in a local bar.  Combat ensues.  Phylus has LIF 40, the dwarves both have LIF 25.  
+
+        [b]Round 2![/b]  
+        Furbeard’s loyal (and very drunk) friend, Chief Burlap, rushes in to assist Furbeard in taking Phylus down.  Both dwarves attack.  Phylus tries to block the newcomer, Burlap, and then attack Furbeard to discourage the other dwarf from continuing this fight.
+
+        Phylus rolls: 
+        (2d100) + dex (35) + Sword and Shield (40) + Wooden Shield (-1) => Might: 74, Roll: 23, 92
+        (2d100) + str (40) + Sword and Shield (40) + Longsword (Medium) => Might: 80, Roll: 41, 99
+        (2d100) + end (30) + Sword and Shield (40) + Wooden Shield (5) => Might: 75, Roll: 84, 2
+
+        Furbeard rolls:
+        (1d100) + dex (30) + Bar Combat (35) => Might: 65, Roll: 45
+        (1d100) + str (50) + Bar Combat (35) + Metal Tankard (Light) => Might: 85, Roll: 43
+        (1d100) + end (40) + Bar Combat (35) => Might: 75, Roll: 72
+
+        Chief Burlap rolls:
+        (1d100) + dex (20) + Bar Combat (40) => Might: 60, Roll: 32
+        (1d100) + str (60) + Bar Combat (40) + Pointy Tankard (Light) => Might: 100, Roll: 47
+        (1d100) + end (30) + Bar Combat (40) => Might: 70, Roll: 17
+
+        [b]Question 4[/b] - Given his Life score (25), what state is Furbeard now in?
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'Fighting, but with a -20 penalty on all actions'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: Unconscious
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: Dead
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: |-
+        Case 4 - Combat
+        Phylus the nimble half-elf has ...
+      body: |-
+        [b]Case 4 - Combat[/b]
+        Phylus the nimble half-elf has run sour of a dwarf named Furbeard in a local bar.  Combat ensues.  Phylus has LIF 40, the dwarves both have LIF 25.  
+
+        [b]Round 3![/b]  
+        Realizing he’s hurt, Phylus tries a desperate maneuver.  Pointing his sword at Chief Burlap, he conjures the power of pure force and channels it directly at the dwarf’s chest, hoping to push him away and thus create a path of escape for himself.  Burlap, worried about just another sword chop like the one his partner got, attempts to block with his tankard.
+
+        Phylus’ rolls:
+        1d100 + int (40) + Telekinesis (50) => Might: 90, Roll: 62
+        1d100 + spi (40) + Telekinesis (50) => Might: 90, Roll: 51
+
+        Chief Burlap’s rolls:
+        (1d100) + dex (20) + Bar Combat (40) => Might: 60, Roll: 56
+        (1d100) + str (60) + Bar Combat (40) + Pointy Tankard (Light) => Might: 100, Roll: 80
+        (1d100) + end (30) + Bar Combat (40) => Might: 70, Roll: 42
+
+        [b]Question 5[/b] - Did Phylus successfully cast the spell?  If so, did he affect Chief Burlap?
+        [i]HINT: Remember that actively blocking changes the stats used to defend.  Account for that when ruling Phylus' attack![/i]
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'Neither, he failed to case the spell.'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'He cast the spell, but failed to affect Chief Burlap'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Both, he cast the spell and pushed Burlap back a bit'
+          chosen: 1
+          not_chosen: 0
+    -
+      type: multichoice
+      title: |-
+        Case 4 - Combat
+        Phylus the nimble half-elf has ...
+      body: |-
+        [b]Case 4 - Combat[/b]
+        Phylus the nimble half-elf has run sour of a dwarf named Furbeard in a local bar.  Combat ensues.  Phylus has LIF 40, the dwarves both have LIF 25.  
+
+        [b]Round 3![/b]  
+        Realizing he’s hurt, Phylus tries a desperate maneuver.  Pointing his sword at Chief Burlap, he conjures the power of pure force and channels it directly at the dwarf’s chest, hoping to push him away and thus create a path of escape for himself.  Burlap, worried about just another sword chop like the one his partner got, attempts to block with his tankard.
+
+        Phylus’ rolls:
+        1d100 + int (40) + Telekinesis (50) => Might: 90, Roll: 62
+        1d100 + spi (40) + Telekinesis (50) => Might: 90, Roll: 51
+
+        Chief Burlap’s rolls:
+        (1d100) + dex (20) + Bar Combat (40) => Might: 60, Roll: 56
+        (1d100) + str (60) + Bar Combat (40) + Pointy Tankard (Light) => Might: 100, Roll: 80
+        (1d100) + end (30) + Bar Combat (40) => Might: 70, Roll: 42
+
+        [b]Question 6[/b] - How much did Burlap's block protect him?
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: "A bit:  it subtracted 6 from Phylus' 18 point produced"
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: "A lot:  It subtracted 6 from Phylus' 8 points produced"
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: "Not much:  It subtracted 1 from Phylus' 6 points produced"
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Not at all:  Burlap failed to block the magical attack'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: |-
+        Case 4 - Combat
+        Phylus the nimble half-elf has ...
+      body: |-
+        [b]Case 4 - Combat[/b]
+        Phylus the nimble half-elf has run sour of a dwarf named Furbeard in a local bar.  Combat ensues.  Phylus has LIF 40, the dwarves both have LIF 25.  
+
+        [b]Round 3![/b]  
+        Realizing he’s hurt, Phylus tries a desperate maneuver.  Pointing his sword at Chief Burlap, he conjures the power of pure force and channels it directly at the dwarf’s chest, hoping to push him away and thus create a path of escape for himself.  Burlap, worried about just another sword chop like the one his partner got, attempts to block with his tankard.
+
+        [b]Question 7[/b] - Assume Phylus succeeded with a net 15 points produced (after accounting for Burlap's block).  How would you determine how far back Burlap was pushed by the spell?
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'Divide the PP by 7 and use yards or meters (about 2 meters, or 6 feet)'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'Use the raw PP in yards or meters (15 meters, or about 50 feet)'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Use the raw PP in centimeters (15 centimeters, or half a foot)'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'Just say "he was pushed out of striking distance"'
+          chosen: 1
+          not_chosen: 0
+eval:
+  title: 'Content Evaluation Exam'
+  body: |-
+    The Content Evaluation exam is to prepare you for evaluation of characters and items.  It will help assess your readiness to spot problematic elements and communicate well with the original submitter to help move toward an agreeable solution.  Becoming an evaluator is a non-optional component of being an SH.  You may begin this exam at any point after successfully passing ASH Test 2 on Ruling.
+
+    Before starting this exam, please review [url=/wiki/evaluators]the Character Evaluation Guide[/url] in the wiki, as well as the [url=/wiki/system-rules/items-and-equipment]Items and Equipment Rules[/url].  
+
+    NOTE:  You'll be able to use both pages as reference during this test and when you're actually evaluating items and characters, so there's no need to memorize the information (since there's quite a lot of it), but it may be a good idea to familiarize yourself with the basic concepts of each before proceeded.
+
+    Like all the other ASH Tests, this test is not meant to be something you ace the first time through!  After you've completed the test, review any questions you got wrong and you should see feedback to help guide you to the right answer.  If you have any questions, contact the System Leads, we're happy to help with any questions you may have :)
+  pass_rate: 100
+  randomize: true
+  takes: 0
+  allow_skipping: false
+  summary_pass: ''
+  summary_default: ''
+  questions:
+    -
+      type: multichoice
+      title: 'What would you tell a player whose C has a skil...'
+      body: "What would you tell a player whose C has a skill that's too broad? (Select all that apply)"
+      max_score: 2
+      multi: true
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'We could split the skill into two or more separate skills and help you redistribute points as you like'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'We could drop one or more parts of the skill so that it would no longer be too broad'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'We could add conditions to the skill so that it has a drawback for being so broad'
+          chosen: -1
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'C Eval - Background'
+      body: |-
+        What cautions would you give a player whose C had the following background? (Select all that apply)
+
+        "Percival Thornbury was an ordinary noble once, a child of his mother's influential holdings in the marsh country below Greymoor.  But on the eve of his 17th birthday, Percival's carriage was attacked by a large beast.  With his driver and the horses killed in seconds, Percival tried to crawl his way to safety, but the beast set upon him quickly.  Desperate, he stabbed at it with his silver dagger, an ornamental gift from his mother before her passing.  The weapon wounded the creature deeply, but not before it bit Percival in the shoulder.  With a long howl, the creature disappeared back into the forest.  Luckily, the full moon light made Percival's overturned carriage easy to find once a rescue party was sent on account of his absence.  They brought the boy back, and the healers tended his wound.  It wasn't until a month later that Percival learned the dark truth - the creature who had attacked and bit him was a werewolf, one that had afflicted Percival with his curse.  That was many years ago.  Now entering middle age, Percival, a powerful baron, must strive to keep his secret hidden lest his enemies learn of his troubling condition.  He has come to Thornwick seeking solace and answers, perhaps even a cure."
+      max_score: 2
+      multi: true
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'No advice necessary - the character background is fine as is'
+          chosen: -1
+          not_chosen: 0
+        -
+          answer: '"Your character will need Setting department approval.  There may be a slight delay."'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: '"We need much more detail on your character''s backstory."'
+          chosen: -1
+          not_chosen: 0
+        -
+          answer: '"Being a rich baron is above and beyond the influence for a starting character."'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: '"Being a werewolf is above and beyond the power level for a starting character."'
+          chosen: -1
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'How would you advise a character with this skil...'
+      body: |-
+        How would you advise a character with this skill?  (Select all that apply)
+
+        "Pastrymancy
+        40
+        The character can conjure baked goods for consumption, conjure fresh dough to slow down or gum up enemies, and summon freshly-baked goods to toss at enemies and possibly burn them."
+      max_score: 1
+      multi: true
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'The skill is too broad'
+          chosen: -1
+          not_chosen: 0
+        -
+          answer: 'The skill is too narrow'
+          chosen: -1
+          not_chosen: 0
+        -
+          answer: 'The skill will need Setting approval'
+          chosen: -1
+          not_chosen: 0
+        -
+          answer: 'No advice necessary - skill is fine as is'
+          chosen: 1
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'C Eval - Description'
+      body: |
+        What's wrong with this character sheet? (Select all that apply)
+
+        [b]Background[/b]
+        Samuel grew up a blacksmith's son.  Following in his late father's footprints, he has been studying the art of crafting arms and armor, and searching for the rare metals his father used to speak of, eager to know what sort of wonders he might be able to craft if he could only get his hands on them.
+
+        [b]Personality[/b]
+        Sam is a bubbly individual, always friendly and charming, having no trouble winning people over.
+
+        [b]Occupation[/b]
+        Blacksmith searching for rare metals to craft with
+
+        [b]Description[/b]
+        Sam had the good fortune of inheriting his father's good looks, cutting a striking figure with his long black hair and burly smith's physique.  He towers at 6'5" and commands attention the moment he enters a room.
+
+        LIF 20
+        END 40
+        STR 40
+        DEX 25
+        INT 30
+        SPI 20
+        CHA 15
+      max_score: 1
+      multi: true
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'More background details needed'
+          chosen: -1
+          not_chosen: 0
+        -
+          answer: 'Background is too grand for a starting-level character'
+          chosen: -1
+          not_chosen: 0
+        -
+          answer: "Stats don't match the personality and description"
+          chosen: 1
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'How would you advise a character with the follo...'
+      body: |-
+        How would you advise a character with the following skill?  (Select all that apply)
+
+        "Frost bite
+        25
+        Buck can temporarily imbue his sword with frost magic, letting it do 5-10 more damage"
+      max_score: 2
+      multi: true
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'No advice necessary - the skill is fine as is'
+          chosen: -1
+          not_chosen: 0
+        -
+          answer: 'The skill is too broad'
+          chosen: -1
+          not_chosen: 0
+        -
+          answer: 'The skill is too narrow'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'The skill includes too many specifics on how it should be ruled'
+          chosen: 1
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'A player crafts a weapon that grants +10 to the...'
+      body: "A player crafts a weapon that grants +10 to the wielder's weapon skill.  How much is the weapon now worth?"
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: '0s - weapons are free'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 1000s
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 400s
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 750s
+          chosen: 1
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'A player submits an item for a paralysis poison...'
+      body: "A player submits an item for a single-dose paralysis poison they crafted to hinder a target's DEX.  The crafting produced 115 PP at difficulty 25.  Using the worth rules on the Items and Equipment page (the value the item form calculates), what is a dose worth?"
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 575s
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 115s
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 920s
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: '28,750s'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'A technician wishes to build a small surveillan...'
+      body: 'A technician builds a small surveillance drone with 100 build points.  Using the worth rules on the Items and Equipment page (the value the item form calculates), what is the drone worth?'
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 200s
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 100s
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: '5,000s'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: '25,000s'
+          chosen: 0
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'An assassin creates a poison with a difficulty ...'
+      body: 'An assassin creates a single-dose poison with a difficulty of 40 that imposes a -7 STR penalty; the crafting produced 49 PP.  What is the value of a dose of this poison in silver?'
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 56s
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 700s
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 245s
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 392s
+          chosen: 1
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'Which of the following would count as a simple,...'
+      body: 'Which of the following would count as a simple, number-less magical item ("No numbers but a real benefit", 25 to 250 silver, on the Items and Equipment page)?'
+      max_score: 1
+      multi: true
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'A magical map that displays the location of storm systems within ten miles'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'A program that can run facial recognition on video or images'
+          chosen: -1
+          not_chosen: 0
+        -
+          answer: 'A model ship that turns into a full-sized galley when exposed to salt water'
+          chosen: -1
+          not_chosen: 0
+        -
+          answer: "A coin-sized marble carving of a scarab beetle that can 'come alive' as a tiny golem for 10 minutes a day and follow simple spoken commands"
+          chosen: -1
+          not_chosen: 0
+        -
+          answer: "A collar and brooch set.  When the collar is worn, however holds the brooch can control the thoughts of the collar's wearer."
+          chosen: -1
+          not_chosen: 0
+    -
+      type: multichoice
+      title: 'How would you advise a character with this skil...'
+      body: |-
+        How would you advise a character with this skill? (Select the answer that matches the GREATEST issue with this skill) 
+
+        "Rune Magic
+        35
+        Darius is trained in drawing runes that can unlock magical effects.  The runes require a special ink that only he can make.  The ink and rune can mimic any magical effect as long as he has time to draw it.  More powerful effects require more time and skill."
+      max_score: 1
+      multi: false
+      random: true
+      boolean: false
+      answers:
+        -
+          answer: 'No advice necessary - the skill is good as is'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'The skill is too broad'
+          chosen: 1
+          not_chosen: 0
+        -
+          answer: 'The skill is too narrow'
+          chosen: 0
+          not_chosen: 0
+        -
+          answer: 'The skill gives too many specifics on how it should be ruled'
+          chosen: 0
+          not_chosen: 0
+ash3:
+  title: 'ASH Test Final Exam'
+  body: |-
+    Welcome to the third SH exam.  While not the final exam, this test is considered most important when deciding whether or not you'll become a fully vetted SH on the site.  
+
+    First, review the materials on [url=/wiki/advanced-story-hosting]Advanced Story Hosting[/url] in the wiki.  By now, you have also run at least 8 sessions, five of them on your own, and should have a good understanding of the overall process of being an SH on the site.
+
+    Once you complete the exam, you will be eligible for Test 4, which covers Item and Character evaluation.  At the same time, your answers to this exam will be reviewed by the site's active SHs.  If at least three of them approve, you will become a full SH, with all the rights and responsibilities thereof.
+
+    All questions are in essay format.  There is no required length, but depth of content is appreciated.  This is your chance to showcase how you will handle in- and out-of-character situations and explain your overall gaming philosophy.  There are any number of right answers.
+
+    Good luck!
+  pass_rate: 0
+  randomize: true
+  takes: 0
+  allow_skipping: false
+  summary_pass: ''
+  summary_default: ''
+  questions:
+    -
+      type: long_answer
+      title: 'Power Balance'
+      body: ''
+      max_score: 10
+    -
+      type: long_answer
+      title: 'Internal Consistency'
+      body: ''
+      max_score: 10
+    -
+      type: long_answer
+      title: 'Motivating PCs'
+      body: ''
+      max_score: 10
+    -
+      type: long_answer
+      title: PVP
+      body: ''
+      max_score: 10
+    -
+      type: long_answer
+      title: 'PC Death'
+      body: ''
+      max_score: 10
+    -
+      type: long_answer
+      title: 'External Continuity'
+      body: ''
+      max_score: 10
+    -
+      type: long_answer
+      title: 'Point of Running Sessions'
+      body: ''
+      max_score: 10
+    -
+      type: long_answer
+      title: 'Most Important Part of Running Sessions'
+      body: ''
+      max_score: 10
+    -
+      type: long_answer
+      title: 'SH Responsibilities'
+      body: ''
+      max_score: 10

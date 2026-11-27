@@ -1,0 +1,22 @@
+uuid: c0cddc32-9e1c-40d5-a9a2-e569a8f9d696
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.comment_node_timeline_event
+    - field.storage.comment.comment_body
+  module:
+    - text
+id: comment.comment_node_timeline_event.comment_body
+field_name: comment_body
+entity_type: comment
+bundle: comment_node_timeline_event
+label: Comment
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

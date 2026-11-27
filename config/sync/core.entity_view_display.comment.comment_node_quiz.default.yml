@@ -1,0 +1,27 @@
+uuid: 123fc821-c298-4abc-ba98-27f3762a653b
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.comment_node_quiz
+    - field.field.comment.comment_node_quiz.comment_body
+  module:
+    - text
+id: comment.comment_node_quiz.default
+targetEntityType: comment
+bundle: comment_node_quiz
+mode: default
+content:
+  comment_body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden: {  }

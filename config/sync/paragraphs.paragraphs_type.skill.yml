@@ -1,0 +1,10 @@
+uuid: 40fd49f1-b3e1-4a37-b885-0d51b8cad374
+langcode: en
+status: true
+dependencies: {  }
+id: skill
+label: Skill
+icon_uuid: null
+icon_default: null
+description: 'Migrated from field_collection field_skill'
+behavior_plugins: {  }

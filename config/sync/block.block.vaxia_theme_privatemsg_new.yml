@@ -1,0 +1,20 @@
+uuid: d2f15db4-19bc-4bdd-991a-b79b766bee89
+langcode: en
+status: true
+dependencies:
+  module:
+    - vaxia_storyhosts
+  theme:
+    - vaxia_theme
+id: vaxia_theme_privatemsg_new
+theme: vaxia_theme
+region: content
+weight: -52
+provider: null
+plugin: privatemsg-new
+settings:
+  id: privatemsg-new
+  label: 'New message indication'
+  label_display: '0'
+  provider: vaxia_storyhosts
+visibility: {  }

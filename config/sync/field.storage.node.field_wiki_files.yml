@@ -1,0 +1,23 @@
+uuid: e7b83be1-1cb2-43f9-b018-ccda3c508b66
+langcode: und
+status: true
+dependencies:
+  module:
+    - file
+    - node
+id: node.field_wiki_files
+field_name: field_wiki_files
+entity_type: node
+type: file
+settings:
+  target_type: file
+  display_field: false
+  display_default: false
+  uri_scheme: public
+module: file
+locked: false
+cardinality: 10
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

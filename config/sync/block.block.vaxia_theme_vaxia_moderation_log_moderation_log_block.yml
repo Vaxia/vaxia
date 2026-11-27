@@ -1,0 +1,33 @@
+uuid: ecf6a735-5d62-417f-9d0f-25fb969d0b70
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+    - user
+    - vaxia_storyhosts
+  theme:
+    - vaxia_theme
+id: vaxia_theme_vaxia_moderation_log_moderation_log_block
+theme: vaxia_theme
+region: content
+weight: -36
+provider: null
+plugin: vaxia_moderation_log-moderation_log_block
+settings:
+  id: vaxia_moderation_log-moderation_log_block
+  label: 'Moderation log'
+  label_display: '0'
+  provider: vaxia_storyhosts
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: '/node/*/character_sheet'
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      player: player

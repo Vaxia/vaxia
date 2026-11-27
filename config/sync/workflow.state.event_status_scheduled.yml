@@ -1,0 +1,13 @@
+uuid: f0c4cfdf-d2a9-4ae2-9bb8-3662f8969be7
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.event_status
+id: event_status_scheduled
+label: scheduled
+weight: -20
+module: workflow
+wid: event_status
+sysid: 0
+single_state_widget: ''

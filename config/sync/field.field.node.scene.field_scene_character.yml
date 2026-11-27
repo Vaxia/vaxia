@@ -1,0 +1,27 @@
+uuid: dae7c55a-f35d-4edd-ac84-b3a6f167cb33
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_scene_character
+    - node.type.character_sheet
+    - node.type.scene
+id: node.scene.field_scene_character
+field_name: field_scene_character
+entity_type: node
+bundle: scene
+label: Character
+description: 'Which character this scene is put in for.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      character_sheet: character_sheet
+    sort:
+      field: _none
+      direction: ASC
+field_type: entity_reference

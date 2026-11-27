@@ -1,0 +1,418 @@
+<?php
+
+/**
+ * @file
+ * Per-forum role grants (D7 forum_access 7.x-1.3 without ACL moderators).
+ *
+ * View, post (new topics and replies), edit and delete per forum term, applied
+ * to every node in the forum (taxonomy_forums: forum, event, proposal, scene,
+ * session_report) through node grants, plus the checks forum_access made in
+ * hook_node_access(), on the forum pages, the node and comment forms.
+ */
+
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Cache\CacheableMetadata;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Url;
+use Drupal\comment\CommentInterface;
+use Drupal\node\NodeInterface;
+use Drupal\taxonomy\TermInterface;
+use Drupal\user\Entity\Role;
+use Drupal\vaxia_forum_access\ForumAccess;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+
+/**
+ * Implements hook_node_grants().
+ *
+ * Roles are the grant ids, as in D7 (role machine name -> stable int).
+ */
+function vaxia_forum_access_node_grants(AccountInterface $account, $op) {
+  return [ForumAccess::REALM => array_map([ForumAccess::class, 'gid'], $account->getRoles())];
+}
+
+/**
+ * Implements hook_node_access_records().
+ */
+function vaxia_forum_access_node_access_records(NodeInterface $node) {
+  $tid = ForumAccess::forumTid($node);
+  if (!$tid) {
+    return [];
+  }
+  $bypass = ForumAccess::bypassRoles();
+  $records = [];
+  foreach (ForumAccess::grants($tid) as $role => $ops) {
+    // Roles that bypass node access need no records; unpublished topics are
+    // for their authors and admins only (D7 denied them in hook_node_access).
+    $view = $node->isPublished() ? $ops['view'] : 0;
+    if (isset($bypass[$role]) || !($view || $ops['update'] || $ops['delete'])) {
+      continue;
+    }
+    $records[] = [
+      'realm' => ForumAccess::REALM,
+      'gid' => ForumAccess::gid($role),
+      'grant_view' => $view,
+      'grant_update' => $ops['update'],
+      'grant_delete' => $ops['delete'],
+      'priority' => 0,
+    ];
+  }
+  if (!$records) {
+    // Nobody gets anything: without a record, core would write its "all"
+    // default grant and show the node to everyone.
+    $records[] = [
+      'realm' => ForumAccess::REALM,
+      'gid' => 0,
+      'grant_view' => 0,
+      'grant_update' => 0,
+      'grant_delete' => 0,
+      'priority' => 0,
+    ];
+  }
+  return $records;
+}
+
+/**
+ * Implements hook_node_access().
+ *
+ * D7 forum_access_node_access(): no View grant denies everything; edit and
+ * delete need the grant or the "own/any forum content" permissions.
+ */
+function vaxia_forum_access_node_access(NodeInterface $node, $op, AccountInterface $account) {
+  $tid = ForumAccess::forumTid($node);
+  if (!$tid || !in_array($op, ['view', 'update', 'delete'], TRUE)) {
+    return AccessResult::neutral();
+  }
+  $cacheability = (new CacheableMetadata())
+    ->addCacheContexts(['user.roles', 'user.permissions', 'user'])
+    ->addCacheTags([ForumAccess::CACHE_TAG])
+    ->addCacheableDependency($node);
+  if (!ForumAccess::access('view', $tid, $account)) {
+    return AccessResult::forbidden('No View grant in this forum.')->addCacheableDependency($cacheability);
+  }
+  $own = $account->isAuthenticated() && $node->getOwnerId() == $account->id();
+  if ($op === 'update' && ($account->hasPermission('edit any forum content') || ($own && $account->hasPermission('edit own forum content')))) {
+    return AccessResult::neutral()->addCacheableDependency($cacheability);
+  }
+  if ($op === 'delete' && ($account->hasPermission('delete any forum content') || ($own && $account->hasPermission('delete own forum content')))) {
+    return AccessResult::neutral()->addCacheableDependency($cacheability);
+  }
+  if (!ForumAccess::access($op, $tid, $account)) {
+    return AccessResult::forbidden('No ' . $op . ' grant in this forum.')->addCacheableDependency($cacheability);
+  }
+  if ($op === 'view' && !$node->isPublished() && !($own && $account->hasPermission('view own unpublished content'))) {
+    return AccessResult::forbidden('Unpublished forum content.')->addCacheableDependency($cacheability);
+  }
+  return AccessResult::neutral()->addCacheableDependency($cacheability);
+}
+
+/**
+ * The forum the current page is about (D7 forum_access_current_tid()).
+ *
+ * The forum page, or node/add/{type}?forum_id=N; 0 elsewhere ("any forum").
+ */
+function vaxia_forum_access_current_tid(): int {
+  $route = \Drupal::routeMatch();
+  if ($route->getRouteName() === 'forum.page' && ($term = $route->getParameter('taxonomy_term')) instanceof TermInterface) {
+    return (int) $term->id();
+  }
+  $forum_id = \Drupal::request()->query->get('forum_id');
+  if ($route->getRouteName() === 'node.add' && is_numeric($forum_id)) {
+    return (int) $forum_id;
+  }
+  return 0;
+}
+
+/**
+ * Implements hook_node_create_access().
+ *
+ * D7 checked forum topics only: the Post grant in the current forum, or in
+ * any forum when the page names none.
+ */
+function vaxia_forum_access_node_create_access(AccountInterface $account, array $context, $entity_bundle) {
+  if ($entity_bundle !== 'forum') {
+    return AccessResult::neutral();
+  }
+  $tid = vaxia_forum_access_current_tid();
+  $result = ForumAccess::access('create', $tid, $account) ? AccessResult::neutral() : AccessResult::forbidden('No Post grant.');
+  return $result->addCacheContexts(['user.roles', 'route', 'url.query_args:forum_id'])->addCacheTags([ForumAccess::CACHE_TAG]);
+}
+
+/**
+ * Implements hook_taxonomy_term_access().
+ *
+ * Forums and containers without a View grant (here or above) are hidden from
+ * the forum index and their pages are denied.
+ */
+function vaxia_forum_access_taxonomy_term_access(EntityInterface $term, $op, AccountInterface $account) {
+  if ($op !== 'view' || !ForumAccess::isForumTerm($term) || $term->isNew()) {
+    return AccessResult::neutral();
+  }
+  $allowed = ForumAccess::canViewTree((int) $term->id(), $account);
+  return ($allowed ? AccessResult::neutral() : AccessResult::forbidden('No View grant on this forum.'))
+    ->addCacheContexts(['user.roles', 'user.permissions'])
+    ->addCacheTags([ForumAccess::CACHE_TAG, 'taxonomy_term_list:' . $term->bundle()])
+    ->addCacheableDependency($term);
+}
+
+/**
+ * Implements hook_comment_access().
+ *
+ * D7: the forum's Edit and Delete grants (and the own/any forum content
+ * permissions) apply to replies too; "edit own comments" alone does not let
+ * anyone edit replies in a forum.
+ */
+function vaxia_forum_access_comment_access(CommentInterface $comment, $op, AccountInterface $account) {
+  $host = $comment->getCommentedEntity();
+  $tid = $host ? ForumAccess::forumTid($host) : 0;
+  if (!$tid || !in_array($op, ['update', 'delete'], TRUE)) {
+    return AccessResult::neutral();
+  }
+  $cacheability = (new CacheableMetadata())
+    ->addCacheContexts(['user.roles', 'user.permissions', 'user'])
+    ->addCacheTags([ForumAccess::CACHE_TAG])
+    ->addCacheableDependency($comment);
+  $own = $account->isAuthenticated() && $comment->getOwnerId() == $account->id();
+  $perm = $op === 'update' ? 'edit own forum content' : 'delete own forum content';
+  if (ForumAccess::access('view', $tid, $account) && (ForumAccess::access($op, $tid, $account) || ($own && $account->hasPermission($perm)))) {
+    return AccessResult::allowed()->addCacheableDependency($cacheability);
+  }
+  if ($op === 'update' && !$account->hasPermission('administer comments')) {
+    return AccessResult::forbidden('No Edit grant in this forum.')->addCacheableDependency($cacheability);
+  }
+  return AccessResult::neutral()->addCacheableDependency($cacheability);
+}
+
+/**
+ * Implements hook_node_links_alter().
+ *
+ * No "Add new comment" link without the Post grant.
+ */
+function vaxia_forum_access_node_links_alter(array &$links, NodeInterface $node, array &$context) {
+  $tid = ForumAccess::forumTid($node);
+  if (!$tid) {
+    return;
+  }
+  $links['#cache']['contexts'][] = 'user.roles';
+  $links['#cache']['tags'][] = ForumAccess::CACHE_TAG;
+  if (ForumAccess::access('create', $tid, \Drupal::currentUser())) {
+    return;
+  }
+  foreach ($links as $key => $link) {
+    if (strpos($key, 'comment__') === 0) {
+      unset($links[$key]['#links']['comment-add']);
+    }
+  }
+}
+
+/**
+ * Implements hook_node_view_alter().
+ *
+ * No reply form under the topic without the Post grant.
+ */
+function vaxia_forum_access_node_view_alter(array &$build, NodeInterface $node, $display) {
+  $tid = ForumAccess::forumTid($node);
+  if (!$tid) {
+    return;
+  }
+  $build['#cache']['contexts'][] = 'user.roles';
+  $build['#cache']['tags'][] = ForumAccess::CACHE_TAG;
+  if (ForumAccess::access('create', $tid, \Drupal::currentUser())) {
+    return;
+  }
+  foreach ($node->getFieldDefinitions() as $field => $definition) {
+    if ($definition->getType() === 'comment' && isset($build[$field][0]['comment_form'])) {
+      unset($build[$field][0]['comment_form']);
+    }
+  }
+}
+
+/**
+ * Implements hook_comment_links_alter().
+ *
+ * No "reply" link on replies without the Post grant.
+ */
+function vaxia_forum_access_comment_links_alter(array &$links, CommentInterface $comment, array &$context) {
+  $host = $comment->getCommentedEntity();
+  $tid = $host ? ForumAccess::forumTid($host) : 0;
+  if ($tid && !ForumAccess::access('create', $tid, \Drupal::currentUser())) {
+    unset($links['comment']['#links']['comment-reply']);
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for comment_form (base form).
+ *
+ * Server side: a reply needs the Post grant in the topic's forum.
+ */
+function vaxia_forum_access_form_comment_form_alter(array &$form, FormStateInterface $form_state) {
+  $comment = $form_state->getFormObject()->getEntity();
+  if ($comment->isNew()) {
+    $form['#validate'][] = 'vaxia_forum_access_comment_form_validate';
+  }
+}
+
+/**
+ * Validates a new reply against the forum's Post grant.
+ */
+function vaxia_forum_access_comment_form_validate(array &$form, FormStateInterface $form_state) {
+  $host = $form_state->getFormObject()->getEntity()->getCommentedEntity();
+  $tid = $host ? ForumAccess::forumTid($host) : 0;
+  if ($tid && !ForumAccess::access('create', $tid, \Drupal::currentUser())) {
+    $form_state->setErrorByName('', t('You are not allowed to post in this forum.'));
+  }
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for node_form.
+ *
+ * D7 _forum_access_node_form(): on forum topics, the forum select only offers
+ * forums (and containers, for context) the user may post in, plus the topic's
+ * current forum when editing. Node admins (bypass) are not restricted.
+ */
+function vaxia_forum_access_form_node_form_alter(array &$form, FormStateInterface $form_state) {
+  $node = $form_state->getFormObject()->getEntity();
+  $account = \Drupal::currentUser();
+  if ($node->bundle() !== 'forum' || !isset($form['taxonomy_forums']['widget']['#options']) || $account->hasPermission('bypass node access')) {
+    return;
+  }
+  $current = $node->isNew() ? 0 : ForumAccess::forumTid($node);
+  $options = [];
+  foreach ($form['taxonomy_forums']['widget']['#options'] as $key => $label) {
+    if (!is_numeric($key) || (int) $key === $current || ForumAccess::access('create', (int) $key, $account)) {
+      $options[$key] = $label;
+    }
+  }
+  $form['taxonomy_forums']['widget']['#options'] = $options;
+  $form['#cache']['contexts'][] = 'user.roles';
+  $form['#cache']['tags'][] = ForumAccess::CACHE_TAG;
+  $form['#validate'][] = 'vaxia_forum_access_node_form_validate';
+}
+
+/**
+ * Server-side check of the chosen forum (the options can be tampered with).
+ */
+function vaxia_forum_access_node_form_validate(array &$form, FormStateInterface $form_state) {
+  $node = $form_state->getFormObject()->getEntity();
+  $current = $node->isNew() ? 0 : (int) \Drupal::service('forum.index_storage')->getOriginalTermId($node);
+  $value = $form_state->getValue('taxonomy_forums');
+  $tid = (int) ($value[0]['target_id'] ?? 0);
+  if ($tid && $tid !== $current && !ForumAccess::access('create', $tid, \Drupal::currentUser())) {
+    $form_state->setErrorByName('taxonomy_forums', t('You are not allowed to post in this forum.'));
+  }
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for taxonomy_term_form.
+ *
+ * The D7 "Access control" grid on the forum and container forms: roles by
+ * View / Post / Edit posts / Delete posts.
+ */
+function vaxia_forum_access_form_taxonomy_term_form_alter(array &$form, FormStateInterface $form_state) {
+  $form_object = $form_state->getFormObject();
+  $operation = $form_object->getOperation();
+  $term = $form_object->getEntity();
+  if (!in_array($operation, ['forum', 'container'], TRUE) || !ForumAccess::isForumTerm($term)) {
+    return;
+  }
+  $account = \Drupal::currentUser();
+  // D7: forum admins without View on a forum can't open its settings.
+  if (!$term->isNew() && !ForumAccess::access('view', (int) $term->id(), $account)) {
+    throw new AccessDeniedHttpException();
+  }
+  $is_container = $operation === 'container';
+  $columns = $is_container
+    ? ['view' => t('View this container'), 'create' => t('See this container in the forum selection list')]
+    : ['view' => t('View this forum'), 'create' => t('Post in this forum'), 'update' => t('Edit posts'), 'delete' => t('Delete posts')];
+  $grants = $term->isNew() ? ForumAccess::defaults() : ForumAccess::grants((int) $term->id());
+  $bypass = ForumAccess::bypassRoles();
+
+  $form['vaxia_forum_access'] = [
+    '#type' => 'details',
+    '#title' => t('Access control'),
+    '#open' => TRUE,
+    '#tree' => TRUE,
+    '#weight' => 5,
+  ];
+  $form['vaxia_forum_access']['grants'] = [
+    '#type' => 'table',
+    '#header' => array_merge([t('Role')], array_values($columns)),
+    '#caption' => $is_container
+      ? t('Users who can see any forum in this container need View. Users who post in a forum in it need See, so the forum shows in context in the forum selection list.')
+      : t('Users also need the "access content" permission to see a forum, "create forum content" / "post comments" with Post to post topics / replies. Edit and Delete apply to topics and replies; the "edit/delete own forum content" permissions work without them.'),
+  ];
+  foreach (Role::loadMultiple() as $rid => $role) {
+    $label = $role->label();
+    if (isset($bypass[$rid])) {
+      $label .= ' ' . t('(bypasses content access: full access either way)');
+    }
+    $form['vaxia_forum_access']['grants'][$rid]['role'] = ['#markup' => $label];
+    foreach (array_keys($columns) as $op) {
+      $form['vaxia_forum_access']['grants'][$rid][$op] = [
+        '#type' => 'checkbox',
+        '#title' => $columns[$op] . ' (' . $role->label() . ')',
+        '#title_display' => 'invisible',
+        '#default_value' => !empty($grants[$rid][$op]),
+      ];
+    }
+  }
+  $form['#validate'][] = 'vaxia_forum_access_term_form_validate';
+  $form['actions']['submit']['#submit'][] = 'vaxia_forum_access_term_form_submit';
+}
+
+/**
+ * D7: a user without bypass must keep View for a role they hold.
+ */
+function vaxia_forum_access_term_form_validate(array &$form, FormStateInterface $form_state) {
+  $account = \Drupal::currentUser();
+  if ($account->hasPermission('bypass node access')) {
+    return;
+  }
+  foreach ((array) $form_state->getValue(['vaxia_forum_access', 'grants']) as $rid => $ops) {
+    if (!empty($ops['view']) && in_array($rid, $account->getRoles(), TRUE)) {
+      return;
+    }
+  }
+  $form_state->setErrorByName('vaxia_forum_access', t('You must assign View access to a role that you hold.'));
+}
+
+/**
+ * Saves the grid and updates node_access for the forum's nodes.
+ */
+function vaxia_forum_access_term_form_submit(array &$form, FormStateInterface $form_state) {
+  $term = $form_state->getFormObject()->getEntity();
+  if (!$term->id()) {
+    return;
+  }
+  $grants = [];
+  foreach ((array) $form_state->getValue(['vaxia_forum_access', 'grants']) as $rid => $ops) {
+    foreach (ForumAccess::OPS as $op) {
+      $grants[$rid][$op] = (int) !empty($ops[$op]);
+    }
+  }
+  ForumAccess::save((int) $term->id(), $grants);
+  \Drupal::logger('access')->notice('Changed grants for %forum forum.', ['%forum' => $term->label()]);
+  if (!ForumAccess::rewriteForumNodes((int) $term->id())) {
+    \Drupal::messenger()->addWarning(t('This forum holds many posts: <a href=":url">rebuild content permissions</a> to apply the new grants.', [':url' => Url::fromRoute('node.configure_rebuild_confirm')->toString()]));
+  }
+}
+
+/**
+ * Implements hook_taxonomy_term_delete().
+ */
+function vaxia_forum_access_taxonomy_term_delete(TermInterface $term) {
+  if (ForumAccess::isForumTerm($term)) {
+    \Drupal::database()->delete('vaxia_forum_access')->condition('tid', $term->id())->execute();
+    ForumAccess::reset();
+  }
+}
+
+/**
+ * Implements hook_user_role_delete().
+ */
+function vaxia_forum_access_user_role_delete($role) {
+  \Drupal::database()->delete('vaxia_forum_access')->condition('role', $role->id())->execute();
+  \Drupal::database()->delete('node_access')->condition('realm', ForumAccess::REALM)->condition('gid', ForumAccess::gid($role->id()))->execute();
+  ForumAccess::reset();
+}

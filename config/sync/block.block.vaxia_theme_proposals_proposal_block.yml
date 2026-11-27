@@ -1,0 +1,20 @@
+uuid: 6096de00-f1a3-4e21-a657-38c3d1b0b67c
+langcode: en
+status: true
+dependencies:
+  module:
+    - vaxia_governance
+  theme:
+    - vaxia_theme
+id: vaxia_theme_proposals_proposal_block
+theme: vaxia_theme
+region: sidebar_first
+weight: -47
+provider: null
+plugin: proposals-proposal_block
+settings:
+  id: proposals-proposal_block
+  label: Proposals
+  label_display: visible
+  provider: vaxia_governance
+visibility: {  }

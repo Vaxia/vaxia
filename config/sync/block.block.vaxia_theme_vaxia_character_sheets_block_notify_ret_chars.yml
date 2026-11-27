@@ -1,0 +1,28 @@
+uuid: 9a868c9b-b039-4e09-998b-8bbcfc5fa3f9
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+    - vaxia_core
+  theme:
+    - vaxia_theme
+id: vaxia_theme_vaxia_character_sheets_block_notify_ret_chars
+theme: vaxia_theme
+region: content
+weight: -50
+provider: null
+plugin: vaxia_character_sheets-block_notify_ret_chars
+settings:
+  id: vaxia_character_sheets-block_notify_ret_chars
+  label: 'Notify Returned Chars'
+  label_display: '0'
+  provider: vaxia_core
+visibility:
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      administrator: administrator

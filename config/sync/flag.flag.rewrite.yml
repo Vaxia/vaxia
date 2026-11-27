@@ -1,0 +1,39 @@
+uuid: f2bb2544-79fe-49ac-8462-a49cba41e64f
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+_core:
+  default_config_hash: FaxgnxJiG4Q6lKWj2I7Y_x2txKKtW1Qm-C88DByfO1c
+id: rewrite
+label: Rewrite
+bundles:
+  - wiki_page
+entity_type: node
+global: true
+flag_short: 'Mark to Rewrite'
+flag_long: 'Mark this page for rewrite'
+flag_message: 'This page has been marked for rewriting to address spelling, grammar or tone issues.'
+unflag_short: "Don't rewrite"
+unflag_long: 'Un-mark this page for rewrite'
+unflag_message: 'This page has been un-marked for rewriting'
+unflag_denied_text: ''
+flood_control_active: false
+flood_control_limit: 10
+flood_control_window: 3600
+weight: 0
+flag_type: 'entity:node'
+link_type: reload
+flagTypeConfig:
+  show_in_links:
+    full: full
+    teaser: teaser
+  show_as_field: false
+  show_on_form: false
+  show_contextual_link: false
+  extra_permissions: {  }
+  access_author: ''
+linkTypeConfig: {  }
+is_anon_enabled: false
+cron_batch_size: 0

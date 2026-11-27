@@ -1,0 +1,27 @@
+uuid: 6464cc3d-da92-49fd-a35e-f07e4abaabd4
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_wiki_files
+    - node.type.wiki_page
+  module:
+    - file
+id: node.wiki_page.field_wiki_files
+field_name: field_wiki_files
+entity_type: node
+bundle: wiki_page
+label: Files
+description: 'Upload any files to go with this article.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:file'
+  handler_settings: {  }
+  file_directory: wiki/files
+  file_extensions: 'txt pdf'
+  max_filesize: ''
+  description_field: true
+field_type: file

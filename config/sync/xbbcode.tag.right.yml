@@ -1,0 +1,13 @@
+uuid: 8ea85891-f2cb-44d9-9ebd-959d703251da
+langcode: en
+status: true
+dependencies: {  }
+id: right
+label: Right
+description: 'Right-aligned block.'
+name: right
+attached: {  }
+sample: '[{{ name }}]Text[/{{ name }}]'
+template_code: '<div style="text-align:right">{{ tag.content }}</div>'
+template_file: null
+editable: false

@@ -1,0 +1,8 @@
+name: VAXIA wiki
+type: module
+description: 'The site wiki: auto-links to other wiki pages, revision notes, locked pages, disambiguation and templates, wiki flags and lists. Replaces D7 site_wiki and vaxia_wiki.'
+package: VAXIA
+core_version_requirement: ^11
+dependencies:
+  - vaxia_core:vaxia_core
+  - flag:flag

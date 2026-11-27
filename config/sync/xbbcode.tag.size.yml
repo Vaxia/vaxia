@@ -1,0 +1,18 @@
+uuid: dc5c5ff2-81f2-4616-9694-d1548d254dfd
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - xbbcode_standard
+_core:
+  default_config_hash: 5riA-akSQ2X9Yn_yBnWmU6KI3LHHmzQ27RP-npoHanM
+id: size
+label: 'Font size'
+description: 'Font size in pixels, 6 to 48: [size=14]text[/size].'
+name: size
+attached: {  }
+sample: '[{{ name }}=18]Bigger[/{{ name }}]'
+template_code: '{% if tag.option matches ''{^[0-9]+$}'' %}<span style="font-size:{{ max(6, min(48, tag.option + 0)) }}px">{{ tag.content }}</span>{% else %}{{ tag.outerSource }}{% endif %}'
+template_file: null
+editable: false

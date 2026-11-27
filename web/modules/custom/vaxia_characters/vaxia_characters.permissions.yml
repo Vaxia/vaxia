@@ -1,0 +1,20 @@
+view inactive sheets:
+  title: 'View inactive sheets'
+use template sheets:
+  title: 'Use template sheets'
+administer NPC handler:
+  title: 'Administer NPC handler'
+  restrict access: true
+create NPCs:
+  title: 'Create NPCs for posting'
+use NPCs:
+  title: 'Use NPCs for posting'
+view reputation xp:
+  title: 'View reputation xp'
+view own reputation xp:
+  title: 'View own reputation xp'
+give reputation xp:
+  title: 'Give reputation xp'
+admin reputation xp:
+  title: 'Administrate reputation xp'
+  restrict access: true

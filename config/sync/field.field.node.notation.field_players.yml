@@ -1,0 +1,28 @@
+uuid: d5b0a9c0-8751-4c87-85bc-514b4cc69f18
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_players
+    - node.type.notation
+id: node.notation.field_players
+field_name: field_players
+entity_type: node
+bundle: notation
+label: Player
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'vaxia_conduct:user'
+  handler_settings:
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    filter:
+      type: _none
+    include_anonymous: true
+field_type: entity_reference

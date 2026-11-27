@@ -1,0 +1,20 @@
+uuid: b24ac753-c843-4284-9155-b5947b92f06d
+langcode: und
+status: true
+dependencies:
+  module:
+    - datetime
+    - user
+id: user.field_took_setting_walkthrough
+field_name: field_took_setting_walkthrough
+entity_type: user
+type: datetime
+settings:
+  datetime_type: date
+module: datetime
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

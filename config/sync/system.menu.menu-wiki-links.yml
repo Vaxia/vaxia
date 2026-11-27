@@ -1,0 +1,8 @@
+uuid: 4f73b0f6-82a4-4f71-95b2-02f2c1c20f84
+langcode: en
+status: true
+dependencies: {  }
+id: menu-wiki-links
+label: 'Wiki Links'
+description: 'Special displays for the wiki are linked here.'
+locked: false

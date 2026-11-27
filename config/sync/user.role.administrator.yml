@@ -1,0 +1,199 @@
+uuid: e007e80d-02a4-4e4c-80d3-20ad8e4202ee
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.filtered_html
+    - filter.format.full_html
+    - node.type.page
+    - workflow.workflow.art_evaluation
+    - workflow.workflow.character_evaluation
+    - workflow.workflow.event_status
+    - workflow.workflow.item_evaluation
+    - workflow.workflow.notation_approval
+    - workflow.workflow.scene_evaluation
+    - workflow.workflow.wiki_workflow
+  module:
+    - block
+    - comment
+    - filter
+    - flag
+    - forum
+    - image
+    - node
+    - path
+    - privatemsg
+    - system
+    - taxonomy
+    - vaxia_characters
+    - vaxia_chat
+    - vaxia_core
+    - vaxia_dice
+    - vaxia_favorites
+    - vaxia_governance
+    - vaxia_items
+    - vaxia_storyhosts
+    - vaxia_wiki
+    - views_ui
+    - webform
+    - webform_node
+    - workflow
+id: administrator
+label: administrator
+weight: 2
+is_admin: false
+permissions:
+  - 'access administration pages'
+  - 'access any art_evaluation workflow_transion overview'
+  - 'access any character_evaluation workflow_transion overview'
+  - 'access any event_status workflow_transion overview'
+  - 'access any item_evaluation workflow_transion overview'
+  - 'access any scene_evaluation workflow_transion overview'
+  - 'access any wiki_workflow workflow_transion overview'
+  - 'access comments'
+  - 'access content'
+  - 'access content overview'
+  - 'access site in maintenance mode'
+  - 'access site reports'
+  - 'access user profiles'
+  - 'add xp to character sheet'
+  - 'add xp to own character sheet'
+  - 'admin personal_rooms'
+  - 'admin reputation xp'
+  - 'admin vaxia settings'
+  - 'administer NPC handler'
+  - 'administer actions'
+  - 'administer blocks'
+  - 'administer character sheet'
+  - 'administer comments'
+  - 'administer content types'
+  - 'administer dice roller'
+  - 'administer dice ruler'
+  - 'administer filters'
+  - 'administer flags'
+  - 'administer forums'
+  - 'administer image styles'
+  - 'administer item settings'
+  - 'administer item shop'
+  - 'administer item uses'
+  - 'administer menu'
+  - 'administer modules'
+  - 'administer nodes'
+  - 'administer old archives'
+  - 'administer permissions'
+  - 'administer privatemsg'
+  - 'administer proposal'
+  - 'administer room cleanup'
+  - 'administer rpg chat'
+  - 'administer site configuration'
+  - 'administer site wiki'
+  - 'administer software updates'
+  - 'administer taxonomy'
+  - 'administer themes'
+  - 'administer url aliases'
+  - 'administer users'
+  - 'administer vacation'
+  - 'administer views'
+  - 'administer workflow'
+  - 'administrate anon mailer'
+  - 'administrate departments'
+  - 'administrate justice form'
+  - 'administrate role application'
+  - 'administrate rpg_elections'
+  - 'administrate sh test'
+  - 'approve sh starvation'
+  - 'approve sh test'
+  - 'bypass node access'
+  - 'bypass vaxia ic chat'
+  - 'can go on vacation'
+  - 'can vote on rpg_elections'
+  - 'cancel account'
+  - 'change own username'
+  - 'create NPCs'
+  - 'create SHs'
+  - 'create art_evaluation workflow_transition'
+  - 'create character_evaluation workflow_transition'
+  - 'create event_status workflow_transition'
+  - 'create item_evaluation workflow_transition'
+  - 'create notation_approval workflow_transition'
+  - 'create page content'
+  - 'create scene_evaluation workflow_transition'
+  - 'create url aliases'
+  - 'create wiki_workflow workflow_transition'
+  - 'delete any page content'
+  - 'delete any webform submission'
+  - 'delete own page content'
+  - 'delete own webform submission'
+  - 'edit SH notes'
+  - 'edit any page content'
+  - 'edit any webform submission'
+  - 'edit locked site wiki'
+  - 'edit own comments'
+  - 'edit own page content'
+  - 'edit own webform submission'
+  - 'edit personal_rooms'
+  - 'edit playable item'
+  - 'edit private SH notes'
+  - 'email others characters'
+  - 'flag delete'
+  - 'flag expand'
+  - 'flag rewrite'
+  - 'give reputation xp'
+  - 'make room from wiki'
+  - 'manage own favorites'
+  - 'post comments'
+  - 'post in narrative format'
+  - 'privatemsg delete own messages'
+  - 'privatemsg write messages'
+  - 'recover user accounts'
+  - 'remove xp from character sheet'
+  - 'remove xp from own character sheet'
+  - 'rule all scenes'
+  - 'score any quiz'
+  - 'search old archives'
+  - 'select account cancellation method'
+  - 'sellback item shop'
+  - 'set item for shop'
+  - 'skip comment approval'
+  - 'transfer others sheets'
+  - 'transfer rxp'
+  - 'unflag delete'
+  - 'unflag expand'
+  - 'unflag rewrite'
+  - 'use NPCs'
+  - 'use SH dice options'
+  - 'use background changer'
+  - 'use dice helper'
+  - 'use dice roller'
+  - 'use dice ruler'
+  - 'use item shop'
+  - 'use items indefinately'
+  - 'use justice form'
+  - 'use scene helper'
+  - 'use template sheets'
+  - 'use text format filtered_html'
+  - 'use text format full_html'
+  - 'view all scenes'
+  - 'view any unpublished wiki_page content'
+  - 'view character permissions'
+  - 'view character sheet log'
+  - 'view comment revisions'
+  - 'view comment revisions diffs'
+  - 'view dice rolls'
+  - 'view inactive sheets'
+  - 'view others accounts'
+  - 'view own reputation xp'
+  - 'view own scenes'
+  - 'view own unpublished content'
+  - 'view own webform submission'
+  - 'view reputation xp'
+  - 'view role application'
+  - 'view rpg chat'
+  - 'view session notes'
+  - 'view session qualify'
+  - 'view sh test results'
+  - 'view the administration theme'
+  - 'view vaxia ic chat'
+  - 'view webform submissions any node'
+  - 'view webform submissions own node'
+  - 'vote on proposal'

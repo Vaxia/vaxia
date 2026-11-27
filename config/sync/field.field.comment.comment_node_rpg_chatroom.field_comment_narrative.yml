@@ -1,0 +1,21 @@
+uuid: c0e51d18-3705-49a1-aa00-5029458f7fa9
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.comment_node_rpg_chatroom
+    - field.storage.comment.field_comment_narrative
+id: comment.comment_node_rpg_chatroom.field_comment_narrative
+field_name: field_comment_narrative
+entity_type: comment
+bundle: comment_node_rpg_chatroom
+label: 'As narrative'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  on_label: ''
+  off_label: ''
+field_type: boolean

@@ -1,0 +1,683 @@
+<?php
+
+/**
+ * @file
+ * Vaxia character sheets: sheet log, starting economy, field controls and XP
+ * charging for playable sheets, new-sheet point rules, and owners not
+ * approving their own sheets (D7 character_sheet + vaxia).
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
+use Drupal\node\NodeInterface;
+use Drupal\vaxia_core\Character;
+
+/**
+ * Sheet fields an owner sees but can't change on a playable sheet ("owner"),
+ * and fields nobody edits by hand ("all"). D7 vaxia_character_sheet_field_info().
+ */
+const VAXIA_CORE_DISABLED_FIELDS = [
+  'owner' => ['title', 'field_is_storyteller', 'field_is_npc', 'field_is_generic_npc', 'field_is_open_npc', 'field_background', 'field_sh_public_information', 'field_achivements', 'field_tag_realm', 'field_other_species', 'field_economy', 'field_property', 'field_sh_notes', 'field_sh_private_notes', 'field_skill_review'],
+  'all' => ['field_personal_room', 'field_items'],
+  'skill' => ['field_skill_name', 'field_skill_desc', 'field_aspect_one', 'field_aspect_two', 'field_aspect_three', 'field_proficiency', 'field_tech_language', 'field_tech_proficiency'],
+];
+
+/**
+ * Implements hook_ENTITY_TYPE_insert() for nodes.
+ */
+require_once __DIR__ . '/includes/players.inc';
+
+function vaxia_core_node_insert(NodeInterface $node) {
+  vaxia_core_conduct_mails($node);
+  if (Character::isSheet($node)) {
+    \Drupal::service('vaxia_core.xp')->log((int) $node->id(), 'new', (string) t('This sheet was created by @user, owned by @owner.', [
+      '@user' => \Drupal::currentUser()->getAccountName(),
+      '@owner' => $node->getOwner()->getAccountName(),
+    ]));
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete() for nodes.
+ */
+function vaxia_core_node_delete(NodeInterface $node) {
+  if (Character::isSheet($node)) {
+    $xp = \Drupal::service('vaxia_core.xp');
+    $xp->deleteLog((int) $node->id());
+    $xp->deleteAll((int) $node->id());
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave() for nodes: new sheets start with the
+ * starting economy.
+ */
+function vaxia_core_node_presave(NodeInterface $node) {
+  // Skill rows left empty on the form aren't skills.
+  if (Character::isSheet($node) && $node->hasField('field_skill')) {
+    $skills = $node->get('field_skill');
+    for ($delta = $skills->count() - 1; $delta >= 0; $delta--) {
+      $skill = $skills->get($delta)->entity;
+      if ($skill && $skill->isNew() && $skill->get('field_skill_name')->isEmpty() && $skill->get('field_skill_value')->isEmpty()) {
+        $skills->removeItem($delta);
+      }
+    }
+  }
+  if (Character::isSheet($node) && $node->isNew() && $node->hasField('field_economy') && $node->get('field_economy')->isEmpty()) {
+    $node->set('field_economy', \Drupal::config('vaxia_core.settings')->get('vaxia_starting_econ'));
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_prepare_form() for nodes: a sheet without skills
+ * offers one empty skill row, as D7's field collection did.
+ */
+function vaxia_core_node_prepare_form(NodeInterface $node, $operation, FormStateInterface $form_state) {
+  if (Character::isSheet($node) && $node->hasField('field_skill') && $node->get('field_skill')->isEmpty()) {
+    $node->get('field_skill')->appendItem(\Drupal\paragraphs\Entity\Paragraph::create(['type' => 'skill']));
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update() for nodes: owners pay XP for what they
+ * raise on a playable sheet.
+ */
+function vaxia_core_node_update(NodeInterface $node) {
+  if (!Character::isSheet($node) || !isset($node->original) || $node->getOwnerId() != \Drupal::currentUser()->id() || !Character::isPlayable($node->original)) {
+    return;
+  }
+  $charge = vaxia_core_sheet_cost($node) - vaxia_core_sheet_cost($node->original, TRUE);
+  if ($charge > 0) {
+    \Drupal::messenger()->addStatus('Charging ' . $charge . ' xp to character sheet.');
+    $xp = \Drupal::service('vaxia_core.xp');
+    $xp->update((int) $node->id(), $charge, 'spent_xp');
+    $xp->log((int) $node->id(), 'xp', (string) t('@xp @type XP spent on @title by @user.', ['@xp' => $charge, '@type' => 'xp', '@title' => $node->label(), '@user' => \Drupal::currentUser()->getAccountName()]));
+  }
+}
+
+/**
+ * XP value of a sheet's stats and skills.
+ *
+ * @param bool $stored
+ *   Read skill values from the database (the saved sheet), not from skill
+ *   entities a form may have changed in memory.
+ */
+function vaxia_core_sheet_cost(NodeInterface $node, bool $stored = FALSE): float {
+  $config = \Drupal::config('vaxia_core.settings');
+  $total = 0;
+  foreach (array_keys(Character::STATS) as $stat) {
+    if ($node->hasField('field_' . $stat)) {
+      $total += Character::cost((float) $config->get('vaxia_attribute_cost'), $node->get('field_' . $stat)->value);
+    }
+  }
+  foreach (vaxia_core_skill_values($node, $stored) as $value) {
+    $total += Character::cost((float) $config->get('vaxia_skill_cost'), $value);
+  }
+  return $total;
+}
+
+/**
+ * Skill values on a sheet.
+ */
+function vaxia_core_skill_values(NodeInterface $node, bool $stored = FALSE): array {
+  if (!$node->hasField('field_skill')) {
+    return [];
+  }
+  if (!$stored) {
+    $values = [];
+    foreach (Character::skills($node) as $skill) {
+      $values[] = $skill->get('field_skill_value')->value;
+    }
+    return $values;
+  }
+  $revisions = array_filter(array_column($node->get('field_skill')->getValue(), 'target_revision_id'));
+  if (!$revisions) {
+    return [];
+  }
+  return \Drupal::database()->query('SELECT field_skill_value_value FROM {paragraph_revision__field_skill_value} WHERE revision_id IN (:ids[])', [':ids[]' => $revisions])->fetchCol();
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for node forms.
+ */
+function vaxia_core_form_node_form_alter(&$form, FormStateInterface $form_state) {
+  // Content still in its workflow's creation state (made by code, not the
+  // form) has no state to offer on the edit form: leave its workflow box out
+  // rather than fail the save. The Workflow tab still moves it.
+  $edited = $form_state->getFormObject()->getEntity();
+  if (!$edited->isNew() && ($wf = Character::workflowField($edited)) && isset($form[$wf])) {
+    $state = \Drupal\workflow\Entity\WorkflowState::load((string) $edited->get($wf)->value);
+    if ($state && $state->isCreationState()) {
+      $form[$wf]['#access'] = FALSE;
+    }
+  }
+  $node = $form_state->getFormObject()->getEntity();
+  if (!Character::isSheet($node)) {
+    return;
+  }
+  $form['#validate'][] = 'vaxia_core_sheet_validate';
+  // Realm details and Skills stay closed until a realm is picked
+  // (js/sheet.js; user, 2026-11-26).
+  $form['#attached']['library'][] = 'vaxia_core/sheet';
+  // Text fields allow Filtered HTML only (field settings), but text saved in
+  // another format keeps that format available, or the sheet couldn't be
+  // saved ("Text format field is required").
+  foreach ($node->getFieldDefinitions() as $name => $definition) {
+    if (!isset($form[$name]['widget']) || !in_array($definition->getType(), ['text', 'text_long', 'text_with_summary'], TRUE)) {
+      continue;
+    }
+    foreach ($node->get($name) as $delta => $item) {
+      if ($item->format && isset($form[$name]['widget'][$delta]['#allowed_formats']) && !in_array($item->format, $form[$name]['widget'][$delta]['#allowed_formats'], TRUE)) {
+        $form[$name]['widget'][$delta]['#allowed_formats'][] = $item->format;
+      }
+    }
+  }
+  // The realm picks its own species and languages fields (the realms and
+  // their fields are vaxia_core.settings realm_fields). "other" in the shown
+  // species list shows Other species.
+  $realm_tids = [];
+  foreach (\Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties(['vid' => 'realm']) as $term) {
+    $realm_tids[$term->label()] = (string) $term->id();
+  }
+  $other = [];
+  foreach (Character::realmFields() as $realm_name => $fields) {
+    if (!isset($realm_tids[$realm_name])) {
+      continue;
+    }
+    $chosen_realm = [':input[name="field_tag_realm"]' => ['value' => $realm_tids[$realm_name]]];
+    foreach (isset($form['field_skill']['widget']) ? $fields['skill_fields'] : [] as $field) {
+      foreach (Element::children($form['field_skill']['widget']) as $delta) {
+        if (isset($form['field_skill']['widget'][$delta]['subform'][$field])) {
+          $form['field_skill']['widget'][$delta]['subform'][$field]['#states']['visible'] = $chosen_realm;
+        }
+      }
+    }
+    foreach (['species' => $fields['species'], 'languages' => $fields['languages'], 'conditions' => $fields['conditions']] as $kind => $field) {
+      if ($field !== '' && isset($form[$field])) {
+        $form[$field]['#states']['visible'] = $chosen_realm;
+        // Required while shown (checked in vaxia_core_sheet_validate()).
+        if ($kind === 'languages') {
+          $form[$field]['#states']['required'] = $chosen_realm;
+        }
+      }
+    }
+    // Only the shown species list counts (a hidden one keeps its value).
+    if (isset($form[$fields['species']])) {
+      $other[] = $chosen_realm + [':input[name="' . $fields['species'] . '"]' => ['value' => 'other']];
+    }
+  }
+  if (isset($form['field_other_species']) && $other) {
+    $form['field_other_species']['#states']['visible'] = [];
+    foreach ($other as $i => $condition) {
+      if ($i) {
+        $form['field_other_species']['#states']['visible'][] = 'or';
+      }
+      $form['field_other_species']['#states']['visible'][] = $condition;
+    }
+    $form['field_other_species']['#states']['required'] = $form['field_other_species']['#states']['visible'];
+  }
+  // Common skills (vocabulary skill_presets): a picker at the top of the
+  // skills that fills the next skill row with a preset of the chosen realm
+  // (js/skill_presets.js). While the sheet is being made: new or a draft.
+  if (isset($form['field_skill']['widget']) && ($node->isNew() || in_array(Character::state($node), [NULL, '', 'character_evaluation_creation', 'character_evaluation_draft'], TRUE))) {
+    $presets = [];
+    foreach (\Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties(['vid' => 'skill_presets']) as $preset) {
+      $presets[$preset->id()] = [
+        'name' => $preset->label(),
+        'description' => trim(html_entity_decode(strip_tags((string) $preset->getDescription()), ENT_QUOTES)),
+        'realm' => (string) $preset->get('field_preset_realm')->target_id,
+        'aspects' => array_map(fn($item) => (string) $item['target_id'], $preset->get('field_preset_aspects')->getValue()),
+        'weight' => (int) $preset->getWeight(),
+      ];
+    }
+    uasort($presets, fn($a, $b) => [$a['weight'], $a['name']] <=> [$b['weight'], $b['name']]);
+    if ($presets) {
+      $form['field_skill']['vaxia_skill_presets'] = [
+        '#type' => 'container',
+        '#weight' => -100,
+        '#attributes' => ['class' => ['vaxia-skill-presets']],
+        'preset' => [
+          '#type' => 'select',
+          '#title' => t('Common skills'),
+          '#description' => t('Pick a common skill for your realm to fill in the next skill below, then set its value. You can change anything it fills in.'),
+          '#options' => ['' => t('- Pick a skill -')],
+          // Filled by the script; the choice itself isn't saved.
+          '#parents' => ['vaxia_skill_preset'],
+          '#validated' => TRUE,
+          '#attributes' => ['class' => ['vaxia-skill-preset']],
+        ],
+        'add' => [
+          '#type' => 'html_tag',
+          '#tag' => 'button',
+          '#value' => t('Add skill'),
+          '#attributes' => ['type' => 'button', 'class' => ['button', 'vaxia-skill-preset-add']],
+        ],
+      ];
+      $form['#attached']['library'][] = 'vaxia_core/skill_presets';
+      $form['#attached']['drupalSettings']['vaxiaSkillPresets'] = $presets;
+    }
+  }
+  // Items and the personal room follow the realm too (user, 2026-11-25):
+  // their autocompletes offer the chosen realm's content, admin-realm and
+  // realm-less content, and what the field already holds. Changing the realm
+  // rebuilds them (AJAX).
+  $chosen = $form_state->getValue(['field_tag_realm', 0, 'target_id']);
+  if ($chosen === NULL && $node->hasField('field_tag_realm')) {
+    $chosen = $node->get('field_tag_realm')->target_id;
+  }
+  $realms = $chosen ? array_values(array_unique(array_filter([(int) $chosen, (int) ($realm_tids[Character::adminRealm()] ?? 0)]))) : [];
+  foreach (['field_items', 'field_personal_room'] as $field) {
+    if (!isset($form[$field]['widget']['target_id'])) {
+      continue;
+    }
+    $keep = $node->hasField($field) ? array_map('intval', array_column($node->get($field)->getValue(), 'target_id')) : [];
+    $form[$field]['widget']['target_id']['#selection_handler'] = 'vaxia_realm:node';
+    $form[$field]['widget']['target_id']['#selection_settings']['vaxia_realms'] = $realms;
+    $form[$field]['widget']['target_id']['#selection_settings']['vaxia_keep'] = $keep;
+    // Hidden until a realm is picked: what they offer depends on it.
+    $form[$field]['#states']['visible'][':input[name="field_tag_realm"]'] = ['!value' => '_none'];
+    $form[$field]['#prefix'] = '<div id="vaxia-realm-' . str_replace('_', '-', $field) . '">';
+    $form[$field]['#suffix'] = '</div>';
+  }
+  if (isset($form['field_tag_realm']['widget'])) {
+    $form['field_tag_realm']['widget']['#ajax'] = ['callback' => 'vaxia_core_sheet_realm_ajax', 'event' => 'change', 'progress' => ['type' => 'none']];
+  }
+  $account = \Drupal::currentUser();
+  $own = $node->getOwnerId() == $account->id();
+  if (Character::isPlayable($node)) {
+    $realm = 'storyhost';
+    if ($node->hasField('field_tag_realm') && $node->get('field_tag_realm')->entity) {
+      $realm = strtolower($node->get('field_tag_realm')->entity->label());
+    }
+    $form['#attributes']['class'][] = 'vaxia-realm-' . $realm;
+    $form['#attributes']['class'][] = $own ? 'vaxia-owner' : 'vaxia-not-owner';
+    $disabled = VAXIA_CORE_DISABLED_FIELDS['all'];
+    if ($own) {
+      // The realms' species and languages fields too, as D7's race and
+      // language fields.
+      $disabled = array_merge($disabled, VAXIA_CORE_DISABLED_FIELDS['owner'], ...array_map(fn($fields) => array_filter([$fields['species'], $fields['languages'], $fields['conditions']]), array_values(Character::realmFields())));
+      vaxia_core_limit_to_affordable($form, $node);
+    }
+    foreach ($disabled as $field) {
+      if (isset($form[$field])) {
+        $form[$field]['#disabled'] = TRUE;
+      }
+    }
+    if ($own && isset($form['field_skill']['widget'])) {
+      foreach ($form['field_skill']['widget'] as $delta => &$element) {
+        if (is_int($delta) && isset($element['subform'])) {
+          foreach (VAXIA_CORE_DISABLED_FIELDS['skill'] as $field) {
+            if (isset($element['subform'][$field])) {
+              $element['subform'][$field]['#disabled'] = TRUE;
+            }
+          }
+        }
+      }
+      unset($element);
+      if (isset($form['field_skill']['widget']['add_more'])) {
+        $form['field_skill']['widget']['add_more']['#access'] = FALSE;
+      }
+    }
+    // A storyhost's own storyhost sheet: only descriptive fields change.
+    $sh = Character::storyhostCharacter((int) $node->getOwnerId());
+    if ($own && $sh && $sh->id() == $node->id()) {
+      $allowed = ['field_personality', 'field_description', 'field_post_color', 'field_sh_notes', 'field_sh_private_notes', 'field_player_notes', 'field_artwork_image'];
+      foreach ($form as $key => &$element) {
+        if (is_array($element) && ((strpos($key, 'field_') === 0 && !in_array($key, $allowed, TRUE)) || $key === 'title')) {
+          $element['#disabled'] = TRUE;
+        }
+      }
+      unset($element);
+      \Drupal::messenger()->addStatus('You are attempting to edit your Storyhost character sheet. Storyhosts are not playable characters, so your options are limited for this sheet.');
+    }
+  }
+  vaxia_core_block_self_approval($form, $node);
+}
+
+/**
+ * Owners raise stats and skills only as far as their XP goes: the number
+ * boxes become lists of affordable values (D7 LIMIT_SHEET).
+ */
+function vaxia_core_limit_to_affordable(array &$form, NodeInterface $node) {
+  $config = \Drupal::config('vaxia_core.settings');
+  $xp = \Drupal::service('vaxia_core.xp');
+  $available = $xp->get((int) $node->id(), 'xp') - $xp->get((int) $node->id(), 'spent_xp');
+  $limit = function (array &$element, float $multiplier) use ($available) {
+    $current = (int) ($element['#default_value'] ?? 0);
+    $options = [$current => $current . ' (cost 0)'];
+    $left = $available;
+    $value = $current;
+    $spent = 0;
+    while ($left > 0) {
+      $step = Character::cost($multiplier, $value + 1) - Character::cost($multiplier, $value);
+      $value++;
+      $spent += $step;
+      $left -= $step;
+      if ($left >= 0) {
+        $options[$value] = $value . ' (cost ' . number_format($spent, 2) . ')';
+      }
+    }
+    $element['#type'] = 'select';
+    $element['#options'] = $options;
+    $element['#default_value'] = $current;
+    unset($element['#min'], $element['#max'], $element['#step'], $element['#size']);
+  };
+  foreach (array_keys(Character::STATS) as $stat) {
+    if (isset($form['field_' . $stat]['widget'][0]['value'])) {
+      $limit($form['field_' . $stat]['widget'][0]['value'], (float) $config->get('vaxia_attribute_cost'));
+    }
+  }
+  if (isset($form['field_skill']['widget'])) {
+    foreach ($form['field_skill']['widget'] as $delta => &$element) {
+      if (is_int($delta) && isset($element['subform']['field_skill_value']['widget'][0]['value'])) {
+        $limit($element['subform']['field_skill_value']['widget'][0]['value'], (float) $config->get('vaxia_skill_cost'));
+      }
+    }
+  }
+}
+
+/**
+ * Validates a sheet save: XP limits for owners of playable sheets, point
+ * rules for new sheets (D7 _character_sheet_validate_xp(),
+ * vaxia_character_sheet_validate_sheet()).
+ */
+function vaxia_core_sheet_validate(array $form, FormStateInterface $form_state) {
+  // Runs alongside field validation, as D7's hook_node_validate() did, so
+  // point errors show even when a required field is also missing.
+  /** @var \Drupal\node\NodeInterface $node */
+  $node = $form_state->getFormObject()->buildEntity($form, $form_state);
+  $original = $node->isNew() ? NULL : \Drupal::entityTypeManager()->getStorage('node')->loadUnchanged($node->id());
+  // The chosen realm's languages are required, and Other species when the
+  // species is "other": D7's conditional_fields required them only while
+  // shown (the port had required every realm's languages, and Other
+  // species, on every sheet).
+  $chosen_realm = $node->hasField('field_tag_realm') ? $node->get('field_tag_realm')->entity : NULL;
+  $realm_fields = $chosen_realm ? (Character::realmFields()[$chosen_realm->label()] ?? NULL) : NULL;
+  if ($realm_fields) {
+    $missing = fn($field) => isset($form[$field]) && ($form[$field]['#access'] ?? TRUE) && $node->hasField($field) && $node->get($field)->isEmpty();
+    if ($missing($realm_fields['languages'])) {
+      $form_state->setErrorByName($realm_fields['languages'], t('@name field is required.', ['@name' => $node->getFieldDefinition($realm_fields['languages'])->getLabel()]));
+    }
+    if ($node->hasField($realm_fields['species']) && $node->get($realm_fields['species'])->value === 'other' && $missing('field_other_species')) {
+      $form_state->setErrorByName('field_other_species', t('@name field is required.', ['@name' => $node->getFieldDefinition('field_other_species')->getLabel()]));
+    }
+  }
+  $xp = \Drupal::service('vaxia_core.xp');
+  if ($original && Character::isPlayable($original) && $node->getOwnerId() == \Drupal::currentUser()->id()) {
+    $cost = vaxia_core_sheet_cost($node) - vaxia_core_sheet_cost($original, TRUE);
+    $available = $xp->get((int) $node->id(), 'xp') - $xp->get((int) $node->id(), 'spent_xp');
+    if ($cost > 0 && $cost > $available) {
+      $form_state->setErrorByName('', t('You have spent %spent_xp xp out of %available_xp available xp. Please revise your sheet.', ['%spent_xp' => $cost, '%available_xp' => $available]));
+      return;
+    }
+  }
+  if ($error = vaxia_core_new_sheet_error($node, $original)) {
+    $form_state->setErrorByName('', $error);
+  }
+}
+
+/**
+ * Point rules for sheets still being created: brand new, or a draft with no
+ * XP yet. NPC sheets are exempt.
+ */
+function vaxia_core_new_sheet_error(NodeInterface $node, ?NodeInterface $original) {
+  if (Character::isNpc($node)) {
+    return NULL;
+  }
+  $config = \Drupal::config('vaxia_core.settings');
+  $in_creation = !$original || (Character::state($original) === $config->get('vaxia_draft_workflow') && \Drupal::service('vaxia_core.xp')->get((int) $node->id(), 'xp') == 0);
+  if (!$in_creation) {
+    return NULL;
+  }
+  $available = (float) $config->get('vaxia_starting_points');
+  $spent = 0;
+  $on_stats = 0;
+  $maxed = 0;
+  $zero_skills = 0;
+  foreach (array_keys(Character::STATS) as $stat) {
+    $value = $node->hasField('field_' . $stat) ? (float) $node->get('field_' . $stat)->value : 0;
+    $spent += $value;
+    $on_stats += $value;
+    if ($value >= (float) $config->get('vaxia_pc_stat_max')) {
+      $maxed++;
+    }
+    if ($spent > $available) {
+      return t('You have spent %spent_xp points out of %available_xp available points. Please revise your sheet.', ['%spent_xp' => $spent, '%available_xp' => $available]);
+    }
+  }
+  foreach (vaxia_core_skill_values($node) as $value) {
+    $spent += (float) $value;
+    if ((float) $value >= (float) $config->get('vaxia_pc_skill_max')) {
+      $maxed++;
+    }
+    if ($value !== NULL && $value !== '' && (float) $value == 0) {
+      $zero_skills++;
+    }
+  }
+  if ($spent > $available) {
+    return t('You have spent %spent_xp points out of %available_xp available points. Please revise your sheet.', ['%spent_xp' => $spent, '%available_xp' => $available]);
+  }
+  if ($spent < $available) {
+    return t('You have spent %spent_xp points out of %available_xp available points. You have more points to spend. Please revise your sheet.', ['%spent_xp' => $spent, '%available_xp' => $available]);
+  }
+  if ($on_stats > (float) $config->get('vaxia_pc_stat_spend_cap')) {
+    return t('You have spent %spent_on_stats points on stats. You cannot spend more than %stat_max on stats. Please revise your sheet.', ['%spent_on_stats' => $on_stats, '%stat_max' => $config->get('vaxia_pc_stat_spend_cap')]);
+  }
+  if ($maxed > (int) $config->get('vaxia_pc_stat_high_cap')) {
+    return t('You have %maxed_values maximized values. You cannot have more than %max_max. Please revise your sheet.', ['%maxed_values' => $maxed, '%max_max' => $config->get('vaxia_pc_stat_high_cap')]);
+  }
+  if ($zero_skills > (int) $config->get('vaxia_pc_stat_zero_cap')) {
+    return t('You have %zero_skills skills at zero. You can only have one skill at zero. Please revise your sheet.', ['%zero_skills' => $zero_skills]);
+  }
+  return NULL;
+}
+
+/**
+ * AJAX callback for the character sheet's realm: the realm-narrowed item and
+ * personal room fields, rebuilt for the new realm.
+ */
+function vaxia_core_sheet_realm_ajax(array &$form, FormStateInterface $form_state) {
+  $response = new \Drupal\Core\Ajax\AjaxResponse();
+  $renderer = \Drupal::service('renderer');
+  foreach (['field_items', 'field_personal_room'] as $field) {
+    if (isset($form[$field]['widget']['target_id'])) {
+      // Rendered here: a response with several render arrays fails to
+      // collect their attachments ("has not yet been rendered"). Without its
+      // field group: an element of a group renders nothing on its own.
+      $element = $form[$field];
+      unset($element['#group']);
+      $html = $renderer->renderInIsolation($element);
+      $response->addCommand(new \Drupal\Core\Ajax\ReplaceCommand('#vaxia-realm-' . str_replace('_', '-', $field), $html));
+      $response->addAttachments($element['#attached'] ?? []);
+    }
+  }
+  return $response;
+}
+
+/**
+ * Implements hook_form_alter(): the Workflow tab's transition form.
+ */
+function vaxia_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if (strpos($form_id, 'workflow_transition_form') === 0) {
+    $object = $form_state->getFormObject();
+    $transition = method_exists($object, 'getEntity') ? $object->getEntity() : NULL;
+    $node = $transition && method_exists($transition, 'getTargetEntity') ? $transition->getTargetEntity() : NULL;
+    if ($node instanceof NodeInterface) {
+      vaxia_core_block_self_approval($form, $node);
+    }
+  }
+}
+
+/**
+ * Owners can't approve their own characters and items: "approved" leaves the
+ * state choices (D7 vaxia_form_workflow_tab_form_alter()). The workflow widget
+ * builds its radios while processing, so this runs after the build.
+ */
+function vaxia_core_block_self_approval(array &$form, NodeInterface $node) {
+  if ($node->isNew() || !in_array($node->bundle(), ['character_sheet', 'items'], TRUE)) {
+    return;
+  }
+  $me = \Drupal::currentUser()->id();
+  // Items: the owner of the item's character can't approve it either (D7
+  // meant to, but its check never ran: known bug).
+  $character = $node->hasField('field_character_owner') ? $node->get('field_character_owner')->entity : NULL;
+  if ($node->getOwnerId() != $me && !($character && $character->getOwnerId() == $me)) {
+    return;
+  }
+  $form['#vaxia_self_approval_node'] = $node;
+  $form['#after_build'][] = 'vaxia_core_self_approval_after_build';
+}
+
+/**
+ * #after_build: drops "approved" from the owner's state radios.
+ */
+function vaxia_core_self_approval_after_build(array $form, FormStateInterface $form_state) {
+  $node = $form["#vaxia_self_approval_node"];
+  $current = Character::state($node);
+  $found = FALSE;
+  $walk = function (array &$element) use (&$walk, $current, &$found) {
+    foreach ($element as $key => &$child) {
+      if (!is_array($child) || (is_string($key) && $key !== '' && $key[0] === '#')) {
+        continue;
+      }
+      // The state choices: to_sid itself (node edit form) or its widget
+      // (Workflow tab).
+      if ($key === 'to_sid') {
+        $choices = &$child;
+        if (isset($child['widget']['#options'])) {
+          $choices = &$child['widget'];
+        }
+        foreach ($choices['#options'] ?? [] as $sid => $label) {
+          if (trim(strip_tags((string) $label)) === 'approved' && $sid !== $current) {
+            unset($choices['#options'][$sid], $choices[$sid]);
+            $found = TRUE;
+          }
+        }
+        unset($choices);
+      }
+      $walk($child);
+    }
+  };
+  $walk($form);
+  if ($found) {
+    \Drupal::messenger()->addStatus(t('You own this node, you cannot set it to approved. Currently: @state', ['@state' => Character::stateLabel($node)]));
+  }
+  return $form;
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for field templates.
+ *
+ * D7 printed every field label with a colon ("Banned IP: 10.0.0.1").
+ */
+function vaxia_core_preprocess_field(array &$variables) {
+  $label = (string) ($variables['label'] ?? '');
+  if ($label !== '' && empty($variables['label_hidden']) && substr($label, -1) !== ':') {
+    $variables['label'] = $label . ':';
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave() for users.
+ *
+ * New accounts that aren't players get "new account" (D7 rule; its condition
+ * read NOT (new account AND player), so players got it too: KNOWN-BUGS #85).
+ */
+function vaxia_core_user_presave(\Drupal\user\UserInterface $account) {
+  vaxia_core_player_presave($account);
+  if ($account->isNew() && $account->id() != 1 && !$account->hasRole('player')) {
+    $account->addRole('new_account');
+  }
+}
+
+/**
+ * Default value callback for reference fields that defaulted to D7 term,
+ * node or user ids: those ids survive the migration, so the default is used
+ * once that entity exists (D7's defaults were ids; D11 stores uuids).
+ */
+function vaxia_core_d7_reference_default(\Drupal\Core\Entity\FieldableEntityInterface $entity, \Drupal\Core\Field\FieldDefinitionInterface $definition): array {
+  $ids = (array) ($definition->getThirdPartySetting('vaxia_core', 'd7_default_ids') ?? []);
+  $target = $definition->getFieldStorageDefinition()->getSetting('target_type');
+  $existing = $ids ? \Drupal::entityTypeManager()->getStorage($target)->loadMultiple($ids) : [];
+  return array_map(fn($id) => ['target_id' => $id], array_keys($existing));
+}
+
+
+/**
+ * Implements hook_cron().
+ */
+function vaxia_core_cron() {
+  vaxia_core_retire_cron();
+}
+
+/**
+ * Implements hook_element_info_alter(): the display defaults FormBuilder adds
+ * to form elements, for elements rendered outside a form too (the GET search
+ * forms several ported lists build by hand). Without them an element with a
+ * description raised 'Undefined array key "#description_display"'.
+ */
+function vaxia_core_element_info_alter(array &$info) {
+  foreach ($info as &$element) {
+    if (!empty($element['#input'])) {
+      $element += ['#description_display' => 'after', '#title_display' => 'before'];
+    }
+  }
+  // Text format tips behind a closed "Formatting help" section (user,
+  // 2026-11-25: they took up a lot of room under every post box).
+  if (isset($info['text_format'])) {
+    $info['text_format']['#process'][] = 'vaxia_core_text_format_collapse_help';
+  }
+}
+
+/**
+ * #process for text_format: moves the format guidelines (and the "about text
+ * formats" link) into a closed details element. filter.js still finds
+ * .js-filter-guidelines inside the format wrapper.
+ */
+function vaxia_core_text_format_collapse_help(array $element) {
+  if (empty($element['format']['guidelines'])) {
+    return $element;
+  }
+  $element['format']['vaxia_help'] = [
+    '#type' => 'details',
+    '#title' => t('Formatting help'),
+    '#open' => FALSE,
+    '#weight' => 20,
+    'guidelines' => $element['format']['guidelines'],
+  ];
+  unset($element['format']['guidelines']);
+  if (isset($element['format']['help'])) {
+    $element['format']['vaxia_help']['help'] = $element['format']['help'];
+    unset($element['format']['help']);
+  }
+  return $element;
+}
+
+/**
+ * Implements hook_mail_alter(): the site's own name and address in VAXIA
+ * mails. The texts (ported from the D7 site's rules) say [site:mail-prefix]
+ * for the subject prefix ("[Vaxia]" on the D7 site; the vaxia_mail_prefix setting, or
+ * the site name), [site:url] and [site:name] for the site,
+ * [vaxia:anon-mailer] for the anonymous mailer form's node id, and
+ * [date:+6 month] for a date (D7's rules printed these with PHP code, which
+ * the port had kept as text).
+ */
+function vaxia_core_mail_alter(array &$message) {
+  if (!str_starts_with((string) $message['module'], 'vaxia')) {
+    return;
+  }
+  $site = \Drupal::config('system.site');
+  $prefix = trim((string) \Drupal::config('vaxia_core.settings')->get('vaxia_mail_prefix')) ?: (string) $site->get('name');
+  $replace = [
+    '[site:mail-prefix]' => '[' . $prefix . ']',
+    '[site:url]' => rtrim(\Drupal\Core\Url::fromRoute('<front>', [], ['absolute' => TRUE])->toString(), '/'),
+    '[site:name]' => (string) $site->get('name'),
+    '[vaxia:anon-mailer]' => (string) \Drupal::config('vaxia_governance.settings')->get('anon_mailer_webform'),
+  ];
+  // "[date:+6 month]": that day, as D7's rules printed it with PHP.
+  $dates = fn($text) => preg_replace_callback('/\[date:([^\]]+)\]/', fn($m) => date('m/d/Y', strtotime($m[1])), $text);
+  $message['subject'] = $dates(strtr((string) $message['subject'], $replace));
+  foreach ((array) $message['body'] as $i => $part) {
+    $message['body'][$i] = is_string($part) ? $dates(strtr($part, $replace)) : $part;
+  }
+}

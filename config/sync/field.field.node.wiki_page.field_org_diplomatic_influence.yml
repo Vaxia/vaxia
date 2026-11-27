@@ -1,0 +1,25 @@
+uuid: b6f167aa-440d-489c-a4c3-fd06a2777245
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_org_diplomatic_influence
+    - node.type.wiki_page
+id: node.wiki_page.field_org_diplomatic_influence
+field_name: field_org_diplomatic_influence
+entity_type: node
+bundle: wiki_page
+label: 'Diplomatic Influence'
+description: 'The diplomatic strength of the organization.'
+required: true
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  min: 0
+  max: 200
+  prefix: ''
+  suffix: ''
+field_type: integer

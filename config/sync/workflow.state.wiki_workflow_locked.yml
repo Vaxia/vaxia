@@ -1,0 +1,13 @@
+uuid: 2413ac5a-9914-4e3f-b6f5-f4d5144e02aa
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.wiki_workflow
+id: wiki_workflow_locked
+label: locked
+weight: 0
+module: workflow
+wid: wiki_workflow
+sysid: 0
+single_state_widget: ''

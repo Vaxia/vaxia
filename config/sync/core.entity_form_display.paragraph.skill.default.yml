@@ -1,0 +1,76 @@
+uuid: 95b4c5b0-aba3-4dc9-99b9-d5324f232a43
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.skill.field_aspect_one
+    - field.field.paragraph.skill.field_aspect_three
+    - field.field.paragraph.skill.field_aspect_two
+    - field.field.paragraph.skill.field_skill_desc
+    - field.field.paragraph.skill.field_skill_name
+    - field.field.paragraph.skill.field_skill_value
+    - field.field.paragraph.skill.field_tech_languages
+    - paragraphs.paragraphs_type.skill
+  module:
+    - paragraphs
+id: paragraph.skill.default
+targetEntityType: paragraph
+bundle: skill
+mode: default
+content:
+  field_aspect_one:
+    type: options_select
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_aspect_three:
+    type: options_select
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_aspect_two:
+    type: options_select
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_skill_desc:
+    type: string_textarea
+    weight: 2
+    region: content
+    settings:
+      rows: 2
+      placeholder: ''
+    third_party_settings: {  }
+  field_skill_name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_skill_value:
+    type: number
+    weight: 1
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_tech_languages:
+    type: entity_reference_paragraphs
+    weight: 6
+    region: content
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

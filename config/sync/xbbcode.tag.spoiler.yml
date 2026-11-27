@@ -1,0 +1,20 @@
+uuid: 20ac6f17-aebe-4970-bc08-c08093f8bced
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - xbbcode_standard
+_core:
+  default_config_hash: RzgVwfeqfFNIxakSMGNs2M-0gN2z56bHQXZKnAkh1XU
+id: spoiler
+label: Spoiler
+description: 'Hides text behind a button.'
+name: spoiler
+attached:
+  library:
+    - xbbcode_standard/tag-styles
+sample: '[spoiler=Spoiler warning]Hidden text[/spoiler]'
+template_code: null
+template_file: '@xbbcode_standard/spoiler.html.twig'
+editable: false

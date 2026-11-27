@@ -1,0 +1,14 @@
+uuid: 58104e1a-e7a2-4f98-aba5-6e1c76ebf0a0
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.character_evaluation
+  module:
+    - workflow
+id: eligible_for_newbie_helper
+label: 'eligible for newbie helper'
+weight: 35
+is_admin: false
+permissions:
+  - 'create character_evaluation workflow_transition'

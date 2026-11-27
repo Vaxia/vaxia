@@ -1,0 +1,26 @@
+<?php
+
+/**
+ * @file
+ * The dice_roller table, as D7's dice_roller module had it (rows migrate as is).
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function vaxia_dice_schema() {
+  $schema['dice_roller'] = [
+    'description' => 'Dice roll results.',
+    'fields' => [
+      'did' => ['type' => 'serial', 'unsigned' => TRUE, 'not null' => TRUE],
+      'pid' => ['description' => 'The post (comment) id.', 'type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE, 'default' => 0],
+      'origin' => ['description' => 'c: comment, n: node.', 'type' => 'varchar', 'length' => 3, 'not null' => TRUE, 'default' => ''],
+      'roll_command' => ['type' => 'varchar', 'length' => 255, 'not null' => TRUE, 'default' => ''],
+      'roll_result' => ['type' => 'varchar', 'length' => 255, 'not null' => TRUE, 'default' => ''],
+      'roll_notes' => ['type' => 'blob', 'not null' => TRUE],
+    ],
+    'primary key' => ['did'],
+    'indexes' => ['pid_origin' => ['pid', 'origin']],
+  ];
+  return $schema;
+}

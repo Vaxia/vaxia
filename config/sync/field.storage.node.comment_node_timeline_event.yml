@@ -1,0 +1,20 @@
+uuid: 3348af03-9c17-44c0-99e4-f028e6d5cd47
+langcode: en
+status: true
+dependencies:
+  module:
+    - comment
+    - node
+id: node.comment_node_timeline_event
+field_name: comment_node_timeline_event
+entity_type: node
+type: comment
+settings:
+  comment_type: comment_node_timeline_event
+module: comment
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

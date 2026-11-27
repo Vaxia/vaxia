@@ -1,0 +1,13 @@
+uuid: 75c8448e-9b4a-4072-a44c-0508238be974
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.scene_evaluation
+id: scene_evaluation_ruled
+label: ruled
+weight: -20
+module: workflow
+wid: scene_evaluation
+sysid: 0
+single_state_widget: ''

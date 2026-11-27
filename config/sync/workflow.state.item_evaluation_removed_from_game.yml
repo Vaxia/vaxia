@@ -1,0 +1,13 @@
+uuid: 81c09936-2f70-4220-a9f6-a6970fa3ba22
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.item_evaluation
+id: item_evaluation_removed_from_game
+label: 'removed from game'
+weight: -13
+module: workflow
+wid: item_evaluation
+sysid: 0
+single_state_widget: ''

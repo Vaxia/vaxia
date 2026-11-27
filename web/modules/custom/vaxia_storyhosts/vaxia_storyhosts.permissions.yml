@@ -1,0 +1,28 @@
+use scene helper:
+  title: 'Use scene helper'
+view own scenes:
+  title: 'View own scenes'
+view all scenes:
+  title: 'View all scenes'
+rule all scenes:
+  title: 'Rule all scenes'
+view session notes:
+  title: 'View session notes'
+can go on vacation:
+  title: 'Can go on vacation'
+administer vacation:
+  title: 'Administer vacation'
+use justice form:
+  title: 'Use justice form'
+administrate justice form:
+  title: 'Administrate justice form'
+approve sh test:
+  title: 'Approve the ASH 3 test'
+approve sh starvation:
+  title: 'Approve the ASH 3 test in starvation mode'
+view sh test results:
+  title: 'View SH test results'
+view session qualify:
+  title: 'View if a session qualifies for system'
+administrate sh test:
+  title: 'Administrate the SH test'

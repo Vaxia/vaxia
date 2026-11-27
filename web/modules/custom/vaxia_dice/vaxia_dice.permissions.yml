@@ -1,0 +1,13 @@
+administer dice roller:
+  title: 'Administer dice roller'
+use dice roller:
+  title: 'Use dice roller'
+view dice rolls:
+  title: 'View dice results'
+use dice ruler:
+  title: 'Use dice ruler'
+administer dice ruler:
+  title: 'Administer dice ruler'
+  restrict access: true
+use dice helper:
+  title: 'Use the dice helper javascript'

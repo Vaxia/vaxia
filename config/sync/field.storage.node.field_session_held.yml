@@ -1,0 +1,20 @@
+uuid: 61d20ab8-ada6-436e-9311-f47731b2a582
+langcode: und
+status: true
+dependencies:
+  module:
+    - datetime
+    - node
+id: node.field_session_held
+field_name: field_session_held
+entity_type: node
+type: datetime
+settings:
+  datetime_type: date
+module: datetime
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

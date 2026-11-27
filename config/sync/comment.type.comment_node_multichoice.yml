@@ -1,0 +1,8 @@
+uuid: c203ba5f-98c3-4e01-8359-f9359c91cd9e
+langcode: en
+status: true
+dependencies: {  }
+id: comment_node_multichoice
+label: 'Multiple choice question comment'
+target_entity_type_id: node
+description: null

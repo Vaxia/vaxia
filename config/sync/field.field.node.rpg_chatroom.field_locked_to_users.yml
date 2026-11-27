@@ -1,0 +1,23 @@
+uuid: f2739912-e412-493c-a5d6-d891d9cd70ed
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_locked_to_users
+    - node.type.rpg_chatroom
+id: node.rpg_chatroom.field_locked_to_users
+field_name: field_locked_to_users
+entity_type: node
+bundle: rpg_chatroom
+label: 'Locked to users'
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'Lock to specific users'
+  off_label: 'Do not lock to specific users'
+field_type: boolean

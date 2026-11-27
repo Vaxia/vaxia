@@ -1,0 +1,14 @@
+uuid: 90b2201a-94f3-4e36-b042-4f0d7d32fdb9
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.eligible_for_sh
+  module:
+    - user
+id: user_remove_role_action.eligible_for_sh
+label: 'Remove the eligible for SH role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: eligible_for_sh

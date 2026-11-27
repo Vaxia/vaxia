@@ -1,0 +1,40 @@
+uuid: 7b40a3d1-9000-4aab-ab1a-dbf83d7e5ae8
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_display.comment.comment_node_play_suggestions.default
+    - field.field.node.play_suggestions.comment_node_play_suggestions
+    - field.field.node.play_suggestions.field_tag_realm
+    - node.type.play_suggestions
+  module:
+    - comment
+    - user
+id: node.play_suggestions.default
+targetEntityType: node
+bundle: play_suggestions
+mode: default
+content:
+  comment_node_play_suggestions:
+    type: comment_default
+    label: hidden
+    settings:
+      view_mode: default
+      pager_id: 0
+    third_party_settings: {  }
+    weight: 20
+    region: content
+  field_tag_realm:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden: {  }

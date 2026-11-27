@@ -1,0 +1,28 @@
+uuid: 17625d8a-16c0-478f-80e1-acf95ef8aeb2
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.artwork
+    - field.field.node.timeline_event.body
+    - field.field.node.timeline_event.comment_node_timeline_event
+    - field.field.node.timeline_event.field_session_held
+    - field.field.node.timeline_event.field_tag_realm
+    - node.type.timeline_event
+  module:
+    - user
+id: node.timeline_event.artwork
+targetEntityType: node
+bundle: timeline_event
+mode: artwork
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  body: true
+  comment_node_timeline_event: true
+  field_session_held: true
+  field_tag_realm: true

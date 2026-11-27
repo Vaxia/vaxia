@@ -1,0 +1,15 @@
+uuid: e3161bdb-82bc-41c6-8868-213fb287570e
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.scene_evaluation_ruled
+    - workflow.state.scene_evaluation_submitted
+id: scene_evaluation_ruled_submitted
+label: null
+module: workflow
+from_sid: scene_evaluation_ruled
+to_sid: scene_evaluation_submitted
+roles:
+  administrator: administrator
+  storyteller: storyteller

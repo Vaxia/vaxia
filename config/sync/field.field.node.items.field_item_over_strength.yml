@@ -1,0 +1,23 @@
+uuid: 5a36ee2d-8bb0-48ce-af48-52ed5061748c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_item_over_strength
+    - node.type.items
+id: node.items.field_item_over_strength
+field_name: field_item_over_strength
+entity_type: node
+bundle: items
+label: Strength
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: float

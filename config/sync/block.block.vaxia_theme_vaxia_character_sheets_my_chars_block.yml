@@ -1,0 +1,20 @@
+uuid: 8ae0c22b-b2ce-4001-9d88-81a3b8d676fc
+langcode: en
+status: true
+dependencies:
+  module:
+    - vaxia_core
+  theme:
+    - vaxia_theme
+id: vaxia_theme_vaxia_character_sheets_my_chars_block
+theme: vaxia_theme
+region: sidebar_first
+weight: -31
+provider: null
+plugin: vaxia_character_sheets-my_chars_block
+settings:
+  id: vaxia_character_sheets-my_chars_block
+  label: 'My characters'
+  label_display: visible
+  provider: vaxia_core
+visibility: {  }

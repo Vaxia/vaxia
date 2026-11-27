@@ -1,0 +1,15 @@
+uuid: 2eaa36dc-121a-41d0-91ed-83758fed6370
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.item_evaluation_draft
+    - workflow.state.item_evaluation_submitted
+id: item_evaluation_draft_submitted
+label: null
+module: workflow
+from_sid: item_evaluation_draft
+to_sid: item_evaluation_submitted
+roles:
+  workflow_author: workflow_author
+  administrator: administrator

@@ -1,0 +1,15 @@
+uuid: 51796149-dfe0-40ec-ae16-ed83c87f38c4
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.item_evaluation_approved
+    - workflow.state.item_evaluation_removed_from_game
+id: item_evaluation_approved_removed_from_game
+label: null
+module: workflow
+from_sid: item_evaluation_approved
+to_sid: item_evaluation_removed_from_game
+roles:
+  administrator: administrator
+  storyteller: storyteller

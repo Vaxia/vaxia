@@ -1,0 +1,23 @@
+uuid: 6cdd828a-2ea5-4db2-bd68-8c1c25cbc041
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_item_over_intellegence
+    - node.type.items
+id: node.items.field_item_over_intellegence
+field_name: field_item_over_intellegence
+entity_type: node
+bundle: items
+label: Intellegence
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: float

@@ -1,0 +1,26 @@
+<?php
+
+/**
+ * @file
+ * Per-forum role grants, as D7 forum_access kept them (rid becomes the role
+ * machine name).
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function vaxia_forum_access_schema() {
+  $schema['vaxia_forum_access'] = [
+    'description' => 'Role grants per forum term.',
+    'fields' => [
+      'tid' => ['type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE],
+      'role' => ['type' => 'varchar_ascii', 'length' => 32, 'not null' => TRUE],
+      'grant_view' => ['type' => 'int', 'size' => 'tiny', 'not null' => TRUE, 'default' => 0],
+      'grant_update' => ['type' => 'int', 'size' => 'tiny', 'not null' => TRUE, 'default' => 0],
+      'grant_delete' => ['type' => 'int', 'size' => 'tiny', 'not null' => TRUE, 'default' => 0],
+      'grant_create' => ['type' => 'int', 'size' => 'tiny', 'not null' => TRUE, 'default' => 0],
+    ],
+    'primary key' => ['tid', 'role'],
+  ];
+  return $schema;
+}

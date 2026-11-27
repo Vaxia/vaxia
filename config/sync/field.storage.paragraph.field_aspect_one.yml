@@ -1,0 +1,20 @@
+uuid: 9f53ceb7-db1d-4643-9873-9c1f61cb4f6c
+langcode: und
+status: true
+dependencies:
+  module:
+    - paragraphs
+    - taxonomy
+id: paragraph.field_aspect_one
+field_name: field_aspect_one
+entity_type: paragraph
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

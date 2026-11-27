@@ -1,0 +1,14 @@
+uuid: e30f7859-f415-405c-91dc-6ee5e69b802c
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.character_evaluation_disapproved
+    - workflow.state.character_evaluation_xp_transferred
+id: character_evaluation_xp_transferred_disapproved
+label: null
+module: workflow
+from_sid: character_evaluation_xp_transferred
+to_sid: character_evaluation_disapproved
+roles:
+  administrator: administrator

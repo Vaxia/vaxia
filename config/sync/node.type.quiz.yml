@@ -1,0 +1,11 @@
+uuid: a897e506-a0bb-41e7-96c1-8a922383dfbf
+langcode: en
+status: true
+dependencies: {  }
+name: Quiz
+type: quiz
+description: 'Create interactive quizzes for site visitors'
+help: null
+new_revision: false
+preview_mode: 1
+display_submitted: true

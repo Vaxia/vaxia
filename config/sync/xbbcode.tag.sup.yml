@@ -1,0 +1,18 @@
+uuid: 64ddf351-4a82-4912-a7c5-7aba112aa7af
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - xbbcode_standard
+_core:
+  default_config_hash: mT2YRZgBMWXGibKS42yjcXq75cm5xtrpRqhQQD0b2NY
+id: sup
+label: Superscript
+description: 'Superscripts text.'
+name: sup
+attached: {  }
+sample: 'x[{{ name }}]2[/{{ name }}]'
+template_code: '<sup>{{ tag.content }}</sup>'
+template_file: null
+editable: false

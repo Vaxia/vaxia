@@ -1,0 +1,21 @@
+uuid: 0642b3e5-fa6c-499b-93a1-1b44b5d662cf
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_took_social_walkthrough
+  module:
+    - datetime
+    - user
+id: user.user.field_took_social_walkthrough
+field_name: field_took_social_walkthrough
+entity_type: user
+bundle: user
+label: 'Took social walkthrough'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

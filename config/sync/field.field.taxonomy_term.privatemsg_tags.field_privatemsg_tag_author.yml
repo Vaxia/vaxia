@@ -1,0 +1,28 @@
+uuid: 80bfdacf-eeac-4fba-b117-55ef2e8f518c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_privatemsg_tag_author
+    - taxonomy.vocabulary.privatemsg_tags
+_core:
+  default_config_hash: Sg2sNwbT7cQ_WGud1ur7ZAt2aj3s0AsjgAISPOvCOk4
+id: taxonomy_term.privatemsg_tags.field_privatemsg_tag_author
+field_name: field_privatemsg_tag_author
+entity_type: taxonomy_term
+bundle: privatemsg_tags
+label: Author
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:user'
+  handler_settings:
+    target_bundles: null
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+field_type: entity_reference

@@ -1,0 +1,25 @@
+uuid: ffa5a2cc-91ae-4486-9c6a-8405c2d6453c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_armor_absorbs
+    - node.type.items
+id: node.items.field_armor_absorbs
+field_name: field_armor_absorbs
+entity_type: node
+bundle: items
+label: 'Absorbs PP'
+description: 'How much PP damage this armor or shield absorbs when the character is hit.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

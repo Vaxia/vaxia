@@ -1,0 +1,16 @@
+uuid: 72bf477f-6c80-4a40-94ce-9071fb54d32e
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    parent: 'main:'
+name: Event
+type: event
+description: 'An event is a session, get together, or other event.'
+help: null
+new_revision: true
+preview_mode: 1
+display_submitted: true

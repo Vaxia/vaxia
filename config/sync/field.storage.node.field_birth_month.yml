@@ -1,0 +1,57 @@
+uuid: 0c40607c-fd03-452d-be11-cc66998197a8
+langcode: und
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_birth_month
+field_name: field_birth_month
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: '01'
+      label: Jan
+    -
+      value: '02'
+      label: Feb
+    -
+      value: '03'
+      label: Mar
+    -
+      value: '04'
+      label: Apr
+    -
+      value: '05'
+      label: May
+    -
+      value: '06'
+      label: Jun
+    -
+      value: '07'
+      label: Jul
+    -
+      value: '08'
+      label: Aug
+    -
+      value: '09'
+      label: Sep
+    -
+      value: '10'
+      label: Oct
+    -
+      value: '11'
+      label: Nov
+    -
+      value: '12'
+      label: Dec
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

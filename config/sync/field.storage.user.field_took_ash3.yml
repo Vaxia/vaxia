@@ -1,0 +1,20 @@
+uuid: 563ad21d-0a70-4bee-b0ae-2c43334501d7
+langcode: und
+status: true
+dependencies:
+  module:
+    - datetime
+    - user
+id: user.field_took_ash3
+field_name: field_took_ash3
+entity_type: user
+type: datetime
+settings:
+  datetime_type: date
+module: datetime
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

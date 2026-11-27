@@ -1,0 +1,27 @@
+uuid: be006a59-7644-4b67-a02d-33396dabdec5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_public_information
+    - filter.format.filtered_html
+    - node.type.character_sheet
+  module:
+    - text
+id: node.character_sheet.field_public_information
+field_name: field_public_information
+entity_type: node
+bundle: character_sheet
+label: 'Public information'
+description: "Include any public information other characters could easily find out about this character. For example: The information a chatty bartender or a social media search would reveal.\r\n<br><br>"
+required: false
+translatable: false
+default_value:
+  -
+    value: ''
+    format: wiki
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - filtered_html
+field_type: text_long

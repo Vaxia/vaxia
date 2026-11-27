@@ -1,0 +1,71 @@
+<?php
+
+/**
+ * @file
+ * The site wiki (D7 site_wiki, vaxia_wiki).
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
+use Drupal\node\NodeInterface;
+
+/**
+ * Whether a wiki page is in the Wiki workflow's "locked" state.
+ */
+function vaxia_wiki_is_locked(NodeInterface $node): bool {
+  return !$node->isNew() && $node->hasField('field_wiki_workflow') && $node->get('field_wiki_workflow')->value === 'wiki_workflow_locked';
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for node forms: wiki edits need a
+ * revision note; locked pages can't be edited without "edit locked site wiki".
+ */
+function vaxia_wiki_form_node_form_alter(array &$form, FormStateInterface $form_state) {
+  $node = $form_state->getFormObject()->getEntity();
+  if ($node->bundle() !== 'wiki_page') {
+    return;
+  }
+  if (vaxia_wiki_is_locked($node) && !\Drupal::currentUser()->hasPermission('edit locked site wiki')) {
+    \Drupal::messenger()->addStatus(t('This wiki article is locked. You are not allowed to edit it.'));
+    foreach (Element::children($form) as $child) {
+      $form[$child]['#access'] = FALSE;
+    }
+    return;
+  }
+  if (\Drupal::config('vaxia_wiki.settings')->get('site_wiki_revision') && isset($form['revision_log'])) {
+    $form['revision_information']['#weight'] = -100;
+    $form['revision_information']['#open'] = TRUE;
+    $form['revision_log']['widget'][0]['value']['#required'] = TRUE;
+    // A note means a new revision.
+    $form['revision']['#default_value'] = TRUE;
+  }
+}
+
+/**
+ * Implements hook_node_access(): unpublished wiki pages for users with the
+ * D7 per-type permission (view_unpublished; production gave it to leads).
+ */
+function vaxia_wiki_node_access(\Drupal\node\NodeInterface $node, $operation, \Drupal\Core\Session\AccountInterface $account) {
+  if ($operation === 'view' && $node->bundle() === 'wiki_page' && !$node->isPublished()) {
+    return \Drupal\Core\Access\AccessResult::allowedIfHasPermission($account, 'view any unpublished wiki_page content')->addCacheableDependency($node);
+  }
+  return \Drupal\Core\Access\AccessResult::neutral();
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view() for nodes: a wiki page shows its
+ * organization fields only when it is about an organization (its type is
+ * "Organization"), as D7's conditional_fields did (34, 67-72). Otherwise
+ * every new page showed "Membership size: 0" and the rest of their defaults.
+ */
+function vaxia_wiki_node_view(array &$build, NodeInterface $node, $display, $view_mode) {
+  if ($node->bundle() !== 'wiki_page') {
+    return;
+  }
+  $types = $node->hasField('field_tag_type') ? array_map(fn($term) => $term->label(), $node->get('field_tag_type')->referencedEntities()) : [];
+  if (!in_array('Organization', $types, TRUE)) {
+    foreach (['field_has_goals', 'field_organization_type', 'field_org_membership_size', 'field_org_material_strength', 'field_org_diplomatic_influence', 'field_org_economic_influence', 'field_provides_reputation'] as $field) {
+      unset($build[$field]);
+    }
+  }
+}

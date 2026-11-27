@@ -1,0 +1,15 @@
+uuid: 9022f005-2268-46a4-b612-affc28b437e6
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.item_evaluation_creation
+    - workflow.state.item_evaluation_draft
+id: item_evaluation_creation_draft
+label: null
+module: workflow
+from_sid: item_evaluation_creation
+to_sid: item_evaluation_draft
+roles:
+  workflow_author: workflow_author
+  administrator: administrator

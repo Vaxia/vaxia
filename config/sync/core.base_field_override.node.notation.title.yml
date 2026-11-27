@@ -1,0 +1,18 @@
+uuid: c8889440-5334-4411-850b-62144a55bb87
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.notation
+id: node.notation.title
+field_name: title
+entity_type: node
+bundle: notation
+label: 'Short summary'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

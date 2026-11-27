@@ -1,0 +1,16 @@
+uuid: e33c2c01-3723-4de7-8fd3-97066e3f06ec
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    parent: 'main:'
+name: Artwork
+type: artwork
+description: 'Artwork for character sheets'
+help: "Step 1: When creating artwork we are under Fair Use policies here. In general, we also ask that you keep the art you use for your characters at the PG-13 level. Site admins reserve the right to tighten down on the approval for art if the freedom is abused.\r\n<br/><br/>\r\nStep 2: Save, when ready to submit change the workflow to approved to activate the art for the site."
+new_revision: false
+preview_mode: 1
+display_submitted: false

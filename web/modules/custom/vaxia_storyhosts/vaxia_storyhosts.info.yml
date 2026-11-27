@@ -1,0 +1,8 @@
+name: VAXIA storyhosts
+type: module
+description: 'The storyhost program: scene records and rulings, storyhost duties, renewal and tests, vacations, justice form. Replaces D7 storyhosts, sh_test, storyhost_duties, storyhost_renewal, justice_form, scene_record, vaxia_scene, vacation, quiz_feedback.'
+package: VAXIA
+core_version_requirement: ^11
+dependencies:
+  - vaxia_core:vaxia_core
+  - vaxia_dice:vaxia_dice

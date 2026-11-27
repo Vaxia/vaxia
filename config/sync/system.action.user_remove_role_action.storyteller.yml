@@ -1,0 +1,14 @@
+uuid: 29a7cd75-4911-45c4-ac9e-cca5ccdb54a8
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.storyteller
+  module:
+    - user
+id: user_remove_role_action.storyteller
+label: 'Remove the storyteller role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: storyteller

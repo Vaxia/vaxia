@@ -1,0 +1,25 @@
+uuid: a29f9f78-8aea-4514-bdb7-9402601fe323
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+    - vaxia_wiki
+  theme:
+    - vaxia_theme
+id: vaxia_theme_site_wiki_admin_site_wiki_search
+theme: vaxia_theme
+region: sidebar_second
+weight: -52
+provider: null
+plugin: site_wiki_admin-site_wiki_search
+settings:
+  id: site_wiki_admin-site_wiki_search
+  label: 'Site wiki search'
+  label_display: visible
+  provider: vaxia_wiki
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: '/wiki/*'

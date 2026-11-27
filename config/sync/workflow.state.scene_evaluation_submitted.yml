@@ -1,0 +1,13 @@
+uuid: 214d3609-f41c-4c5f-bca0-c39da988a844
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.scene_evaluation
+id: scene_evaluation_submitted
+label: submitted
+weight: -20
+module: workflow
+wid: scene_evaluation
+sysid: 0
+single_state_widget: ''

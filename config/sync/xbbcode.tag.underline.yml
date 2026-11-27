@@ -1,0 +1,18 @@
+uuid: 04f76600-96c3-49d3-a036-9bdcb11cb11c
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - xbbcode_standard
+_core:
+  default_config_hash: 406PJKXabtrh9nHwTdZLOtvSlgRNzRP5SxxRsPE3EE8
+id: underline
+label: Underline
+description: 'Underlines text'
+name: u
+attached: {  }
+sample: '[{{ name }}]Underlined[/{{ name }}]'
+template_code: '<span style="text-decoration:underline">{{ tag.content }}</span>'
+template_file: null
+editable: false

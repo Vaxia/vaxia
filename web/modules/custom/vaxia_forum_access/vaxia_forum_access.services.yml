@@ -1,0 +1,14 @@
+services:
+  vaxia_forum_access.reply_access:
+    class: Drupal\vaxia_forum_access\Access\ReplyAccessCheck
+    tags:
+      - { name: access_check, applies_to: _vaxia_forum_access_reply }
+  vaxia_forum_access.route_subscriber:
+    class: Drupal\vaxia_forum_access\Routing\RouteSubscriber
+    tags:
+      - { name: event_subscriber }
+  vaxia_forum_access.forum_page_cache:
+    class: Drupal\vaxia_forum_access\EventSubscriber\ForumPageCache
+    arguments: ['@current_route_match']
+    tags:
+      - { name: event_subscriber }

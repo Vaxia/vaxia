@@ -1,0 +1,21 @@
+uuid: 9f8a532f-0fe9-445c-ad36-eacd9a1ed9c0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_powers_expire
+  module:
+    - datetime
+    - user
+id: user.user.field_powers_expire
+field_name: field_powers_expire
+entity_type: user
+bundle: user
+label: 'Powers expire'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

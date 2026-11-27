@@ -1,0 +1,8 @@
+uuid: 2dbcd4c2-9306-4ccc-ac39-c28016889381
+langcode: en
+status: true
+dependencies: {  }
+id: comment_node_artwork
+label: 'Artwork comment'
+target_entity_type_id: node
+description: null

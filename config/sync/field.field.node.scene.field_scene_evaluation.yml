@@ -1,0 +1,21 @@
+uuid: 4b49498a-6947-41ef-b8fa-80c93cfee5ac
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_scene_evaluation
+    - node.type.scene
+  module:
+    - workflow
+id: node.scene.field_scene_evaluation
+field_name: field_scene_evaluation
+entity_type: node
+bundle: scene
+label: 'Scene evaluation'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: workflow

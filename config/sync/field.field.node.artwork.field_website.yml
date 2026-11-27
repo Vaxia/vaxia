@@ -1,0 +1,19 @@
+uuid: 2935c43f-250c-4406-bf33-84052d08f12d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_website
+    - node.type.artwork
+id: node.artwork.field_website
+field_name: field_website
+entity_type: node
+bundle: artwork
+label: Website
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

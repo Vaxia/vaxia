@@ -1,0 +1,20 @@
+uuid: ac3f5718-f990-44b3-a521-71fc6d2aa6d2
+langcode: en
+status: true
+dependencies:
+  module:
+    - vaxia_core
+  theme:
+    - vaxia_theme
+id: vaxia_theme_character_xp_flavors_block_1
+theme: vaxia_theme
+region: content
+weight: -37
+provider: null
+plugin: character_xp_flavors-block_1
+settings:
+  id: character_xp_flavors-block_1
+  label: 'Character XP Breakdown'
+  label_display: '0'
+  provider: vaxia_core
+visibility: {  }

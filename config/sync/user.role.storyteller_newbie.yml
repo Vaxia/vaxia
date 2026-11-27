@@ -1,0 +1,30 @@
+uuid: a36263b6-5610-49f8-b5e7-3dd6b4e92236
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.session_report
+    - workflow.workflow.character_evaluation
+  module:
+    - node
+    - vaxia_core
+    - vaxia_dice
+    - vaxia_storyhosts
+    - workflow
+id: storyteller_newbie
+label: storyteller-newbie
+weight: 18
+is_admin: false
+permissions:
+  - 'can go on vacation'
+  - 'create SHs'
+  - 'create character_evaluation workflow_transition'
+  - 'create session_report content'
+  - 'delete own session_report content'
+  - 'edit own session_report content'
+  - 'post in narrative format'
+  - 'transfer rxp'
+  - 'use SH dice options'
+  - 'use dice helper'
+  - 'view session qualify'
+  - 'view sh test results'

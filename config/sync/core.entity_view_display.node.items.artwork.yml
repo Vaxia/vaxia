@@ -1,0 +1,478 @@
+uuid: a321dbe3-757d-4e2e-8e62-316a6caf79b9
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.artwork
+    - field.field.node.items.comment_node_items
+    - field.field.node.items.field_absorb_type
+    - field.field.node.items.field_armor_absorbs
+    - field.field.node.items.field_armor_penalty
+    - field.field.node.items.field_build_points
+    - field.field.node.items.field_calc_value
+    - field.field.node.items.field_character_owner
+    - field.field.node.items.field_charisma
+    - field.field.node.items.field_creation_history
+    - field.field.node.items.field_declared_value
+    - field.field.node.items.field_dexterity
+    - field.field.node.items.field_endurance
+    - field.field.node.items.field_fixed_strength
+    - field.field.node.items.field_in_shop
+    - field.field.node.items.field_intelligence
+    - field.field.node.items.field_item_charisma
+    - field.field.node.items.field_item_desc
+    - field.field.node.items.field_item_dexterity
+    - field.field.node.items.field_item_difficulty
+    - field.field.node.items.field_item_endurance
+    - field.field.node.items.field_item_evaluation
+    - field.field.node.items.field_item_history
+    - field.field.node.items.field_item_intelligence
+    - field.field.node.items.field_item_life
+    - field.field.node.items.field_item_over_charisma
+    - field.field.node.items.field_item_over_dexterity
+    - field.field.node.items.field_item_over_endurance
+    - field.field.node.items.field_item_over_intellegence
+    - field.field.node.items.field_item_over_life
+    - field.field.node.items.field_item_over_skill
+    - field.field.node.items.field_item_over_spirituality
+    - field.field.node.items.field_item_over_strength
+    - field.field.node.items.field_item_skill
+    - field.field.node.items.field_item_spent_uses
+    - field.field.node.items.field_item_spirituality
+    - field.field.node.items.field_item_strength
+    - field.field.node.items.field_item_type
+    - field.field.node.items.field_item_use_day
+    - field.field.node.items.field_item_uses
+    - field.field.node.items.field_life
+    - field.field.node.items.field_player_notes
+    - field.field.node.items.field_pp_created
+    - field.field.node.items.field_sellback
+    - field.field.node.items.field_sh_notes
+    - field.field.node.items.field_sh_private_notes
+    - field.field.node.items.field_skill
+    - field.field.node.items.field_spirituality
+    - field.field.node.items.field_strength
+    - field.field.node.items.field_tag_realm
+    - field.field.node.items.field_value
+    - field.field.node.items.field_weapon_class
+    - field.field.node.items.field_weapon_sub_type
+    - node.type.items
+  module:
+    - entity_reference_revisions
+    - options
+    - text
+    - user
+id: node.items.artwork
+targetEntityType: node
+bundle: items
+mode: artwork
+content:
+  field_absorb_type:
+    type: list_default
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 9
+    region: content
+  field_armor_absorbs:
+    type: number_integer
+    label: inline
+    settings:
+      thousand_separator: ' '
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  field_armor_penalty:
+    type: number_integer
+    label: inline
+    settings:
+      thousand_separator: ' '
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 11
+    region: content
+  field_build_points:
+    type: number_integer
+    label: inline
+    settings:
+      thousand_separator: ' '
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 12
+    region: content
+  field_charisma:
+    type: number_integer
+    label: inline
+    settings:
+      thousand_separator: ' '
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 16
+    region: content
+  field_dexterity:
+    type: number_integer
+    label: inline
+    settings:
+      thousand_separator: ' '
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  field_endurance:
+    type: number_integer
+    label: inline
+    settings:
+      thousand_separator: ' '
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_fixed_strength:
+    type: number_integer
+    label: inline
+    settings:
+      thousand_separator: ' '
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 8
+    region: content
+  field_intelligence:
+    type: number_integer
+    label: inline
+    settings:
+      thousand_separator: ' '
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 12
+    region: content
+  field_item_charisma:
+    type: number_decimal
+    label: inline
+    settings:
+      thousand_separator: ' '
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 34
+    region: content
+  field_item_desc:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_item_dexterity:
+    type: number_decimal
+    label: inline
+    settings:
+      thousand_separator: ' '
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 28
+    region: content
+  field_item_difficulty:
+    type: number_integer
+    label: inline
+    settings:
+      thousand_separator: ' '
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_item_endurance:
+    type: number_decimal
+    label: inline
+    settings:
+      thousand_separator: ' '
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 24
+    region: content
+  field_item_history:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_item_intelligence:
+    type: number_decimal
+    label: inline
+    settings:
+      thousand_separator: ' '
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 30
+    region: content
+  field_item_life:
+    type: number_decimal
+    label: inline
+    settings:
+      thousand_separator: ' '
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 22
+    region: content
+  field_item_over_charisma:
+    type: number_decimal
+    label: inline
+    settings:
+      thousand_separator: ' '
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 20
+    region: content
+  field_item_over_dexterity:
+    type: number_decimal
+    label: inline
+    settings:
+      thousand_separator: ' '
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 14
+    region: content
+  field_item_over_endurance:
+    type: number_decimal
+    label: inline
+    settings:
+      thousand_separator: ' '
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  field_item_over_intellegence:
+    type: number_decimal
+    label: inline
+    settings:
+      thousand_separator: ' '
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 16
+    region: content
+  field_item_over_life:
+    type: number_decimal
+    label: inline
+    settings:
+      thousand_separator: ' '
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 8
+    region: content
+  field_item_over_skill:
+    type: number_decimal
+    label: inline
+    settings:
+      thousand_separator: ' '
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 22
+    region: content
+  field_item_over_spirituality:
+    type: number_decimal
+    label: inline
+    settings:
+      thousand_separator: ' '
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 18
+    region: content
+  field_item_over_strength:
+    type: number_decimal
+    label: inline
+    settings:
+      thousand_separator: ' '
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 12
+    region: content
+  field_item_skill:
+    type: number_decimal
+    label: inline
+    settings:
+      thousand_separator: ' '
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 36
+    region: content
+  field_item_spent_uses:
+    type: number_integer
+    label: inline
+    settings:
+      thousand_separator: ' '
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_item_spirituality:
+    type: number_decimal
+    label: inline
+    settings:
+      thousand_separator: ' '
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 32
+    region: content
+  field_item_strength:
+    type: number_decimal
+    label: inline
+    settings:
+      thousand_separator: ' '
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 26
+    region: content
+  field_item_type:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_item_use_day:
+    type: list_default
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_item_uses:
+    type: number_integer
+    label: inline
+    settings:
+      thousand_separator: ' '
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_life:
+    type: number_integer
+    label: inline
+    settings:
+      thousand_separator: ' '
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_player_notes:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 20
+    region: content
+  field_pp_created:
+    type: number_integer
+    label: inline
+    settings:
+      thousand_separator: ' '
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_sh_notes:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 18
+    region: content
+  field_sh_private_notes:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 19
+    region: content
+  field_skill:
+    type: entity_reference_revisions_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_spirituality:
+    type: number_integer
+    label: inline
+    settings:
+      thousand_separator: ' '
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 14
+    region: content
+  field_strength:
+    type: number_integer
+    label: inline
+    settings:
+      thousand_separator: ' '
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 8
+    region: content
+  field_weapon_class:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_weapon_sub_type:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 7
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  comment_node_items: true
+  field_calc_value: true
+  field_character_owner: true
+  field_creation_history: true
+  field_declared_value: true
+  field_in_shop: true
+  field_item_evaluation: true
+  field_sellback: true
+  field_tag_realm: true
+  field_value: true

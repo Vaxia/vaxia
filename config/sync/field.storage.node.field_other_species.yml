@@ -1,0 +1,30 @@
+uuid: 6e1d11cb-4e32-4af7-879c-c371de6058c5
+langcode: und
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_other_species
+field_name: field_other_species
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: npc
+      label: 'NPC Species'
+    -
+      value: playtest
+      label: 'Playtest Species (Requires Approval)'
+    -
+      value: custom
+      label: 'One-off Species (Requires Approval)'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

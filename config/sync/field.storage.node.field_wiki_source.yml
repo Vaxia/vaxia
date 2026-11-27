@@ -1,0 +1,19 @@
+uuid: 3791feeb-4f3a-4dff-9993-1945520f0ed8
+langcode: und
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_wiki_source
+field_name: field_wiki_source
+entity_type: node
+type: entity_reference
+settings:
+  target_type: node
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

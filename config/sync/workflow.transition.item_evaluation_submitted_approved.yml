@@ -1,0 +1,15 @@
+uuid: 4e9e2bdb-381f-4f45-a249-48b656a7108a
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.item_evaluation_approved
+    - workflow.state.item_evaluation_submitted
+id: item_evaluation_submitted_approved
+label: null
+module: workflow
+from_sid: item_evaluation_submitted
+to_sid: item_evaluation_approved
+roles:
+  administrator: administrator
+  storyteller: storyteller

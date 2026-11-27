@@ -1,0 +1,32 @@
+uuid: 081532d2-fe8b-4f16-8822-887dd83a9e84
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_tag_realm
+    - node.type.play_suggestions
+    - taxonomy.vocabulary.realm
+  module:
+    - vaxia_core
+third_party_settings:
+  vaxia_core:
+    d7_default_ids:
+      - 725
+id: node.play_suggestions.field_tag_realm
+field_name: field_tag_realm
+entity_type: node
+bundle: play_suggestions
+label: In
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: vaxia_core_d7_reference_default
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      realm: realm
+    sort:
+      field: _none
+field_type: entity_reference

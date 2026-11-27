@@ -1,0 +1,20 @@
+uuid: 69b0f162-e7ca-44b3-b2d5-782442d4c0c1
+langcode: en
+status: true
+dependencies:
+  module:
+    - vaxia_wiki
+  theme:
+    - olivero
+id: olivero_site_wiki_site_wiki_disamb
+theme: olivero
+region: content
+weight: -46
+provider: null
+plugin: site_wiki_disamb
+settings:
+  id: site_wiki_disamb
+  label: ''
+  label_display: '0'
+  provider: vaxia_wiki
+visibility: {  }

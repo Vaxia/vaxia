@@ -1,0 +1,11 @@
+uuid: fb1d9d3c-d9ce-4b33-b4e2-c329da0f4d63
+langcode: en
+status: true
+dependencies: {  }
+name: 'Multiple choice question'
+type: multichoice
+description: 'This provides multiple choice questions for use by the Quiz module.'
+help: null
+new_revision: false
+preview_mode: 1
+display_submitted: true

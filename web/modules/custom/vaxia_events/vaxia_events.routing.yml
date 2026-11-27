@@ -1,0 +1,27 @@
+vaxia_events.calendar:
+  path: '/calendar'
+  defaults:
+    _controller: '\Drupal\vaxia_events\Controller\EventPages::calendar'
+    _title: 'Calendar'
+  requirements:
+    _permission: 'access content'
+vaxia_events.list:
+  path: '/calendar/event-list'
+  defaults:
+    _controller: '\Drupal\vaxia_events\Controller\EventPages::upcoming'
+    _title: 'Upcoming events'
+  requirements:
+    _permission: 'access content'
+vaxia_events.ical:
+  path: '/calendar/ical'
+  defaults:
+    _controller: '\Drupal\vaxia_events\Controller\EventPages::ical'
+  requirements:
+    _permission: 'access content'
+vaxia_events.timeline:
+  path: '/wiki/timelines'
+  defaults:
+    _controller: '\Drupal\vaxia_events\Controller\EventPages::timeline'
+    _title: 'Timelines'
+  requirements:
+    _permission: 'access content'

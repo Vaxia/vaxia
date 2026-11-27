@@ -1,0 +1,53 @@
+vaxia_conduct.notations:
+  path: '/notations'
+  defaults:
+    _controller: '\Drupal\vaxia_conduct\Controller\ConductLists::notations'
+    _title: 'Social Notes'
+  requirements:
+    _role: 'lead+mediator'
+vaxia_conduct.notations_all:
+  path: '/notations/all'
+  defaults:
+    _controller: '\Drupal\vaxia_conduct\Controller\ConductLists::notations'
+    _title: 'Notes'
+  requirements:
+    _role: 'lead+mediator'
+vaxia_conduct.strikes:
+  path: '/notations/strikes'
+  defaults:
+    _controller: '\Drupal\vaxia_conduct\Controller\ConductLists::strikes'
+    _title: 'Strikes'
+  requirements:
+    _role: 'lead+mediator'
+vaxia_conduct.notation_log:
+  path: '/notation-log'
+  defaults:
+    _controller: '\Drupal\vaxia_conduct\Controller\ConductLists::notations'
+    _title: 'Notes log'
+  requirements:
+    _role: 'lead+mediator+player'
+vaxia_conduct.user_notations:
+  path: '/user/{user}/notations'
+  defaults:
+    _controller: '\Drupal\vaxia_conduct\Controller\ConductLists::userNotations'
+    _title: 'Notes'
+  requirements:
+    _custom_access: '\Drupal\vaxia_conduct\Controller\ConductLists::userNotationsAccess'
+  options:
+    parameters:
+      user:
+        type: entity:user
+vaxia_conduct.banned:
+  path: '/players/banned'
+  defaults:
+    _controller: '\Drupal\vaxia_conduct\Controller\ConductLists::banned'
+    _title: 'Suspended'
+  requirements:
+    _role: 'administrator+lead'
+vaxia_conduct.cold_storage:
+  path: '/players/cold_storage'
+  defaults:
+    _controller: '\Drupal\vaxia_conduct\Controller\ConductLists::coldStorage'
+    _title: 'Cold storage'
+  requirements:
+    _role: 'administrator+lead'

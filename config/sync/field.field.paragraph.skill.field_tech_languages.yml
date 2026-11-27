@@ -1,0 +1,34 @@
+uuid: 490d3e43-ac19-47c3-bd7f-02560ae4c0be
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_tech_languages
+    - paragraphs.paragraphs_type.skill
+    - paragraphs.paragraphs_type.tech_languages
+  module:
+    - entity_reference_revisions
+id: paragraph.skill.field_tech_languages
+field_name: field_tech_languages
+entity_type: paragraph
+bundle: skill
+label: 'Tech contexts'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      tech_languages: tech_languages
+    negate: 0
+    target_bundles_drag_drop:
+      skill:
+        weight: 2
+        enabled: false
+      tech_languages:
+        weight: 1
+        enabled: true
+field_type: entity_reference_revisions

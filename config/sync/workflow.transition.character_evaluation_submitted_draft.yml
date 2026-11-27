@@ -1,0 +1,16 @@
+uuid: 79101548-1366-48ee-9b10-bb4d2c389bd6
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.character_evaluation_draft
+    - workflow.state.character_evaluation_submitted
+id: character_evaluation_submitted_draft
+label: null
+module: workflow
+from_sid: character_evaluation_submitted
+to_sid: character_evaluation_draft
+roles:
+  administrator: administrator
+  storyteller: storyteller
+  workflow_author: workflow_author

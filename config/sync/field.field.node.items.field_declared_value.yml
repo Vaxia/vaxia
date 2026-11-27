@@ -1,0 +1,21 @@
+uuid: 7bbaa01a-ca7c-46d1-b57a-8045254f1ef3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_declared_value
+    - node.type.items
+id: node.items.field_declared_value
+field_name: field_declared_value
+entity_type: node
+bundle: items
+label: 'Declared value'
+description: 'The value as declared to the owner.'
+required: true
+translatable: false
+default_value:
+  -
+    value: '0'
+default_value_callback: ''
+settings: {  }
+field_type: string

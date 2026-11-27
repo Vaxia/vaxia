@@ -1,0 +1,23 @@
+uuid: 75fccbbb-ba3a-4f64-ae36-27e7130f634f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_item_over_dexterity
+    - node.type.items
+id: node.items.field_item_over_dexterity
+field_name: field_item_over_dexterity
+entity_type: node
+bundle: items
+label: Dexterity
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: float

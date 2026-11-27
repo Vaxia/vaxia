@@ -1,0 +1,14 @@
+uuid: a5ffc776-6140-491d-9900-4acf604a7954
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.knows_the_social
+  module:
+    - user
+id: user_remove_role_action.knows_the_social
+label: 'Remove the knows-the-social role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: knows_the_social

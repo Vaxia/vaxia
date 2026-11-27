@@ -1,0 +1,19 @@
+edit playable item:
+  title: 'Edit an item in play'
+administer item settings:
+  title: 'Administer item settings'
+  restrict access: true
+use items indefinately:
+  title: 'Use items indefinitely'
+administer item uses:
+  title: 'Administer item uses'
+  restrict access: true
+use item shop:
+  title: 'Use item shop'
+sellback item shop:
+  title: 'Sell items back to item shop'
+set item for shop:
+  title: 'Set item for shop'
+administer item shop:
+  title: 'Administer item shop'
+  restrict access: true

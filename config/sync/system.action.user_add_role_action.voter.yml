@@ -1,0 +1,14 @@
+uuid: 898576ee-901e-4b07-8955-e7e960d8d574
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.voter
+  module:
+    - user
+id: user_add_role_action.voter
+label: 'Add the voter role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: voter

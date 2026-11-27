@@ -1,0 +1,23 @@
+uuid: 68a20dab-9a6f-4527-83aa-73e6892c0f80
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_absorb_type
+    - node.type.items
+  module:
+    - options
+id: node.items.field_absorb_type
+field_name: field_absorb_type
+entity_type: node
+bundle: items
+label: 'Absorb type'
+description: 'Select the type of defensive bonus. Armors apply all the time, shields only when blocking.'
+required: true
+translatable: false
+default_value:
+  -
+    value: armor
+default_value_callback: ''
+settings: {  }
+field_type: list_string

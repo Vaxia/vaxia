@@ -1,0 +1,45 @@
+uuid: 77832487-eb99-4c6b-b0a5-f3b627f628bf
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_scifi_species
+field_name: field_scifi_species
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: human
+      label: Human
+    -
+      value: android
+      label: Android
+    -
+      value: cyborg
+      label: Cyborg
+    -
+      value: clone
+      label: Clone
+    -
+      value: uplift
+      label: 'Uplifted animal'
+    -
+      value: insectoid
+      label: Insectoid
+    -
+      value: grey
+      label: Grey
+    -
+      value: other
+      label: 'Other (see Other species)'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

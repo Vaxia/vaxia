@@ -1,0 +1,20 @@
+uuid: 767c1c6f-471e-4079-8d2c-0b77753bd3fd
+langcode: und
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_spirituality
+field_name: field_spirituality
+entity_type: node
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

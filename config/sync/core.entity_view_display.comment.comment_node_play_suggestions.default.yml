@@ -1,0 +1,27 @@
+uuid: 3d6dd720-bce5-498e-9014-b7bfc222aced
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.comment_node_play_suggestions
+    - field.field.comment.comment_node_play_suggestions.comment_body
+  module:
+    - text
+id: comment.comment_node_play_suggestions.default
+targetEntityType: comment
+bundle: comment_node_play_suggestions
+mode: default
+content:
+  comment_body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden: {  }

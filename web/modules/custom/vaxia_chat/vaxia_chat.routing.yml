@@ -1,0 +1,97 @@
+vaxia_chat.refresh:
+  path: '/system/rpg_chat/{nid}'
+  defaults:
+    _controller: '\Drupal\vaxia_chat\Controller\Refresh::refresh'
+    nid: 0
+  requirements:
+    _access: 'TRUE'
+vaxia_chat.admin:
+  path: '/admin/rpg'
+  defaults:
+    _controller: '\Drupal\vaxia_chat\Controller\RpgAdmin::page'
+    _title: 'RPG'
+  requirements:
+    # D7 asked for "administer rpg settings", which no module defined, so only
+    # user 1 got in (known bug). RPG admins do now; ported modules with their
+    # own admin permission add it here ("+" means any of).
+    _permission: 'administer rpg chat+admin personal_rooms'
+vaxia_chat.post_revisions:
+  path: '/comment/{comment}/revisions'
+  defaults:
+    _form: '\Drupal\vaxia_chat\Form\PostRevisionsForm'
+    _title: 'Revisions'
+  requirements:
+    # D7's access callback started with a leftover "return TRUE;" (known bug):
+    # anyone could read what was edited out of a post.
+    _permission: 'view comment revisions diffs+administer nodes'
+    # And only for posts the viewer may see, in rooms they may enter (review,
+    # 2026-11-26: any player could read any post's history by its id).
+    _entity_access: 'comment.view'
+    _custom_access: '\Drupal\vaxia_chat\Form\PostRevisionsForm::access'
+  options:
+    parameters:
+      comment:
+        type: entity:comment
+vaxia_chat.archives:
+  path: '/archives'
+  defaults:
+    _form: '\Drupal\vaxia_chat\Form\ArchivesSearchForm'
+    _title: 'Archives'
+  requirements:
+    _permission: 'search old archives'
+vaxia_chat.archives_settings:
+  path: '/admin/vaxia/archives'
+  defaults:
+    _form: '\Drupal\vaxia_chat\Form\ArchivesSettingsForm'
+    _title: 'Archive settings'
+  requirements:
+    _permission: 'administer old archives'
+vaxia_chat.room_cleanup:
+  path: '/admin/vaxia/room_cleanup'
+  defaults:
+    _form: '\Drupal\vaxia_chat\Form\RoomCleanupForm'
+    _title: 'Room cleanup'
+  requirements:
+    _permission: 'administer room cleanup'
+vaxia_chat.personal_rooms_settings:
+  path: '/admin/rpg/personal_rooms'
+  defaults:
+    _form: '\Drupal\vaxia_chat\Form\PersonalRoomsSettingsForm'
+    _title: 'Personal rooms'
+  requirements:
+    _permission: 'admin personal_rooms'
+vaxia_chat.personal_rooms_list:
+  path: '/character-sheets/personal-rooms'
+  defaults:
+    _controller: '\Drupal\vaxia_chat\Controller\PersonalRoomsList::page'
+    _title: 'Personal rooms'
+  requirements:
+    # D7 view access: administrator, lead, storyteller.
+    _role: 'administrator+lead+storyteller'
+vaxia_chat.play_suggestions:
+  path: '/play-suggestions'
+  defaults:
+    _form: '\Drupal\vaxia_chat\Form\PlaySuggestionsListForm'
+    _title: 'Play suggestions'
+  requirements:
+    # D7 view access: administrator, lead, storyteller.
+    _role: 'administrator+lead+storyteller'
+vaxia_chat.rpg_chats:
+  path: '/rpg-chats'
+  defaults:
+    _controller: '\Drupal\vaxia_chat\Controller\ChatLists::rooms'
+    _title: 'RPG Chats'
+  requirements:
+    # D7 view access: authenticated user.
+    _role: 'authenticated'
+vaxia_chat.chat_archives:
+  path: '/node/{node}/chat-archives'
+  defaults:
+    _controller: '\Drupal\vaxia_chat\Controller\ChatLists::archives'
+    _title: 'Chat Archives'
+  requirements:
+    _custom_access: '\Drupal\vaxia_chat\Controller\ChatLists::archivesAccess'
+  options:
+    parameters:
+      node:
+        type: entity:node

@@ -1,0 +1,14 @@
+uuid: c9b26c1f-0a96-4e44-9838-d6810beb76af
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.art_evaluation_approved
+    - workflow.state.art_evaluation_removed_from_site
+id: art_evaluation_removed_from_site_approved
+label: null
+module: workflow
+from_sid: art_evaluation_removed_from_site
+to_sid: art_evaluation_approved
+roles:
+  administrator: administrator

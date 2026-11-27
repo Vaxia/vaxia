@@ -1,0 +1,7 @@
+vaxia_conduct.settings:
+  type: config_object
+  label: 'VAXIA conduct settings'
+  mapping:
+    cold_storage_return_form:
+      type: integer
+      label: 'Node of the "returning player" webform'

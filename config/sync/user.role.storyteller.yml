@@ -1,0 +1,81 @@
+uuid: d42e5fec-9a8a-40e9-8ee3-16a1e979e1a2
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.character_sheet
+    - node.type.items
+    - node.type.play_suggestions
+    - node.type.rpg_chatroom
+    - node.type.scene
+    - node.type.session_report
+    - workflow.workflow.character_evaluation
+    - workflow.workflow.item_evaluation
+    - workflow.workflow.scene_evaluation
+    - workflow.workflow.wiki_workflow
+  module:
+    - node
+    - vaxia_characters
+    - vaxia_chat
+    - vaxia_core
+    - vaxia_dice
+    - vaxia_governance
+    - vaxia_items
+    - vaxia_storyhosts
+    - workflow
+id: storyteller
+label: storyteller
+weight: 5
+is_admin: false
+permissions:
+  - 'access any character_evaluation workflow_transion overview'
+  - 'access any item_evaluation workflow_transion overview'
+  - 'access any scene_evaluation workflow_transion overview'
+  - 'add xp to character sheet'
+  - 'approve sh test'
+  - 'can go on vacation'
+  - 'create NPCs'
+  - 'create character_evaluation workflow_transition'
+  - 'create item_evaluation workflow_transition'
+  - 'create items content'
+  - 'create rpg_chatroom content'
+  - 'create scene_evaluation workflow_transition'
+  - 'create session_report content'
+  - 'create wiki_workflow workflow_transition'
+  - 'delete any play_suggestions content'
+  - 'delete own play_suggestions content'
+  - 'edit SH notes'
+  - 'edit any character_sheet content'
+  - 'edit any items content'
+  - 'edit any play_suggestions content'
+  - 'edit any rpg_chatroom content'
+  - 'edit any scene content'
+  - 'edit own items content'
+  - 'edit own play_suggestions content'
+  - 'edit own rpg_chatroom content'
+  - 'edit own session_report content'
+  - 'edit personal_rooms'
+  - 'edit private SH notes'
+  - 'give reputation xp'
+  - 'make room from wiki'
+  - 'post in narrative format'
+  - 'set item for shop'
+  - 'transfer rxp'
+  - 'use NPCs'
+  - 'use SH dice options'
+  - 'use dice helper'
+  - 'use item shop'
+  - 'use justice form'
+  - 'use scene helper'
+  - 'view all scenes'
+  - 'view character permissions'
+  - 'view character sheet log'
+  - 'view comment revisions'
+  - 'view comment revisions diffs'
+  - 'view others accounts'
+  - 'view own scenes'
+  - 'view reputation xp'
+  - 'view role application'
+  - 'view session notes'
+  - 'view session qualify'
+  - 'view sh test results'

@@ -1,0 +1,21 @@
+uuid: b878e064-136f-4040-8a8e-88591de361af
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_wiki_workflow
+    - node.type.wiki_page
+  module:
+    - workflow
+id: node.wiki_page.field_wiki_workflow
+field_name: field_wiki_workflow
+entity_type: node
+bundle: wiki_page
+label: 'Wiki workflow'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: workflow

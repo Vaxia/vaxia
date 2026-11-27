@@ -1,0 +1,21 @@
+uuid: 4b2256d9-c106-476c-9e6a-1ffc951b3696
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_session_held
+    - node.type.timeline_event
+  module:
+    - datetime
+id: node.timeline_event.field_session_held
+field_name: field_session_held
+entity_type: node
+bundle: timeline_event
+label: 'Event held'
+description: 'When did this event occur.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

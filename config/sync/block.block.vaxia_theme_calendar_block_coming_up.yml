@@ -1,0 +1,20 @@
+uuid: f0b14a3e-f950-4c29-af32-d6e5f4b0a3cd
+langcode: en
+status: true
+dependencies:
+  module:
+    - vaxia_events
+  theme:
+    - vaxia_theme
+id: vaxia_theme_calendar_block_coming_up
+theme: vaxia_theme
+region: sidebar_first
+weight: -33
+provider: null
+plugin: calendar_block-coming_up
+settings:
+  id: calendar_block-coming_up
+  label: 'Calendar: Coming up'
+  label_display: visible
+  provider: vaxia_events
+visibility: {  }

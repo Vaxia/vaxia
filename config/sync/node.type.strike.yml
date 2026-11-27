@@ -1,0 +1,16 @@
+uuid: 75ce2241-ea77-4cca-a300-80dd073857bf
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    parent: 'main:'
+name: Strike
+type: strike
+description: 'A strike is a disciplinary action taken against a player for a documented on-site offense.'
+help: 'STOP. If you are building a strike against a player on this site, make very very sure what you are doing qualifies under a strike condition. Abuse of strikes is a strike itself.'
+new_revision: true
+preview_mode: 1
+display_submitted: true

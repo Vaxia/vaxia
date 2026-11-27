@@ -1,0 +1,51 @@
+<?php
+
+/**
+ * @file
+ * Install hooks for vaxia_governance.
+ */
+
+/**
+ * Implements hook_schema(): D7 proposal's eligible-voter snapshot.
+ */
+function vaxia_governance_schema() {
+  $schema['proposal_eligable_users'] = [
+    'description' => 'Who may vote on each proposal, taken when its ballot was set up.',
+    'fields' => [
+      'nid' => ['type' => 'int', 'not null' => TRUE, 'default' => 0],
+      'uid' => ['type' => 'int', 'not null' => TRUE, 'default' => 0],
+    ],
+    'primary key' => ['nid', 'uid'],
+  ];
+  return $schema + vaxia_governance_election_schema();
+}
+
+/**
+ * D7 rpg_election's tables.
+ */
+function vaxia_governance_election_schema(): array {
+  $schema['rpg_election_nodes'] = [
+    'description' => 'Election proposals: cycle, when opened and closed, positions, winners.',
+    'fields' => [
+      'eid' => ['type' => 'serial', 'not null' => TRUE],
+      'nid' => ['type' => 'int', 'not null' => TRUE, 'default' => 0],
+      'cycle' => ['type' => 'int', 'not null' => TRUE, 'default' => 0],
+      'opened' => ['type' => 'int', 'not null' => TRUE, 'default' => 0],
+      'closed' => ['type' => 'int', 'not null' => TRUE, 'default' => -1],
+      'positions' => ['type' => 'text', 'not null' => FALSE],
+      'winners' => ['type' => 'text', 'not null' => FALSE],
+    ],
+    'primary key' => ['eid'],
+    'indexes' => ['nid' => ['nid']],
+  ];
+  $schema['rpg_election_winners'] = [
+    'description' => 'Who won which position in which election cycle (term limits).',
+    'fields' => [
+      'uid' => ['type' => 'int', 'not null' => TRUE, 'default' => 0],
+      'cycle' => ['type' => 'int', 'not null' => TRUE, 'default' => 0],
+      'position' => ['type' => 'varchar', 'length' => 128, 'not null' => TRUE, 'default' => ''],
+    ],
+    'primary key' => ['uid', 'cycle', 'position'],
+  ];
+  return $schema;
+}

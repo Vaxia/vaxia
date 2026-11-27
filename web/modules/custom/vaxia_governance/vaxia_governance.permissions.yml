@@ -1,0 +1,16 @@
+vote on proposal:
+  title: 'Vote on proposals'
+administer proposal:
+  title: 'Administer proposals'
+administrate anon mailer:
+  title: 'Administrate anon mailer'
+can vote on rpg_elections:
+  title: 'Vote on elections'
+administrate rpg_elections:
+  title: 'Administrate elections'
+administrate departments:
+  title: 'Administrate departments'
+view role application:
+  title: 'View role applications'
+administrate role application:
+  title: 'Administrate role applications'

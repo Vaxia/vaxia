@@ -1,0 +1,25 @@
+uuid: 5003f16e-bd49-44ce-977b-c7506d7a8af1
+langcode: en
+status: true
+dependencies:
+  config:
+    - system.menu.menu-create-stuff
+  module:
+    - system
+  theme:
+    - vaxia_theme
+id: vaxia_theme_menu_create_stuff
+theme: vaxia_theme
+region: sidebar_first
+weight: -28
+provider: null
+plugin: 'system_menu_block:menu-create-stuff'
+settings:
+  id: 'system_menu_block:menu-create-stuff'
+  label: 'Create Stuff'
+  label_display: visible
+  provider: system
+  level: 1
+  depth: 0
+  expand_all_items: false
+visibility: {  }

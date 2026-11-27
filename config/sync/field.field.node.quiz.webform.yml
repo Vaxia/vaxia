@@ -1,0 +1,23 @@
+uuid: 895b45cb-01be-42c4-9c50-c9f076213f78
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.webform
+    - node.type.quiz
+  module:
+    - webform
+id: node.quiz.webform
+field_name: webform
+entity_type: node
+bundle: quiz
+label: Webform
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:webform'
+  handler_settings: {  }
+field_type: webform

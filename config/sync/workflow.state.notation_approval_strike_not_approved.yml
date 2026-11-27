@@ -1,0 +1,13 @@
+uuid: 16432e95-6461-4695-af6b-b23c55fd297d
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.notation_approval
+id: notation_approval_strike_not_approved
+label: 'strike NOT approved'
+weight: -16
+module: workflow
+wid: notation_approval
+sysid: 0
+single_state_widget: ''

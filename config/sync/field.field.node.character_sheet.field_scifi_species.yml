@@ -1,0 +1,21 @@
+uuid: 45649fe5-a6a8-481e-b2b2-89d2416ac08d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_scifi_species
+    - node.type.character_sheet
+  module:
+    - options
+id: node.character_sheet.field_scifi_species
+field_name: field_scifi_species
+entity_type: node
+bundle: character_sheet
+label: 'Science Fiction species'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

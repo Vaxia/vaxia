@@ -1,0 +1,27 @@
+uuid: f52624a3-0222-4272-974f-5bc6a6078b93
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_items
+    - node.type.character_sheet
+    - node.type.items
+id: node.character_sheet.field_items
+field_name: field_items
+entity_type: node
+bundle: character_sheet
+label: Items
+description: 'Items are added to characters from the Item form, not the Character Sheet form. If you need to add an item to this character, go to the item to set the IC owner.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      items: items
+    sort:
+      field: _none
+      direction: ASC
+field_type: entity_reference

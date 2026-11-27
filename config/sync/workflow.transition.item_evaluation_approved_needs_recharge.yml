@@ -1,0 +1,15 @@
+uuid: 96fd71ac-0fa8-47b3-a65e-7f32368446ec
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.item_evaluation_approved
+    - workflow.state.item_evaluation_needs_recharge
+id: item_evaluation_approved_needs_recharge
+label: null
+module: workflow
+from_sid: item_evaluation_approved
+to_sid: item_evaluation_needs_recharge
+roles:
+  administrator: administrator
+  storyteller: storyteller

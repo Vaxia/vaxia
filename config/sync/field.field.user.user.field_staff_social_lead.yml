@@ -1,0 +1,24 @@
+uuid: 680e9fa8-4a34-4568-a7de-90955a4cec2b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_staff_social_lead
+  module:
+    - user
+id: user.user.field_staff_social_lead
+field_name: field_staff_social_lead
+entity_type: user
+bundle: user
+label: 'Eligible for Social Lead'
+description: 'I would like to be considered eligible for Social Lead positions during rpg_elections.'
+required: false
+translatable: true
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

@@ -1,0 +1,8 @@
+uuid: 74f91ba4-48bf-4e3d-993e-521777147c33
+langcode: en
+status: true
+dependencies: {  }
+id: comment_node_rpg_chatroom
+label: 'RPG Chatroom comment'
+target_entity_type_id: node
+description: null

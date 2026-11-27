@@ -1,0 +1,14 @@
+uuid: df2ba1ae-d03b-4544-8d53-9feeb244658a
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.character_evaluation_removed_from_game
+    - workflow.state.character_evaluation_submitted
+id: character_evaluation_removed_from_game_submitted
+label: null
+module: workflow
+from_sid: character_evaluation_removed_from_game
+to_sid: character_evaluation_submitted
+roles:
+  administrator: administrator

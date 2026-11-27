@@ -1,0 +1,32 @@
+uuid: 591ddd75-0c42-47ee-b88d-59d3cec59336
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_rp_posts
+    - node.type.scene
+id: node.scene.field_rp_posts
+field_name: field_rp_posts
+entity_type: node
+bundle: scene
+label: 'RP Posts'
+description: 'Add the posts for your scene here.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:comment'
+  handler_settings:
+    target_bundles: null
+    sort:
+      field: _none
+      direction: ASC
+    behaviors:
+      views-select-list:
+        status: 0
+    view:
+      args: {  }
+      display_name: character_posts
+      view_name: character_posts
+field_type: entity_reference

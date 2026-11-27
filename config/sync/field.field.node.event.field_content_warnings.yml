@@ -1,0 +1,32 @@
+uuid: 2ec4a959-c6f4-4bc2-ae33-d6d8fe9e1b04
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_content_warnings
+    - node.type.event
+    - taxonomy.vocabulary.content
+  module:
+    - vaxia_core
+third_party_settings:
+  vaxia_core:
+    d7_default_ids:
+      - 880
+id: node.event.field_content_warnings
+field_name: field_content_warnings
+entity_type: node
+bundle: event
+label: Content
+description: 'If you can, please make note of any content warnings for this event. Not all of our players are comfortable with all topics so please let attendees know in advance what to expect. That way they can decide if this is a session that they are interested in attending. Note - "graphic" means you plan to go into detail in your descriptions. Consider this the difference between the violence in an summer blockbuster action movie as opposed to the violence in a slasher-horror movie.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: vaxia_core_d7_reference_default
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      content: content
+    sort:
+      field: _none
+field_type: entity_reference

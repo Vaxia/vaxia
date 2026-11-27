@@ -1,0 +1,33 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.wiki_page
+  module:
+    - node
+id: expand
+label: Expand
+bundles:
+  - wiki_page
+entity_type: node
+global: true
+weight: 0
+flag_short: 'Mark to Expand'
+flag_long: 'Mark this page as needing more information'
+flag_message: 'This page has been marked to be expanded on with more information'
+unflag_short: 'Don''t expand'
+unflag_long: 'Un-mark this page for expansion'
+unflag_message: 'This page has been un-marked for expansion'
+unflag_denied_text: ''
+flag_type: 'entity:node'
+link_type: reload
+flagTypeConfig:
+  show_in_links:
+    full: full
+    teaser: teaser
+  show_as_field: false
+  show_on_form: false
+  show_contextual_link: false
+  extra_permissions: {  }
+  access_author: ''
+linkTypeConfig: {  }

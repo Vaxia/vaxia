@@ -1,0 +1,22 @@
+uuid: 3c5a468b-1a3e-4b93-9b1b-6e1471c2f863
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - vaxia_theme
+_core:
+  default_config_hash: BZ5tpW7H8X4PVGRm3MImTIHd2tN0eF7zOtp4SpRYUA0
+id: vaxia_theme_messages
+theme: vaxia_theme
+region: content
+weight: -59
+provider: null
+plugin: system_messages_block
+settings:
+  id: system_messages_block
+  label: Messages
+  label_display: '0'
+  provider: system
+visibility: {  }

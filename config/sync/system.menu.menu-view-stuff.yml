@@ -1,0 +1,8 @@
+uuid: 450d6611-b3e4-42ec-b577-8a4e2381efe4
+langcode: en
+status: true
+dependencies: {  }
+id: menu-view-stuff
+label: 'View Stuff'
+description: ''
+locked: false

@@ -1,0 +1,9 @@
+uuid: f69791ca-0aa1-4668-b04c-a08b89008e1b
+langcode: en
+status: true
+dependencies: {  }
+name: 'Skill presets'
+vid: skill_presets
+description: 'Common skills players can pick on the character form to fill in a skill: name, description (the term description), realm and three aspects.'
+weight: 0
+new_revision: false

@@ -1,0 +1,8 @@
+uuid: 99c08c31-0004-4d38-ab37-6e3339623285
+langcode: en
+status: true
+dependencies: {  }
+id: comment_node_organization_goal
+label: 'Organization Goal comment'
+target_entity_type_id: node
+description: null

@@ -1,0 +1,14 @@
+uuid: 71a3c7dd-813d-46ad-936d-ace6e13a93a1
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.suspended_user
+  module:
+    - user
+id: user_remove_role_action.suspended_user
+label: 'Remove the suspended user role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: suspended_user

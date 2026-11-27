@@ -1,0 +1,25 @@
+uuid: 39e4735d-3f15-4d84-843f-20242a6c50d7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_endurance
+    - node.type.character_sheet
+id: node.character_sheet.field_endurance
+field_name: field_endurance
+entity_type: node
+bundle: character_sheet
+label: Endurance
+description: 'Endurance (END): Physical Resistance; Fortitude'
+required: true
+translatable: false
+default_value:
+  -
+    value: 25
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

@@ -1,0 +1,125 @@
+uuid: 6348e873-5c27-4459-a4e7-665605f51467
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.organization_goal.comment_node_organization_goal
+    - field.field.node.organization_goal.field_current_pp
+    - field.field.node.organization_goal.field_first_stat
+    - field.field.node.organization_goal.field_org_goal
+    - field.field.node.organization_goal.field_organization
+    - field.field.node.organization_goal.field_priority
+    - field.field.node.organization_goal.field_second_stat
+    - field.field.node.organization_goal.field_target
+    - field.field.node.organization_goal.field_target_government
+    - field.field.node.organization_goal.field_target_stat
+    - node.type.organization_goal
+  module:
+    - comment
+    - path
+id: node.organization_goal.default
+targetEntityType: node
+bundle: organization_goal
+mode: default
+content:
+  comment_node_organization_goal:
+    type: comment_default
+    weight: 20
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  created:
+    type: datetime_timestamp
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_current_pp:
+    type: number
+    weight: 9
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_first_stat:
+    type: options_select
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_org_goal:
+    type: options_select
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_organization:
+    type: options_select
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_priority:
+    type: options_select
+    weight: 8
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_second_stat:
+    type: options_select
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_target:
+    type: options_select
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_target_government:
+    type: options_select
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_target_stat:
+    type: options_select
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 30
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 120
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  uid:
+    type: entity_reference_autocomplete
+    weight: 5
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  promote: true
+  sticky: true

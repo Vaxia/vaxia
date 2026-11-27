@@ -1,0 +1,50 @@
+vaxia_core.sheet:
+  route_name: vaxia_core.sheet
+  base_route: entity.node.canonical
+  title: 'Sheet'
+  weight: 3
+vaxia_core.character_sheets_all:
+  route_name: vaxia_core.character_sheets_all
+  base_route: vaxia_core.character_sheets_all
+  title: 'Characters'
+vaxia_core.character_sheets_mine:
+  route_name: vaxia_core.character_sheets_mine
+  base_route: vaxia_core.character_sheets_all
+  title: 'My characters'
+vaxia_core.character_sheets_evaluate:
+  route_name: vaxia_core.character_sheets_evaluate
+  base_route: vaxia_core.character_sheets_all
+  title: 'Character evaluation'
+  weight: 2
+vaxia_core.user_characters:
+  route_name: vaxia_core.user_characters
+  base_route: entity.user.canonical
+  title: 'Characters'
+vaxia_core.admin_characters:
+  route_name: vaxia_core.admin_characters
+  base_route: system.admin_content
+  title: 'Characters'
+vaxia_core.power_search:
+  route_name: vaxia_core.power_search
+  base_route: vaxia_core.power_search
+  title: 'Power search'
+vaxia_core.power_search_unfiltered:
+  route_name: vaxia_core.power_search_unfiltered
+  base_route: vaxia_core.power_search
+  title: 'Unfiltered search'
+  weight: 101
+vaxia_core.players:
+  route_name: vaxia_core.players
+  base_route: vaxia_core.players
+  title: 'Players'
+  weight: 0
+vaxia_core.online_time:
+  route_name: vaxia_core.online_time
+  base_route: vaxia_core.players
+  title: 'Online'
+  weight: 100
+vaxia_core.recover_account:
+  route_name: vaxia_core.recover_account
+  base_route: entity.user.canonical
+  title: 'Recover account'
+  weight: 50

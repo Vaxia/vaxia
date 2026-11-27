@@ -1,0 +1,14 @@
+uuid: 97959057-dd80-49db-9505-78579fcdfd6d
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.character_evaluation_creation
+    - workflow.state.character_evaluation_inactive
+id: character_evaluation_creation_inactive
+label: null
+module: workflow
+from_sid: character_evaluation_creation
+to_sid: character_evaluation_inactive
+roles:
+  administrator: administrator

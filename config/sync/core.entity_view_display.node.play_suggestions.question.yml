@@ -1,0 +1,24 @@
+uuid: 32bf468e-8ec4-455f-a72d-fd726eafd4e3
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.question
+    - field.field.node.play_suggestions.comment_node_play_suggestions
+    - field.field.node.play_suggestions.field_tag_realm
+    - node.type.play_suggestions
+  module:
+    - user
+id: node.play_suggestions.question
+targetEntityType: node
+bundle: play_suggestions
+mode: question
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  comment_node_play_suggestions: true
+  field_tag_realm: true

@@ -1,0 +1,13 @@
+uuid: c2e36dd8-2ebc-4879-b030-b1c3729016fe
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.scene_evaluation
+id: scene_evaluation_not_for_submission
+label: 'not for submission'
+weight: -20
+module: workflow
+wid: scene_evaluation
+sysid: 0
+single_state_widget: ''

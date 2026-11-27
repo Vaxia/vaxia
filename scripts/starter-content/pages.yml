@@ -1,0 +1,759 @@
+# Wiki pages for a new VAXIA site, read by scripts/starter-content.php: the
+# front page, the system pages and the community pages the site's mails link
+# to. Bodies are BBCode (wiki format). Numbers in the system pages are the
+# defaults in Administration > VAXIA > Settings; if you change those, update
+# these pages. The policy pages are sensible defaults: adapt them to your
+# community before opening the site.
+#
+# Each page: path, title, realm (the admin realm's pages hold the system and
+# storyhosting rules), body.
+
+front:
+  path: /wiki/welcome
+  title: Welcome
+  body: |
+    [b]Welcome![/b] This is a play-by-post roleplaying community. You make characters, post in story rooms, roll dice for what's uncertain, and play in storyhosted sessions run by other members.
+
+    [b]Three worlds to play in[/b]
+    [list]
+    [*][url=/wiki/eldmoor]Eldmoor[/url] (Fantasy): swords, sorcery and old roads.
+    [*][url=/wiki/the-meridian-reach]The Meridian Reach[/url] (Science Fiction): starships and the edge of known space.
+    [*][url=/wiki/hollow-creek]Hollow Creek[/url] (Horror): a small town with a long memory.
+    [/list]
+
+    [b]Getting started[/b]
+    [list=1]
+    [*]Make an account and say hello in [url=/locations/limbo]Limbo[/url], the out-of-character room.
+    [*]Read the [url=/wiki/system-rules]System Reference[/url] and [url=/wiki/character-creation]Character Creation[/url].
+    [*]Make a character ([url=/node/add/character_sheet]Create a character[/url], under "New? Start here") and submit it for evaluation. A storyhost will look it over.
+    [*]Once approved, post in your realm's rooms, or ask for a session on the forums.
+    [/list]
+
+    Please read the [url=/wiki/code-conduct]Code of Conduct[/url] and the [url=/wiki/terms-and-conditions]Terms and Conditions[/url].
+
+# The first post in Limbo (a room post, so HTML in Filtered HTML, not BBCode).
+limbo_welcome: |
+  <p><strong>Welcome to your new site!</strong> This is Limbo, the out-of-character room: say hello, ask questions, and chat without a character. Posts here earn no XP.</p>
+  <p>To start playing:</p>
+  <ol>
+  <li>Pick a world: <a href="/wiki/eldmoor">Eldmoor</a> (Fantasy), <a href="/wiki/the-meridian-reach">the Meridian Reach</a> (Science Fiction) or <a href="/wiki/hollow-creek">Hollow Creek</a> (Horror).</li>
+  <li>Read <a href="/wiki/character-creation">Character Creation</a>, then make a character and submit it for evaluation.</li>
+  <li>Once it's approved, post in your world's rooms, or ask for a session on the forums.</li>
+  </ol>
+  <p>Stuck? Ask here. Once you have an approved character, the "I'm bored." button here suggests a place to play. Please read the <a href="/wiki/code-conduct">Code of Conduct</a> before you post.</p>
+
+pages:
+
+  - path: /wiki/system-rules
+    title: System Reference
+    realm: admin
+    body: |
+      The game system in one page. Each topic has its own page.
+
+      [list]
+      [*][url=/wiki/character-creation]Character Creation[/url]: stats, skills and the points to buy them.
+      [*][url=/wiki/skills-and-aspects]Skills and Aspects[/url]: making a skill.
+      [*][url=/wiki/dice-and-rolling]Dice and Rolling[/url]: how rolls and rulings work.
+      [*][url=/wiki/experience]Experience[/url]: KXP, XP and improving characters.
+      [*][url=/wiki/economy-and-silver]Economy and Silver[/url]: money, economy levels and the item shop.
+      [*][url=/wiki/system-rules/items-and-equipment]Items and Equipment[/url]: weapons, armor, charged items and companions.
+      [/list]
+
+      [b]The short version:[/b] characters have seven stats and any number of skills you write yourself. When the outcome matters, you roll d100 + stat + skill, and a storyhost rules on what happens. Posting earns KXP; KXP becomes XP; XP improves your character.
+
+  # Code vs original: the original page did not state point costs. The release
+  # checks creation by raw values (vaxia_core_new_sheet_error(): stats + skills
+  # = 300, stats <= 225, at most 4 values at 40, at most 1 skill at 0); the
+  # tiered cost (Character::cost(), skills x0.75) applies only to XP spending.
+  # "Other" species / Conditions: original says Setting approval; the code also
+  # hides them below 40 HXP (vaxia_other_min_hxp).
+  - path: /wiki/character-creation
+    title: Character Creation
+    realm: admin
+    body: |
+      [b]A person, not a hero.[/b] You are describing a person: a citizen of a world full of adventurers, not a video game character or an epic legend. They may have a rich past, but as far as the site is concerned [i]their real story is just beginning[/i]. Keep the background, stats and skills at a starting level. Original characters only: no characters copied from books, films, games or anime.
+
+      [b]Details[/b]
+      [list]
+      [*][b]Name:[/b] original; no numbers or special characters. A name that happens to match a famous character is fine if the character is clearly not that character.
+      [*][b]Background:[/b] the pivotal events that made them who they are, like giving directions: the important turns, not every street. Explain any unusual skills (where did a farmer learn blood magic?).
+      [*][b]Personality, Occupation, Description:[/b] how they act day to day; what they do or are working toward; what others see when they look at them.
+      [/list]
+
+      [b]Points.[/b] A new character has [b]300 points[/b] and must spend exactly 300 before submitting. At creation a point is a point: the values of your stats and skills simply add up to 300.
+
+      [b]Stats.[/b] Seven stats: Life, Endurance, Strength, Dexterity, Intelligence, Spirituality and Charisma, each from 5 to 40. At most [b]225[/b] points may go into stats. 25 is average, 40 is professional. One or two stats at 40 is normal; three or more will raise eyebrows. Any stat below average should be explained in the background, and you will be expected to roleplay severe weaknesses.
+
+      [b]Skills.[/b] Most starting characters have 2 to 4 skills, each from 5 to 40 (see [url=/wiki/skills-and-aspects]Skills and Aspects[/url]). You may have [b]exactly one skill at 0[/b]: something your character is only starting to learn, ready for XP later. No more than [b]four values at 40[/b] across stats and skills. There are no automatic species abilities or immunities: every ability needs a skill and a roll.
+
+      [b]Relationships.[/b] Your character may be family, friend or partner of another player's character, but [b]not[/b] of another of your own active characters: gifts and favours between one player's characters are not allowed. A relative of one of your retired (inactive) characters is fine.
+
+      [b]Realm.[/b] Pick the realm your character lives in: it decides your species and language lists, your rooms and the items the shop offers. "Other" species and Conditions (such as vampirism) need extra approval and are only open to players with at least 40 XP earned across their characters.
+
+      [b]Evaluation.[/b] Submit the sheet when it's ready; all evaluators are notified. One of them will approve it or send it back to draft with suggestions on the Workflow tab. Evaluators are volunteers: allow up to [b]72 hours[/b] per character, longer for "Other" species or Conditions. Only approved characters can post, roll and earn XP.
+
+      [b]Later costs.[/b] After approval, raising stats and skills costs XP: 1 per point up to 20, 2 per point from 21 to 30, 3 per point from 31 to 40. Skills cost three-quarters of that (a stat raised from 0 to 25 would cost 30 XP; a skill, 22.5).
+
+      Questions? Ask in [url=/locations/limbo]Limbo[/url] or on the [url=/forum]forums[/url].
+
+
+  # Code vs original: the 20 HXP threshold and the 3 XP / 2 XP training rule are
+  # policy (SH-enforced); the code only locks a draft sheet for its owner once
+  # it has XP. The aspect list matches the skill_verbs terms in
+  # starter-content.php.
+  - path: /wiki/skills-and-aspects
+    title: Skills and Aspects
+    realm: admin
+    body: |
+      Skills here are open: there is no list of skills, classes or spells. You write your own.
+
+      [b]Making a skill[/b]
+      [list=1]
+      [*][b]Pick three aspects[/b] (verbs): how the skill affects the game world. A skill can only be used for its aspects.
+      [*][b]Pick a theme:[/b] the flavour that ties the aspects together (swordplay, hedge magic, starship engineering).
+      [*][b]Write it up:[/b] a short description of how the theme delivers the aspects.
+      [/list]
+
+      [b]The aspects[/b]
+      [list]
+      [*][b]Create:[/b] Summon (temporary effect), Craft (custom permanent effect), Persist (make a temporary effect permanent), Repair (damaged people or objects).
+      [*][b]Learn:[/b] Know (existing knowledge), Discover (new info about what is), Predict (new info about what may be), Operate (use a thing without changing it).
+      [*][b]Modify:[/b] Move, Teleport, Change Shape, Change Nature.
+      [*][b]Influence:[/b] Convince, Bolster (buff), Weaken (debuff).
+      [*][b]Resist:[/b] Avoid (prevent damage), Endure (prevent secondary effects of damage), Conceal, Bypass.
+      [*][b]Destroy:[/b] Damage.
+      [/list]
+
+      [b]Combat skills[/b] (a fighting style or weapon) come with [b]Damage and Avoid built in[/b]. Avoid gives the basic defences: block, dodge, parry/counter, redirect/disarm. Using a shield, dual-wielding, throwing small weapons, maintaining your weapon and making ammo need no extra skill. Activated items (potions, scrolls, grenades) need no skill.
+
+      [b]Limits[/b]
+      [list]
+      [*]No numbers in a skill (difficulties, effects): the numbers come from the ruling.
+      [*]No skill that just boosts one stat. The exception is Awareness, limited to two senses.
+      [*]No automatic species abilities or immunities; an "immunity" skill is a resistance.
+      [/list]
+
+      [b]After creation[/b]
+      [list]
+      [*][b]Improving[/b] a skill costs XP (see [url=/wiki/experience]Experience[/url]).
+      [*][b]Broadening:[/b] skills cannot be broadened after creation; write a new skill instead.
+      [*][b]New skills, under 20 HXP:[/b] an evaluator can add, change or remove skills without extra XP.
+      [*][b]New skills, over 20 HXP:[/b] learned through roleplay that an SH reviews: [b]3 XP[/b] (210 KXP) of training posts on your own, or [b]2 XP[/b] (140 KXP) with a trainer who has 40+ in the skill. Record the RP and ask on the SH Requests forum; an SH tracks progress and adds the skill. Some skills are restricted and need a trainer or a special quest. Ask first.
+      [*][b]Awarded skills:[/b] SHs may award a skill from a session, sparingly. A long, vouched-for history of using an ability can also justify one.
+      [/list]
+
+      Each realm's page has example skills. Examples are one way to write a skill, never the only way.
+
+
+  # Code: roll needed and PP from _dice_ruler_make_ruling() in dice_ruler.inc;
+  # multi-action penalty dice_ruler_extra_action_penalty = 20. The original's
+  # "half the difficulty = 17%" is ~19% in the code (roll needed 81.6).
+  - path: /wiki/dice-and-rolling
+    title: Dice and Rolling
+    realm: admin
+    body: |
+      [b]When to roll.[/b] An action needs a roll, and an SH to rule it, when the character has a realistic chance of failing [b]and[/b] failure would have lasting, noticeable consequences: a fight, picking a pocket, forging a sword. Talking, travelling and scenery need no dice. [b]No roll, no impact:[/b] however you describe it, an action without a roll does not change the world. If casual play reaches such an action, pause and ask for an A/SH on the SH Requests forum.
+
+      [b]How.[/b] Under the post box, pick a stat and a skill for each roll. The roller shows a d100 plus your stat and skill. Items your character carries can add their bonus.
+
+      [b]Might and difficulty.[/b] Stat + skill (+ items) is your [b]Might[/b]. The SH sets a [b]Difficulty[/b]: 25 easy, 40 moderate or professional, 70 very hard; or the difficulty is your opponent's might. Might against difficulty gives the [b]roll needed[/b] on the d100 (see [url=/wiki/ladder]The Ladder[/url]):
+      [list]
+      [*]Might equal to the difficulty: about a 50% chance.
+      [*]Might double the difficulty: about 80%.
+      [*]Might half the difficulty: about 19%.
+      [/list]
+
+      [b]Winning by how much.[/b] Your d100 minus the roll needed is your winsby (or failsby). Success produces [b]Points Produced[/b] (PP = might x winsby / 100): damage, healing, or how strong an effect is. Narrow results (PP in single digits, failsby under 15) are barely; 15-25 is moderate; 25+ is extreme, an ace or a botch.
+
+      [b]Two-trait actions.[/b] Combat and magic use two stats (combat may ask for three so the SH can pick). Each roll is compared on its own and the winsbys are averaged. Physical combat uses Dexterity (to hit), Strength (power) and Endurance (soak). Magic and psionics use Intelligence, Spirituality and Charisma.
+
+      [b]More than one action.[/b] Each extra action in a round costs 20 might on every roll.
+
+      [b]Damage.[/b] A wounded character works fully until they fall unconscious. Unconscious at damage equal to Life; dead at double Life. Before ruling a death, the SH checks that the player isn't invoking the [url=/wiki/real-life-harm]No Real Life Harm[/url] rule.
+
+      [b]Rulings.[/b] The ruling A/SH applies the numbers and narrates the result. Never be afraid to ask them what to roll.
+
+
+  # Code: Xp::award() (KXP -> XP + RXP, session XP limited by RXP, BXP
+  # unlocking), Xp::kxpFor() (max 10 KXP/post, none in Limbo or on edits),
+  # vaxia_xp_types (flavours), SheetForm (75% transfer of spent XP, new sheet
+  # spendable else banked, source inactive). Original's 300 XP transfer cap is
+  # vaxia_transfer_cap, off by default.
+  - path: /wiki/experience
+    title: Experience
+    realm: admin
+    body: |
+      You earn experience two ways: by posting in character and by playing in sessions.
+
+      [b]The pools[/b]
+      [list]
+      [*][b]KXP:[/b] earned by in-character posts, by length, up to 10 per post (a post of about 1,450 characters earns the full 10). Posts in Limbo and edits earn none.
+      [*][b]XP:[/b] what you spend to improve your character. Every [b]70 KXP[/b] becomes 1 XP.
+      [*][b]RXP:[/b] a counter of XP earned by roleplaying. Each 70 KXP also adds 1 RXP. It can't be spent.
+      [*][b]BXP:[/b] banked XP. It can't be spent until roleplay unlocks it.
+      [*][b]HXP:[/b] historical XP, the total your character has ever earned.
+      [/list]
+
+      [b]Session XP and the bank.[/b] XP awarded by an A/SH is spendable only as far as your RXP covers it; the rest goes to BXP. After that, every 70 KXP you post earns 1 XP [i]and[/i] unlocks 1 BXP. Example: with 1 RXP, a 4 XP session award gives 1 spendable XP and 3 BXP. Mixing sessions with casual play is the fastest way to grow.
+
+      [b]Spending.[/b] Stats and skills cost 1 XP per point up to 20, 2 from 21 to 30, 3 from 31 to 40; skills cost three-quarters of that. New skills follow [url=/wiki/skills-and-aspects]Skills and Aspects[/url].
+
+      [b]Flavoured XP.[/b] An A/SH may award session XP as a flavour instead of plain XP: by default good, evil, smart, charismatic, warrior, mage or rogue (admins can change the list). It spends like XP and stays on the sheet as a record of what the character did. The session report says who got which flavour. The Top Tens show the ten characters with the most of each flavour, in random order.
+
+      [b]Transferring.[/b] When a character retires or dies, you can transfer [b]75%[/b] of its spent XP to another of your characters from the Sheet tab. If the receiver has never been played (0 XP, 0 KXP), the XP can be spent at once; otherwise it is banked and unlocked by roleplay. The old character becomes inactive and can't be played again without an administrator. Storyhost characters can transfer RXP from running sessions at full value.
+
+
+  # Code: vaxia_characters/src/Silver.php (worth, daily pay, cash-out of
+  # levels), vaxia_items (sellback 75%). The +15 employment cap and the free
+  # basic weapons are policy, not code.
+  - path: /wiki/economy-and-silver
+    title: Economy and Silver
+    realm: admin
+    body: |
+      One economy system serves every realm. [b]Silver[/b] is the universal currency; in-character currencies all translate back to silver.
+
+      [b]Economy level[/b] is your character's lifestyle: assets and income together. 25 is average: clothes, food and a basic place to live. New characters start at 25. It reflects finances only, not social status. Rent, food and everyday needs are [b]already covered[/b] by it, so nobody tracks them. You only spend silver on things that give a bonus in game.
+
+      [b]Daily pay.[/b] Characters are assumed to earn a living. Your Sheet tab shows your monthly disposable income, your daily pay and what your levels are worth. Once a day, a playable character below a month's income gets a day's pay. Above it, they lose a day's pay until they are back under it: unspent silver bleeds off. Investing is how you save.
+
+      [b]Raising your economy[/b]
+      [list]
+      [*][b]Invest[/b] silver from adventuring, crafting or spare income on the Sheet tab (it shows the cost of the next level).
+      [*][b]IC employment:[/b] a full-time job, gained in a recruitment session (ask on the SH Requests forum). Jobs give at most +15 economy in total, and keeping one means roleplaying it, about 1 XP of posting a month.
+      [/list]
+
+      [b]The item shop[/b] on your sheet lists approved items for your realm. If you lack silver, economy levels are cashed in automatically to cover the rest. Basic weapons may be free: weapon classes are balanced against each other, and weapons are part of a fighter's lifestyle. Only bonuses beyond the class cost silver. For custom items, ask on your realm's SH Requests forum. Items marked for sellback can be sold back for 75% of their value.
+
+      [b]Player to player sales[/b] are arranged with an A/SH, who moves the silver and the item between sheets. Economy levels cover dealings with NPCs only.
+
+      [b]Loans.[/b] Lending more silver than you have on hand lowers your economy until you are paid back.
+
+
+  # Code vs original: the original's derived-stat weighting (1.5) does not
+  # apply (the release has 7 primary stats). Item creation: only the
+  # storyteller role has "create items content", so players request items.
+  # The +20/+30 caps and the 25-250s no-number range are policy, not code.
+  - path: /wiki/system-rules/items-and-equipment
+    title: Items and Equipment
+    realm: admin
+    body: |
+      [b]Mundane and vanity items[/b] (clothes, basic tools, a locket from a loved one) are assumed: you have them without buying them, and they give no bonus. [b]Nothing grants a numeric bonus without a cost.[/b] Rope doesn't help climbing just by being rope. If you want a bonus or effect, it must be a real item in the system.
+
+      [b]Getting items[/b]
+      [list]
+      [*]Buy from the item shop on your character sheet (common weapons, armor and gear).
+      [*]Request one on your realm's SH Requests forum: an A/SH writes and submits the item, and deducts the silver.
+      [*]Session rewards, usually free: you earned them by risking your character.
+      [*]Crafting, through roleplay and rolls.
+      [/list]
+      Players don't write items themselves. Every item is approved by a storyhost before use.
+
+      [b]Kinds of bonus:[/b] Modifies (adds to a stat or skill), Overlaps (replaces your stat with the item's; you still add your skill), Percentage (weapons: extra damage by class).
+
+      [b]Worth[/b]
+      [list]
+      [*][b]Stat and skill bonuses:[/b] net bonus (stats count 1 per point, skills 0.75) at 50 silver a point for +1 to +5, 100 for +6 to +10, 200 for +11 to +15, 400 for +16 to +20. No item may exceed a net +20, or +30 on any single bonus.
+      [*][b]Overlaps:[/b] 2 silver a point.
+      [*][b]Unresisted effects[/b] (healing potions): per PP, 5 silver single use, 250 once a day, 750 at will, for each charge.
+      [*][b]Resisted effects[/b] (poisons): as above, times difficulty / 25 when the difficulty is over 25.
+      [*][b]Armor:[/b] 50 silver per point of absorption; shields 25 (they only absorb when blocking).
+      [*][b]Companions, drones and vehicles:[/b] 2 silver per build point.
+      [*][b]No numbers but a real benefit:[/b] 25 to 250 silver by judgement. More than that needs Setting department approval.
+      [/list]
+
+      [b]Types:[/b] Weapon (class Unarmed, Light, Medium or Heavy), Armor/Shield, Charged Item (uses that recharge), Companion/Drone, Misc.
+
+      [b]Using items.[/b] Items on your sheet add their bonuses to rolls. Charged items spend a use each time.
+
+
+  - path: /wiki/story-hosting-basics
+    title: Story Hosting Basics
+    realm: admin
+    body: |
+      [b]What a storyhost is.[/b] Storyhosts (SHs) judge the numbers to keep play fair, then narrate the outcome, turning numbers into actions and results. Like the host of a party, you prepare the place and give people things to do. You're a guide and a narrator, not a boss: if you spend the whole time telling players what to do, nobody has fun. You also fill in the cracks: the NPCs, the conflict, the fraying rope.
+
+      [b]When an SH is needed.[/b] Any time a character attempts something they could realistically fail at, [b]and[/b] failure has lasting, noticeable consequences. Picking a pocket needs an SH; chatting at the tavern doesn't. Ruling such an action, even one character forging a sword, is a session. Most people also use "session" for a scheduled adventure that an SH offers to whoever can make it, usually several hours long.
+
+      [b]The Three Fs, in order[/b]
+      [list=1]
+      [*][b]Fun:[/b] your first goal is that people enjoy themselves, even above fairness.
+      [*][b]Freedom:[/b] leave players room to make real choices and change where things go. Don't railroad.
+      [*][b]Fairness:[/b] rule the numbers honestly and evenly.
+      [/list]
+
+      [b]NPCs[/b] are your tools: villains, guards, people to save. They are [i]always secondary[/i]. The player characters are the stars; NPCs are the backdrop.
+
+      [b]Running a session[/b]
+      [list]
+      [*]Announce it on your realm's forums with a time and a content rating (and "W: Possible character death" if it applies). Check every character's content permissions before you start.
+      [*]Post narratives to set the scene and mark the rounds. Give every player something to do.
+      [*]Ask for rolls only when the outcome matters, and say what to roll.
+      [*]Keep the pace: in play-by-post, a scene that stalls loses players.
+      [/list]
+
+      [b]After.[/b] File a session report: who played, what happened, XP (and flavours) awarded.
+
+      Apprentice storyhosts (ASHs) learn through the [url=/wiki/sh-course]SH Course[/url].
+
+
+  - path: /wiki/advanced-story-hosting
+    title: Advanced Story Hosting
+    realm: admin
+    body: |
+      [b]Content evaluation.[/b] Any time between ASH Test 2 and the final test, an ASH must pass the [url=/quizzes/ash-test-3-evaluation]content evaluation test[/url] to evaluate characters and items (see [url=/wiki/evaluators]Evaluators[/url] and [url=/wiki/system-rules/items-and-equipment]Items and Equipment[/url]).
+
+      [b]Continuity[/b]
+      [list]
+      [*][b]Personal continuity:[/b] keep your NPCs consistent from session to session.
+      [*][b]Site continuity:[/b] the world is shared. Sagas or sessions that change the world (wars, deaths of major figures, new places) need [b]Setting department[/b] approval first: send them a short synopsis. Rules questions go to the [b]System department[/b].
+      [/list]
+
+      [b]Running a campaign.[/b] Link sessions in a saga: recurring characters, consequences that carry over. Build flexible challenges, handle very different characters and power levels so everyone matters, and give characters reasons to act.
+
+      [b]Difficult situations[/b]
+      [list]
+      [*][b]Real Life Harm:[/b] if a player invokes [url=/wiki/real-life-harm]No Real Life Harm[/url], remove the character vaguely from the scene ("appears to be dead") and report to the Social department. You have no say in the outcome.
+      [*][b]Character death:[/b] ask the player about NRLH before ruling a death. NRLH can't be invoked for death in a session marked "W: Possible character death", or after you warned them out of character of the consequences.
+      [*][b]Player vs player:[/b] only with consent. A character whose permissions include "Player vs player combat" has consented.
+      [*][b]Content permissions:[/b] a character's permissions list what its player is willing to have happen to it. Don't cross them without the player's explicit, recorded consent. Permissions can't change mid-session.
+      [*][b]Conflict of interest:[/b] don't rule for your own characters, and don't evaluate your own characters or items.
+      [*][b]Gritty material:[/b] narrate dark themes within the session's rating and the players' permissions.
+      [/list]
+
+      [b]Mentoring.[/b] Full SHs rule the dice for ASH 1s' sessions and answer their questions. The course depends on it.
+
+      [b]Peer review.[/b] An ASH who passes the final test is reviewed by the active storyhosts (see [url=/wiki/sh-course]SH Course[/url]).
+
+
+  - path: /wiki/evaluators
+    title: Evaluators
+    realm: admin
+    body: |
+      Storyhosts evaluate characters and items before they enter play. When unsure, ask another SH to look too.
+
+      [b]The approach.[/b] Be flexible, especially with new players: if a character won't do real damage to the site or the realm, approve it; it can go back to draft later. Trust your gut: a two-dimensional excuse to roll dice is a bad fit. [b]Prefer sending it back to draft[/b] with clear notes on the Workflow tab. Set "disapproved" only when there's no hope (the player isn't trying), and [b]check with another SH first[/b].
+
+      [b]Character details[/b]
+      [list]
+      [*][b]Background:[/b] look for an eventful, coherent life, not length or prose quality. Watch for epic backgrounds (fallen gods, ex-demons, legendary heroes): too much for a starting character, even on older accounts.
+      [*][b]Personality and occupation:[/b] a goal and a connection to the world. Loners work in books and badly in RP.
+      [*][b]Description:[/b] should fit the numbers. Watch for powerful gear or companions slipped into it; they must be real items.
+      [*][b]Names and ages:[/b] check borrowed names against the description before deciding it's a copy. Watch for impossible ages.
+      [/list]
+
+      [b]Numbers[/b] (the sheet checks 300 points, 225 on stats, at most four 40s and one zero skill, and flags min-maxing)
+      [list]
+      [*][b]Consistency:[/b] do stats and skills match the story? A humble farmer with INT 40 or blood magic needs explaining.
+      [*][b]Extremes:[/b] one or two 40s in stats and one in skills is typical. Any stat below 15 needs a reason; 5-10 needs an extreme one.
+      [*][b]Min-maxing:[/b] very high stats with very low skills (skills are cheaper to raise later) should be rebalanced unless the background explains it.
+      [*][b]Too weak:[/b] a character whose main function has mights of 50 will struggle; 70-80 is more appropriate. Send it back if the player will be frustrated.
+      [/list]
+
+      [b]Skills[/b]
+      [list]
+      [*]Three semi-specific functions; aspects match the description.
+      [*]No numbers in skills; no skill that just boosts one stat (except Awareness, two senses).
+      [*]Exotic abilities (regeneration, mind magic, shapeshifting, blood magic) aren't forbidden, but the background must explain them and the player must understand the responsibility.
+      [/list]
+      Permissions must be set, and nothing may break the [url=/wiki/code-conduct]Code of Conduct[/url].
+
+      [b]Items:[/b] the value follows from the effects (see [url=/wiki/system-rules/items-and-equipment]Items and Equipment[/url]), and the description promises no more than the numbers. Never evaluate your own characters or items.
+
+
+  # Code: vaxia_storyhosts/includes/course.inc and duties.inc. Original's
+  # "three SHs approve" is now an application vote: >75% of active storyhosts
+  # (sh_test_approval_min), >50% in starvation mode (< 4 storyhosts). Session
+  # count rules: >= 2 other players' PCs (NPCs, A/SH characters and the host's
+  # own PCs don't count), within 3 years. Renewal: ASH Test 1 + renewal test
+  # within a month; powers lapse a year after Tests 1 and 2.
+  - path: /wiki/sh-course
+    title: The Storyhost Course
+    realm: admin
+    body: |
+      Storyhosts run sessions and evaluate characters and items. To start the course you need [b]40 XP[/b] earned across your characters, so you know the system, the realms and the community. The site mails you when you qualify. The course has three stages.
+
+      [b]Stage One: Basics (ASH 1)[/b]
+      Read [url=/wiki/story-hosting-basics]Story Hosting Basics[/url] and [url=/wiki/system-rules/basics/ash-1-responsibilities]ASH 1 Responsibilities[/url], then pass [url=/quizzes/ash-test-1-story-hosting-basics]ASH Test 1[/url]. You become an ASH 1. Run [b]3 sessions[/b] with a full SH ruling the dice as your mentor.
+
+      [b]Stage Two: Ruling (ASH 2)[/b]
+      Learn the numbers ([url=/wiki/ladder]The Ladder[/url], [url=/wiki/dice-and-rolling]Dice and Rolling[/url]), then pass [url=/quizzes/ash-test-2-ruling]ASH Test 2[/url]; the dice ruler may be used. It only promotes you once your 3 sessions are done. As an ASH 2 ([url=/wiki/system-rules/ruling/ash-2-responsibilities]responsibilities[/url]) run [b]5 more sessions[/b] on your own.
+
+      [b]Stage Three: Advanced Story Hosting[/b]
+      Read [url=/wiki/advanced-story-hosting]Advanced Story Hosting[/url]. Any time after ASH Test 2, pass the [url=/quizzes/ash-test-3-evaluation]content evaluation test[/url]. Once you have 8 sessions in total, take the [url=/quizzes/ash-test-final-exam]Final Exam[/url]: open essay answers. You may start writing early, but you must qualify before you submit.
+
+      [b]Peer review.[/b] The active storyhosts review your answers and your 8 session reports and vote on your application. Two checks must pass: more than 74% of the storyhosts and administrators approve, and at least 75% of the storyhosts and leads together approve. When the site has fewer than 4 storyhosts, the starvation-mode approvers vote instead and more than 50% of them is enough for the first check; the second check still applies. Then you are a full SH.
+
+      [b]What counts as a session.[/b] A published session report with at least [b]2[/b] other players' characters (NPCs, A/SH characters and your own characters don't count), run within the last 3 years. Players in an ASH's sessions are asked for feedback.
+
+      [b]Tests.[/b] All tests except the Final Exam are graded automatically and can be retaken as often as needed. Staff may review attempts to see where an ASH needs help.
+
+      [b]Renewal.[/b] Storyhost powers last a year from your last ASH Tests 1 and 2. Then they lapse, and you are mailed when they do. To renew, pass [url=/quizzes/ash-test-1-story-hosting-basics]ASH Test 1[/url] and [url=/quizzes/ash-test-2-renewing-shs]the renewal test[/url] within a month of each other.
+
+      [b]Staying active.[/b] Powers also need use. Each session report that counts (above) keeps them for 3 months, and each evaluation of someone else's character or item for 6 months. A storyhost with neither in that time, or who hasn't logged in for 6 months, is retired.
+
+
+  - path: /wiki/system-rules/basics/ash-1-responsibilities
+    title: ASH 1 Responsibilities
+    realm: admin
+    body: |
+      As an ASH 1 you run sessions: set scenes, narrate, play NPCs and keep the story moving.
+
+      [list]
+      [*][b]A mentor rules for you.[/b] You haven't learned ruling yet, so a full SH rules the dice in your sessions and advises you. It doesn't have to be the same SH each time; any available SH will do.
+      [*][b]Your storyhost character.[/b] To post in character without using your own characters, you need a storyhost character. Give it any name and stats (it isn't evaluated); a role-like name ("Narrator", "Harbinger") is easy to recognise. It is approved when you pass ASH Test 1. NPC posts earn KXP for it.
+      [*][b]Three sessions.[/b] Run at least 3 qualifying sessions (two or more other players' characters) and file a session report for each before ASH Test 2.
+      [*][b]What you can't do yet:[/b] rule dice, award XP, or evaluate characters or items.
+      [/list]
+
+      Follow the Three Fs (Fun, Freedom, Fairness) and the players' permissions. Ask your mentor anything.
+
+
+  - path: /wiki/system-rules/ruling/ash-2-responsibilities
+    title: ASH 2 Responsibilities
+    realm: admin
+    body: |
+      As an ASH 2 you rule your own sessions' dice. You can see and edit character sheets and items, and award session XP and silver.
+
+      [list]
+      [*][b]Five sessions on your own.[/b] Nobody rules alongside you now, but you can ask other SHs for advice between sessions whenever you have questions.
+      [*][b]Use your powers only for your sessions:[/b] XP, silver and items for what happened in them, recorded in the session report. Never for your own characters.
+      [*][b]Real Life Harm:[/b] handle invocations by the [url=/wiki/real-life-harm]NRLH process[/url]: the Social department decides, not you.
+      [*][b]Not yet:[/b] evaluating characters or items needs the content evaluation test and full SH status.
+      [/list]
+
+      Ask a storyhost when a ruling is unclear.
+
+
+  # Choice for site owners: the original licensed member contributions under
+  # CC BY-NC-SA 4.0 and stated that IP logs are collected. Restored here; keep,
+  # change or replace before opening the site. Age requirement: the code blocks
+  # accounts that don't confirm it at registration.
+  - path: /wiki/terms-and-conditions
+    title: Terms and Conditions
+    realm: admin
+    body: |
+      [i]Adapt these to your community and your jurisdiction.[/i] The site may change these terms at any time; you'll be asked to accept new versions.
+
+      [b]Membership[/b]
+      [list]
+      [*]You must meet the age requirement to join.
+      [*]The site may approve or reject memberships, and promote, demote or remove members, at its discretion.
+      [*]IP addresses, hosts and other available account information are logged, and may be shown to and used by the administration at its discretion (for example, to enforce bans).
+      [*]Follow the [url=/wiki/code-conduct]Code of Conduct[/url].
+      [/list]
+
+      [b]Contributions[/b]
+      Material you submit (characters, setting writing and other text) is released under the [b]Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International[/b] licence (CC BY-NC-SA 4.0). The site and its members may share and adapt it, as long as they:
+      [list]
+      [*][b]Attribution:[/b] give appropriate credit, link the licence and say if changes were made;
+      [*][b]NonCommercial:[/b] don't use it for commercial purposes;
+      [*][b]ShareAlike:[/b] release adaptations under the same licence;
+      [*]add no legal or technical restrictions beyond the licence.
+      [/list]
+      These freedoms can't be revoked as long as the terms are followed. By submitting material you declare you have the right to submit it, and you are responsible for any copyright or legal problems it causes.
+
+      The site is run by volunteers and offered as is.
+
+
+  # Code: vaxia_conduct (approved notations issue Yellow/Red strikes; a 3rd
+  # Yellow in a year becomes a Red; a Red suspends for 1 month, then 3 more
+  # months per extra Red in a year). Permissions field: field_content_limits,
+  # opt-in ("things your character is ok with").
+  - path: /wiki/code-conduct
+    title: Code of Conduct
+    realm: admin
+    body: |
+      How we treat each other here. It applies everywhere on the site: rooms, forums, wiki, art and private messages. Off-site contact between members that continues something from the site counts too.
+
+      [b]The short version.[/b] Be considerate. If it would hurt you, don't do it to someone else. If someone asks you to stop, stop. If you're not sure whether someone will be upset, ask politely and respect the answer.
+
+      [b]Not allowed[/b] (not a complete list)
+      [list]
+      [*]Attacking, threatening or slandering players; flaming or griefing.
+      [*]Harassment, in or out of character (see the [url=/wiki/harassment-policy]Harassment Policy[/url]).
+      [*]Continuing roleplay with someone who has said out of character that they don't want to take part.
+      [*]Ignoring a character's permissions. A character's permissions list what its player is [i]willing[/i] to have happen to it. Anything not ticked needs their explicit consent.
+      [*]Intentionally disrupting sessions out of character.
+      [*]Manipulating others: baiting, guilt-tripping, blackmail, extortion, emotional abuse.
+      [*]Using private or off-site messages to harm another player.
+      [*]Pretending to be a lead or mediator.
+      [*]Cheating or exploiting the game system or website; defacing the wiki.
+      [*]Sexually explicit, racist, excessively violent or illegal content in public places.
+      [*]Accessing other people's accounts; keeping multiple accounts without the administration's permission.
+      [*]Ignoring formal instructions from a lead acting in their role.
+      [/list]
+
+      [b]Consequences.[/b] Staff record problems as [b]notations[/b]. An approved notation can bring a [b]Yellow[/b] or [b]Red strike[/b]. A third Yellow strike within a year becomes a Red. A Red strike suspends the account for a month, and each further Red within a year adds three more months. Serious cases can lead to a permanent ban.
+
+      [b]Who decides.[/b] A lead may act at once when a situation needs it. If anyone involved asks, the [b]Social department[/b] reviews the action and votes on it. A decision voted down is reversed.
+
+      [b]Reporting.[/b] Contact staff privately, use [url=/form/contact]Contact[/url], or the [url=/anonymous-mailer]anonymous mailer[/url]. Mediators help the Social department settle disputes.
+
+
+  - path: /wiki/harassment-policy
+    title: Harassment Policy
+    realm: admin
+    body: |
+      We don't tolerate harassment of any member, by anyone, whatever their role on the site.
+
+      [b]What it is.[/b] Behaviour that is threatening or abusive, or that promotes racist, sexist or other hateful views. Repeatedly contacting ("hounding") someone after they've asked you to stop is harassment. Behaviour that two or more administrators judge to fit the same abusive pattern counts too, even if it isn't listed here.
+
+      [b]In character.[/b] Characters can be hateful or vindictive, but in-character abuse that appears to be driven by out-of-character feelings is treated as harassment. If a player or staff ask you to tone down abrasive or offensive roleplay, do so.
+
+      [b]Sexual harassment[/b] is prohibited in and out of character: stalking, threats, and any non-consensual sexual conversation or roleplay. So is any romantic or sexual content involving a minor: players under 18, and characters whose apparent or effective age is under 18.
+
+      [b]What happens[/b]
+      [list=1]
+      [*]You are warned by staff or a storyhost. You may ask what the problem is, and we'll try to suggest alternatives.
+      [*]If it continues, you receive a strike. Strikes stay on your record and lead to suspension and bans (see the [url=/wiki/code-conduct]Code of Conduct[/url]).
+      [*]Harassment continued off the site may lead to legal action.
+      [/list]
+
+      [b]Reporting.[/b] If you are being harassed, on or off the site, by a member, contact the leads and the administrator at once: use [url=/form/contact]Contact[/url], or the [url=/anonymous-mailer]anonymous mailer[/url]. If you're not sure it counts, report it anyway. We'd rather look at many reports that turn out benign than miss a real one.
+
+  - path: /wiki/real-life-harm
+    title: Real Life Harm
+    realm: admin
+    body: |
+      By and large, roleplay here tends to be emotional and immersive. Normally, this is why we love it, but it does have one major downside: sudden losses in character can have very real impacts on us out of character.
+
+      When that impact affects us in a real and noticeable way, we call it Real Life Harm (RLH), which is above and beyond the more minor emotional lows that might come from a bad guy getting away in a session or a streak of bad dice rolls. Real Life Harm can lead to genuine emotional difficulty in our real lives, which is something we want to spare our players whenever we can.
+
+      For that reason, we have the No Real Life Harm (NRLH) rule. This policy is a safety net to avert an in-character event that would result in Real Life Harm and replace it with one that isn't so damaging out of character.
+
+      The NRLH rule only applies to in-character circumstances, but it is not limited to anything in particular. It may be character death, serious injury, loss of a treasured NPC, or a different major turning point. When invoked, the NRLH rule will update the outcome, but it should not be mistaken for an "undo" button: the new outcome will be as close to an equivalent as we can make it without doing harm.
+
+      For instance, character death might be replaced by serious injury that takes them out of the session or fight. It might result in stat changes to reflect a loss of limb or other function. Death of a beloved NPC might instead become a kidnapping that requires a great deal of silver to resolve. The exact circumstances are up to the ruling A/SH, who should work with the player invoking NRLH to determine what the next-best outcome would be to avoid the harm.
+
+      [b]Invoking RLH[/b]
+      In some instances, A/SHs may prompt a player to ask about RLH, such as when their character just died in a session. Other times, it will be up to the player to invoke the NRLH rule.
+
+      In the latter case, use the Private Message system to contact the ruling A/SH. Let them know exactly what incident in the RP caused you RLH and give a rough explanation of what about it caused you harm, so that they can adjust the scenario accordingly.
+
+      Remember that you may not get exactly what you want. In fact, it's best not to ask for specific alternative outcomes, as most A/SHs still want to help craft a scene rather than just narrate what you've given them. If you explain what about the scene caused you harm, you can trust them to design a new outcome based on those concerns.
+
+      If RLH happens in an RP that doesn't have a ruling A/SH, check the current list of A/SH members of the Social department and reach out to one to invoke RLH. It would be best to pause the RP while your claim is being considered.
+
+      [b]When NRLH does NOT apply[/b]
+      There are several situations where the NRLH rule cannot be invoked because of the nature of the RP or session itself.
+
+      [list]
+      [*]If you willingly consent to PvP, you cannot invoke NRLH if your character is seriously injured or killed in the contest. This includes having "Player vs player combat" in your character's content limits, so be sure to check them if you aren't ready to lose the character. It is off by default.
+      [*]If you attend a session marked "W: Possible character death", you cannot invoke NRLH due to character death in that session.
+      [*]If an A/SH informs you of the potential consequences of an action out of character before you take it, and you take it anyway, you cannot then invoke NRLH after the fact to attempt to undo or change those consequences.
+      [/list]
+
+      [b]A/SHs handling Real Life Harm rulings[/b]
+      If you're an A/SH and a player in a session or scene you're ruling has invoked NRLH, follow the process below.
+
+      [list]
+      [*]If you're in the middle of the session or scene, update your ruling to something vague that removes the character from the remainder of the session or scene. A narrative like "Character A appears to be dead" leaves room for changes later, after you've had time to consider the case.
+      [*]Let the player know that you are working with the Social department to review the case and will update them once a final ruling has been reached.
+      [*]Contact the Social leads to report the claim, and include any details you feel are relevant for them to consider when reviewing it.
+
+      [b]Note:[/b] all NRLH cases need to be reviewed by at least two members of the Social department, of which the ruling A/SH [b]cannot be one[/b]. The ruling A/SH has [b]no influence[/b] on the NRLH ruling, to protect them from reprisals and possible conflict of interest. The Social department will rule on the NRLH claim and work with the player on an agreeable alternative outcome.
+      [*]Once the Social department members have approved it, add the ruling to the IC room as a narrative, or to the session report after the fact, so that others who attended the session will know the outcome and how to approach the affected character in future RP.
+      [/list]
+
+      [b]Don't hesitate with RLH[/b]
+      If you think an IC event might trigger RLH for you, even if you're not 100% sure, go ahead and invoke the rule as soon as you think there's good potential for harm. If, a day or two later, you realize you aren't bothered by the original outcome, you can simply drop the claim.
+
+      If instead you find you're still bothered a few days later, you'll already be closer to a less harmful outcome that the ruling A/SH and the Social department have had time to consider and work on. It's far better to invoke the rule and then drop the claim than to think you'll be fine and then have to invoke it well after the fact, which can be more difficult for the A/SH to post-date.
+
+      Remember: not every claim is going to be valid based on the conditions of the session or scene involved, and you are not guaranteed an outcome you love. The goal is to mitigate harm as much as possible without drastically changing the IC outcome, so the end result may still leave you a little bummed, but it should leave you far less hurt than the original and able to get back to roleplaying and enjoying the site as soon as possible.
+
+      [b]So, in summary:[/b]
+      [list]
+      [*]The NRLH rule is not intended to cover all IC occurrences we find sad or disappointing.
+      [*]The NRLH rule applies when IC occurrences cause lasting damage to our real lives that we cannot otherwise cope with.
+      [*]The A/SH will do their best to be compassionate and empathetic to your feelings, especially when you feel you may be suffering RLH, but may not be able to give you exactly what you ask for.
+      [*]Invoking the NRLH rule is a serious thing, but that should not stop you from invoking it if you believe you are suffering RLH.
+      [/list]
+
+
+  # Code: vaxia_core_retire_cron() (6 months away -> cold storage, SH/lead/
+  # voter roles removed), vaxia_conduct (approved characters -> draft;
+  # returning-player form reactivates by email).
+  - path: /wiki/returning-players
+    title: Returning Players
+    realm: admin
+    body: |
+      Welcome back! Accounts unused for six months go to cold storage.
+
+      [list=1]
+      [*]Fill in the [url=/content/returning-player]returning player form[/url] with your account's email address. If it's found, the account is reactivated and a welcome mail is sent. Check your spam folder. If you no longer have that email address, [url=/form/contact]contact us[/url].
+      [*]Your approved characters were moved back to draft. Update each to the current rules and set it to submitted on its Workflow tab so an evaluator can approve it again.
+      [*]Cold storage also removed staff roles: storyhost, lead and voter. Returning storyhosts renew through the [url=/wiki/sh-course]SH Course[/url] (ASH Test 1 and the renewal test).
+      [/list]
+
+      Check the forums and the [url=/wiki/system-rules]System Reference[/url] for what changed.
+
+  - path: /wiki/care-and-feeding-your-character
+    title: Care and Feeding for Your Character
+    realm: admin
+    body: |
+      Your character is approved. Here is how their long-term life works.
+
+      [b]Experience.[/b] You earn XP by posting in character (KXP) and by playing in sessions. Session XP only becomes spendable as far as your roleplay (RXP) covers it; the rest is banked (BXP) and unlocked by posting. So a mix of sessions and casual play grows a character fastest. Details: [url=/wiki/experience]Experience[/url].
+
+      [b]Growth.[/b] Spend XP on stats and skills; both get more expensive as they rise, and skills cost less than stats. Broad characters are cheaper than very focused ones. New skills come through roleplay and training (see [url=/wiki/skills-and-aspects]Skills and Aspects[/url]).
+
+      [b]Money.[/b] Your economy level is your lifestyle; your silver is spare cash. Silver above a month's income bleeds away, so invest it on the Sheet tab. Look through the item shop for gear worth buying; items and silver also come from sessions. Details: [url=/wiki/economy-and-silver]Economy and Silver[/url].
+
+      [b]Permissions.[/b] Set your character's permissions: the topics you're willing to have your character experience (PvP, graphic violence, mind control...). Review them before each session; they can't change mid-session.
+
+      [b]Goals.[/b] Keep your sheet current and write down goals storyhosts can build sessions around.
+
+      [b]Retirement.[/b] Retiring a character doesn't mean they died, only that you stopped playing them. Others may notice they're gone. You can transfer 75% of a retired character's spent XP to another of your characters (see [url=/wiki/experience]Experience[/url]). A retired character can sometimes be restored, with administrator approval; ask on the forums. [b]Once their XP is transferred and the new character played, restoring the old one is usually impossible[/b], so be sure before you transfer.
+
+  - path: /wiki/beginners-guide-roleplaying
+    title: Beginner's Guide to Roleplaying
+    realm: admin
+    body: |
+      Write in third person, past or present tense. Describe what your character does, says and notices; never what other characters do or feel. Leave room for others to respond. Shorter posts keep a scene moving; long ones earn more KXP. Find the balance for the room.
+
+
+  - path: /wiki/beginners-guide-sessions
+    title: Beginner's Guide to Sessions
+    realm: admin
+    body: |
+      [b]What a session is.[/b] An adventure run by a storyhost (SH) or apprentice (ASH), usually with dice, combat and danger: not a beer at the tavern, but a rescue from a tavern on fire.
+
+      [b]Finding one.[/b] Sessions are announced on your realm's [url=/forum]forums[/url], on the calendar, and sometimes in [url=/locations/limbo]Limbo[/url]. Ask the SH before you join, especially halfway through: some are part of a longer saga. Most are open, and new players are welcome. Check the rating and warnings; "W: Possible character death" means exactly that.
+
+      [b]Narratives and rounds.[/b] The SH posts narratives: summaries of what happened and how well each character did. In combat, post [b]once per round[/b] and wait for the next narrative before posting again.
+
+      [b]Rolling.[/b] When asked, roll a d100 with the stat (and skill, if one applies) the SH names. Stat + skill is your Might; a high might can succeed even on a low roll. Unsure what to roll, or whether a skill applies? Ask, or include it and say so in the OOC field.
+
+      [b]Combat.[/b] Say clearly what you're attacking and how ("a thrust at the neck", not "attacks"). It makes the ruling better.
+
+      [b]Time.[/b] Sessions are long, often several hours. If you must leave early or arrive late, tell the SH and work out a sensible exit or entrance for your character.
+
+      [b]Death and Real Life Harm.[/b] Characters can be hurt or killed. If an outcome would harm you out of character, the [url=/wiki/real-life-harm]No Real Life Harm[/url] rule lets you ask for a less damaging outcome (it is not an undo button, and doesn't apply in "possible character death" sessions or to PvP you agreed to). Your permissions are set before the session and can't change during it.
+
+      [b]Afterwards.[/b] The SH files a session report and awards XP. Check it to see which flavours of XP you received.
+
+  - path: /sessions/storytellers-and-apprentices
+    title: Storytellers and Apprentices
+    realm: admin
+    body: |
+      Storyhosts and apprentices run the site's sessions. The Storyhosting forums are where to reach them; the [url=/wiki/sh-course]SH Course[/url] explains how to become one.
+
+  - path: /proposals/site-governance
+    title: Site Governance
+    realm: admin
+    body: |
+      Members govern the site: proposals are discussed and voted on by members with the voter role, the Setting, Social and System departments are run by elected leads, and elections are held yearly. A grievance (through the anonymous mailer) can remove someone who abused a position; it is handled publicly.
+
+
+  # New page. Original "The Ladder" was a drawn chart; numbers here are from
+  # _dice_ruler_make_ruling() and _dice_ruler_make_two_trait_ruling() in
+  # vaxia_dice/dice_ruler.inc: roll needed = 50.5 + atan(0.06 * (100 * D /
+  # (D + M) - 50)) * 49.5 / atan(3); PP = might * winsby / 100; two-trait
+  # winsby is the average; below -50 is a mishap; added difficulty raises the
+  # roll needed but is given back to the winsby on success. The original's
+  # "half = 17% (roll 83)" is roll 81.6 (~19%) in the code.
+  - path: /wiki/ladder
+    title: The Ladder
+    realm: admin
+    body: |
+      Our system is what separates us from freeform. You compare the roller's [b]might[/b] with a [b]difficulty[/b], use the ladder to find the [b]roll needed[/b], and compare that with the roll they got to see how well they succeeded or failed. The dice ruler does the arithmetic in sessions; this page explains what it's doing.
+
+      [b]The three numbers[/b]
+      [list]
+      [*][b]Might[/b]: everything working for the character. Stat + skill, item bonuses, help from the environment.
+      [*][b]Difficulty[/b]: everything working against them: the task itself, distractions, an opponent's might. Guide: 25 easy, 40 moderate or professional, 70 very hard. The ruler defaults to 25.
+      [*][b]Roll needed[/b]: the lowest d100 roll that succeeds. Meeting it exactly is scraping by, not a triumph.
+      [/list]
+
+      [b]The ladder.[/b] Picture two vertical scales: might on the left, difficulty on the right. Draw a line between them; where it crosses the middle is the roll needed. Only the ratio matters: 25 vs 25 and 50 vs 50 need the same roll.
+
+      [list]
+      [*]Might 4x difficulty (100 vs 25): roll needed about 8.
+      [*]Might 2x difficulty (50 vs 25, 80 vs 40): about 19 (an 80% chance).
+      [*]Might 60 vs difficulty 50: about 40.
+      [*]Equal (25 vs 25): about 50 (a coin flip).
+      [*]Might 50 vs difficulty 65: about 65.
+      [*]Might half the difficulty (25 vs 50): about 82 (roughly 19%).
+      [*]Might a quarter (25 vs 100): about 93.
+      [/list]
+
+      [b]Winsby and failsby.[/b] Roll minus roll needed. Positive is a [b]winsby[/b]; negative is a [b]failsby[/b].
+
+      [b]Points Produced.[/b] On success, [b]PP = might x winsby / 100[/b]. PP is damage dealt, healing done, or the strength of an effect. For effects with a duration, PP / 7 gives the duration.
+
+      [b]Example.[/b] Two players at table tennis. Jess has Dexterity 30, Table Tennis 25 and a good paddle (+5): might 60. Brachus has Dexterity 50 and no skill: might 50, with a bad paddle adding 5 to his difficulty. Jess faces difficulty 50: roll needed 40. She rolls 65, winsby 25, PP = 60 x 25 / 100 = 15. Brachus faces 60 + 5 = 65: roll needed 65. He rolls 26, failsby 39, no PP. Jess aces the serve.
+
+      [b]Both sides fail.[/b] In an opposed roll where both fail, show both failures: the guard hears a twig snap but finds nobody, and the sneaking character now faces 10 more difficulty. Ties favour the defender. If both succeed, more PP wins.
+
+      [b]Two traits.[/b] Combat and magic roll two stats. Find each roll needed and winsby separately, then average the two winsbys (a failsby counts as negative). If the average is 0 or more, the action succeeds, with PP = average might x average winsby / 100. Below -50 is a mishap: a backlash or botch.
+
+      [b]Added difficulty.[/b] Circumstances (darkness, injury, an awkward angle) add to the difficulty and raise the roll needed. On a success, the ruler adds that extra difficulty back to the winsby, so overcoming a harder task produces more.
+
+      [b]Multiple actions.[/b] Each extra action in the same round lowers the might of every roll by 20.
+
+      [b]Reading the result.[/b] Single-digit PP or a failsby under 15 is narrow; 15-25 is moderate; over 25 is extreme. Success is doing what the character wanted, well, not doing something bigger: a perfect roll for a reading light gives a steady, lasting light, not a sun.
+
+
+  - path: /wiki/slow-posting
+    title: Slow-Posting
+    realm: admin
+    body: |
+      [b]Slow-posting[/b] is roleplay that moves more slowly than usual and doesn't happen in one sitting. In fast-posting, everyone is online and plays a scene start to finish in a few hours. In slow-posting, players don't have to be on at the same time, which suits work, school and other schedules.
+
+      [b]Casual slow-posting.[/b] No enforced time limits, as in fast casual play. If someone hasn't posted in [b]2 or more days[/b], send a friendly private message to check whether they want to continue. If you know you'll fall behind, tell the others in the OOC box or by private message.
+
+      [b]Slow-posting sessions.[/b] Only join one if you can post [b]once a day for 1-2 weeks[/b]. A short post that keeps the round moving is a good post.
+
+      [b]For A/SHs.[/b] If a player hasn't posted in over a day, you're encouraged to move on to the next round, skipping that character to keep the session going; they can catch up later. Design challenges with the slower pace in mind.
+
+      [b]Needing oversight.[/b] If casual slow-posting reaches something that needs an A/SH (see [url=/wiki/dice-and-rolling]Dice and Rolling[/url]), pause until a qualified A/SH can rule. It may help to schedule a short fast-posting stretch for that part, then go back to slow-posting.
+
+
+  # New page. Lists only pages that exist in the release; the original's other
+  # policies are given as plain text for site owners to write if wanted.
+  - path: /wiki/site-policies
+    title: Site Policies
+    realm: admin
+    body: |
+      The general rules of the site. No list can foresee everything our creative members get up to: treat these as the guidelines we follow in these and similar cases.
+
+      [b]General[/b]
+      [list]
+      [*][url=/wiki/terms-and-conditions]Terms and Conditions[/url]
+      [*][url=/proposals/site-governance]Site Governance[/url]
+      [/list]
+
+      [b]Conduct and behaviour[/b]
+      [list]
+      [*][url=/wiki/code-conduct]Code of Conduct[/url]
+      [*][url=/wiki/harassment-policy]Harassment Policy[/url]
+      [*][url=/wiki/real-life-harm]Real Life Harm[/url]
+      [*][url=/wiki/slow-posting]Slow-Posting[/url]
+      [/list]
+
+      [b]Players and characters[/b]
+      [list]
+      [*][url=/wiki/character-creation]Character Creation[/url]
+      [*][url=/wiki/care-and-feeding-your-character]Care and Feeding for Your Character[/url]
+      [*][url=/wiki/beginners-guide-sessions]Beginner's Guide to Sessions[/url]
+      [*][url=/wiki/returning-players]Returning Players[/url]
+      [/list]
+
+      [b]Storyhosts[/b]
+      [list]
+      [*][url=/wiki/sh-course]The Storyhost Course[/url]
+      [*][url=/wiki/evaluators]Evaluators[/url]
+      [*][url=/wiki/advanced-story-hosting]Advanced Story Hosting[/url]
+      [/list]
+
+      [i]Not written yet (a site may add them):[/i] privacy policy; art policy; new player probation; player vs player; mature and romantic roleplay; session etiquette; NPC guidelines; vacation mode; crime and punishment; in-game religions; character relationships; department policies.
+
+      To suggest a new policy, make a proposal (see [url=/proposals/site-governance]Site Governance[/url]).
+
+
+  - path: /wiki/message-of-the-day
+    title: Message of the Day
+    realm: admin
+    body: |
+      [b]Welcome![/b] New here? Say hello in [url=/locations/limbo]Limbo[/url] and read the [url=/wiki/welcome]getting started guide[/url]. Upcoming sessions are on the [url=/forum]forums[/url].

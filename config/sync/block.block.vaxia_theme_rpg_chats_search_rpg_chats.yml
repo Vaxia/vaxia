@@ -1,0 +1,28 @@
+uuid: aec0abae-e03f-4a6e-8f34-0c41bc2af410
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - vaxia_chat
+  theme:
+    - vaxia_theme
+id: vaxia_theme_rpg_chats_search_rpg_chats
+theme: vaxia_theme
+region: sidebar_first
+weight: -32
+provider: null
+plugin: rpg_chats-search_rpg_chats
+settings:
+  id: rpg_chats-search_rpg_chats
+  label: 'RP Locations'
+  label_display: visible
+  provider: vaxia_chat
+visibility:
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      rpg_chatroom: rpg_chatroom

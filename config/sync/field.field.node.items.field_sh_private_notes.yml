@@ -1,0 +1,22 @@
+uuid: cacc1822-6ba5-465d-b6fb-cc8f27b622c7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_sh_private_notes
+    - node.type.items
+  module:
+    - text
+id: node.items.field_sh_private_notes
+field_name: field_sh_private_notes
+entity_type: node
+bundle: items
+label: 'Private SH Notes'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

@@ -1,0 +1,20 @@
+uuid: 89cceebc-afd3-4ba4-92e0-de54409fa96f
+langcode: und
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_endurance
+field_name: field_endurance
+entity_type: node
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

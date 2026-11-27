@@ -1,0 +1,16 @@
+uuid: 11745109-8e86-4e38-9d0d-6ff99e41a09c
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.item_evaluation_needs_recharge
+id: item_evaluation_needs_recharge_needs_recharge
+label: null
+module: workflow
+from_sid: item_evaluation_needs_recharge
+to_sid: item_evaluation_needs_recharge
+roles:
+  authenticated: authenticated
+  workflow_author: workflow_author
+  administrator: administrator
+  storyteller: storyteller

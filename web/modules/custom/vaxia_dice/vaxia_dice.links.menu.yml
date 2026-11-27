@@ -1,0 +1,5 @@
+vaxia_dice.dice_ruler_settings:
+  title: 'Dice ruler settings'
+  description: 'Configure the options for the dice ruler'
+  route_name: vaxia_dice.dice_ruler_settings
+  parent: vaxia_core.admin

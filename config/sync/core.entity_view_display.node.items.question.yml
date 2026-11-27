@@ -1,0 +1,124 @@
+uuid: 9ec9734e-f46a-4f46-a70a-c978c2673089
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.question
+    - field.field.node.items.comment_node_items
+    - field.field.node.items.field_absorb_type
+    - field.field.node.items.field_armor_absorbs
+    - field.field.node.items.field_armor_penalty
+    - field.field.node.items.field_build_points
+    - field.field.node.items.field_calc_value
+    - field.field.node.items.field_character_owner
+    - field.field.node.items.field_charisma
+    - field.field.node.items.field_creation_history
+    - field.field.node.items.field_declared_value
+    - field.field.node.items.field_dexterity
+    - field.field.node.items.field_endurance
+    - field.field.node.items.field_fixed_strength
+    - field.field.node.items.field_in_shop
+    - field.field.node.items.field_intelligence
+    - field.field.node.items.field_item_charisma
+    - field.field.node.items.field_item_desc
+    - field.field.node.items.field_item_dexterity
+    - field.field.node.items.field_item_difficulty
+    - field.field.node.items.field_item_endurance
+    - field.field.node.items.field_item_evaluation
+    - field.field.node.items.field_item_history
+    - field.field.node.items.field_item_intelligence
+    - field.field.node.items.field_item_life
+    - field.field.node.items.field_item_over_charisma
+    - field.field.node.items.field_item_over_dexterity
+    - field.field.node.items.field_item_over_endurance
+    - field.field.node.items.field_item_over_intellegence
+    - field.field.node.items.field_item_over_life
+    - field.field.node.items.field_item_over_skill
+    - field.field.node.items.field_item_over_spirituality
+    - field.field.node.items.field_item_over_strength
+    - field.field.node.items.field_item_skill
+    - field.field.node.items.field_item_spent_uses
+    - field.field.node.items.field_item_spirituality
+    - field.field.node.items.field_item_strength
+    - field.field.node.items.field_item_type
+    - field.field.node.items.field_item_use_day
+    - field.field.node.items.field_item_uses
+    - field.field.node.items.field_life
+    - field.field.node.items.field_player_notes
+    - field.field.node.items.field_pp_created
+    - field.field.node.items.field_sellback
+    - field.field.node.items.field_sh_notes
+    - field.field.node.items.field_sh_private_notes
+    - field.field.node.items.field_skill
+    - field.field.node.items.field_spirituality
+    - field.field.node.items.field_strength
+    - field.field.node.items.field_tag_realm
+    - field.field.node.items.field_value
+    - field.field.node.items.field_weapon_class
+    - field.field.node.items.field_weapon_sub_type
+    - node.type.items
+  module:
+    - user
+id: node.items.question
+targetEntityType: node
+bundle: items
+mode: question
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  comment_node_items: true
+  field_absorb_type: true
+  field_armor_absorbs: true
+  field_armor_penalty: true
+  field_build_points: true
+  field_calc_value: true
+  field_character_owner: true
+  field_charisma: true
+  field_creation_history: true
+  field_declared_value: true
+  field_dexterity: true
+  field_endurance: true
+  field_fixed_strength: true
+  field_in_shop: true
+  field_intelligence: true
+  field_item_charisma: true
+  field_item_desc: true
+  field_item_dexterity: true
+  field_item_difficulty: true
+  field_item_endurance: true
+  field_item_evaluation: true
+  field_item_history: true
+  field_item_intelligence: true
+  field_item_life: true
+  field_item_over_charisma: true
+  field_item_over_dexterity: true
+  field_item_over_endurance: true
+  field_item_over_intellegence: true
+  field_item_over_life: true
+  field_item_over_skill: true
+  field_item_over_spirituality: true
+  field_item_over_strength: true
+  field_item_skill: true
+  field_item_spent_uses: true
+  field_item_spirituality: true
+  field_item_strength: true
+  field_item_type: true
+  field_item_use_day: true
+  field_item_uses: true
+  field_life: true
+  field_player_notes: true
+  field_pp_created: true
+  field_sellback: true
+  field_sh_notes: true
+  field_sh_private_notes: true
+  field_skill: true
+  field_spirituality: true
+  field_strength: true
+  field_tag_realm: true
+  field_value: true
+  field_weapon_class: true
+  field_weapon_sub_type: true

@@ -1,0 +1,13 @@
+uuid: 63b65df7-a52e-422d-beef-bb9260ba8ca0
+langcode: en
+status: true
+dependencies: {  }
+id: heading_4
+label: 'Heading 4'
+description: Heading.
+name: h4
+attached: {  }
+sample: '[{{ name }}]Text[/{{ name }}]'
+template_code: '<h4>{{ tag.content }}</h4>'
+template_file: null
+editable: false

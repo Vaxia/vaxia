@@ -1,0 +1,32 @@
+uuid: e0c6d5c8-327d-4d50-af4d-8a6a95a9851d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_tag_realm
+    - node.type.event
+    - taxonomy.vocabulary.realm
+  module:
+    - vaxia_core
+third_party_settings:
+  vaxia_core:
+    d7_default_ids:
+      - 725
+id: node.event.field_tag_realm
+field_name: field_tag_realm
+entity_type: node
+bundle: event
+label: Realm
+description: "Select the realm the session is in. For events that aren't tied to sessions (elections, meetings, or the like), select Storyhost."
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: vaxia_core_d7_reference_default
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      realm: realm
+    sort:
+      field: _none
+field_type: entity_reference

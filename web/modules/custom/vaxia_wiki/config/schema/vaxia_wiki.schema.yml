@@ -1,0 +1,22 @@
+vaxia_wiki.settings:
+  type: config_object
+  label: 'VAXIA wiki settings (keys are the D7 variable names)'
+  mapping:
+    site_wiki_revision:
+      type: boolean
+      label: 'Require revision notes'
+    site_wiki_templates:
+      type: sequence
+      label: 'Wiki page templates'
+      sequence:
+        type: mapping
+        mapping:
+          template_name:
+            type: label
+            label: 'Template name'
+          template:
+            type: text
+            label: 'Template'
+filter_settings.site_wiki:
+  type: filter
+  label: 'Site wiki auto-links'

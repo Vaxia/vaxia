@@ -1,0 +1,19 @@
+uuid: c8c97578-61d2-49ad-9506-465188b79132
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_creation_history
+    - node.type.items
+id: node.items.field_creation_history
+field_name: field_creation_history
+entity_type: node
+bundle: items
+label: 'Creation History'
+description: 'A record of comment posts from when the item was created if comments were attached by item assistant on creation. The RP is recorded here to avoid dead links when the original comments are archived.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

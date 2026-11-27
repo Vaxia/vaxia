@@ -1,0 +1,20 @@
+uuid: 5084954f-e60f-4d96-a862-ecbade4f4ddc
+langcode: und
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_armor_absorbs
+field_name: field_armor_absorbs
+entity_type: node
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

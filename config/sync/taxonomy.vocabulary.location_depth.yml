@@ -1,0 +1,9 @@
+uuid: 24b6282e-1f3b-4fc6-92f1-d5790b4ccc8c
+langcode: en
+status: true
+dependencies: {  }
+name: 'Location Type'
+vid: location_depth
+description: 'Location Type'
+weight: -3
+new_revision: false

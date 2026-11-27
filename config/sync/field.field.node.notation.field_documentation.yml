@@ -1,0 +1,27 @@
+uuid: 5dd4c6e2-9869-450d-a62f-a3736df910c7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_documentation
+    - node.type.notation
+  module:
+    - file
+id: node.notation.field_documentation
+field_name: field_documentation
+entity_type: node
+bundle: notation
+label: Documentation
+description: 'Screenshots, interviews, and other documentary evidence of misconduct. Please include this information as part of the case for the strike so that if a pattern emerges other SHs have all documentation on hand as needed if you are not available at the time. Remember we clear out comments to the archives over time.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:file'
+  handler_settings: {  }
+  file_directory: record
+  file_extensions: 'txt gif jpg bmp png pdf'
+  max_filesize: ''
+  description_field: false
+field_type: file

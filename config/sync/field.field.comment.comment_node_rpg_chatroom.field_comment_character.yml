@@ -1,0 +1,27 @@
+uuid: 00ffbdad-0cf0-45e7-9841-ffa7c34707dc
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.comment_node_rpg_chatroom
+    - field.storage.comment.field_comment_character
+    - node.type.character_sheet
+id: comment.comment_node_rpg_chatroom.field_comment_character
+field_name: field_comment_character
+entity_type: comment
+bundle: comment_node_rpg_chatroom
+label: Character
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      character_sheet: character_sheet
+    sort:
+      field: _none
+      direction: ASC
+field_type: entity_reference

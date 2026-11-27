@@ -1,0 +1,14 @@
+uuid: 88e7171c-dadb-4176-b669-507743a3e862
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.character_evaluation_approved
+    - workflow.state.character_evaluation_draft
+id: character_evaluation_draft_approved
+label: null
+module: workflow
+from_sid: character_evaluation_draft
+to_sid: character_evaluation_approved
+roles:
+  administrator: administrator

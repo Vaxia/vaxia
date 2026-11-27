@@ -1,0 +1,17 @@
+uuid: bb67ea96-08fe-4f59-9aaa-7f5fff109ca0
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.wiki_workflow_locked
+id: wiki_workflow_locked_locked
+label: null
+module: workflow
+from_sid: wiki_workflow_locked
+to_sid: wiki_workflow_locked
+roles:
+  authenticated: authenticated
+  workflow_author: workflow_author
+  administrator: administrator
+  lead: lead
+  storyteller: storyteller

@@ -1,0 +1,13 @@
+uuid: da9dfda0-ac69-4a02-9964-a5ddaf1ddc48
+langcode: en
+status: true
+dependencies: {  }
+id: table_header
+label: 'Table header'
+description: 'Table header cell.'
+name: th
+attached: {  }
+sample: '[{{ name }}]Text[/{{ name }}]'
+template_code: '<th>{{ tag.content }}</th>'
+template_file: null
+editable: false

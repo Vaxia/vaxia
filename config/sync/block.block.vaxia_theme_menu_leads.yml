@@ -1,0 +1,34 @@
+uuid: de131c3e-e275-4b36-836f-c8411f8f9699
+langcode: en
+status: true
+dependencies:
+  config:
+    - system.menu.menu-leads
+  module:
+    - system
+    - user
+  theme:
+    - vaxia_theme
+id: vaxia_theme_menu_leads
+theme: vaxia_theme
+region: sidebar_first
+weight: -24
+provider: null
+plugin: 'system_menu_block:menu-leads'
+settings:
+  id: 'system_menu_block:menu-leads'
+  label: Leads
+  label_display: visible
+  provider: system
+  level: 1
+  depth: 0
+  expand_all_items: false
+visibility:
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      administrator: administrator
+      lead: lead

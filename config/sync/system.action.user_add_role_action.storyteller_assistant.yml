@@ -1,0 +1,14 @@
+uuid: 7036757b-2084-4ea1-ac73-dd8235daa237
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.storyteller_assistant
+  module:
+    - user
+id: user_add_role_action.storyteller_assistant
+label: 'Add the storyteller-assistant role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: storyteller_assistant

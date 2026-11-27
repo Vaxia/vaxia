@@ -1,0 +1,13 @@
+uuid: 14f3a5af-aff8-4918-b68a-3e7f764cac15
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.art_evaluation
+id: art_evaluation_removed_from_site
+label: 'removed from site'
+weight: -18
+module: workflow
+wid: art_evaluation
+sysid: 0
+single_state_widget: ''

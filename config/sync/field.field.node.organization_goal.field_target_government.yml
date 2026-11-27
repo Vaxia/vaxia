@@ -1,0 +1,32 @@
+uuid: c1e95678-1185-41ac-b053-add50ece68e0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_target_government
+    - node.type.organization_goal
+id: node.organization_goal.field_target_government
+field_name: field_target_government
+entity_type: node
+bundle: organization_goal
+label: 'Target Government'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles: null
+    sort:
+      field: _none
+      direction: ASC
+    behaviors:
+      views-select-list:
+        status: 0
+    view:
+      args: {  }
+      display_name: eref_setting_gov
+      view_name: wiki_organizations_list
+field_type: entity_reference

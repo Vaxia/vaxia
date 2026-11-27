@@ -1,0 +1,106 @@
+uuid: 476919c1-d209-495f-ae06-30165006d9fb
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_display.comment.comment_node_session_report.default
+    - field.field.node.session_report.body
+    - field.field.node.session_report.comment_node_session_report
+    - field.field.node.session_report.field_additional_notes
+    - field.field.node.session_report.field_characters_involved
+    - field.field.node.session_report.field_rate_session
+    - field.field.node.session_report.field_saga
+    - field.field.node.session_report.field_session_held
+    - field.field.node.session_report.field_tag_realm
+    - field.field.node.session_report.taxonomy_forums
+    - node.type.session_report
+  module:
+    - comment
+    - datetime
+    - file
+    - options
+    - text
+    - user
+id: node.session_report.default
+targetEntityType: node
+bundle: session_report
+mode: default
+content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  comment_node_session_report:
+    type: comment_default
+    label: hidden
+    settings:
+      view_mode: default
+      pager_id: 0
+    third_party_settings: {  }
+    weight: 20
+    region: content
+  field_additional_notes:
+    type: file_default
+    label: above
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_characters_involved:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_rate_session:
+    type: list_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_saga:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_session_held:
+    type: datetime_custom
+    label: above
+    settings:
+      timezone_override: ''
+      date_format: 'l, F j, Y'
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_tag_realm:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 8
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+  taxonomy_forums:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden: {  }

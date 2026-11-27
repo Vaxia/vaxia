@@ -1,0 +1,14 @@
+uuid: 0e6f1854-b5f4-40c5-88ba-b5514fbd6757
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.suspended_user
+  module:
+    - user
+id: user_add_role_action.suspended_user
+label: 'Add the suspended user role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: suspended_user

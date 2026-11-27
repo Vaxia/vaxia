@@ -1,0 +1,19 @@
+uuid: 0b1a4d36-1da0-43be-b00f-58c1b30d28b9
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - xbbcode_standard
+_core:
+  default_config_hash: GUj_PnQEIsjYNgS6lm8Scw_MVvOLWPHh0phYvdTWXEo
+id: align
+label: Align
+description: 'Aligns a paragraph'
+name: align
+attached: {  }
+sample: |
+  [{{ name }}=left]Left,[/{{ name }}] [{{ name }}=right]right,[/{{ name }}] [{{ name }}=center]center.[/{{ name }}]
+template_code: '<p style="text-align:{{ tag.option|replace({";":""}) }}">{{ tag.content }}</p>'
+template_file: null
+editable: false

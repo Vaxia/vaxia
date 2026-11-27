@@ -1,0 +1,16 @@
+uuid: dac8b45e-4411-4400-96a3-b76199aa2a10
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.character_evaluation_inactive
+id: character_evaluation_inactive_inactive
+label: null
+module: workflow
+from_sid: character_evaluation_inactive
+to_sid: character_evaluation_inactive
+roles:
+  authenticated: authenticated
+  administrator: administrator
+  workflow_author: workflow_author
+  storyteller: storyteller

@@ -1,0 +1,25 @@
+uuid: 77e7edfa-fa4c-4f5c-b100-92f884a3dda5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_intelligence
+    - node.type.character_sheet
+id: node.character_sheet.field_intelligence
+field_name: field_intelligence
+entity_type: node
+bundle: character_sheet
+label: Intelligence
+description: 'Intellect (INT): Mental Acuity; Reasoning'
+required: true
+translatable: false
+default_value:
+  -
+    value: 25
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

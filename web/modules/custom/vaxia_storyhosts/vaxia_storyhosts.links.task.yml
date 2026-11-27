@@ -1,0 +1,45 @@
+vaxia_storyhosts.scenes:
+  route_name: vaxia_storyhosts.scenes
+  base_route: vaxia_storyhosts.scenes
+  title: 'My Scenes'
+  weight: 0
+vaxia_storyhosts.scenes_evaluate:
+  route_name: vaxia_storyhosts.scenes_evaluate
+  base_route: vaxia_storyhosts.scenes
+  title: 'Scene Evaluation'
+  weight: 0
+vaxia_storyhosts.character_scenes:
+  route_name: vaxia_storyhosts.character_scenes
+  base_route: entity.node.canonical
+  title: 'Scenes'
+  weight: 0
+vaxia_storyhosts.sessions:
+  route_name: vaxia_storyhosts.sessions
+  base_route: vaxia_storyhosts.sessions
+  title: 'Sessions'
+  weight: 0
+vaxia_storyhosts.storyhosts:
+  route_name: vaxia_storyhosts.storyhosts
+  base_route: vaxia_storyhosts.sessions
+  title: 'Storyhosts and Apprentices'
+  weight: 0
+vaxia_storyhosts.character_sessions:
+  route_name: vaxia_storyhosts.character_sessions
+  base_route: entity.node.canonical
+  title: 'Sessions'
+  weight: 0
+vaxia_storyhosts.user_sessions:
+  route_name: vaxia_storyhosts.user_sessions
+  base_route: entity.user.canonical
+  title: 'Sessions'
+  weight: 0
+vaxia_storyhosts.user_applications:
+  route_name: vaxia_storyhosts.user_applications
+  base_route: entity.user.canonical
+  title: 'Applications'
+  weight: 90
+vaxia_storyhosts.storyhost_characters:
+  route_name: vaxia_storyhosts.storyhost_characters
+  base_route: system.admin_content
+  title: 'SH characters'
+  weight: 0

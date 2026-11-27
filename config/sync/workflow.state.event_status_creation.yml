@@ -1,0 +1,13 @@
+uuid: ae244de1-3c8f-419f-b602-b6ca6162f185
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.event_status
+id: event_status_creation
+label: (creation)
+weight: -50
+module: workflow
+wid: event_status
+sysid: 1
+single_state_widget: ''

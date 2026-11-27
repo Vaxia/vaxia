@@ -1,0 +1,27 @@
+uuid: 4061f2bd-afe4-4172-bc55-af37431adb44
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_associated_files
+    - node.type.proposal
+  module:
+    - file
+id: node.proposal.field_associated_files
+field_name: field_associated_files
+entity_type: node
+bundle: proposal
+label: 'Associated Files'
+description: 'Upload any files, spreadsheets or images detailing system numbers, or other useful information to give context to this proposal.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:file'
+  handler_settings: {  }
+  file_directory: proposal_files
+  file_extensions: 'txt gif jpg bmp png pdf'
+  max_filesize: ''
+  description_field: true
+field_type: file

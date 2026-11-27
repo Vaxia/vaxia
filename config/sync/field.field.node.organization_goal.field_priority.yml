@@ -1,0 +1,23 @@
+uuid: c961ccaf-2aed-4604-87f9-d304896523e4
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_priority
+    - node.type.organization_goal
+  module:
+    - options
+id: node.organization_goal.field_priority
+field_name: field_priority
+entity_type: node
+bundle: organization_goal
+label: Priority
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: '1'
+default_value_callback: ''
+settings: {  }
+field_type: list_string

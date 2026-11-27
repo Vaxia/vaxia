@@ -1,0 +1,13 @@
+uuid: 139394a3-0696-4f7d-ba7f-c60b82202943
+langcode: en
+status: true
+dependencies: {  }
+id: list_item
+label: 'List item'
+description: 'List item; [*] in a [list] becomes this.'
+name: li
+attached: {  }
+sample: '[{{ name }}]Text[/{{ name }}]'
+template_code: '<li>{{ tag.content }}</li>'
+template_file: null
+editable: false

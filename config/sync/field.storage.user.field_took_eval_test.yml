@@ -1,0 +1,20 @@
+uuid: b050e2b5-b56f-4a02-a7be-d5f345fc09cd
+langcode: und
+status: true
+dependencies:
+  module:
+    - datetime
+    - user
+id: user.field_took_eval_test
+field_name: field_took_eval_test
+entity_type: user
+type: datetime
+settings:
+  datetime_type: date
+module: datetime
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

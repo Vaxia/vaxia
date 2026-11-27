@@ -1,0 +1,14 @@
+uuid: 7946ccd2-77e7-41b7-a87f-d8d7026dfcaf
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.item_evaluation_creation
+    - workflow.state.item_evaluation_disapproved
+id: item_evaluation_creation_disapproved
+label: null
+module: workflow
+from_sid: item_evaluation_creation
+to_sid: item_evaluation_disapproved
+roles:
+  administrator: administrator

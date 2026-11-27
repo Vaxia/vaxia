@@ -1,0 +1,19 @@
+uuid: 8812a7b4-4273-4209-8bb7-2df3b8faa462
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_age_app
+    - node.type.character_sheet
+id: node.character_sheet.field_age_app
+field_name: field_age_app
+entity_type: node
+bundle: character_sheet
+label: 'Apparent Age'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

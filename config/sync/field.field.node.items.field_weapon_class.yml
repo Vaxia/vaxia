@@ -1,0 +1,32 @@
+uuid: e6c4e958-f0c8-4bf1-8ab6-cd4101b68b26
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_weapon_class
+    - node.type.items
+    - taxonomy.vocabulary.weapon_category
+  module:
+    - vaxia_core
+third_party_settings:
+  vaxia_core:
+    d7_default_ids:
+      - 903
+id: node.items.field_weapon_class
+field_name: field_weapon_class
+entity_type: node
+bundle: items
+label: 'Weapon class'
+description: 'How does this weapon modify damage - if it does.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: vaxia_core_d7_reference_default
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      weapon_category: weapon_category
+    sort:
+      field: _none
+field_type: entity_reference

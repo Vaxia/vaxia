@@ -1,0 +1,8 @@
+uuid: 264dca45-b0a4-4cf4-b401-aa43dd3cfc8f
+langcode: en
+status: true
+dependencies: {  }
+id: comment_node_character_sheet
+label: 'Character sheet comment'
+target_entity_type_id: node
+description: null

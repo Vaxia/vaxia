@@ -1,0 +1,14 @@
+uuid: 2a46f1a3-ca04-4d94-9bb6-073cbe34e67a
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.wiki_workflow_creation
+    - workflow.state.wiki_workflow_locked
+id: wiki_workflow_creation_locked
+label: null
+module: workflow
+from_sid: wiki_workflow_creation
+to_sid: wiki_workflow_locked
+roles:
+  workflow_author: workflow_author

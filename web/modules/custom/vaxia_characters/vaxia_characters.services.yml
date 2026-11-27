@@ -1,0 +1,5 @@
+services:
+  vaxia_characters.sheet_gate:
+    class: Drupal\vaxia_characters\EventSubscriber\SheetGate
+    tags:
+      - { name: event_subscriber }

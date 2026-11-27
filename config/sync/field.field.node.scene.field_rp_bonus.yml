@@ -1,0 +1,23 @@
+uuid: 6c880fce-6874-4eb6-8ba8-c0007c40835d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_rp_bonus
+    - node.type.scene
+id: node.scene.field_rp_bonus
+field_name: field_rp_bonus
+entity_type: node
+bundle: scene
+label: 'RP Bonus'
+description: 'Is there RP in this scene? If so the submission qualifies for the RP Bonus. Note: RP means you need at least a few relevant sentences to your action per post. One liner sentences rarely qualify as enough RP to gain this bonus.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'Yes'
+  off_label: 'No'
+field_type: boolean

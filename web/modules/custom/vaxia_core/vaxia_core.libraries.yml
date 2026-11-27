@@ -1,0 +1,25 @@
+clock:
+  js:
+    js/clock.js: {}
+  dependencies:
+    - core/drupal
+    - core/drupalSettings
+    - core/once
+
+skill_presets:
+  js:
+    js/skill_presets.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupalSettings
+    - core/once
+
+sheet:
+  js:
+    js/sheet.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/once
+    - core/drupal.states

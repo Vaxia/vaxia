@@ -1,0 +1,26 @@
+uuid: 56b47efb-61a7-4875-b035-276fd8a3cc1a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_tech_language
+    - paragraphs.paragraphs_type.tech_languages
+    - taxonomy.vocabulary.technology_languages
+id: paragraph.tech_languages.field_tech_language
+field_name: field_tech_language
+entity_type: paragraph
+bundle: tech_languages
+label: 'Tech language'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      technology_languages: technology_languages
+    sort:
+      field: _none
+field_type: entity_reference

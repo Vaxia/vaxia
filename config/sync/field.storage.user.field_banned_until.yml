@@ -1,0 +1,20 @@
+uuid: 84d8720e-6507-4a7e-a361-37ed8e943aec
+langcode: und
+status: true
+dependencies:
+  module:
+    - datetime
+    - user
+id: user.field_banned_until
+field_name: field_banned_until
+entity_type: user
+type: datetime
+settings:
+  datetime_type: date
+module: datetime
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

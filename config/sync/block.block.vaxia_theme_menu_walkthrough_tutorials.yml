@@ -1,0 +1,29 @@
+uuid: 245c7b94-8514-4b68-9c94-52789e8f07a5
+langcode: en
+status: true
+dependencies:
+  config:
+    - system.menu.menu-walkthrough-tutorials
+  module:
+    - system
+  theme:
+    - vaxia_theme
+id: vaxia_theme_menu_walkthrough_tutorials
+theme: vaxia_theme
+region: sidebar_first
+weight: -41
+provider: null
+plugin: 'system_menu_block:menu-walkthrough-tutorials'
+settings:
+  id: 'system_menu_block:menu-walkthrough-tutorials'
+  label: Walkthroughs
+  label_display: visible
+  provider: system
+  level: 1
+  depth: 0
+  expand_all_items: false
+visibility:
+  request_path:
+    id: request_path
+    negate: true
+    pages: '/locations/*'

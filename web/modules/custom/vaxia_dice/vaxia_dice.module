@@ -1,0 +1,162 @@
+<?php
+
+/**
+ * @file
+ * Dice rolls on chat posts: the dice rows on the post form, rolling them when
+ * the post saves, and showing the results under the post.
+ */
+
+use Drupal\comment\CommentInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Markup;
+use Drupal\node\Entity\Node;
+use Drupal\node\NodeInterface;
+use Drupal\vaxia_core\Character;
+use Drupal\vaxia_dice\DiceForm;
+use Drupal\vaxia_dice\Render;
+
+require_once __DIR__ . '/dice_ruler.inc';
+
+/**
+ * Whether posts on this content type carry the dice roller.
+ */
+function vaxia_dice_enabled(string $type): bool {
+  return in_array($type, \Drupal::config('vaxia_dice.settings')->get('dice_roller_types') ?: [], TRUE);
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for comment forms.
+ */
+function vaxia_dice_form_comment_form_alter(&$form, FormStateInterface $form_state) {
+  $comment = $form_state->getFormObject()->getEntity();
+  $room = $comment->getCommentedEntity();
+  if (!$room instanceof NodeInterface || !vaxia_dice_enabled($room->bundle()) || !\Drupal::currentUser()->hasPermission('use dice roller')) {
+    return;
+  }
+  $character = vaxia_dice_selected_character($form_state, $room);
+  $form['vaxia_rolls'] = DiceForm::element($character);
+  if ($character) {
+    $context = ['character' => $character, 'room' => $room];
+    \Drupal::moduleHandler()->alter('vaxia_dice_form', $form, $form_state, $context);
+  }
+  if (isset($form['field_comment_character']['widget'])) {
+    $form['field_comment_character']['widget']['#ajax'] = [
+      'callback' => 'vaxia_dice_character_pick',
+      'wrapper' => 'vaxia-dice-character',
+      'method' => 'replaceWith',
+      'event' => 'change',
+    ];
+  }
+  // After the post saves (it has an id), roll the dice: new posts only, so
+  // editing a post can't add rolls after the fact (review, 2026-11-26).
+  $form_state->set('vaxia_dice_new_post', $comment->isNew());
+  $form['actions']['submit']['#submit'][] = 'vaxia_dice_comment_submit';
+}
+
+/**
+ * AJAX: the dice rows for the character just picked.
+ */
+function vaxia_dice_character_pick(array $form, FormStateInterface $form_state) {
+  return $form['vaxia_rolls'] ?? [];
+}
+
+/**
+ * The character the post is being written as (D7
+ * _vaxia_dice_roller_get_selected_character()): the one picked on the form,
+ * else the last one posted as, else the first available in in-character rooms.
+ */
+function vaxia_dice_selected_character(FormStateInterface $form_state, NodeInterface $room): ?NodeInterface {
+  $uid = (int) \Drupal::currentUser()->id();
+  $options = Character::postableOptions($uid, $room);
+  $allowed = [];
+  foreach ($options as $group) {
+    $allowed += $group;
+  }
+  // Picked on the form: from values once built, else from the raw input of an
+  // AJAX rebuild; NULL when the form is first shown.
+  $picked = $form_state->getValue(['field_comment_character', 0, 'target_id']);
+  $input = $form_state->getUserInput();
+  if ($picked === NULL && array_key_exists('field_comment_character', $input)) {
+    $raw = $input['field_comment_character'];
+    $picked = (string) (is_array($raw) ? reset($raw) : $raw);
+  }
+  $nid = NULL;
+  // Only a character the poster may post as, or the one an edited post
+  // already has: a forged AJAX request could otherwise show any sheet's
+  // stats, skills and items (review, 2026-11-26).
+  $comment = $form_state->getFormObject()->getEntity();
+  $current = $comment->hasField('field_comment_character') ? (int) $comment->get('field_comment_character')->target_id : 0;
+  if ($picked !== NULL && $picked !== '' && $picked !== '_none' && (isset($allowed[(int) $picked]) || ($current && (int) $picked === $current))) {
+    $nid = (int) $picked;
+  }
+  elseif ($picked === NULL) {
+    $last = Character::lastPosted($uid);
+    if ($last && isset($allowed[$last])) {
+      $nid = $last;
+    }
+    elseif (!Character::isLimbo($room)) {
+      foreach (['Characters', 'NPCs', 'Generic NPCs'] as $group) {
+        if (!empty($options[$group])) {
+          $nid = (int) array_key_first($options[$group]);
+          break;
+        }
+      }
+    }
+  }
+  $character = $nid ? Node::load($nid) : NULL;
+  return Character::isSheet($character) ? $character : NULL;
+}
+
+/**
+ * Submit handler: rolls the post's dice rows.
+ */
+function vaxia_dice_comment_submit(array $form, FormStateInterface $form_state) {
+  $comment = $form_state->getFormObject()->getEntity();
+  if (empty($form_state->get('vaxia_dice_new_post')) || !$comment->id() || !$comment->hasField('field_comment_character') || $comment->get('field_comment_character')->isEmpty()) {
+    return;
+  }
+  $character = $comment->get('field_comment_character')->entity;
+  if (!Character::isSheet($character)) {
+    return;
+  }
+  $roller = \Drupal::service('vaxia_dice.roller');
+  foreach (DiceForm::commands((array) $form_state->getValue('vaxia_rolls'), $character) as $command) {
+    if (!empty($command['command'])) {
+      $roller->rollAndStore($command['command'], $command['note'] ?: $command['command'], (int) $comment->id(), 'c');
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view() for comments: rolls under the post.
+ */
+function vaxia_dice_comment_view(array &$build, CommentInterface $comment, EntityViewDisplayInterface $display, $view_mode) {
+  if (!\Drupal::currentUser()->hasPermission('view dice rolls')) {
+    return;
+  }
+  $rolls = \Drupal::service('vaxia_dice.roller')->rolls((int) $comment->id(), 'c');
+  $build['dice_rolls'] = [
+    '#markup' => Markup::create(Render::markup($rolls)),
+    '#weight' => 100,
+  ];
+  $build['#cache']['contexts'][] = 'user.permissions';
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete() for comments.
+ */
+function vaxia_dice_comment_delete(CommentInterface $comment) {
+  \Drupal::service('vaxia_dice.roller')->delete((int) $comment->id(), 'c');
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view() for nodes: the dice helper script in
+ * rooms (D7 dice_helper).
+ */
+function vaxia_dice_node_view(array &$build, NodeInterface $node, EntityViewDisplayInterface $display, $view_mode) {
+  if ($view_mode === 'full' && vaxia_dice_enabled($node->bundle()) && \Drupal::currentUser()->hasPermission('use dice helper')) {
+    $build['#attached']['library'][] = 'vaxia_dice/dice_helper';
+  }
+  $build['#cache']['contexts'][] = 'user.permissions';
+}

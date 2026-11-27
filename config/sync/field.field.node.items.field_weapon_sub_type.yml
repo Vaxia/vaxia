@@ -1,0 +1,26 @@
+uuid: 7d2d00f0-841c-4a57-b458-53372b6195c3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_weapon_sub_type
+    - node.type.items
+    - taxonomy.vocabulary.weapon_sub_category
+id: node.items.field_weapon_sub_type
+field_name: field_weapon_sub_type
+entity_type: node
+bundle: items
+label: 'Weapon Sub-type'
+description: 'Select the generic category for this weapon, skills that cover this category make use this weapon.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      weapon_sub_category: weapon_sub_category
+    sort:
+      field: _none
+field_type: entity_reference

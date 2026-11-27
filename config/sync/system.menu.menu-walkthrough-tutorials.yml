@@ -1,0 +1,8 @@
+uuid: 747e9c29-e168-48f8-82f4-3fd6b453d28b
+langcode: en
+status: true
+dependencies: {  }
+id: menu-walkthrough-tutorials
+label: 'Walkthrough Tutorials'
+description: 'Learn our system, setting, and all the social niceties of our site.'
+locked: false

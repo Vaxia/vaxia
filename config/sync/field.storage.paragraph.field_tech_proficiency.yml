@@ -1,0 +1,30 @@
+uuid: 20c5b7c6-a52e-4d49-8d56-6f47b78c2f14
+langcode: und
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.field_tech_proficiency
+field_name: field_tech_proficiency
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: Unfamiliar
+      label: Unfamiliar
+    -
+      value: Familiar
+      label: Familiar
+    -
+      value: Proficient
+      label: Proficient
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

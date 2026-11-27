@@ -1,0 +1,31 @@
+uuid: c4fea467-2b3d-4590-aefa-5cdf3eccaace
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.tech_languages.field_tech_language
+    - field.field.paragraph.tech_languages.field_tech_proficiency
+    - paragraphs.paragraphs_type.tech_languages
+  module:
+    - options
+id: paragraph.tech_languages.default
+targetEntityType: paragraph
+bundle: tech_languages
+mode: default
+content:
+  field_tech_language:
+    type: entity_reference_label
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_tech_proficiency:
+    type: list_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden: {  }

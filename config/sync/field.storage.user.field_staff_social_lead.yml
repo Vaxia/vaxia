@@ -1,0 +1,18 @@
+uuid: c7cb8ca3-22ac-44f8-b5ea-f770da0615bc
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+id: user.field_staff_social_lead
+field_name: field_staff_social_lead
+entity_type: user
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

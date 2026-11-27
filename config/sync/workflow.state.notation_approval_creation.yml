@@ -1,0 +1,13 @@
+uuid: c39ba3b6-48b6-4779-8a8f-668da5178cee
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.notation_approval
+id: notation_approval_creation
+label: (creation)
+weight: -50
+module: workflow
+wid: notation_approval
+sysid: 1
+single_state_widget: ''

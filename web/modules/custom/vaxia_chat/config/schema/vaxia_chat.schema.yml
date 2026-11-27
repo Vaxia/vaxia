@@ -1,0 +1,23 @@
+vaxia_chat.settings:
+  type: config_object
+  label: 'Vaxia chat settings'
+  mapping:
+    rpg_chat_types:
+      type: sequence
+      label: 'Content types shown as chat rooms'
+      sequence:
+        type: string
+    archives_flat_file_path:
+      type: string
+    archives_date:
+      type: string
+    archives_cron:
+      type: boolean
+    room_cleanup_date:
+      type: string
+    room_cleanup_cron:
+      type: boolean
+    personal_rooms_fields_edit:
+      type: string
+    personal_rooms_fields_view:
+      type: string

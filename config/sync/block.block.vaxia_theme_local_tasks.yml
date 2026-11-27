@@ -1,0 +1,20 @@
+uuid: 731a0166-f886-4b20-b39b-1160cd363872
+langcode: en
+status: true
+dependencies:
+  theme:
+    - vaxia_theme
+id: vaxia_theme_local_tasks
+theme: vaxia_theme
+region: content
+weight: -58
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: Tabs
+  label_display: '0'
+  provider: core
+  primary: true
+  secondary: true
+visibility: {  }

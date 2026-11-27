@@ -1,0 +1,27 @@
+uuid: f6d8271f-942e-4569-914b-5f24e267765e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_additional_notes
+    - node.type.session_report
+  module:
+    - file
+id: node.session_report.field_additional_notes
+field_name: field_additional_notes
+entity_type: node
+bundle: session_report
+label: 'Additional notes'
+description: 'Additional notes and information for this session. ASH who are in training should feel free to use this to upload their session notes in case Academy needs to review them.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:file'
+  handler_settings: {  }
+  file_directory: session_notes
+  file_extensions: 'txt gif jpg bmp png pdf'
+  max_filesize: ''
+  description_field: true
+field_type: file

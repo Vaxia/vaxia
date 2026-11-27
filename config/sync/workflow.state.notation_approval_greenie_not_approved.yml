@@ -1,0 +1,13 @@
+uuid: 04c7a9b2-f58d-4179-88fb-619b81823d15
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.notation_approval
+id: notation_approval_greenie_not_approved
+label: 'greenie NOT approved'
+weight: -15
+module: workflow
+wid: notation_approval
+sysid: 0
+single_state_widget: ''

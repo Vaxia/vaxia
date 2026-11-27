@@ -1,0 +1,26 @@
+uuid: 7f38f28a-d09f-4687-bbb1-6a52a4033f5a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_parent
+    - node.type.rpg_chatroom
+id: node.rpg_chatroom.field_parent
+field_name: field_parent
+entity_type: node
+bundle: rpg_chatroom
+label: 'Parent room'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      rpg_chatroom: rpg_chatroom
+    sort:
+      field: _none
+      direction: ASC
+field_type: entity_reference

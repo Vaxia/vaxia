@@ -1,0 +1,18 @@
+uuid: 9cad7752-9cd2-4eb6-808f-da4008d2487d
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.strike
+id: node.strike.title
+field_name: title
+entity_type: node
+bundle: strike
+label: 'Short summary'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

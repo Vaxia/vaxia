@@ -1,0 +1,14 @@
+uuid: 72840614-8a42-4de6-8fac-d2f750180704
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.character_evaluation
+  module:
+    - workflow
+id: shadowbanned_user
+label: 'shadowbanned user'
+weight: 25
+is_admin: false
+permissions:
+  - 'create character_evaluation workflow_transition'

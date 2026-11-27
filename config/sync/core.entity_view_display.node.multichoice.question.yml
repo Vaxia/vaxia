@@ -1,0 +1,31 @@
+uuid: 66111c28-9d66-409b-9664-91ae72548465
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.question
+    - field.field.node.multichoice.body
+    - field.field.node.multichoice.comment_node_multichoice
+    - node.type.multichoice
+  module:
+    - text
+    - user
+id: node.multichoice.question
+targetEntityType: node
+bundle: multichoice
+mode: question
+content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  comment_node_multichoice: true

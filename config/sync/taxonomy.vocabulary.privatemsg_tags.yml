@@ -1,0 +1,11 @@
+uuid: 6d643a29-319a-4676-9def-1e430510f9ab
+langcode: und
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: n7hjyW-4LKc4NrVnKdTEvfXyZEFzm7EV7Fm2Ui-7mCg
+name: 'Privatemsg Tags'
+vid: privatemsg_tags
+description: ''
+weight: 0
+new_revision: false

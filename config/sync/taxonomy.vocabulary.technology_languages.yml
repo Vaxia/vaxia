@@ -1,0 +1,9 @@
+uuid: 571f01ef-acd9-4b15-8f49-3426462504d1
+langcode: en
+status: true
+dependencies: {  }
+name: 'Technology Languages'
+vid: technology_languages
+description: 'Technology Languages'
+weight: 0
+new_revision: false

@@ -1,0 +1,21 @@
+uuid: df1d17d1-b497-469b-ad89-93dcd8bcc135
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_event_status
+    - node.type.event
+  module:
+    - workflow
+id: node.event.field_event_status
+field_name: field_event_status
+entity_type: node
+bundle: event
+label: 'Event status'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: workflow

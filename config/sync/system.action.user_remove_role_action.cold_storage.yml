@@ -1,0 +1,14 @@
+uuid: 224647dd-e3e4-4791-9c3c-c9acaa1e22e9
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.cold_storage
+  module:
+    - user
+id: user_remove_role_action.cold_storage
+label: 'Remove the cold storage role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: cold_storage

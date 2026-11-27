@@ -1,0 +1,98 @@
+vaxia_wiki.settings:
+  path: '/admin/config/system/site_wiki'
+  defaults:
+    _form: '\Drupal\vaxia_wiki\Form\SiteWikiSettingsForm'
+    _title: 'Site wiki'
+  requirements:
+    _permission: 'administer site wiki'
+vaxia_wiki.content:
+  path: '/admin/content/wiki-content'
+  defaults:
+    _controller: '\Drupal\vaxia_wiki\Controller\WikiLists::content'
+    _title: 'Site wiki articles'
+  requirements:
+    _permission: 'administer nodes'
+vaxia_wiki.recent:
+  path: '/wiki/recently-edited'
+  defaults:
+    _controller: '\Drupal\vaxia_wiki\Controller\WikiLists::recent'
+    _title: 'Recently edited wiki'
+  requirements:
+    _permission: 'access content'
+vaxia_wiki.flagged_delete:
+  path: '/wiki/flagged-delete'
+  defaults:
+    _controller: '\Drupal\vaxia_wiki\Controller\WikiLists::flagged'
+    _title: 'Flagged delete'
+    flag: delete
+  requirements:
+    _role: 'administrator+lead+storyteller'
+vaxia_wiki.flagged_rewrite:
+  path: '/wiki/flagged-rewrite'
+  defaults:
+    _controller: '\Drupal\vaxia_wiki\Controller\WikiLists::flagged'
+    _title: 'Flagged rewrite'
+    flag: rewrite
+  requirements:
+    _role: 'administrator+lead+storyteller'
+vaxia_wiki.flagged_expand:
+  path: '/wiki/flagged-expand'
+  defaults:
+    _controller: '\Drupal\vaxia_wiki\Controller\WikiLists::flagged'
+    _title: 'Flagged expand'
+    flag: expand
+  requirements:
+    _role: 'administrator+lead+storyteller'
+vaxia_wiki.npcs:
+  path: '/wiki/npcs-list'
+  defaults:
+    _controller: '\Drupal\vaxia_wiki\Controller\WikiLists::npcs'
+    _title: 'Setting NPCs'
+  requirements:
+    _permission: 'access content'
+vaxia_wiki.organizations:
+  path: '/wiki/organizations-list'
+  defaults:
+    _controller: '\Drupal\vaxia_wiki\Controller\WikiLists::organizations'
+    _title: 'Setting Organizations'
+  requirements:
+    _permission: 'access content'
+vaxia_wiki.governance:
+  path: '/wiki/site-governance'
+  defaults:
+    _controller: '\Drupal\vaxia_wiki\Controller\WikiLists::governance'
+    _title: 'Site governance'
+  requirements:
+    _permission: 'access content'
+vaxia_wiki.sessions:
+  # One list per realm, by its name in lower case with dashes for spaces
+  # (/wiki/fantasy/session-list), as the calendars.
+  path: '/wiki/{realm}/session-list'
+  defaults:
+    _controller: '\Drupal\vaxia_wiki\Controller\WikiLists::sessions'
+  requirements:
+    _permission: 'access content'
+    realm: '[a-z0-9-]+'
+vaxia_wiki.search:
+  path: '/search/wiki'
+  defaults:
+    _controller: '\Drupal\vaxia_wiki\Controller\WikiLists::search'
+    _title: 'Wiki search'
+  requirements:
+    _permission: 'access content'
+vaxia_wiki.calendar:
+  # One calendar per realm, by its name in lower case with dashes for spaces
+  # (/sessions/calendar/fantasy, /sessions/calendar/science-fiction).
+  path: '/sessions/calendar/{realm}'
+  defaults:
+    _controller: '\Drupal\vaxia_wiki\Controller\WikiLists::sessionCalendar'
+  requirements:
+    _permission: 'access content'
+    realm: '[a-z0-9-]+'
+vaxia_wiki.flagged_admin:
+  path: '/admin/content/wiki-flagged'
+  defaults:
+    _controller: '\Drupal\vaxia_wiki\Controller\WikiLists::flaggedAdmin'
+    _title: 'Site wiki flagged'
+  requirements:
+    _role: 'administrator'

@@ -1,0 +1,114 @@
+uuid: 17bea226-1976-43ce-8fc0-efc9dc53219a
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_display.comment.comment_node_notation.default
+    - field.field.node.notation.body
+    - field.field.node.notation.comment_node_notation
+    - field.field.node.notation.field_category
+    - field.field.node.notation.field_date_of_incident
+    - field.field.node.notation.field_documentation
+    - field.field.node.notation.field_notation_approval
+    - field.field.node.notation.field_players
+    - field.field.node.notation.field_results
+    - field.field.node.notation.field_social_members
+    - field.field.node.notation.field_witnesses
+    - node.type.notation
+  module:
+    - comment
+    - datetime
+    - file
+    - options
+    - text
+    - user
+    - workflow
+id: node.notation.default
+targetEntityType: node
+bundle: notation
+mode: default
+content:
+  body:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  comment_node_notation:
+    type: comment_default
+    label: hidden
+    settings:
+      view_mode: default
+      pager_id: 0
+    third_party_settings: {  }
+    weight: 20
+    region: content
+  field_category:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_date_of_incident:
+    type: datetime_custom
+    label: inline
+    settings:
+      timezone_override: ''
+      date_format: 'l, F j, Y'
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_documentation:
+    type: file_default
+    label: above
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_notation_approval:
+    type: workflow_state_label
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  field_players:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_results:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_social_members:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_witnesses:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden: {  }

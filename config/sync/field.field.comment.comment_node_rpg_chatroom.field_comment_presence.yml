@@ -1,0 +1,23 @@
+uuid: fbb5868f-34a1-4c49-8d96-da1263b01003
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.comment_node_rpg_chatroom
+    - field.storage.comment.field_comment_presence
+id: comment.comment_node_rpg_chatroom.field_comment_presence
+field_name: field_comment_presence
+entity_type: comment
+bundle: comment_node_rpg_chatroom
+label: Presence
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: float

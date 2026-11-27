@@ -1,0 +1,142 @@
+vaxia_governance.settings:
+  type: config_object
+  label: 'VAXIA governance settings (keys are the D7 variable names)'
+  mapping:
+    proposal_node_help:
+      type: text
+      label: 'Help shown on the proposal form'
+    proposal_open_timeframe:
+      type: string
+      label: 'How long proposals stay open'
+    proposal_active_timeframe:
+      type: string
+      label: 'Window for counting active voters'
+    proposal_voter_timeframe:
+      type: string
+      label: 'How long posting keeps someone a voter'
+    proposal_required_perc:
+      type: string
+      label: 'Active-voter participation amendments and grievances need (%)'
+    anon_mailer_webform:
+      type: integer
+      label: 'Node of the anonymous mailer webform'
+    anon_mailer_form:
+      type: integer
+      label: 'Forum the mailer posts to'
+    election_rate:
+      type: string
+      label: 'How often elections are held'
+    election_positions:
+      type: text
+      label: 'Positions, one per line'
+    election_term_limits:
+      type: boolean
+      label: 'Use term limits'
+    election_term_limit_limits:
+      type: string
+      label: 'Consecutive terms allowed'
+    election_role:
+      type: string
+      label: 'Role winners get'
+    election_default_forum:
+      type: integer
+      label: 'Forum for election proposals'
+    election_election_intro:
+      type: text
+      label: 'Election introduction'
+    election_min_numb:
+      type: boolean
+      label: 'Use a minimum number of votes'
+    election_min_numb_val:
+      type: string
+      label: 'Minimum votes'
+    election_min_perc:
+      type: boolean
+      label: 'Use a minimum share of votes'
+    election_min_perc_val:
+      type: string
+      label: 'Minimum share of votes (%)'
+    election_runoff:
+      type: boolean
+      label: 'Run run-offs'
+    election_position_counts:
+      type: sequence
+      label: 'Seats per position'
+      sequence:
+        type: integer
+    election_position_descs:
+      type: sequence
+      label: 'Description per position'
+      sequence:
+        type: text
+    election_run_roles:
+      type: sequence
+      label: 'Roles that may run'
+      sequence:
+        type: string
+    departments:
+      type: text
+      label: 'Departments, one per line (empty: not set up yet)'
+    department_roles:
+      type: sequence
+      label: 'Role of each department'
+      sequence:
+        type: string
+    department_vacation_cutoff:
+      type: string
+      label: 'Vacation length needing a stand-in'
+    department_join_forms:
+      type: mapping
+      label: 'The departments'' "Join" forms (node ids)'
+      mapping:
+        social:
+          type: integer
+        setting:
+          type: integer
+        system:
+          type: integer
+    walkthrough_quizzes:
+      type: mapping
+      label: 'Walkthrough quiz nodes'
+      mapping:
+        system:
+          type: integer
+          label: 'System walkthrough'
+        setting:
+          type: integer
+          label: 'Setting walkthrough'
+        social:
+          type: integer
+          label: 'Social walkthrough'
+    role_app_roles:
+      type: sequence
+      label: 'Roles players apply for'
+      sequence:
+        type: string
+    application_approval_min:
+      type: string
+      label: 'Approval percentage needed'
+    role_app_settings:
+      type: sequence
+      label: 'Per applied role'
+      sequence:
+        type: mapping
+        mapping:
+          quiz:
+            type: sequence
+            label: 'Quizzes'
+            sequence:
+              type: integer
+          eligible:
+            type: string
+            label: 'Role that may apply'
+          view:
+            type: sequence
+            label: 'Roles that view'
+            sequence:
+              type: string
+          approve:
+            type: sequence
+            label: 'Roles that approve'
+            sequence:
+              type: string

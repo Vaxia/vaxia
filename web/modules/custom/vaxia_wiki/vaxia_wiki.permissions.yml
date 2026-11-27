@@ -1,0 +1,7 @@
+edit locked site wiki:
+  title: 'Edit a site wiki page in a locked workflow state'
+administer site wiki:
+  title: 'Administer site wiki settings'
+view any unpublished wiki_page content:
+  title: 'Wiki page: View any unpublished content'
+  description: 'D7 view_unpublished per-type permission (production gave it to leads).'

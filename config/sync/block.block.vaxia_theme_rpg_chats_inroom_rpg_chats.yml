@@ -1,0 +1,28 @@
+uuid: ae15a372-b1fd-40b7-916a-578451ca55a7
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - vaxia_chat
+  theme:
+    - vaxia_theme
+id: vaxia_theme_rpg_chats_inroom_rpg_chats
+theme: vaxia_theme
+region: content
+weight: -45
+provider: null
+plugin: rpg_chats-inroom_rpg_chats
+settings:
+  id: rpg_chats-inroom_rpg_chats
+  label: 'In-Room Search RPG Chats'
+  label_display: '0'
+  provider: vaxia_chat
+visibility:
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      rpg_chatroom: rpg_chatroom

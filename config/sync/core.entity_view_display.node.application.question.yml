@@ -1,0 +1,28 @@
+uuid: c3271955-f813-4fdb-9577-2ce01755d1c2
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.question
+    - field.field.node.application.body
+    - field.field.node.application.comment_node_application
+    - field.field.node.application.field_applied_role_id
+    - field.field.node.application.webform
+    - node.type.application
+  module:
+    - user
+id: node.application.question
+targetEntityType: node
+bundle: application
+mode: question
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  body: true
+  comment_node_application: true
+  field_applied_role_id: true
+  webform: true

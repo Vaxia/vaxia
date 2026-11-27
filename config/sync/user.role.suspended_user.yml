@@ -1,0 +1,14 @@
+uuid: cf04ae2f-493b-4b4e-a4a2-1c7179fc8ae6
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.character_evaluation
+  module:
+    - workflow
+id: suspended_user
+label: 'suspended user'
+weight: 26
+is_admin: false
+permissions:
+  - 'create character_evaluation workflow_transition'

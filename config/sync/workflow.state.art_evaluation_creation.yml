@@ -1,0 +1,13 @@
+uuid: 3614a373-cba7-4f0d-8cef-8e5a3d7b56c1
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.art_evaluation
+id: art_evaluation_creation
+label: (creation)
+weight: -50
+module: workflow
+wid: art_evaluation
+sysid: 1
+single_state_widget: ''

@@ -1,0 +1,14 @@
+uuid: f1b93e3f-0a10-4299-a918-b8f3377bfdc0
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.storyteller_assistant
+  module:
+    - user
+id: user_remove_role_action.storyteller_assistant
+label: 'Remove the storyteller-assistant role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: storyteller_assistant

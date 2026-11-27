@@ -1,0 +1,16 @@
+uuid: 3dbe3cb7-5e4f-46b0-9406-e0c39e30f301
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.art_evaluation_approved
+id: art_evaluation_approved_approved
+label: null
+module: workflow
+from_sid: art_evaluation_approved
+to_sid: art_evaluation_approved
+roles:
+  authenticated: authenticated
+  workflow_author: workflow_author
+  administrator: administrator
+  lead: lead

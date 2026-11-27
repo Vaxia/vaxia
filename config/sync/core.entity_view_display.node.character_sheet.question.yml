@@ -1,0 +1,126 @@
+uuid: e4aa7644-ba2a-429b-8560-efa778a08247
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.question
+    - field.field.node.character_sheet.comment_node_character_sheet
+    - field.field.node.character_sheet.field_achivements
+    - field.field.node.character_sheet.field_age_app
+    - field.field.node.character_sheet.field_artwork_image
+    - field.field.node.character_sheet.field_background
+    - field.field.node.character_sheet.field_background_color
+    - field.field.node.character_sheet.field_birth_day
+    - field.field.node.character_sheet.field_birth_month
+    - field.field.node.character_sheet.field_character_evaluation
+    - field.field.node.character_sheet.field_character_goals
+    - field.field.node.character_sheet.field_charisma
+    - field.field.node.character_sheet.field_content_limits
+    - field.field.node.character_sheet.field_currently_wearing
+    - field.field.node.character_sheet.field_description
+    - field.field.node.character_sheet.field_dexterity
+    - field.field.node.character_sheet.field_economy
+    - field.field.node.character_sheet.field_endurance
+    - field.field.node.character_sheet.field_fantasy_conditions
+    - field.field.node.character_sheet.field_fantasy_languages
+    - field.field.node.character_sheet.field_fantasy_species
+    - field.field.node.character_sheet.field_horror_conditions
+    - field.field.node.character_sheet.field_horror_languages
+    - field.field.node.character_sheet.field_horror_species
+    - field.field.node.character_sheet.field_intelligence
+    - field.field.node.character_sheet.field_is_generic_npc
+    - field.field.node.character_sheet.field_is_npc
+    - field.field.node.character_sheet.field_is_open_npc
+    - field.field.node.character_sheet.field_is_storyteller
+    - field.field.node.character_sheet.field_items
+    - field.field.node.character_sheet.field_last_name
+    - field.field.node.character_sheet.field_life
+    - field.field.node.character_sheet.field_occupation
+    - field.field.node.character_sheet.field_other_species
+    - field.field.node.character_sheet.field_personal_room
+    - field.field.node.character_sheet.field_personality
+    - field.field.node.character_sheet.field_player_notes
+    - field.field.node.character_sheet.field_post_color
+    - field.field.node.character_sheet.field_property
+    - field.field.node.character_sheet.field_public_information
+    - field.field.node.character_sheet.field_real_age
+    - field.field.node.character_sheet.field_scifi_conditions
+    - field.field.node.character_sheet.field_scifi_languages
+    - field.field.node.character_sheet.field_scifi_species
+    - field.field.node.character_sheet.field_sex
+    - field.field.node.character_sheet.field_sh_notes
+    - field.field.node.character_sheet.field_sh_private_notes
+    - field.field.node.character_sheet.field_sh_public_information
+    - field.field.node.character_sheet.field_skill
+    - field.field.node.character_sheet.field_spirituality
+    - field.field.node.character_sheet.field_strength
+    - field.field.node.character_sheet.field_tag_realm
+    - field.field.node.character_sheet.field_titles
+    - field.field.node.character_sheet.field_visibility
+    - node.type.character_sheet
+  module:
+    - user
+id: node.character_sheet.question
+targetEntityType: node
+bundle: character_sheet
+mode: question
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  comment_node_character_sheet: true
+  field_achivements: true
+  field_age_app: true
+  field_artwork_image: true
+  field_background: true
+  field_background_color: true
+  field_birth_day: true
+  field_birth_month: true
+  field_character_evaluation: true
+  field_character_goals: true
+  field_charisma: true
+  field_content_limits: true
+  field_currently_wearing: true
+  field_description: true
+  field_dexterity: true
+  field_economy: true
+  field_endurance: true
+  field_fantasy_conditions: true
+  field_fantasy_languages: true
+  field_fantasy_species: true
+  field_horror_conditions: true
+  field_horror_languages: true
+  field_horror_species: true
+  field_intelligence: true
+  field_is_generic_npc: true
+  field_is_npc: true
+  field_is_open_npc: true
+  field_is_storyteller: true
+  field_items: true
+  field_last_name: true
+  field_life: true
+  field_occupation: true
+  field_other_species: true
+  field_personal_room: true
+  field_personality: true
+  field_player_notes: true
+  field_post_color: true
+  field_property: true
+  field_public_information: true
+  field_real_age: true
+  field_scifi_conditions: true
+  field_scifi_languages: true
+  field_scifi_species: true
+  field_sex: true
+  field_sh_notes: true
+  field_sh_private_notes: true
+  field_sh_public_information: true
+  field_skill: true
+  field_spirituality: true
+  field_strength: true
+  field_tag_realm: true
+  field_titles: true
+  field_visibility: true

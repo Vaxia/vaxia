@@ -1,0 +1,13 @@
+uuid: ad020641-536c-4605-bf2e-3ba52339aeb7
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.item_evaluation
+id: item_evaluation_disapproved
+label: disapproved
+weight: -16
+module: workflow
+wid: item_evaluation
+sysid: 0
+single_state_widget: ''

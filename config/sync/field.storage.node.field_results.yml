@@ -1,0 +1,81 @@
+uuid: 689c72dc-fbe0-4887-8657-f4b9f2c1a970
+langcode: und
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_results
+field_name: field_results
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: na
+      label: 'No additional actions taken'
+    -
+      value: chill
+      label: 'Player requested to disengage in situation'
+    -
+      value: training
+      label: 'Training given'
+    -
+      value: mediation
+      label: 'Mediation between Player'
+    -
+      value: contract
+      label: 'A contract with Social was agreed on by Player'
+    -
+      value: apology
+      label: 'Private apology requested'
+    -
+      value: apology-public
+      label: 'Public apology requested'
+    -
+      value: custody
+      label: 'Alternate RP schedules arranged between Player'
+    -
+      value: break-1d
+      label: 'Player requested to take a break from the site (1 day)'
+    -
+      value: break-3d
+      label: 'Player requested to take a break from the site (3 days)'
+    -
+      value: break-1w
+      label: 'Player requested to take a break from the site (1 week)'
+    -
+      value: yellow
+      label: 'Yellow Strike recommended'
+    -
+      value: red-upgrade
+      label: 'Yellow upgraded to Red, 3rd Yellow w/in year'
+    -
+      value: red
+      label: 'Red Strike recommended'
+    -
+      value: site-ban
+      label: 'Permanent site-ban recommended'
+    -
+      value: xp_yes
+      label: 'XP request granted'
+    -
+      value: xp_no
+      label: 'XP request NOT granted'
+    -
+      value: rlh_yes
+      label: 'RLH request granted'
+    -
+      value: rlh_no
+      label: 'RLH request NOT granted'
+    -
+      value: other
+      label: 'Other action taken'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,8 @@
+uuid: 2ef318f3-0bab-4c31-a379-0cc8b6d03776
+langcode: en
+status: true
+dependencies: {  }
+id: art_evaluation
+label: 'Art evaluation'
+module: workflow
+options: {  }

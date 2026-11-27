@@ -1,0 +1,33 @@
+uuid: 45b21c09-d893-4e91-b841-1fe9d7f79dab
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+    - user
+    - vaxia_governance
+  theme:
+    - vaxia_theme
+id: vaxia_theme_proposals_proposals_closing
+theme: vaxia_theme
+region: content
+weight: -49
+provider: null
+plugin: proposals-proposals_closing
+settings:
+  id: proposals-proposals_closing
+  label: 'Proposals closing'
+  label_display: '0'
+  provider: vaxia_governance
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: /locations/limbo
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      voter: voter

@@ -1,0 +1,589 @@
+<?php
+
+/**
+ * @file
+ * Chat rooms (D7 rpg_chat) and the chat post form (D7 vaxia_form_alter(),
+ * vaxia_process_comment()).
+ */
+
+use Drupal\comment\CommentInterface;
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Markup;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Url;
+use Drupal\node\NodeInterface;
+use Drupal\vaxia_chat\Room;
+use Drupal\vaxia_core\Character;
+
+/**
+ * Implements hook_node_access(): rooms need "view rpg chat".
+ */
+function vaxia_chat_node_access(NodeInterface $node, $op, AccountInterface $account) {
+  // A personal room's player may edit it (its allowed fields only).
+  if ($op === 'update' && \Drupal\vaxia_chat\PersonalRooms::editsAsOwner($node, $account)) {
+    return AccessResult::allowed()->cachePerUser()->addCacheableDependency($node);
+  }
+  if (Room::isRoom($node) && !$account->hasPermission('view rpg chat') && !$account->hasPermission('administer rpg chat')) {
+    return AccessResult::forbidden()->cachePerPermissions();
+  }
+  return AccessResult::neutral()->cachePerPermissions();
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert() / update() / delete() for nodes.
+ */
+function vaxia_chat_node_insert(NodeInterface $node) {
+  if (Room::isRoom($node)) {
+    Room::save($node);
+  }
+}
+
+function vaxia_chat_node_update(NodeInterface $node) {
+  vaxia_chat_node_insert($node);
+  // A character moved from submitted to approved gets its personal room.
+  if (Character::isSheet($node) && isset($node->original)
+    && Character::state($node->original) === 'character_evaluation_submitted'
+    && Character::state($node) === 'character_evaluation_approved') {
+    \Drupal\vaxia_chat\PersonalRooms::onCharacterApproved($node);
+  }
+}
+
+function vaxia_chat_node_delete(NodeInterface $node) {
+  if (Room::isRoom($node)) {
+    Room::delete((int) $node->id());
+  }
+}
+
+/**
+ * Implements hook_cron(): visitors drop off a minute after their last refresh.
+ */
+function vaxia_chat_cron() {
+  \Drupal::database()->delete('rpg_chat_room_users')->condition('timestamp', strtotime('-1 minutes'), '<')->execute();
+  vaxia_chat_archives_cron();
+  // Room cleanup, once a day when enabled.
+  if (\Drupal::config('vaxia_chat.settings')->get('room_cleanup_cron') && \Drupal::state()->get('vaxia_chat.room_cleanup_crontime', 0) < strtotime('-1 day')) {
+    \Drupal::state()->set('vaxia_chat.room_cleanup_crontime', time());
+    \Drupal\vaxia_chat\RoomCleanup::run();
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view() for nodes: the refresh script.
+ */
+function vaxia_chat_node_view(array &$build, NodeInterface $node, EntityViewDisplayInterface $display, $view_mode) {
+  // Wiki articles offer to become a room.
+  if ($node->bundle() === 'wiki_page' && $view_mode === 'full' && \Drupal::currentUser()->hasPermission('make room from wiki')
+    && \Drupal::entityTypeManager()->getAccessControlHandler('node')->createAccess('rpg_chatroom')) {
+    $build['room_cleanup_make_room_from_wiki'] = \Drupal::formBuilder()->getForm('\Drupal\vaxia_chat\Form\MakeRoomForm', $node);
+    $build['room_cleanup_make_room_from_wiki']['#weight'] = 1000;
+    $build['#cache']['contexts'][] = 'user.permissions';
+  }
+  if (Room::isRoom($node) && $view_mode === 'full') {
+    // Opening the room counts as being in it (D7 marked it while building the
+    // post form, before the list).
+    Room::markPresent((int) $node->id());
+    $build['#attached']['library'][] = 'vaxia_chat/rpg_chat';
+    $build['#attached']['library'][] = 'vaxia_chat/vaxia_chatrooms';
+    $build['#attached']['drupalSettings']['rpg_chat']['refreshRate'] = 60;
+    $build['#cache']['max-age'] = 0;
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view_alter() for nodes: posts go in the chat
+ * wrapper the refresh replaces, under the list of who is in the room.
+ */
+function vaxia_chat_node_view_alter(array &$build, NodeInterface $node, EntityViewDisplayInterface $display) {
+  if (!Room::isRoom($node)) {
+    return;
+  }
+  foreach ($node->getFieldDefinitions() as $name => $definition) {
+    if ($definition->getType() === 'comment' && isset($build[$name][0])) {
+      $comments = $build[$name][0]['comments'] ?? [];
+      $build[$name][0]['comments'] = [
+        '#type' => 'container',
+        '#attributes' => ['id' => 'rpg-chat-wrapper', 'class' => ['rpg-chat-wrapper']],
+        'users' => Room::userList((int) $node->id()),
+        'chat' => ['#type' => 'container', '#attributes' => ['id' => 'rpg-chat', 'class' => ['rpg-chat']], 'comments' => $comments],
+      ];
+      // The multi-attack advisor right under the post form, in the form's
+      // column (user, 2026-11-25: as a block after the room it fell below
+      // the chat when the chat was taller than the form).
+      // Roleplaying rooms only, not Limbo (user, 2026-11-26).
+      if (isset($build[$name][0]['comment_form']) && !Character::isLimbo($node)) {
+        $build[$name][0]['comment_form'] = [
+          'form' => $build[$name][0]['comment_form'],
+          'advisor' => [
+            '#type' => 'container',
+            '#attributes' => ['class' => ['vaxia-advisor']],
+            'form' => \Drupal::formBuilder()->getForm('\Drupal\vaxia_dice\Form\PlayerAssistForm'),
+          ],
+        ];
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for nodes and comments: chat markup.
+ */
+function vaxia_chat_preprocess_node(&$variables) {
+  if (Room::isRoom($variables['node'])) {
+    $variables['attributes']['class'][] = 'rpg-chat-node';
+    // IC or OOC styling (D7 vaxia_chatrooms_process_node()).
+    $ooc = !\Drupal::currentUser()->hasPermission('post in narrative format') || Character::isLimbo($variables['node']);
+    $variables['attributes']['class'][] = $ooc ? 'ooc-room' : 'ic-room';
+  }
+}
+
+function vaxia_chat_preprocess_comment(&$variables) {
+  $comment = $variables['elements']['#comment'];
+  $room = Room::isRoom($comment->getCommentedEntity());
+  // The post's picture (D7 vaxia_process_comment()): the post's chosen
+  // artwork, else the Vaxia logo, for every comment; chat posts made as a
+  // character link a picture of the character to it. D11 users have no
+  // picture field, so D7's player artwork step has nothing to read.
+  $character = $room && $comment->hasField('field_comment_character') ? $comment->get('field_comment_character')->entity : NULL;
+  $character = Character::isSheet($character) ? $character : NULL;
+  $artwork = $comment->hasField('field_artwork') ? $comment->get('field_artwork')->entity : NULL;
+  $file = ($artwork && $artwork->hasField('field_artwork_image')) ? $artwork->get('field_artwork_image')->entity : NULL;
+  if (!$file && $character && $character->hasField('field_artwork_image')) {
+    $file = $character->get('field_artwork_image')->entity;
+  }
+  $author = $comment->getOwner();
+  $alt = $character
+    ? t('Charisma: @char', ['@char' => $comment->hasField('field_charisma') ? (string) $comment->get('field_charisma')->value : ''])
+    : t("@user's picture.", ['@user' => $author->getAccountName()]);
+  // D7 drew pictures with the user_picture_style image style (thumbnail);
+  // the logo is a module file, which D7 showed unstyled.
+  $picture = $file
+    ? ['#theme' => 'image_style', '#style_name' => 'thumbnail', '#uri' => $file->getFileUri(), '#alt' => $alt, '#title' => $alt]
+    : ['#theme' => 'image', '#uri' => \Drupal::service('extension.list.module')->getPath('vaxia_chat') . '/images/vaxialogo.gif', '#alt' => $alt, '#title' => $alt];
+  $variables['user_picture'] = $character
+    ? ['#type' => 'link', '#title' => $picture, '#url' => $character->toUrl(), '#attributes' => ['target' => '_blank']]
+    : $picture;
+  if (!$room) {
+    return;
+  }
+  $variables['attributes']['class'][] = 'rpg-chat-post';
+  if ($comment->hasField('field_comment_narrative') && $comment->get('field_comment_narrative')->value) {
+    $variables['attributes']['class'][] = 'rpg-chat-narrative';
+  }
+  // D7's zebra (first post odd) and viewer classes, which display
+  // preferences style; chat posts are not render cached.
+  static $count = 0;
+  $count++;
+  $variables['attributes']['class'][] = $count % 2 ? 'odd' : 'even';
+  $viewer = \Drupal::currentUser();
+  if ($viewer->isAuthenticated() && (int) $comment->getOwnerId() === (int) $viewer->id()) {
+    $variables['attributes']['class'][] = 'comment-by-viewer';
+  }
+  $variables['comment_background_color'] = $variables['elements']['#vaxia_chat_background'] ?? '';
+  // The author column: player and date, or the character (described in its
+  // link title), its content permissions and the player.
+  if (!$character) {
+    $variables['submitted'] = [
+      '#type' => 'inline_template',
+      '#template' => '{{ author }} <br> {{ created }}',
+      '#context' => ['author' => $variables['author'], 'created' => $variables['created']],
+    ];
+    return;
+  }
+  $value = function ($entity, string $field) {
+    return ($entity->hasField($field) && !$entity->get($field)->isEmpty()) ? (string) $entity->get($field)->value : '';
+  };
+  $permissions = [];
+  // Shown to staff who may see them and the owner, not for storyhost
+  // characters or NPCs.
+  if (($viewer->hasPermission('view character permissions') || (int) $character->getOwnerId() === (int) $viewer->id())
+    && !Character::isStoryteller($character) && !Character::isNpc($character)) {
+    $limits = [];
+    foreach ($character->hasField('field_content_limits') ? $character->get('field_content_limits') : [] as $item) {
+      $limits[] = (int) $item->target_id;
+    }
+    $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties(['vid' => 'character_limits']);
+    ksort($terms);
+    foreach ($terms as $tid => $term) {
+      $ok = in_array((int) $tid, $limits, TRUE);
+      $label = $ok ? t('OK for @perm', ['@perm' => $term->label()]) : t('NOT ok for @perm', ['@perm' => $term->label()]);
+      $permissions[] = [
+        '#type' => 'html_tag',
+        '#tag' => 'span',
+        '#value' => $ok ? t('OK for @perm.', ['@perm' => $term->label()]) : t('NOT ok @perm.', ['@perm' => $term->label()]),
+        '#attributes' => [
+          'class' => ['char-perm-button', $ok ? 'char-perm-button-yes' : 'char-perm-button-no', 'char-perm-button-' . $tid],
+          'style' => 'color:transparent !important;height: 20px;width: 20px;float:left;',
+          'title' => $label,
+        ],
+      ];
+    }
+  }
+  $description = $value($comment, 'field_description');
+  $variables['submitted'] = [
+    '#type' => 'inline_template',
+    '#template' => '<span class="rpgchat-character-name"><a href="{{ url }}" title="{{ desc }}">{{ name }}</a></span>{% if perms %}<span class="rpgchat-character-perms">{{ perms }}</span>{% endif %}<span class="rpgchat-user-name">(<a href="{{ user_url }}">{{ user }}</a>)</span> {{ created }}',
+    '#context' => [
+      'url' => $character->toUrl()->toString(),
+      'desc' => mb_strlen($description) > 595 ? mb_substr($description, 0, 600) . '...' : $description,
+      'name' => trim($value($character, 'field_titles') . ' ' . $character->label() . ' ' . $value($character, 'field_last_name')),
+      'perms' => $permissions,
+      'user_url' => $author->toUrl()->toString(),
+      'user' => $author->getAccountName(),
+      'created' => $variables['created'],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave() for comments: keep the character's
+ * description and charisma as they were when posting.
+ */
+function vaxia_chat_comment_presave(CommentInterface $comment) {
+  if (!Room::isRoom($comment->getCommentedEntity()) || !$comment->hasField('field_comment_character')) {
+    return;
+  }
+  $character = $comment->get('field_comment_character')->entity;
+  if (Character::isSheet($character)) {
+    foreach (['field_description', 'field_charisma'] as $field) {
+      if ($comment->hasField($field) && $character->hasField($field)) {
+        $comment->set($field, $character->get($field)->getValue());
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view() for comments: post colours.
+ */
+function vaxia_chat_comment_view(array &$build, CommentInterface $comment, EntityViewDisplayInterface $display, $view_mode) {
+  if (!Room::isRoom($comment->getCommentedEntity())) {
+    return;
+  }
+  $author = $comment->getOwner();
+  $character = $comment->hasField('field_comment_character') ? $comment->get('field_comment_character')->entity : NULL;
+  $value = function ($entity, string $field) {
+    return ($entity && $entity->hasField($field) && !$entity->get($field)->isEmpty()) ? (string) $entity->get($field)->value : '';
+  };
+  // Text colour: the post's, else the character's, else the player's.
+  $color = $value($comment, 'field_comment_color') ?: (Character::isSheet($character) ? $value($character, 'field_post_color') : '') ?: $value($author, 'field_comment_color') ?: '111111';
+  $background = $value($comment, 'field_background_color') ?: (Character::isSheet($character) ? $value($character, 'field_background_color') : '') ?: $value($author, 'field_background_color') ?: '555555';
+  if (isset($build['comment_body'])) {
+    $build['comment_body']['#prefix'] = Markup::create('<span style="color:' . Room::color($color) . '">');
+    $build['comment_body']['#suffix'] = Markup::create('</span>');
+  }
+  // On the article, as D7's comment template did (see the preprocess).
+  $build['#vaxia_chat_background'] = Room::color($background);
+  // Zebra classes and the viewer's character permissions vary per page and
+  // viewer; D7 did not cache posts.
+  $build['#cache']['max-age'] = 0;
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for comment forms: the chat post
+ * form.
+ */
+function vaxia_chat_form_comment_form_alter(&$form, FormStateInterface $form_state) {
+  $comment = $form_state->getFormObject()->getEntity();
+  $room = $comment->getCommentedEntity();
+  if (!Room::isRoom($room)) {
+    return;
+  }
+  $account = \Drupal::currentUser();
+  $limbo = Character::isLimbo($room);
+
+  // Refresh: reloads the posts without submitting the form.
+  $form['actions']['refresh_chat'] = [
+    '#type' => 'submit',
+    '#value' => t('Refresh'),
+    '#submit' => [],
+    '#limit_validation_errors' => [],
+    '#ajax' => [
+      'url' => Url::fromRoute('vaxia_chat.refresh', ['nid' => $room->id()]),
+      'wrapper' => 'rpg-chat-wrapper',
+      'method' => 'replaceWith',
+      'event' => 'click',
+    ],
+    '#weight' => -11,
+  ];
+  $form['actions']['submit']['#value'] = t('Post');
+  // New posts get Filtered HTML only (field setting), but migrated posts are
+  // stored as plain_text (249k) or wiki: an edit keeps the post's own format
+  // available, or the form fails with "Text format field is required".
+  $own_format = $form_state->getFormObject()->getEntity()->get('comment_body')->format;
+  if ($own_format && isset($form['comment_body']['widget'][0]['#allowed_formats']) && !in_array($own_format, $form['comment_body']['widget'][0]['#allowed_formats'], TRUE)) {
+    $form['comment_body']['widget'][0]['#allowed_formats'][] = $own_format;
+  }
+  if (isset($form['actions']['preview'])) {
+    $form['actions']['preview']['#access'] = FALSE;
+  }
+  // Refresh and Post above the post box too, as D7 did (user, 2026-11-25).
+  // rpg_chat.js puts the second Pause button before #edit-0, the top Refresh
+  // (D7's array_unshift gave it that id).
+  $form['top_refresh'] = ['#weight' => -101, '#id' => 'edit-0'] + $form['actions']['refresh_chat'];
+  // Both say op=Post; FormBuilder takes the first match in array order (not
+  // weight), the bottom button, so the handlers other modules add to it later
+  // (dice, items, kxp) run whichever one is clicked.
+  $form['top_post'] = ['#weight' => -100] + $form['actions']['submit'];
+
+  // Characters: own playable ones and NPCs; "- None -" only in limbo rooms.
+  if (isset($form['field_comment_character']['widget'])) {
+    $widget = &$form['field_comment_character']['widget'];
+    $options = Character::postableOptions((int) $account->id(), $room);
+    // Editing someone else's post keeps its character selectable.
+    if (!$comment->isNew() && ($current = $comment->get('field_comment_character')->entity)) {
+      $known = FALSE;
+      foreach ($options as $group) {
+        $known = $known || isset($group[$current->id()]);
+      }
+      if (!$known) {
+        $options['Characters'][$current->id()] = $current->label();
+      }
+    }
+    $widget['#options'] = ($limbo ? ['_none' => t('- None -')] : []) + $options;
+    $widget['#empty_option'] = NULL;
+    if ($comment->isNew()) {
+      $last = Character::lastPosted((int) $account->id());
+      $allowed = [];
+      foreach ($options as $group) {
+        $allowed += $group;
+      }
+      if ($last && isset($allowed[$last])) {
+        $widget['#default_value'] = [$last];
+        $xp = \Drupal::service('vaxia_core.xp');
+        $widget['#description'] = $xp->get($last, 'kxp') . ' / 70 KXP, ' . ($xp->get($last, 'xp') - $xp->get($last, 'spent_xp')) . ' XP';
+      }
+    }
+    unset($widget);
+  }
+  // Copied from the character on save, not typed in.
+  foreach (['field_description', 'field_charisma'] as $field) {
+    if (isset($form[$field])) {
+      $form[$field]['#access'] = FALSE;
+    }
+  }
+  // Artwork: the poster's own approved art, as an image picker (D7
+  // select_image widget).
+  if (isset($form['field_artwork']['widget'])) {
+    $storage = \Drupal::entityTypeManager()->getStorage('node');
+    $art = [];
+    foreach ($storage->loadMultiple($storage->getQuery()->accessCheck(FALSE)->condition('type', 'artwork')->condition('uid', $account->id())->condition('status', 1)->sort('title')->execute()) as $node) {
+      if (Character::state($node) === 'art_evaluation_approved') {
+        $art[$node->id()] = $node->label();
+        // The picture beside the post box (dice_helper.js).
+        $file = $node->hasField('field_artwork_image') ? $node->get('field_artwork_image')->entity : NULL;
+        if ($file) {
+          $form['#attached']['drupalSettings']['vaxiaArtwork'][$node->id()] = \Drupal\image\Entity\ImageStyle::load('thumbnail')->buildUrl($file->getFileUri());
+        }
+      }
+    }
+    $form['field_artwork']['widget']['#options'] = ['_none' => t('- None -')] + $art;
+    $form['field_artwork']['widget']['#attributes']['class'][] = 'form-select-image';
+    $form['#attached']['library'][] = 'vaxia_chat/select_image';
+  }
+  if (isset($form['field_comment_narrative']) && (!$account->hasPermission('post in narrative format') || $limbo)) {
+    $form['field_comment_narrative']['#access'] = FALSE;
+  }
+  $form['actions']['submit']['#submit'][] = 'vaxia_chat_post_submit';
+  Room::markPresent((int) $room->id());
+}
+
+/**
+ * After a post saves: remember the character, award KXP (in-character rooms,
+ * new posts only), and go back to the room.
+ */
+function vaxia_chat_post_submit(array $form, FormStateInterface $form_state) {
+  $comment = $form_state->getFormObject()->getEntity();
+  $room = $comment->getCommentedEntity();
+  $account = \Drupal::currentUser();
+  $character = $comment->hasField('field_comment_character') ? $comment->get('field_comment_character')->entity : NULL;
+  // New posts only: staff editing someone's post keep their own last
+  // character (review, 2026-11-26).
+  if (!empty($form_state->get('vaxia_chat_new_post'))) {
+    Character::setLastPosted((int) $account->id(), $character ? (int) $character->id() : NULL);
+  }
+  $form_state->setRedirectUrl($room->toUrl());
+  if (Character::isLimbo($room) || !$character) {
+    return;
+  }
+  if (empty($form_state->get('vaxia_chat_new_post'))) {
+    \Drupal::messenger()->addStatus('Editing an existing comment - no kxp will be awarded.');
+    return;
+  }
+  $text = (string) $comment->get('comment_body')->value;
+  if ($text === '') {
+    return;
+  }
+  // Posting as an NPC earns the storyhost character the KXP.
+  if (Character::isNpc($character) && ($sh = Character::storyhostCharacter((int) $account->id()))) {
+    $character = $sh;
+  }
+  if (Character::isSheet($character)) {
+    $xp = \Drupal::service('vaxia_core.xp');
+    $xp->award((int) $character->id(), $xp->kxpFor($text), 'kxp');
+  }
+}
+
+/**
+ * Implements hook_form_alter(): marks whether the post form is for a new post
+ * (the entity has an id after saving, so check before).
+ */
+function vaxia_chat_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if (strpos($form_id, 'comment_') === 0 && $form_state->getFormObject() instanceof \Drupal\comment\CommentForm) {
+    $form_state->set('vaxia_chat_new_post', $form_state->getFormObject()->getEntity()->isNew());
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for content type forms: the chat switch.
+ */
+function vaxia_chat_form_node_type_form_alter(&$form, FormStateInterface $form_state) {
+  $type = $form_state->getFormObject()->getEntity();
+  $form['rpg_chat_settings'] = [
+    '#type' => 'details',
+    '#title' => t('RPG chat settings'),
+    '#group' => 'additional_settings',
+  ];
+  $form['rpg_chat_settings']['rpg_chat'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Enable RPG chat?'),
+    '#default_value' => $type->id() && Room::isChatType($type->id()),
+    '#description' => t('Enable this checkbox if you want to provide a RPG chat UI for your users with this content type.'),
+    '#parents' => ['rpg_chat'],
+  ];
+  $form['actions']['submit']['#submit'][] = 'vaxia_chat_node_type_submit';
+}
+
+function vaxia_chat_node_type_submit(array $form, FormStateInterface $form_state) {
+  $type = $form_state->getFormObject()->getEntity()->id();
+  $config = \Drupal::configFactory()->getEditable('vaxia_chat.settings');
+  $types = array_values(array_diff($config->get('rpg_chat_types') ?: [], [$type]));
+  if ($form_state->getValue('rpg_chat')) {
+    $types[] = $type;
+  }
+  $config->set('rpg_chat_types', $types)->save();
+  \Drupal::entityTypeManager()->getAccessControlHandler('node')->resetCache();
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for node forms: rooms show their
+ * chat settings group.
+ */
+function vaxia_chat_form_node_form_alter(&$form, FormStateInterface $form_state) {
+  $node = $form_state->getFormObject()->getEntity();
+  $account = \Drupal::currentUser();
+  // A personal room's player sees only the fields set in Personal rooms.
+  if (!$node->isNew() && \Drupal\vaxia_chat\PersonalRooms::editsAsOwner($node, $account) && !\Drupal\vaxia_chat\PersonalRooms::normalEditAccess($node, $account)) {
+    $edit = \Drupal\vaxia_chat\PersonalRooms::fieldList('personal_rooms_fields_edit');
+    $view = \Drupal\vaxia_chat\PersonalRooms::fieldList('personal_rooms_fields_view');
+    foreach ($form as $key => &$element) {
+      if (!is_array($element) || !(strpos($key, 'field_') === 0 || $key === 'title')) {
+        continue;
+      }
+      if (in_array($key, $view, TRUE)) {
+        $element['#disabled'] = TRUE;
+      }
+      elseif (!in_array($key, $edit, TRUE)) {
+        $element['#access'] = FALSE;
+      }
+    }
+    unset($element);
+  }
+  if (Room::isRoom($node)) {
+    $form['rpg_chat'] = [
+      '#type' => 'details',
+      '#title' => t('RPG chat settings'),
+      '#description' => t('Configure RPG chat settings'),
+      '#group' => 'advanced',
+    ];
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert() / update() for comments: every saved
+ * version of a chat post is kept (decided: posts stay comments, with this
+ * edit history; D7 comment_revisions forced a revision on each edit).
+ */
+function vaxia_chat_comment_insert(CommentInterface $comment) {
+  if (!Room::isRoom($comment->getCommentedEntity())) {
+    return;
+  }
+  \Drupal::database()->insert('vaxia_chat_post_revision')->fields([
+    'cid' => $comment->id(),
+    'uid' => \Drupal::currentUser()->id() ?: $comment->getOwnerId(),
+    'timestamp' => \Drupal::time()->getRequestTime(),
+    'subject' => mb_substr((string) $comment->getSubject(), 0, 64),
+    'body' => (string) $comment->get('comment_body')->value,
+    'format' => (string) $comment->get('comment_body')->format,
+  ])->execute();
+}
+
+function vaxia_chat_comment_update(CommentInterface $comment) {
+  vaxia_chat_comment_insert($comment);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete() for comments.
+ */
+function vaxia_chat_comment_delete(CommentInterface $comment) {
+  \Drupal::database()->delete('vaxia_chat_post_revision')->condition('cid', $comment->id())->execute();
+}
+
+/**
+ * Archives on cron, once a day, when enabled (D7 archives had this switched
+ * off in code; the setting now works).
+ */
+function vaxia_chat_archives_cron() {
+  if (\Drupal::config('vaxia_chat.settings')->get('archives_cron') && \Drupal::state()->get('vaxia_chat.archives_crontime', 0) < strtotime('-1 day')) {
+    \Drupal::state()->set('vaxia_chat.archives_crontime', time());
+    \Drupal\vaxia_chat\Archives::archiveAll();
+  }
+}
+
+/**
+ * Implements hook_entity_type_alter(): permalinks to chat posts open the page
+ * that shows them under the rooms' newest-first order.
+ */
+function vaxia_chat_entity_type_alter(array &$entity_types) {
+  if (isset($entity_types['comment'])) {
+    $entity_types['comment']->setStorageClass('Drupal\vaxia_chat\RoomCommentStorage');
+  }
+}
+
+/**
+ * Implements hook_query_TAG_alter() for comment_filter: chat rooms list their
+ * newest posts first (D7 comment_goodness, comment_default_sorting = newer
+ * first for rpg_chatroom, ordered by cid as production's patch did).
+ */
+function vaxia_chat_query_comment_filter_alter(\Drupal\Core\Database\Query\AlterableInterface $query) {
+  $entity = $query->getMetaData('entity');
+  if (!$entity instanceof NodeInterface || !Room::isRoom($entity)) {
+    return;
+  }
+  $order = &$query->getOrderBy();
+  // Only the list itself (the count query has no ordering).
+  if (!isset($order['torder']) && !isset($order['c.cid']) && !isset($order['c.thread'])) {
+    return;
+  }
+  $expressions = &$query->getExpressions();
+  // Threaded lists sort on an expression; flat ones on c.cid.
+  unset($order['torder'], $expressions['torder'], $order['c.thread'], $order['c.cid']);
+  $order['c.cid'] = 'DESC';
+}
+
+/**
+ * Implements hook_node_links_alter(): no "Add new comment" link in chat rooms;
+ * the post form is on the room page (its Post button posts), and the link
+ * only opened a bare comment form elsewhere. D7 rooms didn't show it.
+ */
+function vaxia_chat_node_links_alter(array &$links, NodeInterface $node, array &$context) {
+  if (!Room::isRoom($node)) {
+    return;
+  }
+  foreach ($links as $key => $group) {
+    if (str_starts_with($key, 'comment__') && isset($links[$key]['#links']['comment-add'])) {
+      unset($links[$key]['#links']['comment-add']);
+    }
+  }
+}

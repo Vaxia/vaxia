@@ -1,0 +1,13 @@
+uuid: 76732ff7-96b9-4777-866e-c645b05bf970
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.wiki_workflow
+id: wiki_workflow_open
+label: open
+weight: 0
+module: workflow
+wid: wiki_workflow
+sysid: 0
+single_state_widget: ''

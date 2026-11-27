@@ -1,0 +1,16 @@
+uuid: b51b3b61-602b-4332-b80a-d23c8b35abc6
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    parent: 'main:'
+name: 'Wiki page'
+type: wiki_page
+description: 'A page in the wiki'
+help: null
+new_revision: true
+preview_mode: 1
+display_submitted: false

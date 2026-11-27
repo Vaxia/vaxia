@@ -1,0 +1,21 @@
+uuid: 9a947450-9489-44d5-ae68-f7dc35358e12
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_notation_approval
+    - node.type.notation
+  module:
+    - workflow
+id: node.notation.field_notation_approval
+field_name: field_notation_approval
+entity_type: node
+bundle: notation
+label: 'Notation approval'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: workflow

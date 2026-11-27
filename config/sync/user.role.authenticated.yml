@@ -1,0 +1,68 @@
+uuid: 93d68463-4448-473b-ae52-078460a82ab6
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.filtered_html
+    - filter.format.webform_default
+    - filter.format.wiki
+    - node.type.character_sheet
+    - workflow.workflow.art_evaluation
+    - workflow.workflow.character_evaluation
+    - workflow.workflow.event_status
+    - workflow.workflow.item_evaluation
+    - workflow.workflow.notation_approval
+    - workflow.workflow.scene_evaluation
+    - workflow.workflow.wiki_workflow
+  module:
+    - comment
+    - filter
+    - node
+    - privatemsg
+    - system
+    - vaxia_chat
+    - vaxia_dice
+    - vaxia_favorites
+    - vaxia_items
+    - workflow
+_core:
+  default_config_hash: dJ0L2DNSj5q6XVZAGsuVDpJTh5UeYkIPwKrUOOpr8YI
+id: authenticated
+label: 'authenticated user'
+weight: 1
+is_admin: false
+permissions:
+  - 'access comments'
+  - 'access content'
+  - 'access own art_evaluation workflow_transion overview'
+  - 'access own character_evaluation workflow_transion overview'
+  - 'access own event_status workflow_transion overview'
+  - 'access own item_evaluation workflow_transion overview'
+  - 'access own scene_evaluation workflow_transion overview'
+  - 'access user profiles'
+  - 'create art_evaluation workflow_transition'
+  - 'create character_evaluation workflow_transition'
+  - 'create character_sheet content'
+  - 'create event_status workflow_transition'
+  - 'create item_evaluation workflow_transition'
+  - 'create notation_approval workflow_transition'
+  - 'create scene_evaluation workflow_transition'
+  - 'create wiki_workflow workflow_transition'
+  - 'edit own character_sheet content'
+  - 'manage own favorites'
+  - 'post comments'
+  - 'privatemsg write messages'
+  - 'search old archives'
+  - 'sellback item shop'
+  - 'skip comment approval'
+  - 'use background changer'
+  - 'use dice helper'
+  - 'use dice roller'
+  - 'use dice ruler'
+  - 'use item shop'
+  - 'use text format filtered_html'
+  - 'use text format webform_default'
+  - 'use text format wiki'
+  - 'view comment revisions'
+  - 'view dice rolls'
+  - 'view rpg chat'

@@ -1,0 +1,36 @@
+uuid: 09011948-88ef-47e9-9453-dc291f0e5ac0
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.application.body
+    - field.field.node.application.comment_node_application
+    - field.field.node.application.field_applied_role_id
+    - field.field.node.application.webform
+    - node.type.application
+  module:
+    - text
+    - user
+id: node.application.teaser
+targetEntityType: node
+bundle: application
+mode: teaser
+content:
+  body:
+    type: text_summary_or_trimmed
+    label: hidden
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  comment_node_application: true
+  field_applied_role_id: true
+  webform: true

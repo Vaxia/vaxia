@@ -1,0 +1,25 @@
+uuid: 1a7516ce-b0b0-4258-9cbf-5f5145100d8f
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.forum
+    - workflow.workflow.character_evaluation
+  module:
+    - comment
+    - node
+    - vaxia_chat
+    - workflow
+id: new_account
+label: 'new account'
+weight: 30
+is_admin: false
+permissions:
+  - 'access user profiles'
+  - 'create character_evaluation workflow_transition'
+  - 'create forum content'
+  - 'edit own forum content'
+  - 'post comments'
+  - 'skip comment approval'
+  - 'view comment revisions'
+  - 'view vaxia ic chat'

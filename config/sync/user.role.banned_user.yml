@@ -1,0 +1,14 @@
+uuid: 51fe65dd-dad1-4576-b580-ac78c2485cea
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.character_evaluation
+  module:
+    - workflow
+id: banned_user
+label: 'banned user'
+weight: 25
+is_admin: false
+permissions:
+  - 'create character_evaluation workflow_transition'

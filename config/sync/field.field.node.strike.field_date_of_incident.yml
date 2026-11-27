@@ -1,0 +1,21 @@
+uuid: a15c93dc-d5b3-4b77-82ad-576aa922489e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_date_of_incident
+    - node.type.strike
+  module:
+    - datetime
+id: node.strike.field_date_of_incident
+field_name: field_date_of_incident
+entity_type: node
+bundle: strike
+label: 'Date of Incident'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

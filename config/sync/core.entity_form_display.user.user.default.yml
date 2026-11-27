@@ -1,0 +1,279 @@
+uuid: 773ef63b-92fb-45dd-9e0d-54f76c3b64d1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.user.user.field_age_requirement
+    - field.field.user.user.field_background_color
+    - field.field.user.user.field_banned_ip
+    - field.field.user.user.field_banned_until
+    - field.field.user.user.field_became_evaluator
+    - field.field.user.user.field_became_sh
+    - field.field.user.user.field_characters_minmax
+    - field.field.user.user.field_characters_submitted
+    - field.field.user.user.field_comment_color
+    - field.field.user.user.field_donated
+    - field.field.user.user.field_last_ip
+    - field.field.user.user.field_latitude
+    - field.field.user.user.field_longitude
+    - field.field.user.user.field_mature
+    - field.field.user.user.field_powers_expire
+    - field.field.user.user.field_reason_for_ban
+    - field.field.user.user.field_staff_setting_lead
+    - field.field.user.user.field_staff_social_lead
+    - field.field.user.user.field_staff_system_lead
+    - field.field.user.user.field_storyhost_character
+    - field.field.user.user.field_terms_and_conditions
+    - field.field.user.user.field_took_ash1
+    - field.field.user.user.field_took_ash2
+    - field.field.user.user.field_took_ash3
+    - field.field.user.user.field_took_eval_test
+    - field.field.user.user.field_took_setting_walkthrough
+    - field.field.user.user.field_took_social_walkthrough
+    - field.field.user.user.field_took_system_walkthrough
+    - field.field.user.user.field_xp_over_time
+    - field.field.user.user.user_picture
+    - image.style.thumbnail
+  module:
+    - datetime
+    - image
+    - user
+id: user.user.default
+targetEntityType: user
+bundle: user
+mode: default
+content:
+  account:
+    weight: -10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  contact:
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_age_requirement:
+    type: boolean_checkbox
+    weight: 24
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_background_color:
+    type: options_select
+    weight: 32
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_banned_ip:
+    type: string_textfield
+    weight: 19
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_banned_until:
+    type: datetime_default
+    weight: 17
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_became_evaluator:
+    type: datetime_default
+    weight: 14
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_became_sh:
+    type: datetime_default
+    weight: 15
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_characters_minmax:
+    type: number
+    weight: 29
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_characters_submitted:
+    type: number
+    weight: 28
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_comment_color:
+    type: string_textfield
+    weight: 31
+    region: content
+    settings:
+      size: 6
+      placeholder: ''
+    third_party_settings: {  }
+  field_donated:
+    type: number
+    weight: 26
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_last_ip:
+    type: string_textfield
+    weight: 18
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_latitude:
+    type: string_textfield
+    weight: 21
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_longitude:
+    type: string_textfield
+    weight: 22
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_mature:
+    type: boolean_checkbox
+    weight: 23
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_powers_expire:
+    type: datetime_default
+    weight: 16
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_reason_for_ban:
+    type: string_textarea
+    weight: 20
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_staff_setting_lead:
+    type: boolean_checkbox
+    weight: 34
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_staff_social_lead:
+    type: boolean_checkbox
+    weight: 35
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_staff_system_lead:
+    type: boolean_checkbox
+    weight: 36
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_storyhost_character:
+    type: entity_reference_autocomplete_tags
+    weight: 30
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_terms_and_conditions:
+    type: boolean_checkbox
+    weight: 25
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_took_ash1:
+    type: datetime_default
+    weight: 7
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_took_ash2:
+    type: datetime_default
+    weight: 8
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_took_ash3:
+    type: datetime_default
+    weight: 9
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_took_eval_test:
+    type: datetime_default
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_took_setting_walkthrough:
+    type: datetime_default
+    weight: 11
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_took_social_walkthrough:
+    type: datetime_default
+    weight: 12
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_took_system_walkthrough:
+    type: datetime_default
+    weight: 13
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_xp_over_time:
+    type: number
+    weight: 27
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  language:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  privatemsg:
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  timezone:
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  user_picture:
+    type: image_image
+    weight: 33
+    region: content
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+hidden: {  }

@@ -1,0 +1,19 @@
+uuid: 001ae9c8-cf5d-4ae4-b200-cfcb4d35a360
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_post_color
+    - node.type.character_sheet
+id: node.character_sheet.field_post_color
+field_name: field_post_color
+entity_type: node
+bundle: character_sheet
+label: 'Default Post Color #'
+description: "Enter as a hex value such as \"001100\" or text such as \"red\".\r\n<br><br>"
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

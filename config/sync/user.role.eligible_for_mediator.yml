@@ -1,0 +1,14 @@
+uuid: 4d87b4c5-2f39-40c8-aa06-0b441bb0652c
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.character_evaluation
+  module:
+    - workflow
+id: eligible_for_mediator
+label: 'eligible for mediator'
+weight: 34
+is_admin: false
+permissions:
+  - 'create character_evaluation workflow_transition'

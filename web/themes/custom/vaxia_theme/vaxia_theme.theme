@@ -1,0 +1,83 @@
+<?php
+
+/**
+ * @file
+ * Vaxia theme hooks (D7 vaxia_theme template.php and templates).
+ */
+
+/**
+ * Implements hook_preprocess_HOOK() for fields: D7 class names alongside
+ * D11's (field-name-body next to field--name-body), so the site's CSS keeps
+ * working; zero values on items are hidden, as D7's field template did.
+ */
+function vaxia_theme_preprocess_field(array &$variables) {
+  $name = str_replace('_', '-', $variables['field_name']);
+  $variables['attributes']['class'][] = 'vaxia-theme';
+  $variables['attributes']['class'][] = 'field-name-' . $name;
+  $variables['attributes']['class'][] = 'field-type-' . str_replace('_', '-', $variables['field_type']);
+  $variables['vaxia_hidden'] = FALSE;
+  if ($variables['entity_type'] === 'node' && ($variables['element']['#bundle'] ?? '') === 'items') {
+    foreach ($variables['items'] as $item) {
+      $markup = (string) ($item['content']['#markup'] ?? '');
+      if ($markup === '0') {
+        $variables['vaxia_hidden'] = TRUE;
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for nodes: D7 classes, and a realm class
+ * on character sheets: the realm's name in lower case with dashes
+ * (realm-fantasy, realm-science-fiction), realm-storyhost without one.
+ */
+function vaxia_theme_preprocess_node(array &$variables) {
+  $node = $variables['node'];
+  $variables['attributes']['class'][] = 'vaxia-theme';
+  $variables['attributes']['class'][] = 'node-' . str_replace('_', '-', $node->bundle());
+  if ($node->bundle() === 'character_sheet') {
+    $realm = $node->hasField('field_tag_realm') ? $node->get('field_tag_realm')->entity : NULL;
+    $variables['attributes']['class'][] = 'realm-' . ($realm ? trim(preg_replace('/[^a-z0-9]+/', '-', strtolower($realm->label())), '-') : 'storyhost');
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for comments: chat posts keep the
+ * background colour vaxia_chat picked (post, character, then player), and the
+ * permalink carries D7's class.
+ */
+function vaxia_theme_preprocess_comment(array &$variables) {
+  $variables['comment_background_color'] = $variables['comment_background_color'] ?? '';
+  $variables['attributes']['class'][] = 'vaxia-theme';
+  $comment = $variables['elements']['#comment'];
+  if (!$comment->isNew()) {
+    $uri = $comment->permalink();
+    $uri->setOption('attributes', ['class' => ['permalink'], 'rel' => 'bookmark']);
+    $variables['permalink'] = \Drupal\Core\Link::fromTextAndUrl(t('Permalink'), $uri)->toString();
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter() for field--comment: chat
+ * rooms show the post form above the posts (D7 comment-wrapper.tpl.php),
+ * forums below.
+ */
+function vaxia_theme_preprocess_field__comment(array &$variables) {
+  $node = $variables['element']['#object'] ?? NULL;
+  $variables['form_first'] = $node && $node->bundle() !== 'forum';
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for html: Zen's body classes, which the
+ * site's CSS and chat scripts target (node-type-rpg-chatroom, sidebar-first,
+ * two-sidebars, no-sidebars).
+ */
+function vaxia_theme_preprocess_html(array &$variables) {
+  $node = \Drupal::routeMatch()->getParameter('node');
+  if ($node instanceof \Drupal\node\NodeInterface) {
+    $variables['attributes']['class'][] = 'node-type-' . str_replace('_', '-', $node->bundle());
+  }
+  $first = !empty($variables['page']['sidebar_first']);
+  $second = !empty($variables['page']['sidebar_second']);
+  $variables['attributes']['class'][] = $first && $second ? 'two-sidebars' : ($first ? 'sidebar-first' : ($second ? 'sidebar-second' : 'no-sidebars'));
+}

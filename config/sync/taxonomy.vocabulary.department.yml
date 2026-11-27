@@ -1,0 +1,9 @@
+uuid: 88f437c5-30ce-40aa-b56e-ce1cab218070
+langcode: en
+status: true
+dependencies: {  }
+name: Department
+vid: department
+description: 'Select a department for this article.'
+weight: -6
+new_revision: false

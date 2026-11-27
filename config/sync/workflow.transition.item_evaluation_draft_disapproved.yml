@@ -1,0 +1,14 @@
+uuid: 4e360543-f1b3-40f1-9a8b-9f487eefb783
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.item_evaluation_disapproved
+    - workflow.state.item_evaluation_draft
+id: item_evaluation_draft_disapproved
+label: null
+module: workflow
+from_sid: item_evaluation_draft
+to_sid: item_evaluation_disapproved
+roles:
+  administrator: administrator

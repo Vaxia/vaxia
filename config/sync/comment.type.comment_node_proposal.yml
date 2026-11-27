@@ -1,0 +1,8 @@
+uuid: 2d1b953d-f046-4f7d-85bf-17c69a6c31df
+langcode: en
+status: true
+dependencies: {  }
+id: comment_node_proposal
+label: 'Proposal comment'
+target_entity_type_id: node
+description: null

@@ -1,0 +1,8 @@
+uuid: 26866ce3-9dbc-46dc-9368-e4cb8c168b87
+langcode: en
+status: true
+dependencies: {  }
+id: character_evaluation
+label: 'Character evaluation'
+module: workflow
+options: {  }

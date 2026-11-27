@@ -1,0 +1,16 @@
+uuid: fb554979-78d5-4d04-afa9-289bc9507cbe
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.character_evaluation
+  module:
+    - vaxia_dice
+    - workflow
+id: storyteller_expired
+label: storyteller-expired
+weight: 21
+is_admin: false
+permissions:
+  - 'create character_evaluation workflow_transition'
+  - 'use dice helper'

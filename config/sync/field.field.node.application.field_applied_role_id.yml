@@ -1,0 +1,19 @@
+uuid: 7d1e4873-3ef8-4490-8091-c54965df3f4d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_applied_role_id
+    - node.type.application
+id: node.application.field_applied_role_id
+field_name: field_applied_role_id
+entity_type: node
+bundle: application
+label: 'Applied Role ID'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

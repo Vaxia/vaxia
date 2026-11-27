@@ -1,0 +1,23 @@
+uuid: c1ee2e2b-513b-471e-acb0-2534e24dd6a8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_format
+    - node.type.event
+  module:
+    - options
+id: node.event.field_format
+field_name: field_format
+entity_type: node
+bundle: event
+label: Format
+description: "What rate of play to expect for this session. Fast posts are a scheduled time where players and SH are posting constantly. Slow posts are sessions where SHs and players may post once or twice a day allowing players who aren't on the same timezone to play."
+required: true
+translatable: false
+default_value:
+  -
+    value: fast
+default_value_callback: ''
+settings: {  }
+field_type: list_string

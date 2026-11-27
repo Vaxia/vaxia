@@ -1,0 +1,8 @@
+uuid: e4229e8f-011f-40eb-813d-a89e1ea8c111
+langcode: en
+status: true
+dependencies: {  }
+id: comment_node_strike
+label: 'Strike comment'
+target_entity_type_id: node
+description: null

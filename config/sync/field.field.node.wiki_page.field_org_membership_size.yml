@@ -1,0 +1,25 @@
+uuid: 2a04404c-0b50-425a-8ee0-c08bd778a740
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_org_membership_size
+    - node.type.wiki_page
+id: node.wiki_page.field_org_membership_size
+field_name: field_org_membership_size
+entity_type: node
+bundle: wiki_page
+label: 'Membership Size'
+description: 'How powerful the membership (individual and sheer numbers) of the organization is compared to others. Past 200 strong, Setting recommends splitting the organization into two.'
+required: true
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  min: 0
+  max: 200
+  prefix: ''
+  suffix: ''
+field_type: integer

@@ -1,0 +1,31 @@
+uuid: d7cd0fb1-4fa3-4bde-8462-cd853a0dcd27
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.filtered_html
+    - filter.format.wiki
+    - workflow.workflow.character_evaluation
+  module:
+    - comment
+    - filter
+    - system
+    - vaxia_chat
+    - workflow
+_core:
+  default_config_hash: j5zLMOdJBqC0bMvSdth5UebkprJB8g_2FXHqhfpJzow
+id: anonymous
+label: 'anonymous user'
+weight: 0
+is_admin: false
+permissions:
+  - 'access comments'
+  - 'access content'
+  - 'create character_evaluation workflow_transition'
+  - 'search old archives'
+  - 'use background changer'
+  - 'use text format filtered_html'
+  - 'use text format wiki'
+  - 'view comment revisions'
+  - 'view rpg chat'
+  - 'view vaxia ic chat'

@@ -1,0 +1,15 @@
+uuid: 4099acb4-3bd5-4208-abb6-5ce42b194dab
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.notation_approval_greenie_no_strike
+    - workflow.state.notation_approval_strike_submitted
+id: notation_approval_strike_submitted_greenie_no_strike
+label: null
+module: workflow
+from_sid: notation_approval_strike_submitted
+to_sid: notation_approval_greenie_no_strike
+roles:
+  administrator: administrator
+  lead: lead

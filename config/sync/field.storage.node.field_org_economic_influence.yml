@@ -1,0 +1,20 @@
+uuid: a91e74ec-5e41-45ad-8f04-5fb8564bf580
+langcode: und
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_org_economic_influence
+field_name: field_org_economic_influence
+entity_type: node
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

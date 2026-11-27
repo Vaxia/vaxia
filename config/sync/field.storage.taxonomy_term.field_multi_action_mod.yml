@@ -1,0 +1,20 @@
+uuid: 51e9d0b4-09e7-4983-878d-1f225b9d9163
+langcode: und
+status: true
+dependencies:
+  module:
+    - taxonomy
+id: taxonomy_term.field_multi_action_mod
+field_name: field_multi_action_mod
+entity_type: taxonomy_term
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,23 @@
+uuid: a9025b19-44ef-4ab7-b5c2-4a574ca5c237
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.comment_node_rpg_chatroom
+    - field.storage.comment.field_charisma
+id: comment.comment_node_rpg_chatroom.field_charisma
+field_name: field_charisma
+entity_type: comment
+bundle: comment_node_rpg_chatroom
+label: Charisma
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

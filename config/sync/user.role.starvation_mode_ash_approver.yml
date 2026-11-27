@@ -1,0 +1,16 @@
+uuid: 060d0255-c1f5-4bbf-870c-77be59b630b0
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.character_evaluation
+  module:
+    - vaxia_storyhosts
+    - workflow
+id: starvation_mode_ash_approver
+label: starvation-mode-ash-approver
+weight: 17
+is_admin: false
+permissions:
+  - 'approve sh starvation'
+  - 'create character_evaluation workflow_transition'

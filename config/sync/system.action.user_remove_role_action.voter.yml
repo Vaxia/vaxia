@@ -1,0 +1,14 @@
+uuid: f3a7d8ca-647c-4e90-b651-91f92a50d7ea
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.voter
+  module:
+    - user
+id: user_remove_role_action.voter
+label: 'Remove the voter role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: voter

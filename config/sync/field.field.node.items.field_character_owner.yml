@@ -1,0 +1,27 @@
+uuid: 2c1ae118-a9da-4663-9743-cd4e79475ee1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_character_owner
+    - node.type.character_sheet
+    - node.type.items
+id: node.items.field_character_owner
+field_name: field_character_owner
+entity_type: node
+bundle: items
+label: 'Character owner'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      character_sheet: character_sheet
+    sort:
+      field: _none
+      direction: ASC
+field_type: entity_reference

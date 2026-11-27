@@ -1,0 +1,42 @@
+uuid: ba288ea7-10a7-4a54-9e6f-c8bc9ba3640b
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_scifi_conditions
+field_name: field_scifi_conditions
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: digital
+      label: 'Digital consciousness (an uploaded or artificial mind)'
+    -
+      value: psionic
+      label: 'Active psionic'
+    -
+      value: augmented
+      label: 'Heavy cybernetic augmentation'
+    -
+      value: clone
+      label: 'Clone degradation'
+    -
+      value: mental
+      label: 'Restricted mental disorder'
+    -
+      value: underage
+      label: 'Underage (actual age, looks, or mentality)'
+    -
+      value: other
+      label: Other
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

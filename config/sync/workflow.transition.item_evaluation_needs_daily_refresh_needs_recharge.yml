@@ -1,0 +1,14 @@
+uuid: dec4ec75-ac8d-4d0a-9f4b-8963b6f75709
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.item_evaluation_needs_daily_refresh
+    - workflow.state.item_evaluation_needs_recharge
+id: item_evaluation_needs_daily_refresh_needs_recharge
+label: null
+module: workflow
+from_sid: item_evaluation_needs_daily_refresh
+to_sid: item_evaluation_needs_recharge
+roles:
+  administrator: administrator

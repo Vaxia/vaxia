@@ -1,0 +1,9 @@
+uuid: ed0387b9-6afe-4ddf-b739-f1439bcb91e8
+langcode: en
+status: true
+dependencies: {  }
+name: 'Item type'
+vid: item_type
+description: 'Item type'
+weight: 2
+new_revision: false

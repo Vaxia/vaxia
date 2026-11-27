@@ -1,0 +1,21 @@
+uuid: 0258c13a-1610-4cd8-9c65-1821e1a3c7f4
+langcode: en
+status: true
+dependencies:
+  config:
+    - comment.type.comment_node_event
+    - field.storage.comment.field_attendance
+  module:
+    - options
+id: comment.comment_node_event.field_attendance
+field_name: field_attendance
+entity_type: comment
+bundle: comment_node_event
+label: Attendance
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

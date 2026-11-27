@@ -1,0 +1,25 @@
+uuid: 3f9d9020-fd61-473b-b14a-49e1fa39d27d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_real_age
+    - node.type.character_sheet
+id: node.character_sheet.field_real_age
+field_name: field_real_age
+entity_type: node
+bundle: character_sheet
+label: 'Real Age'
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: 18
+default_value_callback: ''
+settings:
+  min: 1
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

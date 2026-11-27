@@ -1,0 +1,14 @@
+uuid: 53893538-9f2e-4021-a791-1af0de526008
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.eligible_for_mediator
+  module:
+    - user
+id: user_remove_role_action.eligible_for_mediator
+label: 'Remove the eligible for mediator role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: eligible_for_mediator

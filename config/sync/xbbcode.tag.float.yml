@@ -1,0 +1,13 @@
+uuid: 733a4921-f952-416b-a8a7-62ccf64bf546
+langcode: en
+status: true
+dependencies: {  }
+id: float
+label: Float
+description: 'Floats text: [float=left] or [float=right].'
+name: float
+attached: {  }
+sample: '[{{ name }}=right]Right[/{{ name }}]'
+template_code: "{% if tag.option in ['left', 'right'] %}<span style=\"float:{{ tag.option }}\">{{ tag.content }}</span>{% else %}{{ tag.outerSource }}{% endif %}"
+template_file: null
+editable: false

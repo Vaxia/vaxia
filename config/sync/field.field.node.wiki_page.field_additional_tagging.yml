@@ -1,0 +1,26 @@
+uuid: 7f22959c-236a-4885-9c2c-71734539e217
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_additional_tagging
+    - node.type.wiki_page
+    - taxonomy.vocabulary.wiki_tags
+id: node.wiki_page.field_additional_tagging
+field_name: field_additional_tagging
+entity_type: node
+bundle: wiki_page
+label: Categories
+description: 'Add categories to the wiki page to help us locate information about it. Example tags include: Fantasy, Science Fiction, Horror, Setting, Social, and System...'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      wiki_tags: wiki_tags
+    sort:
+      field: _none
+field_type: entity_reference

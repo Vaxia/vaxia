@@ -1,0 +1,51 @@
+uuid: bffc7117-3632-4867-927f-a4fbf2c37fdb
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_display.comment.comment_node_quiz.default
+    - field.field.node.quiz.body
+    - field.field.node.quiz.comment_node_quiz
+    - field.field.node.quiz.webform
+    - node.type.quiz
+  module:
+    - comment
+    - text
+    - user
+    - webform
+id: node.quiz.default
+targetEntityType: node
+bundle: quiz
+mode: default
+content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  comment_node_quiz:
+    type: comment_default
+    label: hidden
+    settings:
+      view_mode: default
+      pager_id: 0
+    third_party_settings: {  }
+    weight: 20
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+  webform:
+    type: webform_entity_reference_entity_view
+    label: hidden
+    settings:
+      source_entity: true
+      lazy: false
+    third_party_settings: {  }
+    weight: 20
+    region: content
+hidden: {  }

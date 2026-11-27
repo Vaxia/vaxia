@@ -1,0 +1,18 @@
+services:
+  vaxia_core.xp:
+    class: Drupal\vaxia_core\Xp
+    arguments: ['@database', '@current_user', '@messenger', '@request_stack']
+  vaxia_core.deferred_states:
+    class: Drupal\vaxia_core\EventSubscriber\DeferredStates
+    tags:
+      - { name: event_subscriber }
+  cache_context.vaxia_display_prefs:
+    class: Drupal\vaxia_core\Cache\DisplayPrefsCacheContext
+    arguments: ['@current_user']
+    tags:
+      - { name: cache.context }
+  vaxia_core.terms_gate:
+    class: Drupal\vaxia_core\EventSubscriber\TermsGate
+    arguments: ['@current_user']
+    tags:
+      - { name: event_subscriber }

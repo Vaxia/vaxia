@@ -1,0 +1,26 @@
+uuid: f99567af-9388-4d6f-b245-c028c6504323
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_sh_public_information
+    - filter.format.filtered_html
+    - node.type.character_sheet
+  module:
+    - text
+id: node.character_sheet.field_sh_public_information
+field_name: field_sh_public_information
+entity_type: node
+bundle: character_sheet
+label: 'SH Public information'
+description: 'SH provided public information about your character.'
+required: false
+translatable: false
+default_value:
+  -
+    value: ''
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - filtered_html
+field_type: text_long

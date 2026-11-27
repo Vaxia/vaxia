@@ -1,0 +1,15 @@
+uuid: 205b0bf8-2582-451b-87de-77926a5f1ae8
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.scene_evaluation_creation
+    - workflow.state.scene_evaluation_draft
+id: scene_evaluation_creation_draft
+label: null
+module: workflow
+from_sid: scene_evaluation_creation
+to_sid: scene_evaluation_draft
+roles:
+  workflow_author: workflow_author
+  administrator: administrator

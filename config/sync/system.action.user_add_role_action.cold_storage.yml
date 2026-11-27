@@ -1,0 +1,14 @@
+uuid: 44d3a4a5-2a98-4f49-b661-00165b3b5ba6
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.cold_storage
+  module:
+    - user
+id: user_add_role_action.cold_storage
+label: 'Add the cold storage role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: cold_storage

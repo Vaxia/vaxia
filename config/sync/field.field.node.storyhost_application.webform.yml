@@ -1,0 +1,23 @@
+uuid: b73d499d-5211-45cb-bfc4-1d4c2ade79f9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.webform
+    - node.type.storyhost_application
+  module:
+    - webform
+id: node.storyhost_application.webform
+field_name: webform
+entity_type: node
+bundle: storyhost_application
+label: Webform
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:webform'
+  handler_settings: {  }
+field_type: webform

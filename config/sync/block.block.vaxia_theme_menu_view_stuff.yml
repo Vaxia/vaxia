@@ -1,0 +1,25 @@
+uuid: ef7f04ae-bdc2-4be0-a104-f6c3e5b66b71
+langcode: en
+status: true
+dependencies:
+  config:
+    - system.menu.menu-view-stuff
+  module:
+    - system
+  theme:
+    - vaxia_theme
+id: vaxia_theme_menu_view_stuff
+theme: vaxia_theme
+region: sidebar_first
+weight: -29
+provider: null
+plugin: 'system_menu_block:menu-view-stuff'
+settings:
+  id: 'system_menu_block:menu-view-stuff'
+  label: 'View Stuff'
+  label_display: visible
+  provider: system
+  level: 1
+  depth: 0
+  expand_all_items: false
+visibility: {  }

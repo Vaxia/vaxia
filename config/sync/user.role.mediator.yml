@@ -1,0 +1,25 @@
+uuid: c170fa50-7cb8-49d3-816f-1e663425c11a
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.notation
+    - workflow.workflow.character_evaluation
+    - workflow.workflow.notation_approval
+  module:
+    - node
+    - vaxia_chat
+    - vaxia_core
+    - workflow
+id: mediator
+label: mediator
+weight: 29
+is_admin: false
+permissions:
+  - 'access any notation_approval workflow_transion overview'
+  - 'create character_evaluation workflow_transition'
+  - 'create notation content'
+  - 'edit own notation content'
+  - 'view comment revisions'
+  - 'view comment revisions diffs'
+  - 'view others accounts'

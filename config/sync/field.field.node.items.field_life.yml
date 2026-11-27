@@ -1,0 +1,23 @@
+uuid: e2858dd7-06d7-4f6c-bda4-07e54019d1e0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_life
+    - node.type.items
+id: node.items.field_life
+field_name: field_life
+entity_type: node
+bundle: items
+label: Life
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

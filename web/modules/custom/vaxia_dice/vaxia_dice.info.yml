@@ -1,0 +1,8 @@
+name: VAXIA dice
+type: module
+description: 'Dice rolls on chat posts: the roll engine and roll storage (D7 dice_roller), the Vaxia stat/skill dice rows (vaxia.dice.inc), and roll display (dice_ruler).'
+package: VAXIA
+core_version_requirement: ^11
+dependencies:
+  - drupal:comment
+  - vaxia_core:vaxia_core

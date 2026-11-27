@@ -1,0 +1,16 @@
+uuid: 320fbec1-e6de-4ba0-ba8e-7df7a852d019
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.notation_approval_strike_approved
+id: notation_approval_strike_approved_strike_approved
+label: null
+module: workflow
+from_sid: notation_approval_strike_approved
+to_sid: notation_approval_strike_approved
+roles:
+  authenticated: authenticated
+  workflow_author: workflow_author
+  administrator: administrator
+  lead: lead

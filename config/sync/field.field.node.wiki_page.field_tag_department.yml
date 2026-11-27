@@ -1,0 +1,32 @@
+uuid: 854cd25b-e24c-4675-bb6b-a99288a90fc0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_tag_department
+    - node.type.wiki_page
+    - taxonomy.vocabulary.department
+  module:
+    - vaxia_core
+third_party_settings:
+  vaxia_core:
+    d7_default_ids:
+      - 984
+id: node.wiki_page.field_tag_department
+field_name: field_tag_department
+entity_type: node
+bundle: wiki_page
+label: Department
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: vaxia_core_d7_reference_default
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      department: department
+    sort:
+      field: _none
+field_type: entity_reference

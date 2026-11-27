@@ -1,0 +1,11 @@
+uuid: 8212a8ed-f245-4d56-8bc5-31eb434875b7
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.artwork
+label: artwork
+description: null
+targetEntityType: node
+cache: true

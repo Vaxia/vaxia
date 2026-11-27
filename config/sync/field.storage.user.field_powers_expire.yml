@@ -1,0 +1,20 @@
+uuid: f5130e9e-6cd0-485a-87ae-935091f4177f
+langcode: und
+status: true
+dependencies:
+  module:
+    - datetime
+    - user
+id: user.field_powers_expire
+field_name: field_powers_expire
+entity_type: user
+type: datetime
+settings:
+  datetime_type: date
+module: datetime
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

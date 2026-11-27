@@ -1,0 +1,23 @@
+uuid: 9fb9b1da-3011-4eb2-b0ea-458eed957fd5
+langcode: und
+status: true
+dependencies:
+  module:
+    - file
+    - node
+id: node.field_documentation
+field_name: field_documentation
+entity_type: node
+type: file
+settings:
+  target_type: file
+  display_field: false
+  display_default: false
+  uri_scheme: public
+module: file
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

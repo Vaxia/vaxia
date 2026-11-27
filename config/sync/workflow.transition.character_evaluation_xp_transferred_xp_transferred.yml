@@ -1,0 +1,16 @@
+uuid: a9af8644-80e9-4139-bbc7-1bc3aa462d58
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.character_evaluation_xp_transferred
+id: character_evaluation_xp_transferred_xp_transferred
+label: null
+module: workflow
+from_sid: character_evaluation_xp_transferred
+to_sid: character_evaluation_xp_transferred
+roles:
+  authenticated: authenticated
+  administrator: administrator
+  workflow_author: workflow_author
+  storyteller: storyteller

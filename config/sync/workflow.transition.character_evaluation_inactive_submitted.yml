@@ -1,0 +1,15 @@
+uuid: c26a9d5b-4742-4f5a-8d05-f97156519f4d
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.character_evaluation_inactive
+    - workflow.state.character_evaluation_submitted
+id: character_evaluation_inactive_submitted
+label: null
+module: workflow
+from_sid: character_evaluation_inactive
+to_sid: character_evaluation_submitted
+roles:
+  administrator: administrator
+  storyteller: storyteller

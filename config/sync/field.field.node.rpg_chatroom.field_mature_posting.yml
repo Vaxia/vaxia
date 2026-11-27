@@ -1,0 +1,23 @@
+uuid: 4a98a71b-5027-4350-afc0-687211ee34be
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_mature_posting
+    - node.type.rpg_chatroom
+id: node.rpg_chatroom.field_mature_posting
+field_name: field_mature_posting
+entity_type: node
+bundle: rpg_chatroom
+label: 'Mature posting'
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'Mature posts are allowed in this room.'
+  off_label: 'Mature posts are NOT allowed in this room.'
+field_type: boolean

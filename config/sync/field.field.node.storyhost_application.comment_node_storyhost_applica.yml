@@ -1,0 +1,33 @@
+uuid: a9aa0503-8e99-41a9-8e03-ed60d487a4b6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.comment_node_storyhost_applica
+    - node.type.storyhost_application
+  module:
+    - comment
+id: node.storyhost_application.comment_node_storyhost_applica
+field_name: comment_node_storyhost_applica
+entity_type: node
+bundle: storyhost_application
+label: Comments
+description: ''
+required: true
+translatable: true
+default_value:
+  -
+    status: 1
+    cid: 0
+    last_comment_timestamp: 0
+    last_comment_name: null
+    last_comment_uid: 0
+    comment_count: 0
+default_value_callback: ''
+settings:
+  default_mode: 0
+  per_page: 50
+  anonymous: 0
+  form_location: true
+  preview: 1
+field_type: comment

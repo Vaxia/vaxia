@@ -1,0 +1,14 @@
+uuid: bd476c79-f0cc-46fb-be59-017b736172d0
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.shadowbanned_user
+  module:
+    - user
+id: user_remove_role_action.shadowbanned_user
+label: 'Remove the shadowbanned user role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: shadowbanned_user

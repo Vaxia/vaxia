@@ -1,0 +1,25 @@
+uuid: 7e81686b-a4f6-44b6-808b-d65475d17502
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_item_uses
+    - node.type.items
+id: node.items.field_item_uses
+field_name: field_item_uses
+entity_type: node
+bundle: items
+label: Charges
+description: 'How many charges the item has per use. If you are creating a batch of items such as 5 health potions, select "Single use" and set the charges for number of potions. If you are creating an item that can be used three times a day, select "Per day" and set the charges for the number of uses per day.'
+required: true
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

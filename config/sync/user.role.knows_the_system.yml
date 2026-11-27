@@ -1,0 +1,16 @@
+uuid: eb8a23bf-3584-4da2-a81d-7d894387ac41
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.workflow.character_evaluation
+  module:
+    - vaxia_governance
+    - workflow
+id: knows_the_system
+label: knows-the-system
+weight: 24
+is_admin: false
+permissions:
+  - 'create character_evaluation workflow_transition'
+  - 'vote on proposal'

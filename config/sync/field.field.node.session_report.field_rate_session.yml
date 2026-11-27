@@ -1,0 +1,21 @@
+uuid: 26d7d4a7-d941-4ef6-8e2a-333441157099
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_rate_session
+    - node.type.session_report
+  module:
+    - options
+id: node.session_report.field_rate_session
+field_name: field_rate_session
+entity_type: node
+bundle: session_report
+label: 'How good was this session?'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_integer

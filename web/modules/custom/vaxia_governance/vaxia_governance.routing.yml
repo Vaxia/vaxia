@@ -1,0 +1,163 @@
+vaxia_governance.proposal_settings:
+  path: '/admin/rpg/proposal'
+  defaults:
+    _form: '\Drupal\vaxia_governance\Form\ProposalSettingsForm'
+    _title: 'Proposal system'
+  requirements:
+    _permission: 'administer proposal'
+vaxia_governance.proposals:
+  path: '/proposals'
+  defaults:
+    _controller: '\Drupal\vaxia_governance\Controller\ProposalList::page'
+    _title: 'Proposals'
+  requirements:
+    _role: 'player'
+vaxia_governance.ballot:
+  path: '/node/{node}/webform/components'
+  defaults:
+    _form: '\Drupal\vaxia_governance\Form\BallotForm'
+    _title: 'Ballot'
+  requirements:
+    _custom_access: '\Drupal\vaxia_governance\Controller\WebformTabs::ballotAccess'
+  options:
+    parameters:
+      node:
+        type: entity:node
+vaxia_governance.ballot_tab:
+  path: '/node/{node}/webform'
+  defaults:
+    _form: '\Drupal\vaxia_governance\Form\BallotForm'
+    _title: 'Ballot'
+  requirements:
+    _custom_access: '\Drupal\vaxia_governance\Controller\WebformTabs::ballotAccess'
+  options:
+    parameters:
+      node:
+        type: entity:node
+vaxia_governance.webform_results:
+  path: '/node/{node}/webform-results'
+  defaults:
+    _controller: '\Drupal\vaxia_governance\Controller\WebformTabs::results'
+    _title: 'Results'
+  requirements:
+    _custom_access: '\Drupal\vaxia_governance\Controller\WebformTabs::resultsAccess'
+  options:
+    parameters:
+      node:
+        type: entity:node
+vaxia_governance.webform_configure:
+  path: '/node/{node}/webform/configure'
+  defaults:
+    _controller: '\Drupal\vaxia_governance\Controller\WebformTabs::settings'
+    _title: 'Form settings'
+  requirements:
+    _custom_access: '\Drupal\vaxia_governance\Controller\WebformTabs::settingsAccess'
+  options:
+    parameters:
+      node:
+        type: entity:node
+vaxia_governance.webform_emails:
+  path: '/node/{node}/webform/emails'
+  defaults:
+    _controller: '\Drupal\vaxia_governance\Controller\WebformTabs::emails'
+    _title: 'E-mails'
+  requirements:
+    _custom_access: '\Drupal\vaxia_governance\Controller\WebformTabs::settingsAccess'
+  options:
+    parameters:
+      node:
+        type: entity:node
+vaxia_governance.anon_mailer_settings:
+  path: '/admin/vaxia/anon_mailer'
+  defaults:
+    _form: '\Drupal\vaxia_governance\Form\AnonMailerSettingsForm'
+    _title: 'Anon Mailer'
+  requirements:
+    _permission: 'administrate anon mailer'
+vaxia_governance.election_settings:
+  path: '/admin/rpg/rpg_election'
+  defaults:
+    _form: '\Drupal\vaxia_governance\Form\ElectionSettingsForm'
+    _title: 'RPG Election settings'
+  requirements:
+    _permission: 'administrate rpg_elections'
+vaxia_governance.department_settings:
+  path: '/admin/rpg/departments'
+  defaults:
+    _form: '\Drupal\vaxia_governance\Form\DepartmentSettingsForm'
+    _title: 'Department settings'
+  requirements:
+    _permission: 'administrate departments'
+vaxia_governance.members_system_department:
+  path: '/players/system-department'
+  defaults:
+    _controller: '\Drupal\vaxia_governance\Controller\DepartmentMembers::members'
+    _title: 'System department'
+    role: knows_the_system
+  requirements:
+    _permission: 'access content'
+vaxia_governance.members_social_department:
+  path: '/players/social-department'
+  defaults:
+    _controller: '\Drupal\vaxia_governance\Controller\DepartmentMembers::members'
+    _title: 'Social department'
+    role: knows_the_social
+  requirements:
+    _permission: 'access content'
+vaxia_governance.members_setting_department:
+  path: '/players/setting-department'
+  defaults:
+    _controller: '\Drupal\vaxia_governance\Controller\DepartmentMembers::members'
+    _title: 'Setting department'
+    role: knows_the_setting
+  requirements:
+    _permission: 'access content'
+vaxia_governance.members_social_helpers:
+  path: '/players/social-helpers'
+  defaults:
+    _controller: '\Drupal\vaxia_governance\Controller\DepartmentMembers::members'
+    _title: 'Newbie helpers'
+    role: newbie_helper
+  requirements:
+    _permission: 'access content'
+vaxia_governance.members_social_mediators:
+  path: '/players/social-mediators'
+  defaults:
+    _controller: '\Drupal\vaxia_governance\Controller\DepartmentMembers::members'
+    _title: 'Mediators'
+    role: mediator
+  requirements:
+    _permission: 'access content'
+vaxia_governance.role_app_settings:
+  path: '/admin/rpg/role_app'
+  defaults:
+    _form: '\Drupal\vaxia_governance\Form\RoleAppSettingsForm'
+    _title: 'Application settings'
+  requirements:
+    _permission: 'administrate role application'
+vaxia_governance.anon_posts:
+  path: '/node/{node}/anon-posts'
+  defaults:
+    _controller: '\Drupal\vaxia_governance\Controller\GovernanceLists::anonPosts'
+    _title: 'Anonymous mailing posts'
+  requirements:
+    _custom_access: '\Drupal\vaxia_governance\Controller\GovernanceLists::anonPostsAccess'
+  options:
+    parameters:
+      node:
+        type: entity:node
+vaxia_governance.leads:
+  path: '/players/leads'
+  defaults:
+    _controller: '\Drupal\vaxia_governance\Controller\GovernanceLists::leads'
+    _title: 'Leads'
+  requirements:
+    _permission: 'access user profiles'
+vaxia_governance.organization_goals:
+  path: '/setting/organization-goals'
+  defaults:
+    _controller: '\Drupal\vaxia_governance\Controller\GovernanceLists::organizationGoals'
+    _title: 'Organization Goals'
+  requirements:
+    # D7 view access: administrator, lead.
+    _role: 'administrator+lead'

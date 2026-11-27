@@ -1,0 +1,21 @@
+uuid: 57c4f88b-7010-45e2-a728-14d2ba82c551
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_scifi_languages
+    - node.type.character_sheet
+  module:
+    - options
+id: node.character_sheet.field_scifi_languages
+field_name: field_scifi_languages
+entity_type: node
+bundle: character_sheet
+label: 'Science Fiction languages'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

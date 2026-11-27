@@ -1,0 +1,14 @@
+uuid: 4fea847c-b211-4b24-b009-6b62a30a4b1f
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.new_account
+  module:
+    - user
+id: user_add_role_action.new_account
+label: 'Add the new account role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: new_account

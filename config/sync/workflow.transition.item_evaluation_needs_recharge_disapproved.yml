@@ -1,0 +1,14 @@
+uuid: 57710235-0274-48de-a903-7b9690662ec0
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.item_evaluation_disapproved
+    - workflow.state.item_evaluation_needs_recharge
+id: item_evaluation_needs_recharge_disapproved
+label: null
+module: workflow
+from_sid: item_evaluation_needs_recharge
+to_sid: item_evaluation_disapproved
+roles:
+  administrator: administrator

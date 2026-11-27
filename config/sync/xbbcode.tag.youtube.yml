@@ -1,0 +1,13 @@
+uuid: b543f798-3afd-415a-a5b9-a7010ef42c60
+langcode: en
+status: true
+dependencies: {  }
+id: youtube
+label: YouTube
+description: 'YouTube video: [youtube]VIDEO_ID[/youtube].'
+name: youtube
+attached: {  }
+sample: '[{{ name }}]VIDEO_ID[/{{ name }}]'
+template_code: '{% set id = ('''' ~ tag.source)|trim %}{% if id matches ''{^[A-Za-z0-9_-]+$}'' %}<iframe width="425" height="366" src="https://www.youtube.com/embed/{{ id }}" frameborder="0" allowfullscreen></iframe>{% else %}{{ tag.outerSource }}{% endif %}'
+template_file: null
+editable: false

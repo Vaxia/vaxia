@@ -1,0 +1,7 @@
+name: 'Vaxia forum access'
+type: module
+description: 'Per-forum role grants (view, post, edit, delete), as D7 forum_access kept them.'
+package: Vaxia
+core_version_requirement: ^11
+dependencies:
+  - forum:forum

@@ -1,0 +1,28 @@
+uuid: c7678e1e-05b2-494c-9e26-71b7817969aa
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_social_members
+    - node.type.notation
+id: node.notation.field_social_members
+field_name: field_social_members
+entity_type: node
+bundle: notation
+label: 'Social Members'
+description: 'Members of the social department that got involved.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'vaxia_conduct:user'
+  handler_settings:
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    filter:
+      type: _none
+    include_anonymous: true
+field_type: entity_reference

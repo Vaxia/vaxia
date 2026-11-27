@@ -1,0 +1,13 @@
+uuid: 831a9913-04ef-40d4-a618-0baf0478d702
+langcode: en
+status: true
+dependencies: {  }
+id: table
+label: Table
+description: 'Table: [table][tr][td]cell[/td][/tr][/table].'
+name: table
+attached: {  }
+sample: '[{{ name }}][tr][td]Cell[/td][/tr][/{{ name }}]'
+template_code: '<table class="bb-table">{{ tag.content }}</table>'
+template_file: null
+editable: false

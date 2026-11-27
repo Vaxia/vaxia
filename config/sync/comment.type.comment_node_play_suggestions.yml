@@ -1,0 +1,8 @@
+uuid: 342985d3-87a4-4c23-9eb5-549f68999f50
+langcode: en
+status: true
+dependencies: {  }
+id: comment_node_play_suggestions
+label: 'Play suggestions comment'
+target_entity_type_id: node
+description: null

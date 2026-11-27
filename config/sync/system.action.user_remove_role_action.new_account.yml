@@ -1,0 +1,14 @@
+uuid: 651ef4ad-a1e1-4c9f-9791-ce1c93446ae0
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.new_account
+  module:
+    - user
+id: user_remove_role_action.new_account
+label: 'Remove the new account role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: new_account

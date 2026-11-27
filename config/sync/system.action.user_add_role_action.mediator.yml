@@ -1,0 +1,14 @@
+uuid: d441d189-2fe5-448a-b007-4ae85e81e551
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.mediator
+  module:
+    - user
+id: user_add_role_action.mediator
+label: 'Add the mediator role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: mediator

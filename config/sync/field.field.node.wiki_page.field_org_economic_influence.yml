@@ -1,0 +1,25 @@
+uuid: 66501f26-c8e0-46ed-ab4d-a1ec32d663cf
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_org_economic_influence
+    - node.type.wiki_page
+id: node.wiki_page.field_org_economic_influence
+field_name: field_org_economic_influence
+entity_type: node
+bundle: wiki_page
+label: 'Economic Influence'
+description: 'In terms of capital and liquid assets, how deep are this organizations pockets? Do their financial decisions influence the market strongly?'
+required: true
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  min: 0
+  max: 200
+  prefix: ''
+  suffix: ''
+field_type: integer

@@ -1,0 +1,14 @@
+uuid: 530e09cc-7f23-49d6-8055-318fed03ec62
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.item_evaluation_needs_recharge
+    - workflow.state.item_evaluation_removed_from_game
+id: item_evaluation_needs_recharge_removed_from_game
+label: null
+module: workflow
+from_sid: item_evaluation_needs_recharge
+to_sid: item_evaluation_removed_from_game
+roles:
+  administrator: administrator

@@ -1,0 +1,14 @@
+uuid: cd4c81c8-1337-46b0-a9ea-65f9be53114b
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.storyteller
+  module:
+    - user
+id: user_add_role_action.storyteller
+label: 'Add the storyteller role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: storyteller

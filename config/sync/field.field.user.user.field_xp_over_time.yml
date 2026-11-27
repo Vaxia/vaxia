@@ -1,0 +1,24 @@
+uuid: 8eae1776-2a55-4853-b2b6-6aae6a9298f5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_xp_over_time
+  module:
+    - user
+id: user.user.field_xp_over_time
+field_name: field_xp_over_time
+entity_type: user
+bundle: user
+label: 'XP over time'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

@@ -1,0 +1,15 @@
+uuid: da8a666b-9e86-428a-9a7c-d0d209d825cd
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflow.state.wiki_workflow_locked
+    - workflow.state.wiki_workflow_open
+id: wiki_workflow_locked_open
+label: null
+module: workflow
+from_sid: wiki_workflow_locked
+to_sid: wiki_workflow_open
+roles:
+  administrator: administrator
+  lead: lead
