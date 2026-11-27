@@ -1,8 +1,0 @@
-name = Item Uses
-description = Allow for items to have charged uses
-core = 7.x
-package = Vaxia
-php = 5.2.4
-version = 7.x-1.2
-dependencies[] = vaxia
-dependencies[] = items
